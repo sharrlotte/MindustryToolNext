@@ -1,2 +1,9 @@
-export const WEB_VERSION = 'Beta 0.9.0';
-export const THEMES = ['light', 'dark', 'system'];
+const cfg = {
+	webVersion: 'Beta 0.9.0',
+	themes: ['light', 'dark', 'system'],
+	locales: ['vi', 'en-US'],
+	defaultLocale: 'en-US',
+	apiUrl: process.env.BACKEND_URL as string,
+};
+
+export default cfg;

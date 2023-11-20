@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { THEMES } from '@/constant/global';
+import cfg from '@/constant/global';
 
 export function ThemeSwitcher() {
 	const { setTheme } = useTheme();
@@ -30,7 +30,7 @@ export function ThemeSwitcher() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='end'>
-				{THEMES.map((theme) => (
+				{cfg.themes.map((theme) => (
 					<DropdownMenuItem
 						key={theme}
 						className='capitalize'

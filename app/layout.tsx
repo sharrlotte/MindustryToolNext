@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
-import { Monomaniac_One } from 'next/font/google';
 import { cn } from '@/lib/utils';
+import cfg from '@/constant/global';
 import { ThemeProvider } from './theme-provider';
+import { Monomaniac_One } from 'next/font/google';
 import NavigationBar from './navigation';
 
 import './globals.css';
@@ -18,7 +19,11 @@ interface RootParam {
 }
 
 export async function generateStaticParams(): Promise<RootParam[]> {
-	return [{ lang: 'en-US' }, { lang: 'vi' }];
+	return cfg.locales.map((locale) => {
+		return {
+			lang: locale,
+		};
+	});
 }
 
 export default function Root({ children, params }: { children: React.ReactNode; params: RootParam }) {

@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
-export default function page() {
-  return (
-    <div>Map</div>
-  )
+export default function Page() {
+	return <div>Map</div>;
 }

@@ -1,9 +1,9 @@
 'use client';
 
+import cfg from '@/constant/global';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { WEB_VERSION } from '@/constant/global';
 import { usePathname } from 'next/navigation';
 import { ThemeSwitcher } from './theme-switcher';
 import { HTMLAttributes, ReactNode, useState } from 'react';
@@ -52,7 +52,7 @@ export default function NavigationBar() {
 				<section onMouseLeave={hideSidebar}>
 					<div className='flex flex-col gap-1'>
 						<span className='uppercase font-bold text-3xl px-1'>MindustryTool</span>
-						<span className='font-bold rounded-md px-1'>{WEB_VERSION}</span>
+						<span className='font-bold rounded-md px-1'>{cfg.themes}</span>
 						<section className='grid gap-1'>
 							{paths.map((item, index) => (
 								<NavItem
