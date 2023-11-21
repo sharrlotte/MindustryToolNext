@@ -26,13 +26,14 @@ export default async function getSchematics(params: GetSchematicParams): Promise
 	const { page, name, authorId, tags, sort } = schema.parse(params);
 
 	return fetch(
-		`${cfg.apiUrl}/schematics` +
+		`${cfg.apiUrl}/schematics?` +
 			new URLSearchParams({
 				page,
 				name,
 				authorId,
 				sort,
 				tags: tags.join(','),
+				items: '20',
 			})
 	).then((result) => result.json());
 }

@@ -40,7 +40,10 @@ export default function Schematics({ searchParams }: SchematicsProps) {
 			{data.pages
 				.reduce((prev, curr) => prev.concat(curr), [])
 				.map((schematic) => (
-					<SchematicPreview schematic={schematic} />
+					<SchematicPreview
+						key={schematic.id}
+						schematic={schematic}
+					/>
 				))}
 			Hello
 		</PreviewContainer>

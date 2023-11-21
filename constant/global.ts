@@ -3,7 +3,7 @@ const cfg = {
 	themes: ['light', 'dark', 'system'],
 	locales: ['vi', 'en-US'],
 	defaultLocale: 'en-US',
-	apiUrl: process.env.BACKEND_URL as string,
+	apiUrl: 'http://localhost:8080/api/v3',
 };
 
 export default cfg;

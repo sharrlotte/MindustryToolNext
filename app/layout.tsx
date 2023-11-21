@@ -6,6 +6,7 @@ import { Monomaniac_One } from 'next/font/google';
 import NavigationBar from './navigation';
 
 import './globals.css';
+import QueryProvider from './query-provider';
 
 const inter = Monomaniac_One({ subsets: ['latin'], weight: '400' });
 
@@ -41,7 +42,7 @@ export default function Root({ children, params }: { children: React.ReactNode; 
 					disableTransitionOnChange
 				>
 					<NavigationBar />
-					{children}
+					<QueryProvider>{children}</QueryProvider>
 				</ThemeProvider>
 			</body>
 		</html>
