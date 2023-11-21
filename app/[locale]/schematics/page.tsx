@@ -1,12 +1,18 @@
 'use client';
 
 import React from 'react';
-import PreviewContainer from '@/components/preview/preview-container';
+import HydratedSchematic from './hydrated-schematics';
 
 export default function Page() {
-  
-
-
-
-	return <PreviewContainer></PreviewContainer>;
+	return (
+		<HydratedSchematic
+			searchParams={{
+				page: 0,
+				name: '',
+				authorId: '',
+				tags: [],
+				sort: 'time_1',
+			}}
+		/>
+	);
 }

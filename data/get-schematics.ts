@@ -1,8 +1,9 @@
 import cfg from '@/constant/global';
 import { sortSchema } from '@/schema/schema';
+import Schematic from '@/types/Schematic';
 import { z } from 'zod';
 
-interface GetSchematicParams {
+export interface GetSchematicParams {
 	page: number;
 	name: string | null;
 	authorId: string | null;
@@ -10,7 +11,7 @@ interface GetSchematicParams {
 	sort: string;
 }
 
-export default function getSchematics(params: GetSchematicParams) {
+export default async function getSchematics(params: GetSchematicParams): Promise<Schematic[]> {
 	const schema = z.object({
 		page: z
 			.number()
@@ -25,13 +26,13 @@ export default function getSchematics(params: GetSchematicParams) {
 	const { page, name, authorId, tags, sort } = schema.parse(params);
 
 	return fetch(
-		cfg.apiUrl +
+		`${cfg.apiUrl}/schematics` +
 			new URLSearchParams({
 				page,
 				name,
 				authorId,
-				tags : tags,
 				sort,
+				tags: tags.join(','),
 			})
-	);
+	).then((result) => result.json());
 }
