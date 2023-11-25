@@ -1,16 +1,24 @@
-import React from 'react';
-import HydratedSchematic from './hydrated-schematics';
+import React from "react";
+import getQueryClient from "@/query/config/query-client";
+import getSchematics, { GetSchematicParams } from "@/query/get-schematics";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import Schematics from "./schematics";
+interface PageProps {
+  searchParams: GetSchematicParams;
+}
 
-export default function Page() {
-	return (
-		<HydratedSchematic
-			searchParams={{
-				page: 0,
-				name: '',
-				authorId: '',
-				tags: [],
-				sort: 'time_1',
-			}}
-		/>
-	);
+export default async function Page({ searchParams }: PageProps) {
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["schematics", searchParams],
+    queryFn: () => getSchematics(searchParams),
+  });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <Schematics />
+    </HydrationBoundary>
+  );
 }

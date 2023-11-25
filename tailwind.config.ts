@@ -16,6 +16,7 @@ module.exports = {
 			}),
 			spacing: {
 				preview: 'var(--preview-size)',
+				nav: 'var(--nav-height)',
 			},
 			colors: {
 				border: 'hsl(var(--border))',

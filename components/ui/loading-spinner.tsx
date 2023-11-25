@@ -1,9 +1,10 @@
-import React from 'react';
+import { cn } from '@/lib/utils';
+import React, { HTMLAttributes } from 'react';
 
-export default function LoadingSpinner() {
+export default function LoadingSpinner({ className }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className='h-screen grid place-content-center'
+			className={cn('flex justify-center items-center my-2', className)}
 			role='status'
 		>
 			<svg
