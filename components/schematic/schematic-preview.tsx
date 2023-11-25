@@ -1,4 +1,4 @@
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import Preview from "@/components/preview/preview";
 import Schematic from "@/types/Schematic";
 import cfg from "@/constant/global";
@@ -11,16 +11,21 @@ import {
 } from "@heroicons/react/24/solid";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-interface SchematicPreviewProps {
+type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
-}
+};
 
-export default function SchematicPreview({ schematic }: SchematicPreviewProps) {
+export default function SchematicPreview({
+  className,
+  schematic,
+  ...rest
+}: SchematicPreviewProps) {
   const { toast } = useToast();
 
   return (
-    <Preview className="relative flex flex-col">
+    <Preview className={cn("relative flex flex-col", className)} {...rest}>
       <Button
         className="absolute left-1 top-1 aspect-square p-2"
         title="Copy link"

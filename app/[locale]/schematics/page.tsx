@@ -1,11 +1,13 @@
 import React from "react";
 import getQueryClient from "@/query/config/query-client";
-import getSchematics, { GetSchematicParams } from "@/query/schematic/get-schematics";
+import getSchematics, {
+  GetSchematicParams,
+} from "@/query/schematic/get-schematics";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import Schematics from "./schematics";
-interface PageProps {
+type PageProps = {
   searchParams: GetSchematicParams;
-}
+};
 
 export default async function Page({ searchParams }: PageProps) {
   const queryClient = getQueryClient();

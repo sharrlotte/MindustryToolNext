@@ -76,16 +76,17 @@ export default function NavigationBar() {
   );
 }
 
-interface Path {
+type Path = {
   path: string;
   name: ReactNode;
   icon: ReactNode;
   enabled?: boolean;
-}
+};
 
-interface NavItemProps extends Path, HTMLAttributes<HTMLAnchorElement> {
-  onClick: () => void;
-}
+type NavItemProps = Path &
+  HTMLAttributes<HTMLAnchorElement> & {
+    onClick: () => void;
+  };
 
 function NavItem({
   className,
