@@ -6,14 +6,12 @@ import Schematic from "@/types/Schematic";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoMore from "@/components/common/no-more";
 import useSafeSearchParams from "@/hooks/use-safe-search-params";
-import getSchematics, {
-  GetSchematicParams,
-  schematicSearchParamSchema,
-} from "@/query/schematic/get-schematics";
+import getSchematics from "@/query/schematic/get-schematics";
+import { SearchParams, searchSchema } from "@/schema/search-schema";
 
 export default function Schematics() {
   const query = useSafeSearchParams();
-  const searchParams = schematicSearchParamSchema.parse({
+  const searchParams = searchSchema.parse({
     page: Number.parseInt(query.get("page", "0")),
     name: query.get("name"),
     sort: query.get("sort", "time_1"),
@@ -29,7 +27,7 @@ export default function Schematics() {
       getNextPageParam: (
         lastPage: Schematic[],
         pages: Schematic[][],
-        lastPageParams: GetSchematicParams,
+        lastPageParams: SearchParams,
       ) => {
         if (lastPage.length == 0) {
           return undefined;
@@ -41,7 +39,7 @@ export default function Schematics() {
       getPreviousPageParam: (
         lastPage: Schematic[],
         pages: Schematic[][],
-        lastPageParams: GetSchematicParams,
+        lastPageParams: SearchParams,
       ) => {
         if (lastPage.length == 0 || lastPageParams.page <= 0) {
           return undefined;

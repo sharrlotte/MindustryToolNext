@@ -1,22 +1,11 @@
 import cfg from "@/constant/global";
-import { sortSchema } from "@/schema/schema";
+import { SearchParams, searchSchema } from "@/schema/search-schema";
 import Schematic from "@/types/Schematic";
-import { z } from "zod";
-
-export const schematicSearchParamSchema = z.object({
-  page: z.number().gte(0).default(0),
-  name: z.string().default(""),
-  authorId: z.string().default(""),
-  tags: z.array(z.string()).default([]),
-  sort: sortSchema,
-});
-export type GetSchematicParams = z.infer<typeof schematicSearchParamSchema>;
 
 export default async function getSchematics(
-  params: GetSchematicParams,
+  params: SearchParams,
 ): Promise<Schematic[]> {
-  const { page, name, authorId, tags, sort } =
-    schematicSearchParamSchema.parse(params);
+  const { page, name, authorId, tags, sort } = searchSchema.parse(params);
 
   const result = await fetch(
     `${cfg.apiUrl}/schematics?` +
