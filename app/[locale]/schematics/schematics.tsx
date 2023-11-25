@@ -9,7 +9,7 @@ import useSafeSearchParams from "@/hooks/use-safe-search-params";
 import getSchematics, {
   GetSchematicParams,
   schematicSearchParamSchema,
-} from "@/query/get-schematics";
+} from "@/query/schematic/get-schematics";
 
 export default function Schematics() {
   const query = useSafeSearchParams();

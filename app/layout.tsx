@@ -8,8 +8,6 @@ import NavigationBar from "./navigation";
 import "./globals.css";
 import QueryProvider from "../query/config/query-provider";
 import { Toaster } from "@/components/ui/toaster";
-import { NextRouter } from "next/router";
-import { useScrollRestoration } from "@/hooks/use-scroll-restoration";
 
 const inter = Monomaniac_One({ subsets: ["latin"], weight: "400" });
 
@@ -33,13 +31,10 @@ export async function generateStaticParams(): Promise<RootParam[]> {
 export default function Root({
   children,
   params,
-  router,
 }: {
   children: React.ReactNode;
   params: RootParam;
-  router: NextRouter;
 }) {
-  useScrollRestoration(router);
   return (
     <html lang={params.lang ?? "en"} suppressHydrationWarning className="dark">
       <body
