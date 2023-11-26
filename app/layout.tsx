@@ -1,4 +1,4 @@
-import cfg from "@/constant/global";
+import conf from "@/constant/global";
 import NavigationBar from "./navigation";
 import QueryProvider from "../query/config/query-provider";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,12 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 
-const inter = Monomaniac_One({ subsets: ["latin"], weight: "400" , display: 'swap', adjustFontFallback: false});
+const inter = Monomaniac_One({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  adjustFontFallback: false,
+});
 
 export const metadata: Metadata = {
   title: "MindustryTool",
@@ -22,7 +27,7 @@ type RootParam = {
 };
 
 export async function generateStaticParams(): Promise<RootParam[]> {
-  return cfg.locales.map((locale) => {
+  return conf.locales.map((locale) => {
     return {
       lang: locale,
     };
@@ -52,7 +57,7 @@ export default function Root({ children, params }: RootProps) {
           <NextTopLoader height={4} showSpinner={false} />
           <NavigationBar />
           <Toaster />
-          <div className="min-h-[calc(100vh-var(--nav-height))] w-full">
+          <div className="min-h-[calc(100vh-var(--nav-height))] w-full p-4">
             <QueryProvider>{children}</QueryProvider>
           </div>
         </ThemeProvider>

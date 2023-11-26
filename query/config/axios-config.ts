@@ -1,11 +1,11 @@
-import cfg from "@/constant/global";
+import conf from "@/constant/global";
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: cfg.apiUrl,
+  baseURL: conf.apiUrl,
   paramsSerializer: {
-    indexes: null
-  }
+    indexes: null,
+  },
 });
 
 export default axiosClient;

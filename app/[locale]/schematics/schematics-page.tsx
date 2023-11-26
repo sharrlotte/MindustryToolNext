@@ -6,7 +6,7 @@ import NoMore from "@/components/common/no-more";
 import getSchematics from "@/query/schematic/get-schematics";
 import useInfinitePageQuery from "@/hooks/use-infinite-page-query";
 
-export default function Schematicsy() {
+export default function SchematicsPage() {
   const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
     useInfinitePageQuery(getSchematics, "schematics");
 
@@ -24,7 +24,7 @@ export default function Schematicsy() {
 
   return (
     <InfiniteScroll
-      className="grid min-h-full w-full grid-cols-[repeat(auto-fill,var(--preview-size))] items-center justify-center gap-4 p-4"
+      className="grid min-h-full w-full grid-cols-[repeat(auto-fill,var(--preview-size))] items-center justify-center gap-4"
       next={fetchNextPage}
       dataLength={pages.length}
       hasMore={hasNextPage}

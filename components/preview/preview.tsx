@@ -28,7 +28,7 @@ function Header({ className, children }: HeaderProps) {
         className,
       )}
     >
-      <span className="m-auto">{children}</span>
+      <h2 className="m-auto">{children}</h2>
     </div>
   );
 }
@@ -52,9 +52,11 @@ function PImage({ className, src, alt }: ImageProps) {
 
 type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
 
-function Actions({ children }: ActionsProps) {
+function Actions({ className, children }: ActionsProps) {
   return (
-    <section className="flex w-full items-center justify-around px-1">
+    <section
+      className={cn("flex w-full items-center justify-around px-1", className)}
+    >
       {children}
     </section>
   );
@@ -62,9 +64,11 @@ function Actions({ children }: ActionsProps) {
 
 type DescriptionProps = React.HTMLAttributes<HTMLDivElement>;
 
-function Description({ children }: DescriptionProps) {
+function Description({ className, children }: DescriptionProps) {
   return (
-    <section className="flex w-full flex-col items-center py-2">
+    <section
+      className={cn("flex w-full flex-col items-center py-2", className)}
+    >
       {children}
     </section>
   );

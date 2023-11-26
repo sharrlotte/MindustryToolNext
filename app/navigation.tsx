@@ -1,6 +1,6 @@
 "use client";
 
-import cfg from "@/constant/global";
+import conf from "@/constant/global";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -19,14 +19,23 @@ import {
 
 import OutsideWrapper from "@/components/ui/outside-wrapper";
 
+let hideNavTimeout: NodeJS.Timeout | undefined = undefined;
+
 export default function NavigationBar() {
   const pathName = usePathname();
   const route = pathName.split("/").filter((item) => item)[1];
 
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
 
-  const showSidebar = () => setSidebarVisibility(true);
-  const hideSidebar = () => setSidebarVisibility(false);
+  const showSidebar = () => {
+    if (hideNavTimeout) clearTimeout(hideNavTimeout);
+    setSidebarVisibility(true);
+  };
+
+  const hideSidebar = () => {
+    if (hideNavTimeout) clearTimeout(hideNavTimeout);
+    hideNavTimeout = setTimeout(() => setSidebarVisibility(false), 500);
+  };
 
   return (
     <div className="z-50 flex h-nav w-full items-center justify-between bg-slate-500 dark:bg-emerald-500">
@@ -50,12 +59,12 @@ export default function NavigationBar() {
         )}
         onClickOutside={hideSidebar}
       >
-        <section onMouseLeave={hideSidebar}>
+        <section onMouseLeave={hideSidebar} onMouseEnter={showSidebar}>
           <div className="flex flex-col gap-1">
             <span className="bg-gradient-to-r from-emerald-400 to-sky-500 bg-clip-text px-1 text-3xl font-bold uppercase text-transparent">
               MindustryTool
             </span>
-            <span className="rounded-md px-1 font-bold">{cfg.webVersion}</span>
+            <span className="rounded-md px-1 font-bold">{conf.webVersion}</span>
             <section className="grid gap-1">
               {paths.map((item, index) => (
                 <NavItem
