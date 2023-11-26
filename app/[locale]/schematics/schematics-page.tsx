@@ -1,53 +1,14 @@
 "use client";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import SchematicPreview from "@/components/schematic/schematic-preview";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import Schematic from "@/types/Schematic";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoMore from "@/components/common/no-more";
-import useSafeSearchParams from "@/hooks/use-safe-search-params";
 import getSchematics from "@/query/schematic/get-schematics";
-import { SearchParams, searchSchema } from "@/schema/search-schema";
+import useInfinitePageQuery from "@/hooks/use-infinite-page-query";
 
-export default function Schematics() {
-  const query = useSafeSearchParams();
-  const searchParams = searchSchema.parse({
-    page: Number.parseInt(query.get("page", "0")),
-    name: query.get("name"),
-    sort: query.get("sort", "time_1"),
-    tags: query.getAll("tags"),
-    authorId: query.get("authorId"),
-  });
-
+export default function Schematicsy() {
   const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
-    useInfiniteQuery({
-      queryKey: ["posts", searchParams],
-      queryFn: (context) => getSchematics(context.pageParam),
-      initialPageParam: searchParams,
-      getNextPageParam: (
-        lastPage: Schematic[],
-        pages: Schematic[][],
-        lastPageParams: SearchParams,
-      ) => {
-        if (lastPage.length == 0) {
-          return undefined;
-        }
-        lastPageParams.page += 1;
-        return lastPageParams;
-      },
-
-      getPreviousPageParam: (
-        lastPage: Schematic[],
-        pages: Schematic[][],
-        lastPageParams: SearchParams,
-      ) => {
-        if (lastPage.length == 0 || lastPageParams.page <= 0) {
-          return undefined;
-        }
-        lastPageParams.page -= 1;
-        return lastPageParams;
-      },
-    });
+    useInfinitePageQuery(getSchematics, "schematics");
 
   if (isError) {
     return (

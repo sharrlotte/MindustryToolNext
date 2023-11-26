@@ -4,14 +4,11 @@ import Schematic from "@/types/Schematic";
 import cfg from "@/constant/global";
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
-import {
-  ArrowDownTrayIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from "@heroicons/react/24/solid";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
+import LikeComponent from "@/components/like/like-component";
 
 type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -45,9 +42,9 @@ export default function SchematicPreview({
         <Preview.Actions>
           <Button
             className="aspect-square"
-            title="Copy"
             size="icon"
-            variant="ghost"
+            variant="outline"
+            title="Copy"
             onClick={() =>
               toast({
                 title: "Copied",
@@ -60,38 +57,36 @@ export default function SchematicPreview({
             className="aspect-square"
             title="Download"
             size="icon"
-            variant="ghost"
+            variant="outline"
             asChild
           >
             <a href="\icons\chat.png" download>
               <ArrowDownTrayIcon className="h-6 w-6" />
             </a>
           </Button>
-          <Button
-            className="aspect-square"
-            title="Up vote"
-            size="icon"
-            variant="ghost"
+          <LikeComponent
+            initialLikeCount={schematic.like}
+            initialLikeData={schematic.userLike}
           >
-            <ChevronUpIcon className="h-6 w-6" />
-          </Button>
-          <Button
-            className="aspect-square text-xl"
-            size="icon"
-            title="Like count"
-            variant="ghost"
-            disabled
-          >
-            0
-          </Button>
-          <Button
-            className="aspect-square"
-            title="Down vote"
-            size="icon"
-            variant="ghost"
-          >
-            <ChevronDownIcon className="h-6 w-6" />
-          </Button>
+            <LikeComponent.LikeButton
+              className="aspect-square"
+              size="icon"
+              variant="outline"
+              title="Like"
+            />
+            <LikeComponent.LikeCount
+              className="aspect-square text-xl"
+              size="icon"
+              variant="outline"
+              title="Like count"
+            />
+            <LikeComponent.DislikeButton
+              className="aspect-square"
+              size="icon"
+              variant="outline"
+              title="Dislike"
+            />
+          </LikeComponent>
         </Preview.Actions>
       </Preview.Description>
     </Preview>

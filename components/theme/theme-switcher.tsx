@@ -12,8 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import cfg from "@/constant/global";
+import { HTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
 
-export function ThemeSwitcher() {
+type ThemeSwitcherProps = HTMLAttributes<HTMLDivElement>;
+
+export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
   const { setTheme } = useTheme();
 
   const handleSetTheme = (event: React.MouseEvent, theme: string) => {
@@ -23,9 +27,9 @@ export function ThemeSwitcher() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger className="h-full" asChild>
         <Button
-          className="rounded-none"
+          className={cn("rounded-none", className)}
           variant="ghost"
           size="icon"
           title="switch theme"

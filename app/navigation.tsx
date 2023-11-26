@@ -16,6 +16,7 @@ import {
   ServerStackIcon,
   CommandLineIcon,
 } from "@heroicons/react/24/solid";
+
 import OutsideWrapper from "@/components/ui/outside-wrapper";
 
 export default function NavigationBar() {
@@ -28,7 +29,7 @@ export default function NavigationBar() {
   const hideSidebar = () => setSidebarVisibility(false);
 
   return (
-    <div className="ro r sticky top-0 z-50 flex w-full justify-between bg-slate-500 dark:bg-emerald-500">
+    <div className="z-50 flex h-nav w-full justify-between items-center bg-slate-500 dark:bg-emerald-500">
       <Button
         title="menu"
         type="button"
@@ -71,7 +72,7 @@ export default function NavigationBar() {
           </div>
         </section>
       </OutsideWrapper>
-      <ThemeSwitcher />
+      <ThemeSwitcher className="flex h-full" />
     </div>
   );
 }

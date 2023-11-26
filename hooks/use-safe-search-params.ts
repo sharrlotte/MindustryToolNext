@@ -1,5 +1,4 @@
 import { ReadonlyURLSearchParams, useSearchParams } from "next/navigation";
-import React from "react";
 
 export default function useSafeSearchParams() {
   const params = useSearchParams();

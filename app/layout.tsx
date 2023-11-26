@@ -38,7 +38,7 @@ export default function Root({ children, params }: RootProps) {
     <html lang={params.lang ?? "en"} suppressHydrationWarning className="dark">
       <body
         className={cn(
-          "flex min-h-[calc(100vh-var(--nav-height))] select-none flex-col bg-background antialiased",
+          "flex min-h-screen select-none flex-col bg-background antialiased",
           inter.className,
         )}
       >
@@ -50,7 +50,9 @@ export default function Root({ children, params }: RootProps) {
         >
           <NavigationBar />
           <Toaster />
-          <QueryProvider>{children}</QueryProvider>
+          <div className="min-h-[calc(100vh-var(--nav-height))] w-full">
+            <QueryProvider>{children}</QueryProvider>
+          </div>
         </ThemeProvider>
       </body>
     </html>

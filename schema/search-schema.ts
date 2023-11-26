@@ -8,4 +8,5 @@ export const searchSchema = z.object({
   tags: z.array(z.string()).default([]),
   sort: sortSchema,
 });
+
 export type SearchParams = z.infer<typeof searchSchema>;
