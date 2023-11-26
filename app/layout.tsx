@@ -5,11 +5,12 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "../components/theme/theme-provider";
 import { Monomaniac_One } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 import type { Metadata } from "next";
 
 import "./globals.css";
 
-const inter = Monomaniac_One({ subsets: ["latin"], weight: "400" });
+const inter = Monomaniac_One({ subsets: ["latin"], weight: "400" , display: 'swap', adjustFontFallback: false});
 
 export const metadata: Metadata = {
   title: "MindustryTool",
@@ -48,6 +49,7 @@ export default function Root({ children, params }: RootProps) {
           enableSystem
           disableTransitionOnChange
         >
+          <NextTopLoader height={4} showSpinner={false} />
           <NavigationBar />
           <Toaster />
           <div className="min-h-[calc(100vh-var(--nav-height))] w-full">

@@ -48,6 +48,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         title={title}
         ref={ref}
+        type="button"
         {...props}
       />
     );

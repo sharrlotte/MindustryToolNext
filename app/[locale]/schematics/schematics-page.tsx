@@ -17,9 +17,7 @@ export default function Schematicsy() {
   }
 
   if (!data || isLoading) {
-    return (
-      <LoadingSpinner className="fixed bottom-0 left-0 right-0 top-0 h-screen" />
-    );
+    return <LoadingSpinner className="fixed bottom-0 left-0 right-0 top-0" />;
   }
 
   const pages = data?.pages.reduce((prev, curr) => prev.concat(curr), []) ?? [];
