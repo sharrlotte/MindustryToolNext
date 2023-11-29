@@ -35,8 +35,8 @@ export default function MapDetail({ map }: MapDetailProps) {
             alt={map.name}
           />
         </div>
-        <Detail.Header>{map.name}</Detail.Header>
         <Detail.Description>
+          <Detail.Header>{map.name}</Detail.Header>
           <p>{map.description}</p>
           <section className="flex flex-wrap gap-1">
             {tags.map((item, index) => (

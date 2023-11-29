@@ -44,7 +44,7 @@ export default function Root({ children, params }: RootProps) {
     <html
       lang={params.lang ?? "en"}
       suppressHydrationWarning
-      className="dark flex min-h-screen select-none flex-col bg-background antialiased"
+      className="dark flex min-h-screen select-none flex-col bg-background antialiased overflow-x-hidden"
     >
       <body className={cn(inter.className)}>
         <ThemeProvider

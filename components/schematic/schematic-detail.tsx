@@ -47,8 +47,8 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             alt={schematic.name}
           />
         </div>
-        <Detail.Header>{schematic.name}</Detail.Header>
         <Detail.Description>
+          <Detail.Header>{schematic.name}</Detail.Header>
           <p>{schematic.description}</p>
           <section className="flex flex-wrap gap-1">
             {tags.map((item, index) => (
