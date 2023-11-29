@@ -9,7 +9,7 @@ function Detail({ className, children }: DetailProps) {
   return (
     <Card
       className={cn(
-        "relative flex w-full flex-col overflow-x-hidden rounded-xl border-2 lg:flex-row lg:items-start ",
+        "relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden rounded-xl border-2 p-2 lg:items-stretch",
         className,
       )}
     >
@@ -21,12 +21,7 @@ type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 function Info({ className, children }: InfoProps) {
   return (
-    <div
-      className={cn(
-        "flex h-full flex-1 flex-col justify-between gap-2 p-1",
-        className,
-      )}
-    >
+    <div className={cn("flex flex-row flex-wrap gap-2", className)}>
       {children}
     </div>
   );
@@ -35,7 +30,13 @@ function Info({ className, children }: InfoProps) {
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 function Header({ className, children }: HeaderProps) {
-  return <h2 className={cn("text-xl capitalize", className)}>{children}</h2>;
+  return <h1 className={cn("text-xl capitalize", className)}>{children}</h1>;
+}
+
+type AuthorProps = React.HTMLAttributes<HTMLDivElement>;
+
+function Author({ className, children }: HeaderProps) {
+  return <h1 className={cn("text-xl capitalize", className)}>{children}</h1>;
 }
 type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
   src: string;
@@ -45,7 +46,10 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 function PImage({ className, src, alt }: ImageProps) {
   return (
     <Image
-      className={cn(className)}
+      className={cn(
+        "overflow-hidden rounded-md border-2 border-border",
+        className,
+      )}
       src={src}
       alt={alt}
       width={576}

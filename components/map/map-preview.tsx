@@ -1,36 +1,24 @@
 import React, { HTMLAttributes } from "react";
 import Preview from "@/components/preview/preview";
-import Schematic from "@/types/Schematic";
+import Map from "@/types/Map";
 import conf from "@/constant/global";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn, fixProgressBar } from "@/lib/utils";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 import LikeComponent from "@/components/like/like-component";
-import { toast } from "@/hooks/use-toast";
 import CopyButton from "@/components/ui/copy-button";
-import axiosClient from "@/query/config/axios-config";
 
-type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
-  schematic: Schematic;
+type MapPreviewProps = HTMLAttributes<HTMLDivElement> & {
+  map: Map;
 };
 
-export default function SchematicPreview({
+export default function MapPreview({
   className,
-  schematic,
+  map,
   ...rest
-}: SchematicPreviewProps) {
-  const link = `${conf.baseUrl}/schematics/${schematic.id}`;
-
-  const getSchematicData = async () => {
-    const { dismiss } = toast({
-      title: "Coping",
-      content: "Downloading data from server",
-    });
-    const result = await axiosClient.get(`/schematics/${schematic.id}/data`);
-    dismiss();
-    return result.data as Promise<string>;
-  };
+}: MapPreviewProps) {
+  const link = `${conf.baseUrl}/maps/${map.id}`;
 
   return (
     <Preview className={cn("relative flex flex-col", className)} {...rest}>
@@ -41,31 +29,19 @@ export default function SchematicPreview({
         data={link}
         content={link}
       />
-      <Link href={`/schematics/${schematic.id}`}>
+      <Link href={`/maps/${map.id}`}>
         <Preview.Image
           className="h-preview w-preview"
-          src={`${conf.apiUrl}/schematics/${schematic.id}/image`}
-          alt={schematic.name}
+          src={`${conf.apiUrl}/maps/${map.id}/image`}
+          alt={map.name}
         />
       </Link>
       <Preview.Description>
-        <Preview.Header className="h-12">{schematic.name}</Preview.Header>
+        <Preview.Header className="h-12">{map.name}</Preview.Header>
         <Preview.Actions>
-          <CopyButton
-            title="Copied"
-            variant="outline"
-            content={`Copied schematic ${schematic.name}`}
-            data={getSchematicData}
-          />
-          <Button
-            className="aspect-square"
-            title="Download"
-            size="icon"
-            variant="outline"
-            asChild
-          >
+          <Button title="Download" size="icon" variant="outline" asChild>
             <a
-              href={`${conf.apiUrl}/schematics/${schematic.id}/download`}
+              href={`${conf.apiUrl}/maps/${map.id}/download`}
               download
               onClick={fixProgressBar}
             >
@@ -73,23 +49,21 @@ export default function SchematicPreview({
             </a>
           </Button>
           <LikeComponent
-            initialLikeCount={schematic.like}
-            initialLikeData={schematic.userLike}
+            initialLikeCount={map.like}
+            initialLikeData={map.userLike}
           >
             <LikeComponent.LikeButton
-              className="aspect-square"
               size="icon"
               variant="outline"
               title="Like"
             />
             <LikeComponent.LikeCount
-              className="aspect-square text-xl"
+              className="text-xl"
               size="icon"
               variant="outline"
               title="Like count"
             />
             <LikeComponent.DislikeButton
-              className="aspect-square"
               size="icon"
               variant="outline"
               title="Dislike"

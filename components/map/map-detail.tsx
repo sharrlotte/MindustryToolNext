@@ -5,31 +5,19 @@ import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import CopyButton from "@/components/ui/copy-button";
 import conf from "@/constant/global";
-import { toast } from "@/hooks/use-toast";
 import { fixProgressBar } from "@/lib/utils";
-import axiosClient from "@/query/config/axios-config";
-import Schematic from "@/types/Schematic";
+import Map from "@/types/Map";
 import { Tags } from "@/types/Tag";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import React, { HTMLAttributes } from "react";
 
-type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
-  schematic: Schematic;
+type MapDetailProps = HTMLAttributes<HTMLDivElement> & {
+  map: Map;
 };
 
-export default function SchematicDetail({ schematic }: SchematicDetailProps) {
-  const tags = Tags.parseStringArray(schematic.tags);
-  const link = `${conf.baseUrl}/schematics/${schematic.id}`;
-
-  const getSchematicData = async () => {
-    const { dismiss } = toast({
-      title: "Coping",
-      content: "Downloading data from server",
-    });
-    const result = await axiosClient.get(`/schematics/${schematic.id}/data`);
-    dismiss();
-    return result.data as Promise<string>;
-  };
+export default function MapDetail({ map }: MapDetailProps) {
+  const tags = Tags.parseStringArray(map.tags);
+  const link = `${conf.baseUrl}/maps/${map.id}`;
 
   return (
     <Detail>
@@ -43,13 +31,13 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             content={link}
           />
           <Detail.Image
-            src={`${conf.apiUrl}/schematics/${schematic.id}/image`}
-            alt={schematic.name}
+            src={`${conf.apiUrl}/maps/${map.id}/image`}
+            alt={map.name}
           />
         </div>
-        <Detail.Header>{schematic.name}</Detail.Header>
+        <Detail.Header>{map.name}</Detail.Header>
         <Detail.Description>
-          <p>{schematic.description}</p>
+          <p>{map.description}</p>
           <section className="flex flex-wrap gap-1">
             {tags.map((item, index) => (
               <TagCard key={index} tag={item} />
@@ -59,12 +47,6 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
         <div className="flex gap-1">
-          <CopyButton
-            title="Copy"
-            variant="outline"
-            content={`Copied schematic ${schematic.name}`}
-            data={getSchematicData}
-          />
           <Button
             className="aspect-square"
             title="Download"
@@ -73,7 +55,7 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             asChild
           >
             <a
-              href={`${conf.apiUrl}/schematics/${schematic.id}/download`}
+              href={`${conf.apiUrl}/maps/${map.id}/download`}
               download
               onClick={fixProgressBar}
             >
@@ -81,8 +63,8 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             </a>
           </Button>
           <LikeComponent
-            initialLikeCount={schematic.like}
-            initialLikeData={schematic.userLike}
+            initialLikeCount={map.like}
+            initialLikeData={map.userLike}
           >
             <LikeComponent.LikeButton
               className="aspect-square"

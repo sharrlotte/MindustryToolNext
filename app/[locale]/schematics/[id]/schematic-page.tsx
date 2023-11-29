@@ -18,7 +18,7 @@ export default function SchematicPage() {
   });
 
   if (isLoading) {
-    return <LoadingSpinner className="fixed bottom-0 left-0 right-0 top-0" />;
+    return <LoadingSpinner className="absolute bottom-0 left-0 right-0 top-0" />;
   }
 
   if (isError) {
@@ -29,9 +29,5 @@ export default function SchematicPage() {
     notFound();
   }
 
-  return (
-    <div className="flex">
-      <SchematicDetail schematic={data} />
-    </div>
-  );
+  return <SchematicDetail schematic={data} />;
 }

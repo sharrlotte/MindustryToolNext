@@ -41,13 +41,12 @@ type RootProps = {
 
 export default function Root({ children, params }: RootProps) {
   return (
-    <html lang={params.lang ?? "en"} suppressHydrationWarning className="dark">
-      <body
-        className={cn(
-          "flex min-h-screen select-none flex-col bg-background antialiased",
-          inter.className,
-        )}
-      >
+    <html
+      lang={params.lang ?? "en"}
+      suppressHydrationWarning
+      className="dark flex min-h-screen select-none flex-col bg-background antialiased"
+    >
+      <body className={cn(inter.className)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -57,7 +56,7 @@ export default function Root({ children, params }: RootProps) {
           <NextTopLoader height={4} showSpinner={false} />
           <NavigationBar />
           <Toaster />
-          <div className="min-h-[calc(100vh-var(--nav-height))] w-full p-4">
+          <div className="flex min-h-[calc(100vh-var(--nav-height))] w-full flex-col p-4">
             <QueryProvider>{children}</QueryProvider>
           </div>
         </ThemeProvider>

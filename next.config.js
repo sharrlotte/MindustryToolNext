@@ -1,5 +1,8 @@
 /* @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    scrollRestoration: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -12,6 +15,12 @@ const nextConfig = {
         protocol: "http",
         hostname: "localhost",
         port: "8080",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.discordapp.com",
+        port: "",
         pathname: "/**",
       },
     ],
