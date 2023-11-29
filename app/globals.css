@@ -75,6 +75,26 @@
     @apply border-border;
   }
 
+  *::-webkit-scrollbar-track {
+    width: 10px;
+    @apply bg-slate-400 bg-opacity-20;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+
+    background: white;
+  }
+
+  *::-webkit-scrollbar-button {
+    display: none;
+  }
+
   body {
     @apply bg-background text-foreground;
   }

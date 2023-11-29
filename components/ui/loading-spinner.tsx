@@ -4,7 +4,7 @@ import React, { HTMLAttributes } from 'react';
 export default function LoadingSpinner({ className }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn('flex justify-center items-center my-2', className)}
+			className={cn('flex justify-center items-center my-2 pointer-events-none', className)}
 			role='status'
 		>
 			<svg
