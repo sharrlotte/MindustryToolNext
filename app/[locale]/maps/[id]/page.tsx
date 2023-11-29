@@ -1,26 +1,25 @@
-import React from "react";
+import MapPage from "@/app/[locale]/maps/[id]/map-page";
 import getQueryClient from "@/query/config/query-client";
-import getMaps from "@/query/map/get-maps";
+import getMap from "@/query/map/get-map";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import MapsPage from "./maps-page";
-import { SearchParams } from "@/schema/search-schema";
+import React from "react";
 
 type PageProps = {
-  searchParams: SearchParams;
+  params: { id: string };
 };
 
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ["maps", searchParams],
-    queryFn: () => getMaps(searchParams),
+    queryKey: ["map", params],
+    queryFn: () => getMap(params),
   });
 
   const dehydratedState = dehydrate(queryClient);
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <MapsPage />
+      <MapPage />
     </HydrationBoundary>
   );
 }

@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import cfg from "@/constant/global";
+import conf from "@/constant/global";
 import { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
@@ -40,7 +40,7 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {cfg.themes.map((theme) => (
+        {conf.themes.map((theme) => (
           <DropdownMenuItem
             key={theme}
             className="capitalize"

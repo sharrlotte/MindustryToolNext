@@ -1,25 +1,24 @@
-import React, { HTMLAttributes } from "react";
-import Preview from "@/components/preview/preview";
-import Schematic from "@/types/Schematic";
-import conf from "@/constant/global";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { cn, fixProgressBar } from "@/lib/utils";
-import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
+import Detail from "@/components/detail/detail";
 import LikeComponent from "@/components/like/like-component";
-import { toast } from "@/hooks/use-toast";
+import TagCard from "@/components/tag/TagCard";
+import BackButton from "@/components/ui/back-button";
+import { Button } from "@/components/ui/button";
 import CopyButton from "@/components/ui/copy-button";
+import conf from "@/constant/global";
+import { toast } from "@/hooks/use-toast";
+import { fixProgressBar } from "@/lib/utils";
 import axiosClient from "@/query/config/axios-config";
+import Schematic from "@/types/Schematic";
+import { Tags } from "@/types/Tag";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import React, { HTMLAttributes } from "react";
 
-type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
+type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
 };
 
-export default function SchematicPreview({
-  className,
-  schematic,
-  ...rest
-}: SchematicPreviewProps) {
+export default function SchematicDetail({ schematic }: SchematicDetailProps) {
+  const tags = Tags.parseStringArray(schematic.tags);
   const link = `${conf.baseUrl}/schematics/${schematic.id}`;
 
   const getSchematicData = async () => {
@@ -33,26 +32,35 @@ export default function SchematicPreview({
   };
 
   return (
-    <Preview className={cn("relative flex flex-col", className)} {...rest}>
-      <CopyButton
-        className="absolute left-1 top-1 "
-        title="Copy"
-        variant="ghost"
-        data={link}
-        content={link}
-      />
-      <Link href={`/schematics/${schematic.id}`}>
-        <Preview.Image
-          className="h-preview w-preview"
-          src={`${conf.apiUrl}/schematics/${schematic.id}/image`}
-          alt={schematic.name}
-        />
-      </Link>
-      <Preview.Description>
-        <Preview.Header className="h-12">{schematic.name}</Preview.Header>
-        <Preview.Actions>
+    <Detail>
+      <Detail.Info>
+        <div className="relative">
           <CopyButton
-            title="Copied"
+            className="absolute left-1 top-1 "
+            title="Copy"
+            variant="ghost"
+            data={link}
+            content={link}
+          />
+          <Detail.Image
+            src={`${conf.apiUrl}/schematics/${schematic.id}/image`}
+            alt={schematic.name}
+          />
+        </div>
+        <Detail.Description>
+          <Detail.Header>{schematic.name}</Detail.Header>
+          <p>{schematic.description}</p>
+          <section className="flex flex-wrap gap-1">
+            {tags.map((item, index) => (
+              <TagCard key={index} tag={item} />
+            ))}
+          </section>
+        </Detail.Description>
+      </Detail.Info>
+      <Detail.Actions className="flex justify-between">
+        <div className="flex gap-1">
+          <CopyButton
+            title="Copy"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}
             data={getSchematicData}
@@ -95,8 +103,9 @@ export default function SchematicPreview({
               title="Dislike"
             />
           </LikeComponent>
-        </Preview.Actions>
-      </Preview.Description>
-    </Preview>
+        </div>
+        <BackButton />
+      </Detail.Actions>
+    </Detail>
   );
 }

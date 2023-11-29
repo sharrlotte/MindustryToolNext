@@ -1,14 +1,14 @@
 "use client";
-import SchematicPreview from "@/components/schematic/schematic-preview";
+import MapPreview from "@/components/map/map-preview";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoMore from "@/components/common/no-more";
-import getSchematics from "@/query/schematic/get-schematics";
+import getMaps from "@/query/map/get-maps";
 import useInfinitePageQuery from "@/hooks/use-infinite-page-query";
 
-export default function SchematicsPage() {
+export default function MapsPage() {
   const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
-    useInfinitePageQuery(getSchematics, "schematics");
+    useInfinitePageQuery(getMaps, "maps");
 
   if (isError) {
     return (
@@ -17,7 +17,9 @@ export default function SchematicsPage() {
   }
 
   if (!data || isLoading) {
-    return <LoadingSpinner className="absolute bottom-0 left-0 right-0 top-0" />;
+    return (
+      <LoadingSpinner className="absolute bottom-0 left-0 right-0 top-0" />
+    );
   }
 
   const pages = data?.pages.reduce((prev, curr) => prev.concat(curr), []) ?? [];
@@ -35,8 +37,8 @@ export default function SchematicsPage() {
         <NoMore className="col-span-full flex w-full items-center justify-center " />
       }
     >
-      {pages.map((schematic) => (
-        <SchematicPreview key={schematic.id} schematic={schematic} />
+      {pages.map((map) => (
+        <MapPreview key={map.id} map={map} />
       ))}
     </InfiniteScroll>
   );

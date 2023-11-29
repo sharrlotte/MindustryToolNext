@@ -9,6 +9,7 @@ import {
   ChevronDoubleUpIcon,
 } from "@heroicons/react/24/solid";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 type LikeContextType = {
   likeData: Like;
@@ -53,9 +54,20 @@ function LikeComponent({
   const [likeData, setLikeData] = useState(initialLikeData);
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
+  const { toast } = useToast();
 
-  const handleLike = () => FakeLike;
-  const handleDislike = () => FakeLike;
+  const handleLike = () => {
+    toast({
+      title: "It does nothing",
+    });
+    return FakeLike;
+  };
+  const handleDislike = () => {
+    toast({
+      title: "It does nothing",
+    });
+    return FakeLike;
+  };
 
   return (
     <LikeContext.Provider
