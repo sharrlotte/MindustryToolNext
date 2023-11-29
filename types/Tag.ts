@@ -1,8 +1,10 @@
-export default interface Tag {
+type Tag = {
   name: string;
   value: string;
   color: string;
-}
+};
+
+export default Tag;
 
 const TAG_DEFAULT_COLOR = "green";
 const TAG_DIVIDER = "_";
