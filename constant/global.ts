@@ -1,3 +1,4 @@
+import SortTag from "@/types/SortTag";
 import { z } from "zod";
 
 const configSchema = z.object({
@@ -9,7 +10,6 @@ const configSchema = z.object({
   baseUrl: z.string(),
 });
 
-
 const conf = configSchema.parse({
   webVersion: "Beta 0.9.0",
   themes: ["light", "dark", "system"],
@@ -20,3 +20,5 @@ const conf = configSchema.parse({
 });
 
 export default conf;
+
+export const defaultSortTag: SortTag = "time_1";

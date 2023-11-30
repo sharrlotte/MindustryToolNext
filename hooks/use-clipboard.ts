@@ -19,6 +19,6 @@ export default function useClipboard() {
       description: content ?? "Data has been copied to clipboard",
     });
     dismissLast = dismiss;
-    return dismiss
+    return dismiss;
   };
 }
