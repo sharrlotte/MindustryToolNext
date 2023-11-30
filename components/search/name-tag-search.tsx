@@ -10,7 +10,7 @@ import { FilterIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { cloneDeep } from "lodash";
 import SortTag, { sortTag } from "@/types/SortTag";
-import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from "@/types/Tag";
+import Tag, { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from "@/types/Tag";
 import { defaultSortTag } from "@/constant/global";
 import { usePathname, useRouter } from "next/navigation";
 import useSafeSearchParams from "@/hooks/use-safe-search-params";
@@ -20,6 +20,8 @@ import TagCard from "@/components/tag/TagCard";
 type NameTagSearchProps = {
   tags: TagGroup[];
 };
+
+let refreshTimeout: NodeJS.Timeout;
 
 export default function NameTagSearch({ tags }: NameTagSearchProps) {
   const router = useRouter();
@@ -101,8 +103,6 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
 
     params.set("sort", selectedSortTag);
 
-    console.log("Push");
-
     router.push(`${pathname}?${params.toString()}`);
   };
 
@@ -133,6 +133,26 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
     }
   };
 
+  const refreshTagDisplay = () => {
+    if (refreshTimeout) {
+      clearTimeout(refreshTimeout);
+    }
+
+    refreshTimeout = setTimeout(() => handleSearchQueryChange(), 1000);
+  };
+
+  const handleDeleteTag = (tag: Tag) => {
+    setSelectedFilterTags((prev) => {
+      const group = prev.find((item) => item.name === tag.name);
+      if (group) {
+        group.value = group.value.filter((item) => item !== tag.value);
+      }
+
+      return [...prev];
+    });
+    refreshTagDisplay();
+  };
+
   const filteredTags = tagsClone.filter((tag) => {
     if (tag.name.includes(filter)) {
       return true;
@@ -141,6 +161,16 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
 
     return tag.value.length > 0;
   });
+
+  const displayTags = selectedFilterTags.flatMap((group) =>
+    group.value.map((v) => {
+      return {
+        name: group.name,
+        value: v,
+        color: group.color,
+      };
+    }),
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -157,20 +187,10 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
           <FilterIcon />
         </Button>
       </div>
-      <section className="flex items-center justify-center gap-1 w-full md:w-3/4 m-auto">
-        {selectedFilterTags
-          .flatMap((group) =>
-            group.value.map((v) => {
-              return {
-                name: group.name,
-                value: v,
-                color: group.color,
-              };
-            }),
-          )
-          .map((value, index) => (
-            <TagCard key={index} tag={value} />
-          ))}
+      <section className="m-auto flex w-full flex-wrap items-center justify-center gap-1 md:w-3/4">
+        {displayTags.map((value, index) => (
+          <TagCard key={index} tag={value} onDelete={handleDeleteTag} />
+        ))}
       </section>
       {showFilterDialog && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
