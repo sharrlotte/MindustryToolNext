@@ -1,3 +1,5 @@
+import { defaultSortTag } from '@/constant/global';
+import { sortTag } from '@/types/SortTag';
 import { z } from 'zod';
 
-export const sortSchema = z.enum(['time_1', 'time_-1', 'like_1']).default('time_1');
+export const sortSchema = z.enum(sortTag).default(defaultSortTag);

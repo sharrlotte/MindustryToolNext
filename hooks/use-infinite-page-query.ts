@@ -1,5 +1,5 @@
 import useSearchPageParams from "@/hooks/use-search-page-params";
-import { SearchParams, searchSchema } from "@/schema/search-schema";
+import { SearchParams } from "@/schema/search-schema";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 export default function useInfinitePageQuery<T>(

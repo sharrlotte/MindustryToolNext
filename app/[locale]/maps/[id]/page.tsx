@@ -10,7 +10,7 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
-  await queryClient.prefetchQuery({
+  queryClient.prefetchQuery({
     queryKey: ["map", params],
     queryFn: () => getMap(params),
   });

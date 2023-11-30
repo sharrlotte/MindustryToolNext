@@ -7,14 +7,20 @@ import NoMore from "@/components/common/no-more";
 import getSchematics from "@/query/schematic/get-schematics";
 import useInfinitePageQuery from "@/hooks/use-infinite-page-query";
 import NameTagSearch from "@/components/search/name-tag-search";
-import { TagGroups } from "@/types/TagGroup";
+import { useQuery } from "@tanstack/react-query";
+import getTags from "@/query/tag/get-tags";
 
-export default async function SchematicsPage() {
-  const { schematic } = await TagGroups.getTags();
+export default function SchematicsPage() {
+  const { data } = useQuery({
+    queryFn: getTags,
+    queryKey: ["tags"],
+  });
+
+  const schematicTags = data ? data.schematic : [];
 
   return (
     <div className="flex flex-col gap-4">
-      <NameTagSearch tags={schematic} />
+      <NameTagSearch tags={schematicTags} />
       <SchematicContainer />
     </div>
   );

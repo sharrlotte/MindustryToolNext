@@ -6,12 +6,12 @@ type Tag = {
 
 export default Tag;
 
-const TAG_DEFAULT_COLOR = "green";
-const TAG_DIVIDER = "_";
+export const TAG_DEFAULT_COLOR = "green";
+export const TAG_SEPARATOR = "_";
 
 export class Tags {
   static parseString(str: string) {
-    const [name, value] = str.split(TAG_DIVIDER);
+    const [name, value] = str.split(TAG_SEPARATOR);
     if (!name || !value) throw new Error(`Invalid tag: ${str}`);
 
     return { name, value, color: TAG_DEFAULT_COLOR };
