@@ -1,4 +1,4 @@
-import conf from "@/constant/global";
+import env from "@/constant/env";
 import NavigationBar from "./navigation";
 import QueryProvider from "../query/config/query-provider";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,7 @@ import NextTopLoader from "nextjs-toploader";
 import type { Metadata } from "next";
 
 import "./globals.css";
+import ClientInit from "@/app/client-init";
 
 const inter = Monomaniac_One({
   subsets: ["latin"],
@@ -27,7 +28,7 @@ type RootParam = {
 };
 
 export async function generateStaticParams(): Promise<RootParam[]> {
-  return conf.locales.map((locale) => {
+  return env.locales.map((locale) => {
     return {
       lang: locale,
     };
@@ -44,7 +45,7 @@ export default function Root({ children, params }: RootProps) {
     <html
       lang={params.lang ?? "en"}
       suppressHydrationWarning
-      className="dark flex min-h-screen select-none flex-col bg-background antialiased overflow-x-hidden"
+      className="dark flex min-h-screen select-none flex-col overflow-x-hidden bg-background antialiased"
     >
       <body className={cn(inter.className)}>
         <ThemeProvider
@@ -55,6 +56,7 @@ export default function Root({ children, params }: RootProps) {
         >
           <NextTopLoader height={4} showSpinner={false} />
           <NavigationBar />
+          <ClientInit/>
           <Toaster />
           <div className="flex min-h-[calc(100vh-var(--nav-height))] w-full flex-col p-4">
             <QueryProvider>{children}</QueryProvider>

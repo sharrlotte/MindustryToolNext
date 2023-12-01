@@ -1,4 +1,4 @@
-import SortTag from "@/types/SortTag";
+import SortTag from "@/types/response/SortTag";
 import { z } from "zod";
 
 const configSchema = z.object({
@@ -6,19 +6,23 @@ const configSchema = z.object({
   themes: z.array(z.string()),
   locales: z.array(z.string()),
   defaultLocale: z.string(),
-  apiUrl: z.string(),
-  baseUrl: z.string(),
+  url: z.object({
+    base: z.string(),
+    api: z.string(),
+  }),
 });
 
-const conf = configSchema.parse({
+const env = configSchema.parse({
   webVersion: "Beta 0.9.0",
   themes: ["light", "dark", "system"],
   locales: ["vi", "en-US"],
   defaultLocale: "en-US",
-  apiUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
-  baseUrl: process.env.NEXT_PUBLIC_FRONTEND_URL,
+  url: {
+    base: process.env.NEXT_PUBLIC_FRONTEND_URL,
+    api: process.env.NEXT_PUBLIC_BACKEND_URL,
+  },
 });
 
-export default conf;
+export default env;
 
 export const defaultSortTag: SortTag = "time_1";

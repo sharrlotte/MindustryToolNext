@@ -12,11 +12,11 @@ class SafeUrlSearchParams {
     this.params = params;
   }
 
-  get(key: string, defaultValue: string = "") {
-    return this.params.get(key) ?? defaultValue;
+  get<T = string>(key: string, defaultValue: string = "") {
+    return (this.params.get(key) ?? defaultValue) as T;
   }
 
-  getAll(key: string, defaultValue: string[] = []) {
-    return this.params.getAll(key) ?? defaultValue;
+  getAll<T = string>(key: string, defaultValue: string[] = []) {
+    return (this.params.getAll(key) ?? defaultValue) as T[];
   }
 }

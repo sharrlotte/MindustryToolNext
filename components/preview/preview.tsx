@@ -28,7 +28,7 @@ function Header({ className, children }: HeaderProps) {
         className,
       )}
     >
-      <h2 className="m-auto">{children}</h2>
+      <h2 className="m-auto text-center">{children}</h2>
     </div>
   );
 }

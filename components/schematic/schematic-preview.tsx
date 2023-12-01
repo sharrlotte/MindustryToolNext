@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from "react";
 import Preview from "@/components/preview/preview";
-import Schematic from "@/types/Schematic";
-import conf from "@/constant/global";
+import Schematic from "@/types/response/Schematic";
+import env from "@/constant/env";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn, fixProgressBar } from "@/lib/utils";
@@ -20,7 +20,7 @@ export default function SchematicPreview({
   schematic,
   ...rest
 }: SchematicPreviewProps) {
-  const link = `${conf.baseUrl}/schematics/${schematic.id}`;
+  const link = `${env.url.base}/schematics/${schematic.id}`;
 
   const getSchematicData = async () => {
     const { dismiss } = toast({
@@ -44,7 +44,7 @@ export default function SchematicPreview({
       <Link href={`/schematics/${schematic.id}`}>
         <Preview.Image
           className="h-preview w-preview"
-          src={`${conf.apiUrl}/schematics/${schematic.id}/image`}
+          src={`${env.url.api}/schematics/${schematic.id}/image`}
           alt={schematic.name}
         />
       </Link>
@@ -65,7 +65,7 @@ export default function SchematicPreview({
             asChild
           >
             <a
-              href={`${conf.apiUrl}/schematics/${schematic.id}/download`}
+              href={`${env.url.api}/schematics/${schematic.id}/download`}
               download
               onClick={fixProgressBar}
             >

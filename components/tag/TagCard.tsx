@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Tag from "@/types/Tag";
+import Tag from "@/types/data/Tag";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import React, { HTMLAttributes } from "react";
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;
-  onDelete?: () => void;
+  onDelete?: (tag: Tag) => void;
 };
 
 export default function TagCard({
@@ -18,16 +18,30 @@ export default function TagCard({
   const hasDeleteButton = onDelete ? true : false;
   const { name, value, color } = tag;
 
+  const handleOnDelete = (tag: Tag) => {
+    if (onDelete) {
+      onDelete(tag);
+    }
+  };
+
   return (
     <span
-      className={cn("rounded-md px-2 py-1 whitespace-nowrap flex justify-center items-center text-center capitalize", className)}
-      {...props}
+      className={cn(
+        "flex items-center justify-center whitespace-nowrap rounded-md px-2 py-1 text-center capitalize",
+        className,
+      )}
       style={{ backgroundColor: color }}
+      {...props}
     >
       <span>{`${name}:${value}`}</span>
       {hasDeleteButton && (
-        <Button title="delete" onClick={onDelete}>
-          <XMarkIcon />
+        <Button
+          className="p-0"
+          title="delete"
+          variant="none"
+          onClick={() => handleOnDelete(tag)}
+        >
+          <XMarkIcon className="h-5 w-5" />
         </Button>
       )}
     </span>

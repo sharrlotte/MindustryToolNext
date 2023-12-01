@@ -1,6 +1,6 @@
 import axiosClient from "@/query/config/axios-config";
 import { IdSearchParams } from "@/schema/search-id-schema";
-import Map from "@/types/Map";
+import Map from "@/types/response/Map";
 
 export default async function getSchematic({
   id,

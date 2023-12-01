@@ -4,7 +4,7 @@ import MapDetail from "@/components/map/map-detail";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import useSearchId from "@/hooks/use-search-id";
 import getMap from "@/query/map/get-map";
-import Map from "@/types/Map";
+import Map from "@/types/response/Map";
 import { useQuery } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import React from "react";
