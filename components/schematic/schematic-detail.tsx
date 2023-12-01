@@ -4,12 +4,12 @@ import TagCard from "@/components/tag/TagCard";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import CopyButton from "@/components/ui/copy-button";
-import conf from "@/constant/global";
+import env from "@/constant/env";
 import { toast } from "@/hooks/use-toast";
 import { fixProgressBar } from "@/lib/utils";
 import axiosClient from "@/query/config/axios-config";
-import Schematic from "@/types/Schematic";
-import { Tags } from "@/types/Tag";
+import Schematic from "@/types/response/Schematic";
+import { Tags } from "@/types/data/Tag";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import React, { HTMLAttributes } from "react";
 
@@ -19,7 +19,7 @@ type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
 
 export default function SchematicDetail({ schematic }: SchematicDetailProps) {
   const tags = Tags.parseStringArray(schematic.tags);
-  const link = `${conf.baseUrl}/schematics/${schematic.id}`;
+  const link = `${env.url.base}/schematics/${schematic.id}`;
 
   const getSchematicData = async () => {
     const { dismiss } = toast({
@@ -43,7 +43,7 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             content={link}
           />
           <Detail.Image
-            src={`${conf.apiUrl}/schematics/${schematic.id}/image`}
+            src={`${env.url.api}/schematics/${schematic.id}/image`}
             alt={schematic.name}
           />
         </div>
@@ -73,7 +73,7 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             asChild
           >
             <a
-              href={`${conf.apiUrl}/schematics/${schematic.id}/download`}
+              href={`${env.url.api}/schematics/${schematic.id}/download`}
               download
               onClick={fixProgressBar}
             >

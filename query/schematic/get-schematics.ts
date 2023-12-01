@@ -1,6 +1,6 @@
 import axiosClient from "@/query/config/axios-config";
 import { SearchParams, searchSchema } from "@/schema/search-schema";
-import Schematic from "@/types/Schematic";
+import Schematic from "@/types/response/Schematic";
 
 export default async function getSchematics(
   params: SearchParams,

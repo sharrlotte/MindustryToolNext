@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from "react";
 import Preview from "@/components/preview/preview";
-import Map from "@/types/Map";
-import conf from "@/constant/global";
+import Map from "@/types/response/Map";
+import env from "@/constant/env";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn, fixProgressBar } from "@/lib/utils";
@@ -18,7 +18,7 @@ export default function MapPreview({
   map,
   ...rest
 }: MapPreviewProps) {
-  const link = `${conf.baseUrl}/maps/${map.id}`;
+  const link = `${env.url.base}/maps/${map.id}`;
 
   return (
     <Preview className={cn("relative flex flex-col", className)} {...rest}>
@@ -32,7 +32,7 @@ export default function MapPreview({
       <Link href={`/maps/${map.id}`}>
         <Preview.Image
           className="h-preview w-preview"
-          src={`${conf.apiUrl}/maps/${map.id}/image`}
+          src={`${env.url.api}/maps/${map.id}/image`}
           alt={map.name}
         />
       </Link>
@@ -41,7 +41,7 @@ export default function MapPreview({
         <Preview.Actions>
           <Button title="Download" size="icon" variant="outline" asChild>
             <a
-              href={`${conf.apiUrl}/maps/${map.id}/download`}
+              href={`${env.url.api}/maps/${map.id}/download`}
               download
               onClick={fixProgressBar}
             >

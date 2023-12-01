@@ -1,12 +1,12 @@
 "use client";
 
-import conf from "@/constant/global";
+import env from "@/constant/env";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, isSameDay } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { ThemeSwitcher } from "../components/theme/theme-switcher";
-import { HTMLAttributes, ReactNode, useState } from "react";
+import { HTMLAttributes, ReactNode, useEffect, useState } from "react";
 import {
   Bars3Icon,
   BookOpenIcon,
@@ -19,6 +19,7 @@ import {
 
 import OutsideWrapper from "@/components/ui/outside-wrapper";
 import Image from "next/image";
+import axiosClient from "@/query/config/axios-config";
 
 let hideNavTimeout: NodeJS.Timeout | undefined = undefined;
 
@@ -37,6 +38,18 @@ export default function NavigationBar() {
     if (hideNavTimeout) clearTimeout(hideNavTimeout);
     hideNavTimeout = setTimeout(() => setSidebarVisibility(false), 100);
   };
+
+  useEffect(() => {
+    // For metrics
+    const last = localStorage.getItem("last");
+    if (!last || !isSameDay(new Date(last), new Date())) {
+      axiosClient
+        .get("/ping")
+        .then((result) => console.log(result.data))
+        .catch((error) => console.error(error));
+    }
+    localStorage.setItem("last", new Date().toISOString());
+  }, []);
 
   return (
     <div className="sticky top-0 z-50 flex h-nav w-full items-center justify-between dark:bg-emerald-500">
@@ -61,7 +74,7 @@ export default function NavigationBar() {
       >
         <OutsideWrapper
           className={cn(
-            "fixed top-0 flex h-screen min-w-[200px] flex-col justify-between overflow-hidden border-r-2 border-border bg-background px-2 animate-popup",
+            "fixed top-0 flex h-screen min-w-[200px] animate-popup flex-col justify-between overflow-hidden border-r-2 border-border bg-background px-2",
           )}
           onClickOutside={hideSidebar}
         >
@@ -78,7 +91,7 @@ export default function NavigationBar() {
                   />
                   MindustryTool
                 </span>
-                <span className="rounded-md px-1">{conf.webVersion}</span>
+                <span className="rounded-md px-1">{env.webVersion}</span>
                 <section className="grid gap-2">
                   {paths.map((item, index) => (
                     <NavItem
@@ -134,7 +147,6 @@ function NavItem({
       )}
       href={path}
       onClick={onClick}
-      scroll={false}
     >
       {icon} {name}
     </Link>

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Tag from "@/types/Tag";
+import Tag from "@/types/data/Tag";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import React, { HTMLAttributes } from "react";
 
@@ -30,8 +30,8 @@ export default function TagCard({
         "flex items-center justify-center whitespace-nowrap rounded-md px-2 py-1 text-center capitalize",
         className,
       )}
-      {...props}
       style={{ backgroundColor: color }}
+      {...props}
     >
       <span>{`${name}:${value}`}</span>
       {hasDeleteButton && (

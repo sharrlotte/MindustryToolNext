@@ -1,14 +1,15 @@
-import { defaultSortTag } from "@/constant/global";
+import { defaultSortTag } from "@/constant/env";
 import useSafeSearchParams from "@/hooks/use-safe-search-params";
+import { QueryParams } from "@/query/config/search-query-params";
 import { searchSchema } from "@/schema/search-schema";
 
 export default function useSearchPageParams() {
   const query = useSafeSearchParams();
   return searchSchema.parse({
-    page: Number.parseInt(query.get("page", "0")),
-    name: query.get("name"),
-    sort: query.get("sort", defaultSortTag),
-    tags: query.getAll("tags"),
-    authorId: query.get("authorId"),
+    page: Number.parseInt(query.get(QueryParams.page, "0")),
+    name: query.get(QueryParams.name),
+    sort: query.get(QueryParams.sort, defaultSortTag),
+    tags: query.getAll(QueryParams.tags),
+    authorId: query.get(QueryParams.authorId),
   });
 }

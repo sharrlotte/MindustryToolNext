@@ -3,8 +3,8 @@ import { SearchParams } from "@/schema/search-schema";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 export default function useInfinitePageQuery<T>(
-  getFunc: (params: SearchParams) => Promise<T[]>,
-  ...queryKey: any
+    getFunc: (params: SearchParams) => Promise<T[]>,
+    ...queryKey: any
 ) {
   const searchParams = useSearchPageParams();
 

@@ -4,10 +4,10 @@ import TagCard from "@/components/tag/TagCard";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import CopyButton from "@/components/ui/copy-button";
-import conf from "@/constant/global";
+import env from "@/constant/env";
 import { fixProgressBar } from "@/lib/utils";
-import Map from "@/types/Map";
-import { Tags } from "@/types/Tag";
+import Map from "@/types/response/Map";
+import { Tags } from "@/types/data/Tag";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import React, { HTMLAttributes } from "react";
 
@@ -17,7 +17,7 @@ type MapDetailProps = HTMLAttributes<HTMLDivElement> & {
 
 export default function MapDetail({ map }: MapDetailProps) {
   const tags = Tags.parseStringArray(map.tags);
-  const link = `${conf.baseUrl}/maps/${map.id}`;
+  const link = `${env.url.base}/maps/${map.id}`;
 
   return (
     <Detail>
@@ -31,7 +31,7 @@ export default function MapDetail({ map }: MapDetailProps) {
             content={link}
           />
           <Detail.Image
-            src={`${conf.apiUrl}/maps/${map.id}/image`}
+            src={`${env.url.api}/maps/${map.id}/image`}
             alt={map.name}
           />
         </div>
@@ -55,7 +55,7 @@ export default function MapDetail({ map }: MapDetailProps) {
             asChild
           >
             <a
-              href={`${conf.apiUrl}/maps/${map.id}/download`}
+              href={`${env.url.api}/maps/${map.id}/download`}
               download
               onClick={fixProgressBar}
             >

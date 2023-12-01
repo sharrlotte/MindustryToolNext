@@ -1,21 +1,21 @@
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { NextRequest } from "next/server";
-import conf from "@/constant/global";
+import env from "@/constant/env";
 
 function getLocale(request: NextRequest) {
   const headerLanguage = request.headers.get("accept-language");
   let languages = new Negotiator({
     headers: {
-      "accept-language": headerLanguage ?? conf.defaultLocale,
+      "accept-language": headerLanguage ?? env.defaultLocale,
     },
   }).languages();
-  return match(languages, conf.locales, conf.defaultLocale);
+  return match(languages, env.locales, env.defaultLocale);
 }
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const pathnameHasLocale = conf.locales.some(
+  const pathnameHasLocale = env.locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 

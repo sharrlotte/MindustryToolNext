@@ -5,17 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import TagGroup from "@/types/TagGroup";
+import TagGroup from "@/types/response/TagGroup";
 import { FilterIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { cloneDeep } from "lodash";
-import SortTag, { sortTag } from "@/types/SortTag";
-import Tag, { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from "@/types/Tag";
-import { defaultSortTag } from "@/constant/global";
+import SortTag, { sortTag } from "@/types/response/SortTag";
+import Tag, { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from "@/types/data/Tag";
+import { defaultSortTag } from "@/constant/env";
 import { usePathname, useRouter } from "next/navigation";
 import useSafeSearchParams from "@/hooks/use-safe-search-params";
 import _ from "lodash";
 import TagCard from "@/components/tag/TagCard";
+import { QueryParams } from "@/query/config/search-query-params";
 
 type NameTagSearchProps = {
   tags: TagGroup[];
@@ -33,6 +34,7 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
   const handleShowFilterDialog = () => setShowFilterDialog(true);
   const handleHideFilterDialog = () => setShowFilterDialog(false);
 
+  const [name, setName] = useState("");
   const [selectedFilterTags, setSelectedFilterTags] = useState<TagGroup[]>([]);
   const [selectedSortTag, setSelectedSortTag] =
     useState<SortTag>(defaultSortTag);
@@ -43,10 +45,12 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
 
   useEffect(() => {
     if (tags.length > 0) {
-      const sortString = searchParams.get("sort", defaultSortTag) as SortTag;
-      const tagsString = searchParams.getAll("tags");
-
-      setSelectedSortTag(sortString);
+      const sortString = searchParams.get<SortTag>(
+        QueryParams.sort,
+        defaultSortTag,
+      );
+      const nameString = searchParams.get(QueryParams.name);
+      const tagsString = searchParams.getAll(QueryParams.tags);
 
       const tagsArray = _.chain(tagsString)
         .map((value) => value.split(TAG_SEPARATOR))
@@ -71,40 +75,37 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
         .compact()
         .value();
 
+      setSelectedSortTag(sortString);
       setSelectedFilterTags(tagsArray);
-
-      const params = new URLSearchParams();
-      selectedFilterTags
-        .map((group) =>
-          group.value.map((value) => `${group.name}${TAG_SEPARATOR}${value}`),
-        )
-        .forEach((values) =>
-          values.forEach((value) => params.append("tags", value)),
-        );
-
-      params.set("sort", selectedSortTag);
+      setName(nameString);
     }
   }, [tags]);
 
-  const handleSearch = () => {
-    handleSearchQueryChange();
-    handleHideFilterDialog();
-  };
+  useEffect(() => {
+    if (refreshTimeout) {
+      clearTimeout(refreshTimeout);
+    }
 
-  const handleSearchQueryChange = () => {
-    const params = new URLSearchParams();
-    selectedFilterTags
-      .map((group) =>
-        group.value.map((value) => `${group.name}${TAG_SEPARATOR}${value}`),
-      )
-      .forEach((values) =>
-        values.forEach((value) => params.append("tags", value)),
-      );
+    if (!showFilterDialog) {
+      refreshTimeout = setTimeout(() => {
+        const params = new URLSearchParams();
+        selectedFilterTags
+          .map((group) =>
+            group.value.map((value) => `${group.name}${TAG_SEPARATOR}${value}`),
+          )
+          .forEach((values) =>
+            values.forEach((value) => params.append(QueryParams.tags, value)),
+          );
 
-    params.set("sort", selectedSortTag);
+        params.set(QueryParams.sort, selectedSortTag);
+        if (name) {
+          params.set(QueryParams.name, name);
+        }
 
-    router.push(`${pathname}?${params.toString()}`);
-  };
+        router.push(`${pathname}?${params.toString()}`);
+      }, 1000);
+    }
+  }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);
 
   const handleTagGroupChange = (name: string, value: string[]) => {
     const group = selectedFilterTags.find((tag) => tag.name === name);
@@ -133,12 +134,8 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
     }
   };
 
-  const refreshTagDisplay = () => {
-    if (refreshTimeout) {
-      clearTimeout(refreshTimeout);
-    }
-
-    refreshTimeout = setTimeout(() => handleSearchQueryChange(), 1000);
+  const handleNameChange = (value: string) => {
+    setName(value);
   };
 
   const handleDeleteTag = (tag: Tag) => {
@@ -150,7 +147,6 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
 
       return [...prev];
     });
-    refreshTagDisplay();
   };
 
   const filteredTags = tagsClone.filter((tag) => {
@@ -177,7 +173,11 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
       <div className="flex justify-center gap-1">
         <Search className="w-full md:w-1/2">
           <Search.Icon className="p-1" />
-          <Search.Input placeholder="Search with name" />
+          <Search.Input
+            placeholder="Search with name"
+            defaultValue={name}
+            onChange={(event) => handleNameChange(event.currentTarget.value)}
+          />
         </Search>
         <Button
           title="Filter"
@@ -198,7 +198,7 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
             <Search className="w-full p-1">
               <Search.Icon className="p-1" />
               <Search.Input
-                placeholder="Search with name"
+                placeholder="Filter out tags"
                 onChange={(event) => setFilter(event.currentTarget.value)}
               />
             </Search>
@@ -216,9 +216,6 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
             <CardFooter className="flex justify-end gap-1 p-0">
               <Button title="close" onClick={handleHideFilterDialog}>
                 Close
-              </Button>
-              <Button title="search" onClick={handleSearch}>
-                Search
               </Button>
             </CardFooter>
           </Card>

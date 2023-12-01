@@ -4,7 +4,7 @@ import SchematicDetail from "@/components/schematic/schematic-detail";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import useSearchId from "@/hooks/use-search-id";
 import getSchematic from "@/query/schematic/get-schematic";
-import Schematic from "@/types/Schematic";
+import Schematic from "@/types/response/Schematic";
 import { useQuery } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import React from "react";

@@ -5,41 +5,25 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import NoMore from "@/components/common/no-more";
 import getMaps from "@/query/map/get-maps";
 import useInfinitePageQuery from "@/hooks/use-infinite-page-query";
+import { useQuery } from "@tanstack/react-query";
+import getTags from "@/query/tag/get-tags";
+import NameTagSearch from "@/components/search/name-tag-search";
+import InfinitePage from "@/components/common/infinite-page";
 
-export default function MapsPage() {
-  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
-    useInfinitePageQuery(getMaps, "maps");
+export default function MapPage() {
+  const { data } = useQuery({
+    queryFn: getTags,
+    queryKey: ["tags"],
+  });
 
-  if (isError) {
-    return (
-      <div className="flex w-full justify-center">Error : {error.message}</div>
-    );
-  }
-
-  if (!data || isLoading) {
-    return (
-      <LoadingSpinner className="absolute bottom-0 left-0 right-0 top-0" />
-    );
-  }
-
-  const pages = data?.pages.reduce((prev, curr) => prev.concat(curr), []) ?? [];
+  const mapTags = data ? data.map : [];
 
   return (
-    <InfiniteScroll
-      className="grid min-h-full w-full grid-cols-[repeat(auto-fill,var(--preview-size))] items-center justify-center gap-4"
-      next={fetchNextPage}
-      dataLength={pages.length}
-      hasMore={hasNextPage}
-      loader={
-        <LoadingSpinner className="col-span-full flex w-full items-center justify-center" />
-      }
-      endMessage={
-        <NoMore className="col-span-full flex w-full items-center justify-center " />
-      }
-    >
-      {pages.map((map) => (
-        <MapPreview key={map.id} map={map} />
-      ))}
-    </InfiniteScroll>
+    <div className="flex flex-col gap-4">
+      <NameTagSearch tags={mapTags} />
+      <InfinitePage queryKey={["maps"]} getFunc={getMaps}>
+        {(data) => <MapPreview map={data} />}
+      </InfinitePage>
+    </div>
   );
 }

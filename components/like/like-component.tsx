@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, ButtonProps } from "@/components/ui/button";
-import { Like } from "@/types/Like";
+import { Like } from "@/types/response/Like";
 import React, { useState } from "react";
 import { ReactNode } from "react";
 import {
