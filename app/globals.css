@@ -98,7 +98,6 @@
   body {
     @apply bg-background text-foreground;
   }
-
   @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
       display: none;

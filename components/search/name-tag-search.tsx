@@ -1,30 +1,31 @@
-"use client";
+'use client';
 
-import Search from "@/components/search/search-input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import TagGroup from "@/types/response/TagGroup";
-import { FilterIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { cloneDeep } from "lodash";
-import SortTag, { sortTag } from "@/types/response/SortTag";
-import Tag, { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from "@/types/data/Tag";
-import { defaultSortTag } from "@/constant/env";
-import { usePathname, useRouter } from "next/navigation";
-import useSafeSearchParams from "@/hooks/use-safe-search-params";
-import _ from "lodash";
-import TagCard from "@/components/tag/TagCard";
-import { QueryParams } from "@/query/config/search-query-params";
+import Search from '@/components/search/search-input';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import TagGroup from '@/types/response/TagGroup';
+import { FilterIcon } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { cloneDeep } from 'lodash';
+import SortTag, { sortTag } from '@/types/response/SortTag';
+import Tag, { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/types/data/Tag';
+import { defaultSortTag } from '@/constant/env';
+import { usePathname, useRouter } from 'next/navigation';
+import useSafeSearchParams from '@/hooks/use-safe-search-params';
+import TagCard from '@/components/tag/TagCard';
+import { QueryParams } from '@/query/config/search-query-params';
+import OutsideWrapper from '@/components/ui/outside-wrapper';
+import _ from 'lodash';
 
 type NameTagSearchProps = {
-  tags: TagGroup[];
+  tags: TagGroup[] | undefined;
 };
 
 let refreshTimeout: NodeJS.Timeout;
 
-export default function NameTagSearch({ tags }: NameTagSearchProps) {
+export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSafeSearchParams();
@@ -34,12 +35,12 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
   const handleShowFilterDialog = () => setShowFilterDialog(true);
   const handleHideFilterDialog = () => setShowFilterDialog(false);
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [selectedFilterTags, setSelectedFilterTags] = useState<TagGroup[]>([]);
   const [selectedSortTag, setSelectedSortTag] =
     useState<SortTag>(defaultSortTag);
 
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState('');
 
   const tagsClone = cloneDeep(tags);
 
@@ -79,6 +80,7 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
       setSelectedFilterTags(tagsArray);
       setName(nameString);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tags]);
 
   useEffect(() => {
@@ -86,25 +88,28 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
       clearTimeout(refreshTimeout);
     }
 
+    const handleSearch = () => {
+      const params = new URLSearchParams();
+      selectedFilterTags
+        .map((group) =>
+          group.value.map((value) => `${group.name}${TAG_SEPARATOR}${value}`),
+        )
+        .forEach((values) =>
+          values.forEach((value) => params.append(QueryParams.tags, value)),
+        );
+
+      params.set(QueryParams.sort, selectedSortTag);
+      if (name) {
+        params.set(QueryParams.name, name);
+      }
+
+      router.push(`${pathname}?${params.toString()}`);
+    };
+
     if (!showFilterDialog) {
-      refreshTimeout = setTimeout(() => {
-        const params = new URLSearchParams();
-        selectedFilterTags
-          .map((group) =>
-            group.value.map((value) => `${group.name}${TAG_SEPARATOR}${value}`),
-          )
-          .forEach((values) =>
-            values.forEach((value) => params.append(QueryParams.tags, value)),
-          );
-
-        params.set(QueryParams.sort, selectedSortTag);
-        if (name) {
-          params.set(QueryParams.name, name);
-        }
-
-        router.push(`${pathname}?${params.toString()}`);
-      }, 1000);
+      refreshTimeout = setTimeout(() => handleSearch(), 1000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);
 
   const handleTagGroupChange = (name: string, value: string[]) => {
@@ -193,8 +198,11 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
         ))}
       </section>
       {showFilterDialog && (
-        <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
-          <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4">
+        <OutsideWrapper
+          className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm"
+          onClickOutside={handleHideFilterDialog}
+        >
+          <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:h-4/5 md:w-4/5 md:rounded-lg">
             <Search className="w-full p-1">
               <Search.Icon className="p-1" />
               <Search.Input
@@ -204,6 +212,7 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
             </Search>
             <CardContent className="no-scrollbar flex h-full w-full flex-col overflow-auto overscroll-none p-0 ">
               <SortTags
+                filter={filter}
                 selectedSortTag={selectedSortTag}
                 handleSortChange={handleSortChange}
               />
@@ -219,28 +228,37 @@ export default function NameTagSearch({ tags }: NameTagSearchProps) {
               </Button>
             </CardFooter>
           </Card>
-        </div>
+        </OutsideWrapper>
       )}
     </div>
   );
 }
 
 type SortTagProps = {
+  filter: string;
   selectedSortTag: SortTag;
   handleSortChange: (value: string) => void;
 };
 
-function SortTags({ selectedSortTag, handleSortChange }: SortTagProps) {
+function SortTags({ filter, selectedSortTag, handleSortChange }: SortTagProps) {
+  let filteredSortTags = [...sortTag];
+  if (!'sort'.includes(filter)) {
+    filteredSortTags = sortTag.filter((tag) => tag.includes(filter));
+    if (filteredSortTags.length === 0) {
+      return null;
+    }
+  }
+
   return (
     <ToggleGroup
       className="flex w-full flex-wrap justify-start"
-      type={"single"}
+      type={'single'}
       value={selectedSortTag}
       onValueChange={handleSortChange}
     >
       <span className="whitespace-nowrap text-lg capitalize">Sort</span>
       <Separator className="border-[1px]" orientation="horizontal" />
-      {sortTag.map((value, index) => (
+      {filteredSortTags.map((value, index) => (
         <ToggleGroupItem className="capitalize" key={index} value={value}>
           {value}
         </ToggleGroupItem>
@@ -265,9 +283,9 @@ function FilterTags({
       (value) => value.name === group.name,
     );
     if (result && result.value) {
-      return result.value.length > 0 ? result.value[0] : "";
+      return result.value.length > 0 ? result.value[0] : '';
     }
-    return "";
+    return '';
   };
 
   const getMultipleValue = (group: TagGroup) => {
@@ -317,7 +335,7 @@ function SingeFilerTags({
   return (
     <ToggleGroup
       className="flex w-full flex-wrap justify-start"
-      type={"single"}
+      type={'single'}
       value={selectedValue}
       onValueChange={handleTagGroupChange}
     >
@@ -346,7 +364,7 @@ function MultipleFilerTags({
   return (
     <ToggleGroup
       className="flex w-full flex-wrap justify-start"
-      type={"multiple"}
+      type={'multiple'}
       onValueChange={handleTagGroupChange}
       defaultValue={selectedValue}
     >

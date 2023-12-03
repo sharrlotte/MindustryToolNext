@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import * as React from 'react';
+import { Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import env from "@/constant/env";
-import { HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import env from '@/constant/env';
+import { HTMLAttributes } from 'react';
+import { cn } from '@/lib/utils';
 
 type ThemeSwitcherProps = HTMLAttributes<HTMLDivElement>;
 
@@ -29,8 +29,8 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
     <DropdownMenu>
       <DropdownMenuTrigger className="h-full" asChild>
         <Button
-          className={cn("rounded-none", className)}
-          variant="ghost"
+          className={cn(className)}
+          variant="icon"
           size="icon"
           title="switch theme"
         >

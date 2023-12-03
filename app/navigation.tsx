@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import env from "@/constant/env";
-import Link from "next/link";
-import { cn, isSameDay } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { usePathname } from "next/navigation";
-import { ThemeSwitcher } from "../components/theme/theme-switcher";
-import { HTMLAttributes, ReactNode, useEffect, useState } from "react";
+import env from '@/constant/env';
+import Link from 'next/link';
+import { cn, isSameDay } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { usePathname } from 'next/navigation';
+import { ThemeSwitcher } from '../components/theme/theme-switcher';
+import { HTMLAttributes, ReactNode, useEffect, useState } from 'react';
 import {
   Bars3Icon,
   BookOpenIcon,
@@ -15,17 +15,19 @@ import {
   MapIcon,
   ServerStackIcon,
   CommandLineIcon,
-} from "@heroicons/react/24/outline";
+  Cog6ToothIcon,
+  BellIcon,
+} from '@heroicons/react/24/outline';
 
-import OutsideWrapper from "@/components/ui/outside-wrapper";
-import Image from "next/image";
-import axiosClient from "@/query/config/axios-config";
+import OutsideWrapper from '@/components/ui/outside-wrapper';
+import Image from 'next/image';
+import axiosClient from '@/query/config/axios-config';
 
 let hideNavTimeout: NodeJS.Timeout | undefined = undefined;
 
 export default function NavigationBar() {
   const pathName = usePathname();
-  const route = pathName.split("/").filter((item) => item)[1];
+  const route = pathName.split('/').filter((item) => item)[1];
 
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
 
@@ -41,14 +43,14 @@ export default function NavigationBar() {
 
   useEffect(() => {
     // For metrics
-    const last = localStorage.getItem("last");
+    const last = localStorage.getItem('last');
     if (!last || !isSameDay(new Date(last), new Date())) {
       axiosClient
-        .get("/ping")
+        .get('/ping')
         .then((result) => console.log(result.data))
         .catch((error) => console.error(error));
     }
-    localStorage.setItem("last", new Date().toISOString());
+    localStorage.setItem('last', new Date().toISOString());
   }, []);
 
   return (
@@ -66,15 +68,15 @@ export default function NavigationBar() {
       </Button>
       <div
         className={cn(
-          "fixed bottom-0 left-0 right-0 top-0 hidden bg-transparent",
+          'fixed bottom-0 left-0 right-0 top-0 hidden bg-transparent',
           {
-            "flex backdrop-blur-sm": isSidebarVisible,
+            'flex backdrop-blur-sm': isSidebarVisible,
           },
         )}
       >
         <OutsideWrapper
           className={cn(
-            "fixed top-0 flex h-screen min-w-[200px] animate-popup flex-col justify-between overflow-hidden border-r-2 border-border bg-background px-2",
+            'fixed top-0 flex h-screen min-w-[200px] animate-popup flex-col justify-between overflow-hidden border-r-2 border-border bg-background px-2',
           )}
           onClickOutside={hideSidebar}
         >
@@ -97,7 +99,7 @@ export default function NavigationBar() {
                     <NavItem
                       enabled={
                         item.path.slice(1) === route ||
-                        (item.path === "/" && route === undefined)
+                        (item.path === '/' && route === undefined)
                       }
                       key={index}
                       onClick={hideSidebar}
@@ -111,7 +113,15 @@ export default function NavigationBar() {
           </section>
         </OutsideWrapper>
       </div>
-      <ThemeSwitcher className="flex h-full" />
+      <div className="flex items-center justify-center gap-1 px-2">
+        <Button className="aspect-square p-0" title="setting" variant="icon">
+          <BellIcon className="h-6 w-6" />
+        </Button>
+        <ThemeSwitcher className="flex aspect-square h-full" />
+        <Button className="aspect-square p-0" title="setting" variant="icon">
+          <Cog6ToothIcon className="h-6 w-6" />
+        </Button>
+      </div>
     </div>
   );
 }
@@ -139,10 +149,10 @@ function NavItem({
   return (
     <Link
       className={cn(
-        "flex gap-3 rounded-md px-1 py-2 hover:bg-emerald-500",
+        'flex gap-3 rounded-md px-1 py-2 hover:bg-emerald-500',
         className,
         {
-          "bg-emerald-500": enabled,
+          'bg-emerald-500': enabled,
         },
       )}
       href={path}
@@ -155,33 +165,33 @@ function NavItem({
 
 const paths: Path[] = [
   {
-    path: "/", //
-    name: "Home",
+    path: '/', //
+    name: 'Home',
     icon: <HomeIcon className="h-6 w-6" />,
   },
   {
-    path: "/schematics", //
-    name: "Schematic",
+    path: '/schematics', //
+    name: 'Schematic',
     icon: <ClipboardDocumentListIcon className="h-6 w-6" />,
   },
   {
-    path: "/maps",
-    name: "Map",
+    path: '/maps',
+    name: 'Map',
     icon: <MapIcon className="h-6 w-6" />,
   },
   {
-    path: "/posts", //
-    name: "Post",
+    path: '/posts', //
+    name: 'Post',
     icon: <BookOpenIcon className="h-6 w-6" />,
   },
   {
-    path: "/servers", //
-    name: "Server",
+    path: '/servers', //
+    name: 'Server',
     icon: <ServerStackIcon className="h-6 w-6" />,
   },
   {
-    path: "/logic", //
-    name: "Logic",
+    path: '/logic', //
+    name: 'Logic',
     icon: <CommandLineIcon className="h-6 w-6" />,
   },
 ];
