@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import * as React from 'react';
+import { Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import env from "@/constant/env";
-import { HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import env from '@/constant/env';
+import { HTMLAttributes } from 'react';
+import { cn } from '@/lib/utils';
 
 type ThemeSwitcherProps = HTMLAttributes<HTMLDivElement>;
 
@@ -27,15 +27,15 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="h-full" asChild>
+      <DropdownMenuTrigger asChild>
         <Button
-          className={cn("rounded-none", className)}
-          variant="ghost"
+          className={cn(className)}
+          variant="icon"
           size="icon"
           title="switch theme"
         >
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:hidden dark:-rotate-90" />
+          <Moon className="hidden h-[1.2rem] w-[1.2rem] rotate-90 transition-all dark:flex dark:rotate-0" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>

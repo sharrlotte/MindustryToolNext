@@ -1,6 +1,6 @@
 import Detail from "@/components/detail/detail";
 import LikeComponent from "@/components/like/like-component";
-import TagCard from "@/components/tag/TagCard";
+import TagCard from "@/components/tag/tag-card";
 import BackButton from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import CopyButton from "@/components/ui/copy-button";

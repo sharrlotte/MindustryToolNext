@@ -8,6 +8,7 @@ export default function useInfinitePageQuery<T>(
 ) {
   const searchParams = useSearchPageParams();
 
+
   const getNextPageParam = (
     lastPage: T[],
     pages: T[][],
