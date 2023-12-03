@@ -1,7 +1,7 @@
-import React, { ReactNode, useEffect, useRef } from "react";
-import { cn } from "@/lib/utils";
+import React, { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
-type OutsideWrapperProps = {
+type OutsideWrapperProps = HTMLAttributes<HTMLDivElement> & {
   className?: string;
   children: ReactNode;
   onClickOutside: () => void;
@@ -21,9 +21,9 @@ export default function OutsideWrapper({
         onClickOutside();
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [wrapperRef, onClickOutside]);
 

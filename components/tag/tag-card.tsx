@@ -38,7 +38,7 @@ export default function TagCard({
         <Button
           className="p-0"
           title="delete"
-          variant="none"
+          variant="icon"
           onClick={() => handleOnDelete(tag)}
         >
           <XMarkIcon className="h-5 w-5" />

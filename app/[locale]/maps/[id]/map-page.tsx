@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import MapDetail from "@/components/map/map-detail";
-import LoadingSpinner from "@/components/ui/loading-spinner";
-import useSearchId from "@/hooks/use-search-id";
-import getMap from "@/query/map/get-map";
-import Map from "@/types/response/Map";
-import { useQuery } from "@tanstack/react-query";
-import { notFound } from "next/navigation";
-import React from "react";
+import MapDetail from '@/components/map/map-detail';
+import LoadingSpinner from '@/components/ui/loading-spinner';
+import useSearchId from '@/hooks/use-search-id-params';
+import getMap from '@/query/map/get-map';
+import Map from '@/types/response/Map';
+import { useQuery } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
+import React from 'react';
 
 export default function MapPage() {
   const params = useSearchId();
 
   const { data, isLoading, isError } = useQuery<Map>({
-    queryKey: ["map", params],
+    queryKey: ['map', params],
     queryFn: () => getMap(params),
   });
 
@@ -24,7 +24,7 @@ export default function MapPage() {
   }
 
   if (isError) {
-    return "Error";
+    return 'Error';
   }
 
   if (!data) {

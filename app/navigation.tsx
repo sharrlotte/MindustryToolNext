@@ -21,7 +21,6 @@ import {
 
 import OutsideWrapper from '@/components/ui/outside-wrapper';
 import Image from 'next/image';
-import axiosClient from '@/query/config/axios-config';
 
 let hideNavTimeout: NodeJS.Timeout | undefined = undefined;
 
@@ -41,18 +40,6 @@ export default function NavigationBar() {
     hideNavTimeout = setTimeout(() => setSidebarVisibility(false), 100);
   };
 
-  useEffect(() => {
-    // For metrics
-    const last = localStorage.getItem('last');
-    if (!last || !isSameDay(new Date(last), new Date())) {
-      axiosClient
-        .get('/ping')
-        .then((result) => console.log(result.data))
-        .catch((error) => console.error(error));
-    }
-    localStorage.setItem('last', new Date().toISOString());
-  }, []);
-
   return (
     <div className="sticky top-0 z-50 flex h-nav w-full items-center justify-between dark:bg-emerald-500">
       <Button
@@ -68,7 +55,7 @@ export default function NavigationBar() {
       </Button>
       <div
         className={cn(
-          'fixed bottom-0 left-0 right-0 top-0 hidden bg-transparent',
+          'fixed bottom-0 left-0 right-0 top-0 z-50 hidden bg-transparent',
           {
             'flex backdrop-blur-sm': isSidebarVisible,
           },
@@ -76,12 +63,16 @@ export default function NavigationBar() {
       >
         <OutsideWrapper
           className={cn(
-            'fixed top-0 flex h-screen min-w-[200px] animate-popup flex-col justify-between overflow-hidden border-r-2 border-border bg-background px-2',
+            'fixed top-0 flex h-screen min-w-[200px] animate-popup flex-col justify-between overflow-hidden border-r-2 border-border bg-background',
           )}
           onClickOutside={hideSidebar}
         >
-          <section onMouseLeave={hideSidebar} onMouseEnter={showSidebar}>
-            <div className="flex flex-col justify-between">
+          <div
+            className="flex flex-col"
+            onMouseLeave={hideSidebar} //
+            onMouseEnter={showSidebar}
+          >
+            <div className="flex h-screen flex-col justify-between p-2">
               <div className="flex flex-col gap-2">
                 <span className="flex items-center gap-1 bg-gradient-to-r from-emerald-300 to-emerald-500 bg-clip-text px-1 text-2xl font-bold uppercase text-transparent">
                   <Image
@@ -108,9 +99,13 @@ export default function NavigationBar() {
                   ))}
                 </section>
               </div>
-              <div></div>
+              <div className="flex">
+                <Button className="flex flex-1" title="logout">
+                  Logout
+                </Button>
+              </div>
             </div>
-          </section>
+          </div>
         </OutsideWrapper>
       </div>
       <div className="flex items-center justify-center gap-1 px-2">

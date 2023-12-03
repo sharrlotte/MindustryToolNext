@@ -27,15 +27,15 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="h-full" asChild>
+      <DropdownMenuTrigger asChild>
         <Button
           className={cn(className)}
           variant="icon"
           size="icon"
           title="switch theme"
         >
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:hidden dark:-rotate-90" />
+          <Moon className="hidden h-[1.2rem] w-[1.2rem] rotate-90 transition-all dark:flex dark:rotate-0" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
