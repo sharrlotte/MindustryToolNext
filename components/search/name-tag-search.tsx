@@ -186,18 +186,19 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
       {showFilterDialog && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
           <OutsideWrapper
-            className="flex items-center justify-center md:h-4/5 md:w-4/5"
+            className="flex h-screen w-screen items-center justify-center md:h-4/5 md:w-4/5"
             onClickOutside={handleHideFilterDialog}
           >
-            <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
+            <Card className="flex flex-col w-full h-full justify-between gap-2 rounded-none p-4 md:rounded-lg ">
               <Search className="w-full p-1">
                 <Search.Icon className="p-1" />
                 <Search.Input
+                  defaultValue={filter}
                   placeholder="Filter out tags"
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />
               </Search>
-              <CardContent className="no-scrollbar flex h-full w-full flex-col overflow-auto overscroll-none p-0 ">
+              <CardContent className="no-scrollbar flex h-full w-full flex-col  overflow-y-auto overscroll-none p-0 ">
                 <SortTags
                   filter={filter}
                   selectedSortTag={selectedSortTag}
