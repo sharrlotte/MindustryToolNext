@@ -1,15 +1,16 @@
-import React, { HTMLAttributes } from "react";
-import Preview from "@/components/preview/preview";
-import Schematic from "@/types/response/Schematic";
-import env from "@/constant/env";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { cn, fixProgressBar } from "@/lib/utils";
-import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
-import LikeComponent from "@/components/like/like-component";
-import { toast } from "@/hooks/use-toast";
-import CopyButton from "@/components/ui/copy-button";
-import axiosClient from "@/query/config/axios-config";
+import React, { HTMLAttributes } from 'react';
+import Preview from '@/components/preview/preview';
+import Schematic from '@/types/response/Schematic';
+import env from '@/constant/env';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { cn, fixProgressBar } from '@/lib/utils';
+import { ArrowDownTrayIcon } from '@heroicons/react/24/solid';
+import LikeComponent from '@/components/like/like-component';
+import { toast } from '@/hooks/use-toast';
+import CopyButton from '@/components/ui/copy-button';
+import axiosClient from '@/query/config/axios-config';
+import DownloadButton from '@/components/ui/download-button';
 
 type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -24,8 +25,8 @@ export default function SchematicPreview({
 
   const getSchematicData = async () => {
     const { dismiss } = toast({
-      title: "Coping",
-      content: "Downloading data from server",
+      title: 'Coping',
+      content: 'Downloading data from server',
     });
     const result = await axiosClient.get(`/schematics/${schematic.id}/data`);
     dismiss();
@@ -33,7 +34,7 @@ export default function SchematicPreview({
   };
 
   return (
-    <Preview className={cn("relative flex flex-col", className)} {...rest}>
+    <Preview className={cn('relative flex flex-col', className)} {...rest}>
       <CopyButton
         className="absolute left-1 top-1 "
         title="Copy"
@@ -57,43 +58,20 @@ export default function SchematicPreview({
             content={`Copied schematic ${schematic.name}`}
             data={getSchematicData}
           />
-          <Button
-            className="aspect-square"
-            title="Download"
-            size="icon"
-            variant="outline"
-            asChild
-          >
-            <a
-              href={`${env.url.api}/schematics/${schematic.id}/download`}
-              download
-              onClick={fixProgressBar}
-            >
-              <ArrowDownTrayIcon className="h-6 w-6" />
-            </a>
-          </Button>
+          <DownloadButton
+            href={`${env.url.api}/schematics/${schematic.id}/download`}
+          />
           <LikeComponent
             initialLikeCount={schematic.like}
             initialLikeData={schematic.userLike}
           >
-            <LikeComponent.LikeButton
-              className="aspect-square"
-              size="icon"
-              variant="outline"
-              title="Like"
-            />
+            <LikeComponent.LikeButton variant="outline" title="Like" />
             <LikeComponent.LikeCount
-              className="aspect-square text-xl"
-              size="icon"
+              className="text-xl"
               variant="outline"
               title="Like count"
             />
-            <LikeComponent.DislikeButton
-              className="aspect-square"
-              size="icon"
-              variant="outline"
-              title="Dislike"
-            />
+            <LikeComponent.DislikeButton variant="outline" title="Dislike" />
           </LikeComponent>
         </Preview.Actions>
       </Preview.Description>
