@@ -25,7 +25,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "mindustry-tool-backend.onrender.com",
+        hostname: "api.mindustry-tool.app",
         port: "",
         pathname: "/**",
       },
