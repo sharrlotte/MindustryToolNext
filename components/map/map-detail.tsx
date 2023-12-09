@@ -2,13 +2,10 @@ import Detail from '@/components/detail/detail';
 import LikeComponent from '@/components/like/like-component';
 import TagCard from '@/components/tag/tag-card';
 import BackButton from '@/components/ui/back-button';
-import { Button } from '@/components/ui/button';
 import CopyButton from '@/components/ui/copy-button';
 import env from '@/constant/env';
-import { fixProgressBar } from '@/lib/utils';
 import Map from '@/types/response/Map';
 import { Tags } from '@/types/data/Tag';
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/ui/download-button';
 

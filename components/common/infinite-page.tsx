@@ -35,9 +35,7 @@ export default function InfinitePage<T>({
   const pages = data?.pages.reduce((prev, curr) => prev.concat(curr), []) ?? [];
 
   if (pages.length === 0) {
-    return (
-      <NoResult className="w-full flex items-center justify-center" />
-    );
+    return <NoResult className="flex w-full items-center justify-center" />;
   }
 
   return (
