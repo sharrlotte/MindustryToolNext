@@ -26,6 +26,7 @@ const fallback = Roboto({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(env.url.base),
   title: 'MindustryTool',
   description: 'A website about mindustry',
 };
