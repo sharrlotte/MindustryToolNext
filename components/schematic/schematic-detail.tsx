@@ -10,6 +10,7 @@ import Schematic from '@/types/response/Schematic';
 import { Tags } from '@/types/data/Tag';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/ui/download-button';
+import IdUserCard from '@/components/user/id-user-card';
 
 type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -47,6 +48,7 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
         </div>
         <Detail.Description>
           <Detail.Header>{schematic.name}</Detail.Header>
+          <IdUserCard id={schematic.authorId} />
           <p>{schematic.description}</p>
           <section className="flex flex-wrap gap-1">
             {tags.map((item, index) => (

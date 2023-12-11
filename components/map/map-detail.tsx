@@ -8,6 +8,7 @@ import Map from '@/types/response/Map';
 import { Tags } from '@/types/data/Tag';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/ui/download-button';
+import IdUserCard from '@/components/user/id-user-card';
 
 type MapDetailProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;
@@ -35,6 +36,7 @@ export default function MapDetail({ map }: MapDetailProps) {
         </div>
         <Detail.Description>
           <Detail.Header>{map.name}</Detail.Header>
+          <IdUserCard id={map.authorId} />
           <p>{map.description}</p>
           <section className="flex flex-wrap gap-1">
             {tags.map((item, index) => (

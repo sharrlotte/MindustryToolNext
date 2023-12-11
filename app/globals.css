@@ -98,6 +98,24 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  ul,
+  ol {
+    list-style: disc;
+    list-style-position: inside;
+    display: grid;
+    gap: 0.5rem;
+  }
+  b {
+    font-weight: bold;
+  }
+
+  ul li {
+    list-style-position: outside;
+    margin-left: 1rem;
+    padding: 0.5rem;
+  }
+
   @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -105,6 +123,11 @@
     .no-scrollbar {
       -ms-overflow-style: none;
       scrollbar-width: none;
+    }
+
+    *:has(.markdown-image) {
+      display: flex;
+      flex-direction: column;
     }
   }
 }
