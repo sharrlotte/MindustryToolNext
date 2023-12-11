@@ -57,7 +57,7 @@ type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
 function Actions({ className, children }: ActionsProps) {
   return (
     <section
-      className={cn("flex w-full items-center justify-around px-1", className)}
+      className={cn("grid grid-flow-col [grid-auto-columns:minmax(0,1fr)] gap-2 w-full justify-center px-2", className)}
     >
       {children}
     </section>

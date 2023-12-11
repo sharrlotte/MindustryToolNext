@@ -1,25 +1,26 @@
-import SchematicPage from "@/app/[locale]/schematics/[id]/schematic-page";
-import getQueryClient from "@/query/config/query-client";
-import getSchematic from "@/query/schematic/get-schematic";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import React from "react";
+import SchematicPage from '@/app/[locale]/schematics/[id]/schematic-page';
+import env from '@/constant/env';
+import getSchematic from '@/query/schematic/get-schematic';
+import { Metadata } from 'next';
+import React from 'react';
 
-type PageProps = {
+type Props = {
   params: { id: string };
 };
 
-export default async function Page({ params }: PageProps) {
-  const queryClient = getQueryClient();
-  queryClient.prefetchQuery({
-    queryKey: ["schematic", params],
-    queryFn: () => getSchematic(params),
-  });
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = params.id;
+  const map = await getSchematic({ id });
 
-  const dehydratedState = dehydrate(queryClient);
+  return {
+    title: map.name,
+    openGraph: {
+      title: map.name,
+      images: `${env.url.api}/schematics/${map.id}/image`,
+    },
+  };
+}
 
-  return (
-    <HydrationBoundary state={dehydratedState}>
-      <SchematicPage />
-    </HydrationBoundary>
-  );
+export default async function Page() {
+  return <SchematicPage />;
 }

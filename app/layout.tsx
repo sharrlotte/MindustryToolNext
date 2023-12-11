@@ -4,7 +4,7 @@ import QueryProvider from '../query/config/query-provider';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '../components/theme/theme-provider';
-import { Monomaniac_One } from 'next/font/google';
+import { Monomaniac_One, Roboto } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from 'next';
 
@@ -14,6 +14,13 @@ import ClientInit from '@/app/client-init';
 const inter = Monomaniac_One({
   subsets: ['latin'],
   weight: '400',
+  display: 'swap',
+  adjustFontFallback: false,
+});
+
+const fallback = Roboto({
+  subsets: ['latin'],
+  weight: '700',
   display: 'swap',
   adjustFontFallback: false,
 });
@@ -47,7 +54,7 @@ export default function Root({ children, params }: RootProps) {
       lang={params.lang ?? 'en'}
       suppressHydrationWarning
     >
-      <body className={cn(inter.className)}>
+      <body className={cn(inter.className, fallback.className)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

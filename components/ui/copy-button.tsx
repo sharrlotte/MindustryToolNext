@@ -27,7 +27,7 @@ export default function CopyButton({
 
   return (
     <Button
-      className={cn("aspect-square p-2", className)}
+      className={cn("p-2", className)}
       title="Copy link"
       {...props}
       onClick={handleCopy}

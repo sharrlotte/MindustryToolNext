@@ -1,25 +1,26 @@
-import MapPage from "@/app/[locale]/maps/[id]/map-page";
-import getQueryClient from "@/query/config/query-client";
-import getMap from "@/query/map/get-map";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import React from "react";
+import MapPage from '@/app/[locale]/maps/[id]/map-page';
+import env from '@/constant/env';
+import getMap from '@/query/map/get-map';
+import { Metadata } from 'next';
+import React from 'react';
 
-type PageProps = {
+type Props = {
   params: { id: string };
 };
 
-export default async function Page({ params }: PageProps) {
-  const queryClient = getQueryClient();
-  queryClient.prefetchQuery({
-    queryKey: ["map", params],
-    queryFn: () => getMap(params),
-  });
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = params.id;
+  const map = await getMap({ id });
 
-  const dehydratedState = dehydrate(queryClient);
+  return {
+    title: map.name,
+    openGraph: {
+      title: map.name,
+      images: `${env.url.api}/maps/${map.id}/image`,
+    },
+  };
+}
 
-  return (
-    <HydrationBoundary state={dehydratedState}>
-      <MapPage />
-    </HydrationBoundary>
-  );
+export default async function Page() {
+  return <MapPage />;
 }
