@@ -32,9 +32,12 @@ export default function SchematicPreview({
   };
 
   return (
-    <Preview className={cn('relative flex flex-col', className)} {...rest}>
+    <Preview
+      className={cn('group relative flex flex-col', className)}
+      {...rest}
+    >
       <CopyButton
-        className="absolute left-1 top-1 "
+        className="absolute left-1 top-1 opacity-0 transition-opacity duration-500 group-hover:opacity-100 aspect-square"
         title="Copy"
         variant="ghost"
         data={link}

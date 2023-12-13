@@ -51,7 +51,7 @@ type RootProps = {
 export default function Root({ children, params }: RootProps) {
   return (
     <html
-      className="dark flex h-screen select-none flex-col overflow-x-hidden bg-background antialiased "
+      className="dark min-h-[calc(100vh-3rem)] select-none grid overflow-x-hidden bg-background antialiased "
       lang={params.lang ?? 'en'}
       suppressHydrationWarning
     >
@@ -66,7 +66,7 @@ export default function Root({ children, params }: RootProps) {
           <NavigationBar />
           <ClientInit />
           <Toaster />
-          <div className="flex w-full flex-col overflow-auto p-4">
+          <div className="flex w-full flex-col overflow-auto p-4 h-full">
             <QueryProvider>{children}</QueryProvider>
           </div>
         </ThemeProvider>
