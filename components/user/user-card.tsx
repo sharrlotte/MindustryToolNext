@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
+import UserAvatar from '@/components/user/user-avatar';
 import User from '@/types/response/User';
-import Image from 'next/image';
 import React from 'react';
 
 type UserCardProps = {
@@ -11,17 +11,7 @@ function UserCard({ user }: UserCardProps) {
 
   return (
     <div className="flex w-56 items-end gap-2">
-      {imageUrl ? (
-        <Image
-          className="rounded-full border-2 border-border"
-          height={32}
-          width={32}
-          src={imageUrl}
-          alt={name}
-        />
-      ) : (
-        <div></div>
-      )}
+      <UserAvatar url={imageUrl} username={name} />
       <span className="capitalize">{name}</span>
     </div>
   );

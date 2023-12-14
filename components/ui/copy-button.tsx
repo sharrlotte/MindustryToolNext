@@ -1,8 +1,8 @@
-import { Button, ButtonProps } from "@/components/ui/button";
-import useClipboard from "@/hooks/use-clipboard";
-import { cn } from "@/lib/utils";
-import { Copy } from "lucide-react";
-import React from "react";
+import { Button, ButtonProps } from '@/components/ui/button';
+import useClipboard from '@/hooks/use-clipboard';
+import { cn } from '@/lib/utils';
+import { Copy } from 'lucide-react';
+import React from 'react';
 
 type CopyButtonProps = ButtonProps & {
   data: string | (() => Promise<string>);
@@ -27,7 +27,7 @@ export default function CopyButton({
 
   return (
     <Button
-      className={cn("p-2", className)}
+      className={cn('p-2', className)}
       title="Copy link"
       {...props}
       onClick={handleCopy}

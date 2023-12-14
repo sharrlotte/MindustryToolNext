@@ -20,9 +20,12 @@ export default function MapPreview({
   const link = `${env.url.base}/maps/${map.id}`;
 
   return (
-    <Preview className={cn('relative flex flex-col', className)} {...rest}>
+    <Preview
+      className={cn('group relative flex flex-col', className)}
+      {...rest}
+    >
       <CopyButton
-        className="absolute left-1 top-1 "
+        className="absolute left-1 top-1 aspect-square opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         title="Copy"
         variant="ghost"
         data={link}

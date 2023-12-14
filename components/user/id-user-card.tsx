@@ -9,14 +9,18 @@ type IdUserCardProps = {
 };
 
 export default function IdUserCard({ id }: IdUserCardProps) {
+  if (id.toLowerCase() === 'community') {
+    return <span>Community</span>;
+  }
+
+  return <FletchUserCard id={id} />;
+}
+
+function FletchUserCard({ id }: IdUserCardProps) {
   const { data, isLoading, isError } = useQuery<User>({
     queryKey: ['users', id],
     queryFn: () => getUser({ id }),
   });
-
-  if (id.toLowerCase() === 'community') {
-    return <span>Community</span>;
-  }
 
   if (isLoading) {
     return <UserCard.Loading />;

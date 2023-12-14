@@ -1,7 +1,7 @@
-import { Separator } from "@/components/ui/separator";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import SortTag from "@/types/response/SortTag";
-import TagGroup from "@/types/response/TagGroup";
+import { Separator } from '@/components/ui/separator';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import SortTag from '@/types/response/SortTag';
+import TagGroup from '@/types/response/TagGroup';
 
 type SortTagProps = {
   filter: string;
@@ -31,7 +31,12 @@ export default function SortTags({
       value={selectedSortTag}
       onValueChange={handleSortChange}
     >
-      <span className="whitespace-nowrap text-lg capitalize">Sort</span>
+      <span
+        className="whitespace-nowrap text-lg capitalize"
+        style={{ color: tag.color }}
+      >
+        Sort
+      </span>
       <Separator className="border-[1px]" orientation="horizontal" />
       {filteredSortTags.map((value, index) => (
         <ToggleGroupItem className="capitalize" key={index} value={value}>
