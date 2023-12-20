@@ -67,29 +67,37 @@ type GetMeParams = {
   authAccessToken: string;
 };
 
-const getMe = unstable_cache(
-  async ({ authAccessToken, authProvider }: GetMeParams) => {
-    const data: FormData = new FormData();
+const getMe = async ({ authAccessToken, authProvider }: GetMeParams) => {
+  const cacheFunc = unstable_cache(
+    async () => {
+      const data: FormData = new FormData();
 
-    data.append('provider', authProvider);
-    data.append('accessToken', authAccessToken);
+      data.append('provider', authProvider);
+      data.append('accessToken', authAccessToken);
 
-    try {
-      const result = await fetch(`${env.url.api}/auth/login`, {
-        method: 'POST',
-        body: data,
-        cache: 'reload',
-      });
+      try {
+        const result = await fetch(`${env.url.api}/auth/login`, {
+          method: 'POST',
+          body: data,
+          cache: 'reload',
+        });
 
-      if (result.status != 200) {
-        throw new Error('Failed to fetch user data from backend');
+        if (result.status != 200) {
+          throw new Error('Failed to fetch user data from backend');
+        }
+        return (await result
+          .text()
+          .then((data) => (data ? JSON.parse(data) : {}))) as AuthResult;
+      } catch (err) {
+        console.error('Failed to login', err);
+        return null;
       }
-      return (await result
-        .text()
-        .then((data) => (data ? JSON.parse(data) : {}))) as AuthResult;
-    } catch (err) {
-      console.error('Failed to login', err);
-      return null;
-    }
-  },
-);
+    },
+    [authProvider, authAccessToken],
+    {
+      tags: [authProvider, authAccessToken],
+      revalidate: 600,
+    },
+  );
+  return await cacheFunc();
+};
