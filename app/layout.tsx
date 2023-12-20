@@ -11,7 +11,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import ClientInit from '@/app/client-init';
 import { SessionProvider } from 'next-auth/react';
-import { Session } from 'next-auth';
 
 const inter = Monomaniac_One({
   subsets: ['latin'],
@@ -48,10 +47,9 @@ export async function generateStaticParams(): Promise<RootParam[]> {
 type RootProps = {
   children: React.ReactNode;
   params: RootParam;
-  session: Session | null;
 };
 
-export default function Root({ children, params, session }: RootProps) {
+export default function Root({ children, params }: RootProps) {
   return (
     <html
       className="dark grid min-h-[calc(100vh-3rem)] select-none overflow-x-hidden bg-background antialiased "
@@ -67,7 +65,7 @@ export default function Root({ children, params, session }: RootProps) {
         >
           <NextTopLoader height={2} showSpinner={false} />
           <Toaster />
-          <SessionProvider session={session}>
+          <SessionProvider>
             <QueryProvider>
               <ClientInit />
               <NavigationBar />
