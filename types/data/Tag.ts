@@ -23,7 +23,7 @@ export class Tags {
       try {
         result.push(Tags.parseString(tag));
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     }
     return result;

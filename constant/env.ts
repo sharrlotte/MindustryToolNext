@@ -1,5 +1,5 @@
-import SortTag from "@/types/response/SortTag";
-import { z } from "zod";
+import SortTag from '@/types/response/SortTag';
+import { z } from 'zod';
 
 const configSchema = z.object({
   webVersion: z.string(),
@@ -13,10 +13,10 @@ const configSchema = z.object({
 });
 
 const env = configSchema.parse({
-  webVersion: "Beta 0.9.0",
-  themes: ["light", "dark", "system"],
-  locales: ["vi", "en-US"],
-  defaultLocale: "en-US",
+  webVersion: 'Beta 0.9.0',
+  themes: ['light', 'dark', 'system'],
+  locales: ['vi', 'en-US'],
+  defaultLocale: 'en-US',
   url: {
     base: process.env.NEXT_PUBLIC_FRONTEND_URL,
     api: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -25,4 +25,4 @@ const env = configSchema.parse({
 
 export default env;
 
-export const defaultSortTag: SortTag = "time_1";
+export const defaultSortTag: SortTag = 'time_1';

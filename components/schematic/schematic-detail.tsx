@@ -5,18 +5,20 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/ui/copy-button';
 import env from '@/constant/env';
 import { toast } from '@/hooks/use-toast';
-import axiosClient from '@/query/config/axios-config';
 import Schematic from '@/types/response/Schematic';
 import { Tags } from '@/types/data/Tag';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/ui/download-button';
 import IdUserCard from '@/components/user/id-user-card';
+import useClient from '@/hooks/use-client';
 
 type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
 };
 
 export default function SchematicDetail({ schematic }: SchematicDetailProps) {
+  const axiosClient = useClient();
+
   const tags = Tags.parseStringArray(schematic.tags);
   const link = `${env.url.base}/schematics/${schematic.id}`;
 

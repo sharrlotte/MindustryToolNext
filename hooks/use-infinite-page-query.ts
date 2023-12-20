@@ -1,13 +1,15 @@
-import useSearchPageParams from "@/hooks/use-search-page-params";
-import { SearchParams } from "@/schema/search-schema";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import useClient from '@/hooks/use-client';
+import useSearchPageParams from '@/hooks/use-search-page-params';
+import { SearchParams } from '@/types/data/search-schema';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { AxiosInstance } from 'axios';
 
 export default function useInfinitePageQuery<T>(
-    getFunc: (params: SearchParams) => Promise<T[]>,
-    ...queryKey: any
+  getFunc: (axios: AxiosInstance, params: SearchParams) => Promise<T[]>,
+  ...queryKey: any
 ) {
   const searchParams = useSearchPageParams();
-
+  const axiosClient = useClient();
 
   const getNextPageParam = (
     lastPage: T[],
@@ -36,7 +38,7 @@ export default function useInfinitePageQuery<T>(
   return useInfiniteQuery({
     queryKey: [...queryKey, searchParams],
     initialPageParam: searchParams,
-    queryFn: (context) => getFunc(context.pageParam),
+    queryFn: (context) => getFunc(axiosClient, context.pageParam),
     getNextPageParam,
     getPreviousPageParam,
   });

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { sortSchema } from "@/schema/schema";
+import { sortSchema } from "@/types/data/schema";
 
 export const searchSchema = z.object({
   page: z.number().gte(0).default(0),

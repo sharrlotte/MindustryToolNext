@@ -1,6 +1,6 @@
 import useSafeParam from "@/hooks/use-safe-param";
 import { PathParams } from "@/query/config/search-query-params";
-import { searchIdSchema } from "@/schema/search-id-schema";
+import { searchIdSchema } from "@/types/data/search-id-schema";
 
 export default function useSearchId() {
   const safeParams = useSafeParam();

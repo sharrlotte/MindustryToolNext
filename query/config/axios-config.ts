@@ -1,54 +1,24 @@
-import env from "@/constant/env";
-import RefreshTokenResponse from "@/types/response/RefreshTokenResponse";
-import axios from "axios";
+import env from '@/constant/env';
+import { auth } from '@/auth/config';
+import axios from 'axios';
 
-const axiosClient = axios.create({
+const axiosServer = axios.create({
   baseURL: env.url.api,
   paramsSerializer: {
     indexes: null,
   },
 });
 
-export const addRefreshInterceptor = () => {
-  const accessToken = localStorage.getItem("access-token");
+const getServer = async () => {
+  const session = await auth();
+  const accessToken = session?.user?.accessToken;
   if (accessToken) {
-    axiosClient.defaults.headers["Authorization"] = "Bearer " + accessToken;
+    axiosServer.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
+  } else {
+    axiosServer.defaults.headers['Authorization'] = '';
   }
 
-  const refreshInterceptor = axiosClient.interceptors.response.use(
-    async (response) => response,
-    async (error) => {
-      if (error.response.status !== 401) {
-        return Promise.reject(error);
-      }
-      // Avoid loop
-      axiosClient.interceptors.response.eject(refreshInterceptor);
-
-      const refreshToken = localStorage.getItem("refresh-token");
-
-      if (!refreshToken) {
-        return Promise.reject(error);
-      }
-
-      return axiosClient
-        .post("/auth/refresh-token", {
-          refreshToken: refreshToken,
-        })
-        .then((response) => {
-          const { accessToken, refreshToken }: RefreshTokenResponse =
-            response.data;
-          localStorage.setItem("access-token", accessToken);
-          localStorage.setItem("refresh-token", refreshToken);
-
-          error.response.config.headers["Authorization"] =
-            "Bearer " + accessToken;
-
-          return axios(error.response.config);
-        })
-        .catch((error2) => Promise.reject(error2))
-        .finally(addRefreshInterceptor);
-    },
-  );
+  return axiosServer;
 };
 
-export default axiosClient;
+export default getServer;

@@ -3,14 +3,15 @@ import NoResult from '@/components/common/no-result';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { cn } from '@/lib/utils';
-import { SearchParams } from '@/schema/search-schema';
+import { SearchParams } from '@/types/data/search-schema';
+import { AxiosInstance } from 'axios';
 import React, { ReactNode } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 type InfinitePageProps<T> = {
   className?: string;
   queryKey: any[];
-  getFunc: (params: SearchParams) => Promise<T[]>;
+  getFunc: (axios: AxiosInstance, params: SearchParams) => Promise<T[]>;
   children: (data: T) => ReactNode;
 };
 

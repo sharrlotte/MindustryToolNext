@@ -46,8 +46,8 @@ type LikeComponentProps = {
 };
 
 function LikeComponent({
-  initialLikeCount,
-  initialLikeData,
+  initialLikeCount = 0,
+  initialLikeData = FakeLike,
   children,
 }: LikeComponentProps) {
   const [likeCount, setLikeCount] = useState(initialLikeCount);
@@ -88,19 +88,31 @@ function LikeComponent({
 type LikeButtonProps = ButtonProps;
 
 function LikeButton({ className, ...props }: LikeButtonProps) {
-  const { handleLike } = useLike();
+  const { handleLike, likeData } = useLike();
 
   return (
-    <Button className={cn('p-2', className)} {...props} onClick={handleLike}>
+    <Button
+      className={cn('p-2', className, {
+        'bg-success': likeData?.state === 1,
+      })}
+      {...props}
+      onClick={handleLike}
+    >
       <ChevronDoubleUpIcon className="h-6 w-6" />
     </Button>
   );
 }
 
 function DislikeButton({ className, ...props }: LikeButtonProps) {
-  const { handleDislike } = useLike();
+  const { handleDislike, likeData } = useLike();
   return (
-    <Button className={cn('p-2', className)} {...props} onClick={handleDislike}>
+    <Button
+      className={cn('p-2', className, {
+        'bg-destructive': likeData?.state === -1,
+      })}
+      {...props}
+      onClick={handleDislike}
+    >
       <ChevronDoubleDownIcon className="h-6 w-6" />
     </Button>
   );

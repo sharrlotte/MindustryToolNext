@@ -2,6 +2,7 @@
 
 import MapDetail from '@/components/map/map-detail';
 import LoadingSpinner from '@/components/ui/loading-spinner';
+import useClient from '@/hooks/use-client';
 import useSearchId from '@/hooks/use-search-id-params';
 import getMap from '@/query/map/get-map';
 import Map from '@/types/response/Map';
@@ -11,10 +12,11 @@ import React from 'react';
 
 export default function MapPage() {
   const params = useSearchId();
+  const axiosClient = useClient();
 
   const { data, isLoading, isError } = useQuery<Map>({
     queryKey: ['map', params],
-    queryFn: () => getMap(params),
+    queryFn: () => getMap(axiosClient, params),
   });
 
   if (isLoading) {
