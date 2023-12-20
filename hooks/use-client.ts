@@ -2,6 +2,7 @@ import env from '@/constant/env';
 import RefreshTokenResponse from '@/types/response/RefreshTokenResponse';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import React from 'react';
 
 const axiosClient = axios.create({
   baseURL: env.url.api,
@@ -65,6 +66,8 @@ export default function useClient() {
                 refreshToken: '',
               },
             });
+
+            console.log('Error refresh');
 
             Promise.reject(error2);
           })

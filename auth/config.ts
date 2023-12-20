@@ -17,6 +17,7 @@ export const {
 } = NextAuth({
   session: {
     strategy: 'jwt',
+    maxAge: 60 * 60 * 24,
   },
   pages: {
     error: '/auth/error',
@@ -35,14 +36,11 @@ export const {
       const authAccessToken = token.accessToken as string;
 
       // User id not present
-      if (authProvider && authAccessToken && !session.user.id) {
-        const result = await getMe({
-          authAccessToken,
-          authProvider,
-        });
+      if (authProvider && authAccessToken && session.user && !session.user.id) {
+        const apiUser = await getMe({ authAccessToken, authProvider });
 
-        if (result) {
-          const { user, accessToken, refreshToken } = result;
+        if (apiUser) {
+          const { user, accessToken, refreshToken } = apiUser;
           session.user.id = user.id;
           session.user.accessToken = accessToken;
           session.user.refreshToken = refreshToken;
@@ -64,32 +62,34 @@ export const {
   },
 });
 
-type GetMeType = {
+type GetMeParams = {
   authProvider: string;
   authAccessToken: string;
 };
 
 const getMe = unstable_cache(
-  async ({ authProvider, authAccessToken }: GetMeType) => {
+  async ({ authAccessToken, authProvider }: GetMeParams) => {
     const data: FormData = new FormData();
 
     data.append('provider', authProvider);
     data.append('accessToken', authAccessToken);
 
     try {
-      const result: AuthResult = await fetch(`${env.url.api}/auth/login`, {
+      const result = await fetch(`${env.url.api}/auth/login`, {
         method: 'POST',
         body: data,
         cache: 'reload',
-      })
-        .then((response) => response.text())
-        .then((data) => (data ? JSON.parse(data) : {}));
+      });
 
-      return result;
+      if (result.status != 200) {
+        throw new Error('Failed to fetch user data from backend');
+      }
+      return (await result
+        .text()
+        .then((data) => (data ? JSON.parse(data) : {}))) as AuthResult;
     } catch (err) {
-      console.error(err);
+      console.error('Failed to login', err);
       return null;
     }
   },
-  ['me'],
 );
