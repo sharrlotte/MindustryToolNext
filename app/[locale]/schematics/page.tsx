@@ -12,7 +12,7 @@ export default async function Page({
 }) {
   const queryClient = getQueryClient();
   const axiosServer = await getServer();
-  queryClient.prefetchInfiniteQuery({
+  await queryClient.prefetchInfiniteQuery({
     initialPageParam: searchParams,
     queryKey: ['schematics', searchParams],
     queryFn: (context) => getMaps(axiosServer, context.pageParam),
