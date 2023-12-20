@@ -15,9 +15,7 @@ export const {
   handlers: { GET, POST },
   auth,
 } = NextAuth({
-  session: {
-    strategy: 'jwt',
-  },
+  session: { strategy: 'jwt', maxAge: 30 * 24 * 60 * 60 },
   pages: {
     error: '/auth/error',
   },
@@ -41,7 +39,7 @@ export const {
           authProvider,
         });
 
-        if (result) {
+        if (result && session.user) {
           const { user, accessToken, refreshToken } = result;
           session.user.id = user.id;
           session.user.accessToken = accessToken;

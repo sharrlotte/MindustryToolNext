@@ -10,8 +10,8 @@ import type { Metadata } from 'next';
 
 import './globals.css';
 import ClientInit from '@/app/client-init';
-import { SessionProvider } from 'next-auth/react';
 import { Session } from 'next-auth';
+import NextSessionProvider from '@/auth/session-provider';
 
 const inter = Monomaniac_One({
   subsets: ['latin'],
@@ -67,15 +67,15 @@ export default function Root({ children, params, session }: RootProps) {
         >
           <NextTopLoader height={2} showSpinner={false} />
           <Toaster />
-          <SessionProvider session={session}>
-            <QueryProvider>
+          <QueryProvider>
+            <NextSessionProvider>
               <ClientInit />
               <NavigationBar />
               <div className="flex h-full w-full flex-col overflow-auto p-4">
                 {children}
               </div>
-            </QueryProvider>
-          </SessionProvider>
+            </NextSessionProvider>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>
