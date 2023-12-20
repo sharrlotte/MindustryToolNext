@@ -1,7 +1,8 @@
-'use client'
+'use client';
 
 import PostDetail from '@/components/post/post-detail';
 import LoadingSpinner from '@/components/ui/loading-spinner';
+import useClient from '@/hooks/use-client';
 import useSearchId from '@/hooks/use-search-id-params';
 import getPost from '@/query/post/get-post';
 import Post from '@/types/response/Post';
@@ -11,10 +12,11 @@ import React from 'react';
 
 export default function PostPage() {
   const params = useSearchId();
+  const axiosClient = useClient();
 
   const { data, isLoading, isError } = useQuery<Post>({
     queryKey: ['post', params],
-    queryFn: () => getPost(params),
+    queryFn: () => getPost(axiosClient, params),
   });
 
   if (isLoading) {

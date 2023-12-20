@@ -1,4 +1,7 @@
+'use client';
+
 import UserCard from '@/components/user/user-card';
+import useClient from '@/hooks/use-client';
 import getUser from '@/query/user/get-user';
 import User from '@/types/response/User';
 import { useQuery } from '@tanstack/react-query';
@@ -17,9 +20,10 @@ export default function IdUserCard({ id }: IdUserCardProps) {
 }
 
 function FletchUserCard({ id }: IdUserCardProps) {
+  const axiosClient = useClient();
   const { data, isLoading, isError } = useQuery<User>({
     queryKey: ['users', id],
-    queryFn: () => getUser({ id }),
+    queryFn: () => getUser(axiosClient, { id }),
   });
 
   if (isLoading) {

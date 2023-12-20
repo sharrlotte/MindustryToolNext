@@ -1,10 +1,11 @@
-import axiosClient from "@/query/config/axios-config";
-import { IdSearchParams } from "@/schema/search-id-schema";
-import Map from "@/types/response/Map";
+import { IdSearchParams } from '@/types/data/search-id-schema';
+import Map from '@/types/response/Map';
+import { AxiosInstance } from 'axios';
 
-export default async function getMap({
-  id,
-}: IdSearchParams): Promise<Map> {
-  const result = await axiosClient.get(`/maps/${id}`);
+export default async function getMap(
+  axios: AxiosInstance,
+  { id }: IdSearchParams,
+): Promise<Map> {
+  const result = await axios.get(`/maps/${id}`);
   return result.data;
 }

@@ -7,8 +7,8 @@ import { cn } from '@/lib/utils';
 import LikeComponent from '@/components/like/like-component';
 import { toast } from '@/hooks/use-toast';
 import CopyButton from '@/components/ui/copy-button';
-import axiosClient from '@/query/config/axios-config';
 import DownloadButton from '@/components/ui/download-button';
+import useClient from '@/hooks/use-client';
 
 type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -19,6 +19,8 @@ export default function SchematicPreview({
   schematic,
   ...rest
 }: SchematicPreviewProps) {
+  const axiosClient = useClient();
+
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
   const getSchematicData = async () => {
@@ -37,7 +39,7 @@ export default function SchematicPreview({
       {...rest}
     >
       <CopyButton
-        className="absolute left-1 top-1 opacity-0 transition-opacity duration-500 group-hover:opacity-100 aspect-square"
+        className="absolute left-1 top-1 aspect-square opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         title="Copy"
         variant="ghost"
         data={link}

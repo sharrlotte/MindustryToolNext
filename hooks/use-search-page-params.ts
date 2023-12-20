@@ -1,7 +1,7 @@
 import { defaultSortTag } from "@/constant/env";
 import useSafeSearchParams from "@/hooks/use-safe-search-params";
 import { QueryParams } from "@/query/config/search-query-params";
-import { searchSchema } from "@/schema/search-schema";
+import { searchSchema } from "@/types/data/search-schema";
 
 export default function useSearchPageParams() {
   const query = useSafeSearchParams();

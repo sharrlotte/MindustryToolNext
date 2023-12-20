@@ -19,7 +19,7 @@ function UserCard({ user }: UserCardProps) {
 
 function Loading() {
   return (
-    <div className="flex w-56 gap-2">
+    <div className="flex w-56 items-end gap-2">
       <Skeleton className="h-8 w-8 rounded-full border-2 border-border" />
       <Skeleton className="w-full" />
     </div>

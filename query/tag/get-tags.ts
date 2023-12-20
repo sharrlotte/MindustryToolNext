@@ -1,7 +1,9 @@
-import axiosClient from "@/query/config/axios-config";
-import { AllTagGroup } from "@/types/response/TagGroup";
+import { AllTagGroup } from '@/types/response/TagGroup';
+import { AxiosInstance } from 'axios';
 
-export default async function getTags(): Promise<AllTagGroup> {
-  const { data } = await axiosClient.get("/tags");
+export default async function getTags(
+  axios: AxiosInstance,
+): Promise<AllTagGroup> {
+  const { data } = await axios.get('/tags');
   return data;
 }

@@ -1,4 +1,5 @@
 'use client';
+
 import MapPreview from '@/components/map/map-preview';
 import getMaps from '@/query/map/get-maps';
 import NameTagSearch from '@/components/search/name-tag-search';

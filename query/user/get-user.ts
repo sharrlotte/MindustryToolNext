@@ -1,9 +1,12 @@
-import axiosClient from '@/query/config/axios-config';
-import { IdSearchParams } from '@/schema/search-id-schema';
+import { IdSearchParams } from '@/types/data/search-id-schema';
 import User from '@/types/response/User';
+import { AxiosInstance } from 'axios';
 
-export default async function getPosts({ id }: IdSearchParams): Promise<User> {
-  const result = await axiosClient.get(`/users/${id}`);
+export default async function getUser(
+  axios: AxiosInstance,
+  { id }: IdSearchParams,
+): Promise<User> {
+  const result = await axios.get(`/users/${id}`);
 
   return result.data;
 }

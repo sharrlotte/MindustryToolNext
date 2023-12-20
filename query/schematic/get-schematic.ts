@@ -1,10 +1,11 @@
-import axiosClient from "@/query/config/axios-config";
-import { IdSearchParams } from "@/schema/search-id-schema";
-import Schematic from "@/types/response/Schematic";
+import { IdSearchParams } from '@/types/data/search-id-schema';
+import Schematic from '@/types/response/Schematic';
+import { AxiosInstance } from 'axios';
 
-export default async function getSchematic({
-  id,
-}: IdSearchParams): Promise<Schematic> {
-  const result = await axiosClient.get(`/schematics/${id}`);
+export default async function getSchematic(
+  axios: AxiosInstance,
+  { id }: IdSearchParams,
+): Promise<Schematic> {
+  const result = await axios.get(`/schematics/${id}`);
   return result.data;
 }
