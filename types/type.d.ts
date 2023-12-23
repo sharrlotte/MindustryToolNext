@@ -1,3 +1,4 @@
+import { UserRole } from '@/types/response/User';
 import NextAuth, { DefaultSession } from 'next-auth';
 import { User, Session } from 'next-auth';
 
@@ -8,6 +9,7 @@ declare module 'next-auth' {
       accessToken?: string;
       refreshToken?: string;
       expireTime: Date;
+      roles: UserRole[];
     } & DefaultSession['user'];
   }
 
@@ -16,7 +18,7 @@ declare module 'next-auth' {
     refreshToken?: string;
   }
 
-  interface JWT extends DefaultJWT  {
+  interface JWT extends DefaultJWT {
     accessToken?: string;
     provider: string;
   }

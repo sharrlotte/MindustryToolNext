@@ -40,11 +40,13 @@ export const {
         const apiUser = await getMe({ authAccessToken, authProvider });
 
         if (apiUser) {
-          const { user, accessToken, refreshToken, expireTime } = apiUser;
+          const { user, accessToken, refreshToken, expireTime, roles } =
+            apiUser;
           session.user.id = user.id;
           session.user.accessToken = accessToken;
           session.user.refreshToken = refreshToken;
           session.user.expireTime = expireTime;
+          session.user.roles = roles;
         }
       }
 

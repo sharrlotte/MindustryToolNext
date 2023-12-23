@@ -39,7 +39,7 @@ export default function SchematicPreview({
       {...rest}
     >
       <CopyButton
-        className="absolute left-1 top-1 aspect-square opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="absolute left-1 top-1 aspect-square md:opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         title="Copy"
         variant="ghost"
         data={link}

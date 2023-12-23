@@ -2,49 +2,73 @@
 
 import { Button } from '@/components/ui/button';
 import React, { useCallback, useEffect, useState } from 'react';
+import { Socket, io } from 'socket.io-client';
 
-let clientWebSocket: WebSocket;
+let socket: Socket;
 
 export default function LogPage() {
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
+
+  const socketInitializer = useCallback(async () => {
+    // Setup the Socket
+    socket = io({ path: '/api/socket/ping' });
+
+    // Standard socket management
+    socket.on('connect', () => {
+      console.log('Connected to the server');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from the server');
+    });
+
+    socket.on('connect_error', (error) => {
+      console.log('Connection error:', error);
+    });
+
+    socket.on('reconnect', (attemptNumber) => {
+      console.log('Reconnected to the server. Attempt:', attemptNumber);
+    });
+
+    socket.on('reconnect_error', (error) => {
+      console.log('Reconnection error:', error);
+    });
+
+    socket.on('reconnect_failed', () => {
+      console.log('Failed to reconnect to the server');
+    });
+
+    // Manage socket message events
+    socket.on('client-new', (message) => {
+      console.log('new client', message);
+    });
+
+    socket.on('message', (message) => {
+      addLog(message);
+    });
+
+    socket.on('client-count', (count) => {
+      console.log('clientCount', count);
+    });
+  }, []);
+
+  useEffect(() => {
+    socketInitializer();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [socketInitializer]);
 
   const addLog = (message: string) => {
     setLog((prev) => [...prev, message]);
   };
 
   const sendMessage = () => {
-    if (clientWebSocket?.readyState === 1) {
-      clientWebSocket?.send(message);
-      setMessage('');
-    }
+    socket.send(message);
+    setMessage('');
   };
-
-  const connect = useCallback(() => {
-    clientWebSocket = new WebSocket('ws://localhost:8080/sockets/logs');
-
-    clientWebSocket.onclose = function (error) {
-      console.log('clientWebSocket.onclose', clientWebSocket, error);
-    };
-    clientWebSocket.onerror = function (error) {
-      console.log('clientWebSocket.onerror', clientWebSocket, error);
-    };
-    clientWebSocket.onmessage = function (data) {
-      addLog(data.data);
-    };
-
-    clientWebSocket.onclose = () => {
-      setTimeout(function () {
-        connect();
-      }, 1000);
-    };
-  }, []);
-
-  useEffect(() => {
-    connect();
-
-    return () => clientWebSocket.close();
-  }, [connect]);
 
   return (
     <div className="flex h-full w-full flex-col justify-between">

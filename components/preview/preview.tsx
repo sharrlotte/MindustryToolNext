@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
@@ -39,18 +39,16 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 };
 
 function PImage({ className, src, errorSrc, alt }: ImageProps) {
-  const [isError, setError] = useState(false);
-
   return (
     <figure className={cn('h-preview w-preview', className)}>
       <Image
         className="h-full w-full object-cover"
-        src={isError ? errorSrc : src}
+        src={src}
         alt={alt}
         width={576}
         height={576}
         priority
-        onError={() => setError(true)}
+        onError={(err) => (err.currentTarget.src = errorSrc)}
       />
     </figure>
   );

@@ -17,12 +17,16 @@ import {
   CommandLineIcon,
   Cog6ToothIcon,
   BellIcon,
+  UserCircleIcon,
 } from '@heroicons/react/24/outline';
 
-import { signIn, useSession } from 'next-auth/react';
+import {useSession } from 'next-auth/react';
 import OutsideWrapper from '@/components/ui/outside-wrapper';
 import Image from 'next/image';
 import UserAvatar from '@/components/user/user-avatar';
+import { UserRole } from '@/types/response/User';
+import ProtectedElement from '@/components/layout/protected-element';
+import LoginButton from '@/components/common/login-button';
 
 export default function NavigationBar() {
   const { data: session } = useSession();
@@ -103,13 +107,7 @@ export default function NavigationBar() {
                 </section>
               </div>
               <div className="flex">
-                <Button
-                  className="flex flex-1"
-                  title="logout"
-                  onClick={() => signIn()}
-                >
-                  Login
-                </Button>
+                <LoginButton className='flex-1' />
               </div>
             </div>
           </div>
@@ -139,6 +137,7 @@ type Path = {
   name: string;
   icon: ReactNode;
   enabled?: boolean;
+  roles?: UserRole[];
 };
 
 type NavItemProps = Path &
@@ -152,8 +151,29 @@ function NavItem({
   path,
   name,
   enabled,
+  roles,
   onClick,
 }: NavItemProps) {
+  const { data: session } = useSession();
+
+  if (roles) {
+    <ProtectedElement all={roles} session={session}>
+      <Link
+        className={cn(
+          'flex items-center gap-3 rounded-md px-1 py-2 font-thin hover:bg-emerald-500',
+          className,
+          {
+            'bg-emerald-500': enabled,
+          },
+        )}
+        href={path}
+        onClick={onClick}
+      >
+        {icon} <span>{name}</span>
+      </Link>
+    </ProtectedElement>;
+  }
+
   return (
     <Link
       className={cn(
@@ -201,5 +221,10 @@ const paths: Path[] = [
     path: '/logic', //
     name: 'Logic',
     icon: <CommandLineIcon className="h-6 w-6" />,
+  },
+  {
+    path: '/admin', //
+    name: 'Admin',
+    icon: <UserCircleIcon className="h-6 w-6" />,
   },
 ];
