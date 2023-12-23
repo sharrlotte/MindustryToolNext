@@ -33,11 +33,6 @@ function Header({ className, children }: HeaderProps) {
   return <h1 className={cn("text-xl capitalize", className)}>{children}</h1>;
 }
 
-type AuthorProps = React.HTMLAttributes<HTMLDivElement>;
-
-function Author({ className, children }: HeaderProps) {
-  return <h1 className={cn("text-xl capitalize", className)}>{children}</h1>;
-}
 type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
   src: string;
   alt: string;

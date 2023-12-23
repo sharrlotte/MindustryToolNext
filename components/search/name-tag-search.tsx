@@ -23,8 +23,6 @@ type NameTagSearchProps = {
   tags: TagGroup[] | undefined;
 };
 
-let refreshTimeout: NodeJS.Timeout;
-
 export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -81,10 +79,6 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
   }, [tags]);
 
   useEffect(() => {
-    if (refreshTimeout) {
-      clearTimeout(refreshTimeout);
-    }
-
     const handleSearch = () => {
       const params = new URLSearchParams();
       selectedFilterTags
@@ -104,7 +98,7 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
     };
 
     if (!showFilterDialog) {
-      refreshTimeout = setTimeout(() => handleSearch(), 1000);
+      handleSearch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);

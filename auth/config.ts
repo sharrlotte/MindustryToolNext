@@ -1,15 +1,10 @@
 import env from '@/constant/env';
 import serverEnv from '@/constant/serverEnv';
-import User from '@/types/response/User';
+import AuthResult from '@/types/response/AuthResult';
+import RefreshTokenResponse from '@/types/response/RefreshTokenResponse';
 import NextAuth from 'next-auth';
 import Discord from 'next-auth/providers/discord';
 import { unstable_cache } from 'next/cache';
-
-type AuthResult = {
-  accessToken: string;
-  refreshToken: string;
-  user: User;
-};
 
 export const {
   handlers: { GET, POST },
@@ -36,14 +31,37 @@ export const {
       const authAccessToken = token.accessToken as string;
 
       // User id not present
-      if (authProvider && authAccessToken && session.user && !session.user.id) {
+      if (
+        authProvider && //
+        authAccessToken &&
+        session.user &&
+        !session.user.id
+      ) {
         const apiUser = await getMe({ authAccessToken, authProvider });
 
         if (apiUser) {
-          const { user, accessToken, refreshToken } = apiUser;
+          const { user, accessToken, refreshToken, expireTime } = apiUser;
           session.user.id = user.id;
           session.user.accessToken = accessToken;
           session.user.refreshToken = refreshToken;
+          session.user.expireTime = expireTime;
+        }
+      }
+
+      if (
+        session.user &&
+        session.user.refreshToken &&
+        session.user?.expireTime < new Date()
+      ) {
+        const result = await refreshToken(session.user.refreshToken);
+        if (result) {
+          session.user.accessToken = result.accessToken;
+          session.user.refreshToken = result.refreshToken;
+          session.user.expireTime = result.expireTime;
+        } else {
+          session.user.accessToken = '';
+          session.user.refreshToken = '';
+          session.user.expireTime = new Date();
         }
       }
 
@@ -85,6 +103,7 @@ const getMe = async ({ authAccessToken, authProvider }: GetMeParams) => {
         if (result.status != 200) {
           throw new Error('Failed to fetch user data from backend');
         }
+
         return (await result
           .text()
           .then((data) => (data ? JSON.parse(data) : {}))) as AuthResult;
@@ -100,4 +119,30 @@ const getMe = async ({ authAccessToken, authProvider }: GetMeParams) => {
     },
   );
   return await cacheFunc();
+};
+
+const refreshToken = async (refreshToken: string) => {
+  if (!refreshToken) return null;
+
+  const data: FormData = new FormData();
+  data.append('refreshToken', refreshToken);
+
+  try {
+    const result = await fetch(`${env.url.api}/auth/refresh-token`, {
+      method: 'POST',
+      body: data,
+      cache: 'reload',
+    });
+
+    if (result.status != 200) {
+      throw new Error('Failed to fetch user data from backend');
+    }
+
+    return (await result
+      .text()
+      .then((data) => (data ? JSON.parse(data) : {}))) as RefreshTokenResponse;
+  } catch (err) {
+    console.error('Failed to login', err);
+    return null;
+  }
 };

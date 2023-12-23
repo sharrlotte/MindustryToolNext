@@ -37,7 +37,7 @@ export default function NavigationBar() {
   const hideSidebar = () => setSidebarVisibility(false);
 
   return (
-    <div className="sticky top-0 z-50 flex h-nav w-full items-center justify-between dark:bg-emerald-500">
+    <div className="sticky top-0 z-50 flex h-nav w-full items-center justify-between px-2 dark:bg-emerald-500">
       <Button
         title="menu"
         type="button"
@@ -115,7 +115,7 @@ export default function NavigationBar() {
           </div>
         </OutsideWrapper>
       </div>
-      <div className="flex items-center justify-center gap-1 px-">
+      <div className="px- flex items-center justify-center gap-1">
         <Button className="aspect-square p-0" title="setting" variant="icon">
           <BellIcon className="h-6 w-6" />
         </Button>
