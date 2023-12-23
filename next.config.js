@@ -7,12 +7,6 @@ const nextConfig = {
     unoptimized: true,
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 's3.amazonaws.com',
-        port: '',
-        pathname: '/my-bucket/**',
-      },
-      {
         protocol: 'http',
         hostname: 'localhost',
         port: '8080',
@@ -31,8 +25,8 @@ const nextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'https',
-        hostname: 'api.mindustry-tool.app',
+        protocol: 'http',
+        hostname: 'res.cloudinary.com/dyx7yui8u/image/upload/v1703328847',
         port: '',
         pathname: '/**',
       },

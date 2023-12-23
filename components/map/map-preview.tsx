@@ -34,7 +34,8 @@ export default function MapPreview({
       <Link href={`/maps/${map.id}`}>
         <Preview.Image
           className="h-preview w-preview"
-          src={`${env.url.api}/maps/${map.id}/image`}
+          src={`${env.url.image}/maps/${map.id}.png`}
+          errorSrc={`${env.url.api}/maps/${map.id}/image`}
           alt={map.name}
         />
       </Link>

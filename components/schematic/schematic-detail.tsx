@@ -44,7 +44,8 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             content={link}
           />
           <Detail.Image
-            src={`${env.url.api}/schematics/${schematic.id}/image`}
+            src={`${env.url.image}/schematics/${schematic.id}.png`}
+            errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
             alt={schematic.name}
           />
         </div>

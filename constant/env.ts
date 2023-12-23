@@ -9,6 +9,7 @@ const configSchema = z.object({
   url: z.object({
     base: z.string(),
     api: z.string(),
+    image: z.string(),
   }),
 });
 
@@ -20,6 +21,7 @@ const env = configSchema.parse({
   url: {
     base: process.env.NEXT_PUBLIC_FRONTEND_URL,
     api: process.env.NEXT_PUBLIC_BACKEND_URL,
+    image: process.env.NEXT_PUBLIC_CLOUDINARY_IMAGE_URL,
   },
 });
 

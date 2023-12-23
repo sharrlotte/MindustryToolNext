@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import React, { HTMLAttributes } from "react";
+import React, { HTMLAttributes, useState } from "react";
 
 type DetailProps = HTMLAttributes<HTMLDivElement>;
 
@@ -36,23 +36,28 @@ function Header({ className, children }: HeaderProps) {
 type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
   src: string;
   alt: string;
+  errorSrc: string;
 };
 
-function PImage({ className, src, alt }: ImageProps) {
+function PImage({ className, src, errorSrc, alt }: ImageProps) {
+  const [isError, setError] = useState(false);
+
   return (
-    <Image
-      className={cn(
-        "overflow-hidden rounded-md border-2 border-border",
-        className,
-      )}
-      src={src}
-      alt={alt}
-      width={576}
-      height={576}
-      priority
-    />
+    <figure className={cn('h-preview w-preview', className)}>
+      <Image
+        className="h-full w-full object-cover"
+        src={isError ? errorSrc : src}
+        alt={alt}
+        width={576}
+        height={576}
+        priority
+        onError={() => setError(true)}
+      />
+    </figure>
   );
 }
+
+
 
 type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
 
