@@ -27,13 +27,11 @@ export function middleware(request: NextRequest) {
 
   if (hostnameHasVercel) {
     request.nextUrl.hostname = hostname.replace('.vercel', '');
-    console.log(hostname);
   }
 
   if (!pathnameHasLocale) {
     const locale = getLocale(request);
-    request.nextUrl.pathname = `/${locale}${pathname}`;
-    console.log(pathname);
+    request.nextUrl.pathname = `/${locale}${request.nextUrl.pathname}`;
   }
 
   return Response.redirect(request.nextUrl);
