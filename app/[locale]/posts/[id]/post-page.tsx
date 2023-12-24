@@ -12,11 +12,12 @@ import React from 'react';
 
 export default function PostPage() {
   const params = useSearchId();
-  const axiosClient = useClient();
+  const { axiosClient, enabled } = useClient();
 
   const { data, isLoading, isError } = useQuery<Post>({
     queryKey: ['post', params],
     queryFn: () => getPost(axiosClient, params),
+    enabled,
   });
 
   if (isLoading) {
