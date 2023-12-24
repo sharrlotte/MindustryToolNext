@@ -33,19 +33,6 @@ export const {
       const provider = token.provider as string | undefined;
       const providerId = token.providerId as string | undefined;
 
-      if (
-        session.user?.refreshToken &&
-        session.user?.expireTime &&
-        Number(session.user?.expireTime) <= Date.now()
-      ) {
-        const result = await refreshToken(session.user.refreshToken);
-        if (result) {
-          session.user.accessToken = result.accessToken;
-          session.user.refreshToken = result.refreshToken;
-          session.user.expireTime = result.expireTime;
-        }
-      }
-
       // User id not present
       const name = session.user?.name ?? '';
       const image = session.user?.image ?? '';
@@ -64,6 +51,21 @@ export const {
           session.user = user;
         } else {
           session.user = undefined;
+        }
+      } else {
+        session.user = undefined;
+      }
+
+      if (
+        session.user?.refreshToken &&
+        session.user?.expireTime &&
+        Number(session.user?.expireTime) <= Date.now()
+      ) {
+        const result = await refreshToken(session.user.refreshToken);
+        if (result) {
+          session.user.accessToken = result.accessToken;
+          session.user.refreshToken = result.refreshToken;
+          session.user.expireTime = result.expireTime;
         }
       }
 
