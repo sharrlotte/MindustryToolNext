@@ -1,6 +1,7 @@
 import env from '@/constant/env';
 import { auth } from '@/auth/config';
 import axios from 'axios';
+import RefreshTokenResponse from '@/types/response/RefreshTokenResponse';
 
 const axiosServer = axios.create({
   baseURL: env.url.api,
@@ -12,6 +13,7 @@ const axiosServer = axios.create({
 const getServer = async () => {
   const session = await auth();
   const accessToken = session?.user?.accessToken;
+
   if (accessToken) {
     axiosServer.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
   } else {

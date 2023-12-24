@@ -30,7 +30,8 @@ export default function MapDetail({ map }: MapDetailProps) {
             content={link}
           />
           <Detail.Image
-            src={`${env.url.api}/maps/${map.id}/image`}
+            src={`${env.url.image}/maps/${map.id}.png`}
+            errorSrc={`${env.url.api}/maps/${map.id}/image`}
             alt={map.name}
           />
         </div>

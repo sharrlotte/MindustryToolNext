@@ -20,10 +20,11 @@ export default function IdUserCard({ id }: IdUserCardProps) {
 }
 
 function FletchUserCard({ id }: IdUserCardProps) {
-  const axiosClient = useClient();
+  const { axiosClient, enabled } = useClient();
   const { data, isLoading, isError } = useQuery<User>({
     queryKey: ['users', id],
     queryFn: () => getUser(axiosClient, { id }),
+    enabled,
   });
 
   if (isLoading) {

@@ -1,6 +1,5 @@
 import MapPage from '@/app/[locale]/maps/[id]/map-page';
 import env from '@/constant/env';
-import useClient from '@/hooks/use-client';
 import getServer from '@/query/config/axios-config';
 import getQueryClient from '@/query/config/query-client';
 import getMap from '@/query/map/get-map';

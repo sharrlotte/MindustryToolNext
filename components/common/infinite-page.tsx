@@ -1,3 +1,5 @@
+'use client'
+
 import NoMore from '@/components/common/no-more';
 import NoResult from '@/components/common/no-result';
 import LoadingSpinner from '@/components/ui/loading-spinner';

@@ -68,7 +68,6 @@ export default function UserAvatar({
 }: UserAvatarProps) {
   const [isError, setError] = useState(false);
 
-
   if (isError || !url) {
     let total = 0;
     for (let i = 0; i < username.length; i++) {

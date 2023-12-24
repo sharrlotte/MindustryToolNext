@@ -17,15 +17,20 @@ import {
   CommandLineIcon,
   Cog6ToothIcon,
   BellIcon,
+  UserCircleIcon,
 } from '@heroicons/react/24/outline';
 
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import OutsideWrapper from '@/components/ui/outside-wrapper';
 import Image from 'next/image';
 import UserAvatar from '@/components/user/user-avatar';
+import { UserRole } from '@/types/response/User';
+import ProtectedElement from '@/components/layout/protected-element';
+import LoginButton from '@/components/common/login-button';
+import LogoutButton from '@/components/common/logout-button';
 
 export default function NavigationBar() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const pathName = usePathname();
   const route = pathName.split('/').filter((item) => item)[1];
@@ -37,7 +42,7 @@ export default function NavigationBar() {
   const hideSidebar = () => setSidebarVisibility(false);
 
   return (
-    <div className="sticky top-0 z-50 flex h-nav w-full items-center justify-between dark:bg-emerald-500">
+    <div className="fixed top-0 z-50 flex h-nav w-full items-center justify-between px-2 dark:bg-emerald-500">
       <Button
         title="menu"
         type="button"
@@ -59,7 +64,7 @@ export default function NavigationBar() {
       >
         <OutsideWrapper
           className={cn(
-            'pointer-events-auto fixed top-0 flex h-screen min-w-[250px] translate-x-[-100%] flex-col justify-between overflow-hidden bg-background transition-transform duration-300',
+            'pointer-events-auto fixed top-0 flex h-[100vh] min-w-[250px] translate-x-[-100%] flex-col justify-between overflow-hidden bg-background transition-transform duration-300',
             {
               'translate-x-0': isSidebarVisible,
             },
@@ -71,7 +76,7 @@ export default function NavigationBar() {
             onMouseLeave={hideSidebar} //
             onMouseEnter={showSidebar}
           >
-            <div className="flex h-screen flex-col justify-between p-2">
+            <div className="flex h-[100vh] flex-col justify-between p-2">
               <div className="flex flex-col gap-4">
                 <span className="flex flex-col gap-2">
                   <span className="flex items-center justify-start gap-2 bg-gradient-to-r from-emerald-300 to-emerald-500 bg-clip-text p-1 text-3xl font-bold text-transparent">
@@ -103,19 +108,18 @@ export default function NavigationBar() {
                 </section>
               </div>
               <div className="flex">
-                <Button
-                  className="flex flex-1"
-                  title="logout"
-                  onClick={() => signIn()}
-                >
-                  Login
-                </Button>
+                {status === 'authenticated' && (
+                  <LogoutButton className="flex-1" />
+                )}
+                {status === 'unauthenticated' && (
+                  <LoginButton className="flex-1" />
+                )}
               </div>
             </div>
           </div>
         </OutsideWrapper>
       </div>
-      <div className="flex items-center justify-center gap-1 px-">
+      <div className="px- flex items-center justify-center gap-1">
         <Button className="aspect-square p-0" title="setting" variant="icon">
           <BellIcon className="h-6 w-6" />
         </Button>
@@ -126,7 +130,7 @@ export default function NavigationBar() {
         {session?.user && (
           <UserAvatar
             username={session.user.name ?? ''}
-            url={session.user.image ?? ''}
+            url={session.user.imageUrl ?? ''}
           />
         )}
       </div>
@@ -139,6 +143,7 @@ type Path = {
   name: string;
   icon: ReactNode;
   enabled?: boolean;
+  roles?: UserRole[];
 };
 
 type NavItemProps = Path &
@@ -152,8 +157,29 @@ function NavItem({
   path,
   name,
   enabled,
+  roles,
   onClick,
 }: NavItemProps) {
+  const { data: session } = useSession();
+
+  if (roles) {
+    <ProtectedElement all={roles} session={session}>
+      <Link
+        className={cn(
+          'flex items-center gap-3 rounded-md px-1 py-2 font-thin hover:bg-emerald-500',
+          className,
+          {
+            'bg-emerald-500': enabled,
+          },
+        )}
+        href={path}
+        onClick={onClick}
+      >
+        {icon} <span>{name}</span>
+      </Link>
+    </ProtectedElement>;
+  }
+
   return (
     <Link
       className={cn(
@@ -201,5 +227,10 @@ const paths: Path[] = [
     path: '/logic', //
     name: 'Logic',
     icon: <CommandLineIcon className="h-6 w-6" />,
+  },
+  {
+    path: '/admin', //
+    name: 'Admin',
+    icon: <UserCircleIcon className="h-6 w-6" />,
   },
 ];

@@ -9,7 +9,7 @@ export default function useInfinitePageQuery<T>(
   ...queryKey: any
 ) {
   const searchParams = useSearchPageParams();
-  const axiosClient = useClient();
+  const { axiosClient, enabled } = useClient();
 
   const getNextPageParam = (
     lastPage: T[],
@@ -35,11 +35,14 @@ export default function useInfinitePageQuery<T>(
     return lastPageParams;
   };
 
+  const { name, authorId, sort, tags } = searchParams;
+
   return useInfiniteQuery({
-    queryKey: [...queryKey, searchParams],
+    queryKey: [...queryKey, name, authorId, sort, tags],
     initialPageParam: searchParams,
     queryFn: (context) => getFunc(axiosClient, context.pageParam),
     getNextPageParam,
     getPreviousPageParam,
+    enabled,
   });
 }

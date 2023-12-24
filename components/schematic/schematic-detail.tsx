@@ -17,7 +17,7 @@ type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export default function SchematicDetail({ schematic }: SchematicDetailProps) {
-  const axiosClient = useClient();
+  const { axiosClient } = useClient();
 
   const tags = Tags.parseStringArray(schematic.tags);
   const link = `${env.url.base}/schematics/${schematic.id}`;
@@ -44,7 +44,8 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             content={link}
           />
           <Detail.Image
-            src={`${env.url.api}/schematics/${schematic.id}/image`}
+            src={`${env.url.image}/schematics/${schematic.id}.png`}
+            errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
             alt={schematic.name}
           />
         </div>
