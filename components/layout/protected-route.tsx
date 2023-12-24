@@ -1,6 +1,5 @@
 import LoginButton from '@/components/common/login-button';
 import { UserRole } from '@/types/response/User';
-import { signIn } from 'next-auth/react';
 import { Session } from 'next-auth/types';
 import React, { ReactNode } from 'react';
 
@@ -21,18 +20,17 @@ export default async function ProtectedRoute({
   children,
   session,
 }: Props) {
-  if (!session?.user.roles)
+  if (!session?.user?.role)
     return (
       <div className="flex h-full w-full flex-col items-center justify-center">
-        Role;{session?.user.roles}
-        Please login to continute
+        Please login to continue
         <LoginButton className="min-w-[100px]" />
       </div>
     );
   if (any && all) {
     if (
-      all.every((role) => session?.user.roles.includes(role)) &&
-      any.some((role) => session?.user.roles.includes(role))
+      all.every((role) => session?.user?.role.includes(role)) &&
+      any.some((role) => session?.user?.role.includes(role))
     ) {
       return <>{children}</>;
     } else {
@@ -41,7 +39,7 @@ export default async function ProtectedRoute({
   }
 
   if (any) {
-    if (any.some((role) => session?.user.roles.includes(role))) {
+    if (any.some((role) => session?.user?.role.includes(role))) {
       return <>{children}</>;
     } else {
       <NoPermission />;
@@ -49,7 +47,7 @@ export default async function ProtectedRoute({
   }
 
   if (all) {
-    if (all.some((role) => session?.user.roles.includes(role))) {
+    if (all.some((role) => session?.user?.role.includes(role))) {
       return <>{children}</>;
     } else {
       <NoPermission />;

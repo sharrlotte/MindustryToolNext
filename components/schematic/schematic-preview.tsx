@@ -19,7 +19,7 @@ export default function SchematicPreview({
   schematic,
   ...rest
 }: SchematicPreviewProps) {
-  const axiosClient = useClient();
+  const { axiosClient } = useClient();
 
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
@@ -39,7 +39,7 @@ export default function SchematicPreview({
       {...rest}
     >
       <CopyButton
-        className="absolute left-1 top-1 aspect-square md:opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
         title="Copy"
         variant="ghost"
         data={link}

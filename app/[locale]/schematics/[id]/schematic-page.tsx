@@ -12,11 +12,12 @@ import React from 'react';
 
 export default function SchematicPage() {
   const params = useSearchId();
-  const axiosClient = useClient();
+  const { axiosClient, enabled } = useClient();
 
   const { data, isLoading, isError } = useQuery<Schematic>({
     queryKey: ['schematic', params],
     queryFn: () => getSchematic(axiosClient, params),
+    enabled: enabled,
   });
 
   if (isLoading) {

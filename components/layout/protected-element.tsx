@@ -15,12 +15,12 @@ export default function ProtectedElement({
   children,
   session,
 }: Props) {
-  if (!session?.user.roles) return <></>;
+  if (!session?.user?.role) return <></>;
 
   if (any && all) {
     if (
-      all.every((role) => session?.user.roles.includes(role)) &&
-      any.some((role) => session?.user.roles.includes(role))
+      all.every((role) => session?.user?.role.includes(role)) &&
+      any.some((role) => session?.user?.role.includes(role))
     ) {
       return <>{children}</>;
     } else {
@@ -29,12 +29,12 @@ export default function ProtectedElement({
   }
 
   if (any) {
-    if (any.some((role) => session?.user.roles.includes(role))) {
+    if (any.some((role) => session?.user?.role.includes(role))) {
       return <>{children}</>;
     }
 
     if (all) {
-      if (all.some((role) => session?.user.roles.includes(role))) {
+      if (all.some((role) => session?.user?.role.includes(role))) {
         return <>{children}</>;
       }
     }

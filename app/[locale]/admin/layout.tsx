@@ -2,6 +2,8 @@ import { auth } from '@/auth/config';
 import ProtectedRoute from '@/components/layout/protected-route';
 import React, { ReactNode } from 'react';
 
+export const dynamic = 'force-dynamic';
+
 type PageProps = {
   children: ReactNode;
 };

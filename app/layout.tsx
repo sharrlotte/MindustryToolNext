@@ -52,7 +52,7 @@ type RootProps = {
 export default function Root({ children, params }: RootProps) {
   return (
     <html
-      className="dark grid min-h-[calc(100vh-3rem)] select-none overflow-x-hidden bg-background antialiased "
+      className="dark grid min-h-[calc(100vh-3rem)] select-none overflow-x-hidden bg-background pt-nav antialiased "
       lang={params.lang ?? 'en'}
       suppressHydrationWarning
     >

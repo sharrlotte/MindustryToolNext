@@ -1,5 +1,5 @@
 import env from '@/constant/env';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { useSession } from 'next-auth/react';
 
 const axiosClient = axios.create({
@@ -9,8 +9,13 @@ const axiosClient = axios.create({
   },
 });
 
-export default function useClient() {
-  const { data: session } = useSession();
+export type UseClient = {
+  axiosClient: AxiosInstance;
+  enabled: boolean;
+};
+
+export default function useClient(): UseClient {
+  const { data: session, status } = useSession();
   const accessToken = session?.user?.accessToken;
 
   if (accessToken) {
@@ -19,5 +24,5 @@ export default function useClient() {
     axiosClient.defaults.headers['Authorization'] = '';
   }
 
-  return axiosClient;
+  return { axiosClient, enabled: status !== 'loading' };
 }

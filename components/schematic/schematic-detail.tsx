@@ -17,7 +17,7 @@ type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export default function SchematicDetail({ schematic }: SchematicDetailProps) {
-  const axiosClient = useClient();
+  const { axiosClient } = useClient();
 
   const tags = Tags.parseStringArray(schematic.tags);
   const link = `${env.url.base}/schematics/${schematic.id}`;

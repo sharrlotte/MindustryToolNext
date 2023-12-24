@@ -5,4 +5,7 @@ export default interface User {
   name: string;
   imageUrl: string;
   role: UserRole[];
+  accessToken: string;
+  refreshToken: string;
+  expireTime: string;
 }

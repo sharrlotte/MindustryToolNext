@@ -12,11 +12,12 @@ import React from 'react';
 
 export default function MapPage() {
   const params = useSearchId();
-  const axiosClient = useClient();
+  const {axiosClient, enabled} = useClient();
 
   const { data, isLoading, isError } = useQuery<Map>({
     queryKey: ['map', params],
     queryFn: () => getMap(axiosClient, params),
+    enabled
   });
 
   if (isLoading) {
