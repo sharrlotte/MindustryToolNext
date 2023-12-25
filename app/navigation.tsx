@@ -43,7 +43,7 @@ export default function NavigationBar() {
   const hideSidebar = () => setSidebarVisibility(false);
 
   return (
-    <div className="fixed top-0 z-50 flex h-nav w-full items-center justify-between p-2 dark:bg-emerald-500">
+    <div className="fixed top-0 z-50 flex h-nav w-full items-center justify-between  dark:bg-emerald-500">
       <Button
         title="menu"
         type="button"
@@ -123,7 +123,9 @@ export default function NavigationBar() {
                     </Button>
                   </div>
                 )}
-                {status === 'unauthenticated' && <LoginButton />}
+                {status === 'unauthenticated' && (
+                  <LoginButton className="flex-1" />
+                )}
               </div>
             </div>
           </div>

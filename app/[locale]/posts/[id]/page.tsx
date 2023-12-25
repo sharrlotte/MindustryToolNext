@@ -4,7 +4,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import getPost from '@/query/post/get-post';
 import getQueryClient from '@/query/config/query-client';
-import { IdSearchParams } from '@/types/data/search-id-schema';
+import { IdSearchParams } from '@/types/data/id-search-schema';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import getServer from '@/query/config/axios-config';
 

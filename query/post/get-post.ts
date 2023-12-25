@@ -1,4 +1,4 @@
-import { IdSearchParams } from '@/types/data/search-id-schema';
+import { IdSearchParams } from '@/types/data/id-search-schema';
 import Post from '@/types/response/Post';
 import { AxiosInstance } from 'axios';
 

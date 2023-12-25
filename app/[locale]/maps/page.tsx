@@ -3,14 +3,10 @@ import MapsPage from './maps-page';
 import getQueryClient from '@/query/config/query-client';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import getMaps from '@/query/map/get-maps';
-import { SearchParams } from '@/types/data/search-schema';
+import { PageableSearchQuery } from '@/types/data/pageable-search-schema';
 import getServer from '@/query/config/axios-config';
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default async function Page({ searchParams }: { searchParams: PageableSearchQuery }) {
   const queryClient = getQueryClient();
   const axiosServer = await getServer();
 

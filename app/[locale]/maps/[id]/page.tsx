@@ -3,7 +3,7 @@ import env from '@/constant/env';
 import getServer from '@/query/config/axios-config';
 import getQueryClient from '@/query/config/query-client';
 import getMap from '@/query/map/get-map';
-import { IdSearchParams } from '@/types/data/search-id-schema';
+import { IdSearchParams } from '@/types/data/id-search-schema';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
 import React from 'react';

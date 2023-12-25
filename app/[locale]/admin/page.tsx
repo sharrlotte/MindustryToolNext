@@ -13,11 +13,16 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import React from 'react';
+import getLogs from '@/query/log/get-logs';
+import moment from 'moment';
+import { dateFormat } from '@/constant/constant';
 
 const NUMBER_OF_DAY = 15;
 
 const background =
-  'rounded-lg bg-slate-600 bg-opacity-40 p-2 w-[clamp(100px,100%,400px)] aspect-square';
+  'rounded-lg bg-slate-600 bg-opacity-40 p-2 flex flex-col gap-2 p-2 h-[500px]';
+
+const chart = 'h-[450px]';
 
 export default function Page() {
   const axiosClient = useClient();
@@ -27,10 +32,12 @@ export default function Page() {
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);
 
   return (
-    <main className="grid h-full w-full">
-      <div className="flex items-start justify-start gap-4">
+    <main className="flex h-full w-full flex-col gap-4">
+      <span className="text-xl font-bold">Dashboard</span>
+      <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
         <LikeChart axiosClient={axiosClient} start={start} end={end} />
         <LoginChart axiosClient={axiosClient} start={start} end={end} />
+        <LoginLog axiosClient={axiosClient} />
       </div>
     </main>
   );
@@ -71,15 +78,19 @@ type ChartProps = {
   end: Date;
 };
 
-function LikeChart({ axiosClient, start, end }: ChartProps) {
+function LikeChart({
+  axiosClient: { axiosClient, enabled },
+  start,
+  end,
+}: ChartProps) {
   const {
     data: metric,
     error,
     isLoading,
   } = useQuery({
-    queryFn: () => getMetric(axiosClient.axiosClient, start, end, 'daily_like'),
+    queryFn: () => getMetric(axiosClient, start, end, 'daily_like'),
     queryKey: ['daily_like'],
-    enabled: axiosClient.enabled,
+    enabled,
   });
 
   if (isLoading) {
@@ -92,47 +103,52 @@ function LikeChart({ axiosClient, start, end }: ChartProps) {
 
   return (
     <div className={background}>
-      <ResponsiveContainer width="99%" height="99%" aspect={1}>
-        <LineChart
-          data={data}
-          margin={{
-            top: 10,
-            right: 10,
-            left: 10,
-            bottom: 10,
-          }}
-        >
-          <XAxis allowDecimals={false} dataKey="time" />
-          <YAxis allowDecimals={false} dataKey="value" />
-          <Tooltip />
-          <Line
-            name="Value"
-            type="monotone"
-            fill="currentColor"
-            dataKey="value"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <span className="font-bold">User interaction</span>
+      <div className={chart}>
+        <ResponsiveContainer width="99%" height="99%">
+          <LineChart
+            data={data}
+            margin={{
+              top: 10,
+              right: 10,
+              left: 10,
+              bottom: 10,
+            }}
+          >
+            <XAxis allowDecimals={false} dataKey="time" />
+            <YAxis allowDecimals={false} dataKey="value" />
+            <Tooltip />
+            <Line
+              name="Value"
+              type="monotone"
+              fill="currentColor"
+              dataKey="value"
+              stroke="#8884d8"
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
 
-function LoginChart({ axiosClient, start, end }: ChartProps) {
+function LoginChart({
+  axiosClient: { axiosClient, enabled },
+  start,
+  end,
+}: ChartProps) {
   const [loggedDailyUser, dailyUser] = useQueries({
     queries: [
       {
-        queryFn: () =>
-          getMetric(axiosClient.axiosClient, start, end, 'logged_daily_user'),
+        queryFn: () => getMetric(axiosClient, start, end, 'logged_daily_user'),
         queryKey: ['logged_daily_user'],
-        enabled: axiosClient.enabled,
+        enabled,
       },
       {
-        queryFn: () =>
-          getMetric(axiosClient.axiosClient, start, end, 'daily_user'),
+        queryFn: () => getMetric(axiosClient, start, end, 'daily_user'),
         queryKey: ['daily_user'],
-        enabled: axiosClient.enabled,
+        enabled,
       },
     ],
   });
@@ -166,37 +182,82 @@ function LoginChart({ axiosClient, start, end }: ChartProps) {
 
   return (
     <div className={background}>
-      <ResponsiveContainer width="99%" height="99%" aspect={1}>
-        <LineChart
-          data={data}
-          margin={{
-            top: 10,
-            right: 10,
-            left: 10,
-            bottom: 10,
-          }}
-        >
-          <XAxis allowDecimals={false} dataKey="time" />
-          <YAxis allowDecimals={false} />
-          <Tooltip />
-          <Line
-            name="Logged user"
-            type="monotone"
-            dataKey="loggedUser"
-            stroke="#8884d8"
-            fill="currentColor"
-            activeDot={{ r: 8 }}
-          />
-          <Line
-            name="User"
-            type="monotone"
-            dataKey="user"
-            stroke="#82ca9d"
-            fill="currentColor"
-            activeDot={{ r: 8 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <span className="font-bold">User login</span>
+      <div className={chart}>
+        <ResponsiveContainer width="99%" height="99%">
+          <LineChart
+            data={data}
+            margin={{
+              top: 10,
+              right: 10,
+              left: 10,
+              bottom: 10,
+            }}
+          >
+            <XAxis allowDecimals={false} dataKey="time" />
+            <YAxis allowDecimals={false} />
+            <Tooltip />
+            <Line
+              name="Logged user"
+              type="monotone"
+              dataKey="loggedUser"
+              stroke="#8884d8"
+              fill="currentColor"
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              name="User"
+              type="monotone"
+              dataKey="user"
+              stroke="#82ca9d"
+              fill="currentColor"
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+type LoginLogProps = {
+  axiosClient: UseClient;
+};
+
+function LoginLog({ axiosClient: { axiosClient, enabled } }: LoginLogProps) {
+  const {
+    data: logs,
+    error,
+    isLoading,
+  } = useQuery({
+    queryFn: () => getLogs(axiosClient, { page: 0, collection: 'user_login' }),
+    queryKey: ['user_login'],
+    enabled,
+  });
+
+  if (isLoading) {
+    return <LoadingSpinner className={background} />;
+  }
+
+  if (error || !logs) return <span>{error?.message}</span>;
+
+  return (
+    <div className={background}>
+      <span className="font-bold">User login logs</span>
+      <div className={chart}>
+        <section className="grid h-[450px] gap-2 overflow-y-auto">
+          {logs.map((log) => (
+            <span className="flex justify-between" key={log.id}>
+              <div>
+                <span>{`${log.content} ${moment(
+                  new Date(log.time).toISOString(),
+                ).fromNow()}`}</span>
+              </div>
+              <span>{log.ip}</span>
+            </span>
+          ))}
+        </section>
+      </div>
     </div>
   );
 }

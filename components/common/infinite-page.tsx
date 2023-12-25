@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
 import NoMore from '@/components/common/no-more';
 import NoResult from '@/components/common/no-result';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { cn } from '@/lib/utils';
-import { SearchParams } from '@/types/data/search-schema';
+import { PageableSearchQuery } from '@/types/data/pageable-search-schema';
 import { AxiosInstance } from 'axios';
 import React, { ReactNode } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -13,7 +13,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 type InfinitePageProps<T> = {
   className?: string;
   queryKey: any[];
-  getFunc: (axios: AxiosInstance, params: SearchParams) => Promise<T[]>;
+  getFunc: (axios: AxiosInstance, params: PageableSearchQuery) => Promise<T[]>;
   children: (data: T) => ReactNode;
 };
 
