@@ -76,6 +76,8 @@ export const {
           session.user.accessToken = result.accessToken;
           session.user.refreshToken = result.refreshToken;
           session.user.expireTime = result.expireTime;
+        } else {
+          session.user = undefined;
         }
       }
 
@@ -129,7 +131,7 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
       method: 'POST',
       body: data,
       next: {
-        revalidate: 30,
+        revalidate: 300,
         tags: [`${providerId}${provider}`],
       },
       headers: {
@@ -140,7 +142,7 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
     const text = await result.text();
 
     if (result.status === 200) {
-      return JSON.parse(text) as User;
+      return JSON.parse(text ?? '{}') as User;
     } else if (result.status === 401) {
       await apiLogout();
       throw new Error(
@@ -157,6 +159,8 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
 
 const refreshToken = async (refreshToken: string) => {
   if (!refreshToken) return null;
+
+  console.log('Refresh token');
 
   const data: FormData = new FormData();
   data.append('refreshToken', refreshToken);
@@ -199,7 +203,7 @@ const apiLogin = async () => {
       method: 'POST',
       body: data,
       next: {
-        revalidate: 30,
+        revalidate: 300,
       },
     });
 
