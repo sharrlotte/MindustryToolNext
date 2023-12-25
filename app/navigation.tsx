@@ -18,6 +18,7 @@ import {
   Cog6ToothIcon,
   BellIcon,
   UserCircleIcon,
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 
 import { useSession } from 'next-auth/react';
@@ -27,7 +28,7 @@ import UserAvatar from '@/components/user/user-avatar';
 import { UserRole } from '@/types/response/User';
 import ProtectedElement from '@/components/layout/protected-element';
 import LoginButton from '@/components/common/login-button';
-import LogoutButton from '@/components/common/logout-button';
+import UserRoleCard from '@/components/user/user-role';
 
 export default function NavigationBar() {
   const { data: session, status } = useSession();
@@ -42,7 +43,7 @@ export default function NavigationBar() {
   const hideSidebar = () => setSidebarVisibility(false);
 
   return (
-    <div className="fixed top-0 z-50 flex h-nav w-full items-center justify-between px-2 dark:bg-emerald-500">
+    <div className="fixed top-0 z-50 flex h-nav w-full items-center justify-between p-2 dark:bg-emerald-500">
       <Button
         title="menu"
         type="button"
@@ -64,7 +65,7 @@ export default function NavigationBar() {
       >
         <OutsideWrapper
           className={cn(
-            'pointer-events-auto fixed top-0 flex h-[100vh] min-w-[250px] translate-x-[-100%] flex-col justify-between overflow-hidden bg-background transition-transform duration-300',
+            'pointer-events-auto fixed top-0 flex h-[100vh] min-w-[250px] translate-x-[-100%] flex-col justify-between overflow-hidden bg-background  transition-transform duration-300',
             {
               'translate-x-0': isSidebarVisible,
             },
@@ -108,12 +109,21 @@ export default function NavigationBar() {
                 </section>
               </div>
               <div className="flex">
-                {status === 'authenticated' && (
-                  <LogoutButton className="flex-1" />
+                {status === 'authenticated' && session.user && (
+                  <div className="flex min-h-12 flex-1 items-center justify-between rounded-lg bg-zinc-900 p-1">
+                    <div className="flex gap-1">
+                      <UserAvatar className="h-12 w-12" user={session.user} />
+                      <div className="grid p-1">
+                        <span className="capitalize">{session.user.name}</span>
+                        <UserRoleCard role={session.user.role} />
+                      </div>
+                    </div>
+                    <Button title="logout" variant="ghost">
+                      <ArrowRightOnRectangleIcon className="h-6 w-6" />
+                    </Button>
+                  </div>
                 )}
-                {status === 'unauthenticated' && (
-                  <LoginButton className="flex-1" />
-                )}
+                {status === 'unauthenticated' && <LoginButton />}
               </div>
             </div>
           </div>
@@ -127,12 +137,7 @@ export default function NavigationBar() {
         <Button className="aspect-square p-0" title="setting" variant="icon">
           <Cog6ToothIcon className="h-6 w-6" />
         </Button>
-        {session?.user && (
-          <UserAvatar
-            username={session.user.name ?? ''}
-            url={session.user.imageUrl ?? ''}
-          />
-        )}
+        {session?.user && <UserAvatar user={session.user} />}
       </div>
     </div>
   );
@@ -162,25 +167,7 @@ function NavItem({
 }: NavItemProps) {
   const { data: session } = useSession();
 
-  if (roles) {
-    <ProtectedElement all={roles} session={session}>
-      <Link
-        className={cn(
-          'flex items-center gap-3 rounded-md px-1 py-2 font-thin hover:bg-emerald-500',
-          className,
-          {
-            'bg-emerald-500': enabled,
-          },
-        )}
-        href={path}
-        onClick={onClick}
-      >
-        {icon} <span>{name}</span>
-      </Link>
-    </ProtectedElement>;
-  }
-
-  return (
+  const render = () => (
     <Link
       className={cn(
         'flex items-center gap-3 rounded-md px-1 py-2 font-thin hover:bg-emerald-500',
@@ -192,9 +179,20 @@ function NavItem({
       href={path}
       onClick={onClick}
     >
-      {icon} <span>{name}</span>
+      <span>{icon}</span>
+      <span>{name}</span>
     </Link>
   );
+
+  if (roles) {
+    return (
+      <ProtectedElement all={roles} session={session}>
+        {render()}
+      </ProtectedElement>
+    );
+  }
+
+  return render();
 }
 
 const paths: Path[] = [
@@ -231,6 +229,7 @@ const paths: Path[] = [
   {
     path: '/admin', //
     name: 'Admin',
+    roles: ['ADMIN'],
     icon: <UserCircleIcon className="h-6 w-6" />,
   },
 ];

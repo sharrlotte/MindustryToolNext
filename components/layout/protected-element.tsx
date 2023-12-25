@@ -19,24 +19,22 @@ export default function ProtectedElement({
 
   if (any && all) {
     if (
-      all.every((role) => session?.user?.role.includes(role)) &&
-      any.some((role) => session?.user?.role.includes(role))
+      all.every((role) => session.user?.role.includes(role)) &&
+      any.some((role) => session.user?.role.includes(role))
     ) {
       return <>{children}</>;
-    } else {
-      return <></>;
     }
   }
 
   if (any) {
-    if (any.some((role) => session?.user?.role.includes(role))) {
+    if (any.some((role) => session.user?.role.includes(role))) {
       return <>{children}</>;
     }
+  }
 
-    if (all) {
-      if (all.some((role) => session?.user?.role.includes(role))) {
-        return <>{children}</>;
-      }
+  if (all) {
+    if (all.every((role) => session.user?.role.includes(role))) {
+      return <>{children}</>;
     }
   }
 

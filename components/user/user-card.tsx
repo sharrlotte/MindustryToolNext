@@ -7,11 +7,11 @@ type UserCardProps = {
   user: User;
 };
 function UserCard({ user }: UserCardProps) {
-  const { name, imageUrl } = user;
+  const { name } = user;
 
   return (
     <div className="flex w-56 items-end gap-2">
-      <UserAvatar url={imageUrl} username={name} />
+      <UserAvatar user={user} />
       <span className="capitalize">{name}</span>
     </div>
   );
