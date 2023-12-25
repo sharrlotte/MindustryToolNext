@@ -6,6 +6,16 @@ import NextAuth from 'next-auth';
 import Discord from 'next-auth/providers/discord';
 import { env } from 'process';
 
+const authData: {
+  accessToken?: string;
+  refreshToken?: string;
+  expireTime: number;
+} = {
+  accessToken: env.API_ACCESS_TOKEN,
+  refreshToken: env.API_REFRESH_TOKEN,
+  expireTime: Number(env.API_EXPIRE_TIME ?? '0'),
+};
+
 export const {
   handlers: { GET, POST },
   auth,
@@ -66,6 +76,8 @@ export const {
           session.user.accessToken = result.accessToken;
           session.user.refreshToken = result.refreshToken;
           session.user.expireTime = result.expireTime;
+        } else {
+          session.user = undefined;
         }
       }
 
@@ -99,20 +111,19 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
   data.append('name', name);
   data.append('image', image);
 
-  if (
-    !env.API_ACCESS_TOKEN ||
-    new Date(env.API_EXPIRE_TIME as string) <= new Date()
-  ) {
+  if (!authData.accessToken) {
+    console.log('No API token');
     await apiLogin();
   }
 
-  if (
-    new Date(env.API_EXPIRE_TIME as string) <= new Date() &&
-    env.API_REFRESH_TOKEN
-  ) {
-    await apiRefreshToken();
-  } else {
-    await apiLogin();
+  if (authData.expireTime <= Date.now()) {
+    if (authData.accessToken) {
+      console.log('API token expired');
+      await apiRefreshToken();
+    } else {
+      console.log('No API refresh token');
+      await apiLogin();
+    }
   }
 
   try {
@@ -120,18 +131,18 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
       method: 'POST',
       body: data,
       next: {
-        revalidate: 30,
-        tags: [providerId, provider],
+        revalidate: 300,
+        tags: [`${providerId}${provider}`],
       },
       headers: {
-        Authorization: `Bearer ${env.API_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${authData.accessToken}`,
       },
     });
 
     const text = await result.text();
 
     if (result.status === 200) {
-      return JSON.parse(text) as User;
+      return JSON.parse(text ?? '{}') as User;
     } else if (result.status === 401) {
       await apiLogout();
       throw new Error(
@@ -148,6 +159,8 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
 
 const refreshToken = async (refreshToken: string) => {
   if (!refreshToken) return null;
+
+  console.log('Refresh token');
 
   const data: FormData = new FormData();
   data.append('refreshToken', refreshToken);
@@ -190,7 +203,7 @@ const apiLogin = async () => {
       method: 'POST',
       body: data,
       next: {
-        revalidate: 30,
+        revalidate: 300,
       },
     });
 
@@ -199,9 +212,9 @@ const apiLogin = async () => {
     if (result.status === 200) {
       const user = JSON.parse(text) as User;
       if (user) {
-        env.API_ACCESS_TOKEN = user.accessToken;
-        env.API_REFRESH_TOKEN = user.refreshToken;
-        env.API_EXPIRE_TIME = user.expireTime;
+        authData.accessToken = user.accessToken;
+        authData.refreshToken = user.refreshToken;
+        authData.expireTime = user.expireTime;
         return;
       }
     }
@@ -216,16 +229,18 @@ const apiLogin = async () => {
 const apiRefreshToken = async () => {
   const result = await refreshToken(env.API_REFRESH_TOKEN as string);
   if (result) {
-    env.API_REFRESH_TOKEN = result.refreshToken;
-    env.API_ACCESS_TOKEN = result.accessToken;
-    env.API_EXPIRE_TIME = result.expireTime;
+    authData.accessToken = result.accessToken;
+    authData.refreshToken = result.refreshToken;
+    authData.expireTime = Date.now();
   } else {
     await apiLogout();
   }
 };
 
 const apiLogout = async () => {
-  env.API_REFRESH_TOKEN = '';
-  env.API_ACCESS_TOKEN = '';
-  env.API_EXPIRE_TIME = '';
+  authData.accessToken = undefined;
+  authData.refreshToken = undefined;
+  authData.expireTime = Date.now();
 };
+
+export { authData };

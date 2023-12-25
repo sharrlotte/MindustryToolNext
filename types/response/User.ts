@@ -7,5 +7,5 @@ export default interface User {
   role: UserRole[];
   accessToken: string;
   refreshToken: string;
-  expireTime: string;
+  expireTime: number;
 }

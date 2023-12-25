@@ -44,9 +44,9 @@ function fill(
 ) {
   let result: Metric[] = [];
 
-  for (let i = 0; i < numberOfDay + 1; i++) {
+  for (let i = numberOfDay; i > 0; i--) {
     let targetDay = new Date(start);
-    targetDay.setDate(numberOfDay + i);
+    targetDay.setDate(targetDay.getDate() + numberOfDay - i + 1);
     let value = array.find(
       (v) =>
         v.time.getFullYear() === targetDay.getFullYear() &&

@@ -29,29 +29,23 @@ export default async function ProtectedRoute({
     );
   if (any && all) {
     if (
-      all.every((role) => session?.user?.role.includes(role)) &&
-      any.some((role) => session?.user?.role.includes(role))
+      all.every((role) => session.user?.role.includes(role)) &&
+      any.some((role) => session.user?.role.includes(role))
     ) {
       return <>{children}</>;
-    } else {
-      <NoPermission />;
     }
   }
 
   if (any) {
-    if (any.some((role) => session?.user?.role.includes(role))) {
+    if (any.some((role) => session.user?.role.includes(role))) {
       return <>{children}</>;
-    } else {
-      <NoPermission />;
     }
   }
 
   if (all) {
-    if (all.some((role) => session?.user?.role.includes(role))) {
+    if (all.every((role) => session.user?.role.includes(role))) {
       return <>{children}</>;
-    } else {
-      <NoPermission />;
     }
   }
-  throw new Error('No role configured');
+  <NoPermission />;
 }

@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 type UserAvatarProps = {
-  url: string;
-  username: string;
   className?: string;
+  user: {
+    name?: string | null;
+    id: string;
+    imageUrl: string;
+  };
 };
 
 const colorArray = [
@@ -63,38 +67,43 @@ const colorArray = [
 
 export default function UserAvatar({
   className,
-  url,
-  username = 'O',
+  user: { id, imageUrl, name },
 }: UserAvatarProps) {
   const [isError, setError] = useState(false);
 
-  if (isError || !url) {
-    let total = 0;
-    for (let i = 0; i < username.length; i++) {
-      total += username.charCodeAt(i);
-    }
-    const color = colorArray[total % colorArray.length];
-    return (
-      <div
-        className={cn(
-          'flex h-8 w-8 items-center justify-center rounded-full border-2 border-border capitalize',
-          className,
-        )}
-        style={{ backgroundColor: color }}
-      >
-        {username.at(0)}
-      </div>
-    );
-  }
+  const username = name ?? '';
 
-  return (
-    <Image
-      className={cn('rounded-full border-2 border-border', className)}
-      height={32}
-      width={32}
-      src={url}
-      alt={username}
-      onError={() => setError(true)}
-    />
-  );
+  const render = () => {
+    if (isError || !imageUrl) {
+      let total = 0;
+      for (let i = 0; i < username.length; i++) {
+        total += username.charCodeAt(i);
+      }
+      const color = colorArray[total % colorArray.length];
+      return (
+        <div
+          className={cn(
+            'flex h-8 w-8 items-center justify-center rounded-full border-2 border-border capitalize',
+            className,
+          )}
+          style={{ backgroundColor: color }}
+        >
+          {username.at(0)}
+        </div>
+      );
+    }
+
+    return (
+      <Image
+        className={cn('rounded-full border-2 border-border', className)}
+        height={32}
+        width={32}
+        src={imageUrl}
+        alt={username}
+        onError={() => setError(true)}
+      />
+    );
+  };
+
+  return <Link href={`users/${id}`}>{render()}</Link>;
 }
