@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import env from '@/constant/env';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Socket, io } from 'socket.io-client';
 
@@ -12,7 +13,7 @@ export default function LogPage() {
 
   const socketInitializer = useCallback(async () => {
     // Setup the Socket
-    socket = io({ path: '/api/socket/ping' });
+    socket = io({ path: `${env.url.api}/sockets` });
 
     // Standard socket management
     socket.on('connect', () => {

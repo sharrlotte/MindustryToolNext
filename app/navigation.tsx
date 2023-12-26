@@ -171,10 +171,10 @@ function NavItem({
   const render = () => (
     <Link
       className={cn(
-        'flex items-center gap-3 rounded-md px-1 py-2 font-thin transition-colors delay-500 hover:bg-emerald-500',
+        'flex items-center gap-3 rounded-md bg-opacity-0 px-1 py-2 font-thin transition-colors duration-500 hover:bg-emerald-500',
         className,
         {
-          'bg-emerald-500': enabled,
+          'bg-emerald-500 bg-opacity-100': enabled,
         },
       )}
       href={path}
