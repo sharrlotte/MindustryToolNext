@@ -9,7 +9,7 @@ function Detail({ className, children }: DetailProps) {
   return (
     <Card
       className={cn(
-        'relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden rounded-xl border-2 p-2 lg:items-stretch',
+        'relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden rounded-xl border p-2 lg:items-stretch',
         className,
       )}
     >

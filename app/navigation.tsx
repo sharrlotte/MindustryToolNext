@@ -18,7 +18,7 @@ import {
   Cog6ToothIcon,
   BellIcon,
   UserCircleIcon,
-  ArrowRightOnRectangleIcon,
+  ArrowRightEndOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 
 import { useSession } from 'next-auth/react';
@@ -43,7 +43,7 @@ export default function NavigationBar() {
   const hideSidebar = () => setSidebarVisibility(false);
 
   return (
-    <div className="fixed top-0 z-50 flex h-nav w-full items-center justify-between  dark:bg-emerald-500">
+    <div className="fixed top-0 z-50 flex h-nav w-full items-center justify-between  p-2 dark:bg-emerald-500">
       <Button
         title="menu"
         type="button"
@@ -119,7 +119,7 @@ export default function NavigationBar() {
                       </div>
                     </div>
                     <Button title="logout" variant="ghost">
-                      <ArrowRightOnRectangleIcon className="h-6 w-6" />
+                      <ArrowRightEndOnRectangleIcon className="h-6 w-6" />
                     </Button>
                   </div>
                 )}
@@ -139,7 +139,6 @@ export default function NavigationBar() {
         <Button className="aspect-square p-0" title="setting" variant="icon">
           <Cog6ToothIcon className="h-6 w-6" />
         </Button>
-        {session?.user && <UserAvatar user={session.user} />}
       </div>
     </div>
   );
@@ -172,7 +171,7 @@ function NavItem({
   const render = () => (
     <Link
       className={cn(
-        'flex items-center gap-3 rounded-md px-1 py-2 font-thin hover:bg-emerald-500',
+        'flex items-center gap-3 rounded-md px-1 py-2 font-thin transition-colors delay-500 hover:bg-emerald-500',
         className,
         {
           'bg-emerald-500': enabled,

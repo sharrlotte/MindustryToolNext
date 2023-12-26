@@ -79,7 +79,7 @@ export default function LogPage() {
       </section>
       <div className="bottom-0 flex w-full gap-2">
         <input
-          className="w-full rounded-md border-2 border-border bg-background outline-none"
+          className="w-full rounded-md border border-border bg-background outline-none"
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />

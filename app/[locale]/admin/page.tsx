@@ -15,7 +15,6 @@ import {
 import React from 'react';
 import getLogs from '@/query/log/get-logs';
 import moment from 'moment';
-import { dateFormat } from '@/constant/constant';
 
 const NUMBER_OF_DAY = 15;
 
@@ -32,7 +31,7 @@ export default function Page() {
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);
 
   return (
-    <main className="flex h-full w-full flex-col gap-4">
+    <main className="flex h-full w-full flex-col gap-4 overflow-y-auto p-4">
       <span className="text-xl font-bold">Dashboard</span>
       <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
         <LikeChart axiosClient={axiosClient} start={start} end={end} />
@@ -124,7 +123,7 @@ function LikeChart({
               fill="currentColor"
               dataKey="value"
               stroke="#8884d8"
-              activeDot={{ r: 8 }}
+              activeDot={{ r: 4 }}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -203,7 +202,7 @@ function LoginChart({
               dataKey="loggedUser"
               stroke="#8884d8"
               fill="currentColor"
-              activeDot={{ r: 8 }}
+              activeDot={{ r: 4 }}
             />
             <Line
               name="User"
@@ -211,7 +210,7 @@ function LoginChart({
               dataKey="user"
               stroke="#82ca9d"
               fill="currentColor"
-              activeDot={{ r: 8 }}
+              activeDot={{ r: 4 }}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -245,7 +244,7 @@ function LoginLog({ axiosClient: { axiosClient, enabled } }: LoginLogProps) {
     <div className={background}>
       <span className="font-bold">User login logs</span>
       <div className={chart}>
-        <section className="grid h-[450px] gap-2 overflow-y-auto">
+        <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
           {logs.map((log) => (
             <span className="flex justify-between" key={log.id}>
               <div>

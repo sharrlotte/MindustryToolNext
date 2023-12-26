@@ -83,7 +83,7 @@ export default function UserAvatar({
       return (
         <div
           className={cn(
-            'flex h-8 w-8 items-center justify-center rounded-full border-2 border-border capitalize',
+            'flex h-8 w-8 items-center justify-center rounded-full border border-border capitalize',
             className,
           )}
           style={{ backgroundColor: color }}
@@ -95,7 +95,7 @@ export default function UserAvatar({
 
     return (
       <Image
-        className={cn('rounded-full border-2 border-border', className)}
+        className={cn('rounded-full border border-border', className)}
         height={32}
         width={32}
         src={imageUrl}

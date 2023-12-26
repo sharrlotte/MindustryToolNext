@@ -21,16 +21,18 @@ export default function PostPreview({
   return (
     <div
       className={cn(
-        'relative flex flex-col rounded-lg border-2 border-border p-4',
+        'relative flex flex-col rounded-lg border border-border p-4',
         className,
       )}
       {...rest}
     >
-      <div className="flex flex-col gap-2"> 
-        <Link className="flex flex-col gap-2" href={`/posts/${post.id}`}>
-          <span className="flex text-2xl">{post.header}</span>
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
+          <Link href={`/posts/${post.id}`}>
+            <span className="flex text-2xl">{post.header}</span>
+          </Link>
           <IdUserCard id={post.authorId} />
-        </Link>
+        </div>
         <section className="flex gap-2">
           <CopyButton
             size="icon"
