@@ -1,25 +1,26 @@
-'use client'
+'use client';
 
-import NoMore from '@/components/common/no-more';
 import NoResult from '@/components/common/no-result';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { cn } from '@/lib/utils';
-import { SearchParams } from '@/types/data/search-schema';
+import { PageableSearchQuery } from '@/types/data/pageable-search-schema';
 import { AxiosInstance } from 'axios';
 import React, { ReactNode } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from 'react-infinite-scroller';
 
 type InfinitePageProps<T> = {
   className?: string;
   queryKey: any[];
-  getFunc: (axios: AxiosInstance, params: SearchParams) => Promise<T[]>;
+  scrollContainer?: HTMLElement | null;
+  getFunc: (axios: AxiosInstance, params: PageableSearchQuery) => Promise<T[]>;
   children: (data: T) => ReactNode;
 };
 
 export default function InfinitePage<T>({
   className,
   queryKey,
+  scrollContainer = null,
   getFunc,
   children,
 }: InfinitePageProps<T>) {
@@ -45,24 +46,23 @@ export default function InfinitePage<T>({
   }
 
   return (
-    <InfiniteScroll
-      className={cn(
-        className ??
-          'grid min-h-full w-full grid-cols-[repeat(auto-fill,var(--preview-size))] items-center justify-center gap-4 p-4',
-      )}
-      next={fetchNextPage}
-      dataLength={pages.length}
-      hasMore={hasNextPage}
-      loader={
-        <LoadingSpinner className="col-span-full flex w-full items-center justify-center" />
-      }
-      endMessage={
-        <NoMore className="col-span-full flex w-full items-center justify-center " />
-      }
-    >
-      {pages.map((page, index) => (
-        <React.Fragment key={index}>{children(page)}</React.Fragment>
-      ))}
-    </InfiniteScroll>
+    <div className="h-full w-full">
+      <InfiniteScroll
+        className={cn(
+          className ??
+            'grid min-h-full w-full grid-cols-[repeat(auto-fill,var(--preview-size))] items-center justify-center gap-4 p-4',
+        )}
+        pageStart={0}
+        loadMore={(_: number) => fetchNextPage()}
+        hasMore={hasNextPage}
+        loader={
+          <LoadingSpinner key="Loading" className="col-span-full flex w-full items-center justify-center" />
+        }
+        useWindow={false}
+        getScrollParent={() => scrollContainer}
+      >
+        {pages.map((data) => children(data))}
+      </InfiniteScroll>
+    </div>
   );
 }

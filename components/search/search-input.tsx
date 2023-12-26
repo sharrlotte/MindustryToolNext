@@ -20,7 +20,9 @@ function Search({ className, children, ...props }: SearchProps) {
   );
 }
 
-type InputProps = HTMLAttributes<HTMLInputElement>;
+type InputProps = HTMLAttributes<HTMLInputElement> & {
+  placeholder: string
+};
 
 function Input({ className, ...props }: InputProps) {
   return (

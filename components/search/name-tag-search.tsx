@@ -178,11 +178,13 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
           <FilterIcon />
         </Button>
       </div>
-      <section className="m-auto flex w-full flex-wrap items-center justify-center gap-1 md:w-3/4">
-        {displayTags.map((value, index) => (
-          <TagCard key={index} tag={value} onDelete={handleDeleteTag} />
-        ))}
-      </section>
+      {displayTags.length > 0 && (
+        <section className="m-auto flex w-full flex-wrap items-center justify-center gap-1 md:w-3/4">
+          {displayTags.map((value, index) => (
+            <TagCard key={index} tag={value} onDelete={handleDeleteTag} />
+          ))}
+        </section>
+      )}
       {showFilterDialog && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
           <OutsideWrapper

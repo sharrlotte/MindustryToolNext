@@ -93,7 +93,8 @@ function LikeButton({ className, ...props }: LikeButtonProps) {
   return (
     <Button
       className={cn('p-2', className, {
-        'bg-success': likeData?.state === 1,
+        'bg-success hover:bg-success': likeData?.state === 1,
+        'hover:bg-success': likeData?.state === -1 || likeData?.state === 0,
       })}
       {...props}
       onClick={handleLike}
@@ -108,7 +109,8 @@ function DislikeButton({ className, ...props }: LikeButtonProps) {
   return (
     <Button
       className={cn('p-2', className, {
-        'bg-destructive': likeData?.state === -1,
+        'bg-destructive hover:bg-destructive': likeData?.state === -1,
+        'hover:bg-destructive': likeData?.state === 1 || likeData?.state === 0,
       })}
       {...props}
       onClick={handleDislike}

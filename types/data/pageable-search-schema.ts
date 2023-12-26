@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { sortSchema } from "@/types/data/schema";
+import { sortSchema } from "@/types/data/schemas";
 
 export const searchSchema = z.object({
   page: z.number().gte(0).default(0),
@@ -9,4 +9,4 @@ export const searchSchema = z.object({
   sort: sortSchema,
 });
 
-export type SearchParams = z.infer<typeof searchSchema>;
+export type PageableSearchQuery = z.infer<typeof searchSchema>;

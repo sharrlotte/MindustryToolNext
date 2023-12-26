@@ -2,13 +2,13 @@ import React from 'react';
 import SchematicsPage from './schematics-page';
 import getQueryClient from '@/query/config/query-client';
 import getMaps from '@/query/map/get-maps';
-import { SearchParams } from '@/types/data/search-schema';
+import { PageableSearchQuery } from '@/types/data/pageable-search-schema';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import getServer from '@/query/config/axios-config';
 export default async function Page({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: PageableSearchQuery;
 }) {
   const queryClient = getQueryClient();
   const axiosServer = await getServer();

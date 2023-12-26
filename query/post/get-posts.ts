@@ -1,8 +1,14 @@
-import { SearchParams, searchSchema } from '@/types/data/search-schema';
+import {
+  PageableSearchQuery,
+  searchSchema,
+} from '@/types/data/pageable-search-schema';
 import Post from '@/types/response/Post';
 import { AxiosInstance } from 'axios';
 
-export default async function getPosts(axios: AxiosInstance, params: SearchParams): Promise<Post[]> {
+export default async function getPosts(
+  axios: AxiosInstance,
+  params: PageableSearchQuery,
+): Promise<Post[]> {
   const searchParams = searchSchema.parse(params);
   const result = await axios.get('/posts', {
     params: { ...searchParams, items: 20 },
