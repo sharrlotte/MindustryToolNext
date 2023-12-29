@@ -104,7 +104,7 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
     };
 
     if (!showFilterDialog) {
-      timeout = setTimeout(() => handleSearch(), 100);
+      timeout = setTimeout(() => handleSearch(), 0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);
@@ -188,7 +188,7 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
       {showFilterDialog && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
           <OutsideWrapper
-            className="flex h-[100vh] w-screen items-center justify-center md:h-4/5 md:w-4/5"
+            className="flex h-[100dvh] w-screen items-center justify-center md:h-4/5 md:w-4/5"
             onClickOutside={handleHideFilterDialog}
           >
             <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">

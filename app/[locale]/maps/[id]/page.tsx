@@ -1,6 +1,6 @@
 import MapPage from '@/app/[locale]/maps/[id]/map-page';
 import env from '@/constant/env';
-import getServer from '@/query/config/axios-config';
+import getServerAPI from '@/query/config/axios-config';
 import getQueryClient from '@/query/config/query-client';
 import getMap from '@/query/map/get-map';
 import { IdSearchParams } from '@/types/data/id-search-schema';
@@ -14,8 +14,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const axiosServer = await getServer();
-  const map = await getMap(axiosServer, { id });
+  const { axios } = await getServerAPI();
+  const map = await getMap(axios, { id });
 
   return {
     title: map.name,
@@ -28,11 +28,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: { params: IdSearchParams }) {
   const queryClient = getQueryClient();
-  const axiosServer = await getServer();
+  const { axios } = await getServerAPI();
 
   await queryClient.prefetchQuery({
     queryKey: ['map', params],
-    queryFn: () => getMap(axiosServer, params),
+    queryFn: () => getMap(axios, params),
   });
   const dehydratedState = dehydrate(queryClient);
 

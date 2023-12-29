@@ -1,6 +1,6 @@
 import SchematicPage from '@/app/[locale]/schematics/[id]/schematic-page';
 import env from '@/constant/env';
-import getServer from '@/query/config/axios-config';
+import getServerAPI from '@/query/config/axios-config';
 import getQueryClient from '@/query/config/query-client';
 import getSchematic from '@/query/schematic/get-schematic';
 import { IdSearchParams } from '@/types/data/id-search-schema';
@@ -14,8 +14,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const axiosServer = await getServer();
-  const map = await getSchematic(axiosServer, { id });
+  const { axios } = await getServerAPI();
+  const map = await getSchematic(axios, { id });
 
   return {
     title: map.name,
@@ -27,11 +27,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 export default async function Page({ params }: { params: IdSearchParams }) {
   const queryClient = getQueryClient();
-  const axiosServer = await getServer();
+  const { axios } = await getServerAPI();
 
   await queryClient.prefetchQuery({
     queryKey: ['schematic', params],
-    queryFn: () => getSchematic(axiosServer, params),
+    queryFn: () => getSchematic(axios, params),
   });
   const dehydratedState = dehydrate(queryClient);
 

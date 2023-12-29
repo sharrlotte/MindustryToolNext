@@ -52,7 +52,7 @@ type RootProps = {
 export default function Root({ children, params }: RootProps) {
   return (
     <html
-      className="dark grid select-none overflow-hidden bg-background pt-nav antialiased "
+      className="dark h-[100dvh] w-full select-none overflow-hidden bg-background antialiased"
       lang={params.lang ?? 'en'}
       suppressHydrationWarning
     >
@@ -69,9 +69,7 @@ export default function Root({ children, params }: RootProps) {
             <QueryProvider>
               <ClientInit />
               <NavigationBar />
-              <div className="flex h-[calc(100dvh-3rem)] w-full flex-col">
-                {children}
-              </div>
+              <div className="h-[calc(100dvh-3rem)] w-full">{children}</div>
             </QueryProvider>
           </SessionProvider>
         </ThemeProvider>

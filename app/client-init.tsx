@@ -1,16 +1,16 @@
 'use client';
 
-import useClient from '@/hooks/use-client';
+import useClientAPI from '@/hooks/use-client';
 import React, { useEffect } from 'react';
 
 export default function ClientInit() {
-  const { axiosClient, enabled } = useClient();
+  const { axios, enabled } = useClientAPI();
 
   useEffect(() => {
     if (enabled) {
-      axiosClient.get('/ping').catch((error) => console.error(error));
+      axios.get('/ping').catch((error) => console.error(error));
     }
-  }, [axiosClient, enabled]);
+  }, [axios, enabled]);
 
   return undefined;
 }

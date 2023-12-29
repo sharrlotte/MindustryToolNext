@@ -1,4 +1,4 @@
-import useClient from '@/hooks/use-client';
+import useClientAPI from '@/hooks/use-client';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { PageableSearchQuery } from '@/types/data/pageable-search-schema';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ export default function useInfinitePageQuery<T>(
   ...queryKey: any
 ) {
   const PageableSearchQuery = useSearchPageParams();
-  const { axiosClient, enabled } = useClient();
+  const { axios, enabled } = useClientAPI();
 
   const getNextPageParam = (
     lastPage: T[],
@@ -40,7 +40,7 @@ export default function useInfinitePageQuery<T>(
   return useInfiniteQuery({
     queryKey: [...queryKey, name, authorId, sort, tags],
     initialPageParam: PageableSearchQuery,
-    queryFn: (context) => getFunc(axiosClient, context.pageParam),
+    queryFn: (context) => getFunc(axios, context.pageParam),
     getNextPageParam,
     getPreviousPageParam,
     enabled,

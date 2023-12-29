@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
 let socket: ReconnectingWebSocket;
@@ -15,9 +15,10 @@ type SocketState =
   | 'disconnected';
 
 export default function LogPage() {
+  const { data: session } = useSession();
+
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
-  const { data: session } = useSession();
   const [state, setState] = useState<SocketState>('uninitiated');
 
   const accessToken = session?.user?.accessToken;
@@ -42,7 +43,7 @@ export default function LogPage() {
       console.log(err);
       setState('disconnected');
     };
-    socket.onmessage = (event) => addLog(event.data);
+    socket.onmessage = ({ data }) => addLog(JSON.parse(data));
   }, [accessToken]);
 
   useEffect(() => {
@@ -51,8 +52,8 @@ export default function LogPage() {
     return () => socket?.close();
   }, [initSocket]);
 
-  const addLog = (message: string) => {
-    setLog((prev) => [...prev, message]);
+  const addLog = (message: string[]) => {
+    setLog((prev) => [...prev, ...message]);
   };
 
   const sendMessage = () => {
@@ -65,15 +66,19 @@ export default function LogPage() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col justify-between">
-      <section className="flex h-full w-screen flex-col overflow-y-auto p-4">
-        {log.map((item, index) => (
-          <span key={index}>{item}</span>
-        ))}
-      </section>
-      <div className="bottom-0 flex w-full gap-2">
+    <Fragment>
+      <div className="flex h-full w-full flex-col">
+        <div className="grid h-[calc(100%-5.5rem)] gap-2 overflow-auto p-2">
+          {log.slice(log.length - 200).map((item, index) => (
+            <p className="rounded-lg bg-zinc-900 p-2" key={index}>
+              {item}
+            </p>
+          ))}
+        </div>
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 m-2 flex h-10 gap-2">
         <input
-          className="w-full rounded-md border border-border bg-background outline-none"
+          className="h-full w-full rounded-md border border-border bg-background outline-none"
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
@@ -85,6 +90,6 @@ export default function LogPage() {
           Send
         </Button>
       </div>
-    </div>
+    </Fragment>
   );
 }

@@ -6,7 +6,7 @@ import getPost from '@/query/post/get-post';
 import getQueryClient from '@/query/config/query-client';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import getServer from '@/query/config/axios-config';
+import getServerAPI from '@/query/config/axios-config';
 
 type Props = {
   params: { id: string };
@@ -14,8 +14,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const axiosServer = await getServer();
-  const post = await getPost(axiosServer, { id });
+  const { axios } = await getServerAPI();
+  const post = await getPost(axios, { id });
 
   return {
     title: post.header,
@@ -24,11 +24,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: { params: IdSearchParams }) {
   const queryClient = getQueryClient();
-  const axiosServer = await getServer();
+  const { axios } = await getServerAPI();
 
   await queryClient.prefetchQuery({
     queryKey: ['post', params],
-    queryFn: () => getPost(axiosServer, params),
+    queryFn: () => getPost(axios, params),
   });
   const dehydratedState = dehydrate(queryClient);
 

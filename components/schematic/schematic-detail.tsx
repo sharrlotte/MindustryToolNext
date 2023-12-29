@@ -10,14 +10,14 @@ import { Tags } from '@/types/data/Tag';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/ui/download-button';
 import IdUserCard from '@/components/user/id-user-card';
-import useClient from '@/hooks/use-client';
+import useClientAPI from '@/hooks/use-client';
 
 type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
 };
 
 export default function SchematicDetail({ schematic }: SchematicDetailProps) {
-  const { axiosClient } = useClient();
+  const { axios } = useClientAPI();
 
   const tags = Tags.parseStringArray(schematic.tags);
   const link = `${env.url.base}/schematics/${schematic.id}`;
@@ -27,7 +27,7 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
       title: 'Coping',
       content: 'Downloading data from server',
     });
-    const result = await axiosClient.get(`/schematics/${schematic.id}/data`);
+    const result = await axios.get(`/schematics/${schematic.id}/data`);
     dismiss();
     return result.data as Promise<string>;
   };

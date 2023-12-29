@@ -2,7 +2,7 @@
 
 import SchematicDetail from '@/components/schematic/schematic-detail';
 import LoadingSpinner from '@/components/ui/loading-spinner';
-import useClient from '@/hooks/use-client';
+import useClientAPI from '@/hooks/use-client';
 import useSearchId from '@/hooks/use-search-id-params';
 import getSchematic from '@/query/schematic/get-schematic';
 import Schematic from '@/types/response/Schematic';
@@ -12,11 +12,11 @@ import React from 'react';
 
 export default function SchematicPage() {
   const params = useSearchId();
-  const { axiosClient, enabled } = useClient();
+  const { axios, enabled } = useClientAPI();
 
   const { data, isLoading, isError } = useQuery<Schematic>({
     queryKey: ['schematic', params],
-    queryFn: () => getSchematic(axiosClient, params),
+    queryFn: () => getSchematic(axios, params),
     enabled: enabled,
   });
 
