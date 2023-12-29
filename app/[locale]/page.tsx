@@ -2,6 +2,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import Link from 'next/link';
 
 export default function Home() {
+
   return (
     <main className="grid h-full overflow-y-auto p-8 pt-10">
       <section className="rounded-2xl bg-zinc-800 bg-opacity-90 p-8">

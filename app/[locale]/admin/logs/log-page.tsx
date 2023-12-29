@@ -2,78 +2,56 @@
 
 import { Button } from '@/components/ui/button';
 import env from '@/constant/env';
+import { useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Socket, io } from 'socket.io-client';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
-let socket: Socket;
+let socket: ReconnectingWebSocket;
 
 export default function LogPage() {
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
+  const { data: session } = useSession();
 
-  const socketInitializer = useCallback(async () => {
-    // Setup the Socket
-    socket = io({ path: `${env.url.api}/sockets` });
+  const accessToken = session?.user?.accessToken;
 
-    // Standard socket management
-    socket.on('connect', () => {
-      console.log('Connected to the server');
-    });
+  const socketInitializer = useCallback(async (accessToken: string) => {
+    socket = new ReconnectingWebSocket(
+      `ws://localhost:8080/socket?accessToken=${accessToken}`,
+    );
 
-    socket.on('disconnect', () => {
-      console.log('Disconnected from the server');
-    });
+    socket.onmessage = (event) => addLog(event.data);
 
-    socket.on('connect_error', (error) => {
-      console.log('Connection error:', error);
-    });
-
-    socket.on('reconnect', (attemptNumber) => {
-      console.log('Reconnected to the server. Attempt:', attemptNumber);
-    });
-
-    socket.on('reconnect_error', (error) => {
-      console.log('Reconnection error:', error);
-    });
-
-    socket.on('reconnect_failed', () => {
-      console.log('Failed to reconnect to the server');
-    });
-
-    // Manage socket message events
-    socket.on('client-new', (message) => {
-      console.log('new client', message);
-    });
-
-    socket.on('message', (message) => {
-      addLog(message);
-    });
-
-    socket.on('client-count', (count) => {
-      console.log('clientCount', count);
-    });
+    socket.onerror = (err) => {
+      console.error(err);
+    };
   }, []);
 
   useEffect(() => {
-    socketInitializer();
+    if (accessToken) {
+      socketInitializer(accessToken);
+    }
 
     return () => {
-      socket.disconnect();
+      if (socket) socket.close();
     };
-  }, [socketInitializer]);
+  }, [socketInitializer, accessToken]);
 
   const addLog = (message: string) => {
     setLog((prev) => [...prev, message]);
   };
 
   const sendMessage = () => {
-    socket.send(message);
-    setMessage('');
+    if (socket) {
+      socket.send(message);
+      setMessage('');
+    } else {
+    }
   };
 
   return (
     <div className="flex h-full w-full flex-col justify-between">
-      <section className="flex h-full w-full flex-col overflow-y-auto p-4">
+      <section className="flex h-full w-screen flex-col overflow-y-auto p-4">
         {log.map((item, index) => (
           <span key={index}>{item}</span>
         ))}
