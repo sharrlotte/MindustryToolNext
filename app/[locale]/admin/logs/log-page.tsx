@@ -8,44 +8,60 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 let socket: ReconnectingWebSocket;
 
+type SocketState =
+  | 'uninitiated'
+  | 'initiating'
+  | 'connecting'
+  | 'connected'
+  | 'disconnected';
+
 export default function LogPage() {
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
   const { data: session } = useSession();
+  const [state, setState] = useState<SocketState>('uninitiated');
 
   const accessToken = session?.user?.accessToken;
 
-  const socketInitializer = useCallback(async (accessToken: string) => {
+  const initSocket = useCallback(async () => {
+    setState('initiating');
+
+    if (!accessToken) {
+      setState('uninitiated');
+      return;
+    }
+
+    setState('connecting');
+
     socket = new ReconnectingWebSocket(
       `ws://localhost:8080/socket?accessToken=${accessToken}`,
     );
 
-    socket.onmessage = (event) => addLog(event.data);
-
+    socket.onopen = (event) => setState('connected');
+    socket.close = (event) => setState('disconnected');
     socket.onerror = (err) => {
-      console.error(err);
+      console.log(err);
+      setState('disconnected');
     };
-  }, []);
+    socket.onmessage = (event) => addLog(event.data);
+  }, [accessToken]);
 
   useEffect(() => {
-    if (accessToken) {
-      socketInitializer(accessToken);
-    }
+    initSocket();
 
-    return () => {
-      if (socket) socket.close();
-    };
-  }, [socketInitializer, accessToken]);
+    return () => socket?.close();
+  }, [initSocket]);
 
   const addLog = (message: string) => {
     setLog((prev) => [...prev, message]);
   };
 
   const sendMessage = () => {
-    if (socket) {
+    if (socket && state === 'connected') {
       socket.send(message);
       setMessage('');
-    } else {
+    } else if (state === 'uninitiated' || state === 'disconnected') {
+      initSocket();
     }
   };
 
@@ -62,7 +78,11 @@ export default function LogPage() {
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
-        <Button title="send" onClick={sendMessage}>
+        <Button
+          title="send"
+          onClick={sendMessage}
+          disabled={state !== 'connected'}
+        >
           Send
         </Button>
       </div>
