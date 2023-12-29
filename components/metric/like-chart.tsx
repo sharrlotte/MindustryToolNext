@@ -1,6 +1,5 @@
 'use client';
 
-import { NUMBER_OF_DAY, background, chart } from '@/app/[locale]/admin/page';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 import { APIInstance } from '@/hooks/use-client';
 import { fillMetric } from '@/lib/utils';
@@ -14,6 +13,12 @@ import {
   Line,
   LineChart,
 } from 'recharts';
+
+const NUMBER_OF_DAY = 15;
+const background =
+  'rounded-lg bg-zinc-900 p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
+
+const chart = 'h-[400px]';
 
 type ChartProps = {
   axios: APIInstance;

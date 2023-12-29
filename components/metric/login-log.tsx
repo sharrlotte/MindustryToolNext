@@ -1,11 +1,15 @@
 'use client';
 
-import { background, chart } from '@/app/[locale]/admin/page';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 import { APIInstance } from '@/hooks/use-client';
 import getLogs from '@/query/log/get-logs';
 import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
+
+const background =
+  'rounded-lg bg-zinc-900 p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
+
+const chart = 'h-[400px]';
 
 type LoginLogProps = {
   axios: APIInstance;

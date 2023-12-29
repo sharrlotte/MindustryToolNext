@@ -6,12 +6,7 @@ import LoginChart from '@/components/metric/login-chart';
 import LoginLog from '@/components/metric/login-log';
 import useClientAPI from '@/hooks/use-client';
 
-export const NUMBER_OF_DAY = 15;
-
-export const background =
-  'rounded-lg bg-zinc-900 p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
-
-export const chart = 'h-[400px]';
+const NUMBER_OF_DAY = 15;
 
 export default function Page() {
   const axios = useClientAPI();
