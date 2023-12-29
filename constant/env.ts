@@ -7,6 +7,7 @@ const configSchema = z.object({
   locales: z.array(z.string()),
   defaultLocale: z.string(),
   url: z.object({
+    socket: z.string(),
     base: z.string(),
     api: z.string(),
     image: z.string(),
@@ -19,6 +20,7 @@ const env = configSchema.parse({
   locales: ['vi', 'en-US'],
   defaultLocale: 'en-US',
   url: {
+    socket: process.env.NEXT_PUBLIC_BACKEND_SOCKET_URL,
     base: process.env.NEXT_PUBLIC_FRONTEND_URL,
     api: process.env.NEXT_PUBLIC_BACKEND_URL,
     image: process.env.NEXT_PUBLIC_CLOUDINARY_IMAGE_URL,

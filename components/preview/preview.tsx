@@ -40,7 +40,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 
 function PImage({ className, src, errorSrc, alt }: ImageProps) {
   return (
-    <figure className={cn('h-preview w-preview', className)}>
+    <figure className={cn(className)}>
       <Image
         className="h-full w-full object-cover"
         src={src}

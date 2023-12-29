@@ -1,78 +1,72 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Socket, io } from 'socket.io-client';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
-let socket: Socket;
+let socket: ReconnectingWebSocket;
+
+type SocketState =
+  | 'uninitiated'
+  | 'initiating'
+  | 'connecting'
+  | 'connected'
+  | 'disconnected';
 
 export default function LogPage() {
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
+  const { data: session } = useSession();
+  const [state, setState] = useState<SocketState>('uninitiated');
 
-  const socketInitializer = useCallback(async () => {
-    // Setup the Socket
-    socket = io({ path: '/api/socket/ping' });
+  const accessToken = session?.user?.accessToken;
 
-    // Standard socket management
-    socket.on('connect', () => {
-      console.log('Connected to the server');
-    });
+  const initSocket = useCallback(async () => {
+    setState('initiating');
 
-    socket.on('disconnect', () => {
-      console.log('Disconnected from the server');
-    });
+    if (!accessToken) {
+      setState('uninitiated');
+      return;
+    }
 
-    socket.on('connect_error', (error) => {
-      console.log('Connection error:', error);
-    });
+    setState('connecting');
 
-    socket.on('reconnect', (attemptNumber) => {
-      console.log('Reconnected to the server. Attempt:', attemptNumber);
-    });
+    socket = new ReconnectingWebSocket(
+      `ws://localhost:8080/socket?accessToken=${accessToken}`,
+    );
 
-    socket.on('reconnect_error', (error) => {
-      console.log('Reconnection error:', error);
-    });
-
-    socket.on('reconnect_failed', () => {
-      console.log('Failed to reconnect to the server');
-    });
-
-    // Manage socket message events
-    socket.on('client-new', (message) => {
-      console.log('new client', message);
-    });
-
-    socket.on('message', (message) => {
-      addLog(message);
-    });
-
-    socket.on('client-count', (count) => {
-      console.log('clientCount', count);
-    });
-  }, []);
+    socket.onopen = (event) => setState('connected');
+    socket.close = (event) => setState('disconnected');
+    socket.onerror = (err) => {
+      console.log(err);
+      setState('disconnected');
+    };
+    socket.onmessage = (event) => addLog(event.data);
+  }, [accessToken]);
 
   useEffect(() => {
-    socketInitializer();
+    initSocket();
 
-    return () => {
-      socket.disconnect();
-    };
-  }, [socketInitializer]);
+    return () => socket?.close();
+  }, [initSocket]);
 
   const addLog = (message: string) => {
     setLog((prev) => [...prev, message]);
   };
 
   const sendMessage = () => {
-    socket.send(message);
-    setMessage('');
+    if (socket && state === 'connected') {
+      socket.send(message);
+      setMessage('');
+    } else if (state === 'uninitiated' || state === 'disconnected') {
+      initSocket();
+    }
   };
 
   return (
     <div className="flex h-full w-full flex-col justify-between">
-      <section className="flex h-full w-full flex-col overflow-y-auto p-4">
+      <section className="flex h-full w-screen flex-col overflow-y-auto p-4">
         {log.map((item, index) => (
           <span key={index}>{item}</span>
         ))}
@@ -83,7 +77,11 @@ export default function LogPage() {
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
-        <Button title="send" onClick={sendMessage}>
+        <Button
+          title="send"
+          onClick={sendMessage}
+          disabled={state !== 'connected'}
+        >
           Send
         </Button>
       </div>
