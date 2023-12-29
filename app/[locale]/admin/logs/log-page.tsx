@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import env from '@/constant/env';
 import { useSession } from 'next-auth/react';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -34,7 +35,7 @@ export default function LogPage() {
     setState('connecting');
 
     socket = new ReconnectingWebSocket(
-      `ws://localhost:8080/socket?accessToken=${accessToken}`,
+      `${env.url.socket}/socket?accessToken=${accessToken}`,
     );
 
     socket.onopen = (event) => setState('connected');
