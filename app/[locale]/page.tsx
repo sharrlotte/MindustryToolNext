@@ -2,7 +2,6 @@ import IdUserCard from '@/components/user/id-user-card';
 import Link from 'next/link';
 
 export default function Home() {
-
   return (
     <main className="grid h-full overflow-y-auto p-8 pt-10">
       <section className="rounded-2xl bg-zinc-800 bg-opacity-90 p-8">
@@ -29,7 +28,7 @@ export default function Home() {
             <li>
               <Link
                 className="text-emerald-500 hover:text-emerald-500"
-                href="/post/64ca803ea51a933422a49aac"
+                href="/posts/64ca803ea51a933422a49aac"
               >
                 Cách tải game miễn phí
               </Link>
@@ -37,7 +36,7 @@ export default function Home() {
             <li>
               <Link
                 className="text-emerald-500 hover:text-emerald-500"
-                href="/post/6520298fa61f817d3a535be4"
+                href="/posts/6520298fa61f817d3a535be4"
               >
                 Cách chơi chung với bạn bè
               </Link>

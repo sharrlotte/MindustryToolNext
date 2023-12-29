@@ -69,7 +69,7 @@ export const {
       if (
         session.user?.refreshToken &&
         session.user?.expireTime &&
-        Number(session.user?.expireTime) <= Date.now()
+        Number(session.user?.expireTime) >= Date.now()
       ) {
         const result = await refreshToken(session.user.refreshToken);
         if (result) {
@@ -132,7 +132,7 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
       body: data,
       next: {
         revalidate: 300,
-        tags: [`${providerId}${provider}`],
+        tags: [providerId, provider],
       },
       headers: {
         Authorization: `Bearer ${authData.accessToken}`,
