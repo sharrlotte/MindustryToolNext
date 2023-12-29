@@ -1,8 +1,9 @@
 /* @type {import('next').NextConfig} */
 const nextConfig = {
-  // experimental: {
-  //   scrollRestoration: true,
-  // },
+  experimental: {
+    scrollRestoration: true,
+  },
+  reactStrictMode: true,
   images: {
     unoptimized: true,
     remotePatterns: [

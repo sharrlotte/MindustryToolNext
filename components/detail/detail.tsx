@@ -42,7 +42,10 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 function PImage({ className, src, errorSrc, alt }: ImageProps) {
   return (
     <figure
-      className={cn('overflow-hidden rounded-lg md:max-w-[min(80vh,80vw)]', className)}
+      className={cn(
+        'overflow-hidden rounded-lg md:max-w-[min(80dvh,80dvw)]',
+        className,
+      )}
     >
       <Image
         className="h-full w-full object-cover"

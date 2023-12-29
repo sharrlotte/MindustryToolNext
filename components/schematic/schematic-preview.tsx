@@ -8,7 +8,7 @@ import LikeComponent from '@/components/like/like-component';
 import { toast } from '@/hooks/use-toast';
 import CopyButton from '@/components/ui/copy-button';
 import DownloadButton from '@/components/ui/download-button';
-import useClient from '@/hooks/use-client';
+import useClientAPI from '@/hooks/use-client';
 
 type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -19,7 +19,7 @@ export default function SchematicPreview({
   schematic,
   ...rest
 }: SchematicPreviewProps) {
-  const { axiosClient } = useClient();
+  const { axios } = useClientAPI();
 
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
@@ -28,7 +28,7 @@ export default function SchematicPreview({
       title: 'Coping',
       content: 'Downloading data from server',
     });
-    const result = await axiosClient.get(`/schematics/${schematic.id}/data`);
+    const result = await axios.get(`/schematics/${schematic.id}/data`);
     dismiss();
     return result.data as Promise<string>;
   };

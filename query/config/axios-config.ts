@@ -1,26 +1,26 @@
 import env from '@/constant/env';
 import { auth } from '@/auth/config';
-import axios from 'axios';
-import RefreshTokenResponse from '@/types/response/RefreshTokenResponse';
+import Axios from 'axios';
+import { APIInstance } from '@/hooks/use-client';
 
-const axiosServer = axios.create({
+const axios = Axios.create({
   baseURL: env.url.api,
   paramsSerializer: {
     indexes: null,
   },
 });
 
-const getServer = async () => {
+const getServerAPI = async (): Promise<APIInstance> => {
   const session = await auth();
   const accessToken = session?.user?.accessToken;
 
   if (accessToken) {
-    axiosServer.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
+    axios.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
   } else {
-    axiosServer.defaults.headers['Authorization'] = '';
+    axios.defaults.headers['Authorization'] = '';
   }
 
-  return axiosServer;
+  return { axios, enabled: true };
 };
 
-export default getServer;
+export default getServerAPI;

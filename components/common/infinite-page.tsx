@@ -29,7 +29,7 @@ export default function InfinitePage<T>({
 
   if (isError) {
     return (
-      <div className="flex w-full justify-center">Error : {error.message}</div>
+      <div className="flex w-full justify-center">Error : {error?.message}</div>
     );
   }
 
@@ -39,7 +39,7 @@ export default function InfinitePage<T>({
     );
   }
 
-  const pages = data?.pages.reduce((prev, curr) => prev.concat(curr), []) ?? [];
+  const pages = data.pages.reduce((prev, curr) => prev.concat(curr), []);
 
   if (pages.length === 0) {
     return <NoResult className="flex w-full items-center justify-center" />;
