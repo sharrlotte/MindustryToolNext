@@ -65,10 +65,7 @@ export default function Root({ children, params }: RootProps) {
         >
           <NextTopLoader height={2} showSpinner={false} />
           <Toaster />
-          <SessionProvider
-            refetchOnWindowFocus={false}
-            refetchInterval={5 * 60}
-          >
+          <SessionProvider refetchInterval={5 * 60}>
             <QueryProvider>
               <ClientInit />
               <NavigationBar />
