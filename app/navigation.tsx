@@ -18,7 +18,6 @@ import {
   Cog6ToothIcon,
   BellIcon,
   UserCircleIcon,
-  ArrowRightEndOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 
 import { useSession } from 'next-auth/react';
@@ -30,10 +29,9 @@ import ProtectedElement from '@/components/layout/protected-element';
 import LoginButton from '@/components/common/login-button';
 import UserRoleCard from '@/components/user/user-role';
 import LoadingSpinner from '@/components/ui/loading-spinner';
+import LogoutButton from '@/components/common/logout-button';
 
 export default function NavigationBar() {
-  const { data: session, status } = useSession();
-
   const pathName = usePathname();
   const route = pathName.split('/').filter((item) => item)[1];
 
@@ -81,7 +79,7 @@ export default function NavigationBar() {
             <div className="flex h-full flex-col justify-between p-2">
               <div className="flex flex-col gap-4">
                 <span className="flex flex-col gap-2">
-                  <span className="flex items-center justify-start gap-2 bg-gradient-to-r from-emerald-300 to-emerald-500 bg-clip-text p-1 text-3xl font-bold text-transparent">
+                  <span className="flex items-center justify-start gap-2 rounded-sm bg-zinc-900 p-2">
                     <Image
                       className="rounded-sm"
                       src="https://cdn.discordapp.com/attachments/1009013837946695730/1106504291465834596/a_cda53ec40b5d02ffdefa966f2fc013b8.gif"
@@ -89,13 +87,15 @@ export default function NavigationBar() {
                       height={24}
                       width={24}
                     />
-                    MindustryTool
+                    <span className="bg-gradient-to-r from-emerald-300 to-emerald-500 bg-clip-text p-1 text-3xl font-bold text-transparent">
+                      MindustryTool
+                    </span>
                   </span>
-                  <span className="rounded-lg bg-zinc-900 p-2">
+                  <span className="rounded-sm bg-zinc-900 p-2 text-xs">
                     {env.webVersion}
                   </span>
                 </span>
-                <section className="grid gap-2">
+                <section className="grid gap-2 text-sm font-thin">
                   {paths.map((item, index) => (
                     <NavItem
                       enabled={
@@ -109,25 +109,8 @@ export default function NavigationBar() {
                   ))}
                 </section>
               </div>
-              <div className="flex">
-                {status === 'authenticated' && session.user && (
-                  <div className="flex min-h-12 flex-1 items-center justify-between rounded-lg bg-zinc-900 p-1">
-                    <div className="flex gap-1">
-                      <UserAvatar className="h-12 w-12" user={session.user} />
-                      <div className="grid p-1">
-                        <span className="capitalize">{session.user.name}</span>
-                        <UserRoleCard role={session.user.role} />
-                      </div>
-                    </div>
-                    <Button title="logout" variant="ghost">
-                      <ArrowRightEndOnRectangleIcon className="h-6 w-6" />
-                    </Button>
-                  </div>
-                )}
-                {status === 'unauthenticated' && (
-                  <LoginButton className="flex-1" />
-                )}
-                {status === 'loading' && <LoadingSpinner className="flex-1" />}
+              <div className="flex w-full">
+                <UserDisplay />
               </div>
             </div>
           </div>
@@ -144,6 +127,37 @@ export default function NavigationBar() {
       </div>
     </div>
   );
+}
+
+function UserDisplay() {
+  const { data, status } = useSession();
+
+  const session = data;
+
+  if (status === 'authenticated' && session?.user) {
+    return (
+      <div className="flex min-h-12 flex-1 items-center justify-between rounded-sm bg-zinc-900 p-1">
+        <div className="flex gap-1">
+          <UserAvatar className="h-12 w-12" user={session.user} />
+          <div className="grid p-1">
+            <span className="capitalize">{session.user.name}</span>
+            <UserRoleCard role={session.user.role} />
+          </div>
+        </div>
+        <LogoutButton
+          className="aspect-square h-10 w-10 p-2"
+          title="logout"
+          variant="ghost"
+        />
+      </div>
+    );
+  }
+
+  if (status === 'loading') {
+    return <LoadingSpinner className="flex-1" />;
+  }
+
+  return <LoginButton className="flex-1" title="login" />;
 }
 
 type Path = {
@@ -173,10 +187,10 @@ function NavItem({
   const render = () => (
     <Link
       className={cn(
-        'flex items-center gap-3 rounded-md bg-opacity-0 px-1 py-2 font-thin transition-colors duration-300 hover:bg-emerald-500',
+        'flex items-center gap-3 rounded-md bg-opacity-0 px-1 py-2 opacity-80 transition-colors duration-300 hover:bg-emerald-500 hover:opacity-100',
         className,
         {
-          'bg-emerald-500 bg-opacity-100': enabled,
+          'bg-emerald-500 bg-opacity-100 opacity-100': enabled,
         },
       )}
       href={path}

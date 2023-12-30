@@ -15,48 +15,11 @@ export type APIInstance = {
 };
 
 export default function useClientAPI(): APIInstance {
-  const { data: session, status, update } = useSession();
+  const { data: session, status } = useSession();
   const accessToken = session?.user?.accessToken;
-  const refreshToken = session?.user?.refreshToken;
 
   if (accessToken) {
     axios.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
-
-    const createAxiosResponseInterceptor = () => {
-      const interceptor = axios.interceptors.response.use(
-        (response) => response,
-        (error) => {
-          if (error.response.status !== 401) {
-            return Promise.reject(error);
-          }
-
-          axios.interceptors.response.eject(interceptor);
-
-          return axios
-            .post(`${env.url.api}/auth/refresh_token`, {
-              refresh_token: refreshToken,
-            })
-            .then((response) => {
-              error.response.config.headers['Authorization'] =
-                'Bearer ' + response.data.access_token;
-
-              update({
-                user: {
-                  accessToken: response.data.access_token,
-                  refreshToken: response.data.refreshToken,
-                },
-              });
-
-              return axios(error.response.config);
-            })
-            .catch((error2) => {
-              return Promise.reject(error2);
-            })
-            .finally(createAxiosResponseInterceptor);
-        },
-      );
-    };
-    createAxiosResponseInterceptor();
   } else {
     axios.defaults.headers['Authorization'] = '';
   }

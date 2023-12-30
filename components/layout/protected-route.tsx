@@ -22,9 +22,9 @@ export default async function ProtectedRoute({
 }: Props) {
   if (!session?.user?.role)
     return (
-      <div className="flex h-full w-full flex-col items-center justify-center">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-2">
         Please login to continue
-        <LoginButton className="min-w-[100px]" />
+        <LoginButton className="min-w-[100px]" title="login" />
       </div>
     );
   if (any && all) {
