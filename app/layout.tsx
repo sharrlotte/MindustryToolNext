@@ -52,11 +52,17 @@ type RootProps = {
 export default function Root({ children, params }: RootProps) {
   return (
     <html
-      className="dark h-[100dvh] w-full select-none overflow-hidden bg-background antialiased"
+      className="dark h-full w-full select-none overflow-hidden bg-background antialiased"
       lang={params.lang ?? 'en'}
       suppressHydrationWarning
     >
-      <body className={cn(fallback.className, inter.className)}>
+      <body
+        className={cn(
+          fallback.className,
+          inter.className,
+          'h-full w-full overflow-hidden',
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -68,8 +74,10 @@ export default function Root({ children, params }: RootProps) {
           <SessionProvider refetchInterval={5 * 60}>
             <QueryProvider>
               <ClientInit />
-              <NavigationBar />
-              <div className="h-[calc(100dvh-3rem)] w-full">{children}</div>
+              <div className="grid h-full w-full grid-rows-[3rem_1fr] overflow-hidden">
+                <NavigationBar />
+                <div className="h-full w-full overflow-hidden">{children}</div>
+              </div>
             </QueryProvider>
           </SessionProvider>
         </ThemeProvider>

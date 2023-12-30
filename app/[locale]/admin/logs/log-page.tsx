@@ -1,76 +1,26 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import env from '@/constant/env';
-import { useSession } from 'next-auth/react';
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import ReconnectingWebSocket from 'reconnecting-websocket';
-
-let socket: ReconnectingWebSocket | undefined;
-
-type SocketState =
-  | 'uninitiated'
-  | 'initiating'
-  | 'connecting'
-  | 'connected'
-  | 'disconnected';
+import useSocket from '@/hooks/use-socket';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function LogPage() {
-  const { data: session } = useSession();
+  const { socket, state } = useSocket();
 
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
-  const [state, setState] = useState<SocketState>('uninitiated');
   const bottomRef = useRef<HTMLSpanElement | null>();
-
-  const accessToken = session?.user?.accessToken;
-
-  const initSocket = useCallback(() => {
-    if (socket) {
-      socket.close();
-    }
-
-    setState('initiating');
-
-    if (!accessToken) {
-      setState('uninitiated');
-      return;
-    }
-
-    setState('connecting');
-
-    socket = new ReconnectingWebSocket(
-      `${env.url.socket}/socket?accessToken=${accessToken}`,
-    );
-
-    socket.onopen = () => {
-      setState('connected');
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-    socket.close = () => setState('disconnected');
-    socket.onerror = (err) => {
-      console.log(err);
-      setState('disconnected');
-    };
-    socket.onmessage = ({ data }) => addLog(JSON.parse(data));
-
-    return () => {
-      socket?.close();
-      setState('disconnected');
-    };
-  }, [accessToken]);
-
-  useEffect(() => initSocket(), [initSocket]);
 
   const addLog = (message: string[]) => {
     setLog((prev) => [...prev, ...message]);
+    setTimeout(() => {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
+
+  if (socket) {
+    socket.onmessage = (message) => addLog(JSON.parse(message.data));
+  }
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -84,23 +34,25 @@ export default function LogPage() {
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
       setMessage('');
     } else if (state === 'uninitiated' || state === 'disconnected') {
-      initSocket();
     }
   };
 
   return (
-    <Fragment>
-      <div className="flex h-full w-full flex-col">
-        <div className="grid h-[calc(100%-5.5rem)] gap-2 overflow-auto p-2">
+    <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
+      <div className="grid h-full w-full overflow-hidden rounded-md bg-zinc-900 p-2">
+        <div className="flex h-full flex-col gap-2 overflow-auto pr-2">
           {log.slice(log.length - 200).map((item, index) => (
-            <p className="rounded-lg bg-zinc-900 p-2" key={index}>
+            <span
+              className="flex-shrink-0 rounded-lg bg-zinc-700 p-2"
+              key={index}
+            >
               {item}
-            </p>
+            </span>
           ))}
           <span ref={(ref) => (bottomRef.current = ref)}></span>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 m-2 flex h-10 gap-2">
+      <div className="flex h-10 flex-1 gap-2">
         <input
           className="h-full w-full rounded-md border border-border bg-background outline-none"
           value={message}
@@ -114,6 +66,6 @@ export default function LogPage() {
           Send
         </Button>
       </div>
-    </Fragment>
+    </div>
   );
 }

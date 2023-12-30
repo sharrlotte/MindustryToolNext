@@ -15,7 +15,7 @@ export default function PostDetail({ post }: PostDetailProps) {
   const displayTags = Tags.parseStringArray(post.tags);
 
   return (
-    <div className="grid gap-8 p-4">
+    <div className="grid gap-8 overflow-y-auto p-4">
       <header className="grid gap-2">
         <p className="text-4xl">{post.header}</p>
         <IdUserCard id={post.authorId} />

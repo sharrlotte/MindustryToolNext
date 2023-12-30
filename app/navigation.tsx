@@ -42,7 +42,7 @@ export default function NavigationBar() {
   const hideSidebar = () => setSidebarVisibility(false);
 
   return (
-    <div className="z-50 flex h-nav w-full items-center justify-between  p-2 dark:bg-emerald-500">
+    <div className="flex h-nav w-full items-center justify-between p-2 dark:bg-emerald-500">
       <Button
         title="menu"
         type="button"
