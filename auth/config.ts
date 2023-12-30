@@ -22,13 +22,11 @@ export const {
 } = NextAuth({
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 24 * 60,
+    maxAge: 60 * 60 * 24 * 30,
+    updateAge: 60 * 5,
   },
   jwt: {
-    maxAge: 60 * 60 * 24 * 60,
-  },
-  pages: {
-    error: '/auth/error',
+    maxAge: 60 * 60 * 24 * 30,
   },
   providers: [
     Discord({
@@ -68,8 +66,7 @@ export const {
 
       if (
         session.user?.refreshToken &&
-        session.user?.expireTime &&
-        Number(session.user?.expireTime) >= Date.now()
+        session.user?.expireTime <= Date.now()
       ) {
         const result = await refreshToken(session.user.refreshToken);
         if (result) {
@@ -104,6 +101,7 @@ type GetMeParams = {
 };
 
 const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
+  console.log(`Get user: ${provider} - ${providerId}`);
   const data: FormData = new FormData();
 
   data.append('provider', provider);
@@ -144,7 +142,7 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
     if (result.status === 200) {
       return JSON.parse(text ?? '{}') as User;
     } else if (result.status === 401) {
-      await apiLogout();
+      await apiRefreshToken();
       throw new Error(
         'Error unauthenticated when fetch user data from backend: ' + text,
       );
@@ -215,6 +213,7 @@ const apiLogin = async () => {
         authData.accessToken = user.accessToken;
         authData.refreshToken = user.refreshToken;
         authData.expireTime = user.expireTime;
+        console.log('API login success');
         return;
       }
     }
@@ -227,7 +226,7 @@ const apiLogin = async () => {
 };
 
 const apiRefreshToken = async () => {
-  const result = await refreshToken(env.API_REFRESH_TOKEN as string);
+  const result = await refreshToken(authData.refreshToken as string);
   if (result) {
     authData.accessToken = result.accessToken;
     authData.refreshToken = result.refreshToken;
@@ -241,6 +240,8 @@ const apiLogout = async () => {
   authData.accessToken = undefined;
   authData.refreshToken = undefined;
   authData.expireTime = Date.now();
+
+  console.log('Logged out');
 };
 
 export { authData };

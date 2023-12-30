@@ -26,11 +26,16 @@ type ChartProps = {
   end: Date;
 };
 
-export default function LoginChart({
-  axios: { axios, enabled },
-  start,
-  end,
-}: ChartProps) {
+export default function LoginChart(props: ChartProps) {
+  return (
+    <div className={background}>
+      <span className="font-bold">User login</span>
+      <Loading {...props} />
+    </div>
+  );
+}
+
+function Loading({ axios: { axios, enabled }, start, end }: ChartProps) {
   const [loggedDailyUser, dailyUser] = useQueries({
     queries: [
       {
@@ -47,12 +52,7 @@ export default function LoginChart({
   });
 
   if (loggedDailyUser.isLoading || dailyUser.isLoading) {
-    return (
-      <div className={background}>
-        <span className="font-bold">User login</span>
-        <LoadingSpinner className={chart} />
-      </div>
-    );
+    return <LoadingSpinner className={chart} />;
   }
 
   if (loggedDailyUser.error || dailyUser.error)
@@ -79,43 +79,40 @@ export default function LoginChart({
   }
 
   return (
-    <div className={background}>
-      <span className="font-bold">User login</span>
-      <div className={chart}>
-        <ResponsiveContainer width="99%" height="99%">
-          <LineChart
-            data={data}
-            margin={{
-              top: 10,
-              right: 10,
-              left: 10,
-              bottom: 10,
-            }}
-          >
-            <XAxis allowDecimals={false} dataKey="time" />
-            <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Line
-              name="Logged user"
-              type="monotone"
-              dataKey="loggedUser"
-              stroke="#8884d8"
-              strokeWidth={2}
-              fill="currentColor"
-              activeDot={{ r: 4 }}
-            />
-            <Line
-              name="User"
-              type="monotone"
-              dataKey="user"
-              stroke="#82ca9d"
-              strokeWidth={2}
-              fill="currentColor"
-              activeDot={{ r: 4 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+    <div className={chart}>
+      <ResponsiveContainer width="99%" height="99%">
+        <LineChart
+          data={data}
+          margin={{
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: 10,
+          }}
+        >
+          <XAxis allowDecimals={false} dataKey="time" />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Line
+            name="Logged user"
+            type="monotone"
+            dataKey="loggedUser"
+            stroke="#8884d8"
+            strokeWidth={2}
+            fill="currentColor"
+            activeDot={{ r: 4 }}
+          />
+          <Line
+            name="User"
+            type="monotone"
+            dataKey="user"
+            stroke="#82ca9d"
+            strokeWidth={2}
+            fill="currentColor"
+            activeDot={{ r: 4 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }

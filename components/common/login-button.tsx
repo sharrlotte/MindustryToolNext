@@ -1,22 +1,20 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button, ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import { signIn } from 'next-auth/react';
 import React from 'react';
 
-type LoginButtonProps = {
-  className?: string;
-};
-
-export default function LoginButton({ className }: LoginButtonProps) {
+export default function LoginButton({ className, ...props }: ButtonProps) {
   return (
     <Button
-      className={cn('flex', className)}
-      title="logout"
+      className={cn('flex justify-center p-2', className)}
       onClick={() => signIn()}
+      {...props}
     >
       Login
+      <ArrowRightEndOnRectangleIcon className="h-5 w-5" />
     </Button>
   );
 }
