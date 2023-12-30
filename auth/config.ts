@@ -45,6 +45,7 @@ export const {
       const name = session.user?.name ?? '';
       const image = session.user?.image ?? '';
 
+      // Clear all user info
       session.user = undefined;
 
       if (provider && providerId) {
@@ -69,11 +70,14 @@ export const {
         session.user?.expireTime <= Date.now()
       ) {
         const result = await refreshToken(session.user.refreshToken);
+
         if (result) {
+          console.log('User refresh token success', { result });
           session.user.accessToken = result.accessToken;
           session.user.refreshToken = result.refreshToken;
           session.user.expireTime = result.expireTime;
         } else {
+          console.log('User refresh token failed');
           session.user = undefined;
         }
       }
@@ -129,7 +133,7 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
       method: 'POST',
       body: data,
       next: {
-        revalidate: 300,
+        revalidate: 60 * 60,
         tags: [providerId, provider],
       },
       headers: {
@@ -157,8 +161,6 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
 
 const refreshToken = async (refreshToken: string) => {
   if (!refreshToken) return null;
-
-  console.log('Refresh token');
 
   const data: FormData = new FormData();
   data.append('refreshToken', refreshToken);
@@ -226,11 +228,13 @@ const apiLogin = async () => {
 };
 
 const apiRefreshToken = async () => {
+  console.log('API refresh token');
+
   const result = await refreshToken(authData.refreshToken as string);
   if (result) {
     authData.accessToken = result.accessToken;
     authData.refreshToken = result.refreshToken;
-    authData.expireTime = Date.now();
+    authData.expireTime = result.expireTime;
   } else {
     await apiLogout();
   }

@@ -13,7 +13,7 @@ export default function MapPage() {
 
   return (
     <div
-      className="flex flex-col gap-2 overflow-y-auto p-4"
+      className="flex h-full w-full flex-col gap-2 overflow-y-auto p-4"
       ref={(ref) => (scrollContainer.current = ref)}
     >
       <NameTagSearch tags={data.map} />
