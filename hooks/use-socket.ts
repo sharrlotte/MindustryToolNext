@@ -1,5 +1,3 @@
-'use client';
-
 import env from '@/constant/env';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
 import { useSession } from 'next-auth/react';
