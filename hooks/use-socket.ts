@@ -10,19 +10,21 @@ type UseSocket = {
 };
 
 export default function useSocket(): UseSocket {
+  const [hasToken, setHasToken] = useState(false);
   const [socket, setSocket] = useState<SocketClient | undefined>();
   const { data: session, status } = useSession();
   const toaster = useRef(useToast());
 
   const accessToken = session?.user?.accessToken;
   useEffect(() => {
-    if (status === 'loading') {
+    if (hasToken || status === 'loading') {
       return;
     }
 
     let newSocket: SocketClient;
 
     if (accessToken) {
+      setHasToken(true);
       newSocket = new SocketClient(
         `${env.url.socket}/socket?accessToken=${accessToken}`,
       );
@@ -39,10 +41,12 @@ export default function useSocket(): UseSocket {
         title: 'Connected to server',
       });
 
-    newSocket.close = () =>
+    newSocket.close = () => {
+      setHasToken(false);
       toaster.current.toast({
         title: 'Disconnected to server',
       });
+    };
 
     setSocket((prev) => {
       if (prev) {
@@ -52,16 +56,10 @@ export default function useSocket(): UseSocket {
     });
 
     return () => {
-      const interval = setInterval(() => {
-        newSocket.send({ method: 'DISCONNECT' });
-        newSocket.close();
-
-        if (newSocket.getState() === 'disconnected') {
-          clearInterval(interval);
-        }
-      }, 1000);
+      newSocket.send({ method: 'DISCONNECT' });
+      newSocket.close();
     };
-  }, [accessToken, status]);
+  }, [accessToken, status, hasToken]);
 
   return { socket: socket, state: socket?.getState() ?? 'disconnected' };
 }
