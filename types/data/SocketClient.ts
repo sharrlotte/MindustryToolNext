@@ -11,9 +11,11 @@ export type SocketState =
   | 'disconnected';
 
 export default class SocketClient {
+  private static current: ReconnectingWebSocket | undefined;
+
   socket: ReconnectingWebSocket;
 
-  public message?: (event: MessageEvent<string>) => void;
+  public message?: (data: any, event: MessageEvent) => void;
   public error?: (event: ErrorEvent) => void;
   public connect?: (event: Event) => void;
   public disconnect?: (event: CloseEvent) => void;
@@ -21,10 +23,27 @@ export default class SocketClient {
   constructor(url: string) {
     this.socket = new ReconnectingWebSocket(url);
     this.socket.onmessage = (event) => {
-      if (this.message) this.message(event);
+      try {
+        if (
+          SocketClient.current !== undefined &&
+          SocketClient.current !== this.socket
+        ) {
+          this.socket.close();
+          console.log('Closed duplicate socket');
+        }
+
+        if (this.message) {
+          this.message(JSON.parse(event.data), event);
+        }
+      } catch (error) {
+        console.error(event);
+      }
     };
     this.socket.onerror = (event) => {
       if (this.error) this.error(event);
+      if (this.message == null) {
+        this.socket.close();
+      }
     };
     this.socket.onopen = (event) => {
       if (this.connect) this.connect(event);
@@ -42,6 +61,16 @@ export default class SocketClient {
     this.send({
       method: 'DISCONNECT',
     });
+    this.socket.onclose = () => {};
+    this.socket.onerror = () => {
+      this.socket.close();
+    };
+    this.socket.onmessage = () => {
+      this.socket.close();
+    };
+    this.socket.onopen = () => {
+      this.socket.close();
+    };
     this.socket.close();
   }
 
@@ -61,9 +90,14 @@ export default class SocketClient {
   }
 }
 
-type MessageMethod = 'DISCONNECT' | 'MESSAGE';
-
-type MessagePayload = {
-  method: MessageMethod;
-  data?: any;
-};
+type MessagePayload =
+  | {
+      method: 'MESSAGE';
+      data: string;
+    }
+  | {
+      method: 'DISCONNECT';
+    }
+  | {
+      method: 'LOAD';
+    };
