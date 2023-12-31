@@ -1,52 +1,39 @@
 import env from '@/constant/env';
+import SocketClient, { SocketState } from '@/types/data/SocketClient';
 import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useState } from 'react';
-import ReconnectingWebSocket from 'reconnecting-websocket';
+import { useEffect, useState } from 'react';
 
-type SocketState =
-  | 'uninitiated'
-  | 'initiating'
-  | 'connecting'
-  | 'connected'
-  | 'disconnected';
+type UseSocket = {
+  socket: SocketClient | undefined;
+  state: SocketState;
+};
 
-export default function useSocket() {
-  const [socket, setSocket] = useState<ReconnectingWebSocket | undefined>();
-
+export default function useSocket(): UseSocket {
+  const [socket, setSocket] = useState<SocketClient | undefined>();
   const { data: session } = useSession();
-  const [state, setState] = useState<SocketState>('uninitiated');
 
   const accessToken = session?.user?.accessToken;
   useEffect(() => {
-    setState('initiating');
-
-    if (!accessToken) {
-      setState('uninitiated');
-      return;
+    let newSocket: SocketClient;
+    if (accessToken) {
+      newSocket = new SocketClient(
+        `${env.url.socket}/socket?accessToken=${accessToken}`,
+      );
+    } else {
+      newSocket = new SocketClient(`${env.url.socket}/socket`);
     }
 
-    setState('connecting');
-
-    const s = new ReconnectingWebSocket(
-      `${env.url.socket}/socket?accessToken=${accessToken}`,
-    );
-
-    s.onopen = () => {
-      setState('connected');
-    };
-    s.close = () => setState('disconnected');
-    s.onerror = (err) => {
+    newSocket.error = (err) => {
       console.log(err);
-      setState('disconnected');
     };
 
-    setSocket(s);
+    setSocket(newSocket);
 
     return () => {
-      s?.close();
-      setState('disconnected');
+      newSocket.send({ method: 'DISCONNECT' });
+      newSocket.close();
     };
   }, [accessToken]);
 
-  return { socket: socket, state };
+  return { socket: socket, state: socket?.getState() ?? 'disconnected' };
 }

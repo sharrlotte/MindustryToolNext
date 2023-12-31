@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Tag from "@/types/data/Tag";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import React, { HTMLAttributes } from "react";
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import Tag from '@/types/response/Tag';
+import { XMarkIcon } from '@heroicons/react/24/solid';
+import React, { HTMLAttributes } from 'react';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;
@@ -27,7 +27,7 @@ export default function TagCard({
   return (
     <span
       className={cn(
-        "flex items-center justify-center whitespace-nowrap rounded-md px-2 py-1 text-center capitalize",
+        'flex items-center justify-center whitespace-nowrap rounded-md px-2 py-1 text-center capitalize',
         className,
       )}
       style={{ backgroundColor: color }}

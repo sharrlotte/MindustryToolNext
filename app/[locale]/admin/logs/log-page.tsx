@@ -19,7 +19,7 @@ export default function LogPage() {
   };
 
   if (socket) {
-    socket.onmessage = (message) => addLog(JSON.parse(message.data));
+    socket.message = (message) => addLog(JSON.parse(message.data));
   }
 
   useEffect(() => {
@@ -30,10 +30,10 @@ export default function LogPage() {
 
   const sendMessage = () => {
     if (socket && state === 'connected') {
-      socket.send(message);
+      socket.send({ data: message, method: 'MESSAGE' });
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
       setMessage('');
-    } else if (state === 'uninitiated' || state === 'disconnected') {
+    } else if (state === 'disconnected') {
     }
   };
 
@@ -42,10 +42,7 @@ export default function LogPage() {
       <div className="grid h-full w-full overflow-hidden rounded-md bg-zinc-900 p-2">
         <div className="flex h-full flex-col gap-2 overflow-auto pr-2">
           {log.slice(log.length - 200).map((item, index) => (
-            <span
-              className="flex-shrink-0 rounded-lg bg-zinc-700 p-2"
-              key={index}
-            >
+            <span className="rounded-lg bg-zinc-700 p-2" key={index}>
               {item}
             </span>
           ))}

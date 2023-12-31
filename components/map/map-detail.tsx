@@ -5,7 +5,7 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/ui/copy-button';
 import env from '@/constant/env';
 import Map from '@/types/response/Map';
-import { Tags } from '@/types/data/Tag';
+import { Tags } from '@/types/response/Tag';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/ui/download-button';
 import IdUserCard from '@/components/user/id-user-card';
