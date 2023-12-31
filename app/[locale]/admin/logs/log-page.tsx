@@ -2,11 +2,12 @@
 
 import { Button } from '@/components/ui/button';
 import useSocket from '@/hooks/use-socket';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 export default function LogPage() {
   const { socket, state } = useSocket();
 
+  const [loaded, setLoaded] = useState(false);
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
   const bottomRef = useRef<HTMLSpanElement | null>();
@@ -19,7 +20,7 @@ export default function LogPage() {
   };
 
   if (socket) {
-    socket.message = (message) => addLog(JSON.parse(message.data));
+    socket.message = (message) => addLog(message);
   }
 
   useEffect(() => {
@@ -28,13 +29,24 @@ export default function LogPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!loaded && socket) {
+      socket.send({ method: 'LOAD' });
+      setLoaded(true);
+    }
+  }, [loaded, socket]);
+
   const sendMessage = () => {
     if (socket && state === 'connected') {
+      setMessage('');
       socket.send({ data: message, method: 'MESSAGE' });
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-      setMessage('');
-    } else if (state === 'disconnected') {
     }
+  };
+
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    sendMessage();
+    event.preventDefault();
   };
 
   return (
@@ -49,20 +61,16 @@ export default function LogPage() {
           <span ref={(ref) => (bottomRef.current = ref)}></span>
         </div>
       </div>
-      <div className="flex h-10 flex-1 gap-2">
+      <form className="flex h-10 flex-1 gap-2" onSubmit={handleFormSubmit}>
         <input
-          className="h-full w-full rounded-md border border-border bg-background outline-none"
+          className="h-full w-full rounded-md border border-border bg-background px-2 outline-none"
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
-        <Button
-          title="send"
-          onClick={sendMessage}
-          disabled={state !== 'connected'}
-        >
+        <Button type="submit" title="send" disabled={state !== 'connected'}>
           Send
         </Button>
-      </div>
+      </form>
     </div>
   );
 }

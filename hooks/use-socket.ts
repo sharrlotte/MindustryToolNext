@@ -1,7 +1,8 @@
 import env from '@/constant/env';
+import { useToast } from '@/hooks/use-toast';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type UseSocket = {
   socket: SocketClient | undefined;
@@ -10,11 +11,17 @@ type UseSocket = {
 
 export default function useSocket(): UseSocket {
   const [socket, setSocket] = useState<SocketClient | undefined>();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const toaster = useRef(useToast());
 
   const accessToken = session?.user?.accessToken;
   useEffect(() => {
+    if (status === 'loading') {
+      return;
+    }
+
     let newSocket: SocketClient;
+
     if (accessToken) {
       newSocket = new SocketClient(
         `${env.url.socket}/socket?accessToken=${accessToken}`,
@@ -27,13 +34,34 @@ export default function useSocket(): UseSocket {
       console.log(err);
     };
 
-    setSocket(newSocket);
+    newSocket.connect = () =>
+      toaster.current.toast({
+        title: 'Connected to server',
+      });
+
+    newSocket.close = () =>
+      toaster.current.toast({
+        title: 'Disconnected to server',
+      });
+
+    setSocket((prev) => {
+      if (prev) {
+        prev.close();
+      }
+      return newSocket;
+    });
 
     return () => {
-      newSocket.send({ method: 'DISCONNECT' });
-      newSocket.close();
+      const interval = setInterval(() => {
+        newSocket.send({ method: 'DISCONNECT' });
+        newSocket.close();
+
+        if (newSocket.getState() === 'disconnected') {
+          clearInterval(interval);
+        }
+      }, 1000);
     };
-  }, [accessToken]);
+  }, [accessToken, status]);
 
   return { socket: socket, state: socket?.getState() ?? 'disconnected' };
 }
