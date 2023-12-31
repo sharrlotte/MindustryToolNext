@@ -2,12 +2,13 @@
 
 import { Button } from '@/components/ui/button';
 import useSocket from '@/hooks/use-socket';
+import { cn } from '@/lib/utils';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 export default function LogPage() {
   const { socket, state } = useSocket();
 
-  const [loaded, setLoaded] = useState(false);
+  const loaded = useRef(false);
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
   const bottomRef = useRef<HTMLSpanElement | null>();
@@ -30,9 +31,9 @@ export default function LogPage() {
   }, []);
 
   useEffect(() => {
-    if (!loaded && socket) {
+    if (!loaded.current && socket) {
       socket.send({ method: 'LOAD' });
-      setLoaded(true);
+      loaded.current = true;
     }
   }, [loaded, socket]);
 
@@ -67,7 +68,14 @@ export default function LogPage() {
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
-        <Button type="submit" title="send" disabled={state !== 'connected'}>
+        <Button
+          className={cn({
+            'bg-emerald-500 hover:bg-emerald-500': state === 'connected',
+          })}
+          type="submit"
+          title="send"
+          disabled={state !== 'connected' || !message}
+        >
           Send
         </Button>
       </form>

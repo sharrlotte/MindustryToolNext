@@ -1,8 +1,9 @@
+'use client';
+
 import env from '@/constant/env';
-import { useToast } from '@/hooks/use-toast';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
 import { useSession } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 type UseSocket = {
   socket: SocketClient | undefined;
@@ -10,21 +11,20 @@ type UseSocket = {
 };
 
 export default function useSocket(): UseSocket {
-  const [hasToken, setHasToken] = useState(false);
-  const [socket, setSocket] = useState<SocketClient | undefined>();
+  const hasToken = useRef(false);
+  const socket = useRef<SocketClient | undefined>();
   const { data: session, status } = useSession();
-  const toaster = useRef(useToast());
 
   const accessToken = session?.user?.accessToken;
   useEffect(() => {
-    if (hasToken || status === 'loading') {
+    if (hasToken.current || status === 'loading') {
       return;
     }
 
     let newSocket: SocketClient;
 
     if (accessToken) {
-      setHasToken(true);
+      hasToken.current = true;
       newSocket = new SocketClient(
         `${env.url.socket}/socket?accessToken=${accessToken}`,
       );
@@ -36,30 +36,20 @@ export default function useSocket(): UseSocket {
       console.log(err);
     };
 
-    newSocket.connect = () =>
-      toaster.current.toast({
-        title: 'Connected to server',
-      });
+    if (socket.current) {
+      socket.current.close();
+    }
 
-    newSocket.close = () => {
-      setHasToken(false);
-      toaster.current.toast({
-        title: 'Disconnected to server',
-      });
-    };
-
-    setSocket((prev) => {
-      if (prev) {
-        prev.close();
-      }
-      return newSocket;
-    });
+    socket.current = newSocket;
 
     return () => {
-      newSocket.send({ method: 'DISCONNECT' });
+      hasToken.current = false;
       newSocket.close();
     };
-  }, [accessToken, status, hasToken]);
+  }, [accessToken, status]);
 
-  return { socket: socket, state: socket?.getState() ?? 'disconnected' };
+  return {
+    socket: socket.current,
+    state: socket.current?.getState() ?? 'disconnected',
+  };
 }
