@@ -1,7 +1,6 @@
+import { MetricCollection } from '@/constant/enum';
 import { Metric } from '@/types/response/Metric';
 import { AxiosInstance } from 'axios';
-
-type MetricCollection = 'daily_like' | 'daily_user' | 'logged_daily_user';
 
 export default async function getMetric(
   axios: AxiosInstance,

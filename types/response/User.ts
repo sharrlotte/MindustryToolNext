@@ -1,4 +1,4 @@
-export type UserRole = 'ADMIN' | 'USER';
+import { UserRole } from '@/constant/enum';
 
 export default interface User {
   id: string;

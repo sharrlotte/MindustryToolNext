@@ -1,14 +1,7 @@
+import { LogCollection } from '@/constant/enum';
 import Pageable from '@/types/data/pagable-schema';
 import { Log } from '@/types/response/Log';
 import { AxiosInstance } from 'axios';
-
-export type LogCollection =
-  | 'system'
-  | 'database'
-  | 'api'
-  | 'discord_message'
-  | 'request'
-  | 'user_login';
 
 type GetLogParams = Pageable & {
   collection: LogCollection;

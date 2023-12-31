@@ -24,12 +24,12 @@ import { useSession } from 'next-auth/react';
 import OutsideWrapper from '@/components/ui/outside-wrapper';
 import Image from 'next/image';
 import UserAvatar from '@/components/user/user-avatar';
-import { UserRole } from '@/types/response/User';
 import ProtectedElement from '@/components/layout/protected-element';
 import LoginButton from '@/components/common/login-button';
 import UserRoleCard from '@/components/user/user-role';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 import LogoutButton from '@/components/common/logout-button';
+import { UserRole } from '@/constant/enum';
 
 export default function NavigationBar() {
   const pathName = usePathname();

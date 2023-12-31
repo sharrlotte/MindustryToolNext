@@ -1,4 +1,4 @@
-import { UserRole } from '@/types/response/User';
+import { UserRole } from '@/constant/enum';
 import NextAuth, { DefaultSession } from 'next-auth';
 import { User, Session, JWT } from 'next-auth';
 

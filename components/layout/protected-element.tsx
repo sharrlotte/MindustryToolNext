@@ -1,4 +1,4 @@
-import { UserRole } from '@/types/response/User';
+import { UserRole } from '@/constant/enum';
 import { Session } from 'next-auth';
 import React, { ReactNode } from 'react';
 

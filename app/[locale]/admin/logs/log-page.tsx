@@ -36,7 +36,7 @@ export default function LogPage() {
       socket.send({ method: 'LOAD' });
       loaded.current = true;
     }
-  }, [loaded, socket]);
+  }, [socket]);
 
   const sendMessage = () => {
     if (socket && state === 'connected') {
@@ -55,14 +55,14 @@ export default function LogPage() {
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-zinc-900 p-2">
         <div className="flex h-full flex-col gap-2 overflow-auto pr-2">
-          {state === 'connecting' ? (
-            <LoadingSpinner className="h-full w-full" />
-          ) : (
+          {loaded.current ? (
             log.slice(log.length - 200).map((item, index) => (
               <span className="rounded-lg bg-zinc-700 p-2" key={index}>
                 {item}
               </span>
             ))
+          ) : (
+            <LoadingSpinner className="h-full w-full" />
           )}
           <span ref={(ref) => (bottomRef.current = ref)}></span>
         </div>

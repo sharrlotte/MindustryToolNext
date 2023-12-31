@@ -73,7 +73,7 @@ export default function Root({ children, params }: RootProps) {
           <Toaster />
           <SessionProvider
             //            refetchOnWindowFocus={false}
-            refetchInterval={5 * 60}
+            refetchInterval={1 * 60}
           >
             <QueryProvider>
               <ClientInit />
