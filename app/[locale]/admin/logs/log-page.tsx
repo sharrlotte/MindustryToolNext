@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import useSocket from '@/hooks/use-socket';
+import { cn } from '@/lib/utils';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 export default function LogPage() {
@@ -67,7 +68,14 @@ export default function LogPage() {
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
-        <Button type="submit" title="send" disabled={state !== 'connected'}>
+        <Button
+          className={cn({
+            'bg-emerald-500 hover:bg-emerald-500': state === 'connected',
+          })}
+          type="submit"
+          title="send"
+          disabled={state !== 'connected' || !message}
+        >
           Send
         </Button>
       </form>

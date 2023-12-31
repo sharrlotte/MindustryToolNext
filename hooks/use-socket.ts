@@ -1,5 +1,4 @@
 import env from '@/constant/env';
-import { useToast } from '@/hooks/use-toast';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
@@ -10,21 +9,20 @@ type UseSocket = {
 };
 
 export default function useSocket(): UseSocket {
-  const [hasToken, setHasToken] = useState(false);
+  const hasToken = useRef(false);
   const [socket, setSocket] = useState<SocketClient | undefined>();
   const { data: session, status } = useSession();
-  const toaster = useRef(useToast());
 
   const accessToken = session?.user?.accessToken;
   useEffect(() => {
-    if (hasToken || status === 'loading') {
+    if (hasToken.current || status === 'loading') {
       return;
     }
 
     let newSocket: SocketClient;
 
     if (accessToken) {
-      setHasToken(true);
+      hasToken.current = true;
       newSocket = new SocketClient(
         `${env.url.socket}/socket?accessToken=${accessToken}`,
       );
@@ -36,16 +34,8 @@ export default function useSocket(): UseSocket {
       console.log(err);
     };
 
-    newSocket.connect = () =>
-      toaster.current.toast({
-        title: 'Connected to server',
-      });
-
     newSocket.close = () => {
-      setHasToken(false);
-      toaster.current.toast({
-        title: 'Disconnected to server',
-      });
+      hasToken.current = false;
     };
 
     setSocket((prev) => {
@@ -59,7 +49,7 @@ export default function useSocket(): UseSocket {
       newSocket.send({ method: 'DISCONNECT' });
       newSocket.close();
     };
-  }, [accessToken, status, hasToken]);
+  }, [accessToken, status]);
 
   return { socket: socket, state: socket?.getState() ?? 'disconnected' };
 }

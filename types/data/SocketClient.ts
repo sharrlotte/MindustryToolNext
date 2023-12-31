@@ -11,9 +11,9 @@ export type SocketState =
   | 'disconnected';
 
 export default class SocketClient {
-  private static current: ReconnectingWebSocket | undefined;
-
   socket: ReconnectingWebSocket;
+
+  private static instance: SocketClient | undefined;
 
   public message?: (data: any, event: MessageEvent) => void;
   public error?: (event: ErrorEvent) => void;
@@ -22,18 +22,18 @@ export default class SocketClient {
 
   constructor(url: string) {
     this.socket = new ReconnectingWebSocket(url);
+
+    if (SocketClient.instance) {
+      SocketClient.instance.close();
+    }
+
+    SocketClient.instance = this;
+
     this.socket.onmessage = (event) => {
       try {
-        if (
-          SocketClient.current !== undefined &&
-          SocketClient.current !== this.socket
-        ) {
-          this.socket.close();
-          console.log('Closed duplicate socket');
-        }
-
         if (this.message) {
           this.message(JSON.parse(event.data), event);
+          console.log(event);
         }
       } catch (error) {
         console.error(event);
@@ -42,7 +42,7 @@ export default class SocketClient {
     this.socket.onerror = (event) => {
       if (this.error) this.error(event);
       if (this.message == null) {
-        this.socket.close();
+        this.close();
       }
     };
     this.socket.onopen = (event) => {
@@ -63,26 +63,26 @@ export default class SocketClient {
     });
     this.socket.onclose = () => {};
     this.socket.onerror = () => {
-      this.socket.close();
+      this.close();
     };
     this.socket.onmessage = () => {
-      this.socket.close();
+      this.close();
     };
     this.socket.onopen = () => {
-      this.socket.close();
+      this.close();
     };
     this.socket.close();
   }
 
   public getState(): SocketState {
     switch (this.socket.readyState) {
-      case 0:
+      case this.socket.CONNECTING:
         return 'connecting';
-      case 1:
+      case this.socket.OPEN:
         return 'connected';
-      case 2:
+      case this.socket.CLOSING:
         return 'disconnecting';
-      case 3:
+      case this.socket.CLOSED:
         return 'disconnected';
       default:
         return 'disconnected';
