@@ -11,6 +11,8 @@ export type SocketState =
   | 'disconnected';
 
 export default class SocketClient {
+  private static current: ReconnectingWebSocket | undefined;
+
   socket: ReconnectingWebSocket;
 
   public message?: (data: any, event: MessageEvent) => void;
@@ -22,7 +24,17 @@ export default class SocketClient {
     this.socket = new ReconnectingWebSocket(url);
     this.socket.onmessage = (event) => {
       try {
-        if (this.message) this.message(JSON.parse(event.data), event);
+        if (
+          SocketClient.current !== undefined &&
+          SocketClient.current !== this.socket
+        ) {
+          this.socket.close();
+          console.log('Closed duplicate socket');
+        }
+
+        if (this.message) {
+          this.message(JSON.parse(event.data), event);
+        }
       } catch (error) {
         console.error(event);
       }
@@ -50,9 +62,15 @@ export default class SocketClient {
       method: 'DISCONNECT',
     });
     this.socket.onclose = () => {};
-    this.socket.onerror = () => {};
-    this.socket.onmessage = () => {};
-    this.socket.onopen = () => {};
+    this.socket.onerror = () => {
+      this.socket.close();
+    };
+    this.socket.onmessage = () => {
+      this.socket.close();
+    };
+    this.socket.onopen = () => {
+      this.socket.close();
+    };
     this.socket.close();
   }
 
