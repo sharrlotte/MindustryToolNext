@@ -3,7 +3,7 @@ import LikeComponent from '@/components/like/like-component';
 import TagCard from '@/components/tag/tag-card';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
-import { Tags } from '@/types/data/Tag';
+import { Tags } from '@/types/response/Tag';
 import Post from '@/types/response/Post';
 import React from 'react';
 
@@ -15,7 +15,7 @@ export default function PostDetail({ post }: PostDetailProps) {
   const displayTags = Tags.parseStringArray(post.tags);
 
   return (
-    <div className="grid gap-8 p-4">
+    <div className="grid gap-8 overflow-y-auto p-4">
       <header className="grid gap-2">
         <p className="text-4xl">{post.header}</p>
         <IdUserCard id={post.authorId} />

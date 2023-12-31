@@ -8,7 +8,7 @@ import { FilterIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { cloneDeep } from 'lodash';
 import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
-import Tag, { TAG_SEPARATOR } from '@/types/data/Tag';
+import Tag, { TAG_SEPARATOR } from '@/types/response/Tag';
 import { defaultSortTag } from '@/constant/env';
 import { usePathname, useRouter } from 'next/navigation';
 import TagCard from '@/components/tag/tag-card';

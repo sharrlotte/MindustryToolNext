@@ -21,8 +21,8 @@ export default async function Layout({ children }: PageProps) {
 
   return (
     <ProtectedRoute session={session} all={['ADMIN']}>
-      <div className="flex h-full w-full flex-col gap-2 p-2">
-        <div className="no-scrollbar flex min-h-8 w-full items-center gap-4 overflow-x-auto rounded-sm border-border bg-zinc-900 p-2 text-sm font-thin capitalize">
+      <div className="grid h-full w-full grid-rows-[3rem_1fr] gap-2 p-2">
+        <div className="no-scrollbar flex min-h-8 w-full items-center gap-4 overflow-x-auto rounded-sm border-border bg-zinc-900 p-2 text-sm font-bold capitalize">
           {paths.map(({ name, path }) => (
             <Link key={name} href={`/admin/${path}`}>
               {name}

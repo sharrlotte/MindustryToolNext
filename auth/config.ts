@@ -48,6 +48,8 @@ export const {
       // Clear all user info
       session.user = undefined;
 
+      let userRefreshToken = '';
+
       if (provider && providerId) {
         const user = await getUser({
           providerId,
@@ -58,6 +60,7 @@ export const {
 
         if (user) {
           session.user = user;
+          userRefreshToken = user.refreshToken;
         } else {
           session.user = undefined;
         }
@@ -66,15 +69,15 @@ export const {
       }
 
       if (
-        session.user?.refreshToken &&
+        userRefreshToken &&
+        session.user &&
         session.user?.expireTime <= Date.now()
       ) {
-        const result = await refreshToken(session.user.refreshToken);
+        const result = await refreshToken(userRefreshToken);
 
         if (result) {
           console.log('User refresh token success', { result });
           session.user.accessToken = result.accessToken;
-          session.user.refreshToken = result.refreshToken;
           session.user.expireTime = result.expireTime;
         } else {
           console.log('User refresh token failed');
