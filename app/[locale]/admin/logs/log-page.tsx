@@ -8,7 +8,7 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 export default function LogPage() {
   const { socket, state } = useSocket();
 
-  const [loaded, setLoaded] = useState(false);
+  const loaded = useRef(false);
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
   const bottomRef = useRef<HTMLSpanElement | null>();
@@ -31,9 +31,9 @@ export default function LogPage() {
   }, []);
 
   useEffect(() => {
-    if (!loaded && socket) {
+    if (!loaded.current && socket) {
       socket.send({ method: 'LOAD' });
-      setLoaded(true);
+      loaded.current = true;
     }
   }, [loaded, socket]);
 

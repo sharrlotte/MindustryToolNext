@@ -33,7 +33,6 @@ export default class SocketClient {
       try {
         if (this.message) {
           this.message(JSON.parse(event.data), event);
-          console.log(event);
         }
       } catch (error) {
         console.error(event);
@@ -71,7 +70,7 @@ export default class SocketClient {
     this.socket.onopen = () => {
       this.close();
     };
-    this.socket.close();
+    setTimeout(() => this.socket.close(), 1000);
   }
 
   public getState(): SocketState {

@@ -1,7 +1,9 @@
+'use client';
+
 import env from '@/constant/env';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
 import { useSession } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 type UseSocket = {
   socket: SocketClient | undefined;
@@ -10,7 +12,7 @@ type UseSocket = {
 
 export default function useSocket(): UseSocket {
   const hasToken = useRef(false);
-  const [socket, setSocket] = useState<SocketClient | undefined>();
+  const socket = useRef<SocketClient | undefined>();
   const { data: session, status } = useSession();
 
   const accessToken = session?.user?.accessToken;
@@ -34,22 +36,20 @@ export default function useSocket(): UseSocket {
       console.log(err);
     };
 
-    newSocket.close = () => {
-      hasToken.current = false;
-    };
+    if (socket.current) {
+      socket.current.close();
+    }
 
-    setSocket((prev) => {
-      if (prev) {
-        prev.close();
-      }
-      return newSocket;
-    });
+    socket.current = newSocket;
 
     return () => {
-      newSocket.send({ method: 'DISCONNECT' });
+      hasToken.current = false;
       newSocket.close();
     };
   }, [accessToken, status]);
 
-  return { socket: socket, state: socket?.getState() ?? 'disconnected' };
+  return {
+    socket: socket.current,
+    state: socket.current?.getState() ?? 'disconnected',
+  };
 }
