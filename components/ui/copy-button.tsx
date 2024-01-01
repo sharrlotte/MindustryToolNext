@@ -27,7 +27,7 @@ export default function CopyButton({
 
   return (
     <Button
-      className={cn('p-2', className)}
+      className={cn('p-2 hover:bg-success', className)}
       title="Copy link"
       {...props}
       onClick={handleCopy}

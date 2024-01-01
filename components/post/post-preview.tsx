@@ -28,7 +28,7 @@ export default function PostPreview({
     >
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-2">
-          <Link href={`/posts/${post.id}`}>
+          <Link scroll={false} href={`/posts/${post.id}`}>
             <span className="flex text-2xl">{post.header}</span>
           </Link>
           <IdUserCard id={post.authorId} />

@@ -30,6 +30,7 @@ import UserRoleCard from '@/components/user/user-role';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 import LogoutButton from '@/components/common/logout-button';
 import { UserRole } from '@/constant/enum';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function NavigationBar() {
   const pathName = usePathname();
@@ -136,8 +137,8 @@ function UserDisplay() {
 
   if (status === 'authenticated' && session?.user) {
     return (
-      <div className="flex min-h-12 flex-1 items-center justify-between rounded-sm bg-zinc-900 p-1">
-        <div className="flex gap-1">
+      <div className="flex h-16 flex-1 items-center justify-between rounded-sm bg-zinc-900 p-1">
+        <div className="flex items-center justify-center gap-1">
           <UserAvatar className="h-12 w-12" user={session.user} />
           <div className="grid p-1">
             <span className="capitalize">{session.user.name}</span>
@@ -154,7 +155,9 @@ function UserDisplay() {
   }
 
   if (status === 'loading') {
-    return <LoadingSpinner className="flex-1" />;
+    return (
+      <Skeleton className="flex h-16 flex-1 items-center justify-between rounded-sm bg-zinc-900 p-1" />
+    );
   }
 
   return <LoginButton className="flex-1" title="login" />;
@@ -195,6 +198,7 @@ function NavItem({
       )}
       href={path}
       onClick={onClick}
+      scroll={false}
     >
       <span>{icon}</span>
       <span>{name}</span>

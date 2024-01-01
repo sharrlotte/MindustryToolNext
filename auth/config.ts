@@ -136,7 +136,7 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
       method: 'POST',
       body: data,
       next: {
-        revalidate: 60 * 60,
+        revalidate: 60,
         tags: [providerId, provider],
       },
       headers: {
@@ -206,7 +206,7 @@ const apiLogin = async () => {
       method: 'POST',
       body: data,
       next: {
-        revalidate: 300,
+        revalidate: 60,
       },
     });
 

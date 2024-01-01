@@ -9,7 +9,12 @@ type DownloadButtonProps = HTMLAttributes<HTMLAnchorElement> & {
 
 export default function DownloadButton(props: DownloadButtonProps) {
   return (
-    <Button className="p-2" title="Download" variant="outline" asChild>
+    <Button
+      className="p-2 hover:bg-success"
+      title="Download"
+      variant="outline"
+      asChild
+    >
       <a {...props} download onClick={fixProgressBar}>
         <ArrowDownTrayIcon className="h-5 w-5" />
       </a>

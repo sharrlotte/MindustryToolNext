@@ -24,7 +24,7 @@ export default async function Layout({ children }: PageProps) {
       <div className="grid h-full w-full grid-rows-[3rem_1fr] gap-2 p-2">
         <div className="no-scrollbar flex min-h-8 w-full items-center gap-4 overflow-auto rounded-sm border-border bg-zinc-900 p-2 text-sm font-bold capitalize">
           {paths.map(({ name, path }) => (
-            <Link key={name} href={`/admin/${path}`}>
+            <Link key={name} href={`/admin/${path}`} scroll={false}>
               {name}
             </Link>
           ))}

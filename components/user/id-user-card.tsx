@@ -27,12 +27,12 @@ function FletchUserCard({ id }: IdUserCardProps) {
     enabled,
   });
 
-  if (isLoading) {
-    return <UserCard.Loading />;
+  if (isError) {
+    return 'Error';
   }
 
-  if (!data || isError) {
-    return 'Error';
+  if (isLoading || !data) {
+    return <UserCard.Loading />;
   }
 
   return <UserCard user={data} />;

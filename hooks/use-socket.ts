@@ -34,6 +34,7 @@ export default function useSocket(): UseSocket {
   const { data: session, status } = useSession();
 
   const accessToken = session?.user?.accessToken;
+  const state = socket?.getState() ?? 'disconnected';
 
   const init = useCallback(() => {
     if (status === 'loading') {
@@ -47,8 +48,6 @@ export default function useSocket(): UseSocket {
 
     socket.connect = () => init();
 
-    const state = socket.getState();
-
     if (state !== 'connected') {
       return;
     }
@@ -59,7 +58,7 @@ export default function useSocket(): UseSocket {
         data: accessToken,
       });
     }
-  }, [accessToken, status, socket, setSocket]);
+  }, [accessToken, status, socket, state, setSocket]);
 
   useEffect(() => init(), [init]);
 

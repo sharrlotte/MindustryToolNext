@@ -45,7 +45,7 @@ export default function SchematicPreview({
         data={link}
         content={link}
       />
-      <Link href={`/schematics/${schematic.id}`}>
+      <Link scroll={false} href={`/schematics/${schematic.id}`}>
         <Preview.Image
           className="h-preview w-preview"
           src={`${env.url.image}/schematics/${schematic.id}.png`}

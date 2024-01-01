@@ -105,5 +105,9 @@ export default function UserAvatar({
     );
   };
 
-  return <Link href={`users/${id}`}>{render()}</Link>;
+  return (
+    <Link scroll={false} href={`users/${id}`}>
+      {render()}
+    </Link>
+  );
 }

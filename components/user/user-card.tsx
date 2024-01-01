@@ -11,7 +11,7 @@ function UserCard({ user }: UserCardProps) {
   const { name, role } = user;
 
   return (
-    <div className="flex w-56 items-end gap-2 overflow-hidden">
+    <div className="flex h-8 w-56 items-end gap-2 overflow-hidden">
       <UserAvatar user={user} />
       <ColorAsRole className="capitalize" role={role}>
         {name}
@@ -22,9 +22,9 @@ function UserCard({ user }: UserCardProps) {
 
 function Loading() {
   return (
-    <div className="flex w-56 items-start justify-start gap-2">
+    <div className="flex h-8 w-56 items-end justify-start gap-2">
       <Skeleton className="block h-8 w-8 rounded-full border border-border" />
-      <Skeleton className="flex-1" />
+      <Skeleton className="h-full w-full flex-1" />
     </div>
   );
 }

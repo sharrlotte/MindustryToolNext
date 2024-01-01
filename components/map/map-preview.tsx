@@ -25,13 +25,13 @@ export default function MapPreview({
       {...rest}
     >
       <CopyButton
-        className="absolute left-1 top-1 aspect-square md:opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
         title="Copy"
         variant="ghost"
         data={link}
         content={link}
       />
-      <Link href={`/maps/${map.id}`}>
+      <Link scroll={false} href={`/maps/${map.id}`}>
         <Preview.Image
           className="h-preview w-preview"
           src={`${env.url.image}/maps/${map.id}.png`}
