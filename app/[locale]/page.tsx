@@ -95,7 +95,7 @@ export default function Home() {
             <li>
               <a
                 className="text-emerald-500 hover:text-emerald-500"
-                href="/schematic"
+                href="/schematics"
               >
                 Schematic
               </a>
@@ -106,7 +106,7 @@ export default function Home() {
             <li>
               <a
                 className="text-emerald-500 hover:text-emerald-500"
-                href="/map"
+                href="/maps"
               >
                 Map
               </a>

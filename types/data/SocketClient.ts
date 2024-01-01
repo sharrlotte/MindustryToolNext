@@ -11,9 +11,7 @@ export type SocketState =
   | 'disconnected';
 
 export default class SocketClient {
-  socket: ReconnectingWebSocket;
-
-  private static instance: SocketClient | undefined;
+  private socket: ReconnectingWebSocket;
 
   public message?: (data: any, event: MessageEvent) => void;
   public error?: (event: ErrorEvent) => void;
@@ -23,11 +21,7 @@ export default class SocketClient {
   constructor(url: string) {
     this.socket = new ReconnectingWebSocket(url);
 
-    if (SocketClient.instance) {
-      SocketClient.instance.close();
-    }
-
-    SocketClient.instance = this;
+    console.log('created');
 
     this.socket.onmessage = (event) => {
       try {
@@ -87,6 +81,10 @@ export default class SocketClient {
         return 'disconnected';
     }
   }
+
+  public reconnect() {
+    this.socket.reconnect();
+  }
 }
 
 type MessagePayload =
@@ -99,4 +97,8 @@ type MessagePayload =
     }
   | {
       method: 'LOAD';
+    }
+  | {
+      method: 'AUTHORIZATION';
+      data: string;
     };
