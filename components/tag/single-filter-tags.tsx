@@ -20,12 +20,7 @@ export default function SingeFilerTags({
       value={selectedValue}
       onValueChange={handleTagGroupChange}
     >
-      <span
-        className="whitespace-nowrap text-lg capitalize"
-        style={{ color: group.color }}
-      >
-        {group.name}
-      </span>
+      <span className="whitespace-nowrap text-lg capitalize">{group.name}</span>
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.value.map((value, index) => (
         <ToggleGroupItem className="capitalize" key={index} value={value}>
