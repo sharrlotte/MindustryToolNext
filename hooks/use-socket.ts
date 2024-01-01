@@ -3,7 +3,7 @@
 import env from '@/constant/env';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { create } from 'zustand';
 
 type UseSocket = {
@@ -34,7 +34,8 @@ export default function useSocket(): UseSocket {
   const { data: session, status } = useSession();
 
   const accessToken = session?.user?.accessToken;
-  useEffect(() => {
+
+  const init = useCallback(() => {
     if (status === 'loading') {
       return;
     }
@@ -43,6 +44,8 @@ export default function useSocket(): UseSocket {
       setSocket(new SocketClient(`${env.url.socket}/socket`));
       return;
     }
+
+    socket.connect = () => init();
 
     const state = socket.getState();
 
@@ -57,6 +60,8 @@ export default function useSocket(): UseSocket {
       });
     }
   }, [accessToken, status, socket, setSocket]);
+
+  useEffect(() => init(), [init]);
 
   return {
     socket: socket,
