@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { UserRole } from '@/types/response/User';
+import { UserRole } from '@/constant/enum';
 import React, { ReactNode } from 'react';
 
 type ColorAsRoleProps = {

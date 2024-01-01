@@ -10,12 +10,12 @@ import {
 } from '@heroicons/react/24/solid';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { useSession } from 'next-auth/react';
 
 type LikeContextType = {
   likeData: Like;
   likeCount: number;
   isLoading: boolean;
-  isError: boolean;
   handleLike: () => Like;
   handleDislike: () => Like;
 };
@@ -30,7 +30,6 @@ const defaultContextValue: LikeContextType = {
   likeData: FakeLike,
   likeCount: 0,
   isLoading: false,
-  isError: false,
   handleLike: () => FakeLike,
   handleDislike: () => FakeLike,
 };
@@ -50,22 +49,31 @@ function LikeComponent({
   initialLikeData = FakeLike,
   children,
 }: LikeComponentProps) {
+  const { data: session, status } = useSession();
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [likeData, setLikeData] = useState(initialLikeData);
-  const [isLoading, setLoading] = useState(false);
-  const [isError, setError] = useState(false);
   const { toast } = useToast();
 
-  const handleLike = () => {
+  const requireLogin = () => {
     toast({
-      title: 'It does nothing',
+      title: 'You are not logged in',
+      description: 'Login in to like post',
     });
+  };
+
+  const handleLike = () => {
+    if (status === 'authenticated' && session?.user) {
+    } else {
+      requireLogin();
+    }
+
     return FakeLike;
   };
   const handleDislike = () => {
-    toast({
-      title: 'It does nothing',
-    });
+    if (status === 'authenticated' && session?.user) {
+    } else {
+      requireLogin();
+    }
     return FakeLike;
   };
 
@@ -74,8 +82,7 @@ function LikeComponent({
       value={{
         likeData,
         likeCount,
-        isLoading,
-        isError,
+        isLoading: status === 'loading',
         handleLike,
         handleDislike,
       }}
@@ -88,7 +95,7 @@ function LikeComponent({
 type LikeButtonProps = ButtonProps;
 
 function LikeButton({ className, ...props }: LikeButtonProps) {
-  const { handleLike, likeData } = useLike();
+  const { handleLike, likeData, isLoading } = useLike();
 
   return (
     <Button
@@ -97,6 +104,7 @@ function LikeButton({ className, ...props }: LikeButtonProps) {
         'hover:bg-success': likeData?.state === -1 || likeData?.state === 0,
       })}
       {...props}
+      disabled={isLoading}
       onClick={handleLike}
     >
       <ChevronDoubleUpIcon className="h-6 w-6" />
@@ -105,7 +113,7 @@ function LikeButton({ className, ...props }: LikeButtonProps) {
 }
 
 function DislikeButton({ className, ...props }: LikeButtonProps) {
-  const { handleDislike, likeData } = useLike();
+  const { handleDislike, likeData, isLoading } = useLike();
   return (
     <Button
       className={cn('p-2', className, {
@@ -113,6 +121,7 @@ function DislikeButton({ className, ...props }: LikeButtonProps) {
         'hover:bg-destructive': likeData?.state === 1 || likeData?.state === 0,
       })}
       {...props}
+      disabled={isLoading}
       onClick={handleDislike}
     >
       <ChevronDoubleDownIcon className="h-6 w-6" />

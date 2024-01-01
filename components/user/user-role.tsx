@@ -1,4 +1,4 @@
-import { UserRole } from '@/types/response/User';
+import { UserRole } from '@/constant/enum';
 import React from 'react';
 
 type UserRoleCardProps = {
