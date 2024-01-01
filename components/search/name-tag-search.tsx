@@ -1,4 +1,3 @@
-'use client';
 
 import Search from '@/components/search/search-input';
 import { Button } from '@/components/ui/button';
@@ -14,10 +13,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import TagCard from '@/components/tag/tag-card';
 import { QueryParams } from '@/query/config/search-query-params';
 import OutsideWrapper from '@/components/ui/outside-wrapper';
-import _ from 'lodash';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import FilterTags from '@/components/tag/filter-tags';
 import SortTags from '@/components/tag/sort-tags';
+import _ from 'lodash';
 
 type NameTagSearchProps = {
   tags: TagGroup[] | undefined;
@@ -100,7 +99,7 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
         params.set(QueryParams.name, name);
       }
 
-      router.push(`${pathname}?${params.toString()}`);
+      router.replace(`${pathname}?${params.toString()}`);
     };
 
     if (!showFilterDialog) {

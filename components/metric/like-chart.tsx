@@ -42,7 +42,7 @@ function Loading({ axios: { axios, enabled }, start, end }: ChartProps) {
     isLoading,
     isError,
   } = useQuery({
-    queryFn: () => getMetric(axios, start, end, 'daily_like'),
+    queryFn: () => getMetric(axios, start, end, 'DAILY_LIKE'),
     queryKey: ['daily_like'],
     enabled,
   });

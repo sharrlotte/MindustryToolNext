@@ -20,9 +20,7 @@ function RouterLink({ href, children }: any) {
       {children}
     </a>
   ) : (
-    <Link href={href} scroll={false}>
-      {children}
-    </Link>
+    <Link href={href}>{children}</Link>
   );
 }
 

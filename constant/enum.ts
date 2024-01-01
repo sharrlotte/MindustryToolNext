@@ -1,16 +1,18 @@
 export type LogCollection =
-  | 'system'
-  | 'database'
-  | 'api'
-  | 'discord_message'
-  | 'request'
-  | 'user_login';
+  | 'SYSTEM'
+  | 'DATABASE'
+  | 'API'
+  | 'DISCORD_MESSAGE'
+  | 'REQUEST'
+  | 'USER_LOGIN';
 
 export type MetricCollection =
-  | 'daily_like'
-  | 'daily_user'
-  | 'logged_daily_user';
+  | 'DAILY_LIKE'
+  | 'DAILY_USER'
+  | 'LOGGED_DAILY_USER';
 
-export type LikeCollection = 'schematics' | 'maps' | 'posts';
+export type LikeTarget = 'SCHEMATICS' | 'MAPS' | 'POSTS';
 
 export type UserRole = 'ADMIN' | 'USER';
+
+export type LikeAction = 'LIKE' | 'DISLIKE';

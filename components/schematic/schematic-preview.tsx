@@ -45,7 +45,7 @@ export default function SchematicPreview({
         data={link}
         content={link}
       />
-      <Link scroll={false} href={`/schematics/${schematic.id}`}>
+      <Link href={`/schematics/${schematic.id}`}>
         <Preview.Image
           className="h-preview w-preview"
           src={`${env.url.image}/schematics/${schematic.id}.png`}
@@ -66,6 +66,7 @@ export default function SchematicPreview({
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
           <LikeComponent
+            target="schematics"
             initialLikeCount={schematic.like}
             initialLikeData={schematic.userLike}
           >

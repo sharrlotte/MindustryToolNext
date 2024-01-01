@@ -31,7 +31,7 @@ export default function MapPreview({
         data={link}
         content={link}
       />
-      <Link scroll={false} href={`/maps/${map.id}`}>
+      <Link href={`/maps/${map.id}`}>
         <Preview.Image
           className="h-preview w-preview"
           src={`${env.url.image}/maps/${map.id}.png`}
@@ -44,6 +44,7 @@ export default function MapPreview({
         <Preview.Actions>
           <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
           <LikeComponent
+            target="maps"
             initialLikeCount={map.like}
             initialLikeData={map.userLike}
           >

@@ -77,9 +77,11 @@ export default function Root({ children, params }: RootProps) {
           >
             <QueryProvider>
               <ClientInit />
-              <div className="grid h-full w-full grid-rows-[3rem_1fr] overflow-hidden">
+              <div className="grid h-full w-full grid-rows-[2.5rem_1fr] overflow-hidden">
                 <NavigationBar />
-                <div className="h-full w-full overflow-hidden">{children}</div>
+                <div className="relative h-full w-full overflow-hidden">
+                  {children}
+                </div>
               </div>
             </QueryProvider>
           </SessionProvider>

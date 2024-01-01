@@ -73,6 +73,7 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
           <LikeComponent
+            target="schematics"
             initialLikeCount={schematic.like}
             initialLikeData={schematic.userLike}
           >

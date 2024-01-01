@@ -29,6 +29,7 @@ export default function PostDetail({ post }: PostDetailProps) {
       <footer>
         <div className="flex items-center justify-end gap-2">
           <LikeComponent
+            target="posts"
             initialLikeCount={post.like}
             initialLikeData={post.userLike}
           >

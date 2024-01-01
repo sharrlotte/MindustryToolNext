@@ -53,6 +53,7 @@ export default function MapDetail({ map }: MapDetailProps) {
             href={`${env.url.api}/maps/${map.id}/download`}
           />
           <LikeComponent
+            target="maps"
             initialLikeCount={map.like}
             initialLikeData={map.userLike}
           >
