@@ -1,5 +1,5 @@
 import React, { HTMLAttributes } from 'react';
-import Post from '@/types/response/Post';
+import { Post } from '@/types/response/Post';
 import env from '@/constant/env';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -42,7 +42,8 @@ export default function PostPreview({
             content={link}
           />
           <LikeComponent
-            target="posts"
+            targetId={post.id}
+            targetType="POSTS"
             initialLikeCount={post.like}
             initialLikeData={post.userLike}
           >

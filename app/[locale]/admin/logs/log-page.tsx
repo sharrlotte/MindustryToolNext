@@ -35,8 +35,8 @@ export default function LogPage() {
 
   useEffect(() => {
     if (!loaded.current && socket) {
-      socket.send({ method: 'LOAD' });
       loaded.current = true;
+      socket.send({ method: 'LOAD' });
     }
   }, [socket]);
 

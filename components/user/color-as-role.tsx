@@ -5,19 +5,25 @@ import React, { ReactNode } from 'react';
 type ColorAsRoleProps = {
   className: string;
   children: ReactNode;
-  role: UserRole[];
+  roles: UserRole[] | undefined;
 };
 
 export default function ColorAsRole({
   className,
   children,
-  role,
+  roles,
 }: ColorAsRoleProps) {
-  if (role.includes('ADMIN')) {
-    return (
-      <span className={cn('text-emerald-400', className)}>{children}</span>
-    );
-  }
+  const render = (roles: UserRole[] | undefined) => {
+    if (!roles) {
+      return children;
+    }
 
-  return <span>{children}</span>;
+    if (roles.includes('ADMIN')) {
+      return <span>{children}</span>;
+    }
+  };
+
+  return (
+    <span className={cn('text-emerald-400', className)}>{render(roles)}</span>
+  );
 }

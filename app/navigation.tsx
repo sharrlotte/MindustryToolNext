@@ -27,7 +27,6 @@ import UserAvatar from '@/components/user/user-avatar';
 import ProtectedElement from '@/components/layout/protected-element';
 import LoginButton from '@/components/common/login-button';
 import UserRoleCard from '@/components/user/user-role';
-import LoadingSpinner from '@/components/ui/loading-spinner';
 import LogoutButton from '@/components/common/logout-button';
 import { UserRole } from '@/constant/enum';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -142,7 +141,7 @@ function UserDisplay() {
           <UserAvatar className="h-12 w-12" user={session.user} />
           <div className="grid p-1">
             <span className="capitalize">{session.user.name}</span>
-            <UserRoleCard role={session.user.role} />
+            <UserRoleCard roles={session.user.roles} />
           </div>
         </div>
         <LogoutButton

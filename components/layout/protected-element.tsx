@@ -15,25 +15,27 @@ export default function ProtectedElement({
   children,
   session,
 }: Props) {
-  if (!session?.user?.role) return <></>;
+  if (!session?.user?.roles) return <></>;
+
+  const roles = session.user.roles;
 
   if (any && all) {
     if (
-      all.every((role) => session.user?.role.includes(role)) &&
-      any.some((role) => session.user?.role.includes(role))
+      all.every((role) => roles.includes(role)) &&
+      any.some((role) => roles.includes(role))
     ) {
       return <>{children}</>;
     }
   }
 
   if (any) {
-    if (any.some((role) => session.user?.role.includes(role))) {
+    if (any.some((role) => roles.includes(role))) {
       return <>{children}</>;
     }
   }
 
   if (all) {
-    if (all.every((role) => session.user?.role.includes(role))) {
+    if (all.every((role) => roles.includes(role))) {
       return <>{children}</>;
     }
   }

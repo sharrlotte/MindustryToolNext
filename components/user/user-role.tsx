@@ -2,15 +2,19 @@ import { UserRole } from '@/constant/enum';
 import React from 'react';
 
 type UserRoleCardProps = {
-  role: UserRole[];
+  roles: UserRole[];
 };
 
-export default function UserRoleCard({ role }: UserRoleCardProps) {
-  if (role.includes('ADMIN')) {
+export default function UserRoleCard({ roles }: UserRoleCardProps) {
+  if (!roles) {
+    return <></>;
+  }
+
+  if (roles.includes('ADMIN')) {
     return <span className="text-bold text-emerald-400">ADMIN</span>;
   }
 
-  if (role.includes('USER')) {
+  if (roles.includes('USER')) {
     return <span className="text-bold">USER</span>;
   }
 

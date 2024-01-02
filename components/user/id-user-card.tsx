@@ -3,7 +3,7 @@
 import UserCard from '@/components/user/user-card';
 import useClientAPI from '@/hooks/use-client';
 import getUser from '@/query/user/get-user';
-import User from '@/types/response/User';
+import { User } from '@/types/response/User';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 

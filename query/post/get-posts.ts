@@ -2,7 +2,7 @@ import {
   PageableSearchQuery,
   searchSchema,
 } from '@/types/data/pageable-search-schema';
-import Post from '@/types/response/Post';
+import { Post } from '@/types/response/Post';
 import { AxiosInstance } from 'axios';
 
 export default async function getPosts(

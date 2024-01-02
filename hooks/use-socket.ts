@@ -1,69 +1,49 @@
 'use client';
 
 import env from '@/constant/env';
+import useClientAPI from '@/hooks/use-client';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
-import { useSession } from 'next-auth/react';
-import { useCallback, useEffect } from 'react';
-import { create } from 'zustand';
+import { Token } from '@/types/data/Token';
+import { useCallback, useEffect, useRef } from 'react';
+import { useReadLocalStorage } from 'usehooks-ts';
 
 type UseSocket = {
   socket: SocketClient | undefined;
   state: SocketState;
 };
 
-type UseSocketStoreType = {
-  socket: SocketClient | undefined;
-  setSocket: (socket: SocketClient) => void;
-};
-
-const useSocketStore = create<UseSocketStoreType>((set) => ({
-  socket: undefined,
-  setSocket: (socket) => {
-    set((prev) => {
-      if (prev.socket) {
-        prev.socket.close();
-      }
-
-      return { socket: socket };
-    });
-  },
-}));
-
 export default function useSocket(): UseSocket {
-  const { socket, setSocket } = useSocketStore();
-  const { data: session, status } = useSession();
+  const socket = useRef<SocketClient | undefined>();
+  const authenticated = useRef(false);
 
-  const accessToken = session?.user?.accessToken;
-  const state = socket?.getState() ?? 'disconnected';
+  const { enabled } = useClientAPI();
+  const state = socket.current?.getState() ?? 'disconnected';
+  const token = useReadLocalStorage<Token>('token');
 
   const init = useCallback(() => {
-    if (status === 'loading') {
+    if (!socket.current) {
+      socket.current = new SocketClient(`${env.url.socket}/socket`);
       return;
     }
 
-    if (!socket) {
-      setSocket(new SocketClient(`${env.url.socket}/socket`));
+    if (state !== 'connected' || authenticated.current || !token || !enabled) {
       return;
     }
 
-    socket.connect = () => init();
+    const { accessToken } = token;
 
-    if (state !== 'connected') {
-      return;
-    }
+    socket.current.send({
+      method: 'AUTHORIZATION',
+      data: accessToken,
+    });
 
-    if (accessToken) {
-      socket.send({
-        method: 'AUTHORIZATION',
-        data: accessToken,
-      });
-    }
-  }, [accessToken, status, socket, state, setSocket]);
+    authenticated.current = true;
+  }, [state, token, enabled]);
 
   useEffect(() => init(), [init]);
 
   return {
-    socket: socket,
-    state: socket?.getState() ?? 'disconnected',
+    socket: socket.current,
+    state: socket.current?.getState() ?? 'disconnected',
   };
 }

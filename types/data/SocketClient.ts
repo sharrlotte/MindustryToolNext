@@ -21,8 +21,6 @@ export default class SocketClient {
   constructor(url: string) {
     this.socket = new ReconnectingWebSocket(url);
 
-    console.log('created');
-
     this.socket.onmessage = (event) => {
       try {
         if (this.message) {
@@ -51,9 +49,6 @@ export default class SocketClient {
   }
 
   public close() {
-    this.send({
-      method: 'DISCONNECT',
-    });
     this.socket.onclose = () => {};
     this.socket.onerror = () => {
       this.close();
@@ -71,12 +66,16 @@ export default class SocketClient {
     switch (this.socket.readyState) {
       case this.socket.CONNECTING:
         return 'connecting';
+
       case this.socket.OPEN:
         return 'connected';
+
       case this.socket.CLOSING:
         return 'disconnecting';
+
       case this.socket.CLOSED:
         return 'disconnected';
+
       default:
         return 'disconnected';
     }
@@ -91,9 +90,6 @@ type MessagePayload =
   | {
       method: 'MESSAGE';
       data: string;
-    }
-  | {
-      method: 'DISCONNECT';
     }
   | {
       method: 'LOAD';

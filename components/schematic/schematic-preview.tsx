@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from 'react';
 import Preview from '@/components/preview/preview';
-import Schematic from '@/types/response/Schematic';
+import { Schematic } from '@/types/response/Schematic';
 import env from '@/constant/env';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -66,7 +66,8 @@ export default function SchematicPreview({
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
           <LikeComponent
-            target="schematics"
+            targetId={schematic.id}
+            targetType="SCHEMATICS"
             initialLikeCount={schematic.like}
             initialLikeData={schematic.userLike}
           >

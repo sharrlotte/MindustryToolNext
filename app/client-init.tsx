@@ -1,7 +1,7 @@
 'use client';
 
 import useClientAPI from '@/hooks/use-client';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default function ClientInit() {
   const { axios, enabled } = useClientAPI();

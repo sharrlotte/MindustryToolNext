@@ -1,20 +1,24 @@
-import * as globalEnv from '@/constant/env';
-import serverEnv from '@/constant/serverEnv';
-import RefreshTokenResponse from '@/types/response/RefreshTokenResponse';
-import User from '@/types/response/User';
 import NextAuth from 'next-auth';
 import Discord from 'next-auth/providers/discord';
-import { env } from 'process';
+import serverEnv from '@/constant/serverEnv';
+import env from '@/constant/env';
+import { env as environment } from 'process';
+import { RefreshTokenResponse } from '@/types/response/RefreshTokenResponse';
+import { User } from '@/types/response/User';
+import { decodeJWT, encodeJWT } from '@/lib/jwt';
+import { JWT } from '@auth/core/jwt';
 
 const authData: {
-  accessToken?: string;
-  refreshToken?: string;
+  accessToken: string;
+  refreshToken: string;
   expireTime: number;
 } = {
-  accessToken: env.API_ACCESS_TOKEN,
-  refreshToken: env.API_REFRESH_TOKEN,
-  expireTime: Number(env.API_EXPIRE_TIME ?? '0'),
+  accessToken: environment.API_ACCESS_TOKEN || '',
+  refreshToken: environment.API_REFRESH_TOKEN || '',
+  expireTime: Number(environment.API_EXPIRE_TIME ?? '0'),
 };
+
+const JWT_VERSION = 1;
 
 export const {
   handlers: { GET, POST },
@@ -27,6 +31,9 @@ export const {
   },
   jwt: {
     maxAge: 60 * 60 * 24 * 30,
+
+    encode: encodeJWT,
+    decode: decodeJWT,
   },
   providers: [
     Discord({
@@ -38,64 +45,47 @@ export const {
     async session(params) {
       const { session, token } = params;
 
-      const provider = token.provider as string | undefined;
-      const providerId = token.providerId as string | undefined;
-
-      // User id not present
-      const name = session.user?.name ?? '';
-      const image = session.user?.image ?? '';
-
-      // Clear all user info
-      session.user = undefined;
-
-      let userRefreshToken = '';
-
-      if (provider && providerId) {
-        const user = await getUser({
-          providerId,
-          provider,
-          name,
-          image,
-        });
-
-        if (user) {
-          session.user = user;
-          userRefreshToken = user.refreshToken;
-        } else {
-          session.user = undefined;
-        }
-      } else {
-        session.user = undefined;
-      }
-
-      if (
-        userRefreshToken &&
-        session.user &&
-        session.user?.expireTime <= Date.now()
-      ) {
-        const result = await refreshToken(userRefreshToken);
-
-        if (result) {
-          console.log('User refresh token success', { result });
-          session.user.accessToken = result.accessToken;
-          session.user.expireTime = result.expireTime;
-        } else {
-          console.log('User refresh token failed');
-          session.user = undefined;
-        }
+      if (session.user) {
+        session.user.roles = token.roles || [];
+        session.user.id = token.userId;
+        session.user.accessToken = token.accessToken;
+        session.user.refreshToken = token.refreshToken;
+        session.user.expireTime = token.expireTime;
       }
 
       return session;
     },
+    //@ts-ignore
     async jwt(params) {
+      //@ts-check
       const { token, account } = params;
 
       if (account) {
-        token.provider = account.provider;
-        token.providerId = account.providerAccountId;
+        const { provider, providerAccountId: providerId } = account;
+
+        const user = await getUser({
+          providerId,
+          provider,
+        });
+
+        if (user) {
+          token.userId = user.id;
+          token.name = user.name;
+          token.roles = user.roles;
+          token.accessToken = user.accessToken;
+          token.refreshToken = user.refreshToken;
+          token.expireTime = user.expireTime;
+          token.version = JWT_VERSION;
+        } else {
+          return undefined;
+        }
       }
 
-      return token;
+      if (token.version !== JWT_VERSION) {
+        return undefined;
+      }
+
+      return token as JWT;
     },
   },
 });
@@ -103,18 +93,14 @@ export const {
 type GetMeParams = {
   provider: string;
   providerId: string;
-  name: string;
-  image: string;
 };
 
-const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
+const getUser = async ({ providerId, provider }: GetMeParams) => {
   console.log(`Get user: ${provider} - ${providerId}`);
   const data: FormData = new FormData();
 
   data.append('provider', provider);
   data.append('providerId', providerId);
-  data.append('name', name);
-  data.append('image', image);
 
   if (!authData.accessToken) {
     console.log('No API token');
@@ -132,7 +118,7 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
   }
 
   try {
-    const result = await fetch(`${globalEnv.default.url.api}/auth/users`, {
+    const result = await fetch(`${env.url.api}/auth/users`, {
       method: 'POST',
       body: data,
       next: {
@@ -169,14 +155,11 @@ const refreshToken = async (refreshToken: string) => {
   data.append('refreshToken', refreshToken);
 
   try {
-    const result = await fetch(
-      `${globalEnv.default.url.api}/auth/refresh-token`,
-      {
-        method: 'POST',
-        body: data,
-        cache: 'no-cache',
-      },
-    );
+    const result = await fetch(`${env.url.api}/auth/refresh-token`, {
+      method: 'POST',
+      body: data,
+      cache: 'no-cache',
+    });
 
     if (result.status === 200) {
       return (await result
@@ -198,39 +181,34 @@ const refreshToken = async (refreshToken: string) => {
 const apiLogin = async () => {
   const data: FormData = new FormData();
 
-  data.append('provider', env.API_PROVIDER as string);
-  data.append('providerId', env.API_PROVIDER_ID as string);
+  data.append('provider', serverEnv.tokens.api_provider as string);
+  data.append('providerId', serverEnv.tokens.api_provider_id as string);
 
-  try {
-    const result = await fetch(`${globalEnv.default.url.api}/auth/login`, {
-      method: 'POST',
-      body: data,
-      next: {
-        revalidate: 60,
-      },
-    });
+  const result = await fetch(`${env.url.api}/auth/login`, {
+    method: 'POST',
+    body: data,
+    next: {
+      revalidate: 60,
+    },
+  });
 
-    const text = await result.text();
+  const text = await result.text();
 
-    if (result.status === 200) {
-      const user = JSON.parse(text) as User;
-      if (user) {
-        authData.accessToken = user.accessToken;
-        authData.refreshToken = user.refreshToken;
-        authData.expireTime = user.expireTime;
-        console.log('API login success');
-        return;
-      }
+  if (result.status === 200) {
+    const user = JSON.parse(text) as User;
+    if (user) {
+      authData.accessToken = user.accessToken;
+      authData.refreshToken = user.refreshToken;
+      authData.expireTime = user.expireTime;
+      console.log('API login success');
+      return;
     }
-
-    throw new Error('Failed to login as API: ' + text);
-  } catch (err) {
-    console.error('Failed to login as API', err);
-    return null;
   }
+
+  throw new Error('Failed to login as API: ' + text);
 };
 
-const apiRefreshToken = async () => {
+async function apiRefreshToken() {
   console.log('API refresh token');
 
   const result = await refreshToken(authData.refreshToken as string);
@@ -241,14 +219,16 @@ const apiRefreshToken = async () => {
   } else {
     await apiLogout();
   }
-};
+}
 
-const apiLogout = async () => {
-  authData.accessToken = undefined;
-  authData.refreshToken = undefined;
+async function apiLogout() {
+  authData.accessToken = '';
+  authData.refreshToken = '';
   authData.expireTime = Date.now();
 
   console.log('Logged out');
-};
+}
+
+apiLogin();
 
 export { authData };

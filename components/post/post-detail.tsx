@@ -4,7 +4,7 @@ import TagCard from '@/components/tag/tag-card';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
 import { Tags } from '@/types/response/Tag';
-import Post from '@/types/response/Post';
+import { Post } from '@/types/response/Post';
 import React from 'react';
 
 type PostDetailProps = {
@@ -29,7 +29,8 @@ export default function PostDetail({ post }: PostDetailProps) {
       <footer>
         <div className="flex items-center justify-end gap-2">
           <LikeComponent
-            target="posts"
+            targetId={post.id}
+            targetType="POSTS"
             initialLikeCount={post.like}
             initialLikeData={post.userLike}
           >

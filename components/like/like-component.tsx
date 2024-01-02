@@ -49,8 +49,8 @@ type LikeComponentProps = {
   initialLikeData: Like;
   targetType: LikeTarget;
   targetId: string;
-  onSuccess: (result: LikeChange, request: LikeAction) => void;
-  onFailure: () => void;
+  onSuccess?: (result: LikeChange, request: LikeAction) => void;
+  onFailure?: () => void;
 };
 
 function LikeComponent({

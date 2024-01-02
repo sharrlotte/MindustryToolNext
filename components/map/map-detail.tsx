@@ -4,7 +4,7 @@ import TagCard from '@/components/tag/tag-card';
 import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/ui/copy-button';
 import env from '@/constant/env';
-import Map from '@/types/response/Map';
+import { Map } from '@/types/response/Map';
 import { Tags } from '@/types/response/Tag';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/ui/download-button';
@@ -53,7 +53,8 @@ export default function MapDetail({ map }: MapDetailProps) {
             href={`${env.url.api}/maps/${map.id}/download`}
           />
           <LikeComponent
-            target="maps"
+            targetId={map.id}
+            targetType="MAPS"
             initialLikeCount={map.like}
             initialLikeData={map.userLike}
           >
