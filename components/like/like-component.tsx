@@ -11,6 +11,11 @@ import {
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
+import { LikeAction, LikeTarget } from '@/constant/enum';
+import { useMutation } from '@tanstack/react-query';
+import postLike from '@/query/like/post-like';
+import useClientAPI from '@/hooks/use-client';
+import { LikeChange } from '@/types/response/LikeChange';
 
 type LikeContextType = {
   likeData: Like;
@@ -42,17 +47,37 @@ type LikeComponentProps = {
   children: ReactNode;
   initialLikeCount: number;
   initialLikeData: Like;
+  targetType: LikeTarget;
+  targetId: string;
+  onSuccess?: (result: LikeChange, request: LikeAction) => void;
+  onFailure?: () => void;
 };
 
 function LikeComponent({
   initialLikeCount = 0,
   initialLikeData = FakeLike,
   children,
+  targetType,
+  targetId,
+  onSuccess,
+  onFailure,
 }: LikeComponentProps) {
   const { data: session, status } = useSession();
+  const { axios } = useClientAPI();
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [likeData, setLikeData] = useState(initialLikeData);
   const { toast } = useToast();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (action: LikeAction) =>
+      postLike(axios, {
+        action,
+        targetType,
+        targetId,
+      }),
+    onSuccess,
+    onError: onFailure,
+  });
 
   const requireLogin = () => {
     toast({
@@ -82,7 +107,7 @@ function LikeComponent({
       value={{
         likeData,
         likeCount,
-        isLoading: status === 'loading',
+        isLoading: status === 'loading' || isPending,
         handleLike,
         handleDislike,
       }}
@@ -99,9 +124,8 @@ function LikeButton({ className, ...props }: LikeButtonProps) {
 
   return (
     <Button
-      className={cn('p-2', className, {
+      className={cn('p-2 hover:bg-success', className, {
         'bg-success hover:bg-success': likeData?.state === 1,
-        'hover:bg-success': likeData?.state === -1 || likeData?.state === 0,
       })}
       {...props}
       disabled={isLoading}
@@ -116,9 +140,8 @@ function DislikeButton({ className, ...props }: LikeButtonProps) {
   const { handleDislike, likeData, isLoading } = useLike();
   return (
     <Button
-      className={cn('p-2', className, {
+      className={cn('p-2 hover:bg-destructive', className, {
         'bg-destructive hover:bg-destructive': likeData?.state === -1,
-        'hover:bg-destructive': likeData?.state === 1 || likeData?.state === 0,
       })}
       {...props}
       disabled={isLoading}

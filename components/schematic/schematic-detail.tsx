@@ -5,7 +5,7 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/ui/copy-button';
 import env from '@/constant/env';
 import { toast } from '@/hooks/use-toast';
-import Schematic from '@/types/response/Schematic';
+import { Schematic } from '@/types/response/Schematic';
 import { Tags } from '@/types/response/Tag';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/ui/download-button';
@@ -73,6 +73,8 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
           <LikeComponent
+            targetId={schematic.id}
+            targetType="SCHEMATICS"
             initialLikeCount={schematic.like}
             initialLikeData={schematic.userLike}
           >

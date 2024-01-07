@@ -9,11 +9,11 @@ type PageProps = {
 
 const paths = [
   { name: 'dashboard', path: '' },
-  { name: 'log', path: 'logs' },
-  { name: 'schematic', path: 'schematics' },
-  { name: 'map', path: 'maps' },
-  { name: 'post', path: 'posts' },
-  { name: 'setting', path: 'settings' },
+  { name: 'logs', path: 'logs' },
+  { name: 'schematics', path: 'schematics' },
+  { name: 'maps', path: 'maps' },
+  { name: 'posts', path: 'posts' },
+  { name: 'settings', path: 'settings' },
 ];
 
 export default async function Layout({ children }: PageProps) {

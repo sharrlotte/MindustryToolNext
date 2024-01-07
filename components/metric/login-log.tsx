@@ -21,7 +21,7 @@ export default function LoginLog({ axios: { axios, enabled } }: LoginLogProps) {
     error,
     isLoading,
   } = useQuery({
-    queryFn: () => getLogs(axios, { page: 0, collection: 'user_login' }),
+    queryFn: () => getLogs(axios, { page: 0, collection: 'USER_LOGIN' }),
     queryKey: ['user_login'],
     enabled,
   });

@@ -20,30 +20,33 @@ export default async function ProtectedRoute({
   children,
   session,
 }: Props) {
-  if (!session?.user?.role)
+  if (!session?.user?.roles)
     return (
       <div className="flex h-full w-full flex-col items-center justify-center gap-2">
         Please login to continue
         <LoginButton className="min-w-[100px]" title="login" />
       </div>
     );
+
+  const roles = session.user.roles;
+
   if (any && all) {
     if (
-      all.every((role) => session.user?.role.includes(role)) &&
-      any.some((role) => session.user?.role.includes(role))
+      all.every((role) => roles.includes(role)) &&
+      any.some((role) => roles.includes(role))
     ) {
       return <>{children}</>;
     }
   }
 
   if (any) {
-    if (any.some((role) => session.user?.role.includes(role))) {
+    if (any.some((role) => roles.includes(role))) {
       return <>{children}</>;
     }
   }
 
   if (all) {
-    if (all.every((role) => session.user?.role.includes(role))) {
+    if (all.every((role) => roles.includes(role))) {
       return <>{children}</>;
     }
   }

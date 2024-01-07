@@ -1,7 +1,7 @@
-import { ItemRequirement } from "./ItemRequirement";
-import { Like } from "./Like";
+import { ItemRequirement } from './ItemRequirement';
+import { Like } from './Like';
 
-export default interface Schematic {
+export interface Schematic {
   id: string;
   name: string;
   authorId: string;

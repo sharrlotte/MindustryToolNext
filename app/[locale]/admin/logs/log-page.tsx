@@ -26,15 +26,17 @@ export default function LogPage() {
   }
 
   useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      if (bottomRef.current) {
+        bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 1000);
   }, []);
 
   useEffect(() => {
     if (!loaded.current && socket) {
-      socket.send({ method: 'LOAD' });
       loaded.current = true;
+      socket.send({ method: 'LOAD' });
     }
   }, [socket]);
 

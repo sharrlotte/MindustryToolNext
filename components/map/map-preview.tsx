@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from 'react';
 import Preview from '@/components/preview/preview';
-import Map from '@/types/response/Map';
+import { Map } from '@/types/response/Map';
 import env from '@/constant/env';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -25,7 +25,7 @@ export default function MapPreview({
       {...rest}
     >
       <CopyButton
-        className="absolute left-1 top-1 aspect-square md:opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
         title="Copy"
         variant="ghost"
         data={link}
@@ -44,6 +44,8 @@ export default function MapPreview({
         <Preview.Actions>
           <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
           <LikeComponent
+            targetId={map.id}
+            targetType="MAPS"
             initialLikeCount={map.like}
             initialLikeData={map.userLike}
           >

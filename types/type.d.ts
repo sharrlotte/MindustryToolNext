@@ -1,20 +1,24 @@
 import { UserRole } from '@/constant/enum';
-import NextAuth, { DefaultSession } from 'next-auth';
-import { User, Session, JWT } from 'next-auth';
+import NextAuth, { User, Session, DefaultSession, DefaultJWT } from 'next-auth';
+import { JWT, DefaultJWT } from '@auth/core/jwt';
 
 declare module 'next-auth' {
   interface Session {
     user?: {
       id: string;
       accessToken?: string;
-      expireTime: number;
-      imageUrl: string;
-      role: UserRole[];
+      roles: UserRole[];
+      name: string;
+      image: string;
     } & DefaultSession['user'];
   }
+}
 
-  interface JWT {
-    accessToken?: string;
-    provider: string;
+declare module '@auth/core/jwt' {
+  interface JWT extends DefaultJWT {
+    userId: string;
+    roles: UserRole[];
+    version: number;
+    accessToken: string;
   }
 }

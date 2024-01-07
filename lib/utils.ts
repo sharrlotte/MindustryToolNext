@@ -56,3 +56,9 @@ export function fillMetric(
     };
   });
 }
+
+export function toForm(data: Object) {
+  const form = new FormData();
+  Object.entries(data).forEach(([key, value]) => form.append(key, value));
+  return form;
+}

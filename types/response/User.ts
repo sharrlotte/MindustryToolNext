@@ -1,10 +1,10 @@
 import { UserRole } from '@/constant/enum';
 
-export default interface User {
+export interface User {
   id: string;
   name: string;
-  imageUrl: string;
-  role: UserRole[];
+  image: string;
+  roles: UserRole[];
   accessToken: string;
   refreshToken: string;
   expireTime: number;

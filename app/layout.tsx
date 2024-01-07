@@ -72,14 +72,16 @@ export default function Root({ children, params }: RootProps) {
           <NextTopLoader height={2} showSpinner={false} />
           <Toaster />
           <SessionProvider
-            //            refetchOnWindowFocus={false}
-            refetchInterval={1 * 60}
+            refetchOnWindowFocus={false}
+            refetchInterval={2 * 60}
           >
             <QueryProvider>
               <ClientInit />
-              <div className="grid h-full w-full grid-rows-[3rem_1fr] overflow-hidden">
+              <div className="grid h-full w-full grid-rows-[2.5rem_1fr] overflow-hidden">
                 <NavigationBar />
-                <div className="h-full w-full overflow-hidden">{children}</div>
+                <div className="relative h-full w-full overflow-hidden">
+                  {children}
+                </div>
               </div>
             </QueryProvider>
           </SessionProvider>

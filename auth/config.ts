@@ -1,20 +1,22 @@
-import * as globalEnv from '@/constant/env';
-import serverEnv from '@/constant/serverEnv';
-import RefreshTokenResponse from '@/types/response/RefreshTokenResponse';
-import User from '@/types/response/User';
 import NextAuth from 'next-auth';
 import Discord from 'next-auth/providers/discord';
-import { env } from 'process';
+import serverEnv from '@/constant/serverEnv';
+import env from '@/constant/env';
+import { env as environment } from 'process';
+import { RefreshTokenResponse } from '@/types/response/RefreshTokenResponse';
+import { User } from '@/types/response/User';
 
 const authData: {
-  accessToken?: string;
-  refreshToken?: string;
+  accessToken: string;
+  refreshToken: string;
   expireTime: number;
 } = {
-  accessToken: env.API_ACCESS_TOKEN,
-  refreshToken: env.API_REFRESH_TOKEN,
-  expireTime: Number(env.API_EXPIRE_TIME ?? '0'),
+  accessToken: environment.API_ACCESS_TOKEN || '',
+  refreshToken: environment.API_REFRESH_TOKEN || '',
+  expireTime: Number(environment.API_EXPIRE_TIME ?? '0'),
 };
+
+const JWT_VERSION = 1;
 
 export const {
   handlers: { GET, POST },
@@ -38,61 +40,47 @@ export const {
     async session(params) {
       const { session, token } = params;
 
-      const provider = token.provider as string | undefined;
-      const providerId = token.providerId as string | undefined;
-
-      // User id not present
-      const name = session.user?.name ?? '';
-      const image = session.user?.image ?? '';
-
-      // Clear all user info
-      session.user = undefined;
-
-      let userRefreshToken = '';
-
-      if (provider && providerId) {
-        const user = await getUser({
-          providerId,
-          provider,
-          name,
-          image,
-        });
-
-        if (user) {
-          session.user = user;
-          userRefreshToken = user.refreshToken;
-        } else {
-          session.user = undefined;
-        }
-      } else {
-        session.user = undefined;
-      }
-
-      if (
-        userRefreshToken &&
-        session.user &&
-        session.user?.expireTime <= Date.now()
-      ) {
-        const result = await refreshToken(userRefreshToken);
-
-        if (result) {
-          console.log('User refresh token success', { result });
-          session.user.accessToken = result.accessToken;
-          session.user.expireTime = result.expireTime;
-        } else {
-          console.log('User refresh token failed');
-          session.user = undefined;
-        }
+      if (session.user && token) {
+        session.user.id = token.userId;
+        session.user.name = token.name ?? '';
+        session.user.roles = token.roles || [];
+        session.user.accessToken = token.accessToken;
       }
 
       return session;
     },
+    //@ts-ignore
     async jwt(params) {
-      const { token, account } = params;
+      //@ts-check
+      const { token, account, user } = params;
 
-      if (account) {
-        token.provider = account.provider;
-        token.providerId = account.providerAccountId;
+      if (account && user) {
+        const { provider, providerAccountId: providerId } = account;
+
+        const { name, image } = user;
+
+        const apiUser = await getUser({
+          providerId,
+          provider,
+          name: name ?? '',
+          image: image ?? '',
+        });
+
+        if (apiUser) {
+          token.userId = apiUser.id;
+          token.name = apiUser.name;
+          token.roles = apiUser.roles;
+          token.accessToken = apiUser.accessToken;
+          token.version = JWT_VERSION;
+
+          return token;
+        } else {
+          return undefined;
+        }
+      }
+
+      if (token.version !== JWT_VERSION) {
+        return undefined;
       }
 
       return token;
@@ -132,11 +120,11 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
   }
 
   try {
-    const result = await fetch(`${globalEnv.default.url.api}/auth/users`, {
+    const result = await fetch(`${env.url.api}/auth/users`, {
       method: 'POST',
       body: data,
       next: {
-        revalidate: 60 * 60,
+        revalidate: 60,
         tags: [providerId, provider],
       },
       headers: {
@@ -169,26 +157,19 @@ const refreshToken = async (refreshToken: string) => {
   data.append('refreshToken', refreshToken);
 
   try {
-    const result = await fetch(
-      `${globalEnv.default.url.api}/auth/refresh-token`,
-      {
-        method: 'POST',
-        body: data,
-        cache: 'no-cache',
-      },
-    );
+    const result = await fetch(`${env.url.api}/auth/refresh-token`, {
+      method: 'POST',
+      body: data,
+      cache: 'no-cache',
+    });
+
+    const text = await result.text();
 
     if (result.status === 200) {
-      return (await result
-        .text()
-        .then((data) =>
-          data ? JSON.parse(data) : {},
-        )) as RefreshTokenResponse;
+      return JSON.parse(text ?? '{}') as RefreshTokenResponse;
     }
 
-    throw new Error(
-      'Failed to fetch user data from backend: ' + (await result.text()),
-    );
+    throw new Error('Failed to fetch user data from backend: ' + text);
   } catch (err) {
     console.error('Failed to login', err);
     return null;
@@ -198,15 +179,15 @@ const refreshToken = async (refreshToken: string) => {
 const apiLogin = async () => {
   const data: FormData = new FormData();
 
-  data.append('provider', env.API_PROVIDER as string);
-  data.append('providerId', env.API_PROVIDER_ID as string);
+  data.append('provider', serverEnv.tokens.api_provider as string);
+  data.append('providerId', serverEnv.tokens.api_provider_id as string);
 
   try {
-    const result = await fetch(`${globalEnv.default.url.api}/auth/login`, {
+    const result = await fetch(`${env.url.api}/auth/login`, {
       method: 'POST',
       body: data,
       next: {
-        revalidate: 300,
+        revalidate: 60,
       },
     });
 
@@ -222,15 +203,14 @@ const apiLogin = async () => {
         return;
       }
     }
-
-    throw new Error('Failed to login as API: ' + text);
-  } catch (err) {
-    console.error('Failed to login as API', err);
+    throw new Error(text);
+  } catch (error) {
+    console.log('Failed to login as API: ' + error);
     return null;
   }
 };
 
-const apiRefreshToken = async () => {
+async function apiRefreshToken() {
   console.log('API refresh token');
 
   const result = await refreshToken(authData.refreshToken as string);
@@ -241,14 +221,16 @@ const apiRefreshToken = async () => {
   } else {
     await apiLogout();
   }
-};
+}
 
-const apiLogout = async () => {
-  authData.accessToken = undefined;
-  authData.refreshToken = undefined;
+async function apiLogout() {
+  authData.accessToken = '';
+  authData.refreshToken = '';
   authData.expireTime = Date.now();
 
   console.log('Logged out');
-};
+}
+
+apiLogin();
 
 export { authData };

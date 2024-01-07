@@ -5,7 +5,7 @@ import LoadingSpinner from '@/components/ui/loading-spinner';
 import useClientAPI from '@/hooks/use-client';
 import useSearchId from '@/hooks/use-search-id-params';
 import getPost from '@/query/post/get-post';
-import Post from '@/types/response/Post';
+import { Post } from '@/types/response/Post';
 import { useQuery } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import React from 'react';

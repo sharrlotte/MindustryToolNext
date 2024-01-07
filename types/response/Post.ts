@@ -1,6 +1,6 @@
-import { Like } from "@/types/response/Like";
+import { Like } from '@/types/response/Like';
 
-export default interface Post {
+export interface Post {
   id: string;
   authorId: string;
   header: string;

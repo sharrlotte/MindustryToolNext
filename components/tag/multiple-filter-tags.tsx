@@ -20,7 +20,7 @@ export default function MultipleFilerTags({
       onValueChange={handleTagGroupChange}
       defaultValue={selectedValue}
     >
-      <span className="whitespace-nowrap text-lg capitalize" style={{color: group.color}}>{group.name}</span>
+      <span className="whitespace-nowrap text-lg capitalize" >{group.name}</span>
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.value.map((value, index) => (
         <ToggleGroupItem className="capitalize"  key={index} value={value}>

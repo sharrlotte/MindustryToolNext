@@ -1,6 +1,6 @@
-import { Like } from "./Like";
+import { Like } from './Like';
 
-export default interface Map {
+export interface Map {
   id: string;
   name: string;
   authorId: string;
