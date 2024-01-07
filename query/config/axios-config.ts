@@ -1,5 +1,5 @@
 import env from '@/constant/env';
-import { auth, authData } from '@/auth/config';
+import { auth } from '@/auth/config';
 import Axios from 'axios';
 import { APIInstance } from '@/hooks/use-client';
 
@@ -12,13 +12,12 @@ const axios = Axios.create({
 
 const getServerAPI = async (): Promise<APIInstance> => {
   const session = await auth();
-  const userId = session?.user?.id;
+  const accessToken = session?.user?.accessToken;
 
-  if (userId) {
-    axios.defaults.headers['Authorization'] = authData.accessToken;
-    axios.defaults.headers['Authorization-As'] = userId;
+  if (accessToken) {
+    axios.defaults.headers['Authorization'] = accessToken;
   } else {
-    axios.defaults.headers['Authorization-As'] = '';
+    axios.defaults.headers['Authorization'] = '';
   }
 
   return { axios, enabled: true };
