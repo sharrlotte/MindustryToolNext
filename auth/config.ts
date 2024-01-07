@@ -5,6 +5,7 @@ import env from '@/constant/env';
 import { env as environment } from 'process';
 import { RefreshTokenResponse } from '@/types/response/RefreshTokenResponse';
 import { User } from '@/types/response/User';
+import { JWT } from '@auth/core/jwt';
 
 const authData: {
   accessToken: string;
@@ -86,6 +87,16 @@ export const {
       return token;
     },
   },
+  events: {
+    async signOut(params) {
+      //@ts-ignore
+      const token = params?.token as JWT;
+      //@ts-check
+      if (token) {
+        await logout(token.accessToken);
+      }
+    },
+  },
 });
 
 type GetMeParams = {
@@ -147,6 +158,30 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
   } catch (err) {
     console.error('Failed to login', err);
     return null;
+  }
+};
+
+const logout = async (accessToken: string) => {
+  if (!accessToken) return null;
+
+  try {
+    const result = await fetch(`${env.url.api}/auth/logout`, {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const text = await result.text();
+
+    if (result.status === 200) {
+      return;
+    }
+
+    throw new Error(text);
+  } catch (err) {
+    console.error('Failed to logout', err);
   }
 };
 
