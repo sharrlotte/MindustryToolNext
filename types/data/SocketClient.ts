@@ -13,6 +13,8 @@ export type SocketState =
 export default class SocketClient {
   private socket: ReconnectingWebSocket;
 
+  static instance: SocketClient
+
   public message?: (data: any, event: MessageEvent) => void;
   public error?: (event: ErrorEvent) => void;
   public connect?: (event: Event) => void;
@@ -42,6 +44,9 @@ export default class SocketClient {
     this.socket.onclose = (event) => {
       if (this.disconnect) this.disconnect(event);
     };
+
+    SocketClient.instance?.close();
+    SocketClient.instance = this;
   }
 
   public send(payload: MessagePayload) {
