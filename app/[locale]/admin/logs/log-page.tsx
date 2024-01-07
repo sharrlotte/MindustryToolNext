@@ -9,7 +9,7 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 export default function LogPage() {
   const { socket, state } = useSocket();
 
-  const loaded = useRef(false);
+  const [isLoaded, setLoaded] = useState(false);
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
   const bottomRef = useRef<HTMLSpanElement | null>();
@@ -34,11 +34,11 @@ export default function LogPage() {
   }, []);
 
   useEffect(() => {
-    if (!loaded.current && socket) {
-      loaded.current = true;
+    if (!isLoaded && socket && state === 'connected') {
+      setLoaded(true);
       socket.send({ method: 'LOAD' });
     }
-  }, [socket]);
+  }, [socket, isLoaded,state]);
 
   const sendMessage = () => {
     if (socket && state === 'connected') {
@@ -57,7 +57,7 @@ export default function LogPage() {
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-zinc-900 p-2">
         <div className="flex h-full flex-col gap-2 overflow-auto pr-2">
-          {loaded.current ? (
+          {isLoaded ? (
             log.slice(log.length - 200).map((item, index) => (
               <span className="rounded-lg bg-zinc-700 p-2" key={index}>
                 {item}
