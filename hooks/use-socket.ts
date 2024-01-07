@@ -3,9 +3,8 @@
 import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
-import { Token } from '@/types/data/Token';
+import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
-import { useReadLocalStorage } from 'usehooks-ts';
 
 type UseSocket = {
   socket: SocketClient | undefined;
@@ -18,7 +17,8 @@ export default function useSocket(): UseSocket {
 
   const { enabled } = useClientAPI();
   const state = socket.current?.getState() ?? 'disconnected';
-  const token = useReadLocalStorage<Token>('token');
+  const { data: session } = useSession();
+  const accessToken = session?.user?.accessToken;
 
   const init = useCallback(() => {
     if (!socket.current) {
@@ -26,11 +26,14 @@ export default function useSocket(): UseSocket {
       return;
     }
 
-    if (state !== 'connected' || authenticated.current || !token || !enabled) {
+    if (
+      state !== 'connected' ||
+      authenticated.current ||
+      !accessToken ||
+      !enabled
+    ) {
       return;
     }
-
-    const { accessToken } = token;
 
     socket.current.send({
       method: 'AUTHORIZATION',
@@ -38,7 +41,7 @@ export default function useSocket(): UseSocket {
     });
 
     authenticated.current = true;
-  }, [state, token, enabled]);
+  }, [state, accessToken, enabled]);
 
   useEffect(() => init(), [init]);
 
