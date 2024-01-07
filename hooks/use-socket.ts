@@ -3,9 +3,8 @@
 import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
-import { Token } from '@/types/data/Token';
-import { useCallback, useEffect, useRef } from 'react';
-import { useReadLocalStorage } from 'usehooks-ts';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 type UseSocket = {
   socket: SocketClient | undefined;
@@ -13,37 +12,49 @@ type UseSocket = {
 };
 
 export default function useSocket(): UseSocket {
-  const socket = useRef<SocketClient | undefined>();
-  const authenticated = useRef(false);
+  const [socket, setSocket] = useState<SocketClient | undefined>();
+  const [isAuthenticated, setAuthenticated] = useState(false);
 
   const { enabled } = useClientAPI();
-  const state = socket.current?.getState() ?? 'disconnected';
-  const token = useReadLocalStorage<Token>('token');
+  const [state, setState] = useState<SocketState>('disconnected');
+  const { data: session } = useSession();
+  const accessToken = session?.user?.accessToken;
 
-  const init = useCallback(() => {
-    if (!socket.current) {
-      socket.current = new SocketClient(`${env.url.socket}/socket`);
+  useEffect(() => {
+    if (!socket) {
+      const instance = new SocketClient(`${env.url.socket}/socket`);
+      instance.connect = () => setState('connected');
+      instance.disconnect = () => setState('disconnected');
+      setSocket(instance);
       return;
     }
 
-    if (state !== 'connected' || authenticated.current || !token || !enabled) {
+    return () => {
+      socket?.close();
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    if (
+      state !== 'connected' ||
+      isAuthenticated ||
+      !accessToken ||
+      !enabled ||
+      !socket
+    ) {
       return;
     }
 
-    const { accessToken } = token;
-
-    socket.current.send({
+    socket.send({
       method: 'AUTHORIZATION',
       data: accessToken,
     });
 
-    authenticated.current = true;
-  }, [state, token, enabled]);
-
-  useEffect(() => init(), [init]);
+    setAuthenticated(true);
+  }, [accessToken, enabled, socket, state, isAuthenticated]);
 
   return {
-    socket: socket.current,
-    state: socket.current?.getState() ?? 'disconnected',
+    socket: socket,
+    state: socket?.getState() ?? 'disconnected',
   };
 }

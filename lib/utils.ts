@@ -52,7 +52,7 @@ export function fillMetric(
   return result.map(({ value, time }) => {
     return {
       value: value,
-      time: `${time.getDate()}-${time.getMonth() + 1}-${time.getFullYear()}`,
+      time: time.toLocaleDateString(),
     };
   });
 }

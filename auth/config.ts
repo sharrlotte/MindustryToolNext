@@ -50,9 +50,7 @@ export const {
 
       return session;
     },
-    //@ts-ignore
     async jwt(params) {
-      //@ts-check
       const { token, account, user } = params;
 
       if (account && user) {
@@ -76,12 +74,12 @@ export const {
 
           return token;
         } else {
-          return undefined;
+          return null;
         }
       }
 
       if (token.version !== JWT_VERSION) {
-        return undefined;
+        return null;
       }
 
       return token;

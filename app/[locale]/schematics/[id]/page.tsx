@@ -15,13 +15,15 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
   const { axios } = await getServerAPI();
-  const map = await getSchematic(axios, { id });
+  const schematic = await getSchematic(axios, { id });
 
   return {
-    title: map.name,
+    title: schematic.name,
+    description: schematic.description,
     openGraph: {
-      title: map.name,
-      images: `${env.url.api}/schematics/${map.id}/image`,
+      title: schematic.name,
+      description: schematic.description,
+      images: `${env.url.api}/schematics/${schematic.id}/image`,
     },
   };
 }

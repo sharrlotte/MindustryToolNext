@@ -93,23 +93,23 @@ export default function Home() {
           <b className="text-white">Tìm kiếm bản thiết kế?</b>
           <ul>
             <li>
-              <a
+              <Link
                 className="text-emerald-500 hover:text-emerald-500"
                 href="/schematics"
               >
                 Schematic
-              </a>
+              </Link>
             </li>
           </ul>
           <b className="text-white">Tìm kiếm bản đồ?</b>
           <ul>
             <li>
-              <a
+              <Link
                 className="text-emerald-500 hover:text-emerald-500"
                 href="/maps"
               >
                 Map
-              </a>
+              </Link>
             </li>
           </ul>
           <b> Thông tin về Website</b>
