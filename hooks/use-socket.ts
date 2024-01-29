@@ -12,7 +12,7 @@ type UseSocket = {
 };
 
 export default function useSocket(): UseSocket {
-  const [socket, setSocket] = useState<SocketClient | undefined>();
+  const [socket, setSocket] = useState<SocketClient>();
   const [isAuthenticated, setAuthenticated] = useState(false);
 
   const { enabled } = useClientAPI();

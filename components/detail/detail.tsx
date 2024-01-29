@@ -7,14 +7,14 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 function Detail({ className, children }: DetailProps) {
   return (
-    <Card
+    <div
       className={cn(
-        'relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden rounded-xl border p-2 lg:items-stretch',
+        'relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden p-4 lg:items-stretch',
         className,
       )}
     >
       {children}
-    </Card>
+    </div>
   );
 }
 type InfoProps = React.HTMLAttributes<HTMLDivElement>;
