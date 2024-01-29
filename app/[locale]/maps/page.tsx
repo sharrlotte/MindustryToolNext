@@ -1,29 +1,29 @@
-import React from 'react';
-import MapsPage from './maps-page';
-import getQueryClient from '@/query/config/query-client';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+'use client';
+
+import MapPreview from '@/components/map/map-preview';
 import getMaps from '@/query/map/get-maps';
-import { PageableSearchQuery } from '@/types/data/pageable-search-schema';
-import getServerAPI from '@/query/config/axios-config';
+import NameTagSearch from '@/components/search/name-tag-search';
+import InfinitePage from '@/components/common/infinite-page';
+import useTags from '@/hooks/use-tags';
+import { useRef } from 'react';
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: PageableSearchQuery;
-}) {
-  const queryClient = getQueryClient();
-  const { axios } = await getServerAPI();
-
-  await queryClient.prefetchInfiniteQuery({
-    initialPageParam: searchParams,
-    queryKey: ['maps', searchParams],
-    queryFn: (context) => getMaps(axios, context.pageParam),
-  });
-  const dehydratedState = dehydrate(queryClient);
+export default function MapPage() {
+  const data = useTags();
+  const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
-    <HydrationBoundary state={dehydratedState}>
-      <MapsPage />
-    </HydrationBoundary>
+    <div
+      className="flex h-full w-full flex-col gap-2 overflow-y-auto p-4"
+      ref={(ref) => (scrollContainer.current = ref)}
+    >
+      <NameTagSearch tags={data.map} />
+      <InfinitePage
+        queryKey={['maps']}
+        getFunc={getMaps}
+        scrollContainer={scrollContainer.current}
+      >
+        {(data) => <MapPreview key={data.id} map={data} />}
+      </InfinitePage>
+    </div>
   );
 }

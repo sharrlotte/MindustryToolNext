@@ -15,28 +15,29 @@ import { LikeAction, LikeTarget } from '@/constant/enum';
 import { useMutation } from '@tanstack/react-query';
 import postLike from '@/query/like/post-like';
 import useClientAPI from '@/hooks/use-client';
-import { LikeChange } from '@/types/response/LikeChange';
+import { match } from 'assert';
+
+type LikeData = Like & { count: number };
 
 type LikeContextType = {
-  likeData: Like;
-  likeCount: number;
+  likeData: LikeData;
   isLoading: boolean;
-  handleLike: () => Like;
-  handleDislike: () => Like;
+  handleLike: () => void;
+  handleDislike: () => void;
 };
 
-const FakeLike: Like = {
+const FakeLike: LikeData = {
   userId: '',
   targetId: '',
   state: 0,
+  count: 0,
 };
 
 const defaultContextValue: LikeContextType = {
   likeData: FakeLike,
-  likeCount: 0,
   isLoading: false,
-  handleLike: () => FakeLike,
-  handleDislike: () => FakeLike,
+  handleLike: () => {},
+  handleDislike: () => {},
 };
 
 const LikeContext = React.createContext(defaultContextValue);
@@ -49,34 +50,30 @@ type LikeComponentProps = {
   initialLikeData: Like;
   targetType: LikeTarget;
   targetId: string;
-  onSuccess?: (result: LikeChange, request: LikeAction) => void;
-  onFailure?: () => void;
 };
 
 function LikeComponent({
   initialLikeCount = 0,
-  initialLikeData = FakeLike,
+  initialLikeData,
   children,
   targetType,
   targetId,
-  onSuccess,
-  onFailure,
 }: LikeComponentProps) {
   const { data: session, status } = useSession();
   const { axios } = useClientAPI();
-  const [likeCount, setLikeCount] = useState(initialLikeCount);
-  const [likeData, setLikeData] = useState(initialLikeData);
+  const [likeData, setLikeData] = useState({
+    ...(initialLikeData ?? FakeLike),
+    count: initialLikeCount,
+  });
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (action: LikeAction) =>
-      postLike(axios, {
+    mutationFn: async (action: LikeAction) =>
+      await postLike(axios, {
         action,
         targetType,
         targetId,
       }),
-    onSuccess,
-    onError: onFailure,
   });
 
   const requireLogin = () => {
@@ -87,26 +84,58 @@ function LikeComponent({
   };
 
   const handleLike = () => {
-    if (status === 'authenticated' && session?.user) {
-    } else {
-      requireLogin();
+    if (isPending) {
+      return;
     }
 
-    return FakeLike;
-  };
-  const handleDislike = () => {
-    if (status === 'authenticated' && session?.user) {
-    } else {
-      requireLogin();
+    if (status !== 'authenticated' || !session?.user) {
+      return requireLogin();
     }
-    return FakeLike;
+
+    const change = likeData.state === -1 ? 2 : likeData.state === 0 ? 1 : -1;
+    const state = likeData.state === -1 ? 1 : likeData.state === 0 ? 1 : 0;
+
+    setLikeData({
+      ...likeData,
+      state,
+      count: likeData.count + change,
+    });
+    return mutate('LIKE', {
+      onError: () => setLikeData({ ...likeData }),
+      onSuccess: (result) =>
+        setLikeData({ count: likeData.count + result.amount, ...result.like }),
+    });
+  };
+
+  const handleDislike = () => {
+    if (isPending) {
+      return;
+    }
+
+    if (status !== 'authenticated' || !session?.user) {
+      return requireLogin();
+    }
+
+    const change = likeData.state === 1 ? 2 : likeData.state === 0 ? 1 : -1;
+    const state = likeData.state === 1 ? -1 : likeData.state === 0 ? -1 : 0;
+
+    setLikeData({
+      ...likeData,
+      state,
+      count: likeData.count - change,
+    });
+
+    return mutate('DISLIKE', {
+      onError: () => setLikeData({ ...likeData }),
+      onSuccess: (result) =>
+        setLikeData({ count: likeData.count + result.amount, ...result.like }),
+    });
   };
 
   return (
     <LikeContext.Provider
       value={{
         likeData,
-        likeCount,
         isLoading: status === 'loading' || isPending,
         handleLike,
         handleDislike,
@@ -152,17 +181,18 @@ function DislikeButton({ className, ...props }: LikeButtonProps) {
   );
 }
 function LikeCount({ className, ...props }: LikeButtonProps) {
-  const { likeCount } = useLike();
+  const { likeData } = useLike();
+  const { count } = likeData;
 
   return (
     <Button
       className={cn(className, {
-        'text-destructive hover:text-destructive': likeCount < 0,
-        'text-success hover:text-success': likeCount > 0,
+        'text-destructive hover:text-destructive': count < 0,
+        'text-success hover:text-success': count > 0,
       })}
       {...props}
     >
-      {likeCount}
+      {count}
     </Button>
   );
 }

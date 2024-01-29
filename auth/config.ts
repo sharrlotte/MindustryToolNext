@@ -5,7 +5,7 @@ import env from '@/constant/env';
 import { env as environment } from 'process';
 import { RefreshTokenResponse } from '@/types/response/RefreshTokenResponse';
 import { User } from '@/types/response/User';
-import { JWT } from '@auth/core/jwt';
+import { JWT } from 'next-auth/jwt';
 
 const authData: {
   accessToken: string;
@@ -39,16 +39,19 @@ export const {
   ],
   callbacks: {
     async session(params) {
-      const { session, token } = params;
+      if ('token' in params) {
+        const { session, token } = params;
 
-      if (session.user && token) {
-        session.user.id = token.userId;
-        session.user.name = token.name ?? '';
-        session.user.roles = token.roles || [];
-        session.user.accessToken = token.accessToken;
+        if (session.user && token) {
+          session.user.id = token.userId;
+          session.user.name = token.name ?? '';
+          session.user.roles = token.roles || [];
+          session.user.accessToken = token.accessToken;
+        }
+        return session;
       }
 
-      return session;
+      return params.session;
     },
     async jwt(params) {
       const { token, account, user } = params;

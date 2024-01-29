@@ -1,3 +1,5 @@
+'use client';
+
 import Markdown from '@/components/common/markdown';
 import LikeComponent from '@/components/like/like-component';
 import TagCard from '@/components/tag/tag-card';

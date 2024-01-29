@@ -1,3 +1,5 @@
+'use client';
+
 import Detail from '@/components/detail/detail';
 import LikeComponent from '@/components/like/like-component';
 import TagCard from '@/components/tag/tag-card';

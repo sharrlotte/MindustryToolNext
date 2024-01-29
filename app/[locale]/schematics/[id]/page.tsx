@@ -1,11 +1,10 @@
-import SchematicPage from '@/app/[locale]/schematics/[id]/schematic-page';
+import SchematicDetail from '@/components/schematic/schematic-detail';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/axios-config';
-import getQueryClient from '@/query/config/query-client';
 import getSchematic from '@/query/schematic/get-schematic';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import React from 'react';
 
 type Props = {
@@ -28,18 +27,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 export default async function Page({ params }: { params: IdSearchParams }) {
-  const queryClient = getQueryClient();
   const { axios } = await getServerAPI();
+  const schematic = await getSchematic(axios, params);
 
-  await queryClient.prefetchQuery({
-    queryKey: ['schematic', params],
-    queryFn: () => getSchematic(axios, params),
-  });
-  const dehydratedState = dehydrate(queryClient);
+  if (!schematic) {
+    return notFound();
+  }
 
-  return (
-    <HydrationBoundary state={dehydratedState}>
-      <SchematicPage />
-    </HydrationBoundary>
-  );
+  return <SchematicDetail schematic={schematic} />;
 }

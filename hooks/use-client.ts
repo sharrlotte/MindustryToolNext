@@ -1,3 +1,5 @@
+'use client';
+
 import env from '@/constant/env';
 import Axios, { AxiosInstance } from 'axios';
 import { useSession } from 'next-auth/react';

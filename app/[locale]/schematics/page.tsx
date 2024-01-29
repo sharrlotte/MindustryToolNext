@@ -1,27 +1,29 @@
-import React from 'react';
-import SchematicsPage from './schematics-page';
-import getQueryClient from '@/query/config/query-client';
-import getMaps from '@/query/map/get-maps';
-import { PageableSearchQuery } from '@/types/data/pageable-search-schema';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import getServerAPI from '@/query/config/axios-config';
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: PageableSearchQuery;
-}) {
-  const queryClient = getQueryClient();
-  const { axios } = await getServerAPI();
-  await queryClient.prefetchInfiniteQuery({
-    initialPageParam: searchParams,
-    queryKey: ['schematics', searchParams],
-    queryFn: (context) => getMaps(axios, context.pageParam),
-  });
-  const dehydratedState = dehydrate(queryClient);
+'use client';
+
+import SchematicPreview from '@/components/schematic/schematic-preview';
+import getSchematics from '@/query/schematic/get-schematics';
+import NameTagSearch from '@/components/search/name-tag-search';
+import InfinitePage from '@/components/common/infinite-page';
+import useTags from '@/hooks/use-tags';
+import { useRef } from 'react';
+
+export default function Page() {
+  const data = useTags();
+  const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
-    <HydrationBoundary state={dehydratedState}>
-      <SchematicsPage />
-    </HydrationBoundary>
+    <div
+      className="flex h-full flex-col gap-2 overflow-y-auto p-4"
+      ref={(ref) => (scrollContainer.current = ref)}
+    >
+      <NameTagSearch tags={data.schematic} />
+      <InfinitePage
+        queryKey={['schematics']}
+        getFunc={getSchematics}
+        scrollContainer={scrollContainer.current}
+      >
+        {(data) => <SchematicPreview key={data.id} schematic={data} />}
+      </InfinitePage>
+    </div>
   );
 }
