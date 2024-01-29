@@ -1,6 +1,6 @@
 import LoginButton from '@/components/common/login-button';
 import { UserRole } from '@/constant/enum';
-import { Session } from 'next-auth/types';
+import { Session } from 'next-auth';
 import React, { ReactNode } from 'react';
 
 type Props = {
