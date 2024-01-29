@@ -1,12 +1,11 @@
-import PostPage from '@/app/[locale]/posts/[id]/post-page';
 import React from 'react';
 
 import type { Metadata } from 'next';
 import getPost from '@/query/post/get-post';
-import getQueryClient from '@/query/config/query-client';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import getServerAPI from '@/query/config/axios-config';
+import { notFound } from 'next/navigation';
+import PostDetail from '@/components/post/post-detail';
 
 type Props = {
   params: { id: string };
@@ -19,23 +18,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: post.header,
-    description: post.content
+    description: post.content,
   };
 }
 
 export default async function Page({ params }: { params: IdSearchParams }) {
-  const queryClient = getQueryClient();
   const { axios } = await getServerAPI();
+  const post = await getPost(axios, params);
 
-  await queryClient.prefetchQuery({
-    queryKey: ['post', params],
-    queryFn: () => getPost(axios, params),
-  });
-  const dehydratedState = dehydrate(queryClient);
+  if (!post) {
+    return notFound();
+  }
 
-  return (
-    <HydrationBoundary state={dehydratedState}>
-      <PostPage />
-    </HydrationBoundary>
-  );
+  return <PostDetail post={post} />;
 }
