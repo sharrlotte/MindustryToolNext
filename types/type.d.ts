@@ -1,6 +1,6 @@
 import { UserRole } from '@/constant/enum';
 import NextAuth, { User, Session, DefaultSession, DefaultJWT } from 'next-auth';
-import { JWT, DefaultJWT } from '@auth/core/jwt';
+import { JWT, DefaultJWT } from '@auth/core/types';
 
 declare module 'next-auth' {
   interface Session {
@@ -14,7 +14,7 @@ declare module 'next-auth' {
   }
 }
 
-declare module '@auth/core/jwt' {
+declare module 'next-auth/jwt' {
   interface JWT extends DefaultJWT {
     userId: string;
     roles: UserRole[];
