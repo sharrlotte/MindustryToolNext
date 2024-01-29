@@ -54,7 +54,7 @@ type LikeComponentProps = {
 
 function LikeComponent({
   initialLikeCount = 0,
-  initialLikeData = FakeLike,
+  initialLikeData,
   children,
   targetType,
   targetId,
@@ -62,7 +62,7 @@ function LikeComponent({
   const { data: session, status } = useSession();
   const { axios } = useClientAPI();
   const [likeData, setLikeData] = useState({
-    ...initialLikeData,
+    ...(initialLikeData ?? FakeLike),
     count: initialLikeCount,
   });
   const { toast } = useToast();
