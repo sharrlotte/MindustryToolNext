@@ -1,8 +1,5 @@
 /* @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    scrollRestoration: true,
-  },
   reactStrictMode: true,
   images: {
     unoptimized: true,
@@ -26,7 +23,7 @@ const nextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: 'res.cloudinary.com/dyx7yui8u/image/upload/v1703328847',
         port: '',
         pathname: '/**',
