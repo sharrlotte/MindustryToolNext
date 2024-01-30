@@ -15,10 +15,10 @@ import {
   MapIcon,
   ServerStackIcon,
   CommandLineIcon,
-  Cog6ToothIcon,
-  BellIcon,
   UserCircleIcon,
-} from '@heroicons/react/24/outline';
+  ArrowUpTrayIcon,
+} from '@heroicons/react/24/solid';
+import { BellIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
 
 import { useSession } from 'next-auth/react';
 import OutsideWrapper from '@/components/ui/outside-wrapper';
@@ -244,6 +244,11 @@ const paths: Path[] = [
     path: '/logic', //
     name: 'Logic',
     icon: <CommandLineIcon className="h-6 w-6" />,
+  },
+  {
+    path: '/upload', //
+    name: 'Upload',
+    icon: <ArrowUpTrayIcon className="h-6 w-6" />,
   },
   {
     path: '/admin', //
