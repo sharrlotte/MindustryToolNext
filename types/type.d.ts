@@ -9,7 +9,7 @@ declare module 'next-auth' {
       accessToken?: string;
       roles: UserRole[];
       name: string;
-      image: string;
+      imageUrl?: string | null;
     } & DefaultSession['user'];
   }
 }

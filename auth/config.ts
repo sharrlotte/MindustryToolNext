@@ -45,6 +45,7 @@ export const {
         if (session.user && token) {
           session.user.id = token.userId;
           session.user.name = token.name ?? '';
+          session.user.imageUrl = session.user.image;
           session.user.roles = token.roles || [];
           session.user.accessToken = token.accessToken;
         }
