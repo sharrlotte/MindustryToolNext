@@ -1,5 +1,5 @@
 import { auth } from '@/auth/config';
-import ProtectedRoute from '@/components/layout/protected-route';
+import ProtectedRoute from '@/layout/protected-route';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
