@@ -7,13 +7,15 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 function Detail({ className, children }: DetailProps) {
   return (
-    <div
-      className={cn(
-        'relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden p-4 lg:items-stretch',
-        className,
-      )}
-    >
-      {children}
+    <div className="absolute h-full w-full bg-background backdrop-blur-sm">
+      <div
+        className={cn(
+          'relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden p-4 lg:items-stretch',
+          className,
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import SchematicDetail from '@/components/schematic/schematic-detail';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/axios-config';
 import getSchematic from '@/query/schematic/get-schematic';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import React from 'react';
 
 type Props = {
@@ -26,12 +26,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 }
+
 export default async function Page({ params }: { params: IdSearchParams }) {
   const { axios } = await getServerAPI();
   const schematic = await getSchematic(axios, params);
 
   if (!schematic) {
-    return notFound();
+    return <div>Not found</div>;
   }
 
   return <SchematicDetail schematic={schematic} />;

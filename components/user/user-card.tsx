@@ -20,15 +20,4 @@ function UserCard({ user }: UserCardProps) {
   );
 }
 
-function Loading() {
-  return (
-    <div className="flex h-8 w-56 items-end justify-start gap-2">
-      <Skeleton className="block h-8 w-8 rounded-full border border-border" />
-      <Skeleton className="h-full w-full flex-1" />
-    </div>
-  );
-}
-
-UserCard.Loading = Loading;
-
 export default UserCard;

@@ -1,4 +1,3 @@
-
 import Search from '@/components/search/search-input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -199,7 +198,7 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />
               </Search>
-              <CardContent className="no-scrollbar flex h-full w-full flex-col  overflow-y-auto overscroll-none p-0 ">
+              <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
                 <SortTags
                   filter={filter}
                   selectedSortTag={selectedSortTag}

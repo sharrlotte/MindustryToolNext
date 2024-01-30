@@ -24,7 +24,7 @@ import { useSession } from 'next-auth/react';
 import OutsideWrapper from '@/components/ui/outside-wrapper';
 import Image from 'next/image';
 import UserAvatar from '@/components/user/user-avatar';
-import ProtectedElement from '@/components/layout/protected-element';
+import ProtectedElement from '@/layout/protected-element';
 import LoginButton from '@/components/common/login-button';
 import UserRoleCard from '@/components/user/user-role';
 import LogoutButton from '@/components/common/logout-button';
