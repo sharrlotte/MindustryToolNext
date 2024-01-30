@@ -1,4 +1,5 @@
 import SchematicDetail from '@/components/schematic/schematic-detail';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/axios-config';
 import getSchematic from '@/query/schematic/get-schematic';

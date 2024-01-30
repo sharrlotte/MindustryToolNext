@@ -1,5 +1,6 @@
 'use client';
 
+import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import UserCard from '@/components/user/user-card';
 import useClientAPI from '@/hooks/use-client';
 import getUser from '@/query/user/get-user';
@@ -32,7 +33,7 @@ function FletchUserCard({ id }: IdUserCardProps) {
   }
 
   if (isLoading || !data) {
-    return <UserCard.Loading />;
+    return <UserCardSkeleton />;
   }
 
   return <UserCard user={data} />;
