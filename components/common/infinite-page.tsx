@@ -1,7 +1,7 @@
 'use client';
 
 import NoResult from '@/components/common/no-result';
-import LoadingSpinner from '@/components/ui/loading-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { cn } from '@/lib/utils';
 import { PageableSearchQuery } from '@/types/data/pageable-search-schema';
@@ -49,16 +49,20 @@ export default function InfinitePage<T>({
     <div className="h-full w-full">
       <InfiniteScroll
         className={cn(
-          className ??
-            'grid min-h-full w-full grid-cols-[repeat(auto-fill,var(--preview-size))] items-center justify-center gap-4 p-4',
+          'grid w-full grid-cols-[repeat(auto-fill,var(--preview-size))] justify-center gap-4',
+          className,
         )}
         pageStart={0}
         loadMore={(_: number) => fetchNextPage()}
         hasMore={hasNextPage}
         loader={
-          <LoadingSpinner key="Loading" className="col-span-full flex w-full items-center justify-center" />
+          <LoadingSpinner
+            key="Loading"
+            className="col-span-full flex w-full items-center justify-center"
+          />
         }
         useWindow={false}
+        threshold={1000}
         getScrollParent={() => scrollContainer}
       >
         {pages.map((data) => children(data))}

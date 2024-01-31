@@ -1,17 +1,24 @@
-import { Card } from '@/components/ui/card';
+import ColorText from '@/components/common/color-text';
+import TagCard from '@/components/tag/tag-card';
 import { cn } from '@/lib/utils';
+import Tag, { Tags } from '@/types/response/Tag';
 import Image from 'next/image';
 import React, { HTMLAttributes } from 'react';
 
-type DetailProps = HTMLAttributes<HTMLDivElement>;
+type DetailProps = HTMLAttributes<HTMLDivElement> & {
+  padding?: boolean;
+};
 
-function Detail({ className, children }: DetailProps) {
+function Detail({ className, children, padding }: DetailProps) {
   return (
-    <div className="absolute h-full w-full bg-background backdrop-blur-sm">
+    <div className="absolute h-full w-full bg-background">
       <div
         className={cn(
-          'relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden p-4 lg:items-stretch',
+          'relative flex h-full w-full flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch',
           className,
+          {
+            'p-2': padding,
+          },
         )}
       >
         {children}
@@ -29,10 +36,16 @@ function Info({ className, children }: InfoProps) {
   );
 }
 
-type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
+type TitleProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
+  children: string;
+};
 
-function Header({ className, children }: HeaderProps) {
-  return <h1 className={cn('text-xl capitalize', className)}>{children}</h1>;
+function Title({ className, children }: TitleProps) {
+  return (
+    <h1 className={cn('text-2xl capitalize', className)}>
+      <ColorText text={children} />
+    </h1>
+  );
 }
 
 type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
@@ -64,6 +77,16 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
 
 type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
 
+function Header({ className, children }: HeaderProps) {
+  return (
+    <section className={cn('flex flex-col gap-1', className)}>
+      {children}
+    </section>
+  );
+}
+
+type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
+
 function Actions({ className, children }: ActionsProps) {
   return (
     <section className={cn('flex items-center gap-1', className)}>
@@ -72,12 +95,33 @@ function Actions({ className, children }: ActionsProps) {
   );
 }
 
-type DescriptionProps = React.HTMLAttributes<HTMLDivElement>;
+type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
+  tags: string[];
+};
+
+function TagsCard({ className, tags }: TagsProps) {
+  const values = Tags.parseStringArray(tags);
+
+  return (
+    <section className={cn('flex flex-wrap gap-1', className)}>
+      {values.map((item, index) => (
+        <TagCard key={index} tag={item} />
+      ))}
+    </section>
+  );
+}
+
+type DescriptionProps = Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'children'
+> & {
+  children: string;
+};
 
 function Description({ className, children }: DescriptionProps) {
   return (
     <section className={cn('flex flex-col gap-1', className)}>
-      {children}
+      <ColorText text={children} />
     </section>
   );
 }
@@ -86,6 +130,8 @@ Detail.Info = Info;
 Detail.Header = Header;
 Detail.Actions = Actions;
 Detail.Image = PImage;
+Detail.Title = Title;
 Detail.Description = Description;
+Detail.Tags = TagsCard;
 
 export default Detail;

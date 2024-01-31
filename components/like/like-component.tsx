@@ -15,7 +15,6 @@ import { LikeAction, LikeTarget } from '@/constant/enum';
 import { useMutation } from '@tanstack/react-query';
 import postLike from '@/query/like/post-like';
 import useClientAPI from '@/hooks/use-client';
-import { match } from 'assert';
 
 type LikeData = Like & { count: number };
 

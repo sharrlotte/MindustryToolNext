@@ -8,7 +8,7 @@ type UserAvatarProps = {
   user: {
     name?: string | null;
     id: string;
-    image: string;
+    imageUrl?: string | null;
   };
 };
 
@@ -67,14 +67,14 @@ const colorArray = [
 
 export default function UserAvatar({
   className,
-  user: { id, image, name },
+  user: { id, imageUrl, name },
 }: UserAvatarProps) {
   const [isError, setError] = useState(false);
 
   const username = name ?? '';
 
   const render = () => {
-    if (isError || !image) {
+    if (isError || !imageUrl) {
       let total = 0;
       for (let i = 0; i < username.length; i++) {
         total += username.charCodeAt(i);
@@ -98,7 +98,7 @@ export default function UserAvatar({
         className={cn('rounded-full border border-border', className)}
         height={32}
         width={32}
-        src={image}
+        src={imageUrl}
         alt={username}
         onError={() => setError(true)}
       />

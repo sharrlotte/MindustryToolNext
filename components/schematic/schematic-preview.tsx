@@ -6,9 +6,10 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import LikeComponent from '@/components/like/like-component';
 import { toast } from '@/hooks/use-toast';
-import CopyButton from '@/components/ui/copy-button';
-import DownloadButton from '@/components/ui/download-button';
+import CopyButton from '@/components/button/copy-button';
+import DownloadButton from '@/components/button/download-button';
 import useClientAPI from '@/hooks/use-client';
+import getSchematicData from '@/query/schematic/get-schematic-data';
 
 type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -23,14 +24,14 @@ export default function SchematicPreview({
 
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
-  const getSchematicData = async () => {
+  const getData = async () => {
     const { dismiss } = toast({
       title: 'Coping',
       content: 'Downloading data from server',
     });
-    const result = await axios.get(`/schematics/${schematic.id}/data`);
+    const result = await getSchematicData(axios, schematic.id);
     dismiss();
-    return result.data as Promise<string>;
+    return result;
   };
 
   return (
@@ -60,7 +61,7 @@ export default function SchematicPreview({
             title="Copied"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}
-            data={getSchematicData}
+            data={getData}
           />
           <DownloadButton
             href={`${env.url.api}/schematics/${schematic.id}/download`}

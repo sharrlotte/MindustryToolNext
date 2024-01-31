@@ -1,16 +1,9 @@
 'use client';
 
-import env from '@/constant/env';
-import Axios, { AxiosInstance } from 'axios';
+import axiosInstance from '@/query/config/config';
+import { AxiosInstance } from 'axios';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
-
-const axios = Axios.create({
-  baseURL: env.url.api,
-  paramsSerializer: {
-    indexes: null,
-  },
-});
 
 export type APIInstance = {
   axios: AxiosInstance;
@@ -27,11 +20,11 @@ export default function useClientAPI(): APIInstance {
     }
 
     if (accessToken)
-      axios.defaults.headers['Authorization'] = 'Bearer ' + accessToken;
+      axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + accessToken;
     else {
-      axios.defaults.headers['Authorization'] = '';
+      axiosInstance.defaults.headers['Authorization'] = '';
     }
   }, [status, accessToken]);
 
-  return { axios, enabled: status !== 'loading' };
+  return { axios: axiosInstance, enabled: status !== 'loading' };
 }

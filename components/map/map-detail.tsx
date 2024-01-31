@@ -2,26 +2,24 @@
 
 import Detail from '@/components/detail/detail';
 import LikeComponent from '@/components/like/like-component';
-import TagCard from '@/components/tag/tag-card';
 import BackButton from '@/components/ui/back-button';
-import CopyButton from '@/components/ui/copy-button';
+import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { Map } from '@/types/response/Map';
-import { Tags } from '@/types/response/Tag';
 import React, { HTMLAttributes } from 'react';
-import DownloadButton from '@/components/ui/download-button';
+import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 
 type MapDetailProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;
+  padding?: boolean;
 };
 
-export default function MapDetail({ map }: MapDetailProps) {
-  const tags = Tags.parseStringArray(map.tags);
+export default function MapDetail({ map, padding }: MapDetailProps) {
   const link = `${env.url.base}/maps/${map.id}`;
 
   return (
-    <Detail>
+    <Detail padding={padding}>
       <Detail.Info>
         <div className="relative">
           <CopyButton
@@ -37,16 +35,12 @@ export default function MapDetail({ map }: MapDetailProps) {
             alt={map.name}
           />
         </div>
-        <Detail.Description>
-          <Detail.Header>{map.name}</Detail.Header>
+        <Detail.Header>
+          <Detail.Title>{map.name}</Detail.Title>
           <IdUserCard id={map.authorId} />
-          <p>{map.description}</p>
-          <section className="flex flex-wrap gap-1">
-            {tags.map((item, index) => (
-              <TagCard key={index} tag={item} />
-            ))}
-          </section>
-        </Detail.Description>
+          <Detail.Description>{map.description}</Detail.Description>
+          <Detail.Tags tags={map.tags} />
+        </Detail.Header>
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
         <div className="flex gap-1">

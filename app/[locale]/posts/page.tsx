@@ -8,15 +8,15 @@ import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
 
 export default function PostsPage() {
-  const data = useTags();
+  const { post } = useTags();
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
     <div
-      className="flex h-full w-full flex-col gap-4 overflow-y-auto p-4"
+      className="flex h-full w-full flex-col gap-4 overflow-y-auto p-2"
       ref={(ref) => (scrollContainer.current = ref)}
     >
-      <NameTagSearch tags={data.post} />
+      <NameTagSearch tags={post} />
       <InfinitePage
         className="flex flex-col gap-2"
         queryKey={['posts']}

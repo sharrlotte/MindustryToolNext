@@ -4,7 +4,7 @@ import env from '@/constant/env';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import LikeComponent from '@/components/like/like-component';
-import CopyButton from '@/components/ui/copy-button';
+import CopyButton from '@/components/button/copy-button';
 import IdUserCard from '@/components/user/id-user-card';
 
 type PostPreviewProps = HTMLAttributes<HTMLDivElement> & {

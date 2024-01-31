@@ -15,19 +15,19 @@ import {
   MapIcon,
   ServerStackIcon,
   CommandLineIcon,
-  Cog6ToothIcon,
-  BellIcon,
   UserCircleIcon,
-} from '@heroicons/react/24/outline';
+  ArrowUpTrayIcon,
+} from '@heroicons/react/24/solid';
+import { BellIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
 
 import { useSession } from 'next-auth/react';
-import OutsideWrapper from '@/components/ui/outside-wrapper';
+import OutsideWrapper from '@/components/common/outside-wrapper';
 import Image from 'next/image';
 import UserAvatar from '@/components/user/user-avatar';
 import ProtectedElement from '@/layout/protected-element';
-import LoginButton from '@/components/common/login-button';
+import LoginButton from '@/components/button/login-button';
 import UserRoleCard from '@/components/user/user-role';
-import LogoutButton from '@/components/common/logout-button';
+import LogoutButton from '@/components/button/logout-button';
 import { UserRole } from '@/constant/enum';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -79,7 +79,7 @@ export default function NavigationBar() {
             <div className="flex h-full flex-col justify-between p-2">
               <div className="flex flex-col gap-4">
                 <span className="flex flex-col gap-2">
-                  <span className="flex items-center justify-start gap-2 rounded-sm bg-zinc-900 p-2">
+                  <span className="flex items-center justify-start gap-2 rounded-sm bg-card p-2">
                     <Image
                       className="rounded-sm"
                       src="https://cdn.discordapp.com/attachments/1009013837946695730/1106504291465834596/a_cda53ec40b5d02ffdefa966f2fc013b8.gif"
@@ -91,7 +91,7 @@ export default function NavigationBar() {
                       MindustryTool
                     </span>
                   </span>
-                  <span className="rounded-sm bg-zinc-900 p-2 text-xs">
+                  <span className="rounded-sm bg-card p-2 text-xs">
                     {env.webVersion}
                   </span>
                 </span>
@@ -136,7 +136,7 @@ function UserDisplay() {
 
   if (status === 'authenticated' && session?.user) {
     return (
-      <div className="flex h-16 flex-1 items-center justify-between rounded-sm bg-zinc-900 p-1">
+      <div className="flex h-16 flex-1 items-center justify-between rounded-sm bg-card p-1">
         <div className="flex items-center justify-center gap-1">
           <UserAvatar className="h-12 w-12" user={session.user} />
           <div className="grid p-1">
@@ -155,7 +155,7 @@ function UserDisplay() {
 
   if (status === 'loading') {
     return (
-      <Skeleton className="flex h-16 flex-1 items-center justify-between rounded-sm bg-zinc-900 p-1" />
+      <Skeleton className="flex h-16 flex-1 items-center justify-between rounded-sm bg-card p-1" />
     );
   }
 
@@ -244,6 +244,11 @@ const paths: Path[] = [
     path: '/logic', //
     name: 'Logic',
     icon: <CommandLineIcon className="h-6 w-6" />,
+  },
+  {
+    path: '/upload', //
+    name: 'Upload',
+    icon: <ArrowUpTrayIcon className="h-6 w-6" />,
   },
   {
     path: '/admin', //

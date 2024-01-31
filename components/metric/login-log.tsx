@@ -1,13 +1,13 @@
 'use client';
 
-import LoadingSpinner from '@/components/ui/loading-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import { APIInstance } from '@/hooks/use-client';
 import getLogs from '@/query/log/get-logs';
 import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
 
 const background =
-  'rounded-lg bg-zinc-900 p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
+  'rounded-lg bg-card p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
 
 const chart = 'h-[400px]';
 

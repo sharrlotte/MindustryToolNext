@@ -1,7 +1,7 @@
 import SchematicDetail from '@/components/schematic/schematic-detail';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import env from '@/constant/env';
-import getServerAPI from '@/query/config/axios-config';
+import getServerAPI from '@/query/config/get-server-api';
 import getSchematic from '@/query/schematic/get-schematic';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { Metadata } from 'next';
@@ -35,5 +35,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
     return <div>Not found</div>;
   }
 
-  return <SchematicDetail schematic={schematic} />;
+  return <SchematicDetail schematic={schematic} padding />;
 }

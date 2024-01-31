@@ -8,15 +8,15 @@ import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
 
 export default function MapPage() {
-  const data = useTags();
+  const { map } = useTags();
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
     <div
-      className="flex h-full w-full flex-col gap-2 overflow-y-auto p-4"
+      className="flex h-full w-full flex-col gap-4 overflow-y-auto p-2"
       ref={(ref) => (scrollContainer.current = ref)}
     >
-      <NameTagSearch tags={data.map} />
+      <NameTagSearch tags={map} />
       <InfinitePage
         queryKey={['maps']}
         getFunc={getMaps}
