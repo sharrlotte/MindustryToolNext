@@ -1,7 +1,7 @@
 'use client';
 
 import NoResult from '@/components/common/no-result';
-import LoadingSpinner from '@/components/ui/loading-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { cn } from '@/lib/utils';
 import { PageableSearchQuery } from '@/types/data/pageable-search-schema';

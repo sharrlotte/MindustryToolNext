@@ -1,6 +1,6 @@
 'use client';
 
-import LoadingSpinner from '@/components/ui/loading-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import { APIInstance } from '@/hooks/use-client';
 import { fillMetric } from '@/lib/utils';
 import getMetric from '@/query/metric/get-metric';

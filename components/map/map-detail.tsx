@@ -4,12 +4,12 @@ import Detail from '@/components/detail/detail';
 import LikeComponent from '@/components/like/like-component';
 import TagCard from '@/components/tag/tag-card';
 import BackButton from '@/components/ui/back-button';
-import CopyButton from '@/components/ui/copy-button';
+import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { Map } from '@/types/response/Map';
 import { Tags } from '@/types/response/Tag';
 import React, { HTMLAttributes } from 'react';
-import DownloadButton from '@/components/ui/download-button';
+import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 
 type MapDetailProps = HTMLAttributes<HTMLDivElement> & {

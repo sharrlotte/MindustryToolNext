@@ -1,6 +1,5 @@
 import ColorText from '@/components/common/color-text';
 import TagCard from '@/components/tag/tag-card';
-import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import Tag, { Tags } from '@/types/response/Tag';
 import Image from 'next/image';
@@ -10,10 +9,10 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 function Detail({ className, children }: DetailProps) {
   return (
-    <div className="absolute h-full w-full bg-background backdrop-blur-sm">
+    <div className="absolute h-full w-full bg-background">
       <div
         className={cn(
-          'relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden p-4 lg:items-stretch',
+          'relative flex h-full w-full flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch',
           className,
         )}
       >

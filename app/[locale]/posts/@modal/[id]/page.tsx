@@ -3,7 +3,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import getPost from '@/query/post/get-post';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import getServerAPI from '@/query/config/axios-config';
+import getServerAPI from '@/query/config/get-server-api';
 import { notFound } from 'next/navigation';
 import PostDetail from '@/components/post/post-detail';
 

@@ -1,4 +1,4 @@
-import LoginButton from '@/components/common/login-button';
+import LoginButton from '@/components/button/login-button';
 import { UserRole } from '@/constant/enum';
 import { Session } from 'next-auth';
 import React, { ReactNode } from 'react';

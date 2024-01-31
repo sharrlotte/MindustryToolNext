@@ -7,7 +7,7 @@ type ModalLayoutProps = {
 
 export default function ModalLayout({ children, modal }: ModalLayoutProps) {
   return (
-    <div className="flex h-full w-full flex-col overflow-y-auto">
+    <div className="flex h-full w-full flex-col overflow-y-auto relative">
       {children}
       {modal}
     </div>

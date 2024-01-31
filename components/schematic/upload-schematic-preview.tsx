@@ -4,25 +4,24 @@ import { Schematic } from '@/types/response/Schematic';
 import env from '@/constant/env';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import LikeComponent from '@/components/like/like-component';
 import { toast } from '@/hooks/use-toast';
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import useClientAPI from '@/hooks/use-client';
 import getSchematicData from '@/query/schematic/get-schematic-data';
 
-type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
+type UploadSchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
 };
 
-export default function SchematicPreview({
+export default function UploadSchematicPreview({
   className,
   schematic,
   ...rest
-}: SchematicPreviewProps) {
+}: UploadSchematicPreviewProps) {
   const { axios } = useClientAPI();
 
-  const link = `${env.url.base}/schematics/${schematic.id}`;
+  const link = `${env.url.base}/admin/schematics/${schematic.id}`;
 
   const getData = async () => {
     const { dismiss } = toast({
@@ -46,7 +45,7 @@ export default function SchematicPreview({
         data={link}
         content={link}
       />
-      <Link href={`/schematics/${schematic.id}`}>
+      <Link href={`/admin/schematics/${schematic.id}`}>
         <Preview.Image
           className="h-preview w-preview"
           src={`${env.url.image}/schematics/${schematic.id}.png`}
@@ -66,20 +65,6 @@ export default function SchematicPreview({
           <DownloadButton
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
-          <LikeComponent
-            targetId={schematic.id}
-            targetType="SCHEMATICS"
-            initialLikeCount={schematic.like}
-            initialLikeData={schematic.userLike}
-          >
-            <LikeComponent.LikeButton variant="outline" title="Like" />
-            <LikeComponent.LikeCount
-              className="text-xl"
-              variant="outline"
-              title="Like count"
-            />
-            <LikeComponent.DislikeButton variant="outline" title="Dislike" />
-          </LikeComponent>
         </Preview.Actions>
       </Preview.Description>
     </Preview>

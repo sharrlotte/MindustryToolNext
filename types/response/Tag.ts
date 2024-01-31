@@ -17,7 +17,10 @@ export class Tags {
     return { name, value, color: TAG_DEFAULT_COLOR };
   }
 
-  static parseStringArray(arr: string[]) {
+  static parseStringArray(arr: string[] | null) {
+    if (!arr) {
+      return [];
+    }
     const result = [];
     for (let tag of arr) {
       try {

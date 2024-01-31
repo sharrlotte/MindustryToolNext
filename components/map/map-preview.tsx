@@ -5,8 +5,8 @@ import env from '@/constant/env';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import LikeComponent from '@/components/like/like-component';
-import CopyButton from '@/components/ui/copy-button';
-import DownloadButton from '@/components/ui/download-button';
+import CopyButton from '@/components/button/copy-button';
+import DownloadButton from '@/components/button/download-button';
 
 type MapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;

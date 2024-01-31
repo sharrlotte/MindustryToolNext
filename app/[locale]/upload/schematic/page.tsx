@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import LoadingSpinner from '@/components/ui/loading-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import IdUserCard from '@/components/user/id-user-card';
 import UserCard from '@/components/user/user-card';
 import { PNG_IMAGE_PREFIX } from '@/constant/constant';
@@ -62,6 +62,7 @@ export default function UploadSchematicPage() {
       onSuccess: () => {
         toast({
           title: 'Upload schematic success',
+          variant: 'success',
         });
       },
       onError(error) {

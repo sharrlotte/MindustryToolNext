@@ -3,15 +3,16 @@
 import Detail from '@/components/detail/detail';
 import LikeComponent from '@/components/like/like-component';
 import BackButton from '@/components/ui/back-button';
-import CopyButton from '@/components/ui/copy-button';
+import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { toast } from '@/hooks/use-toast';
 import { Schematic } from '@/types/response/Schematic';
 import React, { HTMLAttributes } from 'react';
-import DownloadButton from '@/components/ui/download-button';
+import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
+import getSchematicData from '@/query/schematic/get-schematic-data';
 
 type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -22,14 +23,14 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
 
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
-  const getSchematicData = async () => {
+  const getData = async () => {
     const { dismiss } = toast({
       title: 'Coping',
       content: 'Downloading data from server',
     });
-    const result = await axios.get(`/schematics/${schematic.id}/data`);
+    const result = await getSchematicData(axios, schematic.id);
     dismiss();
-    return result.data as Promise<string>;
+    return result;
   };
 
   return (
@@ -63,7 +64,7 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             title="Copy"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}
-            data={getSchematicData}
+            data={getData}
           />
           <DownloadButton
             className="aspect-square"

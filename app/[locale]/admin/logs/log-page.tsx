@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import LoadingSpinner from '@/components/ui/loading-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import useSocket from '@/hooks/use-socket';
 import { cn } from '@/lib/utils';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';

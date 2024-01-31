@@ -21,13 +21,13 @@ import {
 import { BellIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
 
 import { useSession } from 'next-auth/react';
-import OutsideWrapper from '@/components/ui/outside-wrapper';
+import OutsideWrapper from '@/components/common/outside-wrapper';
 import Image from 'next/image';
 import UserAvatar from '@/components/user/user-avatar';
 import ProtectedElement from '@/layout/protected-element';
-import LoginButton from '@/components/common/login-button';
+import LoginButton from '@/components/button/login-button';
 import UserRoleCard from '@/components/user/user-role';
-import LogoutButton from '@/components/common/logout-button';
+import LogoutButton from '@/components/button/logout-button';
 import { UserRole } from '@/constant/enum';
 import { Skeleton } from '@/components/ui/skeleton';
 

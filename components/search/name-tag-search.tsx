@@ -11,7 +11,7 @@ import { defaultSortTag } from '@/constant/env';
 import { usePathname, useRouter } from 'next/navigation';
 import TagCard from '@/components/tag/tag-card';
 import { QueryParams } from '@/query/config/search-query-params';
-import OutsideWrapper from '@/components/ui/outside-wrapper';
+import OutsideWrapper from '@/components/common/outside-wrapper';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import FilterTags from '@/components/tag/filter-tags';
 import SortTags from '@/components/tag/sort-tags';

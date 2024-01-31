@@ -3,7 +3,7 @@ import FilterTags from '@/components/tag/filter-tags';
 import TagCard from '@/components/tag/tag-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import OutsideWrapper from '@/components/ui/outside-wrapper';
+import OutsideWrapper from '@/components/common/outside-wrapper';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 import { cloneDeep } from 'lodash';
@@ -87,9 +87,9 @@ export default function NameTagSelector({
         </section>
       </div>
       {showFilterDialog && (
-        <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
           <OutsideWrapper
-            className="flex h-[100dvh] w-screen items-center justify-center md:h-4/5 md:w-4/5"
+            className="flex h-[100dvh] w-screen items-center justify-center md:h-5/6 md:w-5/6"
             onClickOutside={handleHideFilterDialog}
           >
             <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">

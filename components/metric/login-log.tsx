@@ -1,6 +1,6 @@
 'use client';
 
-import LoadingSpinner from '@/components/ui/loading-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import { APIInstance } from '@/hooks/use-client';
 import getLogs from '@/query/log/get-logs';
 import { useQuery } from '@tanstack/react-query';
