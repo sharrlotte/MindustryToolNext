@@ -41,10 +41,10 @@ type UploadSchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
 export default function UploadSchematicDetail({
   schematic,
 }: UploadSchematicDetailProps) {
+  const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
   const queryClient = useQueryClient();
-  const { toast } = useToast();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { schematic: schematicTags } = useTags();
 
@@ -53,7 +53,7 @@ export default function UploadSchematicDetail({
       postVerifySchematic(axios, data),
     onSuccess: () => {
       queryClient.setQueriesData<{ pages: Schematic[][] }>(
-        { predicate: (q) => q.queryKey.includes('schematic-upload') },
+        { predicate: (q) => q.queryKey.includes('schematic-uploads') },
         (data) => {
           if (data) {
             data.pages = data.pages.map((page) =>
@@ -64,6 +64,11 @@ export default function UploadSchematicDetail({
           }
         },
       );
+
+      queryClient.invalidateQueries({
+        predicate: (q) => q.queryKey.includes('schematics'),
+      });
+
       back();
       toast({
         title: 'Verify schematic successfully',
