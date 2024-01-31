@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 type IdUserCardProps = {
-  id: string;
+  id: string | 'community';
 };
 
 export default function IdUserCard({ id }: IdUserCardProps) {

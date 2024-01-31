@@ -1,3 +1,5 @@
+import { Tags } from '@/types/response/Tag';
+
 type TagGroup = {
   name: string;
   value: string[];
@@ -12,3 +14,9 @@ export type AllTagGroup = {
   map: TagGroup[];
   post: TagGroup[];
 };
+
+export class TagGroups {
+  static toString(tags: TagGroup[]) {
+    return Tags.toString(Tags.fromTagGroup(tags));
+  }
+}

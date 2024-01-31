@@ -8,15 +8,15 @@ import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
 
 export default function Page() {
-  const data = useTags();
+  const { schematic } = useTags();
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
     <div
-      className="flex h-full flex-col gap-2 overflow-y-auto p-4"
+      className="relative flex h-full flex-col gap-2 overflow-y-auto p-4"
       ref={(ref) => (scrollContainer.current = ref)}
     >
-      <NameTagSearch tags={data.schematic} />
+      <NameTagSearch tags={schematic} />
       <InfinitePage
         queryKey={['schematics']}
         getFunc={getSchematics}

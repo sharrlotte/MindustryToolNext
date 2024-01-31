@@ -17,7 +17,6 @@ type MapDetailProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export default function MapDetail({ map }: MapDetailProps) {
-  const tags = Tags.parseStringArray(map.tags);
   const link = `${env.url.base}/maps/${map.id}`;
 
   return (
@@ -37,16 +36,12 @@ export default function MapDetail({ map }: MapDetailProps) {
             alt={map.name}
           />
         </div>
-        <Detail.Description>
-          <Detail.Header>{map.name}</Detail.Header>
+        <Detail.Header>
+          <Detail.Title>{map.name}</Detail.Title>
           <IdUserCard id={map.authorId} />
-          <p>{map.description}</p>
-          <section className="flex flex-wrap gap-1">
-            {tags.map((item, index) => (
-              <TagCard key={index} tag={item} />
-            ))}
-          </section>
-        </Detail.Description>
+          <Detail.Description>{map.description}</Detail.Description>
+          <Detail.Tags tags={map.tags} />
+        </Detail.Header>
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
         <div className="flex gap-1">

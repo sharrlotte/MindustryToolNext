@@ -4,8 +4,9 @@ import serverEnv from '@/constant/serverEnv';
 import env from '@/constant/env';
 import { env as environment } from 'process';
 import { RefreshTokenResponse } from '@/types/response/RefreshTokenResponse';
-import { User } from '@/types/response/User';
 import { JWT } from 'next-auth/jwt';
+import { LoginResponse } from '@/types/response/LoginResponse';
+import 'server-only';
 
 const authData: {
   accessToken: string;
@@ -148,7 +149,7 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
     const text = await result.text();
 
     if (result.status === 200) {
-      return JSON.parse(text ?? '{}') as User;
+      return JSON.parse(text ?? '{}') as LoginResponse;
     } else if (result.status === 401) {
       await apiRefreshToken();
       throw new Error(
@@ -231,7 +232,7 @@ const apiLogin = async () => {
     const text = await result.text();
 
     if (result.status === 200) {
-      const user = JSON.parse(text) as User;
+      const user = JSON.parse(text) as LoginResponse;
       if (user) {
         authData.accessToken = user.accessToken;
         authData.refreshToken = user.refreshToken;

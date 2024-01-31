@@ -8,7 +8,7 @@ type UserAvatarProps = {
   user: {
     name?: string | null;
     id: string;
-    imageUrl: string;
+    imageUrl?: string | null;
   };
 };
 

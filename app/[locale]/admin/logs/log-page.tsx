@@ -38,7 +38,7 @@ export default function LogPage() {
       setLoaded(true);
       socket.send({ method: 'LOAD' });
     }
-  }, [socket, isLoaded,state]);
+  }, [socket, isLoaded, state]);
 
   const sendMessage = () => {
     if (socket && state === 'connected') {
@@ -55,7 +55,7 @@ export default function LogPage() {
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
-      <div className="grid h-full w-full overflow-hidden rounded-md bg-zinc-900 p-2">
+      <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
         <div className="flex h-full flex-col gap-2 overflow-auto pr-2">
           {isLoaded ? (
             log.slice(log.length - 200).map((item, index) => (

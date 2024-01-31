@@ -16,7 +16,7 @@ import {
 const NUMBER_OF_DAY = 15;
 
 const background =
-  'rounded-lg bg-zinc-900 p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
+  'rounded-lg bg-card p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
 
 const chart = 'h-[400px]';
 

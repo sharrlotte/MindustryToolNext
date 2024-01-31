@@ -1,3 +1,6 @@
+import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
+import TagGroup from '@/types/response/TagGroup';
+
 type Tag = {
   name: string;
   value: string;
@@ -5,9 +8,6 @@ type Tag = {
 };
 
 export default Tag;
-
-export const TAG_DEFAULT_COLOR = "green";
-export const TAG_SEPARATOR = "_";
 
 export class Tags {
   static parseString(str: string) {
@@ -27,5 +27,21 @@ export class Tags {
       }
     }
     return result;
+  }
+
+  static fromTagGroup(tags: TagGroup[]): Tag[] {
+    return tags.flatMap((group) =>
+      group.value.map((v) => {
+        return {
+          name: group.name,
+          value: v,
+          color: group.color,
+        };
+      }),
+    );
+  }
+
+  static toString(tags: Tag[]) {
+    return tags.map((tag) => tag.name + TAG_SEPARATOR + tag.value).join();
   }
 }

@@ -2,17 +2,16 @@
 
 import Detail from '@/components/detail/detail';
 import LikeComponent from '@/components/like/like-component';
-import TagCard from '@/components/tag/tag-card';
 import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/ui/copy-button';
 import env from '@/constant/env';
 import { toast } from '@/hooks/use-toast';
 import { Schematic } from '@/types/response/Schematic';
-import { Tags } from '@/types/response/Tag';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/ui/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
+import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 
 type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -21,7 +20,6 @@ type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
 export default function SchematicDetail({ schematic }: SchematicDetailProps) {
   const { axios } = useClientAPI();
 
-  const tags = Tags.parseStringArray(schematic.tags);
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
   const getSchematicData = async () => {
@@ -51,16 +49,13 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
             alt={schematic.name}
           />
         </div>
-        <Detail.Description>
-          <Detail.Header>{schematic.name}</Detail.Header>
+        <Detail.Header>
+          <Detail.Title>{schematic.name}</Detail.Title>
           <IdUserCard id={schematic.authorId} />
-          <p>{schematic.description}</p>
-          <section className="flex flex-wrap gap-1">
-            {tags.map((item, index) => (
-              <TagCard key={index} tag={item} />
-            ))}
-          </section>
-        </Detail.Description>
+          <Detail.Description>{schematic.description}</Detail.Description>
+          <ItemRequirementCard requirement={schematic.requirement} />
+          <Detail.Tags tags={schematic.tags} />
+        </Detail.Header>
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
         <div className="flex gap-1">

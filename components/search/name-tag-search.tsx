@@ -6,7 +6,7 @@ import { FilterIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { cloneDeep } from 'lodash';
 import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
-import Tag, { TAG_SEPARATOR } from '@/types/response/Tag';
+import Tag, { Tags } from '@/types/response/Tag';
 import { defaultSortTag } from '@/constant/env';
 import { usePathname, useRouter } from 'next/navigation';
 import TagCard from '@/components/tag/tag-card';
@@ -16,14 +16,20 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import FilterTags from '@/components/tag/filter-tags';
 import SortTags from '@/components/tag/sort-tags';
 import _ from 'lodash';
+import { TAG_SEPARATOR } from '@/constant/constant';
+import { cn } from '@/lib/utils';
 
 type NameTagSearchProps = {
-  tags: TagGroup[] | undefined;
+  className?: string;
+  tags?: TagGroup[];
 };
 
 let timeout: NodeJS.Timeout | undefined;
 
-export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
+export default function NameTagSearch({
+  className,
+  tags = [],
+}: NameTagSearchProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchPageParams();
@@ -111,6 +117,7 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
     const group = selectedFilterTags.find((tag) => tag.name === name);
     if (group) {
       group.value = value;
+      setSelectedFilterTags([...selectedFilterTags]);
     } else {
       let result = tagsClone.find((tag) => tag.name === name);
 
@@ -147,19 +154,11 @@ export default function NameTagSearch({ tags = [] }: NameTagSearchProps) {
     });
   };
 
-  const displayTags = selectedFilterTags.flatMap((group) =>
-    group.value.map((v) => {
-      return {
-        name: group.name,
-        value: v,
-        color: group.color,
-      };
-    }),
-  );
+  const displayTags = Tags.fromTagGroup(selectedFilterTags);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-center gap-1">
+    <div className={cn('flex flex-col gap-2', className)}>
+      <div className="flex justify-center gap-2">
         <Search className="w-full md:w-1/2">
           <Search.Icon className="p-1" />
           <Search.Input
