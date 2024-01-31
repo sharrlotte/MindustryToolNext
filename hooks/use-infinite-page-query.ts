@@ -6,7 +6,7 @@ import { AxiosInstance } from 'axios';
 
 export default function useInfinitePageQuery<T>(
   getFunc: (axios: AxiosInstance, params: PageableSearchQuery) => Promise<T[]>,
-  ...queryKey: any
+  queryKey: any[],
 ) {
   const PageableSearchQuery = useSearchPageParams();
   const { axios, enabled } = useClientAPI();

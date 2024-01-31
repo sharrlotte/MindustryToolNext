@@ -5,15 +5,20 @@ import Tag, { Tags } from '@/types/response/Tag';
 import Image from 'next/image';
 import React, { HTMLAttributes } from 'react';
 
-type DetailProps = HTMLAttributes<HTMLDivElement>;
+type DetailProps = HTMLAttributes<HTMLDivElement> & {
+  padding?: boolean;
+};
 
-function Detail({ className, children }: DetailProps) {
+function Detail({ className, children, padding }: DetailProps) {
   return (
     <div className="absolute h-full w-full bg-background">
       <div
         className={cn(
           'relative flex h-full w-full flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch',
           className,
+          {
+            'p-2': padding,
+          },
         )}
       >
         {children}

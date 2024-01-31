@@ -13,7 +13,7 @@ export default function PostsPage() {
 
   return (
     <div
-      className="flex h-full w-full flex-col gap-4 overflow-y-auto p-4"
+      className="flex h-full w-full flex-col gap-4 overflow-y-auto p-2"
       ref={(ref) => (scrollContainer.current = ref)}
     >
       <NameTagSearch tags={post} />

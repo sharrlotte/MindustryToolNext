@@ -16,7 +16,6 @@ import postVerifySchematic from '@/query/schematic/post-verify-schematic';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import { Button } from '@/components/ui/button';
 import getSchematicData from '@/query/schematic/get-schematic-data';
-import VerifyButton from '@/components/button/verify-button';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,7 +30,9 @@ import {
 import TagGroup from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import useTags from '@/hooks/use-tags';
-import RejectButton from '@/components/button/reject-button';
+import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
+import _ from 'lodash';
 
 type UploadSchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -40,6 +41,7 @@ type UploadSchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
 export default function UploadSchematicDetail({
   schematic,
 }: UploadSchematicDetailProps) {
+  const { back } = useRouter();
   const { axios } = useClientAPI();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -49,12 +51,20 @@ export default function UploadSchematicDetail({
   const { mutate: verifySchematic, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifySchematicRequest) =>
       postVerifySchematic(axios, data),
-    onMutate: () => {
-      queryClient.setQueryData(['schematic-upload'], (data: any) => {
-        console.log(data);
-      });
-    },
     onSuccess: () => {
+      queryClient.setQueriesData<{ pages: Schematic[][] }>(
+        { predicate: (q) => q.queryKey.includes('schematic-upload') },
+        (data) => {
+          if (data) {
+            data.pages = data.pages.map((page) =>
+              page.filter((item) => item.id !== schematic.id),
+            );
+
+            return _.cloneDeep(data);
+          }
+        },
+      );
+      back();
       toast({
         title: 'Verify schematic successfully',
         variant: 'success',
@@ -85,8 +95,8 @@ export default function UploadSchematicDetail({
   function VerifySchematicButton() {
     return (
       <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <VerifyButton />
+        <AlertDialogTrigger className="aspect-square h-9 w-9 rounded-md border p-2">
+          <CheckIcon className="h-5 w-5" />
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -116,8 +126,8 @@ export default function UploadSchematicDetail({
   function RejectSchematicButton() {
     return (
       <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <RejectButton />
+        <AlertDialogTrigger className="aspect-square h-9 w-9 rounded-md border p-2">
+          <XMarkIcon className="h-5 w-5" />
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -176,17 +186,18 @@ export default function UploadSchematicDetail({
       <Detail.Actions className="flex justify-between">
         <div className="flex gap-1">
           <CopyButton
+            className="aspect-square h-9 w-9"
             title="Copy"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}
             data={getData}
           />
           <DownloadButton
-            className="aspect-square"
+            className="aspect-square h-9 w-9"
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
-          <VerifySchematicButton />
           <RejectSchematicButton />
+          <VerifySchematicButton />
         </div>
         <BackButton />
       </Detail.Actions>

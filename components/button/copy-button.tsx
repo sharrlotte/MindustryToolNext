@@ -32,7 +32,7 @@ export default function CopyButton({
       {...props}
       onClick={handleCopy}
     >
-      <Copy className="h-4 w-4" strokeWidth="1.3px" />
+      <Copy className="h-5 w-5" strokeWidth="1.3px" />
     </Button>
   );
 }

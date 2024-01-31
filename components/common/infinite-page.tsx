@@ -49,7 +49,7 @@ export default function InfinitePage<T>({
     <div className="h-full w-full">
       <InfiniteScroll
         className={cn(
-          'grid w-full grid-cols-[repeat(auto-fill,var(--preview-size))] justify-center gap-4 p-4',
+          'grid w-full grid-cols-[repeat(auto-fill,var(--preview-size))] justify-center gap-4',
           className,
         )}
         pageStart={0}

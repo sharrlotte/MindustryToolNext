@@ -35,5 +35,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
     return notFound();
   }
 
-  return <MapDetail map={map} />;
+  return <MapDetail map={map} padding />;
 }

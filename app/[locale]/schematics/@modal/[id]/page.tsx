@@ -35,5 +35,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
     return <div>Not found</div>;
   }
 
-  return <SchematicDetail schematic={schematic} />;
+  return <SchematicDetail schematic={schematic} padding />;
 }

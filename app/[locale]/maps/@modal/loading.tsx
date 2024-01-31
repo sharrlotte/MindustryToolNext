@@ -1,3 +1,5 @@
 import DetailSkeleton from '@/components/skeleton/detail-skeleton';
 
-export default DetailSkeleton;
+export default function Skeleton() {
+  return <DetailSkeleton padding />;
+}

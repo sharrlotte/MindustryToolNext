@@ -16,9 +16,13 @@ import getSchematicData from '@/query/schematic/get-schematic-data';
 
 type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
+  padding?: boolean;
 };
 
-export default function SchematicDetail({ schematic }: SchematicDetailProps) {
+export default function SchematicDetail({
+  schematic,
+  padding,
+}: SchematicDetailProps) {
   const { axios } = useClientAPI();
 
   const link = `${env.url.base}/schematics/${schematic.id}`;
@@ -34,7 +38,7 @@ export default function SchematicDetail({ schematic }: SchematicDetailProps) {
   };
 
   return (
-    <Detail>
+    <Detail padding={padding}>
       <Detail.Info>
         <div className="relative">
           <CopyButton
