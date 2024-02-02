@@ -11,7 +11,7 @@ import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import postVerifySchematic from '@/query/schematic/post-verify-schematic';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import { Button } from '@/components/ui/button';
@@ -33,6 +33,9 @@ import useTags from '@/hooks/use-tags';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import _ from 'lodash';
+import deleteSchematic from '@/query/schematic/delete-schematic';
+import useQueriesData from '@/hooks/use-queries-data';
+import LoadingWrapper from '@/components/common/loading-wrapper';
 
 type UploadSchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -41,29 +44,18 @@ type UploadSchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
 export default function UploadSchematicDetail({
   schematic,
 }: UploadSchematicDetailProps) {
+  const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { schematic: schematicTags } = useTags();
+  const { deleteById, invalidateByKey } = useQueriesData();
 
   const { mutate: verifySchematic, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifySchematicRequest) =>
       postVerifySchematic(axios, data),
     onSuccess: () => {
-      queryClient.setQueriesData<{ pages: Schematic[][] }>(
-        { predicate: (q) => q.queryKey.includes('schematic-upload') },
-        (data) => {
-          if (data) {
-            data.pages = data.pages.map((page) =>
-              page.filter((item) => item.id !== schematic.id),
-            );
-
-            return _.cloneDeep(data);
-          }
-        },
-      );
+      deleteById(['schematic-uploads'], schematic.id);
       back();
       toast({
         title: 'Verify schematic successfully',
@@ -77,9 +69,35 @@ export default function UploadSchematicDetail({
         variant: 'destructive',
       });
     },
+    onSettled: () => {
+      invalidateByKey(['schematic-uploads']);
+    },
   });
 
-  const isLoading = isVerifying;
+  const { mutate: deleteSchematicById, isPending: isDeleting } = useMutation({
+    mutationFn: (id: string) => deleteSchematic(axios, id),
+    onSuccess: () => {
+      deleteById(['schematic-uploads'], schematic.id);
+      invalidateByKey(['schematic-uploads']);
+      back();
+      toast({
+        title: 'Delete schematic successfully',
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Failed to delete schematic',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+    onSettled: () => {
+      invalidateByKey(['schematic-uploads']);
+    },
+  });
+
+  const isLoading = isVerifying || isDeleting;
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
   const getData = async () => {
@@ -95,8 +113,13 @@ export default function UploadSchematicDetail({
   function VerifySchematicButton() {
     return (
       <AlertDialog>
-        <AlertDialogTrigger className="aspect-square h-9 w-9 rounded-md border p-2">
-          <CheckIcon className="h-5 w-5" />
+        <AlertDialogTrigger
+          className="aspect-square h-9 w-9 rounded-md border p-2"
+          disabled={isLoading}
+        >
+          <LoadingWrapper isLoading={isLoading}>
+            <CheckIcon className="h-5 w-5" />
+          </LoadingWrapper>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -126,8 +149,13 @@ export default function UploadSchematicDetail({
   function RejectSchematicButton() {
     return (
       <AlertDialog>
-        <AlertDialogTrigger className="aspect-square h-9 w-9 rounded-md border p-2">
-          <XMarkIcon className="h-5 w-5" />
+        <AlertDialogTrigger
+          className="aspect-square h-9 w-9 rounded-md border p-2"
+          disabled={isLoading}
+        >
+          <LoadingWrapper isLoading={isLoading}>
+            <XMarkIcon className="h-5 w-5" />
+          </LoadingWrapper>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -138,15 +166,14 @@ export default function UploadSchematicDetail({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>
+            <AlertDialogAction className="bg-destructive" asChild>
               <Button
                 title="Reject"
                 variant="destructive"
-                onClick={() =>
-                  verifySchematic({ id: schematic.id, tags: selectedTags })
-                }
-              />
-              Reject
+                onClick={() => deleteSchematicById(schematic.id)}
+              >
+                Reject
+              </Button>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

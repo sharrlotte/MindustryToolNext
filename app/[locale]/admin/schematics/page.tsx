@@ -18,7 +18,7 @@ export default function Page() {
     >
       <NameTagSearch tags={schematic} />
       <InfinitePage
-        queryKey={['schematic-upload']}
+        queryKey={['schematic-uploads']}
         getFunc={getSchematicUploads}
         scrollContainer={scrollContainer.current}
       >
