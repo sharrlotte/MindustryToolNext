@@ -22,8 +22,8 @@ export default function MultipleFilerTags({
     >
       <span className="whitespace-nowrap text-lg capitalize">{group.name}</span>
       <Separator className="border-[1px]" orientation="horizontal" />
-      {group.value.map((value, index) => (
-        <ToggleGroupItem className="capitalize" key={index} value={value}>
+      {group.value.map((value) => (
+        <ToggleGroupItem className="capitalize" key={value} value={value}>
           {value}
         </ToggleGroupItem>
       ))}

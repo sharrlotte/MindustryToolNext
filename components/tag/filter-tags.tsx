@@ -15,14 +15,17 @@ export default function FilterTags({
   selectedFilterTags,
   handleTagGroupChange,
 }: FilterTagProps) {
-  const filteredTags = tags.filter((tag) => {
-    if (tag.name.includes(filter)) {
-      return true;
-    }
-    tag.value = tag.value.filter((value) => value.includes(filter));
+  const filteredTags =
+    filter.length === 0
+      ? tags
+      : tags.filter((tag) => {
+          if (tag.name.includes(filter)) {
+            return true;
+          }
+          tag.value = tag.value.filter((value) => value.includes(filter));
 
-    return tag.value.length > 0;
-  });
+          return tag.value.length > 0;
+        });
 
   const getSingleValue = (group: TagGroup) => {
     const result = selectedFilterTags.find(
@@ -44,10 +47,10 @@ export default function FilterTags({
     return [];
   };
 
-  return filteredTags.map((group, index) =>
+  return filteredTags.map((group) =>
     group.duplicate ? (
       <MultipleFilerTags
-        key={index}
+        key={group.name}
         group={group}
         selectedValue={getMultipleValue(group)}
         handleTagGroupChange={(value) =>
@@ -56,7 +59,7 @@ export default function FilterTags({
       />
     ) : (
       <SingeFilerTags
-        key={index}
+        key={group.name}
         group={group}
         selectedValue={getSingleValue(group)}
         handleTagGroupChange={(value) =>

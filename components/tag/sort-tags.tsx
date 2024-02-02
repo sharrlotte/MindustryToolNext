@@ -33,8 +33,8 @@ export default function SortTags({
     >
       <span className="whitespace-nowrap text-lg capitalize">Sort</span>
       <Separator className="border-[1px]" orientation="horizontal" />
-      {filteredSortTags.map((value, index) => (
-        <ToggleGroupItem className="capitalize" key={index} value={value}>
+      {filteredSortTags.map((value) => (
+        <ToggleGroupItem className="capitalize" key={value} value={value}>
           {value}
         </ToggleGroupItem>
       ))}

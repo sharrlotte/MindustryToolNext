@@ -28,8 +28,8 @@ export default function PostDetail({ post, padding }: PostDetailProps) {
         <p className="text-4xl">{post.header}</p>
         <IdUserCard id={post.authorId} />
         <section className="flex flex-wrap items-center gap-1">
-          {displayTags.map((value, index) => (
-            <TagCard key={index} tag={value} />
+          {displayTags.map((value) => (
+            <TagCard key={value.name + value.value} tag={value} />
           ))}
         </section>
       </header>

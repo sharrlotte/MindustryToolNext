@@ -104,8 +104,8 @@ function TagsCard({ className, tags }: TagsProps) {
 
   return (
     <section className={cn('flex flex-wrap gap-1', className)}>
-      {values.map((item, index) => (
-        <TagCard key={index} tag={item} />
+      {values.map((item) => (
+        <TagCard key={item.name + item.value} tag={item} />
       ))}
     </section>
   );

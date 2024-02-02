@@ -81,8 +81,12 @@ export default function NameTagSelector({
           className="flex w-full flex-wrap items-center justify-start gap-1"
           hidden={displayTags.length === 0}
         >
-          {displayTags.map((value, index) => (
-            <TagCard key={index} tag={value} onDelete={handleDeleteTag} />
+          {displayTags.map((item) => (
+            <TagCard
+              key={item.name + item.value}
+              tag={item}
+              onDelete={handleDeleteTag}
+            />
           ))}
         </section>
       </div>

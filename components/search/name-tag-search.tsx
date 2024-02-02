@@ -177,8 +177,12 @@ export default function NameTagSearch({
       </div>
       {displayTags.length > 0 && (
         <section className="m-auto flex w-full flex-wrap items-center justify-center gap-1 md:w-3/4">
-          {displayTags.map((value, index) => (
-            <TagCard key={index} tag={value} onDelete={handleDeleteTag} />
+          {displayTags.map((item) => (
+            <TagCard
+              key={item.name + item.value}
+              tag={item}
+              onDelete={handleDeleteTag}
+            />
           ))}
         </section>
       )}
