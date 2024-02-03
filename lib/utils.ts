@@ -29,12 +29,12 @@ export function fillMetric(
   numberOfDay: number,
   array: Metric[] | undefined,
   defaultValue: number,
-): Metric[] {
+) {
   if (!array) {
     return [];
   }
 
-  let result: Metric[] = [];
+  let result: { value: number; time: string }[] = [];
 
   for (let i = numberOfDay; i > 0; i--) {
     let targetDay = new Date(start);
@@ -46,8 +46,15 @@ export function fillMetric(
         v.time.getDate() === targetDay.getDate(),
     );
     if (value === undefined)
-      result.push({ value: defaultValue, time: targetDay });
-    else result.push(value);
+      result.push({
+        value: defaultValue,
+        time: targetDay.toLocaleDateString(),
+      });
+    else
+      result.push({
+        value: value.value,
+        time: value.time.toLocaleDateString(),
+      });
   }
   return result;
 }
