@@ -2,8 +2,6 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import Nprogress from 'nprogress';
 import { Metric } from '@/types/response/Metric';
-import TagGroup from '@/types/response/TagGroup';
-import Tag from '@/types/response/Tag';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,7 +29,7 @@ export function fillMetric(
   numberOfDay: number,
   array: Metric[] | undefined,
   defaultValue: number,
-) {
+): Metric[] {
   if (!array) {
     return [];
   }
@@ -51,12 +49,7 @@ export function fillMetric(
       result.push({ value: defaultValue, time: targetDay });
     else result.push(value);
   }
-  return result.map(({ value, time }) => {
-    return {
-      value: value,
-      time: time.toLocaleDateString(),
-    };
-  });
+  return result;
 }
 
 export function toForm(data: Object) {

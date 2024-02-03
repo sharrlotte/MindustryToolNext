@@ -5,94 +5,90 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { useToast } from '@/hooks/use-toast';
-import { Schematic } from '@/types/response/Schematic';
+import { Map } from '@/types/response/Map';
 import React, { HTMLAttributes, useState } from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
-import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import { useMutation } from '@tanstack/react-query';
-import postVerifySchematic from '@/query/schematic/post-verify-schematic';
-import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
-import getSchematicData from '@/query/schematic/get-schematic-data';
+import postVerifyMap from '@/query/map/post-verify-map';
+import VerifyMapRequest from '@/types/request/VerifyMapRequest';
+import getMapData from '@/query/map/get-map-data';
 import TagGroup from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import useTags from '@/hooks/use-tags';
 import { useRouter } from 'next/navigation';
-import deleteSchematic from '@/query/schematic/delete-schematic';
+import deleteMap from '@/query/map/delete-map';
 import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 
-type UploadSchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
-  schematic: Schematic;
+type UploadMapDetailProps = HTMLAttributes<HTMLDivElement> & {
+  map: Map;
 };
 
-export default function UploadSchematicDetail({
-  schematic,
-}: UploadSchematicDetailProps) {
+export default function UploadMapDetail({ map }: UploadMapDetailProps) {
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const { schematic: schematicTags } = useTags();
+  const { map: mapTags } = useTags();
   const { deleteById, invalidateByKey } = useQueriesData();
 
-  const { mutate: verifySchematic, isPending: isVerifying } = useMutation({
-    mutationFn: (data: VerifySchematicRequest) =>
-      postVerifySchematic(axios, data),
+  const { mutate: verifyMap, isPending: isVerifying } = useMutation({
+    mutationFn: (data: VerifyMapRequest) => postVerifyMap(axios, data),
     onSuccess: () => {
-      deleteById(['schematic-uploads'], schematic.id);
+      deleteById(['map-uploads'], map.id);
       back();
       toast({
-        title: 'Verify schematic successfully',
+        title: 'Verify map successfully',
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to verify schematic',
+        title: 'Failed to verify map',
         description: error.message,
         variant: 'destructive',
       });
     },
     onSettled: () => {
-      invalidateByKey(['schematic-uploads']);
+      invalidateByKey(['map-uploads']);
     },
   });
 
-  const { mutate: deleteSchematicById, isPending: isDeleting } = useMutation({
-    mutationFn: (id: string) => deleteSchematic(axios, id),
+  const { mutate: deleteMapById, isPending: isDeleting } = useMutation({
+    mutationFn: (id: string) => deleteMap(axios, id),
     onSuccess: () => {
-      deleteById(['schematic-uploads'], schematic.id);
-      invalidateByKey(['schematic-uploads']);
+      deleteById(['map-uploads'], map.id);
+      invalidateByKey(['map-uploads']);
       back();
       toast({
-        title: 'Delete schematic successfully',
+        title: 'Delete map successfully',
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to delete schematic',
+        title: 'Failed to delete map',
         description: error.message,
         variant: 'destructive',
       });
     },
     onSettled: () => {
-      invalidateByKey(['schematic-uploads']);
+      invalidateByKey(['map-uploads']);
     },
   });
 
   const isLoading = isVerifying || isDeleting;
-  const link = `${env.url.base}/schematics/${schematic.id}`;
+  const link = `${env.url.base}/maps/${map.id}`;
 
   const getData = async () => {
     const { dismiss } = toast({
       title: 'Coping',
       content: 'Downloading data from server',
     });
-    const result = await getSchematicData(axios, schematic.id);
+    const result = await getMapData(axios, map.id);
     dismiss();
     return result;
   };
@@ -109,18 +105,18 @@ export default function UploadSchematicDetail({
             content={link}
           />
           <Detail.Image
-            src={`${env.url.image}/schematics/${schematic.id}.png`}
-            errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
-            alt={schematic.name}
+            src={`${env.url.image}/maps/${map.id}.png`}
+            errorSrc={`${env.url.api}/maps/${map.id}/image`}
+            alt={map.name}
           />
+          Map
         </div>
         <Detail.Header>
-          <Detail.Title>{schematic.name}</Detail.Title>
-          <IdUserCard id={schematic.authorId} />
-          <Detail.Description>{schematic.description}</Detail.Description>
-          <ItemRequirementCard requirement={schematic.requirement} />
+          <Detail.Title>{map.name}</Detail.Title>
+          <IdUserCard id={map.authorId} />
+          <Detail.Description>{map.description}</Detail.Description>
           <NameTagSelector
-            tags={schematicTags}
+            tags={mapTags}
             value={selectedTags}
             onChange={setSelectedTags}
           />
@@ -132,24 +128,22 @@ export default function UploadSchematicDetail({
             className="aspect-square h-9 w-9"
             title="Copy"
             variant="outline"
-            content={`Copied schematic ${schematic.name}`}
+            content={`Copied map ${map.name}`}
             data={getData}
           />
           <DownloadButton
             className="aspect-square h-9 w-9"
-            href={`${env.url.api}/schematics/${schematic.id}/download`}
+            href={`${env.url.api}/maps/${map.id}/download`}
           />
           <DeleteButton
-            description={`Delete this schematic: ${schematic.name}`}
+            description={`Delete this map: ${map.name}`}
             isLoading={isLoading}
-            onClick={() => deleteSchematicById(schematic.id)}
+            onClick={() => deleteMapById(map.id)}
           />
           <VerifyButton
-            description={`Verify this schematic: ${schematic.name}`}
+            description={`Verify this map: ${map.name}`}
             isLoading={isLoading}
-            onClick={() =>
-              verifySchematic({ id: schematic.id, tags: selectedTags })
-            }
+            onClick={() => verifyMap({ id: map.id, tags: selectedTags })}
           />
         </div>
         <BackButton />

@@ -16,7 +16,7 @@ function getLocale(request: NextRequest) {
 export function middleware(request: NextRequest) {
   let { pathname, hostname } = request.nextUrl;
 
-  const hostnameHasVercel = hostname.includes('.vercel');
+  const hostnameHasVercel = hostname.includes('mindustry-tool.vercel.app');
   const pathnameHasLocale = env.locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );

@@ -15,9 +15,9 @@ import OutsideWrapper from '@/components/common/outside-wrapper';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import FilterTags from '@/components/tag/filter-tags';
 import SortTags from '@/components/tag/sort-tags';
-import _ from 'lodash';
 import { TAG_SEPARATOR } from '@/constant/constant';
 import { cn } from '@/lib/utils';
+import _ from 'lodash';
 
 type NameTagSearchProps = {
   className?: string;
