@@ -14,28 +14,15 @@ import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import { useMutation } from '@tanstack/react-query';
 import postVerifySchematic from '@/query/schematic/post-verify-schematic';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
-import { Button } from '@/components/ui/button';
 import getSchematicData from '@/query/schematic/get-schematic-data';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 import TagGroup from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import useTags from '@/hooks/use-tags';
-import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
-import _ from 'lodash';
 import deleteSchematic from '@/query/schematic/delete-schematic';
 import useQueriesData from '@/hooks/use-queries-data';
-import LoadingWrapper from '@/components/common/loading-wrapper';
+import VerifyButton from '@/components/button/verify-button';
+import DeleteButton from '@/components/button/delete-button';
 
 type UploadSchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -110,77 +97,6 @@ export default function UploadSchematicDetail({
     return result;
   };
 
-  function VerifySchematicButton() {
-    return (
-      <AlertDialog>
-        <AlertDialogTrigger
-          className="aspect-square h-9 w-9 rounded-md border p-2"
-          disabled={isLoading}
-        >
-          <LoadingWrapper isLoading={isLoading}>
-            <CheckIcon className="h-5 w-5" />
-          </LoadingWrapper>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Verify this schematic: {schematic.name}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction asChild>
-              <Button
-                title="Verify"
-                onClick={() =>
-                  verifySchematic({ id: schematic.id, tags: selectedTags })
-                }
-              >
-                Verify
-              </Button>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    );
-  }
-
-  function RejectSchematicButton() {
-    return (
-      <AlertDialog>
-        <AlertDialogTrigger
-          className="aspect-square h-9 w-9 rounded-md border p-2"
-          disabled={isLoading}
-        >
-          <LoadingWrapper isLoading={isLoading}>
-            <XMarkIcon className="h-5 w-5" />
-          </LoadingWrapper>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Reject this schematic: {schematic.name}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-destructive" asChild>
-              <Button
-                title="Reject"
-                variant="destructive"
-                onClick={() => deleteSchematicById(schematic.id)}
-              >
-                Reject
-              </Button>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    );
-  }
-
   return (
     <Detail>
       <Detail.Info>
@@ -223,8 +139,18 @@ export default function UploadSchematicDetail({
             className="aspect-square h-9 w-9"
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
-          <RejectSchematicButton />
-          <VerifySchematicButton />
+          <DeleteButton
+            description={`Delete this schematic: ${schematic.name}`}
+            isLoading={isLoading}
+            onClick={() => deleteSchematicById(schematic.id)}
+          />
+          <VerifyButton
+            description={`Verify this schematic: ${schematic.name}`}
+            isLoading={isLoading}
+            onClick={() =>
+              verifySchematic({ id: schematic.id, tags: selectedTags })
+            }
+          />
         </div>
         <BackButton />
       </Detail.Actions>

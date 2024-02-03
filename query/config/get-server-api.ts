@@ -8,7 +8,7 @@ const getServerAPI = async (): Promise<APIInstance> => {
   const accessToken = session?.user?.accessToken;
 
   if (accessToken) {
-    axiosInstance.defaults.headers['Authorization'] = accessToken;
+    axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + accessToken;
   } else {
     axiosInstance.defaults.headers['Authorization'] = '';
   }

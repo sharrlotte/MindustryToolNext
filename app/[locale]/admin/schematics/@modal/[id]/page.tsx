@@ -15,3 +15,4 @@ export default async function Page({ params }: { params: IdSearchParams }) {
 
   return <UploadSchematicDetail schematic={schematic} />;
 }
+

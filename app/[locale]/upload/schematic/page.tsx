@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
+import LoadingWrapper from '@/components/common/loading-wrapper';
 import Detail from '@/components/detail/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import NameTagSelector from '@/components/search/name-tag-selector';
@@ -11,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import LoadingSpinner from '@/components/common/loading-spinner';
 import IdUserCard from '@/components/user/id-user-card';
 import UserCard from '@/components/user/user-card';
 import { PNG_IMAGE_PREFIX } from '@/constant/constant';
@@ -29,7 +29,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { ChangeEvent, useEffect, useState } from 'react';
 
-export default function UploadSchematicPage() {
+export default function Page() {
   const { axios } = useClientAPI();
   const [data, setData] = useState<File | string | undefined>();
   const [preview, setPreview] = useState<SchematicPreviewResponse>();
@@ -53,6 +53,7 @@ export default function UploadSchematicPage() {
           description: error.message,
           variant: 'destructive',
         });
+        setData(undefined);
       },
     });
 
@@ -167,6 +168,7 @@ export default function UploadSchematicPage() {
                       type="file"
                       hidden
                       disabled={isLoading}
+                      accept=".msch"
                       onChange={(event) => handleFileChange(event)}
                     />
                   </div>
@@ -203,7 +205,9 @@ export default function UploadSchematicPage() {
           onClick={() => handleSubmit()}
           disabled={isLoading || uploadCheck !== true}
         >
-          {uploadCheck === true ? 'Upload' : uploadCheck}
+          <LoadingWrapper isLoading={isLoading}>
+            {uploadCheck === true ? 'Upload' : uploadCheck}
+          </LoadingWrapper>
         </Button>
       </div>
     </div>
