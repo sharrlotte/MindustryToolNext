@@ -16,6 +16,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import UserCard from '@/components/user/user-card';
 import { PNG_IMAGE_PREFIX } from '@/constant/constant';
 import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
 import useTags from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -41,6 +42,7 @@ export default function Page() {
   const [isOpen, setOpen] = useState(false);
 
   const closeDialog = () => setOpen(false);
+  const { invalidateByKey } = useQueriesData();
 
   const { mutate: getSchematicPreview, isPending: isLoadingSchematicPreview } =
     useMutation({
@@ -65,6 +67,10 @@ export default function Page() {
           title: 'Upload schematic success',
           variant: 'success',
         });
+        setData(undefined);
+        setPreview(undefined);
+        setSelectedTags([]);
+        invalidateByKey(['schematic-uploads']);
       },
       onError(error) {
         toast({
@@ -142,18 +148,24 @@ export default function Page() {
 
   return (
     <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md pr-1">
-      <div className="flex flex-row gap-2 rounded-md bg-card p-2">
-        <section className="flex min-h-10 flex-row flex-wrap gap-2">
+      <div className="flex flex-row  gap-2 rounded-md bg-card p-2">
+        <section className="flex min-h-10 flex-row flex-wrap items-center gap-2">
           <Dialog open={isOpen} onOpenChange={setOpen}>
             <DialogTrigger
-              className={cn({ 'rounded-md bg-button px-4': !preview })}
+              className={cn({
+                'rounded-md bg-button px-4 py-1.5 text-sm': !preview,
+              })}
               disabled={isLoading}
             >
-              {preview ? (
-                <img src={PNG_IMAGE_PREFIX + preview.image} alt="Error" />
-              ) : (
-                <span title="Select schematic">Select schematic</span>
-              )}
+              <LoadingWrapper isLoading={isLoadingSchematicPreview}>
+                {preview ? (
+                  <img src={PNG_IMAGE_PREFIX + preview.image} alt="Error" />
+                ) : (
+                  <span className="py-1" title="Select schematic">
+                    Select schematic
+                  </span>
+                )}
+              </LoadingWrapper>
             </DialogTrigger>
             <DialogContent className="w-4/5 rounded-md">
               <DialogTitle>Select schematic</DialogTitle>

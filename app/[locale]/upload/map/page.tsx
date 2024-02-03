@@ -20,6 +20,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { ChangeEvent, useEffect, useState } from 'react';
 import LoadingWrapper from '@/components/common/loading-wrapper';
+import useQueriesData from '@/hooks/use-queries-data';
 
 export default function Page() {
   const { axios } = useClientAPI();
@@ -30,6 +31,7 @@ export default function Page() {
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { map } = useTags();
   const { toast } = useToast();
+  const { invalidateByKey } = useQueriesData();
 
   const { mutate: getMapPreview, isPending: isLoadingMapPreview } = useMutation(
     {
@@ -53,6 +55,10 @@ export default function Page() {
         title: 'Upload map success',
         variant: 'success',
       });
+      setData(undefined);
+      setPreview(undefined)
+      setSelectedTags([]);
+      invalidateByKey(['map-uploads']);
     },
     onError(error) {
       toast({
@@ -113,15 +119,17 @@ export default function Page() {
   return (
     <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md pr-1">
       <div className="flex flex-col gap-2 rounded-md bg-card p-2">
-        <section className="flex min-h-10 flex-row flex-wrap gap-2">
+        <section className="flex min-h-10 flex-row flex-wrap items-center gap-2">
           <label className="button" htmlFor="file">
-            {preview ? (
-              <img src={PNG_IMAGE_PREFIX + preview.image} alt="Error" />
-            ) : (
-              <Button title="Select file" asChild>
-                <span title="Select map">Select map</span>
-              </Button>
-            )}
+            <LoadingWrapper isLoading={isLoadingMapPreview}>
+              {preview ? (
+                <img src={PNG_IMAGE_PREFIX + preview.image} alt="Error" />
+              ) : (
+                <Button className="text-sm" title="Select file" asChild>
+                  <span title="Select map">Select map</span>
+                </Button>
+              )}
+            </LoadingWrapper>
           </label>
           <input
             id="file"
