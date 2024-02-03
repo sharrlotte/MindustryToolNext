@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <main className="grid h-full overflow-y-auto p-8 pt-10">
+    <div className="grid h-full overflow-y-auto p-8 pt-10">
       <section className="rounded-2xl bg-zinc-800 bg-opacity-90 p-8">
         <span className="text-2xl text-white">Chào mừng đến với </span>
         <Link
@@ -127,6 +127,6 @@ export default function Home() {
           </ul>
         </section>
       </section>
-    </main>
+    </div>
   );
 }
