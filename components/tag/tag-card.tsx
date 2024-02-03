@@ -27,7 +27,7 @@ export default function TagCard({
   return (
     <span
       className={cn(
-        'flex items-center justify-center whitespace-nowrap rounded-md px-2 py-0.5 text-center capitalize',
+        'flex items-center justify-center whitespace-nowrap rounded-md px-2 py-1 text-center capitalize',
         className,
       )}
       style={{ backgroundColor: color }}

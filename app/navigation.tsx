@@ -17,8 +17,9 @@ import {
   CommandLineIcon,
   UserCircleIcon,
   ArrowUpTrayIcon,
+  BellIcon,
+  Cog6ToothIcon,
 } from '@heroicons/react/24/solid';
-import { BellIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
 
 import { useSession } from 'next-auth/react';
 import OutsideWrapper from '@/components/common/outside-wrapper';

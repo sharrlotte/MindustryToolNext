@@ -24,11 +24,15 @@ export default function DetailSkeleton({ padding }: DetailSkeletonProps) {
             <UserCardSkeleton />
           </div>
         </div>
-        <div className="flex items-center gap-1">
-          <Skeleton className="h-9 w-9 border border-border" />
-          <Skeleton className="h-9 w-9 border border-border" />
-          <Skeleton className="h-9 w-9 border border-border" />
-          <Skeleton className="h-9 w-9 border border-border" />
+        <div className="flex justify-between">
+          <div className="flex items-center gap-1">
+            <Skeleton className="h-9 w-9 border border-border" />
+            <Skeleton className="h-9 w-9 border border-border" />
+            <Skeleton className="h-9 w-9 border border-border" />
+            <Skeleton className="h-9 w-9 border border-border" />
+            <Skeleton className="h-9 w-9 border border-border" />
+          </div>
+          <Skeleton className="h-9 w-16 border border-border" />
         </div>
       </div>
     </div>
