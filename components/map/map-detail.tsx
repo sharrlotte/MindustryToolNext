@@ -38,6 +38,10 @@ export default function MapDetail({ map, padding }: MapDetailProps) {
         <Detail.Header>
           <Detail.Title>{map.name}</Detail.Title>
           <IdUserCard id={map.authorId} />
+          <div className="flex items-end gap-2">
+            <span>Verified by</span>
+            <IdUserCard id={map.verifyAdmin} />
+          </div>
           <Detail.Description>{map.description}</Detail.Description>
           <Detail.Tags tags={map.tags} />
         </Detail.Header>

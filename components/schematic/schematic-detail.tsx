@@ -57,6 +57,10 @@ export default function SchematicDetail({
         <Detail.Header>
           <Detail.Title>{schematic.name}</Detail.Title>
           <IdUserCard id={schematic.authorId} />
+          <div className="flex items-end gap-2">
+            <span>Verified by</span>
+            <IdUserCard id={schematic.verifyAdmin} />
+          </div>
           <Detail.Description>{schematic.description}</Detail.Description>
           <ItemRequirementCard requirement={schematic.requirement} />
           <Detail.Tags tags={schematic.tags} />

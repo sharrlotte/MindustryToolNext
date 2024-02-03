@@ -13,6 +13,10 @@ type IdUserCardProps = {
 };
 
 export default function IdUserCard({ id }: IdUserCardProps) {
+  if (!id) {
+    return <span>User not found</span>;
+  }
+
   if (id.toLowerCase() === 'community') {
     return <span>Community</span>;
   }
@@ -32,8 +36,12 @@ function FletchUserCard({ id }: IdUserCardProps) {
     return 'Error';
   }
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return <UserCardSkeleton />;
+  }
+
+  if (!data) {
+    return <span>User not found</span>;
   }
 
   return <UserCard user={data} />;
