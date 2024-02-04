@@ -30,5 +30,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
     return notFound();
   }
 
-  return <PostDetail post={post} />;
+  return <PostDetail post={post} padding />;
 }

@@ -6,7 +6,7 @@ import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { useToast } from '@/hooks/use-toast';
 import { Map } from '@/types/response/Map';
-import React, { HTMLAttributes, useState } from 'react';
+import React, { useState } from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
@@ -23,7 +23,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 
-type UploadMapDetailProps = HTMLAttributes<HTMLDivElement> & {
+type UploadMapDetailProps = {
   map: Map;
 };
 
