@@ -8,7 +8,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import { Tags } from '@/types/response/Tag';
 import { Post } from '@/types/response/Post';
 import React from 'react';
-import { cn } from '@/lib/utils';
+import Detail from '@/components/detail/detail';
 
 type PostDetailProps = {
   post: Post;
@@ -19,11 +19,7 @@ export default function PostDetail({ post, padding }: PostDetailProps) {
   const displayTags = Tags.parseStringArray(post.tags);
 
   return (
-    <div
-      className={cn('grid gap-8 overflow-y-auto p-4', {
-        'p-2': padding,
-      })}
-    >
+    <Detail padding={padding}>
       <header className="grid gap-2">
         <p className="text-4xl">{post.header}</p>
         <IdUserCard id={post.authorId} />
@@ -49,6 +45,6 @@ export default function PostDetail({ post, padding }: PostDetailProps) {
           <BackButton />
         </div>
       </footer>
-    </div>
+    </Detail>
   );
 }

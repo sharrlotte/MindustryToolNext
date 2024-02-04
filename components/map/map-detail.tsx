@@ -6,11 +6,11 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { Map } from '@/types/response/Map';
-import React, { HTMLAttributes } from 'react';
+import React from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 
-type MapDetailProps = HTMLAttributes<HTMLDivElement> & {
+type MapDetailProps = {
   map: Map;
   padding?: boolean;
 };
