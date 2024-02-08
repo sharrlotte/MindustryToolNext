@@ -14,7 +14,7 @@ export default function ColorText({ text, className }: ColorTextProps) {
   let index = text.search(COLOR_REGEX);
   let key = 0;
 
-  if (index < 0) return <div className={cn(className)}>{text}</div>;
+  if (index < 0) return <span className={cn(className)}>{text}</span>;
 
   let result: ReactNode[] = [];
 
@@ -25,7 +25,7 @@ export default function ColorText({ text, className }: ColorTextProps) {
 
   let arr = text.match(COLOR_REGEX);
 
-  if (!arr) return <div className={cn(className)}>{text}</div>;
+  if (!arr) return <span className={cn(className)}>{text}</span>;
 
   const s = new Option().style;
 
