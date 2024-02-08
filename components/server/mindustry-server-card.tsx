@@ -61,9 +61,11 @@ export default function MindustryServerCard({
             Address:
             {server.address}
           </span>
-          <div className="col-span-full">
-            Description: <ColorText text={server.description} />
-          </div>
+          {server.description && (
+            <div className="col-span-full">
+              Description: <ColorText text={server.description} />
+            </div>
+          )}
           <span>Ping: {server.ping}ms</span>
           <div className="flex justify-end gap-2">
             <LikeComponent
