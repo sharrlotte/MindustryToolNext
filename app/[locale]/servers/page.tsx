@@ -2,17 +2,16 @@
 
 import InfinitePage from '@/components/common/infinite-page';
 import MindustryServerCard from '@/components/server/mindustry-server-card';
-import useSearchPageParams from '@/hooks/use-search-page-params';
 import getServers from '@/query/server/get-servers';
 import { useRef } from 'react';
 
 export default function Page() {
   const scrollContainer = useRef<HTMLDivElement | null>();
-  const params = useSearchPageParams();
+  const params = { page: 0 };
 
   return (
     <div
-      className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden p-2"
+      className="h-full overflow-y-auto p-2"
       ref={(ref) => (scrollContainer.current = ref)}
     >
       <InfinitePage
@@ -22,7 +21,7 @@ export default function Page() {
         params={params}
         getFunc={getServers}
       >
-        {(data) => <MindustryServerCard key={data.address} server={data} />}
+        {(data) => <MindustryServerCard key={data.id} server={data} />}
       </InfinitePage>
     </div>
   );

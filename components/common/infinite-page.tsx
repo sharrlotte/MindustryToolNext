@@ -42,39 +42,37 @@ export default function InfinitePage<T, P extends PaginationQuery>({
   }
 
   return (
-    <div className="h-full w-full">
-      <InfiniteScroll
-        className={className
-           ??
-          'grid w-full grid-cols-[repeat(auto-fill,var(--preview-size))] justify-center gap-4'
-        }
-        pageStart={0}
-        loadMore={(_: number) => fetchNextPage()}
-        hasMore={hasNextPage}
-        loader={
-          <LoadingSpinner
-            key="Loading"
-            className="col-span-full flex w-full items-center justify-center"
-          />
-        }
-        useWindow={false}
-        getScrollParent={() => scrollContainer}
-      >
-        {pages.map((data, index) => children(data, index))}
-        {!hasNextPage && (
-          <span
-            className="col-span-full flex w-full items-center justify-center"
-            key="End"
-          >
-            End
-          </span>
-        )}
-        {isError && (
-          <div className="flex w-full justify-center">
-            Error : {error?.message}
-          </div>
-        )}
-      </InfiniteScroll>
-    </div>
+    <InfiniteScroll
+      className={
+        className ??
+        'grid w-full grid-cols-[repeat(auto-fill,var(--preview-size))] justify-center gap-4'
+      }
+      threshold={1000}
+      loadMore={(_: number) => fetchNextPage()}
+      hasMore={hasNextPage}
+      loader={
+        <LoadingSpinner
+          key="Loading"
+          className="col-span-full mb-4 flex w-full items-center justify-center"
+        />
+      }
+      useWindow={false}
+      getScrollParent={() => scrollContainer}
+    >
+      {pages.map((data, index) => children(data, index))}
+      {!hasNextPage && (
+        <span
+          className="col-span-full flex w-full items-center justify-center"
+          key="End"
+        >
+          End
+        </span>
+      )}
+      {isError && (
+        <div className="flex w-full justify-center">
+          Error : {error?.message}
+        </div>
+      )}
+    </InfiniteScroll>
   );
 }
