@@ -49,13 +49,9 @@ export default function MapPreview({
             initialLikeCount={map.like}
             initialLikeData={map.userLike}
           >
-            <LikeComponent.LikeButton variant="outline" title="Like" />
-            <LikeComponent.LikeCount
-              className="text-xl"
-              variant="outline"
-              title="Like count"
-            />
-            <LikeComponent.DislikeButton variant="outline" title="Dislike" />
+            <LikeComponent.LikeButton />
+            <LikeComponent.LikeCount />
+            <LikeComponent.DislikeButton />
           </LikeComponent>
         </Preview.Actions>
       </Preview.Description>

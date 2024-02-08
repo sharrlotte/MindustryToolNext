@@ -6,9 +6,11 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import InfinitePage from '@/components/common/infinite-page';
 import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
+import useSearchPageParams from '@/hooks/use-search-page-params';
 
 export default function Page() {
   const { schematic } = useTags();
+  const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
@@ -18,6 +20,7 @@ export default function Page() {
     >
       <NameTagSearch tags={schematic} />
       <InfinitePage
+        params={params}
         queryKey={['schematics']}
         getFunc={getSchematics}
         scrollContainer={scrollContainer.current}

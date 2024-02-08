@@ -4,38 +4,34 @@ import NoResult from '@/components/common/no-result';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { cn } from '@/lib/utils';
-import { PageableSearchQuery } from '@/types/data/pageable-search-schema';
+import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { AxiosInstance } from 'axios';
 import React, { ReactNode } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
-type InfinitePageProps<T> = {
+type InfinitePageProps<T, P extends PaginationQuery> = {
   className?: string;
   queryKey: any[];
+  params: P;
   scrollContainer?: HTMLElement | null;
-  getFunc: (axios: AxiosInstance, params: PageableSearchQuery) => Promise<T[]>;
-  children: (data: T) => ReactNode;
+  getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
+  children: (data: T, index?: number) => ReactNode;
 };
 
-export default function InfinitePage<T>({
+export default function InfinitePage<T, P extends PaginationQuery>({
   className,
   queryKey,
+  params,
   scrollContainer = null,
   getFunc,
   children,
-}: InfinitePageProps<T>) {
+}: InfinitePageProps<T, P>) {
   const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
-    useInfinitePageQuery(getFunc, queryKey);
+    useInfinitePageQuery(getFunc, params, queryKey);
 
-  if (isError) {
+  if (isLoading || !data) {
     return (
-      <div className="flex w-full justify-center">Error : {error?.message}</div>
-    );
-  }
-
-  if (!data || isLoading) {
-    return (
-      <LoadingSpinner className="absolute bottom-0 left-0 right-0 top-0" />
+      <LoadingSpinner className="absolute bottom-0 left-0 right-0 top-0 mb-2" />
     );
   }
 
@@ -46,27 +42,37 @@ export default function InfinitePage<T>({
   }
 
   return (
-    <div className="h-full w-full">
-      <InfiniteScroll
-        className={cn(
-          'grid w-full grid-cols-[repeat(auto-fill,var(--preview-size))] justify-center gap-4',
-          className,
-        )}
-        pageStart={0}
-        loadMore={(_: number) => fetchNextPage()}
-        hasMore={hasNextPage}
-        loader={
-          <LoadingSpinner
-            key="Loading"
-            className="col-span-full flex w-full items-center justify-center"
-          />
-        }
-        useWindow={false}
-        threshold={1000}
-        getScrollParent={() => scrollContainer}
-      >
-        {pages.map((data) => children(data))}
-      </InfiniteScroll>
-    </div>
+    <InfiniteScroll
+      className={
+        className ??
+        'grid w-full grid-cols-[repeat(auto-fill,var(--preview-size))] justify-center gap-4'
+      }
+      threshold={1000}
+      loadMore={(_: number) => fetchNextPage()}
+      hasMore={hasNextPage}
+      loader={
+        <LoadingSpinner
+          key="Loading"
+          className="col-span-full mb-4 flex w-full items-center justify-center"
+        />
+      }
+      useWindow={false}
+      getScrollParent={() => scrollContainer}
+    >
+      {pages.map((data, index) => children(data, index))}
+      {!hasNextPage && (
+        <span
+          className="col-span-full flex w-full items-center justify-center"
+          key="End"
+        >
+          End
+        </span>
+      )}
+      {isError && (
+        <div className="flex w-full justify-center">
+          Error : {error?.message}
+        </div>
+      )}
+    </InfiniteScroll>
   );
 }

@@ -47,22 +47,9 @@ export default function PostPreview({
             initialLikeCount={post.like}
             initialLikeData={post.userLike}
           >
-            <LikeComponent.LikeButton
-              variant="outline"
-              title="Like"
-              size="icon"
-            />
-            <LikeComponent.LikeCount
-              className="text-xl"
-              variant="outline"
-              title="Like count"
-              size="icon"
-            />
-            <LikeComponent.DislikeButton
-              variant="outline"
-              title="Dislike"
-              size="icon"
-            />
+            <LikeComponent.LikeButton />
+            <LikeComponent.LikeCount />
+            <LikeComponent.DislikeButton />
           </LikeComponent>
         </section>
       </div>
