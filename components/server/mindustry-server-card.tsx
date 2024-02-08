@@ -27,7 +27,7 @@ export default function MindustryServerCard({
       </CopyButton>
       <section className="flex h-full flex-col overflow-hidden rounded-sm bg-background p-2">
         <div className="flex h-full flex-col justify-between">
-          <div className="grid grid-cols-2 gap-x-2">
+          <div className="grid grid-cols-1 gap-x-2 md:grid-cols-2">
             <div className="flex gap-2">
               <span>{server.players}</span>
               {server.playerLimit ? (
