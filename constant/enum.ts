@@ -11,7 +11,7 @@ export type MetricCollection =
   | 'DAILY_USER'
   | 'LOGGED_DAILY_USER';
 
-export type LikeTarget = 'SCHEMATICS' | 'MAPS' | 'POSTS';
+export type LikeTarget = 'SCHEMATICS' | 'MAPS' | 'POSTS' | 'SERVERS';
 
 export type UserRole = 'ADMIN' | 'USER';
 

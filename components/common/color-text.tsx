@@ -30,7 +30,7 @@ export default function ColorText({ text, className }: ColorTextProps) {
   const s = new Option().style;
 
   while (arr.length > 0) {
-    let color = arr[0];
+    let color = arr[0].toLocaleLowerCase();
     color = color.substring(1, color.length - 1); // @ts-ignore
 
     if (color.includes('#')) {

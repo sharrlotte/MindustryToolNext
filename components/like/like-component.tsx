@@ -145,16 +145,19 @@ function LikeComponent({
   );
 }
 
-type LikeButtonProps = ButtonProps;
+type LikeButtonProps = Omit<ButtonProps, 'title'>;
 
 function LikeButton({ className, ...props }: LikeButtonProps) {
   const { handleLike, likeData, isLoading } = useLike();
 
   return (
     <Button
-      className={cn('p-2 hover:bg-success', className, {
+      className={cn('aspect-square p-2 hover:bg-success', className, {
         'bg-success hover:bg-success': likeData?.state === 1,
       })}
+      title="like"
+      size="icon"
+      variant="outline"
       {...props}
       disabled={isLoading}
       onClick={handleLike}
@@ -168,10 +171,13 @@ function DislikeButton({ className, ...props }: LikeButtonProps) {
   const { handleDislike, likeData, isLoading } = useLike();
   return (
     <Button
-      className={cn('p-2 hover:bg-destructive', className, {
+      className={cn('aspect-square p-2 hover:bg-destructive', className, {
         'bg-destructive hover:bg-destructive': likeData?.state === -1,
       })}
+      size="icon"
+      variant="outline"
       {...props}
+      title="dislike"
       disabled={isLoading}
       onClick={handleDislike}
     >
@@ -185,10 +191,13 @@ function LikeCount({ className, ...props }: LikeButtonProps) {
 
   return (
     <Button
-      className={cn(className, {
+      className={cn('aspect-square text-xl',className, {
         'text-destructive hover:text-destructive': count < 0,
         'text-success hover:text-success': count > 0,
       })}
+      size="icon"
+      variant="outline"
+      title="like count"
       {...props}
     >
       {count}

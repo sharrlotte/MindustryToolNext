@@ -58,24 +58,9 @@ export default function MapDetail({ map, padding }: MapDetailProps) {
             initialLikeCount={map.like}
             initialLikeData={map.userLike}
           >
-            <LikeComponent.LikeButton
-              className="aspect-square"
-              size="icon"
-              variant="outline"
-              title="Like"
-            />
-            <LikeComponent.LikeCount
-              className="aspect-square text-xl"
-              size="icon"
-              variant="outline"
-              title="Like count"
-            />
-            <LikeComponent.DislikeButton
-              className="aspect-square"
-              size="icon"
-              variant="outline"
-              title="Dislike"
-            />
+            <LikeComponent.LikeButton />
+            <LikeComponent.LikeCount />
+            <LikeComponent.DislikeButton />
           </LikeComponent>
         </div>
         <BackButton />

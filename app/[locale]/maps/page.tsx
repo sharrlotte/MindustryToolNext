@@ -6,9 +6,11 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import InfinitePage from '@/components/common/infinite-page';
 import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
+import useSearchPageParams from '@/hooks/use-search-page-params';
 
 export default function MapPage() {
   const { map } = useTags();
+  const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
@@ -18,6 +20,7 @@ export default function MapPage() {
     >
       <NameTagSearch tags={map} />
       <InfinitePage
+        params={params}
         queryKey={['maps']}
         getFunc={getMaps}
         scrollContainer={scrollContainer.current}

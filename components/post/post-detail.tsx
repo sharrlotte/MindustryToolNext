@@ -38,9 +38,9 @@ export default function PostDetail({ post, padding }: PostDetailProps) {
             initialLikeCount={post.like}
             initialLikeData={post.userLike}
           >
-            <LikeComponent.LikeButton title="like" variant="outline" />
-            <LikeComponent.LikeCount title="0count" variant="outline" />
-            <LikeComponent.DislikeButton title="dislike" variant="outline" />
+            <LikeComponent.LikeButton />
+            <LikeComponent.LikeCount  />
+            <LikeComponent.DislikeButton  />
           </LikeComponent>
           <BackButton />
         </div>
