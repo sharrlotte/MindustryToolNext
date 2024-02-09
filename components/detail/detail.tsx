@@ -17,7 +17,7 @@ function Detail({ className, children, padding }: DetailProps) {
           'relative flex h-full w-full flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch',
           className,
           {
-            'p-2': padding,
+            'p-4': padding,
           },
         )}
       >

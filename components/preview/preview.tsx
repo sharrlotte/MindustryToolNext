@@ -9,7 +9,7 @@ function Preview({ className, children, ...props }: CardProps) {
   return (
     <Card
       className={cn(
-        'flex min-h-preview w-preview animate-appear items-center justify-center overflow-hidden',
+        'flex min-h-preview animate-appear items-center justify-center overflow-hidden',
         className,
       )}
       {...props}
@@ -24,7 +24,7 @@ function Header({ className, children }: HeaderProps) {
   return (
     <div
       className={cn(
-        'flex h-8 w-preview overflow-hidden bg-opacity-50 px-2 capitalize',
+        'flex h-8 overflow-hidden bg-opacity-50 px-2 capitalize',
         className,
       )}
     >
@@ -40,7 +40,12 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 
 function PImage({ className, src, errorSrc, alt }: ImageProps) {
   return (
-    <figure className={cn(className)}>
+    <figure
+      className={cn(
+        'flex h-full w-full items-center justify-center',
+        className,
+      )}
+    >
       <Image
         className="h-full w-full object-cover"
         src={src}

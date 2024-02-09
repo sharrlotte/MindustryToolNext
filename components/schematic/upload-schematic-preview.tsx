@@ -47,7 +47,6 @@ export default function UploadSchematicPreview({
       />
       <Link href={`/admin/schematics/${schematic.id}`}>
         <Preview.Image
-          className="h-preview w-preview"
           src={`${env.url.image}/schematics/${schematic.id}.png`}
           errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
           alt={schematic.name}

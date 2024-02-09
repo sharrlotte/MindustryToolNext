@@ -56,7 +56,7 @@ export default function Page() {
         variant: 'success',
       });
       setData(undefined);
-      setPreview(undefined)
+      setPreview(undefined);
       setSelectedTags([]);
       invalidateByKey(['map-uploads']);
     },
@@ -91,6 +91,7 @@ export default function Page() {
       return;
     }
 
+    setPreview(undefined);
     setData(files[0]);
   }
 
@@ -118,9 +119,12 @@ export default function Page() {
 
   return (
     <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md pr-1">
-      <div className="flex flex-col gap-2 rounded-md bg-card p-2">
+      <div className="flex flex-col gap-2 rounded-md p-2">
         <section className="flex min-h-10 flex-row flex-wrap items-center gap-2">
-          <label className="button" htmlFor="file">
+          <label
+            className="button rounded-md border border-border"
+            htmlFor="file"
+          >
             <LoadingWrapper isLoading={isLoadingMapPreview}>
               {preview ? (
                 <img src={PNG_IMAGE_PREFIX + preview.image} alt="Error" />

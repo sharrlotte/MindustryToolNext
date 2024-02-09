@@ -151,10 +151,14 @@ function LikeButton({ className, ...props }: LikeButtonProps) {
   const { handleLike, likeData, isLoading } = useLike();
 
   return (
-    <Button
-      className={cn('aspect-square p-2 hover:bg-success', className, {
-        'bg-success hover:bg-success': likeData?.state === 1,
-      })}
+    <button
+      className={cn(
+        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border p-2 hover:bg-success',
+        className,
+        {
+          'bg-success hover:bg-success': likeData?.state === 1,
+        },
+      )}
       title="like"
       size="icon"
       variant="outline"
@@ -163,17 +167,21 @@ function LikeButton({ className, ...props }: LikeButtonProps) {
       onClick={handleLike}
     >
       <ChevronDoubleUpIcon className="h-6 w-6" />
-    </Button>
+    </button>
   );
 }
 
 function DislikeButton({ className, ...props }: LikeButtonProps) {
   const { handleDislike, likeData, isLoading } = useLike();
   return (
-    <Button
-      className={cn('aspect-square p-2 hover:bg-destructive', className, {
-        'bg-destructive hover:bg-destructive': likeData?.state === -1,
-      })}
+    <button
+      className={cn(
+        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border p-2 hover:bg-destructive',
+        className,
+        {
+          'bg-destructive hover:bg-destructive': likeData?.state === -1,
+        },
+      )}
       size="icon"
       variant="outline"
       {...props}
@@ -182,7 +190,7 @@ function DislikeButton({ className, ...props }: LikeButtonProps) {
       onClick={handleDislike}
     >
       <ChevronDoubleDownIcon className="h-6 w-6" />
-    </Button>
+    </button>
   );
 }
 function LikeCount({ className, ...props }: LikeButtonProps) {
@@ -190,18 +198,22 @@ function LikeCount({ className, ...props }: LikeButtonProps) {
   const { count } = likeData;
 
   return (
-    <Button
-      className={cn('aspect-square text-xl',className, {
-        'text-destructive hover:text-destructive': count < 0,
-        'text-success hover:text-success': count > 0,
-      })}
+    <button
+      className={cn(
+        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border text-xl',
+        className,
+        {
+          'text-destructive hover:text-destructive': count < 0,
+          'text-success hover:text-success': count > 0,
+        },
+      )}
       size="icon"
       variant="outline"
       title="like count"
       {...props}
     >
       {count}
-    </Button>
+    </button>
   );
 }
 

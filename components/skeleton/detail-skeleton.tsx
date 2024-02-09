@@ -11,13 +11,13 @@ export default function DetailSkeleton({ padding }: DetailSkeletonProps) {
   return (
     <div
       className={cn('absolute h-full w-full bg-background backdrop-blur-sm', {
-        'p-2': padding,
+        'p-4': padding,
       })}
     >
       <div className="relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch">
         <div className="flex flex-row flex-wrap gap-2">
-          <div className="relative">
-            <Skeleton className="h-[400px] max-h-full w-[400px] max-w-full overflow-hidden rounded-lg" />
+          <div className="relative overflow-hidden rounded-lg">
+            <Skeleton className="h-[400px] max-h-full w-[400px] max-w-full overflow-hidden" />
           </div>
           <div className="flex flex-col gap-1">
             <Skeleton className="h-8 w-80 text-xl capitalize" />
@@ -25,12 +25,12 @@ export default function DetailSkeleton({ padding }: DetailSkeletonProps) {
           </div>
         </div>
         <div className="flex justify-between">
-          <div className="flex items-center gap-1">
-            <Skeleton className="h-9 w-9 border border-border" />
-            <Skeleton className="h-9 w-9 border border-border" />
-            <Skeleton className="h-9 w-9 border border-border" />
-            <Skeleton className="h-9 w-9 border border-border" />
-            <Skeleton className="h-9 w-9 border border-border" />
+          <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
+            <Skeleton className="border border-border" />
+            <Skeleton className="border border-border" />
+            <Skeleton className="border border-border" />
+            <Skeleton className="border border-border" />
+            <Skeleton className="border border-border" />
           </div>
           <Skeleton className="h-9 w-16 border border-border" />
         </div>
