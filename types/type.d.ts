@@ -10,6 +10,7 @@ declare module 'next-auth' {
       roles: UserRole[];
       name: string;
       imageUrl?: string | null;
+      expireAt: number; 
     } & DefaultSession['user'];
   }
 }
@@ -20,5 +21,6 @@ declare module 'next-auth/jwt' {
     roles: UserRole[];
     version: number;
     accessToken: string;
+    expireAt: number;
   }
 }

@@ -49,6 +49,7 @@ export const {
           session.user.imageUrl = session.user.image;
           session.user.roles = token.roles || [];
           session.user.accessToken = token.accessToken;
+          session.user.expireAt = token.expireAt;
         }
         return session;
       }
@@ -75,6 +76,7 @@ export const {
           token.name = apiUser.name;
           token.roles = apiUser.roles;
           token.accessToken = apiUser.accessToken;
+          token.expireAt = apiUser.expireTime;
           token.version = JWT_VERSION;
 
           return token;
@@ -251,7 +253,7 @@ const apiLogin = async () => {
 async function apiRefreshToken() {
   console.log('API refresh token');
 
-  const result = await refreshToken(authData.refreshToken as string);
+  const result = await refreshToken(authData.refreshToken);
   if (result) {
     authData.accessToken = result.accessToken;
     authData.refreshToken = result.refreshToken;
