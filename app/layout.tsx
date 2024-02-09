@@ -12,14 +12,6 @@ import './globals.css';
 import ClientInit from '@/app/client-init';
 import { SessionProvider } from 'next-auth/react';
 
-const inter = Jura({
-  subsets: ['latin'],
-  weight: '500',
-  display: 'swap',
-  adjustFontFallback: false,
-  preload: true,
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
   title: 'MindustryTool',
@@ -50,7 +42,7 @@ export default function Root({ children, params }: RootProps) {
       lang={params.lang ?? 'en'}
       suppressHydrationWarning
     >
-      <body className={cn(inter.className, 'h-full w-full overflow-hidden')}>
+      <body className={cn('h-full w-full overflow-hidden')}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

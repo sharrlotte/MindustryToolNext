@@ -71,6 +71,7 @@ export default function Page() {
                 />
                 <div className="flex gap-2 self-end">
                   <Button
+                    variant="outline"
                     title="Copy from clipboard"
                     onClick={handleCopyFromClipboard}
                   >
