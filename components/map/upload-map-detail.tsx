@@ -123,18 +123,14 @@ export default function UploadMapDetail({ map }: UploadMapDetailProps) {
         </Detail.Header>
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
-        <div className="flex gap-1">
+        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
-            className="aspect-square h-9 w-9"
             title="Copy"
             variant="outline"
             content={`Copied map ${map.name}`}
             data={getData}
           />
-          <DownloadButton
-            className="aspect-square h-9 w-9"
-            href={`${env.url.api}/maps/${map.id}/download`}
-          />
+          <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
           <DeleteButton
             description={`Delete this map: ${map.name}`}
             isLoading={isLoading}

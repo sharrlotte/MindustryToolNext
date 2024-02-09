@@ -17,7 +17,7 @@ export default function DetailSkeleton({ padding }: DetailSkeletonProps) {
       <div className="relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch">
         <div className="flex flex-row flex-wrap gap-2">
           <div className="relative overflow-hidden rounded-lg">
-            <Skeleton className="h-[400px] max-h-full w-[400px] max-w-full overflow-hidden" />
+            <Skeleton className="h-[400px] max-h-full w-[400px] max-w-full" />
           </div>
           <div className="flex flex-col gap-1">
             <Skeleton className="h-8 w-80 text-xl capitalize" />
@@ -26,7 +26,6 @@ export default function DetailSkeleton({ padding }: DetailSkeletonProps) {
         </div>
         <div className="flex justify-between">
           <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-            <Skeleton className="border border-border" />
             <Skeleton className="border border-border" />
             <Skeleton className="border border-border" />
             <Skeleton className="border border-border" />
