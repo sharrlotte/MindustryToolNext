@@ -28,7 +28,7 @@ export default function DeleteButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger
-        className="aspect-square h-9 w-9 rounded-md border p-2"
+        className="rounded-md border p-2 flex justify-center items-center"
         disabled={isLoading}
       >
         <LoadingWrapper isLoading={isLoading}>

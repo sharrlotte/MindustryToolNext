@@ -10,12 +10,12 @@ import React, { useRef } from 'react';
 
 export default function Page() {
   const { map } = useTags();
-  const params = useSearchPageParams()
+  const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
     <div
-      className="relative flex h-full flex-col gap-4 overflow-y-auto"
+      className="relative flex h-full flex-col gap-4 overflow-y-auto pr-2"
       ref={(ref) => (scrollContainer.current = ref)}
     >
       <NameTagSearch tags={map} />

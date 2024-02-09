@@ -47,11 +47,8 @@ export default function MapDetail({ map, padding }: MapDetailProps) {
         </Detail.Header>
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
-        <div className="flex gap-1">
-          <DownloadButton
-            className="aspect-square"
-            href={`${env.url.api}/maps/${map.id}/download`}
-          />
+        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
+          <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
           <LikeComponent
             targetId={map.id}
             targetType="MAPS"

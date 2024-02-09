@@ -67,7 +67,7 @@ export default function SchematicDetail({
         </Detail.Header>
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
-        <div className="flex gap-1">
+        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
             title="Copy"
             variant="outline"
@@ -75,7 +75,6 @@ export default function SchematicDetail({
             data={getData}
           />
           <DownloadButton
-            className="aspect-square"
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
           <LikeComponent

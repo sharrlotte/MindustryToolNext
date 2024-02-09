@@ -28,7 +28,7 @@ export default function VerifyButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger
-        className="aspect-square h-9 w-9 rounded-md border p-2"
+        className="flex items-center justify-center  rounded-md border p-2"
         disabled={isLoading}
       >
         <LoadingWrapper isLoading={isLoading}>

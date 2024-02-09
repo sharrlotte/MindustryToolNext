@@ -30,8 +30,8 @@ export default function PostDetail({ post, padding }: PostDetailProps) {
         </section>
       </header>
       <Markdown>{post.content}</Markdown>
-      <footer>
-        <div className="flex items-center justify-end gap-2">
+      <footer className="flex justify-between">
+        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <LikeComponent
             targetId={post.id}
             targetType="POSTS"
@@ -39,11 +39,11 @@ export default function PostDetail({ post, padding }: PostDetailProps) {
             initialLikeData={post.userLike}
           >
             <LikeComponent.LikeButton />
-            <LikeComponent.LikeCount  />
-            <LikeComponent.DislikeButton  />
+            <LikeComponent.LikeCount />
+            <LikeComponent.DislikeButton />
           </LikeComponent>
-          <BackButton />
         </div>
+        <BackButton />
       </footer>
     </Detail>
   );

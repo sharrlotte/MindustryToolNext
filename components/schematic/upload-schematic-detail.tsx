@@ -127,16 +127,14 @@ export default function UploadSchematicDetail({
         </Detail.Header>
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
-        <div className="flex gap-1">
+        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
-            className="aspect-square h-9 w-9"
             title="Copy"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}
             data={getData}
           />
           <DownloadButton
-            className="aspect-square h-9 w-9"
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
           <DeleteButton

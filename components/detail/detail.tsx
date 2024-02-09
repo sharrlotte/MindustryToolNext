@@ -1,7 +1,7 @@
 import ColorText from '@/components/common/color-text';
 import TagCard from '@/components/tag/tag-card';
 import { cn } from '@/lib/utils';
-import Tag, { Tags } from '@/types/response/Tag';
+import { Tags } from '@/types/response/Tag';
 import Image from 'next/image';
 import React, { HTMLAttributes } from 'react';
 
@@ -11,13 +11,13 @@ type DetailProps = HTMLAttributes<HTMLDivElement> & {
 
 function Detail({ className, children, padding }: DetailProps) {
   return (
-    <div className="absolute h-full w-full bg-background">
+    <div className="absolute inset-0 overflow-hidden bg-background">
       <div
         className={cn(
           'relative flex h-full w-full flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch',
           className,
           {
-            'p-2': padding,
+            'p-4': padding,
           },
         )}
       >

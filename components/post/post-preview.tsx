@@ -33,9 +33,8 @@ export default function PostPreview({
           </Link>
           <IdUserCard id={post.authorId} />
         </div>
-        <section className="flex gap-2">
+        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
-            size="icon"
             title="Copy"
             variant="outline"
             data={link}
@@ -51,7 +50,7 @@ export default function PostPreview({
             <LikeComponent.LikeCount />
             <LikeComponent.DislikeButton />
           </LikeComponent>
-        </section>
+        </div>
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ export default function MapPreview({
 
   return (
     <Preview
-      className={cn('group relative flex flex-col', className)}
+      className={cn('group relative flex flex-col justify-between', className)}
       {...rest}
     >
       <CopyButton
@@ -31,9 +31,8 @@ export default function MapPreview({
         data={link}
         content={link}
       />
-      <Link href={`/maps/${map.id}`}>
+      <Link className="h-full w-full" href={`/maps/${map.id}`}>
         <Preview.Image
-          className="h-preview w-preview"
           src={`${env.url.image}/maps/${map.id}.png`}
           errorSrc={`${env.url.api}/maps/${map.id}/image`}
           alt={map.name}

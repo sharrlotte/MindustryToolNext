@@ -15,7 +15,7 @@ export default function Page() {
 
   return (
     <div
-      className="relative flex h-full flex-col gap-4 overflow-y-auto p-2"
+      className="relative flex h-full flex-col gap-4 overflow-y-auto p-4"
       ref={(ref) => (scrollContainer.current = ref)}
     >
       <NameTagSearch tags={schematic} />
