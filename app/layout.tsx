@@ -4,7 +4,7 @@ import QueryProvider from '../query/config/query-provider';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '../components/theme/theme-provider';
-import { Monomaniac_One, Roboto } from 'next/font/google';
+import { Jura } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from 'next';
 
@@ -12,18 +12,12 @@ import './globals.css';
 import ClientInit from '@/app/client-init';
 import { SessionProvider } from 'next-auth/react';
 
-const inter = Monomaniac_One({
-  subsets: ['latin'],
-  weight: '400',
-  display: 'swap',
-  adjustFontFallback: false,
-});
-
-const fallback = Roboto({
+const inter = Jura({
   subsets: ['latin'],
   weight: '500',
   display: 'swap',
   adjustFontFallback: false,
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -56,13 +50,7 @@ export default function Root({ children, params }: RootProps) {
       lang={params.lang ?? 'en'}
       suppressHydrationWarning
     >
-      <body
-        className={cn(
-          fallback.className,
-          inter.className,
-          'h-full w-full overflow-hidden',
-        )}
-      >
+      <body className={cn(inter.className, 'h-full w-full overflow-hidden')}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
