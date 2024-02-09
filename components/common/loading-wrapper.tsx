@@ -6,7 +6,6 @@ type LoadingWrapperProps = {
   isLoading: boolean;
   children?: ReactNode;
 };
-
 export default function LoadingWrapper({
   className,
   isLoading,

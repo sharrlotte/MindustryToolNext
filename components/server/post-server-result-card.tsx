@@ -1,18 +1,20 @@
 import CopyButton from '@/components/button/copy-button';
 import ColorText from '@/components/common/color-text';
-import LikeComponent from '@/components/like/like-component';
-import MindustryServer from '@/types/response/MindustryServer';
-import React from 'react';
+import PostServerResponse from '@/types/response/PostServerResponse';
 
-type MindustryServerCardProps = {
-  server: MindustryServer;
+type PostServerResultCardProps = {
+  server?: PostServerResponse;
 };
 
-export default function MindustryServerCard({
+export default function PostServerResultCard({
   server,
-}: MindustryServerCardProps) {
+}: PostServerResultCardProps) {
+  if (!server) {
+    return;
+  }
+
   return (
-    <div className="flex flex-col gap-2 overflow-hidden rounded-md bg-card p-2">
+    <div className="flex flex-col gap-2 overflow-hidden rounded-md">
       <CopyButton
         className="justify-start px-0 text-xl"
         title="Copied"
@@ -25,7 +27,7 @@ export default function MindustryServerCard({
           text={server.name ? server.name : server.address}
         />
       </CopyButton>
-      <section className="flex h-full flex-col overflow-hidden rounded-sm bg-background p-2">
+      <section className="flex h-full flex-col overflow-hidden rounded-sm">
         <div className="flex h-full flex-col justify-between">
           <div className="grid grid-cols-1 gap-x-2 md:grid-cols-2">
             <div className="flex gap-2">
@@ -54,9 +56,7 @@ export default function MindustryServerCard({
             </span>
             <span className="overflow-hidden whitespace-nowrap capitalize">
               Game mode:
-              <ColorText
-                text={server.modeName ? server.mapname : server.mode}
-              />
+              {server.modeName ? server.mapname : server.mode}
             </span>
           </div>
           <span className="col-span-full">
@@ -69,18 +69,6 @@ export default function MindustryServerCard({
             </div>
           )}
           <span>Ping: {server.ping}ms</span>
-          <div className="flex justify-end gap-2">
-            <LikeComponent
-              initialLikeCount={server.like}
-              initialLikeData={server.userLike}
-              targetType={'SERVERS'}
-              targetId={server.id}
-            >
-              <LikeComponent.LikeButton />
-              <LikeComponent.LikeCount />
-              <LikeComponent.DislikeButton />
-            </LikeComponent>
-          </div>
         </div>
       </section>
     </div>
