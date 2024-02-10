@@ -14,5 +14,5 @@ export default interface PostServerResponse {
   modeName: string;
   ping: number;
   port: number;
-  time: string;
+  time: number;
 }

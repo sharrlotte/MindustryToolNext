@@ -28,7 +28,7 @@ export default function DeleteButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger
-        className="rounded-md border p-2 flex justify-center items-center"
+        className="flex items-center justify-center rounded-md border p-2"
         disabled={isLoading}
       >
         <LoadingWrapper isLoading={isLoading}>
@@ -42,7 +42,10 @@ export default function DeleteButton({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-destructive" asChild>
+          <AlertDialogAction
+            className="bg-destructive hover:bg-destructive"
+            asChild
+          >
             <Button title="Delete" onClick={onClick}>
               Delete
             </Button>

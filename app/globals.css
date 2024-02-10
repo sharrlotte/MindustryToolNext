@@ -35,7 +35,7 @@
     --radius: 0.5rem;
 
     --preview-size: 14rem;
-    --success: 160 84.1% 39.4%;
+    --success: 152, 69%, 31%;
     --button: 160 84.1% 39.4%;
   }
 
@@ -100,8 +100,6 @@
   ol {
     list-style: disc;
     list-style-position: inside;
-    display: grid;
-    gap: 0.5rem;
   }
   b {
     font-weight: bold;

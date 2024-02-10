@@ -1,8 +1,6 @@
-import TagGroup from '@/types/response/TagGroup';
-
 type PostSchematicRequest = {
   data: string | File;
-  tags: TagGroup[];
+  tags: string;
 };
 
 export default PostSchematicRequest;

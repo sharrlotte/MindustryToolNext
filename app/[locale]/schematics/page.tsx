@@ -1,12 +1,12 @@
 'use client';
 
-import SchematicPreview from '@/components/schematic/schematic-preview';
 import getSchematics from '@/query/schematic/get-schematics';
 import NameTagSearch from '@/components/search/name-tag-search';
 import InfinitePage from '@/components/common/infinite-page';
 import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
 import useSearchPageParams from '@/hooks/use-search-page-params';
+import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 
 export default function Page() {
   const { schematic } = useTags();
@@ -25,7 +25,7 @@ export default function Page() {
         getFunc={getSchematics}
         scrollContainer={scrollContainer.current}
       >
-        {(data) => <SchematicPreview key={data.id} schematic={data} />}
+        {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
       </InfinitePage>
     </div>
   );

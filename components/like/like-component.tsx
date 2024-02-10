@@ -1,47 +1,16 @@
 'use client';
 
-import { Button, ButtonProps } from '@/components/ui/button';
 import { Like } from '@/types/response/Like';
 import React, { useState } from 'react';
 import { ReactNode } from 'react';
-import {
-  ChevronDoubleDownIcon,
-  ChevronDoubleUpIcon,
-} from '@heroicons/react/24/solid';
-import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
 import { LikeAction, LikeTarget } from '@/constant/enum';
 import { useMutation } from '@tanstack/react-query';
 import postLike from '@/query/like/post-like';
 import useClientAPI from '@/hooks/use-client';
+import { FakeLike, LikeContext } from '@/context/like-context';
 
-type LikeData = Like & { count: number };
-
-type LikeContextType = {
-  likeData: LikeData;
-  isLoading: boolean;
-  handleLike: () => void;
-  handleDislike: () => void;
-};
-
-const FakeLike: LikeData = {
-  userId: '',
-  targetId: '',
-  state: 0,
-  count: 0,
-};
-
-const defaultContextValue: LikeContextType = {
-  likeData: FakeLike,
-  isLoading: false,
-  handleLike: () => {},
-  handleDislike: () => {},
-};
-
-const LikeContext = React.createContext(defaultContextValue);
-
-const useLike = () => React.useContext(LikeContext);
 
 type LikeComponentProps = {
   children: ReactNode;
@@ -144,81 +113,5 @@ function LikeComponent({
     </LikeContext.Provider>
   );
 }
-
-type LikeButtonProps = Omit<ButtonProps, 'title'>;
-
-function LikeButton({ className, ...props }: LikeButtonProps) {
-  const { handleLike, likeData, isLoading } = useLike();
-
-  return (
-    <button
-      className={cn(
-        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border p-2 hover:bg-success',
-        className,
-        {
-          'bg-success hover:bg-success': likeData?.state === 1,
-        },
-      )}
-      title="like"
-      size="icon"
-      variant="outline"
-      {...props}
-      disabled={isLoading}
-      onClick={handleLike}
-    >
-      <ChevronDoubleUpIcon className="h-6 w-6" />
-    </button>
-  );
-}
-
-function DislikeButton({ className, ...props }: LikeButtonProps) {
-  const { handleDislike, likeData, isLoading } = useLike();
-  return (
-    <button
-      className={cn(
-        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border p-2 hover:bg-destructive',
-        className,
-        {
-          'bg-destructive hover:bg-destructive': likeData?.state === -1,
-        },
-      )}
-      size="icon"
-      variant="outline"
-      {...props}
-      title="dislike"
-      disabled={isLoading}
-      onClick={handleDislike}
-    >
-      <ChevronDoubleDownIcon className="h-6 w-6" />
-    </button>
-  );
-}
-function LikeCount({ className, ...props }: LikeButtonProps) {
-  const { likeData } = useLike();
-  const { count } = likeData;
-
-  return (
-    <button
-      className={cn(
-        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border text-xl',
-        className,
-        {
-          'text-destructive hover:text-destructive': count < 0,
-          'text-success hover:text-success': count > 0,
-        },
-      )}
-      size="icon"
-      variant="outline"
-      title="like count"
-      {...props}
-    >
-      {count}
-    </button>
-  );
-}
-
-LikeComponent.LikeButton = LikeButton;
-LikeComponent.DislikeButton = DislikeButton;
-LikeComponent.LikeCount = LikeCount;
 
 export default LikeComponent;

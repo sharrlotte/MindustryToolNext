@@ -1,11 +1,11 @@
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { Post } from '@/types/response/Post';
+import { PostDetail } from '@/types/response/PostDetail';
 import { AxiosInstance } from 'axios';
 
 export default async function getPost(
   axios: AxiosInstance,
   { id }: IdSearchParams,
-): Promise<Post> {
+): Promise<PostDetail> {
   const result = await axios.get(`/posts/${id}`);
   return result.data;
 }

@@ -25,7 +25,7 @@ import postSchematicPreview from '@/query/schematic/post-schematic-preview';
 import PostSchematicRequest from '@/types/request/PostSchematicRequest';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import SchematicPreviewResponse from '@/types/response/SchematicPreviewResponse';
-import TagGroup from '@/types/response/TagGroup';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -129,7 +129,7 @@ export default function Page() {
       return;
     }
 
-    postNewSchematic({ data, tags: selectedTags });
+    postNewSchematic({ data, tags: TagGroups.toString(selectedTags) });
   }
 
   useEffect(() => {

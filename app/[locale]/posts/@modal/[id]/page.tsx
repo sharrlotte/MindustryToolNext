@@ -5,7 +5,7 @@ import getPost from '@/query/post/get-post';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import getServerAPI from '@/query/config/get-server-api';
 import { notFound } from 'next/navigation';
-import PostDetail from '@/components/post/post-detail';
+import PostDetailCard from '@/components/post/post-detail-card';
 
 type Props = {
   params: { id: string };
@@ -30,5 +30,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
     return notFound();
   }
 
-  return <PostDetail post={post} padding />;
+  return <PostDetailCard post={post} padding />;
 }

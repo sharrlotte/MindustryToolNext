@@ -1,4 +1,4 @@
-import UploadSchematicDetail from '@/components/schematic/upload-schematic-detail';
+import UploadSchematicDetailCard from '@/components/schematic/upload-schematic-detail-card';
 import getServerAPI from '@/query/config/get-server-api';
 import getSchematic from '@/query/schematic/get-schematic';
 import { IdSearchParams } from '@/types/data/id-search-schema';
@@ -13,6 +13,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
     return notFound();
   }
 
-  return <UploadSchematicDetail schematic={schematic} />;
+  return <UploadSchematicDetailCard schematic={schematic} />;
 }
-

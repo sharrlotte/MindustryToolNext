@@ -75,10 +75,6 @@ export default class SocketClient {
         return 'disconnected';
     }
   }
-
-  public reconnect() {
-    this.socket.reconnect();
-  }
 }
 
 type MessagePayload =

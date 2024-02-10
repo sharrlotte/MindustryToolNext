@@ -5,7 +5,7 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { useToast } from '@/hooks/use-toast';
-import { Schematic } from '@/types/response/Schematic';
+import { SchematicDetail } from '@/types/response/SchematicDetail';
 import React, { HTMLAttributes, useState } from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
@@ -15,7 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import postVerifySchematic from '@/query/schematic/post-verify-schematic';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import getSchematicData from '@/query/schematic/get-schematic-data';
-import TagGroup from '@/types/response/TagGroup';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import useTags from '@/hooks/use-tags';
 import { useRouter } from 'next/navigation';
@@ -24,18 +24,20 @@ import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 
-type UploadSchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
-  schematic: Schematic;
+type UploadSchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
+  schematic: SchematicDetail;
 };
 
-export default function UploadSchematicDetail({
+export default function UploadSchematicDetailCard({
   schematic,
-}: UploadSchematicDetailProps) {
+}: UploadSchematicDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { schematic: schematicTags } = useTags();
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(
+    TagGroups.parseString(schematic.tags, schematicTags),
+  );
   const { deleteById, invalidateByKey } = useQueriesData();
 
   const { mutate: verifySchematic, isPending: isVerifying } = useMutation({
@@ -43,6 +45,7 @@ export default function UploadSchematicDetail({
       postVerifySchematic(axios, data),
     onSuccess: () => {
       deleteById(['schematic-uploads'], schematic.id);
+      invalidateByKey(['total-schematic-uploads']);
       back();
       toast({
         title: 'Verify schematic successfully',
@@ -56,16 +59,13 @@ export default function UploadSchematicDetail({
         variant: 'destructive',
       });
     },
-    onSettled: () => {
-      invalidateByKey(['schematic-uploads']);
-    },
   });
 
   const { mutate: deleteSchematicById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deleteSchematic(axios, id),
     onSuccess: () => {
       deleteById(['schematic-uploads'], schematic.id);
-      invalidateByKey(['schematic-uploads']);
+      invalidateByKey(['total-schematic-uploads']);
       back();
       toast({
         title: 'Delete schematic successfully',
@@ -78,9 +78,6 @@ export default function UploadSchematicDetail({
         description: error.message,
         variant: 'destructive',
       });
-    },
-    onSettled: () => {
-      invalidateByKey(['schematic-uploads']);
     },
   });
 
@@ -146,7 +143,10 @@ export default function UploadSchematicDetail({
             description={`Verify this schematic: ${schematic.name}`}
             isLoading={isLoading}
             onClick={() =>
-              verifySchematic({ id: schematic.id, tags: selectedTags })
+              verifySchematic({
+                id: schematic.id,
+                tags: TagGroups.toString(selectedTags),
+              })
             }
           />
         </div>

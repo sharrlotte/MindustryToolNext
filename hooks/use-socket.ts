@@ -1,10 +1,8 @@
-'use client';
-
 import env from '@/constant/env';
-import useClientAPI from '@/hooks/use-client';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
+import useSocketStore from '@/zustand/socket-store';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 type UseSocket = {
   socket: SocketClient | undefined;
@@ -12,35 +10,27 @@ type UseSocket = {
 };
 
 export default function useSocket(): UseSocket {
-  const [socket, setSocket] = useState<SocketClient>();
-  const [isAuthenticated, setAuthenticated] = useState(false);
+  const { socket, authState, setSocket, setAuthState } = useSocketStore();
 
-  const { enabled } = useClientAPI();
-  const [state, setState] = useState<SocketState>('disconnected');
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const accessToken = session?.user?.accessToken;
 
   useEffect(() => {
-    if (!socket) {
-      const instance = new SocketClient(`${env.url.socket}/socket`);
-      instance.connect = () => setState('connected');
-      instance.disconnect = () => setState('disconnected');
-      setSocket(instance);
+    if (socket) {
       return;
     }
 
-    return () => {
-      socket?.close();
-    };
-  }, [socket]);
+    const instance = new SocketClient(`${env.url.socket}/socket`);
+    setSocket(instance);
+  }, [socket, setSocket]);
 
   useEffect(() => {
     if (
-      state !== 'connected' ||
-      isAuthenticated ||
+      authState !== 'loading' ||
+      status === 'loading' ||
       !accessToken ||
-      !enabled ||
-      !socket
+      !socket ||
+      socket.getState() !== 'connected'
     ) {
       return;
     }
@@ -50,8 +40,8 @@ export default function useSocket(): UseSocket {
       data: accessToken,
     });
 
-    setAuthenticated(true);
-  }, [accessToken, enabled, socket, state, isAuthenticated]);
+    setAuthState('authenticated');
+  }, [accessToken, socket, status, authState, setAuthState]);
 
   return {
     socket: socket,

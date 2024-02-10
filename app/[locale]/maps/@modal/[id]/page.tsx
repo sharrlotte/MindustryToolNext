@@ -1,4 +1,4 @@
-import MapDetail from '@/components/map/map-detail';
+import MapDetailCard from '@/components/map/map-detail-card';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/get-server-api';
 import getMap from '@/query/map/get-map';
@@ -35,5 +35,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
     return notFound();
   }
 
-  return <MapDetail map={map} padding />;
+  return <MapDetailCard map={map} padding />;
 }

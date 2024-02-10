@@ -1,4 +1,4 @@
-import UploadMapDetail from '@/components/map/upload-map-detail';
+import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
 import getServerAPI from '@/query/config/get-server-api';
 import getMap from '@/query/map/get-map';
 import { IdSearchParams } from '@/types/data/id-search-schema';
@@ -13,5 +13,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
     return notFound();
   }
 
-  return <UploadMapDetail map={map} />;
+  return <UploadMapDetailCard map={map} />;
 }

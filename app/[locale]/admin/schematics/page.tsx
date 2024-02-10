@@ -1,7 +1,7 @@
 'use client';
 
 import InfinitePage from '@/components/common/infinite-page';
-import UploadSchematicPreview from '@/components/schematic/upload-schematic-preview';
+import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useTags from '@/hooks/use-tags';
@@ -25,7 +25,9 @@ export default function Page() {
         getFunc={getSchematicUploads}
         scrollContainer={scrollContainer.current}
       >
-        {(data) => <UploadSchematicPreview key={data.id} schematic={data} />}
+        {(data) => (
+          <UploadSchematicPreviewCard key={data.id} schematic={data} />
+        )}
       </InfinitePage>
     </div>
   );

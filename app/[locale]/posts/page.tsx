@@ -1,12 +1,12 @@
 'use client';
 
-import PostPreview from '@/components/post/post-preview';
 import getPosts from '@/query/post/get-posts';
 import NameTagSearch from '@/components/search/name-tag-search';
 import InfinitePage from '@/components/common/infinite-page';
 import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
 import useSearchPageParams from '@/hooks/use-search-page-params';
+import PostPreviewCard from '@/components/post/post-preview-card';
 
 export default function PostsPage() {
   const { post } = useTags();
@@ -20,13 +20,13 @@ export default function PostsPage() {
     >
       <NameTagSearch tags={post} />
       <InfinitePage
-        className="flex flex-col gap-2"
+        className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
         params={params}
         queryKey={['posts']}
         getFunc={getPosts}
         scrollContainer={scrollContainer.current}
       >
-        {(data) => <PostPreview key={data.id} post={data} />}
+        {(data) => <PostPreviewCard key={data.id} post={data} />}
       </InfinitePage>
     </div>
   );

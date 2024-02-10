@@ -11,7 +11,7 @@ type DetailProps = HTMLAttributes<HTMLDivElement> & {
 
 function Detail({ className, children, padding }: DetailProps) {
   return (
-    <div className="absolute inset-0 overflow-hidden bg-background">
+    <div className="absolute overflow-hidden bg-background">
       <div
         className={cn(
           'relative flex h-full w-full flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch',

@@ -1,12 +1,12 @@
 'use client';
 
-import MapPreview from '@/components/map/map-preview';
 import getMaps from '@/query/map/get-maps';
 import NameTagSearch from '@/components/search/name-tag-search';
 import InfinitePage from '@/components/common/infinite-page';
 import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
 import useSearchPageParams from '@/hooks/use-search-page-params';
+import MapPreviewCard from '@/components/map/map-preview-card';
 
 export default function MapPage() {
   const { map } = useTags();
@@ -25,7 +25,7 @@ export default function MapPage() {
         getFunc={getMaps}
         scrollContainer={scrollContainer.current}
       >
-        {(data) => <MapPreview key={data.id} map={data} />}
+        {(data) => <MapPreviewCard key={data.id} map={data} />}
       </InfinitePage>
     </div>
   );

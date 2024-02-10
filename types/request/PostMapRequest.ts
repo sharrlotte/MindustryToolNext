@@ -1,8 +1,6 @@
-import TagGroup from '@/types/response/TagGroup';
-
 type PostMapRequest = {
-  data: File;
-  tags: TagGroup[];
+  file: File;
+  tags: string;
 };
 
 export default PostMapRequest;

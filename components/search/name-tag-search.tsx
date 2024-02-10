@@ -77,9 +77,9 @@ export default function NameTagSearch({
         .compact()
         .value();
 
-      setSelectedSortTag(sortString);
+      setSelectedSortTag(sortString ?? defaultSortTag);
       setSelectedFilterTags(tagsArray);
-      setName(nameString);
+      setName(nameString ?? '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tags]);

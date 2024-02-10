@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import rehypeSanitize from 'rehype-sanitize';
 
 interface MarkdownProps {
   className?: string;
@@ -39,8 +40,9 @@ function MarkdownImage({ src, alt }: any) {
 export default function Markdown({ className, children }: MarkdownProps) {
   return (
     <ReactMarkdown
-      className={cn('prose lg:prose-xl', className)}
+      className={cn(className)}
       components={{ a: RouterLink, img: MarkdownImage }}
+      rehypePlugins={[rehypeSanitize]}
     >
       {children}
     </ReactMarkdown>

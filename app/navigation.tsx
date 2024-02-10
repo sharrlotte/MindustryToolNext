@@ -88,9 +88,7 @@ export default function NavigationBar() {
                       height={24}
                       width={24}
                     />
-                    <span className="bg-gradient-to-r from-emerald-300 to-emerald-500 bg-clip-text p-1 text-3xl font-bold text-transparent">
-                      MindustryTool
-                    </span>
+                    <span>MindustryTool</span>
                   </span>
                   <span className="rounded-sm bg-card p-2 text-xs">
                     {env.webVersion}
@@ -190,7 +188,7 @@ function NavItem({
   const render = () => (
     <Link
       className={cn(
-        'flex items-center gap-3 rounded-md bg-opacity-0 px-1 py-2 opacity-80 transition-colors duration-300 hover:bg-emerald-500 hover:opacity-100',
+        'flex items-center gap-3 rounded-md bg-opacity-0 px-1 py-2 font-bold opacity-80 transition-colors duration-300 hover:bg-emerald-500 hover:opacity-100',
         className,
         {
           'bg-emerald-500 bg-opacity-100 opacity-100': enabled,

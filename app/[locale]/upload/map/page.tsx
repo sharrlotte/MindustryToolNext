@@ -15,7 +15,7 @@ import postMapPreview from '@/query/map/post-map-preview';
 import PostMapRequest from '@/types/request/PostMapRequest';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import MapPreviewResponse from '@/types/response/MapPreviewResponse';
-import TagGroup from '@/types/response/TagGroup';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -24,7 +24,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 
 export default function Page() {
   const { axios } = useClientAPI();
-  const [data, setData] = useState<File>();
+  const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState<MapPreviewResponse>();
   const { data: session } = useSession();
   const user = session?.user;
@@ -43,7 +43,7 @@ export default function Page() {
           description: error.message,
           variant: 'destructive',
         });
-        setData(undefined);
+        setFile(undefined);
       },
     },
   );
@@ -55,7 +55,7 @@ export default function Page() {
         title: 'Upload map success',
         variant: 'success',
       });
-      setData(undefined);
+      setFile(undefined);
       setPreview(undefined);
       setSelectedTags([]);
       invalidateByKey(['map-uploads']);
@@ -92,25 +92,25 @@ export default function Page() {
     }
 
     setPreview(undefined);
-    setData(files[0]);
+    setFile(files[0]);
   }
 
   function handleSubmit() {
-    if (!data || isLoading) {
+    if (!file || isLoading) {
       return;
     }
 
-    postNewMap({ data, tags: selectedTags });
+    postNewMap({ file, tags: TagGroups.toString(selectedTags) });
   }
 
   useEffect(() => {
-    if (data) {
-      getMapPreview({ data });
+    if (file) {
+      getMapPreview({ file });
     }
-  }, [data, getMapPreview]);
+  }, [file, getMapPreview]);
 
   function checkUploadRequirement() {
-    if (!data) return 'No map data';
+    if (!file) return 'No map data';
 
     return true;
   }

@@ -3,10 +3,10 @@ import { sortSchema } from '@/types/data/schemas';
 
 export const searchSchema = z.object({
   page: z.number().gte(0).default(0),
-  name: z.string().default(''),
-  authorId: z.string().default(''),
-  tags: z.array(z.string()).default([]),
-  sort: sortSchema,
+  name: z.string().default('').optional(),
+  authorId: z.string().default('').optional(),
+  tags: z.array(z.string()).default([]).optional(),
+  sort: sortSchema.optional(),
 });
 
 export type PaginationSearchQuery = z.infer<typeof searchSchema>;

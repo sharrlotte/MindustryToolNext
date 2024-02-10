@@ -5,7 +5,7 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { useToast } from '@/hooks/use-toast';
-import { Map } from '@/types/response/Map';
+import { MapDetail } from '@/types/response/MapDetail';
 import React, { useState } from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
@@ -14,7 +14,7 @@ import { useMutation } from '@tanstack/react-query';
 import postVerifyMap from '@/query/map/post-verify-map';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 import getMapData from '@/query/map/get-map-data';
-import TagGroup from '@/types/response/TagGroup';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import useTags from '@/hooks/use-tags';
 import { useRouter } from 'next/navigation';
@@ -23,22 +23,25 @@ import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 
-type UploadMapDetailProps = {
-  map: Map;
+type UploadMapDetailCardProps = {
+  map: MapDetail;
 };
 
-export default function UploadMapDetail({ map }: UploadMapDetailProps) {
+export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { map: mapTags } = useTags();
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(
+    TagGroups.parseString(map.tags, mapTags),
+  );
   const { deleteById, invalidateByKey } = useQueriesData();
 
   const { mutate: verifyMap, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifyMapRequest) => postVerifyMap(axios, data),
     onSuccess: () => {
       deleteById(['map-uploads'], map.id);
+      invalidateByKey(['total-map-uploads']);
       back();
       toast({
         title: 'Verify map successfully',
@@ -52,16 +55,13 @@ export default function UploadMapDetail({ map }: UploadMapDetailProps) {
         variant: 'destructive',
       });
     },
-    onSettled: () => {
-      invalidateByKey(['map-uploads']);
-    },
   });
 
   const { mutate: deleteMapById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deleteMap(axios, id),
     onSuccess: () => {
       deleteById(['map-uploads'], map.id);
-      invalidateByKey(['map-uploads']);
+      invalidateByKey(['total-map-uploads']);
       back();
       toast({
         title: 'Delete map successfully',
@@ -75,23 +75,10 @@ export default function UploadMapDetail({ map }: UploadMapDetailProps) {
         variant: 'destructive',
       });
     },
-    onSettled: () => {
-      invalidateByKey(['map-uploads']);
-    },
   });
 
   const isLoading = isVerifying || isDeleting;
   const link = `${env.url.base}/maps/${map.id}`;
-
-  const getData = async () => {
-    const { dismiss } = toast({
-      title: 'Coping',
-      content: 'Downloading data from server',
-    });
-    const result = await getMapData(axios, map.id);
-    dismiss();
-    return result;
-  };
 
   return (
     <Detail>
@@ -124,12 +111,6 @@ export default function UploadMapDetail({ map }: UploadMapDetailProps) {
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <CopyButton
-            title="Copy"
-            variant="outline"
-            content={`Copied map ${map.name}`}
-            data={getData}
-          />
           <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
           <DeleteButton
             description={`Delete this map: ${map.name}`}
@@ -139,7 +120,9 @@ export default function UploadMapDetail({ map }: UploadMapDetailProps) {
           <VerifyButton
             description={`Verify this map: ${map.name}`}
             isLoading={isLoading}
-            onClick={() => verifyMap({ id: map.id, tags: selectedTags })}
+            onClick={() =>
+              verifyMap({ id: map.id, tags: TagGroups.toString(selectedTags) })
+            }
           />
         </div>
         <BackButton />

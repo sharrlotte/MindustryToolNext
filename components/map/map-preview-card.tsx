@@ -7,6 +7,9 @@ import { cn } from '@/lib/utils';
 import LikeComponent from '@/components/like/like-component';
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
+import DislikeButton from '@/components/like/dislike-button';
+import LikeButton from '@/components/like/like-button';
+import LikeCount from '@/components/like/like-count';
 
 type MapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;
@@ -48,9 +51,9 @@ export default function MapPreview({
             initialLikeCount={map.like}
             initialLikeData={map.userLike}
           >
-            <LikeComponent.LikeButton />
-            <LikeComponent.LikeCount />
-            <LikeComponent.DislikeButton />
+            <LikeButton />
+            <LikeCount />
+            <DislikeButton />
           </LikeComponent>
         </Preview.Actions>
       </Preview.Description>
