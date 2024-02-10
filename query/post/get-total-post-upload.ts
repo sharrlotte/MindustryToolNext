@@ -6,7 +6,7 @@ import { AxiosInstance } from 'axios';
 
 export default async function getTotalPostUpload(
   axios: AxiosInstance,
-  params: PaginationSearchQuery,
+  params: Omit<PaginationSearchQuery, 'page'>,
 ): Promise<number> {
   const searchParams = searchSchema.parse(params);
   const result = await axios.get('/posts/total/upload', {
