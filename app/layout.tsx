@@ -41,6 +41,7 @@ export default function Root({ children, params }: RootProps) {
       className="dark h-full w-full select-none overflow-hidden bg-background antialiased"
       lang={params.lang ?? 'en'}
       suppressHydrationWarning
+      data-color-mode="dark"
     >
       <body className={cn('h-full w-full overflow-hidden')}>
         <ThemeProvider

@@ -39,7 +39,7 @@ function MarkdownImage({ src, alt }: any) {
 export default function Markdown({ className, children }: MarkdownProps) {
   return (
     <ReactMarkdown
-      className={cn('prose lg:prose-xl', className)}
+      className={cn(className)}
       components={{ a: RouterLink, img: MarkdownImage }}
     >
       {children}

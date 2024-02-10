@@ -14,7 +14,7 @@ import { useMutation } from '@tanstack/react-query';
 import postVerifyMap from '@/query/map/post-verify-map';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 import getMapData from '@/query/map/get-map-data';
-import TagGroup from '@/types/response/TagGroup';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import useTags from '@/hooks/use-tags';
 import { useRouter } from 'next/navigation';
@@ -139,7 +139,9 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
           <VerifyButton
             description={`Verify this map: ${map.name}`}
             isLoading={isLoading}
-            onClick={() => verifyMap({ id: map.id, tags: selectedTags })}
+            onClick={() =>
+              verifyMap({ id: map.id, tags: TagGroups.toString(selectedTags) })
+            }
           />
         </div>
         <BackButton />

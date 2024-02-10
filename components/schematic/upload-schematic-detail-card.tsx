@@ -15,7 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import postVerifySchematic from '@/query/schematic/post-verify-schematic';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import getSchematicData from '@/query/schematic/get-schematic-data';
-import TagGroup from '@/types/response/TagGroup';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import useTags from '@/hooks/use-tags';
 import { useRouter } from 'next/navigation';
@@ -146,7 +146,10 @@ export default function UploadSchematicDetailCard({
             description={`Verify this schematic: ${schematic.name}`}
             isLoading={isLoading}
             onClick={() =>
-              verifySchematic({ id: schematic.id, tags: selectedTags })
+              verifySchematic({
+                id: schematic.id,
+                tags: TagGroups.toString(selectedTags),
+              })
             }
           />
         </div>

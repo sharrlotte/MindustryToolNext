@@ -100,8 +100,6 @@
   ol {
     list-style: disc;
     list-style-position: inside;
-    display: grid;
-    gap: 0.5rem;
   }
   b {
     font-weight: bold;

@@ -1,5 +1,4 @@
 import PostSchematicRequest from '@/types/request/PostSchematicRequest';
-import { TagGroups } from '@/types/response/TagGroup';
 import { AxiosInstance } from 'axios';
 
 export default async function postSchematic(
@@ -13,7 +12,7 @@ export default async function postSchematic(
   } else if (data instanceof File) {
     form.append('file', data);
   }
-  form.append('tags', TagGroups.toString(tags));
+  form.append('tags', tags);
 
   return axios.post('/schematics', form, {
     data: form,

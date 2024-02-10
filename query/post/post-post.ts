@@ -1,14 +1,14 @@
 import { toForm } from '@/lib/utils';
-import PostMapRequest from '@/types/request/PostMapRequest';
+import PostPostRequest from '@/types/request/PostPostRequest';
 import { AxiosInstance } from 'axios';
 
 export default async function postMap(
   axios: AxiosInstance,
-  data: PostMapRequest,
+  data: PostPostRequest,
 ): Promise<void> {
   const form = toForm(data);
 
-  return axios.post('/maps', form, {
+  return axios.post('/posts', form, {
     data: form,
   });
 }

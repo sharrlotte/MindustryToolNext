@@ -1,8 +1,6 @@
-import TagGroup from '@/types/response/TagGroup';
-
 type VerifyMapRequest = {
   id: string;
-  tags: TagGroup[];
+  tags: string;
 };
 
 export default VerifyMapRequest;

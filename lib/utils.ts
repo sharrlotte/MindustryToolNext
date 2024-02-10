@@ -34,7 +34,7 @@ export function fillMetric(
     return [];
   }
 
-  let result: { value: number; time: number }[] = [];
+  let result: { value: number; time: string }[] = [];
 
   for (let i = numberOfDay; i > 0; i--) {
     let targetDay = new Date(start);
@@ -59,7 +59,7 @@ export function fillMetric(
   return result;
 }
 
-export function toForm(data: Object) {
+export function toForm(data: Record<string, string | File>) {
   const form = new FormData();
   Object.entries(data).forEach(([key, value]) => form.append(key, value));
   return form;

@@ -14,17 +14,17 @@ import { Button } from '@/components/ui/button';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 
-type DeleteButtonProps = {
+type RemoveButtonProps = {
   isLoading: boolean;
   onClick: () => void;
   description: string;
 };
 
-export default function DeleteButton({
+export default function RemoveButton({
   isLoading,
   description,
   onClick,
-}: DeleteButtonProps) {
+}: RemoveButtonProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger
