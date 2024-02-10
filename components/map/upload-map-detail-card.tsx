@@ -39,6 +39,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
     mutationFn: (data: VerifyMapRequest) => postVerifyMap(axios, data),
     onSuccess: () => {
       deleteById(['map-uploads'], map.id);
+      invalidateByKey(['total-map-uploads']);
       back();
       toast({
         title: 'Verify map successfully',
@@ -52,16 +53,13 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
         variant: 'destructive',
       });
     },
-    onSettled: () => {
-      invalidateByKey(['map-uploads']);
-    },
   });
 
   const { mutate: deleteMapById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deleteMap(axios, id),
     onSuccess: () => {
       deleteById(['map-uploads'], map.id);
-      invalidateByKey(['map-uploads']);
+      invalidateByKey(['total-map-uploads']);
       back();
       toast({
         title: 'Delete map successfully',
@@ -75,23 +73,10 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
         variant: 'destructive',
       });
     },
-    onSettled: () => {
-      invalidateByKey(['map-uploads']);
-    },
   });
 
   const isLoading = isVerifying || isDeleting;
   const link = `${env.url.base}/maps/${map.id}`;
-
-  const getData = async () => {
-    const { dismiss } = toast({
-      title: 'Coping',
-      content: 'Downloading data from server',
-    });
-    const result = await getMapData(axios, map.id);
-    dismiss();
-    return result;
-  };
 
   return (
     <Detail>
@@ -124,12 +109,6 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <CopyButton
-            title="Copy"
-            variant="outline"
-            content={`Copied map ${map.name}`}
-            data={getData}
-          />
           <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
           <DeleteButton
             description={`Delete this map: ${map.name}`}

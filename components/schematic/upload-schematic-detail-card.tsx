@@ -43,6 +43,7 @@ export default function UploadSchematicDetailCard({
       postVerifySchematic(axios, data),
     onSuccess: () => {
       deleteById(['schematic-uploads'], schematic.id);
+      invalidateByKey(['total-schematic-uploads']);
       back();
       toast({
         title: 'Verify schematic successfully',
@@ -56,16 +57,13 @@ export default function UploadSchematicDetailCard({
         variant: 'destructive',
       });
     },
-    onSettled: () => {
-      invalidateByKey(['schematic-uploads']);
-    },
   });
 
   const { mutate: deleteSchematicById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deleteSchematic(axios, id),
     onSuccess: () => {
       deleteById(['schematic-uploads'], schematic.id);
-      invalidateByKey(['schematic-uploads']);
+      invalidateByKey(['total-schematic-uploads']);
       back();
       toast({
         title: 'Delete schematic successfully',
@@ -78,9 +76,6 @@ export default function UploadSchematicDetailCard({
         description: error.message,
         variant: 'destructive',
       });
-    },
-    onSettled: () => {
-      invalidateByKey(['schematic-uploads']);
     },
   });
 

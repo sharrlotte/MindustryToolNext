@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { AxiosError } from 'axios';
 
@@ -14,11 +16,16 @@ export default function ErrorScreen({
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-2">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
       <h2 className="text-2xl capitalize">{message}</h2>
-      <Button title="reset" onClick={() => reset()}>
-        Try again
-      </Button>
+      <div className="grid items-center justify-center gap-2">
+        <Button title="reset" onClick={() => reset()}>
+          Try again
+        </Button>
+        <Button title="reset" onClick={() => window.location.reload()}>
+          Refresh
+        </Button>
+      </div>
     </div>
   );
 }

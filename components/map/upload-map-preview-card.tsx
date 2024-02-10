@@ -20,7 +20,7 @@ export default function UploadMapPreview({
 
   return (
     <Preview
-      className={cn('group relative flex flex-col', className)}
+      className={cn('group relative', className)}
       {...rest}
     >
       <CopyButton

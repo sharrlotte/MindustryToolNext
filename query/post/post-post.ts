@@ -2,7 +2,7 @@ import { toForm } from '@/lib/utils';
 import PostPostRequest from '@/types/request/PostPostRequest';
 import { AxiosInstance } from 'axios';
 
-export default async function postMap(
+export default async function postPost(
   axios: AxiosInstance,
   data: PostPostRequest,
 ): Promise<void> {

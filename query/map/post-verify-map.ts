@@ -1,6 +1,5 @@
 import { toForm } from '@/lib/utils';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
-import { TagGroups } from '@/types/response/TagGroup';
 import { AxiosInstance } from 'axios';
 
 export default async function postVerifyMap(

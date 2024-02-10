@@ -14,12 +14,14 @@ type NameTagSelectorProps = {
   value: TagGroup[];
   disabled?: boolean;
   onChange: (value: TagGroup[]) => void;
+  hideSelectedTag?: boolean
 };
 
 export default function NameTagSelector({
   tags = [],
   value,
   disabled = false,
+  hideSelectedTag,
   onChange,
 }: NameTagSelectorProps) {
   const [filter, setFilter] = useState('');
@@ -75,20 +77,19 @@ export default function NameTagSelector({
           disabled={disabled}
           onClick={handleShowFilterDialog}
         >
-          Add Tag
+          Add Tag ({displayTags.length})
         </Button>
-        <section
-          className="flex w-full flex-wrap items-center justify-start gap-1"
-          hidden={displayTags.length === 0}
-        >
-          {displayTags.map((item) => (
-            <TagCard
-              key={item.name + item.value}
-              tag={item}
-              onDelete={handleDeleteTag}
-            />
-          ))}
-        </section>
+        {!hideSelectedTag && displayTags.length > 0 && (
+          <section className="flex w-full flex-wrap items-center justify-start gap-1">
+            {displayTags.map((item) => (
+              <TagCard
+                key={item.name + item.value}
+                tag={item}
+                onDelete={handleDeleteTag}
+              />
+            ))}
+          </section>
+        )}
       </div>
       {showFilterDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">

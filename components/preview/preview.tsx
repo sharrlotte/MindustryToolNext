@@ -9,7 +9,7 @@ function Preview({ className, children, ...props }: CardProps) {
   return (
     <Card
       className={cn(
-        'flex min-h-preview animate-appear items-center justify-center overflow-hidden',
+        'flex min-h-preview animate-appear items-center justify-between overflow-hidden flex-col',
         className,
       )}
       {...props}

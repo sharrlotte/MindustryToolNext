@@ -45,7 +45,7 @@ export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
           </LikeComponent>
         </div>
       </header>
-      <Markdown>{post.content}</Markdown>
+      <Markdown className="h-full">{post.content}</Markdown>
       <footer className="flex rounded-md bg-card p-2">
         <BackButton className="ml-auto" />
       </footer>

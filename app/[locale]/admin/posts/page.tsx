@@ -1,15 +1,15 @@
 'use client';
 
 import InfinitePage from '@/components/common/infinite-page';
-import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
+import UploadPostPreviewCard from '@/components/post/upload-post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useTags from '@/hooks/use-tags';
-import getSchematicUploads from '@/query/schematic/get-schematic-upload';
+import getPostUploads from '@/query/post/get-post-upload';
 import React, { useRef } from 'react';
 
 export default function Page() {
-  const { schematic } = useTags();
+  const { post } = useTags();
   const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 
@@ -18,16 +18,15 @@ export default function Page() {
       className="relative flex h-full flex-col gap-4 overflow-y-auto pr-2"
       ref={(ref) => (scrollContainer.current = ref)}
     >
-      <NameTagSearch tags={schematic} />
+      <NameTagSearch tags={post} />
       <InfinitePage
+        className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
         params={params}
-        queryKey={['schematic-uploads']}
-        getFunc={getSchematicUploads}
+        queryKey={['post-uploads']}
+        getFunc={getPostUploads}
         scrollContainer={scrollContainer.current}
       >
-        {(data) => (
-          <UploadSchematicPreviewCard key={data.id} schematic={data} />
-        )}
+        {(data) => <UploadPostPreviewCard key={data.id} post={data} />}
       </InfinitePage>
     </div>
   );

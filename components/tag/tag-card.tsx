@@ -27,16 +27,16 @@ export default function TagCard({
   return (
     <span
       className={cn(
-        'flex items-center justify-center whitespace-nowrap rounded-md px-2 py-1 text-center capitalize',
+        'py-1/2 group flex h-8 items-center justify-center gap-1 whitespace-nowrap rounded-md px-1 text-center text-xs capitalize',
         className,
       )}
       style={{ backgroundColor: color }}
       {...props}
     >
-      <span>{`${name}:${value}`}</span>
+      <span>{`${name}(${value})`}</span>
       {hasDeleteButton && (
         <Button
-          className="p-0"
+          className="max-w-0 p-0 transition-all duration-500 group-hover:max-w-full"
           title="delete"
           variant="icon"
           onClick={() => handleOnDelete(tag)}
