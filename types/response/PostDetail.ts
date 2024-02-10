@@ -1,9 +1,12 @@
 import { Like } from '@/types/response/Like';
 
-export type PostPage = Array<{
+export interface PostDetail {
   id: string;
   authorId: string;
   header: string;
+  content: string;
   like: number;
+  tags: string[];
+  time: string;
   userLike: Like;
-}>;
+}

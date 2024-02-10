@@ -5,7 +5,7 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { useToast } from '@/hooks/use-toast';
-import { Map } from '@/types/response/Map';
+import { MapDetail } from '@/types/response/MapDetail';
 import React, { useState } from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
@@ -23,11 +23,11 @@ import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 
-type UploadMapDetailProps = {
-  map: Map;
+type UploadMapDetailCardProps = {
+  map: MapDetail;
 };
 
-export default function UploadMapDetail({ map }: UploadMapDetailProps) {
+export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();

@@ -6,16 +6,16 @@ import TagCard from '@/components/tag/tag-card';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
 import { Tags } from '@/types/response/Tag';
-import { Post } from '@/types/response/Post';
+import { PostDetail } from '@/types/response/PostDetail';
 import React from 'react';
 import Detail from '@/components/detail/detail';
 
-type PostDetailProps = {
-  post: Post;
+type PostDetailCardProps = {
+  post: PostDetail;
   padding?: boolean;
 };
 
-export default function PostDetail({ post, padding }: PostDetailProps) {
+export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
   const displayTags = Tags.parseStringArray(post.tags);
 
   return (

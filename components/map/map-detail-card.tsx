@@ -5,17 +5,17 @@ import LikeComponent from '@/components/like/like-component';
 import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
-import { Map } from '@/types/response/Map';
 import React from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
+import { MapDetail } from '@/types/response/MapDetail';
 
-type MapDetailProps = {
-  map: Map;
+type MapDetailCardProps = {
+  map: MapDetail;
   padding?: boolean;
 };
 
-export default function MapDetail({ map, padding }: MapDetailProps) {
+export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
   const link = `${env.url.base}/maps/${map.id}`;
 
   return (

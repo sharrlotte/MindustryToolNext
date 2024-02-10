@@ -5,7 +5,7 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { useToast } from '@/hooks/use-toast';
-import { Schematic } from '@/types/response/Schematic';
+import { SchematicDetail } from '@/types/response/SchematicDetail';
 import React, { HTMLAttributes, useState } from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
@@ -24,13 +24,13 @@ import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 
-type UploadSchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
-  schematic: Schematic;
+type UploadSchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
+  schematic: SchematicDetail;
 };
 
-export default function UploadSchematicDetail({
+export default function UploadSchematicDetailCard({
   schematic,
-}: UploadSchematicDetailProps) {
+}: UploadSchematicDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();

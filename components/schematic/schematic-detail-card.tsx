@@ -6,7 +6,7 @@ import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { toast } from '@/hooks/use-toast';
-import { Schematic } from '@/types/response/Schematic';
+import { SchematicDetail } from '@/types/response/SchematicDetail';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
@@ -14,15 +14,15 @@ import useClientAPI from '@/hooks/use-client';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import getSchematicData from '@/query/schematic/get-schematic-data';
 
-type SchematicDetailProps = HTMLAttributes<HTMLDivElement> & {
-  schematic: Schematic;
+type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
+  schematic: SchematicDetail;
   padding?: boolean;
 };
 
-export default function SchematicDetail({
+export default function SchematicDetailCard({
   schematic,
   padding,
-}: SchematicDetailProps) {
+}: SchematicDetailCardProps) {
   const { axios } = useClientAPI();
 
   const link = `${env.url.base}/schematics/${schematic.id}`;

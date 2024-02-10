@@ -2,7 +2,7 @@ import {
   PaginationSearchQuery,
   searchSchema,
 } from '@/types/data/pageable-search-schema';
-import { Schematic } from '@/types/response/Schematic';
+import { Schematic } from '@/types/response/SchematicDetail';
 import { AxiosInstance } from 'axios';
 
 export default async function getSchematicUploads(

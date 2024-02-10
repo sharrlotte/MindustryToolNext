@@ -7,15 +7,15 @@ import LikeComponent from '@/components/like/like-component';
 import CopyButton from '@/components/button/copy-button';
 import IdUserCard from '@/components/user/id-user-card';
 
-type PostPreviewProps = HTMLAttributes<HTMLDivElement> & {
+type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
-export default function PostPreview({
+export default function PostPreviewCard({
   className,
   post,
   ...rest
-}: PostPreviewProps) {
+}: PostPreviewCardProps) {
   const link = `${env.url.base}/posts/${post.id}`;
 
   return (

@@ -1,5 +1,4 @@
-import SchematicDetail from '@/components/schematic/schematic-detail';
-import DetailSkeleton from '@/components/skeleton/detail-skeleton';
+import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/get-server-api';
 import getSchematic from '@/query/schematic/get-schematic';
@@ -35,5 +34,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
     return <div>Not found</div>;
   }
 
-  return <SchematicDetail schematic={schematic} padding />;
+  return <SchematicDetailCard schematic={schematic} padding />;
 }

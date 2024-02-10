@@ -11,15 +11,15 @@ import DownloadButton from '@/components/button/download-button';
 import useClientAPI from '@/hooks/use-client';
 import getSchematicData from '@/query/schematic/get-schematic-data';
 
-type SchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
+type SchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
 };
 
-export default function SchematicPreview({
+export default function SchematicPreviewCard({
   className,
   schematic,
   ...rest
-}: SchematicPreviewProps) {
+}: SchematicPreviewCardProps) {
   const { axios } = useClientAPI();
 
   const link = `${env.url.base}/schematics/${schematic.id}`;

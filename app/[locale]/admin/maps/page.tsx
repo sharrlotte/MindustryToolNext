@@ -1,7 +1,7 @@
 'use client';
 
 import InfinitePage from '@/components/common/infinite-page';
-import UploadMapPreview from '@/components/map/upload-map-preview';
+import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useTags from '@/hooks/use-tags';
@@ -25,7 +25,7 @@ export default function Page() {
         params={params}
         scrollContainer={scrollContainer.current}
       >
-        {(data) => <UploadMapPreview key={data.id} map={data} />}
+        {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
       </InfinitePage>
     </div>
   );

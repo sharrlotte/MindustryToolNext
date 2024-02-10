@@ -10,15 +10,15 @@ import DownloadButton from '@/components/button/download-button';
 import useClientAPI from '@/hooks/use-client';
 import getSchematicData from '@/query/schematic/get-schematic-data';
 
-type UploadSchematicPreviewProps = HTMLAttributes<HTMLDivElement> & {
+type UploadSchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
 };
 
-export default function UploadSchematicPreview({
+export default function UploadSchematicPreviewCard({
   className,
   schematic,
   ...rest
-}: UploadSchematicPreviewProps) {
+}: UploadSchematicPreviewCardProps) {
   const { axios } = useClientAPI();
 
   const link = `${env.url.base}/admin/schematics/${schematic.id}`;
