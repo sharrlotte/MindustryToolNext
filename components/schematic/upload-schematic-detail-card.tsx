@@ -34,8 +34,10 @@ export default function UploadSchematicDetailCard({
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { schematic: schematicTags } = useTags();
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(
+    TagGroups.parseString(schematic.tags, schematicTags),
+  );
   const { deleteById, invalidateByKey } = useQueriesData();
 
   const { mutate: verifySchematic, isPending: isVerifying } = useMutation({

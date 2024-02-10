@@ -32,8 +32,10 @@ export default function UploadPostDetailCard({
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { post: postTags } = useTags();
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(
+    TagGroups.parseString(post.tags, postTags),
+  );
   const { deleteById, invalidateByKey } = useQueriesData();
 
   const { mutate: verifyPost, isPending: isVerifying } = useMutation({

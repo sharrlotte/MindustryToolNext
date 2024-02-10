@@ -41,6 +41,7 @@ export default function Page() {
       setContent('');
       setSelectedTags([]);
       invalidateByKey(['post-uploads']);
+      invalidateByKey(['total-post-uploads']);
     },
     onError(error) {
       toast({

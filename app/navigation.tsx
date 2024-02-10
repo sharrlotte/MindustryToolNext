@@ -188,7 +188,7 @@ function NavItem({
   const render = () => (
     <Link
       className={cn(
-        'flex items-center gap-3 rounded-md bg-opacity-0 px-1 py-2 font-bold transition-colors duration-300 hover:bg-emerald-500 hover:opacity-100',
+        'flex items-center gap-3 rounded-md bg-opacity-0 px-1 py-2 font-bold opacity-80 transition-colors duration-300 hover:bg-emerald-500 hover:opacity-100',
         className,
         {
           'bg-emerald-500 bg-opacity-100 opacity-100': enabled,

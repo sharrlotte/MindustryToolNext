@@ -31,8 +31,10 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { map: mapTags } = useTags();
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(
+    TagGroups.parseString(map.tags, mapTags),
+  );
   const { deleteById, invalidateByKey } = useQueriesData();
 
   const { mutate: verifyMap, isPending: isVerifying } = useMutation({
