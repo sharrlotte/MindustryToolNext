@@ -13,6 +13,9 @@ import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import getSchematicData from '@/query/schematic/get-schematic-data';
+import DislikeButton from '@/components/like/dislike-button';
+import LikeButton from '@/components/like/like-button';
+import LikeCount from '@/components/like/like-count';
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -83,9 +86,9 @@ export default function SchematicDetailCard({
             initialLikeCount={schematic.like}
             initialLikeData={schematic.userLike}
           >
-            <LikeComponent.LikeButton />
-            <LikeComponent.LikeCount />
-            <LikeComponent.DislikeButton />
+            <LikeButton />
+            <LikeCount />
+            <DislikeButton />
           </LikeComponent>
         </div>
         <BackButton />

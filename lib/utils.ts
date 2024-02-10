@@ -34,7 +34,7 @@ export function fillMetric(
     return [];
   }
 
-  let result: { value: number; time: string }[] = [];
+  let result: { value: number; time: number }[] = [];
 
   for (let i = numberOfDay; i > 0; i--) {
     let targetDay = new Date(start);

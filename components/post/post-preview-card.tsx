@@ -6,6 +6,9 @@ import { cn } from '@/lib/utils';
 import LikeComponent from '@/components/like/like-component';
 import CopyButton from '@/components/button/copy-button';
 import IdUserCard from '@/components/user/id-user-card';
+import DislikeButton from '@/components/like/dislike-button';
+import LikeButton from '@/components/like/like-button';
+import LikeCount from '@/components/like/like-count';
 
 type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
@@ -26,30 +29,33 @@ export default function PostPreviewCard({
       )}
       {...rest}
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex h-full flex-col justify-between gap-2">
+        <Link href={`/posts/${post.id}`}>
+          <span className="flex text-2xl">{post.header}</span>
+        </Link>
         <div className="flex flex-col gap-2">
-          <Link href={`/posts/${post.id}`}>
-            <span className="flex text-2xl">{post.header}</span>
-          </Link>
-          <IdUserCard id={post.authorId} />
-        </div>
-        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <CopyButton
-            title="Copy"
-            variant="outline"
-            data={link}
-            content={link}
-          />
-          <LikeComponent
-            targetId={post.id}
-            targetType="POSTS"
-            initialLikeCount={post.like}
-            initialLikeData={post.userLike}
-          >
-            <LikeComponent.LikeButton />
-            <LikeComponent.LikeCount />
-            <LikeComponent.DislikeButton />
-          </LikeComponent>
+          <div>
+            <IdUserCard id={post.authorId} />
+            <span>{new Date(post.time).toLocaleString()}</span>
+          </div>
+          <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
+            <CopyButton
+              title="Copy"
+              variant="outline"
+              data={link}
+              content={link}
+            />
+            <LikeComponent
+              targetId={post.id}
+              targetType="POSTS"
+              initialLikeCount={post.like}
+              initialLikeData={post.userLike}
+            >
+              <LikeButton />
+              <LikeCount />
+              <DislikeButton />
+            </LikeComponent>
+          </div>
         </div>
       </div>
     </div>

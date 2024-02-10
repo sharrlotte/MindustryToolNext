@@ -10,6 +10,9 @@ import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import useClientAPI from '@/hooks/use-client';
 import getSchematicData from '@/query/schematic/get-schematic-data';
+import DislikeButton from '@/components/like/dislike-button';
+import LikeButton from '@/components/like/like-button';
+import LikeCount from '@/components/like/like-count';
 
 type SchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -71,9 +74,9 @@ export default function SchematicPreviewCard({
             initialLikeCount={schematic.like}
             initialLikeData={schematic.userLike}
           >
-            <LikeComponent.LikeButton />
-            <LikeComponent.LikeCount />
-            <LikeComponent.DislikeButton />
+            <LikeButton />
+            <LikeCount />
+            <DislikeButton />
           </LikeComponent>
         </Preview.Actions>
       </Preview.Description>

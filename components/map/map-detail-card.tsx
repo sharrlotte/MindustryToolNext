@@ -9,6 +9,9 @@ import React from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 import { MapDetail } from '@/types/response/MapDetail';
+import LikeButton from '@/components/like/like-button';
+import LikeCount from '@/components/like/like-count';
+import DislikeButton from '@/components/like/dislike-button';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -55,9 +58,9 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
             initialLikeCount={map.like}
             initialLikeData={map.userLike}
           >
-            <LikeComponent.LikeButton />
-            <LikeComponent.LikeCount />
-            <LikeComponent.DislikeButton />
+            <LikeButton />
+            <LikeCount />
+            <DislikeButton />
           </LikeComponent>
         </div>
         <BackButton />

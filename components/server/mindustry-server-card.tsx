@@ -1,6 +1,9 @@
 import CopyButton from '@/components/button/copy-button';
 import ColorText from '@/components/common/color-text';
+import DislikeButton from '@/components/like/dislike-button';
+import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
+import LikeCount from '@/components/like/like-count';
 import MindustryServer from '@/types/response/MindustryServer';
 import React from 'react';
 
@@ -76,9 +79,9 @@ export default function MindustryServerCard({
               targetType={'SERVERS'}
               targetId={server.id}
             >
-              <LikeComponent.LikeButton />
-              <LikeComponent.LikeCount />
-              <LikeComponent.DislikeButton />
+              <LikeButton />
+              <LikeCount />
+              <DislikeButton />
             </LikeComponent>
           </div>
         </div>

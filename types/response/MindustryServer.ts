@@ -16,7 +16,7 @@ export default interface MindustryServer {
   modeName: string;
   ping: number;
   port: number;
-  time: string;
+  time: number;
   like: number;
   userLike: Like;
 }

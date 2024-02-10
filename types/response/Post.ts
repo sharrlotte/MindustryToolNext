@@ -6,4 +6,6 @@ export type Post = {
   header: string;
   like: number;
   userLike: Like;
+  tags: string[];
+  time: number;
 };

@@ -20,7 +20,7 @@ export default function PostsPage() {
     >
       <NameTagSearch tags={post} />
       <InfinitePage
-        className="flex flex-col gap-2"
+        className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
         params={params}
         queryKey={['posts']}
         getFunc={getPosts}

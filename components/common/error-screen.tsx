@@ -1,14 +1,21 @@
 import { Button } from '@/components/ui/button';
+import { AxiosError } from 'axios';
 
 export default function ErrorScreen({
   reset,
+  error,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  let message = 'Something went wrong!';
+  if (error instanceof AxiosError) {
+    message = error.message;
+  }
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-      <h2 className="text-2xl capitalize">Something went wrong!</h2>
+      <h2 className="text-2xl capitalize">{message}</h2>
       <Button title="reset" onClick={() => reset()}>
         Try again
       </Button>
