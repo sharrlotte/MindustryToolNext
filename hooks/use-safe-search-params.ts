@@ -1,7 +1,10 @@
-import { ReadonlyURLSearchParams, useSearchParams } from "next/navigation";
+'use client';
+
+import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 
 export default function useSafeSearchParams() {
   const params = useSearchParams();
+
   return new SafeUrlSearchParams(params);
 }
 
@@ -12,7 +15,7 @@ class SafeUrlSearchParams {
     this.params = params;
   }
 
-  get<T = string>(key: string, defaultValue: string = "") {
+  get<T = string>(key: string, defaultValue: string = '') {
     return (this.params.get(key) ?? defaultValue) as T;
   }
 

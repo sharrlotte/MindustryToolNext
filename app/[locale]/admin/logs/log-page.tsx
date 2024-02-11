@@ -69,7 +69,11 @@ export default function LogPage() {
           <span ref={(ref) => (bottomRef.current = ref)}></span>
         </div>
       </div>
-      <form className="flex h-10 flex-1 gap-2" onSubmit={handleFormSubmit}>
+      <form
+        className="flex h-10 flex-1 gap-2"
+        name="text"
+        onSubmit={handleFormSubmit}
+      >
         <input
           className="h-full w-full rounded-md border border-border bg-background px-2 outline-none"
           value={message}

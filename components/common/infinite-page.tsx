@@ -8,7 +8,7 @@ import { AxiosInstance } from 'axios';
 import React, { ReactNode } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
-type InfinitePageProps<T, P extends PaginationQuery> = {
+type InfinitePageProps<T, P> = {
   className?: string;
   queryKey: QueryKey[];
   params: P;
@@ -17,7 +17,10 @@ type InfinitePageProps<T, P extends PaginationQuery> = {
   children: (data: T, index?: number) => ReactNode;
 };
 
-export default function InfinitePage<T, P extends PaginationQuery>({
+export default function InfinitePage<
+  T extends { id: string },
+  P extends PaginationQuery,
+>({
   className,
   queryKey,
   params,
@@ -34,7 +37,9 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     );
   }
 
-  const pages = data.pages.reduce((prev, curr) => prev.concat(curr), []);
+  const pages = data.pages
+    .reduce((prev, curr) => prev.concat(curr), [])
+    .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
 
   if (pages.length === 0) {
     return <NoResult className="flex w-full items-center justify-center" />;
@@ -46,7 +51,6 @@ export default function InfinitePage<T, P extends PaginationQuery>({
         className ??
         'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-4'
       }
-      threshold={1000}
       loadMore={(_: number) => fetchNextPage()}
       hasMore={hasNextPage}
       loader={
