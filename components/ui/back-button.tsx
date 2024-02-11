@@ -4,7 +4,10 @@ import { Button, ButtonProps } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-export default function BackButton({ ...props }: Omit<ButtonProps, 'title'>) {
+export default function BackButton({
+  children,
+  ...props
+}: Omit<ButtonProps, 'title'>) {
   const router = useRouter();
 
   return (
@@ -14,7 +17,7 @@ export default function BackButton({ ...props }: Omit<ButtonProps, 'title'>) {
       {...props}
       onClick={() => router.back()}
     >
-      Back
+      {children ?? 'Back'}
     </Button>
   );
 }

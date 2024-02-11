@@ -92,7 +92,7 @@ export default function Page() {
           />
           <Button
             title="Submit"
-            disabled={isPending}
+            disabled={isPending || uploadCheck !== true}
             onClick={() =>
               mutate({
                 header,

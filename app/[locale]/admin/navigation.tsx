@@ -60,10 +60,12 @@ function SchematicPath() {
     queryKey: ['total-schematic-uploads'],
   });
 
+  const schematicCount = data ?? 0;
+
   return (
     <>
       <span>schematic</span>
-      <span>({data ?? 0})</span>
+      {schematicCount > 0 && <span>({schematicCount})</span>}
     </>
   );
 }
@@ -74,10 +76,12 @@ function MapPath() {
     queryKey: ['total-map-uploads'],
   });
 
+  const mapCount = data ?? 0;
+
   return (
     <>
       <span>map</span>
-      <span>({data ?? 0})</span>
+      {mapCount > 0 && <span>({mapCount})</span>}
     </>
   );
 }
@@ -88,10 +92,12 @@ function PostPath() {
     queryKey: ['total-post-uploads'],
   });
 
+  const postCount = data ?? 0;
+
   return (
     <>
       <span>post</span>
-      <span>({data ?? 0})</span>
+      {postCount > 0 && <span>({postCount})</span>}
     </>
   );
 }

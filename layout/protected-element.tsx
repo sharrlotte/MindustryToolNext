@@ -6,12 +6,14 @@ type Props = {
   children: ReactNode;
   any?: UserRole[];
   all?: UserRole[];
+  ownerId?: string;
   session: Session | null;
 };
 
 export default function ProtectedElement({
   all,
   any,
+  ownerId,
   children,
   session,
 }: Props) {
@@ -19,26 +21,20 @@ export default function ProtectedElement({
 
   const roles = session.user.roles;
 
-  if (any && all) {
-    if (
-      all.every((role) => roles.includes(role)) &&
-      any.some((role) => roles.includes(role))
-    ) {
-      return <>{children}</>;
-    }
+  if (roles.includes('ADMIN')){
+    return <>{children}</>;
   }
 
-  if (any) {
-    if (any.some((role) => roles.includes(role))) {
-      return <>{children}</>;
-    }
+  const pred = [
+    all ? all.every((role) => roles.includes(role)) : true,
+    any ? any.some((role) => roles.includes(role)) : true,
+    ownerId ? ownerId === session.user.id : true,
+  ].every(Boolean);
+
+  if (!pred) {
+    return <></>;
   }
 
-  if (all) {
-    if (all.every((role) => roles.includes(role))) {
-      return <>{children}</>;
-    }
-  }
-
-  return <></>;
+  return <>{children}</>;
 }
+

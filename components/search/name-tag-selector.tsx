@@ -14,7 +14,7 @@ type NameTagSelectorProps = {
   value: TagGroup[];
   disabled?: boolean;
   onChange: (value: TagGroup[]) => void;
-  hideSelectedTag?: boolean
+  hideSelectedTag?: boolean;
 };
 
 export default function NameTagSelector({

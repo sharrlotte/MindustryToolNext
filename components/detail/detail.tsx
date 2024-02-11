@@ -11,17 +11,22 @@ type DetailProps = HTMLAttributes<HTMLDivElement> & {
 
 function Detail({ className, children, padding }: DetailProps) {
   return (
-    <div className="absolute overflow-hidden bg-background">
+    <div
+      className={cn('absolute inset-0 w-full overflow-y-auto bg-background')}
+    >
       <div
-        className={cn(
-          'relative flex h-full w-full flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch',
-          className,
-          {
-            'p-4': padding,
-          },
-        )}
+        className={cn({
+          'p-4': padding,
+        })}
       >
-        {children}
+        <div
+          className={cn(
+            'relative flex h-full w-full flex-col justify-between gap-2 lg:items-stretch',
+            className,
+          )}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -89,7 +94,7 @@ type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 function Actions({ className, children }: ActionsProps) {
   return (
-    <section className={cn('flex items-center gap-1', className)}>
+    <section className={cn('flex items-end gap-1', className)}>
       {children}
     </section>
   );

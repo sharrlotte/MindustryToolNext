@@ -12,6 +12,15 @@ import { MapDetail } from '@/types/response/MapDetail';
 import LikeButton from '@/components/like/like-button';
 import LikeCount from '@/components/like/like-count';
 import DislikeButton from '@/components/like/dislike-button';
+import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import { useToast } from '@/hooks/use-toast';
+import putRemoveMap from '@/query/map/put-remove-map';
+import { useMutation } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import ProtectedElement from '@/layout/protected-element';
+import TakeDownButton from '@/components/button/take-down-button';
+import { useRouter } from 'next/navigation';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -20,6 +29,32 @@ type MapDetailCardProps = {
 
 export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
   const link = `${env.url.base}/maps/${map.id}`;
+
+  const { axios } = useClientAPI();
+  const { deleteById, invalidateByKey } = useQueriesData();
+  const { back } = useRouter();
+  const { toast } = useToast();
+  const { data: session } = useSession();
+
+  const { mutate: removeMap, isPending: isRemoving } = useMutation({
+    mutationFn: (id: string) => putRemoveMap(axios, id),
+    onSuccess: () => {
+      deleteById(['maps'], map.id);
+      invalidateByKey(['map-uploads']);
+      back();
+      toast({
+        title: 'Take down map successfully',
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Failed to take down map',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
 
   return (
     <Detail padding={padding}>
@@ -62,6 +97,13 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
             <LikeCount />
             <DislikeButton />
           </LikeComponent>
+          <ProtectedElement session={session} ownerId={map.authorId}>
+            <TakeDownButton
+              isLoading={isRemoving}
+              description={`Take down this map: ${map.name}`}
+              onClick={() => removeMap(map.id)}
+            />
+          </ProtectedElement>
         </div>
         <BackButton />
       </Detail.Actions>

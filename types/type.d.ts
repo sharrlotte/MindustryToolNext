@@ -10,7 +10,7 @@ declare module 'next-auth' {
       roles: UserRole[];
       name: string;
       imageUrl?: string | null;
-      expireAt: number; 
+      expireAt: number;
     } & DefaultSession['user'];
   }
 }
@@ -23,4 +23,20 @@ declare module 'next-auth/jwt' {
     accessToken: string;
     expireAt: number;
   }
+}
+
+declare global {
+  type QueryKey =
+    | 'schematics'
+    | 'maps'
+    | 'posts'
+    | 'schematic-uploads'
+    | 'map-uploads'
+    | 'post-uploads'
+    | 'total-schematic-uploads'
+    | 'total-map-uploads'
+    | 'total-post-uploads'
+    | 'servers';
+
+  type TQueryKey = QueryKey;
 }
