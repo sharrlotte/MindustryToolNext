@@ -1,5 +1,4 @@
 import useClientAPI from '@/hooks/use-client';
-import useSearchPageParams from '@/hooks/use-search-page-params';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
@@ -9,7 +8,6 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
   params: P,
   queryKey: QueryKey[],
 ) {
-  const PaginationSearchQuery = useSearchPageParams();
   const { axios, enabled } = useClientAPI();
 
   const getNextPageParam = (lastPage: T[], pages: T[][], lastPageParams: P) => {
@@ -32,15 +30,19 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     return lastPageParams;
   };
 
-  const { name, authorId, sort, tags } = PaginationSearchQuery;
+  const { page, ...rest } = params;
+
+  console.log(...Object.values(rest));
 
   return useInfiniteQuery({
-    queryKey: [...queryKey, name, authorId, sort, tags],
+    queryKey: [...queryKey, ...Object.values(rest)],
     initialPageParam: params,
     // @ts-ignore
     queryFn: (context) => getFunc(axios, context.pageParam),
     getNextPageParam,
     getPreviousPageParam,
     enabled,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 }

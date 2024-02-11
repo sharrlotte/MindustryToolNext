@@ -2,7 +2,6 @@
 
 import Markdown from '@/components/common/markdown';
 import LikeComponent from '@/components/like/like-component';
-import TagCard from '@/components/tag/tag-card';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
 import { Tags } from '@/types/response/Tag';
@@ -21,6 +20,7 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
 import ProtectedElement from '@/layout/protected-element';
+import TagContainer from '@/components/tag/tag-container';
 
 type PostDetailCardProps = {
   post: PostDetail;
@@ -62,11 +62,7 @@ export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
         <div className="grid gap-2">
           <IdUserCard id={post.authorId} />
           <span>{new Date(post.time).toLocaleString()}</span>
-          <section className="flex flex-wrap items-center gap-1">
-            {displayTags.map((value) => (
-              <TagCard key={value.name + value.value} tag={value} />
-            ))}
-          </section>
+          <TagContainer tags={displayTags} />
         </div>
       </header>
       <div>

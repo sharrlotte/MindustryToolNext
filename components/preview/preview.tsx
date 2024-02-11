@@ -9,7 +9,7 @@ function Preview({ className, children, ...props }: CardProps) {
   return (
     <Card
       className={cn(
-        'flex min-h-preview animate-appear items-center justify-between overflow-hidden flex-col',
+        'flex min-h-preview animate-appear flex-col items-center justify-between overflow-hidden',
         className,
       )}
       {...props}
@@ -50,9 +50,8 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
         className="h-full w-full object-cover"
         src={src}
         alt={alt}
-        width={576}
-        height={576}
-        priority
+        width={224}
+        height={224}
         onError={(err) => (err.currentTarget.src = errorSrc)}
       />
     </figure>

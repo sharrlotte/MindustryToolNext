@@ -19,8 +19,8 @@ import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 import { Tags } from '@/types/response/Tag';
-import TagCard from '@/components/tag/tag-card';
 import Markdown from '@/components/common/markdown';
+import TagContainer from '@/components/tag/tag-container';
 
 type UploadPostDetailCardProps = {
   post: PostDetail;
@@ -91,11 +91,7 @@ export default function UploadPostDetailCard({
         <div className="grid gap-2">
           <IdUserCard id={post.authorId} />
           <span>{new Date(post.time).toLocaleString()}</span>
-          <section className="flex flex-wrap items-center gap-1">
-            {displayTags.map((value) => (
-              <TagCard key={value.name + value.value} tag={value} />
-            ))}
-          </section>
+          <TagContainer tags={displayTags} />
         </div>
       </header>
       <div>
