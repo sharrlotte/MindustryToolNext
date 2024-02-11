@@ -95,7 +95,7 @@ export default function Page() {
         onOpenChange={() => setResult(undefined)}
       >
         <DialogContent>
-          <DialogTitle>Add server successall</DialogTitle>
+          <DialogTitle>Add server successfully</DialogTitle>
           <PostServerResultCard server={result} />
         </DialogContent>
       </Dialog>

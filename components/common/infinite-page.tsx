@@ -56,7 +56,7 @@ export default function InfinitePage<
       loader={
         <LoadingSpinner
           key="Loading"
-          className="col-span-full mb-4 flex w-full items-center justify-center"
+          className="col-span-full flex w-full items-center justify-center"
         />
       }
       useWindow={false}
