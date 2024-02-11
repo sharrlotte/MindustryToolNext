@@ -3,7 +3,6 @@
 import NoResult from '@/components/common/no-result';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
-import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { AxiosInstance } from 'axios';
 import React, { ReactNode } from 'react';
@@ -11,7 +10,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 type InfinitePageProps<T, P extends PaginationQuery> = {
   className?: string;
-  queryKey: any[];
+  queryKey: QueryKey[];
   params: P;
   scrollContainer?: HTMLElement | null;
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;

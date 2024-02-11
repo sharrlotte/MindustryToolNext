@@ -6,7 +6,7 @@ import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { useToast } from '@/hooks/use-toast';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
-import React, { HTMLAttributes, useState } from 'react';
+import React, { HTMLAttributes, useEffect, useState } from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
@@ -35,9 +35,7 @@ export default function UploadSchematicDetailCard({
   const { back } = useRouter();
   const { axios } = useClientAPI();
   const { schematic: schematicTags } = useTags();
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(
-    TagGroups.parseString(schematic.tags, schematicTags),
-  );
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
 
   const { mutate: verifySchematic, isPending: isVerifying } = useMutation({
@@ -46,6 +44,7 @@ export default function UploadSchematicDetailCard({
     onSuccess: () => {
       deleteById(['schematic-uploads'], schematic.id);
       invalidateByKey(['total-schematic-uploads']);
+      invalidateByKey(['schematics']);
       back();
       toast({
         title: 'Verify schematic successfully',
@@ -80,6 +79,10 @@ export default function UploadSchematicDetailCard({
       });
     },
   });
+
+  useEffect(() => {
+    setSelectedTags(TagGroups.parseString(schematic.tags, schematicTags));
+  }, [schematic.tags, schematicTags]);
 
   const isLoading = isVerifying || isDeleting;
   const link = `${env.url.base}/schematics/${schematic.id}`;

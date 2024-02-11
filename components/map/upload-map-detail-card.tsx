@@ -6,14 +6,13 @@ import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
 import { useToast } from '@/hooks/use-toast';
 import { MapDetail } from '@/types/response/MapDetail';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DownloadButton from '@/components/button/download-button';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
 import { useMutation } from '@tanstack/react-query';
 import postVerifyMap from '@/query/map/post-verify-map';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
-import getMapData from '@/query/map/get-map-data';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import useTags from '@/hooks/use-tags';
@@ -32,9 +31,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { back } = useRouter();
   const { axios } = useClientAPI();
   const { map: mapTags } = useTags();
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(
-    TagGroups.parseString(map.tags, mapTags),
-  );
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
 
   const { mutate: verifyMap, isPending: isVerifying } = useMutation({
@@ -62,6 +59,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
     onSuccess: () => {
       deleteById(['map-uploads'], map.id);
       invalidateByKey(['total-map-uploads']);
+      invalidateByKey(['maps']);
       back();
       toast({
         title: 'Delete map successfully',
@@ -76,6 +74,10 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
       });
     },
   });
+
+  useEffect(() => {
+    setSelectedTags(TagGroups.parseString(map.tags, mapTags));
+  }, [map.tags, mapTags]);
 
   const isLoading = isVerifying || isDeleting;
   const link = `${env.url.base}/maps/${map.id}`;

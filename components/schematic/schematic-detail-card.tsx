@@ -5,7 +5,7 @@ import LikeComponent from '@/components/like/like-component';
 import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import React, { HTMLAttributes } from 'react';
 import DownloadButton from '@/components/button/download-button';
@@ -16,6 +16,13 @@ import getSchematicData from '@/query/schematic/get-schematic-data';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeCount from '@/components/like/like-count';
+import useQueriesData from '@/hooks/use-queries-data';
+import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
+import { useMutation } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import ProtectedElement from '@/layout/protected-element';
+import TakeDownButton from '@/components/button/take-down-button';
+import { useRouter } from 'next/navigation';
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -27,6 +34,30 @@ export default function SchematicDetailCard({
   padding,
 }: SchematicDetailCardProps) {
   const { axios } = useClientAPI();
+  const { deleteById, invalidateByKey } = useQueriesData();
+  const { back } = useRouter();
+  const { toast } = useToast();
+  const { data: session } = useSession();
+
+  const { mutate: removeSchematic, isPending: isRemoving } = useMutation({
+    mutationFn: (id: string) => putRemoveSchematic(axios, id),
+    onSuccess: () => {
+      deleteById(['schematics'], schematic.id);
+      invalidateByKey(['schematic-uploads']);
+      back();
+      toast({
+        title: 'Take down schematic successfully',
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Failed to take down schematic',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
 
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
@@ -90,6 +121,13 @@ export default function SchematicDetailCard({
             <LikeCount />
             <DislikeButton />
           </LikeComponent>
+          <ProtectedElement session={session} ownerId={schematic.authorId}>
+            <TakeDownButton
+              isLoading={isRemoving}
+              description={`Take down this schematic: ${schematic.name}`}
+              onClick={() => removeSchematic(schematic.id)}
+            />
+          </ProtectedElement>
         </div>
         <BackButton />
       </Detail.Actions>

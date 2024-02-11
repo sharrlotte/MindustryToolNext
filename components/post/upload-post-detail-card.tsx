@@ -4,7 +4,7 @@ import Detail from '@/components/detail/detail';
 import BackButton from '@/components/ui/back-button';
 import { useToast } from '@/hooks/use-toast';
 import { PostDetail } from '@/types/response/PostDetail';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
 import { useMutation } from '@tanstack/react-query';
@@ -33,9 +33,7 @@ export default function UploadPostDetailCard({
   const { back } = useRouter();
   const { axios } = useClientAPI();
   const { post: postTags } = useTags();
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(
-    TagGroups.parseString(post.tags, postTags),
-  );
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
 
   const { mutate: verifyPost, isPending: isVerifying } = useMutation({
@@ -63,6 +61,7 @@ export default function UploadPostDetailCard({
     onSuccess: () => {
       deleteById(['post-uploads'], post.id);
       invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
       back();
       toast({
         title: 'Delete post successfully',
@@ -78,6 +77,10 @@ export default function UploadPostDetailCard({
     },
   });
 
+  useEffect(() => {
+    setSelectedTags(TagGroups.parseString(post.tags, postTags));
+  }, [post.tags, postTags]);
+
   const isLoading = isVerifying || isDeleting;
   const displayTags = Tags.parseStringArray(post.tags);
 
@@ -85,7 +88,7 @@ export default function UploadPostDetailCard({
     <Detail>
       <header className="grid gap-2 pb-10">
         <p className="text-4xl">{post.header}</p>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid gap-2">
           <IdUserCard id={post.authorId} />
           <span>{new Date(post.time).toLocaleString()}</span>
           <section className="flex flex-wrap items-center gap-1">
@@ -95,7 +98,9 @@ export default function UploadPostDetailCard({
           </section>
         </div>
       </header>
-      <Markdown className="h-full">{post.content}</Markdown>
+      <div>
+        <Markdown>{post.content}</Markdown>
+      </div>
       <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
         <NameTagSelector
           tags={postTags}

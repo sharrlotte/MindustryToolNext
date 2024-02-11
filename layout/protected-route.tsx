@@ -30,25 +30,14 @@ export default async function ProtectedRoute({
 
   const roles = session.user.roles;
 
-  if (any && all) {
-    if (
-      all.every((role) => roles.includes(role)) &&
-      any.some((role) => roles.includes(role))
-    ) {
-      return <>{children}</>;
-    }
+  const pred = [
+    all ? all.every((role) => roles.includes(role)) : true,
+    any ? any.some((role) => roles.includes(role)) : true,
+  ].every(Boolean);
+
+  if (!pred) {
+    return <NoPermission />;
   }
 
-  if (any) {
-    if (any.some((role) => roles.includes(role))) {
-      return <>{children}</>;
-    }
-  }
-
-  if (all) {
-    if (all.every((role) => roles.includes(role))) {
-      return <>{children}</>;
-    }
-  }
-  <NoPermission />;
+  return <>{children}</>;
 }
