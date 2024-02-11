@@ -1,6 +1,5 @@
 import Search from '@/components/search/search-input';
 import FilterTags from '@/components/tag/filter-tags';
-import TagCard from '@/components/tag/tag-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import OutsideWrapper from '@/components/common/outside-wrapper';
@@ -8,6 +7,7 @@ import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 import { cloneDeep } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import TagContainer from '@/components/tag/tag-container';
 
 type NameTagSelectorProps = {
   tags?: TagGroup[];
@@ -79,16 +79,8 @@ export default function NameTagSelector({
         >
           Add Tag ({displayTags.length})
         </Button>
-        {!hideSelectedTag && displayTags.length > 0 && (
-          <section className="flex w-full flex-wrap items-center justify-start gap-1">
-            {displayTags.map((item) => (
-              <TagCard
-                key={item.name + item.value}
-                tag={item}
-                onDelete={handleDeleteTag}
-              />
-            ))}
-          </section>
+        {!hideSelectedTag && (
+          <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
         )}
       </div>
       {showFilterDialog && (

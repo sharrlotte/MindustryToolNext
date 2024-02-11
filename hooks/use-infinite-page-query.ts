@@ -30,7 +30,9 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     return lastPageParams;
   };
 
-  const {page, ...rest} = params
+  const { page, ...rest } = params;
+
+  console.log(...Object.values(rest));
 
   return useInfiniteQuery({
     queryKey: [...queryKey, ...Object.values(rest)],
@@ -40,5 +42,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     getNextPageParam,
     getPreviousPageParam,
     enabled,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 }

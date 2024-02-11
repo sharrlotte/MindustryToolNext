@@ -9,7 +9,6 @@ import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import { defaultSortTag } from '@/constant/env';
 import { usePathname, useRouter } from 'next/navigation';
-import TagCard from '@/components/tag/tag-card';
 import { QueryParams } from '@/query/config/search-query-params';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import useSearchPageParams from '@/hooks/use-search-page-params';
@@ -18,6 +17,7 @@ import SortTags from '@/components/tag/sort-tags';
 import { TAG_SEPARATOR } from '@/constant/constant';
 import { cn } from '@/lib/utils';
 import _ from 'lodash';
+import TagContainer from '@/components/tag/tag-container';
 
 type NameTagSearchProps = {
   className?: string;
@@ -34,6 +34,7 @@ export default function NameTagSearch({
   const pathname = usePathname();
   const searchParams = useSearchPageParams();
 
+  const [page, setPage] = useState(0);
   const [name, setName] = useState('');
   const [selectedFilterTags, setSelectedFilterTags] = useState<TagGroup[]>([]);
   const [selectedSortTag, setSelectedSortTag] =
@@ -53,6 +54,7 @@ export default function NameTagSearch({
         sort: sortString,
         name: nameString,
         tags: tagsString,
+        page,
       } = searchParams;
 
       const tagsArray = _.chain(tagsString)
@@ -77,6 +79,7 @@ export default function NameTagSearch({
         .compact()
         .value();
 
+      setPage(page);
       setSelectedSortTag(sortString ?? defaultSortTag);
       setSelectedFilterTags(tagsArray);
       setName(nameString ?? '');
@@ -100,6 +103,7 @@ export default function NameTagSearch({
         );
 
       params.set(QueryParams.sort, selectedSortTag);
+      params.set(QueryParams.page, page.toString());
       if (name) {
         params.set(QueryParams.name, name);
       }
@@ -175,17 +179,7 @@ export default function NameTagSearch({
           <FilterIcon />
         </Button>
       </div>
-      {displayTags.length > 0 && (
-        <section className="m-auto flex w-full flex-wrap items-center justify-center gap-1 md:w-3/4">
-          {displayTags.map((item) => (
-            <TagCard
-              key={item.name + item.value}
-              tag={item}
-              onDelete={handleDeleteTag}
-            />
-          ))}
-        </section>
-      )}
+      <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
       {showFilterDialog && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
           <OutsideWrapper

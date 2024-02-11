@@ -9,13 +9,11 @@ import {
 export default function useSearchPageParams(): PaginationSearchQuery {
   const query = useSafeSearchParams();
 
-  const params = searchSchema.parse({
+  return searchSchema.parse({
     page: Number.parseInt(query.get(QueryParams.page, '0')),
     name: query.get(QueryParams.name),
     sort: query.get(QueryParams.sort, defaultSortTag),
     tags: query.getAll(QueryParams.tags),
     authorId: query.get(QueryParams.authorId),
   });
-
-  return params;
 }

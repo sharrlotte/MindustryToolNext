@@ -1,5 +1,5 @@
 import ColorText from '@/components/common/color-text';
-import TagCard from '@/components/tag/tag-card';
+import TagContainer from '@/components/tag/tag-container';
 import { cn } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
 import Image from 'next/image';
@@ -106,13 +106,7 @@ type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
 function TagsCard({ className, tags }: TagsProps) {
   const values = Tags.parseStringArray(tags);
 
-  return (
-    <section className={cn('flex flex-wrap gap-1', className)}>
-      {values.map((item) => (
-        <TagCard key={item.name + item.value} tag={item} />
-      ))}
-    </section>
-  );
+  return <TagContainer tags={values} />;
 }
 
 type DescriptionProps = Omit<

@@ -15,7 +15,7 @@ export default function TagCard({
   onDelete,
   ...props
 }: TagCardProps) {
-  const hasDeleteButton = onDelete ? true : false;
+  const hasDeleteButton = onDelete !== undefined;
   const { name, value, color } = tag;
 
   const handleOnDelete = (tag: Tag) => {
@@ -27,8 +27,11 @@ export default function TagCard({
   return (
     <span
       className={cn(
-        'py-1/2 group flex h-8 items-center justify-center gap-1 whitespace-nowrap rounded-md px-1 text-center text-xs capitalize',
+        'py-1/2 flex h-8 items-center justify-center gap-1 whitespace-nowrap rounded-md px-1 text-center text-xs capitalize',
         className,
+        {
+          group: hasDeleteButton,
+        },
       )}
       style={{ backgroundColor: color }}
       {...props}
