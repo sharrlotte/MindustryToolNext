@@ -15,7 +15,7 @@ function Detail({ className, children, padding }: DetailProps) {
       className={cn('absolute inset-0 w-full overflow-y-auto bg-background')}
     >
       <div
-        className={cn({
+        className={cn('h-full w-full', {
           'p-4': padding,
         })}
       >
