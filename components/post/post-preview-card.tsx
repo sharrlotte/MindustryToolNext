@@ -36,10 +36,11 @@ export default function PostPreviewCard({
         <div className="flex flex-col gap-2">
           <div>
             <IdUserCard id={post.authorId} />
-            <span>{new Date(post.time).toLocaleString()}</span>
+            <span>{new Date(post.createdAt).toLocaleString()}</span>
           </div>
           <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
             <CopyButton
+              className="border border-border "
               title="Copy"
               variant="outline"
               data={link}

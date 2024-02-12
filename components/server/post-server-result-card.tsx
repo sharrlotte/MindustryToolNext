@@ -14,9 +14,9 @@ export default function PostServerResultCard({
   }
 
   return (
-    <div className="flex flex-col gap-2 overflow-hidden rounded-md">
+    <div className="flex flex-col gap-2 overflow-hidden rounded-md font-medium">
       <CopyButton
-        className="justify-start px-0 text-xl"
+        className="justify-start px-0 text-xl text-foreground"
         title="Copied"
         content={server.address}
         data={server.address}

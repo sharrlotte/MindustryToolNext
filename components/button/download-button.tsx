@@ -12,15 +12,13 @@ export default function DownloadButton({
   ...props
 }: DownloadButtonProps) {
   return (
-    <Button
-      className={cn('p-2', className)}
-      title="Download"
-      variant="outline"
-      asChild
+    <a
+      className="flex items-center justify-center rounded-md border border-border"
+      {...props}
+      download
+      onClick={fixProgressBar}
     >
-      <a {...props} download onClick={fixProgressBar}>
-        <ArrowDownTrayIcon className="h-5 w-5" />
-      </a>
-    </Button>
+      <ArrowDownTrayIcon className="h-5 w-5" />
+    </a>
   );
 }

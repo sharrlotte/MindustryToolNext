@@ -18,7 +18,7 @@ export default async function getMetric(
     })
     .then((result) =>
       result.data.map((v: any) => {
-        let time = new Date(v.time);
+        let time = new Date(v.createdAt);
         return { value: v.value, time };
       }),
     );

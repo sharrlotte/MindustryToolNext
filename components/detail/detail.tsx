@@ -12,21 +12,17 @@ type DetailProps = HTMLAttributes<HTMLDivElement> & {
 function Detail({ className, children, padding }: DetailProps) {
   return (
     <div
-      className={cn('absolute inset-0 w-full overflow-y-auto bg-background')}
+      className={cn('absolute inset-0 w-full overflow-y-auto bg-background', {
+        'p-4': padding,
+      })}
     >
       <div
-        className={cn({
-          'p-4': padding,
-        })}
+        className={cn(
+          'relative flex h-full w-full flex-col justify-between gap-2 lg:items-stretch',
+          className,
+        )}
       >
-        <div
-          className={cn(
-            'relative flex h-full w-full flex-col justify-between gap-2 lg:items-stretch',
-            className,
-          )}
-        >
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );
@@ -106,7 +102,7 @@ type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
 function TagsCard({ className, tags }: TagsProps) {
   const values = Tags.parseStringArray(tags);
 
-  return <TagContainer tags={values} />;
+  return <TagContainer className={className} tags={values} />;
 }
 
 type DescriptionProps = Omit<

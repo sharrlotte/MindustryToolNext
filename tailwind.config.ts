@@ -11,6 +11,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--font-icon)'],
+      },
       minHeight: (theme: any) => ({
         ...theme('spacing'),
       }),

@@ -30,6 +30,7 @@ export default function CopyButton({
     <Button
       className={cn('p-2', className)}
       title="Copy link"
+      variant="outline"
       {...props}
       onClick={handleCopy}
     >

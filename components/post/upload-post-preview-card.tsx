@@ -28,7 +28,7 @@ export default function UploadPostPreviewCard({
         <div className="flex flex-col gap-2">
           <div>
             <IdUserCard id={post.authorId} />
-            <span>{new Date(post.time).toLocaleString()}</span>
+            <span>{new Date(post.createdAt).toLocaleString()}</span>
           </div>
         </div>
       </div>

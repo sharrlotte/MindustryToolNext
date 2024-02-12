@@ -19,7 +19,7 @@ import {
   ArrowUpTrayIcon,
   BellIcon,
   Cog6ToothIcon,
-} from '@heroicons/react/24/solid';
+} from '@heroicons/react/24/outline';
 
 import { useSession } from 'next-auth/react';
 import OutsideWrapper from '@/components/common/outside-wrapper';
@@ -43,7 +43,7 @@ export default function NavigationBar() {
   const hideSidebar = () => setSidebarVisibility(false);
 
   return (
-    <div className="flex w-full items-center justify-between p-2 dark:bg-emerald-500">
+    <div className="flex w-full items-center justify-between bg-button p-2 text-white shadow-lg">
       <Button
         title="menu"
         type="button"
@@ -53,11 +53,11 @@ export default function NavigationBar() {
         onClick={showSidebar}
         onMouseEnter={showSidebar}
       >
-        <Bars3Icon className="h-8 w-8" />
+        <Bars3Icon className="h-8 w-8 text-white" />
       </Button>
       <div
         className={cn(
-          'pointer-events-none fixed bottom-0 left-0 right-0 top-0 z-50 bg-transparent',
+          'pointer-events-none fixed bottom-0 left-0 right-0 top-0 z-50 bg-transparent text-foreground',
           {
             'visible backdrop-blur-sm': isSidebarVisible,
           },
@@ -88,13 +88,13 @@ export default function NavigationBar() {
                       height={24}
                       width={24}
                     />
-                    <span>MindustryTool</span>
+                    <span className="font-medium">MindustryTool</span>
                   </span>
                   <span className="rounded-sm bg-card p-2 text-xs">
                     {env.webVersion}
                   </span>
                 </span>
-                <section className="grid gap-2 text-sm font-thin">
+                <section className="grid gap-2 text-sm">
                   {paths.map((item, index) => (
                     <NavItem
                       enabled={
@@ -108,7 +108,7 @@ export default function NavigationBar() {
                   ))}
                 </section>
               </div>
-              <div className="flex w-full">
+              <div className="w-full">
                 <UserDisplay />
               </div>
             </div>
@@ -188,16 +188,16 @@ function NavItem({
   const render = () => (
     <Link
       className={cn(
-        'flex items-center gap-3 rounded-md bg-opacity-0 px-1 py-2 font-bold opacity-80 transition-colors duration-300 hover:bg-emerald-500 hover:opacity-100',
+        'flex items-center gap-3 rounded-md px-1 py-2 font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
         className,
         {
-          'bg-emerald-500 bg-opacity-100 opacity-100': enabled,
+          'bg-button text-background opacity-100 dark:text-foreground': enabled,
         },
       )}
       href={path}
       onClick={onClick}
     >
-      <span>{icon}</span>
+      <span className="opacity-100">{icon}</span>
       <span>{name}</span>
     </Link>
   );

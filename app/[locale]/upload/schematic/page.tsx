@@ -103,6 +103,7 @@ export default function Page() {
       return;
     }
 
+    setPreview(undefined);
     closeDialog();
     setData(files[0]);
   }
@@ -119,6 +120,7 @@ export default function Page() {
           return;
         }
 
+        setPreview(undefined);
         closeDialog();
         setData(text);
       });
@@ -154,13 +156,14 @@ export default function Page() {
             <DialogTrigger
               className={cn('border border-border', {
                 'rounded-md px-4 py-1.5 text-sm': !preview,
-                'bg-button': !isLoadingSchematicPreview,
+                'bg-button font-medium text-background dark:text-foreground':
+                  !isLoadingSchematicPreview,
               })}
               disabled={isLoading}
             >
               <LoadingWrapper isLoading={isLoadingSchematicPreview}>
                 {preview ? (
-                  <img src={PNG_IMAGE_PREFIX + preview.image} alt="Error" />
+                  <img src={PNG_IMAGE_PREFIX + preview.image} alt="Schematic" />
                 ) : (
                   <span className="py-1" title="Select schematic">
                     Select schematic
@@ -171,22 +174,21 @@ export default function Page() {
             <DialogContent className="w-4/5 rounded-md">
               <DialogTitle>Select schematic</DialogTitle>
               <div className="grid items-stretch justify-stretch gap-2">
-                <Button title="file" asChild>
-                  <div className="flex w-full items-center justify-center">
-                    <label className="button" htmlFor="file">
-                      Upload a file
-                    </label>
-                    <input
-                      id="file"
-                      type="file"
-                      hidden
-                      disabled={isLoading}
-                      accept=".msch"
-                      onChange={(event) => handleFileChange(event)}
-                    />
-                  </div>
+                <Button title="file" variant="primary" asChild>
+                  <label className="hover:cursor-pointer" htmlFor="file">
+                    Upload a file
+                  </label>
                 </Button>
+                <input
+                  id="file"
+                  type="file"
+                  hidden
+                  disabled={isLoading}
+                  accept=".msch"
+                  onChange={(event) => handleFileChange(event)}
+                />
                 <Button
+                  variant="primary"
                   title={'copy-from-clipboard'}
                   onClick={() => handleCodeChange()}
                   disabled={isLoading}
@@ -215,6 +217,7 @@ export default function Page() {
         <Button
           className="w-fit"
           title="Upload"
+          variant="primary"
           onClick={() => handleSubmit()}
           disabled={isLoading || uploadCheck !== true}
         >

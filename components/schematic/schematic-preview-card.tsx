@@ -60,6 +60,7 @@ export default function SchematicPreviewCard({
         <Preview.Header className="h-12">{schematic.name}</Preview.Header>
         <Preview.Actions>
           <CopyButton
+            className="border border-border "
             title="Copied"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}

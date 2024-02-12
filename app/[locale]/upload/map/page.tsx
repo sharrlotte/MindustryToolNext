@@ -120,16 +120,18 @@ export default function Page() {
   return (
     <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md pr-1">
       <div className="flex flex-col gap-2 rounded-md p-2">
-        <section className="flex min-h-10 flex-row flex-wrap items-center gap-2">
-          <label
-            className="button rounded-md border border-border"
-            htmlFor="file"
-          >
+        <section className="flex min-h-10 flex-row flex-wrap gap-2">
+          <label htmlFor="file" className="hover:cursor-pointer">
             <LoadingWrapper isLoading={isLoadingMapPreview}>
               {preview ? (
                 <img src={PNG_IMAGE_PREFIX + preview.image} alt="Error" />
               ) : (
-                <Button className="text-sm" title="Select file" asChild>
+                <Button
+                  className="text-sm"
+                  variant="primary"
+                  title="Select file"
+                  asChild
+                >
                   <span title="Select map">Select map</span>
                 </Button>
               )}
@@ -160,6 +162,7 @@ export default function Page() {
       <div className="flex flex-col items-end justify-center rounded-md bg-card p-2">
         <Button
           className="w-fit"
+          variant="primary"
           title="Upload"
           onClick={() => handleSubmit()}
           disabled={isLoading || uploadCheck !== true}

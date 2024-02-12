@@ -44,11 +44,11 @@ export default function LoginLog({ axios: { axios, enabled } }: LoginLogProps) {
         <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
           {logs?.map((log) => (
             <span
-              className="flex justify-between gap-8 rounded-sm bg-zinc-700 p-4"
+              className="flex justify-between gap-8 rounded-sm bg-background p-4"
               key={log.id}
             >
               <span>{`${log.content} ${moment(
-                new Date(log.time).toISOString(),
+                new Date(log.createdAt).toISOString(),
               ).fromNow()}`}</span>
               <span>{log.ip}</span>
             </span>

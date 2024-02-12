@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Tag from '@/types/response/Tag';
-import { XMarkIcon } from '@heroicons/react/24/solid';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import React, { HTMLAttributes } from 'react';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
@@ -27,7 +27,7 @@ export default function TagCard({
   return (
     <span
       className={cn(
-        'py-1/2 flex h-8 items-center justify-center gap-1 whitespace-nowrap rounded-md px-1 text-center text-xs capitalize',
+        'py-1/2 flex h-8 items-center gap-1 whitespace-nowrap rounded-md px-1 text-center text-xs capitalize text-background dark:text-foreground',
         className,
         {
           group: hasDeleteButton,
@@ -39,7 +39,7 @@ export default function TagCard({
       <span>{`${name}(${value})`}</span>
       {hasDeleteButton && (
         <Button
-          className="max-w-0 p-0 transition-all duration-500 group-hover:max-w-full"
+          className="w-0 p-0 transition-all duration-500 group-hover:w-full"
           title="delete"
           variant="icon"
           onClick={() => handleOnDelete(tag)}

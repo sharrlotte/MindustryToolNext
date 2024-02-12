@@ -12,7 +12,7 @@ function UserCard({ user }: UserCardProps) {
   return (
     <div className="flex h-8 w-56 items-end gap-2 overflow-hidden">
       <UserAvatar user={user} />
-      <ColorAsRole className="capitalize" roles={roles}>
+      <ColorAsRole className="font-medium capitalize" roles={roles}>
         {name}
       </ColorAsRole>
     </div>

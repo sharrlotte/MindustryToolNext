@@ -129,6 +129,7 @@ export default function UploadSchematicDetailCard({
       <Detail.Actions className="flex justify-between">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
+            className="border border-border"
             title="Copy"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}
