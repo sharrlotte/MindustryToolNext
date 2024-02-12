@@ -4,13 +4,13 @@ import QueryProvider from '../query/config/query-provider';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '../components/theme/theme-provider';
-import { Jura } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from 'next';
 
 import './globals.css';
 import ClientInit from '@/app/client-init';
 import { SessionProvider } from 'next-auth/react';
+import localFont from '@next/font/local';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
@@ -21,6 +21,25 @@ export const metadata: Metadata = {
 type RootParam = {
   lang: string;
 };
+
+// const font = localFont({
+//   src: [
+//     {
+//       path: '../public/fonts/font.woff',
+//       weight: '500',
+//     },
+//   ],
+//   variable: '--font-mindustry',
+// });
+
+const icon = localFont({
+  src: [
+    {
+      path: '../public/fonts/icon.ttf',
+    },
+  ],
+  variable: '--font-icon',
+});
 
 export async function generateStaticParams(): Promise<RootParam[]> {
   return env.locales.map((locale) => {
@@ -38,7 +57,11 @@ type RootProps = {
 export default function Root({ children, params }: RootProps) {
   return (
     <html
-      className="dark h-full w-full select-none overflow-hidden bg-background antialiased"
+      className={cn(
+        'dark h-full w-full select-none overflow-hidden bg-background text-foreground antialiased',
+        // font.variable,
+        icon.variable,
+      )}
       lang={params.lang ?? 'en'}
       suppressHydrationWarning
       data-color-mode="dark"
@@ -50,7 +73,7 @@ export default function Root({ children, params }: RootProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <NextTopLoader height={2} showSpinner={false} />
+          <NextTopLoader height={2} showSpinner={false} color="white" />
           <Toaster />
           <SessionProvider
             refetchOnWindowFocus={false}

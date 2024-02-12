@@ -19,12 +19,7 @@ export default function TagContainer({
   }
 
   return (
-    <section
-      className={cn(
-        'flex w-full flex-wrap items-center justify-center gap-1',
-        className,
-      )}
-    >
+    <section className={cn('flex w-full flex-wrap gap-1', className)}>
       {tags.map((item) => (
         <TagCard
           key={item.name + item.value}

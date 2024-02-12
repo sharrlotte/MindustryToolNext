@@ -73,6 +73,7 @@ export default function NameTagSelector({
       <div className="flex flex-col gap-2">
         <Button
           className="w-fit"
+          variant="primary"
           title="Filter"
           disabled={disabled}
           onClick={handleShowFilterDialog}
@@ -80,7 +81,11 @@ export default function NameTagSelector({
           Add Tag ({displayTags.length})
         </Button>
         {!hideSelectedTag && (
-          <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
+          <TagContainer
+            className="justify-start"
+            tags={displayTags}
+            handleDeleteTag={handleDeleteTag}
+          />
         )}
       </div>
       {showFilterDialog && (
@@ -107,7 +112,11 @@ export default function NameTagSelector({
                 />
               </CardContent>
               <CardFooter className="flex justify-end gap-1 p-0">
-                <Button title="close" onClick={handleHideFilterDialog}>
+                <Button
+                  title="close"
+                  variant="outline"
+                  onClick={handleHideFilterDialog}
+                >
                   Close
                 </Button>
               </CardFooter>

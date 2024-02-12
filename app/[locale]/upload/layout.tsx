@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -37,14 +36,15 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="flex h-full w-full flex-col gap-2 p-4">
-      <section className="no-scrollbar flex min-h-14 w-full items-center gap-2 overflow-auto rounded-sm border-border bg-card p-2 text-sm font-bold capitalize">
+      <section className="no-scrollbar flex w-full items-center gap-2 overflow-auto rounded-sm border-border bg-card p-2 text-sm font-bold capitalize">
         {tabs.map(({ name, url }) => (
           <Link
             key={name}
             className={cn(
-              'flex items-center justify-center gap-3 rounded-md bg-opacity-0 p-2 opacity-80 transition-colors duration-300 hover:bg-emerald-500 hover:opacity-100',
+              'flex min-w-16 items-center justify-center rounded-sm p-2 opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
               {
-                'bg-emerald-500 bg-opacity-100 opacity-100': route === url,
+                'bg-button bg-opacity-100 text-background opacity-100 dark:text-foreground':
+                  route === url,
               },
             )}
             href={`/upload/${url}`}

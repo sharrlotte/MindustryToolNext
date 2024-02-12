@@ -15,7 +15,7 @@ export default function MindustryServerCard({
   server,
 }: MindustryServerCardProps) {
   return (
-    <div className="flex flex-col gap-2 overflow-hidden rounded-md bg-card p-2">
+    <div className="flex flex-col gap-2 overflow-hidden rounded-md bg-card p-2 font-medium shadow-md">
       <CopyButton
         className="justify-start px-0 text-xl"
         title="Copied"
@@ -24,7 +24,7 @@ export default function MindustryServerCard({
         variant="ghost"
       >
         <ColorText
-          className="overflow-hidden whitespace-nowrap"
+          className="overflow-hidden whitespace-nowrap text-foreground"
           text={server.name ? server.name : server.address}
         />
       </CopyButton>
@@ -79,9 +79,9 @@ export default function MindustryServerCard({
               targetType={'SERVERS'}
               targetId={server.id}
             >
-              <LikeButton />
-              <LikeCount />
-              <DislikeButton />
+              <LikeButton className="w-9" />
+              <LikeCount className="w-9" />
+              <DislikeButton className="w-9" />
             </LikeComponent>
           </div>
         </div>

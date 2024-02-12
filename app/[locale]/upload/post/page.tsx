@@ -16,6 +16,8 @@ import NameTagSelector from '@/components/search/name-tag-selector';
 import LoadingWrapper from '@/components/common/loading-wrapper';
 import useTags from '@/hooks/use-tags';
 import rehypeSanitize from 'rehype-sanitize';
+import useLanguages from '@/hooks/use-languages';
+import ComboBox from '@/components/common/combo-box';
 
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then((mod) => mod.default),
@@ -25,10 +27,12 @@ export default function Page() {
   const [header, setHeader] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
+  const [language, setLanguage] = useState('');
   const { axios } = useClientAPI();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const { post } = useTags();
+  const languages = useLanguages();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: PostPostRequest) => postPost(axios, data),
@@ -59,6 +63,8 @@ export default function Page() {
 
     if (selectedTags.length === 0) return 'No tags';
 
+    if (!language) return 'No language';
+
     return true;
   }
 
@@ -74,7 +80,6 @@ export default function Page() {
             value={header}
             onChange={(event) => setHeader(event.currentTarget.value)}
           />
-
           <MDEditor
             value={content}
             onChange={(value) => setContent(value ?? '')}
@@ -83,7 +88,15 @@ export default function Page() {
             }}
           />
         </div>
-        <div className="flex justify-end gap-2 rounded-md bg-card p-2">
+        <div className="flex justify-start gap-2 rounded-md bg-card p-2">
+          <ComboBox
+            placeholder="Select language"
+            values={languages.map((value) => ({
+              value,
+              label: value,
+            }))}
+            onChange={(value) => setLanguage(value ?? '')}
+          />
           <NameTagSelector
             tags={post}
             value={selectedTags}
@@ -91,12 +104,15 @@ export default function Page() {
             hideSelectedTag
           />
           <Button
+            className="ml-auto"
             title="Submit"
+            variant="primary"
             disabled={isPending || uploadCheck !== true}
             onClick={() =>
               mutate({
                 header,
                 content,
+                language,
                 tags: TagGroups.toString(selectedTags),
               })
             }

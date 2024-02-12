@@ -61,7 +61,7 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
       <Detail.Info>
         <div className="relative">
           <CopyButton
-            className="absolute left-1 top-1 "
+            className="absolute left-1 top-1"
             title="Copy"
             variant="ghost"
             data={link}

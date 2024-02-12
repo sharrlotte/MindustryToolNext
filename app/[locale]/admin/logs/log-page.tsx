@@ -56,10 +56,10 @@ export default function LogPage() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
-        <div className="flex h-full flex-col gap-2 overflow-auto pr-2">
+        <div className="flex h-full flex-col gap-1 overflow-auto pr-2">
           {isLoaded ? (
             log.slice(log.length - 200).map((item, index) => (
-              <span className="rounded-lg bg-zinc-700 p-2" key={index}>
+              <span className="rounded-lg bg-background p-2" key={index}>
                 {item}
               </span>
             ))
@@ -81,7 +81,7 @@ export default function LogPage() {
         />
         <Button
           className={cn({
-            'bg-emerald-500 hover:bg-emerald-500': state === 'connected',
+            'bg-button hover:bg-button': state === 'connected',
           })}
           type="submit"
           title="send"

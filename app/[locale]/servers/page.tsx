@@ -57,7 +57,9 @@ export default function Page() {
         >
           <Dialog>
             <DialogTrigger asChild>
-              <Button title="Add server">Add server</Button>
+              <Button variant="primary" title="Add server">
+                Add server
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogTitle>Add a server</DialogTitle>
@@ -66,7 +68,7 @@ export default function Page() {
                   value={address}
                   type="text"
                   placeholder="Server address"
-                  className="w-full border-b-2 border-border bg-transparent p-1 outline-none hover:border-b-2 hover:outline-none"
+                  className="w-full border-b-2 border-foreground bg-transparent pt-1 outline-none hover:border-b-2 hover:outline-none"
                   onChange={(event) => setAddress(event.currentTarget.value)}
                 />
                 <div className="flex gap-2 self-end">
@@ -80,6 +82,7 @@ export default function Page() {
                   <Button
                     className="self-end"
                     title="Submit"
+                    variant="primary"
                     onClick={() => mutate({ address })}
                   >
                     Submit

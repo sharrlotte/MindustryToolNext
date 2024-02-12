@@ -66,6 +66,9 @@ export default function ColorText({ text, className }: ColorTextProps) {
   }
 
   function breakdown(text: string, color: string) {
+    if (text === '[]'){
+      return [];
+    }
     let s = text.split('\n');
     let r = [];
     key += 1;

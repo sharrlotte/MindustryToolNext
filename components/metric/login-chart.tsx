@@ -80,7 +80,11 @@ function Loading({ axios: { axios, enabled }, start, end }: ChartProps) {
 
   return (
     <div className={chart}>
-      <ResponsiveContainer width="99%" height="99%">
+      <ResponsiveContainer
+        className="text-background dark:text-foreground"
+        width="99%"
+        height="99%"
+      >
         <LineChart
           data={data}
           margin={{

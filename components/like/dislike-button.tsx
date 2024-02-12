@@ -3,7 +3,7 @@
 import { useLike } from '@/context/like-context';
 import { ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ChevronDoubleDownIcon } from '@heroicons/react/24/solid';
+import { ChevronDoubleDownIcon } from '@heroicons/react/24/outline';
 
 type LikeButtonProps = Omit<ButtonProps, 'title'>;
 

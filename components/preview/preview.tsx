@@ -1,21 +1,20 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import { Card } from '@/components/ui/card';
 
 type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
 function Preview({ className, children, ...props }: CardProps) {
   return (
-    <Card
+    <div
       className={cn(
-        'flex min-h-preview animate-appear flex-col items-center justify-between overflow-hidden',
+        'flex min-h-preview animate-appear flex-col items-center justify-between overflow-hidden rounded-md border shadow-md',
         className,
       )}
       {...props}
     >
       {children}
-    </Card>
+    </div>
   );
 }
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;

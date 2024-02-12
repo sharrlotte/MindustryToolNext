@@ -172,11 +172,12 @@ export default function NameTagSearch({
           />
         </Search>
         <Button
+          className="border-none bg-card shadow-md dark:bg-transparent"
           title="Filter"
           variant="outline"
           onClick={handleShowFilterDialog}
         >
-          <FilterIcon />
+          <FilterIcon className="h-5 w-5" strokeWidth={1.5} />
         </Button>
       </div>
       <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
