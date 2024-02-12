@@ -61,7 +61,7 @@ export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
         <p className="text-4xl">{post.header}</p>
         <div className="grid gap-2">
           <IdUserCard id={post.authorId} />
-          <span>{new Date(post.time).toLocaleString()}</span>
+          <span>{new Date(post.createdAt).toLocaleString()}</span>
           <TagContainer tags={displayTags} />
         </div>
       </header>

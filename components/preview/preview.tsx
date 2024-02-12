@@ -47,7 +47,7 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
       )}
     >
       <Image
-        className="h-full w-full object-cover"
+        className="h-full min-h-preview w-full min-w-preview object-cover"
         src={src}
         alt={alt}
         width={224}

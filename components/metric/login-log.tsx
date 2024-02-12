@@ -48,7 +48,7 @@ export default function LoginLog({ axios: { axios, enabled } }: LoginLogProps) {
               key={log.id}
             >
               <span>{`${log.content} ${moment(
-                new Date(log.time).toISOString(),
+                new Date(log.createdAt).toISOString(),
               ).fromNow()}`}</span>
               <span>{log.ip}</span>
             </span>

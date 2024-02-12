@@ -7,5 +7,5 @@ export type Post = {
   like: number;
   userLike: Like;
   tags: string[];
-  time: number;
+  createdAt: number;
 };

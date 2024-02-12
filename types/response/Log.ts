@@ -2,7 +2,7 @@ export interface Log {
   id: string;
   content: string;
   environment: string;
-  time: number;
+  createdAt: number;
   requestUrl: string;
   ip: string;
   userId: string;

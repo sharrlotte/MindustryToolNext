@@ -7,6 +7,6 @@ export interface PostDetail {
   content: string;
   like: number;
   tags: string[];
-  time: number;
   userLike: Like;
+  createdAt: number;
 }
