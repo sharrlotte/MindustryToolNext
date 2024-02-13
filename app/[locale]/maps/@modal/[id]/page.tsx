@@ -4,7 +4,6 @@ import getServerAPI from '@/query/config/get-server-api';
 import getMap from '@/query/map/get-map';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import React from 'react';
 
 type Props = {
@@ -30,10 +29,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: { params: IdSearchParams }) {
   const { axios } = await getServerAPI();
   const map = await getMap(axios, params);
-
-  if (!map) {
-    return notFound();
-  }
 
   return <MapDetailCard map={map} padding />;
 }

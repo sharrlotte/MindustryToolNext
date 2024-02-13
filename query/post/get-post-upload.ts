@@ -1,18 +1,11 @@
-import {
-  PaginationSearchQuery,
-  searchSchema,
-} from '@/types/data/pageable-search-schema';
-import { Post } from '@/types/response/Post';
+import { IdSearchParams } from '@/types/data/id-search-schema';
+import { PostDetail } from '@/types/response/PostDetail';
 import { AxiosInstance } from 'axios';
 
-export default async function getPostUploads(
+export default async function getPostUpload(
   axios: AxiosInstance,
-  params: PaginationSearchQuery,
-): Promise<Post[]> {
-  const searchParams = searchSchema.parse(params);
-  const result = await axios.get('/posts/upload', {
-    params: { ...searchParams, items: 20 },
-  });
-
+  { id }: IdSearchParams,
+): Promise<PostDetail> {
+  const result = await axios.get(`/posts/upload/${id}`);
   return result.data;
 }

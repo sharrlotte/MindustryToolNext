@@ -1,13 +1,14 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { RestApiError } from '@/query/config/config';
 import { AxiosError } from 'axios';
 
 export default function ErrorScreen({
   reset,
   error,
 }: {
-  error: Error & { digest?: string };
+  error: Error & { digest?: string } & any;
   reset: () => void;
 }) {
   let message = 'Something went wrong!';

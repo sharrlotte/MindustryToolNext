@@ -28,15 +28,15 @@
     --destructive: 0 90% 40%;
     --destructive-foreground: 60 9.1% 97.8%;
 
-    --border: 20 5.9% 80%;
+    --border: 20 5.9% 70%;
     --input: 20 5.9% 90%;
     --ring: 0 50% 100%;
 
     --radius: 0.5rem;
 
     --preview-size: 14rem;
-    --success: 152, 69%, 31%;
-    --nav: 3rem;
+    --success: 150, 73%, 55%;
+    --nav: 2.5rem;
     --button: 217 91.2% 59.8%;
   }
 
@@ -67,6 +67,7 @@
     --ring: 24 5.7% 82.9%;
 
     --button: 160 84.1% 39.4%;
+    --success: 152, 69%, 31%;
   }
 }
 

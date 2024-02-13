@@ -1,6 +1,5 @@
 import { toForm } from '@/lib/utils';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
-import { TagGroups } from '@/types/response/TagGroup';
 import { AxiosInstance } from 'axios';
 
 export default async function postVerifySchematic(
@@ -9,7 +8,7 @@ export default async function postVerifySchematic(
 ): Promise<void> {
   const form = toForm({ tags });
 
-  return axios.post(`/schematics/${id}`, form, {
+  return axios.post(`/schematics/${id}/verify`, form, {
     data: form,
   });
 }

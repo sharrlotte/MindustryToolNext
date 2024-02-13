@@ -43,7 +43,7 @@ export default function NavigationBar() {
   const hideSidebar = () => setSidebarVisibility(false);
 
   return (
-    <div className="flex w-full items-center justify-between bg-button p-2 text-white shadow-lg">
+    <div className="flex h-nav w-full items-center justify-between bg-button p-1 text-white shadow-lg">
       <Button
         title="menu"
         type="button"
@@ -158,7 +158,7 @@ function UserDisplay() {
     );
   }
 
-  return <LoginButton className="flex-1" title="login" />;
+  return <LoginButton className="w-full gap-1" title="login" />;
 }
 
 type Path = {

@@ -5,7 +5,7 @@ import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-
 import NameTagSearch from '@/components/search/name-tag-search';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useTags from '@/hooks/use-tags';
-import getSchematicUploads from '@/query/schematic/get-schematic-upload';
+import getSchematicUploads from '@/query/schematic/get-schematic-uploads';
 import React, { useRef } from 'react';
 
 export default function Page() {

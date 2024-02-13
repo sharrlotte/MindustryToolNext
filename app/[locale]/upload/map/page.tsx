@@ -153,7 +153,7 @@ export default function Page() {
               <NameTagSelector
                 tags={map}
                 value={selectedTags}
-                onChange={setSelectedTags}
+                setValue={setSelectedTags}
               />
             </section>
           )}

@@ -6,27 +6,26 @@ import OutsideWrapper from '@/components/common/outside-wrapper';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 import { cloneDeep } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TagContainer from '@/components/tag/tag-container';
 
 type NameTagSelectorProps = {
   tags?: TagGroup[];
-  value: TagGroup[];
   disabled?: boolean;
-  onChange: (value: TagGroup[]) => void;
   hideSelectedTag?: boolean;
+  value: TagGroup[];
+  setValue: (value: (prev: TagGroup[]) => TagGroup[]) => void;
 };
 
 export default function NameTagSelector({
   tags = [],
   value,
+  setValue,
   disabled = false,
   hideSelectedTag,
-  onChange,
 }: NameTagSelectorProps) {
   const [filter, setFilter] = useState('');
-  const [selectedFilterTags, setSelectedFilterTags] =
-    useState<TagGroup[]>(value);
+
   const [showFilterDialog, setShowFilterDialog] = useState(false);
 
   const handleShowFilterDialog = () => setShowFilterDialog(true);
@@ -34,29 +33,25 @@ export default function NameTagSelector({
 
   const tagsClone = cloneDeep(tags);
 
-  const handleTagGroupChange = (name: string, value: string[]) => {
-    const group = selectedFilterTags.find((tag) => tag.name === name);
+  const handleTagGroupChange = (name: string, v: string[]) => {
+    const group = value.find((tag) => tag.name === name);
     if (group) {
-      group.value = value;
-      setSelectedFilterTags([...selectedFilterTags]);
+      group.value = v;
+      setValue(_ => [...value]);
     } else {
       let result = tagsClone.find((tag) => tag.name === name);
 
       // Ignore tag that not match with server
       if (result) {
-        result.value = value;
-        selectedFilterTags.push(result);
-        setSelectedFilterTags([...selectedFilterTags]);
+        result.value = v;
+        value.push(result);
+        setValue(_ => [...value]);
       }
     }
   };
 
-  useEffect(() => {
-    onChange(selectedFilterTags);
-  }, [selectedFilterTags, onChange]);
-
   const handleDeleteTag = (tag: Tag) => {
-    setSelectedFilterTags((prev) => {
+    setValue((prev) => {
       const group = prev.find((item) => item.name === tag.name);
       if (group) {
         group.value = group.value.filter((item) => item !== tag.value);
@@ -66,7 +61,7 @@ export default function NameTagSelector({
     });
   };
 
-  const displayTags = Tags.fromTagGroup(selectedFilterTags);
+  const displayTags = Tags.fromTagGroup(value);
 
   return (
     <div className="flex flex-col gap-4">
@@ -106,7 +101,7 @@ export default function NameTagSelector({
               <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
                 <FilterTags
                   filter={filter}
-                  selectedFilterTags={selectedFilterTags}
+                  selectedFilterTags={value}
                   tags={tagsClone}
                   handleTagGroupChange={handleTagGroupChange}
                 />
