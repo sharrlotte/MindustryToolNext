@@ -13,7 +13,6 @@
         "@formatjs/intl-localematcher": "^0.5.2",
         "@heroicons/react": "^2.1.1",
         "@hookform/resolvers": "^3.3.4",
-        "@next/font": "^14.1.0",
         "@radix-ui/react-alert-dialog": "^1.0.5",
         "@radix-ui/react-dialog": "^1.0.5",
         "@radix-ui/react-dropdown-menu": "^2.0.6",

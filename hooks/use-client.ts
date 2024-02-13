@@ -2,13 +2,24 @@
 
 import axiosInstance from '@/query/config/config';
 import { AxiosInstance } from 'axios';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
 export type APIInstance = {
   axios: AxiosInstance;
   enabled: boolean;
 };
+
+axiosInstance.interceptors.request.use(
+  (request) => {
+    return request;
+  },
+  (error) => {
+    if (error.response?.data?.status === 401) {
+      signOut();
+    }
+  },
+);
 
 export default function useClientAPI(): APIInstance {
   const { data: session, status } = useSession();

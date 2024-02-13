@@ -10,7 +10,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import ClientInit from '@/app/client-init';
 import { SessionProvider } from 'next-auth/react';
-import localFont from '@next/font/local';
+import localFont from "next/font/local";
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
@@ -81,7 +81,7 @@ export default function Root({ children, params }: RootProps) {
           >
             <QueryProvider>
               <ClientInit />
-              <div className="grid h-full w-full grid-rows-[2.5rem_1fr] overflow-hidden">
+              <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
                 <NavigationBar />
                 <div className="relative h-full w-full overflow-hidden">
                   {children}

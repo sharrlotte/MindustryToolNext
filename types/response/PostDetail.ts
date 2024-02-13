@@ -7,6 +7,13 @@ export interface PostDetail {
   content: string;
   like: number;
   tags: string[];
+  translations: Record<
+    string,
+    {
+      header: string;
+      content: string;
+    }
+  >;
   userLike: Like;
   createdAt: number;
 }

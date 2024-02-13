@@ -11,6 +11,7 @@ export default function LoginButton({ className, ...props }: ButtonProps) {
     <Button
       className={cn('flex justify-center p-2', className)}
       onClick={() => signIn()}
+      variant="primary"
       {...props}
     >
       Login

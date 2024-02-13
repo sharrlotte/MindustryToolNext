@@ -15,10 +15,11 @@ export default function DislikeButton({
   return (
     <button
       className={cn(
-        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border p-2 hover:bg-destructive',
+        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border p-2 hover:bg-destructive hover:text-background dark:hover:text-foreground',
         className,
         {
-          'bg-destructive hover:bg-destructive': likeData?.state === -1,
+          'bg-destructive text-background dark:text-foreground':
+            likeData?.state === -1,
         },
       )}
       size="icon"

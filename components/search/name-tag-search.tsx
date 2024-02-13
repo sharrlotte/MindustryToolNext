@@ -172,7 +172,7 @@ export default function NameTagSearch({
           />
         </Search>
         <Button
-          className="border-none bg-card shadow-md dark:bg-transparent"
+          className="border border-none border-border bg-card shadow-md dark:border-solid dark:bg-transparent"
           title="Filter"
           variant="outline"
           onClick={handleShowFilterDialog}

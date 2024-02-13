@@ -13,10 +13,10 @@ export default function LikeButton({ className, ...props }: LikeButtonProps) {
   return (
     <button
       className={cn(
-        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border p-2 hover:bg-success',
+        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border p-2 hover:bg-success hover:text-background dark:hover:text-foreground',
         className,
         {
-          'bg-success hover:bg-success': likeData?.state === 1,
+          'bg-success text-background dark:text-foreground': likeData?.state === 1,
         },
       )}
       title="like"
