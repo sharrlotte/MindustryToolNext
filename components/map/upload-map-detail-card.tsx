@@ -107,7 +107,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
           <NameTagSelector
             tags={mapTags}
             value={selectedTags}
-            onChange={setSelectedTags}
+            setValue={setSelectedTags}
           />
         </Detail.Header>
       </Detail.Info>

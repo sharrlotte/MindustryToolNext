@@ -8,7 +8,7 @@ export default async function postVerifyMap(
 ): Promise<void> {
   const form = toForm({ tags });
 
-  return axios.post(`/maps/${id}`, form, {
+  return axios.post(`/maps/${id}/verify`, form, {
     data: form,
   });
 }

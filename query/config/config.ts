@@ -2,7 +2,7 @@ import env from '@/constant/env';
 import Axios from 'axios';
 import { notFound } from 'next/navigation';
 
-class ApiError extends Error {
+export class RestApiError extends Error {
   message: string;
   status: number;
 
@@ -23,12 +23,8 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => {
-    if (error.response?.data?.status === 404) {
-      notFound();
-    }
-
     if (error?.response?.data) {
-      throw new ApiError(
+      throw new RestApiError(
         error.response.data.message,
         error.response.data.status,
       );

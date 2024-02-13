@@ -82,7 +82,7 @@ export default function UploadPostDetailCard({
   }, [post.tags, postTags]);
 
   const isLoading = isVerifying || isDeleting;
-  const displayTags = Tags.parseStringArray(post.tags);
+  const displayTags = Tags.fromTagGroup(selectedTags);
 
   return (
     <Detail>
@@ -101,7 +101,7 @@ export default function UploadPostDetailCard({
         <NameTagSelector
           tags={postTags}
           value={selectedTags}
-          onChange={setSelectedTags}
+          setValue={setSelectedTags}
           hideSelectedTag
         />
         <DeleteButton

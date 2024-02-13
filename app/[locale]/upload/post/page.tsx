@@ -30,53 +30,193 @@ import getMePosts from '@/query/post/get-me-posts';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import getPost from '@/query/post/get-post';
 import NoResult from '@/components/common/no-result';
+import postTranslatePost from '@/query/post/post-translate-post';
+import TranslatePostRequest from '@/types/request/TranslatePostRequest';
+import LoadingScreen from '@/components/common/loading-screen';
 
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then((mod) => mod.default),
   { ssr: false },
 );
 
+type Shared = {
+  header: string;
+  setHeader: (data: string) => void;
+  content: string;
+  setContent: (data: string) => void;
+  language: string;
+  setLanguage: (data: string) => void;
+};
+
 export default function Page() {
   // If post is not undefined then its a translate request
   const [post, setPost] = useState<PostDetail>();
-  const state = post ? 'translate' : 'upload';
+  const [header, setHeader] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [language, setLanguage] = useState('');
 
   function render() {
-    if (state === 'upload') {
+    if (post === undefined) {
       return (
         <>
-          <AddTranslationDialog onPostSelect={(post) => setPost(post)} />
-          <UploadPage />
+          <div>
+            <AddTranslationDialog onPostSelect={(post) => setPost(post)} />
+          </div>
+          <UploadPage
+            shared={{
+              header,
+              setHeader,
+              content,
+              setContent,
+              language,
+              setLanguage,
+            }}
+          />
         </>
       );
     }
 
     return (
       <>
-        <Button
-          title="Change to upload"
-          variant="secondary"
-          onClick={() => setPost(undefined)}
-        >
-          Go to upload page
-        </Button>
-        <TranslatePage />
+        <div>
+          <Button
+            title="Change to upload"
+            variant="secondary"
+            onClick={() => setPost(undefined)}
+          >
+            Go to upload page
+          </Button>
+        </div>
+        <TranslatePage
+          post={post}
+          shared={{
+            header,
+            setHeader,
+            content,
+            setContent,
+            language,
+            setLanguage,
+          }}
+        />
       </>
     );
   }
 
-  return <div className="flex flex-col gap-2">{render()}</div>;
+  return <div className="flex h-full flex-col gap-2">{render()}</div>;
 }
 
-function TranslatePage() {
-  return <div></div>;
+function TranslatePage({
+  post,
+  shared: { header, setHeader, content, setContent, language, setLanguage },
+}: {
+  shared: Shared;
+} & { post: PostDetail }) {
+  const { axios } = useClientAPI();
+  const { toast } = useToast();
+  const { invalidateByKey } = useQueriesData();
+  const languages = useLanguages();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: TranslatePostRequest) => postTranslatePost(axios, data),
+    onSuccess: () => {
+      toast({
+        title: 'Upload post success',
+        variant: 'success',
+      });
+      setHeader('');
+      setContent('');
+      invalidateByKey(['post-uploads']);
+      invalidateByKey(['total-post-uploads']);
+    },
+    onError(error) {
+      toast({
+        title: 'Upload post failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+
+  function checkUploadRequirement() {
+    if (!header) return 'No title';
+
+    if (!content) return 'No content';
+
+    if (!language) return 'No language';
+
+    return true;
+  }
+
+  const uploadCheck = checkUploadRequirement();
+
+  return (
+    <div className="h-full overflow-y-auto rounded-md">
+      <div className="hidden h-full flex-col justify-between gap-2 md:flex">
+        <div className="flex w-full flex-col gap-2">
+          <div className="w-full rounded-md bg-card p-2">
+            <div className="font-bold">Title</div>
+            <div className="select-text text-sm">{post.header}</div>
+          </div>
+          <div className="w-full rounded-md bg-card p-2">
+            <div className="font-bold">Content</div>
+            <div className="select-text text-sm">{post.content}</div>
+          </div>
+        </div>
+        <div className="flex h-full flex-col gap-1 rounded-md bg-card p-2">
+          <input
+            className="w-full rounded-sm bg-white p-1 text-black outline-none hover:outline-none"
+            placeholder="Title"
+            value={header}
+            onChange={(event) => setHeader(event.currentTarget.value)}
+          />
+          <MDEditor
+            value={content}
+            onChange={(value) => setContent(value ?? '')}
+          />
+        </div>
+        <div className="flex justify-start gap-2 rounded-md bg-card p-2">
+          <ComboBox
+            placeholder="Select language"
+            values={languages
+              .filter((language) => language !== post.language)
+              .map((value) => ({
+                value,
+                label: value,
+              }))}
+            onChange={(value) => setLanguage(value ?? '')}
+          />
+          <Button
+            className="ml-auto"
+            title="Submit"
+            variant="primary"
+            disabled={isPending || uploadCheck !== true}
+            onClick={() =>
+              mutate({
+                id: post.id,
+                header,
+                content,
+                language,
+              })
+            }
+          >
+            <LoadingWrapper isLoading={isPending}>
+              {uploadCheck === true ? 'Upload' : uploadCheck}
+            </LoadingWrapper>
+          </Button>
+        </div>
+      </div>
+      <span className="md:hidden">
+        Mobile screen is not supported yet, please use a bigger screen
+      </span>
+    </div>
+  );
 }
 
-function UploadPage() {
-  const [header, setHeader] = useState<string>('');
-  const [content, setContent] = useState<string>('');
-  const [language, setLanguage] = useState('');
-
+function UploadPage({
+  shared: { header, setHeader, content, setContent, language, setLanguage },
+}: {
+  shared: Shared;
+}) {
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { axios } = useClientAPI();
   const { toast } = useToast();
@@ -147,7 +287,7 @@ function UploadPage() {
           <NameTagSelector
             tags={postTags}
             value={selectedTags}
-            onChange={setSelectedTags}
+            setValue={setSelectedTags}
             hideSelectedTag
           />
           <Button
@@ -195,6 +335,11 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
       }),
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (id: string) => getPost(axios, { id }),
+    onSuccess: (data) => onPostSelect(data),
+  });
+
   function render() {
     if (isLoading) {
       return <LoadingSpinner />;
@@ -213,21 +358,22 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         className="flex items-start justify-start border border-border p-2 text-start"
         key={id}
         title={header}
-        onClick={async () => {
-          const postDetail = await getPost(axios, { id });
-          onPostSelect(postDetail);
-        }}
+        onClick={() => mutate(id)}
       >
         {header.trim()}
       </button>
     ));
   }
 
+  if (isPending) {
+    return <LoadingScreen />;
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button title="Add translation" variant="secondary">
-          Go to translation page
+          Translate a post
         </Button>
       </DialogTrigger>
       <DialogContent>

@@ -122,7 +122,7 @@ export default function UploadSchematicDetailCard({
           <NameTagSelector
             tags={schematicTags}
             value={selectedTags}
-            onChange={setSelectedTags}
+            setValue={setSelectedTags}
           />
         </Detail.Header>
       </Detail.Info>

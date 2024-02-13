@@ -8,7 +8,7 @@ export default async function postVerifyPost(
 ): Promise<void> {
   const form = toForm({ tags });
 
-  return axios.post(`/posts/${id}`, form, {
+return axios.post(`/posts/${id}/verify`, form, {
     data: form,
   });
 }
