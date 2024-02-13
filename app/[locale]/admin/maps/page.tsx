@@ -5,7 +5,7 @@ import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useTags from '@/hooks/use-tags';
-import getMapUploads from '@/query/map/get-map-upload';
+import getMapUploads from '@/query/map/get-map-uploads';
 import React, { useRef } from 'react';
 
 export default function Page() {

@@ -9,7 +9,7 @@ export default async function getTotalMapUpload(
   params: Omit<PaginationSearchQuery, 'page'>,
 ): Promise<number> {
   const searchParams = searchSchema.parse(params);
-  const result = await axios.get('/maps/total/upload', {
+  const result = await axios.get('/maps/upload/total', {
     params: { ...searchParams },
   });
 

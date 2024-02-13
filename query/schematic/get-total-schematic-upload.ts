@@ -9,7 +9,7 @@ export default async function getTotalSchematicUpload(
   params: Omit<PaginationSearchQuery, 'page'>,
 ): Promise<number> {
   const searchParams = searchSchema.parse(params);
-  const result = await axios.get('/schematics/total/upload', {
+  const result = await axios.get('/schematics/upload/total', {
     params: { ...searchParams },
   });
 

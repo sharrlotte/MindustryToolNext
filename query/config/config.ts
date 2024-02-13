@@ -23,6 +23,10 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => {
+    if (error.response?.data?.status === 404) {
+      notFound();
+    }
+
     if (error?.response?.data) {
       throw new RestApiError(
         error.response.data.message,

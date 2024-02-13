@@ -1,18 +1,11 @@
-import {
-  PaginationSearchQuery,
-  searchSchema,
-} from '@/types/data/pageable-search-schema';
-import { Schematic } from '@/types/response/Schematic';
+import { IdSearchParams } from '@/types/data/id-search-schema';
+import { SchematicDetail } from '@/types/response/SchematicDetail';
 import { AxiosInstance } from 'axios';
 
-export default async function getSchematicUploads(
+export default async function getSchematicUpload(
   axios: AxiosInstance,
-  params: PaginationSearchQuery,
-): Promise<Schematic[]> {
-  const searchParams = searchSchema.parse(params);
-  const result = await axios.get('/schematics/upload', {
-    params: { ...searchParams, items: 20 },
-  });
-
+  { id }: IdSearchParams,
+): Promise<SchematicDetail> {
+  const result = await axios.get(`/schematics/upload/${id}`);
   return result.data;
 }

@@ -4,7 +4,6 @@ import type { Metadata } from 'next';
 import getPost from '@/query/post/get-post';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import getServerAPI from '@/query/config/get-server-api';
-import { notFound } from 'next/navigation';
 import PostDetailCard from '@/components/post/post-detail-card';
 
 type Props = {
@@ -25,10 +24,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: { params: IdSearchParams }) {
   const { axios } = await getServerAPI();
   const post = await getPost(axios, params);
-
-  if (!post) {
-    return notFound();
-  }
 
   return <PostDetailCard post={post} padding />;
 }

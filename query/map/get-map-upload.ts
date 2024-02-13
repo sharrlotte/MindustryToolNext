@@ -1,18 +1,11 @@
-import {
-  PaginationSearchQuery,
-  searchSchema,
-} from '@/types/data/pageable-search-schema';
-import { Map } from '@/types/response/Map';
+import { IdSearchParams } from '@/types/data/id-search-schema';
+import { MapDetail } from '@/types/response/MapDetail';
 import { AxiosInstance } from 'axios';
 
-export default async function getMapUploads(
+export default async function getMapUpload(
   axios: AxiosInstance,
-  params: PaginationSearchQuery,
-): Promise<Map[]> {
-  const searchParams = searchSchema.parse(params);
-  const result = await axios.get('/maps/upload', {
-    params: { ...searchParams, items: 20 },
-  });
-
+  { id }: IdSearchParams,
+): Promise<MapDetail> {
+  const result = await axios.get(`/maps/upload/${id}`);
   return result.data;
 }
