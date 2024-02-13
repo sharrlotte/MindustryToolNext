@@ -43,7 +43,11 @@ export default function VerifyButton({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button title="Verify" onClick={onClick}>
+            <Button
+              className="bg-success hover:bg-success"
+              title="Verify"
+              onClick={onClick}
+            >
               Verify
             </Button>
           </AlertDialogAction>

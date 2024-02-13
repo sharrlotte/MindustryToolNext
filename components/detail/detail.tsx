@@ -12,9 +12,12 @@ type DetailProps = HTMLAttributes<HTMLDivElement> & {
 function Detail({ className, children, padding }: DetailProps) {
   return (
     <div
-      className={cn('absolute inset-0 w-full overflow-y-auto bg-background', {
-        'p-4': padding,
-      })}
+      className={cn(
+        'absolute inset-0 w-full overflow-y-auto bg-background pr-1',
+        {
+          'p-4': padding,
+        },
+      )}
     >
       <div
         className={cn(
