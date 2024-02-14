@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div className="grid h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center p-8 pt-10 text-white">
-      <section className="rounded-2xl bg-zinc-900/80 p-8 shadow-md">
+      <section className="rounded-2xl bg-zinc-900/80 p-8 shadow-md backdrop-blur-sm">
         <span className="text-2xl">Chào mừng đến với </span>
         <Link className="text-2xl font-medium capitalize" href="/">
           mindustry tool
