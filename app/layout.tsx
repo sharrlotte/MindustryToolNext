@@ -10,7 +10,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import ClientInit from '@/app/client-init';
 import { SessionProvider } from 'next-auth/react';
-import localFont from "next/font/local";
+import localFont from 'next/font/local';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),

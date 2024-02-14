@@ -115,7 +115,7 @@ export default function NavigationBar() {
           </div>
         </OutsideWrapper>
       </div>
-      <div className="px- flex items-center justify-center gap-1">
+      <div className="px- flex items-center justify-center">
         <Button className="aspect-square p-0" title="setting" variant="icon">
           <BellIcon className="h-6 w-6" />
         </Button>

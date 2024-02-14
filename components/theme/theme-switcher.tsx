@@ -29,13 +29,12 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className={cn(className)}
+          className={cn('h-9 w-9 p-0', className)}
           variant="icon"
-          size="icon"
           title="switch theme"
         >
-          <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:hidden dark:-rotate-90" />
-          <MoonIcon className="hidden h-[1.2rem] w-[1.2rem] rotate-90 transition-all dark:flex dark:rotate-0" />
+          <SunIcon className="h-6 w-6 dark:hidden" />
+          <MoonIcon className="hidden h-5 w-5 dark:block" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>

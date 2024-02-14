@@ -355,7 +355,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
 
     return data?.map(({ id, header }) => (
       <button
-        className="flex items-start justify-start border border-border p-2 text-start"
+        className="flex items-start justify-start border border-border p-2 text-start rounded-md"
         key={id}
         title={header}
         onClick={() => mutate(id)}
