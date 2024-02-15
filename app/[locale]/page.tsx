@@ -25,7 +25,7 @@ export default function Home() {
             <li>
               <Link
                 className="text-button hover:text-button"
-                href="/posts/64ca803ea51a933422a49aac"
+                href="posts/65c7a3416ae1177545c438e1"
               >
                 Cách tải game miễn phí
               </Link>
@@ -82,6 +82,16 @@ export default function Home() {
                 rel="noopener noreferrer"
               >
                 Four Gaming Studio
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-button hover:text-button"
+                href="http://www.youtube.com/@gezpil8397"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Gezpil
               </a>
             </li>
           </ul>
