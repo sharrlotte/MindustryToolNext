@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
-import { ThemeSwitcher } from '../components/theme/theme-switcher';
+import { ThemeSwitcher } from '../../components/theme/theme-switcher';
 import { HTMLAttributes, ReactNode, useState } from 'react';
 import {
   Bars3Icon,

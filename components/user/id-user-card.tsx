@@ -14,7 +14,7 @@ type IdUserCardProps = {
 
 export default function IdUserCard({ id }: IdUserCardProps) {
   if (!id) {
-    return <span>User not found</span>;
+    return <span></span>;
   }
 
   if (id.toLowerCase() === 'community') {

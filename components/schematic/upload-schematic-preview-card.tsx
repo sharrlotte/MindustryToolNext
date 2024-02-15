@@ -9,6 +9,8 @@ import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import useClientAPI from '@/hooks/use-client';
 import getSchematicData from '@/query/schematic/get-schematic-data';
+import useToastAction from '@/hooks/use-toast-action';
+import { useI18n } from '@/locales/client';
 
 type UploadSchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -20,18 +22,15 @@ export default function UploadSchematicPreviewCard({
   ...rest
 }: UploadSchematicPreviewCardProps) {
   const { axios } = useClientAPI();
+  const t = useI18n();
 
   const link = `${env.url.base}/admin/schematics/${schematic.id}`;
 
-  const getData = async () => {
-    const { dismiss } = toast({
-      title: 'Coping',
-      content: 'Downloading data from server',
-    });
-    const result = await getSchematicData(axios, schematic.id);
-    dismiss();
-    return result;
-  };
+  const getData = useToastAction({
+    title: t('copying'),
+    content: t('downloading-data'),
+    action: async () => await getSchematicData(axios, schematic.id),
+  });
 
   return (
     <Preview

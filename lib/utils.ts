@@ -64,3 +64,4 @@ export function toForm(data: Record<string, string | File>) {
   Object.entries(data).forEach(([key, value]) => form.append(key, value));
   return form;
 }
+

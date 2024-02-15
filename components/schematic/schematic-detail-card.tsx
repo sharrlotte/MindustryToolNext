@@ -23,6 +23,8 @@ import { useSession } from 'next-auth/react';
 import ProtectedElement from '@/layout/protected-element';
 import TakeDownButton from '@/components/button/take-down-button';
 import { useRouter } from 'next/navigation';
+import { useI18n } from '@/locales/client';
+import useToastAction from '@/hooks/use-toast-action';
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -38,6 +40,7 @@ export default function SchematicDetailCard({
   const { back } = useRouter();
   const { toast } = useToast();
   const { data: session } = useSession();
+  const t = useI18n();
 
   const { mutate: removeSchematic, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => putRemoveSchematic(axios, id),
@@ -46,13 +49,13 @@ export default function SchematicDetailCard({
       invalidateByKey(['schematic-uploads']);
       back();
       toast({
-        title: 'Take down schematic successfully',
+        title: t('take-down-success'),
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to take down schematic',
+        title: t('take-down-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -61,15 +64,11 @@ export default function SchematicDetailCard({
 
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
-  const getData = async () => {
-    const { dismiss } = toast({
-      title: 'Coping',
-      content: 'Downloading data from server',
-    });
-    const result = await getSchematicData(axios, schematic.id);
-    dismiss();
-    return result;
-  };
+  const getData = useToastAction({
+    title: t('copying'),
+    content: t('downloading-data'),
+    action: async () => await getSchematicData(axios, schematic.id),
+  });
 
   return (
     <Detail padding={padding}>
@@ -92,7 +91,7 @@ export default function SchematicDetailCard({
           <Detail.Title>{schematic.name}</Detail.Title>
           <IdUserCard id={schematic.authorId} />
           <div className="flex items-end gap-2">
-            <span>Verified by</span>
+            <span>{t('verified-by')}</span>
             <IdUserCard id={schematic.verifyAdmin} />
           </div>
           <Detail.Description>{schematic.description}</Detail.Description>
@@ -104,9 +103,9 @@ export default function SchematicDetailCard({
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
             className="border border-border "
-            title="Copy"
+            title={t('copied')}
             variant="outline"
-            content={`Copied schematic ${schematic.name}`}
+            content={t('copied-name', { name: schematic.name })}
             data={getData}
           />
           <DownloadButton
@@ -125,7 +124,7 @@ export default function SchematicDetailCard({
           <ProtectedElement session={session} ownerId={schematic.authorId}>
             <TakeDownButton
               isLoading={isRemoving}
-              description={`Take down this schematic: ${schematic.name}`}
+              description={t('take-down-alert', { name: schematic.name })}
               onClick={() => removeSchematic(schematic.id)}
             />
           </ProtectedElement>

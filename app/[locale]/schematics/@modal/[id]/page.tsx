@@ -4,6 +4,7 @@ import getServerAPI from '@/query/config/get-server-api';
 import getSchematic from '@/query/schematic/get-schematic';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import React from 'react';
 
 type Props = {
@@ -31,7 +32,7 @@ export default async function Page({ params }: { params: IdSearchParams }) {
   const schematic = await getSchematic(axios, params);
 
   if (!schematic) {
-    return <div>Not found</div>;
+    return notFound();
   }
 
   return <SchematicDetailCard schematic={schematic} padding />;

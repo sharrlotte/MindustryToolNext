@@ -21,7 +21,7 @@ function Detail({ className, children, padding }: DetailProps) {
     >
       <div
         className={cn(
-          'relative flex h-full w-full flex-col justify-between gap-2 lg:items-stretch',
+          'relative flex min-h-full w-full flex-col justify-between gap-2 lg:items-stretch',
           className,
         )}
       >

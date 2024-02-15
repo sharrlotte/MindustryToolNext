@@ -23,6 +23,8 @@ import deleteSchematic from '@/query/schematic/delete-schematic';
 import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
+import useToastAction from '@/hooks/use-toast-action';
+import { useI18n } from '@/locales/client';
 
 type UploadSchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -37,6 +39,7 @@ export default function UploadSchematicDetailCard({
   const { schematic: schematicTags } = useTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
+  const t = useI18n();
 
   const { mutate: verifySchematic, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifySchematicRequest) =>
@@ -87,15 +90,11 @@ export default function UploadSchematicDetailCard({
   const isLoading = isVerifying || isDeleting;
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
-  const getData = async () => {
-    const { dismiss } = toast({
-      title: 'Coping',
-      content: 'Downloading data from server',
-    });
-    const result = await getSchematicData(axios, schematic.id);
-    dismiss();
-    return result;
-  };
+  const getData = useToastAction({
+    title: t('copying'),
+    content: t('downloading-data'),
+    action: async () => await getSchematicData(axios, schematic.id),
+  });
 
   return (
     <Detail>

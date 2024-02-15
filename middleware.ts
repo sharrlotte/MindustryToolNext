@@ -1,40 +1,14 @@
-import { match } from '@formatjs/intl-localematcher';
-import Negotiator from 'negotiator';
 import { NextRequest } from 'next/server';
 import env from '@/constant/env';
+import { createI18nMiddleware } from 'next-international/middleware';
 
-function getLocale(request: NextRequest) {
-  const headerLanguage = request.headers.get('accept-language');
-  let languages = new Negotiator({
-    headers: {
-      'accept-language': headerLanguage ?? env.defaultLocale,
-    },
-  }).languages();
-  return match(languages, env.locales, env.defaultLocale);
-}
+const I18nMiddleware = createI18nMiddleware({
+  locales: env.locales,
+  defaultLocale: env.defaultLocale,
+});
 
 export function middleware(request: NextRequest) {
-  let { pathname, hostname } = request.nextUrl;
-
-  const hostnameHasVercel = hostname.includes('mindustry-tool.vercel.app');
-  const pathnameHasLocale = env.locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
-
-  if (pathnameHasLocale && !hostnameHasVercel) {
-    return;
-  }
-
-  if (hostnameHasVercel) {
-    request.nextUrl.hostname = hostname.replace('.vercel', '');
-  }
-
-  if (!pathnameHasLocale) {
-    const locale = getLocale(request);
-    request.nextUrl.pathname = `/${locale}${request.nextUrl.pathname}`;
-  }
-
-  return Response.redirect(request.nextUrl);
+  return I18nMiddleware(request);
 }
 
 export const config = {

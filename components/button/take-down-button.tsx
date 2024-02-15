@@ -11,6 +11,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { useI18n } from '@/locales/client';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 
@@ -25,6 +26,8 @@ export default function TakeDownButton({
   description,
   onClick,
 }: TakeDownButtonProps) {
+  const t = useI18n();
+
   return (
     <AlertDialog>
       <AlertDialogTrigger
@@ -37,17 +40,17 @@ export default function TakeDownButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t('are-you-sure')}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive"
             asChild
           >
             <Button title="Delete" onClick={onClick}>
-              Takedown
+              {t('take-down')}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -18,6 +18,7 @@ import { TAG_SEPARATOR } from '@/constant/constant';
 import { cn } from '@/lib/utils';
 import _ from 'lodash';
 import TagContainer from '@/components/tag/tag-container';
+import { useI18n } from '@/locales/client';
 
 type NameTagSearchProps = {
   className?: string;
@@ -33,6 +34,7 @@ export default function NameTagSearch({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchPageParams();
+  const t = useI18n();
 
   const [page, setPage] = useState(0);
   const [name, setName] = useState('');
@@ -166,7 +168,7 @@ export default function NameTagSearch({
         <Search className="w-full md:w-1/2">
           <Search.Icon className="p-1" />
           <Search.Input
-            placeholder="Search with name"
+            placeholder={t('search-by-name')}
             defaultValue={name}
             onChange={(event) => handleNameChange(event.currentTarget.value)}
           />
@@ -192,7 +194,7 @@ export default function NameTagSearch({
                 <Search.Icon className="p-1" />
                 <Search.Input
                   defaultValue={filter}
-                  placeholder="Filter out tags"
+                  placeholder={t('filter')}
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />
               </Search>
@@ -212,7 +214,7 @@ export default function NameTagSearch({
               </CardContent>
               <CardFooter className="flex justify-end gap-1 p-0">
                 <Button title="close" onClick={handleHideFilterDialog}>
-                  {isChanged ? 'Search' : 'Close'}
+                  {isChanged ? t('search') : t('close')}
                 </Button>
               </CardFooter>
             </Card>
