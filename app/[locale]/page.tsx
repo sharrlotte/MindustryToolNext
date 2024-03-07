@@ -80,11 +80,11 @@ export default async function Home() {
             <li>
               <a
                 className="text-button hover:text-button"
-                href="https://www.youtube.com/@FourGamingStudio"
+                href="https://www.youtube.com/@FourEverNice "
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Four Gaming Studio
+                Four Ever Nice
               </a>
             </li>
             <li>

@@ -76,7 +76,6 @@ export default function SchematicDetailCard({
         <div className="relative">
           <CopyButton
             className="absolute left-1 top-1 "
-            title="Copy"
             variant="ghost"
             data={link}
             content={link}
@@ -103,7 +102,6 @@ export default function SchematicDetailCard({
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
             className="border border-border "
-            title={t('copied')}
             variant="outline"
             content={t('copied-name', { name: schematic.name })}
             data={getData}

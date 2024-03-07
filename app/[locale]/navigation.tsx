@@ -81,14 +81,7 @@ export default function NavigationBar() {
               <div className="flex flex-col gap-4">
                 <span className="flex flex-col gap-2">
                   <span className="flex items-center justify-start gap-2 rounded-sm bg-card p-2">
-                    <Image
-                      className="rounded-sm"
-                      src="https://cdn.discordapp.com/attachments/1009013837946695730/1106504291465834596/a_cda53ec40b5d02ffdefa966f2fc013b8.gif"
-                      alt="mindustry-vn-logo"
-                      height={24}
-                      width={24}
-                    />
-                    <span className="font-medium">MindustryTool</span>
+                    <span className="text-xl font-medium">MindustryTool</span>
                   </span>
                   <span className="rounded-sm bg-card p-2 text-xs">
                     {env.webVersion}

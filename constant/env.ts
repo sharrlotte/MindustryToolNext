@@ -15,7 +15,7 @@ const configSchema = z.object({
 });
 
 const env = configSchema.parse({
-  webVersion: 'Beta 0.9.0',
+  webVersion: 'Version 1.0.0',
   themes: ['light', 'dark', 'system'],
   locales: ['vi', 'en'],
   defaultLocale: 'en',

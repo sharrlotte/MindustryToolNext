@@ -1,7 +1,7 @@
 export default {
   'website-name': 'MindustryTool',
   'content-not-found': 'Không tìm thấy trang',
-  'home.welcome': 'Chào mừng đến với',
+  'home.welcome': 'Chào mừng đến với ',
   'home.download-free': 'Tải game miễn phí (Official)',
   'home.download-tutorial': 'Cách tải game miễn phí',
   'home.play-with-friend-tutorial':
@@ -24,6 +24,7 @@ export default {
   error: 'Lỗi',
   'end-of-page': 'Hết',
   'no-result': 'Không có kết quả',
+  copy: 'Sao chép',
   copying: 'Đang sao chép',
   copied: 'Đã sao chép',
   'downloading-data': 'Đang tải dữ liệu',
@@ -35,4 +36,5 @@ export default {
   'verified-by': 'Duyệt bởi',
   'are-you-sure': 'Bạn đã chắc chắn chưa',
   cancel: 'Hủy',
+  'server.upload-failed': '',
 } as const;

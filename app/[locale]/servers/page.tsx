@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import useClientAPI from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
+import { useI18n } from '@/locales/client';
 import getServers from '@/query/server/get-servers';
 import postServer from '@/query/server/post-server';
 import PostServerRequest from '@/types/request/PostServerRequest';
@@ -29,11 +30,13 @@ export default function Page() {
   const { axios } = useClientAPI();
   const { toast } = useToast();
 
+  const t = useI18n();
+
   const { mutate, isPending } = useMutation({
     mutationFn: (data: PostServerRequest) => postServer(axios, data),
     onError(error) {
       toast({
-        title: 'Upload server failed',
+        title: t('server.upload-failed'),
         description: error.message,
         variant: 'destructive',
       });
@@ -58,11 +61,10 @@ export default function Page() {
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="primary" title="Add server">
-                Add server
+                {t('server.add')}
               </Button>
             </DialogTrigger>
             <DialogContent>
-              <DialogTitle>Add a server</DialogTitle>
               <div className="flex flex-col gap-2">
                 <input
                   value={address}

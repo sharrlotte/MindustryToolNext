@@ -1,10 +1,11 @@
 import { Button, ButtonProps } from '@/components/ui/button';
 import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 import { Copy } from 'lucide-react';
 import React from 'react';
 
-type CopyButtonProps = ButtonProps & {
+type CopyButtonProps = Omit<ButtonProps, 'title'> & {
   data: string | (() => Promise<string>);
   title?: string;
   content?: string;
@@ -18,6 +19,7 @@ export default function CopyButton({
   children,
   ...props
 }: CopyButtonProps) {
+  const t = useI18n();
   const copy = useClipboard();
 
   const handleCopy = async () => {
@@ -29,7 +31,7 @@ export default function CopyButton({
   return (
     <Button
       className={cn('p-2', className)}
-      title="Copy link"
+      title={title ?? t('copy')}
       variant="outline"
       {...props}
       onClick={handleCopy}

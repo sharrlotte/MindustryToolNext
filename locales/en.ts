@@ -24,6 +24,7 @@ export default {
   error: 'Error',
   'end-of-page': 'End',
   'no-result': 'No result',
+  copy: 'Copy',
   copying: 'Copying',
   copied: 'Copied',
   'downloading-data': 'Downloading data',
@@ -35,4 +36,6 @@ export default {
   'verified-by': 'Verified by',
   'are-you-sure': 'Are you sure',
   cancel: 'Cancel',
+  'server.upload-failed': 'Upload server failed',
+  'server.add': 'Add server',
 } as const;
