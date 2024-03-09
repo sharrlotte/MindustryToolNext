@@ -21,6 +21,7 @@ import DeleteButton from '@/components/button/delete-button';
 import { Tags } from '@/types/response/Tag';
 import Markdown from '@/components/common/markdown';
 import TagContainer from '@/components/tag/tag-container';
+import { useI18n } from '@/locales/client';
 
 type UploadPostDetailCardProps = {
   post: PostDetail;
@@ -36,6 +37,8 @@ export default function UploadPostDetailCard({
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
 
+  const t = useI18n();
+
   const { mutate: verifyPost, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifyPostRequest) => postVerifyPost(axios, data),
     onSuccess: () => {
@@ -43,13 +46,13 @@ export default function UploadPostDetailCard({
       invalidateByKey(['total-post-uploads']);
       back();
       toast({
-        title: 'Verify post successfully',
+        title: t('verify-success'),
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to verify post',
+        title: t('verify-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -64,13 +67,13 @@ export default function UploadPostDetailCard({
       invalidateByKey(['posts']);
       back();
       toast({
-        title: 'Delete post successfully',
+        title: t('delete-success'),
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to delete post',
+        title: t('delete-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -105,12 +108,12 @@ export default function UploadPostDetailCard({
           hideSelectedTag
         />
         <DeleteButton
-          description={`Delete this post: ${post.header}`}
+          description={`${t('delete')} ${post.header}`}
           isLoading={isLoading}
           onClick={() => deletePostById(post.id)}
         />
         <VerifyButton
-          description={`Verify this post: ${post.header}`}
+          description={`${t('verify')} ${post.header}`}
           isLoading={isLoading}
           onClick={() =>
             verifyPost({ id: post.id, tags: TagGroups.toString(selectedTags) })

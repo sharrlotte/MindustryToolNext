@@ -61,7 +61,8 @@ export function fillMetric(
 
 export function toForm(data: Record<string, string | File>) {
   const form = new FormData();
-  Object.entries(data).forEach(([key, value]) => form.append(key, value));
+  Object.entries(data).forEach(([key, value]) => {
+    form.append(key, value);
+  });
   return form;
 }
-

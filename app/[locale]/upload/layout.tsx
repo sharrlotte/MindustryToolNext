@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
@@ -14,29 +15,30 @@ type TabData = {
   url: string;
 };
 
-const tabs: TabData[] = [
-  {
-    name: 'Schematic',
-    url: 'schematic',
-  },
-  {
-    name: 'Map',
-    url: 'map',
-  },
-  {
-    name: 'Post',
-    url: 'post',
-  },
-];
-
 export default function Layout({ children }: LayoutProps) {
   const pathName = usePathname();
   const segments = pathName.split('/').filter((item) => item);
   const route = segments.length === 3 ? segments[2] : null;
+  const t = useI18n();
+
+  const tabs: TabData[] = [
+    {
+      name: t('schematic'),
+      url: 'schematic',
+    },
+    {
+      name: t('map'),
+      url: 'map',
+    },
+    {
+      name: t('post'),
+      url: 'post',
+    },
+  ];
 
   return (
-    <div className="flex h-full w-full flex-col gap-2 p-4">
-      <section className="no-scrollbar flex w-full items-center gap-2 overflow-auto rounded-sm border-border bg-card p-2 text-sm font-bold capitalize">
+    <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-4">
+      <section className="no-scrollbar flex h-12 w-full items-center gap-2 overflow-y-auto rounded-sm border-border bg-card p-2 text-sm font-bold capitalize">
         {tabs.map(({ name, url }) => (
           <Link
             key={name}

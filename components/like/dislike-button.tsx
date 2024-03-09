@@ -1,9 +1,10 @@
 'use client';
 
-import { useLike } from '@/context/like-context';
 import { ButtonProps } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { ChevronDoubleDownIcon } from '@heroicons/react/24/outline';
+import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
+import { useLike } from '@/context/like-context';
 
 type LikeButtonProps = Omit<ButtonProps, 'title'>;
 
@@ -12,6 +13,8 @@ export default function DislikeButton({
   ...props
 }: LikeButtonProps) {
   const { handleDislike, likeData, isLoading } = useLike();
+  const t = useI18n();
+
   return (
     <button
       className={cn(
@@ -25,7 +28,7 @@ export default function DislikeButton({
       size="icon"
       variant="outline"
       {...props}
-      title="dislike"
+      title={t('dislike')}
       disabled={isLoading}
       onClick={handleDislike}
     >

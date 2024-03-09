@@ -1,5 +1,5 @@
-import CopyButton from '@/components/button/copy-button';
 import ColorText from '@/components/common/color-text';
+import CopyButton from '@/components/button/copy-button';
 import PostServerResponse from '@/types/response/PostServerResponse';
 
 type PostServerResultCardProps = {
@@ -17,7 +17,6 @@ export default function PostServerResultCard({
     <div className="flex flex-col gap-2 overflow-hidden rounded-md font-medium">
       <CopyButton
         className="justify-start px-0 text-xl text-foreground"
-        title="Copied"
         content={server.address}
         data={server.address}
         variant="ghost"

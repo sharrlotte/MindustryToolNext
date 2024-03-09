@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import {
   Command,
   CommandEmpty,
@@ -11,9 +11,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 type Value<T> = { label: string; value: T };
 
@@ -55,7 +56,7 @@ export default function ComboBox<T>({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search" />
+          <CommandInput />
           <CommandEmpty>No value found.</CommandEmpty>
           <CommandGroup>
             {values.map((v) => (

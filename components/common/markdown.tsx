@@ -1,8 +1,7 @@
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import { cn } from '@/lib/utils';
 import rehypeSanitize from 'rehype-sanitize';
 
 interface MarkdownProps {
@@ -26,11 +25,15 @@ function RouterLink({ href, children }: any) {
 }
 
 function MarkdownImage({ src, alt }: any) {
+  if (src && src.includes('localhost')) {
+    src = 'blob:' + src;
+  }
+
   return (
-    <Image
+    <img
       className="markdown-image h-full w-full"
-      src={src}
       alt={alt}
+      src={src}
       width={1024}
       height={800}
     />
@@ -40,7 +43,7 @@ function MarkdownImage({ src, alt }: any) {
 export default function Markdown({ className, children }: MarkdownProps) {
   return (
     <ReactMarkdown
-      className={cn(className)}
+      className={cn('markdown', className)}
       components={{ a: RouterLink, img: MarkdownImage }}
       rehypePlugins={[rehypeSanitize]}
     >

@@ -2,6 +2,7 @@
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { APIInstance } from '@/hooks/use-client';
 import { fillMetric } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 import getMetric from '@/query/metric/get-metric';
 import { useQueries } from '@tanstack/react-query';
 import {
@@ -27,9 +28,10 @@ type ChartProps = {
 };
 
 export default function LoginChart(props: ChartProps) {
+  const t = useI18n();
   return (
     <div className={background}>
-      <span className="font-bold">User login</span>
+      <span className="font-bold">{t('metric.user-login')}</span>
       <Loading {...props} />
     </div>
   );

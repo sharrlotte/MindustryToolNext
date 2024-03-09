@@ -18,7 +18,6 @@ export default function MindustryServerCard({
     <div className="flex flex-col gap-2 overflow-hidden rounded-md bg-card p-2 font-medium shadow-md">
       <CopyButton
         className="justify-start px-0 text-xl"
-        title="Copied"
         content={server.address}
         data={server.address}
         variant="ghost"

@@ -1,20 +1,21 @@
 'use client';
 
 import React, { HTMLAttributes } from 'react';
+
+import CopyButton from '@/components/button/copy-button';
+import DislikeButton from '@/components/like/dislike-button';
+import DownloadButton from '@/components/button/download-button';
+import LikeButton from '@/components/like/like-button';
+import LikeComponent from '@/components/like/like-component';
+import LikeCount from '@/components/like/like-count';
+import Link from 'next/link';
 import Preview from '@/components/preview/preview';
 import { Schematic } from '@/types/response/Schematic';
-import env from '@/constant/env';
-import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import LikeComponent from '@/components/like/like-component';
-import { toast } from '@/hooks/use-toast';
-import CopyButton from '@/components/button/copy-button';
-import DownloadButton from '@/components/button/download-button';
-import useClientAPI from '@/hooks/use-client';
+import env from '@/constant/env';
 import getSchematicData from '@/query/schematic/get-schematic-data';
-import DislikeButton from '@/components/like/dislike-button';
-import LikeButton from '@/components/like/like-button';
-import LikeCount from '@/components/like/like-count';
+import { toast } from '@/hooks/use-toast';
+import useClientAPI from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
 import useToastAction from '@/hooks/use-toast-action';
 
@@ -38,7 +39,6 @@ export default function SchematicPreviewCard({
     action: async () => await getSchematicData(axios, schematic.id),
   });
 
-
   return (
     <Preview
       className={cn('group relative flex flex-col', className)}
@@ -46,7 +46,6 @@ export default function SchematicPreviewCard({
     >
       <CopyButton
         className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
-        title="Copy"
         variant="ghost"
         data={link}
         content={link}
@@ -63,7 +62,6 @@ export default function SchematicPreviewCard({
         <Preview.Actions>
           <CopyButton
             className="border border-border "
-            title="Copied"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}
             data={getData}

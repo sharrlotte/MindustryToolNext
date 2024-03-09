@@ -2,6 +2,7 @@
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { APIInstance } from '@/hooks/use-client';
+import { useI18n } from '@/locales/client';
 import getLogs from '@/query/log/get-logs';
 import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
@@ -26,10 +27,12 @@ export default function LoginLog({ axios: { axios, enabled } }: LoginLogProps) {
     enabled,
   });
 
+  const t = useI18n();
+
   if (isLoading) {
     return (
       <div className={background}>
-        <span className="font-bold">User login history</span>
+        <span className="font-bold">{t('metric.user-login-history')}</span>
         <LoadingSpinner className={chart} />
       </div>
     );
@@ -39,7 +42,7 @@ export default function LoginLog({ axios: { axios, enabled } }: LoginLogProps) {
 
   return (
     <div className={background}>
-      <span className="font-bold">User login history</span>
+      <span className="font-bold">{t('metric.user-login-history')}</span>
       <div className={chart}>
         <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
           {logs?.map((log) => (

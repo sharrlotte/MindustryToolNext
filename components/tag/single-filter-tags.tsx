@@ -1,3 +1,4 @@
+import TagName from '@/components/tag/tag-name';
 import { Separator } from '@/components/ui/separator';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import TagGroup from '@/types/response/TagGroup';
@@ -28,7 +29,7 @@ export default function SingeFilerTags({
           key={value}
           value={value}
         >
-          {value}
+          <TagName>{value}</TagName>
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

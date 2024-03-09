@@ -1,16 +1,16 @@
 import React, { HTMLAttributes } from 'react';
-import Preview from '@/components/preview/preview';
-import { Schematic } from '@/types/response/Schematic';
-import env from '@/constant/env';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { toast } from '@/hooks/use-toast';
+
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import useClientAPI from '@/hooks/use-client';
+import Link from 'next/link';
+import Preview from '@/components/preview/preview';
+import { Schematic } from '@/types/response/Schematic';
+import { cn } from '@/lib/utils';
+import env from '@/constant/env';
 import getSchematicData from '@/query/schematic/get-schematic-data';
-import useToastAction from '@/hooks/use-toast-action';
+import useClientAPI from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
+import useToastAction from '@/hooks/use-toast-action';
 
 type UploadSchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -39,7 +39,6 @@ export default function UploadSchematicPreviewCard({
     >
       <CopyButton
         className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
-        title="Copy"
         variant="ghost"
         data={link}
         content={link}
@@ -56,7 +55,6 @@ export default function UploadSchematicPreviewCard({
         <Preview.Actions>
           <CopyButton
             className="border border-border "
-            title="Copied"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}
             data={getData}

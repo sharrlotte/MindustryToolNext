@@ -1,26 +1,27 @@
 'use client';
 
-import InfinitePage from '@/components/common/infinite-page';
-import LoadingWrapper from '@/components/common/loading-wrapper';
-import MindustryServerCard from '@/components/server/mindustry-server-card';
-import PostServerResultCard from '@/components/server/post-server-result-card';
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import useClientAPI from '@/hooks/use-client';
-import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
-import getServers from '@/query/server/get-servers';
-import postServer from '@/query/server/post-server';
+import { useRef, useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { ClipboardIcon } from '@heroicons/react/24/outline';
+import InfinitePage from '@/components/common/infinite-page';
+import LoadingWrapper from '@/components/common/loading-wrapper';
+import MindustryServerCard from '@/components/server/mindustry-server-card';
 import PostServerRequest from '@/types/request/PostServerRequest';
 import PostServerResponse from '@/types/response/PostServerResponse';
-import { ClipboardIcon } from '@heroicons/react/24/outline';
+import PostServerResultCard from '@/components/server/post-server-result-card';
+import getServers from '@/query/server/get-servers';
+import postServer from '@/query/server/post-server';
+import useClientAPI from '@/hooks/use-client';
+import { useI18n } from '@/locales/client';
 import { useMutation } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Page() {
   const scrollContainer = useRef<HTMLDivElement | null>();
@@ -36,7 +37,7 @@ export default function Page() {
     mutationFn: (data: PostServerRequest) => postServer(axios, data),
     onError(error) {
       toast({
-        title: t('server.upload-failed'),
+        title: t('server.upload-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -60,7 +61,7 @@ export default function Page() {
         >
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="primary" title="Add server">
+              <Button variant="primary" title={t('server.add')}>
                 {t('server.add')}
               </Button>
             </DialogTrigger>
@@ -69,25 +70,25 @@ export default function Page() {
                 <input
                   value={address}
                   type="text"
-                  placeholder="Server address"
+                  placeholder={t('address')}
                   className="w-full border-b-2 border-foreground bg-transparent pt-1 outline-none hover:border-b-2 hover:outline-none"
                   onChange={(event) => setAddress(event.currentTarget.value)}
                 />
                 <div className="flex gap-2 self-end">
                   <Button
                     variant="outline"
-                    title="Copy from clipboard"
+                    title={t('copy-from-clipboard')}
                     onClick={handleCopyFromClipboard}
                   >
                     <ClipboardIcon className="h-6 w-6" />
                   </Button>
                   <Button
                     className="self-end"
-                    title="Submit"
+                    title={t('submit')}
                     variant="primary"
                     onClick={() => mutate({ address })}
                   >
-                    Submit
+                    {t('submit')}
                   </Button>
                 </div>
               </div>
@@ -100,7 +101,7 @@ export default function Page() {
         onOpenChange={() => setResult(undefined)}
       >
         <DialogContent>
-          <DialogTitle>Add server successfully</DialogTitle>
+          <DialogTitle>{t('server.add-success')}</DialogTitle>
           <PostServerResultCard server={result} />
         </DialogContent>
       </Dialog>

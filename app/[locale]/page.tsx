@@ -7,7 +7,7 @@ export default async function Home() {
 
   return (
     <div className="grid h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center p-8 pt-10 text-white">
-      <section className="rounded-2xl bg-zinc-900/80 p-8 shadow-md backdrop-blur-sm">
+      <section className="no-scrollbar overflow-y-auto rounded-md bg-zinc-900/80 p-8 shadow-md backdrop-blur-sm">
         <span className="text-2xl">{t('home.welcome')}</span>
         <Link className="text-2xl font-medium capitalize" href="/">
           {t('website-name')}
@@ -105,7 +105,7 @@ export default async function Home() {
                 className="text-button hover:text-button"
                 href="/schematics"
               >
-                Schematic
+                {t('schematic')}
               </Link>
             </li>
           </ul>
@@ -113,7 +113,7 @@ export default async function Home() {
           <ul>
             <li>
               <Link className="text-button hover:text-button" href="/maps">
-                Map
+                {t('map')}
               </Link>
             </li>
           </ul>

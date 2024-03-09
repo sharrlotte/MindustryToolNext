@@ -1,24 +1,25 @@
-import Search from '@/components/search/search-input';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import TagGroup from '@/types/response/TagGroup';
-import { FilterIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { cloneDeep } from 'lodash';
 import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
-import { defaultSortTag } from '@/constant/env';
 import { usePathname, useRouter } from 'next/navigation';
-import { QueryParams } from '@/query/config/search-query-params';
-import OutsideWrapper from '@/components/common/outside-wrapper';
-import useSearchPageParams from '@/hooks/use-search-page-params';
+
+import { Button } from '@/components/ui/button';
+import { FilterIcon } from 'lucide-react';
 import FilterTags from '@/components/tag/filter-tags';
+import OutsideWrapper from '@/components/common/outside-wrapper';
+import { QueryParams } from '@/query/config/search-query-params';
+import Search from '@/components/search/search-input';
 import SortTags from '@/components/tag/sort-tags';
 import { TAG_SEPARATOR } from '@/constant/constant';
-import { cn } from '@/lib/utils';
-import _ from 'lodash';
 import TagContainer from '@/components/tag/tag-container';
+import TagGroup from '@/types/response/TagGroup';
+import _ from 'lodash';
+import { cloneDeep } from 'lodash';
+import { cn } from '@/lib/utils';
+import { defaultSortTag } from '@/constant/env';
 import { useI18n } from '@/locales/client';
+import useSearchPageParams from '@/hooks/use-search-page-params';
 
 type NameTagSearchProps = {
   className?: string;
@@ -175,7 +176,7 @@ export default function NameTagSearch({
         </Search>
         <Button
           className="border border-none border-border bg-card shadow-md dark:border-solid dark:bg-transparent"
-          title="Filter"
+          title={t('filter')}
           variant="outline"
           onClick={handleShowFilterDialog}
         >
@@ -186,7 +187,7 @@ export default function NameTagSearch({
       {showFilterDialog && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
           <OutsideWrapper
-            className="flex h-[100dvh] w-screen items-center justify-center md:h-4/5 md:w-4/5"
+            className="flex h-screen w-screen items-center justify-center md:h-4/5 md:w-4/5"
             onClickOutside={handleHideFilterDialog}
           >
             <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
@@ -213,7 +214,7 @@ export default function NameTagSearch({
                 />
               </CardContent>
               <CardFooter className="flex justify-end gap-1 p-0">
-                <Button title="close" onClick={handleHideFilterDialog}>
+                <Button title={t('close')} onClick={handleHideFilterDialog}>
                   {isChanged ? t('search') : t('close')}
                 </Button>
               </CardFooter>

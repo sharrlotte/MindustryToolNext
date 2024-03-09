@@ -2,6 +2,7 @@
 
 import useClientAPI from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 import getTotalMapUpload from '@/query/map/get-total-map-upload';
 import getTotalPostUpload from '@/query/post/get-total-post-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
@@ -54,6 +55,7 @@ export default function Navigation({ children }: NavigationProps) {
 }
 
 function SchematicPath() {
+  const t = useI18n();
   const { axios } = useClientAPI();
   const { data } = useQuery({
     queryFn: () => getTotalSchematicUpload(axios, {}),
@@ -64,12 +66,13 @@ function SchematicPath() {
 
   return (
     <>
-      <span>schematic</span>
+      <span>{t('schematic')}</span>
       {schematicCount > 0 && <span>({schematicCount})</span>}
     </>
   );
 }
 function MapPath() {
+  const t = useI18n();
   const { axios } = useClientAPI();
   const { data } = useQuery({
     queryFn: () => getTotalMapUpload(axios, {}),
@@ -80,12 +83,13 @@ function MapPath() {
 
   return (
     <>
-      <span>map</span>
+      <span>{t('map')}</span>
       {mapCount > 0 && <span>({mapCount})</span>}
     </>
   );
 }
 function PostPath() {
+  const t = useI18n();
   const { axios } = useClientAPI();
   const { data } = useQuery({
     queryFn: () => getTotalPostUpload(axios, {}),
@@ -96,7 +100,7 @@ function PostPath() {
 
   return (
     <>
-      <span>post</span>
+      <span>{t('post')}</span>
       {postCount > 0 && <span>({postCount})</span>}
     </>
   );

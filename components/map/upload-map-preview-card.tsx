@@ -1,11 +1,12 @@
 import React, { HTMLAttributes } from 'react';
-import Preview from '@/components/preview/preview';
-import { Map } from '@/types/response/Map';
-import env from '@/constant/env';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
+import Link from 'next/link';
+import { Map } from '@/types/response/Map';
+import Preview from '@/components/preview/preview';
+import { cn } from '@/lib/utils';
+import env from '@/constant/env';
 
 type UploadMapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;
@@ -19,13 +20,9 @@ export default function UploadMapPreview({
   const link = `${env.url.base}/admin/maps/${map.id}`;
 
   return (
-    <Preview
-      className={cn('group relative', className)}
-      {...rest}
-    >
+    <Preview className={cn('group relative', className)} {...rest}>
       <CopyButton
         className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
-        title="Copy"
         variant="ghost"
         data={link}
         content={link}

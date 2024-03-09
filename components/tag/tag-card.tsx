@@ -1,8 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import Tag from '@/types/response/Tag';
-import { XMarkIcon } from '@heroicons/react/24/outline';
 import React, { HTMLAttributes } from 'react';
+
+import { Button } from '@/components/ui/button';
+import Tag from '@/types/response/Tag';
+import TagName from '@/components/tag/tag-name';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;
@@ -24,6 +27,8 @@ export default function TagCard({
     }
   };
 
+  const t = useI18n();
+
   return (
     <span
       className={cn(
@@ -36,11 +41,11 @@ export default function TagCard({
       style={{ backgroundColor: color }}
       {...props}
     >
-      <span>{`${name}(${value})`}</span>
+      <TagName>{name}</TagName>(<TagName>{value}</TagName>)
       {hasDeleteButton && (
         <Button
           className="w-0 p-0 transition-all duration-500 group-hover:w-full"
-          title="delete"
+          title={t('delete')}
           variant="icon"
           onClick={() => handleOnDelete(tag)}
         >

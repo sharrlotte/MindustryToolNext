@@ -21,6 +21,7 @@ import deleteMap from '@/query/map/delete-map';
 import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
+import { useI18n } from '@/locales/client';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;
@@ -33,6 +34,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { map: mapTags } = useTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
+  const t = useI18n();
 
   const { mutate: verifyMap, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifyMapRequest) => postVerifyMap(axios, data),
@@ -41,13 +43,13 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
       invalidateByKey(['total-map-uploads']);
       back();
       toast({
-        title: 'Verify map successfully',
+        title: t('verify-success'),
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to verify map',
+        title: t('verify-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -62,13 +64,13 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
       invalidateByKey(['maps']);
       back();
       toast({
-        title: 'Delete map successfully',
+        title: t('delete-success'),
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to delete map',
+        title: t('delete-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -88,7 +90,6 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
         <div className="relative">
           <CopyButton
             className="absolute left-1 top-1 "
-            title="Copy"
             variant="ghost"
             data={link}
             content={link}
@@ -98,7 +99,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
             errorSrc={`${env.url.api}/maps/${map.id}/image`}
             alt={map.name}
           />
-          Map
+          {t('map')}
         </div>
         <Detail.Header>
           <Detail.Title>{map.name}</Detail.Title>
@@ -115,12 +116,12 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
           <DeleteButton
-            description={`Delete this map: ${map.name}`}
+            description={`${t('delete')} ${map.name}`}
             isLoading={isLoading}
             onClick={() => deleteMapById(map.id)}
           />
           <VerifyButton
-            description={`Verify this map: ${map.name}`}
+            description={`${t('verify')} ${map.name}`}
             isLoading={isLoading}
             onClick={() =>
               verifyMap({ id: map.id, tags: TagGroups.toString(selectedTags) })

@@ -1,4 +1,5 @@
-import LoadingWrapper from '@/components/common/loading-wrapper';
+'use client';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,10 +11,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+
 import { Button } from '@/components/ui/button';
-import { useI18n } from '@/locales/client';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import LoadingWrapper from '@/components/common/loading-wrapper';
 import React from 'react';
+import { TrashIcon } from '@heroicons/react/24/outline';
+import { useI18n } from '@/locales/client';
 
 type TakeDownButtonProps = {
   isLoading: boolean;
@@ -49,7 +52,7 @@ export default function TakeDownButton({
             className="bg-destructive hover:bg-destructive"
             asChild
           >
-            <Button title="Delete" onClick={onClick}>
+            <Button title={t('take-down')} onClick={onClick}>
               {t('take-down')}
             </Button>
           </AlertDialogAction>

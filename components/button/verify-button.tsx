@@ -1,4 +1,5 @@
-import LoadingWrapper from '@/components/common/loading-wrapper';
+'use client';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,9 +11,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+
 import { Button } from '@/components/ui/button';
 import { CheckIcon } from '@heroicons/react/24/outline';
+import LoadingWrapper from '@/components/common/loading-wrapper';
 import React from 'react';
+import { useI18n } from '@/locales/client';
 
 type VerifyButtonProps = {
   isLoading: boolean;
@@ -25,6 +29,8 @@ export default function VerifyButton({
   description,
   onClick,
 }: VerifyButtonProps) {
+  const t = useI18n();
+
   return (
     <AlertDialog>
       <AlertDialogTrigger
@@ -37,18 +43,18 @@ export default function VerifyButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t('are-you-sure')}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
               className="bg-success hover:bg-success"
-              title="Verify"
+              title={t('verify')}
               onClick={onClick}
             >
-              Verify
+              {t('verify')}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

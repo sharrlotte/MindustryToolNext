@@ -1,13 +1,17 @@
-import Search from '@/components/search/search-input';
-import FilterTags from '@/components/tag/filter-tags';
-import { Button } from '@/components/ui/button';
+'use client';
+
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import OutsideWrapper from '@/components/common/outside-wrapper';
+import React, { useState } from 'react';
 import Tag, { Tags } from '@/types/response/Tag';
+
+import { Button } from '@/components/ui/button';
+import FilterTags from '@/components/tag/filter-tags';
+import OutsideWrapper from '@/components/common/outside-wrapper';
+import Search from '@/components/search/search-input';
+import TagContainer from '@/components/tag/tag-container';
 import TagGroup from '@/types/response/TagGroup';
 import { cloneDeep } from 'lodash';
-import React, { useState } from 'react';
-import TagContainer from '@/components/tag/tag-container';
+import { useI18n } from '@/locales/client';
 
 type NameTagSelectorProps = {
   tags?: TagGroup[];
@@ -31,13 +35,15 @@ export default function NameTagSelector({
   const handleShowFilterDialog = () => setShowFilterDialog(true);
   const handleHideFilterDialog = () => setShowFilterDialog(false);
 
+  const t = useI18n();
+
   const tagsClone = cloneDeep(tags);
 
   const handleTagGroupChange = (name: string, v: string[]) => {
     const group = value.find((tag) => tag.name === name);
     if (group) {
       group.value = v;
-      setValue(_ => [...value]);
+      setValue((_) => [...value]);
     } else {
       let result = tagsClone.find((tag) => tag.name === name);
 
@@ -45,7 +51,7 @@ export default function NameTagSelector({
       if (result) {
         result.value = v;
         value.push(result);
-        setValue(_ => [...value]);
+        setValue((_) => [...value]);
       }
     }
   };
@@ -69,11 +75,11 @@ export default function NameTagSelector({
         <Button
           className="w-fit"
           variant="primary"
-          title="Filter"
+          title={t('add-tag')}
           disabled={disabled}
           onClick={handleShowFilterDialog}
         >
-          Add Tag ({displayTags.length})
+          {t('add-tag')} ({displayTags.length})
         </Button>
         {!hideSelectedTag && (
           <TagContainer
@@ -86,7 +92,7 @@ export default function NameTagSelector({
       {showFilterDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
           <OutsideWrapper
-            className="flex h-[100dvh] w-screen items-center justify-center md:h-5/6 md:w-5/6"
+            className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6"
             onClickOutside={handleHideFilterDialog}
           >
             <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
@@ -94,7 +100,7 @@ export default function NameTagSelector({
                 <Search.Icon className="p-1" />
                 <Search.Input
                   defaultValue={filter}
-                  placeholder="Filter out tags"
+                  placeholder={t('filter')}
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />
               </Search>
@@ -108,11 +114,11 @@ export default function NameTagSelector({
               </CardContent>
               <CardFooter className="flex justify-end gap-1 p-0">
                 <Button
-                  title="close"
+                  title={t('close')}
                   variant="outline"
                   onClick={handleHideFilterDialog}
                 >
-                  Close
+                  {t('close')}
                 </Button>
               </CardFooter>
             </Card>

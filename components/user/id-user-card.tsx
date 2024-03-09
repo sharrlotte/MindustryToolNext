@@ -3,6 +3,7 @@
 import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import UserCard from '@/components/user/user-card';
 import useClientAPI from '@/hooks/use-client';
+import { useI18n } from '@/locales/client';
 import getUser from '@/query/user/get-user';
 import { User } from '@/types/response/User';
 import { useQuery } from '@tanstack/react-query';
@@ -25,6 +26,7 @@ export default function IdUserCard({ id }: IdUserCardProps) {
 }
 
 function FletchUserCard({ id }: IdUserCardProps) {
+  const t = useI18n();
   const { axios, enabled } = useClientAPI();
   const { data, isLoading, isError } = useQuery<User>({
     queryKey: ['users', id],
@@ -41,7 +43,7 @@ function FletchUserCard({ id }: IdUserCardProps) {
   }
 
   if (!data) {
-    return <span>User not found</span>;
+    return <span>{t('user.not-found')}</span>;
   }
 
   return <UserCard user={data} />;

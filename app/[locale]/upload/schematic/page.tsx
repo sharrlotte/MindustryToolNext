@@ -1,34 +1,36 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import LoadingWrapper from '@/components/common/loading-wrapper';
-import Detail from '@/components/detail/detail';
-import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import NameTagSelector from '@/components/search/name-tag-selector';
-import { Button } from '@/components/ui/button';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
+import { Button } from '@/components/ui/button';
+import Detail from '@/components/detail/detail';
 import IdUserCard from '@/components/user/id-user-card';
-import UserCard from '@/components/user/user-card';
+import ItemRequirementCard from '@/components/schematic/item-requirement-card';
+import LoadingWrapper from '@/components/common/loading-wrapper';
+import NameTagSelector from '@/components/search/name-tag-selector';
 import { PNG_IMAGE_PREFIX } from '@/constant/constant';
-import useClientAPI from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import useTags from '@/hooks/use-tags';
-import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
-import postSchematic from '@/query/schematic/post-schematic';
-import postSchematicPreview from '@/query/schematic/post-schematic-preview';
 import PostSchematicRequest from '@/types/request/PostSchematicRequest';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import SchematicPreviewResponse from '@/types/response/SchematicPreviewResponse';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import UserCard from '@/components/user/user-card';
+import { cn } from '@/lib/utils';
+import postSchematic from '@/query/schematic/post-schematic';
+import postSchematicPreview from '@/query/schematic/post-schematic-preview';
+import useClientAPI from '@/hooks/use-client';
+import { useI18n } from '@/locales/client';
 import { useMutation } from '@tanstack/react-query';
+import useQueriesData from '@/hooks/use-queries-data';
 import { useSession } from 'next-auth/react';
-import { ChangeEvent, useEffect, useState } from 'react';
+import useTags from '@/hooks/use-tags';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Page() {
   const { axios } = useClientAPI();
@@ -40,6 +42,7 @@ export default function Page() {
   const { schematic } = useTags();
   const { toast } = useToast();
   const [isOpen, setOpen] = useState(false);
+  const t = useI18n();
 
   const closeDialog = () => setOpen(false);
   const { invalidateByKey } = useQueriesData();
@@ -51,7 +54,7 @@ export default function Page() {
       onSuccess: (data) => setPreview(data),
       onError(error) {
         toast({
-          title: 'Failed to get preview',
+          title: t('upload.get-preview-fail'),
           description: error.message,
           variant: 'destructive',
         });
@@ -64,7 +67,7 @@ export default function Page() {
       mutationFn: (data: PostSchematicRequest) => postSchematic(axios, data),
       onSuccess: () => {
         toast({
-          title: 'Upload schematic success',
+          title: t('upload.success'),
           variant: 'success',
         });
         setData(undefined);
@@ -74,7 +77,7 @@ export default function Page() {
       },
       onError(error) {
         toast({
-          title: 'Upload schematic failed',
+          title: t('upload.fail'),
           description: error.message,
           variant: 'destructive',
         });
@@ -87,7 +90,7 @@ export default function Page() {
     const files = event.target.files;
     if (!files || files.length <= 0 || !files[0]) {
       toast({
-        title: 'No file selected',
+        title: t('upload.no-file'),
         variant: 'destructive',
       });
       return;
@@ -97,7 +100,7 @@ export default function Page() {
 
     if (extension !== 'msch') {
       toast({
-        title: 'Invalid file extension, file must end with .msch',
+        title: t('upload.invalid-schematic-file'),
         variant: 'destructive',
       });
       return;
@@ -112,9 +115,17 @@ export default function Page() {
     navigator.clipboard
       .readText() //
       .then((text) => {
+        if (!text || text.length === 0) {
+          toast({
+            title: t('upload.clipboard-empty'),
+            variant: 'destructive',
+          });
+          return;
+        }
+
         if (!text.startsWith('bXNja')) {
           toast({
-            title: 'Invalid schematic code',
+            title: t('upload.invalid-schematic-code'),
             variant: 'destructive',
           });
           return;
@@ -141,7 +152,7 @@ export default function Page() {
   }, [data, getSchematicPreview]);
 
   function checkUploadRequirement() {
-    if (!data) return 'No schematic data';
+    if (!data) return t('upload.no-content');
 
     return true;
   }
@@ -165,18 +176,22 @@ export default function Page() {
                 {preview ? (
                   <img src={PNG_IMAGE_PREFIX + preview.image} alt="Schematic" />
                 ) : (
-                  <span className="py-1" title="Select schematic">
-                    Select schematic
+                  <span className="py-1" title={t('upload.select-schematic')}>
+                    {t('upload.select-schematic')}
                   </span>
                 )}
               </LoadingWrapper>
             </DialogTrigger>
             <DialogContent className="w-4/5 rounded-md">
-              <DialogTitle>Select schematic</DialogTitle>
+              <DialogTitle> {t('upload.select-schematic')}</DialogTitle>
               <div className="grid items-stretch justify-stretch gap-2">
-                <Button title="file" variant="primary" asChild>
+                <Button
+                  title={t('upload.select-schematic-file')}
+                  variant="primary"
+                  asChild
+                >
                   <label className="hover:cursor-pointer" htmlFor="file">
-                    Upload a file
+                    {t('upload.select-schematic-file')}
                   </label>
                 </Button>
                 <input
@@ -193,7 +208,7 @@ export default function Page() {
                   onClick={() => handleCodeChange()}
                   disabled={isLoading}
                 >
-                  Copy from clipboard
+                  {t('copy-from-clipboard')}
                 </Button>
               </div>
             </DialogContent>
@@ -216,13 +231,13 @@ export default function Page() {
       <div className="flex flex-col items-end justify-center rounded-md bg-card p-2">
         <Button
           className="w-fit"
-          title="Upload"
+          title={t('upload')}
           variant="primary"
           onClick={() => handleSubmit()}
           disabled={isLoading || uploadCheck !== true}
         >
           <LoadingWrapper isLoading={isLoading}>
-            {uploadCheck === true ? 'Upload' : uploadCheck}
+            {uploadCheck === true ? t('upload') : uploadCheck}
           </LoadingWrapper>
         </Button>
       </div>

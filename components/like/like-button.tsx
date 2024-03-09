@@ -3,12 +3,14 @@
 import { ButtonProps } from '@/components/ui/button';
 import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 import { ChevronDoubleUpIcon } from '@heroicons/react/24/outline';
 
 type LikeButtonProps = Omit<ButtonProps, 'title'>;
 
 export default function LikeButton({ className, ...props }: LikeButtonProps) {
   const { handleLike, likeData, isLoading } = useLike();
+  const t = useI18n()
 
   return (
     <button
@@ -19,7 +21,7 @@ export default function LikeButton({ className, ...props }: LikeButtonProps) {
           'bg-success text-background dark:text-foreground': likeData?.state === 1,
         },
       )}
-      title="like"
+      title={t('like')}
       size="icon"
       variant="outline"
       {...props}

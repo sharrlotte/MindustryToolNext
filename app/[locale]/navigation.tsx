@@ -1,38 +1,84 @@
 'use client';
 
-import env from '@/constant/env';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { usePathname } from 'next/navigation';
-import { ThemeSwitcher } from '../../components/theme/theme-switcher';
-import { HTMLAttributes, ReactNode, useState } from 'react';
 import {
+  ArrowUpTrayIcon,
   Bars3Icon,
+  BellIcon,
   BookOpenIcon,
   ClipboardDocumentListIcon,
+  Cog6ToothIcon,
+  CommandLineIcon,
   HomeIcon,
   MapIcon,
   ServerStackIcon,
-  CommandLineIcon,
   UserCircleIcon,
-  ArrowUpTrayIcon,
-  BellIcon,
-  Cog6ToothIcon,
 } from '@heroicons/react/24/outline';
+import { HTMLAttributes, ReactNode, useState } from 'react';
 
-import { useSession } from 'next-auth/react';
-import OutsideWrapper from '@/components/common/outside-wrapper';
-import Image from 'next/image';
-import UserAvatar from '@/components/user/user-avatar';
-import ProtectedElement from '@/layout/protected-element';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import LoginButton from '@/components/button/login-button';
-import UserRoleCard from '@/components/user/user-role';
 import LogoutButton from '@/components/button/logout-button';
-import { UserRole } from '@/constant/enum';
+import OutsideWrapper from '@/components/common/outside-wrapper';
+import ProtectedElement from '@/layout/protected-element';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ThemeSwitcher } from '../../components/theme/theme-switcher';
+import UserAvatar from '@/components/user/user-avatar';
+import { UserRole } from '@/constant/enum';
+import UserRoleCard from '@/components/user/user-role';
+import { cn } from '@/lib/utils';
+import env from '@/constant/env';
+import { useI18n } from '@/locales/client';
+import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function NavigationBar() {
+  const t = useI18n();
+
+  const paths: Path[] = [
+    {
+      path: '/', //
+      name: t('home'),
+      icon: <HomeIcon className="h-6 w-6" />,
+    },
+    {
+      path: '/schematics', //
+      name: t('schematic'),
+      icon: <ClipboardDocumentListIcon className="h-6 w-6" />,
+    },
+    {
+      path: '/maps',
+      name: t('map'),
+      icon: <MapIcon className="h-6 w-6" />,
+    },
+    {
+      path: '/posts', //
+      name: t('post'),
+      icon: <BookOpenIcon className="h-6 w-6" />,
+    },
+    {
+      path: '/servers', //
+      name: t('server'),
+      icon: <ServerStackIcon className="h-6 w-6" />,
+    },
+    {
+      path: '/logic', //
+      name: t('logic'),
+      icon: <CommandLineIcon className="h-6 w-6" />,
+    },
+    {
+      path: '/upload', //
+      name: t('upload'),
+      icon: <ArrowUpTrayIcon className="h-6 w-6" />,
+    },
+    {
+      path: '/admin', //
+      name: t('admin'),
+      roles: ['ADMIN'],
+      icon: <UserCircleIcon className="h-6 w-6" />,
+    },
+  ];
+
   const pathName = usePathname();
   const route = pathName.split('/').filter((item) => item)[1];
 
@@ -45,7 +91,7 @@ export default function NavigationBar() {
   return (
     <div className="flex h-nav w-full items-center justify-between bg-button p-1 text-white shadow-lg">
       <Button
-        title="menu"
+        title=""
         type="button"
         variant="link"
         size="icon"
@@ -57,7 +103,7 @@ export default function NavigationBar() {
       </Button>
       <div
         className={cn(
-          'pointer-events-none fixed bottom-0 left-0 right-0 top-0 z-50 bg-transparent text-foreground',
+          'pointer-events-none fixed inset-0 z-50 h-screen bg-transparent text-foreground',
           {
             'visible backdrop-blur-sm': isSidebarVisible,
           },
@@ -65,7 +111,7 @@ export default function NavigationBar() {
       >
         <OutsideWrapper
           className={cn(
-            'pointer-events-auto fixed bottom-0 top-0 flex min-w-[250px] translate-x-[-100%] flex-col justify-between overflow-hidden bg-background  transition-transform duration-300',
+            'pointer-events-auto fixed bottom-0 top-0 flex min-w-[250px] translate-x-[-100%] flex-col justify-between bg-background transition-transform duration-300',
             {
               'translate-x-0': isSidebarVisible,
             },
@@ -73,7 +119,7 @@ export default function NavigationBar() {
           onClickOutside={hideSidebar}
         >
           <div
-            className="flex h-full flex-col"
+            className="flex h-full flex-col overflow-y-auto"
             onMouseLeave={hideSidebar} //
             onMouseEnter={showSidebar}
           >
@@ -124,6 +170,8 @@ export default function NavigationBar() {
 function UserDisplay() {
   const { data, status } = useSession();
 
+  const t = useI18n();
+
   const session = data;
 
   if (status === 'authenticated' && session?.user) {
@@ -138,7 +186,7 @@ function UserDisplay() {
         </div>
         <LogoutButton
           className="aspect-square h-10 w-10 p-2"
-          title="logout"
+          title={t('logout')}
           variant="ghost"
         />
       </div>
@@ -151,7 +199,7 @@ function UserDisplay() {
     );
   }
 
-  return <LoginButton className="w-full gap-1" title="login" />;
+  return <LoginButton className="w-full gap-1" title={t('login')} />;
 }
 
 type Path = {
@@ -205,47 +253,3 @@ function NavItem({
 
   return render();
 }
-
-const paths: Path[] = [
-  {
-    path: '/', //
-    name: 'Home',
-    icon: <HomeIcon className="h-6 w-6" />,
-  },
-  {
-    path: '/schematics', //
-    name: 'Schematic',
-    icon: <ClipboardDocumentListIcon className="h-6 w-6" />,
-  },
-  {
-    path: '/maps',
-    name: 'Map',
-    icon: <MapIcon className="h-6 w-6" />,
-  },
-  {
-    path: '/posts', //
-    name: 'Post',
-    icon: <BookOpenIcon className="h-6 w-6" />,
-  },
-  {
-    path: '/servers', //
-    name: 'Server',
-    icon: <ServerStackIcon className="h-6 w-6" />,
-  },
-  {
-    path: '/logic', //
-    name: 'Logic',
-    icon: <CommandLineIcon className="h-6 w-6" />,
-  },
-  {
-    path: '/upload', //
-    name: 'Upload',
-    icon: <ArrowUpTrayIcon className="h-6 w-6" />,
-  },
-  {
-    path: '/admin', //
-    name: 'Admin',
-    roles: ['ADMIN'],
-    icon: <UserCircleIcon className="h-6 w-6" />,
-  },
-];
