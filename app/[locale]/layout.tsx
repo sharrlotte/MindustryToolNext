@@ -1,18 +1,18 @@
-import env from '@/constant/env';
-import NavigationBar from './navigation';
-import QueryProvider from '../../query/config/query-provider';
-import { cn } from '@/lib/utils';
-import { Toaster } from '@/components/ui/toaster';
-import { ThemeProvider } from '../../components/theme/theme-provider';
-import NextTopLoader from 'nextjs-toploader';
-import type { Metadata } from 'next';
+import './../globals.css';
 
 import ClientInit from '@/app/[locale]/client-init';
-import { SessionProvider } from 'next-auth/react';
-import localFont from 'next/font/local';
 import { I18nProviderClient } from '@/locales/client';
-
-import './../globals.css';
+import type { Metadata } from 'next';
+import NavigationBar from './navigation';
+import NextTopLoader from 'nextjs-toploader';
+import QueryProvider from '../../query/config/query-provider';
+import { SessionProvider } from 'next-auth/react';
+import { ThemeProvider } from '../../components/theme/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
+import env from '@/constant/env';
+import localFont from 'next/font/local';
+import { setStaticParamsLocale } from 'next-international/server';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
@@ -57,6 +57,8 @@ type RootProps = {
 };
 
 export default function Root({ children, params }: RootProps) {
+  setStaticParamsLocale(params.locale);
+
   return (
     <html
       className={cn(
