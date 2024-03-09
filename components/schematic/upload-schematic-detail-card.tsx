@@ -23,6 +23,8 @@ import deleteSchematic from '@/query/schematic/delete-schematic';
 import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
+import useToastAction from '@/hooks/use-toast-action';
+import { useI18n } from '@/locales/client';
 
 type UploadSchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -37,6 +39,7 @@ export default function UploadSchematicDetailCard({
   const { schematic: schematicTags } = useTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
+  const t = useI18n();
 
   const { mutate: verifySchematic, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifySchematicRequest) =>
@@ -47,13 +50,13 @@ export default function UploadSchematicDetailCard({
       invalidateByKey(['schematics']);
       back();
       toast({
-        title: 'Verify schematic successfully',
+        title: t('verify-success'),
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to verify schematic',
+        title: t('verify-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -67,13 +70,13 @@ export default function UploadSchematicDetailCard({
       invalidateByKey(['total-schematic-uploads']);
       back();
       toast({
-        title: 'Delete schematic successfully',
+        title: t('delete-success'),
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to delete schematic',
+        title: t('delete-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -87,15 +90,11 @@ export default function UploadSchematicDetailCard({
   const isLoading = isVerifying || isDeleting;
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
-  const getData = async () => {
-    const { dismiss } = toast({
-      title: 'Coping',
-      content: 'Downloading data from server',
-    });
-    const result = await getSchematicData(axios, schematic.id);
-    dismiss();
-    return result;
-  };
+  const getData = useToastAction({
+    title: t('copying'),
+    content: t('downloading-data'),
+    action: async () => await getSchematicData(axios, schematic.id),
+  });
 
   return (
     <Detail>
@@ -103,7 +102,6 @@ export default function UploadSchematicDetailCard({
         <div className="relative">
           <CopyButton
             className="absolute left-1 top-1 "
-            title="Copy"
             variant="ghost"
             data={link}
             content={link}
@@ -130,7 +128,6 @@ export default function UploadSchematicDetailCard({
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
             className="border border-border"
-            title="Copy"
             variant="outline"
             content={`Copied schematic ${schematic.name}`}
             data={getData}
@@ -139,12 +136,12 @@ export default function UploadSchematicDetailCard({
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
           <DeleteButton
-            description={`Delete this schematic: ${schematic.name}`}
+            description={`${t('delete')} ${schematic.name}`}
             isLoading={isLoading}
             onClick={() => deleteSchematicById(schematic.id)}
           />
           <VerifyButton
-            description={`Verify this schematic: ${schematic.name}`}
+            description={`${t('verify')} ${schematic.name}`}
             isLoading={isLoading}
             onClick={() =>
               verifySchematic({

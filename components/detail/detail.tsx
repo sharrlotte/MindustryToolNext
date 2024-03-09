@@ -1,9 +1,10 @@
-import ColorText from '@/components/common/color-text';
-import TagContainer from '@/components/tag/tag-container';
-import { cn } from '@/lib/utils';
-import { Tags } from '@/types/response/Tag';
-import Image from 'next/image';
 import React, { HTMLAttributes } from 'react';
+
+import ColorText from '@/components/common/color-text';
+import Image from 'next/image';
+import TagContainer from '@/components/tag/tag-container';
+import { Tags } from '@/types/response/Tag';
+import { cn } from '@/lib/utils';
 
 type DetailProps = HTMLAttributes<HTMLDivElement> & {
   padding?: boolean;
@@ -21,7 +22,7 @@ function Detail({ className, children, padding }: DetailProps) {
     >
       <div
         className={cn(
-          'relative flex h-full w-full flex-col justify-between gap-2 lg:items-stretch',
+          'relative flex min-h-full w-full flex-col justify-between gap-2 lg:items-stretch',
           className,
         )}
       >
@@ -46,9 +47,9 @@ type TitleProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
 
 function Title({ className, children }: TitleProps) {
   return (
-    <h1 className={cn('text-2xl capitalize', className)}>
+    <h3 className={cn('text-2xl capitalize', className)}>
       <ColorText text={children} />
-    </h1>
+    </h3>
   );
 }
 
@@ -62,7 +63,7 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
   return (
     <figure
       className={cn(
-        'overflow-hidden rounded-lg md:max-w-[min(80dvh,80dvw)]',
+        'overflow-hidden rounded-lg md:max-w-[min(80vh,80vw)]',
         className,
       )}
     >

@@ -1,4 +1,5 @@
-import LoadingWrapper from '@/components/common/loading-wrapper';
+'use client';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,9 +11,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+
 import { Button } from '@/components/ui/button';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import LoadingWrapper from '@/components/common/loading-wrapper';
 import React from 'react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useI18n } from '@/locales/client';
 
 type DeleteButtonProps = {
   isLoading: boolean;
@@ -25,6 +29,8 @@ export default function DeleteButton({
   description,
   onClick,
 }: DeleteButtonProps) {
+  const t = useI18n();
+
   return (
     <AlertDialog>
       <AlertDialogTrigger
@@ -37,17 +43,17 @@ export default function DeleteButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t('are-you-sure')}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive"
             asChild
           >
-            <Button title="Delete" onClick={onClick}>
-              Delete
+            <Button title={t('delete')} onClick={onClick}>
+              {t('delete')}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -1,49 +1,46 @@
 'use client';
 
-import '@uiw/react-md-editor/markdown-editor.css';
-import '@uiw/react-markdown-preview/markdown.css';
-import dynamic from 'next/dynamic';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import PostPostRequest from '@/types/request/PostPostRequest';
-import postPost from '@/query/post/post-post';
-import useClientAPI from '@/hooks/use-client';
-import { useToast } from '@/hooks/use-toast';
-import useQueriesData from '@/hooks/use-queries-data';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import NameTagSelector from '@/components/search/name-tag-selector';
-import LoadingWrapper from '@/components/common/loading-wrapper';
-import useTags from '@/hooks/use-tags';
-import useLanguages from '@/hooks/use-languages';
-import ComboBox from '@/components/common/combo-box';
-import { PostDetail } from '@/types/response/PostDetail';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import Search from '@/components/search/search-input';
-import getMePosts from '@/query/post/get-me-posts';
-import LoadingSpinner from '@/components/common/loading-spinner';
-import getPost from '@/query/post/get-post';
-import NoResult from '@/components/common/no-result';
-import postTranslatePost from '@/query/post/post-translate-post';
-import TranslatePostRequest from '@/types/request/TranslatePostRequest';
-import LoadingScreen from '@/components/common/loading-screen';
+import MarkdownEditor, {
+  MarkdownData,
+} from '@/components/common/markdown-editor';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-const MDEditor = dynamic(
-  () => import('@uiw/react-md-editor').then((mod) => mod.default),
-  { ssr: false },
-);
+import { Button } from '@/components/ui/button';
+import ComboBox from '@/components/common/combo-box';
+import { Input } from '@/components/ui/input';
+import LoadingScreen from '@/components/common/loading-screen';
+import LoadingSpinner from '@/components/common/loading-spinner';
+import LoadingWrapper from '@/components/common/loading-wrapper';
+import NameTagSelector from '@/components/search/name-tag-selector';
+import NoResult from '@/components/common/no-result';
+import { PostDetail } from '@/types/response/PostDetail';
+import PostPostRequest from '@/types/request/PostPostRequest';
+import Search from '@/components/search/search-input';
+import TranslatePostRequest from '@/types/request/TranslatePostRequest';
+import getMePosts from '@/query/post/get-me-posts';
+import getPost from '@/query/post/get-post';
+import postPost from '@/query/post/post-post';
+import postTranslatePost from '@/query/post/post-translate-post';
+import useClientAPI from '@/hooks/use-client';
+import { useI18n } from '@/locales/client';
+import useLanguages from '@/hooks/use-languages';
+import useQueriesData from '@/hooks/use-queries-data';
+import { useState } from 'react';
+import useTags from '@/hooks/use-tags';
+import { useToast } from '@/hooks/use-toast';
 
 type Shared = {
   header: string;
   setHeader: (data: string) => void;
-  content: string;
-  setContent: (data: string) => void;
+  content: MarkdownData;
+  setContent: (data: MarkdownData) => void;
   language: string;
   setLanguage: (data: string) => void;
 };
@@ -52,15 +49,25 @@ export default function Page() {
   // If post is not undefined then its a translate request
   const [post, setPost] = useState<PostDetail>();
   const [header, setHeader] = useState<string>('');
-  const [content, setContent] = useState<string>('');
+  const [content, setContent] = useState<MarkdownData>({
+    text: '',
+    images: [],
+  });
   const [language, setLanguage] = useState('');
+  const t = useI18n();
+
+  function handlePostSelect(post: PostDetail) {
+    setPost(post);
+    setHeader(post.header);
+    setContent({ text: post.content, images: [] });
+  }
 
   function render() {
     if (post === undefined) {
       return (
         <>
           <div>
-            <AddTranslationDialog onPostSelect={(post) => setPost(post)} />
+            <AddTranslationDialog onPostSelect={handlePostSelect} />
           </div>
           <UploadPage
             shared={{
@@ -80,11 +87,11 @@ export default function Page() {
       <>
         <div>
           <Button
-            title="Change to upload"
+            title={t('upload.go-to-upload-page')}
             variant="secondary"
             onClick={() => setPost(undefined)}
           >
-            Go to upload page
+            {t('upload.go-to-upload-page')}
           </Button>
         </div>
         <TranslatePage
@@ -102,7 +109,9 @@ export default function Page() {
     );
   }
 
-  return <div className="flex h-full flex-col gap-2">{render()}</div>;
+  return (
+    <div className="flex h-full flex-col gap-2 overflow-hidden">{render()}</div>
+  );
 }
 
 function TranslatePage({
@@ -115,22 +124,23 @@ function TranslatePage({
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const languages = useLanguages();
+  const t = useI18n();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: TranslatePostRequest) => postTranslatePost(axios, data),
     onSuccess: () => {
       toast({
-        title: 'Upload post success',
+        title: t('upload.success'),
         variant: 'success',
       });
       setHeader('');
-      setContent('');
+      setContent({ text: '', images: [] });
       invalidateByKey(['post-uploads']);
       invalidateByKey(['total-post-uploads']);
     },
     onError(error) {
       toast({
-        title: 'Upload post failed',
+        title: t('server.upload-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -138,11 +148,11 @@ function TranslatePage({
   });
 
   function checkUploadRequirement() {
-    if (!header) return 'No title';
+    if (!header) return t('upload.no-title');
 
-    if (!content) return 'No content';
+    if (!content) return t('upload.no-content');
 
-    if (!language) return 'No language';
+    if (!language) return t('upload.no-language');
 
     return true;
   }
@@ -150,35 +160,25 @@ function TranslatePage({
   const uploadCheck = checkUploadRequirement();
 
   return (
-    <div className="h-full overflow-y-auto rounded-md">
-      <div className="hidden h-full flex-col justify-between gap-2 md:flex">
-        <div className="flex w-full flex-col gap-2">
-          <div className="w-full rounded-md bg-card p-2">
-            <div className="font-bold">Title</div>
-            <div className="select-text text-sm">{post.header}</div>
-          </div>
-          <div className="w-full rounded-md bg-card p-2">
-            <div className="font-bold">Content</div>
-            <div className="select-text text-sm">{post.content}</div>
-          </div>
-        </div>
-        <div className="flex h-full flex-col gap-1 rounded-md bg-card p-2">
-          <input
-            className="w-full rounded-sm bg-white p-1 text-black outline-none hover:outline-none"
-            placeholder="Title"
+    <div className="flex h-full overflow-hidden rounded-md">
+      <div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
+        <div className="flex h-full flex-col gap-1 overflow-hidden rounded-md bg-card p-2">
+          <Input
+            className="w-full rounded-sm bg-background outline-none hover:outline-none"
+            placeholder={t('upload.title')}
             value={header}
             onChange={(event) => setHeader(event.currentTarget.value)}
           />
-          <MDEditor
+          <MarkdownEditor
             value={content}
-            onChange={(value) => setContent(value ?? '')}
+            onChange={(value) => setContent(value)}
           />
         </div>
-        <div className="flex justify-start gap-2 rounded-md bg-card p-2">
+        <div className="flex items-center justify-start gap-2 rounded-md bg-card p-2">
           <ComboBox
-            placeholder="Select language"
+            placeholder={t('upload.select-language')}
             values={languages
-              .filter((language) => language !== post.language)
+              .filter((language) => language !== post.lang)
               .map((value) => ({
                 value,
                 label: value,
@@ -187,7 +187,7 @@ function TranslatePage({
           />
           <Button
             className="ml-auto"
-            title="Submit"
+            title={t('submit')}
             variant="primary"
             disabled={isPending || uploadCheck !== true}
             onClick={() =>
@@ -195,12 +195,12 @@ function TranslatePage({
                 id: post.id,
                 header,
                 content,
-                language,
+                lang: language,
               })
             }
           >
             <LoadingWrapper isLoading={isPending}>
-              {uploadCheck === true ? 'Upload' : uploadCheck}
+              {uploadCheck === true ? t('upload') : uploadCheck}
             </LoadingWrapper>
           </Button>
         </div>
@@ -223,23 +223,24 @@ function UploadPage({
   const { invalidateByKey } = useQueriesData();
   const { post: postTags } = useTags();
   const languages = useLanguages();
+  const t = useI18n();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: PostPostRequest) => postPost(axios, data),
     onSuccess: () => {
       toast({
-        title: 'Upload post success',
+        title: t('upload.success'),
         variant: 'success',
       });
       setHeader('');
-      setContent('');
+      setContent({ text: '', images: [] });
       setSelectedTags([]);
       invalidateByKey(['post-uploads']);
       invalidateByKey(['total-post-uploads']);
     },
     onError(error) {
       toast({
-        title: 'Upload post failed',
+        title: t('upload.fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -247,13 +248,13 @@ function UploadPage({
   });
 
   function checkUploadRequirement() {
-    if (!header) return 'No title';
+    if (!header) return t('upload.no-title');
 
-    if (!content) return 'No content';
+    if (!content) return t('upload.no-content');
 
-    if (selectedTags.length === 0) return 'No tags';
+    if (!language) return t('upload.no-language');
 
-    if (!language) return 'No language';
+    if (selectedTags.length === 0) return t('upload.no-tags');
 
     return true;
   }
@@ -261,23 +262,23 @@ function UploadPage({
   const uploadCheck = checkUploadRequirement();
 
   return (
-    <div className="h-full overflow-y-auto rounded-md">
-      <div className="hidden h-full flex-col justify-between gap-2 md:flex">
-        <div className="flex h-full flex-col gap-1 rounded-md bg-card p-2">
-          <input
-            className="w-full rounded-sm bg-white p-1 text-black outline-none hover:outline-none"
-            placeholder="Title"
+    <div className="flex h-full flex-col overflow-hidden rounded-md">
+      <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
+        <div className="flex h-full flex-col gap-1 overflow-hidden rounded-md bg-card p-2">
+          <Input
+            className="w-full rounded-sm bg-background outline-none hover:outline-none"
+            placeholder={t('upload.title')}
             value={header}
             onChange={(event) => setHeader(event.currentTarget.value)}
           />
-          <MDEditor
+          <MarkdownEditor
             value={content}
-            onChange={(value) => setContent(value ?? '')}
+            onChange={(value) => setContent(value)}
           />
         </div>
-        <div className="flex justify-start gap-2 rounded-md bg-card p-2">
+        <div className="flex items-center justify-start gap-2 overflow-hidden rounded-md bg-card p-2">
           <ComboBox
-            placeholder="Select language"
+            placeholder={t('upload.select-language')}
             values={languages.map((value) => ({
               value,
               label: value,
@@ -292,27 +293,24 @@ function UploadPage({
           />
           <Button
             className="ml-auto"
-            title="Submit"
+            title={t('submit')}
             variant="primary"
             disabled={isPending || uploadCheck !== true}
             onClick={() =>
               mutate({
                 header,
                 content,
-                language,
+                lang: language,
                 tags: TagGroups.toString(selectedTags),
               })
             }
           >
             <LoadingWrapper isLoading={isPending}>
-              {uploadCheck === true ? 'Upload' : uploadCheck}
+              {uploadCheck === true ? t('upload') : uploadCheck}
             </LoadingWrapper>
           </Button>
         </div>
       </div>
-      <span className="md:hidden">
-        Mobile screen is not supported yet, please use a bigger screen
-      </span>
     </div>
   );
 }
@@ -324,6 +322,7 @@ type AddTranslationDialogProps = {
 function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
   const [name, setName] = useState('');
   const { axios } = useClientAPI();
+  const t = useI18n();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['me-posts', name],
     queryFn: () =>
@@ -354,14 +353,15 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
     }
 
     return data?.map(({ id, header }) => (
-      <button
-        className="flex items-start justify-start border border-border p-2 text-start rounded-md"
+      <Button
+        className="h-full w-full items-center justify-start rounded-md border border-border p-2 text-start hover:bg-button"
+        variant="secondary"
         key={id}
         title={header}
         onClick={() => mutate(id)}
       >
         {header.trim()}
-      </button>
+      </Button>
     ));
   }
 
@@ -372,23 +372,22 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button title="Add translation" variant="secondary">
-          Translate a post
+        <Button title={t('upload.translate-post')} variant="secondary">
+          {t('upload.translate-post')}
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Select post</DialogTitle>
-        <DialogDescription>Post to add translation to</DialogDescription>
+        <DialogTitle>{t('upload.select-post')}</DialogTitle>
         <div className="flex flex-col gap-2">
           <Search>
             <Search.Input
-              placeholder="Post name"
+              placeholder={t('upload.post-name')}
               defaultValue={name}
               onChange={(event) => setName(event.currentTarget.value)}
             />
             <Search.Icon />
           </Search>
-          <div className="flex flex-col gap-1">{render()}</div>
+          <div className="flex w-full flex-col gap-1">{render()}</div>
         </div>
       </DialogContent>
     </Dialog>

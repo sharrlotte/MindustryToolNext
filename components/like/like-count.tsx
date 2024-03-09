@@ -3,12 +3,14 @@
 import { useLike } from '@/context/like-context';
 import { ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 
 type LikeButtonProps = Omit<ButtonProps, 'title'>;
 
 export default function LikeCount({ className, ...props }: LikeButtonProps) {
   const { likeData } = useLike();
   const { count } = likeData;
+  const t = useI18n();
 
   return (
     <button
@@ -22,7 +24,7 @@ export default function LikeCount({ className, ...props }: LikeButtonProps) {
       )}
       size="icon"
       variant="outline"
-      title="like count"
+      title={t('like-count')}
       {...props}
     >
       {count}

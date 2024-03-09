@@ -1,15 +1,16 @@
 import React, { HTMLAttributes } from 'react';
-import Preview from '@/components/preview/preview';
-import { Map } from '@/types/response/Map';
-import env from '@/constant/env';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import LikeComponent from '@/components/like/like-component';
+
 import CopyButton from '@/components/button/copy-button';
-import DownloadButton from '@/components/button/download-button';
 import DislikeButton from '@/components/like/dislike-button';
+import DownloadButton from '@/components/button/download-button';
 import LikeButton from '@/components/like/like-button';
+import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
+import Link from 'next/link';
+import { Map } from '@/types/response/Map';
+import Preview from '@/components/preview/preview';
+import { cn } from '@/lib/utils';
+import env from '@/constant/env';
 
 type MapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;
@@ -29,7 +30,6 @@ export default function MapPreview({
     >
       <CopyButton
         className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
-        title="Copy"
         variant="ghost"
         data={link}
         content={link}

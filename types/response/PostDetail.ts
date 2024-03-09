@@ -7,7 +7,7 @@ export interface PostDetail {
   content: string;
   like: number;
   tags: string[];
-  language: string
+  lang: string
   translations: Record<
     string,
     {

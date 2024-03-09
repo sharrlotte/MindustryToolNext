@@ -1,6 +1,6 @@
+import Image from 'next/image';
 import React from 'react';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -8,7 +8,7 @@ function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'flex min-h-preview animate-appear flex-col items-center justify-between overflow-hidden rounded-md border shadow-md',
+        'flex h-full min-h-preview animate-appear flex-col items-center justify-between overflow-hidden rounded-md border shadow-md',
         className,
       )}
       {...props}
@@ -27,7 +27,7 @@ function Header({ className, children }: HeaderProps) {
         className,
       )}
     >
-      <h2 className="m-auto text-center">{children}</h2>
+      <h4 className="m-auto text-center">{children}</h4>
     </div>
   );
 }
@@ -41,7 +41,7 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
   return (
     <figure
       className={cn(
-        'flex h-full w-full items-center justify-center',
+        'flex h-full min-h-preview w-full items-center justify-center',
         className,
       )}
     >

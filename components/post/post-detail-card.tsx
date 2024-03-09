@@ -21,6 +21,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
 import ProtectedElement from '@/layout/protected-element';
 import TagContainer from '@/components/tag/tag-container';
+import { useI18n } from '@/locales/client';
 
 type PostDetailCardProps = {
   post: PostDetail;
@@ -34,6 +35,7 @@ export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
   const { back } = useRouter();
   const { toast } = useToast();
   const { data: session } = useSession();
+  const t = useI18n();
 
   const { mutate: removePost, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => putRemovePost(axios, id),
@@ -42,13 +44,13 @@ export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
       invalidateByKey(['post-uploads']);
       back();
       toast({
-        title: 'Take down post successfully',
+        title: t('take-down-success'),
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to take down post',
+        title: t('take-down-fail'),
         description: error.message,
         variant: 'destructive',
       });

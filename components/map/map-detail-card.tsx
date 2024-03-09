@@ -21,6 +21,7 @@ import { useSession } from 'next-auth/react';
 import ProtectedElement from '@/layout/protected-element';
 import TakeDownButton from '@/components/button/take-down-button';
 import { useRouter } from 'next/navigation';
+import { useI18n } from '@/locales/client';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -36,6 +37,8 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
   const { toast } = useToast();
   const { data: session } = useSession();
 
+  const t = useI18n();
+
   const { mutate: removeMap, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => putRemoveMap(axios, id),
     onSuccess: () => {
@@ -43,13 +46,13 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
       invalidateByKey(['map-uploads']);
       back();
       toast({
-        title: 'Take down map successfully',
+        title: t('take-down-success'),
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: 'Failed to take down map',
+        title: t('take-down-fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -62,7 +65,6 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
         <div className="relative">
           <CopyButton
             className="absolute left-1 top-1"
-            title="Copy"
             variant="ghost"
             data={link}
             content={link}
@@ -77,7 +79,7 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
           <Detail.Title>{map.name}</Detail.Title>
           <IdUserCard id={map.authorId} />
           <div className="flex items-end gap-2">
-            <span>Verified by</span>
+            <span>{t('verified-by')}</span>
             <IdUserCard id={map.verifyAdmin} />
           </div>
           <Detail.Description>{map.description}</Detail.Description>

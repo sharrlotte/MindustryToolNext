@@ -7,6 +7,7 @@ import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { AxiosInstance } from 'axios';
 import React, { ReactNode } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
+import { useI18n } from '@/locales/client';
 
 type InfinitePageProps<T, P> = {
   className?: string;
@@ -28,6 +29,7 @@ export default function InfinitePage<
   getFunc,
   children,
 }: InfinitePageProps<T, P>) {
+  const t = useI18n();
   const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
     useInfinitePageQuery(getFunc, params, queryKey);
 
@@ -68,12 +70,12 @@ export default function InfinitePage<
           className="col-span-full flex w-full items-center justify-center"
           key="End"
         >
-          End
+          {t('end-of-page')}
         </span>
       )}
       {isError && (
         <div className="flex w-full justify-center">
-          Error : {error?.message}
+          {t('error')} : {error?.message}
         </div>
       )}
     </InfiniteScroll>

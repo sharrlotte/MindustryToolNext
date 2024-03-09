@@ -11,16 +11,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import env from '@/constant/env';
 import { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 
 type ThemeSwitcherProps = HTMLAttributes<HTMLDivElement>;
 
+export const themes = ['light', 'dark', 'system'] as const;
+
+type ThemeType = (typeof themes)[number];
+
 export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
   const { setTheme } = useTheme();
+  const t = useI18n();
 
-  const handleSetTheme = (event: React.MouseEvent, theme: string) => {
+  const handleSetTheme = (event: React.MouseEvent, theme: ThemeType) => {
     setTheme(theme);
     event.stopPropagation();
   };
@@ -39,13 +44,13 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {env.themes.map((theme) => (
+        {themes.map((theme) => (
           <DropdownMenuItem
             key={theme}
             className="capitalize"
             onClick={(event) => handleSetTheme(event, theme)}
           >
-            {theme}
+            {t(theme)}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

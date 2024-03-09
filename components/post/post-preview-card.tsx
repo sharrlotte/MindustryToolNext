@@ -41,7 +41,6 @@ export default function PostPreviewCard({
           <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
             <CopyButton
               className="border border-border "
-              title="Copy"
               variant="outline"
               data={link}
               content={link}

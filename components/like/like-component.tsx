@@ -47,7 +47,7 @@ function LikeComponent({
   const requireLogin = () => {
     toast({
       title: 'You are not logged in',
-      description: 'Login in to like post',
+      description: 'Login in to like',
     });
   };
 

@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 const configSchema = z.object({
   webVersion: z.string(),
-  themes: z.array(z.string()),
   locales: z.array(z.string()),
   defaultLocale: z.string(),
   url: z.object({
@@ -15,10 +14,9 @@ const configSchema = z.object({
 });
 
 const env = configSchema.parse({
-  webVersion: 'Beta 0.9.0',
-  themes: ['light', 'dark', 'system'],
-  locales: ['vi', 'en-US'],
-  defaultLocale: 'en-US',
+  webVersion: 'Version 1.0.0',
+  locales: ['vi', 'en'],
+  defaultLocale: 'en',
   url: {
     socket: process.env.NEXT_PUBLIC_BACKEND_SOCKET_URL,
     base: process.env.NEXT_PUBLIC_FRONTEND_URL,

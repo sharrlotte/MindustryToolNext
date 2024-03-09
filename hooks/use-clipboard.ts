@@ -1,4 +1,5 @@
 import { useToast } from '@/hooks/use-toast';
+import { useI18n } from '@/locales/client';
 
 type CopyProps = {
   data: string;
@@ -10,12 +11,9 @@ let dismissLast: (() => void) | null = null;
 
 export default function useClipboard() {
   const { toast } = useToast();
+  const t = useI18n();
 
-  return async ({
-    data,
-    title = 'Copied',
-    content = 'Data has been copied to clipboard',
-  }: CopyProps) => {
+  return async ({ data, title = t('copied'), content = '' }: CopyProps) => {
     await navigator.clipboard.writeText(data);
     if (dismissLast) dismissLast();
     const { dismiss } = toast({

@@ -1,26 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import Detail from '@/components/detail/detail';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import { ChangeEvent, useEffect, useState } from 'react';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
 import { Button } from '@/components/ui/button';
+import Detail from '@/components/detail/detail';
 import IdUserCard from '@/components/user/id-user-card';
-import UserCard from '@/components/user/user-card';
-import { PNG_IMAGE_PREFIX } from '@/constant/constant';
-import useClientAPI from '@/hooks/use-client';
-import useTags from '@/hooks/use-tags';
-import { useToast } from '@/hooks/use-toast';
-import postMap from '@/query/map/post-map';
-import postMapPreview from '@/query/map/post-map-preview';
-import PostMapRequest from '@/types/request/PostMapRequest';
+import LoadingWrapper from '@/components/common/loading-wrapper';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import MapPreviewResponse from '@/types/response/MapPreviewResponse';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import NameTagSelector from '@/components/search/name-tag-selector';
+import { PNG_IMAGE_PREFIX } from '@/constant/constant';
+import PostMapRequest from '@/types/request/PostMapRequest';
+import UserCard from '@/components/user/user-card';
+import postMap from '@/query/map/post-map';
+import postMapPreview from '@/query/map/post-map-preview';
+import useClientAPI from '@/hooks/use-client';
+import { useI18n } from '@/locales/client';
 import { useMutation } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import { ChangeEvent, useEffect, useState } from 'react';
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import useQueriesData from '@/hooks/use-queries-data';
+import { useSession } from 'next-auth/react';
+import useTags from '@/hooks/use-tags';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Page() {
   const { axios } = useClientAPI();
@@ -33,13 +35,15 @@ export default function Page() {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 
+  const t = useI18n();
+
   const { mutate: getMapPreview, isPending: isLoadingMapPreview } = useMutation(
     {
       mutationFn: (data: MapPreviewRequest) => postMapPreview(axios, data),
       onSuccess: (data) => setPreview(data),
       onError(error) {
         toast({
-          title: 'Failed to get preview',
+          title: t('upload.get-preview-fail'),
           description: error.message,
           variant: 'destructive',
         });
@@ -52,7 +56,7 @@ export default function Page() {
     mutationFn: (data: PostMapRequest) => postMap(axios, data),
     onSuccess: () => {
       toast({
-        title: 'Upload map success',
+        title: t('upload.success'),
         variant: 'success',
       });
       setFile(undefined);
@@ -62,7 +66,7 @@ export default function Page() {
     },
     onError(error) {
       toast({
-        title: 'Upload map failed',
+        title: t('upload.fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -75,7 +79,7 @@ export default function Page() {
     const files = event.target.files;
     if (!files || files.length <= 0 || !files[0]) {
       toast({
-        title: 'No file selected',
+        title: t('upload.no-file'),
         variant: 'destructive',
       });
       return;
@@ -85,7 +89,7 @@ export default function Page() {
 
     if (extension !== 'msav') {
       toast({
-        title: 'Invalid file extension, file must end with .msav',
+        title: t('upload.invalid-map-file'),
         variant: 'destructive',
       });
       return;
@@ -110,7 +114,7 @@ export default function Page() {
   }, [file, getMapPreview]);
 
   function checkUploadRequirement() {
-    if (!file) return 'No map data';
+    if (!file) return t('upload.no-file');
 
     return true;
   }
@@ -129,10 +133,12 @@ export default function Page() {
                 <Button
                   className="text-sm"
                   variant="primary"
-                  title="Select file"
+                  title={t('upload.select-map')}
                   asChild
                 >
-                  <span title="Select map">Select map</span>
+                  <span title={t('upload.select-map')}>
+                    {t('upload.select-map')}
+                  </span>
                 </Button>
               )}
             </LoadingWrapper>
@@ -163,12 +169,12 @@ export default function Page() {
         <Button
           className="w-fit"
           variant="primary"
-          title="Upload"
+          title={t('upload')}
           onClick={() => handleSubmit()}
           disabled={isLoading || uploadCheck !== true}
         >
           <LoadingWrapper isLoading={isLoading}>
-            {uploadCheck === true ? 'Upload' : uploadCheck}
+            {uploadCheck === true ? t('upload') : uploadCheck}
           </LoadingWrapper>
         </Button>
       </div>
