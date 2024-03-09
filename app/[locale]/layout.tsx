@@ -43,22 +43,12 @@ const icon = localFont({
   variable: '--font-icon',
 });
 
-export async function generateStaticParams(): Promise<RootParam[]> {
-  return env.locales.map((locale) => {
-    return {
-      locale,
-    };
-  });
-}
-
 type RootProps = {
   children: React.ReactNode;
   params: RootParam;
 };
 
 export default function Root({ children, params }: RootProps) {
-  setStaticParamsLocale(params.locale);
-
   return (
     <html
       className={cn(
