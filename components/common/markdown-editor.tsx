@@ -36,6 +36,7 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Markdown from '@/components/common/markdown';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 import { useForm } from 'react-hook-form';
 import { useI18n } from '@/locales/client';
@@ -222,15 +223,6 @@ export default function MarkdownEditor({
           </Button>
         </div>
         <div>
-          <Button
-            className="p-1"
-            size="icon"
-            title={t('line-break')}
-            variant="icon"
-            onClick={() => insertAtCaret('\n----------\n')}
-          >
-            <HRIcon className="h-3 w-3" />
-          </Button>
           <LinkDialog onAccept={insertAtCaret}>
             <LinkChainIcon className="h-3 w-3" />
           </LinkDialog>
@@ -505,7 +497,9 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
     },
   });
 
-  function handleFilePick(files: FileList | null) {
+  function handleFilePick(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = event.currentTarget.files;
+
     if (!files || files.length === 0) {
       return;
     }
@@ -517,6 +511,9 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
 
     form.setValue('image', url);
   }
+
+  const imageUrl = form.getValues('image') && 'blob:' + form.getValues('image');
+  const hasImage = URL.canParse(imageUrl);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -572,9 +569,7 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
                         hidden
                         accept=".png, .jpg"
                         type="file"
-                        onChange={(event) =>
-                          handleFilePick(event.currentTarget.files)
-                        }
+                        onChange={handleFilePick}
                       />
                     </div>
                   </FormControl>
@@ -582,6 +577,20 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
                 </FormItem>
               )}
             />
+            {hasImage && (
+              <div className="relative">
+                <Button
+                  className="absolute right-0 top-0"
+                  title={t('delete')}
+                  size="icon"
+                  variant="icon"
+                  onClick={() => form.reset({ image: undefined })}
+                >
+                  <XMarkIcon className="h-4 w-4" />
+                </Button>
+                <img src={imageUrl} />
+              </div>
+            )}
             <div className="flex justify-end">
               <Button
                 className="ml-auto"

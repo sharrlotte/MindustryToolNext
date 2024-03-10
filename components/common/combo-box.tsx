@@ -57,24 +57,24 @@ export default function ComboBox<T>({
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput />
-          <CommandEmpty>No value found.</CommandEmpty>
+          <CommandEmpty>No value found</CommandEmpty>
           <CommandGroup>
-            {values.map((v) => (
+            {values.map((item) => (
               <CommandItem
-                key={v.label}
-                value={v.label}
+                key={item.label}
+                value={item.label}
                 onSelect={(currentLabel) => {
-                  setValue(currentLabel === value?.label ? undefined : v);
+                  setValue(currentLabel === value?.label ? undefined : item);
                   setOpen(false);
                 }}
               >
                 <CheckIcon
                   className={cn(
                     'mr-2 h-4 w-4',
-                    value === v.value ? 'opacity-100' : 'opacity-0',
+                    value === item.value ? 'opacity-100' : 'opacity-0',
                   )}
                 />
-                {v.label}
+                {item.label}
               </CommandItem>
             ))}
           </CommandGroup>

@@ -7,8 +7,45 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import useSocket from '@/hooks/use-socket';
+import { useQuery } from '@tanstack/react-query';
+import useClientAPI from '@/hooks/use-client';
+import getLogCollections from '@/query/log/get-log-collections';
+import ComboBox from '@/components/common/combo-box';
+import getLogs from '@/query/log/get-logs';
+import InfinitePage from '@/components/common/infinite-page';
+import { LogCollection } from '@/constant/enum';
+import LogCard from '@/components/log/log-card';
 
 export default function LogPage() {
+  const [collection, setCollection] = useState<string>();
+
+  const { axios, enabled } = useClientAPI();
+  const { data } = useQuery({
+    queryKey: ['log-types'],
+    initialData: [],
+    queryFn: () => getLogCollections(axios),
+    enabled,
+  });
+
+  return (
+    <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
+      <ComboBox
+        values={['LIVE', ...data].map((item) => ({
+          label: item,
+          value: item,
+        }))}
+        onChange={setCollection}
+      />
+      {collection && collection !== 'LIVE' ? (
+        <StaticLog collection={collection} />
+      ) : (
+        <LiveLog />
+      )}
+    </div>
+  );
+}
+
+function LiveLog() {
   const { socket, state } = useSocket();
 
   const [isLoaded, setLoaded] = useState(false);
@@ -74,18 +111,18 @@ export default function LogPage() {
         </div>
       </div>
       <form
-        className="flex h-10 flex-1 gap-2"
+        className="flex h-10 flex-1 gap-1"
         name="text"
         onSubmit={handleFormSubmit}
       >
         <input
-          className="h-full w-full rounded-md border border-border bg-background px-2 outline-none"
+          className="h-10 w-full rounded-md border border-border bg-background px-2 outline-none"
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
         <Button
           className={cn({
-            'h-full bg-button hover:bg-button': state === 'connected',
+            'h-10 bg-button hover:bg-button': state === 'connected',
           })}
           type="submit"
           title={t('send')}
@@ -94,6 +131,31 @@ export default function LogPage() {
           {t('send')}
         </Button>
       </form>
+    </div>
+  );
+}
+
+type StaticLogProps = {
+  collection: string;
+};
+
+function StaticLog({ collection }: StaticLogProps) {
+  const scrollContainer = useRef<HTMLDivElement | null>();
+
+  return (
+    <div
+      className="relative grid h-full items-center gap-4 overflow-y-auto overflow-x-hidden"
+      ref={(ref) => (scrollContainer.current = ref)}
+    >
+      <InfinitePage
+        className="grid items-center justify-center gap-2"
+        params={{ page: 0, collection: collection as LogCollection }}
+        queryKey={['logs']}
+        getFunc={getLogs}
+        scrollContainer={scrollContainer.current}
+      >
+        {(data) => <LogCard key={data.id} log={data} />}
+      </InfinitePage>
     </div>
   );
 }

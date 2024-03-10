@@ -10,6 +10,7 @@ import MarkdownEditor, {
   MarkdownData,
 } from '@/components/common/markdown-editor';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { useDeferredValue, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
@@ -29,10 +30,10 @@ import getPost from '@/query/post/get-post';
 import postPost from '@/query/post/post-post';
 import postTranslatePost from '@/query/post/post-translate-post';
 import useClientAPI from '@/hooks/use-client';
+import { useDebounceValue } from 'usehooks-ts';
 import { useI18n } from '@/locales/client';
 import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useState } from 'react';
 import useTags from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 
@@ -85,7 +86,7 @@ export default function Page() {
 
     return (
       <>
-        <div>
+        <div className="space-x-2">
           <Button
             title={t('upload.go-to-upload-page')}
             variant="secondary"
@@ -93,6 +94,7 @@ export default function Page() {
           >
             {t('upload.go-to-upload-page')}
           </Button>
+          <AddTranslationDialog onPostSelect={handlePostSelect} />
         </div>
         <TranslatePage
           post={post}
@@ -159,6 +161,18 @@ function TranslatePage({
 
   const uploadCheck = checkUploadRequirement();
 
+  const validLanguages = languages
+    .filter(
+      (language) =>
+        language !== post.lang &&
+        post.translations &&
+        !Object.keys(post.translations).includes(language),
+    )
+    .map((value) => ({
+      value,
+      label: value,
+    }));
+
   return (
     <div className="flex h-full overflow-hidden rounded-md">
       <div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
@@ -177,12 +191,7 @@ function TranslatePage({
         <div className="flex items-center justify-start gap-2 rounded-md bg-card p-2">
           <ComboBox
             placeholder={t('upload.select-language')}
-            values={languages
-              .filter((language) => language !== post.lang)
-              .map((value) => ({
-                value,
-                label: value,
-              }))}
+            values={validLanguages}
             onChange={(value) => setLanguage(value ?? '')}
           />
           <Button
@@ -320,8 +329,8 @@ type AddTranslationDialogProps = {
 };
 
 function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
-  const [name, setName] = useState('');
-  const { axios } = useClientAPI();
+  const [name, setName] = useDebounceValue('', 500);
+  const { axios, enabled } = useClientAPI();
   const t = useI18n();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['me-posts', name],
@@ -332,6 +341,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         tags: [],
         sort: 'time_1',
       }),
+    enabled,
   });
 
   const { mutate, isPending } = useMutation({

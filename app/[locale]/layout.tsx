@@ -12,7 +12,6 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import env from '@/constant/env';
 import localFont from 'next/font/local';
-import { setStaticParamsLocale } from 'next-international/server';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),

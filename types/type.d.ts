@@ -36,7 +36,8 @@ declare global {
     | 'total-schematic-uploads'
     | 'total-map-uploads'
     | 'total-post-uploads'
-    | 'servers';
+    | 'servers'
+    | 'logs';
 
   type TQueryKey = QueryKey;
 }
