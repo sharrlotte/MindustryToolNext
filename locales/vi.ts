@@ -86,7 +86,7 @@ export default {
   'take-down-alert': 'Gỡ {name}',
   'take-down-fail': 'Gỡ thất bại',
   'take-down-success': 'Gỡ thành công',
-  'try-again': 'Try again',
+  'try-again': 'Thử lại',
   upload: 'Đăng',
   'upload.clipboard-empty': 'Bộ nhớ đệm trống',
   'upload.content': 'Nội dung',

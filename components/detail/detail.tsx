@@ -35,7 +35,7 @@ type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 function Info({ className, children }: InfoProps) {
   return (
-    <div className={cn('flex flex-row flex-wrap gap-2', className)}>
+    <div className={cn('flex flex-col gap-2 md:flex-row', className)}>
       {children}
     </div>
   );

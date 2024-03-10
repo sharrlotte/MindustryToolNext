@@ -1,7 +1,7 @@
-import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
-import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
 import React from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
+import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
+import { cn } from '@/lib/utils';
 
 type DetailSkeletonProps = {
   padding?: boolean;
@@ -15,7 +15,7 @@ export default function DetailSkeleton({ padding }: DetailSkeletonProps) {
       })}
     >
       <div className="relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch">
-        <div className="flex flex-row flex-wrap gap-2">
+        <div className="flex flex-col gap-2 md:flex-row">
           <div className="relative overflow-hidden rounded-lg">
             <Skeleton className="h-[400px] max-h-full w-[400px] max-w-full" />
           </div>
