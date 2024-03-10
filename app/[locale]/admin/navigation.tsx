@@ -1,36 +1,39 @@
 'use client';
 
-import useClientAPI from '@/hooks/use-client';
+import React, { ReactNode } from 'react';
+
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
 import getTotalMapUpload from '@/query/map/get-total-map-upload';
 import getTotalPostUpload from '@/query/post/get-total-post-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
-import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
+import useClientAPI from '@/hooks/use-client';
+import { useI18n } from '@/locales/client';
 import { usePathname } from 'next/navigation';
-import React, { ReactNode } from 'react';
-
-const paths: Array<{
-  name: ReactNode;
-  path: string;
-}> = [
-  { name: 'dashboard', path: '' },
-  { name: 'log', path: 'logs' },
-  { name: <SchematicPath />, path: 'schematics' },
-  { name: <MapPath />, path: 'maps' },
-  { name: <PostPath />, path: 'posts' },
-  { name: 'setting', path: 'settings' },
-];
+import { useQuery } from '@tanstack/react-query';
 
 type NavigationProps = {
   children: ReactNode;
 };
 
 export default function Navigation({ children }: NavigationProps) {
+  const t = useI18n();
+
   let pathname = usePathname();
   let firstSlash = pathname.indexOf('/', 1);
   pathname = pathname.slice(firstSlash);
+
+  const paths: Array<{
+    name: ReactNode;
+    path: string;
+  }> = [
+    { name: t('dashboard'), path: '' },
+    { name: t('log'), path: 'logs' },
+    { name: <SchematicPath />, path: 'schematics' },
+    { name: <MapPath />, path: 'maps' },
+    { name: <PostPath />, path: 'posts' },
+    { name: t('setting'), path: 'settings' },
+  ];
 
   return (
     <div className="grid h-full w-full grid-rows-[3rem_1fr] gap-2 p-4">

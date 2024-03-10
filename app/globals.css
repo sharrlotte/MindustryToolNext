@@ -97,7 +97,7 @@
   }
 
   blockquote {
-    @apply m-0 border-l border-[#6a737d] p-0;
+    @apply m-0 border-l-4 border-zinc-300 p-0 pl-2;
   }
 
   p > code {
