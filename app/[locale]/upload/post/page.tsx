@@ -161,6 +161,18 @@ function TranslatePage({
 
   const uploadCheck = checkUploadRequirement();
 
+  const validLanguages = languages
+    .filter(
+      (language) =>
+        language !== post.lang &&
+        post.translations &&
+        !Object.keys(post.translations).includes(language),
+    )
+    .map((value) => ({
+      value,
+      label: value,
+    }));
+
   return (
     <div className="flex h-full overflow-hidden rounded-md">
       <div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
@@ -179,12 +191,7 @@ function TranslatePage({
         <div className="flex items-center justify-start gap-2 rounded-md bg-card p-2">
           <ComboBox
             placeholder={t('upload.select-language')}
-            values={languages
-              .filter((language) => language !== post.lang)
-              .map((value) => ({
-                value,
-                label: value,
-              }))}
+            values={validLanguages}
             onChange={(value) => setLanguage(value ?? '')}
           />
           <Button
