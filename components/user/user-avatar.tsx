@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 type UserAvatarProps = {
   className?: string;
+  url?: string;
   user: {
     name?: string | null;
     id: string;
@@ -67,9 +70,12 @@ const colorArray = [
 
 export default function UserAvatar({
   className,
+  url,
   user: { id, imageUrl, name },
 }: UserAvatarProps) {
   const [isError, setError] = useState(false);
+
+  useEffect(() => setError(false), [imageUrl]);
 
   const username = name ?? '';
 
@@ -80,6 +86,7 @@ export default function UserAvatar({
         total += username.charCodeAt(i);
       }
       const color = colorArray[total % colorArray.length];
+
       return (
         <div
           className={cn(
@@ -100,10 +107,11 @@ export default function UserAvatar({
         width={32}
         src={imageUrl}
         alt={username}
+        priority
         onError={() => setError(true)}
       />
     );
   };
 
-  return <Link href={`users/${id}`}>{render()}</Link>;
+  return <Link href={url ?? `/users/${id}`}>{render()}</Link>;
 }

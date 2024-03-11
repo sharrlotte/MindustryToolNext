@@ -45,16 +45,18 @@ export default function MapPreview({
         <Preview.Header className="h-12">{map.name}</Preview.Header>
         <Preview.Actions>
           <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
-          <LikeComponent
-            targetId={map.id}
-            targetType="MAPS"
-            initialLikeCount={map.like}
-            initialLikeData={map.userLike}
-          >
-            <LikeButton />
-            <LikeCount />
-            <DislikeButton />
-          </LikeComponent>
+          {map.status === 'VERIFIED' && (
+            <LikeComponent
+              targetId={map.id}
+              targetType="MAPS"
+              initialLikeCount={map.like}
+              initialLikeData={map.userLike}
+            >
+              <LikeButton />
+              <LikeCount />
+              <DislikeButton />
+            </LikeComponent>
+          )}
         </Preview.Actions>
       </Preview.Description>
     </Preview>

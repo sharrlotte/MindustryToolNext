@@ -1,3 +1,4 @@
+import { Status } from '@/types/response/Status';
 import { Like } from './Like';
 
 export type Map = {
@@ -5,4 +6,5 @@ export type Map = {
   name: string;
   like: number;
   userLike: Like;
+  status: Status;
 };

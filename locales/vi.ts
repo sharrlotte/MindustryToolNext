@@ -6,6 +6,7 @@ export default {
   dashboard: 'Bảng điều khiển',
   log: 'Nhật ký',
   setting: 'Cài đặt',
+  user: 'Người dùng',
   admin: 'Quản trị viên',
   'are-you-sure': 'Bạn đã chắc chắn chưa',
   bold: 'In hoa',

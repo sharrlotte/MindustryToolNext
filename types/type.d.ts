@@ -37,7 +37,13 @@ declare global {
     | 'total-map-uploads'
     | 'total-post-uploads'
     | 'servers'
-    | 'logs';
+    | 'logs'
+    | 'user-schematics'
+    | 'user-maps'
+    | 'user-posts'
+    | 'me-schematics'
+    | 'me-maps'
+    | 'me-posts';
 
   type TQueryKey = QueryKey;
 }

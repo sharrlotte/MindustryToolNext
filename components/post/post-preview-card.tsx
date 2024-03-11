@@ -45,16 +45,18 @@ export default function PostPreviewCard({
               data={link}
               content={link}
             />
-            <LikeComponent
-              targetId={post.id}
-              targetType="POSTS"
-              initialLikeCount={post.like}
-              initialLikeData={post.userLike}
-            >
-              <LikeButton />
-              <LikeCount />
-              <DislikeButton />
-            </LikeComponent>
+            {post.status === 'VERIFIED' && (
+              <LikeComponent
+                targetId={post.id}
+                targetType="POSTS"
+                initialLikeCount={post.like}
+                initialLikeData={post.userLike}
+              >
+                <LikeButton />
+                <LikeCount />
+                <DislikeButton />
+              </LikeComponent>
+            )}
           </div>
         </div>
       </div>

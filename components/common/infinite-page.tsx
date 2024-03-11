@@ -35,7 +35,7 @@ export default function InfinitePage<
 
   if (isLoading || !data) {
     return (
-      <LoadingSpinner className="absolute bottom-0 left-0 right-0 top-0 mb-2" />
+      <LoadingSpinner className="flex h-full w-full items-center justify-center" />
     );
   }
 

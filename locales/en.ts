@@ -7,6 +7,7 @@ export default {
   log: 'Log',
   setting: 'Setting',
   admin: 'Admin',
+  user: 'User',
   'are-you-sure': 'Are you sure',
   bold: 'Bold',
   back: 'Back',

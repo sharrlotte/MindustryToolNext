@@ -31,6 +31,7 @@ import env from '@/constant/env';
 import { useI18n } from '@/locales/client';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { ShieldIcon } from 'lucide-react';
 
 export default function NavigationBar() {
   const t = useI18n();
@@ -62,6 +63,11 @@ export default function NavigationBar() {
       icon: <ServerStackIcon className="h-6 w-6" />,
     },
     {
+      path: '/users/me', //
+      name: t('user'),
+      icon: <UserCircleIcon className="h-6 w-6" />,
+    },
+    {
       path: '/logic', //
       name: t('logic'),
       icon: <CommandLineIcon className="h-6 w-6" />,
@@ -75,7 +81,7 @@ export default function NavigationBar() {
       path: '/admin', //
       name: t('admin'),
       roles: ['ADMIN'],
-      icon: <UserCircleIcon className="h-6 w-6" />,
+      icon: <ShieldIcon className="h-6 w-6" />,
     },
   ];
 
@@ -178,7 +184,11 @@ function UserDisplay() {
     return (
       <div className="flex h-16 flex-1 items-center justify-between rounded-sm bg-card p-1">
         <div className="flex items-center justify-center gap-1">
-          <UserAvatar className="h-12 w-12" user={session.user} />
+          <UserAvatar
+            className="h-12 w-12"
+            user={session.user}
+            url="/users/me"
+          />
           <div className="grid p-1">
             <span className="capitalize">{session.user.name}</span>
             <UserRoleCard roles={session.user.roles} />
