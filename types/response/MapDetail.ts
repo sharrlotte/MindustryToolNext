@@ -1,3 +1,4 @@
+import { Status } from '@/types/response/Status';
 import { Like } from './Like';
 
 export interface MapDetail {
