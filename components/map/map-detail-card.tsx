@@ -22,6 +22,8 @@ import ProtectedElement from '@/layout/protected-element';
 import TakeDownButton from '@/components/button/take-down-button';
 import { useRouter } from 'next/navigation';
 import { useI18n } from '@/locales/client';
+import deleteMap from '@/query/map/delete-map';
+import DeleteButton from '@/components/button/delete-button';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -58,6 +60,29 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
       });
     },
   });
+
+  const { mutate: deleteMapById, isPending: isDeleting } = useMutation({
+    mutationFn: (id: string) => deleteMap(axios, id),
+    onSuccess: () => {
+      deleteById(['map-uploads'], map.id);
+      invalidateByKey(['total-map-uploads']);
+      invalidateByKey(['maps']);
+      back();
+      toast({
+        title: t('delete-success'),
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: t('delete-fail'),
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const isLoading = isDeleting || isRemoving;
 
   return (
     <Detail padding={padding}>
@@ -99,11 +124,22 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
             <LikeCount />
             <DislikeButton />
           </LikeComponent>
-          <ProtectedElement session={session} ownerId={map.authorId}>
+          <ProtectedElement
+            session={session}
+            ownerId={map.authorId}
+            show={map.status === 'VERIFIED'}
+          >
             <TakeDownButton
               isLoading={isRemoving}
               description={`Take down this map: ${map.name}`}
               onClick={() => removeMap(map.id)}
+            />
+          </ProtectedElement>
+          <ProtectedElement session={session} ownerId={map.authorId}>
+            <DeleteButton
+              description={`${t('delete')} ${map.name}`}
+              isLoading={isLoading}
+              onClick={() => deleteMapById(map.id)}
             />
           </ProtectedElement>
         </div>

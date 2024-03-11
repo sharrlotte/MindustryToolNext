@@ -1,3 +1,4 @@
+import { Status } from '@/types/response/Status';
 import { Like } from './Like';
 
 export interface MapDetail {
@@ -9,7 +10,7 @@ export interface MapDetail {
   like: number;
   height: number;
   width: number;
-  isVerified: boolean;
+  status: Status;
   verifyAdmin: string;
   userLike: Like;
 }

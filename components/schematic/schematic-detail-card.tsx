@@ -25,6 +25,8 @@ import TakeDownButton from '@/components/button/take-down-button';
 import { useRouter } from 'next/navigation';
 import { useI18n } from '@/locales/client';
 import useToastAction from '@/hooks/use-toast-action';
+import deleteSchematic from '@/query/schematic/delete-schematic';
+import DeleteButton from '@/components/button/delete-button';
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -61,6 +63,28 @@ export default function SchematicDetailCard({
       });
     },
   });
+
+  const { mutate: deleteSchematicById, isPending: isDeleting } = useMutation({
+    mutationFn: (id: string) => deleteSchematic(axios, id),
+    onSuccess: () => {
+      deleteById(['schematic-uploads'], schematic.id);
+      invalidateByKey(['total-schematic-uploads']);
+      back();
+      toast({
+        title: t('delete-success'),
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: t('delete-fail'),
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const isLoading = isRemoving || isDeleting;
 
   const link = `${env.url.base}/schematics/${schematic.id}`;
 
@@ -119,11 +143,22 @@ export default function SchematicDetailCard({
             <LikeCount />
             <DislikeButton />
           </LikeComponent>
-          <ProtectedElement session={session} ownerId={schematic.authorId}>
+          <ProtectedElement
+            session={session}
+            ownerId={schematic.authorId}
+            show={schematic.status === 'VERIFIED'}
+          >
             <TakeDownButton
-              isLoading={isRemoving}
+              isLoading={isLoading}
               description={t('take-down-alert', { name: schematic.name })}
               onClick={() => removeSchematic(schematic.id)}
+            />
+          </ProtectedElement>
+          <ProtectedElement session={session} ownerId={schematic.authorId}>
+            <DeleteButton
+              description={`${t('delete')} ${schematic.name}`}
+              isLoading={isLoading}
+              onClick={() => deleteSchematicById(schematic.id)}
             />
           </ProtectedElement>
         </div>

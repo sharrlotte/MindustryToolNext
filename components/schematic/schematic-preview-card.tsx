@@ -69,16 +69,18 @@ export default function SchematicPreviewCard({
           <DownloadButton
             href={`${env.url.api}/schematics/${schematic.id}/download`}
           />
-          <LikeComponent
-            targetId={schematic.id}
-            targetType="SCHEMATICS"
-            initialLikeCount={schematic.like}
-            initialLikeData={schematic.userLike}
-          >
-            <LikeButton />
-            <LikeCount />
-            <DislikeButton />
-          </LikeComponent>
+          {schematic.status === 'VERIFIED' && (
+            <LikeComponent
+              targetId={schematic.id}
+              targetType="SCHEMATICS"
+              initialLikeCount={schematic.like}
+              initialLikeData={schematic.userLike}
+            >
+              <LikeButton />
+              <LikeCount />
+              <DislikeButton />
+            </LikeComponent>
+          )}
         </Preview.Actions>
       </Preview.Description>
     </Preview>
