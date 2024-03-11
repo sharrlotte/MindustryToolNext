@@ -9,7 +9,7 @@ export interface MapDetail {
   like: number;
   height: number;
   width: number;
-  isVerified: boolean;
+  status: Status;
   verifyAdmin: string;
   userLike: Like;
 }

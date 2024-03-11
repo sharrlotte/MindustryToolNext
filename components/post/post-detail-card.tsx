@@ -22,6 +22,8 @@ import { useSession } from 'next-auth/react';
 import ProtectedElement from '@/layout/protected-element';
 import TagContainer from '@/components/tag/tag-container';
 import { useI18n } from '@/locales/client';
+import deletePost from '@/query/post/delete-post';
+import DeleteButton from '@/components/button/delete-button';
 
 type PostDetailCardProps = {
   post: PostDetail;
@@ -57,6 +59,29 @@ export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
     },
   });
 
+  const { mutate: deletePostById, isPending: isDeleting } = useMutation({
+    mutationFn: (id: string) => deletePost(axios, id),
+    onSuccess: () => {
+      deleteById(['post-uploads'], post.id);
+      invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
+      back();
+      toast({
+        title: t('delete-success'),
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: t('delete-fail'),
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const isLoading = isDeleting || isRemoving;
+
   return (
     <Detail padding={padding}>
       <header className="grid gap-2 pb-4">
@@ -81,11 +106,22 @@ export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
           <LikeCount />
           <DislikeButton />
         </LikeComponent>
-        <ProtectedElement session={session} ownerId={post.authorId}>
+        <ProtectedElement
+          session={session}
+          ownerId={post.authorId}
+          show={post.status === 'VERIFIED'}
+        >
           <TakeDownButton
-            isLoading={isRemoving}
+            isLoading={isLoading}
             description={`Take down this post: ${post.header}`}
             onClick={() => removePost(post.id)}
+          />
+        </ProtectedElement>
+        <ProtectedElement session={session} ownerId={post.authorId}>
+          <DeleteButton
+            description={`${t('delete')} ${post.header}`}
+            isLoading={isLoading}
+            onClick={() => deletePostById(post.id)}
           />
         </ProtectedElement>
         <BackButton className="ml-auto" />

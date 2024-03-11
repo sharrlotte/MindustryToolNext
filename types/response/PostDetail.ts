@@ -1,4 +1,5 @@
 import { Like } from '@/types/response/Like';
+import { Status } from '@/types/response/Status';
 
 export interface PostDetail {
   id: string;
@@ -8,6 +9,7 @@ export interface PostDetail {
   like: number;
   tags: string[];
   lang: string
+  status: Status
   translations: Record<
     string,
     {

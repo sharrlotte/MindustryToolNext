@@ -13,17 +13,15 @@ export default function ColorAsRole({
   children,
   roles,
 }: ColorAsRoleProps) {
-  const render = (roles: UserRole[] | undefined) => {
-    if (!roles) {
-      return children;
-    }
+  if (!roles) {
+    return <span className={cn(className)}>{children}</span>;
+  }
 
-    if (roles.includes('ADMIN')) {
-      return <span>{children}</span>;
-    }
-  };
+  if (roles.includes('ADMIN')) {
+    return (
+      <span className={cn('text-emerald-400', className)}>{children}</span>
+    );
+  }
 
-  return (
-    <span className={cn('text-emerald-400', className)}>{render(roles)}</span>
-  );
+  return <span className={cn(className)}>{children}</span>;
 }

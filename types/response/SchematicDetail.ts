@@ -1,3 +1,4 @@
+import { Status } from '@/types/response/Status';
 import { ItemRequirement } from './ItemRequirement';
 import { Like } from './Like';
 
@@ -11,7 +12,7 @@ export interface SchematicDetail {
   like: number;
   height: number;
   width: number;
-  isVerified: boolean;
+  status: Status
   verifyAdmin: string;
   userLike: Like;
 }
