@@ -8,15 +8,14 @@ type LogCardProps = {
 
 export default function LogCard({ log }: LogCardProps) {
   return (
-    <div className="no-scrollbar grid w-full overflow-x-auto rounded-md bg-card p-2">
+    <div className="no-scrollbar flex h-full w-full flex-col overflow-x-auto overflow-y-hidden rounded-md bg-card p-2">
       <span>URL: {log.requestUrl}</span>
       <span>IP: {log.ip}</span>
       <span>UserID: {log.userId}</span>
       <span>Content: {log.content}</span>
       <span>Environment: {log.environment}</span>
-      <span>
-        Created at: {moment(new Date(log.createdAt).toISOString()).fromNow()}
-      </span>
+      <span>Created at: {moment(log.createdAt).fromNow()}</span>
+      <span>Created at: {new Date(log.createdAt).toUTCString()}</span>
     </div>
   );
 }

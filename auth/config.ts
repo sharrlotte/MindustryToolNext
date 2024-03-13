@@ -2,7 +2,6 @@ import NextAuth from 'next-auth';
 import Discord from 'next-auth/providers/discord';
 import serverEnv from '@/constant/serverEnv';
 import env from '@/constant/env';
-import { env as environment } from 'process';
 import { RefreshTokenResponse } from '@/types/response/RefreshTokenResponse';
 import { JWT } from 'next-auth/jwt';
 import { LoginResponse } from '@/types/response/LoginResponse';
@@ -13,9 +12,9 @@ const authData: {
   refreshToken: string;
   expireTime: number;
 } = {
-  accessToken: environment.API_ACCESS_TOKEN || '',
-  refreshToken: environment.API_REFRESH_TOKEN || '',
-  expireTime: Number(environment.API_EXPIRE_TIME ?? '0'),
+  accessToken: '',
+  refreshToken: '',
+  expireTime: Number('0'),
 };
 
 const JWT_VERSION = 1;

@@ -30,6 +30,7 @@ export default function LogPage() {
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
       <ComboBox
+        defaultValue={{ label: 'LIVE', value: 'LIVE' }}
         values={['LIVE', ...data].map((item) => ({
           label: item,
           value: item,
@@ -141,15 +142,23 @@ type StaticLogProps = {
 
 function StaticLog({ collection }: StaticLogProps) {
   const scrollContainer = useRef<HTMLDivElement | null>();
-
+  const [env, setEnv] = useState<'Prod' | 'Dev' | undefined>(undefined);
   return (
     <div
-      className="relative grid h-full items-center gap-4 overflow-y-auto overflow-x-hidden"
+      className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2"
       ref={(ref) => (scrollContainer.current = ref)}
     >
+      <ComboBox
+        defaultValue={{ label: 'Prod', value: 'Prod' }}
+        values={[
+          { value: 'Prod', label: 'Prod' },
+          { value: 'Dev', label: 'Dev' },
+        ]}
+        onChange={setEnv}
+      />
       <InfinitePage
-        className="grid items-center justify-center gap-2"
-        params={{ page: 0, collection: collection as LogCollection }}
+        className="flex w-full flex-col items-center justify-center gap-2"
+        params={{ page: 0, collection: collection as LogCollection, env }}
         queryKey={['logs']}
         getFunc={getLogs}
         scrollContainer={scrollContainer.current}
