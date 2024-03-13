@@ -5,7 +5,7 @@ import { AxiosInstance } from 'axios';
 
 type GetLogParams = Pageable & {
   collection: LogCollection;
-  env: 'Prod' | 'Dev' | undefined;
+  env?: 'Prod' | 'Dev';
 };
 
 export default async function getLogs(
