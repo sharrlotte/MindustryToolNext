@@ -10,33 +10,70 @@ export type SocketState =
   | 'disconnecting'
   | 'disconnected';
 
+export type EventHandler = (data: any, event: MessageEvent) => void;
+
+type DataEvent =
+  | {
+      method: 'LOAD';
+      data: string[];
+    }
+  | {
+      method: 'MESSAGE';
+      data: string;
+    };
+
+type MessagePayload =
+  | {
+      method: 'MESSAGE';
+      data: string;
+    }
+  | {
+      method: 'LOAD';
+    }
+  | {
+      method: 'AUTHORIZATION';
+      data: string;
+    };
+
 export default class SocketClient {
   private socket: ReconnectingWebSocket;
 
   static instance: SocketClient;
 
-  public message?: (data: any, event: MessageEvent) => void;
+  handlers: Record<string, EventHandler> = {};
+
   public error?: (event: ErrorEvent) => void;
   public connect?: (event: Event) => void;
   public disconnect?: (event: CloseEvent) => void;
 
+  public onMessage<T extends DataEvent['method']>(
+    method: T,
+    handler: (data: Extract<DataEvent, { method: T }>['data']) => void,
+  ) {
+    this.handlers[method] = handler;
+  }
+
   constructor(url: string) {
     this.socket = new ReconnectingWebSocket(url);
 
-    this.socket.onmessage = (event) => {
+    this.socket.onmessage = async (event) => {
       try {
-        if (this.message) {
-          this.message(JSON.parse(event.data), event);
+        const data = event.data;
+        const message = JSON.parse(data);
+
+        const handler = this.handlers[message.method];
+
+        if (!handler) {
+          return;
         }
+
+        handler(message.data, event);
       } catch (error) {
-        console.error(event);
+        console.error(error);
       }
     };
     this.socket.onerror = (event) => {
       if (this.error) this.error(event);
-      if (this.message == null) {
-        this.close();
-      }
     };
     this.socket.onopen = (event) => {
       if (this.connect) this.connect(event);
@@ -76,16 +113,3 @@ export default class SocketClient {
     }
   }
 }
-
-type MessagePayload =
-  | {
-      method: 'MESSAGE';
-      data: string;
-    }
-  | {
-      method: 'LOAD';
-    }
-  | {
-      method: 'AUTHORIZATION';
-      data: string;
-    };

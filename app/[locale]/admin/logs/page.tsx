@@ -64,7 +64,8 @@ function LiveLog() {
   };
 
   if (socket) {
-    socket.message = (message) => addLog(message);
+    socket.onMessage('LOAD', (message) => addLog(message));
+    socket.onMessage('MESSAGE', (message) => addLog([message]));
   }
 
   useEffect(() => {
@@ -98,12 +99,15 @@ function LiveLog() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
-        <div className="flex h-full flex-col gap-1 overflow-auto pr-2">
+        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden pr-2">
           {isLoaded ? (
             log.slice(log.length - 200).map((item, index) => (
-              <span className="rounded-lg bg-background p-2" key={index}>
+              <div
+                className="text-wrap rounded-lg bg-background p-2"
+                key={index}
+              >
                 {item}
-              </span>
+              </div>
             ))
           ) : (
             <LoadingSpinner className="h-full w-full" />
@@ -117,13 +121,13 @@ function LiveLog() {
         onSubmit={handleFormSubmit}
       >
         <input
-          className="h-10 w-full rounded-md border border-border bg-background px-2 outline-none"
+          className="h-full w-full rounded-md border border-border bg-background px-2 outline-none"
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
         <Button
-          className={cn({
-            'h-10 bg-button hover:bg-button': state === 'connected',
+          className={cn('h-full', {
+            'bg-button hover:bg-button': state === 'connected',
           })}
           type="submit"
           title={t('send')}
@@ -141,13 +145,10 @@ type StaticLogProps = {
 };
 
 function StaticLog({ collection }: StaticLogProps) {
-  const scrollContainer = useRef<HTMLDivElement | null>();
   const [env, setEnv] = useState<'Prod' | 'Dev' | undefined>(undefined);
+
   return (
-    <div
-      className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2"
-      ref={(ref) => (scrollContainer.current = ref)}
-    >
+    <>
       <ComboBox
         defaultValue={{ label: 'Prod', value: 'Prod' }}
         values={[
@@ -156,15 +157,16 @@ function StaticLog({ collection }: StaticLogProps) {
         ]}
         onChange={setEnv}
       />
-      <InfinitePage
-        className="flex w-full flex-col items-center justify-center gap-2"
-        params={{ page: 0, collection: collection as LogCollection, env }}
-        queryKey={['logs']}
-        getFunc={getLogs}
-        scrollContainer={scrollContainer.current}
-      >
-        {(data) => <LogCard key={data.id} log={data} />}
-      </InfinitePage>
-    </div>
+      <div className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2">
+        <InfinitePage
+          className="flex w-full flex-col items-center justify-center gap-2"
+          params={{ page: 0, collection: collection as LogCollection, env }}
+          queryKey={['logs']}
+          getFunc={getLogs}
+        >
+          {(data) => <LogCard key={data.id} log={data} />}
+        </InfinitePage>
+      </div>
+    </>
   );
 }

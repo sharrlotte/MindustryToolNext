@@ -166,7 +166,7 @@ export default function NameTagSearch({
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex justify-center gap-2">
-        <Search className="w-full md:w-1/2">
+        <Search className="w-full">
           <Search.Icon className="p-1" />
           <Search.Input
             placeholder={t('search-by-name')}

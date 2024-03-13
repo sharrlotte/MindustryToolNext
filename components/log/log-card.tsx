@@ -8,7 +8,7 @@ type LogCardProps = {
 
 export default function LogCard({ log }: LogCardProps) {
   return (
-    <div className="no-scrollbar flex h-full w-full flex-col overflow-x-auto overflow-y-hidden rounded-md bg-card p-2">
+    <div className="no-scrollbar flex h-full w-full flex-col overflow-hidden rounded-md bg-card p-2">
       <span>URL: {log.requestUrl}</span>
       <span>IP: {log.ip}</span>
       <span>UserID: {log.userId}</span>
