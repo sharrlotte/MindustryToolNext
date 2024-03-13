@@ -5,16 +5,18 @@ import { AxiosInstance } from 'axios';
 
 type GetLogParams = Pageable & {
   collection: LogCollection;
+  env?: 'Prod' | 'Dev';
 };
 
 export default async function getLogs(
   axios: AxiosInstance,
-  { collection, page }: GetLogParams,
+  { collection, page, env }: GetLogParams,
 ): Promise<Log[]> {
   const result = await axios.get(`logs/${collection}`, {
     params: {
       page,
       items: 20,
+      env,
     },
   });
 

@@ -1,7 +1,7 @@
 import SocketClient from '@/types/data/SocketClient';
 import { create } from 'zustand';
 
-type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
+export type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
 
 type SocketStore = {
   socket?: SocketClient;
