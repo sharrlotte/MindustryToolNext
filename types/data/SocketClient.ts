@@ -12,13 +12,17 @@ export type SocketState =
 
 export type EventHandler = (data: any, event: MessageEvent) => void;
 
-type DataEvent =
+type SocketEvent =
   | {
       method: 'LOAD';
       data: string[];
     }
   | {
       method: 'MESSAGE';
+      data: string;
+    }
+  | {
+      method: 'ROOM_MESSAGE';
       data: string;
     };
 
@@ -33,6 +37,14 @@ type MessagePayload =
   | {
       method: 'AUTHORIZATION';
       data: string;
+    }
+  | {
+      method: 'JOIN_ROOM';
+      data: string;
+    }
+  | {
+      method: 'LEAVE_ROOM';
+      data: string;
     };
 
 export default class SocketClient {
@@ -46,9 +58,9 @@ export default class SocketClient {
   public connect?: (event: Event) => void;
   public disconnect?: (event: CloseEvent) => void;
 
-  public onMessage<T extends DataEvent['method']>(
+  public onMessage<T extends SocketEvent['method']>(
     method: T,
-    handler: (data: Extract<DataEvent, { method: T }>['data']) => void,
+    handler: (data: Extract<SocketEvent, { method: T }>['data']) => void,
   ) {
     this.handlers[method] = handler;
   }
