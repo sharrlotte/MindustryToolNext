@@ -16,13 +16,9 @@ export default function useSocket(): UseSocket {
   const accessToken = session?.user?.accessToken;
 
   useEffect(() => {
-    if (socket) {
-      return;
-    }
-
     const instance = new SocketClient(`${env.url.socket}/socket`);
     setSocket(instance);
-  }, [socket, setSocket]);
+  }, []);
 
   useEffect(() => {
     if (
@@ -42,6 +38,12 @@ export default function useSocket(): UseSocket {
 
     setAuthState('authenticated');
   }, [accessToken, socket, status, authState, setAuthState]);
+
+  useEffect(() => {
+    return () => {
+      setAuthState('loading');
+    };
+  }, []);
 
   return {
     socket: socket,

@@ -5,14 +5,14 @@ export type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
 
 type SocketStore = {
   socket?: SocketClient;
-  setSocket: (socket: SocketClient) => void;
+  setSocket: (socket?: SocketClient) => void;
   authState: AuthState;
   setAuthState: (state: AuthState) => void;
 };
 
 const useSocketStore = create<SocketStore>((set) => ({
   socket: undefined,
-  setSocket: (socket: SocketClient) => set({ socket }),
+  setSocket: (socket?: SocketClient) => set({ socket }),
   authState: 'loading',
   setAuthState: (authState) => set({ authState }),
 }));
