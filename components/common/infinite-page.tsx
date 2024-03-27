@@ -17,6 +17,10 @@ type InfinitePageProps<T, P> = {
   loader?: ReactElement<any, string | JSXElementConstructor<any>>;
   noResult?: ReactNode;
   end?: ReactNode;
+  skeleton?: {
+    amount: number;
+    item: ReactNode;
+  };
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
   children: (data: T, index?: number) => ReactNode;
 };
@@ -32,23 +36,33 @@ export default function InfinitePage<
   loader,
   noResult,
   end,
+  skeleton,
   getFunc,
   children,
 }: InfinitePageProps<T, P>) {
   const t = useI18n();
-  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
-    useInfinitePageQuery(getFunc, params, queryKey);
-
-  loader = loader ?? (
-    <LoadingSpinner
-      key="loading"
-      className="col-span-full flex h-full w-full items-center justify-center"
-    />
-  );
+  const {
+    data,
+    isLoading,
+    error,
+    isError,
+    hasNextPage,
+    isFetching,
+    fetchNextPage,
+  } = useInfinitePageQuery(getFunc, params, queryKey);
 
   noResult = noResult ?? (
     <NoResult className="flex w-full items-center justify-center" />
   );
+
+  if (!loader && !skeleton) {
+    loader = (
+      <LoadingSpinner
+        key="loading"
+        className="col-span-full flex h-full w-full items-center justify-center"
+      />
+    );
+  }
 
   end = end ?? (
     <span
@@ -60,7 +74,26 @@ export default function InfinitePage<
   );
 
   if (isLoading || !data) {
-    return loader;
+    return (
+      <div
+        className={
+          className ??
+          'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-4'
+        }
+      >
+        {loader
+          ? loader
+          : skeleton && (
+              <>
+                {Array(skeleton.amount)
+                  .fill(1)
+                  .map((_, index) => (
+                    <React.Fragment key={index}>{skeleton.item}</React.Fragment>
+                  ))}
+              </>
+            )}
+      </div>
+    );
   }
 
   const pages = data.pages
@@ -89,6 +122,15 @@ export default function InfinitePage<
         <div className="flex w-full justify-center">
           {t('error')} : {error?.message}
         </div>
+      )}
+      {isFetching && skeleton && (
+        <>
+          {Array(skeleton.amount)
+            .fill(1)
+            .map((_, index) => (
+              <React.Fragment key={index}>{skeleton.item}</React.Fragment>
+            ))}
+        </>
       )}
     </InfiniteScroll>
   );

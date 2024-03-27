@@ -26,7 +26,7 @@ declare module 'next-auth/jwt' {
 }
 
 declare global {
-  type QueryKey =
+  type QueryKey = (
     | 'schematics'
     | 'maps'
     | 'posts'
@@ -43,7 +43,9 @@ declare global {
     | 'user-posts'
     | 'me-schematics'
     | 'me-maps'
-    | 'me-posts';
+    | 'me-posts'
+  ) &
+    any;
 
   type TQueryKey = QueryKey;
 }

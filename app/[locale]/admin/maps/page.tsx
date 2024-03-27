@@ -3,6 +3,7 @@
 import InfinitePage from '@/components/common/infinite-page';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useTags from '@/hooks/use-tags';
 import getMapUploads from '@/query/map/get-map-uploads';
@@ -24,6 +25,10 @@ export default function Page() {
         getFunc={getMapUploads}
         params={params}
         scrollContainer={scrollContainer.current}
+        skeleton={{
+          amount: 20,
+          item: <PreviewSkeleton />,
+        }}
       >
         {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
       </InfinitePage>

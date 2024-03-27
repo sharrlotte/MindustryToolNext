@@ -7,6 +7,7 @@ import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import MapPreviewCard from '@/components/map/map-preview-card';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 export default function MapPage() {
   const { map } = useTags();
@@ -24,6 +25,10 @@ export default function MapPage() {
         queryKey={['maps']}
         getFunc={getMaps}
         scrollContainer={scrollContainer.current}
+        skeleton={{
+          amount: 20,
+          item: <PreviewSkeleton />,
+        }}
       >
         {(data) => <MapPreviewCard key={data.id} map={data} />}
       </InfinitePage>

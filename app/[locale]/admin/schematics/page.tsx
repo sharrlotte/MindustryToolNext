@@ -3,6 +3,7 @@
 import InfinitePage from '@/components/common/infinite-page';
 import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useTags from '@/hooks/use-tags';
 import getSchematicUploads from '@/query/schematic/get-schematic-uploads';
@@ -24,6 +25,10 @@ export default function Page() {
         queryKey={['schematic-uploads']}
         getFunc={getSchematicUploads}
         scrollContainer={scrollContainer.current}
+        skeleton={{
+          amount: 20,
+          item: <PreviewSkeleton />,
+        }}
       >
         {(data) => (
           <UploadSchematicPreviewCard key={data.id} schematic={data} />
