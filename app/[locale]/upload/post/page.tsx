@@ -358,9 +358,11 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
       return <span>{error.message}</span>;
     }
 
-    if (data?.length === 0) {
+    if (!data || data?.length === 0) {
       return <NoResult />;
     }
+
+    console.log(data);
 
     return data?.map(({ id, header }) => (
       <Button
