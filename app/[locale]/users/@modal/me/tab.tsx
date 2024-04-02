@@ -5,6 +5,7 @@ import MapPreviewCard from '@/components/map/map-preview-card';
 import PostPreviewCard from '@/components/post/post-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
@@ -52,6 +53,10 @@ export default function Tab({ me }: TabProps) {
               queryKey={['me-schematics']}
               getFunc={getMeSchematics}
               scrollContainer={scrollContainer.current}
+              skeleton={{
+                amount: 20,
+                item: <PreviewSkeleton />,
+              }}
             >
               {(data) => (
                 <SchematicPreviewCard key={data.id} schematic={data} />
@@ -67,6 +72,10 @@ export default function Tab({ me }: TabProps) {
               queryKey={['me-maps']}
               getFunc={getMeMaps}
               scrollContainer={scrollContainer.current}
+              skeleton={{
+                amount: 20,
+                item: <PreviewSkeleton />,
+              }}
             >
               {(data) => <MapPreviewCard key={data.id} map={data} />}
             </InfinitePage>

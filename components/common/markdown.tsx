@@ -3,6 +3,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { cn } from '@/lib/utils';
 import rehypeSanitize from 'rehype-sanitize';
+import env from '@/constant/env';
 
 interface MarkdownProps {
   className?: string;
@@ -25,7 +26,7 @@ function RouterLink({ href, children }: any) {
 }
 
 function MarkdownImage({ src, alt }: any) {
-  if (src && src.includes('localhost')) {
+  if (src && src.includes(env.url.base)) {
     src = 'blob:' + src;
   }
 

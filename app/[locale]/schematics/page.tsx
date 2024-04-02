@@ -7,6 +7,7 @@ import useTags from '@/hooks/use-tags';
 import { useRef } from 'react';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 export default function Page() {
   const { schematic } = useTags();
@@ -24,6 +25,10 @@ export default function Page() {
         queryKey={['schematics']}
         getFunc={getSchematics}
         scrollContainer={scrollContainer.current}
+        skeleton={{
+          amount: 20,
+          item: <PreviewSkeleton />,
+        }}
       >
         {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
       </InfinitePage>
