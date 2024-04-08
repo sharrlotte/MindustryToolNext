@@ -8,12 +8,14 @@ export const searchSchema = z.object({
   authorId: z.string().default('').optional(),
   tags: z.array(z.string()).default([]).optional(),
   sort: sortSchema.optional(),
+  items: z.number().gte(0).lte(100).optional().default(20),
 });
 
 export type PaginationSearchQuery = z.infer<typeof searchSchema>;
 
 export type PaginationQuery = {
   page: number;
+  items: number;
 };
 
 export const statusSearchSchema = z.object({
@@ -23,6 +25,7 @@ export const statusSearchSchema = z.object({
   tags: z.array(z.string()).default([]).optional(),
   sort: sortSchema.optional(),
   status: z.enum(verifyStatus).default('UNSET'),
+  items: z.number().gte(0).lte(100).optional().default(20),
 });
 
 export type StatusPaginationSearchQuery = z.infer<typeof statusSearchSchema>;

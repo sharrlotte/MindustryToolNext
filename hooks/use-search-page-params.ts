@@ -16,5 +16,6 @@ export default function useSearchPageParams(): PaginationSearchQuery {
     tags: query.getAll(QueryParams.tags),
     authorId: query.get(QueryParams.authorId),
     status: query.get(QueryParams.status),
+    items: Number.parseInt(query.get(QueryParams.items, '20')),
   });
 }
