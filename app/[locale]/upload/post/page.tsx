@@ -338,6 +338,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
       getMePosts(axios, {
         page: 0,
         name,
+        items: 20,
         tags: [],
         sort: 'time_1',
       }),
@@ -361,8 +362,6 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
     if (!data || data?.length === 0) {
       return <NoResult />;
     }
-
-    console.log(data);
 
     return data?.map(({ id, header }) => (
       <Button

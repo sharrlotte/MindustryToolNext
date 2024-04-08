@@ -12,7 +12,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
   const initialData: T[] = [];
 
   const getNextPageParam = (lastPage: T[], pages: T[][], lastPageParams: P) => {
-    if (!lastPage || lastPage.length === 0) {
+    if (!lastPage || lastPage.length === 0 || lastPage.length < params.items) {
       return undefined;
     }
     lastPageParams.page += 1;
@@ -24,7 +24,12 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     pages: T[][],
     lastPageParams: P,
   ) => {
-    if (!lastPage || lastPage.length == 0 || lastPageParams.page <= 0) {
+    if (
+      !lastPage ||
+      lastPageParams.page <= 0 ||
+      lastPage.length === 0 ||
+      lastPage.length < params.items
+    ) {
       return undefined;
     }
     lastPageParams.page -= 1;

@@ -15,6 +15,8 @@ import getLogs from '@/query/log/get-logs';
 import InfinitePage from '@/components/common/infinite-page';
 import { LogCollection } from '@/constant/enum';
 import LogCard from '@/components/log/log-card';
+import { PaginationQuery } from '@/types/data/pageable-search-schema';
+import { Log } from '@/types/response/Log';
 
 export default function LogPage() {
   const [collection, setCollection] = useState<string>();
@@ -144,6 +146,11 @@ type StaticLogProps = {
   collection: string;
 };
 
+type LogPaginationQuery = PaginationQuery & {
+  collection: LogCollection;
+  env: 'Prod' | 'Dev' | undefined;
+};
+
 function StaticLog({ collection }: StaticLogProps) {
   const [env, setEnv] = useState<'Prod' | 'Dev' | undefined>(undefined);
 
@@ -158,9 +165,14 @@ function StaticLog({ collection }: StaticLogProps) {
         onChange={setEnv}
       />
       <div className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2">
-        <InfinitePage
+        <InfinitePage<Log, LogPaginationQuery>
           className="flex w-full flex-col items-center justify-center gap-2"
-          params={{ page: 0, collection: collection as LogCollection, env }}
+          params={{
+            page: 0,
+            items: 20,
+            collection: collection as LogCollection,
+            env,
+          }}
           queryKey={['logs']}
           getFunc={getLogs}
         >

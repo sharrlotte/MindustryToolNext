@@ -28,7 +28,7 @@ export default async function Home() {
             <li>
               <Link
                 className="text-button hover:text-button"
-                href="posts/65c7a3416ae1177545c438e1"
+                href="posts/66138f77b02b7c52c1dc6281"
               >
                 {t('home.download-tutorial')}
               </Link>
@@ -36,7 +36,7 @@ export default async function Home() {
             <li>
               <Link
                 className="text-button hover:text-button"
-                href="/posts/6520298fa61f817d3a535be4"
+                href="/posts/660c1d0a078cab34e564e269"
               >
                 {t('home.play-with-friend-tutorial')}
               </Link>
