@@ -1,6 +1,7 @@
 import env from '@/constant/env';
 import Axios from 'axios';
 import { notFound } from 'next/navigation';
+import https from 'https';
 
 export class RestApiError extends Error {
   message: string;
