@@ -2,7 +2,6 @@ import 'server-only';
 import { auth } from '@/auth/config';
 import { APIInstance } from '@/hooks/use-client';
 import axiosInstance from '@/query/config/config';
-import https from 'https';
 
 const getServerAPI = async (): Promise<APIInstance> => {
   const session = await auth();

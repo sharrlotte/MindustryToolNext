@@ -15,14 +15,17 @@ export type EventHandler = (data: any, event: MessageEvent) => void;
 type SocketEvent =
   | {
       method: 'LOAD';
+      room: string;
       data: string[];
     }
   | {
       method: 'MESSAGE';
+      room: string;
       data: string;
     }
   | {
       method: 'ROOM_MESSAGE';
+      room: string;
       data: string;
     };
 
@@ -58,11 +61,18 @@ export default class SocketClient {
   public connect?: (event: Event) => void;
   public disconnect?: (event: CloseEvent) => void;
 
+  private room: string = '';
+
   public onMessage<T extends SocketEvent['method']>(
     method: T,
     handler: (data: Extract<SocketEvent, { method: T }>['data']) => void,
   ) {
-    this.handlers[method] = handler;
+    this.handlers[method + this.room] = handler;
+    this.room = '';
+  }
+
+  public onRoom(room: string) {
+    this.room = room;
   }
 
   constructor(url: string) {
@@ -99,7 +109,8 @@ export default class SocketClient {
   }
 
   public send(payload: MessagePayload) {
-    this.socket.send(JSON.stringify(payload));
+    this.socket.send(JSON.stringify({ ...payload, room: this.room }));
+    this.room = '';
   }
 
   public close() {
