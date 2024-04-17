@@ -36,14 +36,14 @@ export default function useSocket(): UseSocket {
       data: accessToken,
     });
 
+    console.log({ accessToken });
+
     setAuthState('authenticated');
   }, [accessToken, socket, status, authState, setAuthState]);
 
   useEffect(() => {
-    return () => {
-      setAuthState('loading');
-    };
-  }, []);
+    setAuthState('loading');
+  }, [socket]);
 
   return {
     socket: socket,

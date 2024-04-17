@@ -32,6 +32,7 @@ export default function Navigation({ children }: NavigationProps) {
     { name: <SchematicPath />, path: 'schematics' },
     { name: <MapPath />, path: 'maps' },
     { name: <PostPath />, path: 'posts' },
+    { name: t('server'), path: 'servers' },
     { name: t('setting'), path: 'settings' },
   ];
 
