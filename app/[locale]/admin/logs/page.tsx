@@ -3,7 +3,6 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import LoadingSpinner from '@/components/common/loading-spinner';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import useSocket from '@/hooks/use-socket';
@@ -49,9 +48,8 @@ export default function LogPage() {
 }
 
 function LiveLog() {
-  const { socket, state } = useSocket();
+  const { socket, state, isAuthenticated } = useSocket();
 
-  const [isLoaded, setLoaded] = useState(false);
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
   const bottomRef = useRef<HTMLSpanElement | null>();
@@ -60,15 +58,11 @@ function LiveLog() {
 
   const addLog = (message: string[]) => {
     setLog((prev) => [...prev, ...message]);
+
     setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };
-
-  if (socket) {
-    socket.onMessage('LOAD', (message) => addLog(message));
-    socket.onMessage('MESSAGE', (message) => addLog([message]));
-  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -79,16 +73,19 @@ function LiveLog() {
   }, []);
 
   useEffect(() => {
-    if (!isLoaded && socket && state === 'connected') {
-      setLoaded(true);
-      socket.send({ method: 'LOAD' });
+    if (socket && state === 'connected' && isAuthenticated) {
+      socket.send({ method: 'JOIN_ROOM', data: 'LOG' });
+      socket.onRoom('LOG').send({ method: 'LOAD' });
+
+      socket.onRoom('LOG').onMessage('LOAD', (message) => addLog(message));
+      socket.onRoom('LOG').onMessage('MESSAGE', (message) => addLog([message]));
     }
-  }, [socket, isLoaded, state]);
+  }, [socket, state, isAuthenticated]);
 
   const sendMessage = () => {
     if (socket && state === 'connected') {
       setMessage('');
-      socket.send({ data: message, method: 'MESSAGE' });
+      socket.onRoom('LOG').send({ data: message, method: 'MESSAGE' });
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   };
@@ -102,18 +99,11 @@ function LiveLog() {
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
         <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden pr-2">
-          {isLoaded ? (
-            log.slice(log.length - 200).map((item, index) => (
-              <div
-                className="text-wrap rounded-lg bg-background p-2"
-                key={index}
-              >
-                {item}
-              </div>
-            ))
-          ) : (
-            <LoadingSpinner className="h-full w-full" />
-          )}
+          {log.map((item, index) => (
+            <div className="text-wrap rounded-lg bg-background p-2" key={index}>
+              {item}
+            </div>
+          ))}
           <span ref={(ref) => (bottomRef.current = ref)}></span>
         </div>
       </div>

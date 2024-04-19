@@ -1,22 +1,29 @@
 import env from '@/constant/env';
+import { useSocketContext } from '@/context/socket-context';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
-import useSocketStore from '@/zustand/socket-store';
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 type UseSocket = {
   socket: SocketClient | undefined;
   state: SocketState;
+  isAuthenticated: boolean;
 };
 
 export default function useSocket(): UseSocket {
-  const { socket, authState, setSocket, setAuthState } = useSocketStore();
+  const { socket, authState, setSocket, setAuthState } = useSocketContext();
 
+  const [state, setState] = useState<SocketState>('connected');
   const { data: session, status } = useSession();
   const accessToken = session?.user?.accessToken;
 
   useEffect(() => {
     const instance = new SocketClient(`${env.url.socket}/socket`);
+
+    instance.onDisconnect(() => setAuthState('loading'));
+    instance.onDisconnect(() => setState('disconnected'));
+    instance.onConnect(() => setState('connected'));
+
     setSocket(instance);
   }, []);
 
@@ -26,7 +33,7 @@ export default function useSocket(): UseSocket {
       status === 'loading' ||
       !accessToken ||
       !socket ||
-      socket.getState() !== 'connected'
+      state !== 'connected'
     ) {
       return;
     }
@@ -36,17 +43,20 @@ export default function useSocket(): UseSocket {
       data: accessToken,
     });
 
-    console.log({ accessToken });
-
     setAuthState('authenticated');
-  }, [accessToken, socket, status, authState, setAuthState]);
+  }, [accessToken, socket, status, state, authState, setAuthState]);
 
   useEffect(() => {
-    setAuthState('loading');
-  }, [socket]);
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
+  }, []);
 
   return {
-    socket: socket,
-    state: socket?.getState() ?? 'disconnected',
+    socket,
+    state,
+    isAuthenticated: authState === 'authenticated',
   };
 }
