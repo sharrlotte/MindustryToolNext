@@ -12,6 +12,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import env from '@/constant/env';
 import localFont from 'next/font/local';
+import { SocketContext, SocketProvider } from '@/context/socket-context';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
@@ -73,15 +74,17 @@ export default function Root({ children, params }: RootProps) {
               refetchOnWindowFocus={false}
               refetchInterval={2 * 60}
             >
-              <QueryProvider>
-                <ClientInit />
-                <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
-                  <NavigationBar />
-                  <div className="relative h-full w-full overflow-hidden">
-                    {children}
+              <SocketProvider>
+                <QueryProvider>
+                  <ClientInit />
+                  <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
+                    <NavigationBar />
+                    <div className="relative h-full w-full overflow-hidden">
+                      {children}
+                    </div>
                   </div>
-                </div>
-              </QueryProvider>
+                </QueryProvider>
+              </SocketProvider>
             </SessionProvider>
           </ThemeProvider>
         </I18nProviderClient>

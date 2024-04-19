@@ -10,6 +10,8 @@ export type SocketState =
   | 'disconnecting'
   | 'disconnected';
 
+export type SocketRoom = 'SERVER' | 'LOG' | string;
+
 export type EventHandler = (data: any, event: MessageEvent) => void;
 
 type SocketEvent =
@@ -57,9 +59,9 @@ export default class SocketClient {
 
   handlers: Record<string, EventHandler> = {};
 
-  public error?: (event: ErrorEvent) => void;
-  public connect?: (event: Event) => void;
-  public disconnect?: (event: CloseEvent) => void;
+  private errors: ((event: ErrorEvent) => void)[] = [];
+  private connects: ((event: Event) => void)[] = [];
+  private disconnects: ((event: CloseEvent) => void)[] = [];
 
   private room: string = '';
 
@@ -71,8 +73,10 @@ export default class SocketClient {
     this.room = '';
   }
 
-  public onRoom(room: string) {
+  public onRoom(room: SocketRoom) {
     this.room = room;
+
+    return this;
   }
 
   constructor(url: string) {
@@ -83,7 +87,7 @@ export default class SocketClient {
         const data = event.data;
         const message = JSON.parse(data);
 
-        const handler = this.handlers[message.method];
+        const handler = this.handlers[message.method + message.room];
 
         if (!handler) {
           return;
@@ -95,13 +99,13 @@ export default class SocketClient {
       }
     };
     this.socket.onerror = (event) => {
-      if (this.error) this.error(event);
+      this.errors.forEach((error) => error(event));
     };
     this.socket.onopen = (event) => {
-      if (this.connect) this.connect(event);
+      this.connects.forEach((connect) => connect(event));
     };
     this.socket.onclose = (event) => {
-      if (this.disconnect) this.disconnect(event);
+      this.disconnects.forEach((disconnect) => disconnect(event));
     };
 
     SocketClient.instance?.close();
@@ -111,6 +115,18 @@ export default class SocketClient {
   public send(payload: MessagePayload) {
     this.socket.send(JSON.stringify({ ...payload, room: this.room }));
     this.room = '';
+  }
+
+  public onConnect(handler: (event: Event) => void) {
+    this.connects.push(handler);
+  }
+
+  public onDisconnect(handler: (event: CloseEvent) => void) {
+    this.disconnects.push(handler);
+  }
+
+  public onError(handler: (event: ErrorEvent) => void) {
+    this.errors.push(handler);
   }
 
   public close() {
