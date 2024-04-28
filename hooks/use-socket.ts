@@ -13,7 +13,7 @@ type UseSocket = {
 export default function useSocket(): UseSocket {
   const { socket, authState, setSocket, setAuthState } = useSocketContext();
 
-  const [state, setState] = useState<SocketState>('connected');
+  const [state, setState] = useState<SocketState>('disconnected');
   const { data: session, status } = useSession();
   const accessToken = session?.user?.accessToken;
 

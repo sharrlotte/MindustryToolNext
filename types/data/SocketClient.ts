@@ -26,6 +26,11 @@ type SocketEvent =
       data: string;
     }
   | {
+      method: 'SERVER_MESSAGE';
+      room: string;
+      data: string;
+    }
+  | {
       method: 'ROOM_MESSAGE';
       room: string;
       data: string;
@@ -34,6 +39,10 @@ type SocketEvent =
 type MessagePayload =
   | {
       method: 'MESSAGE';
+      data: string;
+    }
+  | {
+      method: 'SERVER_MESSAGE';
       data: string;
     }
   | {

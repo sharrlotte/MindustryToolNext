@@ -6,16 +6,17 @@ type LogCardProps = {
   log: Log;
 };
 
-export default function LogCard({ log }: LogCardProps) {
+export default function LogCard({
+  log: { requestUrl, ip, userId, content, environment, createdAt },
+}: LogCardProps) {
   return (
-    <div className="no-scrollbar flex h-full w-full flex-col overflow-hidden rounded-md bg-card p-2">
-      <span>URL: {log.requestUrl}</span>
-      <span>IP: {log.ip}</span>
-      <span>UserID: {log.userId}</span>
-      <span>Content: {log.content}</span>
-      <span>Environment: {log.environment}</span>
-      <span>Created at: {moment(log.createdAt).fromNow()}</span>
-      <span>Created at: {new Date(log.createdAt).toUTCString()}</span>
+    <div className="no-scrollbar flex h-full w-full flex-col rounded-md bg-card p-2">
+      {requestUrl && <span>URL: {requestUrl}</span>}
+      <span>IP: {ip}</span>
+      {userId && <span>UserID: {userId}</span>}
+      <span>Content: {content}</span>
+      <span>Created at: {moment(createdAt).fromNow()}</span>
+      <span>Created at: {new Date(createdAt).toLocaleString('vi')}</span>
     </div>
   );
 }

@@ -11,7 +11,7 @@ export default async function getMeMaps(
 ): Promise<Map[]> {
   const searchParams = searchSchema.parse(params);
   const result = await axios.get(`/users/@me/maps`, {
-    params: { ...searchParams, items: 20 },
+    params: searchParams,
   });
 
   return result.data;

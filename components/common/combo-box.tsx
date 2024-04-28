@@ -1,4 +1,4 @@
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
+import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import {
   Command,
   CommandEmpty,
@@ -14,7 +14,6 @@ import {
 import React, { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
 type Value<T> = { label: string; value: T };
 
@@ -68,12 +67,6 @@ export default function ComboBox<T>({
                   setOpen(false);
                 }}
               >
-                <CheckIcon
-                  className={cn(
-                    'mr-2 h-4 w-4',
-                    value === item.value ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
                 {item.label}
               </CommandItem>
             ))}

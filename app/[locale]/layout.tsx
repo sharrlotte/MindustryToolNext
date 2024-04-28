@@ -12,7 +12,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import env from '@/constant/env';
 import localFont from 'next/font/local';
-import { SocketContext, SocketProvider } from '@/context/socket-context';
+import { SocketProvider } from '@/context/socket-context';
+import { Inter } from 'next/font/google';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
@@ -34,6 +35,11 @@ type RootParam = {
 //   variable: '--font-mindustry',
 // });
 
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['vietnamese'],
+});
+
 const icon = localFont({
   src: [
     {
@@ -54,6 +60,7 @@ export default function Root({ children, params }: RootProps) {
       className={cn(
         'dark h-full w-full select-none overflow-hidden bg-background text-foreground antialiased',
         // font.variable,
+        inter.variable,
         icon.variable,
       )}
       lang={params.locale ?? 'en'}

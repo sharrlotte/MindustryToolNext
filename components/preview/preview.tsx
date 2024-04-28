@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 type CardProps = React.HTMLAttributes<HTMLDivElement>;
@@ -8,7 +8,7 @@ function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'flex h-full min-h-preview animate-appear flex-col items-center justify-between overflow-hidden rounded-md border bg-card shadow-md',
+        'min-h-preview-height flex h-full animate-appear flex-col items-center justify-between overflow-hidden rounded-md border bg-card shadow-md',
         className,
       )}
       {...props}
@@ -38,6 +38,8 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 };
 
 function PImage({ className, src, errorSrc, alt }: ImageProps) {
+  const [isError, setError] = useState(false);
+
   return (
     <figure
       className={cn(
@@ -46,12 +48,12 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
       )}
     >
       <Image
-        className="h-full min-h-preview w-full min-w-preview object-cover"
-        src={src}
+        className="h-full min-h-preview w-full min-w-preview object-cover "
+        src={isError ? errorSrc : src}
         alt={alt}
         width={224}
         height={224}
-        onError={(err) => (err.currentTarget.src = errorSrc)}
+        onError={() => setError(true)}
       />
     </figure>
   );

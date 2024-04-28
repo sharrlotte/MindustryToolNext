@@ -16,11 +16,14 @@ import { LogCollection } from '@/constant/enum';
 import LogCard from '@/components/log/log-card';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
+import useQueryState from '@/hooks/use-query-state';
+import LoadingSpinner from '@/components/common/loading-spinner';
 
 export default function LogPage() {
-  const [collection, setCollection] = useState<string>();
+  const [collection, setCollection] = useQueryState('collection', 'LIVE');
 
   const { axios, enabled } = useClientAPI();
+
   const { data } = useQuery({
     queryKey: ['log-types'],
     initialData: [],
@@ -31,7 +34,7 @@ export default function LogPage() {
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
       <ComboBox
-        defaultValue={{ label: 'LIVE', value: 'LIVE' }}
+        defaultValue={{ label: collection, value: collection }}
         values={['LIVE', ...data].map((item) => ({
           label: item,
           value: item,
@@ -99,11 +102,18 @@ function LiveLog() {
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
         <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden pr-2">
-          {log.map((item, index) => (
-            <div className="text-wrap rounded-lg bg-background p-2" key={index}>
-              {item}
-            </div>
-          ))}
+          {state !== 'connected' ? (
+            <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
+          ) : (
+            log.map((item, index) => (
+              <div
+                className="text-wrap rounded-lg bg-background p-2"
+                key={index}
+              >
+                {item}
+              </div>
+            ))
+          )}
           <span ref={(ref) => (bottomRef.current = ref)}></span>
         </div>
       </div>
@@ -136,13 +146,15 @@ type StaticLogProps = {
   collection: string;
 };
 
+type LogEnvironment = 'Prod' | 'Dev';
+
 type LogPaginationQuery = PaginationQuery & {
   collection: LogCollection;
-  env: 'Prod' | 'Dev' | undefined;
+  env: LogEnvironment;
 };
 
 function StaticLog({ collection }: StaticLogProps) {
-  const [env, setEnv] = useState<'Prod' | 'Dev' | undefined>(undefined);
+  const [env, setEnv] = useQueryState('environment', '');
 
   return (
     <>
@@ -161,7 +173,7 @@ function StaticLog({ collection }: StaticLogProps) {
             page: 0,
             items: 20,
             collection: collection as LogCollection,
-            env,
+            env: env as LogEnvironment,
           }}
           queryKey={['logs']}
           getFunc={getLogs}

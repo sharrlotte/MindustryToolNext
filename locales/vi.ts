@@ -122,4 +122,5 @@ export default {
   'verify-success': 'Duyệt thành công',
   'web-owner': 'Chủ trang web',
   'website-name': 'MindustryTool',
+  console: 'Bảng điều khiển',
 } as const;
