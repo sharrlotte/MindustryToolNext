@@ -78,7 +78,7 @@ export default function InfinitePage<
       <div
         className={
           className ??
-          'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-4'
+          'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
         }
       >
         {loader
@@ -108,7 +108,7 @@ export default function InfinitePage<
     <InfiniteScroll
       className={
         className ??
-        'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-4'
+        'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
       }
       loadMore={(_: number) => fetchNextPage()}
       hasMore={hasNextPage}

@@ -22,6 +22,7 @@ module.exports = {
       }),
       spacing: {
         preview: 'var(--preview-size)',
+        'preview-height': 'var(--preview-card-height)',
         nav: 'var(--nav)',
       },
       colors: {

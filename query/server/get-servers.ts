@@ -1,12 +1,12 @@
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
-import MindustryServer from '@/types/response/MindustryServer';
+import ExternalServer from '@/types/response/ExternalServer';
 import { AxiosInstance } from 'axios';
 
 export default async function getServers(
   axios: AxiosInstance,
   params: PaginationQuery,
-): Promise<MindustryServer[]> {
-  const result = await axios.get(`/mindustry-servers`, {
+): Promise<ExternalServer[]> {
+  const result = await axios.get(`/external-servers`, {
     params: {
       ...params,
       items: 40,

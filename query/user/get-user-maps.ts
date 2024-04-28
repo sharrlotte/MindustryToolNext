@@ -12,7 +12,7 @@ export default async function getUserMaps(
 ): Promise<Map[]> {
   const searchParams = searchSchema.parse(params);
   const result = await axios.get(`/users/${userId}/maps`, {
-    params: { ...searchParams, items: 20 },
+    params: searchParams,
   });
 
   return result.data;

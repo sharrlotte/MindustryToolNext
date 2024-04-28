@@ -12,7 +12,7 @@ export default async function getUserPosts(
 ): Promise<Post[]> {
   const searchParams = searchSchema.parse(params);
   const result = await axios.get(`/users/${userId}/posts`, {
-    params: { ...searchParams, items: 20 },
+    params: searchParams,
   });
 
   return result.data;

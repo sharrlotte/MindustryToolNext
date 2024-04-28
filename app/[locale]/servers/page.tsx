@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { ClipboardIcon } from '@heroicons/react/24/outline';
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingWrapper from '@/components/common/loading-wrapper';
-import MindustryServerCard from '@/components/server/mindustry-server-card';
+import ExternalServerCard from '@/components/server/external-server-card';
 import PostServerRequest from '@/types/request/PostServerRequest';
 import PostServerResponse from '@/types/response/PostServerResponse';
 import PostServerResultCard from '@/components/server/post-server-result-card';
@@ -116,7 +116,7 @@ export default function Page() {
           params={params}
           getFunc={getServers}
         >
-          {(data) => <MindustryServerCard key={data.id} server={data} />}
+          {(data) => <ExternalServerCard key={data.id} server={data} />}
         </InfinitePage>
       </div>
     </div>

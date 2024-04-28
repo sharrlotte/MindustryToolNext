@@ -38,10 +38,10 @@ export default function Navigation({ children }: NavigationProps) {
 
   return (
     <div className="grid h-full w-full grid-rows-[3rem_1fr] gap-2 p-4">
-      <section className="no-scrollbar flex min-h-8 w-full items-center gap-4 overflow-auto rounded-md bg-card p-2 text-sm font-bold capitalize">
+      <section className="no-scrollbar flex min-h-8 w-full items-center gap-4 overflow-x-auto rounded-md bg-card p-2 text-sm font-bold capitalize">
         {paths.map(({ name, path }) => (
           <Link
-            className={cn('opacity-70', {
+            className={cn('opacity-70 text-nowrap', {
               'opacity-100':
                 (pathname.includes(path) && path !== '') ||
                 (path === '' && pathname === '/admin'),

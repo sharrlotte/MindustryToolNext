@@ -22,4 +22,8 @@ class SafeUrlSearchParams {
   getAll<T = string>(key: string, defaultValue: string[] = []) {
     return (this.params.getAll(key) ?? defaultValue) as T[];
   }
+
+  raw() {
+    return this.params;
+  }
 }

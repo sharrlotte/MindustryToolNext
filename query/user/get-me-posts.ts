@@ -11,7 +11,7 @@ export default async function getMePosts(
 ): Promise<Post[]> {
   const searchParams = searchSchema.parse(params);
   const result = await axios.get(`/users/@me/posts`, {
-    params: { ...searchParams, items: 20 },
+    params: searchParams,
   });
 
   return result.data;

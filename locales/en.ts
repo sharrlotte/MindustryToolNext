@@ -121,4 +121,8 @@ export default {
   'verify-success': 'Verify succeed',
   'web-owner': 'Web owner',
   'website-name': 'MindustryTool',
+  console: 'Console',
+  'internal-server.add-map': 'Add map',
+  'internal-server.select-map': 'Select map',
+  'internal-server.map-name': 'Map name',
 } as const;

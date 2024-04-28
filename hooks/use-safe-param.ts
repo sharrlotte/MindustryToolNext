@@ -20,4 +20,8 @@ class SafeParams {
   getAll(key: string, defaultValue: string[] = []): string[] {
     return this.params[key] ?? defaultValue;
   }
+
+  raw(){
+    return this.params;
+  }
 }

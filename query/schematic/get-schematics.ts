@@ -11,7 +11,7 @@ export default async function getSchematics(
 ): Promise<Schematic[]> {
   const searchParams = searchSchema.parse(params);
   const result = await axios.get('/schematics', {
-    params: { ...searchParams, items: 20 },
+    params: searchParams,
   });
 
   return result.data;
