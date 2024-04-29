@@ -104,7 +104,6 @@ export default class SocketClient {
 
         handler(message.data, event);
       } catch (error) {
-        console.error(error);
       }
     };
     this.socket.onerror = (event) => {

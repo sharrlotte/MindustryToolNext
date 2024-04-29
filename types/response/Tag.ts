@@ -26,7 +26,6 @@ export class Tags {
       try {
         result.push(Tags.parseString(tag));
       } catch (err) {
-        console.error(err);
       }
     }
     return result;

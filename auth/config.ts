@@ -111,7 +111,6 @@ type GetMeParams = {
 };
 
 const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
-  console.log(`Get user: ${provider} - ${providerId}`);
   const data: FormData = new FormData();
 
   data.append('provider', provider);
@@ -120,16 +119,13 @@ const getUser = async ({ providerId, provider, name, image }: GetMeParams) => {
   data.append('image', image);
 
   if (!authData.accessToken) {
-    console.log('No API token');
     await apiLogin();
   }
 
   if (authData.expireTime <= Date.now()) {
     if (authData.accessToken) {
-      console.log('API token expired');
       await apiRefreshToken();
     } else {
-      console.log('No API refresh token');
       await apiLogin();
     }
   }
@@ -238,20 +234,16 @@ const apiLogin = async () => {
         authData.accessToken = user.accessToken;
         authData.refreshToken = user.refreshToken;
         authData.expireTime = user.expireTime;
-        console.log('API login success');
         return;
       }
     }
     throw new Error(text);
   } catch (error) {
-    console.log('Failed to login as API: ' + error);
     return null;
   }
 };
 
 async function apiRefreshToken() {
-  console.log('API refresh token');
-
   const result = await refreshToken(authData.refreshToken);
   if (result) {
     authData.accessToken = result.accessToken;
@@ -266,8 +258,6 @@ async function apiLogout() {
   authData.accessToken = '';
   authData.refreshToken = '';
   authData.expireTime = Date.now();
-
-  console.log('Logged out');
 }
 
 apiLogin();

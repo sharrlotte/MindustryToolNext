@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 
 const COLOR_REGEX = /\[([^\]]+)\]/g;
 
@@ -9,6 +9,12 @@ interface ColorTextProps {
 }
 
 export default function ColorText({ text, className }: ColorTextProps) {
+  const result = useMemo(() => render(text, className), [text, className]);
+
+  return <span className={cn(className)}>{result}</span>;
+}
+
+function render(text: string, className?: string) {
   if (!text) return <></>;
 
   let index = text.search(COLOR_REGEX);
@@ -19,7 +25,7 @@ export default function ColorText({ text, className }: ColorTextProps) {
   let result: ReactNode[] = [];
 
   if (index !== 0) {
-    add(text.substring(0, index), 'white');
+    key = add(result, text.substring(0, index), 'white', key);
     text = text.substring(index);
   }
 
@@ -31,7 +37,7 @@ export default function ColorText({ text, className }: ColorTextProps) {
 
   while (arr.length > 0) {
     let color = arr[0].toLocaleLowerCase();
-    color = color.substring(1, color.length - 1); // @ts-ignore
+    color = color.substring(1, color.length - 1);
 
     if (color.includes('#')) {
       color = color.padEnd(7, '0');
@@ -47,51 +53,64 @@ export default function ColorText({ text, className }: ColorTextProps) {
         break;
     }
 
-    if (arr.length < 2) {
-      add(text.substring(arr[0].length), s.color);
+    if (arr.length === 1) {
+      if (s.color === '') {
+        key = add(result, text.substring(0), s.color, key);
+      } else {
+        key = add(result, text.substring(arr[0].length), s.color, key);
+      }
       break;
     }
 
     var nextIndex = text.indexOf(arr[1]);
 
-    if (s.color !== '') add(text.substring(arr[0].length, nextIndex), s.color);
-    else add(text.substring(0, nextIndex), s.color);
-
+    if (s.color !== '') {
+      key = add(result, text.substring(arr[0].length, nextIndex), s.color, key);
+    } else {
+      key = add(result, text.substring(0, nextIndex), s.color, key);
+    }
     text = text.substring(nextIndex);
     arr.shift();
   }
 
-  function add(text: string, color: string) {
-    result.push(...breakdown(text, color));
+  return result;
+}
+function add(result: ReactNode[], text: string, color: string, key: number) {
+  const r = breakdown(text, color, key);
+  result.push(...r.result);
+  key = r.key;
+  return key;
+}
+
+function breakdown(text: string, color: string, key: number) {
+  if (text === '[]') {
+    return { result: [], key };
   }
 
-  function breakdown(text: string, color: string) {
-    if (text === '[]'){
-      return [];
-    }
-    let s = text.split('\n');
-    let r = [];
-    key += 1;
+  let s = text.split('\n');
+  let r = [];
+  key += 1;
 
+  if (s.length === 1) {
+    return { result: [text], key };
+  }
+
+  r.push(
+    <span key={key} style={{ color: color }}>
+      {s[0]}
+    </span>,
+  );
+
+  for (let i = 1; i < s.length; i++) {
+    key += 1;
+    r.push(<br key={key} />);
+
+    key += 1;
     r.push(
       <span key={key} style={{ color: color }}>
-        {s[0]}
+        {s[i]}
       </span>,
     );
-
-    for (let i = 1; i < s.length; i++) {
-      key += 1;
-      r.push(<br key={key} />);
-
-      key += 1;
-      r.push(
-        <span key={key} style={{ color: color }}>
-          {s[i]}
-        </span>,
-      );
-    }
-    return r;
   }
-
-  return <span className={cn(className)}>{result}</span>;
+  return { result: r, key };
 }

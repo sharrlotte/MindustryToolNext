@@ -1,7 +1,7 @@
-export interface InternalServerDetail {
-  id: string
+export type InternalServerDetail = {
+  id: string;
   name: string;
+  description: string;
   port: number;
-  alive: boolean;
-  started: boolean;
-}
+  mode: string;
+};

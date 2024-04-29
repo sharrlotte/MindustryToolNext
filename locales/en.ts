@@ -125,4 +125,5 @@ export default {
   'internal-server.add-map': 'Add map',
   'internal-server.select-map': 'Select map',
   'internal-server.map-name': 'Map name',
+  'info': "Info"
 } as const;
