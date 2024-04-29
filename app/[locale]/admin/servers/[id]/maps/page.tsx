@@ -34,7 +34,7 @@ export default function Page() {
   const id = useSafeParam().get('id');
 
   return (
-    <div className="flex flex-col gap-2 rounded-r-md bg-card p-2">
+    <div className="flex flex-col gap-2 overflow-hidden rounded-md bg-card p-2 md:rounded-r-md">
       <AddMapDialog serverId={id} />
       <div
         className="flex h-full w-full flex-col gap-2 overflow-y-auto pr-2"
@@ -131,7 +131,11 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
   return (
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild>
-        <Button className='ml-auto' title={t('internal-server.add-map')} variant="secondary">
+        <Button
+          className="ml-auto"
+          title={t('internal-server.add-map')}
+          variant="secondary"
+        >
           {t('internal-server.add-map')}
         </Button>
       </DialogTrigger>
@@ -139,7 +143,6 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
         <DialogTitle>{t('internal-server.select-map')}</DialogTitle>
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />
-
           <div className="flex h-full w-full flex-col gap-2 overflow-y-auto">
             {render()}
           </div>

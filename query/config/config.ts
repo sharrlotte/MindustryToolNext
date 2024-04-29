@@ -24,7 +24,7 @@ axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error.response?.data?.status === 404) {
-      notFound();
+      return notFound();
     }
 
     if (error?.response?.data) {
