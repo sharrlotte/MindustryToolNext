@@ -1,6 +1,5 @@
 'use client';
 
-import FieldEditor from '@/components/common/field-editor';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 import _ from 'lodash';
 import React from 'react';
@@ -16,13 +15,7 @@ const Schema = z.object({
 });
 
 export default function InfoEditor({ server }: Props) {
-  function onSubmit(){
+  function onSubmit() {}
 
-  }
-
-  return (
-    <div className="rounded-md bg-card p-2 md:rounded-none">
-      <FieldEditor value={_.omit(server, 'id')} schema={Schema} onSubmit={onSubmit} />
-    </div>
-  );
+  return <div className="rounded-md bg-card p-2 md:rounded-none"></div>;
 }

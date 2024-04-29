@@ -4,4 +4,6 @@ export type InternalServerDetail = {
   description: string;
   port: number;
   mode: string;
+  started: boolean;
+  alive: boolean;
 };

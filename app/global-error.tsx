@@ -1,5 +1,5 @@
 'use client';
 
-import ErrorScreen from '@/app/[locale]/error';
+import ErrorScreen from '@/components/common/error-screen';
 
 export default ErrorScreen;

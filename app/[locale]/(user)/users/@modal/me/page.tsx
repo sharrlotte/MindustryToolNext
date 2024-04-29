@@ -1,4 +1,4 @@
-import Tab from '@/app/[locale]/users/@modal/me/tab';
+import Tab from '@/app/[locale]/(user)/users/@modal/me/tab';
 import getServerAPI from '@/query/config/get-server-api';
 import getMe from '@/query/user/get-me';
 

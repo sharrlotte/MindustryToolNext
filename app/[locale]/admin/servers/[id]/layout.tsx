@@ -33,7 +33,7 @@ export default function Layout({ children }: PageProps) {
       label: (
         <>
           <IdentificationIcon className="h-6 w-6" />
-          <span>{t('info')}</span>
+          <span>{t('server-info')}</span>
         </>
       ),
     },
