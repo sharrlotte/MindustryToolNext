@@ -1,15 +1,16 @@
 'use client';
 
 import InfinitePage from '@/components/common/infinite-page';
-import UploadPostPreviewCard from '@/components/post/upload-post-preview-card';
+import PluginCard from '@/components/plugin/plugin-card';
 import NameTagSearch from '@/components/search/name-tag-search';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useTags from '@/hooks/use-tags';
-import getPostUploads from '@/query/post/get-post-uploads';
+import getPlugins from '@/query/plugin/get-plugins';
 import React, { useRef } from 'react';
 
 export default function Page() {
-  const { post } = useTags();
+  const { plugin } = useTags();
   const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 
@@ -18,15 +19,18 @@ export default function Page() {
       className="relative flex h-full flex-col gap-4 overflow-y-auto"
       ref={(ref) => (scrollContainer.current = ref)}
     >
-      <NameTagSearch tags={post} />
+      <NameTagSearch tags={plugin} useSort={false} />
       <InfinitePage
-        className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
+        queryKey={['plugins']}
+        getFunc={getPlugins}
         params={params}
-        queryKey={['post-uploads']}
-        getFunc={getPostUploads}
         scrollContainer={scrollContainer.current}
+        skeleton={{
+          amount: 20,
+          item: <PreviewSkeleton />,
+        }}
       >
-        {(data) => <UploadPostPreviewCard key={data.id} post={data} />}
+        {(data) => <PluginCard key={data.id} plugin={data} />}
       </InfinitePage>
     </div>
   );

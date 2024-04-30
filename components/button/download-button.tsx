@@ -13,7 +13,7 @@ export default function DownloadButton({
 }: DownloadButtonProps) {
   return (
     <a
-      className="flex items-center justify-center rounded-md border border-border"
+      className="flex min-h-8 items-center justify-center rounded-md border border-border"
       {...props}
       download
       onClick={fixProgressBar}

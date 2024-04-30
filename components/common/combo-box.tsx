@@ -1,77 +1,87 @@
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from '@/components/ui/command';
+  ChevronUpDownIcon,
+  MagnifyingGlassCircleIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/react/24/outline';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 type Value<T> = { label: string; value: T };
 
 type ComboBoxProps<T> = {
+  className?: string;
   placeholder?: string;
-  defaultValue?: Value<T>;
+  value?: Value<T>;
   values: Array<Value<T>>;
-  onChange?: (value: T | undefined) => void;
+  onChange: (value: T | undefined) => void;
 };
 
 export default function ComboBox<T>({
+  className,
   placeholder,
   values,
-  defaultValue,
+  value,
   onChange,
 }: ComboBoxProps<T>) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<Value<T> | undefined>(defaultValue);
-
-  useEffect(() => {
-    if (onChange) {
-      onChange(value?.value);
-    }
-  }, [value, onChange]);
+  const [input, setInput] = useState('');
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          className={cn('w-[200px] justify-between', className)}
           title=""
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
           variant="secondary"
         >
           {value ? value.label : placeholder ?? 'Select'}
           <ChevronUpDownIcon className="ml-auto h-5 w-5 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput />
-          <CommandEmpty>No value found</CommandEmpty>
-          <CommandGroup>
+      <PopoverContent className="w-[200px] bg-card p-0">
+        <div className="mt-0.5 divide-y">
+          <div className="flex gap-1 p-1">
+            <div>
+              <MagnifyingGlassIcon className="h-5 w-5" />
+            </div>
+            <input
+              className="border-none bg-transparent font-thin outline-none"
+              value={input}
+              placeholder="Search"
+              onChange={(event) => setInput(event.currentTarget.value)}
+            />
+          </div>
+          <div className="grid gap-1 p-1">
             {values.map((item) => (
-              <CommandItem
+              <button
+                className={cn(
+                  'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm font-thin text-foreground outline-none hover:bg-button hover:text-background aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+                  {
+                    'bg-button text-background': item.label === value?.label,
+                  },
+                )}
+                type="button"
                 key={item.label}
                 value={item.label}
-                onSelect={(currentLabel) => {
-                  setValue(currentLabel === value?.label ? undefined : item);
+                onClick={() => {
+                  onChange(item.value);
                   setOpen(false);
                 }}
               >
                 {item.label}
-              </CommandItem>
+              </button>
             ))}
-          </CommandGroup>
-        </Command>
+          </div>
+        </div>
       </PopoverContent>
     </Popover>
   );

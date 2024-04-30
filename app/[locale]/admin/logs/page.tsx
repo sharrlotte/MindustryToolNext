@@ -25,22 +25,22 @@ export default function LogPage() {
   const { axios, enabled } = useClientAPI();
 
   const { data } = useQuery({
-    queryKey: ['log-types'],
-    initialData: [],
-    queryFn: () => getLogCollections(axios),
+    queryKey: ['log-collections'],
+    queryFn: async () => getLogCollections(axios),
     enabled,
   });
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
       <ComboBox
-        defaultValue={{ label: collection, value: collection }}
-        values={['LIVE', ...data].map((item) => ({
+        value={{ label: collection, value: collection }}
+        values={['LIVE', ...(data ?? [])].map((item) => ({
           label: item,
           value: item,
         }))}
         onChange={setCollection}
       />
+
       {collection && collection !== 'LIVE' ? (
         <StaticLog collection={collection} />
       ) : (
@@ -101,7 +101,7 @@ function LiveLog() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
-        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden pr-2">
+        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden">
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
           ) : (
@@ -128,9 +128,8 @@ function LiveLog() {
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
         <Button
-          className={cn('h-full', {
-            'bg-button hover:bg-button': state === 'connected',
-          })}
+          className="h-full"
+          variant="primary"
           type="submit"
           title={t('send')}
           disabled={state !== 'connected' || !message}
@@ -159,14 +158,14 @@ function StaticLog({ collection }: StaticLogProps) {
   return (
     <>
       <ComboBox
-        defaultValue={{ label: 'Prod', value: 'Prod' }}
+        value={{ label: env, value: env }}
         values={[
           { value: 'Prod', label: 'Prod' },
           { value: 'Dev', label: 'Dev' },
         ]}
         onChange={setEnv}
       />
-      <div className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden pr-2">
+      <div className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden">
         <InfinitePage<Log, LogPaginationQuery>
           className="flex w-full flex-col items-center justify-center gap-2"
           params={{

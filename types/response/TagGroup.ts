@@ -15,6 +15,7 @@ export type AllTagGroup = {
   schematic: TagGroup[];
   map: TagGroup[];
   post: TagGroup[];
+  plugin: TagGroup[];
 };
 
 export class TagGroups {
@@ -46,6 +47,6 @@ export class TagGroups {
       .compact()
       .value();
 
-      return tagsArray;
+    return tagsArray;
   }
 }

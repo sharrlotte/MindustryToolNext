@@ -49,7 +49,7 @@ export default function Page() {
         .onRoom(`SERVER-${id}`)
         .onMessage('SERVER_MESSAGE', (message) => addLog([message]));
     }
-  }, [socket, state, isAuthenticated]);
+  }, [id, socket, state, isAuthenticated]);
 
   const sendMessage = () => {
     if (socket && state === 'connected') {
@@ -70,12 +70,16 @@ export default function Page() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden bg-card px-2 pt-2">
       <div className="grid h-full w-full overflow-hidden">
-        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-background pr-2">
+        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-black/80 text-white">
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
           ) : (
             log.map((item, index) => (
-              <ColorText className="text-wrap p-2" key={index} text={item} />
+              <ColorText
+                className="text-wrap px-2 py-1"
+                key={index}
+                text={item}
+              />
             ))
           )}
           <span ref={(ref) => (bottomRef.current = ref)}></span>
@@ -92,9 +96,8 @@ export default function Page() {
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
         <Button
-          className={cn('h-full', {
-            'bg-button hover:bg-button': state === 'connected',
-          })}
+          className="h-full"
+          variant="primary"
           type="submit"
           title={t('send')}
           disabled={state !== 'connected' || !message}

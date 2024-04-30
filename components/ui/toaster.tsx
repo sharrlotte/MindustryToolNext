@@ -9,6 +9,7 @@ import {
   ToastViewport,
 } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 
 export function Toaster() {
   const { toasts } = useToast();
@@ -19,7 +20,17 @@ export function Toaster() {
         return (
           <Toast key={id} {...props}>
             <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
+              {title && (
+                <ToastTitle className="flex gap-0.5 justify-center items-center">
+                  {props.variant === 'success' && (
+                    <CheckCircleIcon className="h-5 w-5" />
+                  )}
+                  {props.variant === 'destructive' && (
+                    <XCircleIcon className="h-5 w-5" />
+                  )}
+                  {title}
+                </ToastTitle>
+              )}
               {description && (
                 <ToastDescription>{description}</ToastDescription>
               )}

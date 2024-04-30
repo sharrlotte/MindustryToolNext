@@ -3,7 +3,7 @@ export default {
   'add-link': 'Thêm liên kết',
   'add-tag': 'Thêm thẻ',
   address: 'Địa chỉ',
-  dashboard: 'Bảng điều khiển',
+  dashboard: 'Bảng thông tin',
   log: 'Nhật ký',
   setting: 'Cài đặt',
   user: 'Người dùng',

@@ -160,9 +160,9 @@ export default function Page() {
   const uploadCheck = checkUploadRequirement();
 
   return (
-    <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md pr-1">
-      <div className="flex flex-row  gap-2 rounded-md p-2">
-        <section className="flex min-h-10 flex-row flex-wrap items-center gap-2">
+    <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
+      <div className="flex flex-1 flex-col gap-2 rounded-md bg-card p-2">
+        <section className="flex min-h-10 flex-row flex-wrap items-center gap-2 md:flex-row md:items-start">
           <Dialog open={isOpen} onOpenChange={setOpen}>
             <DialogTrigger
               className={cn('border border-border', {

@@ -1,7 +1,6 @@
-import InfoEditor from '@/app/[locale]/admin/servers/[id]/info-editor';
+import Dashboard from '@/app/[locale]/admin/servers/[id]/dashboard';
 import getServerAPI from '@/query/config/get-server-api';
 import getInternalServer from '@/query/server/get-internal-server';
-import _ from 'lodash';
 import React from 'react';
 
 type PageProps = {
@@ -13,5 +12,5 @@ export default async function Page({ params: { id } }: PageProps) {
 
   const server = await getInternalServer(axios, { id });
 
-  return <InfoEditor server={server} />;
+  return <Dashboard server={server} />;
 }

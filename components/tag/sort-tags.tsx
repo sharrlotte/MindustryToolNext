@@ -36,7 +36,7 @@ export default function SortTags({
       <Separator className="border-[1px]" orientation="horizontal" />
       {filteredSortTags.map((value) => (
         <ToggleGroupItem
-          className="capitalize hover:bg-button hover:text-background data-[state=on]:bg-button data-[state=on]:text-background dark:hover:text-foreground data-[state=on]:dark:text-foreground"
+          className="capitalize hover:bg-button hover:text-background data-[state=on]:bg-button  data-[state=on]:text-background dark:hover:text-foreground data-[state=on]:dark:text-foreground"
           key={value}
           value={value}
         >

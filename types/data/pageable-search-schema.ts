@@ -29,3 +29,12 @@ export const statusSearchSchema = z.object({
 });
 
 export type StatusPaginationSearchQuery = z.infer<typeof statusSearchSchema>;
+
+export const pluginSearchSchema = z.object({
+  page: z.number().gte(0).default(0),
+  name: z.string().default('').optional(),
+  tags: z.array(z.string()).default([]).optional(),
+  items: z.number().gte(0).lte(100).optional().default(20),
+});
+
+export type PluginPaginationQuery = z.infer<typeof pluginSearchSchema>;
