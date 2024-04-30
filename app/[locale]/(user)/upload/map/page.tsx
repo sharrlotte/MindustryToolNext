@@ -122,9 +122,9 @@ export default function Page() {
   const uploadCheck = checkUploadRequirement();
 
   return (
-    <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md pr-1">
-      <div className="flex flex-col gap-2 rounded-md p-2">
-        <section className="flex min-h-10 flex-row flex-wrap gap-2">
+    <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
+      <div className="flex flex-1 flex-col gap-2 rounded-md bg-card p-2">
+        <section className="flex min-h-10 flex-row flex-wrap gap-2 md:flex-row md:items-start">
           <label htmlFor="file" className="hover:cursor-pointer">
             <LoadingWrapper isLoading={isLoadingMapPreview}>
               {preview ? (

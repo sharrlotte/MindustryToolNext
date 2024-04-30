@@ -3,7 +3,7 @@ export type InternalServerDetail = {
   name: string;
   description: string;
   port: number;
-  mode: string;
+  mode: 'SURVIVAL' | 'ATTACK' | 'PVP';
   started: boolean;
   alive: boolean;
 };

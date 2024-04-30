@@ -10,7 +10,7 @@ import MarkdownEditor, {
   MarkdownData,
 } from '@/components/common/markdown-editor';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import { useDeferredValue, useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
@@ -67,7 +67,7 @@ export default function Page() {
     if (post === undefined) {
       return (
         <>
-          <div>
+          <div className="rounded-md bg-card p-2">
             <AddTranslationDialog onPostSelect={handlePostSelect} />
           </div>
           <UploadPage
@@ -86,7 +86,7 @@ export default function Page() {
 
     return (
       <>
-        <div className="space-x-2">
+        <div className="space-x-2 rounded-sm bg-card p-2">
           <Button
             title={t('upload.go-to-upload-page')}
             variant="secondary"

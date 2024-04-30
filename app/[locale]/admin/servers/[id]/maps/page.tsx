@@ -37,7 +37,7 @@ export default function Page() {
     <div className="flex flex-col gap-2 overflow-hidden rounded-md bg-card p-2 md:rounded-r-md">
       <AddMapDialog serverId={id} />
       <div
-        className="flex h-full w-full flex-col gap-2 overflow-y-auto pr-2"
+        className="flex h-full w-full flex-col gap-2 overflow-y-auto"
         ref={(ref) => (scrollContainer.current = ref)}
       >
         <InfinitePage

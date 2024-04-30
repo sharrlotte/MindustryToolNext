@@ -4,8 +4,8 @@ import useSafeParam from '@/hooks/use-safe-param';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import {
+  Cog6ToothIcon,
   CommandLineIcon,
-  IdentificationIcon,
   MapIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -32,8 +32,8 @@ export default function Layout({ children }: PageProps) {
       href: '',
       label: (
         <>
-          <IdentificationIcon className="h-6 w-6" />
-          <span>{t('server-info')}</span>
+          <MapIcon className="h-6 w-6" />
+          <span>{t('dashboard')}</span>
         </>
       ),
     },
@@ -52,6 +52,15 @@ export default function Layout({ children }: PageProps) {
         <>
           <CommandLineIcon className="h-6 w-6" />
           <span>{t('console')}</span>
+        </>
+      ),
+    },
+    {
+      href: '/setting',
+      label: (
+        <>
+          <Cog6ToothIcon className="h-6 w-6" />
+          <span>{t('setting')}</span>
         </>
       ),
     },

@@ -54,7 +54,7 @@ export default function Page() {
 
   return (
     <div className="flex h-full flex-col gap-2 py-2 pl-2">
-      <div className="flex justify-end pr-4">
+      <div className="flex justify-end">
         <LoadingWrapper
           className="flex h-9 w-9 items-center justify-center rounded-md border border-border"
           isLoading={isPending}
@@ -106,7 +106,7 @@ export default function Page() {
         </DialogContent>
       </Dialog>
       <div
-        className="h-full overflow-y-auto pr-2"
+        className="h-full overflow-y-auto"
         ref={(ref) => (scrollContainer.current = ref)}
       >
         <InfinitePage
