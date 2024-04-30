@@ -10,5 +10,5 @@ export default function useTags(): AllTagGroup {
     queryKey: ['tags'],
   });
 
-  return data ?? { schematic: [], map: [], post: [] };
+  return data ?? { schematic: [], map: [], post: [], plugin: [] };
 }
