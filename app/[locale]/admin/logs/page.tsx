@@ -128,9 +128,8 @@ function LiveLog() {
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
         <Button
-          className={cn('h-full', {
-            'bg-button hover:bg-button': state === 'connected',
-          })}
+          className="h-full"
+          variant="primary"
           type="submit"
           title={t('send')}
           disabled={state !== 'connected' || !message}
@@ -159,7 +158,7 @@ function StaticLog({ collection }: StaticLogProps) {
   return (
     <>
       <ComboBox
-        value={{ label: 'Prod', value: 'Prod' }}
+        value={{ label: env, value: env }}
         values={[
           { value: 'Prod', label: 'Prod' },
           { value: 'Dev', label: 'Dev' },

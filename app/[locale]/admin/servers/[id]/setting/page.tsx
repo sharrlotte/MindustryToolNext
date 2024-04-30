@@ -221,7 +221,7 @@ function ServerSettingEditor({ server }: Props) {
               {t('reset')}
             </Button>
             <Button
-              className="bg-button"
+              variant="primary"
               type="submit"
               title={t('update')}
               disabled={isPending}

@@ -20,8 +20,9 @@ export default function Navigation({ children }: NavigationProps) {
   const t = useI18n();
 
   let pathname = usePathname();
-  let firstSlash = pathname.indexOf('/', 1);
-  pathname = pathname.slice(firstSlash);
+  let firstSlash = pathname.indexOf('/admin', 1);
+
+  pathname = pathname.slice(firstSlash + '/admin'.length);
 
   const paths: Array<{
     name: ReactNode;
@@ -41,10 +42,10 @@ export default function Navigation({ children }: NavigationProps) {
       <section className="no-scrollbar flex min-h-8 w-full items-center gap-4 overflow-x-auto rounded-md bg-card p-2 text-sm font-bold capitalize">
         {paths.map(({ name, path }) => (
           <Link
-            className={cn('opacity-70 text-nowrap', {
+            className={cn('text-nowrap opacity-70', {
               'opacity-100':
-                (pathname.includes(path) && path !== '') ||
-                (path === '' && pathname === '/admin'),
+                (pathname.startsWith('/' + path) && path !== '') ||
+                (path === '' && pathname === ''),
             })}
             key={path}
             href={`/admin/${path}`}

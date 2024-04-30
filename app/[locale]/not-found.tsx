@@ -6,7 +6,10 @@ export default function NotFound() {
       <h2 className="text-bold text-3xl">Resource Not Found</h2>
       <p>Could not find requested resource</p>
 
-      <Link className="rounded-md border bg-button p-2" href="/">
+      <Link
+        className="rounded-md border bg-button p-2 text-background dark:text-foreground"
+        href="/"
+      >
         Return Home
       </Link>
     </div>

@@ -9,7 +9,7 @@ interface ColorTextProps {
 }
 
 export default function ColorText({ text, className }: ColorTextProps) {
-  const result = useMemo(() => render(text, className), [text, className]);
+  const result = useMemo(() => render(text), [text]);
 
   return <span className={cn(className)}>{result}</span>;
 }
@@ -20,7 +20,7 @@ function render(text: string, className?: string) {
   let index = text.search(COLOR_REGEX);
   let key = 0;
 
-  if (index < 0) return <span className={cn(className)}>{text}</span>;
+  if (index < 0) return <span>{text}</span>;
 
   let result: ReactNode[] = [];
 
@@ -31,7 +31,7 @@ function render(text: string, className?: string) {
 
   let arr = text.match(COLOR_REGEX);
 
-  if (!arr) return <span className={cn(className)}>{text}</span>;
+  if (!arr) return <span>{text}</span>;
 
   const s = new Option().style;
 
@@ -92,7 +92,14 @@ function breakdown(text: string, color: string, key: number) {
   key += 1;
 
   if (s.length === 1) {
-    return { result: [text], key };
+    return {
+      result: [
+        <span key={key} style={{ color: color }}>
+          {text}
+        </span>,
+      ],
+      key,
+    };
   }
 
   r.push(

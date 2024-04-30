@@ -64,9 +64,9 @@ export default function ComboBox<T>({
             {values.map((item) => (
               <button
                 className={cn(
-                  'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm font-thin outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+                  'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm font-thin text-foreground outline-none hover:bg-button hover:text-background aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
                   {
-                    'bg-button': item.label === value?.label,
+                    'bg-button text-background': item.label === value?.label,
                   },
                 )}
                 type="button"
