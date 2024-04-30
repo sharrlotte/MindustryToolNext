@@ -24,6 +24,7 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 type NameTagSearchProps = {
   className?: string;
   tags?: TagGroup[];
+  useSort?: boolean;
 };
 
 let timeout: NodeJS.Timeout | undefined;
@@ -31,6 +32,7 @@ let timeout: NodeJS.Timeout | undefined;
 export default function NameTagSearch({
   className,
   tags = [],
+  useSort = true,
 }: NameTagSearchProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -105,8 +107,12 @@ export default function NameTagSearch({
           values.forEach((value) => params.append(QueryParams.tags, value)),
         );
 
-      params.set(QueryParams.sort, selectedSortTag);
       params.set(QueryParams.page, page.toString());
+
+      if (useSort) {
+        params.set(QueryParams.sort, selectedSortTag);
+      }
+
       if (name) {
         params.set(QueryParams.name, name);
       }
@@ -200,12 +206,14 @@ export default function NameTagSearch({
                 />
               </Search>
               <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
-                <SortTags
-                  filter={filter}
-                  selectedSortTag={selectedSortTag}
-                  tag={sortTagGroup}
-                  handleSortChange={handleSortChange}
-                />
+                {useSort && (
+                  <SortTags
+                    filter={filter}
+                    selectedSortTag={selectedSortTag}
+                    tag={sortTagGroup}
+                    handleSortChange={handleSortChange}
+                  />
+                )}
                 <FilterTags
                   filter={filter}
                   selectedFilterTags={selectedFilterTags}

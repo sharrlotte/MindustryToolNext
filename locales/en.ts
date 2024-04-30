@@ -130,4 +130,5 @@ export default {
   reset: 'Reset',
   'update.success': 'Update successfully',
   'update.fail': 'Update failed',
+  plugin: 'Plugin',
 } as const;

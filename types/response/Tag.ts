@@ -25,8 +25,7 @@ export class Tags {
     for (let tag of arr) {
       try {
         result.push(Tags.parseString(tag));
-      } catch (err) {
-      }
+      } catch (err) {}
     }
     return result;
   }
