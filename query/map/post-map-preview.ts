@@ -5,9 +5,12 @@ import { AxiosInstance } from 'axios';
 
 export default async function postMapPreview(
   axios: AxiosInstance,
-  data: MapPreviewRequest,
+  { file }: MapPreviewRequest,
 ): Promise<MapPreviewResponse> {
-  const form = toForm(data);
+  const form = new FormData();
+
+  form.append('file', file);
+
   const result = await axios.post('/maps/preview', form, {
     data: form,
   });
