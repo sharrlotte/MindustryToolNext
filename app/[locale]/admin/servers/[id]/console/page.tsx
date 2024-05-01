@@ -5,12 +5,20 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';
 import useSearchId from '@/hooks/use-search-id-params';
 import useSocket from '@/hooks/use-socket';
-import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, {
+  FormEvent,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 export default function Page() {
   const { id } = useSearchId();
+
+  const [messageHistory, setMessageHistory] = useState<string[]>([]);
+  let [messagesCursor, setMessageCursor] = useState(0);
 
   const { socket, state, isAuthenticated } = useSocket();
 
@@ -58,6 +66,13 @@ export default function Page() {
         .onRoom(`SERVER-${id}`)
         .send({ data: message, method: 'SERVER_MESSAGE' });
 
+      setMessageHistory((prev) => {
+        const v = [...prev, message];
+        setMessageCursor(v.length - 1);
+
+        return v;
+      });
+
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   };
@@ -66,6 +81,40 @@ export default function Page() {
     sendMessage();
     event.preventDefault();
   };
+
+  function handleKeyPress(event: KeyboardEvent<HTMLInputElement>) {
+    if (messageHistory.length === 0) {
+      return;
+    }
+
+    switch (event.key) {
+      case 'ArrowUp': {
+        setMessageCursor((prev) => {
+          prev--;
+
+          if (prev < 0) {
+            return messageHistory.length - 1;
+          }
+
+          return prev;
+        });
+        setMessage(messageHistory[messagesCursor]);
+        break;
+      }
+
+      case 'ArrowDown': {
+        setMessageCursor((prev) => {
+          prev++;
+
+          prev = prev % messageHistory.length;
+
+          return prev;
+        });
+        setMessage(messageHistory[messagesCursor]);
+        break;
+      }
+    }
+  }
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden bg-card px-2 pt-2">
@@ -93,6 +142,7 @@ export default function Page() {
         <input
           className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none"
           value={message}
+          onKeyDown={handleKeyPress}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
         <Button

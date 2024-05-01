@@ -9,23 +9,23 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { toast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import postReloadInternalServers from '@/query/server/post-reload-internal-servers';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
 import React from 'react';
 
 export default function ReloadServerDialog() {
   const t = useI18n();
-
+  const { axios } = useClientAPI();
   const { invalidateByKey } = useQueriesData();
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
     mutationFn: () => postReloadInternalServers(axios),
     onSuccess: () => {
-      invalidateByKey(['servers']);
+      invalidateByKey(['internal-servers']);
       toast({
         title: t('update.success'),
         variant: 'success',
@@ -59,6 +59,7 @@ export default function ReloadServerDialog() {
             <Button
               className="bg-destructive hover:bg-destructive"
               title={t('reload')}
+              onClick={() => mutate()}
             >
               {t('reload')}
             </Button>
