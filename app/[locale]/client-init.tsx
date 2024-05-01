@@ -10,7 +10,10 @@ export default function ClientInit() {
 
   useEffect(() => {
     if (enabled) {
-      axios.get('/ping?client=web').catch((error) => console.error(error));
+      axios.get('/ping?client=web').catch((error) => {
+        signOut();
+        console.error(error);
+      });
     }
   }, [axios, enabled]);
 
