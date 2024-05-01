@@ -112,6 +112,7 @@ export default {
   'upload.success': 'Upload successfully',
   'upload.title': 'Title',
   'upload.translate-post': 'Translate post',
+  'upload.invalid-plugin-file': 'Invalid plugin file, file must end with .jar',
   url: 'Url',
   'url-header': 'Header',
   'user.not-found': 'User not found',
@@ -131,4 +132,8 @@ export default {
   'update.success': 'Update successfully',
   'update.fail': 'Update failed',
   plugin: 'Plugin',
+  'plugin.add': 'Add plugin',
+  'upload.select-file': 'Select file',
+  'internal-server.add-plugin': 'Add plugin',
+  'internal-server.select-plugin': 'Select plugin',
 } as const;

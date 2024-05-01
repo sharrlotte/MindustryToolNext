@@ -113,7 +113,10 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
+          <DownloadButton
+            href={`${env.url.api}/maps/${map.id}/download`}
+            fileName={`{${map.name}}.msav`}
+          />
           <LikeComponent
             targetId={map.id}
             targetType="MAPS"

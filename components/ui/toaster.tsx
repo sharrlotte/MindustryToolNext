@@ -21,7 +21,7 @@ export function Toaster() {
           <Toast key={id} {...props}>
             <div className="grid gap-1">
               {title && (
-                <ToastTitle className="flex gap-0.5 justify-center items-center">
+                <ToastTitle className="flex items-center justify-start gap-0.5 text-start">
                   {props.variant === 'success' && (
                     <CheckCircleIcon className="h-5 w-5" />
                   )}

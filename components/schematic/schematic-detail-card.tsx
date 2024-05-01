@@ -132,6 +132,7 @@ export default function SchematicDetailCard({
           />
           <DownloadButton
             href={`${env.url.api}/schematics/${schematic.id}/download`}
+            fileName={`{${schematic.name}}.msch`}
           />
           <LikeComponent
             targetId={schematic.id}

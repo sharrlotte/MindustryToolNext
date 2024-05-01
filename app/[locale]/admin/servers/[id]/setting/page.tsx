@@ -120,91 +120,89 @@ function ServerSettingEditor({ server }: Props) {
     <div className="flex flex-col justify-between gap-2">
       <Form {...form}>
         <form
-          className="flex-1 space-y-4 bg-card p-2"
+          className="flex flex-1 flex-col justify-between space-y-4 bg-card p-2"
           onSubmit={form.handleSubmit((value) => mutate(value))}
         >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Server name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Test" {...field} />
-                </FormControl>
-                <FormDescription>
-                  The server name that displayed in game
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Some cool stuff"
-                    {...field}
-                    value={field.value ?? ''}
-                  />
-                </FormControl>
-                <FormDescription>
-                  The server description that displayed in game
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="port"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Port</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="6567"
-                    type="number"
-                    {...field}
-                    onChange={(event) =>
-                      field.onChange(event.target.valueAsNumber)
-                    }
-                  />
-                </FormControl>
-                <FormDescription>
-                  The port that server hosting on
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="mode"
-            render={({ field }) => (
-              <FormItem className="grid">
-                <FormLabel>Mode</FormLabel>
-                <FormControl>
-                  <ComboBox
-                    className="bg-transparent"
-                    placeholder={InternalServerModes[0]}
-                    value={{ label: field.value, value: field.value }}
-                    values={InternalServerModes.map((value) => ({
-                      label: value,
-                      value,
-                    }))}
-                    onChange={(value) => field.onChange(value)}
-                  />
-                </FormControl>
-                <FormDescription>Server game mode</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Server name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Test" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The server name that displayed in game
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Some cool stuff" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The server description that displayed in game
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="port"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Port</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="6567"
+                      type="number"
+                      {...field}
+                      onChange={(event) =>
+                        field.onChange(event.target.valueAsNumber)
+                      }
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    The port that server hosting on
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="mode"
+              render={({ field }) => (
+                <FormItem className="grid">
+                  <FormLabel>Mode</FormLabel>
+                  <FormControl>
+                    <ComboBox
+                      className="bg-transparent"
+                      placeholder={InternalServerModes[0]}
+                      value={{ label: field.value, value: field.value }}
+                      values={InternalServerModes.map((value) => ({
+                        label: value,
+                        value,
+                      }))}
+                      onChange={(value) => field.onChange(value)}
+                    />
+                  </FormControl>
+                  <FormDescription>Server game mode</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <div
             className={cn(
               'flex translate-y-[100vh] justify-end gap-1 transition-transform duration-500',

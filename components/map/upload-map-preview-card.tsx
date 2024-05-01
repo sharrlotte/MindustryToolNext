@@ -37,7 +37,10 @@ export default function UploadMapPreview({
       <Preview.Description>
         <Preview.Header className="h-12">{map.name}</Preview.Header>
         <Preview.Actions>
-          <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
+          <DownloadButton
+            href={`${env.url.api}/maps/${map.id}/download`}
+            fileName={`{${map.name}}.msav`}
+          />
         </Preview.Actions>
       </Preview.Description>
     </Preview>

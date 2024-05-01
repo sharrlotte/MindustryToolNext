@@ -104,7 +104,7 @@ export default function UploadPostDetailCard({
         <NameTagSelector
           tags={postTags}
           value={selectedTags}
-          setValue={setSelectedTags}
+          onChange={setSelectedTags}
           hideSelectedTag
         />
         <DeleteButton
