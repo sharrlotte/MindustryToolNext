@@ -77,7 +77,7 @@ export default {
   'search-by-name': 'Search by name',
   send: 'Send',
   server: 'Server',
-  'server.add': 'Add server',
+  'server.add': 'Add',
   'server.add-success': 'Add server successfully',
   'server.upload-fail': 'Upload server failed',
   strikethrough: 'Strikethrough',
@@ -136,4 +136,5 @@ export default {
   'upload.select-file': 'Select file',
   'internal-server.add-plugin': 'Add plugin',
   'internal-server.select-plugin': 'Select plugin',
+  reload: 'Reload',
 } as const;

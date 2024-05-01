@@ -41,7 +41,7 @@ export default function ComboBox<T>({
           title=""
           role="combobox"
           aria-expanded={open}
-          variant="secondary"
+          variant="outline"
         >
           {value ? value.label : placeholder ?? 'Select'}
           <ChevronUpDownIcon className="ml-auto h-5 w-5 shrink-0" />

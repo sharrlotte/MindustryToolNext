@@ -58,7 +58,7 @@ export default function Page({ params: { id } }: PageProps) {
     isPending,
     error,
   } = useQuery({
-    queryKey: ['servers', id],
+    queryKey: ['internal-servers', id],
     queryFn: () => getInternalServer(axios, { id }),
     enabled,
   });
@@ -95,11 +95,11 @@ function ServerSettingEditor({ server }: Props) {
   const { id, started } = server;
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['servers'],
+    mutationKey: ['internal-servers'],
     mutationFn: (data: PutInternalServerRequest) =>
       putInternalServer(axios, id, data),
     onSuccess: () => {
-      invalidateByKey(['servers']);
+      invalidateByKey(['internal-servers']);
       server = { ...server, ...form.getValues() };
       toast({
         title: t('update.success'),

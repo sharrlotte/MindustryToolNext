@@ -42,7 +42,7 @@ export default function Page() {
         <InfinitePage
           className="flex flex-col gap-2"
           params={{ page: 0, items: 20 }}
-          queryKey={['plugins']}
+          queryKey={['internal-server-plugins', id]}
           getFunc={(axios, params) =>
             getInternalServerPlugins(axios, id, params)
           }
@@ -87,7 +87,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     },
     onSuccess: () => {
       setShow(false);
-      invalidateByKey(['plugins']);
+      invalidateByKey(['internal-server-plugins']);
     },
   });
 
@@ -107,7 +107,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     return data?.map(({ id, name, description }) => (
       <Button
         className="flex h-fit w-full flex-col items-start justify-start rounded-md border border-border p-2 text-start hover:bg-button"
-        variant="secondary"
+        variant="outline"
         key={id}
         title={name}
         onClick={() => mutate(id)}
