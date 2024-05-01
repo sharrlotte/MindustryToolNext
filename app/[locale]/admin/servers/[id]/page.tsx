@@ -8,6 +8,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import getInternalServer from '@/query/server/get-internal-server';
+import postReloadInternalServer from '@/query/server/post-reload-internal-server';
 import postStartInternalServers from '@/query/server/post-start-internal-server';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -78,6 +79,27 @@ function Dashboard({ server }: Props) {
       }),
   });
 
+  const { mutate: reloadServer, isPending: isReloadingServer } = useMutation({
+    mutationKey: ['internal-server, internal-servers'],
+    mutationFn: () => postReloadInternalServer(axios, id),
+    onSuccess: () => {
+      invalidateByKey(['internal-servers']);
+      invalidateByKey(['internal-server']);
+      toast({
+        title: t('upload.success'),
+        variant: 'success',
+      });
+    },
+    onError: (error) =>
+      toast({
+        title: t('upload.fail'),
+        description: error.message,
+        variant: 'destructive',
+      }),
+  });
+
+  const isLoading = isPending || isReloadingServer;
+
   return (
     <div className="flex flex-col gap-2">
       <div className="bg-card p-2">
@@ -98,12 +120,21 @@ function Dashboard({ server }: Props) {
         </div>
       </div>
       <div className="flex flex-row justify-end gap-2 bg-card p-2">
+        <Button
+          className="min-w-20"
+          title="Shutdown"
+          variant="secondary"
+          disabled={isLoading}
+          onClick={() => reloadServer()}
+        >
+          Reload
+        </Button>
         {started ? (
           <Button
             className="min-w-20"
             title="Shutdown"
             variant="secondary"
-            disabled={isPending}
+            disabled={isLoading}
           >
             Shutdown
           </Button>
@@ -112,7 +143,7 @@ function Dashboard({ server }: Props) {
             className="min-w-20"
             title="Start"
             variant="primary"
-            disabled={isPending}
+            disabled={isLoading}
             onClick={() => mutate()}
           >
             Start
