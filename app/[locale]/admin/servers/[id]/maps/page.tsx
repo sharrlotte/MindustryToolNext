@@ -111,7 +111,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
     return data?.map(({ id, name }) => (
       <Button
         className="flex h-full max-h-preview-height w-full flex-col items-start justify-start rounded-md border border-border p-2 text-start hover:bg-button"
-        variant="secondary"
+        variant="outline"
         key={id}
         title={name}
         onClick={() => mutate(id)}

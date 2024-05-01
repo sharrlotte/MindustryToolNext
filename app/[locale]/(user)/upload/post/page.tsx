@@ -366,7 +366,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
     return data?.map(({ id, header }) => (
       <Button
         className="h-full w-full items-center justify-start rounded-md border border-border p-2 text-start hover:bg-button"
-        variant="secondary"
+        variant="outline"
         key={id}
         title={header}
         onClick={() => mutate(id)}

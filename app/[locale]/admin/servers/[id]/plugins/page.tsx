@@ -107,7 +107,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     return data?.map(({ id, name, description }) => (
       <Button
         className="flex h-fit w-full flex-col items-start justify-start rounded-md border border-border p-2 text-start hover:bg-button"
-        variant="secondary"
+        variant="outline"
         key={id}
         title={name}
         onClick={() => mutate(id)}
