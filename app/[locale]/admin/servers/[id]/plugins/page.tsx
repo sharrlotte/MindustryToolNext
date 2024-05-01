@@ -42,7 +42,7 @@ export default function Page() {
         <InfinitePage
           className="flex flex-col gap-2"
           params={{ page: 0, items: 20 }}
-          queryKey={['plugins']}
+          queryKey={['internal-server-plugins', id]}
           getFunc={(axios, params) =>
             getInternalServerPlugins(axios, id, params)
           }
@@ -87,7 +87,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     },
     onSuccess: () => {
       setShow(false);
-      invalidateByKey(['plugins']);
+      invalidateByKey(['internal-server-plugins']);
     },
   });
 

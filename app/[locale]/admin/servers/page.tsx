@@ -1,5 +1,6 @@
+import CreateServerDialog from '@/app/[locale]/admin/servers/create-server-dialog';
+import ReloadServerDialog from '@/app/[locale]/admin/servers/reload-server-dialog';
 import InternalServerCard from '@/components/server/internal-server-card';
-import { Button } from '@/components/ui/button';
 import getServerAPI from '@/query/config/get-server-api';
 import getInternalServers from '@/query/server/get-internal-servers';
 import React from 'react';
@@ -10,16 +11,11 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="rounded-md bg-card p-2">
-        <Button
-          className="ml-auto flex"
-          title="Create new server"
-          variant="primary"
-        >
-          Create new server
-        </Button>
+      <div className="flex justify-end gap-2 rounded-md bg-card p-2">
+        <ReloadServerDialog />
+        <CreateServerDialog />
       </div>
-      <section>
+      <section className="grid gap-2">
         {servers.map((server) => (
           <InternalServerCard server={server} key={server.port} />
         ))}

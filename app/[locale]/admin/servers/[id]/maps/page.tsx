@@ -44,7 +44,7 @@ export default function Page() {
       >
         <InfinitePage
           params={{ page: 0, items: 20 }}
-          queryKey={['maps']}
+          queryKey={['internal-server-maps', id]}
           getFunc={(axios, params) => getInternalServerMaps(axios, id, params)}
           scrollContainer={scrollContainer.current}
           skeleton={{
@@ -91,7 +91,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
     },
     onSuccess: () => {
       setShow(false);
-      invalidateByKey(['maps']);
+      invalidateByKey(['internal-server-maps']);
     },
   });
 
