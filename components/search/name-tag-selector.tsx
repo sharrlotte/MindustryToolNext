@@ -18,13 +18,13 @@ type NameTagSelectorProps = {
   disabled?: boolean;
   hideSelectedTag?: boolean;
   value: TagGroup[];
-  setValue: (value: (prev: TagGroup[]) => TagGroup[]) => void;
+  onChange: (value: TagGroup[]) => void;
 };
 
 export default function NameTagSelector({
   tags = [],
   value,
-  setValue,
+  onChange,
   disabled = false,
   hideSelectedTag,
 }: NameTagSelectorProps) {
@@ -43,7 +43,7 @@ export default function NameTagSelector({
     const group = value.find((tag) => tag.name === name);
     if (group) {
       group.value = v;
-      setValue((_) => [...value]);
+      onChange([...value]);
     } else {
       let result = tagsClone.find((tag) => tag.name === name);
 
@@ -51,20 +51,18 @@ export default function NameTagSelector({
       if (result) {
         result.value = v;
         value.push(result);
-        setValue((_) => [...value]);
+        onChange([...value]);
       }
     }
   };
 
   const handleDeleteTag = (tag: Tag) => {
-    setValue((prev) => {
-      const group = prev.find((item) => item.name === tag.name);
-      if (group) {
-        group.value = group.value.filter((item) => item !== tag.value);
-      }
+    const group = value.find((item) => item.name === tag.name);
+    if (group) {
+      group.value = group.value.filter((item) => item !== tag.value);
+    }
 
-      return [...prev];
-    });
+    onChange([...value]);
   };
 
   const displayTags = Tags.fromTagGroup(value);

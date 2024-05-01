@@ -117,12 +117,6 @@ export default function InfinitePage<
       getScrollParent={() => scrollContainer}
     >
       {pages.map((data, index) => children(data, index))}
-      {!hasNextPage && end}
-      {isError && (
-        <div className="flex w-full justify-center">
-          {t('error')} : {error?.message}
-        </div>
-      )}
       {isFetching && skeleton && (
         <>
           {Array(skeleton.amount)
@@ -131,6 +125,12 @@ export default function InfinitePage<
               <React.Fragment key={index}>{skeleton.item}</React.Fragment>
             ))}
         </>
+      )}
+      {!hasNextPage && end}
+      {isError && (
+        <div className="flex w-full justify-center">
+          {t('error')} : {error?.message}
+        </div>
       )}
     </InfiniteScroll>
   );

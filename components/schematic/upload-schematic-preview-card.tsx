@@ -61,6 +61,7 @@ export default function UploadSchematicPreviewCard({
           />
           <DownloadButton
             href={`${env.url.api}/schematics/${schematic.id}/download`}
+            fileName={`{${schematic.name}}.msch`}
           />
         </Preview.Actions>
       </Preview.Description>

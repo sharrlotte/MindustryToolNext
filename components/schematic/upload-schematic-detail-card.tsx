@@ -120,7 +120,7 @@ export default function UploadSchematicDetailCard({
           <NameTagSelector
             tags={schematicTags}
             value={selectedTags}
-            setValue={setSelectedTags}
+            onChange={setSelectedTags}
           />
         </Detail.Header>
       </Detail.Info>
@@ -134,6 +134,7 @@ export default function UploadSchematicDetailCard({
           />
           <DownloadButton
             href={`${env.url.api}/schematics/${schematic.id}/download`}
+            fileName={`{${schematic.name}}.msch`}
           />
           <DeleteButton
             description={`${t('delete')} ${schematic.name}`}

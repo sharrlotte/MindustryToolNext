@@ -7,17 +7,17 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deletePlugin from '@/query/plugin/delete-plugin';
-import { Plugin } from '@/types/response/Plugin';
+import deleteInternalServerPlugin from '@/query/server/delete-internal-server-plugin';
+import InternalServerPlugin from '@/types/response/InternalServerPlugin';
 import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 
 type Props = {
-  plugin: Plugin;
+  plugin: InternalServerPlugin;
 };
 
-export default function PluginCard({
-  plugin: { id, name, description },
+export default function InternalServerPluginCard({
+  plugin: { id, serverId, name, pluginId },
 }: Props) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
@@ -25,7 +25,7 @@ export default function PluginCard({
 
   const { axios } = useClientAPI();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
-    mutationFn: (id: string) => deletePlugin(axios, id),
+    mutationFn: () => deleteInternalServerPlugin(axios, serverId, id),
     onSuccess: () => {
       invalidateByKey(['plugins']);
       toast({
@@ -43,18 +43,17 @@ export default function PluginCard({
   });
 
   return (
-    <div className="grid gap-2 rounded-md border p-2">
+    <div className="grid gap-2 rounded-md border bg-card p-2">
       <h2>{name}</h2>
-      <span>{description}</span>
       <div className="flex gap-2">
         <DeleteButton
           description={`${t('delete')} ${name}`}
           isLoading={isDeleting}
-          onClick={() => deletePluginById(id)}
+          onClick={() => deletePluginById()}
         />
         <DownloadButton
           className="w-10"
-          href={`${env.url.api}/plugins/${id}/download`}
+          href={`${env.url.api}/plugins/${pluginId}/download`}
           secure
           fileName={`${name}.zip`}
         />

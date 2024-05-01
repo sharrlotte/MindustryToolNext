@@ -297,7 +297,7 @@ function UploadPage({
           <NameTagSelector
             tags={postTags}
             value={selectedTags}
-            setValue={setSelectedTags}
+            onChange={setSelectedTags}
             hideSelectedTag
           />
           <Button

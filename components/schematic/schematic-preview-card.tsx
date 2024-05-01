@@ -68,6 +68,7 @@ export default function SchematicPreviewCard({
           />
           <DownloadButton
             href={`${env.url.api}/schematics/${schematic.id}/download`}
+            fileName={`{${schematic.name}}.msch`}
           />
           {schematic.status === 'VERIFIED' && (
             <LikeComponent

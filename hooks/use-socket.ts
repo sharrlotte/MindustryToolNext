@@ -25,7 +25,7 @@ export default function useSocket(): UseSocket {
     instance.onConnect(() => setState('connected'));
 
     setSocket(instance);
-  }, []);
+  }, [setAuthState, setSocket]);
 
   useEffect(() => {
     if (
@@ -52,7 +52,7 @@ export default function useSocket(): UseSocket {
         socket.close();
       }
     };
-  }, []);
+  }, [socket]);
 
   return {
     socket,

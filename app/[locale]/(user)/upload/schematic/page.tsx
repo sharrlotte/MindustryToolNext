@@ -222,7 +222,7 @@ export default function Page() {
               <NameTagSelector
                 tags={schematic}
                 value={selectedTags}
-                setValue={setSelectedTags}
+                onChange={setSelectedTags}
               />
             </section>
           )}

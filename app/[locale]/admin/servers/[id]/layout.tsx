@@ -7,6 +7,7 @@ import {
   Cog6ToothIcon,
   CommandLineIcon,
   MapIcon,
+  PuzzlePieceIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -43,6 +44,15 @@ export default function Layout({ children }: PageProps) {
         <>
           <MapIcon className="h-6 w-6" />
           <span>{t('map')}</span>
+        </>
+      ),
+    },
+    {
+      href: '/plugins',
+      label: (
+        <>
+          <PuzzlePieceIcon className="h-6 w-6" />
+          <span>{t('plugin')}</span>
         </>
       ),
     },

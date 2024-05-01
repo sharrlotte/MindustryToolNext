@@ -108,13 +108,16 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
           <NameTagSelector
             tags={mapTags}
             value={selectedTags}
-            setValue={setSelectedTags}
+            onChange={setSelectedTags}
           />
         </Detail.Header>
       </Detail.Info>
       <Detail.Actions className="flex justify-between">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <DownloadButton href={`${env.url.api}/maps/${map.id}/download`} />
+          <DownloadButton
+            href={`${env.url.api}/maps/${map.id}/download`}
+            fileName={`{${map.name}}.msav`}
+          />
           <DeleteButton
             description={`${t('delete')} ${map.name}`}
             isLoading={isLoading}
