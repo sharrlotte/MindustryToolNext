@@ -1,5 +1,6 @@
 'use client';
 
+import { Skeleton } from '@/components/ui/skeleton';
 import useClientAPI from '@/hooks/use-client';
 import useSafeParam from '@/hooks/use-safe-param';
 import { cn } from '@/lib/utils';
@@ -91,7 +92,7 @@ export default function Layout({ children }: PageProps) {
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden rounded-md md:grid-cols-[auto,1fr] md:grid-rows-1">
       <div className="flex min-w-48 flex-col flex-wrap gap-2">
         <h2 className="bg-card px-4 py-2 text-3xl font-bold">
-          {server?.name ?? 'Server'}
+          {server?.name ?? <Skeleton className="h-9 w-full rounded-none" />}
         </h2>
         <div className="flex min-w-48 flex-1 flex-wrap gap-2 bg-card p-2 md:flex-col">
           {links.map(({ href, label }) => (
