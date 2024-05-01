@@ -36,7 +36,7 @@ export default function InternalServerMapCard({
       });
     },
     onSuccess: () => {
-      invalidateByKey(['maps']);
+      invalidateByKey(['internal-server-maps']);
     },
   });
 
