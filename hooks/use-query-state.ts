@@ -2,22 +2,28 @@ import useSafeSearchParams from '@/hooks/use-safe-search-params';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function useQueryState(name: string, initialState: string) {
+export default function useQueryState<T extends string>(
+  name: string,
+  initialState: T,
+) {
   const params = useSafeSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
   const queryState = params.get(name);
 
-  const [state, setState] = useState<string>(
-    queryState ? queryState : initialState,
-  );
+  const [state, setState] = useState<string>(queryState ?? initialState);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(params.raw());
-    queryParams.set(name, state ?? initialState);
+    if (state) {
+      queryParams.set(name, state);
+    } else {
+      queryParams.set(name, initialState);
+      setState(initialState);
+    }
     router.replace(`${pathname}?${queryParams.toString()}`);
-  }, [state]);
+  }, [initialState, name, pathname, router, state]);
 
   const setter = (value?: string) => setState(value ?? initialState);
 

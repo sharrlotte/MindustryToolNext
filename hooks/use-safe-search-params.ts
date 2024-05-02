@@ -8,7 +8,7 @@ export default function useSafeSearchParams() {
   return new SafeUrlSearchParams(params);
 }
 
-class SafeUrlSearchParams {
+export class SafeUrlSearchParams {
   private params: ReadonlyURLSearchParams;
 
   constructor(params: ReadonlyURLSearchParams) {
