@@ -51,6 +51,7 @@ export default function InternalServerMapCard({
         <Preview.Header className="h-12">{name}</Preview.Header>
         <Preview.Actions>
           <DeleteButton
+            className="absolute right-0 top-0 h-12 w-12 border-none"
             isLoading={isPending}
             onClick={() => mutate(id)}
             description={t('delete')}

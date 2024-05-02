@@ -9,6 +9,8 @@ type Props = {
   show?: boolean;
   ownerId?: string;
   session: Session | null;
+  alt?: ReactNode;
+  passOnEmpty?: boolean;
 };
 
 export default function ProtectedElement({
@@ -18,8 +20,10 @@ export default function ProtectedElement({
   children,
   show,
   session,
+  alt,
+  passOnEmpty,
 }: Props) {
-  if (!session?.user?.roles) return <></>;
+  if (!session?.user?.roles) return passOnEmpty ? children : alt;
 
   const roles = session.user.roles;
 
@@ -35,7 +39,7 @@ export default function ProtectedElement({
   ].every(Boolean);
 
   if (!pred) {
-    return <></>;
+    return alt;
   }
 
   return <>{children}</>;

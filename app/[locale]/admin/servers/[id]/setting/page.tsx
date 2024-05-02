@@ -120,10 +120,10 @@ function ServerSettingEditor({ server }: Props) {
     <div className="flex flex-col justify-between gap-2">
       <Form {...form}>
         <form
-          className="flex flex-1 flex-col justify-between space-y-4 bg-card p-2"
+          className="flex flex-1 flex-col justify-between bg-card p-2"
           onSubmit={form.handleSubmit((value) => mutate(value))}
         >
-          <div>
+          <div className="space-y-4">
             <FormField
               control={form.control}
               name="name"

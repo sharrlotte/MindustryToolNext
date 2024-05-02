@@ -1,14 +1,18 @@
 'use client';
 
+import { Skeleton } from '@/components/ui/skeleton';
+import useClientAPI from '@/hooks/use-client';
 import useSafeParam from '@/hooks/use-safe-param';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
+import getInternalServer from '@/query/server/get-internal-server';
 import {
   Cog6ToothIcon,
   CommandLineIcon,
   MapIcon,
   PuzzlePieceIcon,
 } from '@heroicons/react/24/outline';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
@@ -24,6 +28,14 @@ export default function Layout({ children }: PageProps) {
   let pathname = usePathname();
   let firstSlash = pathname.indexOf('/', 1);
   pathname = pathname.slice(firstSlash);
+
+  const { axios, enabled } = useClientAPI();
+
+  const { data: server } = useQuery({
+    queryKey: ['internal-servers', id],
+    queryFn: () => getInternalServer(axios, { id }),
+    enabled,
+  });
 
   const links: {
     href: string;
@@ -78,23 +90,28 @@ export default function Layout({ children }: PageProps) {
 
   return (
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden rounded-md md:grid-cols-[auto,1fr] md:grid-rows-1">
-      <div className="flex min-w-48 flex-wrap gap-2 bg-card p-2 md:flex-col">
-        {links.map(({ href, label }) => (
-          <Link
-            className={cn(
-              'flex text-nowrap px-2 py-2 text-sm font-semibold opacity-70',
-              {
-                'rounded-sm bg-button text-white opacity-100':
-                  (pathname.includes(href) && href !== '') ||
-                  (href === '' && pathname === `/admin/servers/${id}`),
-              },
-            )}
-            key={href}
-            href={`/admin/servers/${id}/${href}`}
-          >
-            <div className="flex items-center gap-2">{label}</div>
-          </Link>
-        ))}
+      <div className="flex min-w-48 flex-col flex-wrap gap-2">
+        <h2 className="bg-card px-4 py-2 text-3xl font-bold">
+          {server?.name ?? <Skeleton className="h-9 w-full rounded-none" />}
+        </h2>
+        <div className="flex min-w-48 flex-1 flex-wrap gap-2 bg-card p-2 md:flex-col">
+          {links.map(({ href, label }) => (
+            <Link
+              className={cn(
+                'flex text-nowrap px-2 py-2 text-sm font-semibold opacity-70',
+                {
+                  'rounded-sm bg-button text-white opacity-100':
+                    (pathname.includes(href) && href !== '') ||
+                    (href === '' && pathname === `/admin/servers/${id}`),
+                },
+              )}
+              key={href}
+              href={`/admin/servers/${id}/${href}`}
+            >
+              <div className="flex items-center gap-2">{label}</div>
+            </Link>
+          ))}
+        </div>
       </div>
       {children}
     </div>

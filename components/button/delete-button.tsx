@@ -17,14 +17,17 @@ import LoadingWrapper from '@/components/common/loading-wrapper';
 import React from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useI18n } from '@/locales/client';
+import { cn } from '@/lib/utils';
 
 type DeleteButtonProps = {
+  className?: string;
   isLoading: boolean;
   onClick: () => void;
   description: string;
 };
 
 export default function DeleteButton({
+  className,
   isLoading,
   description,
   onClick,
@@ -34,7 +37,10 @@ export default function DeleteButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger
-        className="flex items-center justify-center rounded-md border p-2"
+        className={cn(
+          'flex items-center justify-center rounded-md border p-2',
+          className,
+        )}
         disabled={isLoading}
       >
         <LoadingWrapper isLoading={isLoading}>
