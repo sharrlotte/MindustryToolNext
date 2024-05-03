@@ -2,6 +2,7 @@
 
 import ColorText from '@/components/common/color-text';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import LoadingWrapper from '@/components/common/loading-wrapper';
 import { Button } from '@/components/ui/button';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -121,34 +122,52 @@ function Dashboard({ server }: Props) {
         </div>
       </div>
       <div className="flex flex-row justify-end gap-2 bg-card p-2">
-        <Button
-          className="min-w-20"
-          title="Shutdown"
+        <LoadingWrapper
+          className="w-20"
           variant="secondary"
-          disabled={isLoading}
-          onClick={() => reloadServer()}
+          isLoading={isLoading}
         >
-          Reload
-        </Button>
-        {started ? (
           <Button
-            className="min-w-20"
+            className="w-20"
             title="Shutdown"
             variant="secondary"
             disabled={isLoading}
+            onClick={() => reloadServer()}
           >
-            Shutdown
+            Reload
           </Button>
+        </LoadingWrapper>
+        {started ? (
+          <LoadingWrapper
+            className="w-20"
+            variant="secondary"
+            isLoading={isLoading}
+          >
+            <Button
+              className="w-20"
+              title="Shutdown"
+              variant="secondary"
+              disabled={isLoading}
+            >
+              Shutdown
+            </Button>
+          </LoadingWrapper>
         ) : (
-          <Button
-            className="min-w-20"
-            title="Start"
+          <LoadingWrapper
+            className="w-20"
             variant="primary"
-            disabled={isLoading}
-            onClick={() => mutate()}
+            isLoading={isLoading}
           >
-            Start
-          </Button>
+            <Button
+              className="w-20"
+              title="Start"
+              variant="primary"
+              disabled={isLoading}
+              onClick={() => mutate()}
+            >
+              Start
+            </Button>
+          </LoadingWrapper>
         )}
       </div>
     </div>

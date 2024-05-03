@@ -153,7 +153,8 @@ type LogPaginationQuery = PaginationQuery & {
 };
 
 function StaticLog({ collection }: StaticLogProps) {
-  const [env, setEnv] = useQueryState('environment', 'PROD');
+  const [env, setEnv] = useQueryState<LogEnvironment>('environment', 'Prod');
+
 
   return (
     <>

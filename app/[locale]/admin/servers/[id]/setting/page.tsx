@@ -43,6 +43,8 @@ import {
 } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import deleteInternalServer from '@/query/server/delete-internal-server';
+import LoadingWrapper from '@/components/common/loading-wrapper';
 
 type PageProps = {
   params: { id: string };
@@ -114,7 +116,26 @@ function ServerSettingEditor({ server }: Props) {
       }),
   });
 
+  const { mutate: deleteServer, isPending: isDeleting } = useMutation({
+    mutationKey: ['internal-servers'],
+    mutationFn: () => deleteInternalServer(axios, id),
+    onSuccess: () => {
+      invalidateByKey(['internal-servers']);
+      toast({
+        title: t('delete-success'),
+        variant: 'success',
+      });
+    },
+    onError: (error) =>
+      toast({
+        title: t('delete-fail'),
+        description: error.message,
+        variant: 'destructive',
+      }),
+  });
+
   const isChanged = !isEqual(form.getValues(), server);
+  const isLoading = isPending || isDeleting;
 
   return (
     <div className="flex flex-col justify-between gap-2">
@@ -232,14 +253,16 @@ function ServerSettingEditor({ server }: Props) {
       <div className="flex justify-end bg-card p-2">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button
-              className="min-w-20"
-              title="Delete"
-              variant="destructive"
-              disabled={started}
-            >
-              Delete
-            </Button>
+            <LoadingWrapper isLoading={isLoading}>
+              <Button
+                className="min-w-20"
+                title="Delete"
+                variant="destructive"
+                disabled={started || isLoading}
+              >
+                Delete
+              </Button>
+            </LoadingWrapper>
           </AlertDialogTrigger>
           <AlertDialogContent>
             Are you sure you want to delete
@@ -249,6 +272,8 @@ function ServerSettingEditor({ server }: Props) {
                 <Button
                   className="bg-destructive hover:bg-destructive"
                   title={t('delete')}
+                  onClick={() => deleteServer()}
+                  disabled={started || isLoading}
                 >
                   {t('delete')}
                 </Button>
