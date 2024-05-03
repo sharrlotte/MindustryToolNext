@@ -23,6 +23,7 @@ export default function useQueryState<T extends string>(
       setState(initialState);
     }
     router.replace(`${pathname}?${queryParams.toString()}`);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialState, name, pathname, router, state]);
 
   const setter = (value?: string) => setState(value ?? initialState);

@@ -11,6 +11,7 @@ import { useI18n } from '@/locales/client';
 import deleteInternalServerMap from '@/query/server/delete-internal-server-map';
 import InternalServerMap from '@/types/response/InternalServerMap';
 import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
 import React from 'react';
 
 type InternalServerMapCardProps = {
@@ -42,11 +43,13 @@ export default function InternalServerMapCard({
 
   return (
     <Preview className={cn('group relative flex flex-col justify-between')}>
-      <Preview.Image
-        src={`${env.url.image}/maps/${mapId}.png`}
-        errorSrc={`${env.url.api}/maps/${mapId}/image`}
-        alt={name ?? 'internal server map'}
-      />
+      <Link href={`/maps/${mapId}`}>
+        <Preview.Image
+          src={`${env.url.image}/maps/${mapId}.png`}
+          errorSrc={`${env.url.api}/maps/${mapId}/image`}
+          alt={name ?? 'internal server map'}
+        />
+      </Link>
       <Preview.Description>
         <Preview.Header className="h-12">{name}</Preview.Header>
         <Preview.Actions>
