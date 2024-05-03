@@ -6,15 +6,18 @@ import { useEffect } from 'react';
 
 export default function ClientInit() {
   const { axios, enabled } = useClientAPI();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     if (enabled) {
       axios.get('/ping?client=web').catch((error) => {
-        signOut();
+        if (status === 'authenticated') {
+          signOut();
+        }
         console.error(error);
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [axios, enabled]);
 
   useEffect(() => {
