@@ -7,20 +7,14 @@ type LoadingWrapperProps = {
   className?: string;
   isLoading: boolean;
   children?: ReactNode;
-} & ButtonVariants;
+};
 export default function LoadingWrapper({
   className,
-  variant,
-  size,
   isLoading,
   children,
 }: LoadingWrapperProps) {
   if (isLoading) {
-    return (
-      <LoadingSpinner
-        className={cn(buttonVariants({ variant, size, className }))}
-      />
-    );
+    return <LoadingSpinner className={cn(className)} />;
   }
 
   return children;
