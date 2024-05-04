@@ -253,16 +253,14 @@ function ServerSettingEditor({ server }: Props) {
       <div className="flex justify-end bg-card p-2">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <LoadingWrapper isLoading={isLoading}>
-              <Button
-                className="min-w-20"
-                title="Delete"
-                variant="destructive"
-                disabled={started || isLoading}
-              >
-                Delete
-              </Button>
-            </LoadingWrapper>
+            <Button
+              className="min-w-20"
+              title="Delete"
+              variant="destructive"
+              disabled={isLoading}
+            >
+              <LoadingWrapper isLoading={isLoading}>Delete</LoadingWrapper>
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             Are you sure you want to delete
@@ -273,7 +271,7 @@ function ServerSettingEditor({ server }: Props) {
                   className="bg-destructive hover:bg-destructive"
                   title={t('delete')}
                   onClick={() => deleteServer()}
-                  disabled={started || isLoading}
+                  disabled={isLoading}
                 >
                   {t('delete')}
                 </Button>

@@ -11,13 +11,17 @@ export default function ClientInit() {
   useEffect(() => {
     if (enabled) {
       axios.get('/ping?client=web').catch((error) => {
-        if (status === 'authenticated') {
+        console.log(error.response?.data?.status);
+        if (
+          status === 'authenticated' &&
+          error.response?.data?.status === 403
+        ) {
           signOut();
         }
         console.error(error);
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [axios, enabled]);
 
   useEffect(() => {
