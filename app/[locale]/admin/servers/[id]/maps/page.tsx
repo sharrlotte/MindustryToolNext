@@ -25,9 +25,9 @@ import { useToast } from '@/hooks/use-toast';
 import env from '@/constant/env';
 import Preview from '@/components/preview/preview';
 import NameTagSearch from '@/components/search/name-tag-search';
-import useTags from '@/hooks/use-tags';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useQueriesData from '@/hooks/use-queries-data';
+import { useSearchTags } from '@/hooks/use-tags';
 
 export default function Page() {
   const scrollContainer = useRef<HTMLDivElement | null>();
@@ -65,7 +65,7 @@ type AddMapDialogProps = {
 
 function AddMapDialog({ serverId }: AddMapDialogProps) {
   const { toast } = useToast();
-  const { map } = useTags();
+  const { map } = useSearchTags();
   const [show, setShow] = useState(false);
   const { axios, enabled } = useClientAPI();
   const t = useI18n();

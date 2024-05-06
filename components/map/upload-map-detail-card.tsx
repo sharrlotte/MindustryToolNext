@@ -15,13 +15,13 @@ import postVerifyMap from '@/query/map/post-verify-map';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
-import useTags from '@/hooks/use-tags';
 import { useRouter } from 'next/navigation';
 import deleteMap from '@/query/map/delete-map';
 import useQueriesData from '@/hooks/use-queries-data';
 import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 import { useI18n } from '@/locales/client';
+import { usePostTags } from '@/hooks/use-tags';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;
@@ -31,7 +31,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
-  const { map: mapTags } = useTags();
+  const { map: mapTags } = usePostTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
   const t = useI18n();

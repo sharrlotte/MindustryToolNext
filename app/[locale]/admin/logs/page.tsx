@@ -3,7 +3,6 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import useSocket from '@/hooks/use-socket';
 import { useQuery } from '@tanstack/react-query';
@@ -154,7 +153,6 @@ type LogPaginationQuery = PaginationQuery & {
 
 function StaticLog({ collection }: StaticLogProps) {
   const [env, setEnv] = useQueryState<LogEnvironment>('environment', 'Prod');
-
 
   return (
     <>

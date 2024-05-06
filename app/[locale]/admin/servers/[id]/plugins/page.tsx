@@ -20,11 +20,11 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useRef, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import NameTagSearch from '@/components/search/name-tag-search';
-import useTags from '@/hooks/use-tags';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import useQueriesData from '@/hooks/use-queries-data';
 import getInternalServerPlugins from '@/query/server/get-internal-server-plugins';
 import InternalServerPluginCard from '@/components/server/internal-server-plugin-card';
+import { useSearchTags } from '@/hooks/use-tags';
 
 export default function Page() {
   const scrollContainer = useRef<HTMLDivElement | null>();
@@ -61,7 +61,7 @@ type AddPluginDialogProps = {
 
 function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const { toast } = useToast();
-  const { plugin } = useTags();
+  const { plugin } = useSearchTags();
   const [show, setShow] = useState(false);
   const { axios, enabled } = useClientAPI();
   const t = useI18n();

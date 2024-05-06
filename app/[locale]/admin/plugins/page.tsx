@@ -3,17 +3,15 @@
 import InfinitePage from '@/components/common/infinite-page';
 import PluginCard from '@/components/plugin/plugin-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import { Button } from '@/components/ui/button';
 import useSearchPageParams from '@/hooks/use-search-page-params';
-import useTags from '@/hooks/use-tags';
+import { useSearchTags } from '@/hooks/use-tags';
 import { useI18n } from '@/locales/client';
 import getPlugins from '@/query/plugin/get-plugins';
 import Link from 'next/link';
 import React, { useRef } from 'react';
 
 export default function Page() {
-  const { plugin } = useTags();
+  const { plugin } = useSearchTags();
   const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 

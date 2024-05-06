@@ -88,7 +88,7 @@ function Dashboard({ server }: Props) {
       invalidateByKey(['internal-server']);
       toast({
         title: t('upload.success'),
-        variant: 'success',
+      variant: 'success',
       });
     },
     onError: (error) =>
@@ -122,52 +122,40 @@ function Dashboard({ server }: Props) {
         </div>
       </div>
       <div className="flex flex-row justify-end gap-2 bg-card p-2">
-        <LoadingWrapper
+        <Button
           className="w-20"
+          title="Shutdown"
           variant="secondary"
-          isLoading={isLoading}
+          disabled={isLoading}
+          onClick={() => reloadServer()}
         >
+          <LoadingWrapper className="w-20" isLoading={isLoading}>
+            Reload
+          </LoadingWrapper>
+        </Button>
+        {started ? (
           <Button
             className="w-20"
             title="Shutdown"
             variant="secondary"
             disabled={isLoading}
-            onClick={() => reloadServer()}
           >
-            Reload
-          </Button>
-        </LoadingWrapper>
-        {started ? (
-          <LoadingWrapper
-            className="w-20"
-            variant="secondary"
-            isLoading={isLoading}
-          >
-            <Button
-              className="w-20"
-              title="Shutdown"
-              variant="secondary"
-              disabled={isLoading}
-            >
+            <LoadingWrapper className="w-20" isLoading={isLoading}>
               Shutdown
-            </Button>
-          </LoadingWrapper>
+            </LoadingWrapper>
+          </Button>
         ) : (
-          <LoadingWrapper
+          <Button
             className="w-20"
+            title="Start"
             variant="primary"
-            isLoading={isLoading}
+            disabled={isLoading}
+            onClick={() => mutate()}
           >
-            <Button
-              className="w-20"
-              title="Start"
-              variant="primary"
-              disabled={isLoading}
-              onClick={() => mutate()}
-            >
+            <LoadingWrapper className="w-20" isLoading={isLoading}>
               Start
-            </Button>
-          </LoadingWrapper>
+            </LoadingWrapper>
+          </Button>
         )}
       </div>
     </div>

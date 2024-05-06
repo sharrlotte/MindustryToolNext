@@ -5,12 +5,12 @@ import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
-import useTags from '@/hooks/use-tags';
+import { useSearchTags } from '@/hooks/use-tags';
 import getSchematicUploads from '@/query/schematic/get-schematic-uploads';
 import React, { useRef } from 'react';
 
 export default function Page() {
-  const { schematic } = useTags();
+  const { schematic } = useSearchTags();
   const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 

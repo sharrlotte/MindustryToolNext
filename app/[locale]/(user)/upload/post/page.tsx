@@ -34,8 +34,8 @@ import { useDebounceValue } from 'usehooks-ts';
 import { useI18n } from '@/locales/client';
 import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
-import useTags from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
+import { usePostTags } from '@/hooks/use-tags';
 
 type Shared = {
   header: string;
@@ -230,7 +230,7 @@ function UploadPage({
   const { axios } = useClientAPI();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
-  const { post: postTags } = useTags();
+  const { post: postTags } = usePostTags();
   const languages = useLanguages();
   const t = useI18n();
 

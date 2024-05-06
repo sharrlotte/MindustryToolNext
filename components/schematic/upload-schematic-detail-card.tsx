@@ -17,7 +17,6 @@ import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import getSchematicData from '@/query/schematic/get-schematic-data';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
-import useTags from '@/hooks/use-tags';
 import { useRouter } from 'next/navigation';
 import deleteSchematic from '@/query/schematic/delete-schematic';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -25,6 +24,7 @@ import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
+import { usePostTags } from '@/hooks/use-tags';
 
 type UploadSchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -36,7 +36,7 @@ export default function UploadSchematicDetailCard({
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
-  const { schematic: schematicTags } = useTags();
+  const { schematic: schematicTags } = usePostTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
   const t = useI18n();

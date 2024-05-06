@@ -3,13 +3,13 @@
 import getPosts from '@/query/post/get-posts';
 import NameTagSearch from '@/components/search/name-tag-search';
 import InfinitePage from '@/components/common/infinite-page';
-import useTags from '@/hooks/use-tags';
-import { useRef } from 'react';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import PostPreviewCard from '@/components/post/post-preview-card';
+import { useSearchTags } from '@/hooks/use-tags';
+import { useRef } from 'react';
 
 export default function PostsPage() {
-  const { post } = useTags();
+  const { post } = useSearchTags();
   const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 

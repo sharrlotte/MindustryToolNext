@@ -59,12 +59,17 @@ export default function Page() {
     }
   }, [id, socket, state, isAuthenticated]);
 
-  const sendMessage = () => {
+  function sendMessage(message: string) {
+    let data = '';
+    if (message.startsWith('/')) {
+      data = message.substring(1);
+    } else {
+      data = `say ${message}`;
+    }
+
     if (socket && state === 'connected') {
       setMessage('');
-      socket
-        .onRoom(`SERVER-${id}`)
-        .send({ data: message, method: 'SERVER_MESSAGE' });
+      socket.onRoom(`SERVER-${id}`).send({ data, method: 'SERVER_MESSAGE' });
 
       setMessageHistory((prev) => {
         const v = [...prev, message];
@@ -75,10 +80,10 @@ export default function Page() {
 
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  }
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-    sendMessage();
+    sendMessage(message);
     event.preventDefault();
   };
 

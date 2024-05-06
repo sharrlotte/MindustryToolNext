@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
 import useStatusSearchParams from '@/hooks/use-status-search-params';
-import useTags from '@/hooks/use-tags';
+import { useSearchTags } from '@/hooks/use-tags';
 import { useI18n } from '@/locales/client';
 import getMePosts from '@/query/post/get-me-posts';
 import getMeMaps from '@/query/user/get-me-maps';
@@ -23,7 +23,7 @@ type TabProps = {
 };
 export default function Tab({ me }: TabProps) {
   const t = useI18n();
-  const { schematic, map, post } = useTags();
+  const { schematic, map, post } = useSearchTags();
   const scrollContainer = useRef<HTMLDivElement | null>();
   const params = useStatusSearchParams();
 
