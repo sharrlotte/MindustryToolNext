@@ -5,12 +5,12 @@ import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
-import useTags from '@/hooks/use-tags';
+import { useSearchTags } from '@/hooks/use-tags';
 import getMapUploads from '@/query/map/get-map-uploads';
 import React, { useRef } from 'react';
 
 export default function Page() {
-  const { map } = useTags();
+  const { map } = useSearchTags();
   const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 

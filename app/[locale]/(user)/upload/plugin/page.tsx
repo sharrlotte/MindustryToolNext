@@ -9,7 +9,6 @@ import useClientAPI from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
 import { useMutation } from '@tanstack/react-query';
 import useQueriesData from '@/hooks/use-queries-data';
-import useTags from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import postPlugin from '@/query/plugin/post-plugin';
 import {
@@ -30,10 +29,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { usePostTags } from '@/hooks/use-tags';
 
 export default function Page() {
   const { axios } = useClientAPI();
-  const { plugin } = useTags();
+  const { plugin } = usePostTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 

@@ -21,8 +21,8 @@ import { useI18n } from '@/locales/client';
 import { useMutation } from '@tanstack/react-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useSession } from 'next-auth/react';
-import useTags from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
+import { usePostTags } from '@/hooks/use-tags';
 
 export default function Page() {
   const { axios } = useClientAPI();
@@ -31,7 +31,7 @@ export default function Page() {
   const { data: session } = useSession();
   const user = session?.user;
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const { map } = useTags();
+  const { map } = usePostTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 

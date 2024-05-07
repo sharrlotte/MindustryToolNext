@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
 import useSearchPageParams from '@/hooks/use-search-page-params';
-import useTags from '@/hooks/use-tags';
+import { useSearchTags } from '@/hooks/use-tags';
 import { useI18n } from '@/locales/client';
 import getUserMaps from '@/query/user/get-user-maps';
 import getUserPosts from '@/query/user/get-user-posts';
@@ -24,7 +24,7 @@ type TabProps = {
 export default function Tab({ user }: TabProps) {
   const t = useI18n();
   const id = user.id;
-  const { schematic, map, post } = useTags();
+  const { schematic, map, post } = useSearchTags();
   const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 

@@ -12,7 +12,6 @@ import postVerifyPost from '@/query/post/post-verify-post';
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import NameTagSelector from '@/components/search/name-tag-selector';
-import useTags from '@/hooks/use-tags';
 import { useRouter } from 'next/navigation';
 import deletePost from '@/query/post/delete-post';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -22,6 +21,7 @@ import { Tags } from '@/types/response/Tag';
 import Markdown from '@/components/common/markdown';
 import TagContainer from '@/components/tag/tag-container';
 import { useI18n } from '@/locales/client';
+import { usePostTags } from '@/hooks/use-tags';
 
 type UploadPostDetailCardProps = {
   post: PostDetail;
@@ -33,7 +33,7 @@ export default function UploadPostDetailCard({
   const { toast } = useToast();
   const { back } = useRouter();
   const { axios } = useClientAPI();
-  const { post: postTags } = useTags();
+  const { post: postTags } = usePostTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
 
