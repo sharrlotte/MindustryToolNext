@@ -2,6 +2,7 @@ import useClientAPI from '@/hooks/use-client';
 import getTags from '@/query/tag/get-tags';
 import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 export function useSearchTags(): AllTagGroup {
   const { axios } = useClientAPI();
@@ -16,12 +17,15 @@ export function useSearchTags(): AllTagGroup {
 export function usePostTags(): AllTagGroup {
   const { schematic, map, post, plugin } = useSearchTags();
 
-  const predicate = (tag: TagGroup) => tag.name === 'size';
+  const predicate = (tag: TagGroup) => tag.name !== 'size';
 
-  return {
-    schematic: schematic.filter(predicate),
-    map: map.filter(predicate),
-    post: post.filter(predicate),
-    plugin: plugin.filter(predicate),
-  };
+  return useMemo(
+    () => ({
+      schematic: schematic.filter(predicate),
+      map: map.filter(predicate),
+      post: post.filter(predicate),
+      plugin: plugin.filter(predicate),
+    }),
+    [schematic, map, post, plugin],
+  );
 }
