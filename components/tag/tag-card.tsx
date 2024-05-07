@@ -32,7 +32,7 @@ export default function TagCard({
   return (
     <span
       className={cn(
-        'py-1/2 flex h-8 items-center gap-1 whitespace-nowrap rounded-md px-1 text-center text-xs capitalize text-background dark:text-foreground',
+        'flex h-8 items-center gap-1 whitespace-nowrap rounded-md px-2 py-1 text-center text-xs capitalize text-background dark:text-foreground',
         className,
         {
           group: hasDeleteButton,
@@ -44,7 +44,7 @@ export default function TagCard({
       <TagName>{name}</TagName>(<TagName>{value}</TagName>)
       {hasDeleteButton && (
         <Button
-          className="w-0 p-0 transition-all duration-500 group-hover:w-full"
+          className="w-0 p-0 transition-all duration-500 group-hover:w-5"
           title={t('delete')}
           variant="icon"
           onClick={() => handleOnDelete(tag)}
