@@ -37,6 +37,7 @@ export default function Page() {
 
   const t = useI18n();
 
+
   const { mutate: getMapPreview, isPending: isLoadingMapPreview } = useMutation(
     {
       mutationFn: (data: MapPreviewRequest) => postMapPreview(axios, data),

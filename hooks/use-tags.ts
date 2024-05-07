@@ -10,13 +10,15 @@ export function useSearchTags(): AllTagGroup {
     queryKey: ['tags'],
   });
 
+  console.log({ data });
+
   return data ?? { schematic: [], map: [], post: [], plugin: [] };
 }
 
 export function usePostTags(): AllTagGroup {
   const { schematic, map, post, plugin } = useSearchTags();
 
-  const predicate = (tag: TagGroup) => tag.name === 'size';
+  const predicate = (tag: TagGroup) => tag.name !== 'size';
 
   return {
     schematic: schematic.filter(predicate),
