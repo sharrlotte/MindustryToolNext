@@ -107,7 +107,9 @@ export default function Page() {
       </Dialog>
       <div
         className="h-full overflow-y-auto"
-        ref={(ref) => (scrollContainer.current = ref)}
+        ref={(ref) => {
+          scrollContainer.current = ref;
+        }}
       >
         <InfinitePage
           className="grid w-full grid-cols-1 justify-center gap-4 md:grid-cols-2 xl:grid-cols-3"

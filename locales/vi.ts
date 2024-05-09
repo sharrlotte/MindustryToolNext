@@ -123,4 +123,5 @@ export default {
   'web-owner': 'Chủ trang web',
   'website-name': 'MindustryTool',
   console: 'Bảng điều khiển',
+  plugin: 'Plugin',
 } as const;

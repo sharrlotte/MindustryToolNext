@@ -5,6 +5,7 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';
 import useSearchId from '@/hooks/use-search-id-params';
 import useSocket from '@/hooks/use-socket';
+import { isReachedEnd } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import React, {
   FormEvent,
@@ -32,6 +33,14 @@ export default function Page() {
     setLog((prev) => [...prev, ...message]);
 
     setTimeout(() => {
+      if (!bottomRef.current) {
+        return;
+      }
+
+      if (!isReachedEnd(bottomRef.current)) {
+        return;
+      }
+
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };
@@ -136,7 +145,11 @@ export default function Page() {
               />
             ))
           )}
-          <span ref={(ref) => (bottomRef.current = ref)}></span>
+          <span
+            ref={(ref) => {
+              bottomRef.current = ref;
+            }}
+          ></span>
         </div>
       </div>
       <form

@@ -37,7 +37,9 @@ export default function Page() {
       </div>
       <div
         className="flex h-full w-full flex-col gap-2 overflow-y-auto bg-card p-2"
-        ref={(ref) => (scrollContainer.current = ref)}
+        ref={(ref) => {
+          scrollContainer.current = ref;
+        }}
       >
         <InfinitePage
           className="flex flex-col gap-2"

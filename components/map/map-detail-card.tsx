@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation';
 import { useI18n } from '@/locales/client';
 import deleteMap from '@/query/map/delete-map';
 import DeleteButton from '@/components/button/delete-button';
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -93,7 +94,9 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
             variant="ghost"
             data={link}
             content={link}
-          />
+          >
+            <LinkIcon className="h-5 w-5" />
+          </CopyButton>
           <Detail.Image
             src={`${env.url.image}/maps/${map.id}.png`}
             errorSrc={`${env.url.api}/maps/${map.id}/image`}

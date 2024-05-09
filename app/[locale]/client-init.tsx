@@ -11,7 +11,6 @@ export default function ClientInit() {
   useEffect(() => {
     if (enabled) {
       axios.get('/ping?client=web').catch((error) => {
-        console.log(error.response?.data?.status);
         if (
           status === 'authenticated' &&
           error.response?.data?.status === 403

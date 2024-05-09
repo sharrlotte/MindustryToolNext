@@ -27,6 +27,7 @@ import { useI18n } from '@/locales/client';
 import useToastAction from '@/hooks/use-toast-action';
 import deleteSchematic from '@/query/schematic/delete-schematic';
 import DeleteButton from '@/components/button/delete-button';
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -103,7 +104,9 @@ export default function SchematicDetailCard({
             variant="ghost"
             data={link}
             content={link}
-          />
+          >
+            <LinkIcon className="h-5 w-5" />
+          </CopyButton>
           <Detail.Image
             src={`${env.url.image}/schematics/${schematic.id}.png`}
             errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}

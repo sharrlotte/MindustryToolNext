@@ -11,6 +11,7 @@ import { Map } from '@/types/response/Map';
 import Preview from '@/components/preview/preview';
 import { cn } from '@/lib/utils';
 import env from '@/constant/env';
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 type MapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;
@@ -33,7 +34,9 @@ export default function MapPreview({
         variant="ghost"
         data={link}
         content={link}
-      />
+      >
+        <LinkIcon className="h-5 w-5" />
+      </CopyButton>
       <Link className="h-full w-full" href={`/maps/${map.id}`}>
         <Preview.Image
           src={`${env.url.image}/maps/${map.id}.png`}

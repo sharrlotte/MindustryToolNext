@@ -11,7 +11,9 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
   const { axios, enabled } = useClientAPI();
 
   const getNextPageParam = (lastPage: T[], pages: T[][], lastPageParams: P) => {
-    if (!lastPage || lastPage.length === 0) {
+    console.log({ lastPage, lastPageParams });
+
+    if (!lastPage || lastPage.length === 0 || pages.length < params.items) {
       return undefined;
     }
     lastPageParams.page += 1;
@@ -35,7 +37,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     return lastPageParams;
   };
 
-  const { page, ...rest } = params;
+  const { page, items, ...rest } = params;
 
   return useInfiniteQuery<T[], Error, InfiniteData<T[], P>, QueryKey[], P>({
     queryKey: [...queryKey, ...Object.values(rest)],

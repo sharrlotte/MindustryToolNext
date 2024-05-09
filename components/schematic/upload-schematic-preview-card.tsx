@@ -11,6 +11,7 @@ import getSchematicData from '@/query/schematic/get-schematic-data';
 import useClientAPI from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
 import useToastAction from '@/hooks/use-toast-action';
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 type UploadSchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -42,7 +43,9 @@ export default function UploadSchematicPreviewCard({
         variant="ghost"
         data={link}
         content={link}
-      />
+      >
+        <LinkIcon className="h-5 w-5" />
+      </CopyButton>
       <Link href={`/admin/schematics/${schematic.id}`}>
         <Preview.Image
           src={`${env.url.image}/schematics/${schematic.id}.png`}

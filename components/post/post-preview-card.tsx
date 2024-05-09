@@ -9,6 +9,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeCount from '@/components/like/like-count';
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
@@ -44,7 +45,9 @@ export default function PostPreviewCard({
               variant="outline"
               data={link}
               content={link}
-            />
+            >
+              <LinkIcon className="h-5 w-5" />
+            </CopyButton>
             {post.status === 'VERIFIED' && (
               <LikeComponent
                 targetId={post.id}
