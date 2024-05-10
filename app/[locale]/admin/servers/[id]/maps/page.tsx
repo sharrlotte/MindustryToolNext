@@ -25,6 +25,7 @@ import Preview from '@/components/preview/preview';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useSearchTags } from '@/hooks/use-tags';
+import useSearchPageParams from '@/hooks/use-search-page-params';
 
 export default function Page() {
   const scrollContainer = useRef<HTMLDivElement | null>();
@@ -71,6 +72,8 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
 
   const { invalidateByKey } = useQueriesData();
 
+  //TODO: Fix search
+  const params = useSearchPageParams();
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   const { mutate, isPending } = useMutation({
@@ -115,7 +118,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
             }}
           >
             <InfinitePage
-              params={{ page: 0, items: 20 }}
+              params={params}
               queryKey={['internal-server-maps']}
               getFunc={(axios, params) => getMaps(axios, params)}
               scrollContainer={scrollContainer.current}
