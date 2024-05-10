@@ -15,27 +15,29 @@ export default function Page() {
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
-    <div
-      className="relative flex h-full flex-col gap-4 overflow-y-auto"
-      ref={(ref) => {
-        scrollContainer.current = ref;
-      }}
-    >
+    <div className="relative flex h-full flex-col gap-4">
       <NameTagSearch tags={schematic} />
-      <InfinitePage
-        params={params}
-        queryKey={['schematic-uploads']}
-        getFunc={getSchematicUploads}
-        scrollContainer={scrollContainer.current}
-        skeleton={{
-          amount: 20,
-          item: <PreviewSkeleton />,
+      <div
+        className="relative flex h-full flex-col overflow-y-auto"
+        ref={(ref) => {
+          scrollContainer.current = ref;
         }}
       >
-        {(data) => (
-          <UploadSchematicPreviewCard key={data.id} schematic={data} />
-        )}
-      </InfinitePage>
+        <InfinitePage
+          params={params}
+          queryKey={['schematic-uploads']}
+          getFunc={getSchematicUploads}
+          scrollContainer={scrollContainer.current}
+          skeleton={{
+            amount: 20,
+            item: <PreviewSkeleton />,
+          }}
+        >
+          {(data) => (
+            <UploadSchematicPreviewCard key={data.id} schematic={data} />
+          )}
+        </InfinitePage>
+      </div>
     </div>
   );
 }

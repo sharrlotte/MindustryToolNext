@@ -14,22 +14,24 @@ export default function Page() {
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
-    <div
-      className="relative flex h-full flex-col gap-4 overflow-y-auto"
-      ref={(ref) => {
-        scrollContainer.current = ref;
-      }}
-    >
-      <NameTagSearch tags={post} />
-      <InfinitePage
-        className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
-        params={params}
-        queryKey={['post-uploads']}
-        getFunc={getPostUploads}
-        scrollContainer={scrollContainer.current}
+    <div>
+      <div
+        className="relative flex h-full flex-col gap-4 overflow-y-auto"
+        ref={(ref) => {
+          scrollContainer.current = ref;
+        }}
       >
-        {(data) => <UploadPostPreviewCard key={data.id} post={data} />}
-      </InfinitePage>
+        <NameTagSearch tags={post} />
+        <InfinitePage
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
+          params={params}
+          queryKey={['post-uploads']}
+          getFunc={getPostUploads}
+          scrollContainer={scrollContainer.current}
+        >
+          {(data) => <UploadPostPreviewCard key={data.id} post={data} />}
+        </InfinitePage>
+      </div>
     </div>
   );
 }

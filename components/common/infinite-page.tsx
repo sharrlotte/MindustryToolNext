@@ -73,6 +73,14 @@ export default function InfinitePage<
     </span>
   );
 
+  if (isError || error) {
+    return (
+      <div className="flex w-full justify-center">
+        {t('error')} : {error?.message}
+      </div>
+    );
+  }
+
   if (isLoading || !data) {
     return (
       <div
@@ -127,11 +135,6 @@ export default function InfinitePage<
         </>
       )}
       {!hasNextPage && end}
-      {isError && (
-        <div className="flex w-full justify-center">
-          {t('error')} : {error?.message}
-        </div>
-      )}
     </InfiniteScroll>
   );
 }

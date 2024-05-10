@@ -18,14 +18,14 @@ export default function Page() {
   const t = useI18n();
 
   return (
-    <div className="flex h-full flex-col justify-between">
+    <div className="flex h-full flex-col justify-between gap-4">
+      <NameTagSearch tags={plugin} useSort={false} />
       <div
-        className="relative flex h-full flex-col gap-4 overflow-y-auto"
+        className="relative flex h-full flex-col overflow-y-auto"
         ref={(ref) => {
           scrollContainer.current = ref;
         }}
       >
-        <NameTagSearch tags={plugin} useSort={false} />
         <InfinitePage
           className="flex flex-col gap-2"
           queryKey={['plugins']}
