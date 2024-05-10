@@ -54,11 +54,11 @@ export default function InternalServerMapCard({
         <Preview.Header className="h-12">{name}</Preview.Header>
         <Preview.Actions>
           <DeleteButton
-            className="absolute right-0 top-0 h-12 w-12 border-none"
+            className="absolute right-1 top-1 h-10 w-10 border-none backdrop-brightness-50"
             isLoading={isPending}
             onClick={() => mutate(id)}
             description={t('delete')}
-          ></DeleteButton>
+          />
         </Preview.Actions>
       </Preview.Description>
     </Preview>

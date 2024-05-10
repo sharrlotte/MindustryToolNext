@@ -124,4 +124,5 @@ export default {
   'website-name': 'MindustryTool',
   console: 'Bảng điều khiển',
   plugin: 'Plugin',
+  'select-file': 'Chọn file'
 } as const;
