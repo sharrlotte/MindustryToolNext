@@ -124,5 +124,17 @@ export default {
   'website-name': 'MindustryTool',
   console: 'Bảng điều khiển',
   plugin: 'Plugin',
-  'upload.select-file': 'Chọn file'
+  'upload.select-file': 'Chọn file',
+  'internal-server.add-map': 'Thêm bản đồ',
+  'internal-server.select-map': 'Chọn bản đồ',
+  'internal-server.map-name': 'Tên bản đồ',
+  'server-info': 'Thông tin',
+  update: 'Cập nhật',
+  reset: 'Khôi phục',
+  'update.success': 'Cập nhật thành công',
+  'update.fail': 'Cập nhật thất bại',
+  'plugin.add': 'Thêm plugin',
+  'internal-server.add-plugin': 'Thêm plugin',
+  'internal-server.select-plugin': 'Chọn plugin',
+  reload: 'Reload',
 } as const;
