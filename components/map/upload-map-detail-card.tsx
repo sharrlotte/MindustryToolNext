@@ -22,6 +22,7 @@ import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
 import { useI18n } from '@/locales/client';
 import { usePostTags } from '@/hooks/use-tags';
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;
@@ -93,7 +94,9 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
             variant="ghost"
             data={link}
             content={link}
-          />
+          >
+            <LinkIcon className="h-5 w-5" />
+          </CopyButton>
           <Detail.Image
             src={`${env.url.image}/maps/${map.id}.png`}
             errorSrc={`${env.url.api}/maps/${map.id}/image`}

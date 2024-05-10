@@ -25,6 +25,7 @@ import DeleteButton from '@/components/button/delete-button';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
 import { usePostTags } from '@/hooks/use-tags';
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 type UploadSchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -105,7 +106,9 @@ export default function UploadSchematicDetailCard({
             variant="ghost"
             data={link}
             content={link}
-          />
+          >
+            <LinkIcon className="h-5 w-5" />
+          </CopyButton>
           <Detail.Image
             src={`${env.url.image}/schematics/${schematic.id}.png`}
             errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}

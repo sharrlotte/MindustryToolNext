@@ -30,7 +30,9 @@ export default function Tab({ me }: TabProps) {
   return (
     <div
       className="absolute inset-0 space-y-2 overflow-auto bg-background p-4"
-      ref={(ref) => (scrollContainer.current = ref)}
+      ref={(ref) => {
+        scrollContainer.current = ref;
+      }}
     >
       <div className="flex gap-2 rounded-md bg-card p-2">
         <UserAvatar className="h-20 w-20" user={me} />

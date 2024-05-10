@@ -17,6 +17,7 @@ import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
 import useQueryState from '@/hooks/use-query-state';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import { isReachedEnd } from '@/lib/utils';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
@@ -62,6 +63,16 @@ function LiveLog() {
     setLog((prev) => [...prev, ...message]);
 
     setTimeout(() => {
+      if (!bottomRef.current) {
+        return;
+      }
+
+      const element = bottomRef.current;
+
+      if (!isReachedEnd(element)) {
+        return;
+      }
+
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };
@@ -113,7 +124,11 @@ function LiveLog() {
               </div>
             ))
           )}
-          <span ref={(ref) => (bottomRef.current = ref)}></span>
+          <span
+            ref={(ref) => {
+              bottomRef.current = ref;
+            }}
+          ></span>
         </div>
       </div>
       <form

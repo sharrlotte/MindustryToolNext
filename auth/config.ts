@@ -38,7 +38,8 @@ export const {
     }),
   ],
   callbacks: {
-    async session(params) {
+    //TODO: Fix type
+    async session(params: any) {
       if ('token' in params) {
         const { session, token } = params;
 

@@ -12,7 +12,7 @@ export async function delay(timeMilis: number) {
 }
 
 export async function fixProgressBar() {
-  await delay(5000);
+  await delay(500);
   Nprogress.done();
 }
 
@@ -66,4 +66,12 @@ export function toForm(data: Record<string, string | number | File>) {
     form.append(key, value);
   });
   return form;
+}
+
+export function isReachedEnd(element: HTMLElement) {
+  return (
+    Math.abs(
+      element.scrollHeight - (element.scrollTop + element.clientHeight),
+    ) <= 1
+  );
 }

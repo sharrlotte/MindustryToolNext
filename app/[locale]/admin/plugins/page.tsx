@@ -21,7 +21,9 @@ export default function Page() {
     <div className="flex h-full flex-col justify-between">
       <div
         className="relative flex h-full flex-col gap-4 overflow-y-auto"
-        ref={(ref) => (scrollContainer.current = ref)}
+        ref={(ref) => {
+          scrollContainer.current = ref;
+        }}
       >
         <NameTagSearch tags={plugin} useSort={false} />
         <InfinitePage
