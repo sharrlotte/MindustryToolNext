@@ -49,6 +49,7 @@ export default function Page() {
   });
 
   function handleCopyFromClipboard() {
+    
     navigator.clipboard.readText().then((text) => setAddress(text));
   }
 

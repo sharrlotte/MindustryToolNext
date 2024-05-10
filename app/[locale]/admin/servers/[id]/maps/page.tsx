@@ -26,6 +26,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useSearchTags } from '@/hooks/use-tags';
 import useSearchPageParams from '@/hooks/use-search-page-params';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Page() {
   const scrollContainer = useRef<HTMLDivElement | null>();
@@ -124,7 +125,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
               scrollContainer={scrollContainer.current}
               skeleton={{
                 amount: 20,
-                item: <PreviewSkeleton />,
+                item: <Skeleton className="h-preview-height" />,
               }}
             >
               {({ id, name }) => (

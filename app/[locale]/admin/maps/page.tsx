@@ -15,25 +15,27 @@ export default function Page() {
   const scrollContainer = useRef<HTMLDivElement | null>();
 
   return (
-    <div
-      className="relative flex h-full flex-col gap-4 overflow-y-auto"
-      ref={(ref) => {
-        scrollContainer.current = ref;
-      }}
-    >
+    <div className="relative flex h-full flex-col gap-4">
       <NameTagSearch tags={map} />
-      <InfinitePage
-        queryKey={['map-uploads']}
-        getFunc={getMapUploads}
-        params={params}
-        scrollContainer={scrollContainer.current}
-        skeleton={{
-          amount: 20,
-          item: <PreviewSkeleton />,
+      <div
+        className="relative flex h-full flex-col gap-4 overflow-y-auto"
+        ref={(ref) => {
+          scrollContainer.current = ref;
         }}
       >
-        {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
-      </InfinitePage>
+        <InfinitePage
+          queryKey={['map-uploads']}
+          getFunc={getMapUploads}
+          params={params}
+          scrollContainer={scrollContainer.current}
+          skeleton={{
+            amount: 20,
+            item: <PreviewSkeleton />,
+          }}
+        >
+          {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
+        </InfinitePage>
+      </div>
     </div>
   );
 }
