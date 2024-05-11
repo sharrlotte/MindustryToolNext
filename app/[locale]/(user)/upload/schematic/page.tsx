@@ -31,6 +31,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/hooks/use-toast';
 import { usePostTags } from '@/hooks/use-tags';
+import Image from 'next/image';
 
 export default function Page() {
   const { axios } = useClientAPI();
@@ -174,7 +175,13 @@ export default function Page() {
             >
               <LoadingWrapper isLoading={isLoadingSchematicPreview}>
                 {preview ? (
-                  <img src={PNG_IMAGE_PREFIX + preview.image} alt="Schematic" />
+                  <Image
+                    loader={({ src }) => src}
+                    src={PNG_IMAGE_PREFIX + preview.image}
+                    alt="Map"
+                    width={512}
+                    height={512}
+                  />
                 ) : (
                   <span className="py-1" title={t('upload.select-schematic')}>
                     {t('upload.select-schematic')}

@@ -23,6 +23,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/hooks/use-toast';
 import { usePostTags } from '@/hooks/use-tags';
+import Image from 'next/image';
 
 export default function Page() {
   const { axios } = useClientAPI();
@@ -36,7 +37,6 @@ export default function Page() {
   const { invalidateByKey } = useQueriesData();
 
   const t = useI18n();
-
 
   const { mutate: getMapPreview, isPending: isLoadingMapPreview } = useMutation(
     {
@@ -129,7 +129,13 @@ export default function Page() {
           <label htmlFor="file" className="hover:cursor-pointer">
             <LoadingWrapper isLoading={isLoadingMapPreview}>
               {preview ? (
-                <img src={PNG_IMAGE_PREFIX + preview.image} alt="Error" />
+                <Image
+                  loader={({ src }) => src}
+                  src={PNG_IMAGE_PREFIX + preview.image}
+                  alt="Map"
+                  width={512}
+                  height={512}
+                />
               ) : (
                 <Button
                   className="text-sm"

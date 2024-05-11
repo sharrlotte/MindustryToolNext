@@ -588,7 +588,8 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
                 >
                   <XMarkIcon className="h-4 w-4" />
                 </Button>
-                <img src={imageUrl} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={imageUrl} alt='preview' />
               </div>
             )}
             <div className="flex justify-end">
