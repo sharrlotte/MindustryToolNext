@@ -4,11 +4,9 @@ import { AxiosInstance } from 'axios';
 
 export default async function postPlugin(
   axios: AxiosInstance,
-  { file, ...data }: PostPluginRequest,
+  data: PostPluginRequest,
 ): Promise<void> {
   const form = toForm(data);
-
-  form.append('file', file);
 
   return axios.post('/plugins', form, {
     data: form,
