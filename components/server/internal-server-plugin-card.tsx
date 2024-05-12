@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function InternalServerPluginCard({
-  plugin: { id, serverId, name, pluginId },
+  plugin: { id, serverId, name },
 }: Props) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
