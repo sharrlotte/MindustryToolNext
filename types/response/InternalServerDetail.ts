@@ -6,4 +6,6 @@ export type InternalServerDetail = {
   mode: 'SURVIVAL' | 'ATTACK' | 'PVP';
   started: boolean;
   alive: boolean;
+  ramUsage: number;
+  totalRam: number;
 };
