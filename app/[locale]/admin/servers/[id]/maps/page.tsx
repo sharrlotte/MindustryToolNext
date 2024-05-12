@@ -88,7 +88,6 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
       });
     },
     onSuccess: () => {
-      setShow(false);
       invalidateByKey(['internal-server-maps']);
     },
   });
