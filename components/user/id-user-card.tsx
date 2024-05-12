@@ -28,14 +28,14 @@ export default function IdUserCard({ id }: IdUserCardProps) {
 function FletchUserCard({ id }: IdUserCardProps) {
   const t = useI18n();
   const { axios, enabled } = useClientAPI();
-  const { data, isLoading, isError } = useQuery<User>({
+  const { data, isLoading, isError, error } = useQuery<User>({
     queryKey: ['users', id],
     queryFn: () => getUser(axios, { id }),
     enabled,
   });
 
-  if (isError) {
-    return 'Error';
+  if (isError || error) {
+    return <span>{error?.message}</span>;
   }
 
   if (isLoading) {

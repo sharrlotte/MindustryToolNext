@@ -56,7 +56,8 @@ type Props = {
 function Dashboard({ server }: Props) {
   const t = useI18n();
 
-  const { started, name, description, port, mode, id } = server;
+  const { started, name, description, port, mode, id, ramUsage, totalRam } =
+    server;
   const { toast } = useToast();
   const { axios } = useClientAPI();
   const { invalidateByKey } = useQueriesData();
@@ -88,7 +89,7 @@ function Dashboard({ server }: Props) {
       invalidateByKey(['internal-server']);
       toast({
         title: t('upload.success'),
-      variant: 'success',
+        variant: 'success',
       });
     },
     onError: (error) =>
@@ -119,6 +120,12 @@ function Dashboard({ server }: Props) {
         <div>
           <span>Game mode: </span>
           <span>{mode}</span>
+        </div>
+        <div className='space-x-2'>
+          <span>Memory {Math.floor((ramUsage / totalRam) * 100) / 100}%</span>
+          <span>
+            {ramUsage}/{totalRam}mb
+          </span>
         </div>
       </div>
       <div className="flex flex-row justify-end gap-2 bg-card p-2">

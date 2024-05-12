@@ -45,7 +45,7 @@ export default function Page() {
       name: '',
       description: '',
       tags: [],
-      file: undefined,
+      url: '',
     },
   });
 
@@ -112,44 +112,17 @@ export default function Page() {
             />
             <FormField
               control={form.control}
-              name="file"
+              name="url"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>File</FormLabel>
+                  <FormLabel>URL</FormLabel>
                   <FormControl>
-                    <label
-                      className="block hover:cursor-pointer"
-                      htmlFor="file"
-                    >
-                      <Button
-                        className="text-sm"
-                        variant="primary"
-                        title={t('upload.select-file')}
-                        asChild
-                      >
-                        {field.value ? (
-                          <span>{field.value.name}</span>
-                        ) : (
-                          <span title={t('upload.select-file')}>
-                            {t('upload.select-file')}
-                          </span>
-                        )}
-                      </Button>
-                      <input
-                        id="file"
-                        type="file"
-                        hidden
-                        accept=".jar"
-                        onChange={(event) => {
-                          const files = event.currentTarget.files;
-                          if (files && files[0]) {
-                            field.onChange(files[0]);
-                          }
-                        }}
-                      />
-                    </label>
+                    <Input
+                      placeholder="https://github.com/sharrlotte/MindustryToolPlugin"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormDescription>The plugin description</FormDescription>
+                  <FormDescription>The plugin url</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

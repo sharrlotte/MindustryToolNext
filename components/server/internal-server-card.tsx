@@ -8,7 +8,7 @@ type ServerInstancesCardProps = {
 };
 
 export default async function InternalServerCard({
-  server: { id, name, port, alive, started },
+  server: { id, name, port, alive, started, ramUsage, totalRam },
 }: ServerInstancesCardProps) {
   const t = await getI18n();
 
@@ -20,6 +20,7 @@ export default async function InternalServerCard({
         <div className="text-2xl">{name}</div>
         <div>Port: {port}</div>
         <div>{status}</div>
+        <div>Memory {Math.floor((ramUsage / totalRam) * 100) / 100}%</div>
       </Link>
     </div>
   );

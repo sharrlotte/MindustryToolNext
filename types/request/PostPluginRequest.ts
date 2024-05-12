@@ -4,7 +4,7 @@ export type PostPluginRequest = {
   name: string;
   description: string;
   tags: string;
-  file: File;
+  url: string;
 };
 
 export const PostPluginRequestSchema = z.object({
@@ -20,11 +20,11 @@ export const PostPluginRequestSchema = z.object({
       }),
     )
     .min(1),
-  file: z
-    .instanceof(File)
-    .refine(
-      (file: File) => file.name.split('.').pop() === 'jar',
-      'Invalid file extension',
+  url: z
+    .string()
+    .regex(
+      /https:\/\/github.com\/([a-zA-Z0-9]+)\/([a-zA-Z]+[a-zA-Z]+)/,
+      'Invalid GitHub URL',
     ),
 });
 

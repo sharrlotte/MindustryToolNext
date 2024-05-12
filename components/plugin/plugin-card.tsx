@@ -1,8 +1,6 @@
 'use client';
 
 import DeleteButton from '@/components/button/delete-button';
-import DownloadButton from '@/components/button/download-button';
-import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
@@ -51,12 +49,6 @@ export default function PluginCard({
           description={`${t('delete')} ${name}`}
           isLoading={isDeleting}
           onClick={() => deletePluginById(id)}
-        />
-        <DownloadButton
-          className="w-10"
-          href={`${env.url.api}/plugins/${id}/download`}
-          secure
-          fileName={`${name}.zip`}
         />
       </div>
     </div>
