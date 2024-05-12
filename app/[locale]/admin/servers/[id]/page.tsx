@@ -121,8 +121,8 @@ function Dashboard({ server }: Props) {
           <span>Game mode: </span>
           <span>{mode}</span>
         </div>
-        <div className='space-x-2'>
-          <span>Memory {Math.floor((ramUsage / totalRam) * 100) / 100}%</span>
+        <div className="space-x-2">
+          <span>Memory {Math.floor((ramUsage / totalRam) * 100)}%</span>
           <span>
             {ramUsage}/{totalRam}mb
           </span>
