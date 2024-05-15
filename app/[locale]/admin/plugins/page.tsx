@@ -13,7 +13,7 @@ import React, { useRef } from 'react';
 export default function Page() {
   const { plugin } = useSearchTags();
   const params = useSearchPageParams();
-  const scrollContainer = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement | null>();
 
   const t = useI18n();
 
@@ -23,7 +23,7 @@ export default function Page() {
       <div
         className="relative flex h-full flex-col overflow-y-auto"
         ref={(ref) => {
-          scrollContainer.current = ref;
+          container.current = ref;
         }}
       >
         <InfinitePage
@@ -31,7 +31,7 @@ export default function Page() {
           queryKey={['plugins']}
           getFunc={getPlugins}
           params={params}
-          scrollContainer={scrollContainer.current}
+          container={container.current}
         >
           {(data) => <PluginCard key={data.id} plugin={data} />}
         </InfinitePage>

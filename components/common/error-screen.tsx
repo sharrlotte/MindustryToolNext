@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/locales/client';
+import { notFound } from 'next/navigation';
 
 export default function ErrorScreen({
   reset,
@@ -11,6 +12,10 @@ export default function ErrorScreen({
   reset: () => void;
 }) {
   let message = error.message ?? 'Something went wrong!';
+
+  if (message === 'NEXT_NOT_FOUND') {
+    throw notFound();
+  }
 
   const t = useI18n();
 

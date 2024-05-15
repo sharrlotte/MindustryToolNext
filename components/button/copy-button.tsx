@@ -22,19 +22,17 @@ export default function CopyButton({
   const t = useI18n();
   const copy = useClipboard();
 
-  const handleCopy = async () => {
-    let d = data instanceof Function ? await data() : data;
-
-    copy({ data: d, title, content });
-  };
-
   return (
     <Button
       className={cn('p-2', className)}
       title={title ?? t('copy')}
       variant="outline"
       {...props}
-      onClick={handleCopy}
+      onClick={async () => {
+        let d = data instanceof Function ? await data() : data;
+
+        copy({ data: d, title, content });
+      }}
     >
       {children ?? <Copy className="h-5 w-5" strokeWidth="1.3px" />}
     </Button>

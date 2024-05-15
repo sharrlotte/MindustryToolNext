@@ -13,6 +13,6 @@ export type MetricCollection =
 
 export type LikeTarget = 'SCHEMATICS' | 'MAPS' | 'POSTS' | 'SERVERS';
 
-export type UserRole = 'ADMIN' | 'USER';
+export type UserRole = 'ADMIN' | 'USER' | "SHAR";
 
 export type LikeAction = 'LIKE' | 'DISLIKE';

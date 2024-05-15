@@ -27,9 +27,10 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useSearchTags } from '@/hooks/use-tags';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { Skeleton } from '@/components/ui/skeleton';
+import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 
 export default function Page() {
-  const scrollContainer = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement | null>(null);
   const id = useSafeParam().get('id');
 
   return (
@@ -40,21 +41,25 @@ export default function Page() {
       <div
         className="flex h-full w-full flex-col gap-2 overflow-y-auto bg-card p-2"
         ref={(ref) => {
-          scrollContainer.current = ref;
+          container.current = ref;
         }}
       >
-        <InfinitePage
+        <ResponsiveInfiniteScrollGrid
           params={{ page: 0, items: 20 }}
           queryKey={['internal-server-maps', id]}
           getFunc={(axios, params) => getInternalServerMaps(axios, id, params)}
-          scrollContainer={scrollContainer.current}
+          container={container.current}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,
           }}
+          itemMinWidth={224}
+          itemMinHeight={352}
+          contentOffsetHeight={112}
+          gap={8}
         >
           {(data) => <InternalServerMapCard key={data.id} map={data} />}
-        </InfinitePage>
+        </ResponsiveInfiniteScrollGrid>
       </div>
     </div>
   );
@@ -75,7 +80,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
 
   //TODO: Fix search
   const params = useSearchPageParams();
-  const scrollContainer = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement | null>();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) =>
@@ -88,7 +93,6 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
       });
     },
     onSuccess: () => {
-      setShow(false);
       invalidateByKey(['internal-server-maps']);
     },
   });
@@ -115,14 +119,14 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
           <div
             className="flex h-full w-full flex-col gap-2 overflow-y-auto bg-card p-2"
             ref={(ref) => {
-              scrollContainer.current = ref;
+              container.current = ref;
             }}
           >
             <InfinitePage
               params={params}
               queryKey={['internal-server-maps']}
               getFunc={(axios, params) => getMaps(axios, params)}
-              scrollContainer={scrollContainer.current}
+              container={container.current}
               skeleton={{
                 amount: 20,
                 item: <Skeleton className="h-preview-height" />,

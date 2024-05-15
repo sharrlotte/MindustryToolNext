@@ -12,7 +12,7 @@ export default function DislikeButton({
   className,
   ...props
 }: LikeButtonProps) {
-  const { handleDislike, likeData, isLoading } = useLike();
+  const { handleAction, likeData, isLoading } = useLike();
   const t = useI18n();
 
   return (
@@ -30,7 +30,7 @@ export default function DislikeButton({
       {...props}
       title={t('dislike')}
       disabled={isLoading}
-      onClick={handleDislike}
+      onClick={() => handleAction('DISLIKE')}
     >
       <ChevronDoubleDownIcon className="h-6 w-6" />
     </button>

@@ -9,8 +9,8 @@ import { ChevronDoubleUpIcon } from '@heroicons/react/24/outline';
 type LikeButtonProps = Omit<ButtonProps, 'title'>;
 
 export default function LikeButton({ className, ...props }: LikeButtonProps) {
-  const { handleLike, likeData, isLoading } = useLike();
-  const t = useI18n()
+  const { handleAction, likeData, isLoading } = useLike();
+  const t = useI18n();
 
   return (
     <button
@@ -18,7 +18,8 @@ export default function LikeButton({ className, ...props }: LikeButtonProps) {
         'flex h-9 min-w-9 items-center justify-center rounded-md border border-border p-2 hover:bg-success hover:text-background dark:hover:text-foreground',
         className,
         {
-          'bg-success text-background dark:text-foreground': likeData?.state === 1,
+          'bg-success text-background dark:text-foreground':
+            likeData?.state === 1,
         },
       )}
       title={t('like')}
@@ -26,7 +27,7 @@ export default function LikeButton({ className, ...props }: LikeButtonProps) {
       variant="outline"
       {...props}
       disabled={isLoading}
-      onClick={handleLike}
+      onClick={() => handleAction('LIKE')}
     >
       <ChevronDoubleUpIcon className="h-6 w-6" />
     </button>

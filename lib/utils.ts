@@ -68,10 +68,10 @@ export function toForm(data: Record<string, string | number | File>) {
   return form;
 }
 
-export function isReachedEnd(element: HTMLElement) {
+export function isReachedEnd(element: HTMLElement, offset: number = 100) {
   return (
     Math.abs(
       element.scrollHeight - (element.scrollTop + element.clientHeight),
-    ) <= 1
+    ) <= offset
   );
 }

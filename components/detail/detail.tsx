@@ -70,6 +70,7 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
         alt={alt}
         width={576}
         height={576}
+        priority
         onError={(err) => (err.currentTarget.src = errorSrc)}
       />
     </figure>

@@ -1,9 +1,13 @@
 'use client';
 
 import InfinitePage from '@/components/common/infinite-page';
+import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import MapPreviewCard from '@/components/map/map-preview-card';
+import UploadMapPreview from '@/components/map/upload-map-preview-card';
 import PostPreviewCard from '@/components/post/post-preview-card';
+import UploadPostPreviewCard from '@/components/post/upload-post-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
+import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -26,13 +30,13 @@ export default function Tab({ user }: TabProps) {
   const id = user.id;
   const { schematic, map, post } = useSearchTags();
   const params = useSearchPageParams();
-  const scrollContainer = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement | null>(null);
 
   return (
     <div
       className="absolute inset-0 space-y-2 overflow-y-auto bg-background p-4"
       ref={(ref) => {
-        scrollContainer.current = ref;
+        container.current = ref;
       }}
     >
       <div className="flex gap-2 rounded-md bg-card p-2">
@@ -51,37 +55,55 @@ export default function Tab({ user }: TabProps) {
         <TabsContent value="schematic">
           <div className="relative flex h-full flex-col gap-4">
             <NameTagSearch tags={schematic} />
-            <InfinitePage
+            <ResponsiveInfiniteScrollGrid
               params={params}
-              queryKey={['user-schematics']}
+              queryKey={['user-schematics', id]}
               getFunc={(axios, params) => getUserSchematics(axios, id, params)}
-              scrollContainer={scrollContainer.current}
+              container={container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
               }}
+              itemMinWidth={224}
+              itemMinHeight={352}
+              contentOffsetHeight={112}
+              gap={8}
             >
-              {(data) => (
-                <SchematicPreviewCard key={data.id} schematic={data} />
-              )}
-            </InfinitePage>
+              {(data) =>
+                data.status === 'VERIFIED' ? (
+                  <SchematicPreviewCard key={data.id} schematic={data} />
+                ) : (
+                  <UploadSchematicPreviewCard key={data.id} schematic={data} />
+                )
+              }
+            </ResponsiveInfiniteScrollGrid>
           </div>
         </TabsContent>
         <TabsContent value="map">
           <div className="flex h-full w-full flex-col gap-4">
             <NameTagSearch tags={map} />
-            <InfinitePage
+            <ResponsiveInfiniteScrollGrid
               params={params}
-              queryKey={['user-maps']}
+              queryKey={['user-maps', id]}
               getFunc={(axios, params) => getUserMaps(axios, id, params)}
-              scrollContainer={scrollContainer.current}
+              container={container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
               }}
+              itemMinWidth={224}
+              itemMinHeight={352}
+              contentOffsetHeight={112}
+              gap={8}
             >
-              {(data) => <MapPreviewCard key={data.id} map={data} />}
-            </InfinitePage>
+              {(data) =>
+                data.status === 'VERIFIED' ? (
+                  <MapPreviewCard key={data.id} map={data} />
+                ) : (
+                  <UploadMapPreview key={data.id} map={data} />
+                )
+              }
+            </ResponsiveInfiniteScrollGrid>
           </div>
         </TabsContent>
         <TabsContent value="post">
@@ -90,11 +112,17 @@ export default function Tab({ user }: TabProps) {
             <InfinitePage
               className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
               params={params}
-              queryKey={['user-posts']}
+              queryKey={['user-posts', id]}
               getFunc={(axios, params) => getUserPosts(axios, id, params)}
-              scrollContainer={scrollContainer.current}
+              container={container.current}
             >
-              {(data) => <PostPreviewCard key={data.id} post={data} />}
+              {(data) =>
+                data.status === 'VERIFIED' ? (
+                  <PostPreviewCard key={data.id} post={data} />
+                ) : (
+                  <UploadPostPreviewCard key={data.id} post={data} />
+                )
+              }
             </InfinitePage>
           </div>
         </TabsContent>

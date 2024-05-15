@@ -27,7 +27,7 @@ import InternalServerPluginCard from '@/components/server/internal-server-plugin
 import { useSearchTags } from '@/hooks/use-tags';
 
 export default function Page() {
-  const scrollContainer = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement | null>();
   const id = useSafeParam().get('id');
 
   return (
@@ -38,7 +38,7 @@ export default function Page() {
       <div
         className="flex h-full w-full flex-col gap-2 overflow-y-auto bg-card p-2"
         ref={(ref) => {
-          scrollContainer.current = ref;
+          container.current = ref;
         }}
       >
         <InfinitePage
@@ -48,7 +48,7 @@ export default function Page() {
           getFunc={(axios, params) =>
             getInternalServerPlugins(axios, id, params)
           }
-          scrollContainer={scrollContainer.current}
+          container={container.current}
         >
           {(data) => <InternalServerPluginCard key={data.id} plugin={data} />}
         </InfinitePage>

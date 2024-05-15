@@ -11,7 +11,6 @@ import postLike from '@/query/like/post-like';
 import useClientAPI from '@/hooks/use-client';
 import { FakeLike, LikeContext } from '@/context/like-context';
 
-
 type LikeComponentProps = {
   children: ReactNode;
   initialLikeCount: number;
@@ -44,56 +43,35 @@ function LikeComponent({
       }),
   });
 
-  const requireLogin = () => {
-    toast({
-      title: 'You are not logged in',
-      description: 'Login in to like',
-    });
-  };
-
-  const handleLike = () => {
+  const handleAction = (action: 'LIKE' | 'DISLIKE') => {
     if (isPending) {
       return;
     }
 
     if (status !== 'authenticated' || !session?.user) {
-      return requireLogin();
+      return toast({
+        title: 'You are not logged in',
+        description: 'Login in to like',
+      });
     }
 
-    const change = likeData.state === -1 ? 2 : likeData.state === 0 ? 1 : -1;
-    const state = likeData.state === -1 ? 1 : likeData.state === 0 ? 1 : 0;
+    let change;
+    let state: 0 | 1 | -1;
+
+    if (action === 'LIKE') {
+      change = likeData.state === -1 ? 2 : likeData.state === 0 ? 1 : -1;
+      state = likeData.state === -1 ? 1 : likeData.state === 0 ? 1 : 0;
+    } else {
+      change = likeData.state === 1 ? 2 : likeData.state === 0 ? 1 : -1;
+      state = likeData.state === 1 ? -1 : likeData.state === 0 ? -1 : 0;
+    }
 
     setLikeData({
       ...likeData,
       state,
       count: likeData.count + change,
     });
-    return mutate('LIKE', {
-      onError: () => setLikeData({ ...likeData }),
-      onSuccess: (result) =>
-        setLikeData({ count: likeData.count + result.amount, ...result.like }),
-    });
-  };
-
-  const handleDislike = () => {
-    if (isPending) {
-      return;
-    }
-
-    if (status !== 'authenticated' || !session?.user) {
-      return requireLogin();
-    }
-
-    const change = likeData.state === 1 ? 2 : likeData.state === 0 ? 1 : -1;
-    const state = likeData.state === 1 ? -1 : likeData.state === 0 ? -1 : 0;
-
-    setLikeData({
-      ...likeData,
-      state,
-      count: likeData.count - change,
-    });
-
-    return mutate('DISLIKE', {
+    return mutate(action, {
       onError: () => setLikeData({ ...likeData }),
       onSuccess: (result) =>
         setLikeData({ count: likeData.count + result.amount, ...result.like }),
@@ -105,8 +83,7 @@ function LikeComponent({
       value={{
         likeData,
         isLoading: status === 'loading' || isPending,
-        handleLike,
-        handleDislike,
+        handleAction,
       }}
     >
       {children}

@@ -1,14 +1,23 @@
 import IdUserCard from '@/components/user/id-user-card';
+import UserCard from '@/components/user/user-card';
 import { getI18n } from '@/locales/server';
+import getServerAPI from '@/query/config/get-server-api';
+import getUsers from '@/query/user/get-users';
 import Link from 'next/link';
 
 export default async function Home() {
   const t = await getI18n();
+  const { axios } = await getServerAPI();
+  const users = await getUsers(axios, {
+    page: 0,
+    items: 20,
+    role: 'ADMIN',
+  });
 
   return (
     <div className="grid h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center p-8 pt-10 text-white">
       <div className="no-scrollbar overflow-y-auto rounded-md bg-zinc-900/80 p-8 shadow-md backdrop-blur-sm">
-        <div className="flex flex-wrap md:gap-32 gap-4 p-4">
+        <div className="flex flex-wrap gap-4 p-4 md:gap-32">
           <section className="flex flex-col gap-4 p-4">
             <span className="text-2xl">{t('home.welcome')}</span>
             <Link className="text-2xl font-medium capitalize" href="/">
@@ -126,9 +135,11 @@ export default async function Home() {
               <IdUserCard id="64b63239e53d0c354d505733" />
               <p className="list-item whitespace-nowrap">{t('admin')}</p>
               <div className="grid gap-1">
-                <IdUserCard id="64b6def5fa35080d51928849" />
-                <IdUserCard id="64b8c74b2ab2c664a63d9f0d" />
-                <IdUserCard id="64ba2279c92ba71c46dc7355" />
+                {users
+                  .filter((user) => user.id !== '64b63239e53d0c354d505733')
+                  .map((user) => (
+                    <UserCard key={user.id} user={user} />
+                  ))}
               </div>
               <p className="list-item whitespace-nowrap">{t('contributor')}</p>
               <IdUserCard id="64b7f3cf830ef61869872548" />

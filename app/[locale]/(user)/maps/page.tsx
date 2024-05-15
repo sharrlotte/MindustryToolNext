@@ -8,11 +8,12 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { useSearchTags } from '@/hooks/use-tags';
+import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 
 export default function MapPage() {
   const { map } = useSearchTags();
   const params = useSearchPageParams();
-  const scrollContainer = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement | null>(null);
 
   return (
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
@@ -20,21 +21,25 @@ export default function MapPage() {
       <div
         className="relative flex h-full flex-col overflow-auto "
         ref={(ref) => {
-          scrollContainer.current = ref;
+          container.current = ref;
         }}
       >
-        <InfinitePage
+        <ResponsiveInfiniteScrollGrid
           params={params}
           queryKey={['maps']}
           getFunc={getMaps}
-          scrollContainer={scrollContainer.current}
+          container={container.current}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,
           }}
+          itemMinWidth={224}
+          itemMinHeight={352}
+          contentOffsetHeight={112}
+          gap={8}
         >
           {(data) => <MapPreviewCard key={data.id} map={data} />}
-        </InfinitePage>
+        </ResponsiveInfiniteScrollGrid>
       </div>
     </div>
   );
