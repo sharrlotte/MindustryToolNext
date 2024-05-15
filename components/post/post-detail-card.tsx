@@ -7,7 +7,6 @@ import IdUserCard from '@/components/user/id-user-card';
 import { Tags } from '@/types/response/Tag';
 import { PostDetail } from '@/types/response/PostDetail';
 import React from 'react';
-import Detail from '@/components/detail/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeCount from '@/components/like/like-count';
@@ -24,6 +23,7 @@ import TagContainer from '@/components/tag/tag-container';
 import { useI18n } from '@/locales/client';
 import deletePost from '@/query/post/delete-post';
 import DeleteButton from '@/components/button/delete-button';
+import { Detail } from '@/components/detail/detail';
 
 type PostDetailCardProps = {
   post: PostDetail;
