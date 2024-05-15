@@ -4,10 +4,10 @@ import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import Link from 'next/link';
 import { Map } from '@/types/response/Map';
-import Preview from '@/components/preview/preview';
 import { cn } from '@/lib/utils';
 import env from '@/constant/env';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/preview/preview';
 
 type UploadMapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;
@@ -31,21 +31,21 @@ export default function UploadMapPreview({
         <LinkIcon className="h-5 w-5" />
       </CopyButton>
       <Link href={`/admin/maps/${map.id}`}>
-        <Preview.Image
+        <PreviewImage
           src={`${env.url.image}/maps/${map.id}.png`}
           errorSrc={`${env.url.api}/maps/${map.id}/image`}
           alt={map.name}
         />
       </Link>
-      <Preview.Description>
-        <Preview.Header className="h-12">{map.name}</Preview.Header>
-        <Preview.Actions>
+      <PreviewDescription>
+        <PreviewHeader className="h-12">{map.name}</PreviewHeader>
+        <PreviewActions>
           <DownloadButton
             href={`${env.url.api}/maps/${map.id}/download`}
             fileName={`{${map.name}}.msav`}
           />
-        </Preview.Actions>
-      </Preview.Description>
+        </PreviewActions>
+      </PreviewDescription>
     </Preview>
   );
 }

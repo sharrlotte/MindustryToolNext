@@ -21,13 +21,13 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useRef, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import env from '@/constant/env';
-import Preview from '@/components/preview/preview';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useSearchTags } from '@/hooks/use-tags';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { Skeleton } from '@/components/ui/skeleton';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
+import { PreviewImage } from '@/components/preview/preview';
 
 export default function Page() {
   const container = useRef<HTMLDivElement | null>(null);
@@ -141,7 +141,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
                   onClick={() => mutate(id)}
                 >
                   <h3>{name}</h3>
-                  <Preview.Image
+                  <PreviewImage
                     src={`${env.url.image}/maps/${id}.png`}
                     errorSrc={`${env.url.api}/maps/${id}/image`}
                     alt={name}

@@ -1,6 +1,5 @@
 'use client';
 
-import Detail from '@/components/detail/detail';
 import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
@@ -23,6 +22,15 @@ import DeleteButton from '@/components/button/delete-button';
 import { useI18n } from '@/locales/client';
 import { usePostTags } from '@/hooks/use-tags';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import {
+  Detail,
+  DetailActions,
+  DetailDescription,
+  DetailHeader,
+  DetailImage,
+  DetailInfo,
+  DetailTitle,
+} from '@/components/detail/detail';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;
@@ -87,7 +95,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
 
   return (
     <Detail>
-      <Detail.Info>
+      <DetailInfo>
         <div className="relative">
           <CopyButton
             className="absolute left-1 top-1 "
@@ -97,25 +105,25 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
           >
             <LinkIcon className="h-5 w-5" />
           </CopyButton>
-          <Detail.Image
+          <DetailImage
             src={`${env.url.image}/maps/${map.id}.png`}
             errorSrc={`${env.url.api}/maps/${map.id}/image`}
             alt={map.name}
           />
           {t('map')}
         </div>
-        <Detail.Header>
-          <Detail.Title>{map.name}</Detail.Title>
+        <DetailHeader>
+          <DetailTitle>{map.name}</DetailTitle>
           <IdUserCard id={map.authorId} />
-          <Detail.Description>{map.description}</Detail.Description>
+          <DetailDescription>{map.description}</DetailDescription>
           <NameTagSelector
             tags={mapTags}
             value={selectedTags}
             onChange={setSelectedTags}
           />
-        </Detail.Header>
-      </Detail.Info>
-      <Detail.Actions className="flex justify-between">
+        </DetailHeader>
+      </DetailInfo>
+      <DetailActions className="flex justify-between">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <DownloadButton
             href={`${env.url.api}/maps/${map.id}/download`}
@@ -135,7 +143,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
           />
         </div>
         <BackButton />
-      </Detail.Actions>
+      </DetailActions>
     </Detail>
   );
 }

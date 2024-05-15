@@ -1,6 +1,5 @@
 'use client';
 
-import Detail from '@/components/detail/detail';
 import LikeComponent from '@/components/like/like-component';
 import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
@@ -28,6 +27,16 @@ import useToastAction from '@/hooks/use-toast-action';
 import deleteSchematic from '@/query/schematic/delete-schematic';
 import DeleteButton from '@/components/button/delete-button';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import {
+  Detail,
+  DetailActions,
+  DetailDescription,
+  DetailHeader,
+  DetailImage,
+  DetailInfo,
+  DetailTagsCard,
+  DetailTitle,
+} from '@/components/detail/detail';
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -97,7 +106,7 @@ export default function SchematicDetailCard({
 
   return (
     <Detail padding={padding}>
-      <Detail.Info>
+      <DetailInfo>
         <div className="relative">
           <CopyButton
             className="absolute left-1 top-1 "
@@ -107,25 +116,25 @@ export default function SchematicDetailCard({
           >
             <LinkIcon className="h-5 w-5" />
           </CopyButton>
-          <Detail.Image
+          <DetailImage
             src={`${env.url.image}/schematics/${schematic.id}.png`}
             errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
             alt={schematic.name}
           />
         </div>
-        <Detail.Header>
-          <Detail.Title>{schematic.name}</Detail.Title>
+        <DetailHeader>
+          <DetailTitle>{schematic.name}</DetailTitle>
           <IdUserCard id={schematic.authorId} />
           <div className="flex items-end gap-2">
             <span>{t('verified-by')}</span>
             <IdUserCard id={schematic.verifyAdmin} />
           </div>
-          <Detail.Description>{schematic.description}</Detail.Description>
+          <DetailDescription>{schematic.description}</DetailDescription>
           <ItemRequirementCard requirement={schematic.requirement} />
-          <Detail.Tags tags={schematic.tags} />
-        </Detail.Header>
-      </Detail.Info>
-      <Detail.Actions className="flex justify-between">
+          <DetailTagsCard tags={schematic.tags} />
+        </DetailHeader>
+      </DetailInfo>
+      <DetailActions className="flex justify-between">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
             className="border border-border "
@@ -167,7 +176,7 @@ export default function SchematicDetailCard({
           </ProtectedElement>
         </div>
         <BackButton />
-      </Detail.Actions>
+      </DetailActions>
     </Detail>
   );
 }

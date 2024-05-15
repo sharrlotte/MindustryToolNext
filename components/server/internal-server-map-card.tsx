@@ -1,7 +1,12 @@
 'use client';
 
 import DeleteButton from '@/components/button/delete-button';
-import Preview from '@/components/preview/preview';
+import Preview, {
+  PreviewActions,
+  PreviewDescription,
+  PreviewHeader,
+  PreviewImage,
+} from '@/components/preview/preview';
 import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -44,23 +49,23 @@ export default function InternalServerMapCard({
   return (
     <Preview className={cn('group relative flex flex-col justify-between')}>
       <Link href={`/maps/${mapId}`}>
-        <Preview.Image
+        <PreviewImage
           src={`${env.url.image}/maps/${mapId}.png`}
           errorSrc={`${env.url.api}/maps/${mapId}/image`}
           alt={name ?? 'internal server map'}
         />
       </Link>
-      <Preview.Description>
-        <Preview.Header className="h-12">{name}</Preview.Header>
-        <Preview.Actions>
+      <PreviewDescription>
+        <PreviewHeader className="h-12">{name}</PreviewHeader>
+        <PreviewActions>
           <DeleteButton
             className="absolute right-1 top-1 h-10 w-10 border-none backdrop-brightness-50"
             isLoading={isPending}
             onClick={() => mutate(id)}
             description={t('delete')}
           />
-        </Preview.Actions>
-      </Preview.Description>
+        </PreviewActions>
+      </PreviewDescription>
     </Preview>
   );
 }

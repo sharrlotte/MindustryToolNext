@@ -11,7 +11,7 @@ import {
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { Button } from '@/components/ui/button';
-import Detail from '@/components/detail/detail';
+import { DetailDescription, DetailTitle } from '@/components/detail/detail';
 import IdUserCard from '@/components/user/id-user-card';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import LoadingWrapper from '@/components/common/loading-wrapper';
@@ -222,9 +222,9 @@ export default function Page() {
           </Dialog>
           {preview && (
             <section className="flex flex-col gap-2">
-              <Detail.Title>{preview.name}</Detail.Title>
+              <DetailTitle>{preview.name}</DetailTitle>
               {user ? <UserCard user={user} /> : <IdUserCard id="community" />}
-              <Detail.Description>{preview.description}</Detail.Description>
+              <DetailDescription>{preview.description}</DetailDescription>
               <ItemRequirementCard requirement={preview.requirement} />
               <NameTagSelector
                 tags={schematic}

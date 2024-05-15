@@ -1,6 +1,6 @@
 'use client';
 
-import React, { HTMLAttributes, useMemo } from 'react';
+import React, { HTMLAttributes } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DislikeButton from '@/components/like/dislike-button';
@@ -9,7 +9,6 @@ import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import Link from 'next/link';
-import Preview from '@/components/preview/preview';
 import { Schematic } from '@/types/response/Schematic';
 import { cn } from '@/lib/utils';
 import env from '@/constant/env';
@@ -18,6 +17,13 @@ import useClientAPI from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
 import useToastAction from '@/hooks/use-toast-action';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import {
+  Preview,
+  PreviewActions,
+  PreviewDescription,
+  PreviewHeader,
+  PreviewImage,
+} from '@/components/preview/preview';
 
 type SchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -50,15 +56,15 @@ function SchematicPreviewCard({
         <LinkIcon className="h-5 w-5" />
       </CopyButton>
       <Link className="h-full w-full" href={`/schematics/${schematic.id}`}>
-        <Preview.Image
+        <PreviewImage
           src={`${env.url.image}/schematics/${schematic.id}.png`}
           errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
           alt={schematic.name}
         />
       </Link>
-      <Preview.Description>
-        <Preview.Header className="h-12">{schematic.name}</Preview.Header>
-        <Preview.Actions>
+      <PreviewDescription>
+        <PreviewHeader className="h-12">{schematic.name}</PreviewHeader>
+        <PreviewActions>
           <CopyButton
             className="border border-border "
             variant="outline"
@@ -81,8 +87,8 @@ function SchematicPreviewCard({
               <DislikeButton />
             </LikeComponent>
           )}
-        </Preview.Actions>
-      </Preview.Description>
+        </PreviewActions>
+      </PreviewDescription>
     </Preview>
   );
 }

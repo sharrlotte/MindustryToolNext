@@ -10,7 +10,7 @@ type DetailProps = HTMLAttributes<HTMLDivElement> & {
   padding?: boolean;
 };
 
-function Detail({ className, children, padding }: DetailProps) {
+export function Detail({ className, children, padding }: DetailProps) {
   return (
     <div
       className={cn('absolute inset-0 w-full overflow-y-auto bg-background', {
@@ -30,7 +30,7 @@ function Detail({ className, children, padding }: DetailProps) {
 }
 type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
-function Info({ className, children }: InfoProps) {
+export function DetailInfo({ className, children }: InfoProps) {
   return (
     <div className={cn('flex flex-col gap-2 md:flex-row', className)}>
       {children}
@@ -42,7 +42,7 @@ type TitleProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
   children: string;
 };
 
-function Title({ className, children }: TitleProps) {
+export function DetailTitle({ className, children }: TitleProps) {
   return (
     <h3 className={cn('text-2xl capitalize', className)}>
       <ColorText text={children} />
@@ -56,7 +56,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
   errorSrc: string;
 };
 
-function PImage({ className, src, errorSrc, alt }: ImageProps) {
+export function DetailImage({ className, src, errorSrc, alt }: ImageProps) {
   return (
     <figure
       className={cn(
@@ -79,7 +79,7 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
 
 type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
 
-function Header({ className, children }: HeaderProps) {
+export function DetailHeader({ className, children }: HeaderProps) {
   return (
     <section className={cn('flex flex-col gap-1', className)}>
       {children}
@@ -89,7 +89,7 @@ function Header({ className, children }: HeaderProps) {
 
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
-function Actions({ className, children }: ActionsProps) {
+export function DetailActions({ className, children }: ActionsProps) {
   return (
     <section className={cn('flex items-end gap-1', className)}>
       {children}
@@ -101,7 +101,7 @@ type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
   tags: string[];
 };
 
-function TagsCard({ className, tags }: TagsProps) {
+export function DetailTagsCard({ className, tags }: TagsProps) {
   const values = Tags.parseStringArray(tags);
 
   return <TagContainer className={className} tags={values} />;
@@ -114,20 +114,10 @@ type DescriptionProps = Omit<
   children: string;
 };
 
-function Description({ className, children }: DescriptionProps) {
+export function DetailDescription({ className, children }: DescriptionProps) {
   return (
     <section className={cn('flex flex-col gap-1', className)}>
       <ColorText text={children} />
     </section>
   );
 }
-
-Detail.Info = Info;
-Detail.Header = Header;
-Detail.Actions = Actions;
-Detail.Image = PImage;
-Detail.Title = Title;
-Detail.Description = Description;
-Detail.Tags = TagsCard;
-
-export default Detail;

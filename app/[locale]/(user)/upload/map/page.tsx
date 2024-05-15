@@ -5,7 +5,6 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { Button } from '@/components/ui/button';
-import Detail from '@/components/detail/detail';
 import IdUserCard from '@/components/user/id-user-card';
 import LoadingWrapper from '@/components/common/loading-wrapper';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
@@ -24,6 +23,7 @@ import { useSession } from 'next-auth/react';
 import { useToast } from '@/hooks/use-toast';
 import { usePostTags } from '@/hooks/use-tags';
 import Image from 'next/image';
+import { DetailDescription, DetailTitle } from '@/components/detail/detail';
 
 export default function Page() {
   const { axios } = useClientAPI();
@@ -160,9 +160,9 @@ export default function Page() {
           />
           {preview && (
             <section className="flex flex-col gap-2">
-              <Detail.Title>{preview.name}</Detail.Title>
+              <DetailTitle>{preview.name}</DetailTitle>
               {user ? <UserCard user={user} /> : <IdUserCard id="community" />}
-              <Detail.Description>{preview.description}</Detail.Description>
+              <DetailDescription>{preview.description}</DetailDescription>
               <NameTagSelector
                 tags={map}
                 value={selectedTags}
