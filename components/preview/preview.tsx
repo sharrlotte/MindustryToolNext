@@ -8,7 +8,7 @@ function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'min-h-preview-height animate-appear overflow-hidden rounded-md border bg-card shadow-md',
+        'flex min-h-preview-height animate-appear flex-col justify-between overflow-hidden rounded-md border bg-card shadow-md',
         className,
       )}
       {...props}
