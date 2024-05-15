@@ -11,15 +11,20 @@ export default function ItemRequirementCard({
 }: ItemRequirementCardProps) {
   if (!requirement) return <></>;
 
-  return <></>;
-  // return (
-  // 	<section className=' flex flex-row flex-wrap gap-2'>
-  // 		{requirement.map((r, index) => (
-  // 			<span key={index} className='flex flex-row justify-center items-center'>
-  // 				<Image className='h-4 w-4' src={`/assets/images/items/item-${r.name}.png`} alt={r.name} />
-  // 				<span> {r.amount} </span>
-  // 			</span>
-  // 		))}
-  // 	</section>
-  // );
+  return (
+    <section className=" flex flex-row flex-wrap gap-2">
+      {requirement.map((r, index) => (
+        <span key={index} className="flex flex-row items-center justify-center">
+          <Image
+            className="h-6 w-6"
+            width={24}
+            height={24}
+            src={`/assets/items/item-${r.name}.png`}
+            alt={r.name}
+          />
+          <span> {r.amount} </span>
+        </span>
+      ))}
+    </section>
+  );
 }

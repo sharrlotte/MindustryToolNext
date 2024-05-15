@@ -55,6 +55,7 @@ function LiveLog() {
 
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
+  const containerRef = useRef<HTMLDivElement | null>();
   const bottomRef = useRef<HTMLSpanElement | null>();
 
   const t = useI18n();
@@ -63,13 +64,11 @@ function LiveLog() {
     setLog((prev) => [...prev, ...message]);
 
     setTimeout(() => {
-      if (!bottomRef.current) {
+      if (!bottomRef.current || !containerRef.current) {
         return;
       }
 
-      const element = bottomRef.current;
-
-      if (!isReachedEnd(element)) {
+      if (!isReachedEnd(containerRef.current)) {
         return;
       }
 
@@ -99,7 +98,6 @@ function LiveLog() {
     if (socket && state === 'connected') {
       setMessage('');
       socket.onRoom('LOG').send({ data: message, method: 'MESSAGE' });
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -111,7 +109,12 @@ function LiveLog() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
-        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden">
+        <div
+          className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden"
+          ref={(ref) => {
+            containerRef.current = ref;
+          }}
+        >
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
           ) : (

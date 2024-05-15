@@ -17,6 +17,10 @@ export default function ColorAsRole({
     return <span className={cn(className)}>{children}</span>;
   }
 
+  if (roles.includes('SHAR')) {
+    return <span className={cn('text-pink-500', className)}>{children}</span>;
+  }
+
   if (roles.includes('ADMIN')) {
     return (
       <span className={cn('text-emerald-400', className)}>{children}</span>

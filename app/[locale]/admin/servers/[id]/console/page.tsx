@@ -25,6 +25,7 @@ export default function Page() {
 
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
+  const containerRef = useRef<HTMLDivElement | null>();
   const bottomRef = useRef<HTMLSpanElement | null>();
 
   const t = useI18n();
@@ -33,11 +34,11 @@ export default function Page() {
     setLog((prev) => [...prev, ...message]);
 
     setTimeout(() => {
-      if (!bottomRef.current) {
+      if (!bottomRef.current || !containerRef.current) {
         return;
       }
 
-      if (!isReachedEnd(bottomRef.current)) {
+      if (!isReachedEnd(containerRef.current)) {
         return;
       }
 
@@ -86,8 +87,6 @@ export default function Page() {
 
         return v;
       });
-
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
@@ -133,7 +132,12 @@ export default function Page() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden bg-card px-2 pt-2">
       <div className="grid h-full w-full overflow-hidden">
-        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-black/80 text-white">
+        <div
+          className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-black/80 text-white"
+          ref={(ref) => {
+            containerRef.current = ref;
+          }}
+        >
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
           ) : (

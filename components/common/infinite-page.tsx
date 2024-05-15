@@ -6,14 +6,14 @@ import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { AxiosInstance } from 'axios';
 import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
 import { useI18n } from '@/locales/client';
+import InfiniteScroll from 'react-infinite-scroller';
 
 type InfinitePageProps<T, P> = {
   className?: string;
   queryKey: QueryKey[];
   params: P;
-  scrollContainer?: HTMLElement | null;
+  container?: HTMLElement | null;
   loader?: ReactElement<any, string | JSXElementConstructor<any>>;
   noResult?: ReactNode;
   end?: ReactNode;
@@ -32,7 +32,7 @@ export default function InfinitePage<
   className,
   queryKey,
   params,
-  scrollContainer = null,
+  container = null,
   loader,
   noResult,
   end,
@@ -81,7 +81,7 @@ export default function InfinitePage<
     );
   }
 
-  if (isLoading || !data) {
+  if (isLoading || !data || !container) {
     return (
       <div
         className={
@@ -122,7 +122,7 @@ export default function InfinitePage<
       hasMore={hasNextPage}
       loader={loader}
       useWindow={false}
-      getScrollParent={() => scrollContainer}
+      getScrollParent={() => container}
     >
       {pages.map((data, index) => children(data, index))}
       {isFetching && skeleton && (

@@ -24,7 +24,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Page() {
-  const scrollContainer = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement | null>();
   const [address, setAddress] = useState('');
   const [result, setResult] = useState<PostServerResponse>();
   const params = { page: 0, items: 40 };
@@ -109,13 +109,13 @@ export default function Page() {
       <div
         className="h-full overflow-y-auto"
         ref={(ref) => {
-          scrollContainer.current = ref;
+          container.current = ref;
         }}
       >
         <InfinitePage
           className="grid w-full grid-cols-1 justify-center gap-4 md:grid-cols-2 xl:grid-cols-3"
           queryKey={['servers']}
-          scrollContainer={scrollContainer.current}
+          container={container.current}
           params={params}
           getFunc={getServers}
         >

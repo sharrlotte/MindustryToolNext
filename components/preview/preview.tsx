@@ -8,7 +8,7 @@ function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'min-h-preview-height flex h-full animate-appear flex-col items-center justify-between overflow-hidden rounded-md border bg-card shadow-md',
+        'min-h-preview-height animate-appear overflow-hidden rounded-md border bg-card shadow-md',
         className,
       )}
       {...props}
@@ -23,7 +23,7 @@ function Header({ className, children }: HeaderProps) {
   return (
     <div
       className={cn(
-        'flex h-8 overflow-hidden bg-opacity-50 px-2 capitalize',
+        'h-8 overflow-hidden bg-opacity-50 px-2 capitalize',
         className,
       )}
     >
@@ -41,21 +41,15 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
   const [isError, setError] = useState(false);
 
   return (
-    <figure
-      className={cn(
-        'flex h-full min-h-preview w-full items-center justify-center',
-        className,
-      )}
-    >
-      <Image
-        className="h-full min-h-preview w-full min-w-preview object-cover "
-        src={isError ? errorSrc : src}
-        alt={alt}
-        width={224}
-        height={224}
-        onError={() => setError(true)}
-      />
-    </figure>
+    <Image
+      className={cn('h-full w-full object-cover', className)}
+      src={isError ? errorSrc : src}
+      alt={alt}
+      width={224}
+      height={224}
+      onError={() => setError(true)}
+      loading="lazy"
+    />
   );
 }
 
@@ -78,11 +72,7 @@ type DescriptionProps = React.HTMLAttributes<HTMLDivElement>;
 
 function Description({ className, children }: DescriptionProps) {
   return (
-    <section
-      className={cn('flex w-full flex-col items-center py-2', className)}
-    >
-      {children}
-    </section>
+    <section className={cn('h-28 w-full py-2', className)}>{children}</section>
   );
 }
 

@@ -6,8 +6,7 @@ import React from 'react';
 type LikeContextType = {
   likeData: LikeData;
   isLoading: boolean;
-  handleLike: () => void;
-  handleDislike: () => void;
+  handleAction: (action: 'LIKE' | 'DISLIKE') => void;
 };
 
 export const FakeLike: LikeData = {
@@ -20,8 +19,7 @@ export const FakeLike: LikeData = {
 const defaultContextValue: LikeContextType = {
   likeData: FakeLike,
   isLoading: false,
-  handleLike: () => {},
-  handleDislike: () => {},
+  handleAction: (action: 'LIKE' | 'DISLIKE') => {},
 };
 
 export const LikeContext = React.createContext(defaultContextValue);
