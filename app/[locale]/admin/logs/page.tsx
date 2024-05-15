@@ -17,7 +17,19 @@ import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
 import useQueryState from '@/hooks/use-query-state';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import { isReachedEnd } from '@/lib/utils';
+import { cn, isReachedEnd } from '@/lib/utils';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { FilterIcon } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { debounce } from 'lodash';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import moment from 'moment';
+import { Calendar } from '@/components/ui/calendar';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
@@ -31,7 +43,7 @@ export default function LogPage() {
   });
 
   return (
-    <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
+    <div className="flex h-full w-full flex-col gap-1 overflow-hidden">
       <ComboBox
         value={{ label: collection, value: collection }}
         values={['LIVE', ...(data ?? [])].map((item) => ({
@@ -87,9 +99,12 @@ function LiveLog() {
   useEffect(() => {
     if (socket && state === 'connected' && isAuthenticated) {
       socket.send({ method: 'JOIN_ROOM', data: 'LOG' });
-      socket.onRoom('LOG').send({ method: 'LOAD' });
+      socket.onRoom('LOG').send({ method: 'GET_MESSAGE', page: 0, items: 50 });
 
-      socket.onRoom('LOG').onMessage('LOAD', (message) => addLog(message));
+      socket
+        .onRoom('LOG')
+        .onMessage('GET_MESSAGE', (message) => addLog(message));
+
       socket.onRoom('LOG').onMessage('MESSAGE', (message) => addLog([message]));
     }
   }, [socket, state, isAuthenticated]);
@@ -164,24 +179,205 @@ type StaticLogProps = {
 
 type LogEnvironment = 'Prod' | 'Dev';
 
+type Filter = {
+  ip?: string;
+  userId?: string;
+  url?: string;
+  content?: string;
+  before?: string;
+  after?: string;
+};
+
 type LogPaginationQuery = PaginationQuery & {
   collection: LogCollection;
   env: LogEnvironment;
-};
+} & Filter;
 
 function StaticLog({ collection }: StaticLogProps) {
   const [env, setEnv] = useQueryState<LogEnvironment>('environment', 'Prod');
+  const [content, setContent] = useQueryState('content', '');
+  const [ip, setIp] = useQueryState('ip', '');
+  const [url, setUrl] = useQueryState('url', '');
+  const [userId, setUserId] = useQueryState('userId', '');
+  const [before, setBefore] = useQueryState('before', '');
+  const [after, setAfter] = useQueryState('after', '');
+
+  function setFilter({ ip, userId, url, content }: Filter) {
+    if (content) {
+      setContent(content);
+    }
+
+    if (userId) {
+      setUserId(userId);
+    }
+
+    if (ip) {
+      setIp(ip);
+    }
+
+    if (url) {
+      setUrl(url);
+    }
+  }
 
   return (
-    <>
-      <ComboBox
-        value={{ label: env, value: env }}
-        values={[
-          { value: 'Prod', label: 'Prod' },
-          { value: 'Dev', label: 'Dev' },
-        ]}
-        onChange={setEnv}
-      />
+    <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
+      <div className="flex gap-1">
+        <ComboBox
+          value={{ label: env, value: env }}
+          values={[
+            { value: 'Prod', label: 'Prod' },
+            { value: 'Dev', label: 'Dev' },
+          ]}
+          onChange={setEnv}
+        />
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button title="Filter">
+              <FilterIcon />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="grid gap-2">
+            <div>
+              <label>Content</label>
+              <div className="flex gap-1">
+                <Input
+                  placeholder="Content"
+                  value={content}
+                  onChange={(event) => setContent(event.currentTarget.value)}
+                />
+                <Button
+                  title="Remove"
+                  variant="outline"
+                  disabled={!content}
+                  onClick={() => setContent('')}
+                >
+                  <XMarkIcon className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            <div>
+              <label>IP</label>
+              <div className="flex gap-1">
+                <Input
+                  placeholder="IP"
+                  value={ip}
+                  onChange={(event) => setIp(event.currentTarget.value)}
+                />
+                <Button
+                  title="Remove"
+                  variant="outline"
+                  disabled={!ip}
+                  onClick={() => setIp('')}
+                >
+                  <XMarkIcon className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            <div>
+              <label>UserId</label>
+              <div className="flex gap-1">
+                <Input
+                  placeholder="User Id"
+                  value={userId}
+                  onChange={(event) => setUserId(event.currentTarget.value)}
+                />
+                <Button
+                  title="Remove"
+                  variant="outline"
+                  disabled={!userId}
+                  onClick={() => setUserId('')}
+                >
+                  <XMarkIcon className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            <div>
+              <label>Request url</label>
+              <div className="flex gap-1">
+                <Input
+                  placeholder="Request url"
+                  value={url}
+                  onChange={(event) => setUrl(event.currentTarget.value)}
+                />
+                <Button
+                  title="Remove"
+                  variant="outline"
+                  disabled={!url}
+                  onClick={() => setUrl('')}
+                >
+                  <XMarkIcon className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            <div>
+              <div className="py-1">
+                <label className="block">Before day</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      className={cn(
+                        'w-[240px] pl-3 text-left font-normal',
+                        !before && 'text-muted-foreground',
+                      )}
+                      title="Pick"
+                      variant="outline"
+                    >
+                      {before
+                        ? `${new Date(before).toLocaleDateString()}`
+                        : 'Pick a day'}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <Calendar
+                      mode="single"
+                      selected={before ? new Date(before) : undefined}
+                      onSelect={(value) =>
+                        setBefore(value?.toISOString() ?? '')
+                      }
+                      disabled={(date) =>
+                        date > new Date() || date < new Date('1900-01-01')
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="py-1">
+                <label className="block">After day</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      className={cn(
+                        'w-[240px] pl-3 text-left font-normal',
+                        !after && 'text-muted-foreground',
+                      )}
+                      title="Pick"
+                      variant="outline"
+                    >
+                      {after
+                        ? `${new Date(after).toLocaleDateString()}`
+                        : 'Pick a day'}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <Calendar
+                      mode="single"
+                      selected={after ? new Date(after) : undefined}
+                      onSelect={(value) => setAfter(value?.toISOString() ?? '')}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date('1900-01-01')
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
       <div className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden">
         <InfinitePage<Log, LogPaginationQuery>
           className="flex w-full flex-col items-center justify-center gap-2"
@@ -190,13 +386,19 @@ function StaticLog({ collection }: StaticLogProps) {
             items: 20,
             collection: collection as LogCollection,
             env: env as LogEnvironment,
+            content,
+            userId,
+            ip,
+            url,
+            before,
+            after,
           }}
           queryKey={['logs']}
           getFunc={getLogs}
         >
-          {(data) => <LogCard key={data.id} log={data} />}
+          {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
         </InfinitePage>
       </div>
-    </>
+    </div>
   );
 }

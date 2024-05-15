@@ -57,11 +57,13 @@ export default function Page() {
   useEffect(() => {
     if (socket && state === 'connected' && isAuthenticated) {
       socket.send({ method: 'JOIN_ROOM', data: `SERVER-${id}` });
-      socket.onRoom(`SERVER-${id}`).send({ method: 'LOAD' });
+      socket
+        .onRoom(`SERVER-${id}`)
+        .send({ method: 'GET_MESSAGE', page: 0, items: 50 });
 
       socket
         .onRoom(`SERVER-${id}`)
-        .onMessage('LOAD', (message) => addLog(message));
+        .onMessage('GET_MESSAGE', (message) => addLog(message));
 
       socket
         .onRoom(`SERVER-${id}`)

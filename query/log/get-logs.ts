@@ -10,13 +10,17 @@ type GetLogParams = Pageable & {
 
 export default async function getLogs(
   axios: AxiosInstance,
-  { collection, page, env }: GetLogParams,
+  { collection, page, ...rest }: GetLogParams,
 ): Promise<Log[]> {
+  const params = Object.fromEntries(
+    Object.entries(rest).filter(([_, value]) => value),
+  );
+
   const result = await axios.get(`logs/${collection}`, {
     params: {
-      page,
       items: 20,
-      env,
+      page,
+      ...params,
     },
   });
 

@@ -81,7 +81,7 @@ export default function InfinitePage<
     );
   }
 
-  if (isLoading || !data || !container) {
+  if (isLoading || !data ) {
     return (
       <div
         className={

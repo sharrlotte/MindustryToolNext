@@ -16,7 +16,7 @@ export type EventHandler = (data: any, event: MessageEvent) => void;
 
 type SocketEvent =
   | {
-      method: 'LOAD';
+      method: 'GET_MESSAGE';
       room: string;
       data: string[];
     }
@@ -46,7 +46,9 @@ type MessagePayload =
       data: string;
     }
   | {
-      method: 'LOAD';
+      method: 'GET_MESSAGE';
+      page: number;
+      items: number;
     }
   | {
       method: 'AUTHORIZATION';
@@ -103,8 +105,7 @@ export default class SocketClient {
         }
 
         handler(message.data, event);
-      } catch (error) {
-      }
+      } catch (error) {}
     };
     this.socket.onerror = (event) => {
       this.errors.forEach((error) => error(event));
