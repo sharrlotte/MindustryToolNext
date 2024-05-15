@@ -1,6 +1,5 @@
 'use client';
 
-import Detail from '@/components/detail/detail';
 import LikeComponent from '@/components/like/like-component';
 import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
@@ -25,6 +24,16 @@ import { useI18n } from '@/locales/client';
 import deleteMap from '@/query/map/delete-map';
 import DeleteButton from '@/components/button/delete-button';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import {
+  Detail,
+  DetailActions,
+  DetailDescription,
+  DetailHeader,
+  DetailImage,
+  DetailInfo,
+  DetailTagsCard,
+  DetailTitle,
+} from '@/components/detail/detail';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -87,7 +96,7 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
 
   return (
     <Detail padding={padding}>
-      <Detail.Info>
+      <DetailInfo>
         <div className="relative">
           <CopyButton
             className="absolute left-1 top-1"
@@ -97,24 +106,24 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
           >
             <LinkIcon className="h-5 w-5" />
           </CopyButton>
-          <Detail.Image
+          <DetailImage
             src={`${env.url.image}/maps/${map.id}.png`}
             errorSrc={`${env.url.api}/maps/${map.id}/image`}
             alt={map.name}
           />
         </div>
-        <Detail.Header>
-          <Detail.Title>{map.name}</Detail.Title>
+        <DetailHeader>
+          <DetailTitle>{map.name}</DetailTitle>
           <IdUserCard id={map.authorId} />
           <div className="flex items-end gap-2">
             <span>{t('verified-by')}</span>
             <IdUserCard id={map.verifyAdmin} />
           </div>
-          <Detail.Description>{map.description}</Detail.Description>
-          <Detail.Tags tags={map.tags} />
-        </Detail.Header>
-      </Detail.Info>
-      <Detail.Actions className="flex justify-between">
+          <DetailDescription>{map.description}</DetailDescription>
+          <DetailTagsCard tags={map.tags} />
+        </DetailHeader>
+      </DetailInfo>
+      <DetailActions className="flex justify-between">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <DownloadButton
             href={`${env.url.api}/maps/${map.id}/download`}
@@ -150,7 +159,7 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
           </ProtectedElement>
         </div>
         <BackButton />
-      </Detail.Actions>
+      </DetailActions>
     </Detail>
   );
 }

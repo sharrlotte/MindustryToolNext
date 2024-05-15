@@ -1,6 +1,5 @@
 'use client';
 
-import Detail from '@/components/detail/detail';
 import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
 import env from '@/constant/env';
@@ -26,6 +25,15 @@ import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
 import { usePostTags } from '@/hooks/use-tags';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import {
+  Detail,
+  DetailActions,
+  DetailDescription,
+  DetailHeader,
+  DetailImage,
+  DetailInfo,
+  DetailTitle,
+} from '@/components/detail/detail';
 
 type UploadSchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -99,7 +107,7 @@ export default function UploadSchematicDetailCard({
 
   return (
     <Detail>
-      <Detail.Info>
+      <DetailInfo>
         <div className="relative">
           <CopyButton
             className="absolute left-1 top-1 "
@@ -109,25 +117,25 @@ export default function UploadSchematicDetailCard({
           >
             <LinkIcon className="h-5 w-5" />
           </CopyButton>
-          <Detail.Image
+          <DetailImage
             src={`${env.url.image}/schematics/${schematic.id}.png`}
             errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
             alt={schematic.name}
           />
         </div>
-        <Detail.Header>
-          <Detail.Title>{schematic.name}</Detail.Title>
+        <DetailHeader>
+          <DetailTitle>{schematic.name}</DetailTitle>
           <IdUserCard id={schematic.authorId} />
-          <Detail.Description>{schematic.description}</Detail.Description>
+          <DetailDescription>{schematic.description}</DetailDescription>
           <ItemRequirementCard requirement={schematic.requirement} />
           <NameTagSelector
             tags={schematicTags}
             value={selectedTags}
             onChange={setSelectedTags}
           />
-        </Detail.Header>
-      </Detail.Info>
-      <Detail.Actions className="flex justify-between">
+        </DetailHeader>
+      </DetailInfo>
+      <DetailActions className="flex justify-between">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <CopyButton
             className="border border-border"
@@ -156,7 +164,7 @@ export default function UploadSchematicDetailCard({
           />
         </div>
         <BackButton />
-      </Detail.Actions>
+      </DetailActions>
     </Detail>
   );
 }

@@ -3,7 +3,6 @@ import React, { HTMLAttributes } from 'react';
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import Link from 'next/link';
-import Preview from '@/components/preview/preview';
 import { Schematic } from '@/types/response/Schematic';
 import { cn } from '@/lib/utils';
 import env from '@/constant/env';
@@ -12,6 +11,7 @@ import useClientAPI from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
 import useToastAction from '@/hooks/use-toast-action';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/preview/preview';
 
 type UploadSchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -47,15 +47,15 @@ export default function UploadSchematicPreviewCard({
         <LinkIcon className="h-5 w-5" />
       </CopyButton>
       <Link href={`/admin/schematics/${schematic.id}`}>
-        <Preview.Image
+        <PreviewImage
           src={`${env.url.image}/schematics/${schematic.id}.png`}
           errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
           alt={schematic.name}
         />
       </Link>
-      <Preview.Description>
-        <Preview.Header className="h-12">{schematic.name}</Preview.Header>
-        <Preview.Actions>
+      <PreviewDescription>
+        <PreviewHeader className="h-12">{schematic.name}</PreviewHeader>
+        <PreviewActions>
           <CopyButton
             className="border border-border "
             variant="outline"
@@ -66,8 +66,8 @@ export default function UploadSchematicPreviewCard({
             href={`${env.url.api}/schematics/${schematic.id}/download`}
             fileName={`{${schematic.name}}.msch`}
           />
-        </Preview.Actions>
-      </Preview.Description>
+        </PreviewActions>
+      </PreviewDescription>
     </Preview>
   );
 }

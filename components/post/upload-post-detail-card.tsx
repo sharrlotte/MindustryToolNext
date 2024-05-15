@@ -1,6 +1,5 @@
 'use client';
 
-import Detail from '@/components/detail/detail';
 import BackButton from '@/components/ui/back-button';
 import { useToast } from '@/hooks/use-toast';
 import { PostDetail } from '@/types/response/PostDetail';
@@ -22,6 +21,7 @@ import Markdown from '@/components/common/markdown';
 import TagContainer from '@/components/tag/tag-container';
 import { useI18n } from '@/locales/client';
 import { usePostTags } from '@/hooks/use-tags';
+import { Detail } from '@/components/detail/detail';
 
 type UploadPostDetailCardProps = {
   post: PostDetail;

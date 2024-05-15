@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
-function Preview({ className, children, ...props }: CardProps) {
+export function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
@@ -19,7 +19,7 @@ function Preview({ className, children, ...props }: CardProps) {
 }
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
-function Header({ className, children }: HeaderProps) {
+export function PreviewHeader({ className, children }: HeaderProps) {
   return (
     <div
       className={cn(
@@ -37,7 +37,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
   errorSrc: string;
 };
 
-function PImage({ className, src, errorSrc, alt }: ImageProps) {
+export function PreviewImage({ className, src, errorSrc, alt }: ImageProps) {
   const [isError, setError] = useState(false);
 
   return (
@@ -55,7 +55,7 @@ function PImage({ className, src, errorSrc, alt }: ImageProps) {
 
 type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
 
-function Actions({ className, children }: ActionsProps) {
+export function PreviewActions({ className, children }: ActionsProps) {
   return (
     <section
       className={cn(
@@ -70,15 +70,8 @@ function Actions({ className, children }: ActionsProps) {
 
 type DescriptionProps = React.HTMLAttributes<HTMLDivElement>;
 
-function Description({ className, children }: DescriptionProps) {
+export function PreviewDescription({ className, children }: DescriptionProps) {
   return (
     <section className={cn('h-28 w-full py-2', className)}>{children}</section>
   );
 }
-
-Preview.Header = Header;
-Preview.Actions = Actions;
-Preview.Image = PImage;
-Preview.Description = Description;
-
-export default Preview;

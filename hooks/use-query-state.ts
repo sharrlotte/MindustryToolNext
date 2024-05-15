@@ -18,15 +18,37 @@ export default function useQueryState<T extends string>(
     const queryParams = new URLSearchParams(params.raw());
     if (state) {
       queryParams.set(name, state);
+      setState(state);
     } else {
       queryParams.set(name, initialState);
       setState(initialState);
     }
-    router.replace(`${pathname}?${queryParams.toString()}`);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialState, name, pathname, router, state]);
 
-  const setter = (value?: string) => setState(value ?? initialState);
+    if (!queryParams.get(name)) {
+      queryParams.delete(name);
+    }
+
+    router.replace(`${pathname}?${queryParams.toString()}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialState, name, pathname, router]);
+
+  const setter = (value?: string) => {
+    setState(value ?? initialState);
+
+    const queryParams = new URLSearchParams(params.raw());
+
+    if (value) {
+      queryParams.set(name, value);
+    } else {
+      queryParams.set(name, initialState);
+    }
+
+    if (!queryParams.get(name)) {
+      queryParams.delete(name);
+    }
+
+    router.replace(`${pathname}?${queryParams.toString()}`);
+  };
 
   return [state, setter] as const;
 }

@@ -8,10 +8,16 @@ import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import Link from 'next/link';
 import { Map } from '@/types/response/Map';
-import Preview from '@/components/preview/preview';
 import { cn } from '@/lib/utils';
 import env from '@/constant/env';
 import { LinkIcon } from '@heroicons/react/24/outline';
+import {
+  Preview,
+  PreviewActions,
+  PreviewDescription,
+  PreviewHeader,
+  PreviewImage,
+} from '@/components/preview/preview';
 
 type MapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;
@@ -38,15 +44,15 @@ export default function MapPreview({
         <LinkIcon className="h-5 w-5" />
       </CopyButton>
       <Link className="h-full w-full" href={`/maps/${map.id}`}>
-        <Preview.Image
+        <PreviewImage
           src={`${env.url.image}/maps/${map.id}.png`}
           errorSrc={`${env.url.api}/maps/${map.id}/image`}
           alt={map.name}
         />
       </Link>
-      <Preview.Description>
-        <Preview.Header className="h-12">{map.name}</Preview.Header>
-        <Preview.Actions>
+      <PreviewDescription>
+        <PreviewHeader className="h-12">{map.name}</PreviewHeader>
+        <PreviewActions>
           <DownloadButton
             href={`${env.url.api}/maps/${map.id}/download`}
             fileName={`{${map.name}}.msav`}
@@ -63,8 +69,8 @@ export default function MapPreview({
               <DislikeButton />
             </LikeComponent>
           )}
-        </Preview.Actions>
-      </Preview.Description>
+        </PreviewActions>
+      </PreviewDescription>
     </Preview>
   );
 }
