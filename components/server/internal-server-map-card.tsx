@@ -1,7 +1,8 @@
 'use client';
 
 import DeleteButton from '@/components/button/delete-button';
-import Preview, {
+import {
+  Preview,
   PreviewActions,
   PreviewDescription,
   PreviewHeader,
