@@ -49,7 +49,7 @@ function SchematicPreviewCard({
       >
         <LinkIcon className="h-5 w-5" />
       </CopyButton>
-      <Link href={`/schematics/${schematic.id}`}>
+      <Link className="h-full w-full" href={`/schematics/${schematic.id}`}>
         <Preview.Image
           src={`${env.url.image}/schematics/${schematic.id}.png`}
           errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
@@ -87,4 +87,4 @@ function SchematicPreviewCard({
   );
 }
 
-export default React.memo(SchematicPreviewCard)
+export default React.memo(SchematicPreviewCard);
