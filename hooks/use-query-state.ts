@@ -16,6 +16,7 @@ export default function useQueryState<T extends string>(
 
   useEffect(() => {
     const queryParams = new URLSearchParams(params.raw());
+
     if (state) {
       queryParams.set(name, state);
       setState(state);
@@ -33,21 +34,21 @@ export default function useQueryState<T extends string>(
   }, [initialState, name, pathname, router]);
 
   const setter = (value?: string) => {
-    setState(value ?? initialState);
-
     const queryParams = new URLSearchParams(params.raw());
 
-    if (value) {
-      queryParams.set(name, value);
-    } else {
-      queryParams.set(name, initialState);
-    }
+    if (!value) value = initialState;
+
+    queryParams.set(name, value);
 
     if (!queryParams.get(name)) {
       queryParams.delete(name);
     }
 
-    router.replace(`${pathname}?${queryParams.toString()}`);
+    setState(value);
+    setTimeout(
+      () => router.replace(`${pathname}?${queryParams.toString()}`),
+      100,
+    );
   };
 
   return [state, setter] as const;
