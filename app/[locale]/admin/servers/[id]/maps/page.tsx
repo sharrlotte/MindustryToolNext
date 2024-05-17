@@ -117,7 +117,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />
           <div
-            className="flex h-full w-full flex-col gap-2 overflow-y-auto bg-card p-2"
+            className="flex h-full w-full flex-col gap-2 overflow-y-auto p-2"
             ref={(ref) => {
               container.current = ref;
             }}
@@ -134,13 +134,13 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
             >
               {({ id, name }) => (
                 <Button
-                  className="flex h-full max-h-preview-height w-full flex-col items-start justify-start rounded-md border border-border p-2 text-start hover:bg-button"
+                  className="relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start hover:border-button"
                   variant="outline"
                   key={id}
                   title={name}
                   onClick={() => mutate(id)}
                 >
-                  <h3>{name}</h3>
+                  <h3 className="absolute top-0 w-full text-center p-2 overflow-hidden backdrop-brightness-50">{name}</h3>
                   <PreviewImage
                     src={`${env.url.image}/maps/${id}.png`}
                     errorSrc={`${env.url.api}/maps/${id}/image`}

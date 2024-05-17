@@ -37,9 +37,6 @@ export const {
       clientSecret: serverEnv.oauth.discord.client_secret,
     }),
   ],
-  cookies: {
-    
-  },
   callbacks: {
     //TODO: Fix type
     async session(params: any) {
