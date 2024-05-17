@@ -140,7 +140,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
                   title={name}
                   onClick={() => mutate(id)}
                 >
-                  <h3 className="absolute top-2 -translate-y-1/2">{name}</h3>
+                  <h3 className="absolute top-0 w-full text-center p-2 overflow-hidden backdrop-brightness-50">{name}</h3>
                   <PreviewImage
                     src={`${env.url.image}/maps/${id}.png`}
                     errorSrc={`${env.url.api}/maps/${id}/image`}
