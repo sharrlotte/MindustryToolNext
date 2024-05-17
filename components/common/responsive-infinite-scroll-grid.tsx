@@ -158,7 +158,7 @@ export default function ResponsiveInfiniteScrollGrid<
   const itemWith = (container.clientWidth - (cols - 1) * gap) / cols;
 
   const itemHeight = Math.max(itemWith + contentOffsetHeight, itemMinHeight);
-  const rows = Math.floor(numberOfItems / cols);
+  const rows = Math.ceil(numberOfItems / cols);
 
   const scrollHeight = rows * itemHeight + (rows - 1) * gap;
 
@@ -176,7 +176,7 @@ export default function ResponsiveInfiniteScrollGrid<
   const startHeight = startRow * (itemHeight + gap);
 
   const endRow = Math.min(
-    rows - 1,
+    rows,
     Math.floor((fixedScrollTop + container.clientHeight) / (itemHeight + gap)) +
       2,
   );
