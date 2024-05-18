@@ -56,8 +56,18 @@ type Props = {
 function Dashboard({ server }: Props) {
   const t = useI18n();
 
-  const { started, name, description, port, mode, id, ramUsage, totalRam } =
-    server;
+  const {
+    started,
+    name,
+    description,
+    port,
+    mode,
+    id,
+    ramUsage,
+    totalRam,
+    players,
+    mapName,
+  } = server;
   const { toast } = useToast();
   const { axios } = useClientAPI();
   const { invalidateByKey } = useQueriesData();
@@ -120,6 +130,14 @@ function Dashboard({ server }: Props) {
         <div>
           <span>Game mode: </span>
           <span>{mode}</span>
+        </div>
+        <div>
+          <span>Players: </span>
+          <span>{players}</span>
+        </div>
+        <div>
+          <span>Map: </span>
+          <span>{mapName}</span>
         </div>
         <div className="space-x-2">
           <span>Memory {Math.floor((ramUsage / totalRam) * 100)}%</span>

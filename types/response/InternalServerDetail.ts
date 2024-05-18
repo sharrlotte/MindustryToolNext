@@ -8,4 +8,6 @@ export type InternalServerDetail = {
   alive: boolean;
   ramUsage: number;
   totalRam: number;
+  players: number;
+  mapName: string;
 };
