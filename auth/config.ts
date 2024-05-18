@@ -17,7 +17,7 @@ const authData: {
   expireTime: Number('0'),
 };
 
-const JWT_VERSION = 1;
+const JWT_VERSION = 2;
 
 export const {
   handlers: { GET, POST },
