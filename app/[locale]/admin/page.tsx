@@ -5,6 +5,7 @@ import LikeChart from '@/components/metric/like-chart';
 import LoginChart from '@/components/metric/login-chart';
 import LoginLog from '@/components/metric/login-log';
 import useClientAPI from '@/hooks/use-client';
+import LoginHistory from '@/components/metric/login-history';
 
 const NUMBER_OF_DAY = 15;
 
@@ -22,6 +23,7 @@ export default function Page() {
         <LikeChart axios={axios} start={start} end={end} />
         <LoginChart axios={axios} start={start} end={end} />
         <LoginLog axios={axios} />
+        <LoginHistory axios={axios} />
       </div>
     </div>
   );

@@ -21,13 +21,11 @@ import { cn, isReachedEnd } from '@/lib/utils';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { FilterIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { debounce } from 'lodash';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import moment from 'moment';
 import { Calendar } from '@/components/ui/calendar';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -99,7 +97,7 @@ function LiveLog() {
   useEffect(() => {
     if (socket && state === 'connected' && isAuthenticated) {
       socket.send({ method: 'JOIN_ROOM', data: 'LOG' });
-      socket.onRoom('LOG').send({ method: 'GET_MESSAGE', page: 0, items: 50 });
+      socket.onRoom('LOG').send({ method: 'GET_MESSAGE', page: 0, items: 20 });
 
       socket
         .onRoom('LOG')
