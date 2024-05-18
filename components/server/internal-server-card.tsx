@@ -20,7 +20,6 @@ export default async function InternalServerCard({
         <div className="text-2xl">{name}</div>
         <div>Port: {port}</div>
         <div>{status}</div>
-        <div>Memory {Math.floor((ramUsage / totalRam) * 100)}%</div>
       </Link>
     </div>
   );
