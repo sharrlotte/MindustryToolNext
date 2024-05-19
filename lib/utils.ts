@@ -75,3 +75,15 @@ export function isReachedEnd(element: HTMLElement, offset: number = 100) {
     ) <= offset
   );
 }
+
+export function mapReversed<T, R>(
+  array: T[],
+  mapper: (data: T, index?: number) => R,
+) {
+  var result = [];
+  for (let i = array.length - 1; i >= 0; i--) {
+    result.push(mapper(array[i]));
+  }
+
+  return result;
+}

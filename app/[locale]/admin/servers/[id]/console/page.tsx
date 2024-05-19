@@ -5,7 +5,7 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';
 import useSearchId from '@/hooks/use-search-id-params';
 import useSocket from '@/hooks/use-socket';
-import { isReachedEnd } from '@/lib/utils';
+import { isReachedEnd, mapReversed } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import React, {
   FormEvent,
@@ -31,7 +31,7 @@ export default function Page() {
   const t = useI18n();
 
   const addLog = (message: string[]) => {
-    setLog((prev) => [...prev, ...message]);
+    setLog((prev) => [...message, ...prev]);
 
     setTimeout(() => {
       if (!bottomRef.current || !containerRef.current) {
@@ -143,7 +143,7 @@ export default function Page() {
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
           ) : (
-            log.map((item, index) => (
+            mapReversed(log, (item, index) => (
               <ColorText
                 className="text-wrap px-2 py-1"
                 key={index}
