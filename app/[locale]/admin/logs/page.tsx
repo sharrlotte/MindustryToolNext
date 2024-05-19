@@ -17,7 +17,7 @@ import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
 import useQueryState from '@/hooks/use-query-state';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import { cn, isReachedEnd } from '@/lib/utils';
+import { cn, isReachedEnd, mapReversed } from '@/lib/utils';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { FilterIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -71,7 +71,7 @@ function LiveLog() {
   const t = useI18n();
 
   const addLog = (message: string[]) => {
-    setLog((prev) => [...prev, ...message]);
+    setLog((prev) => [...message, ...prev]);
 
     setTimeout(() => {
       if (!bottomRef.current || !containerRef.current) {
@@ -131,7 +131,7 @@ function LiveLog() {
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
           ) : (
-            log.map((item, index) => (
+            mapReversed(log, (item, index) => (
               <div
                 className="text-wrap rounded-lg bg-background p-2"
                 key={index}
