@@ -156,6 +156,7 @@ export default function Page() {
             hidden
             accept=".msav"
             disabled={isLoading}
+            key={file?.name}
             onChange={(event) => handleFileChange(event)}
           />
           {preview && (

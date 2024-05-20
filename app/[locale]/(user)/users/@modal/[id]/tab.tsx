@@ -59,7 +59,7 @@ export default function Tab({ user }: TabProps) {
               params={params}
               queryKey={['user-schematics', id]}
               getFunc={(axios, params) => getUserSchematics(axios, id, params)}
-              container={container.current}
+              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -86,7 +86,7 @@ export default function Tab({ user }: TabProps) {
               params={params}
               queryKey={['user-maps', id]}
               getFunc={(axios, params) => getUserMaps(axios, id, params)}
-              container={container.current}
+              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -114,7 +114,7 @@ export default function Tab({ user }: TabProps) {
               params={params}
               queryKey={['user-posts', id]}
               getFunc={(axios, params) => getUserPosts(axios, id, params)}
-              container={container.current}
+              container={() => container.current}
             >
               {(data) =>
                 data.status === 'VERIFIED' ? (

@@ -2,7 +2,7 @@
 
 import axiosInstance from '@/query/config/config';
 import { AxiosInstance } from 'axios';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 

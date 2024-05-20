@@ -6,16 +6,15 @@ import TagContainer from '@/components/tag/tag-container';
 import { Tags } from '@/types/response/Tag';
 import { cn } from '@/lib/utils';
 
-type DetailProps = HTMLAttributes<HTMLDivElement> & {
-  padding?: boolean;
-};
+type DetailProps = HTMLAttributes<HTMLDivElement>;
 
-export function Detail({ className, children, padding }: DetailProps) {
+export function Detail({ className, children }: DetailProps) {
   return (
     <div
-      className={cn('absolute inset-0 w-full overflow-y-auto bg-background', {
-        'p-4': padding,
-      })}
+      className={cn(
+        'absolute inset-0 w-full overflow-y-auto bg-background',
+        {},
+      )}
     >
       <div
         className={cn(

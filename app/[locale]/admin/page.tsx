@@ -18,7 +18,7 @@ export default function Page() {
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);
 
   return (
-    <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background">
+    <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-4">
       <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2">
         <LikeChart axios={axios} start={start} end={end} />
         <LoginChart axios={axios} start={start} end={end} />

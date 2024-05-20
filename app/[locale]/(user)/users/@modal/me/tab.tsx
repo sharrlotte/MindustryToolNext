@@ -58,7 +58,7 @@ export default function Tab({ me }: TabProps) {
               params={params}
               queryKey={['me-schematics']}
               getFunc={getMeSchematics}
-              container={container.current}
+              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -85,7 +85,7 @@ export default function Tab({ me }: TabProps) {
               params={params}
               queryKey={['me-maps']}
               getFunc={getMeMaps}
-              container={container.current}
+              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -113,7 +113,7 @@ export default function Tab({ me }: TabProps) {
               params={params}
               queryKey={['me-posts']}
               getFunc={getMePosts}
-              container={container.current}
+              container={() => container.current}
             >
               {(data) =>
                 data.status === 'VERIFIED' ? (

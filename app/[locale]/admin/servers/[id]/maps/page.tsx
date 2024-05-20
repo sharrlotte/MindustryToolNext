@@ -40,15 +40,13 @@ export default function Page() {
       </div>
       <div
         className="flex h-full w-full flex-col gap-2 overflow-y-auto bg-card p-2"
-        ref={(ref) => {
-          container.current = ref;
-        }}
+        ref={container}
       >
         <ResponsiveInfiniteScrollGrid
           params={{ page: 0, items: 20 }}
           queryKey={['internal-server-maps', id]}
           getFunc={(axios, params) => getInternalServerMaps(axios, id, params)}
-          container={container.current}
+          container={() => container.current}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,
@@ -126,7 +124,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
               params={params}
               queryKey={['internal-server-maps']}
               getFunc={(axios, params) => getMaps(axios, params)}
-              container={container.current}
+              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <Skeleton className="h-preview-height" />,
@@ -140,7 +138,9 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
                   title={name}
                   onClick={() => mutate(id)}
                 >
-                  <h3 className="absolute top-0 w-full text-center p-2 overflow-hidden backdrop-brightness-50">{name}</h3>
+                  <h3 className="absolute top-0 w-full overflow-hidden p-2 text-center backdrop-brightness-50">
+                    {name}
+                  </h3>
                   <PreviewImage
                     src={`${env.url.image}/maps/${id}.png`}
                     errorSrc={`${env.url.api}/maps/${id}/image`}

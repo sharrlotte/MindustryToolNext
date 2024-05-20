@@ -41,7 +41,7 @@ export default function LogPage() {
   });
 
   return (
-    <div className="flex h-full w-full flex-col gap-1 overflow-hidden">
+    <div className="flex h-full w-full flex-col gap-1 overflow-hidden p-4">
       <ComboBox
         value={{ label: collection, value: collection }}
         values={['LIVE', ...(data ?? [])].map((item) => ({

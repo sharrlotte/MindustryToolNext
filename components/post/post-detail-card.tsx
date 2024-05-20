@@ -27,10 +27,9 @@ import { Detail } from '@/components/detail/detail';
 
 type PostDetailCardProps = {
   post: PostDetail;
-  padding?: boolean;
 };
 
-export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
+export default function PostDetailCard({ post }: PostDetailCardProps) {
   const displayTags = Tags.parseStringArray(post.tags);
   const { axios } = useClientAPI();
   const { deleteById, invalidateByKey } = useQueriesData();
@@ -83,7 +82,7 @@ export default function PostDetailCard({ post, padding }: PostDetailCardProps) {
   const isLoading = isDeleting || isRemoving;
 
   return (
-    <Detail padding={padding}>
+    <Detail>
       <header className="grid gap-2 pb-4">
         <p className="text-4xl">{post.header}</p>
         <div className="grid gap-2">

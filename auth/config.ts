@@ -7,6 +7,35 @@ import { JWT } from 'next-auth/jwt';
 import { LoginResponse } from '@/types/response/LoginResponse';
 import 'server-only';
 
+class Lock {
+  private promise: Promise<void>;
+
+  private resolve: (() => void) | undefined;
+
+  constructor() {
+    this.promise = Promise.resolve();
+    this.resolve = undefined;
+  }
+
+  await() {
+    return this.promise;
+  }
+
+  acquire() {
+    this.promise = new Promise<void>((resolve) => (this.resolve = resolve));
+  }
+
+  release() {
+    if (this.resolve) {
+      this.resolve();
+    }
+  }
+}
+
+export default Lock;
+
+const lock = new Lock();
+
 const authData: {
   accessToken: string;
   refreshToken: string;
@@ -213,6 +242,9 @@ const refreshToken = async (refreshToken: string) => {
 };
 
 const apiLogin = async () => {
+  await lock.await();
+  lock.acquire();
+
   const data: FormData = new FormData();
 
   data.append('provider', serverEnv.tokens.api_provider as string);
@@ -241,6 +273,8 @@ const apiLogin = async () => {
     throw new Error(text);
   } catch (error) {
     return null;
+  } finally {
+    lock.release();
   }
 };
 
@@ -260,7 +294,5 @@ async function apiLogout() {
   authData.refreshToken = '';
   authData.expireTime = Date.now();
 }
-
-apiLogin();
 
 export { authData };

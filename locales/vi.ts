@@ -137,4 +137,5 @@ export default {
   'internal-server.add-plugin': 'Thêm plugin',
   'internal-server.select-plugin': 'Chọn plugin',
   reload: 'Reload',
+  files: 'Files',
 } as const;

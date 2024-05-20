@@ -19,16 +19,14 @@ export default function PostsPage() {
       <NameTagSearch tags={post} />
       <div
         className="flex h-full w-full flex-col overflow-y-auto"
-        ref={(ref) => {
-          container.current = ref;
-        }}
+        ref={container}
       >
         <ResponsiveInfiniteScrollGrid
           className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
           params={params}
           queryKey={['posts']}
           getFunc={getPosts}
-          container={container.current}
+          container={() => container.current}
           itemMinWidth={224}
           itemMinHeight={352}
           contentOffsetHeight={112}

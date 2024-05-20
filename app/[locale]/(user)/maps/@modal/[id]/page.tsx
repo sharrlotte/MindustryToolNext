@@ -30,5 +30,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
   const { axios } = await getServerAPI();
   const map = await getMap(axios, params);
 
-  return <MapDetailCard map={map} padding />;
+  return <MapDetailCard map={map} />;
 }

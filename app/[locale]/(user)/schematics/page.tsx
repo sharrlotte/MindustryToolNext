@@ -19,15 +19,13 @@ export default function Page() {
       <NameTagSearch tags={schematic} />
       <div
         className="relative flex h-full flex-col overflow-auto"
-        ref={(ref) => {
-          container.current = ref;
-        }}
+        ref={container}
       >
         <ResponsiveInfiniteScrollGrid
           params={params}
           queryKey={['schematics']}
           getFunc={getSchematics}
-          container={container.current}
+          container={() => container.current}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,

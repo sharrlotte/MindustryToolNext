@@ -16,19 +16,17 @@ export default function Page() {
   const container = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div className="relative flex h-full flex-col gap-4">
+    <div className="relative flex h-full flex-col gap-4 p-4">
       <NameTagSearch tags={map} />
       <div
         className="relative flex h-full flex-col gap-4 overflow-y-auto"
-        ref={(ref) => {
-          container.current = ref;
-        }}
+        ref={container}
       >
         <ResponsiveInfiniteScrollGrid
           queryKey={['map-uploads']}
           getFunc={getMapUploads}
           params={params}
-          container={container.current}
+          container={() => container.current}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,

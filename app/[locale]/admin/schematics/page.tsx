@@ -16,19 +16,17 @@ export default function Page() {
   const container = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div className="relative flex h-full flex-col gap-4">
+    <div className="relative flex h-full flex-col gap-4 p-4">
       <NameTagSearch tags={schematic} />
       <div
         className="relative flex h-full flex-col overflow-y-auto"
-        ref={(ref) => {
-          container.current = ref;
-        }}
+        ref={container}
       >
         <ResponsiveInfiniteScrollGrid
           params={params}
           queryKey={['schematic-uploads']}
           getFunc={getSchematicUploads}
-          container={container.current}
+          container={() => container.current}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,

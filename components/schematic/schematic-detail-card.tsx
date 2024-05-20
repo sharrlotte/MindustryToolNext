@@ -40,12 +40,10 @@ import {
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
-  padding?: boolean;
 };
 
 export default function SchematicDetailCard({
   schematic,
-  padding,
 }: SchematicDetailCardProps) {
   const { axios } = useClientAPI();
   const { deleteById, invalidateByKey } = useQueriesData();
@@ -105,7 +103,7 @@ export default function SchematicDetailCard({
   });
 
   return (
-    <Detail padding={padding}>
+    <Detail>
       <DetailInfo>
         <div className="relative">
           <CopyButton
