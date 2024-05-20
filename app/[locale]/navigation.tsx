@@ -29,7 +29,7 @@ import { ThemeSwitcher } from '../../components/theme/theme-switcher';
 import UserAvatar from '@/components/user/user-avatar';
 import { UserRole } from '@/constant/enum';
 import UserRoleCard from '@/components/user/user-role';
-import { cn } from '@/lib/utils';
+import { cn, max } from '@/lib/utils';
 import env from '@/constant/env';
 import { useI18n } from '@/locales/client';
 import { usePathname } from 'next/navigation';
@@ -274,12 +274,21 @@ function NavItems({ onClick }: NavItemsProps) {
 
   const { data: session } = useSession();
   const pathName = usePathname();
-  const route = pathName.split('/').filter((item) => item)[1];
+  const pattern = /[a-zA-Z0-9-]+\/([a-zA-Z0-9\/-]+)/;
+  const route = '/' + pattern.exec(pathName)?.at(1);
+
+  const allPaths: string[] = pathGroups
+    .reduce<Path[]>((prev, curr) => prev.concat(curr.paths), [])
+    .reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
+
+  const bestMatch = max(
+    allPaths,
+    (value) => value.length * (route.startsWith(value) ? 1 : 0),
+  );
 
   const render = (paths: Path[]) => {
     return paths.map(({ path, icon, name }) => {
-      const enabled =
-        path.slice(1) === route || (path === '/' && route === undefined);
+      const enabled = path === bestMatch;
 
       return (
         <Link

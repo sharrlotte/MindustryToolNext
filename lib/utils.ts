@@ -82,8 +82,24 @@ export function mapReversed<T, R>(
 ) {
   var result = [];
   for (let i = array.length - 1; i >= 0; i--) {
-    result.push(mapper(array[i]));
+    result.push(mapper(array[i], i));
   }
 
   return result;
+}
+
+export function max<T>(array: T[], transformer: (value: T) => number) {
+  if (array.length === 0) return null;
+
+  let max = transformer(array[0]);
+  let value = array[0];
+
+  for (let i = 1; i < array.length; i++) {
+    if (transformer(array[i]) > max) {
+      max = transformer(array[i]);
+      value = array[i];
+    }
+  }
+
+  return value;
 }

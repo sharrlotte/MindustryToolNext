@@ -33,4 +33,10 @@ const nextConfig = {
   },
 };
 
-module.exports = removeImports(nextConfig);
+const analyze = process.env.ANALYZE === 'true';
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: analyze,
+});
+
+module.exports = withBundleAnalyzer(nextConfig);
