@@ -38,7 +38,7 @@ function FletchUserCard({ id }: IdUserCardProps) {
     return <span>{error?.message}</span>;
   }
 
-  if (isLoading || !data) {
+  if (isLoading || !data || !enabled) {
     return <UserCardSkeleton />;
   }
 

@@ -24,7 +24,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Page() {
-  const container = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement>(null);
   const [address, setAddress] = useState('');
   const [result, setResult] = useState<PostServerResponse>();
   const params = { page: 0, items: 40 };
@@ -49,7 +49,6 @@ export default function Page() {
   });
 
   function handleCopyFromClipboard() {
-    
     navigator.clipboard.readText().then((text) => setAddress(text));
   }
 
@@ -106,16 +105,11 @@ export default function Page() {
           <PostServerResultCard server={result} />
         </DialogContent>
       </Dialog>
-      <div
-        className="h-full overflow-y-auto"
-        ref={(ref) => {
-          container.current = ref;
-        }}
-      >
+      <div className="h-full overflow-y-auto" ref={container}>
         <InfinitePage
           className="grid w-full grid-cols-1 justify-center gap-4 md:grid-cols-2 xl:grid-cols-3"
           queryKey={['servers']}
-          container={container.current}
+          container={() => container.current}
           params={params}
           getFunc={getServers}
         >

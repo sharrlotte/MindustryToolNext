@@ -41,7 +41,7 @@ export default function LogPage() {
   });
 
   return (
-    <div className="flex h-full w-full flex-col gap-1 overflow-hidden">
+    <div className="flex h-full w-full flex-col gap-1 overflow-hidden p-4">
       <ComboBox
         value={{ label: collection, value: collection }}
         values={['LIVE', ...(data ?? [])].map((item) => ({
@@ -199,6 +199,7 @@ function StaticLog({ collection }: StaticLogProps) {
   const [userId, setUserId] = useQueryState('userId', '');
   const [before, setBefore] = useQueryState('before', '');
   const [after, setAfter] = useQueryState('after', '');
+  const container = useRef<HTMLDivElement>(null);
 
   function setFilter({ ip, userId, url, content }: Filter) {
     if (content) {
@@ -376,7 +377,10 @@ function StaticLog({ collection }: StaticLogProps) {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden">
+      <div
+        className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden"
+        ref={container}
+      >
         <InfinitePage<Log, LogPaginationQuery>
           className="flex w-full flex-col items-center justify-center gap-2"
           params={{
@@ -391,6 +395,7 @@ function StaticLog({ collection }: StaticLogProps) {
             before,
             after,
           }}
+          container={() => container.current}
           queryKey={['logs']}
           getFunc={getLogs}
         >

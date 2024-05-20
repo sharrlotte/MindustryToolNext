@@ -37,10 +37,9 @@ import {
 
 type MapDetailCardProps = {
   map: MapDetail;
-  padding?: boolean;
 };
 
-export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
+export default function MapDetailCard({ map }: MapDetailCardProps) {
   const link = `${env.url.base}/maps/${map.id}`;
 
   const { axios } = useClientAPI();
@@ -95,7 +94,7 @@ export default function MapDetailCard({ map, padding }: MapDetailCardProps) {
   const isLoading = isDeleting || isRemoving;
 
   return (
-    <Detail padding={padding}>
+    <Detail>
       <DetailInfo>
         <div className="relative">
           <CopyButton

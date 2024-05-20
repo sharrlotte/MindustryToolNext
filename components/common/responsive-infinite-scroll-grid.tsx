@@ -19,7 +19,7 @@ type ResponsiveInfiniteScrollGridProps<T, P> = {
     amount: number;
     item: ReactNode;
   };
-  container: HTMLElement | null;
+  container: () => HTMLElement | null;
   itemMinWidth: number;
   itemMinHeight: number;
   contentOffsetHeight: number;
@@ -70,6 +70,7 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const [scrollTop, setScrollTop] = useState(0);
 
+  var currentContainer = container();
   const skeletonElements = useMemo(
     () =>
       skeleton &&
@@ -83,31 +84,39 @@ export default function ResponsiveInfiniteScrollGrid<
 
   useEffect(() => {
     function handleScroll() {
-      if (container) {
-        setScrollTop(container.scrollTop);
+      if (currentContainer) {
+        setScrollTop(currentContainer.scrollTop);
       }
     }
 
-    const throttled = throttle(() => handleScroll(), 500);
+    const throttled = throttle(() => handleScroll(), 50);
 
-    container?.addEventListener('scroll', throttled);
-    container?.addEventListener('scrollend', handleScroll);
+    currentContainer?.addEventListener('scroll', throttled);
+    currentContainer?.addEventListener('scrollend', handleScroll);
     return () => {
-      container?.removeEventListener('scrollend', handleScroll);
-      container?.removeEventListener('scroll', throttled);
+      currentContainer?.removeEventListener('scrollend', handleScroll);
+      currentContainer?.removeEventListener('scroll', throttled);
     };
-  }, [container]);
+  }, [currentContainer]);
 
   useEffect(() => {
-    if (container) {
+    if (currentContainer) {
       const offsetFromBottom =
-        container.scrollHeight - (scrollTop + container.clientHeight);
+        currentContainer.scrollHeight -
+        (scrollTop + currentContainer.clientHeight);
 
       if (offsetFromBottom < threshold && hasNextPage && !isFetching) {
         fetchNextPage();
       }
     }
-  }, [container, fetchNextPage, hasNextPage, isFetching, threshold, scrollTop]);
+  }, [
+    currentContainer,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    threshold,
+    scrollTop,
+  ]);
 
   noResult = noResult ?? (
     <NoResult className="flex w-full items-center justify-center" />
@@ -139,7 +148,9 @@ export default function ResponsiveInfiniteScrollGrid<
     );
   }
 
-  if (isLoading || !data || !container) {
+  console.log({ isLoading, data, currentContainer });
+
+  if (isLoading || !data || !currentContainer) {
     return (
       <div className={className ?? defaultClassName} style={{ gap }}>
         {loader ? loader : skeletonElements}
@@ -153,9 +164,9 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const numberOfItems = pages.length + (isFetching ? skeleton?.amount ?? 0 : 0);
 
-  const cols = Math.floor(container.clientWidth / (itemMinWidth + gap));
+  const cols = Math.floor(currentContainer.clientWidth / (itemMinWidth + gap));
 
-  const itemWith = (container.clientWidth - (cols - 1) * gap) / cols;
+  const itemWith = (currentContainer.clientWidth - (cols - 1) * gap) / cols;
 
   const itemHeight = Math.max(itemWith + contentOffsetHeight, itemMinHeight);
   const rows = Math.ceil(numberOfItems / cols);
@@ -163,7 +174,7 @@ export default function ResponsiveInfiniteScrollGrid<
   const scrollHeight = rows * itemHeight + (rows - 1) * gap;
 
   const fixedScrollTop = Math.min(
-    scrollHeight - container.clientHeight,
+    scrollHeight - currentContainer.clientHeight,
     scrollTop,
   );
 
@@ -177,8 +188,9 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const endRow = Math.min(
     rows,
-    Math.floor((fixedScrollTop + container.clientHeight) / (itemHeight + gap)) +
-      2,
+    Math.floor(
+      (fixedScrollTop + currentContainer.clientHeight) / (itemHeight + gap),
+    ) + 2,
   );
 
   const endIndex = endRow * (cols + 1);

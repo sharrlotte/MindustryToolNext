@@ -13,25 +13,23 @@ import React, { useRef } from 'react';
 export default function Page() {
   const { plugin } = useSearchTags();
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement>(null);
 
   const t = useI18n();
 
   return (
-    <div className="flex h-full flex-col justify-between gap-4">
+    <div className="flex h-full flex-col justify-between gap-4 p-4">
       <NameTagSearch tags={plugin} useSort={false} />
       <div
         className="relative flex h-full flex-col overflow-y-auto"
-        ref={(ref) => {
-          container.current = ref;
-        }}
+        ref={container}
       >
         <InfinitePage
           className="flex flex-col gap-2"
           queryKey={['plugins']}
           getFunc={getPlugins}
           params={params}
-          container={container.current}
+          container={() => container.current}
         >
           {(data) => <PluginCard key={data.id} plugin={data} />}
         </InfinitePage>

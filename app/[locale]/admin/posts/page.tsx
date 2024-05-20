@@ -11,15 +11,12 @@ import React, { useRef } from 'react';
 export default function Page() {
   const { post } = useSearchTags();
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement | null>();
-
+  const container = useRef<HTMLDivElement>(null);
   return (
     <div>
       <div
-        className="relative flex h-full flex-col gap-4 overflow-y-auto"
-        ref={(ref) => {
-          container.current = ref;
-        }}
+        className="relative flex h-full flex-col gap-4 overflow-y-auto p-4"
+        ref={container}
       >
         <NameTagSearch tags={post} />
         <InfinitePage
@@ -27,7 +24,7 @@ export default function Page() {
           params={params}
           queryKey={['post-uploads']}
           getFunc={getPostUploads}
-          container={container.current}
+          container={() => container.current}
         >
           {(data) => <UploadPostPreviewCard key={data.id} post={data} />}
         </InfinitePage>

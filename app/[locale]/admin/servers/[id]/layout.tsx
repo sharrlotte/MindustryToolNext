@@ -9,6 +9,7 @@ import getInternalServer from '@/query/server/get-internal-server';
 import {
   Cog6ToothIcon,
   CommandLineIcon,
+  FolderIcon,
   MapIcon,
   PuzzlePieceIcon,
 } from '@heroicons/react/24/outline';
@@ -78,6 +79,15 @@ export default function Layout({ children }: PageProps) {
       ),
     },
     {
+      href: '/files',
+      label: (
+        <>
+          <FolderIcon className="h-6 w-6" />
+          <span>{t('files')}</span>
+        </>
+      ),
+    },
+    {
       href: '/setting',
       label: (
         <>
@@ -94,7 +104,7 @@ export default function Layout({ children }: PageProps) {
         <h2 className="bg-card px-4 py-2 text-3xl font-bold">
           {server?.name ?? <Skeleton className="h-9 w-full rounded-none" />}
         </h2>
-        <div className="flex min-w-48 flex-1 flex-wrap gap-2 bg-card p-2 md:flex-col">
+        <div className="flex min-w-48 flex-1 flex-wrap gap-2 overflow-x-auto bg-card p-2 md:flex-col">
           {links.map(({ href, label }) => (
             <Link
               className={cn(

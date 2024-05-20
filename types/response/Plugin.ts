@@ -3,5 +3,6 @@ export type Plugin = {
   name: string;
   description: string;
   tags: string[];
+  url: string
   createdAt: number;
 };

@@ -13,7 +13,7 @@ type InfinitePageProps<T, P> = {
   className?: string;
   queryKey: QueryKey[];
   params: P;
-  container?: HTMLElement | null;
+  container: () => HTMLElement | null;
   loader?: ReactElement<any, string | JSXElementConstructor<any>>;
   noResult?: ReactNode;
   end?: ReactNode;
@@ -32,7 +32,7 @@ export default function InfinitePage<
   className,
   queryKey,
   params,
-  container = null,
+  container,
   loader,
   noResult,
   end,
@@ -81,7 +81,7 @@ export default function InfinitePage<
     );
   }
 
-  if (isLoading || !data ) {
+  if (isLoading || !data) {
     return (
       <div
         className={
@@ -122,7 +122,7 @@ export default function InfinitePage<
       hasMore={hasNextPage}
       loader={loader}
       useWindow={false}
-      getScrollParent={() => container}
+      getScrollParent={container}
     >
       {pages.map((data, index) => children(data, index))}
       {isFetching && skeleton && (

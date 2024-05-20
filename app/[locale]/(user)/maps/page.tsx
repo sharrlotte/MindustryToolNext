@@ -20,15 +20,13 @@ export default function MapPage() {
       <NameTagSearch tags={map} />
       <div
         className="relative flex h-full flex-col overflow-auto "
-        ref={(ref) => {
-          container.current = ref;
-        }}
+        ref={container}
       >
         <ResponsiveInfiniteScrollGrid
           params={params}
           queryKey={['maps']}
           getFunc={getMaps}
-          container={container.current}
+          container={() => container.current}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,

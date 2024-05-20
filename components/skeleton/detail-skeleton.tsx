@@ -1,19 +1,10 @@
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
-import { cn } from '@/lib/utils';
 
-type DetailSkeletonProps = {
-  padding?: boolean;
-};
-
-export default function DetailSkeleton({ padding }: DetailSkeletonProps) {
+export default function DetailSkeleton() {
   return (
-    <div
-      className={cn('absolute h-full w-full bg-background backdrop-blur-sm', {
-        'p-4': padding,
-      })}
-    >
+    <div className={'absolute h-full w-full bg-background backdrop-blur-sm'}>
       <div className="relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch">
         <div className="flex flex-col gap-2 md:flex-row">
           <div className="relative overflow-hidden rounded-lg">
