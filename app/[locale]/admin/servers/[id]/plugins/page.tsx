@@ -27,7 +27,7 @@ import InternalServerPluginCard from '@/components/server/internal-server-plugin
 import { useSearchTags } from '@/hooks/use-tags';
 
 export default function Page() {
-  const container = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement>(null);
   const id = useSafeParam().get('id');
 
   return (

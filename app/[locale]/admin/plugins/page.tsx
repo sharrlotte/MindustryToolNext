@@ -13,7 +13,7 @@ import React, { useRef } from 'react';
 export default function Page() {
   const { plugin } = useSearchTags();
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement | null>();
+  const container = useRef<HTMLDivElement>(null);
 
   const t = useI18n();
 

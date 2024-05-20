@@ -11,8 +11,7 @@ import React, { useRef } from 'react';
 export default function Page() {
   const { post } = useSearchTags();
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement | null>();
-
+  const container = useRef<HTMLDivElement>(null);
   return (
     <div>
       <div

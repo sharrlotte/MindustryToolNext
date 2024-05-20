@@ -78,8 +78,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
 
   //TODO: Fix search
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement | null>();
-
+  const container = useRef<HTMLDivElement>(null);
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) =>
       postInternalServerMap(axios, serverId, { mapId }),
@@ -116,9 +115,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
           <NameTagSearch tags={map} />
           <div
             className="flex h-full w-full flex-col gap-2 overflow-y-auto p-2"
-            ref={(ref) => {
-              container.current = ref;
-            }}
+            ref={container}
           >
             <InfinitePage
               params={params}
