@@ -203,14 +203,25 @@ function NavItems({ onClick }: NavItemsProps) {
           icon: <ServerStackIcon className="h-6 w-6" />,
         },
         {
+          path: '/logic', //
+          name: t('logic'),
+          icon: <CommandLineIcon className="h-6 w-6" />,
+        },
+      ],
+    },
+    {
+      name: t('user'),
+      roles: ['USER'],
+      paths: [
+        {
           path: '/users/me', //
           name: t('user'),
           icon: <UserCircleIcon className="h-6 w-6" />,
         },
         {
-          path: '/logic', //
-          name: t('logic'),
-          icon: <CommandLineIcon className="h-6 w-6" />,
+          name: t('setting'),
+          path: '/users/me/settings',
+          icon: <Cog6ToothIcon className="h-6 w-6" />,
         },
         {
           path: '/upload', //
