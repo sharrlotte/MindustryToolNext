@@ -6,9 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import MarkdownEditor, {
-  MarkdownData,
-} from '@/components/common/markdown-editor';
+import { MarkdownData } from '@/components/common/markdown-editor';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -36,6 +34,11 @@ import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { usePostTags } from '@/hooks/use-tags';
+import dynamic from 'next/dynamic';
+
+const MarkdownEditor = dynamic(
+  () => import('@/components/common/markdown-editor'),
+);
 
 type Shared = {
   header: string;

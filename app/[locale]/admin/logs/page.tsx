@@ -65,8 +65,8 @@ function LiveLog() {
 
   const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
-  const containerRef = useRef<HTMLDivElement | null>();
-  const bottomRef = useRef<HTMLSpanElement | null>();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLSpanElement>(null);
 
   const t = useI18n();
 
@@ -124,9 +124,7 @@ function LiveLog() {
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
         <div
           className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden"
-          ref={(ref) => {
-            containerRef.current = ref;
-          }}
+          ref={containerRef}
         >
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
@@ -140,11 +138,7 @@ function LiveLog() {
               </div>
             ))
           )}
-          <span
-            ref={(ref) => {
-              bottomRef.current = ref;
-            }}
-          ></span>
+          <span ref={bottomRef}></span>
         </div>
       </div>
       <form

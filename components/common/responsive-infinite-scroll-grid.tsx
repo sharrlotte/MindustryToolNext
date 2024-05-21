@@ -148,8 +148,6 @@ export default function ResponsiveInfiniteScrollGrid<
     );
   }
 
-  console.log({ isLoading, data, currentContainer });
-
   if (isLoading || !data || !currentContainer) {
     return (
       <div className={className ?? defaultClassName} style={{ gap }}>

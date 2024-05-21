@@ -12,7 +12,7 @@ export function Detail({ className, children }: DetailProps) {
   return (
     <div
       className={cn(
-        'absolute inset-0 w-full overflow-y-auto bg-background',
+        'absolute inset-0 w-full overflow-y-auto bg-background p-4',
         {},
       )}
     >
