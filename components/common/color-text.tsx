@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn, getColor } from '@/lib/utils';
 import React, { ReactNode, useMemo } from 'react';
 
 const COLOR_REGEX = /\[([^\]]+)\]/g;
@@ -33,41 +33,31 @@ function render(text: string, className?: string) {
 
   if (!arr) return <span>{text}</span>;
 
-  const s = new Option().style;
-
   while (arr.length > 0) {
     let color = arr[0].toLocaleLowerCase();
     color = color.substring(1, color.length - 1);
 
     if (color.includes('#')) {
       color = color.padEnd(7, '0');
-    }
-
-    switch (color) {
-      case 'accent':
-        s.color = 'yellow';
-        break;
-
-      default:
-        s.color = color;
-        break;
+    } else {
+      color = getColor(color);
     }
 
     if (arr.length === 1) {
-      if (s.color === '') {
-        key = add(result, text.substring(0), s.color, key);
+      if (!color) {
+        key = add(result, text.substring(0), '', key);
       } else {
-        key = add(result, text.substring(arr[0].length), s.color, key);
+        key = add(result, text.substring(arr[0].length), color, key);
       }
       break;
     }
 
     var nextIndex = text.indexOf(arr[1]);
 
-    if (s.color !== '') {
-      key = add(result, text.substring(arr[0].length, nextIndex), s.color, key);
+    if (color) {
+      key = add(result, text.substring(arr[0].length, nextIndex), color, key);
     } else {
-      key = add(result, text.substring(0, nextIndex), s.color, key);
+      key = add(result, text.substring(0, nextIndex), '', key);
     }
     text = text.substring(nextIndex);
     arr.shift();
