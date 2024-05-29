@@ -23,7 +23,7 @@ export const PostPluginRequestSchema = z.object({
   url: z
     .string()
     .regex(
-      /https:\/\/github.com\/([a-zA-Z0-9]+)\/([a-zA-Z]+[a-zA-Z]+)/,
+      /https:\/\/github.com\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)/,
       'Invalid GitHub URL',
     ),
 });
