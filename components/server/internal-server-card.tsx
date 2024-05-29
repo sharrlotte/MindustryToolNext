@@ -1,3 +1,4 @@
+import ColorText from '@/components/common/color-text';
 import { getI18n } from '@/locales/server';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 import Link from 'next/link';
@@ -17,7 +18,7 @@ export default async function InternalServerCard({
   return (
     <div className="flex justify-between rounded-md bg-card p-2">
       <Link className="flex flex-1 flex-col" href={`/admin/servers/${id}`}>
-        <div className="text-2xl">{name}</div>
+        <ColorText className="text-2xl" text={name} />
         <div>Port: {port}</div>
         <div>{status}</div>
       </Link>
