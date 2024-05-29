@@ -58,7 +58,7 @@ export default function Root({ children, params }: RootProps) {
   return (
     <html
       className={cn(
-        'dark h-full w-full select-none overflow-hidden bg-background text-foreground antialiased',
+        'dark h-full w-full overflow-hidden bg-background text-foreground antialiased',
         // font.variable,
         inter.variable,
         icon.variable,
