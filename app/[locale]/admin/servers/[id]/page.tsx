@@ -111,6 +111,9 @@ function Dashboard({ server }: Props) {
   });
 
   const isLoading = isPending || isReloadingServer;
+  const ramUsagePercent = totalRam
+    ? Math.floor((ramUsage / totalRam) * 100)
+    : 0;
 
   return (
     <div className="flex flex-col gap-2">
@@ -140,7 +143,7 @@ function Dashboard({ server }: Props) {
           <span>{mapName}</span>
         </div>
         <div className="space-x-2">
-          <span>Memory {Math.floor((ramUsage / totalRam) * 100)}%</span>
+          <span>Memory {ramUsagePercent}%</span>
           <span>
             {ramUsage}/{totalRam}mb
           </span>
