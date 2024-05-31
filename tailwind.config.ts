@@ -105,6 +105,14 @@ module.exports = {
             opacity: 1,
           },
         },
+        expand: {
+          '0%': { transform: 'scaleY(0)' },
+          '100%': { transform: 'scaleY(1)' },
+        },
+        collapse: {
+          '0%': { transform: 'scaleY(1)' },
+          '100%': { transform: 'scaleY(0)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -113,6 +121,8 @@ module.exports = {
         popup: 'popup 0.2s forwards',
         spin: 'spin 1s linear infinite',
         appear: 'appear 1s',
+        expand: 'expand 1s linear forwards',
+        collapse: 'collapse 1s linear forwards',
       },
     },
   },
