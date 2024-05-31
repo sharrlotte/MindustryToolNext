@@ -146,7 +146,7 @@ var colours: Record<string, string> = {
   yellow: '#ffff00',
   yellowgreen: '#9acd32',
   accent: 'yellow',
-  "": "white"
+  '': 'white',
 };
 
 export function cn(...inputs: ClassValue[]) {
@@ -182,9 +182,15 @@ export function fillMetric(
 
   let result: { value: number; time: string }[] = [];
 
-  for (let i = numberOfDay; i > 0; i--) {
+  for (let i = numberOfDay - 1; i >= 0; i--) {
     let targetDay = new Date(start);
-    targetDay.setDate(targetDay.getDate() + numberOfDay - i + 1);
+
+    targetDay.setDate(targetDay.getDate() + numberOfDay - i);
+
+    if (Math.abs(targetDay.getMonth() - start.getMonth()) >= 2) {
+      targetDay.setMonth(start.getMonth() + 1);
+    }
+
     let value = array.find(
       (v) =>
         v.time.getFullYear() === targetDay.getFullYear() &&
@@ -250,6 +256,6 @@ export function max<T>(array: T[], transformer: (value: T) => number) {
   return value;
 }
 
-export function getColor(color: string){
-    return colours[color]
+export function getColor(color: string) {
+  return colours[color];
 }

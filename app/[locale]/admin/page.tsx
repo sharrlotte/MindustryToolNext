@@ -13,8 +13,8 @@ export default function Page() {
   const axios = useClientAPI();
 
   const start = new Date();
-  start.setDate(new Date().getDate() + 1);
   const end = new Date();
+
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);
 
   return (
