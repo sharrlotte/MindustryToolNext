@@ -8,7 +8,7 @@ export function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'flex min-h-preview-height animate-appear flex-col justify-between overflow-hidden rounded-md border bg-card shadow-md',
+        'flex h-preview-height animate-appear flex-col justify-between overflow-hidden rounded-md border bg-card shadow-md',
         className,
       )}
       {...props}
@@ -42,7 +42,7 @@ export function PreviewImage({ className, src, errorSrc, alt }: ImageProps) {
 
   return (
     <Image
-      className={cn('h-full w-full object-cover', className)}
+      className={cn('h-full w-full object-cover overflow-hidden aspect-square', className)}
       src={isError ? errorSrc : src}
       alt={alt}
       width={224}
