@@ -1,7 +1,7 @@
 import { cn, getColor } from '@/lib/utils';
 import React, { ReactNode, useMemo } from 'react';
 
-const COLOR_REGEX = /\[([^\]]+)\]/g;
+const COLOR_REGEX = /\[([a-zA-Z0-9]+)\]/g;
 
 interface ColorTextProps {
   text: string;
@@ -9,7 +9,7 @@ interface ColorTextProps {
 }
 
 export default function ColorText({ text, className }: ColorTextProps) {
-  const result = useMemo(() => render(text), [text]);
+  const result = useMemo(() => render(text, className), [text, className]);
 
   return <span className={cn(className)}>{result}</span>;
 }

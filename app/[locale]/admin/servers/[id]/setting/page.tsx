@@ -1,7 +1,7 @@
 'use client';
 
 import getInternalServer from '@/query/server/get-internal-server';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
@@ -86,27 +86,29 @@ type Props = {
 
 function ServerSettingEditor({ server }: Props) {
   const t = useI18n();
+  const [currentServer, setCurrentServer] = useState(server);
   const form = useForm<PutInternalServerRequest>({
     resolver: zodResolver(PutInternalServerSchema),
-    defaultValues: server,
+    defaultValues: currentServer,
   });
   const { invalidateByKey } = useQueriesData();
   const { axios } = useClientAPI();
   const { toast } = useToast();
 
-  const { id, started } = server;
+  const { id } = currentServer;
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['internal-servers'],
     mutationFn: (data: PutInternalServerRequest) =>
       putInternalServer(axios, id, data),
-    onSuccess: () => {
+    onSuccess: (_, data) => {
       invalidateByKey(['internal-servers']);
-      server = { ...server, ...form.getValues() };
+      server = { ...currentServer, ...form.getValues() };
       toast({
         title: t('update.success'),
         variant: 'success',
       });
+      setCurrentServer((prev) => ({ ...prev, ...data }));
     },
     onError: (error) =>
       toast({
@@ -134,7 +136,7 @@ function ServerSettingEditor({ server }: Props) {
       }),
   });
 
-  const isChanged = !isEqual(form.getValues(), server);
+  const isChanged = !isEqual(form.getValues(), currentServer);
   const isLoading = isPending || isDeleting;
 
   return (
@@ -144,7 +146,7 @@ function ServerSettingEditor({ server }: Props) {
           className="flex flex-1 flex-col justify-between bg-card p-2"
           onSubmit={form.handleSubmit((value) => mutate(value))}
         >
-          <div className="space-y-4">
+          <div className="space-y-6">
             <FormField
               control={form.control}
               name="name"
@@ -208,7 +210,7 @@ function ServerSettingEditor({ server }: Props) {
                   <FormLabel>Mode</FormLabel>
                   <FormControl>
                     <ComboBox
-                      className="bg-transparent"
+                      className="bg-transparent capitalize"
                       placeholder={InternalServerModes[0]}
                       value={{ label: field.value, value: field.value }}
                       values={InternalServerModes.map((value) => ({
@@ -236,6 +238,7 @@ function ServerSettingEditor({ server }: Props) {
               variant="secondary"
               title={t('reset')}
               onClick={() => form.reset()}
+              disabled={isLoading}
             >
               {t('reset')}
             </Button>

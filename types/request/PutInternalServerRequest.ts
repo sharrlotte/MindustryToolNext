@@ -1,6 +1,13 @@
 import { z } from 'zod';
 
-export const InternalServerModes = ['SURVIVAL', 'ATTACK', 'PVP'] as const;
+export const InternalServerModes = [
+  'SURVIVAL',
+  'ATTACK',
+  'PVP',
+  'SANDBOX',
+] as const;
+
+export type InternalServerMode = (typeof InternalServerModes)[number];
 
 export const PutInternalServerSchema = z.object({
   name: z.string().min(1).max(50),

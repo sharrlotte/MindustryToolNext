@@ -55,7 +55,10 @@ function SchematicPreviewCard({
       >
         <LinkIcon className="h-5 w-5" />
       </CopyButton>
-      <Link className="h-full w-full" href={`/schematics/${schematic.id}`}>
+      <Link
+        className="h-full w-full overflow-hidden"
+        href={`/schematics/${schematic.id}`}
+      >
         <PreviewImage
           src={`${env.url.image}/schematics/${schematic.id}.png`}
           errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}

@@ -1,6 +1,5 @@
 import {
   ChevronUpDownIcon,
-  MagnifyingGlassCircleIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 import {
@@ -37,13 +36,13 @@ export default function ComboBox<T>({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className={cn('w-[200px] justify-between', className)}
+          className={cn('w-[200px] justify-between capitalize', className)}
           title=""
           role="combobox"
           aria-expanded={open}
           variant="outline"
         >
-          {value ? value.label : placeholder ?? 'Select'}
+          {value ? value.label.toLowerCase() : placeholder ?? 'Select'}
           <ChevronUpDownIcon className="ml-auto h-5 w-5 shrink-0" />
         </Button>
       </PopoverTrigger>
@@ -64,7 +63,7 @@ export default function ComboBox<T>({
             {values.map((item) => (
               <button
                 className={cn(
-                  'relative flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm font-thin text-foreground outline-none hover:bg-button hover:text-background aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-foreground',
+                  'relative flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm font-thin capitalize text-foreground outline-none hover:bg-button hover:text-background aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-foreground',
                   {
                     'bg-button text-background': item.label === value?.label,
                   },
@@ -77,7 +76,7 @@ export default function ComboBox<T>({
                   setOpen(false);
                 }}
               >
-                {item.label}
+                {item.label.toLowerCase()}
               </button>
             ))}
           </div>

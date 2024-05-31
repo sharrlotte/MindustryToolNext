@@ -146,6 +146,7 @@ var colours: Record<string, string> = {
   yellow: '#ffff00',
   yellowgreen: '#9acd32',
   accent: 'yellow',
+  "": "white"
 };
 
 export function cn(...inputs: ClassValue[]) {

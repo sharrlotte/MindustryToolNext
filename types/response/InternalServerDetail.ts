@@ -1,9 +1,11 @@
+import { InternalServerMode } from '@/types/request/PutInternalServerRequest';
+
 export type InternalServerDetail = {
   id: string;
   name: string;
   description: string;
   port: number;
-  mode: 'SURVIVAL' | 'ATTACK' | 'PVP';
+  mode: InternalServerMode;
   started: boolean;
   alive: boolean;
   ramUsage: number;

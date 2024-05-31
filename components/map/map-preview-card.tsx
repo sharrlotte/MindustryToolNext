@@ -43,7 +43,7 @@ export default function MapPreview({
       >
         <LinkIcon className="h-5 w-5" />
       </CopyButton>
-      <Link className="h-full w-full" href={`/maps/${map.id}`}>
+      <Link className="h-full w-full overflow-hidden" href={`/maps/${map.id}`}>
         <PreviewImage
           src={`${env.url.image}/maps/${map.id}.png`}
           errorSrc={`${env.url.api}/maps/${map.id}/image`}
