@@ -51,7 +51,7 @@ export default function Page() {
             amount: 20,
             item: <PreviewSkeleton />,
           }}
-          itemMinWidth={224}
+          itemMinWidth={320}
           itemMinHeight={352}
           contentOffsetHeight={112}
           gap={8}

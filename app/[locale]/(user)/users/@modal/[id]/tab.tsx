@@ -64,7 +64,7 @@ export default function Tab({ user }: TabProps) {
                 amount: 20,
                 item: <PreviewSkeleton />,
               }}
-              itemMinWidth={224}
+              itemMinWidth={320}
               itemMinHeight={352}
               contentOffsetHeight={112}
               gap={8}
@@ -91,7 +91,7 @@ export default function Tab({ user }: TabProps) {
                 amount: 20,
                 item: <PreviewSkeleton />,
               }}
-              itemMinWidth={224}
+              itemMinWidth={320}
               itemMinHeight={352}
               contentOffsetHeight={112}
               gap={8}

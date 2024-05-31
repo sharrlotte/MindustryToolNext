@@ -45,10 +45,11 @@ export default function useQueryState<T extends string>(
     }
 
     setState(value);
-    setTimeout(
-      () => router.replace(`${pathname}?${queryParams.toString()}`),
-      100,
-    );
+    const timer = setTimeout(() => {
+      router.replace(`${pathname}?${queryParams.toString()}`);
+
+      return () => clearTimeout(timer);
+    }, 100);
   };
 
   return [state, setter] as const;
