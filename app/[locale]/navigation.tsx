@@ -34,19 +34,27 @@ import env from '@/constant/env';
 import { useI18n } from '@/locales/client';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { ShieldIcon } from 'lucide-react';
 import useClientAPI from '@/hooks/use-client';
 import getTotalMapUpload from '@/query/map/get-total-map-upload';
 import getTotalPostUpload from '@/query/post/get-total-post-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
+import Collapse from '@/components/common/collapse';
+import { ShieldCheckIcon } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { useVerifyCount } from '@/zustand/verify-count';
 
 export default function NavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
 
   const showSidebar = () => setSidebarVisibility(true);
 
-  const hideSidebar = () => setSidebarVisibility(false);
+  const hideSidebar = () => setSidebarVisibility(true);
 
   return (
     <div className="flex h-nav w-full items-center justify-between bg-button p-1 text-white shadow-lg">
@@ -158,8 +166,18 @@ type PathGroup = {
   roles?: UserRole[];
 };
 
+type SubPath =
+  | string
+  | {
+      path: string;
+      name: ReactNode;
+      icon: ReactNode;
+      enabled?: boolean;
+      roles?: UserRole[];
+    }[];
+
 type Path = {
-  path: string;
+  path: SubPath;
   name: ReactNode;
   icon: ReactNode;
   enabled?: boolean;
@@ -219,11 +237,6 @@ function NavItems({ onClick }: NavItemsProps) {
           icon: <UserCircleIcon className="h-6 w-6" />,
         },
         {
-          name: t('setting'),
-          path: '/users/me/settings',
-          icon: <Cog6ToothIcon className="h-6 w-6" />,
-        },
-        {
           path: '/upload', //
           name: t('upload'),
           icon: <ArrowUpTrayIcon className="h-6 w-6" />,
@@ -245,19 +258,25 @@ function NavItems({ onClick }: NavItemsProps) {
           icon: <CircleStackIcon className="h-6 w-6" />,
         },
         {
-          name: <SchematicPath />,
-          path: '/admin/schematics',
-          icon: <ClipboardDocumentListIcon className="h-6 w-6" />,
-        },
-        {
-          name: <MapPath />,
-          path: '/admin/maps',
-          icon: <MapIcon className="h-6 w-6" />,
-        },
-        {
-          name: <PostPath />,
-          path: '/admin/posts',
-          icon: <BookOpenIcon className="h-6 w-6" />,
+          name: <VerifyPath />,
+          path: [
+            {
+              name: <SchematicPath />,
+              path: '/admin/schematics',
+              icon: <ClipboardDocumentListIcon className="h-6 w-6" />,
+            },
+            {
+              name: <MapPath />,
+              path: '/admin/maps',
+              icon: <MapIcon className="h-6 w-6" />,
+            },
+            {
+              name: <PostPath />,
+              path: '/admin/posts',
+              icon: <BookOpenIcon className="h-6 w-6" />,
+            },
+          ],
+          icon: <ShieldCheckIcon className="h-6 w-6" />,
         },
         {
           name: t('plugin'),
@@ -288,38 +307,92 @@ function NavItems({ onClick }: NavItemsProps) {
   const pattern = /[a-zA-Z0-9-]+\/([a-zA-Z0-9\/-]+)/;
   const route = '/' + pattern.exec(pathName)?.at(1);
 
+  function getPath(path: SubPath): string[] {
+    if (typeof path === 'string') {
+      return [path];
+    }
+
+    return path.reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
+  }
+
   const allPaths: string[] = pathGroups
     .reduce<Path[]>((prev, curr) => prev.concat(curr.paths), [])
-    .reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
+    .reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
 
   const bestMatch = max(
     allPaths,
     (value) => value.length * (route.startsWith(value) ? 1 : 0),
   );
 
-  const render = (paths: Path[]) => {
+  function render(paths: Path[]): ReactNode {
     return paths.map(({ path, icon, name }) => {
-      const enabled = path === bestMatch;
+      if (typeof path === 'string')
+        return (
+          <Link
+            key={path}
+            className={cn(
+              'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+              {
+                'bg-button text-background opacity-100 dark:text-foreground':
+                  path === bestMatch,
+              },
+            )}
+            href={path}
+            onClick={onClick}
+          >
+            <span>{icon}</span>
+            <span>{name}</span>
+          </Link>
+        );
 
       return (
-        <Link
-          key={path}
-          className={cn(
-            'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
-            {
-              'bg-button text-background opacity-100 dark:text-foreground':
-                enabled,
-            },
-          )}
-          href={path}
-          onClick={onClick}
+        <Accordion
+          key={name?.toString()}
+          type="single"
+          collapsible
+          className="w-full"
         >
-          <span>{icon}</span>
-          <span>{name}</span>
-        </Link>
+          <AccordionItem className="w-full" value="item-1">
+            <AccordionTrigger
+              className={cn(
+                'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                {
+                  'bg-button text-background opacity-100 dark:text-foreground':
+                    path.some((path) => path.path === bestMatch),
+                },
+              )}
+            >
+              <div className="flex items-end gap-3">
+                <span>{icon}</span>
+                <span>{name}</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="space-y-1 pl-4">
+              {path
+                .filter((item) => typeof item.path === 'string')
+                .map((item) => (
+                  <Link
+                    key={item.path}
+                    className={cn(
+                      'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                      {
+                        'bg-button text-background opacity-100 dark:text-foreground':
+                          item.path === bestMatch,
+                      },
+                    )}
+                    href={item.path}
+                    onClick={onClick}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.name}</span>
+                  </Link>
+                ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       );
     });
-  };
+  }
 
   const renderGroup = ({ roles, name, paths }: PathGroup) => {
     if (roles) {
@@ -348,15 +421,45 @@ function NavItems({ onClick }: NavItemsProps) {
   );
 }
 
+function VerifyPath() {
+  const { axios } = useClientAPI();
+  const set = useVerifyCount((data) => data.set);
+  const [{ data: schematicCount }, { data: mapCount }, { data: postCount }] =
+    useQueries({
+      queries: [
+        {
+          queryFn: () => getTotalSchematicUpload(axios, {}),
+          queryKey: ['total-schematic-uploads'],
+          placeholderData: 0,
+        },
+        {
+          queryFn: () => getTotalMapUpload(axios, {}),
+          queryKey: ['total-map-uploads'],
+          placeholderData: 0,
+        },
+        {
+          queryFn: () => getTotalMapUpload(axios, {}),
+          queryKey: ['total-map-uploads'],
+          placeholderData: 0,
+        },
+      ],
+    });
+
+  set({ schematicCount, mapCount, postCount });
+
+  const amount = (schematicCount ?? 0) + (mapCount ?? 0) + (postCount ?? 0);
+
+  return (
+    <>
+      <span>Verify</span>
+      {amount > 0 && <span>({amount})</span>}
+    </>
+  );
+}
+
 function SchematicPath() {
   const t = useI18n();
-  const { axios } = useClientAPI();
-  const { data } = useQuery({
-    queryFn: () => getTotalSchematicUpload(axios, {}),
-    queryKey: ['total-schematic-uploads'],
-  });
-
-  const schematicCount = data ?? 0;
+  const schematicCount = useVerifyCount((data) => data.schematicCount);
 
   return (
     <>
@@ -367,13 +470,7 @@ function SchematicPath() {
 }
 function MapPath() {
   const t = useI18n();
-  const { axios } = useClientAPI();
-  const { data } = useQuery({
-    queryFn: () => getTotalMapUpload(axios, {}),
-    queryKey: ['total-map-uploads'],
-  });
-
-  const mapCount = data ?? 0;
+  const mapCount = useVerifyCount((data) => data.mapCount);
 
   return (
     <>
@@ -384,13 +481,7 @@ function MapPath() {
 }
 function PostPath() {
   const t = useI18n();
-  const { axios } = useClientAPI();
-  const { data } = useQuery({
-    queryFn: () => getTotalPostUpload(axios, {}),
-    queryKey: ['total-post-uploads'],
-  });
-
-  const postCount = data ?? 0;
+  const postCount = useVerifyCount((data) => data.postCount);
 
   return (
     <>
