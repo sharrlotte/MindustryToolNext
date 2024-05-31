@@ -238,6 +238,7 @@ function ServerSettingEditor({ server }: Props) {
               variant="secondary"
               title={t('reset')}
               onClick={() => form.reset()}
+              disabled={isLoading}
             >
               {t('reset')}
             </Button>
