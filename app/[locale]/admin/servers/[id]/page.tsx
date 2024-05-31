@@ -72,7 +72,7 @@ function Dashboard({ server }: Props) {
   const { axios } = useClientAPI();
   const { invalidateByKey } = useQueriesData();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: startServer, isPending: isStartingServer } = useMutation({
     mutationKey: ['internal-server, internal-servers'],
     mutationFn: () => postStartInternalServers(axios, id),
     onSuccess: () => {
@@ -90,6 +90,25 @@ function Dashboard({ server }: Props) {
         variant: 'destructive',
       }),
   });
+  const { mutate: shutdownServer, isPending: isShuttingDownServer } =
+    useMutation({
+      mutationKey: ['internal-server, internal-servers'],
+      mutationFn: () => postStartInternalServers(axios, id),
+      onSuccess: () => {
+        invalidateByKey(['internal-servers']);
+        invalidateByKey(['internal-server']);
+        toast({
+          title: t('upload.success'),
+          variant: 'success',
+        });
+      },
+      onError: (error) =>
+        toast({
+          title: t('upload.fail'),
+          description: error.message,
+          variant: 'destructive',
+        }),
+    });
 
   const { mutate: reloadServer, isPending: isReloadingServer } = useMutation({
     mutationKey: ['internal-server, internal-servers'],
@@ -110,7 +129,8 @@ function Dashboard({ server }: Props) {
       }),
   });
 
-  const isLoading = isPending || isReloadingServer;
+  const isLoading =
+    isStartingServer || isReloadingServer || isShuttingDownServer;
   const ramUsagePercent = totalRam
     ? Math.floor((ramUsage / totalRam) * 100)
     : 0;
@@ -167,6 +187,7 @@ function Dashboard({ server }: Props) {
             title="Shutdown"
             variant="secondary"
             disabled={isLoading}
+            onClick={() => shutdownServer()}
           >
             <LoadingWrapper className="w-20" isLoading={isLoading}>
               Shutdown
@@ -178,7 +199,7 @@ function Dashboard({ server }: Props) {
             title="Start"
             variant="primary"
             disabled={isLoading}
-            onClick={() => mutate()}
+            onClick={() => startServer()}
           >
             <LoadingWrapper className="w-20" isLoading={isLoading}>
               Start
