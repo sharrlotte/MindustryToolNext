@@ -3,6 +3,14 @@
 import ColorText from '@/components/common/color-text';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import LoadingWrapper from '@/components/common/loading-wrapper';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -170,29 +178,70 @@ function Dashboard({ server }: Props) {
         </div>
       </div>
       <div className="flex flex-row justify-end gap-2 bg-card p-2">
-        <Button
-          className="w-20"
-          title="Shutdown"
-          variant="secondary"
-          disabled={isLoading}
-          onClick={() => reloadServer()}
-        >
-          <LoadingWrapper className="w-20" isLoading={isLoading}>
-            Reload
-          </LoadingWrapper>
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              className="min-w-20"
+              title="Delete"
+              variant="destructive"
+              disabled={isLoading}
+            >
+              {t('reload')}
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            Are you sure you want to reload server
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <Button
+                  className="w-20"
+                  title="reload"
+                  variant="secondary"
+                  disabled={isLoading}
+                  onClick={() => reloadServer()}
+                >
+                  <LoadingWrapper className="w-20" isLoading={isLoading}>
+                    {t('reload')}
+                  </LoadingWrapper>
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         {started ? (
-          <Button
-            className="w-20"
-            title="Shutdown"
-            variant="secondary"
-            disabled={isLoading}
-            onClick={() => shutdownServer()}
-          >
-            <LoadingWrapper className="w-20" isLoading={isLoading}>
-              Shutdown
-            </LoadingWrapper>
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                className="min-w-20"
+                title="Delete"
+                variant="destructive"
+                disabled={isLoading}
+              >
+                {t('reload')}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              Are you sure you want to shutdown server
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+                <AlertDialogAction asChild>
+                  <Button
+                    className="w-20"
+                    title="Shutdown"
+                    variant="secondary"
+                    disabled={isLoading}
+                    onClick={() => shutdownServer()}
+                  >
+                    <LoadingWrapper className="w-20" isLoading={isLoading}>
+                      Shutdown
+                    </LoadingWrapper>
+                  </Button>
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         ) : (
           <Button
             className="w-20"
