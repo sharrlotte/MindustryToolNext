@@ -1,8 +1,5 @@
 'use client';
 
-import LoadingSpinner from '@/components/common/loading-spinner';
-import NoResult from '@/components/common/no-result';
-import { Button } from '@/components/ui/button';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -23,6 +20,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  ArrowLeftIcon,
+  FolderIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
+import LoadingSpinner from '@/components/common/loading-spinner';
+import NoResult from '@/components/common/no-result';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -31,11 +36,6 @@ import useSearchId from '@/hooks/use-search-id-params';
 import deleteInternalServerFile from '@/query/server/delete-internal-server-file';
 import getInternalServerFiles from '@/query/server/get-internal-server-files';
 import postInternalServerFile from '@/query/server/post-internal-server-file';
-import {
-  ArrowLeftIcon,
-  FolderIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FileIcon } from '@radix-ui/react-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -62,6 +62,7 @@ export default function Page() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['internal-server-files', path],
     queryFn: async () => getInternalServerFiles(axios, id, path),
+    placeholderData: [],
     enabled,
   });
 
@@ -91,10 +92,6 @@ export default function Page() {
   });
 
   const isPending = isDeletingFile || isAddingFile;
-
-  if (isLoading || !enabled) {
-    return <LoadingSpinner />;
-  }
 
   if (error) {
     return <div>{error?.message}</div>;
@@ -177,31 +174,38 @@ export default function Page() {
             <ArrowLeftIcon className="w-6"></ArrowLeftIcon>
           </Button>
         )}
-        {data?.map(({ name, directory }) =>
-          directory ? (
-            <Button
-              className="items-center justify-start gap-1 px-1"
-              key={name}
-              title={name}
-              onClick={() => setPath(`${path}/${name}`)}
-            >
-              <FolderIcon className="h-6 w-6" />
-              <span>{name}</span>
-            </Button>
-          ) : (
-            <ContextMenu key={name}>
-              <ContextMenuTrigger className="flex items-center justify-start gap-1 rounded-md border px-1 py-2 h-9">
-                <FileIcon className="h-6 w-6" />
-                {name}
-              </ContextMenuTrigger>
-              <ContextMenuContent>
-                <ContextMenuItem onClick={() => deleteFile(`${path}/${name}`)}>
-                  <TrashIcon className="h-6 w-6" />
-                  Delete
-                </ContextMenuItem>
-              </ContextMenuContent>
-            </ContextMenu>
-          ),
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          data?.map(({ name, directory }) =>
+            directory ? (
+              <Button
+                className="items-center justify-start gap-1 px-1"
+                key={name}
+                title={name}
+                onClick={() => setPath(`${path}/${name}`)}
+              >
+                <FolderIcon className="h-6 w-6" />
+                <span>{name}</span>
+              </Button>
+            ) : (
+              <ContextMenu key={name}>
+                <ContextMenuTrigger className="flex h-9 items-center justify-start gap-1 rounded-md border px-1 py-2 ">
+                  <FileIcon className="h-6 w-6" />
+                  {name}
+                </ContextMenuTrigger>
+                <ContextMenuContent>
+                  <ContextMenuItem
+                    className="cursor-pointer hover:bg-destructive focus:bg-destructive"
+                    onClick={() => deleteFile(`${path}/${name}`)}
+                  >
+                    <TrashIcon className="h-6 w-6" />
+                    Delete
+                  </ContextMenuItem>
+                </ContextMenuContent>
+              </ContextMenu>
+            ),
+          )
         )}
       </div>
     </div>
