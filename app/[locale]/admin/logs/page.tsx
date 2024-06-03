@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
@@ -107,7 +108,7 @@ function LiveLog() {
     }
   }, [socket, state, isAuthenticated]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (socket && state === 'connected') {
       setMessage('');
       socket.onRoom('LOG').send({ data: message, method: 'MESSAGE' });
