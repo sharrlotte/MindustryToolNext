@@ -193,11 +193,9 @@ function Dashboard({ server }: Props) {
             Are you sure you want to reload server
             <AlertDialogFooter>
               <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-              <AlertDialogAction asChild>
+              <AlertDialogAction variant="destructive" asChild>
                 <Button
-                  className="w-20"
                   title="reload"
-                  variant="secondary"
                   disabled={isLoading}
                   onClick={() => reloadServer()}
                 >
@@ -219,18 +217,16 @@ function Dashboard({ server }: Props) {
                 variant="destructive"
                 disabled={isLoading}
               >
-                {t('reload')}
+                Shutdown
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               Are you sure you want to shutdown server
               <AlertDialogFooter>
                 <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-                <AlertDialogAction asChild>
+                <AlertDialogAction variant="destructive" asChild>
                   <Button
-                    className="w-20"
                     title="Shutdown"
-                    variant="secondary"
                     disabled={isLoading}
                     onClick={() => shutdownServer()}
                   >
