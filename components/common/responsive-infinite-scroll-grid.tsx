@@ -191,7 +191,6 @@ export default function ResponsiveInfiniteScrollGrid<
     ) + 2,
   );
 
-  console.log({ itemHeight, itemWith, cols });
   const endIndex = endRow * (cols + 1);
 
   return (
