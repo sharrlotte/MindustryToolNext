@@ -99,7 +99,7 @@ export default function MarkdownEditor({
     const start = input.selectionStart;
     const end = input.selectionEnd;
 
-    if (end && start !== end) {
+    if (start !== end) {
       setContent(({ text, images }) => ({
         text:
           text.substring(0, start) +
@@ -116,7 +116,9 @@ export default function MarkdownEditor({
         input.setSelectionRange(start + before.length, end + after.length),
       );
     } else {
-      const position = end ? end : input.value.length;
+      const position = start;
+
+      console.log(start, end);
 
       setContent(({ text, images }) => ({
         text:
@@ -589,7 +591,7 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
                   <XMarkIcon className="h-4 w-4" />
                 </Button>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={imageUrl} alt='preview' />
+                <img src={imageUrl} alt="preview" />
               </div>
             )}
             <div className="flex justify-end">

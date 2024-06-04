@@ -89,7 +89,18 @@ export default function ResponsiveInfiniteScrollGrid<
       }
     }
 
-    const throttled = throttle(() => handleScroll(), 50);
+    const throttled = throttle(() => {
+      handleScroll();
+      if (currentContainer) {
+        const offsetFromBottom =
+          currentContainer.scrollHeight -
+          (scrollTop + currentContainer.clientHeight);
+
+        if (offsetFromBottom < threshold && hasNextPage && !isFetching) {
+          fetchNextPage();
+        }
+      }
+    }, 200);
 
     currentContainer?.addEventListener('scroll', throttled);
     currentContainer?.addEventListener('scrollend', handleScroll);
@@ -97,25 +108,13 @@ export default function ResponsiveInfiniteScrollGrid<
       currentContainer?.removeEventListener('scrollend', handleScroll);
       currentContainer?.removeEventListener('scroll', throttled);
     };
-  }, [currentContainer]);
-
-  useEffect(() => {
-    if (currentContainer) {
-      const offsetFromBottom =
-        currentContainer.scrollHeight -
-        (scrollTop + currentContainer.clientHeight);
-
-      if (offsetFromBottom < threshold && hasNextPage && !isFetching) {
-        fetchNextPage();
-      }
-    }
   }, [
     currentContainer,
     fetchNextPage,
     hasNextPage,
     isFetching,
-    threshold,
     scrollTop,
+    threshold,
   ]);
 
   noResult = noResult ?? (

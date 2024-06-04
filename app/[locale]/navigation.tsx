@@ -36,10 +36,8 @@ import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import useClientAPI from '@/hooks/use-client';
 import getTotalMapUpload from '@/query/map/get-total-map-upload';
-import getTotalPostUpload from '@/query/post/get-total-post-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
-import { useQueries, useQuery } from '@tanstack/react-query';
-import Collapse from '@/components/common/collapse';
+import { useQueries } from '@tanstack/react-query';
 import { ShieldCheckIcon } from 'lucide-react';
 import {
   Accordion,
@@ -237,9 +235,31 @@ function NavItems({ onClick }: NavItemsProps) {
           icon: <UserCircleIcon className="h-6 w-6" />,
         },
         {
-          path: '/upload', //
           name: t('upload'),
           icon: <ArrowUpTrayIcon className="h-6 w-6" />,
+          path: [
+            {
+              name: t('schematic'),
+              path: '/upload/schematic',
+              icon: <ClipboardDocumentListIcon className="h-6 w-6" />,
+            },
+            {
+              path: '/upload/map',
+              name: t('map'),
+              icon: <MapIcon className="h-6 w-6" />,
+            },
+            {
+              path: '/upload/post', //
+              name: t('post'),
+              icon: <BookOpenIcon className="h-6 w-6" />,
+            },
+            {
+              path: '/upload/plugin', //
+              name: t('plugin'),
+              icon: <PuzzlePieceIcon className="h-6 w-6" />,
+              roles: ['ADMIN'],
+            },
+          ],
         },
       ],
     },
@@ -307,6 +327,8 @@ function NavItems({ onClick }: NavItemsProps) {
   const pattern = /[a-zA-Z0-9-]+\/([a-zA-Z0-9\/-]+)/;
   const route = '/' + pattern.exec(pathName)?.at(1);
 
+  const [value, setValue] = useState('');
+
   function getPath(path: SubPath): string[] {
     if (typeof path === 'string') {
       return [path];
@@ -325,71 +347,93 @@ function NavItems({ onClick }: NavItemsProps) {
   );
 
   function render(paths: Path[]): ReactNode {
-    return paths.map(({ path, icon, name }) => {
+    return paths.map(({ path, icon, name, roles }) => {
       if (typeof path === 'string')
         return (
-          <Link
+          <ProtectedElement
             key={path}
-            className={cn(
-              'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
-              {
-                'bg-button text-background opacity-100 dark:text-foreground':
-                  path === bestMatch,
-              },
-            )}
-            href={path}
-            onClick={onClick}
+            session={session}
+            all={roles}
+            passOnEmpty
           >
-            <span>{icon}</span>
-            <span>{name}</span>
-          </Link>
-        );
-
-      return (
-        <Accordion
-          key={name?.toString()}
-          type="single"
-          collapsible
-          className="w-full"
-        >
-          <AccordionItem className="w-full" value="item-1">
-            <AccordionTrigger
+            <Link
               className={cn(
                 'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
                 {
                   'bg-button text-background opacity-100 dark:text-foreground':
-                    path.some((path) => path.path === bestMatch),
+                    path === bestMatch,
                 },
               )}
+              href={path}
+              onClick={onClick}
             >
-              <div className="flex items-end gap-3">
-                <span>{icon}</span>
-                <span>{name}</span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent className="space-y-1 pl-4">
-              {path
-                .filter((item) => typeof item.path === 'string')
-                .map((item) => (
-                  <Link
-                    key={item.path}
-                    className={cn(
-                      'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
-                      {
-                        'bg-button text-background opacity-100 dark:text-foreground':
-                          item.path === bestMatch,
-                      },
-                    )}
-                    href={item.path}
-                    onClick={onClick}
-                  >
-                    <span>{item.icon}</span>
-                    <span>{item.name}</span>
-                  </Link>
-                ))}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+              <span>{icon}</span>
+              <span>{name}</span>
+            </Link>
+          </ProtectedElement>
+        );
+
+      return (
+        <ProtectedElement
+          key={path.toString()}
+          session={session}
+          all={roles}
+          passOnEmpty
+        >
+          <Accordion
+            key={name?.toString()}
+            type="single"
+            collapsible
+            className="w-full"
+            value={value}
+            onValueChange={setValue}
+          >
+            <AccordionItem className="w-full" value="item-1">
+              <AccordionTrigger
+                className={cn(
+                  'flex gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300',
+                  {
+                    'bg-button text-background opacity-100 hover:bg-button hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
+                      path.some((path) => path.path === bestMatch) && !value,
+                  },
+                )}
+              >
+                <div className="flex items-end gap-3">
+                  <span>{icon}</span>
+                  <span>{name}</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="space-y-1 pl-4">
+                {path
+                  .filter((item) => typeof item.path === 'string')
+                  .map((item) => (
+                    <ProtectedElement
+                      key={item.path}
+                      session={session}
+                      all={item.roles}
+                      passOnEmpty
+                    >
+                      <Link
+                        key={item.path}
+                        className={cn(
+                          'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                          {
+                            'bg-button text-background opacity-100 dark:text-foreground':
+                              item.path === bestMatch,
+                          },
+                        )}
+                        href={item.path}
+                        onClick={onClick}
+                      >
+                        <span>{item.icon}</span>
+                        <span>{item.name}</span>
+                      </Link>
+                    </ProtectedElement>
+                  ))}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </ProtectedElement>
       );
     });
   }
