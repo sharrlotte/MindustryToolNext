@@ -161,7 +161,15 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const numberOfItems = pages.length + (isFetching ? skeleton?.amount ?? 0 : 0);
 
-  const cols = Math.floor(currentContainer.clientWidth / (itemMinWidth + gap));
+  const estimatedCols = Math.floor(currentContainer.clientWidth / itemMinWidth);
+
+  const cols =
+    estimatedCols +
+    (currentContainer.clientWidth -
+      ((estimatedCols - 1) * gap) / estimatedCols <
+    itemMinWidth
+      ? -1
+      : 0);
 
   const itemWith = (currentContainer.clientWidth - (cols - 1) * gap) / cols;
 

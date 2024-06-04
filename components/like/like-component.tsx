@@ -55,14 +55,14 @@ function LikeComponent({
       });
     }
 
-    let change;
+    let change: -2 | -1 | 0 | 1 | 2;
     let state: 0 | 1 | -1;
 
     if (action === 'LIKE') {
       change = likeData.state === -1 ? 2 : likeData.state === 0 ? 1 : -1;
       state = likeData.state === -1 ? 1 : likeData.state === 0 ? 1 : 0;
     } else {
-      change = likeData.state === 1 ? 2 : likeData.state === 0 ? 1 : -1;
+      change = likeData.state === 1 ? -2 : likeData.state === 0 ? -1 : 1;
       state = likeData.state === 1 ? -1 : likeData.state === 0 ? -1 : 0;
     }
 

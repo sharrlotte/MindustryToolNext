@@ -118,8 +118,6 @@ export default function MarkdownEditor({
     } else {
       const position = start;
 
-      console.log(start, end);
-
       setContent(({ text, images }) => ({
         text:
           text.substring(0, position) +

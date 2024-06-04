@@ -1,15 +1,13 @@
-'use client';
-
 import ProtectedRoute from '@/layout/protected-route';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import React, { ReactNode } from 'react';
 
 type LayoutProps = {
   children: ReactNode;
 };
 
-export default function Layout({ children }: LayoutProps) {
-  const { data } = useSession();
+export default async function Layout({ children }: LayoutProps) {
+  const data = await getSession();
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-4">
