@@ -34,16 +34,15 @@ export default function NameTagSearch({
   tags = [],
   useSort = true,
 }: NameTagSearchProps) {
+  const t = useI18n();
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchPageParams();
-  const t = useI18n();
 
   const [page, setPage] = useState(0);
   const [name, setName] = useState('');
   const [selectedFilterTags, setSelectedFilterTags] = useState<TagGroup[]>([]);
-  const [selectedSortTag, setSelectedSortTag] =
-    useState<SortTag>(defaultSortTag);
   const [filter, setFilter] = useState('');
   const [isChanged, setChanged] = useState(false);
   const [showFilterDialog, setShowFilterDialog] = useState(false);
@@ -55,12 +54,7 @@ export default function NameTagSearch({
 
   useEffect(() => {
     if (tags.length > 0) {
-      const {
-        sort: sortString,
-        name: nameString,
-        tags: tagsString,
-        page,
-      } = searchParams;
+      const { name: nameString, tags: tagsString, page } = searchParams;
 
       const tagsArray = _.chain(tagsString)
         .map((value) => value.split(TAG_SEPARATOR))
@@ -85,7 +79,6 @@ export default function NameTagSearch({
         .value();
 
       setPage(page);
-      setSelectedSortTag(sortString ?? defaultSortTag);
       setSelectedFilterTags(tagsArray);
       setName(nameString ?? '');
     }
@@ -109,10 +102,6 @@ export default function NameTagSearch({
 
       params.set(QueryParams.page, page.toString());
 
-      if (useSort) {
-        params.set(QueryParams.sort, selectedSortTag);
-      }
-
       if (name) {
         params.set(QueryParams.name, name);
       }
@@ -124,7 +113,7 @@ export default function NameTagSearch({
       timeout = setTimeout(() => handleSearch(), 0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);
+  }, [name, showFilterDialog, selectedFilterTags]);
 
   const handleTagGroupChange = (name: string, value: string[]) => {
     const group = selectedFilterTags.find((tag) => tag.name === name);
@@ -141,13 +130,6 @@ export default function NameTagSearch({
         setChanged(true);
         setSelectedFilterTags([...selectedFilterTags]);
       }
-    }
-  };
-
-  const handleSortChange = (value: any) => {
-    if (value && sortTag.includes(value)) {
-      setSelectedSortTag(value);
-      setChanged(true);
     }
   };
 
@@ -206,14 +188,6 @@ export default function NameTagSearch({
                 />
               </Search>
               <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
-                {useSort && (
-                  <SortTags
-                    filter={filter}
-                    selectedSortTag={selectedSortTag}
-                    tag={sortTagGroup}
-                    handleSortChange={handleSortChange}
-                  />
-                )}
                 <FilterTags
                   filter={filter}
                   selectedFilterTags={selectedFilterTags}

@@ -39,7 +39,7 @@ export default function Page() {
         <AddMapDialog serverId={id} />
       </div>
       <div
-        className="flex h-full w-full flex-col gap-2 overflow-y-auto bg-card p-2"
+        className="flex h-full w-full flex-col gap-2 overflow-y-auto bg-card"
         ref={container}
       >
         <ResponsiveInfiniteScrollGrid

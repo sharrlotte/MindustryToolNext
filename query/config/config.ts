@@ -23,9 +23,15 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => {
+    if (error.errno === -4078) {
+      throw new Error('Service is unavailable, please try again later');
+    }
+
     if (error.response?.data?.status === 404) {
       return notFound();
     }
+
+    console.log({ Custom: error });
 
     if (error?.response?.data) {
       throw new RestApiError(

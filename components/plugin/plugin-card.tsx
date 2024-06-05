@@ -58,7 +58,7 @@ export default function PluginCard({
       <span>{description}</span>
       <div className="flex gap-2">
         <DeleteButton
-          className="absolute right-2 top-2 backdrop-brightness-50"
+          className="absolute right-1 top-1 border-none"
           description={`${t('delete')} ${name}`}
           isLoading={isDeleting}
           onClick={() => deletePluginById(id)}

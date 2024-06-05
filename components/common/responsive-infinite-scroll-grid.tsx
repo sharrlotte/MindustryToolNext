@@ -158,12 +158,15 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const estimatedCols = Math.floor(currentContainer.clientWidth / itemMinWidth);
 
+  // Plus 20 for the scroll bar padding
   const cols =
-    estimatedCols +
-    (currentContainer.clientWidth -
-      ((estimatedCols - 1) * gap) / estimatedCols <
+    estimatedCols -
+    ((currentContainer.clientWidth -
+      24 -
+      Math.min(estimatedCols - 1, 0) * gap) /
+      estimatedCols <
     itemMinWidth
-      ? -1
+      ? 1
       : 0);
 
   const itemWith = (currentContainer.clientWidth - (cols - 1) * gap) / cols;
@@ -192,6 +195,16 @@ export default function ResponsiveInfiniteScrollGrid<
       (fixedScrollTop + currentContainer.clientHeight) / (itemHeight + gap),
     ) + 2,
   );
+
+  console.log({
+    cols,
+    rows,
+    estimatedCols,
+    itemMinWidth,
+    l:
+      currentContainer.clientWidth -
+      ((estimatedCols - 1) * gap) / estimatedCols,
+  });
 
   const endIndex = endRow * (cols + 1);
 
