@@ -6,6 +6,7 @@ export type InternalServerDetail = {
   description: string;
   port: number;
   mode: InternalServerMode;
+  discordChannelId: string
   started: boolean;
   alive: boolean;
   ramUsage: number;

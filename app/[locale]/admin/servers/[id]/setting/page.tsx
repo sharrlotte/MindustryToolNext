@@ -204,6 +204,19 @@ function ServerSettingEditor({ server }: Props) {
             />
             <FormField
               control={form.control}
+              name="discordChannelId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Discord channel id</FormLabel>
+                  <FormControl>
+                    <Input type="text" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="mode"
               render={({ field }) => (
                 <FormItem className="grid">
