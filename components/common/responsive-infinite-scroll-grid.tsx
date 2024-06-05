@@ -29,14 +29,11 @@ type ResponsiveInfiniteScrollGridProps<T, P> = {
   children: (data: T, index?: number) => ReactNode;
 };
 
-const defaultClassName =
-  'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center';
-
 export default function ResponsiveInfiniteScrollGrid<
-  T extends { id: string },
+  T,
   P extends PaginationQuery,
 >({
-  className,
+  className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center',
   queryKey,
   params,
   container,
@@ -71,16 +68,14 @@ export default function ResponsiveInfiniteScrollGrid<
   const [scrollTop, setScrollTop] = useState(0);
 
   var currentContainer = container();
-  const skeletonElements = useMemo(
-    () =>
-      skeleton &&
-      Array(skeleton.amount)
+  const skeletonElements = useMemo(() => {
+    if (skeleton)
+      return Array(skeleton.amount)
         .fill(1)
         .map((_, index) => (
           <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-        )),
-    [skeleton],
-  );
+        ));
+  }, [skeleton]);
 
   useEffect(() => {
     function handleScroll() {
@@ -89,7 +84,18 @@ export default function ResponsiveInfiniteScrollGrid<
       }
     }
 
-    const throttled = throttle(() => handleScroll(), 50);
+    const throttled = throttle(() => {
+      handleScroll();
+      if (currentContainer) {
+        const offsetFromBottom =
+          currentContainer.scrollHeight -
+          (scrollTop + currentContainer.clientHeight);
+
+        if (offsetFromBottom < threshold && hasNextPage && !isFetching) {
+          fetchNextPage();
+        }
+      }
+    }, 200);
 
     currentContainer?.addEventListener('scroll', throttled);
     currentContainer?.addEventListener('scrollend', handleScroll);
@@ -97,25 +103,13 @@ export default function ResponsiveInfiniteScrollGrid<
       currentContainer?.removeEventListener('scrollend', handleScroll);
       currentContainer?.removeEventListener('scroll', throttled);
     };
-  }, [currentContainer]);
-
-  useEffect(() => {
-    if (currentContainer) {
-      const offsetFromBottom =
-        currentContainer.scrollHeight -
-        (scrollTop + currentContainer.clientHeight);
-
-      if (offsetFromBottom < threshold && hasNextPage && !isFetching) {
-        fetchNextPage();
-      }
-    }
   }, [
     currentContainer,
     fetchNextPage,
     hasNextPage,
     isFetching,
-    threshold,
     scrollTop,
+    threshold,
   ]);
 
   noResult = noResult ?? (
@@ -150,7 +144,7 @@ export default function ResponsiveInfiniteScrollGrid<
 
   if (isLoading || !data || !currentContainer) {
     return (
-      <div className={className ?? defaultClassName} style={{ gap }}>
+      <div className={className} style={{ gap }}>
         {loader ? loader : skeletonElements}
       </div>
     );
@@ -162,7 +156,15 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const numberOfItems = pages.length + (isFetching ? skeleton?.amount ?? 0 : 0);
 
-  const cols = Math.floor(currentContainer.clientWidth / (itemMinWidth + gap));
+  const estimatedCols = Math.floor(currentContainer.clientWidth / itemMinWidth);
+
+  const cols =
+    estimatedCols +
+    (currentContainer.clientWidth -
+      ((estimatedCols - 1) * gap) / estimatedCols <
+    itemMinWidth
+      ? -1
+      : 0);
 
   const itemWith = (currentContainer.clientWidth - (cols - 1) * gap) / cols;
 
@@ -203,7 +205,7 @@ export default function ResponsiveInfiniteScrollGrid<
       }}
     >
       <div
-        className={cn(className ?? defaultClassName)}
+        className={cn(className)}
         style={{ transform: `translateY(${startHeight}px)`, gap }}
       >
         <Items pages={pages} startIndex={startIndex} endIndex={endIndex} />

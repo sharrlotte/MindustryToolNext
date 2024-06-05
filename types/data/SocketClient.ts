@@ -13,55 +13,76 @@ export type SocketState =
 export type SocketRoom = 'SERVER' | 'LOG' | string;
 
 export type EventHandler = (data: any, event: MessageEvent) => void;
+type BaseSocketEvent = {
+  id: string;
+};
 
-type SocketEvent =
-  | {
-      method: 'GET_MESSAGE';
-      room: string;
-      data: string[];
-    }
-  | {
-      method: 'MESSAGE';
-      room: string;
-      data: string;
-    }
-  | {
-      method: 'SERVER_MESSAGE';
-      room: string;
-      data: string;
-    }
-  | {
-      method: 'ROOM_MESSAGE';
-      room: string;
-      data: string;
-    };
+type SocketEvent = BaseSocketEvent &
+  (
+    | {
+        method: 'GET_MESSAGE';
+        room: string;
+        data: string[];
+      }
+    | {
+        method: 'MESSAGE';
+        room: string;
+        data: string;
+      }
+    | {
+        method: 'SERVER_MESSAGE';
+        room: string;
+        data: string;
+      }
+    | {
+        method: 'ROOM_MESSAGE';
+        room: string;
+        data: string;
+      }
+  );
 
-type MessagePayload =
-  | {
-      method: 'MESSAGE';
-      data: string;
-    }
-  | {
-      method: 'SERVER_MESSAGE';
-      data: string;
-    }
-  | {
-      method: 'GET_MESSAGE';
-      page: number;
-      items: number;
-    }
-  | {
-      method: 'AUTHORIZATION';
-      data: string;
-    }
-  | {
-      method: 'JOIN_ROOM';
-      data: string;
-    }
-  | {
-      method: 'LEAVE_ROOM';
-      data: string;
-    };
+type BaseMessagePayload = {};
+
+type MessagePayload = BaseMessagePayload &
+  (
+    | {
+        method: 'MESSAGE';
+        data: string;
+      }
+    | {
+        method: 'SERVER_MESSAGE';
+        data: string;
+      }
+    | {
+        method: 'GET_MESSAGE';
+        page: number;
+        items: number;
+      }
+    | {
+        method: 'AUTHORIZATION';
+        data: string;
+      }
+    | {
+        method: 'JOIN_ROOM';
+        data: string;
+      }
+    | {
+        method: 'LEAVE_ROOM';
+        data: string;
+      }
+  );
+
+type PromiseReceiver = {
+  resolve: (value: unknown) => void;
+  reject: (reason: any) => void;
+};
+
+let count = 0;
+
+function genId() {
+  count = (count + 1) % Number.MAX_SAFE_INTEGER;
+  return count.toString();
+}
 
 export default class SocketClient {
   private socket: ReconnectingWebSocket;
@@ -75,6 +96,8 @@ export default class SocketClient {
   private disconnects: ((event: CloseEvent) => void)[] = [];
 
   private room: string = '';
+
+  private requests: Record<string, PromiseReceiver> = {};
 
   public onMessage<T extends SocketEvent['method']>(
     method: T,
@@ -97,6 +120,11 @@ export default class SocketClient {
       try {
         const data = event.data;
         const message = JSON.parse(data);
+
+        if (message.id) {
+          const { resolve } = this.requests[message.id];
+          resolve(message.data);
+        }
 
         const handler = this.handlers[message.method + message.room];
 
@@ -124,6 +152,27 @@ export default class SocketClient {
   public send(payload: MessagePayload) {
     this.socket.send(JSON.stringify({ ...payload, room: this.room }));
     this.room = '';
+  }
+  public async await<T extends MessagePayload>(
+    payload: T,
+  ): Promise<Extract<SocketEvent, { method: T['method'] }>['data']> {
+    const id = genId();
+    this.socket.send(
+      JSON.stringify({ id, ...payload, room: this.room, acknowledge: true }),
+    );
+    this.room = '';
+
+    const promise = new Promise<any>((resolve, reject) => {
+      this.requests[id] = { resolve, reject };
+
+      const timeout = setTimeout(() => {
+        reject('Request timeout');
+
+        return () => clearTimeout(timeout);
+      }, 10000);
+    });
+
+    return await promise;
   }
 
   public onConnect(handler: (event: Event) => void) {

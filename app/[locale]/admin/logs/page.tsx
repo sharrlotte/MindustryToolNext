@@ -4,8 +4,7 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/locales/client';
-import useSocket from '@/hooks/use-socket';
-import { useQuery } from '@tanstack/react-query';
+import { InfiniteData, useQuery, useQueryClient } from '@tanstack/react-query';
 import useClientAPI from '@/hooks/use-client';
 import getLogCollections from '@/query/log/get-log-collections';
 import ComboBox from '@/components/common/combo-box';
@@ -17,7 +16,7 @@ import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
 import useQueryState from '@/hooks/use-query-state';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import { cn, isReachedEnd, mapReversed } from '@/lib/utils';
+import { cn, isReachedEnd } from '@/lib/utils';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { FilterIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -28,6 +27,8 @@ import {
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useSocket } from '@/context/socket-context';
+import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
@@ -61,30 +62,14 @@ export default function LogPage() {
 }
 
 function LiveLog() {
-  const { socket, state, isAuthenticated } = useSocket();
+  const { socket, state } = useSocket();
+  const container = useRef<HTMLDivElement>(null);
 
-  const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
-  const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLSpanElement>(null);
+  const queryClient = useQueryClient();
 
   const t = useI18n();
-
-  const addLog = (message: string[]) => {
-    setLog((prev) => [...message, ...prev]);
-
-    setTimeout(() => {
-      if (!bottomRef.current || !containerRef.current) {
-        return;
-      }
-
-      if (!isReachedEnd(containerRef.current)) {
-        return;
-      }
-
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -95,22 +80,53 @@ function LiveLog() {
   }, []);
 
   useEffect(() => {
-    if (socket && state === 'connected' && isAuthenticated) {
-      socket.send({ method: 'JOIN_ROOM', data: 'LOG' });
-      socket.onRoom('LOG').send({ method: 'GET_MESSAGE', page: 0, items: 20 });
+    socket.onRoom('LOG').send({ method: 'JOIN_ROOM', data: 'LOG' });
+    socket.onRoom('LOG').onMessage('MESSAGE', (message) => {
+      queryClient.setQueryData<
+        InfiniteData<Array<string>, unknown> | undefined
+      >(['live-log'], (query) => {
+        if (!query) {
+          return undefined;
+        }
 
-      socket
-        .onRoom('LOG')
-        .onMessage('GET_MESSAGE', (message) => addLog(message));
+        const { pages, ...data } = query;
 
-      socket.onRoom('LOG').onMessage('MESSAGE', (message) => addLog([message]));
-    }
-  }, [socket, state, isAuthenticated]);
+        let [firstPage, ...rest] = pages;
+        firstPage = [message, ...firstPage];
 
-  const sendMessage = () => {
+        console.log({
+          ...data,
+          pages: [firstPage, ...rest],
+        });
+
+        return {
+          ...data,
+          pages: [firstPage, ...rest],
+        };
+      });
+
+      setTimeout(() => {
+        if (!bottomRef.current || !container.current) {
+          return;
+        }
+
+        if (!isReachedEnd(container.current)) {
+          return;
+        }
+
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    });
+  }, [queryClient, socket]);
+
+  const sendMessage = async () => {
     if (socket && state === 'connected') {
-      setMessage('');
       socket.onRoom('LOG').send({ data: message, method: 'MESSAGE' });
+      setMessage('');
+    }
+
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -122,23 +138,42 @@ function LiveLog() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
-        <div
-          className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden"
-          ref={containerRef}
-        >
+        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden">
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
           ) : (
-            mapReversed(log, (item, index) => (
-              <div
-                className="text-wrap rounded-lg bg-background p-2"
-                key={index}
+            <div className="h-full overflow-y-auto" ref={container}>
+              <InfiniteScrollList
+                className="grid w-full grid-cols-1 justify-center gap-1 overflow-hidden"
+                queryKey={['live-log']}
+                reversed
+                container={() => container.current}
+                params={{ page: 0, items: 40 }}
+                end={<></>}
+                getFunc={(
+                  _,
+                  params: {
+                    page: number;
+                    items: number;
+                  },
+                ) =>
+                  socket
+                    .onRoom('LOG')
+                    .await({ method: 'GET_MESSAGE', ...params })
+                }
               >
-                {item}
-              </div>
-            ))
+                {(data, index) => (
+                  <span
+                    className="w-full text-wrap rounded-lg bg-background p-2"
+                    key={index}
+                  >
+                    {data}
+                  </span>
+                )}
+              </InfiniteScrollList>
+              <span ref={bottomRef}></span>
+            </div>
           )}
-          <span ref={bottomRef}></span>
         </div>
       </div>
       <form

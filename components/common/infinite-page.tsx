@@ -21,14 +21,12 @@ type InfinitePageProps<T, P> = {
     amount: number;
     item: ReactNode;
   };
+  reversed?: boolean;
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
   children: (data: T, index?: number) => ReactNode;
 };
 
-export default function InfinitePage<
-  T extends { id: string },
-  P extends PaginationQuery,
->({
+export default function InfinitePage<T, P extends PaginationQuery>({
   className,
   queryKey,
   params,
@@ -39,6 +37,7 @@ export default function InfinitePage<
   skeleton,
   getFunc,
   children,
+  reversed,
 }: InfinitePageProps<T, P>) {
   const t = useI18n();
   const {
@@ -104,9 +103,7 @@ export default function InfinitePage<
     );
   }
 
-  const pages = data.pages
-    .reduce((prev, curr) => prev.concat(curr), [])
-    .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
+  const pages = data.pages.reduce((prev, curr) => prev.concat(curr), []);
 
   if (pages.length === 0) {
     return noResult;
@@ -123,6 +120,7 @@ export default function InfinitePage<
       loader={loader}
       useWindow={false}
       getScrollParent={container}
+      isReverse={reversed}
     >
       {pages.map((data, index) => children(data, index))}
       {isFetching && skeleton && (

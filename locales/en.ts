@@ -137,5 +137,6 @@ export default {
   'internal-server.add-plugin': 'Add plugin',
   'internal-server.select-plugin': 'Select plugin',
   reload: 'Reload',
-  'files': 'Files'
+  files: 'Files',
+  chat: 'Chat',
 } as const;
