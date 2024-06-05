@@ -1,12 +1,14 @@
 'use client';
 
 import ColorText from '@/components/common/color-text';
+import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';
 import { useSocket } from '@/context/socket-context';
 import useSearchId from '@/hooks/use-search-id-params';
-import { isReachedEnd, mapReversed } from '@/lib/utils';
+import { isReachedEnd } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import React, {
   FormEvent,
   KeyboardEvent,
@@ -21,30 +23,14 @@ export default function Page() {
   const [messageHistory, setMessageHistory] = useState<string[]>([]);
   let [messagesCursor, setMessageCursor] = useState(0);
 
-  const { socket, state, isAuthenticated } = useSocket();
+  const { socket, state } = useSocket();
+  const container = useRef<HTMLDivElement>(null);
 
-  const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
-  const containerRef = useRef<HTMLDivElement | null>();
-  const bottomRef = useRef<HTMLSpanElement | null>();
+  const bottomRef = useRef<HTMLSpanElement>(null);
+  const queryClient = useQueryClient();
 
   const t = useI18n();
-
-  const addLog = (message: string[]) => {
-    setLog((prev) => [...message, ...prev]);
-
-    setTimeout(() => {
-      if (!bottomRef.current || !containerRef.current) {
-        return;
-      }
-
-      if (!isReachedEnd(containerRef.current)) {
-        return;
-      }
-
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -55,45 +41,61 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    if (socket && state === 'connected' && isAuthenticated) {
-      socket.send({ method: 'JOIN_ROOM', data: `SERVER-${id}` });
-      socket
-        .onRoom(`SERVER-${id}`)
-        .send({ method: 'GET_MESSAGE', page: 0, items: 50 });
+    socket.send({ method: 'JOIN_ROOM', data: `SERVER-${id}` });
 
-      socket
-        .onRoom(`SERVER-${id}`)
-        .onMessage('GET_MESSAGE', (message) => addLog(message));
+    socket.onRoom(`SERVER-${id}`).onMessage('SERVER_MESSAGE', (message) => {
+      queryClient.setQueryData<
+        InfiniteData<Array<string>, unknown> | undefined
+      >(['server-message', id], (query) => {
+        if (!query) {
+          return undefined;
+        }
 
-      socket
-        .onRoom(`SERVER-${id}`)
-        .onMessage('SERVER_MESSAGE', (message) => addLog([message]));
-    }
-  }, [id, socket, state, isAuthenticated]);
+        const { pages, ...data } = query;
 
-  function sendMessage(message: string) {
-    let data = '';
-    if (message.startsWith('/')) {
-      data = message.substring(1);
-    } else {
-      data = `say ${message}`;
-    }
+        let [firstPage, ...rest] = pages;
+        firstPage = [message, ...firstPage];
 
-    if (socket && state === 'connected') {
-      setMessage('');
-      socket.onRoom(`SERVER-${id}`).send({ data, method: 'SERVER_MESSAGE' });
+        console.log({
+          ...data,
+          pages: [firstPage, ...rest],
+        });
 
-      setMessageHistory((prev) => {
-        const v = [...prev, message];
-        setMessageCursor(v.length - 1);
-
-        return v;
+        return {
+          ...data,
+          pages: [firstPage, ...rest],
+        };
       });
+
+      setTimeout(() => {
+        if (!bottomRef.current || !container.current) {
+          return;
+        }
+
+        if (!isReachedEnd(container.current)) {
+          return;
+        }
+
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    });
+  }, [queryClient, socket, id]);
+
+  const sendMessage = async () => {
+    if (socket && state === 'connected') {
+      socket
+        .onRoom(`SERVER-${id}`)
+        .send({ data: message, method: 'SERVER_MESSAGE' });
+      setMessage('');
     }
-  }
+
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-    sendMessage(message);
+    sendMessage();
     event.preventDefault();
   };
 
@@ -134,28 +136,41 @@ export default function Page() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden bg-card px-2 pt-2">
       <div className="grid h-full w-full overflow-hidden">
-        <div
-          className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-black/80 text-white"
-          ref={(ref) => {
-            containerRef.current = ref;
-          }}
-        >
+        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-black/80 text-white">
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
           ) : (
-            mapReversed(log, (item, index) => (
-              <ColorText
-                className="text-wrap px-2 py-1"
-                key={index}
-                text={item}
-              />
-            ))
+            <div className="h-full overflow-y-auto" ref={container}>
+              <InfiniteScrollList
+                className="grid w-full grid-cols-1 justify-center gap-1 overflow-hidden"
+                queryKey={['server-message', id]}
+                reversed
+                container={() => container.current}
+                params={{ page: 0, items: 40 }}
+                end={<></>}
+                getFunc={(
+                  _,
+                  params: {
+                    page: number;
+                    items: number;
+                  },
+                ) =>
+                  socket
+                    .onRoom(`SERVER-${id}`)
+                    .await({ method: 'GET_MESSAGE', ...params })
+                }
+              >
+                {(data, index) => (
+                  <ColorText
+                    className="w-full text-wrap rounded-lg bg-background p-2"
+                    key={index}
+                    text={data}
+                  ></ColorText>
+                )}
+              </InfiniteScrollList>
+              <span ref={bottomRef}></span>
+            </div>
           )}
-          <span
-            ref={(ref) => {
-              bottomRef.current = ref;
-            }}
-          ></span>
         </div>
       </div>
       <form

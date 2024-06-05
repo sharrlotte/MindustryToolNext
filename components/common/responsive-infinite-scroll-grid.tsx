@@ -29,14 +29,11 @@ type ResponsiveInfiniteScrollGridProps<T, P> = {
   children: (data: T, index?: number) => ReactNode;
 };
 
-const defaultClassName =
-  'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center';
-
 export default function ResponsiveInfiniteScrollGrid<
   T,
   P extends PaginationQuery,
 >({
-  className,
+  className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center',
   queryKey,
   params,
   container,
@@ -147,7 +144,7 @@ export default function ResponsiveInfiniteScrollGrid<
 
   if (isLoading || !data || !currentContainer) {
     return (
-      <div className={className ?? defaultClassName} style={{ gap }}>
+      <div className={className} style={{ gap }}>
         {loader ? loader : skeletonElements}
       </div>
     );
@@ -208,7 +205,7 @@ export default function ResponsiveInfiniteScrollGrid<
       }}
     >
       <div
-        className={cn(className ?? defaultClassName)}
+        className={cn(className)}
         style={{ transform: `translateY(${startHeight}px)`, gap }}
       >
         <Items pages={pages} startIndex={startIndex} endIndex={endIndex} />
