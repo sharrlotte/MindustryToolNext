@@ -1,5 +1,5 @@
+import { auth } from '@/auth/config';
 import ProtectedRoute from '@/layout/protected-route';
-import { getSession } from 'next-auth/react';
 import React, { ReactNode } from 'react';
 
 type LayoutProps = {
@@ -7,7 +7,7 @@ type LayoutProps = {
 };
 
 export default async function Layout({ children }: LayoutProps) {
-  const data = await getSession();
+  const data = await auth();
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-4">
