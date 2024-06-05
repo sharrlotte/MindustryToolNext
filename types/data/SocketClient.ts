@@ -153,9 +153,9 @@ export default class SocketClient {
     this.socket.send(JSON.stringify({ ...payload, room: this.room }));
     this.room = '';
   }
-  public async await<T extends SocketEvent>(
-    payload: MessagePayload,
-  ): Promise<T> {
+  public async await<T extends MessagePayload>(
+    payload: T,
+  ): Promise<Extract<SocketEvent, { method: T['method'] }>['data']> {
     const id = genId();
     this.socket.send(
       JSON.stringify({ id, ...payload, room: this.room, acknowledge: true }),

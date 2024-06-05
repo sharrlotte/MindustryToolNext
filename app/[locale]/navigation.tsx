@@ -6,6 +6,7 @@ import {
   BellIcon,
   BookOpenIcon,
   ChartBarSquareIcon,
+  ChatBubbleLeftIcon,
   CircleStackIcon,
   ClipboardDocumentListIcon,
   Cog6ToothIcon,
@@ -223,6 +224,11 @@ function NavItems({ onClick }: NavItemsProps) {
           name: t('logic'),
           icon: <CommandLineIcon className="h-6 w-6" />,
         },
+        {
+          path: '/yui', //
+          name: t('chat'),
+          icon: <ChatBubbleLeftIcon className="h-6 w-6" />,
+        },
       ],
     },
     {
@@ -388,7 +394,7 @@ function NavItems({ onClick }: NavItemsProps) {
             value={value}
             onValueChange={setValue}
           >
-            <AccordionItem className="w-full" value="item-1">
+            <AccordionItem className="w-full" value={path.toString()}>
               <AccordionTrigger
                 className={cn(
                   'flex gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300',

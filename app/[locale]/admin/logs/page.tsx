@@ -1,11 +1,16 @@
 'use client';
 
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/locales/client';
-import useSocket from '@/hooks/use-socket';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useClientAPI from '@/hooks/use-client';
 import getLogCollections from '@/query/log/get-log-collections';
 import ComboBox from '@/components/common/combo-box';
@@ -28,7 +33,7 @@ import {
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
+import { useSocket } from '@/context/socket-context';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
@@ -63,29 +68,35 @@ export default function LogPage() {
 
 function LiveLog() {
   const { socket, state, isAuthenticated } = useSocket();
+  const container = useRef<HTMLDivElement>(null);
 
-  const [log, setLog] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
-  const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLSpanElement>(null);
+  const queryClient = useQueryClient();
 
   const t = useI18n();
 
-  const addLog = (message: string[]) => {
-    setLog((prev) => [...message, ...prev]);
+  const addLog = useCallback(
+    (message: string[]) => {
+      queryClient.setQueryData(['live-log'], (data: any) => ({
+        ...data,
+        pages: data.pages[-1].append(message),
+      }));
 
-    setTimeout(() => {
-      if (!bottomRef.current || !containerRef.current) {
-        return;
-      }
+      setTimeout(() => {
+        if (!bottomRef.current || !container.current) {
+          return;
+        }
 
-      if (!isReachedEnd(containerRef.current)) {
-        return;
-      }
+        if (!isReachedEnd(container.current)) {
+          return;
+        }
 
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    },
+    [queryClient],
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -95,23 +106,19 @@ function LiveLog() {
     }, 1000);
   }, []);
 
-  useEffect(() => {
-    if (socket && state === 'connected' && isAuthenticated) {
-      socket.send({ method: 'JOIN_ROOM', data: 'LOG' });
-      socket.onRoom('LOG').send({ method: 'GET_MESSAGE', page: 0, items: 20 });
-
-      socket
-        .onRoom('LOG')
-        .onMessage('GET_MESSAGE', (message) => addLog(message));
-
-      socket.onRoom('LOG').onMessage('MESSAGE', (message) => addLog([message]));
-    }
-  }, [socket, state, isAuthenticated]);
-
   const sendMessage = async () => {
     if (socket && state === 'connected') {
+      queryClient.setQueryData(['live-log'], (data: any) => ({
+        ...data,
+        pages: data.pages[-1].append(message),
+      }));
+
       setMessage('');
       socket.onRoom('LOG').send({ data: message, method: 'MESSAGE' });
+    }
+
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -125,21 +132,42 @@ function LiveLog() {
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
         <div
           className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden"
-          ref={containerRef}
+          ref={container}
         >
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
           ) : (
-            mapReversed(log, (item, index) => (
-              <div
-                className="text-wrap rounded-lg bg-background p-2"
-                key={index}
+            <div className="h-full overflow-y-auto" ref={container}>
+              <InfinitePage
+                className="grid w-full grid-cols-1 justify-center gap-1"
+                queryKey={['live-log']}
+                reversed
+                container={() => container.current}
+                params={{ page: 0, items: 40 }}
+                getFunc={(
+                  _,
+                  params: {
+                    page: number;
+                    items: number;
+                  },
+                ) =>
+                  socket
+                    .onRoom('LOG')
+                    .await({ method: 'GET_MESSAGE', ...params })
+                }
               >
-                {item}
-              </div>
-            ))
+                {(data, index) => (
+                  <span
+                    className="text-wrap rounded-lg bg-background p-2"
+                    key={index}
+                  >
+                    {data}
+                  </span>
+                )}
+              </InfinitePage>
+              <span ref={bottomRef}></span>
+            </div>
           )}
-          <span ref={bottomRef}></span>
         </div>
       </div>
       <form

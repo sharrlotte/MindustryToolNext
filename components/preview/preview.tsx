@@ -51,7 +51,7 @@ export function PreviewImage({ className, src, errorSrc, alt }: ImageProps) {
       width={224}
       height={224}
       onError={() => setError(true)}
-      loading="lazy"
+      priority
     />
   );
 }

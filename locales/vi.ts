@@ -138,4 +138,5 @@ export default {
   'internal-server.select-plugin': 'Chọn plugin',
   reload: 'Reload',
   files: 'Files',
+  chat: 'Chat',
 } as const;

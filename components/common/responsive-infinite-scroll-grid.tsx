@@ -33,7 +33,7 @@ const defaultClassName =
   'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center';
 
 export default function ResponsiveInfiniteScrollGrid<
-  T extends { id: string },
+  T,
   P extends PaginationQuery,
 >({
   className,
@@ -71,16 +71,14 @@ export default function ResponsiveInfiniteScrollGrid<
   const [scrollTop, setScrollTop] = useState(0);
 
   var currentContainer = container();
-  const skeletonElements = useMemo(
-    () =>
-      skeleton &&
-      Array(skeleton.amount)
+  const skeletonElements = useMemo(() => {
+    if (skeleton)
+      return Array(skeleton.amount)
         .fill(1)
         .map((_, index) => (
           <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-        )),
-    [skeleton],
-  );
+        ));
+  }, [skeleton]);
 
   useEffect(() => {
     function handleScroll() {

@@ -3,8 +3,8 @@
 import ColorText from '@/components/common/color-text';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';
+import { useSocket } from '@/context/socket-context';
 import useSearchId from '@/hooks/use-search-id-params';
-import useSocket from '@/hooks/use-socket';
 import { isReachedEnd, mapReversed } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import React, {
