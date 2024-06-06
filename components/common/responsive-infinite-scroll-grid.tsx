@@ -156,18 +156,13 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const numberOfItems = pages.length + (isFetching ? skeleton?.amount ?? 0 : 0);
 
-  const estimatedCols = Math.floor(currentContainer.clientWidth / itemMinWidth);
+  const gridComputedStyle = window.getComputedStyle(currentContainer);
+
+  const cols = gridComputedStyle
+    .getPropertyValue('grid-template-columns')
+    .split(' ').length;
 
   // Plus 20 for the scroll bar padding
-  const cols =
-    estimatedCols -
-    ((currentContainer.clientWidth -
-      24 -
-      Math.min(estimatedCols - 1, 0) * gap) /
-      estimatedCols <
-    itemMinWidth
-      ? 1
-      : 0);
 
   const itemWith = (currentContainer.clientWidth - (cols - 1) * gap) / cols;
 
