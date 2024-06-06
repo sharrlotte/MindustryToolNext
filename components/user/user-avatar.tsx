@@ -5,16 +5,6 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
-type UserAvatarProps = {
-  className?: string;
-  url?: string;
-  user: {
-    name?: string | null;
-    id: string;
-    imageUrl?: string | null;
-  };
-};
-
 const colorArray = [
   '#FF6633',
   '#FFB399',
@@ -68,10 +58,22 @@ const colorArray = [
   '#6666FF',
 ];
 
+type UserAvatarProps = {
+  className?: string;
+  url?: string;
+  user: {
+    name?: string | null;
+    id: string;
+    imageUrl?: string | null;
+  };
+  clickable?: boolean;
+};
+
 export default function UserAvatar({
   className,
   url,
   user: { id, imageUrl, name },
+  clickable = true,
 }: UserAvatarProps) {
   const [isError, setError] = useState(false);
 
@@ -112,6 +114,9 @@ export default function UserAvatar({
       />
     );
   };
+  if (clickable) {
+    return <Link href={url ?? `/users/${id}`}>{render()}</Link>;
+  }
 
-  return <Link href={url ?? `/users/${id}`}>{render()}</Link>;
+  return <div>{render()}</div>;
 }

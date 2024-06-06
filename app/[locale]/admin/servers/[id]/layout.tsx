@@ -1,6 +1,13 @@
 'use client';
 
 import ColorText from '@/components/common/color-text';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
 import useClientAPI from '@/hooks/use-client';
 import useSafeParam from '@/hooks/use-safe-param';
@@ -102,14 +109,26 @@ export default function Layout({ children }: PageProps) {
   const serverName = server?.name;
 
   return (
-    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden rounded-md md:grid-cols-[auto,1fr] md:grid-rows-1">
+    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden md:grid-cols-[auto,1fr] md:grid-rows-1">
       <div className="flex min-w-48 flex-col flex-wrap gap-2">
-        <h2 className="max-w-72 text-ellipsis bg-card px-4 py-2 text-3xl font-bold">
-          {serverName ? (
-            <ColorText text={serverName} />
-          ) : (
-            <Skeleton className="h-9 w-full rounded-none" />
-          )}
+        <h2 className="w-full text-ellipsis bg-card p-4 text-3xl font-bold md:max-w-72">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/admin/servers">Server</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                {serverName ? (
+                  <ColorText className="w-full" text={serverName} />
+                ) : (
+                  <Skeleton className="h-9 w-full rounded-none" />
+                )}
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </h2>
         <div className="flex min-w-48 flex-1 flex-wrap gap-2 overflow-x-auto bg-card p-2 md:flex-col">
           {links.map(({ href, label }) => (

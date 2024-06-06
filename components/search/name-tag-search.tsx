@@ -10,7 +10,6 @@ import FilterTags from '@/components/tag/filter-tags';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import { QueryParams } from '@/query/config/search-query-params';
 import Search from '@/components/search/search-input';
-import SortTags from '@/components/tag/sort-tags';
 import { TAG_SEPARATOR } from '@/constant/constant';
 import TagContainer from '@/components/tag/tag-container';
 import TagGroup from '@/types/response/TagGroup';
@@ -20,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { defaultSortTag } from '@/constant/env';
 import { useI18n } from '@/locales/client';
 import useSearchPageParams from '@/hooks/use-search-page-params';
+import ComboBox from '@/components/common/combo-box';
 
 type NameTagSearchProps = {
   className?: string;
@@ -180,6 +180,22 @@ export default function NameTagSearch({
             onChange={(event) => handleNameChange(event.currentTarget.value)}
           />
         </Search>
+        {useSort && (
+          <ComboBox
+            value={{
+              // @ts-ignore
+              label: t(selectedSortTag.toLowerCase()),
+              value: selectedSortTag,
+            }}
+            values={sortTagGroup.value.map((value) => ({
+              // @ts-ignore
+              label: t(value.toLowerCase()),
+              value: value as SortTag,
+            }))}
+            onChange={(value) => handleSortChange(value ?? defaultSortTag)}
+            searchBar={false}
+          />
+        )}
         <Button
           className="border border-none border-border bg-card shadow-md dark:border-solid dark:bg-transparent"
           title={t('filter')}
@@ -206,14 +222,6 @@ export default function NameTagSearch({
                 />
               </Search>
               <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
-                {useSort && (
-                  <SortTags
-                    filter={filter}
-                    selectedSortTag={selectedSortTag}
-                    tag={sortTagGroup}
-                    handleSortChange={handleSortChange}
-                  />
-                )}
                 <FilterTags
                   filter={filter}
                   selectedFilterTags={selectedFilterTags}

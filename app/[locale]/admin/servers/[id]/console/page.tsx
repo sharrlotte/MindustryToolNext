@@ -56,11 +56,6 @@ export default function Page() {
         let [firstPage, ...rest] = pages;
         firstPage = [message, ...firstPage];
 
-        console.log({
-          ...data,
-          pages: [firstPage, ...rest],
-        });
-
         return {
           ...data,
           pages: [firstPage, ...rest],

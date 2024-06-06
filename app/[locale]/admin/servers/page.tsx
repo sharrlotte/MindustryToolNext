@@ -15,7 +15,7 @@ export default async function Page() {
         <ReloadServerDialog />
         <CreateServerDialog />
       </div>
-      <section className="grid gap-2">
+      <section className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
         {servers.map((server) => (
           <InternalServerCard server={server} key={server.port} />
         ))}

@@ -41,10 +41,10 @@ export default function Page() {
   const user = session?.user;
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { schematic } = usePostTags();
-  const { toast } = useToast();
   const [isOpen, setOpen] = useState(false);
-  const t = useI18n();
 
+  const t = useI18n();
+  const { toast } = useToast();
   const closeDialog = () => setOpen(false);
   const { invalidateByKey } = useQueriesData();
 

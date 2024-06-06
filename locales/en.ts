@@ -139,4 +139,7 @@ export default {
   reload: 'Reload',
   files: 'Files',
   chat: 'Chat',
+  time_1: 'Mới nhất',
+  'time_-1': 'Cũ nhất',
+  like_1: 'Lượt thích',
 } as const;
