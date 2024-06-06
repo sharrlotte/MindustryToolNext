@@ -41,10 +41,11 @@ export default function InternalServerPluginCard({
   });
 
   return (
-    <div className="grid gap-2 rounded-md border bg-card p-2">
+    <div className="relative grid gap-2 rounded-md border bg-card p-2">
       <h2>{name}</h2>
       <div className="flex gap-2">
         <DeleteButton
+          className="absolute right-1 top-1 border-none"
           description={`${t('delete')} ${name}`}
           isLoading={isDeleting}
           onClick={() => deletePluginById()}
