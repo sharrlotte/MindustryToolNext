@@ -77,10 +77,12 @@ export default function Page() {
   }, [queryClient, socket, id]);
 
   const sendMessage = async () => {
+    const data = message.startsWith('/')
+      ? message.substring(1)
+      : 'say' + message;
+
     if (socket && state === 'connected') {
-      socket
-        .onRoom(`SERVER-${id}`)
-        .send({ data: message, method: 'SERVER_MESSAGE' });
+      socket.onRoom(`SERVER-${id}`).send({ data, method: 'SERVER_MESSAGE' });
       setMessage('');
     }
 
