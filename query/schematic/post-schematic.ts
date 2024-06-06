@@ -7,7 +7,7 @@ export default async function postSchematic(
 ): Promise<void> {
   const form = new FormData();
 
-  if (data instanceof String) {
+  if (typeof data === 'string') {
     form.append('code', data);
   } else if (data instanceof File) {
     form.append('file', data);
