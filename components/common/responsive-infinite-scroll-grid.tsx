@@ -196,16 +196,6 @@ export default function ResponsiveInfiniteScrollGrid<
     ) + 2,
   );
 
-  console.log({
-    cols,
-    rows,
-    estimatedCols,
-    itemMinWidth,
-    l:
-      currentContainer.clientWidth -
-      ((estimatedCols - 1) * gap) / estimatedCols,
-  });
-
   const endIndex = endRow * (cols + 1);
 
   return (

@@ -19,6 +19,7 @@ type ComboBoxProps<T> = {
   placeholder?: string;
   value?: Value<T>;
   values: Array<Value<T>>;
+  searchBar?: boolean;
   onChange: (value: T | undefined) => void;
 };
 
@@ -27,6 +28,7 @@ export default function ComboBox<T>({
   placeholder,
   values,
   value,
+  searchBar = true,
   onChange,
 }: ComboBoxProps<T>) {
   const [open, setOpen] = useState(false);
@@ -48,17 +50,19 @@ export default function ComboBox<T>({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] bg-card p-0">
         <div className="mt-0.5 divide-y">
-          <div className="flex gap-1 p-1">
-            <div>
-              <MagnifyingGlassIcon className="h-5 w-5" />
+          {searchBar && (
+            <div className="flex gap-1 p-1">
+              <div>
+                <MagnifyingGlassIcon className="h-5 w-5" />
+              </div>
+              <input
+                className="border-none bg-transparent font-thin outline-none"
+                value={input}
+                placeholder="Search"
+                onChange={(event) => setInput(event.currentTarget.value)}
+              />
             </div>
-            <input
-              className="border-none bg-transparent font-thin outline-none"
-              value={input}
-              placeholder="Search"
-              onChange={(event) => setInput(event.currentTarget.value)}
-            />
-          </div>
+          )}
           <div className="grid gap-1 p-1">
             {values.map((item) => (
               <button

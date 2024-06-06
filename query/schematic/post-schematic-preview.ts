@@ -8,11 +8,14 @@ export default async function postSchematicPreview(
 ): Promise<SchematicPreviewResponse> {
   const form = new FormData();
 
-  if (data instanceof String) {
+  if (typeof data === 'string') {
     form.append('code', data);
   } else if (data instanceof File) {
     form.append('file', data);
+  } else {
+    throw new Error("Invalid data")
   }
+
   const result = await axios.post('/schematics/preview', form, {
     data: form,
   });

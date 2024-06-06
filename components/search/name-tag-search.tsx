@@ -10,7 +10,6 @@ import FilterTags from '@/components/tag/filter-tags';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import { QueryParams } from '@/query/config/search-query-params';
 import Search from '@/components/search/search-input';
-import SortTags from '@/components/tag/sort-tags';
 import { TAG_SEPARATOR } from '@/constant/constant';
 import TagContainer from '@/components/tag/tag-container';
 import TagGroup from '@/types/response/TagGroup';
@@ -20,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { defaultSortTag } from '@/constant/env';
 import { useI18n } from '@/locales/client';
 import useSearchPageParams from '@/hooks/use-search-page-params';
+import ComboBox from '@/components/common/combo-box';
 
 type NameTagSearchProps = {
   className?: string;
@@ -34,15 +34,16 @@ export default function NameTagSearch({
   tags = [],
   useSort = true,
 }: NameTagSearchProps) {
-  const t = useI18n();
-
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchPageParams();
+  const t = useI18n();
 
   const [page, setPage] = useState(0);
   const [name, setName] = useState('');
   const [selectedFilterTags, setSelectedFilterTags] = useState<TagGroup[]>([]);
+  const [selectedSortTag, setSelectedSortTag] =
+    useState<SortTag>(defaultSortTag);
   const [filter, setFilter] = useState('');
   const [isChanged, setChanged] = useState(false);
   const [showFilterDialog, setShowFilterDialog] = useState(false);
@@ -54,7 +55,12 @@ export default function NameTagSearch({
 
   useEffect(() => {
     if (tags.length > 0) {
-      const { name: nameString, tags: tagsString, page } = searchParams;
+      const {
+        sort: sortString,
+        name: nameString,
+        tags: tagsString,
+        page,
+      } = searchParams;
 
       const tagsArray = _.chain(tagsString)
         .map((value) => value.split(TAG_SEPARATOR))
@@ -79,6 +85,7 @@ export default function NameTagSearch({
         .value();
 
       setPage(page);
+      setSelectedSortTag(sortString ?? defaultSortTag);
       setSelectedFilterTags(tagsArray);
       setName(nameString ?? '');
     }
@@ -102,6 +109,10 @@ export default function NameTagSearch({
 
       params.set(QueryParams.page, page.toString());
 
+      if (useSort) {
+        params.set(QueryParams.sort, selectedSortTag);
+      }
+
       if (name) {
         params.set(QueryParams.name, name);
       }
@@ -113,7 +124,7 @@ export default function NameTagSearch({
       timeout = setTimeout(() => handleSearch(), 0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, showFilterDialog, selectedFilterTags]);
+  }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);
 
   const handleTagGroupChange = (name: string, value: string[]) => {
     const group = selectedFilterTags.find((tag) => tag.name === name);
@@ -130,6 +141,13 @@ export default function NameTagSearch({
         setChanged(true);
         setSelectedFilterTags([...selectedFilterTags]);
       }
+    }
+  };
+
+  const handleSortChange = (value: any) => {
+    if (value && sortTag.includes(value)) {
+      setSelectedSortTag(value);
+      setChanged(true);
     }
   };
 
@@ -162,6 +180,22 @@ export default function NameTagSearch({
             onChange={(event) => handleNameChange(event.currentTarget.value)}
           />
         </Search>
+        {useSort && (
+          <ComboBox
+            value={{
+              // @ts-ignore
+              label: t(selectedSortTag.toLowerCase()),
+              value: selectedSortTag,
+            }}
+            values={sortTagGroup.value.map((value) => ({
+              // @ts-ignore
+              label: t(value.toLowerCase()),
+              value: value as SortTag,
+            }))}
+            onChange={(value) => handleSortChange(value ?? defaultSortTag)}
+            searchBar={false}
+          />
+        )}
         <Button
           className="border border-none border-border bg-card shadow-md dark:border-solid dark:bg-transparent"
           title={t('filter')}

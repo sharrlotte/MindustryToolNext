@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  ArrowLeftEndOnRectangleIcon,
   ArrowUpTrayIcon,
   Bars3Icon,
   BellIcon,
@@ -26,20 +27,25 @@ import LogoutButton from '@/components/button/logout-button';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import ProtectedElement from '@/layout/protected-element';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ThemeSwitcher } from '../../components/theme/theme-switcher';
 import UserAvatar from '@/components/user/user-avatar';
 import { UserRole } from '@/constant/enum';
 import UserRoleCard from '@/components/user/user-role';
 import { cn, max } from '@/lib/utils';
 import env from '@/constant/env';
-import { useI18n } from '@/locales/client';
+import {
+  Locale,
+  locales,
+  useChangeLocale,
+  useCurrentLocale,
+  useI18n,
+} from '@/locales/client';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import useClientAPI from '@/hooks/use-client';
 import getTotalMapUpload from '@/query/map/get-total-map-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
 import { useQueries } from '@tanstack/react-query';
-import { ShieldCheckIcon } from 'lucide-react';
+import { GlobeIcon, ShieldCheckIcon, UserIcon } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
@@ -47,6 +53,10 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { useVerifyCount } from '@/zustand/verify-count';
+import ComboBox from '@/components/common/combo-box';
+import { ThemeSwitcher } from '@/components/theme/theme-switcher';
+import React from 'react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 export default function NavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
@@ -58,7 +68,7 @@ export default function NavigationBar() {
   return (
     <div className="flex h-nav w-full items-center justify-between bg-button p-1 text-white shadow-lg">
       <Button
-        title=""
+        title="Navbar"
         type="button"
         variant="link"
         size="icon"
@@ -112,20 +122,16 @@ export default function NavigationBar() {
           <BellIcon className="h-6 w-6" />
         </Button>
         <ThemeSwitcher className="flex aspect-square h-full" />
-        <Button className="aspect-square p-0" title="setting" variant="icon">
-          <Cog6ToothIcon className="h-6 w-6" />
-        </Button>
+        <SideBar />
       </div>
     </div>
   );
 }
 
 function UserDisplay() {
-  const { data, status } = useSession();
+  const { data: session, status } = useSession();
 
   const t = useI18n();
-
-  const session = data;
 
   if (status === 'authenticated' && session?.user) {
     return (
@@ -539,4 +545,105 @@ function PostPath() {
       {postCount > 0 && <span>({postCount})</span>}
     </>
   );
+}
+
+type Tab = {
+  icon: ReactNode;
+  action: ReactNode;
+}[][];
+
+function SideBar() {
+  const { data: session } = useSession();
+
+  const changeLocale = useChangeLocale({ preserveSearchParams: true });
+  const locale = useCurrentLocale();
+
+  const tabs: Tab = [
+    [
+      {
+        icon: <HomeIcon className="h-5 w-5" />,
+        action: (
+          <Link className="w-full" href="/">
+            Trang chủ
+          </Link>
+        ),
+      },
+    ],
+    [
+      {
+        icon: <UserIcon className="h-5 w-5" />,
+        action: (
+          <Link className="w-full" href="/users/me">
+            Thông tin tài khoản
+          </Link>
+        ),
+      },
+    ],
+    [
+      {
+        icon: <Cog6ToothIcon className="h-5 w-5" />,
+        action: 'Cài đặt',
+      },
+      {
+        icon: <GlobeIcon className="h-5 w-5" />,
+        action: (
+          <ComboBox<Locale>
+            value={{ label: locale, value: locale }}
+            values={locales.map((value: Locale) => ({ label: value, value }))}
+            onChange={(value) => changeLocale(value ?? 'en')}
+          />
+        ),
+      },
+    ],
+    [
+      {
+        icon: <ArrowLeftEndOnRectangleIcon className="h-5 w-5" />,
+        action: <LogoutButton title={'Logout'} />,
+      },
+    ],
+  ];
+
+  if (session && session.user) {
+    return (
+      <Sheet>
+        <SheetTrigger className="cursor-pointer">
+          <UserAvatar
+            className="h-8 w-8"
+            user={session.user}
+            url="/users/me"
+            clickable={false}
+          />
+        </SheetTrigger>
+        <SheetContent className="space-y-2 p-2">
+          <div className="flex items-end gap-2">
+            <UserAvatar
+              className="h-8 w-8"
+              user={session.user}
+              url="/users/me"
+              clickable={false}
+            />
+            <span>{session.user.name}</span>
+          </div>
+          <div className="pt-6">
+            {tabs.map((tab, index) => (
+              <React.Fragment key={index}>
+                {tab.map(({ action, icon }, index) => (
+                  <div
+                    className="flex gap-2 rounded-md p-2 hover:bg-blue-500 hover:text-white"
+                    key={index}
+                  >
+                    {icon}
+                    {action}
+                  </div>
+                ))}
+                <div className="mb-1 w-full border-b pt-1" />
+              </React.Fragment>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  return <LoginButton title={'Login'} />;
 }
