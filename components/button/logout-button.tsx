@@ -1,15 +1,14 @@
 'use client';
 
-import { Button, ButtonProps } from '@/components/ui/button';
+import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
-import { signOut } from 'next-auth/react';
 import React from 'react';
 
-export default function LogoutButton({ className, ...props }: ButtonProps) {
+export default function LogoutButton({ className }: { className?: string }) {
   return (
-    <Button className={cn(className)} onClick={() => signOut()} {...props}>
+    <a className={cn(className)} href={`${env.url.api}/auth/logout`}>
       <ArrowRightStartOnRectangleIcon className="h-5 w-5" />
-    </Button>
+    </a>
   );
 }

@@ -16,7 +16,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import putRemoveMap from '@/query/map/put-remove-map';
 import { useMutation } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
+
 import ProtectedElement from '@/layout/protected-element';
 import TakeDownButton from '@/components/button/take-down-button';
 import { useRouter } from 'next/navigation';
@@ -34,6 +34,7 @@ import {
   DetailTagsCard,
   DetailTitle,
 } from '@/components/detail/detail';
+import { useSession } from '@/context/session-context';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -46,7 +47,7 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
   const { deleteById, invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();
-  const { data: session } = useSession();
+  const { session } = useSession();
 
   const t = useI18n();
 

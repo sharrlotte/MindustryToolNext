@@ -1,6 +1,6 @@
 import LoginButton from '@/components/button/login-button';
 import { UserRole } from '@/constant/enum';
-import { Session } from 'next-auth';
+import { Session } from '@/types/response/Session';
 import React, { ReactNode } from 'react';
 
 type Props = {
@@ -20,7 +20,7 @@ export default async function ProtectedRoute({
   children,
   session,
 }: Props) {
-  if (!session?.user?.roles)
+  if (!session?.roles)
     return (
       <div className="flex h-full w-full flex-col items-center justify-center gap-2">
         Please login to continue
@@ -28,7 +28,7 @@ export default async function ProtectedRoute({
       </div>
     );
 
-  const roles = session.user.roles;
+  const roles = session.roles;
 
   const pred = [
     all ? all.every((role) => roles.includes(role)) : true,

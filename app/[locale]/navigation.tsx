@@ -40,7 +40,6 @@ import {
   useI18n,
 } from '@/locales/client';
 import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import useClientAPI from '@/hooks/use-client';
 import getTotalMapUpload from '@/query/map/get-total-map-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
@@ -57,6 +56,7 @@ import ComboBox from '@/components/common/combo-box';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 import React from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useSession } from '@/context/session-context';
 
 export default function NavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
@@ -129,29 +129,21 @@ export default function NavigationBar() {
 }
 
 function UserDisplay() {
-  const { data: session, status } = useSession();
+  const { session, state } = useSession();
 
   const t = useI18n();
 
-  if (status === 'authenticated' && session?.user) {
+  if (state === 'authenticated' && session) {
     return (
       <div className="flex h-16 items-center justify-between rounded-sm bg-card p-1">
         <div className="flex items-center justify-center gap-1">
-          <UserAvatar
-            className="h-12 w-12"
-            user={session.user}
-            url="/users/me"
-          />
+          <UserAvatar className="h-12 w-12" user={session} url="/users/me" />
           <div className="grid p-1">
-            <span className="capitalize">{session.user.name}</span>
-            <UserRoleCard roles={session.user.roles} />
+            <span className="capitalize">{session.name}</span>
+            <UserRoleCard roles={session.roles} />
           </div>
         </div>
-        <LogoutButton
-          className="aspect-square h-10 w-10 p-2"
-          title={t('logout')}
-          variant="ghost"
-        />
+        <LogoutButton className="aspect-square h-10 w-10 p-2" />
       </div>
     );
   }
@@ -334,7 +326,8 @@ function NavItems({ onClick }: NavItemsProps) {
     },
   ];
 
-  const { data: session } = useSession();
+  const { session } = useSession();
+
   const pathName = usePathname();
   const pattern = /[a-zA-Z0-9-]+\/([a-zA-Z0-9\/-]+)/;
   const route = '/' + pattern.exec(pathName)?.at(1);
@@ -553,7 +546,7 @@ type Tab = {
 }[][];
 
 function SideBar() {
-  const { data: session } = useSession();
+  const { session } = useSession();
 
   const changeLocale = useChangeLocale({ preserveSearchParams: true });
   const locale = useCurrentLocale();
@@ -598,18 +591,18 @@ function SideBar() {
     [
       {
         icon: <ArrowLeftEndOnRectangleIcon className="h-5 w-5" />,
-        action: <LogoutButton title={'Logout'} />,
+        action: <LogoutButton />,
       },
     ],
   ];
 
-  if (session && session.user) {
+  if (session) {
     return (
       <Sheet>
         <SheetTrigger className="cursor-pointer">
           <UserAvatar
             className="h-8 w-8"
-            user={session.user}
+            user={session}
             url="/users/me"
             clickable={false}
           />
@@ -618,11 +611,11 @@ function SideBar() {
           <div className="flex items-end gap-2">
             <UserAvatar
               className="h-8 w-8"
-              user={session.user}
+              user={session}
               url="/users/me"
               clickable={false}
             />
-            <span>{session.user.name}</span>
+            <span>{session.name}</span>
           </div>
           <div className="pt-6">
             {tabs.map((tab, index) => (

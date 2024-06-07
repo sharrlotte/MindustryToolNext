@@ -28,17 +28,17 @@ import useClientAPI from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
 import { useMutation } from '@tanstack/react-query';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useSession } from 'next-auth/react';
 import { useToast } from '@/hooks/use-toast';
 import { usePostTags } from '@/hooks/use-tags';
 import Image from 'next/image';
+import { useSession } from '@/context/session-context';
 
 export default function Page() {
   const { axios } = useClientAPI();
   const [data, setData] = useState<File | string | undefined>();
   const [preview, setPreview] = useState<SchematicPreviewResponse>();
-  const { data: session } = useSession();
-  const user = session?.user;
+  const { session } = useSession();
+
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { schematic } = usePostTags();
   const [isOpen, setOpen] = useState(false);
@@ -223,7 +223,11 @@ export default function Page() {
           {preview && (
             <section className="flex flex-col gap-2">
               <DetailTitle>{preview.name}</DetailTitle>
-              {user ? <UserCard user={user} /> : <IdUserCard id="community" />}
+              {session ? (
+                <UserCard user={session} />
+              ) : (
+                <IdUserCard id="community" />
+              )}
               <DetailDescription>{preview.description}</DetailDescription>
               <ItemRequirementCard requirement={preview.requirement} />
               <NameTagSelector

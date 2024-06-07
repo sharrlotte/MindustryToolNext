@@ -6,7 +6,6 @@ import type { Metadata } from 'next';
 import NavigationBar from './navigation';
 import NextTopLoader from 'nextjs-toploader';
 import QueryProvider from '../../query/config/query-provider';
-import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from '../../components/theme/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
@@ -14,6 +13,7 @@ import env from '@/constant/env';
 import localFont from 'next/font/local';
 import { SocketProvider } from '@/context/socket-context';
 import { Inter } from 'next/font/google';
+import { SessionProvider } from '@/context/session-context';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
@@ -77,10 +77,7 @@ export default function Root({ children, params }: RootProps) {
           >
             <NextTopLoader height={2} showSpinner={false} color="white" />
             <Toaster />
-            <SessionProvider
-              refetchOnWindowFocus={false}
-              refetchInterval={2 * 60}
-            >
+            <SessionProvider>
               <SocketProvider>
                 <QueryProvider>
                   <ClientInit />

@@ -1,17 +1,16 @@
-import 'server-only';
-import { auth } from '@/auth/config';
-import { APIInstance } from '@/hooks/use-client';
 import axiosInstance from '@/query/config/config';
+import { AxiosInstance } from 'axios';
+import { cookies } from 'next/headers';
 
-const getServerAPI = async (): Promise<APIInstance> => {
-  const session = await auth();
-  const accessToken = session?.user?.accessToken;
+import 'server-only';
 
-  if (accessToken) {
-    axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + accessToken;
-  } else {
-    axiosInstance.defaults.headers['Authorization'] = '';
-  }
+const getServerAPI = async (): Promise<{
+  axios: AxiosInstance;
+  enabled: boolean;
+}> => {
+  const cookie = cookies().toString();
+
+  axiosInstance.defaults.headers['Cookie'] = cookie;
 
   return { axios: axiosInstance, enabled: true };
 };

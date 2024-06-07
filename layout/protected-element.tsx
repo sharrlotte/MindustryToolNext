@@ -1,5 +1,5 @@
 import { UserRole } from '@/constant/enum';
-import { Session } from 'next-auth';
+import { Session } from '@/types/response/Session';
 import React, { ReactNode } from 'react';
 
 type Props = {
@@ -23,9 +23,9 @@ export default function ProtectedElement({
   alt,
   passOnEmpty,
 }: Props) {
-  if (!session?.user?.roles) return passOnEmpty ? children : alt;
+  if (!session?.roles) return passOnEmpty ? children : alt;
 
-  const roles = session.user.roles;
+  const roles = session.roles;
 
   if (roles.includes('ADMIN')) {
     return <>{children}</>;
@@ -34,7 +34,7 @@ export default function ProtectedElement({
   const pred = [
     all ? all.every((role) => roles.includes(role)) : true,
     any ? any.some((role) => roles.includes(role)) : true,
-    ownerId ? ownerId === session.user.id : true,
+    ownerId ? ownerId === session.id : true,
     show === undefined ? true : show,
   ].every(Boolean);
 

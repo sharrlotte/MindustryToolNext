@@ -18,7 +18,6 @@ import LikeCount from '@/components/like/like-count';
 import useQueriesData from '@/hooks/use-queries-data';
 import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
 import { useMutation } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import ProtectedElement from '@/layout/protected-element';
 import TakeDownButton from '@/components/button/take-down-button';
 import { useRouter } from 'next/navigation';
@@ -37,6 +36,7 @@ import {
   DetailTagsCard,
   DetailTitle,
 } from '@/components/detail/detail';
+import { useSession } from '@/context/session-context';
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;
@@ -49,7 +49,8 @@ export default function SchematicDetailCard({
   const { deleteById, invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();
-  const { data: session } = useSession();
+  const { session } = useSession();
+
   const t = useI18n();
 
   const { mutate: removeSchematic, isPending: isRemoving } = useMutation({
