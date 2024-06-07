@@ -18,6 +18,7 @@ const axiosInstance = Axios.create({
   paramsSerializer: {
     indexes: null,
   },
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.response.use(

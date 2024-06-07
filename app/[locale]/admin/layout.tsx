@@ -1,5 +1,5 @@
-import { auth } from '@/auth/config';
 import ProtectedRoute from '@/layout/protected-route';
+import getSession from '@/query/auth/get-session';
 import React, { ReactNode } from 'react';
 
 type PageProps = {
@@ -7,7 +7,7 @@ type PageProps = {
 };
 
 export default async function Layout({ children }: PageProps) {
-  const session = await auth();
+  const session = await getSession();
 
   return (
     <ProtectedRoute session={session} all={['ADMIN']}>

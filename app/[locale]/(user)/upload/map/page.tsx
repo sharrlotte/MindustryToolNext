@@ -19,18 +19,18 @@ import useClientAPI from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
 import { useMutation } from '@tanstack/react-query';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useSession } from 'next-auth/react';
 import { useToast } from '@/hooks/use-toast';
 import { usePostTags } from '@/hooks/use-tags';
 import Image from 'next/image';
 import { DetailDescription, DetailTitle } from '@/components/detail/detail';
+import { useSession } from '@/context/session-context';
 
 export default function Page() {
   const { axios } = useClientAPI();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState<MapPreviewResponse>();
-  const { data: session } = useSession();
-  const user = session?.user;
+  const { session } = useSession();
+
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { map } = usePostTags();
   const { toast } = useToast();
@@ -162,7 +162,11 @@ export default function Page() {
           {preview && (
             <section className="flex flex-col gap-2">
               <DetailTitle>{preview.name}</DetailTitle>
-              {user ? <UserCard user={user} /> : <IdUserCard id="community" />}
+              {session ? (
+                <UserCard user={session} />
+              ) : (
+                <IdUserCard id="community" />
+              )}
               <DetailDescription>{preview.description}</DetailDescription>
               <NameTagSelector
                 tags={map}

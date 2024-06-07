@@ -8,10 +8,11 @@ import { AxiosInstance } from 'axios';
 import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
 import { useI18n } from '@/locales/client';
 import InfiniteScroll from 'react-infinite-scroller';
+import { QueryKey } from '@tanstack/react-query';
 
 type InfinitePageProps<T, P> = {
   className?: string;
-  queryKey: QueryKey[];
+  queryKey: QueryKey;
   params: P;
   container: () => HTMLElement | null;
   loader?: ReactElement<any, string | JSXElementConstructor<any>>;

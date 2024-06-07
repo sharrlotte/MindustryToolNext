@@ -59,10 +59,6 @@ type MessagePayload = BaseMessagePayload &
         items: number;
       }
     | {
-        method: 'AUTHORIZATION';
-        data: string;
-      }
-    | {
         method: 'JOIN_ROOM';
         data: string;
       }

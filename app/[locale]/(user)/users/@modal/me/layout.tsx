@@ -1,5 +1,5 @@
-import { auth } from '@/auth/config';
 import ProtectedRoute from '@/layout/protected-route';
+import getSession from '@/query/auth/get-session';
 import { ReactNode } from 'react';
 
 type Props = {
@@ -7,6 +7,7 @@ type Props = {
 };
 
 export default async function Layout({ children }: Props) {
-  const session = await auth();
+  const session = await getSession();
+
   return <ProtectedRoute session={session}>{children}</ProtectedRoute>;
 }

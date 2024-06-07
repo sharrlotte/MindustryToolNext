@@ -4,12 +4,13 @@ import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { isReachedEnd, mapReversed } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
+import { QueryKey } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
 import React, { ReactNode, useEffect, useMemo } from 'react';
 
 type InfiniteScrollListProps<T, P> = {
   className?: string;
-  queryKey: QueryKey[];
+  queryKey: QueryKey;
   params: P;
   loader?: ReactNode;
   noResult?: ReactNode;

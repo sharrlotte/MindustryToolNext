@@ -17,13 +17,13 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { useSession } from 'next-auth/react';
 import ProtectedElement from '@/layout/protected-element';
 import TagContainer from '@/components/tag/tag-container';
 import { useI18n } from '@/locales/client';
 import deletePost from '@/query/post/delete-post';
 import DeleteButton from '@/components/button/delete-button';
 import { Detail } from '@/components/detail/detail';
+import { useSession } from '@/context/session-context';
 
 type PostDetailCardProps = {
   post: PostDetail;
@@ -35,7 +35,8 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   const { deleteById, invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();
-  const { data: session } = useSession();
+  const { session } = useSession();
+
   const t = useI18n();
 
   const { mutate: removePost, isPending: isRemoving } = useMutation({
