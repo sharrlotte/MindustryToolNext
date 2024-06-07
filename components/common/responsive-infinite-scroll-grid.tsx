@@ -7,7 +7,7 @@ import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { QueryKey } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
 import { throttle } from 'lodash';
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 type ResponsiveInfiniteScrollGridProps<T, P> = {
   className?: string;
@@ -67,8 +67,11 @@ export default function ResponsiveInfiniteScrollGrid<
   }, [data, children]);
 
   const [scrollTop, setScrollTop] = useState(0);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   var currentContainer = container();
+  var currentWrapper = wrapperRef.current;
+
   const skeletonElements = useMemo(() => {
     if (skeleton)
       return Array(skeleton.amount)
@@ -156,16 +159,19 @@ export default function ResponsiveInfiniteScrollGrid<
   }
 
   const numberOfItems = pages.length + (isFetching ? skeleton?.amount ?? 0 : 0);
+  const clientWidth =
+    currentWrapper?.clientWidth ?? currentContainer.clientWidth;
 
-  const gridComputedStyle = window.getComputedStyle(currentContainer);
+  const estimatedCols = Math.floor(clientWidth / itemMinWidth);
 
-  const cols = gridComputedStyle
-    .getPropertyValue('grid-template-columns')
-    .split(' ').length;
+  const cols =
+    estimatedCols -
+    ((clientWidth - Math.max(estimatedCols - 1, 0) * gap) / estimatedCols <
+    itemMinWidth
+      ? 1
+      : 0);
 
-  // Plus 20 for the scroll bar padding
-
-  const itemWith = (currentContainer.clientWidth - (cols - 1) * gap) / cols;
+  const itemWith = Math.floor((clientWidth - (cols - 1) * gap) / cols);
 
   const itemHeight = Math.max(itemWith + contentOffsetHeight, itemMinHeight);
   const rows = Math.ceil(numberOfItems / cols);
@@ -194,9 +200,12 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const endIndex = endRow * (cols + 1);
 
+  console.log({ cols, rows, itemWith, clientWidth });
+
   return (
     <div
       className="w-full"
+      ref={wrapperRef}
       style={{
         height: `${scrollHeight}px`,
         maxHeight: `${scrollHeight}px`,

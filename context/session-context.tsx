@@ -42,8 +42,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     session: null,
   });
 
-  console.log({ auth });
-
   useLayoutEffect(() => {
     axios
       .get<any, { data: Session }>('/auth/session')
