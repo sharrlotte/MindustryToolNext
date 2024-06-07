@@ -200,8 +200,6 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const endIndex = endRow * (cols + 1);
 
-  console.log({ cols, rows, itemWith, clientWidth });
-
   return (
     <div
       className="w-full"
