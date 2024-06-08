@@ -1,12 +1,15 @@
+import { setStaticParamsLocale } from 'next-international/server';
+import Link from 'next/link';
+
 import IdUserCard from '@/components/user/id-user-card';
 import UserCard from '@/components/user/user-card';
 import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
 import getUsers from '@/query/user/get-users';
 
-import Link from 'next/link';
-
 export default async function Home() {
+  await setStaticParamsLocale('en');
+
   const t = await getI18n();
   const { axios } = await getServerAPI();
   const users = await getUsers(axios, {

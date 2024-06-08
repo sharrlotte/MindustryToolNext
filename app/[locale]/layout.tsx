@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { setStaticParamsLocale } from 'next-international/server';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import NextTopLoader from 'nextjs-toploader';
@@ -20,10 +21,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
   title: 'MindustryTool',
   description: 'A website about mindustry',
-};
-
-type RootParam = {
-  locale: string;
 };
 
 // const font = localFont({
@@ -50,12 +47,18 @@ const icon = localFont({
   variable: '--font-icon',
 });
 
+type RootParam = {
+  locale: string;
+};
+
 type RootProps = {
   children: React.ReactNode;
   params: RootParam;
 };
 
-export default function Root({ children, params }: RootProps) {
+export default async function Root({ children, params }: RootProps) {
+  await setStaticParamsLocale('en');
+
   return (
     <html
       className={cn(

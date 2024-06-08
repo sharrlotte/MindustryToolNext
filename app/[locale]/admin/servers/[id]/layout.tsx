@@ -1,10 +1,10 @@
 import { LayoutDashboardIcon } from 'lucide-react';
+import { setStaticParamsLocale } from 'next-international/server';
 import React, { ReactNode } from 'react';
 
 import NavLink from '@/app/[locale]/admin/servers/[id]/nav-link';
 import ServerName from '@/app/[locale]/admin/servers/[id]/server-name';
 import SidebarToggle from '@/app/[locale]/admin/servers/[id]/sidebar-toggle';
-import ColorText from '@/components/common/color-text';
 import Divider from '@/components/ui/divider';
 import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
@@ -25,6 +25,7 @@ type PageProps = {
 };
 
 export default async function Layout({ params: { id }, children }: PageProps) {
+  await setStaticParamsLocale('en');
   const t = await getI18n();
 
   const { axios } = await getServerAPI();
