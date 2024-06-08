@@ -1,3 +1,8 @@
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
+import NextTopLoader from 'nextjs-toploader';
+
 import ClientInit from '@/app/[locale]/client-init';
 import { Toaster } from '@/components/ui/toaster';
 import env from '@/constant/env';
@@ -10,10 +15,6 @@ import { ThemeProvider } from '../../components/theme/theme-provider';
 import QueryProvider from '../../query/config/query-provider';
 import './../globals.css';
 import NavigationBar from './navigation';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import localFont from 'next/font/local';
-import NextTopLoader from 'nextjs-toploader';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),

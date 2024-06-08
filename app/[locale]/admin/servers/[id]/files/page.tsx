@@ -1,5 +1,7 @@
 'use client';
 
+import React, { useState } from 'react';
+
 import AddFileDialog from '@/app/[locale]/admin/servers/[id]/files/add-file-dialog';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
@@ -19,19 +21,14 @@ import { useToast } from '@/hooks/use-toast';
 import deleteInternalServerFile from '@/query/server/delete-internal-server-file';
 import getInternalServerFiles from '@/query/server/get-internal-server-files';
 
-import {
-  ArrowLeftIcon,
-  FolderIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
 import { FileIcon } from '@radix-ui/react-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
 
 export default function Page() {
   const [path, setPath] = useQueryState('path', '/');
   const { id } = useSearchId();
-  const { axios, enabled } = useClientAPI();
+  const { axios } = useClientAPI();
   const [search, setSearch] = useState('');
   const { toast } = useToast();
 
@@ -39,7 +36,6 @@ export default function Page() {
     queryKey: ['internal-server-files', path],
     queryFn: async () => getInternalServerFiles(axios, id, path),
     placeholderData: [],
-    enabled,
   });
 
   const { invalidateByKey } = useQueriesData();

@@ -5,7 +5,7 @@ import React from 'react';
 
 import ColorText from '@/components/common/color-text';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import LoadingWrapper from '@/components/common/loading-wrapper';
+import RamUsageChart from '@/components/metric/ram-usage-chart';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -177,12 +177,7 @@ function Dashboard({ server }: Props) {
           <span>Map: </span>
           <span>{mapName}</span>
         </div>
-        <div className="space-x-2">
-          <span>Memory {ramUsagePercent}%</span>
-          <span>
-            {ramUsage}/{totalRam}mb
-          </span>
-        </div>
+        <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
       </div>
       <div className="flex flex-row justify-end gap-2 p-2">
         <AlertDialog>

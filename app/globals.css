@@ -151,6 +151,11 @@
     padding: 0.5rem;
   }
 
+  g,
+  path {
+    @apply focus:border-none focus:outline-none;
+  }
+
   @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
       display: none;

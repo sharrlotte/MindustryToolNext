@@ -1,5 +1,8 @@
 'use client';
 
+import React, { useState } from 'react';
+import { ReactNode } from 'react';
+
 import { LikeAction, LikeTarget } from '@/constant/enum';
 import { FakeLike, LikeContext } from '@/context/like-context';
 import { useSession } from '@/context/session-context';
@@ -9,8 +12,6 @@ import postLike from '@/query/like/post-like';
 import { Like } from '@/types/response/Like';
 
 import { useMutation } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import { ReactNode } from 'react';
 
 type LikeComponentProps = {
   children: ReactNode;
@@ -72,6 +73,7 @@ function LikeComponent({
       state,
       count: likeData.count + change,
     });
+
     return mutate(action, {
       onError: () => setLikeData({ ...likeData }),
       onSuccess: (result) =>
