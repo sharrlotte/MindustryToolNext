@@ -1,6 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
+import Image from 'next/image';
+import { ChangeEvent, useEffect, useState } from 'react';
+
 import LoadingWrapper from '@/components/common/loading-wrapper';
 import { DetailDescription, DetailTitle } from '@/components/detail/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
@@ -30,8 +33,8 @@ import SchematicPreviewResponse from '@/types/response/SchematicPreviewResponse'
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation } from '@tanstack/react-query';
-import Image from 'next/image';
-import { ChangeEvent, useEffect, useState } from 'react';
+
+/* eslint-disable @next/next/no-img-element */
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -179,7 +182,7 @@ export default function Page() {
                 {preview ? (
                   <Image
                     loader={({ src }) => src}
-                    src={PNG_IMAGE_PREFIX + preview.image}
+                    src={PNG_IMAGE_PREFIX + preview.image.trim()}
                     alt="Map"
                     width={512}
                     height={512}
