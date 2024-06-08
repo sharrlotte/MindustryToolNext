@@ -5,6 +5,7 @@ import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import ExternalServer from '@/types/response/ExternalServer';
+
 import React from 'react';
 
 type MindustryServerCardProps = {

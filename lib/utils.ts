@@ -1,7 +1,8 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import Nprogress from 'nprogress';
 import { Metric } from '@/types/response/Metric';
+
+import { type ClassValue, clsx } from 'clsx';
+import Nprogress from 'nprogress';
+import { twMerge } from 'tailwind-merge';
 
 var colours: Record<string, string> = {
   aliceblue: '#f0f8ff',

@@ -4,6 +4,7 @@ import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
+
 import { QueryKey } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
 import { throttle } from 'lodash';

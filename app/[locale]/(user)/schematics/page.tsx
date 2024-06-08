@@ -1,13 +1,14 @@
 'use client';
 
-import getSchematics from '@/query/schematic/get-schematics';
-import NameTagSearch from '@/components/search/name-tag-search';
-import { useRef } from 'react';
-import useSearchPageParams from '@/hooks/use-search-page-params';
-import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import { useSearchTags } from '@/hooks/use-tags';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
+import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
+import NameTagSearch from '@/components/search/name-tag-search';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import useSearchPageParams from '@/hooks/use-search-page-params';
+import { useSearchTags } from '@/hooks/use-tags';
+import getSchematics from '@/query/schematic/get-schematics';
+
+import { useRef } from 'react';
 
 export default function Page() {
   const { schematic } = useSearchTags();

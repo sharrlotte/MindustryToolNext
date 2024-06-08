@@ -3,6 +3,7 @@ import ReloadServerDialog from '@/app/[locale]/admin/servers/reload-server-dialo
 import InternalServerCard from '@/components/server/internal-server-card';
 import getServerAPI from '@/query/config/get-server-api';
 import getInternalServers from '@/query/server/get-internal-servers';
+
 import React from 'react';
 
 export default async function Page() {

@@ -1,5 +1,6 @@
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getSchematicUpload(

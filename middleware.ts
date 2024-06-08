@@ -1,6 +1,7 @@
-import { NextRequest } from 'next/server';
-import env from '@/constant/env';
 import { createI18nMiddleware } from 'next-international/middleware';
+import { NextRequest } from 'next/server';
+
+import env from '@/constant/env';
 
 const I18nMiddleware = createI18nMiddleware({
   locales: env.locales,

@@ -1,5 +1,6 @@
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import ExternalServer from '@/types/response/ExternalServer';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getServers(

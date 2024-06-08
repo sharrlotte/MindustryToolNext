@@ -1,37 +1,42 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
+import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
+
+import LoadingWrapper from '@/components/common/loading-wrapper';
+import { DetailDescription, DetailTitle } from '@/components/detail/detail';
+import ItemRequirementCard from '@/components/schematic/item-requirement-card';
+import NameTagSelector from '@/components/search/name-tag-selector';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-
-import { Button } from '@/components/ui/button';
-import { DetailDescription, DetailTitle } from '@/components/detail/detail';
 import IdUserCard from '@/components/user/id-user-card';
-import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import LoadingWrapper from '@/components/common/loading-wrapper';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import UserCard from '@/components/user/user-card';
 import { PNG_IMAGE_PREFIX } from '@/constant/constant';
+import { useSession } from '@/context/session-context';
+import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import { usePostTags } from '@/hooks/use-tags';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
+import postSchematic from '@/query/schematic/post-schematic';
+import postSchematicPreview from '@/query/schematic/post-schematic-preview';
 import PostSchematicRequest from '@/types/request/PostSchematicRequest';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import SchematicPreviewResponse from '@/types/response/SchematicPreviewResponse';
-import UserCard from '@/components/user/user-card';
-import { cn } from '@/lib/utils';
-import postSchematic from '@/query/schematic/post-schematic';
-import postSchematicPreview from '@/query/schematic/post-schematic-preview';
-import useClientAPI from '@/hooks/use-client';
-import { useI18n } from '@/locales/client';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
 import { useMutation } from '@tanstack/react-query';
-import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
-import { usePostTags } from '@/hooks/use-tags';
-import Image from 'next/image';
-import { useSession } from '@/context/session-context';
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
 
 export default function Page() {
   const { axios } = useClientAPI();
@@ -177,7 +182,7 @@ export default function Page() {
                 {preview ? (
                   <Image
                     loader={({ src }) => src}
-                    src={PNG_IMAGE_PREFIX + preview.image}
+                    src={PNG_IMAGE_PREFIX + preview.image.trim()}
                     alt="Map"
                     width={512}
                     height={512}

@@ -1,19 +1,20 @@
-import './../globals.css';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
+import NextTopLoader from 'nextjs-toploader';
 
 import ClientInit from '@/app/[locale]/client-init';
-import { I18nProviderClient } from '@/locales/client';
-import type { Metadata } from 'next';
-import NavigationBar from './navigation';
-import NextTopLoader from 'nextjs-toploader';
-import QueryProvider from '../../query/config/query-provider';
-import { ThemeProvider } from '../../components/theme/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import { cn } from '@/lib/utils';
 import env from '@/constant/env';
-import localFont from 'next/font/local';
-import { SocketProvider } from '@/context/socket-context';
-import { Inter } from 'next/font/google';
 import { SessionProvider } from '@/context/session-context';
+import { SocketProvider } from '@/context/socket-context';
+import { cn } from '@/lib/utils';
+import { I18nProviderClient } from '@/locales/client';
+
+import { ThemeProvider } from '../../components/theme/theme-provider';
+import QueryProvider from '../../query/config/query-provider';
+import './../globals.css';
+import NavigationBar from './navigation';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),

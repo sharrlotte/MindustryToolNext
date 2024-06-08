@@ -3,6 +3,7 @@ import env from '@/constant/env';
 import getServerAPI from '@/query/config/get-server-api';
 import getMap from '@/query/map/get-map';
 import { IdSearchParams } from '@/types/data/id-search-schema';
+
 import { Metadata } from 'next';
 import React from 'react';
 

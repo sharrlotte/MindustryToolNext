@@ -1,29 +1,9 @@
 'use client';
 
-import LikeComponent from '@/components/like/like-component';
-import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
-import env from '@/constant/env';
-import React from 'react';
-import DownloadButton from '@/components/button/download-button';
-import IdUserCard from '@/components/user/id-user-card';
-import { MapDetail } from '@/types/response/MapDetail';
-import LikeButton from '@/components/like/like-button';
-import LikeCount from '@/components/like/like-count';
-import DislikeButton from '@/components/like/dislike-button';
-import useClientAPI from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
-import putRemoveMap from '@/query/map/put-remove-map';
-import { useMutation } from '@tanstack/react-query';
-
-import ProtectedElement from '@/layout/protected-element';
-import TakeDownButton from '@/components/button/take-down-button';
-import { useRouter } from 'next/navigation';
-import { useI18n } from '@/locales/client';
-import deleteMap from '@/query/map/delete-map';
 import DeleteButton from '@/components/button/delete-button';
-import { LinkIcon } from '@heroicons/react/24/outline';
+import DownloadButton from '@/components/button/download-button';
+import TakeDownButton from '@/components/button/take-down-button';
 import {
   Detail,
   DetailActions,
@@ -34,7 +14,27 @@ import {
   DetailTagsCard,
   DetailTitle,
 } from '@/components/detail/detail';
+import DislikeButton from '@/components/like/dislike-button';
+import LikeButton from '@/components/like/like-button';
+import LikeComponent from '@/components/like/like-component';
+import LikeCount from '@/components/like/like-count';
+import BackButton from '@/components/ui/back-button';
+import IdUserCard from '@/components/user/id-user-card';
+import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
+import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import { useToast } from '@/hooks/use-toast';
+import ProtectedElement from '@/layout/protected-element';
+import { useI18n } from '@/locales/client';
+import deleteMap from '@/query/map/delete-map';
+import putRemoveMap from '@/query/map/put-remove-map';
+import { MapDetail } from '@/types/response/MapDetail';
+
+import { LinkIcon } from '@heroicons/react/24/outline';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
 type MapDetailCardProps = {
   map: MapDetail;

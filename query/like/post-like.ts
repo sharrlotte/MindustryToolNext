@@ -1,5 +1,6 @@
 import { LikePostRequest } from '@/types/request/LikePostRequest';
 import { LikeChange } from '@/types/response/LikeChange';
+
 import { AxiosInstance } from 'axios';
 
 export default async function postLike(

@@ -1,27 +1,27 @@
 'use client';
 
+import InfinitePage from '@/components/common/infinite-page';
+import LoadingWrapper from '@/components/common/loading-wrapper';
+import ExternalServerCard from '@/components/server/external-server-card';
+import PostServerResultCard from '@/components/server/post-server-result-card';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useRef, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { ClipboardIcon } from '@heroicons/react/24/outline';
-import InfinitePage from '@/components/common/infinite-page';
-import LoadingWrapper from '@/components/common/loading-wrapper';
-import ExternalServerCard from '@/components/server/external-server-card';
-import PostServerRequest from '@/types/request/PostServerRequest';
-import PostServerResponse from '@/types/response/PostServerResponse';
-import PostServerResultCard from '@/components/server/post-server-result-card';
+import useClientAPI from '@/hooks/use-client';
+import { useToast } from '@/hooks/use-toast';
+import { useI18n } from '@/locales/client';
 import getServers from '@/query/server/get-servers';
 import postServer from '@/query/server/post-server';
-import useClientAPI from '@/hooks/use-client';
-import { useI18n } from '@/locales/client';
+import PostServerRequest from '@/types/request/PostServerRequest';
+import PostServerResponse from '@/types/response/PostServerResponse';
+
+import { ClipboardIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
+import { useRef, useState } from 'react';
 
 export default function Page() {
   const container = useRef<HTMLDivElement>(null);
@@ -80,7 +80,7 @@ export default function Page() {
                     title={t('copy-from-clipboard')}
                     onClick={handleCopyFromClipboard}
                   >
-                    <ClipboardIcon className="h-6 w-6" />
+                    <ClipboardIcon className="h-5 w-5" />
                   </Button>
                   <Button
                     className="self-end"

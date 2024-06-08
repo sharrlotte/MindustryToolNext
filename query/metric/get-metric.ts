@@ -1,5 +1,6 @@
 import { MetricCollection } from '@/constant/enum';
 import { Metric } from '@/types/response/Metric';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getMetric(

@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
 import LikeChart from '@/components/metric/like-chart';
 import LoginChart from '@/components/metric/login-chart';
+import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import useClientAPI from '@/hooks/use-client';
-import LoginHistory from '@/components/metric/login-history';
+
+import React from 'react';
 
 const NUMBER_OF_DAY = 15;
 

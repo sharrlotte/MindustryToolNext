@@ -1,4 +1,5 @@
 import LoadingSpinner from '@/components/common/loading-spinner';
+
 import React from 'react';
 
 export default function LoadingScreen() {

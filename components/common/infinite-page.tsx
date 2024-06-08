@@ -1,14 +1,15 @@
 'use client';
 
-import NoResult from '@/components/common/no-result';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
+import { useI18n } from '@/locales/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
+
+import { QueryKey } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
 import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
-import { useI18n } from '@/locales/client';
 import InfiniteScroll from 'react-infinite-scroller';
-import { QueryKey } from '@tanstack/react-query';
 
 type InfinitePageProps<T, P> = {
   className?: string;

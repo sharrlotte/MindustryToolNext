@@ -1,4 +1,5 @@
 import env from '@/constant/env';
+
 import Axios from 'axios';
 import { notFound } from 'next/navigation';
 
@@ -32,14 +33,14 @@ axiosInstance.interceptors.response.use(
       return notFound();
     }
 
-    console.log({ Custom: error });
-
     if (error?.response?.data) {
       throw new RestApiError(
         error.response.data.message,
         error.response.data.status,
       );
     }
+
+    console.log({ Custom: error });
 
     throw error;
   },

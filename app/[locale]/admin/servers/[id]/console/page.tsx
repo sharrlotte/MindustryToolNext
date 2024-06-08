@@ -8,6 +8,7 @@ import { useSocket } from '@/context/socket-context';
 import useSearchId from '@/hooks/use-search-id-params';
 import { isReachedEnd } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
+
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import React, {
   FormEvent,
@@ -135,7 +136,7 @@ export default function Page() {
       <div className="grid h-full w-full overflow-hidden">
         <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-black/80 text-white">
           {state !== 'connected' ? (
-            <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
+            <LoadingSpinner className="m-auto h-5 w-5 flex-1" />
           ) : (
             <div className="h-full overflow-y-auto" ref={container}>
               <InfiniteScrollList

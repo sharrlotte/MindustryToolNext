@@ -1,7 +1,7 @@
 import ReconnectingWebSocket, {
-  Event,
-  ErrorEvent,
   CloseEvent,
+  ErrorEvent,
+  Event,
 } from 'reconnecting-websocket';
 
 export type SocketState =

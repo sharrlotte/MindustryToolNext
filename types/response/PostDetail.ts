@@ -8,8 +8,8 @@ export interface PostDetail {
   content: string;
   like: number;
   tags: string[];
-  lang: string
-  status: Status
+  lang: string;
+  status: Status;
   translations: Record<
     string,
     {

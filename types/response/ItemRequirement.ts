@@ -1,5 +1,5 @@
 export interface ItemRequirement {
-	name: string;
-	color: string;
-	amount: number;
+  name: string;
+  color: string;
+  amount: number;
 }

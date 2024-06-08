@@ -1,8 +1,11 @@
 'use client';
 
+import { notFound } from 'next/navigation';
+import React from 'react';
+
 import ColorText from '@/components/common/color-text';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import LoadingWrapper from '@/components/common/loading-wrapper';
+import RamUsageChart from '@/components/metric/ram-usage-chart';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,9 +23,9 @@ import getInternalServer from '@/query/server/get-internal-server';
 import postReloadInternalServer from '@/query/server/post-reload-internal-server';
 import postStartInternalServers from '@/query/server/post-start-internal-server';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
+import { useShowLoading } from '@/zustand/loading-state';
+
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { notFound } from 'next/navigation';
-import React from 'react';
 
 type PageProps = {
   params: { id: string };
@@ -87,13 +90,13 @@ function Dashboard({ server }: Props) {
       invalidateByKey(['internal-servers']);
       invalidateByKey(['internal-server']);
       toast({
-        title: t('upload.success'),
+        title: 'Start server successfully',
         variant: 'success',
       });
     },
     onError: (error) =>
       toast({
-        title: t('upload.fail'),
+        title: 'Start server failed',
         description: error.message,
         variant: 'destructive',
       }),
@@ -106,13 +109,13 @@ function Dashboard({ server }: Props) {
         invalidateByKey(['internal-servers']);
         invalidateByKey(['internal-server']);
         toast({
-          title: t('upload.success'),
+          title: 'Shutdown server successfully',
           variant: 'success',
         });
       },
       onError: (error) =>
         toast({
-          title: t('upload.fail'),
+          title: 'Shutdown server failed',
           description: error.message,
           variant: 'destructive',
         }),
@@ -125,27 +128,31 @@ function Dashboard({ server }: Props) {
       invalidateByKey(['internal-servers']);
       invalidateByKey(['internal-server']);
       toast({
-        title: t('upload.success'),
+        title: 'Reload server successfully',
         variant: 'success',
       });
     },
     onError: (error) =>
       toast({
-        title: t('upload.fail'),
+        title: 'Reload server failed',
         description: error.message,
         variant: 'destructive',
       }),
   });
 
-  const isLoading =
-    isStartingServer || isReloadingServer || isShuttingDownServer;
   const ramUsagePercent = totalRam
     ? Math.floor((ramUsage / totalRam) * 100)
     : 0;
 
+  const isLoading = useShowLoading([
+    isStartingServer,
+    isReloadingServer,
+    isShuttingDownServer,
+  ]);
+
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-1 flex-col gap-1 bg-card p-2">
+      <div className="flex flex-1 flex-col gap-1 p-2">
         <div>
           <span>Name: </span>
           <ColorText text={name} />
@@ -170,14 +177,9 @@ function Dashboard({ server }: Props) {
           <span>Map: </span>
           <span>{mapName}</span>
         </div>
-        <div className="space-x-2">
-          <span>Memory {ramUsagePercent}%</span>
-          <span>
-            {ramUsage}/{totalRam}mb
-          </span>
-        </div>
+        <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
       </div>
-      <div className="flex flex-row justify-end gap-2 bg-card p-2">
+      <div className="flex flex-row justify-end gap-2 p-2">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button
@@ -199,9 +201,7 @@ function Dashboard({ server }: Props) {
                   disabled={isLoading}
                   onClick={() => reloadServer()}
                 >
-                  <LoadingWrapper className="w-20" isLoading={isLoading}>
-                    {t('reload')}
-                  </LoadingWrapper>
+                  {t('reload')}
                 </Button>
               </AlertDialogAction>
             </AlertDialogFooter>
@@ -230,9 +230,7 @@ function Dashboard({ server }: Props) {
                     disabled={isLoading}
                     onClick={() => shutdownServer()}
                   >
-                    <LoadingWrapper className="w-20" isLoading={isLoading}>
-                      Shutdown
-                    </LoadingWrapper>
+                    Shutdown
                   </Button>
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -246,9 +244,7 @@ function Dashboard({ server }: Props) {
             disabled={isLoading}
             onClick={() => startServer()}
           >
-            <LoadingWrapper className="w-20" isLoading={isLoading}>
-              Start
-            </LoadingWrapper>
+            Start
           </Button>
         )}
       </div>

@@ -1,17 +1,23 @@
-import React, { HTMLAttributes } from 'react';
-
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import Link from 'next/link';
-import { Schematic } from '@/types/response/Schematic';
-import { cn } from '@/lib/utils';
+import {
+  Preview,
+  PreviewActions,
+  PreviewDescription,
+  PreviewHeader,
+  PreviewImage,
+} from '@/components/preview/preview';
 import env from '@/constant/env';
-import getSchematicData from '@/query/schematic/get-schematic-data';
 import useClientAPI from '@/hooks/use-client';
-import { useI18n } from '@/locales/client';
 import useToastAction from '@/hooks/use-toast-action';
+import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
+import getSchematicData from '@/query/schematic/get-schematic-data';
+import { Schematic } from '@/types/response/Schematic';
+
 import { LinkIcon } from '@heroicons/react/24/outline';
-import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/preview/preview';
+import Link from 'next/link';
+import React, { HTMLAttributes } from 'react';
 
 type UploadSchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;

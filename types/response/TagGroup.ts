@@ -1,5 +1,6 @@
 import { TAG_SEPARATOR } from '@/constant/constant';
 import { Tags } from '@/types/response/Tag';
+
 import _ from 'lodash';
 
 type TagGroup = {

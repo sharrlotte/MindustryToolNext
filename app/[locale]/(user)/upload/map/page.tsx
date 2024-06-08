@@ -1,29 +1,34 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
+import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
+import LoadingWrapper from '@/components/common/loading-wrapper';
+import { DetailDescription, DetailTitle } from '@/components/detail/detail';
+import NameTagSelector from '@/components/search/name-tag-selector';
 import { Button } from '@/components/ui/button';
 import IdUserCard from '@/components/user/id-user-card';
-import LoadingWrapper from '@/components/common/loading-wrapper';
-import MapPreviewRequest from '@/types/request/MapPreviewRequest';
-import MapPreviewResponse from '@/types/response/MapPreviewResponse';
-import NameTagSelector from '@/components/search/name-tag-selector';
-import { PNG_IMAGE_PREFIX } from '@/constant/constant';
-import PostMapRequest from '@/types/request/PostMapRequest';
 import UserCard from '@/components/user/user-card';
+import { PNG_IMAGE_PREFIX } from '@/constant/constant';
+import { useSession } from '@/context/session-context';
+import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import { usePostTags } from '@/hooks/use-tags';
+import { useToast } from '@/hooks/use-toast';
+import { useI18n } from '@/locales/client';
 import postMap from '@/query/map/post-map';
 import postMapPreview from '@/query/map/post-map-preview';
-import useClientAPI from '@/hooks/use-client';
-import { useI18n } from '@/locales/client';
+import MapPreviewRequest from '@/types/request/MapPreviewRequest';
+import PostMapRequest from '@/types/request/PostMapRequest';
+import MapPreviewResponse from '@/types/response/MapPreviewResponse';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
 import { useMutation } from '@tanstack/react-query';
-import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
-import { usePostTags } from '@/hooks/use-tags';
-import Image from 'next/image';
-import { DetailDescription, DetailTitle } from '@/components/detail/detail';
-import { useSession } from '@/context/session-context';
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
 
 export default function Page() {
   const { axios } = useClientAPI();
@@ -131,7 +136,7 @@ export default function Page() {
               {preview ? (
                 <Image
                   loader={({ src }) => src}
-                  src={PNG_IMAGE_PREFIX + preview.image}
+                  src={PNG_IMAGE_PREFIX + preview.image.trim()}
                   alt="Map"
                   width={512}
                   height={512}

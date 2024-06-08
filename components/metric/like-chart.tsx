@@ -5,14 +5,15 @@ import { APIInstance } from '@/hooks/use-client';
 import { fillMetric } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import getMetric from '@/query/metric/get-metric';
+
 import { useQuery } from '@tanstack/react-query';
 import {
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Tooltip,
   Line,
   LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts';
 
 const NUMBER_OF_DAY = 15;

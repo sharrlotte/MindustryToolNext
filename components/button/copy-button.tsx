@@ -2,6 +2,7 @@ import { Button, ButtonProps } from '@/components/ui/button';
 import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
+
 import { Copy } from 'lucide-react';
 import React from 'react';
 

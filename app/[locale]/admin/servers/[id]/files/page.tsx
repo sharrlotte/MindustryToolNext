@@ -1,97 +1,64 @@
 'use client';
 
+import React, { useState } from 'react';
+
+import AddFileDialog from '@/app/[locale]/admin/servers/[id]/files/add-file-dialog';
+import LoadingSpinner from '@/components/common/loading-spinner';
+import NoResult from '@/components/common/no-result';
+import { Button } from '@/components/ui/button';
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import {
-  ArrowLeftIcon,
-  FolderIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline';
-import LoadingSpinner from '@/components/common/loading-spinner';
-import NoResult from '@/components/common/no-result';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useQueryState from '@/hooks/use-query-state';
 import useSearchId from '@/hooks/use-search-id-params';
+import { useToast } from '@/hooks/use-toast';
 import deleteInternalServerFile from '@/query/server/delete-internal-server-file';
 import getInternalServerFiles from '@/query/server/get-internal-server-files';
-import postInternalServerFile from '@/query/server/post-internal-server-file';
-import { zodResolver } from '@hookform/resolvers/zod';
+
+import { ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
 import { FileIcon } from '@radix-ui/react-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 export default function Page() {
-  const addFileSchema = z.object({
-    file: z
-      .any()
-      .refine((files) => files.size <= 500000, `Max file size is 5MB.`),
-  });
-
-  type AddFileRequest = z.infer<typeof addFileSchema>;
-
-  const [resetFile, setResetFile] = useState(0);
-
   const [path, setPath] = useQueryState('path', '/');
   const { id } = useSearchId();
-  const { axios, enabled } = useClientAPI();
-  const { invalidateByKey } = useQueriesData();
+  const { axios } = useClientAPI();
+  const [search, setSearch] = useState('');
+  const { toast } = useToast();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['internal-server-files', path],
     queryFn: async () => getInternalServerFiles(axios, id, path),
     placeholderData: [],
-    enabled,
   });
 
-  const form = useForm<AddFileRequest>({
-    resolver: zodResolver(addFileSchema),
-    defaultValues: {
-      file: undefined,
-    },
-  });
+  const { invalidateByKey } = useQueriesData();
 
-  const { mutate: addFile, isPending: isAddingFile } = useMutation({
-    mutationKey: ['add-file'],
-    mutationFn: async (file: File) =>
-      postInternalServerFile(axios, id, path, file),
-    onSuccess: () => {
-      invalidateByKey(['internal-server-files', path]);
-    },
-  });
-
-  const { mutate: deleteFile, isPending: isDeletingFile } = useMutation({
+  const { mutate: deleteFile } = useMutation({
     mutationKey: ['delete-file'],
     mutationFn: async (path: string) =>
       deleteInternalServerFile(axios, id, path),
     onSuccess: () => {
       invalidateByKey(['internal-server-files', path]);
     },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Failed to delete file',
+        description: error.message,
+      });
+    },
   });
 
-  const isPending = isDeletingFile || isAddingFile;
+  function setFilePath(path: string) {
+    setPath(path.replaceAll('//', '/'));
+  }
 
   if (error) {
     return <div>{error?.message}</div>;
@@ -101,112 +68,66 @@ export default function Page() {
     return <NoResult />;
   }
 
-  function handleSubmit(data: AddFileRequest) {
-    addFile(data.file);
-    form.reset();
-    setResetFile((prev) => prev + 1);
-  }
-  //TODO: Context menu add/remove file
-
   return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden py-2">
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="w-fit" title="Add file" variant="primary">
-            Add file
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <Form {...form}>
-            <form
-              className="space-y-4"
-              onSubmit={form.handleSubmit(handleSubmit)}
-            >
-              <FormField
-                control={form.control}
-                name="file"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>File to upload</FormLabel>
-                    <FormControl>
-                      <div>
-                        <Input
-                          key={resetFile}
-                          id="add-file"
-                          name="file"
-                          type="file"
-                          onChange={(event) => {
-                            const files = event.currentTarget.files;
-                            if (files && files.length > 0) {
-                              field.onChange(files[0]);
-                            }
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="flex justify-end">
-                <DialogClose asChild>
-                  <Button
-                    title="submit"
-                    variant="primary"
-                    type="submit"
-                    disabled={isPending}
-                  >
-                    Save
-                  </Button>
-                </DialogClose>
-              </div>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-      <div className="flex h-full flex-col gap-2 overflow-y-auto">
+    <div className="flex h-full flex-col gap-2 overflow-hidden py-2 p-2">
+      <div className="text-base font-bold whitespace-nowrap">
+        {[id, ...path.split('/')].filter(Boolean).join(' > ')}
+      </div>
+      <div className="flex gap-2">
+        <Input
+          placeholder="Search file name"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
+        <AddFileDialog id={id} path={path} />
+      </div>
+      <div className="flex h-full flex-col gap-2 overflow-hidden">
         {path !== '/' && (
           <Button
-            className="items-center justify-start px-1"
+            className="items-center justify-start px-2"
             title=".."
-            onClick={() => setPath(path.split('/').slice(0, -1).join('/'))}
+            onClick={() => setFilePath(path.split('/').slice(0, -1).join('/'))}
           >
-            <ArrowLeftIcon className="w-6"></ArrowLeftIcon>
+            <ArrowLeftIcon className="w-5"></ArrowLeftIcon>
           </Button>
         )}
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          data?.map(({ name, directory }) =>
-            directory ? (
-              <Button
-                className="items-center justify-start gap-1 px-1"
-                key={name}
-                title={name}
-                onClick={() => setPath(`${path}/${name}`)}
-              >
-                <FolderIcon className="h-6 w-6" />
-                <span>{name}</span>
-              </Button>
-            ) : (
-              <ContextMenu key={name}>
-                <ContextMenuTrigger className="flex h-9 items-center justify-start gap-1 rounded-md border px-1 py-2 ">
-                  <FileIcon className="h-6 w-6" />
-                  {name}
-                </ContextMenuTrigger>
-                <ContextMenuContent>
-                  <ContextMenuItem
-                    className="cursor-pointer hover:bg-destructive focus:bg-destructive"
-                    onClick={() => deleteFile(`${path}/${name}`)}
-                  >
-                    <TrashIcon className="h-6 w-6" />
-                    Delete
-                  </ContextMenuItem>
-                </ContextMenuContent>
-              </ContextMenu>
-            ),
-          )
-        )}
+        <div className="flex h-full flex-col gap-2 overflow-y-auto">
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            data
+              .filter(({ name }) => name.includes(search))
+              .map(({ name, directory, data }) =>
+                data ? (
+                  <p key={name} className="whitespace-pre-line">
+                    {data}
+                  </p>
+                ) : (
+                  <ContextMenu key={name}>
+                    <ContextMenuTrigger
+                      className="flex h-9 cursor-pointer items-center justify-start gap-1 rounded-md border px-1 py-2 text-sm"
+                      onClick={() => setFilePath(`${path}/${name}`)}
+                    >
+                      {directory ? (
+                        <FolderIcon className="h-5 w-5" />
+                      ) : (
+                        <FileIcon className="h-5 w-5" />
+                      )}
+                      <span>{name}</span>
+                    </ContextMenuTrigger>
+                    <ContextMenuContent>
+                      <ContextMenuItem
+                        variant="destructive"
+                        onClick={() => deleteFile(`${path}/${name}`)}
+                      >
+                        Delete
+                      </ContextMenuItem>
+                    </ContextMenuContent>
+                  </ContextMenu>
+                ),
+              )
+          )}
+        </div>
       </div>
     </div>
   );

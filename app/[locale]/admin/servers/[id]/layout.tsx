@@ -1,152 +1,93 @@
-'use client';
+import { LayoutDashboardIcon } from 'lucide-react';
+import React, { ReactNode } from 'react';
 
+import NavLink from '@/app/[locale]/admin/servers/[id]/nav-link';
+import ServerName from '@/app/[locale]/admin/servers/[id]/server-name';
+import SidebarToggle from '@/app/[locale]/admin/servers/[id]/sidebar-toggle';
 import ColorText from '@/components/common/color-text';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { Skeleton } from '@/components/ui/skeleton';
-import useClientAPI from '@/hooks/use-client';
-import useSafeParam from '@/hooks/use-safe-param';
-import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import Divider from '@/components/ui/divider';
+import { getI18n } from '@/locales/server';
+import getServerAPI from '@/query/config/get-server-api';
 import getInternalServer from '@/query/server/get-internal-server';
+
 import {
+  ArrowLeftIcon,
   Cog6ToothIcon,
   CommandLineIcon,
   FolderIcon,
   MapIcon,
   PuzzlePieceIcon,
 } from '@heroicons/react/24/outline';
-import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React, { ReactNode } from 'react';
 
 type PageProps = {
+  params: { id: string };
   children: ReactNode;
 };
 
-export default function Layout({ children }: PageProps) {
-  const t = useI18n();
+export default async function Layout({ params: { id }, children }: PageProps) {
+  const t = await getI18n();
 
-  const id = useSafeParam().get('id');
-  let pathname = usePathname();
-  let firstSlash = pathname.indexOf('/', 1);
-  pathname = pathname.slice(firstSlash);
-
-  const { axios, enabled } = useClientAPI();
-
-  const { data: server } = useQuery({
-    queryKey: ['internal-servers', id],
-    queryFn: () => getInternalServer(axios, { id }),
-    enabled,
-  });
+  const { axios } = await getServerAPI();
+  const server = await getInternalServer(axios, { id });
 
   const links: {
     href: string;
     label: ReactNode;
+    icon: ReactNode;
   }[] = [
     {
       href: '',
-      label: (
-        <>
-          <MapIcon className="h-6 w-6" />
-          <span>{t('dashboard')}</span>
-        </>
-      ),
+      label: t('dashboard'),
+      icon: <LayoutDashboardIcon className="h-5 w-5" />,
     },
     {
       href: '/maps',
-      label: (
-        <>
-          <MapIcon className="h-6 w-6" />
-          <span>{t('map')}</span>
-        </>
-      ),
+      label: t('map'),
+      icon: <MapIcon className="h-5 w-5" />,
     },
     {
       href: '/plugins',
-      label: (
-        <>
-          <PuzzlePieceIcon className="h-6 w-6" />
-          <span>{t('plugin')}</span>
-        </>
-      ),
+      label: t('plugin'),
+      icon: <PuzzlePieceIcon className="h-5 w-5" />,
     },
     {
       href: '/console',
-      label: (
-        <>
-          <CommandLineIcon className="h-6 w-6" />
-          <span>{t('console')}</span>
-        </>
-      ),
+      label: t('console'),
+      icon: <CommandLineIcon className="h-5 w-5" />,
     },
     {
       href: '/files',
-      label: (
-        <>
-          <FolderIcon className="h-6 w-6" />
-          <span>{t('files')}</span>
-        </>
-      ),
+      label: t('files'),
+      icon: <FolderIcon className="h-5 w-5" />,
     },
     {
       href: '/setting',
-      label: (
-        <>
-          <Cog6ToothIcon className="h-6 w-6" />
-          <span>{t('setting')}</span>
-        </>
-      ),
+      label: t('setting'),
+      icon: <Cog6ToothIcon className="h-5 w-5" />,
     },
   ];
 
-  const serverName = server?.name;
-
   return (
-    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden md:grid-cols-[auto,1fr] md:grid-rows-1">
-      <div className="flex min-w-48 flex-col flex-wrap gap-2">
-        <h2 className="w-full text-ellipsis bg-card p-4 text-3xl font-bold md:max-w-72">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/admin/servers">Server</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                {serverName ? (
-                  <ColorText className="w-full" text={serverName} />
-                ) : (
-                  <Skeleton className="h-9 w-full rounded-none" />
-                )}
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </h2>
-        <div className="flex min-w-48 flex-1 flex-wrap gap-2 overflow-x-auto bg-card p-2 md:flex-col">
-          {links.map(({ href, label }) => (
-            <Link
-              className={cn(
-                'flex text-nowrap px-2 py-2 text-sm font-semibold opacity-70',
-                {
-                  'rounded-sm bg-button text-white opacity-100':
-                    (pathname.includes(href) && href !== '') ||
-                    (href === '' && pathname === `/admin/servers/${id}`),
-                },
-              )}
-              key={href}
-              href={`/admin/servers/${id}/${href}`}
-            >
-              <div className="flex items-center gap-2">{label}</div>
-            </Link>
+    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] overflow-hidden md:grid-cols-[auto,1fr] md:grid-rows-1 divide-x">
+      <div className="flex flex-col flex-wrap relative">
+        <div className="flex flex-1 flex-wrap gap-2 overflow-x-auto md:overflow-x-hidden p-2 md:flex-col font-extrabold antialiased">
+          <div className="flex gap-1 justify-between items-center">
+            <ServerName name={server.name} />
+            <SidebarToggle />
+          </div>
+          <Divider className="hidden md:block" />
+          {links.map((item) => (
+            <NavLink key={item.href} {...item} id={id} />
           ))}
+          <div className="mt-auto flex flex-col gap-2">
+            <Divider className="hidden md:block" />
+            <NavLink
+              id={id}
+              href="/admin/servers"
+              label={'Back to server list'}
+              icon={<ArrowLeftIcon className="h-5 w-5" />}
+            />
+          </div>
         </div>
       </div>
       {children}

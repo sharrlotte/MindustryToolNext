@@ -1,7 +1,7 @@
 import axiosInstance from '@/query/config/config';
+
 import { AxiosInstance } from 'axios';
 import { cookies } from 'next/headers';
-
 import 'server-only';
 
 const getServerAPI = async (): Promise<{

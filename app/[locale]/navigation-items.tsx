@@ -1,0 +1,421 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { UserRole } from '@/constant/enum';
+import { useSession } from '@/context/session-context';
+import useClientAPI from '@/hooks/use-client';
+import ProtectedElement from '@/layout/protected-element';
+import { cn, max } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
+import getTotalMapUpload from '@/query/map/get-total-map-upload';
+import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
+import { useVerifyCount } from '@/zustand/verify-count';
+
+import {
+  ArrowUpTrayIcon,
+  ChartBarSquareIcon,
+  ChatBubbleLeftIcon,
+  CircleStackIcon,
+  ClipboardDocumentListIcon,
+  Cog6ToothIcon,
+  CommandLineIcon,
+  PuzzlePieceIcon,
+  ServerStackIcon,
+} from '@heroicons/react/24/outline';
+import { useQueries } from '@tanstack/react-query';
+import {
+  BookOpenIcon,
+  HomeIcon,
+  MapIcon,
+  ShieldCheckIcon,
+  UserCircleIcon,
+} from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ReactNode, useState } from 'react';
+
+type PathGroup = {
+  name: string;
+  paths: Path[];
+  roles?: UserRole[];
+};
+
+type SubPath =
+  | string
+  | {
+      path: string;
+      name: ReactNode;
+      icon: ReactNode;
+      enabled?: boolean;
+      roles?: UserRole[];
+    }[];
+
+type Path = {
+  path: SubPath;
+  name: ReactNode;
+  icon: ReactNode;
+  enabled?: boolean;
+  roles?: UserRole[];
+};
+
+type NavItemsProps = {
+  onClick: () => void;
+};
+
+export function NavItems({ onClick }: NavItemsProps) {
+  const t = useI18n();
+
+  const pathGroups: PathGroup[] = [
+    {
+      name: '',
+      paths: [
+        {
+          path: '/', //
+          name: t('home'),
+          icon: <HomeIcon className="h-5 w-5" />,
+        },
+        {
+          path: '/schematics', //
+          name: t('schematic'),
+          icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
+        },
+        {
+          path: '/maps',
+          name: t('map'),
+          icon: <MapIcon className="h-5 w-5" />,
+        },
+        {
+          path: '/posts', //
+          name: t('post'),
+          icon: <BookOpenIcon className="h-5 w-5" />,
+        },
+        {
+          path: '/servers', //
+          name: t('server'),
+          icon: <ServerStackIcon className="h-5 w-5" />,
+        },
+        {
+          path: '/logic', //
+          name: t('logic'),
+          icon: <CommandLineIcon className="h-5 w-5" />,
+        },
+        {
+          path: '/yui', //
+          name: t('chat'),
+          icon: <ChatBubbleLeftIcon className="h-5 w-5" />,
+        },
+      ],
+    },
+    {
+      name: t('user'),
+      roles: ['USER'],
+      paths: [
+        {
+          path: '/users/me', //
+          name: t('user'),
+          icon: <UserCircleIcon className="h-5 w-5" />,
+        },
+        {
+          name: t('upload'),
+          icon: <ArrowUpTrayIcon className="h-5 w-5" />,
+          path: [
+            {
+              name: t('schematic'),
+              path: '/upload/schematic',
+              icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
+            },
+            {
+              path: '/upload/map',
+              name: t('map'),
+              icon: <MapIcon className="h-5 w-5" />,
+            },
+            {
+              path: '/upload/post', //
+              name: t('post'),
+              icon: <BookOpenIcon className="h-5 w-5" />,
+            },
+            {
+              path: '/upload/plugin', //
+              name: t('plugin'),
+              icon: <PuzzlePieceIcon className="h-5 w-5" />,
+              roles: ['ADMIN'],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: t('admin'),
+      roles: ['ADMIN'],
+      paths: [
+        {
+          name: t('dashboard'),
+          path: '/admin',
+          icon: <ChartBarSquareIcon className="h-5 w-5" />,
+        },
+        {
+          name: t('log'),
+          path: '/admin/logs',
+          icon: <CircleStackIcon className="h-5 w-5" />,
+        },
+        {
+          name: <VerifyPath />,
+          path: [
+            {
+              name: <SchematicPath />,
+              path: '/admin/schematics',
+              icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
+            },
+            {
+              name: <MapPath />,
+              path: '/admin/maps',
+              icon: <MapIcon className="h-5 w-5" />,
+            },
+            {
+              name: <PostPath />,
+              path: '/admin/posts',
+              icon: <BookOpenIcon className="h-5 w-5" />,
+            },
+          ],
+          icon: <ShieldCheckIcon className="h-5 w-5" />,
+        },
+        {
+          name: t('plugin'),
+          path: '/admin/plugins',
+          icon: <PuzzlePieceIcon className="h-5 w-5" />,
+        },
+        {
+          name: t('server'),
+          path: '/admin/servers',
+          icon: <ServerStackIcon className="h-5 w-5" />,
+        },
+        {
+          name: t('setting'),
+          path: '/admin/settings',
+          icon: <Cog6ToothIcon className="h-5 w-5" />,
+        },
+      ],
+    },
+    {
+      name: 'Shar',
+      paths: [],
+      roles: ['SHAR'],
+    },
+  ];
+
+  const { session } = useSession();
+
+  const pathName = usePathname();
+  const pattern = /[a-zA-Z0-9-]+\/([a-zA-Z0-9\/-]+)/;
+  const route = '/' + pattern.exec(pathName)?.at(1);
+
+  const [value, setValue] = useState('');
+
+  function getPath(path: SubPath): string[] {
+    if (typeof path === 'string') {
+      return [path];
+    }
+
+    return path.reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
+  }
+
+  const allPaths: string[] = pathGroups
+    .reduce<Path[]>((prev, curr) => prev.concat(curr.paths), [])
+    .reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
+
+  const bestMatch = max(
+    allPaths,
+    (value) => value.length * (route.startsWith(value) ? 1 : 0),
+  );
+
+  function render(paths: Path[]): ReactNode {
+    return paths.map(({ path, icon, name, roles }) => {
+      if (typeof path === 'string')
+        return (
+          <ProtectedElement
+            key={path}
+            session={session}
+            all={roles}
+            passOnEmpty
+          >
+            <Link
+              className={cn(
+                'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                {
+                  'bg-button text-background opacity-100 dark:text-foreground':
+                    path === bestMatch,
+                },
+              )}
+              href={path}
+              onClick={onClick}
+            >
+              <span>{icon}</span>
+              <span>{name}</span>
+            </Link>
+          </ProtectedElement>
+        );
+
+      return (
+        <ProtectedElement
+          key={path.toString()}
+          session={session}
+          all={roles}
+          passOnEmpty
+        >
+          <Accordion
+            key={name?.toString()}
+            type="single"
+            collapsible
+            className="w-full"
+            value={value}
+            onValueChange={setValue}
+          >
+            <AccordionItem className="w-full" value={path.toString()}>
+              <AccordionTrigger
+                className={cn(
+                  'flex gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300',
+                  {
+                    'bg-button text-background opacity-100 hover:bg-button hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
+                      path.some((path) => path.path === bestMatch) && !value,
+                  },
+                )}
+              >
+                <div className="flex items-end gap-3">
+                  <span>{icon}</span>
+                  <span>{name}</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="space-y-1 pl-4">
+                {path
+                  .filter((item) => typeof item.path === 'string')
+                  .map((item) => (
+                    <ProtectedElement
+                      key={item.path}
+                      session={session}
+                      all={item.roles}
+                      passOnEmpty
+                    >
+                      <Link
+                        key={item.path}
+                        className={cn(
+                          'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                          {
+                            'bg-button text-background opacity-100 dark:text-foreground':
+                              item.path === bestMatch,
+                          },
+                        )}
+                        href={item.path}
+                        onClick={onClick}
+                      >
+                        <span>{item.icon}</span>
+                        <span>{item.name}</span>
+                      </Link>
+                    </ProtectedElement>
+                  ))}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </ProtectedElement>
+      );
+    });
+  }
+
+  const renderGroup = ({ roles, name, paths }: PathGroup) => {
+    if (roles) {
+      return (
+        <ProtectedElement key={name} all={roles} session={session}>
+          <div className="space-y-1 py-2">
+            <span className="font-bold">{name}</span>
+            {render(paths)}
+          </div>
+        </ProtectedElement>
+      );
+    }
+
+    return (
+      <div className="space-y-1 py-2" key={name}>
+        <span className="font-bold">{name}</span>
+        {render(paths)}
+      </div>
+    );
+  };
+
+  return (
+    <div className="no-scrollbar h-full w-full space-y-2 divide-y-2 overflow-y-auto">
+      {pathGroups.map((group) => renderGroup(group))}
+    </div>
+  );
+}
+
+function VerifyPath() {
+  const { axios } = useClientAPI();
+  const set = useVerifyCount((data) => data.set);
+  const [{ data: schematicCount }, { data: mapCount }, { data: postCount }] =
+    useQueries({
+      queries: [
+        {
+          queryFn: () => getTotalSchematicUpload(axios, {}),
+          queryKey: ['total-schematic-uploads'],
+          placeholderData: 0,
+        },
+        {
+          queryFn: () => getTotalMapUpload(axios, {}),
+          queryKey: ['total-map-uploads'],
+          placeholderData: 0,
+        },
+        {
+          queryFn: () => getTotalMapUpload(axios, {}),
+          queryKey: ['total-map-uploads'],
+          placeholderData: 0,
+        },
+      ],
+    });
+
+  set({ schematicCount, mapCount, postCount });
+
+  const amount = (schematicCount ?? 0) + (mapCount ?? 0) + (postCount ?? 0);
+
+  return (
+    <>
+      <span>Verify</span>
+      {amount > 0 && <span>({amount})</span>}
+    </>
+  );
+}
+
+function SchematicPath() {
+  const t = useI18n();
+  const schematicCount = useVerifyCount((data) => data.schematicCount);
+
+  return (
+    <>
+      <span>{t('schematic')}</span>
+      {schematicCount > 0 && <span>({schematicCount})</span>}
+    </>
+  );
+}
+function MapPath() {
+  const t = useI18n();
+  const mapCount = useVerifyCount((data) => data.mapCount);
+
+  return (
+    <>
+      <span>{t('map')}</span>
+      {mapCount > 0 && <span>({mapCount})</span>}
+    </>
+  );
+}
+function PostPath() {
+  const t = useI18n();
+  const postCount = useVerifyCount((data) => data.postCount);
+
+  return (
+    <>
+      <span>{t('post')}</span>
+      {postCount > 0 && <span>({postCount})</span>}
+    </>
+  );
+}

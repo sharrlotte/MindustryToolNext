@@ -1,8 +1,9 @@
-import React, { HTMLAttributes } from 'react';
-import { Post } from '@/types/response/Post';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
 import IdUserCard from '@/components/user/id-user-card';
+import { cn } from '@/lib/utils';
+import { Post } from '@/types/response/Post';
+
+import Link from 'next/link';
+import React, { HTMLAttributes } from 'react';
 
 type UploadPostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;

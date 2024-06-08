@@ -7,6 +7,7 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useI18n } from '@/locales/client';
 import getPlugins from '@/query/plugin/get-plugins';
+
 import Link from 'next/link';
 import React, { useRef } from 'react';
 

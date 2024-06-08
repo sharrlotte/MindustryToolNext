@@ -1,7 +1,7 @@
 'use client';
 
-import { useLike } from '@/context/like-context';
 import { ButtonProps } from '@/components/ui/button';
+import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 

@@ -1,30 +1,9 @@
 'use client';
 
-import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
-import env from '@/constant/env';
-import { useToast } from '@/hooks/use-toast';
-import { SchematicDetail } from '@/types/response/SchematicDetail';
-import React, { HTMLAttributes, useEffect, useState } from 'react';
-import DownloadButton from '@/components/button/download-button';
-import IdUserCard from '@/components/user/id-user-card';
-import useClientAPI from '@/hooks/use-client';
-import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import { useMutation } from '@tanstack/react-query';
-import postVerifySchematic from '@/query/schematic/post-verify-schematic';
-import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
-import getSchematicData from '@/query/schematic/get-schematic-data';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import NameTagSelector from '@/components/search/name-tag-selector';
-import { useRouter } from 'next/navigation';
-import deleteSchematic from '@/query/schematic/delete-schematic';
-import useQueriesData from '@/hooks/use-queries-data';
-import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
-import useToastAction from '@/hooks/use-toast-action';
-import { useI18n } from '@/locales/client';
-import { usePostTags } from '@/hooks/use-tags';
-import { LinkIcon } from '@heroicons/react/24/outline';
+import DownloadButton from '@/components/button/download-button';
+import VerifyButton from '@/components/button/verify-button';
 import {
   Detail,
   DetailActions,
@@ -34,6 +13,28 @@ import {
   DetailInfo,
   DetailTitle,
 } from '@/components/detail/detail';
+import ItemRequirementCard from '@/components/schematic/item-requirement-card';
+import NameTagSelector from '@/components/search/name-tag-selector';
+import BackButton from '@/components/ui/back-button';
+import IdUserCard from '@/components/user/id-user-card';
+import env from '@/constant/env';
+import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import { usePostTags } from '@/hooks/use-tags';
+import { useToast } from '@/hooks/use-toast';
+import useToastAction from '@/hooks/use-toast-action';
+import { useI18n } from '@/locales/client';
+import deleteSchematic from '@/query/schematic/delete-schematic';
+import getSchematicData from '@/query/schematic/get-schematic-data';
+import postVerifySchematic from '@/query/schematic/post-verify-schematic';
+import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
+import { SchematicDetail } from '@/types/response/SchematicDetail';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
+import { LinkIcon } from '@heroicons/react/24/outline';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import React, { HTMLAttributes, useEffect, useState } from 'react';
 
 type UploadSchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;

@@ -1,4 +1,5 @@
 import PostServerResponse from '@/types/response/PostServerResponse';
+
 import { AxiosInstance } from 'axios';
 
 export default async function postShutdownInternalServers(

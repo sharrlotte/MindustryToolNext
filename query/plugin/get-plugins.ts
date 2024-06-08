@@ -3,6 +3,7 @@ import {
   searchSchema,
 } from '@/types/data/pageable-search-schema';
 import { Plugin } from '@/types/response/Plugin';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getPlugins(

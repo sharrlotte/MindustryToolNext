@@ -1,4 +1,5 @@
 import InternalServerFile from '@/types/response/InternalServerFile';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getInternalServerFiles(

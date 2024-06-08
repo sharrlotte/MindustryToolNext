@@ -1,16 +1,9 @@
-import React, { HTMLAttributes } from 'react';
-
 import CopyButton from '@/components/button/copy-button';
-import DislikeButton from '@/components/like/dislike-button';
 import DownloadButton from '@/components/button/download-button';
+import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
-import Link from 'next/link';
-import { Map } from '@/types/response/Map';
-import { cn } from '@/lib/utils';
-import env from '@/constant/env';
-import { LinkIcon } from '@heroicons/react/24/outline';
 import {
   Preview,
   PreviewActions,
@@ -18,6 +11,13 @@ import {
   PreviewHeader,
   PreviewImage,
 } from '@/components/preview/preview';
+import env from '@/constant/env';
+import { cn } from '@/lib/utils';
+import { Map } from '@/types/response/Map';
+
+import { LinkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import React, { HTMLAttributes } from 'react';
 
 type MapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;

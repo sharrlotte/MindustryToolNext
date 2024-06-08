@@ -7,6 +7,7 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import getSchematicUploads from '@/query/schematic/get-schematic-uploads';
+
 import React, { useRef } from 'react';
 
 export default function Page() {

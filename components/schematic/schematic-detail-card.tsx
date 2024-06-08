@@ -1,31 +1,9 @@
 'use client';
 
-import LikeComponent from '@/components/like/like-component';
-import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
-import env from '@/constant/env';
-import { useToast } from '@/hooks/use-toast';
-import { SchematicDetail } from '@/types/response/SchematicDetail';
-import React, { HTMLAttributes } from 'react';
-import DownloadButton from '@/components/button/download-button';
-import IdUserCard from '@/components/user/id-user-card';
-import useClientAPI from '@/hooks/use-client';
-import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import getSchematicData from '@/query/schematic/get-schematic-data';
-import DislikeButton from '@/components/like/dislike-button';
-import LikeButton from '@/components/like/like-button';
-import LikeCount from '@/components/like/like-count';
-import useQueriesData from '@/hooks/use-queries-data';
-import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
-import { useMutation } from '@tanstack/react-query';
-import ProtectedElement from '@/layout/protected-element';
-import TakeDownButton from '@/components/button/take-down-button';
-import { useRouter } from 'next/navigation';
-import { useI18n } from '@/locales/client';
-import useToastAction from '@/hooks/use-toast-action';
-import deleteSchematic from '@/query/schematic/delete-schematic';
 import DeleteButton from '@/components/button/delete-button';
-import { LinkIcon } from '@heroicons/react/24/outline';
+import DownloadButton from '@/components/button/download-button';
+import TakeDownButton from '@/components/button/take-down-button';
 import {
   Detail,
   DetailActions,
@@ -36,7 +14,30 @@ import {
   DetailTagsCard,
   DetailTitle,
 } from '@/components/detail/detail';
+import DislikeButton from '@/components/like/dislike-button';
+import LikeButton from '@/components/like/like-button';
+import LikeComponent from '@/components/like/like-component';
+import LikeCount from '@/components/like/like-count';
+import ItemRequirementCard from '@/components/schematic/item-requirement-card';
+import BackButton from '@/components/ui/back-button';
+import IdUserCard from '@/components/user/id-user-card';
+import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
+import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import { useToast } from '@/hooks/use-toast';
+import useToastAction from '@/hooks/use-toast-action';
+import ProtectedElement from '@/layout/protected-element';
+import { useI18n } from '@/locales/client';
+import deleteSchematic from '@/query/schematic/delete-schematic';
+import getSchematicData from '@/query/schematic/get-schematic-data';
+import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
+import { SchematicDetail } from '@/types/response/SchematicDetail';
+
+import { LinkIcon } from '@heroicons/react/24/outline';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import React, { HTMLAttributes } from 'react';
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: SchematicDetail;

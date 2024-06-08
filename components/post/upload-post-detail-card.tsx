@@ -1,27 +1,28 @@
 'use client';
 
+import DeleteButton from '@/components/button/delete-button';
+import VerifyButton from '@/components/button/verify-button';
+import Markdown from '@/components/common/markdown';
+import { Detail } from '@/components/detail/detail';
+import NameTagSelector from '@/components/search/name-tag-selector';
+import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
-import { useToast } from '@/hooks/use-toast';
-import { PostDetail } from '@/types/response/PostDetail';
-import React, { useEffect, useState } from 'react';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientAPI from '@/hooks/use-client';
-import { useMutation } from '@tanstack/react-query';
+import useQueriesData from '@/hooks/use-queries-data';
+import { usePostTags } from '@/hooks/use-tags';
+import { useToast } from '@/hooks/use-toast';
+import { useI18n } from '@/locales/client';
+import deletePost from '@/query/post/delete-post';
 import postVerifyPost from '@/query/post/post-verify-post';
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import NameTagSelector from '@/components/search/name-tag-selector';
-import { useRouter } from 'next/navigation';
-import deletePost from '@/query/post/delete-post';
-import useQueriesData from '@/hooks/use-queries-data';
-import VerifyButton from '@/components/button/verify-button';
-import DeleteButton from '@/components/button/delete-button';
+import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
-import Markdown from '@/components/common/markdown';
-import TagContainer from '@/components/tag/tag-container';
-import { useI18n } from '@/locales/client';
-import { usePostTags } from '@/hooks/use-tags';
-import { Detail } from '@/components/detail/detail';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 type UploadPostDetailCardProps = {
   post: PostDetail;

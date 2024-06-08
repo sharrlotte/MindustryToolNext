@@ -2,6 +2,7 @@ import UploadSchematicDetailCard from '@/components/schematic/upload-schematic-d
 import getServerAPI from '@/query/config/get-server-api';
 import getSchematicUpload from '@/query/schematic/get-schematic-upload';
 import { IdSearchParams } from '@/types/data/id-search-schema';
+
 import React from 'react';
 
 export default async function Page({ params }: { params: IdSearchParams }) {

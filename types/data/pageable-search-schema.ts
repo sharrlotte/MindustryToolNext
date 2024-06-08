@@ -1,6 +1,7 @@
-import { z } from 'zod';
 import { sortSchema } from '@/types/data/schemas';
 import { verifyStatus } from '@/types/response/Status';
+
+import { z } from 'zod';
 
 export const searchSchema = z.object({
   page: z.number().gte(0).default(0),

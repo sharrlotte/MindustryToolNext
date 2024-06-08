@@ -1,3 +1,3 @@
-import ModalLayout from "@/layout/modal-layout";
+import ModalLayout from '@/layout/modal-layout';
 
-export default ModalLayout
+export default ModalLayout;

@@ -1,16 +1,17 @@
 'use client';
 
-import { Like } from '@/types/response/Like';
 import React, { useState } from 'react';
 import { ReactNode } from 'react';
-import { useToast } from '@/hooks/use-toast';
 
 import { LikeAction, LikeTarget } from '@/constant/enum';
-import { useMutation } from '@tanstack/react-query';
-import postLike from '@/query/like/post-like';
-import useClientAPI from '@/hooks/use-client';
 import { FakeLike, LikeContext } from '@/context/like-context';
 import { useSession } from '@/context/session-context';
+import useClientAPI from '@/hooks/use-client';
+import { useToast } from '@/hooks/use-toast';
+import postLike from '@/query/like/post-like';
+import { Like } from '@/types/response/Like';
+
+import { useMutation } from '@tanstack/react-query';
 
 type LikeComponentProps = {
   children: ReactNode;
@@ -72,6 +73,7 @@ function LikeComponent({
       state,
       count: likeData.count + change,
     });
+
     return mutate(action, {
       onError: () => setLikeData({ ...likeData }),
       onSuccess: (result) =>
@@ -83,7 +85,7 @@ function LikeComponent({
     <LikeContext.Provider
       value={{
         likeData,
-        isLoading: status === 'loading' || isPending,
+        isLoading: isPending,
         handleAction,
       }}
     >

@@ -1,6 +1,7 @@
-import { AxiosInstance } from 'axios';
-import PostPostRequest from '@/types/request/PostPostRequest';
 import { toForm } from '@/lib/utils';
+import PostPostRequest from '@/types/request/PostPostRequest';
+
+import { AxiosInstance } from 'axios';
 
 export default async function postPost(
   axios: AxiosInstance,

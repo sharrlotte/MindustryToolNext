@@ -1,5 +1,6 @@
-import { cn } from '@/lib/utils';
 import { UserRole } from '@/constant/enum';
+import { cn } from '@/lib/utils';
+
 import React, { ReactNode } from 'react';
 
 type ColorAsRoleProps = {

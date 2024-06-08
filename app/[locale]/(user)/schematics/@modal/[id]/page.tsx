@@ -1,11 +1,12 @@
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import React from 'react';
+
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/get-server-api';
 import getSchematic from '@/query/schematic/get-schematic';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import React from 'react';
 
 type Props = {
   params: { id: string };

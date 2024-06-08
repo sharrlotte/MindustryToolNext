@@ -1,6 +1,7 @@
 'use client';
 
 import useClientAPI from '@/hooks/use-client';
+
 import { useEffect } from 'react';
 
 export default function ClientInit() {
@@ -8,7 +9,7 @@ export default function ClientInit() {
 
   useEffect(() => {
     if (enabled) {
-      axios.get('/ping?client=web');
+      axios.get('/ping?client=web').catch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [axios, enabled]);

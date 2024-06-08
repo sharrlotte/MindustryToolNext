@@ -1,8 +1,9 @@
 'use client';
 
-import React, { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
+
 import { SearchIcon } from 'lucide-react';
+import React, { HTMLAttributes } from 'react';
 
 type SearchProps = HTMLAttributes<HTMLDivElement>;
 

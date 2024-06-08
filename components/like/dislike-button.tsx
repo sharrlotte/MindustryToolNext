@@ -1,10 +1,11 @@
 'use client';
 
 import { ButtonProps } from '@/components/ui/button';
-import { ChevronDoubleDownIcon } from '@heroicons/react/24/outline';
+import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import { useLike } from '@/context/like-context';
+
+import { ChevronDoubleDownIcon } from '@heroicons/react/24/outline';
 
 type LikeButtonProps = Omit<ButtonProps, 'title'>;
 
@@ -32,7 +33,7 @@ export default function DislikeButton({
       disabled={isLoading}
       onClick={() => handleAction('DISLIKE')}
     >
-      <ChevronDoubleDownIcon className="h-6 w-6" />
+      <ChevronDoubleDownIcon className="h-5 w-5" />
     </button>
   );
 }

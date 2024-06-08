@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
+
 import React, { HTMLAttributes } from 'react';
 
 type NoResultProps = HTMLAttributes<HTMLDivElement>;

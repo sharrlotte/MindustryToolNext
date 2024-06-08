@@ -1,34 +1,34 @@
 'use client';
 
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { useI18n } from '@/locales/client';
-import { InfiniteData, useQuery, useQueryClient } from '@tanstack/react-query';
-import useClientAPI from '@/hooks/use-client';
-import getLogCollections from '@/query/log/get-log-collections';
 import ComboBox from '@/components/common/combo-box';
-import getLogs from '@/query/log/get-logs';
 import InfinitePage from '@/components/common/infinite-page';
-import { LogCollection } from '@/constant/enum';
-import LogCard from '@/components/log/log-card';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
-import { Log } from '@/types/response/Log';
-import useQueryState from '@/hooks/use-query-state';
+import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import { cn, isReachedEnd } from '@/lib/utils';
+import LogCard from '@/components/log/log-card';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { FilterIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { LogCollection } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
-import InfiniteScrollList from '@/components/common/infinite-scroll-list';
+import useClientAPI from '@/hooks/use-client';
+import useQueryState from '@/hooks/use-query-state';
+import { cn, isReachedEnd } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
+import getLogCollections from '@/query/log/get-log-collections';
+import getLogs from '@/query/log/get-logs';
+import { PaginationQuery } from '@/types/data/pageable-search-schema';
+import { Log } from '@/types/response/Log';
+
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { InfiniteData, useQuery, useQueryClient } from '@tanstack/react-query';
+import { FilterIcon } from 'lucide-react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
@@ -134,7 +134,7 @@ function LiveLog() {
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
         <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden">
           {state !== 'connected' ? (
-            <LoadingSpinner className="m-auto h-6 w-6 flex-1" />
+            <LoadingSpinner className="m-auto h-5 w-5 flex-1" />
           ) : (
             <div className="h-full overflow-y-auto" ref={container}>
               <InfiniteScrollList

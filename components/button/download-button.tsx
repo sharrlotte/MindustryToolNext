@@ -1,9 +1,10 @@
 import useClientAPI from '@/hooks/use-client';
 import { cn, fixProgressBar } from '@/lib/utils';
+
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
-import React, { HTMLAttributes } from 'react';
 import { saveAs } from 'file-saver';
+import React, { HTMLAttributes } from 'react';
 
 type DownloadButtonProps = HTMLAttributes<HTMLAnchorElement> & {
   href: string;
@@ -78,7 +79,7 @@ function SecureDownloadButton({
       {isPending ? (
         <div className="relative flex h-full w-full cursor-pointer items-center justify-center">
           <svg
-            className="absolute h-6 w-6 animate-bounce"
+            className="absolute h-5 w-5 animate-bounce"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -88,7 +89,7 @@ function SecureDownloadButton({
             <path d="M 16.5 12 L 12 16.5 L 16.5 12 Z M 12 16.5 L 7.5 12 L 12 16.5 Z M 12 16.5 L 12 3 L 12 16.5 Z"></path>
           </svg>
           <svg
-            className="absolute h-6 w-6"
+            className="absolute h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"

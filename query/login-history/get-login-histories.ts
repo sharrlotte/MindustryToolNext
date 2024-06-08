@@ -1,5 +1,6 @@
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import UserLoginHistory from '@/types/response/UserLoginHistory';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getLoginHistories(

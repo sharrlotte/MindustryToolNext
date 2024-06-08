@@ -1,7 +1,8 @@
+import React, { ReactNode } from 'react';
+
 import LoginButton from '@/components/button/login-button';
 import { UserRole } from '@/constant/enum';
 import { Session } from '@/types/response/Session';
-import React, { ReactNode } from 'react';
 
 type Props = {
   children: ReactNode;
@@ -24,7 +25,7 @@ export default async function ProtectedRoute({
     return (
       <div className="flex h-full w-full flex-col items-center justify-center gap-2">
         Please login to continue
-        <LoginButton className="min-w-[100px]" title="login" />
+        <LoginButton className="min-w-[100px]" />
       </div>
     );
 

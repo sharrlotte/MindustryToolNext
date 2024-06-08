@@ -1,4 +1,5 @@
 import { ItemRequirement } from '@/types/response/ItemRequirement';
+
 import Image from 'next/image';
 import React from 'react';
 
@@ -16,7 +17,7 @@ export default function ItemRequirementCard({
       {requirement.map((r, index) => (
         <span key={index} className="flex flex-row items-center justify-center">
           <Image
-            className="h-6 w-6"
+            className="h-5 w-5"
             width={24}
             height={24}
             src={`/assets/items/item-${r.name}.png`}
