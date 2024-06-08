@@ -2,8 +2,9 @@ import {
   PaginationSearchQuery,
   searchSchema,
 } from '@/types/data/pageable-search-schema';
-import { AxiosInstance } from 'axios';
 import { Map } from '@/types/response/Map';
+
+import { AxiosInstance } from 'axios';
 
 export default async function getUserMaps(
   axios: AxiosInstance,

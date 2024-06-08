@@ -1,13 +1,19 @@
-import React, { HTMLAttributes } from 'react';
-
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import Link from 'next/link';
-import { Map } from '@/types/response/Map';
-import { cn } from '@/lib/utils';
+import {
+  Preview,
+  PreviewActions,
+  PreviewDescription,
+  PreviewHeader,
+  PreviewImage,
+} from '@/components/preview/preview';
 import env from '@/constant/env';
+import { cn } from '@/lib/utils';
+import { Map } from '@/types/response/Map';
+
 import { LinkIcon } from '@heroicons/react/24/outline';
-import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/preview/preview';
+import Link from 'next/link';
+import React, { HTMLAttributes } from 'react';
 
 type UploadMapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;

@@ -1,5 +1,6 @@
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
+
 import React from 'react';
 
 export default function PreviewPageSkeleton() {

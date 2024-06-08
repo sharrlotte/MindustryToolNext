@@ -1,5 +1,5 @@
-import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
-import { useParams } from "next/navigation";
+import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
+import { useParams } from 'next/navigation';
 
 export default function useSafeParam() {
   const params = useParams();
@@ -13,7 +13,7 @@ class SafeParams {
     this.params = params;
   }
 
-  get(key: string, defaultValue: string = ""): string {
+  get(key: string, defaultValue: string = ''): string {
     return this.params[key] ?? defaultValue;
   }
 
@@ -21,7 +21,7 @@ class SafeParams {
     return this.params[key] ?? defaultValue;
   }
 
-  raw(){
+  raw() {
     return this.params;
   }
 }

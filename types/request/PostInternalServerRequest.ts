@@ -1,4 +1,5 @@
 import { InternalServerModes } from '@/types/request/PutInternalServerRequest';
+
 import { z } from 'zod';
 
 export const PostInternalServerSchema = z.object({

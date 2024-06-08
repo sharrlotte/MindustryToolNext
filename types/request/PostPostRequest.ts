@@ -1,4 +1,4 @@
-import { MarkdownData } from "@/components/common/markdown-editor";
+import { MarkdownData } from '@/components/common/markdown-editor';
 
 type PostPostRequest = {
   header: string;

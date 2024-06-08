@@ -1,29 +1,30 @@
 'use client';
 
+import DeleteButton from '@/components/button/delete-button';
+import TakeDownButton from '@/components/button/take-down-button';
 import Markdown from '@/components/common/markdown';
-import LikeComponent from '@/components/like/like-component';
-import BackButton from '@/components/ui/back-button';
-import IdUserCard from '@/components/user/id-user-card';
-import { Tags } from '@/types/response/Tag';
-import { PostDetail } from '@/types/response/PostDetail';
-import React from 'react';
+import { Detail } from '@/components/detail/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
+import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
-import TakeDownButton from '@/components/button/take-down-button';
-import putRemovePost from '@/query/post/put-remove-post';
+import TagContainer from '@/components/tag/tag-container';
+import BackButton from '@/components/ui/back-button';
+import IdUserCard from '@/components/user/id-user-card';
+import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
-import TagContainer from '@/components/tag/tag-container';
 import { useI18n } from '@/locales/client';
 import deletePost from '@/query/post/delete-post';
-import DeleteButton from '@/components/button/delete-button';
-import { Detail } from '@/components/detail/detail';
-import { useSession } from '@/context/session-context';
+import putRemovePost from '@/query/post/put-remove-post';
+import { PostDetail } from '@/types/response/PostDetail';
+import { Tags } from '@/types/response/Tag';
+
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
 type PostDetailCardProps = {
   post: PostDetail;

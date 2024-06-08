@@ -8,6 +8,7 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import getMapUploads from '@/query/map/get-map-uploads';
+
 import React, { useRef } from 'react';
 
 export default function Page() {

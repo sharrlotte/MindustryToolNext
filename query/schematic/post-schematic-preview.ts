@@ -1,5 +1,6 @@
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import SchematicPreviewResponse from '@/types/response/SchematicPreviewResponse';
+
 import { AxiosInstance } from 'axios';
 
 export default async function postSchematicPreview(
@@ -13,7 +14,7 @@ export default async function postSchematicPreview(
   } else if (data instanceof File) {
     form.append('file', data);
   } else {
-    throw new Error("Invalid data")
+    throw new Error('Invalid data');
   }
 
   const result = await axios.post('/schematics/preview', form, {

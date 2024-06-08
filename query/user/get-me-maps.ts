@@ -3,6 +3,7 @@ import {
   searchSchema,
 } from '@/types/data/pageable-search-schema';
 import { Map } from '@/types/response/Map';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getMeMaps(

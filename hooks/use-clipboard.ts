@@ -1,5 +1,6 @@
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
+
 import { useCallback } from 'react';
 
 type CopyProps = {

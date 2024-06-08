@@ -2,6 +2,7 @@ import {
   PaginationSearchQuery,
   searchSchema,
 } from '@/types/data/pageable-search-schema';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getTotalMapUpload(

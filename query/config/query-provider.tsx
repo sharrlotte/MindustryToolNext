@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import queryClientConfig from "@/query/config/query-config";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HTMLAttributes, useState } from "react";
+import queryClientConfig from '@/query/config/query-config';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HTMLAttributes, useState } from 'react';
 
 export default function QueryProvider({
   children,

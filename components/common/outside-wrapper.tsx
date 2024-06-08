@@ -1,5 +1,6 @@
-import React, { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+
+import React, { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 
 type OutsideWrapperProps = HTMLAttributes<HTMLDivElement> & {
   className?: string;

@@ -1,5 +1,6 @@
 'use client';
 
+import LoadingWrapper from '@/components/common/loading-wrapper';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,12 +12,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-
 import { Button } from '@/components/ui/button';
-import { CheckIcon } from '@heroicons/react/24/outline';
-import LoadingWrapper from '@/components/common/loading-wrapper';
-import React from 'react';
 import { useI18n } from '@/locales/client';
+
+import { CheckIcon } from '@heroicons/react/24/outline';
+import React from 'react';
 
 type VerifyButtonProps = {
   isLoading: boolean;

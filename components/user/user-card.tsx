@@ -1,6 +1,7 @@
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 import { User } from '@/types/response/User';
+
 import React from 'react';
 
 type UserCardProps = {

@@ -1,6 +1,7 @@
 'use client';
 
 import { LikeData } from '@/types/data/LikeData';
+
 import React from 'react';
 
 type LikeContextType = {

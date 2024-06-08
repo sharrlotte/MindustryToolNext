@@ -2,6 +2,7 @@ import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
 import getServerAPI from '@/query/config/get-server-api';
 import getPostUpload from '@/query/post/get-post-upload';
 import { IdSearchParams } from '@/types/data/id-search-schema';
+
 import { notFound } from 'next/navigation';
 import React from 'react';
 

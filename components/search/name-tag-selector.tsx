@@ -1,17 +1,17 @@
 'use client';
 
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import React, { useState } from 'react';
-import Tag, { Tags } from '@/types/response/Tag';
-
-import { Button } from '@/components/ui/button';
-import FilterTags from '@/components/tag/filter-tags';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import Search from '@/components/search/search-input';
+import FilterTags from '@/components/tag/filter-tags';
 import TagContainer from '@/components/tag/tag-container';
-import TagGroup from '@/types/response/TagGroup';
-import { cloneDeep } from 'lodash';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useI18n } from '@/locales/client';
+import Tag, { Tags } from '@/types/response/Tag';
+import TagGroup from '@/types/response/TagGroup';
+
+import { cloneDeep } from 'lodash';
+import React, { useState } from 'react';
 
 type NameTagSelectorProps = {
   tags?: TagGroup[];

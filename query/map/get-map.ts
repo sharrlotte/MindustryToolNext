@@ -1,5 +1,6 @@
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { MapDetail } from '@/types/response/MapDetail';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getMap(

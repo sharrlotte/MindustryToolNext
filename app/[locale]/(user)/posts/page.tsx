@@ -1,13 +1,14 @@
 'use client';
 
-import getPosts from '@/query/post/get-posts';
-import NameTagSearch from '@/components/search/name-tag-search';
 import InfinitePage from '@/components/common/infinite-page';
-import useSearchPageParams from '@/hooks/use-search-page-params';
-import PostPreviewCard from '@/components/post/post-preview-card';
-import { useSearchTags } from '@/hooks/use-tags';
-import { useRef } from 'react';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
+import PostPreviewCard from '@/components/post/post-preview-card';
+import NameTagSearch from '@/components/search/name-tag-search';
+import useSearchPageParams from '@/hooks/use-search-page-params';
+import { useSearchTags } from '@/hooks/use-tags';
+import getPosts from '@/query/post/get-posts';
+
+import { useRef } from 'react';
 
 export default function PostsPage() {
   const { post } = useSearchTags();

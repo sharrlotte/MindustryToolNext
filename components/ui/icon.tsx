@@ -1,7 +1,8 @@
-import React from "react";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-import IconPath from "@/constant/icons";
+import IconPath from '@/constant/icons';
+import { cn } from '@/lib/utils';
+
+import Image from 'next/image';
+import React from 'react';
 
 type IconProps = {
   className?: string;

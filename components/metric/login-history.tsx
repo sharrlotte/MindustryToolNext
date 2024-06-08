@@ -4,6 +4,7 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import { APIInstance } from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
 import getLoginHistories from '@/query/login-history/get-login-histories';
+
 import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
 

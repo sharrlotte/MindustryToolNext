@@ -20,6 +20,7 @@ import getUserMaps from '@/query/user/get-user-maps';
 import getUserPosts from '@/query/user/get-user-posts';
 import getUserSchematics from '@/query/user/get-user-schematics';
 import { User } from '@/types/response/User';
+
 import React, { useRef } from 'react';
 
 type TabProps = {

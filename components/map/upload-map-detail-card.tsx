@@ -1,27 +1,9 @@
 'use client';
 
-import BackButton from '@/components/ui/back-button';
 import CopyButton from '@/components/button/copy-button';
-import env from '@/constant/env';
-import { useToast } from '@/hooks/use-toast';
-import { MapDetail } from '@/types/response/MapDetail';
-import React, { useEffect, useState } from 'react';
-import DownloadButton from '@/components/button/download-button';
-import IdUserCard from '@/components/user/id-user-card';
-import useClientAPI from '@/hooks/use-client';
-import { useMutation } from '@tanstack/react-query';
-import postVerifyMap from '@/query/map/post-verify-map';
-import VerifyMapRequest from '@/types/request/VerifyMapRequest';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import NameTagSelector from '@/components/search/name-tag-selector';
-import { useRouter } from 'next/navigation';
-import deleteMap from '@/query/map/delete-map';
-import useQueriesData from '@/hooks/use-queries-data';
-import VerifyButton from '@/components/button/verify-button';
 import DeleteButton from '@/components/button/delete-button';
-import { useI18n } from '@/locales/client';
-import { usePostTags } from '@/hooks/use-tags';
-import { LinkIcon } from '@heroicons/react/24/outline';
+import DownloadButton from '@/components/button/download-button';
+import VerifyButton from '@/components/button/verify-button';
 import {
   Detail,
   DetailActions,
@@ -31,6 +13,25 @@ import {
   DetailInfo,
   DetailTitle,
 } from '@/components/detail/detail';
+import NameTagSelector from '@/components/search/name-tag-selector';
+import BackButton from '@/components/ui/back-button';
+import IdUserCard from '@/components/user/id-user-card';
+import env from '@/constant/env';
+import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import { usePostTags } from '@/hooks/use-tags';
+import { useToast } from '@/hooks/use-toast';
+import { useI18n } from '@/locales/client';
+import deleteMap from '@/query/map/delete-map';
+import postVerifyMap from '@/query/map/post-verify-map';
+import VerifyMapRequest from '@/types/request/VerifyMapRequest';
+import { MapDetail } from '@/types/response/MapDetail';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
+import { LinkIcon } from '@heroicons/react/24/outline';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;

@@ -1,8 +1,8 @@
 'use client';
 
 import axiosInstance from '@/query/config/config';
-import { AxiosInstance } from 'axios';
 
+import { AxiosInstance } from 'axios';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 

@@ -1,5 +1,6 @@
 import useClientAPI from '@/hooks/use-client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
+
 import {
   InfiniteData,
   QueryKey,

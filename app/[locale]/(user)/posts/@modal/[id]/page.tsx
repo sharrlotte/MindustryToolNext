@@ -1,10 +1,10 @@
-import React from 'react';
-
-import type { Metadata } from 'next';
+import PostDetailCard from '@/components/post/post-detail-card';
+import getServerAPI from '@/query/config/get-server-api';
 import getPost from '@/query/post/get-post';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import getServerAPI from '@/query/config/get-server-api';
-import PostDetailCard from '@/components/post/post-detail-card';
+
+import type { Metadata } from 'next';
+import React from 'react';
 
 type Props = {
   params: { id: string };

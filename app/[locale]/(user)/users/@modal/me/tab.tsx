@@ -20,6 +20,7 @@ import getMePosts from '@/query/post/get-me-posts';
 import getMeMaps from '@/query/user/get-me-maps';
 import getMeSchematics from '@/query/user/get-me-schematics';
 import { User } from '@/types/response/User';
+
 import React, { useRef } from 'react';
 
 type TabProps = {

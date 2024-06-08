@@ -1,5 +1,6 @@
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import InternalServerPlugin from '@/types/response/InternalServerPlugin';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getInternalServerPlugins(

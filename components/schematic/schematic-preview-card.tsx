@@ -1,22 +1,11 @@
 'use client';
 
-import React, { HTMLAttributes, memo } from 'react';
-
 import CopyButton from '@/components/button/copy-button';
-import DislikeButton from '@/components/like/dislike-button';
 import DownloadButton from '@/components/button/download-button';
+import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
-import Link from 'next/link';
-import { Schematic } from '@/types/response/Schematic';
-import { cn } from '@/lib/utils';
-import env from '@/constant/env';
-import getSchematicData from '@/query/schematic/get-schematic-data';
-import useClientAPI from '@/hooks/use-client';
-import { useI18n } from '@/locales/client';
-import useToastAction from '@/hooks/use-toast-action';
-import { LinkIcon } from '@heroicons/react/24/outline';
 import {
   Preview,
   PreviewActions,
@@ -24,6 +13,17 @@ import {
   PreviewHeader,
   PreviewImage,
 } from '@/components/preview/preview';
+import env from '@/constant/env';
+import useClientAPI from '@/hooks/use-client';
+import useToastAction from '@/hooks/use-toast-action';
+import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
+import getSchematicData from '@/query/schematic/get-schematic-data';
+import { Schematic } from '@/types/response/Schematic';
+
+import { LinkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import React, { HTMLAttributes, memo } from 'react';
 
 type SchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;

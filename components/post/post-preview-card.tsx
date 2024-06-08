@@ -1,15 +1,16 @@
-import React, { HTMLAttributes } from 'react';
-import { Post } from '@/types/response/Post';
-import env from '@/constant/env';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import LikeComponent from '@/components/like/like-component';
 import CopyButton from '@/components/button/copy-button';
-import IdUserCard from '@/components/user/id-user-card';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
+import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
+import IdUserCard from '@/components/user/id-user-card';
+import env from '@/constant/env';
+import { cn } from '@/lib/utils';
+import { Post } from '@/types/response/Post';
+
 import { LinkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import React, { HTMLAttributes } from 'react';
 
 type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;

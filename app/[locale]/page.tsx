@@ -3,6 +3,7 @@ import UserCard from '@/components/user/user-card';
 import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
 import getUsers from '@/query/user/get-users';
+
 import Link from 'next/link';
 
 export default async function Home() {

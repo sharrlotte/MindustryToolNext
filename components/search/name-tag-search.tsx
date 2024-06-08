@@ -1,25 +1,25 @@
+import ComboBox from '@/components/common/combo-box';
+import OutsideWrapper from '@/components/common/outside-wrapper';
+import Search from '@/components/search/search-input';
+import FilterTags from '@/components/tag/filter-tags';
+import TagContainer from '@/components/tag/tag-container';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import React, { useEffect, useState } from 'react';
+import { TAG_SEPARATOR } from '@/constant/constant';
+import { defaultSortTag } from '@/constant/env';
+import useSearchPageParams from '@/hooks/use-search-page-params';
+import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
+import { QueryParams } from '@/query/config/search-query-params';
 import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
-import { usePathname, useRouter } from 'next/navigation';
-
-import { Button } from '@/components/ui/button';
-import { FilterIcon } from 'lucide-react';
-import FilterTags from '@/components/tag/filter-tags';
-import OutsideWrapper from '@/components/common/outside-wrapper';
-import { QueryParams } from '@/query/config/search-query-params';
-import Search from '@/components/search/search-input';
-import { TAG_SEPARATOR } from '@/constant/constant';
-import TagContainer from '@/components/tag/tag-container';
 import TagGroup from '@/types/response/TagGroup';
+
 import _ from 'lodash';
 import { cloneDeep } from 'lodash';
-import { cn } from '@/lib/utils';
-import { defaultSortTag } from '@/constant/env';
-import { useI18n } from '@/locales/client';
-import useSearchPageParams from '@/hooks/use-search-page-params';
-import ComboBox from '@/components/common/combo-box';
+import { FilterIcon } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 type NameTagSearchProps = {
   className?: string;

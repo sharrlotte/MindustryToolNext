@@ -1,5 +1,6 @@
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import InternalServerMap from '@/types/response/InternalServerMap';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getInternalServerMaps(

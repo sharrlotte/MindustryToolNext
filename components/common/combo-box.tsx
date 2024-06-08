@@ -1,16 +1,16 @@
-import {
-  ChevronUpDownIcon,
-  MagnifyingGlassIcon,
-} from '@heroicons/react/24/outline';
+import { Button } from '@/components/ui/button';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import React, { useState } from 'react';
-
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+import {
+  ChevronUpDownIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/react/24/outline';
+import React, { useState } from 'react';
 
 type Value<T> = { label: string; value: T };
 

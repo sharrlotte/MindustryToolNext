@@ -1,14 +1,15 @@
 'use client';
 
-import getMaps from '@/query/map/get-maps';
-import NameTagSearch from '@/components/search/name-tag-search';
 import InfinitePage from '@/components/common/infinite-page';
-import { useRef } from 'react';
-import useSearchPageParams from '@/hooks/use-search-page-params';
-import MapPreviewCard from '@/components/map/map-preview-card';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import { useSearchTags } from '@/hooks/use-tags';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
+import MapPreviewCard from '@/components/map/map-preview-card';
+import NameTagSearch from '@/components/search/name-tag-search';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import useSearchPageParams from '@/hooks/use-search-page-params';
+import { useSearchTags } from '@/hooks/use-tags';
+import getMaps from '@/query/map/get-maps';
+
+import { useRef } from 'react';
 
 export default function MapPage() {
   const { map } = useSearchTags();

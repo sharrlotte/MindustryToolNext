@@ -1,6 +1,7 @@
 import ColorText from '@/components/common/color-text';
 import { getI18n } from '@/locales/server';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
+
 import Link from 'next/link';
 import React from 'react';
 

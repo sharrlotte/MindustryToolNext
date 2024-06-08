@@ -1,6 +1,7 @@
 import { UserRole } from '@/constant/enum';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { User } from '@/types/response/User';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getUsers(

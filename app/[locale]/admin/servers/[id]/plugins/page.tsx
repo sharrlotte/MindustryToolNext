@@ -4,27 +4,28 @@ import InfinitePage from '@/components/common/infinite-page';
 import LoadingScreen from '@/components/common/loading-screen';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
+import NameTagSearch from '@/components/search/name-tag-search';
+import InternalServerPluginCard from '@/components/server/internal-server-plugin-card';
 import { Button } from '@/components/ui/button';
-import useClientAPI from '@/hooks/use-client';
-import useSafeParam from '@/hooks/use-safe-param';
-import { useI18n } from '@/locales/client';
-import getPlugins from '@/query/plugin/get-plugins';
-import postInternalServerPlugin from '@/query/server/post-internal-server-plugin';
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog';
+import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import useSafeParam from '@/hooks/use-safe-param';
+import useSearchPageParams from '@/hooks/use-search-page-params';
+import { useSearchTags } from '@/hooks/use-tags';
+import { useToast } from '@/hooks/use-toast';
+import { useI18n } from '@/locales/client';
+import getPlugins from '@/query/plugin/get-plugins';
+import getInternalServerPlugins from '@/query/server/get-internal-server-plugins';
+import postInternalServerPlugin from '@/query/server/post-internal-server-plugin';
+
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useRef, useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import NameTagSearch from '@/components/search/name-tag-search';
-import useSearchPageParams from '@/hooks/use-search-page-params';
-import useQueriesData from '@/hooks/use-queries-data';
-import getInternalServerPlugins from '@/query/server/get-internal-server-plugins';
-import InternalServerPluginCard from '@/components/server/internal-server-plugin-card';
-import { useSearchTags } from '@/hooks/use-tags';
 
 export default function Page() {
   const container = useRef<HTMLDivElement>(null);

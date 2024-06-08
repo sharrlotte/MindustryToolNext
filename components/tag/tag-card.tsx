@@ -1,11 +1,11 @@
-import React, { HTMLAttributes } from 'react';
-
-import { Button } from '@/components/ui/button';
-import Tag from '@/types/response/Tag';
 import TagName from '@/components/tag/tag-name';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
+import Tag from '@/types/response/Tag';
+
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import React, { HTMLAttributes } from 'react';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;

@@ -1,10 +1,21 @@
 'use client';
 
-import getInternalServer from '@/query/server/get-internal-server';
+import { isEqual } from 'lodash';
+import { notFound } from 'next/navigation';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { InternalServerDetail } from '@/types/response/InternalServerDetail';
-
+import ComboBox from '@/components/common/combo-box';
+import LoadingSpinner from '@/components/common/loading-spinner';
+import LoadingWrapper from '@/components/common/loading-wrapper';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -16,35 +27,23 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import useClientAPI from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import { isEqual } from 'lodash';
-
-import { useMutation, useQuery } from '@tanstack/react-query';
+import deleteInternalServer from '@/query/server/delete-internal-server';
+import getInternalServer from '@/query/server/get-internal-server';
+import putInternalServer from '@/query/server/put-internal-server';
 import {
   InternalServerModes,
   PutInternalServerRequest,
   PutInternalServerSchema,
 } from '@/types/request/PutInternalServerRequest';
-import putInternalServer from '@/query/server/put-internal-server';
-import useClientAPI from '@/hooks/use-client';
-import ComboBox from '@/components/common/combo-box';
-import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
-import { notFound } from 'next/navigation';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { cn } from '@/lib/utils';
-import LoadingSpinner from '@/components/common/loading-spinner';
-import deleteInternalServer from '@/query/server/delete-internal-server';
-import LoadingWrapper from '@/components/common/loading-wrapper';
+import { InternalServerDetail } from '@/types/response/InternalServerDetail';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 type PageProps = {
   params: { id: string };
@@ -143,7 +142,7 @@ function ServerSettingEditor({ server }: Props) {
     <div className="flex flex-col justify-between gap-2">
       <Form {...form}>
         <form
-          className="flex flex-1 flex-col justify-between bg-card p-2"
+          className="flex flex-1 flex-col justify-between p-2"
           onSubmit={form.handleSubmit((value) => mutate(value))}
         >
           <div className="space-y-6">
@@ -239,15 +238,14 @@ function ServerSettingEditor({ server }: Props) {
               )}
             />
           </div>
-          <div
-            className={cn(
-              'flex translate-y-[100vh] justify-end gap-1 transition-transform duration-500',
-              {
-                'translate-y-0': isChanged,
-              },
-            )}
-          >
+          <div className="flex justify-end p-2 gap-2">
             <Button
+              className={cn(
+                'flex translate-y-[100vh] justify-end transition-transform duration-500',
+                {
+                  'translate-y-0': isChanged,
+                },
+              )}
               variant="secondary"
               title={t('reset')}
               onClick={() => form.reset()}
@@ -256,6 +254,12 @@ function ServerSettingEditor({ server }: Props) {
               {t('reset')}
             </Button>
             <Button
+              className={cn(
+                'flex translate-y-[100vh] justify-end transition-transform duration-500',
+                {
+                  'translate-y-0': isChanged,
+                },
+              )}
               variant="primary"
               type="submit"
               title={t('update')}
@@ -263,39 +267,37 @@ function ServerSettingEditor({ server }: Props) {
             >
               {t('update')}
             </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  className="min-w-20"
+                  title="Delete"
+                  variant="destructive"
+                  disabled={isLoading}
+                >
+                  Delete
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                Are you sure you want to delete
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+                  <AlertDialogAction asChild>
+                    <Button
+                      className="bg-destructive hover:bg-destructive"
+                      title={t('delete')}
+                      onClick={() => deleteServer()}
+                      disabled={isLoading}
+                    >
+                      {t('delete')}
+                    </Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </form>
       </Form>
-      <div className="flex justify-end bg-card p-2">
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              className="min-w-20"
-              title="Delete"
-              variant="destructive"
-              disabled={isLoading}
-            >
-              <LoadingWrapper isLoading={isLoading}>Delete</LoadingWrapper>
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            Are you sure you want to delete
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-              <AlertDialogAction asChild>
-                <Button
-                  className="bg-destructive hover:bg-destructive"
-                  title={t('delete')}
-                  onClick={() => deleteServer()}
-                  disabled={isLoading}
-                >
-                  {t('delete')}
-                </Button>
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
     </div>
   );
 }

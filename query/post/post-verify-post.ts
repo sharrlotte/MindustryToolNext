@@ -1,5 +1,6 @@
 import { toForm } from '@/lib/utils';
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
+
 import { AxiosInstance } from 'axios';
 
 export default async function postVerifyPost(
@@ -8,7 +9,7 @@ export default async function postVerifyPost(
 ): Promise<void> {
   const form = toForm({ tags });
 
-return axios.post(`/posts/${id}/verify`, form, {
+  return axios.post(`/posts/${id}/verify`, form, {
     data: form,
   });
 }

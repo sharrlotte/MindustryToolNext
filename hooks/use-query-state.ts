@@ -1,4 +1,5 @@
 import useSafeSearchParams from '@/hooks/use-safe-search-params';
+
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 

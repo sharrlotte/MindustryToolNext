@@ -1,4 +1,5 @@
 import { Status } from '@/types/response/Status';
+
 import { Like } from './Like';
 
 export type Schematic = {

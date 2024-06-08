@@ -1,10 +1,10 @@
-import React, { HTMLAttributes } from 'react';
-
 import ColorText from '@/components/common/color-text';
-import Image from 'next/image';
 import TagContainer from '@/components/tag/tag-container';
-import { Tags } from '@/types/response/Tag';
 import { cn } from '@/lib/utils';
+import { Tags } from '@/types/response/Tag';
+
+import Image from 'next/image';
+import React, { HTMLAttributes } from 'react';
 
 type DetailProps = HTMLAttributes<HTMLDivElement>;
 

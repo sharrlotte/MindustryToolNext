@@ -1,19 +1,19 @@
 'use client';
 
-import * as React from 'react';
-import { useTheme } from 'next-themes';
-import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
-
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
+
+import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
+import { useTheme } from 'next-themes';
+import * as React from 'react';
+import { HTMLAttributes } from 'react';
 
 type ThemeSwitcherProps = HTMLAttributes<HTMLDivElement>;
 
@@ -38,7 +38,7 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
           variant="icon"
           title="switch theme"
         >
-          <SunIcon className="h-6 w-6 dark:hidden" />
+          <SunIcon className="h-5 w-5 dark:hidden" />
           <MoonIcon className="hidden h-5 w-5 dark:block" />
           <span className="sr-only">Toggle theme</span>
         </Button>

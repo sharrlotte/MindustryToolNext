@@ -1,4 +1,5 @@
 import { AllTagGroup } from '@/types/response/TagGroup';
+
 import { AxiosInstance } from 'axios';
 
 export default async function getTags(
