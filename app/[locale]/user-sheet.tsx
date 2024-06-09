@@ -1,31 +1,36 @@
-import LoginButton from '@/components/button/login-button';
+'use client';
+
+import { GlobeIcon, HomeIcon, UserIcon } from 'lucide-react';
+import Link from 'next/link';
+import React, { ReactNode } from 'react';
+
 import LogoutButton from '@/components/button/logout-button';
 import ComboBox from '@/components/common/combo-box';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import UserAvatar from '@/components/user/user-avatar';
+import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
 import {
   Locale,
   locales,
   useChangeLocale,
   useCurrentLocale,
+  useI18n,
 } from '@/locales/client';
 
 import {
   ArrowLeftEndOnRectangleIcon,
   Cog6ToothIcon,
 } from '@heroicons/react/24/outline';
-import { GlobeIcon, HomeIcon, UserIcon } from 'lucide-react';
-import Link from 'next/link';
-import React, { ReactNode } from 'react';
 
 type Tab = {
   icon: ReactNode;
   action: ReactNode;
 }[][];
 
-export function SideBar() {
+export function UserSheet() {
   const { session } = useSession();
+  const t = useI18n();
 
   const changeLocale = useChangeLocale({ preserveSearchParams: true });
   const locale = useCurrentLocale();
@@ -117,5 +122,5 @@ export function SideBar() {
     );
   }
 
-  return <LoginButton />;
+  return <a href={`${env.url.api}/oauth2/discord`}>{t('login')}</a>;
 }

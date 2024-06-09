@@ -69,7 +69,7 @@ export default async function Layout({ params: { id }, children }: PageProps) {
   ];
 
   return (
-    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] overflow-hidden md:grid-cols-[auto,1fr] md:grid-rows-1 divide-x">
+    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] overflow-hidden md:grid-cols-[auto,1fr] md:grid-rows-1 md:divide-x">
       <div className="flex flex-col flex-wrap relative">
         <div className="flex flex-1 flex-wrap gap-2 overflow-x-auto md:overflow-x-hidden p-2 md:flex-col font-extrabold antialiased">
           <div className="flex gap-1 justify-between items-center">
@@ -83,8 +83,8 @@ export default async function Layout({ params: { id }, children }: PageProps) {
           <div className="mt-auto flex flex-col gap-2">
             <Divider className="hidden md:block" />
             <NavLink
-              id={id}
-              href="/admin/servers"
+              id=""
+              href=""
               label={'Back to server list'}
               icon={<ArrowLeftIcon className="h-5 w-5" />}
             />
