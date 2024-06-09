@@ -4,8 +4,15 @@ import { GlobeIcon, HomeIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
-import LogoutButton from '@/components/button/logout-button';
 import ComboBox from '@/components/common/combo-box';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import Divider from '@/components/ui/divider';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import UserAvatar from '@/components/user/user-avatar';
 import env from '@/constant/env';
@@ -41,7 +48,7 @@ export function UserSheet() {
         icon: <HomeIcon className="h-5 w-5" />,
         action: (
           <Link className="w-full" href="/">
-            Trang chủ
+            {t('home')}
           </Link>
         ),
       },
@@ -51,7 +58,7 @@ export function UserSheet() {
         icon: <UserIcon className="h-5 w-5" />,
         action: (
           <Link className="w-full" href="/users/me">
-            Thông tin tài khoản
+            {t('user')}
           </Link>
         ),
       },
@@ -59,23 +66,42 @@ export function UserSheet() {
     [
       {
         icon: <Cog6ToothIcon className="h-5 w-5" />,
-        action: 'Cài đặt',
+        action: (
+          <Link className="w-full" href="/users/me/setting">
+            {t('setting')}
+          </Link>
+        ),
       },
       {
         icon: <GlobeIcon className="h-5 w-5" />,
         action: (
-          <ComboBox<Locale>
-            value={{ label: locale, value: locale }}
-            values={locales.map((value: Locale) => ({ label: value, value }))}
-            onChange={(value) => changeLocale(value ?? 'en')}
-          />
+          <Dialog>
+            <DialogTrigger>Change language</DialogTrigger>
+            <DialogContent>
+              <DialogHeader>Choose your language</DialogHeader>
+              <ComboBox<Locale>
+                value={{ label: locale, value: locale }}
+                values={locales.map((value: Locale) => ({
+                  label: value,
+                  value,
+                }))}
+                onChange={(value) => changeLocale(value ?? 'en')}
+              />
+              <DialogFooter>
+                You can contribute to website language at
+                <a href="https://github.com/sharrlotte/MindustryToolNext/issues">
+                  {' Github'}
+                </a>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         ),
       },
     ],
     [
       {
         icon: <ArrowLeftEndOnRectangleIcon className="h-5 w-5" />,
-        action: <LogoutButton />,
+        action: <a href={`${env.url.api}/auth/logout`}>{t('logout')}</a>,
       },
     ],
   ];
@@ -101,19 +127,18 @@ export function UserSheet() {
             />
             <span>{session.name}</span>
           </div>
-          <div className="pt-6">
+          <div className="pt-6 divide-2">
             {tabs.map((tab, index) => (
               <React.Fragment key={index}>
                 {tab.map(({ action, icon }, index) => (
                   <div
-                    className="flex gap-2 rounded-md p-2 hover:bg-blue-500 hover:text-white"
+                    className="flex gap-2 rounded-md p-2 hover:bg-button hover:text-white items-center"
                     key={index}
                   >
                     {icon}
                     {action}
                   </div>
                 ))}
-                <div className="mb-1 w-full border-b pt-1" />
               </React.Fragment>
             ))}
           </div>
@@ -122,5 +147,9 @@ export function UserSheet() {
     );
   }
 
-  return <a href={`${env.url.api}/oauth2/discord`}>{t('login')}</a>;
+  return (
+    <a className="font-bold px-2" href={`${env.url.api}/oauth2/discord`}>
+      {t('login')}
+    </a>
+  );
 }

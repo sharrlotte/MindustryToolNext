@@ -154,14 +154,14 @@ function ServerSettingEditor({ server }: Props) {
                 <FormItem>
                   <FormLabel>Server name</FormLabel>
                   <FormControl>
+                    <Input placeholder="Test" {...field} />
+                  </FormControl>
+                  <FormDescription>
                     {field.value ? (
-                      <Input placeholder="Test" {...field} />
+                      <ColorText text={field.value} />
                     ) : (
                       'The server name that displayed in game'
                     )}
-                  </FormControl>
-                  <FormDescription>
-                    <ColorText text={field.value} />
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

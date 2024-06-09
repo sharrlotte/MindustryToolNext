@@ -1,6 +1,6 @@
-import SortTag from '@/types/response/SortTag';
-
 import { z } from 'zod';
+
+import SortTag from '@/types/response/SortTag';
 
 const configSchema = z.object({
   webVersion: z.string(),
@@ -15,7 +15,7 @@ const configSchema = z.object({
 });
 
 const env = configSchema.parse({
-  webVersion: 'Version 1.0.0',
+  webVersion: 'Version 1.1.1',
   locales: ['vi', 'en'],
   defaultLocale: 'en',
   url: {
