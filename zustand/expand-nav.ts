@@ -6,6 +6,6 @@ type State = {
 };
 
 export const useExpand = create<State>((set) => ({
-  expand: true,
+  expand: false,
   setExpand: (data: boolean) => set({ expand: data }),
 }));

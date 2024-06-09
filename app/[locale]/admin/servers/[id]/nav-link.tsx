@@ -24,18 +24,27 @@ export default function NavLink({ id, href, label, icon }: Props) {
   return (
     <Link
       className={cn(
-        'items-center gap-2 flex text-nowrap px-2 py-2 text-sm font-semibold opacity-70 hover:rounded-sm hover:bg-button hover:text-white hover:opacity-100',
+        'items-center flex text-nowrap px-2 py-2 text-sm font-semibold opacity-70 hover:rounded-sm hover:bg-button hover:text-white hover:opacity-100 gap-2 transition-[gap]',
         {
           'rounded-sm bg-button text-white opacity-100':
             (pathname.endsWith(href) && href !== '') ||
-            (href === '' && pathname === `/admin/servers/${id}`),
+            (id !== '' && href === '' && pathname === `/admin/servers/${id}`),
+        },
+        {
+          'gap-0 delay-200': !expand,
         },
       )}
       key={href}
       href={`/admin/servers/${id}/${href}`}
     >
       {icon}
-      {expand && <span className="md:min-w-40">{label}</span>}
+      <span
+        className={cn('w-40 overflow-hidden transition-[width] duration-200', {
+          'w-0': !expand,
+        })}
+      >
+        {label}
+      </span>
     </Link>
   );
 }

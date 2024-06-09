@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import LoadingWrapper from '@/components/common/loading-wrapper';
@@ -153,10 +154,14 @@ function ServerSettingEditor({ server }: Props) {
                 <FormItem>
                   <FormLabel>Server name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Test" {...field} />
+                    {field.value ? (
+                      <Input placeholder="Test" {...field} />
+                    ) : (
+                      'The server name that displayed in game'
+                    )}
                   </FormControl>
                   <FormDescription>
-                    The server name that displayed in game
+                    <ColorText text={field.value} />
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -172,7 +177,11 @@ function ServerSettingEditor({ server }: Props) {
                     <Input placeholder="Some cool stuff" {...field} />
                   </FormControl>
                   <FormDescription>
-                    The server description that displayed in game
+                    {field.value ? (
+                      <ColorText text={field.value} />
+                    ) : (
+                      'The server description that displayed in game'
+                    )}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

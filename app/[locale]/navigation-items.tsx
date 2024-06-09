@@ -106,7 +106,7 @@ export function NavItems({ onClick }: NavItemsProps) {
           icon: <CommandLineIcon className="h-5 w-5" />,
         },
         {
-          path: '/yui', //
+          path: '/chat', //
           name: t('chat'),
           icon: <ChatBubbleLeftIcon className="h-5 w-5" />,
         },
