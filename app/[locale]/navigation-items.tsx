@@ -3,6 +3,7 @@ import {
   FolderIcon,
   HomeIcon,
   MapIcon,
+  ServerCogIcon,
   ShieldCheckIcon,
   UserCircleIcon,
 } from 'lucide-react';
@@ -73,7 +74,7 @@ export function NavItems({ onClick }: NavItemsProps) {
 
   const pathGroups: PathGroup[] = [
     {
-      name: 'User',
+      name: '',
       paths: [
         {
           path: '/', //
@@ -182,7 +183,7 @@ export function NavItems({ onClick }: NavItemsProps) {
         {
           name: t('server'),
           path: '/admin/servers',
-          icon: <ServerStackIcon className="h-5 w-5" />,
+          icon: <ServerCogIcon className="h-5 w-5" />,
         },
         {
           name: t('setting'),
@@ -319,55 +320,14 @@ export function NavItems({ onClick }: NavItemsProps) {
     });
   }
 
-  if (!session) {
-    return (
-      <div className="space-y-2">
-        {pathGroups.map(({ name, roles, paths }) => (
-          <ProtectedElement
-            key={name}
-            all={roles}
-            session={session}
-            passOnEmpty
-          >
-            <div>{name}</div>
-            {render(paths)}
-          </ProtectedElement>
-        ))}
-      </div>
-    );
-  }
-
   return (
-    <div className="no-scrollbar h-full w-full space-y-2 divide-y overflow-y-auto py-2">
-      <Tabs defaultValue={pathGroups[0].name}>
-        <TabsList className="grid w-full grid-flow-col rounded-md">
-          {pathGroups.map(({ name, roles }) => (
-            <ProtectedElement
-              key={name}
-              all={roles}
-              session={session}
-              passOnEmpty
-            >
-              <TabsTrigger className="rounded-sm" value={name}>
-                {name}
-              </TabsTrigger>
-            </ProtectedElement>
-          ))}
-        </TabsList>
-
-        {pathGroups.map(({ name, roles, paths }) => (
-          <ProtectedElement
-            key={name}
-            all={roles}
-            session={session}
-            passOnEmpty
-          >
-            <TabsContent className="space-y-2" value={name}>
-              {render(paths)}
-            </TabsContent>
-          </ProtectedElement>
-        ))}
-      </Tabs>
+    <div className="space-y-1 overflow-y-auto no-scrollbar">
+      {pathGroups.map(({ name, roles, paths }) => (
+        <ProtectedElement key={name} all={roles} session={session} passOnEmpty>
+          <div className="font-bold pt-2">{name}</div>
+          {render(paths)}
+        </ProtectedElement>
+      ))}
     </div>
   );
 }

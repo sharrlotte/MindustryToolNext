@@ -122,5 +122,9 @@ export function UserSheet() {
     );
   }
 
-  return <a href={`${env.url.api}/oauth2/discord`}>{t('login')}</a>;
+  return (
+    <a className="font-bold px-2" href={`${env.url.api}/oauth2/discord`}>
+      {t('login')}
+    </a>
+  );
 }

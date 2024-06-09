@@ -1,5 +1,9 @@
 'use client';
 
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
+import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import { AlertDialogFooter } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
@@ -32,8 +36,6 @@ import { InternalServerModes } from '@/types/request/PutInternalServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import React from 'react';
-import { useForm } from 'react-hook-form';
 
 export default function CreateServerDialog() {
   const t = useI18n();
@@ -98,7 +100,11 @@ export default function CreateServerDialog() {
                       <Input placeholder="Test" {...field} />
                     </FormControl>
                     <FormDescription>
-                      The server name that displayed in game
+                      {field.value ? (
+                        <ColorText text={field.value} />
+                      ) : (
+                        'The server name that displayed in game'
+                      )}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -114,7 +120,11 @@ export default function CreateServerDialog() {
                       <Input placeholder="Some cool stuff" {...field} />
                     </FormControl>
                     <FormDescription>
-                      The server description that displayed in game
+                      {field.value ? (
+                        <ColorText text={field.value} />
+                      ) : (
+                        'The server description that displayed in game'
+                      )}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
