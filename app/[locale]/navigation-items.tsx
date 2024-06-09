@@ -1,9 +1,22 @@
 import {
+  BookOpenIcon,
+  FolderIcon,
+  HomeIcon,
+  MapIcon,
+  ShieldCheckIcon,
+  UserCircleIcon,
+} from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ReactNode, useState } from 'react';
+
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserRole } from '@/constant/enum';
 import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
@@ -26,16 +39,6 @@ import {
   ServerStackIcon,
 } from '@heroicons/react/24/outline';
 import { useQueries } from '@tanstack/react-query';
-import {
-  BookOpenIcon,
-  HomeIcon,
-  MapIcon,
-  ShieldCheckIcon,
-  UserCircleIcon,
-} from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ReactNode, useState } from 'react';
 
 type PathGroup = {
   name: string;
@@ -70,7 +73,7 @@ export function NavItems({ onClick }: NavItemsProps) {
 
   const pathGroups: PathGroup[] = [
     {
-      name: '',
+      name: 'User',
       paths: [
         {
           path: '/', //
@@ -106,17 +109,6 @@ export function NavItems({ onClick }: NavItemsProps) {
           path: '/yui', //
           name: t('chat'),
           icon: <ChatBubbleLeftIcon className="h-5 w-5" />,
-        },
-      ],
-    },
-    {
-      name: t('user'),
-      roles: ['USER'],
-      paths: [
-        {
-          path: '/users/me', //
-          name: t('user'),
-          icon: <UserCircleIcon className="h-5 w-5" />,
         },
         {
           name: t('upload'),
@@ -201,8 +193,14 @@ export function NavItems({ onClick }: NavItemsProps) {
     },
     {
       name: 'Shar',
-      paths: [],
       roles: ['SHAR'],
+      paths: [
+        {
+          name: 'File',
+          path: '/shar/file',
+          icon: <FolderIcon className="h-5 w-5" />,
+        },
+      ],
     },
   ];
 
@@ -289,32 +287,30 @@ export function NavItems({ onClick }: NavItemsProps) {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="space-y-1 pl-4">
-                {path
-                  .filter((item) => typeof item.path === 'string')
-                  .map((item) => (
-                    <ProtectedElement
+                {path.map((item) => (
+                  <ProtectedElement
+                    key={item.path}
+                    session={session}
+                    all={item.roles}
+                    passOnEmpty
+                  >
+                    <Link
                       key={item.path}
-                      session={session}
-                      all={item.roles}
-                      passOnEmpty
+                      className={cn(
+                        'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                        {
+                          'bg-button text-background opacity-100 dark:text-foreground':
+                            item.path === bestMatch,
+                        },
+                      )}
+                      href={item.path}
+                      onClick={onClick}
                     >
-                      <Link
-                        key={item.path}
-                        className={cn(
-                          'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
-                          {
-                            'bg-button text-background opacity-100 dark:text-foreground':
-                              item.path === bestMatch,
-                          },
-                        )}
-                        href={item.path}
-                        onClick={onClick}
-                      >
-                        <span>{item.icon}</span>
-                        <span>{item.name}</span>
-                      </Link>
-                    </ProtectedElement>
-                  ))}
+                      <span>{item.icon}</span>
+                      <span>{item.name}</span>
+                    </Link>
+                  </ProtectedElement>
+                ))}
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -323,29 +319,55 @@ export function NavItems({ onClick }: NavItemsProps) {
     });
   }
 
-  const renderGroup = ({ roles, name, paths }: PathGroup) => {
-    if (roles) {
-      return (
-        <ProtectedElement key={name} all={roles} session={session}>
-          <div className="space-y-1 py-2">
-            <span className="font-bold">{name}</span>
-            {render(paths)}
-          </div>
-        </ProtectedElement>
-      );
-    }
-
+  if (!session) {
     return (
-      <div className="space-y-1 py-2" key={name}>
-        <span className="font-bold">{name}</span>
-        {render(paths)}
+      <div className="space-y-2">
+        {pathGroups.map(({ name, roles, paths }) => (
+          <ProtectedElement
+            key={name}
+            all={roles}
+            session={session}
+            passOnEmpty
+          >
+            <div>{name}</div>
+            {render(paths)}
+          </ProtectedElement>
+        ))}
       </div>
     );
-  };
+  }
 
   return (
-    <div className="no-scrollbar h-full w-full space-y-2 divide-y-2 overflow-y-auto">
-      {pathGroups.map((group) => renderGroup(group))}
+    <div className="no-scrollbar h-full w-full space-y-2 divide-y overflow-y-auto py-2">
+      <Tabs defaultValue={pathGroups[0].name}>
+        <TabsList className="grid w-full grid-flow-col rounded-md">
+          {pathGroups.map(({ name, roles }) => (
+            <ProtectedElement
+              key={name}
+              all={roles}
+              session={session}
+              passOnEmpty
+            >
+              <TabsTrigger className="rounded-sm" value={name}>
+                {name}
+              </TabsTrigger>
+            </ProtectedElement>
+          ))}
+        </TabsList>
+
+        {pathGroups.map(({ name, roles, paths }) => (
+          <ProtectedElement
+            key={name}
+            all={roles}
+            session={session}
+            passOnEmpty
+          >
+            <TabsContent className="space-y-2" value={name}>
+              {render(paths)}
+            </TabsContent>
+          </ProtectedElement>
+        ))}
+      </Tabs>
     </div>
   );
 }

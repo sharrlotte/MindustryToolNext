@@ -21,7 +21,7 @@ export default async function ProtectedRoute({
   children,
   session,
 }: Props) {
-  if (!session?.roles)
+  if (!session || session.roles.length === 0)
     return (
       <div className="flex h-full w-full flex-col items-center justify-center gap-2">
         Please login to continue

@@ -1,7 +1,7 @@
+import React, { ReactNode } from 'react';
+
 import { UserRole } from '@/constant/enum';
 import { Session } from '@/types/response/Session';
-
-import React, { ReactNode } from 'react';
 
 type Props = {
   children: ReactNode;
@@ -24,7 +24,9 @@ export default function ProtectedElement({
   alt,
   passOnEmpty,
 }: Props) {
-  if (!session?.roles) return passOnEmpty ? children : alt;
+  if (!session || session.roles.length === 0) {
+    return passOnEmpty && !all && !any ? children : alt;
+  }
 
   const roles = session.roles;
 

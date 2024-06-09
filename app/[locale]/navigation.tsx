@@ -4,8 +4,8 @@ import { useState } from 'react';
 import React from 'react';
 
 import { NavItems } from '@/app/[locale]/navigation-items';
-import { SideBar } from '@/app/[locale]/sidebar';
 import { UserDisplay } from '@/app/[locale]/user-display';
+import { UserSheet } from '@/app/[locale]/user-sheet';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
@@ -14,7 +14,7 @@ import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 import { useLoadingState } from '@/zustand/loading-state';
 
-import { Bars3Icon, BellIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 
 export default function NavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
@@ -76,17 +76,16 @@ export default function NavigationBar() {
                   </span>
                   <NavItems onClick={hideSidebar} />
                 </div>
-                <UserDisplay />
+                <div className="space-y-2">
+                  <ThemeSwitcher />
+                  <UserDisplay />
+                </div>
               </div>
             </div>
           </OutsideWrapper>
         </div>
         <div className="flex items-center justify-center">
-          <Button className="aspect-square p-0" title="setting" variant="icon">
-            <BellIcon className="h-5 w-5" />
-          </Button>
-          <ThemeSwitcher className="flex aspect-square h-full" />
-          <SideBar />
+          <UserSheet />
         </div>
       </div>
     </>
