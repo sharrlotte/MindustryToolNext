@@ -1,5 +1,9 @@
 'use client';
 
+import { AxiosInstance } from 'axios';
+import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
+
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
@@ -7,9 +11,6 @@ import { useI18n } from '@/locales/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
-import { AxiosInstance } from 'axios';
-import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
 
 type InfinitePageProps<T, P> = {
   className?: string;
@@ -55,6 +56,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
   noResult = noResult ?? (
     <NoResult className="flex w-full items-center justify-center" />
   );
+
 
   if (!loader && !skeleton) {
     loader = (

@@ -1,5 +1,8 @@
 'use client';
 
+import { FilterIcon } from 'lucide-react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
+
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
 import InfiniteScrollList from '@/components/common/infinite-scroll-list';
@@ -27,8 +30,6 @@ import { Log } from '@/types/response/Log';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { InfiniteData, useQuery, useQueryClient } from '@tanstack/react-query';
-import { FilterIcon } from 'lucide-react';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
@@ -141,9 +142,10 @@ function LiveLog() {
                 className="grid w-full grid-cols-1 justify-center gap-1 overflow-hidden"
                 queryKey={['live-log']}
                 reversed
+                threshold={1000}
                 container={() => container.current}
                 params={{ page: 0, items: 40 }}
-                end={<></>}
+                end={<>No more message</>}
                 getFunc={(
                   _,
                   params: {

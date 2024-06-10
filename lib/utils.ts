@@ -1,8 +1,8 @@
-import { Metric } from '@/types/response/Metric';
-
 import { type ClassValue, clsx } from 'clsx';
 import Nprogress from 'nprogress';
 import { twMerge } from 'tailwind-merge';
+
+import { Metric } from '@/types/response/Metric';
 
 var colours: Record<string, string> = {
   aliceblue: '#f0f8ff',
@@ -231,11 +231,11 @@ export function isReachedEnd(element: HTMLElement, offset: number = 100) {
 
 export function mapReversed<T, R>(
   array: T[],
-  mapper: (data: T, index?: number) => R,
+  mapper: (data: T, index: number, array: T[]) => R,
 ) {
   var result = [];
   for (let i = array.length - 1; i >= 0; i--) {
-    result.push(mapper(array[i], i));
+    result.push(mapper(array[i], i, array));
   }
 
   return result;
@@ -259,4 +259,12 @@ export function max<T>(array: T[], transformer: (value: T) => number) {
 
 export function getColor(color: string) {
   return colours[color];
+}
+
+export function mergeNestArray<T>(items: T[][]) {
+  return items.reduce((prev, curr) => prev.concat(curr), []);
+}
+
+export function makeArray(size: number) {
+  return Array(size).fill(1);
 }

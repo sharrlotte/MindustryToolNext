@@ -76,7 +76,9 @@ export function UserSheet() {
         icon: <GlobeIcon className="h-5 w-5" />,
         action: (
           <Dialog>
-            <DialogTrigger>Change language</DialogTrigger>
+            <DialogTrigger className="w-full text-start">
+              Change language
+            </DialogTrigger>
             <DialogContent>
               <DialogHeader>Choose your language</DialogHeader>
               <ComboBox<Locale>
@@ -101,7 +103,11 @@ export function UserSheet() {
     [
       {
         icon: <ArrowLeftEndOnRectangleIcon className="h-5 w-5" />,
-        action: <a href={`${env.url.api}/auth/logout`}>{t('logout')}</a>,
+        action: (
+          <a className="w-full" href={`${env.url.api}/auth/logout`}>
+            {t('logout')}
+          </a>
+        ),
       },
     ],
   ];

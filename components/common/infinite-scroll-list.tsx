@@ -1,13 +1,26 @@
+import { AxiosInstance } from 'axios';
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
-import { isReachedEnd, mapReversed } from '@/lib/utils';
+import {
+  isReachedEnd,
+  makeArray,
+  mapReversed,
+  mergeNestArray,
+} from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
-import { AxiosInstance } from 'axios';
-import React, { ReactNode, useEffect, useMemo } from 'react';
 
 type InfiniteScrollListProps<T, P> = {
   className?: string;
@@ -24,7 +37,7 @@ type InfiniteScrollListProps<T, P> = {
   reversed?: boolean;
   container: () => HTMLElement | null;
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
-  children: (data: T, index?: number) => ReactNode;
+  children: (data: T, index?: number, endIndex?: number) => ReactNode;
 };
 
 export default function InfiniteScrollList<T, P extends PaginationQuery>({
@@ -41,7 +54,23 @@ export default function InfiniteScrollList<T, P extends PaginationQuery>({
   getFunc,
   children,
 }: InfiniteScrollListProps<T, P>) {
+  const currentContainer = container();
+  const listRef = useRef<HTMLDivElement>(null);
+  const currentList = listRef.current;
+
+  const [lastHeight, setLastHeight] = useState(0);
+
   const t = useI18n();
+
+  const getFuncWrapper = useCallback(
+    (axios: AxiosInstance, params: P) => {
+      setLastHeight(currentList?.clientHeight ?? 0);
+
+      return getFunc(axios, params);
+    },
+    [currentList?.clientHeight, getFunc],
+  );
+
   const {
     data,
     isLoading,
@@ -51,32 +80,40 @@ export default function InfiniteScrollList<T, P extends PaginationQuery>({
     hasPreviousPage,
     isFetching,
     fetchNextPage,
-    fetchPreviousPage,
-  } = useInfinitePageQuery(getFunc, params, queryKey);
+  } = useInfinitePageQuery(getFuncWrapper, params, queryKey);
+
+  const pageMapper = useCallback(
+    (item: T, index: number, array: T[]) =>
+      children(item, index, array.length - params.items),
+    [children, params.items],
+  );
+
+  useEffect(() => {
+    const diff = (currentList?.clientHeight ?? 0) - lastHeight;
+
+    if (diff > 0) {
+      currentContainer?.scrollTo({
+        top: diff,
+      });
+    }
+  }, [currentList, data, lastHeight, currentContainer]);
+
   const pages = useMemo(() => {
     return !data
       ? []
       : reversed
-        ? mapReversed(
-            data.pages.reduce((prev, curr) => prev.concat(curr), []),
-            children,
-          )
-        : data.pages
-            .reduce((prev, curr) => prev.concat(curr), [])
-            .map(children);
-  }, [data, reversed, children]);
+        ? mapReversed(mergeNestArray(data.pages), pageMapper)
+        : mergeNestArray(data.pages).map(pageMapper);
+  }, [data, reversed, pageMapper]);
 
-  var currentContainer = container();
   const skeletonElements = useMemo(() => {
     if (skeleton)
-      return Array(skeleton.amount)
-        .fill(1)
-        .map((_, index) => (
-          <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-        ));
+      return makeArray(skeleton.amount).map((_, index) => (
+        <React.Fragment key={index}>{skeleton.item}</React.Fragment>
+      ));
   }, [skeleton]);
 
-  useEffect(() => {
+  const checkIfNeedFetchMore = useCallback(() => {
     const handleEndReach = () => {
       if (hasNextPage) {
         fetchNextPage();
@@ -89,40 +126,45 @@ export default function InfiniteScrollList<T, P extends PaginationQuery>({
       }
     };
 
-    const handleScroll = () => {
-      if (currentContainer && !isFetching) {
-        if (isReachedEnd(currentContainer, threshold)) {
-          if (reversed) {
-            handleTopReach();
-          } else {
-            handleEndReach();
-          }
-        }
-
-        if (currentContainer.scrollTop <= threshold) {
-          if (reversed) {
-            handleEndReach();
-          } else {
-            handleTopReach();
-          }
+    if (currentContainer && !isFetching) {
+      if (isReachedEnd(currentContainer, threshold)) {
+        if (reversed) {
+          handleTopReach();
+        } else {
+          handleEndReach();
         }
       }
-    };
 
-    currentContainer?.addEventListener('scroll', handleScroll);
-    return () => {
-      currentContainer?.removeEventListener('scroll', handleScroll);
-    };
+      if (currentContainer.scrollTop <= threshold) {
+        if (reversed) {
+          handleEndReach();
+        } else {
+          handleTopReach();
+        }
+      }
+    }
   }, [
     currentContainer,
     fetchNextPage,
-    fetchPreviousPage,
     hasNextPage,
     hasPreviousPage,
     isFetching,
     reversed,
     threshold,
   ]);
+
+  useEffect(() => {
+    currentList?.addEventListener('scroll', checkIfNeedFetchMore);
+    return () => {
+      currentList?.removeEventListener('scroll', checkIfNeedFetchMore);
+    };
+  }, [checkIfNeedFetchMore, currentList]);
+
+  useEffect(() => {
+    const interval = setInterval(() => checkIfNeedFetchMore(), 1000);
+
+    return () => clearInterval(interval);
+  }, [checkIfNeedFetchMore]);
 
   noResult = noResult ?? (
     <NoResult className="flex w-full items-center justify-center" />
@@ -165,7 +207,7 @@ export default function InfiniteScrollList<T, P extends PaginationQuery>({
   }
 
   return (
-    <div className={className}>
+    <div className={className} ref={listRef}>
       {pages}
       {isFetching && skeletonElements}
       {!hasNextPage && end}

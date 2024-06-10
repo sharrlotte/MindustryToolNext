@@ -1,7 +1,7 @@
-import env from '@/constant/env';
-
 import Axios from 'axios';
 import { notFound } from 'next/navigation';
+
+import env from '@/constant/env';
 
 export class RestApiError extends Error {
   message: string;
@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
       );
     }
 
-    console.log({ Custom: error });
+    console.error({ Custom: error });
 
     throw error;
   },

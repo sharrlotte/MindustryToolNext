@@ -1,5 +1,8 @@
 'use client';
 
+import Link from 'next/link';
+import React, { useRef } from 'react';
+
 import InfinitePage from '@/components/common/infinite-page';
 import PluginCard from '@/components/plugin/plugin-card';
 import NameTagSearch from '@/components/search/name-tag-search';
@@ -7,9 +10,6 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useI18n } from '@/locales/client';
 import getPlugins from '@/query/plugin/get-plugins';
-
-import Link from 'next/link';
-import React, { useRef } from 'react';
 
 export default function Page() {
   const { plugin } = useSearchTags();
