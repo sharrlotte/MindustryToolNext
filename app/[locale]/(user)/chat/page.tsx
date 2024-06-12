@@ -18,12 +18,14 @@ export default function Page() {
     url: `${env.url.api}/mindustry-gpt/chat`,
   });
 
+  const [reset, setReset] = useState(0);
   const { session: user } = useSession();
   const [prompt, setPrompt] = useState('');
 
   function handleSubmit() {
     submit(prompt);
     setPrompt('');
+    setReset(reset + 1);
     document.getElementById('bottom')?.scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -33,7 +35,7 @@ export default function Page() {
 
   return (
     <div className="grid grid-rows-[1fr,auto,auto] h-full p-2 overflow-hidden gap-2">
-      <div className="p-2 h-full overflow-y-auto space-y-4 ">
+      <div className="p-2 h-full overflow-y-auto space-y-4 flex flex-col">
         {data.length === 0 && !isPending ? (
           <Markdown className="text-center h-full flex justify-center items-center">
             **Write down your question**
@@ -51,8 +53,9 @@ export default function Page() {
         <div id="bottom"></div>
       </div>
       <div className="flex flex-col gap-2">
-        <div className="flex gap-2 border rounded-md mx-auto items-end p-1 w-dvw md:w-2/3">
+        <div className="flex gap-2 border rounded-md mx-auto items-end p-2 w-dvw md:w-2/3">
           <div
+            key={reset}
             className="min-h-full focus-visible:outline-none max-h-56 overflow-y-auto overflow-x-hidden w-full max-w-[100vw] p-1"
             contentEditable
             role="textbox"
@@ -69,8 +72,9 @@ export default function Page() {
             <SendIcon className="w-5 h-5" />
           </Button>
         </div>
-        <div className="text-xs font-bold text-center">
-          Remember that this bot is not perfect. Please check important info.
+        <div className="text-xs text-center">
+          Remember that this bot is not perfect. If there is any issue, please
+          report.
         </div>
       </div>
     </div>

@@ -8,6 +8,13 @@ type MindustryGptConfig = {
   url: string;
 };
 
+let count = 0;
+
+function genId() {
+  count = (count + 1) % Number.MAX_SAFE_INTEGER;
+  return count.toString();
+}
+
 export default function useMindustryGpt({ url }: MindustryGptConfig) {
   const id = useId();
 
@@ -58,6 +65,8 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
   const { mutate, error, isPending } = useMutation({
     mutationKey: ['completion', id],
     mutationFn: async (prompt: string) => {
+      const requestId = genId();
+
       if (abortController) {
         abortController.abort();
       }
@@ -71,14 +80,14 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
           (prev) => {
             if (!prev) {
               return {
-                [id]: token,
+                [requestId]: token,
               };
             }
 
-            if (prev[id]) {
-              prev[id] += token;
+            if (prev[requestId]) {
+              prev[requestId] += token;
             } else {
-              prev[id] = token;
+              prev[requestId] = token;
             }
           },
         );
