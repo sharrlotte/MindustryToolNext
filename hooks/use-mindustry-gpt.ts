@@ -13,7 +13,7 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { data } = useQuery<string>({
+  const { data } = useQuery<Record<string, string>>({
     queryKey: ['completion', id],
   });
 
@@ -66,8 +66,21 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
       setAbortController(controller);
 
       for await (const token of getChat(url, prompt, signal)) {
-        queryClient.setQueryData<string>(['completion', id], (prev) =>
-          prev ? prev + token : token,
+        queryClient.setQueryData<Record<string, string>>(
+          ['completion', id],
+          (prev) => {
+            if (!prev) {
+              return {
+                [id]: token,
+              };
+            }
+
+            if (prev[id]) {
+              prev[id] += token;
+            } else {
+              prev[id] = token;
+            }
+          },
         );
       }
       setAbortController(null);
@@ -81,5 +94,8 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
     },
   });
 
-  return [mutate, { data, error, isPending }] as const;
+  return [
+    mutate,
+    { data: Object.values(data ?? {}), error, isPending },
+  ] as const;
 }
