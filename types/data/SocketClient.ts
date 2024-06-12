@@ -1,3 +1,4 @@
+import { request } from 'http';
 import ReconnectingWebSocket, {
   CloseEvent,
   ErrorEvent,
@@ -119,17 +120,21 @@ export default class SocketClient {
 
         if (message.id) {
           const { resolve } = this.requests[message.id];
-          resolve(message.data);
+          return resolve(message.data);
         }
 
         const handler = this.handlers[message.method + message.room];
 
         if (!handler) {
-          return;
+          throw new Error(
+            'No handler register to response: ' + JSON.stringify(message),
+          );
         }
 
         handler(message.data, event);
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
     };
     this.socket.onerror = (event) => {
       this.errors.forEach((error) => error(event));
@@ -153,13 +158,13 @@ export default class SocketClient {
     payload: T,
   ): Promise<Extract<SocketEvent, { method: T['method'] }>['data']> {
     const id = genId();
-    this.socket.send(
-      JSON.stringify({ id, ...payload, room: this.room, acknowledge: true }),
-    );
-    this.room = '';
 
     const promise = new Promise<any>((resolve, reject) => {
       this.requests[id] = { resolve, reject };
+      this.socket.send(
+        JSON.stringify({ id, ...payload, room: this.room, acknowledge: true }),
+      );
+      this.room = '';
 
       const timeout = setTimeout(() => {
         reject('Request timeout');

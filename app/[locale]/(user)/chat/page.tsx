@@ -1,41 +1,73 @@
-import React from 'react';
+'use client';
 
-import { Input } from '@/components/ui/input';
+import { SendIcon } from 'lucide-react';
+import React, { useState } from 'react';
+
+import Markdown from '@/components/common/markdown';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import UserAvatar from '@/components/user/user-avatar';
+import env from '@/constant/env';
+import { useSession } from '@/context/session-context';
+import useMindustryGpt from '@/hooks/use-mindustry-gpt';
+import { useI18n } from '@/locales/client';
 
 export default function Page() {
+  const t = useI18n();
+  const [submit, { data, isPending }] = useMindustryGpt({
+    url: `${env.url.api}/mindustry-gpt/chat`,
+  });
+
+  const { session: user } = useSession();
+  const [prompt, setPrompt] = useState('');
+
+  function handleSubmit() {
+    submit(prompt);
+    setPrompt('');
+    document.getElementById('bottom')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  if (!user) {
+    return;
+  }
+
   return (
-    <div className="grid grid-rows-[1fr,auto] h-full p-4">
-      <div className="p-2 h-full">
-        MindustryGPT:
-        <br />
-        <div className="p-4">
-          Bộ xử lý (processor) trong Mindustry đóng vai trò là thành phần trung
-          tâm cho phép người chơi sử dụng ngôn ngữ lập trình Industry Logic
-          (mLog) để tự động hóa và quản lý các hoạt động trong trò chơi. Các bộ
-          xử lý có thể thực hiện nhiều nhiệm vụ khác nhau dựa trên mã lệnh mà
-          người chơi viết. Dưới đây là một số chức năng chính của bộ xử lý trong
-          Mindustry: Thu thập thông tin: Lấy thông tin về các khối (blocks) và
-          đơn vị (units), bao gồm cả người chơi, để sử dụng trong các chiến lược
-          và tự động hóa. Điều khiển các tòa nhà và tháp pháo: Điều khiển hoạt
-          động của các tòa nhà và tháp pháo để tối ưu hóa phòng thủ và sản xuất.
-          Đọc và ghi thông tin: Ghi và đọc dữ liệu vào và từ các đơn vị, cho
-          phép truyền thông tin giữa các phần khác nhau của hệ thống. Hiển thị
-          hình dạng và màu sắc: Tạo ra các hình dạng và màu sắc trên các màn
-          hình hiển thị để cung cấp thông tin trực quan cho người chơi. Xuất văn
-          bản: Xuất văn bản thông qua các khối tin nhắn để thông báo hoặc chỉ
-          thị cho người chơi. Quản lý bộ nhớ: Đọc và ghi dữ liệu vào các ô nhớ
-          (memory cells) để lưu trữ và truy xuất thông tin khi cần thiết. Nhận
-          đầu vào từ người chơi: Nhận và xử lý đầu vào từ người chơi thông qua
-          các khối chuyển đổi (switch blocks). Thực hiện các phép toán: Thực
-          hiện các phép toán toán học, bao gồm cả phép toán đơn (unary) và phép
-          toán nhị phân (binary), để xử lý dữ liệu và thực hiện các tính toán
-          cần thiết. Nhờ vào các chức năng này, bộ xử lý trong Mindustry cho
-          phép người chơi tạo ra các hệ thống tự động phức tạp và thực hiện các
-          chiến lược nâng cao, tối ưu hóa việc quản lý tài nguyên và bảo vệ căn
-          cứ.
-        </div>
+    <div className="grid grid-rows-[1fr,auto,auto] h-full p-2 overflow-hidden gap-2">
+      <div className="p-2 h-full overflow-y-auto space-y-4 ">
+        {data.length === 0 && !isPending ? (
+          <Markdown className="text-center h-full flex justify-center items-center">
+            **Write down your question**
+          </Markdown>
+        ) : (
+          data.map((chat, index) => (
+            <div key={index} className="border rounded-lg shadow-lg p-4">
+              <UserAvatar user={user} />
+              <Markdown>{chat.replaceAll('data:', '')}</Markdown>
+            </div>
+          ))
+        )}
+
+        {isPending && <Skeleton className="h-60 w-full rounded-lg"></Skeleton>}
+        <div id="bottom"></div>
       </div>
-      <Input />
+      <div className="flex gap-2 border rounded-md mx-auto items-end p-1 w-dvw md:w-2/3">
+        <div
+          className="min-h-full focus-visible:outline-none max-h-56 overflow-y-auto overflow-x-hidden w-full max-w-[100vw] p-1"
+          contentEditable
+          role="textbox"
+          data-placeholder="How to download the game for free"
+          //@ts-ignore
+          onInput={(event) => setPrompt(event.target.textContent ?? '')}
+        />
+        <Button
+          title={t('submit')}
+          variant="primary"
+          disabled={isPending}
+          onClick={handleSubmit}
+        >
+          <SendIcon className="w-5 h-5" />
+        </Button>
+      </div>
     </div>
   );
 }

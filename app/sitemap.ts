@@ -6,7 +6,6 @@ const routes = ['schematics', 'maps', 'posts', 'servers', 'upload'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return routes.reduce<MetadataRoute.Sitemap>((prev, curr) => {
-    console.log({ env, curr });
     for (let lang of env.locales) {
       prev.push({
         url: `${env.url.base}/${lang}/${curr}`,
