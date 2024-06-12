@@ -50,23 +50,28 @@ export default function Page() {
         {isPending && <Skeleton className="h-60 w-full rounded-lg"></Skeleton>}
         <div id="bottom"></div>
       </div>
-      <div className="flex gap-2 border rounded-md mx-auto items-end p-1 w-dvw md:w-2/3">
-        <div
-          className="min-h-full focus-visible:outline-none max-h-56 overflow-y-auto overflow-x-hidden w-full max-w-[100vw] p-1"
-          contentEditable
-          role="textbox"
-          data-placeholder="How to download the game for free"
-          //@ts-ignore
-          onInput={(event) => setPrompt(event.target.textContent ?? '')}
-        />
-        <Button
-          title={t('submit')}
-          variant="primary"
-          disabled={isPending}
-          onClick={handleSubmit}
-        >
-          <SendIcon className="w-5 h-5" />
-        </Button>
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-2 border rounded-md mx-auto items-end p-1 w-dvw md:w-2/3">
+          <div
+            className="min-h-full focus-visible:outline-none max-h-56 overflow-y-auto overflow-x-hidden w-full max-w-[100vw] p-1"
+            contentEditable
+            role="textbox"
+            data-placeholder="How to download the game for free"
+            //@ts-ignore
+            onInput={(event) => setPrompt(event.target.textContent ?? '')}
+          />
+          <Button
+            title={t('submit')}
+            variant="primary"
+            disabled={isPending}
+            onClick={handleSubmit}
+          >
+            <SendIcon className="w-5 h-5" />
+          </Button>
+        </div>
+        <div className="text-xs font-bold text-center">
+          Remember that this bot is not perfect. Please check important info.
+        </div>
       </div>
     </div>
   );
