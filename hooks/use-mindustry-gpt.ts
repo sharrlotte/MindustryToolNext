@@ -12,7 +12,7 @@ let count = 0;
 
 function genId() {
   count = (count + 1) % Number.MAX_SAFE_INTEGER;
-  return count.toString();
+  return count;
 }
 
 export default function useMindustryGpt({ url }: MindustryGptConfig) {
@@ -20,7 +20,7 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { data } = useQuery<Record<string, string>>({
+  const { data } = useQuery<Record<number, string>>({
     queryKey: ['completion', id],
   });
 
@@ -75,7 +75,7 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
       setAbortController(controller);
 
       for await (const token of getChat(url, prompt, signal)) {
-        queryClient.setQueryData<Record<string, string>>(
+        queryClient.setQueryData<Record<number, string>>(
           ['completion', id],
           (prev) => {
             if (!prev) {
@@ -105,6 +105,12 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
 
   return [
     mutate,
-    { data: Object.values(data ?? {}), error, isPending },
+    {
+      data: Object.entries(data ?? {})
+        .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+        .map((a) => a[1]),
+      error,
+      isPending,
+    },
   ] as const;
 }

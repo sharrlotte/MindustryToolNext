@@ -1,7 +1,7 @@
+import React, { ReactNode } from 'react';
+
 import ProtectedRoute from '@/layout/protected-route';
 import getSession from '@/query/auth/get-session';
-
-import React, { ReactNode } from 'react';
 
 type LayoutProps = {
   children: ReactNode;

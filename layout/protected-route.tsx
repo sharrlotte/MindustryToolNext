@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import LoginButton from '@/components/button/login-button';
+import RequireLogin from '@/components/common/require-login';
 import { UserRole } from '@/constant/enum';
 import { Session } from '@/types/response/Session';
 
@@ -21,13 +22,7 @@ export default async function ProtectedRoute({
   children,
   session,
 }: Props) {
-  if (!session || session.roles.length === 0)
-    return (
-      <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-        Please login to continue
-        <LoginButton className="min-w-[100px] w-fit" />
-      </div>
-    );
+  if (!session || session.roles.length === 0) return <RequireLogin />;
 
   const roles = session.roles;
 

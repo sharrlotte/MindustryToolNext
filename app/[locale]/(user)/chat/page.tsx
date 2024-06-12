@@ -26,7 +26,10 @@ export default function Page() {
     submit(prompt);
     setPrompt('');
     setReset(reset + 1);
-    document.getElementById('bottom')?.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(() => {
+      document.getElementById('bottom')?.scrollIntoView({ behavior: 'smooth' });
+    }, 1000);
   }
 
   if (!user) {
@@ -37,9 +40,9 @@ export default function Page() {
     <div className="grid grid-rows-[1fr,auto,auto] h-full p-2 overflow-hidden gap-2">
       <div className="p-2 h-full overflow-y-auto space-y-4 flex flex-col">
         {data.length === 0 && !isPending ? (
-          <Markdown className="text-center h-full flex justify-center items-center">
-            **Write down your question**
-          </Markdown>
+          <div className="font-bold text-center h-full flex justify-center items-center">
+            {t('chat.message')}
+          </div>
         ) : (
           data.map((chat, index) => (
             <div key={index} className="border rounded-lg shadow-lg p-4">
@@ -49,7 +52,9 @@ export default function Page() {
           ))
         )}
 
-        {isPending && <Skeleton className="h-60 w-full rounded-lg"></Skeleton>}
+        {isPending && (
+          <Skeleton className="h-60 min-h-60 w-full rounded-lg"></Skeleton>
+        )}
         <div id="bottom"></div>
       </div>
       <div className="flex flex-col gap-2">
@@ -59,7 +64,7 @@ export default function Page() {
             className="min-h-full focus-visible:outline-none max-h-56 overflow-y-auto overflow-x-hidden w-full max-w-[100vw] p-1"
             contentEditable
             role="textbox"
-            data-placeholder="How to download the game for free"
+            data-placeholder={t('chat.input-place-holder')}
             //@ts-ignore
             onInput={(event) => setPrompt(event.target.textContent ?? '')}
           />
@@ -72,10 +77,7 @@ export default function Page() {
             <SendIcon className="w-5 h-5" />
           </Button>
         </div>
-        <div className="text-xs text-center">
-          Remember that this bot is not perfect. If there is any issue, please
-          report.
-        </div>
+        <div className="text-xs text-center">{t('chat.notice')}</div>
       </div>
     </div>
   );

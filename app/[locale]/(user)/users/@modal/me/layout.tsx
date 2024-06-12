@@ -1,7 +1,7 @@
+import { ReactNode } from 'react';
+
 import ProtectedRoute from '@/layout/protected-route';
 import getSession from '@/query/auth/get-session';
-
-import { ReactNode } from 'react';
 
 type Props = {
   children: ReactNode;
