@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import React, {
   ReactNode,
+  experimental_useEffectEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -58,6 +59,7 @@ export default function InfiniteScrollList<T, P extends PaginationQuery>({
   const listRef = useRef<HTMLDivElement>(null);
   const currentList = listRef.current;
 
+  const [scrollTop, setScrollTop] = useState(0);
   const [lastHeight, setLastHeight] = useState(0);
 
   const t = useI18n();
@@ -88,15 +90,29 @@ export default function InfiniteScrollList<T, P extends PaginationQuery>({
     [children, params.items],
   );
 
-  useEffect(() => {
-    const diff = (currentList?.clientHeight ?? 0) - lastHeight;
-
-    if (diff > 0) {
-      currentContainer?.scrollTo({
-        top: diff,
-      });
+  const remainScrollPosition = experimental_useEffectEvent(() => {
+    if (!currentContainer || !currentList) {
+      return;
     }
-  }, [currentList, data, lastHeight, currentContainer]);
+
+    const isScrollUp = currentContainer.scrollTop < scrollTop;
+
+    if (!isScrollUp && currentContainer.scrollTop > threshold) {
+      return;
+    }
+
+    const diff = currentList.clientHeight - lastHeight;
+
+    currentContainer.scrollTo({
+      top: diff,
+    });
+  });
+
+  useEffect(() => {
+    remainScrollPosition();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, currentContainer, currentList]);
 
   const pages = useMemo(() => {
     return !data
@@ -154,11 +170,21 @@ export default function InfiniteScrollList<T, P extends PaginationQuery>({
   ]);
 
   useEffect(() => {
+    function onScroll() {
+      if (currentContainer) {
+        setScrollTop(currentContainer.scrollTop);
+      }
+    }
+
+    currentContainer?.addEventListener('scrollend', onScroll);
+    currentContainer?.addEventListener('scroll', onScroll);
     currentList?.addEventListener('scroll', checkIfNeedFetchMore);
     return () => {
+      currentContainer?.removeEventListener('scrollend', onScroll);
+      currentContainer?.removeEventListener('scroll', onScroll);
       currentList?.removeEventListener('scroll', checkIfNeedFetchMore);
     };
-  }, [checkIfNeedFetchMore, currentList]);
+  }, [checkIfNeedFetchMore, currentContainer, currentList]);
 
   useEffect(() => {
     const interval = setInterval(() => checkIfNeedFetchMore(), 1000);

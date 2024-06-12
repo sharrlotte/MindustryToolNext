@@ -20,7 +20,6 @@ export default function NavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
 
   const showSidebar = () => setSidebarVisibility(true);
-
   const hideSidebar = () => setSidebarVisibility(false);
 
   const isLoading = useLoadingState((state) => state.isLoading);

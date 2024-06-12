@@ -1,5 +1,14 @@
 'use client';
 
+import React, {
+  FormEvent,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
 import ColorText from '@/components/common/color-text';
 import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -10,13 +19,10 @@ import { isReachedEnd } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
-import React, {
-  FormEvent,
-  KeyboardEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+
+type ServerMessageData = InfiniteData<Array<string>, unknown> | undefined;
+
+const queryParam = { page: 0, items: 40 };
 
 export default function Page() {
   const { id } = useSearchId();
@@ -41,41 +47,53 @@ export default function Page() {
     }, 1000);
   }, []);
 
+  const handleReceiveMessage = useCallback(
+    (query: ServerMessageData, message: string) => {
+      if (!query) {
+        return undefined;
+      }
+
+      const { pages, ...data } = query;
+
+      let [firstPage, ...rest] = pages;
+      firstPage = [message, ...firstPage];
+
+      return {
+        ...data,
+        pages: [firstPage, ...rest],
+      };
+    },
+    [],
+  );
+
+  const handleScrollOnMessage = useCallback(() => {
+    setTimeout(() => {
+      if (!bottomRef.current || !container.current) {
+        return;
+      }
+
+      if (!isReachedEnd(container.current)) {
+        return;
+      }
+
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  }, []);
+
   useEffect(() => {
     socket.send({ method: 'JOIN_ROOM', data: `SERVER-${id}` });
 
-    socket.onRoom(`SERVER-${id}`).onMessage('SERVER_MESSAGE', (message) => {
-      queryClient.setQueryData<
-        InfiniteData<Array<string>, unknown> | undefined
-      >(['server-message', id], (query) => {
-        if (!query) {
-          return undefined;
-        }
+    socket
+      .onRoom(`SERVER-${id}`) //
+      .onMessage('SERVER_MESSAGE', (message) => {
+        queryClient.setQueryData<ServerMessageData>(
+          ['server-message', id],
+          (query) => handleReceiveMessage(query, message),
+        );
 
-        const { pages, ...data } = query;
-
-        let [firstPage, ...rest] = pages;
-        firstPage = [message, ...firstPage];
-
-        return {
-          ...data,
-          pages: [firstPage, ...rest],
-        };
+        handleScrollOnMessage();
       });
-
-      setTimeout(() => {
-        if (!bottomRef.current || !container.current) {
-          return;
-        }
-
-        if (!isReachedEnd(container.current)) {
-          return;
-        }
-
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    });
-  }, [queryClient, socket, id]);
+  }, [queryClient, socket, id, handleReceiveMessage, handleScrollOnMessage]);
 
   const sendMessage = async () => {
     const data = message.startsWith('/')
@@ -84,6 +102,7 @@ export default function Page() {
 
     if (socket && state === 'connected') {
       socket.onRoom(`SERVER-${id}`).send({ data, method: 'SERVER_MESSAGE' });
+      setMessageHistory((prev) => [...prev, message]);
       setMessage('');
     }
 
@@ -144,15 +163,9 @@ export default function Page() {
                 queryKey={['server-message', id]}
                 reversed
                 container={() => container.current}
-                params={{ page: 0, items: 40 }}
+                params={queryParam}
                 end={<></>}
-                getFunc={(
-                  _,
-                  params: {
-                    page: number;
-                    items: number;
-                  },
-                ) =>
+                getFunc={(_, params) =>
                   socket
                     .onRoom(`SERVER-${id}`)
                     .await({ method: 'GET_MESSAGE', ...params })

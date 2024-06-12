@@ -142,7 +142,6 @@ function LiveLog() {
                 className="grid w-full grid-cols-1 justify-center gap-1 overflow-hidden"
                 queryKey={['live-log']}
                 reversed
-                threshold={1000}
                 container={() => container.current}
                 params={{ page: 0, items: 40 }}
                 end={<>No more message</>}

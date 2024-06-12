@@ -140,6 +140,9 @@ importers:
       react-infinite-scroller:
         specifier: ^1.2.6
         version: 1.2.6(react@19.0.0-rc-cc1ec60d0d-20240607)
+      react-is:
+        specifier: 19.0.0-rc-a26e3f403e-20240611
+        version: 19.0.0-rc-a26e3f403e-20240611
       react-markdown:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.3.3)(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -3155,6 +3158,9 @@ packages:
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  react-is@19.0.0-rc-a26e3f403e-20240611:
+    resolution: {integrity: sha512-vOTGUadk9/0r7xBICNp6kssADmNJZgIG4vg5PWR0QCuokus/QjAemIHugtzgMZQ+Ur/EHf3N6qcLC40J4hMYAQ==}
 
   react-markdown@9.0.1:
     resolution: {integrity: sha512-186Gw/vF1uRkydbsOIkcGXw7aHq0sZOCRFFjGrr7b9+nVZg4UfA4enXCaxm4fUzecU38sWfrNDitGhshuU7rdg==}
@@ -7104,6 +7110,8 @@ snapshots:
       react: 19.0.0-rc-cc1ec60d0d-20240607
 
   react-is@16.13.1: {}
+
+  react-is@19.0.0-rc-a26e3f403e-20240611: {}
 
   react-markdown@9.0.1(@types/react@18.3.3)(react@19.0.0-rc-cc1ec60d0d-20240607):
     dependencies:

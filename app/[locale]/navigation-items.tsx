@@ -3,13 +3,12 @@ import {
   FolderIcon,
   HomeIcon,
   MapIcon,
-  ServerCogIcon,
+  ServerIcon,
   ShieldCheckIcon,
-  UserCircleIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import {
   Accordion,
@@ -17,7 +16,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserRole } from '@/constant/enum';
 import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
@@ -183,7 +181,7 @@ export function NavItems({ onClick }: NavItemsProps) {
         {
           name: t('server'),
           path: '/admin/servers',
-          icon: <ServerCogIcon className="h-5 w-5" />,
+          icon: <ServerIcon className="h-5 w-5" />,
         },
         {
           name: t('setting'),
@@ -242,7 +240,7 @@ export function NavItems({ onClick }: NavItemsProps) {
           >
             <Link
               className={cn(
-                'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                'flex items-end gap-3 font-bold rounded-md px-3 py-2 text-sm opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
                 {
                   'bg-button text-background opacity-100 dark:text-foreground':
                     path === bestMatch,
@@ -251,7 +249,7 @@ export function NavItems({ onClick }: NavItemsProps) {
               href={path}
               onClick={onClick}
             >
-              <span>{icon}</span>
+              <span> {icon}</span>
               <span>{name}</span>
             </Link>
           </ProtectedElement>
@@ -275,7 +273,7 @@ export function NavItems({ onClick }: NavItemsProps) {
             <AccordionItem className="w-full" value={path.toString()}>
               <AccordionTrigger
                 className={cn(
-                  'flex gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300',
+                  'flex gap-3 rounded-md px-3 py-2 text-sm hover:bg-button hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground font-bold opacity-80 transition-colors duration-300 shadow-md',
                   {
                     'bg-button text-background opacity-100 hover:bg-button hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
                       path.some((path) => path.path === bestMatch) && !value,
@@ -298,7 +296,7 @@ export function NavItems({ onClick }: NavItemsProps) {
                     <Link
                       key={item.path}
                       className={cn(
-                        'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-medium opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                        'flex items-end gap-3 rounded-md px-1 py-2 text-xs font-bold opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
                         {
                           'bg-button text-background opacity-100 dark:text-foreground':
                             item.path === bestMatch,
@@ -324,7 +322,7 @@ export function NavItems({ onClick }: NavItemsProps) {
     <div className="space-y-1 overflow-y-auto no-scrollbar">
       {pathGroups.map(({ name, roles, paths }) => (
         <ProtectedElement key={name} all={roles} session={session} passOnEmpty>
-          <div className="font-bold pt-2">{name}</div>
+          <div className="font-extrabold pt-2">{name}</div>
           {render(paths)}
         </ProtectedElement>
       ))}
@@ -363,7 +361,7 @@ function VerifyPath() {
   return (
     <>
       <span>Verify</span>
-      {amount > 0 && <span>({amount})</span>}
+      {amount > 0 && <span> ({amount})</span>}
     </>
   );
 }
@@ -374,8 +372,8 @@ function SchematicPath() {
 
   return (
     <>
-      <span>{t('schematic')}</span>
-      {schematicCount > 0 && <span>({schematicCount})</span>}
+      <span> {t('schematic')}</span>
+      {schematicCount > 0 && <span> ({schematicCount})</span>}
     </>
   );
 }
@@ -386,7 +384,7 @@ function MapPath() {
   return (
     <>
       <span>{t('map')}</span>
-      {mapCount > 0 && <span>({mapCount})</span>}
+      {mapCount > 0 && <span> ({mapCount})</span>}
     </>
   );
 }
@@ -397,7 +395,7 @@ function PostPath() {
   return (
     <>
       <span>{t('post')}</span>
-      {postCount > 0 && <span>({postCount})</span>}
+      {postCount > 0 && <span> ({postCount})</span>}
     </>
   );
 }

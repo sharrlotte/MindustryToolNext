@@ -48,8 +48,16 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
 
   const { page, items, ...rest } = params;
 
+  let filteredQueryKey: any[];
+
+  if (Object.keys(rest).length > 0) {
+    filteredQueryKey = [...queryKey, rest];
+  } else {
+    filteredQueryKey = [...queryKey];
+  }
+
   return useInfiniteQuery<T[], Error, InfiniteData<T[], P>, QueryKey, P>({
-    queryKey: [...queryKey, rest],
+    queryKey: filteredQueryKey,
     initialPageParam: params,
     // @ts-ignore
     queryFn: (context) => getFunc(axios, context.pageParam),
