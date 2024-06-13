@@ -28,7 +28,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 export default function Page() {
   const [path, setPath] = useQueryState('path', '/');
   const { id } = useSearchId();
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const [search, setSearch] = useState('');
   const { toast } = useToast();
 

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+import { revalidate } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import { AlertDialogFooter } from '@/components/ui/alert-dialog';
@@ -50,7 +51,7 @@ export default function CreateServerDialog() {
   });
 
   const { invalidateByKey } = useQueriesData();
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
@@ -64,6 +65,7 @@ export default function CreateServerDialog() {
         variant: 'success',
       });
       form.reset();
+      revalidate('/admin/servers');
     },
     onError: (error) =>
       toast({
@@ -158,7 +160,7 @@ export default function CreateServerDialog() {
                 name="discordChannelId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Port</FormLabel>
+                    <FormLabel>Discord channel id</FormLabel>
                     <FormControl>
                       <Input type="text" {...field} />
                     </FormControl>

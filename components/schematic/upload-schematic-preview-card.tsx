@@ -1,3 +1,6 @@
+import Link from 'next/link';
+import React, { HTMLAttributes } from 'react';
+
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import {
@@ -16,8 +19,6 @@ import getSchematicData from '@/query/schematic/get-schematic-data';
 import { Schematic } from '@/types/response/Schematic';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import React, { HTMLAttributes } from 'react';
 
 type UploadSchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -28,7 +29,7 @@ export default function UploadSchematicPreviewCard({
   schematic,
   ...rest
 }: UploadSchematicPreviewCardProps) {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const t = useI18n();
 
   const link = `${env.url.base}/admin/schematics/${schematic.id}`;

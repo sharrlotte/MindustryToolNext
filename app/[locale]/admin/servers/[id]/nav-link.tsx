@@ -32,6 +32,7 @@ export default function NavLink({ id, href, label, icon }: Props) {
         },
         {
           'gap-0 delay-200': !expand,
+          'w-full': expand,
         },
       )}
       key={href}

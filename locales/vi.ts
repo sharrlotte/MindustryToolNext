@@ -139,4 +139,9 @@ export default {
   reload: 'Reload',
   files: 'Files',
   chat: 'Chat',
+  'chat.notice':
+    ' Hãy nhớ rảng bot này không hoàn hảo. Vì thế nếu có lỗi xãy ra xin hãy báo cáo với chúng tôi',
+  'chat.input-place-holder': 'Tải trò chơi miễn phí',
+  'chat.message': 'Hãy viết câu hỏi của bạn',
+  'require-login': 'Đăng nhập để tiếp tục',
 } as const;

@@ -29,7 +29,7 @@ function LikeComponent({
   targetId,
 }: LikeComponentProps) {
   const { session } = useSession();
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const [likeData, setLikeData] = useState({
     ...(initialLikeData ?? FakeLike),
     count: initialLikeCount,

@@ -1,14 +1,14 @@
 'use client';
 
 import { isEqual } from 'lodash';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { revalidate } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,7 +51,7 @@ type PageProps = {
 };
 
 export default function Page({ params: { id } }: PageProps) {
-  const { axios, enabled } = useClientAPI();
+  const axios = useClientAPI();
 
   const {
     data: server,
@@ -62,7 +62,6 @@ export default function Page({ params: { id } }: PageProps) {
   } = useQuery({
     queryKey: ['internal-servers', id],
     queryFn: () => getInternalServer(axios, { id }),
-    enabled,
   });
 
   if (isLoading || isPending) {
@@ -86,13 +85,14 @@ type Props = {
 
 function ServerSettingEditor({ server }: Props) {
   const t = useI18n();
+  const router = useRouter();
   const [currentServer, setCurrentServer] = useState(server);
   const form = useForm<PutInternalServerRequest>({
     resolver: zodResolver(PutInternalServerSchema),
     defaultValues: currentServer,
   });
   const { invalidateByKey } = useQueriesData();
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { toast } = useToast();
 
   const { id } = currentServer;
@@ -127,6 +127,8 @@ function ServerSettingEditor({ server }: Props) {
         title: t('delete-success'),
         variant: 'success',
       });
+      revalidate('/admin/servers');
+      router.push('/admin/servers');
     },
     onError: (error) =>
       toast({

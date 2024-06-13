@@ -1,5 +1,8 @@
 'use client';
 
+import Link from 'next/link';
+import React, { HTMLAttributes, memo } from 'react';
+
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import DislikeButton from '@/components/like/dislike-button';
@@ -22,8 +25,6 @@ import getSchematicData from '@/query/schematic/get-schematic-data';
 import { Schematic } from '@/types/response/Schematic';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import React, { HTMLAttributes, memo } from 'react';
 
 type SchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
@@ -35,7 +36,7 @@ const SchematicPreviewCard = memo(function SchematicPreviewCard({
   ...rest
 }: SchematicPreviewCardProps) {
   const t = useI18n();
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
 
   const link = `${env.url.base}/schematics/${schematic.id}`;
 

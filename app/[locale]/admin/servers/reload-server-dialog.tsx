@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,11 +18,10 @@ import { useI18n } from '@/locales/client';
 import postReloadInternalServers from '@/query/server/post-reload-internal-servers';
 
 import { useMutation } from '@tanstack/react-query';
-import React from 'react';
 
 export default function ReloadServerDialog() {
   const t = useI18n();
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { invalidateByKey } = useQueriesData();
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],

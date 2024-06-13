@@ -1,5 +1,9 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+import { useState } from 'react';
+import { useDebounceValue } from 'usehooks-ts';
+
 import ComboBox from '@/components/common/combo-box';
 import LoadingScreen from '@/components/common/loading-screen';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -32,9 +36,6 @@ import { PostDetail } from '@/types/response/PostDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import dynamic from 'next/dynamic';
-import { useState } from 'react';
-import { useDebounceValue } from 'usehooks-ts';
 
 const MarkdownEditor = dynamic(
   () => import('@/components/common/markdown-editor'),
@@ -125,7 +126,7 @@ function TranslatePage({
 }: {
   shared: Shared;
 } & { post: PostDetail }) {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const languages = useLanguages();
@@ -230,7 +231,7 @@ function UploadPage({
   shared: Shared;
 }) {
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const { post: postTags } = usePostTags();
@@ -333,7 +334,7 @@ type AddTranslationDialogProps = {
 
 function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
   const [name, setName] = useDebounceValue('', 500);
-  const { axios, enabled } = useClientAPI();
+  const axios = useClientAPI();
   const t = useI18n();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['me-posts', name],
@@ -345,7 +346,6 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         tags: [],
         sort: 'time_1',
       }),
-    enabled,
   });
 
   const { mutate, isPending } = useMutation({

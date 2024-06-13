@@ -1,5 +1,8 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import React from 'react';
+
 import CopyButton from '@/components/button/copy-button';
 import DeleteButton from '@/components/button/delete-button';
 import DownloadButton from '@/components/button/download-button';
@@ -33,8 +36,6 @@ import { MapDetail } from '@/types/response/MapDetail';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import React from 'react';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -43,7 +44,7 @@ type MapDetailCardProps = {
 export default function MapDetailCard({ map }: MapDetailCardProps) {
   const link = `${env.url.base}/maps/${map.id}`;
 
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { deleteById, invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();

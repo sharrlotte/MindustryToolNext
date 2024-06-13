@@ -1,5 +1,8 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
 import CopyButton from '@/components/button/copy-button';
 import DeleteButton from '@/components/button/delete-button';
 import DownloadButton from '@/components/button/download-button';
@@ -30,8 +33,6 @@ import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;
@@ -40,7 +41,7 @@ type UploadMapDetailCardProps = {
 export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { map: mapTags } = usePostTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();

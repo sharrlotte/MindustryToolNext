@@ -8,12 +8,19 @@ type MindustryGptConfig = {
   url: string;
 };
 
+let count = 0;
+
+function genId() {
+  count = (count + 1) % Number.MAX_SAFE_INTEGER;
+  return count;
+}
+
 export default function useMindustryGpt({ url }: MindustryGptConfig) {
   const id = useId();
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { data } = useQuery<Record<string, string>>({
+  const { data } = useQuery<Record<number, string>>({
     queryKey: ['completion', id],
   });
 
@@ -58,6 +65,8 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
   const { mutate, error, isPending } = useMutation({
     mutationKey: ['completion', id],
     mutationFn: async (prompt: string) => {
+      const requestId = genId();
+
       if (abortController) {
         abortController.abort();
       }
@@ -66,19 +75,19 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
       setAbortController(controller);
 
       for await (const token of getChat(url, prompt, signal)) {
-        queryClient.setQueryData<Record<string, string>>(
+        queryClient.setQueryData<Record<number, string>>(
           ['completion', id],
           (prev) => {
             if (!prev) {
               return {
-                [id]: token,
+                [requestId]: token,
               };
             }
 
-            if (prev[id]) {
-              prev[id] += token;
+            if (prev[requestId]) {
+              prev[requestId] += token;
             } else {
-              prev[id] = token;
+              prev[requestId] = token;
             }
           },
         );
@@ -96,6 +105,12 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
 
   return [
     mutate,
-    { data: Object.values(data ?? {}), error, isPending },
+    {
+      data: Object.entries(data ?? {})
+        .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+        .map((a) => a[1]),
+      error,
+      isPending,
+    },
   ] as const;
 }

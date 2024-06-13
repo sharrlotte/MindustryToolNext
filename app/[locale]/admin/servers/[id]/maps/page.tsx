@@ -1,5 +1,7 @@
 'use client';
 
+import React, { useRef, useState } from 'react';
+
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingScreen from '@/components/common/loading-screen';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
@@ -28,7 +30,6 @@ import getInternalServerMaps from '@/query/server/get-internal-server-maps';
 import postInternalServerMap from '@/query/server/post-internal-server-map';
 
 import { useMutation } from '@tanstack/react-query';
-import React, { useRef, useState } from 'react';
 
 export default function Page() {
   const container = useRef<HTMLDivElement | null>(null);
@@ -72,7 +73,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
   const { toast } = useToast();
   const { map } = useSearchTags();
   const [show, setShow] = useState(false);
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const t = useI18n();
 
   const { invalidateByKey } = useQueriesData();

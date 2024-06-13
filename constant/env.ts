@@ -15,7 +15,7 @@ const configSchema = z.object({
 });
 
 const env = configSchema.parse({
-  webVersion: 'Version 1.1.1',
+  webVersion: 'v1.1.1',
   locales: ['vi', 'en'],
   defaultLocale: 'en',
   url: {

@@ -1,5 +1,8 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import React from 'react';
+
 import DeleteButton from '@/components/button/delete-button';
 import TakeDownButton from '@/components/button/take-down-button';
 import Markdown from '@/components/common/markdown';
@@ -23,8 +26,6 @@ import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import React from 'react';
 
 type PostDetailCardProps = {
   post: PostDetail;
@@ -32,7 +33,7 @@ type PostDetailCardProps = {
 
 export default function PostDetailCard({ post }: PostDetailCardProps) {
   const displayTags = Tags.parseStringArray(post.tags);
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { deleteById, invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();
@@ -93,7 +94,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
           <TagContainer tags={displayTags} />
         </div>
       </header>
-      <div>
+      <div className="h-full flex flex-1">
         <Markdown>{post.content}</Markdown>
       </div>
       <footer className="flex gap-1 rounded-md bg-card p-2">

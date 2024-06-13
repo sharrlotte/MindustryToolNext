@@ -1,10 +1,11 @@
 'use client';
 
-import { GlobeIcon, HomeIcon, UserIcon } from 'lucide-react';
+import { GlobeIcon, HomeIcon, InfoIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
+import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 import {
   Dialog,
   DialogContent,
@@ -14,6 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
@@ -62,16 +64,16 @@ export function UserSheet() {
           </Link>
         ),
       },
-    ],
-    [
       {
-        icon: <Cog6ToothIcon className="h-5 w-5" />,
+        icon: <InfoIcon className="h-5 w-5" />,
         action: (
-          <Link className="w-full" href="/users/me/setting">
-            {t('setting')}
+          <Link className="w-full" href="/users/me">
+            Info
           </Link>
         ),
       },
+    ],
+    [
       {
         icon: <GlobeIcon className="h-5 w-5" />,
         action: (
@@ -87,22 +89,34 @@ export function UserSheet() {
                   label: value,
                   value,
                 }))}
+                searchBar={false}
                 onChange={(value) => changeLocale(value ?? 'en')}
               />
               <DialogFooter>
-                You can contribute to website language at
                 <a href="https://github.com/sharrlotte/MindustryToolNext/issues">
-                  {' Github'}
+                  You can contribute to website language at Github
                 </a>
               </DialogFooter>
             </DialogContent>
           </Dialog>
         ),
       },
+      {
+        icon: undefined,
+        action: <ThemeSwitcher />,
+      },
+      {
+        icon: <Cog6ToothIcon className="h-6 w-6" />,
+        action: (
+          <Link className="w-full" href="/users/me/setting">
+            {t('setting')}
+          </Link>
+        ),
+      },
     ],
     [
       {
-        icon: <ArrowLeftEndOnRectangleIcon className="h-5 w-5" />,
+        icon: <ArrowLeftEndOnRectangleIcon className="h-6 w-7" />,
         action: (
           <a className="w-full" href={`${env.url.api}/auth/logout`}>
             {t('logout')}
@@ -123,29 +137,34 @@ export function UserSheet() {
             clickable={false}
           />
         </SheetTrigger>
-        <SheetContent className="space-y-2 p-2">
+        <SheetContent className="space-y-2 p-2 md:min-w-[20vw] text-sm">
           <div className="flex items-end gap-2">
             <UserAvatar
-              className="h-8 w-8"
+              className="h-12 w-12"
               user={session}
               url="/users/me"
               clickable={false}
             />
-            <span>{session.name}</span>
+            <ColorAsRole
+              className="capitalize font-bold text-xl"
+              roles={session.roles}
+            >
+              {session.name}
+            </ColorAsRole>
           </div>
-          <div className="pt-6 divide-2">
+          <div className="divide-y-2 space-y-4 text-opacity-90">
             {tabs.map((tab, index) => (
-              <React.Fragment key={index}>
+              <div key={index} className="pt-4">
                 {tab.map(({ action, icon }, index) => (
                   <div
-                    className="flex gap-2 rounded-md p-2 hover:bg-button hover:text-white items-center"
+                    className="grid grid-cols-[20px,1fr] w-full gap-4 rounded-sm p-2 hover:bg-button hover:text-white items-center cursor-pointer min-w-52"
                     key={index}
                   >
                     {icon}
                     {action}
                   </div>
                 ))}
-              </React.Fragment>
+              </div>
             ))}
           </div>
         </SheetContent>

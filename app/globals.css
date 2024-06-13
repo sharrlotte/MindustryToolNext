@@ -76,6 +76,9 @@
     @apply box-border border-border;
   }
 
+  .markdown-image {
+    @apply my-4;
+  }
   .markdown > * {
     @apply overflow-hidden;
   }
@@ -101,11 +104,11 @@
   }
 
   p > code {
-    @apply rounded-md border bg-background bg-opacity-60 p-1 text-foreground;
+    @apply my-4 rounded-md border bg-background bg-opacity-60 p-1 text-foreground;
   }
 
   pre {
-    @apply rounded-md border bg-background bg-opacity-60 p-1 text-foreground;
+    @apply my-4 rounded-md border bg-background bg-opacity-60 p-1 text-foreground;
   }
 
   *::-webkit-scrollbar-track {

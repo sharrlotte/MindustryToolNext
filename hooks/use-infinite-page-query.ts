@@ -14,7 +14,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
   params: P,
   queryKey: QueryKey,
 ) {
-  const { axios, enabled } = useClientAPI();
+  const axios = useClientAPI();
 
   const getNextPageParam = (
     lastPage: T[],
@@ -63,6 +63,5 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     queryFn: (context) => getFunc(axios, context.pageParam),
     getNextPageParam,
     getPreviousPageParam,
-    enabled,
   });
 }

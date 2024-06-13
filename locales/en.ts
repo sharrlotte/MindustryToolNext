@@ -142,4 +142,9 @@ export default {
   time_1: 'Mới nhất',
   'time_-1': 'Cũ nhất',
   like_1: 'Lượt thích',
+  'chat.notice':
+    ' Remember that this bot is not perfect. If there is any issue, please report.',
+  'chat.input-place-holder': 'How to download the game for free',
+  'chat.message': 'Write down your question',
+  'require-login': 'Login to continute',
 } as const;

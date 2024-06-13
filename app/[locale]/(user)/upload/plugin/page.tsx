@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
+import { useForm } from 'react-hook-form';
+
 import LoadingWrapper from '@/components/common/loading-wrapper';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import { Button } from '@/components/ui/button';
@@ -29,12 +31,13 @@ import { TagGroups } from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+
+/* eslint-disable @next/next/no-img-element */
 
 /* eslint-disable @next/next/no-img-element */
 
 export default function Page() {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { plugin } = usePostTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();

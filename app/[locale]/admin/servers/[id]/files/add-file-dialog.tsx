@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -20,9 +24,6 @@ import postInternalServerFile from '@/query/server/post-internal-server-file';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 const addFileSchema = z.object({
   file: z
@@ -36,7 +37,7 @@ type Props = {
 };
 
 export default function AddFileDialog({ id, path }: Props) {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { invalidateByKey } = useQueriesData();
 
   type AddFileRequest = z.infer<typeof addFileSchema>;

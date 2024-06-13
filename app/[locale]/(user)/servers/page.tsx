@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef, useState } from 'react';
+
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingWrapper from '@/components/common/loading-wrapper';
 import ExternalServerCard from '@/components/server/external-server-card';
@@ -21,14 +23,13 @@ import PostServerResponse from '@/types/response/PostServerResponse';
 
 import { ClipboardIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
 
 export default function Page() {
   const container = useRef<HTMLDivElement>(null);
   const [address, setAddress] = useState('');
   const [result, setResult] = useState<PostServerResponse>();
   const params = { page: 0, items: 40 };
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { toast } = useToast();
 
   const t = useI18n();
