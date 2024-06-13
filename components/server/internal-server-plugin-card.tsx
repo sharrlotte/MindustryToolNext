@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import DeleteButton from '@/components/button/delete-button';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -9,7 +11,6 @@ import deleteInternalServerPlugin from '@/query/server/delete-internal-server-pl
 import InternalServerPlugin from '@/types/response/InternalServerPlugin';
 
 import { useMutation } from '@tanstack/react-query';
-import React from 'react';
 
 type Props = {
   plugin: InternalServerPlugin;
@@ -22,7 +23,7 @@ export default function InternalServerPluginCard({
   const { invalidateByKey } = useQueriesData();
   const t = useI18n();
 
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: () => deleteInternalServerPlugin(axios, serverId, id),
     onSuccess: () => {

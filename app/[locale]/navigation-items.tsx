@@ -319,11 +319,13 @@ export function NavItems({ onClick }: NavItemsProps) {
   }
 
   return (
-    <div className="space-y-1 overflow-y-auto no-scrollbar">
+    <div className="space-y-4 overflow-y-auto no-scrollbar">
       {pathGroups.map(({ name, roles, paths }) => (
         <ProtectedElement key={name} all={roles} session={session} passOnEmpty>
-          <div className="font-extrabold pt-2">{name}</div>
-          {render(paths)}
+          <div className="space-y-1">
+            <div className="font-extrabold pt-2">{name}</div>
+            {render(paths)}
+          </div>
         </ProtectedElement>
       ))}
     </div>
@@ -331,7 +333,7 @@ export function NavItems({ onClick }: NavItemsProps) {
 }
 
 function VerifyPath() {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const set = useVerifyCount((data) => data.set);
   const [{ data: schematicCount }, { data: mapCount }, { data: postCount }] =
     useQueries({

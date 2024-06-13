@@ -1,9 +1,9 @@
 'use client';
 
+import { notFound } from 'next/navigation';
+
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/locales/client';
-
-import { notFound } from 'next/navigation';
 
 export default function ErrorScreen({
   reset,

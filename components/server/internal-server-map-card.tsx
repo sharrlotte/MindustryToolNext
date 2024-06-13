@@ -1,5 +1,8 @@
 'use client';
 
+import Link from 'next/link';
+import React from 'react';
+
 import DeleteButton from '@/components/button/delete-button';
 import {
   Preview,
@@ -18,8 +21,6 @@ import deleteInternalServerMap from '@/query/server/delete-internal-server-map';
 import InternalServerMap from '@/types/response/InternalServerMap';
 
 import { useMutation } from '@tanstack/react-query';
-import Link from 'next/link';
-import React from 'react';
 
 type InternalServerMapCardProps = {
   map: InternalServerMap;
@@ -28,7 +29,7 @@ type InternalServerMapCardProps = {
 export default function InternalServerMapCard({
   map: { name, mapId, id, serverId },
 }: InternalServerMapCardProps) {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const t = useI18n();
   const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();

@@ -1,5 +1,8 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
 import DeleteButton from '@/components/button/delete-button';
 import VerifyButton from '@/components/button/verify-button';
 import Markdown from '@/components/common/markdown';
@@ -21,8 +24,6 @@ import { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
 
 type UploadPostDetailCardProps = {
   post: PostDetail;
@@ -33,7 +34,7 @@ export default function UploadPostDetailCard({
 }: UploadPostDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { post: postTags } = usePostTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();

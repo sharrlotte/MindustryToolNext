@@ -11,7 +11,7 @@ export default async function Home() {
   await setStaticParamsLocale('en');
 
   const t = await getI18n();
-  const { axios } = await getServerAPI();
+  const axios = await getServerAPI();
   const users = await getUsers(axios, {
     page: 0,
     items: 20,

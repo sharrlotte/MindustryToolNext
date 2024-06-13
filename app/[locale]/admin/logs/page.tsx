@@ -34,12 +34,11 @@ import { InfiniteData, useQuery, useQueryClient } from '@tanstack/react-query';
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
 
-  const { axios, enabled } = useClientAPI();
+  const axios = useClientAPI();
 
   const { data } = useQuery({
     queryKey: ['log-collections'],
     queryFn: async () => getLogCollections(axios),
-    enabled,
   });
 
   return (

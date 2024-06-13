@@ -47,7 +47,7 @@ type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
 export default function SchematicDetailCard({
   schematic,
 }: SchematicDetailCardProps) {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { deleteById, invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();

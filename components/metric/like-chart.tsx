@@ -1,12 +1,6 @@
 'use client';
 
-import LoadingSpinner from '@/components/common/loading-spinner';
-import { APIInstance } from '@/hooks/use-client';
-import { fillMetric } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
-import getMetric from '@/query/metric/get-metric';
-
-import { useQuery } from '@tanstack/react-query';
+import { AxiosInstance } from 'axios';
 import {
   Line,
   LineChart,
@@ -16,6 +10,13 @@ import {
   YAxis,
 } from 'recharts';
 
+import LoadingSpinner from '@/components/common/loading-spinner';
+import { fillMetric } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
+import getMetric from '@/query/metric/get-metric';
+
+import { useQuery } from '@tanstack/react-query';
+
 const NUMBER_OF_DAY = 15;
 const background =
   'rounded-lg bg-card p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
@@ -23,7 +24,7 @@ const background =
 const chart = 'h-[400px]';
 
 type ChartProps = {
-  axios: APIInstance;
+  axios: AxiosInstance;
   start: Date;
   end: Date;
 };
@@ -39,7 +40,7 @@ export default function LikeChart(props: ChartProps) {
   );
 }
 
-function Loading({ axios: { axios, enabled }, start, end }: ChartProps) {
+function Loading({ axios, start, end }: ChartProps) {
   const {
     data: metric,
     error,
@@ -48,7 +49,6 @@ function Loading({ axios: { axios, enabled }, start, end }: ChartProps) {
   } = useQuery({
     queryFn: () => getMetric(axios, start, end, 'DAILY_LIKE'),
     queryKey: ['daily_like'],
-    enabled,
   });
 
   if (isLoading) {

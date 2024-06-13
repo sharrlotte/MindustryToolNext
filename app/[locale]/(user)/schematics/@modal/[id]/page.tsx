@@ -14,7 +14,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const { axios } = await getServerAPI();
+  const axios = await getServerAPI();
   const schematic = await getSchematic(axios, { id });
 
   return {
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: { params: IdSearchParams }) {
-  const { axios } = await getServerAPI();
+  const axios = await getServerAPI();
   const schematic = await getSchematic(axios, params);
 
   if (!schematic) {

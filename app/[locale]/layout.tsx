@@ -96,6 +96,9 @@ export default async function Root({ children, params }: RootProps) {
             </SessionProvider>
           </ThemeProvider>
         </I18nProviderClient>
+        <span className="p-2 text-xs fixed bottom-0 left-0">
+          {env.webVersion}
+        </span>
       </body>
     </html>
   );

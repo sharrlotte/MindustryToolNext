@@ -1,5 +1,4 @@
 import LoginButton from '@/components/button/login-button';
-import LogoutButton from '@/components/button/logout-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
@@ -21,7 +20,6 @@ export function UserDisplay() {
             <UserRoleCard roles={session.roles} />
           </div>
         </div>
-        <LogoutButton className="aspect-square h-10 w-10 p-2" />
       </div>
     );
   }

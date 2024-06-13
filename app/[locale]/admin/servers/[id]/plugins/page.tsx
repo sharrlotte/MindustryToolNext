@@ -1,5 +1,7 @@
 'use client';
 
+import React, { useRef, useState } from 'react';
+
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingScreen from '@/components/common/loading-screen';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -25,7 +27,6 @@ import getInternalServerPlugins from '@/query/server/get-internal-server-plugins
 import postInternalServerPlugin from '@/query/server/post-internal-server-plugin';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useRef, useState } from 'react';
 
 export default function Page() {
   const container = useRef<HTMLDivElement>(null);
@@ -64,7 +65,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const { toast } = useToast();
   const { plugin } = useSearchTags();
   const [show, setShow] = useState(false);
-  const { axios, enabled } = useClientAPI();
+  const axios = useClientAPI();
   const t = useI18n();
 
   const params = useSearchPageParams();
@@ -73,7 +74,6 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['plugins', params],
     queryFn: () => getPlugins(axios, params),
-    enabled,
   });
 
   const { mutate, isPending } = useMutation({

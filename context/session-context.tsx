@@ -1,10 +1,10 @@
 'use client';
 
-import useClientAPI from '@/hooks/use-client';
-import { Session } from '@/types/response/Session';
-
 import React, { ReactNode, useLayoutEffect, useState } from 'react';
 import { useInterval } from 'usehooks-ts';
+
+import useClientAPI from '@/hooks/use-client';
+import { Session } from '@/types/response/Session';
 
 export type SessionState = 'loading' | 'authenticated' | 'unauthenticated';
 
@@ -37,7 +37,7 @@ export function useSession(): SessionContextType {
 }
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const [auth, setSession] = useState<SessionContextType>({
     state: 'loading',
     session: null,

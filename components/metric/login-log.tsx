@@ -1,12 +1,13 @@
 'use client';
 
+import { AxiosInstance } from 'axios';
+import moment from 'moment';
+
 import LoadingSpinner from '@/components/common/loading-spinner';
-import { APIInstance } from '@/hooks/use-client';
 import { useI18n } from '@/locales/client';
 import getLogs from '@/query/log/get-logs';
 
 import { useQuery } from '@tanstack/react-query';
-import moment from 'moment';
 
 const background =
   'rounded-lg bg-card p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
@@ -14,10 +15,10 @@ const background =
 const chart = 'h-[400px]';
 
 type LoginLogProps = {
-  axios: APIInstance;
+  axios: AxiosInstance;
 };
 
-export default function LoginLog({ axios: { axios, enabled } }: LoginLogProps) {
+export default function LoginLog({ axios }: LoginLogProps) {
   const {
     data: logs,
     error,
@@ -25,7 +26,6 @@ export default function LoginLog({ axios: { axios, enabled } }: LoginLogProps) {
   } = useQuery({
     queryFn: () => getLogs(axios, { page: 0, collection: 'USER_LOGIN' }),
     queryKey: ['user_login'],
-    enabled,
   });
 
   const t = useI18n();

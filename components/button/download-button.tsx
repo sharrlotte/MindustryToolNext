@@ -1,10 +1,11 @@
+import { saveAs } from 'file-saver';
+import React, { HTMLAttributes } from 'react';
+
 import useClientAPI from '@/hooks/use-client';
 import { cn, fixProgressBar } from '@/lib/utils';
 
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
-import { saveAs } from 'file-saver';
-import React, { HTMLAttributes } from 'react';
 
 type DownloadButtonProps = HTMLAttributes<HTMLAnchorElement> & {
   href: string;
@@ -56,7 +57,7 @@ function SecureDownloadButton({
   fileName,
   href,
 }: SecureDownloadButtonProps) {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
 
   const { mutate, isPending } = useMutation({
     mutationFn: () =>

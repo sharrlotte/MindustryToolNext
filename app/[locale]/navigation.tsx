@@ -8,7 +8,6 @@ import { UserDisplay } from '@/app/[locale]/user-display';
 import { UserSheet } from '@/app/[locale]/user-sheet';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import OutsideWrapper from '@/components/common/outside-wrapper';
-import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 import { Button } from '@/components/ui/button';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
@@ -69,21 +68,15 @@ export default function NavigationBar() {
                     <span className="flex items-center justify-start gap-2 rounded-sm bg-card p-2">
                       <span className="text-xl font-medium">MindustryTool</span>
                     </span>
-                    <span className="rounded-sm bg-card p-2 text-xs">
-                      {env.webVersion}
-                    </span>
+                    <UserDisplay />
                   </span>
                   <NavItems onClick={hideSidebar} />
-                </div>
-                <div className="space-y-2">
-                  <ThemeSwitcher />
-                  <UserDisplay />
                 </div>
               </div>
             </div>
           </OutsideWrapper>
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center gap-1">
           <UserSheet />
         </div>
       </div>

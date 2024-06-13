@@ -1,7 +1,7 @@
+import React from 'react';
+
 import { UserRole } from '@/constant/enum';
 import { cn } from '@/lib/utils';
-
-import React from 'react';
 
 type UserRoleCardProps = {
   className?: string;
@@ -13,9 +13,15 @@ export default function UserRoleCard({ className, roles }: UserRoleCardProps) {
     return <></>;
   }
 
+  if (roles.includes('SHAR')) {
+    return (
+      <span className={cn('font-bold text-pink-400', className)}>SHAR</span>
+    );
+  }
+
   if (roles.includes('ADMIN')) {
     return (
-      <span className={cn('text-bold text-emerald-400', className)}>ADMIN</span>
+      <span className={cn('font-bold text-emerald-400', className)}>ADMIN</span>
     );
   }
 

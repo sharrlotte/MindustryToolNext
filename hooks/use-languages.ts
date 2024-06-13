@@ -4,7 +4,7 @@ import getLanguages from '@/query/language/get-languages';
 import { useQuery } from '@tanstack/react-query';
 
 export default function useLanguages(): string[] {
-  const { axios } = useClientAPI();
+  const axios = useClientAPI();
   const { data } = useQuery({
     queryFn: () => getLanguages(axios),
     queryKey: ['languages'],

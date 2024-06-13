@@ -1,12 +1,6 @@
 'use client';
 
-import LoadingSpinner from '@/components/common/loading-spinner';
-import { APIInstance } from '@/hooks/use-client';
-import { fillMetric } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
-import getMetric from '@/query/metric/get-metric';
-
-import { useQueries } from '@tanstack/react-query';
+import { AxiosInstance } from 'axios';
 import {
   Line,
   LineChart,
@@ -16,6 +10,13 @@ import {
   YAxis,
 } from 'recharts';
 
+import LoadingSpinner from '@/components/common/loading-spinner';
+import { fillMetric } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
+import getMetric from '@/query/metric/get-metric';
+
+import { useQueries } from '@tanstack/react-query';
+
 const NUMBER_OF_DAY = 15;
 
 const background =
@@ -24,7 +25,7 @@ const background =
 const chart = 'h-[400px]';
 
 type ChartProps = {
-  axios: APIInstance;
+  axios: AxiosInstance;
   start: Date;
   end: Date;
 };
@@ -39,18 +40,16 @@ export default function LoginChart(props: ChartProps) {
   );
 }
 
-function Loading({ axios: { axios, enabled }, start, end }: ChartProps) {
+function Loading({ axios, start, end }: ChartProps) {
   const [loggedDailyUser, dailyUser] = useQueries({
     queries: [
       {
         queryFn: () => getMetric(axios, start, end, 'LOGGED_DAILY_USER'),
         queryKey: ['logged_daily_user'],
-        enabled,
       },
       {
         queryFn: () => getMetric(axios, start, end, 'DAILY_USER'),
         queryKey: ['daily_user'],
-        enabled,
       },
     ],
   });
