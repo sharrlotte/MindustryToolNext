@@ -29,9 +29,9 @@ export default async function Page({ params: { id } }: Props) {
   } = server;
 
   return (
-    <div className="flex flex-col gap-4 p-4 overflow-y-auto">
-      <div className="flex gap-4">
-        <div className="flex flex-col gap-1 p-4 bg-card rounded-lg shadow-lg">
+    <div className="flex flex-col gap-4 p-2 md:p-4 overflow-y-auto">
+      <div className="flex gap-4 flex-wrap">
+        <div className="flex flex-col gap-1 p-4 bg-card rounded-lg shadow-lg flex-wrap min-w-60 flex-1">
           <div>
             <span>Name: </span>
             <ColorText text={name} />
@@ -49,15 +49,17 @@ export default async function Page({ params: { id } }: Props) {
             <span>{mode}</span>
           </div>
           <div>
-            <span>Players: </span>
-            <span>{players}</span>
-          </div>
-          <div>
             <span>Map: </span>
             <span>{mapName}</span>
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-1 p-4 bg-card rounded-lg shadow-lg"></div>
+        <div className="flex flex-[3] flex-col gap-1 p-4 bg-card rounded-lg shadow-lg min-w-60">
+          For testing purpose
+          <div>
+            <span>Players: </span>
+            <span>{players}</span>
+          </div>
+        </div>
       </div>
       <div className="flex-1 flex flex-col gap-2">
         <div className="text-xl">System status</div>

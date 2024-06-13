@@ -157,7 +157,7 @@ export function UserSheet() {
               <div key={index} className="pt-4">
                 {tab.map(({ action, icon }, index) => (
                   <div
-                    className="flex gap-4 rounded-sm p-2 hover:bg-button hover:text-white items-center cursor-pointer min-w-60"
+                    className="grid grid-cols-[20px,1fr] w-full gap-4 rounded-sm p-2 hover:bg-button hover:text-white items-center cursor-pointer min-w-52"
                     key={index}
                   >
                     {icon}

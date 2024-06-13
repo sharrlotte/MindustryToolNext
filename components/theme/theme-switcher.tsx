@@ -13,8 +13,8 @@ export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="flex w-full capitalize justify-between rounded-sm">
-      <span className="flex gap-3">
+    <div className="flex w-full capitalize justify-between rounded-sm col-span-full">
+      <span className="flex gap-4">
         {theme === 'light' ? (
           <SunIcon className="w-5" />
         ) : (

@@ -65,8 +65,9 @@ export default function NavigationBar() {
               <div className="flex h-full flex-col justify-between overflow-hidden p-2">
                 <div className="flex h-full flex-1 flex-col overflow-hidden">
                   <span className="flex flex-col gap-2">
-                    <span className="flex items-center justify-start gap-2 rounded-sm bg-card p-2">
+                    <span className="flex items-end justify-start gap-2 rounded-sm bg-card p-2">
                       <span className="text-xl font-medium">MindustryTool</span>
+                      <span className="text-xs">{env.webVersion}</span>
                     </span>
                     <UserDisplay />
                   </span>
