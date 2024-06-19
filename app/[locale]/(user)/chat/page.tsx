@@ -14,7 +14,7 @@ import { useI18n } from '@/locales/client';
 
 export default function Page() {
   const t = useI18n();
-  const [submit, { data, isPending }] = useMindustryGpt({
+  const [submit, { data, isPending, isLoading }] = useMindustryGpt({
     url: `${env.url.api}/mindustry-gpt/chat`,
   });
 
@@ -39,7 +39,7 @@ export default function Page() {
   return (
     <div className="grid grid-rows-[1fr,auto,auto] h-full p-2 overflow-hidden gap-2">
       <div className="p-2 h-full overflow-y-auto space-y-4 flex flex-col">
-        {data.length === 0 && !isPending ? (
+        {data.length === 0 && !isLoading ? (
           <div className="font-bold text-center h-full flex justify-center items-center">
             {t('chat.message')}
           </div>
@@ -47,12 +47,12 @@ export default function Page() {
           data.map((chat, index) => (
             <div key={index} className="border rounded-lg shadow-lg p-4">
               <UserAvatar user={user} />
-              <Markdown>{chat.replaceAll('data:', '')}</Markdown>
+              <Markdown>{chat}</Markdown>
             </div>
           ))
         )}
 
-        {isPending && (
+        {isLoading && (
           <Skeleton className="h-60 min-h-60 w-full rounded-lg"></Skeleton>
         )}
         <div id="bottom"></div>

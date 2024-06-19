@@ -154,6 +154,10 @@
     padding: 0.5rem;
   }
 
+  li ::marker {
+    display: inline;
+  }
+
   g,
   path {
     @apply focus:border-none focus:outline-none;
