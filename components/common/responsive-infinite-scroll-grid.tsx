@@ -166,6 +166,8 @@ export default function ResponsiveInfiniteScrollGrid<
 
   const estimatedCols = Math.max(Math.floor(clientWidth / itemMinWidth), 1);
 
+  itemMinWidth = Math.min(itemMinWidth, clientWidth);
+
   const cols =
     estimatedCols -
     ((clientWidth - Math.max(estimatedCols - 1, 0) * gap) / estimatedCols <
