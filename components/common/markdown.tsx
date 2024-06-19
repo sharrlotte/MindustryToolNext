@@ -47,7 +47,7 @@ function MarkdownImage({ src, alt }: any) {
 export default function Markdown({ className, children }: MarkdownProps) {
   return (
     <ReactMarkdown
-      className={cn('markdown', className)}
+      className={cn('markdown space-y-4', className)}
       components={{ a: RouterLink, img: MarkdownImage }}
       rehypePlugins={[rehypeSanitize]}
     >
