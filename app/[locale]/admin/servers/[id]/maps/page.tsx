@@ -141,7 +141,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
                     {name}
                   </h3>
                   <PreviewImage
-                    src={`${env.url.image}/maps/${id}.png`}
+                    src={`${env.url.image}/map-previews/${id}.png`}
                     errorSrc={`${env.url.api}/maps/${id}/image`}
                     alt={name}
                   />

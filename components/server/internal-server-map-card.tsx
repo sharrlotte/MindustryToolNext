@@ -53,7 +53,7 @@ export default function InternalServerMapCard({
     <Preview className={cn('group relative flex flex-col justify-between')}>
       <Link href={`/maps/${mapId}`}>
         <PreviewImage
-          src={`${env.url.image}/maps/${mapId}.png`}
+          src={`${env.url.image}/map-previews/${mapId}.png`}
           errorSrc={`${env.url.api}/maps/${mapId}/image`}
           alt={name ?? 'internal server map'}
         />

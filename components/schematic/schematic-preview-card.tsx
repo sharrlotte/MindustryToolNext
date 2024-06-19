@@ -61,7 +61,7 @@ const SchematicPreviewCard = memo(function SchematicPreviewCard({
         href={`/schematics/${schematic.id}`}
       >
         <PreviewImage
-          src={`${env.url.image}/schematics/${schematic.id}.png`}
+          src={`${env.url.image}/schematic-previews/${schematic.id}.png`}
           errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
           alt={schematic.name}
         />
