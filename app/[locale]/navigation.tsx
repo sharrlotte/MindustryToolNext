@@ -69,10 +69,10 @@ export default function NavigationBar() {
                       <span className="text-xl font-medium">MindustryTool</span>
                       <span className="text-xs">{env.webVersion}</span>
                     </span>
-                    <UserDisplay />
                   </span>
                   <NavItems onClick={hideSidebar} />
                 </div>
+                <UserDisplay />
               </div>
             </div>
           </OutsideWrapper>
