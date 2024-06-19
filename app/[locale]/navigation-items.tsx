@@ -296,7 +296,7 @@ export function NavItems({ onClick }: NavItemsProps) {
                     <Link
                       key={item.path}
                       className={cn(
-                        'flex items-end gap-3 rounded-md px-1 py-2 text-xs font-bold opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                        'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
                         {
                           'bg-button text-background opacity-100 dark:text-foreground':
                             item.path === bestMatch,
