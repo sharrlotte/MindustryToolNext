@@ -93,10 +93,10 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
           <span>{new Date(post.createdAt).toLocaleString()}</span>
           <TagContainer tags={displayTags} />
         </div>
+        <div className="h-full flex flex-1">
+          <Markdown>{post.content}</Markdown>
+        </div>
       </header>
-      <div className="h-full flex flex-1">
-        <Markdown>{post.content}</Markdown>
-      </div>
       <footer className="flex gap-1 rounded-md bg-card p-2">
         <LikeComponent
           targetId={post.id}

@@ -1,3 +1,7 @@
+import { AxiosInstance } from 'axios';
+import { throttle } from 'lodash';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
@@ -6,9 +10,6 @@ import { useI18n } from '@/locales/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
-import { AxiosInstance } from 'axios';
-import { throttle } from 'lodash';
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 type ResponsiveInfiniteScrollGridProps<T, P> = {
   className?: string;
@@ -163,7 +164,7 @@ export default function ResponsiveInfiniteScrollGrid<
   const clientWidth =
     currentWrapper?.clientWidth ?? currentContainer.clientWidth;
 
-  const estimatedCols = Math.floor(clientWidth / itemMinWidth);
+  const estimatedCols = Math.max(Math.floor(clientWidth / itemMinWidth), 1);
 
   const cols =
     estimatedCols -

@@ -98,10 +98,10 @@ export default function UploadPostDetailCard({
           <span>{new Date(post.createdAt).toLocaleString()}</span>
           <TagContainer tags={displayTags} />
         </div>
+        <div>
+          <Markdown>{post.content}</Markdown>
+        </div>
       </header>
-      <div>
-        <Markdown>{post.content}</Markdown>
-      </div>
       <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
         <NameTagSelector
           tags={postTags}
