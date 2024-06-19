@@ -38,7 +38,7 @@ export default function UploadMapPreview({
       </CopyButton>
       <Link href={`/admin/maps/${map.id}`}>
         <PreviewImage
-          src={`${env.url.image}/maps/${map.id}.png`}
+          src={`${env.url.image}/map-previews/${map.id}.png`}
           errorSrc={`${env.url.api}/maps/${map.id}/image`}
           alt={map.name}
         />
