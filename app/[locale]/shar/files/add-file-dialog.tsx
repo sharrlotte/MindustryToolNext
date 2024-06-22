@@ -32,11 +32,10 @@ const addFileSchema = z.object({
 });
 
 type Props = {
-  id: string;
   path: string;
 };
 
-export default function AddFileDialog({ id, path }: Props) {
+export default function AddFileDialog({ path }: Props) {
   const axios = useClientAPI();
   const { invalidateByKey } = useQueriesData();
 

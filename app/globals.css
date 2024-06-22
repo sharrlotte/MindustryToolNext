@@ -72,6 +72,9 @@
 }
 
 @layer base {
+  * {
+    @apply border-border;
+  }
   div {
     @apply box-border border-border;
   }

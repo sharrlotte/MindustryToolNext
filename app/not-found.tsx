@@ -16,6 +16,7 @@ export default function NotFoundScreen() {
         >
           Home
         </Link>
+        <BackButton>Back</BackButton>
       </div>
     </div>
   );
