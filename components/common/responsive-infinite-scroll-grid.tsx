@@ -126,7 +126,7 @@ export default function ResponsiveInfiniteScrollGrid<
     loader = (
       <LoadingSpinner
         key="loading"
-        className="col-span-full flex h-full w-full items-center justify-center"
+        className="col-span-full flex h-full w-full items-center justify-center absolute inset-0"
       />
     );
   }

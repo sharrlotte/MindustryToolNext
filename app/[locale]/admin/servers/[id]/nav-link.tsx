@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
-import { useExpand } from '@/zustand/expand-nav';
+import { useExpandServerNav } from '@/zustand/expand-nav';
 
 type Props = {
   id: string;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function NavLink({ id, href, label, icon }: Props) {
-  const expand = useExpand((state) => state.expand);
+  const expand = useExpandServerNav((state) => state.expand);
 
   let pathname = usePathname();
   let firstSlash = pathname.indexOf('/', 1);

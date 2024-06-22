@@ -4,10 +4,10 @@ import { ChevronRight } from 'lucide-react';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { useExpand } from '@/zustand/expand-nav';
+import { useExpandServerNav } from '@/zustand/expand-nav';
 
 export default function SidebarToggle() {
-  const { expand, setExpand } = useExpand();
+  const { expand, setExpand } = useExpandServerNav();
 
   return (
     <div
