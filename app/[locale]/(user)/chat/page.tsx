@@ -1,7 +1,7 @@
 'use client';
 
 import { SendIcon } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { Fragment, KeyboardEvent, useEffect, useState } from 'react';
 
 import Markdown from '@/components/common/markdown';
 import { Button } from '@/components/ui/button';
@@ -10,17 +10,27 @@ import UserAvatar from '@/components/user/user-avatar';
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
 import useMindustryGpt from '@/hooks/use-mindustry-gpt';
+import { isReachedEnd } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
+
+const url = `${env.url.api}/mindustry-gpt/chat`;
 
 export default function Page() {
   const t = useI18n();
   const [submit, { data, isPending, isLoading }] = useMindustryGpt({
-    url: `${env.url.api}/mindustry-gpt/chat`,
+    url,
   });
 
   const [reset, setReset] = useState(0);
   const { session: user } = useSession();
   const [prompt, setPrompt] = useState('');
+
+  useEffect(() => {
+    const bottom = document.getElementById('bottom');
+    if (bottom && isReachedEnd(bottom)) {
+      bottom.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [data]);
 
   function handleSubmit() {
     submit(prompt);
@@ -30,6 +40,12 @@ export default function Page() {
     setTimeout(() => {
       document.getElementById('bottom')?.scrollIntoView({ behavior: 'smooth' });
     }, 1000);
+  }
+
+  function handleKeyPress(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === 'Enter') {
+      handleSubmit();
+    }
   }
 
   if (!user) {
@@ -44,11 +60,18 @@ export default function Page() {
             {t('chat.message')}
           </div>
         ) : (
-          data.map((chat, index) => (
-            <div key={index} className="border rounded-lg shadow-lg p-4">
-              <UserAvatar user={user} />
-              <Markdown>{chat}</Markdown>
-            </div>
+          data.map(({ text, prompt }, index) => (
+            <Fragment key={index}>
+              <div className="flex justify-end">
+                <span className="rounded-lg shadow-lg bg-card px-4 py-2">
+                  {prompt}
+                </span>
+              </div>
+              <div className="border rounded-lg shadow-lg p-4 space-y-2">
+                <UserAvatar user={user} />
+                <Markdown>{text}</Markdown>
+              </div>
+            </Fragment>
           ))
         )}
 
@@ -67,6 +90,7 @@ export default function Page() {
             data-placeholder={t('chat.input-place-holder')}
             //@ts-ignore
             onInput={(event) => setPrompt(event.target.textContent ?? '')}
+            onKeyDown={handleKeyPress}
           />
           <Button
             title={t('submit')}

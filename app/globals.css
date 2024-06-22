@@ -72,7 +72,7 @@
 }
 
 @layer base {
-  * {
+  div {
     @apply box-border border-border;
   }
 
@@ -111,23 +111,23 @@
     @apply my-4 rounded-md border bg-background bg-opacity-60 p-1 text-foreground;
   }
 
-  *::-webkit-scrollbar-track {
+  div::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
 
-  *::-webkit-scrollbar {
+  div::-webkit-scrollbar {
     width: 12px;
     height: 12px;
   }
 
-  *::-webkit-scrollbar-thumb {
+  div::-webkit-scrollbar-thumb {
     border: 4px solid transparent;
     background-clip: padding-box;
     border-radius: 9999px;
     @apply border-2 border-transparent bg-white bg-clip-padding;
   }
 
-  *::-webkit-scrollbar-button {
+  div::-webkit-scrollbar-button {
     display: none;
   }
 

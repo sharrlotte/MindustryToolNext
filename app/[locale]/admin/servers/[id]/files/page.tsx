@@ -18,8 +18,8 @@ import useQueriesData from '@/hooks/use-queries-data';
 import useQueryState from '@/hooks/use-query-state';
 import useSearchId from '@/hooks/use-search-id-params';
 import { useToast } from '@/hooks/use-toast';
-import deleteInternalServerFile from '@/query/server/delete-internal-server-file';
-import getInternalServerFiles from '@/query/server/get-internal-server-files';
+import deleteServerFile from '@/query/server/delete-internal-server-file';
+import getServerFiles from '@/query/server/get-internal-server-files';
 
 import { ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
 import { FileIcon } from '@radix-ui/react-icons';
@@ -34,7 +34,7 @@ export default function Page() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['internal-server-files', path],
-    queryFn: async () => getInternalServerFiles(axios, id, path),
+    queryFn: async () => getServerFiles(axios, id, path),
     placeholderData: [],
   });
 
@@ -42,8 +42,7 @@ export default function Page() {
 
   const { mutate: deleteFile } = useMutation({
     mutationKey: ['delete-file'],
-    mutationFn: async (path: string) =>
-      deleteInternalServerFile(axios, id, path),
+    mutationFn: async (path: string) => deleteServerFile(axios, id, path),
     onSuccess: () => {
       invalidateByKey(['internal-server-files', path]);
     },
