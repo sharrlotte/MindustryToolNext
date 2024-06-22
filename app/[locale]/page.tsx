@@ -7,8 +7,18 @@ import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
 import getUsers from '@/query/user/get-users';
 
-export default async function Home() {
-  await setStaticParamsLocale('en');
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'vi' }];
+}
+
+export default async function Home({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  await setStaticParamsLocale(locale);
 
   const t = await getI18n();
   const axios = await getServerAPI();

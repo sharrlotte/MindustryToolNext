@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import AddFileDialog from '@/app/[locale]/admin/servers/[id]/files/add-file-dialog';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
+import FileCard from '@/components/file/file-card';
+import FileHierarchy from '@/components/file/file-hierarchy';
 import { Button } from '@/components/ui/button';
 import {
   ContextMenu,
@@ -18,8 +20,8 @@ import useQueriesData from '@/hooks/use-queries-data';
 import useQueryState from '@/hooks/use-query-state';
 import useSearchId from '@/hooks/use-search-id-params';
 import { useToast } from '@/hooks/use-toast';
-import deleteInternalServerFile from '@/query/server/delete-internal-server-file';
-import getInternalServerFiles from '@/query/server/get-internal-server-files';
+import deleteServerFile from '@/query/server/delete-internal-server-file';
+import getServerFiles from '@/query/server/get-internal-server-files';
 
 import { ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
 import { FileIcon } from '@radix-ui/react-icons';
@@ -34,7 +36,7 @@ export default function Page() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['internal-server-files', path],
-    queryFn: async () => getInternalServerFiles(axios, id, path),
+    queryFn: async () => getServerFiles(axios, id, path),
     placeholderData: [],
   });
 
@@ -42,8 +44,7 @@ export default function Page() {
 
   const { mutate: deleteFile } = useMutation({
     mutationKey: ['delete-file'],
-    mutationFn: async (path: string) =>
-      deleteInternalServerFile(axios, id, path),
+    mutationFn: async (path: string) => deleteServerFile(axios, id, path),
     onSuccess: () => {
       invalidateByKey(['internal-server-files', path]);
     },
@@ -70,9 +71,7 @@ export default function Page() {
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden py-2 p-2">
-      <div className="text-base font-bold whitespace-nowrap">
-        {[id, ...path.split('/')].filter(Boolean).join(' > ')}
-      </div>
+      <FileHierarchy path={path} onClick={setFilePath} />
       <div className="flex gap-2">
         <Input
           placeholder="Search file name"
@@ -97,35 +96,20 @@ export default function Page() {
           ) : (
             data
               .filter(({ name }) => name.includes(search))
-              .map(({ name, directory, data }) =>
-                data ? (
-                  <p key={name} className="whitespace-pre-line">
-                    {data}
-                  </p>
-                ) : (
-                  <ContextMenu key={name}>
-                    <ContextMenuTrigger
-                      className="flex h-9 cursor-pointer items-center justify-start gap-1 rounded-md border px-1 py-2 text-sm"
-                      onClick={() => setFilePath(`${path}/${name}`)}
-                    >
-                      {directory ? (
-                        <FolderIcon className="h-5 w-5" />
-                      ) : (
-                        <FileIcon className="h-5 w-5" />
-                      )}
-                      <span>{name}</span>
-                    </ContextMenuTrigger>
-                    <ContextMenuContent>
-                      <ContextMenuItem
-                        variant="destructive"
-                        onClick={() => deleteFile(`${path}/${name}`)}
-                      >
-                        Delete
-                      </ContextMenuItem>
-                    </ContextMenuContent>
-                  </ContextMenu>
-                ),
-              )
+              .map((file) => (
+                <FileCard
+                  key={file.name}
+                  file={file}
+                  onClick={(file) => setFilePath(`${path}/${file.name}`)}
+                >
+                  <ContextMenuItem
+                    variant="destructive"
+                    onClick={() => deleteFile(`${path}/${name}`)}
+                  >
+                    Delete
+                  </ContextMenuItem>
+                </FileCard>
+              ))
           )}
         </div>
       </div>

@@ -20,7 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import postServerFile from '@/query/server/post-internal-server-file';
+import postServerFile from '@/query/files/post-server-file';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -32,11 +32,10 @@ const addFileSchema = z.object({
 });
 
 type Props = {
-  id: string;
   path: string;
 };
 
-export default function AddFileDialog({ id, path }: Props) {
+export default function AddFileDialog({ path }: Props) {
   const axios = useClientAPI();
   const { invalidateByKey } = useQueriesData();
 
@@ -53,9 +52,9 @@ export default function AddFileDialog({ id, path }: Props) {
 
   const { mutate: addFile, isPending: isAddingFile } = useMutation({
     mutationKey: ['add-file'],
-    mutationFn: async (file: File) => postServerFile(axios, id, path, file),
+    mutationFn: async (file: File) => postServerFile(axios, path, file),
     onSuccess: () => {
-      invalidateByKey(['internal-server-files', path]);
+      invalidateByKey(['server-files', path]);
     },
   });
 

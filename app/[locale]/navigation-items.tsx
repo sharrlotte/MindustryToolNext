@@ -1,5 +1,7 @@
 import {
   BookOpenIcon,
+  BotIcon,
+  FileIcon,
   FolderIcon,
   HomeIcon,
   MapIcon,
@@ -184,6 +186,17 @@ export function NavItems({ onClick }: NavItemsProps) {
           icon: <ServerIcon className="h-5 w-5" />,
         },
         {
+          name: 'MindustryGPT',
+          icon: <BotIcon className="h-5 w-5" />,
+          path: [
+            {
+              name: 'Document',
+              path: '/mindustry-gpt/documents',
+              icon: <FileIcon className="h-5 w-5" />,
+            },
+          ],
+        },
+        {
           name: t('setting'),
           path: '/admin/settings',
           icon: <Cog6ToothIcon className="h-5 w-5" />,
@@ -196,7 +209,7 @@ export function NavItems({ onClick }: NavItemsProps) {
       paths: [
         {
           name: 'File',
-          path: '/shar/file',
+          path: '/shar/files',
           icon: <FolderIcon className="h-5 w-5" />,
         },
       ],

@@ -8,8 +8,6 @@ type MindustryGptConfig = {
   url: string;
 };
 
-let count = 0;
-
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const decoder = new TextDecoder();
@@ -38,9 +36,12 @@ async function* getChat(url: string, prompt: string, signal: AbortSignal) {
 
     let token = decoder.decode(value).replaceAll('data:', '');
     token = token.endsWith('\n\n') ? token.slice(0, token.length - 2) : token;
+    token = token.startsWith('\n\n') ? token.slice(2, token.length) : token;
+
+    console.log(token)
 
     for (const t of token) {
-      await sleep(10);
+      await sleep(5);
       yield t;
     }
 
@@ -56,7 +57,9 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
   const requestId = useRef(0);
 
   const { toast } = useToast();
-  const [data, setData] = useState<Map<number, string>>(new Map());
+  const [data, setData] = useState<
+    Map<number, { text: string; prompt: string }>
+  >(new Map());
 
   const [abortController, setAbortController] =
     useState<AbortController | null>();
@@ -77,9 +80,9 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
         const current = data.get(requestId.current);
 
         if (current) {
-          data.set(requestId.current, current + token);
+          data.set(requestId.current, { text: current.text + token, prompt });
         } else {
-          data.set(requestId.current, token);
+          data.set(requestId.current, { text: token, prompt });
         }
 
         setData(new Map(data));

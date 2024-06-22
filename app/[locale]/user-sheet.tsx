@@ -9,11 +9,11 @@ import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
+  DialogDescription,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import Divider from '@/components/ui/divider';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
@@ -82,7 +82,9 @@ export function UserSheet() {
               Change language
             </DialogTrigger>
             <DialogContent>
-              <DialogHeader>Choose your language</DialogHeader>
+              <DialogHeader>
+                <DialogTitle>Choose your language</DialogTitle>
+              </DialogHeader>
               <ComboBox<Locale>
                 value={{ label: locale, value: locale }}
                 values={locales.map((value: Locale) => ({
@@ -92,11 +94,11 @@ export function UserSheet() {
                 searchBar={false}
                 onChange={(value) => changeLocale(value ?? 'en')}
               />
-              <DialogFooter>
+              <DialogDescription>
                 <a href="https://github.com/sharrlotte/MindustryToolNext/issues">
                   You can contribute to website language at Github
                 </a>
-              </DialogFooter>
+              </DialogDescription>
             </DialogContent>
           </Dialog>
         ),

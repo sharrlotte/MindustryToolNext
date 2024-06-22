@@ -1,5 +1,4 @@
 import { LayoutDashboardIcon } from 'lucide-react';
-import { setStaticParamsLocale } from 'next-international/server';
 import React, { ReactNode } from 'react';
 
 import NavLink from '@/app/[locale]/admin/servers/[id]/nav-link';
@@ -22,7 +21,6 @@ type PageProps = {
 };
 
 export default async function Layout({ params: { id }, children }: PageProps) {
-  await setStaticParamsLocale('en');
   const t = await getI18n();
 
   const links: {
