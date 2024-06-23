@@ -5,7 +5,7 @@ type State = {
   setExpand: (data: boolean) => void;
 };
 
-export const useExpandServerNav = create<State>((set) => ({
+export const useExpandSidebar = create<State>((set) => ({
   expand: false,
   setExpand: (data: boolean) => set({ expand: data }),
 }));

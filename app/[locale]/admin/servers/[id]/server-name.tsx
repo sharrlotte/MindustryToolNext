@@ -4,14 +4,14 @@ import React from 'react';
 
 import ColorText from '@/components/common/color-text';
 import { cn } from '@/lib/utils';
-import { useExpand } from '@/zustand/expand-nav';
+import { useExpandServerNav } from '@/zustand/expand-nav';
 
 type Props = {
   name: string;
 };
 
 export default function ServerName({ name }: Props) {
-  const expand = useExpand((state) => state.expand);
+  const expand = useExpandServerNav((state) => state.expand);
 
   if (expand) {
     return (
