@@ -55,7 +55,7 @@ export default function UploadSchematicPreviewCard({
       </CopyButton>
       <Link href={`/admin/schematics/${schematic.id}`}>
         <PreviewImage
-          src={`${env.url.image}/schematic-previews/${schematic.id}.png`}
+          src={`${env.url.image}/schematics-previews/${schematic.id}.png`}
           errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
           alt={schematic.name}
         />
