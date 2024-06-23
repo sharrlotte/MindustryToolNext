@@ -1,7 +1,6 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import moment from 'moment';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { useI18n } from '@/locales/client';

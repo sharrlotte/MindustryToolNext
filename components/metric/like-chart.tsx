@@ -2,13 +2,18 @@
 
 import { AxiosInstance } from 'axios';
 import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
+  CategoryScale,
+  ChartData,
+  Chart as ChartJS,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
   Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+} from 'chart.js';
+import React from 'react';
+import { Line } from 'react-chartjs-2';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { fillMetric } from '@/lib/utils';
@@ -17,9 +22,28 @@ import getMetric from '@/query/metric/get-metric';
 
 import { useQuery } from '@tanstack/react-query';
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+);
+
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+  },
+};
+
 const NUMBER_OF_DAY = 15;
 const background =
-  'rounded-lg bg-card p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
+  'rounded-lg bg-card flex w-full flex-col gap-2 p-2 h-[500px]';
 
 const chart = 'h-[400px]';
 
@@ -57,38 +81,24 @@ function Loading({ axios, start, end }: ChartProps) {
 
   if (isError || error) return <span>{error?.message}</span>;
 
-  const data = fillMetric(start, NUMBER_OF_DAY, metric, 0);
+  const fixedData = fillMetric(start, NUMBER_OF_DAY, metric, 0);
+
+  const data: ChartData<'line'> = {
+    labels: fixedData.map(({ time }) => time),
+    datasets: [
+      {
+        label: 'Interaction',
+        data: fixedData.map(({ value }) => value),
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        tension: 0.3,
+      },
+    ],
+  };
 
   return (
     <div className={chart}>
-      <ResponsiveContainer
-        className="text-background dark:text-foreground"
-        width="99%"
-        height="99%"
-      >
-        <LineChart
-          data={data}
-          margin={{
-            top: 10,
-            right: 10,
-            left: 10,
-            bottom: 10,
-          }}
-        >
-          <XAxis allowDecimals={false} dataKey="time" />
-          <YAxis allowDecimals={false} dataKey="value" />
-          <Tooltip />
-          <Line
-            name="Value"
-            type="monotone"
-            fill="currentColor"
-            dataKey="value"
-            strokeWidth={2}
-            stroke="#8884d8"
-            activeDot={{ r: 4 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <Line options={options} data={data} />
     </div>
   );
 }

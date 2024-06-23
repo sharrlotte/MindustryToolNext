@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from 'clsx';
 import Nprogress from 'nprogress';
 import { twMerge } from 'tailwind-merge';
 
-import { Metric } from '@/types/response/Metric';
+import { ChartData, Metric } from '@/types/response/Metric';
 
 var colours: Record<string, string> = {
   aliceblue: '#f0f8ff',
@@ -176,7 +176,7 @@ export function fillMetric(
   numberOfDay: number,
   array: Metric[] | undefined,
   defaultValue: number,
-) {
+): ChartData[] {
   if (!array) {
     return [];
   }

@@ -84,8 +84,6 @@ function genId() {
 export default class SocketClient {
   private socket: ReconnectingWebSocket;
 
-  static instance: SocketClient;
-
   handlers: Record<string, EventHandler> = {};
 
   private errors: ((event: ErrorEvent) => void)[] = [];
@@ -145,9 +143,6 @@ export default class SocketClient {
     this.socket.onclose = (event) => {
       this.disconnects.forEach((disconnect) => disconnect(event));
     };
-
-    SocketClient.instance?.close();
-    SocketClient.instance = this;
   }
 
   public send(payload: MessagePayload) {

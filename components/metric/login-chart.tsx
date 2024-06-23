@@ -2,13 +2,17 @@
 
 import { AxiosInstance } from 'axios';
 import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
+  CategoryScale,
+  ChartData,
+  Chart as ChartJS,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
   Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { fillMetric } from '@/lib/utils';
@@ -17,6 +21,24 @@ import getMetric from '@/query/metric/get-metric';
 
 import { useQueries } from '@tanstack/react-query';
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+);
+
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+  },
+};
 const NUMBER_OF_DAY = 15;
 
 const background =
@@ -72,54 +94,29 @@ function Loading({ axios, start, end }: ChartProps) {
 
   let fixedDaily = fillMetric(start, NUMBER_OF_DAY, dailyUser.data, 0);
 
-  const data = [];
-  for (let i = 0; i < fixedDaily.length; i++) {
-    data.push({
-      time: fixedDaily[i].time,
-      loggedUser: fixedLoggedDaily[i].value,
-      user: fixedDaily[i].value,
-    });
-  }
+  const data: ChartData<'line'> = {
+    labels: fixedLoggedDaily.map(({ time }) => time),
+    datasets: [
+      {
+        label: 'User',
+        data: fixedDaily.map(({ value }) => value),
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        tension: 0.3,
+      },
+      {
+        label: 'Logged in user',
+        data: fixedLoggedDaily.map(({ value }) => value),
+        borderColor: 'rgb(99, 255, 132)',
+        backgroundColor: 'rgba(99, 255, 132)',
+        tension: 0.3,
+      },
+    ],
+  };
 
   return (
     <div className={chart}>
-      <ResponsiveContainer
-        className="text-background dark:text-foreground"
-        width="99%"
-        height="99%"
-      >
-        <LineChart
-          data={data}
-          margin={{
-            top: 10,
-            right: 10,
-            left: 10,
-            bottom: 10,
-          }}
-        >
-          <XAxis allowDecimals={false} dataKey="time" />
-          <YAxis allowDecimals={false} />
-          <Tooltip />
-          <Line
-            name="Logged user"
-            type="monotone"
-            dataKey="loggedUser"
-            stroke="#8884d8"
-            strokeWidth={2}
-            fill="currentColor"
-            activeDot={{ r: 4 }}
-          />
-          <Line
-            name="User"
-            type="monotone"
-            dataKey="user"
-            stroke="#82ca9d"
-            strokeWidth={2}
-            fill="currentColor"
-            activeDot={{ r: 4 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <Line options={options} data={data} />
     </div>
   );
 }
