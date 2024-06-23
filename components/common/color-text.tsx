@@ -1,8 +1,8 @@
-import { cn, getColor } from '@/lib/utils';
-
 import React, { ReactNode, useMemo } from 'react';
 
-const COLOR_REGEX = /\[([#a-zA-Z0-9]+)\]/g;
+import { cn, getColor } from '@/lib/utils';
+
+const COLOR_REGEX = /\[([#a-zA-Z0-9]*)\]/g;
 
 interface ColorTextProps {
   text: string;
@@ -26,7 +26,7 @@ function render(text: string, className?: string) {
   let result: ReactNode[] = [];
 
   if (index !== 0) {
-    key = add(result, text.substring(0, index), 'white', key);
+    key = add(result, text.substring(0, index), '', key);
     text = text.substring(index);
   }
 
@@ -38,22 +38,23 @@ function render(text: string, className?: string) {
     let color = arr[0].toLocaleLowerCase();
     color = color.substring(1, color.length - 1);
 
-    if (color.includes('#')) {
+    if (color.startsWith('#')) {
       color = color.padEnd(7, '0');
     } else {
       color = getColor(color);
     }
 
     if (arr.length === 1) {
-      if (!color) {
-        key = add(result, text.substring(0), '', key);
-      } else {
+      if (color) {
+        console.log({ arr, color, rest: text.substring(arr[0].length) });
         key = add(result, text.substring(arr[0].length), color, key);
+      } else {
+        key = add(result, text, '', key);
       }
       break;
     }
 
-    var nextIndex = text.indexOf(arr[1]);
+    var nextIndex = text.indexOf(arr[1], arr[0].length);
 
     if (color) {
       key = add(result, text.substring(arr[0].length, nextIndex), color, key);
