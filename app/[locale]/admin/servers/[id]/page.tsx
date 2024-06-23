@@ -1,3 +1,4 @@
+import { setStaticParamsLocale } from 'next-international/server';
 import React from 'react';
 
 import ReloadServerButton from '@/app/[locale]/admin/servers/[id]/reload-server-button';
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export default async function Page({ params: { id } }: Props) {
+  setStaticParamsLocale('en');
   const axios = await getServerAPI();
   const server = await getInternalServer(axios, { id });
 
