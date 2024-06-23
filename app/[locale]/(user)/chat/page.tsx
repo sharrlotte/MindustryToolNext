@@ -1,108 +1,162 @@
 'use client';
 
-import { SendIcon } from 'lucide-react';
-import React, { Fragment, KeyboardEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
-import Markdown from '@/components/common/markdown';
+import LoginButton from '@/components/button/login-button';
+import InfiniteScrollList from '@/components/common/infinite-scroll-list';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import UserAvatar from '@/components/user/user-avatar';
-import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
-import useMindustryGpt from '@/hooks/use-mindustry-gpt';
+import { useSocket } from '@/context/socket-context';
+import ProtectedElement from '@/layout/protected-element';
 import { isReachedEnd } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 
-const url = `${env.url.api}/mindustry-gpt/chat`;
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 
-export default function Page() {
+export default function LogPage() {
+  const { socket, state } = useSocket();
+  const { session } = useSession();
+  const container = useRef<HTMLDivElement>(null);
+
+  const [message, setMessage] = useState<string>('');
+  const bottomRef = useRef<HTMLSpanElement>(null);
+  const queryClient = useQueryClient();
+
   const t = useI18n();
-  const [submit, { data, isPending, isLoading }] = useMindustryGpt({
-    url,
-  });
-
-  const [reset, setReset] = useState(0);
-  const { session: user } = useSession();
-  const [prompt, setPrompt] = useState('');
 
   useEffect(() => {
-    const bottom = document.getElementById('bottom');
-    if (bottom && isReachedEnd(bottom)) {
-      bottom.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [data]);
-
-  function handleSubmit() {
-    submit(prompt);
-    setPrompt('');
-    setReset(reset + 1);
-
     setTimeout(() => {
-      document.getElementById('bottom')?.scrollIntoView({ behavior: 'smooth' });
+      if (bottomRef.current) {
+        bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
     }, 1000);
-  }
+  }, []);
 
-  function handleKeyPress(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key === 'Enter') {
-      handleSubmit();
+  useEffect(() => {
+    socket.onRoom('GLOBAL').send({ method: 'JOIN_ROOM', data: 'GLOBAL' });
+    socket.onRoom('GLOBAL').onMessage('MESSAGE', (message) => {
+      queryClient.setQueryData<
+        InfiniteData<Array<string>, unknown> | undefined
+      >(['live-log'], (query) => {
+        if (!query) {
+          return undefined;
+        }
+
+        const { pages, ...data } = query;
+
+        let [firstPage, ...rest] = pages;
+        firstPage = [message, ...firstPage];
+        return {
+          ...data,
+          pages: [firstPage, ...rest],
+        };
+      });
+
+      setTimeout(() => {
+        if (!bottomRef.current || !container.current) {
+          return;
+        }
+
+        if (!isReachedEnd(container.current)) {
+          return;
+        }
+
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    });
+  }, [queryClient, socket]);
+
+  const sendMessage = async () => {
+    if (socket && state === 'connected') {
+      socket.onRoom('GLOBAL').send({ data: message, method: 'MESSAGE' });
+      setMessage('');
     }
-  }
 
-  if (!user) {
-    return;
-  }
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    sendMessage();
+    event.preventDefault();
+  };
 
   return (
-    <div className="grid grid-rows-[1fr,auto,auto] h-full p-2 overflow-hidden gap-2">
-      <div className="p-2 h-full overflow-y-auto space-y-4 flex flex-col">
-        {data.length === 0 && !isLoading ? (
-          <div className="font-bold text-center h-full flex justify-center items-center">
-            {t('chat.message')}
-          </div>
-        ) : (
-          data.map(({ text, prompt }, index) => (
-            <Fragment key={index}>
-              <div className="flex justify-end">
-                <span className="rounded-lg shadow-lg bg-card px-4 py-2">
-                  {prompt}
-                </span>
-              </div>
-              <div className="border rounded-lg shadow-lg p-4 space-y-2">
-                <UserAvatar user={user} />
-                <Markdown>{text}</Markdown>
-              </div>
-            </Fragment>
-          ))
-        )}
-
-        {isLoading && (
-          <Skeleton className="h-60 min-h-60 w-full rounded-lg"></Skeleton>
-        )}
-        <div id="bottom"></div>
+    <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden p-2">
+      <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
+        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden">
+          {state !== 'connected' ? (
+            <LoadingSpinner className="m-auto h-5 w-5 flex-1" />
+          ) : (
+            <div className="h-full overflow-y-auto" ref={container}>
+              <InfiniteScrollList
+                className="flex flex-col gap-1 overflow-hidden h-full"
+                queryKey={['live-log']}
+                reversed
+                container={() => container.current}
+                params={{ page: 0, items: 40 }}
+                end={<></>}
+                noResult={''}
+                getFunc={(
+                  _,
+                  params: {
+                    page: number;
+                    items: number;
+                  },
+                ) =>
+                  socket
+                    .onRoom('GLOBAL')
+                    .await({ method: 'GET_MESSAGE', ...params })
+                }
+              >
+                {(data, index) => (
+                  <span
+                    className="w-full text-wrap rounded-lg bg-background p-2"
+                    key={index}
+                  >
+                    {data}
+                  </span>
+                )}
+              </InfiniteScrollList>
+              <span ref={bottomRef}></span>
+            </div>
+          )}
+        </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex gap-2 border rounded-md mx-auto items-end p-2 w-dvw md:w-2/3">
-          <div
-            key={reset}
-            className="min-h-full focus-visible:outline-none max-h-56 overflow-y-auto overflow-x-hidden w-full max-w-[100vw] p-1"
-            contentEditable
-            role="textbox"
-            data-placeholder={t('chat.input-place-holder')}
-            //@ts-ignore
-            onInput={(event) => setPrompt(event.target.textContent ?? '')}
-            onKeyDown={handleKeyPress}
+      <ProtectedElement
+        session={session}
+        all={['USER']}
+        alt={
+          <div className="h-full w-full text-center whitespace-nowrap">
+            <LoginButton className="justify-center bg-button">
+              Login to chat
+            </LoginButton>
+          </div>
+        }
+      >
+        <form
+          className="flex h-10 flex-1 gap-1"
+          name="text"
+          onSubmit={handleFormSubmit}
+        >
+          <input
+            className="h-full w-full rounded-md border border-border bg-background px-2 outline-none"
+            value={message}
+            onChange={(event) => setMessage(event.currentTarget.value)}
           />
           <Button
-            title={t('submit')}
+            className="h-full"
             variant="primary"
-            disabled={isPending}
-            onClick={handleSubmit}
+            type="submit"
+            title={t('send')}
+            disabled={state !== 'connected' || !message}
           >
-            <SendIcon className="w-5 h-5" />
+            {t('send')}
           </Button>
-        </div>
-        <div className="text-xs text-center">{t('chat.notice')}</div>
-      </div>
+        </form>
+      </ProtectedElement>
     </div>
   );
 }

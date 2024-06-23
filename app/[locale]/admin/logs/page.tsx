@@ -138,7 +138,7 @@ function LiveLog() {
           ) : (
             <div className="h-full overflow-y-auto" ref={container}>
               <InfiniteScrollList
-                className="grid w-full grid-cols-1 justify-center gap-1 overflow-hidden"
+                className="flex flex-col gap-1 overflow-hidden h-full"
                 queryKey={['live-log']}
                 reversed
                 container={() => container.current}

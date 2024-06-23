@@ -46,7 +46,6 @@ function render(text: string, className?: string) {
 
     if (arr.length === 1) {
       if (color) {
-        console.log({ arr, color, rest: text.substring(arr[0].length) });
         key = add(result, text.substring(arr[0].length), color, key);
       } else {
         key = add(result, text, '', key);
