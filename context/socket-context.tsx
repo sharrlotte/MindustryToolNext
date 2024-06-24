@@ -47,6 +47,14 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   }, [setSocket]);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setState(socket?.getState() ?? 'disconnected');
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [socket]);
+
+  useEffect(() => {
     return () => {
       if (socket && socket.getState() === 'connected') {
         socket.close();

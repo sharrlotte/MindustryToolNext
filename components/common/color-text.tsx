@@ -10,12 +10,12 @@ interface ColorTextProps {
 }
 
 export default function ColorText({ text, className }: ColorTextProps) {
-  const result = useMemo(() => render(text, className), [text, className]);
+  const result = useMemo(() => render(text), [text]);
 
   return <span className={cn(className)}>{result}</span>;
 }
 
-function render(text: string, className?: string) {
+function render(text: string) {
   if (!text) return <></>;
 
   let index = text.search(COLOR_REGEX);

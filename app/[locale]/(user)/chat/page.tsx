@@ -1,104 +1,45 @@
 'use client';
 
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import { SendIcon, SmileIcon } from 'lucide-react';
+import React, { FormEvent, useRef, useState } from 'react';
 
 import LoginButton from '@/components/button/login-button';
 import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
 import { useSession } from '@/context/session-context';
 import { useSocket } from '@/context/socket-context';
+import useMessage from '@/hooks/use-message';
 import ProtectedElement from '@/layout/protected-element';
-import { isReachedEnd } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 
-import { InfiniteData, useQueryClient } from '@tanstack/react-query';
-
-export default function LogPage() {
+export default function Page() {
   const { socket, state } = useSocket();
   const { session } = useSession();
+
   const container = useRef<HTMLDivElement>(null);
-
-  const [message, setMessage] = useState<string>('');
-  const bottomRef = useRef<HTMLSpanElement>(null);
-  const queryClient = useQueryClient();
-
-  const t = useI18n();
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (bottomRef.current) {
-        bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 1000);
-  }, []);
-
-  useEffect(() => {
-    socket.onRoom('GLOBAL').send({ method: 'JOIN_ROOM', data: 'GLOBAL' });
-    socket.onRoom('GLOBAL').onMessage('MESSAGE', (message) => {
-      queryClient.setQueryData<
-        InfiniteData<Array<string>, unknown> | undefined
-      >(['live-log'], (query) => {
-        if (!query) {
-          return undefined;
-        }
-
-        const { pages, ...data } = query;
-
-        let [firstPage, ...rest] = pages;
-        firstPage = [message, ...firstPage];
-        return {
-          ...data,
-          pages: [firstPage, ...rest],
-        };
-      });
-
-      setTimeout(() => {
-        if (!bottomRef.current || !container.current) {
-          return;
-        }
-
-        if (!isReachedEnd(container.current)) {
-          return;
-        }
-
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    });
-  }, [queryClient, socket]);
-
-  const sendMessage = async () => {
-    if (socket && state === 'connected') {
-      socket.onRoom('GLOBAL').send({ data: message, method: 'MESSAGE' });
-      setMessage('');
-    }
-
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-    sendMessage();
-    event.preventDefault();
-  };
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden p-2">
-      <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
-        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden">
+      <div className="grid h-full w-full overflow-hidden rounded-md p-2">
+        <div className="flex h-full flex-col gap-1 overflow-x-hidden">
           {state !== 'connected' ? (
-            <LoadingSpinner className="m-auto h-5 w-5 flex-1" />
+            <LoadingSpinner className="m-auto" />
           ) : (
             <div className="h-full overflow-y-auto" ref={container}>
               <InfiniteScrollList
-                className="flex flex-col gap-1 overflow-hidden h-full"
-                queryKey={['live-log']}
+                className="flex flex-col gap-1 h-full"
+                queryKey={['global']}
                 reversed
                 container={() => container.current}
                 params={{ page: 0, items: 40 }}
                 end={<></>}
-                noResult={''}
+                noResult={
+                  <div className="h-full w-full flex justify-center font-semibold items-center">
+                    {"Let's start a conversation"}
+                  </div>
+                }
                 getFunc={(
                   _,
                   params: {
@@ -111,16 +52,8 @@ export default function LogPage() {
                     .await({ method: 'GET_MESSAGE', ...params })
                 }
               >
-                {(data, index) => (
-                  <span
-                    className="w-full text-wrap rounded-lg bg-background p-2"
-                    key={index}
-                  >
-                    {data}
-                  </span>
-                )}
+                {(data, index) => <MessageCard key={index} message={data} />}
               </InfiniteScrollList>
-              <span ref={bottomRef}></span>
             </div>
           )}
         </div>
@@ -136,27 +69,55 @@ export default function LogPage() {
           </div>
         }
       >
-        <form
-          className="flex h-10 flex-1 gap-1"
-          name="text"
-          onSubmit={handleFormSubmit}
-        >
-          <input
-            className="h-full w-full rounded-md border border-border bg-background px-2 outline-none"
-            value={message}
-            onChange={(event) => setMessage(event.currentTarget.value)}
-          />
-          <Button
-            className="h-full"
-            variant="primary"
-            type="submit"
-            title={t('send')}
-            disabled={state !== 'connected' || !message}
-          >
-            {t('send')}
-          </Button>
-        </form>
+        <ChatInput containerElement={container.current} />
       </ProtectedElement>
     </div>
+  );
+}
+
+type ChatInputProps = {
+  containerElement: HTMLDivElement | null;
+};
+
+function ChatInput({ containerElement }: ChatInputProps) {
+  const [message, setMessage] = useState<string>('');
+  const { state } = useSocket();
+
+  const t = useI18n();
+  const { sendMessage } = useMessage({
+    containerElement,
+    room: 'GLOBAL',
+    queryKey: ['global'],
+  });
+
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    sendMessage(message);
+    setMessage('');
+    event.preventDefault();
+  };
+  return (
+    <form
+      className="flex h-10 flex-1 gap-1"
+      name="text"
+      onSubmit={handleFormSubmit}
+    >
+      <div className="rounded-md border border-border bg-background px-2 w-full flex items-center">
+        <input
+          className="h-full w-full outline-none"
+          value={message}
+          onChange={(event) => setMessage(event.currentTarget.value)}
+        />
+        <SmileIcon className="w-6 h-6" />
+      </div>
+      <Button
+        className="h-full"
+        variant="primary"
+        type="submit"
+        title={t('send')}
+        disabled={state !== 'connected' || !message}
+      >
+        <SendIcon className="w-5 h-5" />
+      </Button>
+    </form>
   );
 }

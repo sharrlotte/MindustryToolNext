@@ -41,12 +41,15 @@ type InfiniteScrollListProps<T, P> = {
   children: (data: T, index?: number, endIndex?: number) => ReactNode;
 };
 
-export default function InfiniteScrollList<T, P extends PaginationQuery>({
+export default function InfiniteScrollList<
+  T,
+  P extends PaginationQuery = PaginationQuery,
+>({
   className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center',
   queryKey,
   params,
   loader,
-  noResult,
+  noResult = <NoResult className="flex w-full items-center justify-center" />,
   end,
   skeleton,
   threshold = 500,
@@ -191,10 +194,6 @@ export default function InfiniteScrollList<T, P extends PaginationQuery>({
 
     return () => clearInterval(interval);
   }, [checkIfNeedFetchMore]);
-
-  noResult = noResult ?? (
-    <NoResult className="flex w-full items-center justify-center" />
-  );
 
   if (!loader && !skeleton) {
     loader = (

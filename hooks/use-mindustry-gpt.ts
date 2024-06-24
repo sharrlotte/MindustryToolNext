@@ -38,8 +38,6 @@ async function* getChat(url: string, prompt: string, signal: AbortSignal) {
     token = token.endsWith('\n\n') ? token.slice(0, token.length - 2) : token;
     token = token.startsWith('\n\n') ? token.slice(2, token.length) : token;
 
-    console.log(token)
-
     for (const t of token) {
       await sleep(5);
       yield t;

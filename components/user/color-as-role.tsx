@@ -1,7 +1,7 @@
+import React, { ReactNode } from 'react';
+
 import { UserRole } from '@/constant/enum';
 import { cn } from '@/lib/utils';
-
-import React, { ReactNode } from 'react';
 
 type ColorAsRoleProps = {
   className: string;
@@ -26,6 +26,14 @@ export default function ColorAsRole({
     return (
       <span className={cn('text-emerald-400', className)}>{children}</span>
     );
+  }
+
+  if (roles.includes('SERVER')) {
+    return <span className={cn('text-purple-600', className)}>{children}</span>;
+  }
+
+  if (roles.includes('BOT')) {
+    return <span className={cn('text-blue-600', className)}>{children}</span>;
   }
 
   return <span className={cn(className)}>{children}</span>;
