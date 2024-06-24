@@ -14,7 +14,7 @@ export default function LoginButton({
   children,
 }: {
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }) {
   const t = useI18n();
   const [_, setCookie] = useCookies();
