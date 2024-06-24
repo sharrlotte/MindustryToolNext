@@ -33,7 +33,7 @@ export default function Page() {
   const id = useSafeParam().get('id');
 
   return (
-    <div className="flex flex-col gap-2 overflow-hidden">
+    <div className="flex flex-col gap-2 overflow-hidden p-4">
       <div className=" flex justify-end bg-card p-2">
         <AddPluginDialog serverId={id} />
       </div>
