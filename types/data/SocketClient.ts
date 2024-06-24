@@ -5,6 +5,8 @@ import ReconnectingWebSocket, {
   Event,
 } from 'reconnecting-websocket';
 
+import { Message } from '@/types/response/Message';
+
 export type SocketState =
   | 'connecting'
   | 'connected'
@@ -23,22 +25,22 @@ type SocketEvent = BaseSocketEvent &
     | {
         method: 'GET_MESSAGE';
         room: string;
-        data: string[];
+        data: Message[];
       }
     | {
         method: 'MESSAGE';
         room: string;
-        data: string;
+        data: Message;
       }
     | {
         method: 'SERVER_MESSAGE';
         room: string;
-        data: string;
+        data: Message;
       }
     | {
         method: 'ROOM_MESSAGE';
         room: string;
-        data: string;
+        data: Message;
       }
   );
 
@@ -83,8 +85,6 @@ function genId() {
 
 export default class SocketClient {
   private socket: ReconnectingWebSocket;
-
-  static instance: SocketClient;
 
   handlers: Record<string, EventHandler> = {};
 
@@ -145,9 +145,6 @@ export default class SocketClient {
     this.socket.onclose = (event) => {
       this.disconnects.forEach((disconnect) => disconnect(event));
     };
-
-    SocketClient.instance?.close();
-    SocketClient.instance = this;
   }
 
   public send(payload: MessagePayload) {

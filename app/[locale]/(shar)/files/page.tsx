@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-import AddFileDialog from '@/app/[locale]/shar/files/add-file-dialog';
+import AddFileDialog from '@/app/[locale]/(shar)/files/add-file-dialog';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import FileCard from '@/components/file/file-card';

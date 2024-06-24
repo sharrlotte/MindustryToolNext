@@ -1,8 +1,10 @@
 import { type ClassValue, clsx } from 'clsx';
 import Nprogress from 'nprogress';
 import { twMerge } from 'tailwind-merge';
+import { create } from 'zustand';
 
-import { Metric } from '@/types/response/Metric';
+import { Message } from '@/types/response/Message';
+import { ChartData, Metric } from '@/types/response/Metric';
 
 var colours: Record<string, string> = {
   aliceblue: '#f0f8ff',
@@ -150,6 +152,24 @@ var colours: Record<string, string> = {
   '': 'white',
 };
 
+export type GroupBy<T> = {
+  key: string;
+  value: T[];
+};
+
+export function groupBy<T>(
+  array: T[],
+  predicate: (value: T, index: number, array: T[]) => string,
+) {
+  const defaultValue = {} as Record<string, T[]>;
+
+  const map = array.reduce((acc, value, index, array) => {
+    (acc[predicate(value, index, array)] ||= []).push(value);
+    return acc;
+  }, defaultValue);
+
+  return Object.entries(map).map(([key, value]) => ({ key, value }));
+}
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -176,7 +196,7 @@ export function fillMetric(
   numberOfDay: number,
   array: Metric[] | undefined,
   defaultValue: number,
-) {
+): ChartData[] {
   if (!array) {
     return [];
   }
@@ -277,4 +297,17 @@ export function byteToSize(bytes: number) {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
 
   return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + '' + sizes[i];
+}
+
+export function isBelongToLastMessage(
+  lastMessage: Message,
+  newMessage: Message,
+) {
+  const lastMessageDate = new Date(lastMessage.createdAt);
+  const newMessageDate = new Date(newMessage.createdAt);
+
+  return (
+    lastMessage.userId === newMessage.userId &&
+    newMessageDate.getTime() - lastMessageDate.getTime() < 300000
+  );
 }

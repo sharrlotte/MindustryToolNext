@@ -1,9 +1,9 @@
 'use client';
 
+import React, { ReactNode, useEffect, useLayoutEffect, useState } from 'react';
+
 import env from '@/constant/env';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
-
-import React, { ReactNode, useEffect, useLayoutEffect, useState } from 'react';
 
 export type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
 
@@ -47,8 +47,16 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   }, [setSocket]);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setState(socket?.getState() ?? 'disconnected');
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [socket]);
+
+  useEffect(() => {
     return () => {
-      if (socket) {
+      if (socket && socket.getState() === 'connected') {
         socket.close();
       }
     };

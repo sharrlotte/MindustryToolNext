@@ -1,108 +1,123 @@
 'use client';
 
-import { SendIcon } from 'lucide-react';
-import React, { Fragment, KeyboardEvent, useEffect, useState } from 'react';
+import { SendIcon, SmileIcon } from 'lucide-react';
+import React, { FormEvent, useRef, useState } from 'react';
 
-import Markdown from '@/components/common/markdown';
+import LoginButton from '@/components/button/login-button';
+import InfiniteScrollList from '@/components/common/infinite-scroll-list';
+import LoadingSpinner from '@/components/common/loading-spinner';
+import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import UserAvatar from '@/components/user/user-avatar';
-import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
-import useMindustryGpt from '@/hooks/use-mindustry-gpt';
-import { isReachedEnd } from '@/lib/utils';
+import { useSocket } from '@/context/socket-context';
+import useMessage from '@/hooks/use-message';
+import ProtectedElement from '@/layout/protected-element';
 import { useI18n } from '@/locales/client';
 
-const url = `${env.url.api}/mindustry-gpt/chat`;
-
 export default function Page() {
-  const t = useI18n();
-  const [submit, { data, isPending, isLoading }] = useMindustryGpt({
-    url,
-  });
+  const { socket, state } = useSocket();
+  const { session } = useSession();
 
-  const [reset, setReset] = useState(0);
-  const { session: user } = useSession();
-  const [prompt, setPrompt] = useState('');
-
-  useEffect(() => {
-    const bottom = document.getElementById('bottom');
-    if (bottom && isReachedEnd(bottom)) {
-      bottom.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [data]);
-
-  function handleSubmit() {
-    submit(prompt);
-    setPrompt('');
-    setReset(reset + 1);
-
-    setTimeout(() => {
-      document.getElementById('bottom')?.scrollIntoView({ behavior: 'smooth' });
-    }, 1000);
-  }
-
-  function handleKeyPress(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key === 'Enter') {
-      handleSubmit();
-    }
-  }
-
-  if (!user) {
-    return;
-  }
+  const container = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="grid grid-rows-[1fr,auto,auto] h-full p-2 overflow-hidden gap-2">
-      <div className="p-2 h-full overflow-y-auto space-y-4 flex flex-col">
-        {data.length === 0 && !isLoading ? (
-          <div className="font-bold text-center h-full flex justify-center items-center">
-            {t('chat.message')}
-          </div>
-        ) : (
-          data.map(({ text, prompt }, index) => (
-            <Fragment key={index}>
-              <div className="flex justify-end">
-                <span className="rounded-lg shadow-lg bg-card px-4 py-2">
-                  {prompt}
-                </span>
-              </div>
-              <div className="border rounded-lg shadow-lg p-4 space-y-2">
-                <UserAvatar user={user} />
-                <Markdown>{text}</Markdown>
-              </div>
-            </Fragment>
-          ))
-        )}
-
-        {isLoading && (
-          <Skeleton className="h-60 min-h-60 w-full rounded-lg"></Skeleton>
-        )}
-        <div id="bottom"></div>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex gap-2 border rounded-md mx-auto items-end p-2 w-dvw md:w-2/3">
-          <div
-            key={reset}
-            className="min-h-full focus-visible:outline-none max-h-56 overflow-y-auto overflow-x-hidden w-full max-w-[100vw] p-1"
-            contentEditable
-            role="textbox"
-            data-placeholder={t('chat.input-place-holder')}
-            //@ts-ignore
-            onInput={(event) => setPrompt(event.target.textContent ?? '')}
-            onKeyDown={handleKeyPress}
-          />
-          <Button
-            title={t('submit')}
-            variant="primary"
-            disabled={isPending}
-            onClick={handleSubmit}
-          >
-            <SendIcon className="w-5 h-5" />
-          </Button>
+    <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden p-2">
+      <div className="grid h-full w-full overflow-hidden rounded-md p-2">
+        <div className="flex h-full flex-col gap-1 overflow-x-hidden">
+          {state !== 'connected' ? (
+            <LoadingSpinner className="m-auto" />
+          ) : (
+            <div className="h-full overflow-y-auto" ref={container}>
+              <InfiniteScrollList
+                className="flex flex-col gap-1 h-full"
+                queryKey={['global']}
+                reversed
+                container={() => container.current}
+                params={{ page: 0, items: 40 }}
+                end={<></>}
+                noResult={
+                  <div className="h-full w-full flex justify-center font-semibold items-center">
+                    {"Let's start a conversation"}
+                  </div>
+                }
+                getFunc={(
+                  _,
+                  params: {
+                    page: number;
+                    items: number;
+                  },
+                ) =>
+                  socket
+                    .onRoom('GLOBAL')
+                    .await({ method: 'GET_MESSAGE', ...params })
+                }
+              >
+                {(data, index) => <MessageCard key={index} message={data} />}
+              </InfiniteScrollList>
+            </div>
+          )}
         </div>
-        <div className="text-xs text-center">{t('chat.notice')}</div>
       </div>
+      <ProtectedElement
+        session={session}
+        all={['USER']}
+        alt={
+          <div className="h-full w-full text-center whitespace-nowrap">
+            <LoginButton className="justify-center bg-button">
+              Login to chat
+            </LoginButton>
+          </div>
+        }
+      >
+        <ChatInput containerElement={container.current} />
+      </ProtectedElement>
     </div>
+  );
+}
+
+type ChatInputProps = {
+  containerElement: HTMLDivElement | null;
+};
+
+function ChatInput({ containerElement }: ChatInputProps) {
+  const [message, setMessage] = useState<string>('');
+  const { state } = useSocket();
+
+  const t = useI18n();
+  const { sendMessage } = useMessage({
+    containerElement,
+    room: 'GLOBAL',
+    queryKey: ['global'],
+  });
+
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    sendMessage(message);
+    setMessage('');
+    event.preventDefault();
+  };
+  return (
+    <form
+      className="flex h-10 flex-1 gap-1"
+      name="text"
+      onSubmit={handleFormSubmit}
+    >
+      <div className="rounded-md border border-border bg-background px-2 w-full flex items-center">
+        <input
+          className="h-full w-full outline-none"
+          value={message}
+          onChange={(event) => setMessage(event.currentTarget.value)}
+        />
+        <SmileIcon className="w-6 h-6" />
+      </div>
+      <Button
+        className="h-full"
+        variant="primary"
+        type="submit"
+        title={t('send')}
+        disabled={state !== 'connected' || !message}
+      >
+        <SendIcon className="w-5 h-5" />
+      </Button>
+    </form>
   );
 }

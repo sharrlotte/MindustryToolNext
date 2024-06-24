@@ -15,7 +15,7 @@ export default function LoadingSpinner({
       role="status"
     >
       <motion.div
-        className="w-5 h-5 border-2 border-button m-10"
+        className="w-5 h-5 border-2 border-button m-10 flex justify-center items-center"
         animate={{
           scale: [1, 1.5, 1.5, 1, 1],
           rotate: [0, 0, 270, 270, 0],
@@ -28,7 +28,23 @@ export default function LoadingSpinner({
           repeat: Infinity,
           repeatDelay: 1,
         }}
-      />
+      >
+        <motion.div
+          className="border-2 border-emerald-600 w-3 h-3"
+          animate={{
+            scale: [1, 1, 1, 1, 1],
+            rotate: [0, 90, 270, 270, 0],
+            borderRadius: '0',
+          }}
+          transition={{
+            duration: 2,
+            ease: 'easeInOut',
+            times: [0, 0.2, 0.5, 0.8, 1],
+            repeat: Infinity,
+            repeatDelay: 1,
+          }}
+        />
+      </motion.div>
       <span className="sr-only">Loading...</span>
     </div>
   );

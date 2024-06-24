@@ -112,6 +112,11 @@ export function NavItems({ onClick }: NavItemsProps) {
           icon: <ChatBubbleLeftIcon className="h-5 w-5" />,
         },
         {
+          path: '/mindustry-gpt', //
+          name: 'MindustryGpt',
+          icon: <BotIcon className="h-5 w-5" />,
+        },
+        {
           name: t('upload'),
           icon: <ArrowUpTrayIcon className="h-5 w-5" />,
           path: [
@@ -198,7 +203,7 @@ export function NavItems({ onClick }: NavItemsProps) {
       paths: [
         {
           name: 'File',
-          path: '/shar/files',
+          path: '/files',
           icon: <FolderIcon className="h-5 w-5" />,
         },
         {
@@ -207,7 +212,7 @@ export function NavItems({ onClick }: NavItemsProps) {
           path: [
             {
               name: 'Document',
-              path: '/shar/mindustry-gpt/documents',
+              path: '/mindustry-gpt/documents',
               icon: <FileIcon className="h-5 w-5" />,
             },
           ],

@@ -1,13 +1,14 @@
 'use client';
 
 import { FilterIcon } from 'lucide-react';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
 import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import LogCard from '@/components/log/log-card';
+import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -20,8 +21,9 @@ import {
 import { LogCollection } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
 import useClientAPI from '@/hooks/use-client';
+import useMessage from '@/hooks/use-message';
 import useQueryState from '@/hooks/use-query-state';
-import { cn, isReachedEnd } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import getLogCollections from '@/query/log/get-log-collections';
 import getLogs from '@/query/log/get-logs';
@@ -29,7 +31,7 @@ import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { InfiniteData, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
@@ -42,15 +44,17 @@ export default function LogPage() {
   });
 
   return (
-    <div className="flex h-full w-full flex-col gap-1 overflow-hidden p-4">
-      <ComboBox
-        value={{ label: collection, value: collection }}
-        values={['LIVE', ...(data ?? [])].map((item) => ({
-          label: item,
-          value: item,
-        }))}
-        onChange={setCollection}
-      />
+    <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-4">
+      <div className="p-2 bg-card rounded-md">
+        <ComboBox
+          value={{ label: collection, value: collection }}
+          values={['LIVE', ...(data ?? [])].map((item) => ({
+            label: item,
+            value: item,
+          }))}
+          onChange={setCollection}
+        />
+      </div>
 
       {collection && collection !== 'LIVE' ? (
         <StaticLog collection={collection} />
@@ -65,85 +69,24 @@ function LiveLog() {
   const { socket, state } = useSocket();
   const container = useRef<HTMLDivElement>(null);
 
-  const [message, setMessage] = useState<string>('');
-  const bottomRef = useRef<HTMLSpanElement>(null);
-  const queryClient = useQueryClient();
-
-  const t = useI18n();
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (bottomRef.current) {
-        bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 1000);
-  }, []);
-
-  useEffect(() => {
-    socket.onRoom('LOG').send({ method: 'JOIN_ROOM', data: 'LOG' });
-    socket.onRoom('LOG').onMessage('MESSAGE', (message) => {
-      queryClient.setQueryData<
-        InfiniteData<Array<string>, unknown> | undefined
-      >(['live-log'], (query) => {
-        if (!query) {
-          return undefined;
-        }
-
-        const { pages, ...data } = query;
-
-        let [firstPage, ...rest] = pages;
-        firstPage = [message, ...firstPage];
-        return {
-          ...data,
-          pages: [firstPage, ...rest],
-        };
-      });
-
-      setTimeout(() => {
-        if (!bottomRef.current || !container.current) {
-          return;
-        }
-
-        if (!isReachedEnd(container.current)) {
-          return;
-        }
-
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    });
-  }, [queryClient, socket]);
-
-  const sendMessage = async () => {
-    if (socket && state === 'connected') {
-      socket.onRoom('LOG').send({ data: message, method: 'MESSAGE' });
-      setMessage('');
-    }
-
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-    sendMessage();
-    event.preventDefault();
-  };
-
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
-        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden">
+        <div className="flex h-full flex-col gap-1 overflow-hidden">
           {state !== 'connected' ? (
-            <LoadingSpinner className="m-auto h-5 w-5 flex-1" />
+            <LoadingSpinner className="m-auto" />
           ) : (
-            <div className="h-full overflow-y-auto" ref={container}>
+            <div
+              className="h-full overflow-y-auto overflow-x-hidden"
+              ref={container}
+            >
               <InfiniteScrollList
-                className="grid w-full grid-cols-1 justify-center gap-1 overflow-hidden"
+                className="flex flex-col gap-1 h-full"
                 queryKey={['live-log']}
                 reversed
                 container={() => container.current}
                 params={{ page: 0, items: 40 }}
-                end={<>No more message</>}
+                end={<></>}
                 getFunc={(
                   _,
                   params: {
@@ -156,41 +99,60 @@ function LiveLog() {
                     .await({ method: 'GET_MESSAGE', ...params })
                 }
               >
-                {(data, index) => (
-                  <span
-                    className="w-full text-wrap rounded-lg bg-background p-2"
-                    key={index}
-                  >
-                    {data}
-                  </span>
-                )}
+                {(data, index) => <MessageCard key={index} message={data} />}
               </InfiniteScrollList>
-              <span ref={bottomRef}></span>
             </div>
           )}
         </div>
       </div>
-      <form
-        className="flex h-10 flex-1 gap-1"
-        name="text"
-        onSubmit={handleFormSubmit}
-      >
-        <input
-          className="h-full w-full rounded-md border border-border bg-background px-2 outline-none"
-          value={message}
-          onChange={(event) => setMessage(event.currentTarget.value)}
-        />
-        <Button
-          className="h-full"
-          variant="primary"
-          type="submit"
-          title={t('send')}
-          disabled={state !== 'connected' || !message}
-        >
-          {t('send')}
-        </Button>
-      </form>
+      <SendMessageButton containerElement={container.current} />
     </div>
+  );
+}
+
+type SendMessageButtonProps = {
+  containerElement: HTMLDivElement | null;
+};
+
+function SendMessageButton({ containerElement }: SendMessageButtonProps) {
+  const [message, setMessage] = useState<string>('');
+  const { state } = useSocket();
+
+  const t = useI18n();
+
+  const { sendMessage } = useMessage({
+    containerElement,
+    room: 'LOG',
+    queryKey: ['live-log'],
+  });
+
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    sendMessage(message);
+    setMessage('');
+    event.preventDefault();
+  };
+
+  return (
+    <form
+      className="flex h-10 flex-1 gap-1"
+      name="text"
+      onSubmit={handleFormSubmit}
+    >
+      <input
+        className="h-full w-full rounded-md border border-border bg-background px-2 outline-none"
+        value={message}
+        onChange={(event) => setMessage(event.currentTarget.value)}
+      />
+      <Button
+        className="h-full"
+        variant="primary"
+        type="submit"
+        title={t('send')}
+        disabled={state !== 'connected' || !message}
+      >
+        {t('send')}
+      </Button>
+    </form>
   );
 }
 
