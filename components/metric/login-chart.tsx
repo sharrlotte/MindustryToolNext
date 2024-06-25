@@ -42,9 +42,7 @@ const options = {
 const NUMBER_OF_DAY = 15;
 
 const background =
-  'rounded-lg bg-card p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
-
-const chart = 'h-[400px]';
+  'rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5]';
 
 type ChartProps = {
   axios: AxiosInstance;
@@ -77,7 +75,7 @@ function Loading({ axios, start, end }: ChartProps) {
   });
 
   if (loggedDailyUser.isLoading || dailyUser.isLoading) {
-    return <LoadingSpinner className={chart} />;
+    return <LoadingSpinner className="h-full aspect-[2/1.5]" />;
   }
 
   if (loggedDailyUser.error || dailyUser.error)
@@ -115,7 +113,7 @@ function Loading({ axios, start, end }: ChartProps) {
   };
 
   return (
-    <div className={chart}>
+    <div className="h-full">
       <Line options={options} data={data} />
     </div>
   );
