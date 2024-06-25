@@ -39,3 +39,5 @@ export const pluginSearchSchema = z.object({
 });
 
 export type PluginPaginationQuery = z.infer<typeof pluginSearchSchema>;
+
+export type DocumentPaginationQuery = Omit<PluginPaginationQuery, 'tags'>;

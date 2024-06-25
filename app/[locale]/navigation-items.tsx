@@ -181,11 +181,6 @@ export function NavItems({ onClick }: NavItemsProps) {
           icon: <ShieldCheckIcon className="h-5 w-5" />,
         },
         {
-          name: t('plugin'),
-          path: '/admin/plugins',
-          icon: <PuzzlePieceIcon className="h-5 w-5" />,
-        },
-        {
           name: t('server'),
           path: '/admin/servers',
           icon: <ServerIcon className="h-5 w-5" />,
@@ -205,6 +200,11 @@ export function NavItems({ onClick }: NavItemsProps) {
           name: 'File',
           path: '/files',
           icon: <FolderIcon className="h-5 w-5" />,
+        },
+        {
+          name: t('plugin'),
+          path: '/plugins',
+          icon: <PuzzlePieceIcon className="h-5 w-5" />,
         },
         {
           name: 'MindustryGPT',

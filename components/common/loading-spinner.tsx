@@ -15,7 +15,7 @@ export default function LoadingSpinner({
       role="status"
     >
       <motion.div
-        className="w-5 h-5 border-2 border-button m-10 flex justify-center items-center"
+        className="w-5 h-5 border-2 border-button flex justify-center items-center"
         animate={{
           scale: [1, 1.5, 1.5, 1, 1],
           rotate: [0, 0, 270, 270, 0],
