@@ -308,6 +308,7 @@ export function isBelongToLastMessage(
 
   return (
     lastMessage.userId === newMessage.userId &&
-    newMessageDate.getTime() - lastMessageDate.getTime() < 300000
+    newMessageDate.getTime() - lastMessageDate.getTime() < 300000 &&
+    lastMessage.content.length < 10
   );
 }
