@@ -1,4 +1,3 @@
-import { request } from 'http';
 import ReconnectingWebSocket, {
   CloseEvent,
   ErrorEvent,
@@ -118,20 +117,16 @@ export default class SocketClient {
         const data = event.data;
         const message = JSON.parse(data);
 
+        const handler = this.handlers[message.method + message.room];
+
+        if (handler) {
+          handler(message.data, event);
+        }
+
         if (message.id) {
           const { resolve } = this.requests[message.id];
           return resolve(message.data);
         }
-
-        const handler = this.handlers[message.method + message.room];
-
-        if (!handler) {
-          throw new Error(
-            'No handler register to response: ' + JSON.stringify(message),
-          );
-        }
-
-        handler(message.data, event);
       } catch (error) {
         console.error(error);
       }

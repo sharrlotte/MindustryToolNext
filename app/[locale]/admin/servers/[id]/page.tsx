@@ -10,11 +10,10 @@ import getServerAPI from '@/query/config/get-server-api';
 import getInternalServer from '@/query/server/get-internal-server';
 
 type Props = {
-  params: { id: string };
+  params: { id: string; locale: string };
 };
 
-export default async function Page({ params: { id } }: Props) {
-  setStaticParamsLocale('en');
+export default async function Page({ params: { id, locale } }: Props) {
   const axios = await getServerAPI();
   const server = await getInternalServer(axios, { id });
 
