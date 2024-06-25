@@ -94,8 +94,11 @@ function Loading({ axios, start, end }: ChartProps) {
             },
           },
           scales: {
-            yAxes: {
+            y: {
               beginAtZero: true,
+              ticks: {
+                stepSize: 1,
+              },
             },
           },
         }}

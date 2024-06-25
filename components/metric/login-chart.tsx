@@ -33,9 +33,6 @@ ChartJS.register(
 
 const NUMBER_OF_DAY = 15;
 
-const background =
-  'rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5]';
-
 type ChartProps = {
   axios: AxiosInstance;
   start: Date;
@@ -45,7 +42,7 @@ type ChartProps = {
 export default function LoginChart(props: ChartProps) {
   const t = useI18n();
   return (
-    <div className={background}>
+    <div className="rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5]">
       <span className="font-bold">{t('metric.user-login')}</span>
       <Loading {...props} />
     </div>
@@ -109,8 +106,11 @@ function Loading({ axios, start, end }: ChartProps) {
       <Line
         options={{
           scales: {
-            yAxes: {
+            y: {
               beginAtZero: true,
+              ticks: {
+                stepSize: 1,
+              },
             },
           },
         }}
