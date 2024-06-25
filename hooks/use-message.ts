@@ -57,7 +57,7 @@ export default function useMessage({
               return [firstPage, ...rest];
             }
 
-            return [message, ...rest];
+            return [message, firstPage, ...rest];
           });
 
           return { ...query, pages };
