@@ -31,14 +31,6 @@ ChartJS.register(
   Legend,
 );
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-  },
-};
 const NUMBER_OF_DAY = 15;
 
 const background =
@@ -114,7 +106,16 @@ function Loading({ axios, start, end }: ChartProps) {
 
   return (
     <div className="h-full">
-      <Line options={options} data={data} />
+      <Line
+        options={{
+          scales: {
+            yAxes: {
+              beginAtZero: true,
+            },
+          },
+        }}
+        data={data}
+      />
     </div>
   );
 }

@@ -32,18 +32,7 @@ ChartJS.register(
   Legend,
 );
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-  },
-};
-
 const NUMBER_OF_DAY = 15;
-const background =
-  'rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5]';
 
 type ChartProps = {
   axios: AxiosInstance;
@@ -55,7 +44,7 @@ export default function LikeChart(props: ChartProps) {
   const t = useI18n();
 
   return (
-    <div className={background}>
+    <div className="rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5] justify-between">
       <span className="font-bold">{t('metric.user-interaction')}</span>
       <Loading {...props} />
     </div>
@@ -96,7 +85,22 @@ function Loading({ axios, start, end }: ChartProps) {
 
   return (
     <div className="bg-card h-full">
-      <Line options={options} data={data} />
+      <Line
+        options={{
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top' as const,
+            },
+          },
+          scales: {
+            yAxes: {
+              beginAtZero: true,
+            },
+          },
+        }}
+        data={data}
+      />
     </div>
   );
 }
