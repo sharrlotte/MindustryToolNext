@@ -9,10 +9,6 @@ import getUsers from '@/query/user/get-users';
 
 export const dynamicParams = false;
 
-export async function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'vi' }];
-}
-
 export default async function Home({
   params: { locale },
 }: {
