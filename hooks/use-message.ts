@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useSocket } from '@/context/socket-context';
 import { isBelongToLastMessage, isReachedEnd } from '@/lib/utils';
@@ -20,17 +20,35 @@ export default function useMessage({
   const { socket, state } = useSocket();
   const queryClient = useQueryClient();
 
+  const scrollToBottom = useCallback((containerElement: HTMLElement | null) => {
+    setTimeout(() => {
+      if (containerElement && isReachedEnd(containerElement, 500)) {
+        containerElement.scrollTo({
+          top: containerElement.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    }, 100);
+  }, []);
+
   useEffect(() => {
     setTimeout(() => {
       containerElement?.scrollTo({
         top: containerElement.scrollHeight,
-        behavior: 'instant',
+        behavior: 'smooth',
       });
-    }, 1000);
+    }, 2000);
   }, [containerElement]);
 
   useEffect(() => {
     socket.onRoom(room).send({ method: 'JOIN_ROOM', data: room });
+  }, [room, socket]);
+
+  useEffect(() => {
+    socket
+      .onRoom(room)
+      .onMessage('GET_MESSAGE', () => scrollToBottom(containerElement));
+
     socket.onRoom(room).onMessage('MESSAGE', (message) => {
       queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>(
         { queryKey },
@@ -64,22 +82,9 @@ export default function useMessage({
         },
       );
 
-      setTimeout(() => {
-        if (!containerElement) {
-          return;
-        }
-
-        if (!isReachedEnd(containerElement)) {
-          return;
-        }
-
-        containerElement?.scrollTo({
-          top: containerElement.scrollHeight,
-          behavior: 'smooth',
-        });
-      }, 100);
+      scrollToBottom(containerElement);
     });
-  }, [containerElement, queryClient, queryKey, room, socket]);
+  }, [containerElement, queryClient, queryKey, room, scrollToBottom, socket]);
 
   const sendMessage = async (message: string) => {
     if (socket && state === 'connected') {

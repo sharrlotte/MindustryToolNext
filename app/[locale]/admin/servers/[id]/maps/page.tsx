@@ -1,5 +1,6 @@
 'use client';
 
+import { setStaticParamsLocale } from 'next-international/server';
 import React, { useRef, useState } from 'react';
 
 import InfinitePage from '@/components/common/infinite-page';
@@ -31,7 +32,8 @@ import postInternalServerMap from '@/query/server/post-internal-server-map';
 
 import { useMutation } from '@tanstack/react-query';
 
-export default function Page() {
+export default function Page({ params: { locale } }: any) {
+  setStaticParamsLocale(locale);
   const container = useRef<HTMLDivElement | null>(null);
   const id = useSafeParam().get('id');
 
