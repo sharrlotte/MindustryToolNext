@@ -5,7 +5,7 @@ import { cn, getColor } from '@/lib/utils';
 const COLOR_REGEX = /\[([#a-zA-Z0-9]*)\]/g;
 
 interface ColorTextProps {
-  text: string;
+  text?: string;
   className?: string;
 }
 
@@ -15,7 +15,7 @@ export default function ColorText({ text, className }: ColorTextProps) {
   return <span className={cn(className)}>{result}</span>;
 }
 
-function render(text: string) {
+function render(text?: string) {
   if (!text) return <></>;
 
   let index = text.search(COLOR_REGEX);

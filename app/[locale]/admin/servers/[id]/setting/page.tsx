@@ -142,10 +142,10 @@ function ServerSettingEditor({ server }: Props) {
   const isLoading = isPending || isDeleting;
 
   return (
-    <div className="flex flex-col justify-between gap-2">
+    <div className="flex flex-col justify-between gap-2 p-4">
       <Form {...form}>
         <form
-          className="flex flex-1 flex-col justify-between p-2"
+          className="flex flex-1 flex-col justify-between"
           onSubmit={form.handleSubmit((value) => mutate(value))}
         >
           <div className="space-y-6">
