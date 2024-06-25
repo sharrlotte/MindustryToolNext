@@ -28,7 +28,7 @@ export default function Page() {
           ) : (
             <div className="h-full overflow-y-auto" ref={container}>
               <InfiniteScrollList
-                className="flex flex-col gap-1 overflow-hidden h-full"
+                className="flex flex-col gap-1 h-full"
                 queryKey={[`server-${id}-message`, id]}
                 reversed
                 container={() => container.current}
