@@ -14,7 +14,6 @@ type Props = {
 };
 
 export default async function Page({ params: { id, locale } }: Props) {
-  setStaticParamsLocale(locale);
   const axios = await getServerAPI();
   const server = await getInternalServer(axios, { id });
 
