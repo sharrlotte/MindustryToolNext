@@ -26,7 +26,7 @@ export function UserDisplay() {
 
   if (state === 'loading') {
     return (
-      <Skeleton className="flex h-16 flex-1 items-center justify-between rounded-sm bg-card p-1" />
+      <Skeleton className="flex h-16 max-h-16 flex-1 items-center justify-between rounded-sm bg-card p-1" />
     );
   }
 

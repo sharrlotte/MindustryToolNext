@@ -1,12 +1,13 @@
 'use client';
 
+import React from 'react';
+
+import ClientChart from '@/components/metric/client-chart';
 import LikeChart from '@/components/metric/like-chart';
 import LoginChart from '@/components/metric/login-chart';
 import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import useClientAPI from '@/hooks/use-client';
-
-import React from 'react';
 
 const NUMBER_OF_DAY = 15;
 
@@ -23,6 +24,7 @@ export default function Page() {
       <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2">
         <LikeChart axios={axios} start={start} end={end} />
         <LoginChart axios={axios} start={start} end={end} />
+        <ClientChart axios={axios} start={start} end={end} />
         <LoginLog axios={axios} />
         <LoginHistory axios={axios} />
       </div>
