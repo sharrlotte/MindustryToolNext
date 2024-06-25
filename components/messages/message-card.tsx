@@ -1,9 +1,7 @@
 import moment from 'moment';
-import { Fragment } from 'react';
 
 import ColorText from '@/components/common/color-text';
 import ColorAsRole from '@/components/user/color-as-role';
-import IdUserCard from '@/components/user/id-user-card';
 import UserAvatar from '@/components/user/user-avatar';
 import useClientAPI from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
@@ -19,9 +17,9 @@ type Props = {
 
 export function MessageCard({ className, message }: Props) {
   const axios = useClientAPI();
-  const { userId, id, content, createdAt } = message;
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['users', id],
+  const { userId, content, createdAt } = message;
+  const { data } = useQuery({
+    queryKey: ['users', userId],
     queryFn: () => getUser(axios, { id: userId }),
   });
 

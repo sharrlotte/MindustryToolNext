@@ -22,7 +22,6 @@ import { useQuery } from '@tanstack/react-query';
 export default function SidebarToggle() {
   const { id } = useParams();
   const pathname = usePathname();
-  const rest = pathname.split(id as string).at(-1) || '';
   const { expand, setExpand } = useExpandServerNav();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(id);
@@ -70,7 +69,11 @@ export default function SidebarToggle() {
         </PopoverTrigger>
         <PopoverContent className="w-[200px] grid p-2 gap-1">
           {servers.map(({ id, name }) => (
-            <Link key={id} href={pathname.replace(serverId, id)}>
+            <Link
+              key={id}
+              href={pathname.replace(serverId, id)}
+              onClick={() => setValue(id)}
+            >
               <ColorText text={name} className="text-sm" />
             </Link>
           ))}
