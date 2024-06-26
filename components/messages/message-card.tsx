@@ -1,6 +1,7 @@
 import moment from 'moment';
 
 import ColorText from '@/components/common/color-text';
+import { Skeleton } from '@/components/ui/skeleton';
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 import useClientAPI from '@/hooks/use-client';
@@ -23,22 +24,27 @@ export function MessageCard({ className, message }: Props) {
     queryFn: () => getUser(axios, { id: userId }),
   });
 
-  if (!data) {
-    return <></>;
-  }
-
-  const { name, roles } = data;
-
   return (
     <div
       className={cn('w-full text-wrap rounded-lg flex p-2 gap-2', className)}
     >
-      <UserAvatar user={data} />
+      {data ? (
+        <UserAvatar user={data} />
+      ) : (
+        <Skeleton className="rounded-full border border-border w-8 h-8" />
+      )}
       <div>
         <div className="space-x-2">
-          <ColorAsRole className="font-semibold capitalize" roles={roles}>
-            {name}
-          </ColorAsRole>
+          {data ? (
+            <ColorAsRole
+              className="font-semibold capitalize"
+              roles={data.roles}
+            >
+              {data.name}
+            </ColorAsRole>
+          ) : (
+            <Skeleton className="w-24 h-6" />
+          )}
           <span>{moment(createdAt).fromNow()}</span>
         </div>
         <div className="grid gap-1">

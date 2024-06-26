@@ -5,6 +5,7 @@ import ReconnectingWebSocket, {
 } from 'reconnecting-websocket';
 
 import { Message } from '@/types/response/Message';
+import { User } from '@/types/response/User';
 
 export type SocketState =
   | 'connecting'
@@ -41,6 +42,11 @@ type SocketEvent = BaseSocketEvent &
         room: string;
         data: Message;
       }
+    | {
+        method: 'GET_MEMBER';
+        room: string;
+        data: User[];
+      }
   );
 
 type BaseMessagePayload = {};
@@ -58,7 +64,7 @@ type MessagePayload = BaseMessagePayload &
     | {
         method: 'GET_MESSAGE';
         page: number;
-        items: number;
+        size: number;
       }
     | {
         method: 'JOIN_ROOM';
@@ -67,6 +73,11 @@ type MessagePayload = BaseMessagePayload &
     | {
         method: 'LEAVE_ROOM';
         data: string;
+      }
+    | {
+        method: 'GET_MEMBER';
+        page: number;
+        size: number;
       }
   );
 

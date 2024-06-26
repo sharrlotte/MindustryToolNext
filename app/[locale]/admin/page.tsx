@@ -21,7 +21,7 @@ export default function Page() {
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-4">
-      <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2">
+      <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2 lg:grid-cols-3gv">
         <LikeChart axios={axios} start={start} end={end} />
         <LoginChart axios={axios} start={start} end={end} />
         <ClientChart axios={axios} start={start} end={end} />

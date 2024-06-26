@@ -1,8 +1,8 @@
+import { AxiosInstance } from 'axios';
+
 import { LogCollection } from '@/constant/enum';
 import Pageable from '@/types/data/pagable-schema';
 import { Log } from '@/types/response/Log';
-
-import { AxiosInstance } from 'axios';
 
 type GetLogParams = Pageable & {
   collection: LogCollection;
@@ -19,7 +19,7 @@ export default async function getLogs(
 
   const result = await axios.get(`logs/${collection}`, {
     params: {
-      items: 20,
+      size: 20,
       page,
       ...params,
     },

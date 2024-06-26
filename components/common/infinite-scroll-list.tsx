@@ -63,7 +63,7 @@ export default function InfiniteScrollList<
   const currentList = listRef.current;
 
   const [scrollTop, setScrollTop] = useState(0);
-  const [lastHeight, setLastHeight] = useState(0);
+  const [lastHeight, setLastHeight] = useState(-1);
 
   const t = useI18n();
 
@@ -89,8 +89,8 @@ export default function InfiniteScrollList<
 
   const pageMapper = useCallback(
     (item: T, index: number, array: T[]) =>
-      children(item, index, array.length - params.items),
-    [children, params.items],
+      children(item, index, array.length - params.size),
+    [children, params.size],
   );
 
   const remainScrollPosition = experimental_useEffectEvent(() => {

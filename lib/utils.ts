@@ -281,8 +281,8 @@ export function getColor(color: string) {
   return colours[color];
 }
 
-export function mergeNestArray<T>(items: T[][]) {
-  return items.reduce((prev, curr) => prev.concat(curr), []);
+export function mergeNestArray<T>(size: T[][]) {
+  return size.reduce((prev, curr) => prev.concat(curr), []);
 }
 
 export function makeArray(size: number) {

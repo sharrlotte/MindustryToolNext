@@ -45,7 +45,7 @@ export default function ServerMaps() {
         ref={container}
       >
         <ResponsiveInfiniteScrollGrid
-          params={{ page: 0, items: 20 }}
+          params={{ page: 0, size: 20 }}
           queryKey={['internal-server-maps', id]}
           getFunc={(axios, params) => getInternalServerMaps(axios, id, params)}
           container={() => container.current}

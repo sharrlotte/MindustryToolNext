@@ -4,7 +4,7 @@ import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
 
 export default async function getTotalPostUpload(
   axios: AxiosInstance,
-  params: Omit<PaginationSearchQuery, 'page' | 'items'>,
+  params: Omit<PaginationSearchQuery, 'page' | 'size'>,
 ): Promise<number> {
   const result = await axios.get('/posts/upload/total', {
     params,

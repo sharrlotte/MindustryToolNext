@@ -67,7 +67,7 @@ export default function LogPage() {
 
 function LiveLog() {
   const { socket, state } = useSocket();
-  const container = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
@@ -78,20 +78,20 @@ function LiveLog() {
           ) : (
             <div
               className="h-full overflow-y-auto overflow-x-hidden"
-              ref={container}
+              ref={(ref) => setContainer(ref)}
             >
               <InfiniteScrollList
                 className="flex flex-col gap-1 h-full"
                 queryKey={['live-log']}
                 reversed
-                container={() => container.current}
-                params={{ page: 0, items: 40 }}
+                container={() => container}
+                params={{ page: 0, size: 40 }}
                 end={<></>}
                 getFunc={(
                   _,
                   params: {
                     page: number;
-                    items: number;
+                    size: number;
                   },
                 ) =>
                   socket
@@ -105,7 +105,7 @@ function LiveLog() {
           )}
         </div>
       </div>
-      <SendMessageButton containerElement={container.current} />
+      <SendMessageButton containerElement={container} />
     </div>
   );
 }
@@ -370,7 +370,7 @@ function StaticLog({ collection }: StaticLogProps) {
           className="flex w-full flex-col items-center justify-center gap-2"
           params={{
             page: 0,
-            items: 20,
+            size: 20,
             collection: collection as LogCollection,
             env: env as LogEnvironment,
             content,

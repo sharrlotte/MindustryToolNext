@@ -5,7 +5,7 @@ export const QueryParams = {
   tags: 'tags',
   sort: 'sort',
   status: 'status',
-  items: 'items',
+  size: 'size',
 } as const;
 
 export const PathParams = {

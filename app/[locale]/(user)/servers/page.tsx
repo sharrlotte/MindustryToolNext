@@ -28,7 +28,7 @@ export default function Page() {
   const container = useRef<HTMLDivElement>(null);
   const [address, setAddress] = useState('');
   const [result, setResult] = useState<PostServerResponse>();
-  const params = { page: 0, items: 40 };
+  const params = { page: 0, size: 40 };
   const axios = useClientAPI();
   const { toast } = useToast();
 

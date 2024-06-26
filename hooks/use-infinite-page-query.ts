@@ -22,7 +22,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     lastPageParams: P,
     allPageParams: P[],
   ) => {
-    if (lastPage.length === 0 || lastPage.length < params.items) {
+    if (lastPage.length === 0 || lastPage.length < params.size) {
       return undefined;
     }
 
@@ -38,7 +38,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     if (
       lastPageParams.page <= 0 ||
       lastPage.length === 0 ||
-      lastPage.length < params.items
+      lastPage.length < params.size
     ) {
       return undefined;
     }
@@ -46,7 +46,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     return { ...lastPageParams, page: allPages.length - 1 };
   };
 
-  const { page, items, ...rest } = params;
+  const { page, size, ...rest } = params;
 
   let filteredQueryKey: any[];
 

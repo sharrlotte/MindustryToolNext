@@ -1,7 +1,7 @@
+import { AxiosInstance } from 'axios';
+
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import ExternalServer from '@/types/response/ExternalServer';
-
-import { AxiosInstance } from 'axios';
 
 export default async function getServers(
   axios: AxiosInstance,
@@ -10,7 +10,7 @@ export default async function getServers(
   const result = await axios.get(`/external-servers`, {
     params: {
       ...params,
-      items: 40,
+      size: 40,
     },
   });
 
