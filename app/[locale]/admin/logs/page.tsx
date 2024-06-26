@@ -7,6 +7,7 @@ import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
 import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import MessageList from '@/components/common/message-list';
 import LogCard from '@/components/log/log-card';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
@@ -80,10 +81,11 @@ function LiveLog() {
               className="h-full overflow-y-auto overflow-x-hidden"
               ref={(ref) => setContainer(ref)}
             >
-              <InfiniteScrollList
+              <MessageList
                 className="flex flex-col gap-1 h-full"
                 queryKey={['live-log']}
                 reversed
+                room="LOG"
                 container={() => container}
                 params={{ page: 0, size: 40 }}
                 end={<></>}
@@ -100,7 +102,7 @@ function LiveLog() {
                 }
               >
                 {(data) => <MessageCard key={data.id} message={data} />}
-              </InfiniteScrollList>
+              </MessageList>
             </div>
           )}
         </div>
@@ -121,9 +123,7 @@ function SendMessageButton({ containerElement }: SendMessageButtonProps) {
   const t = useI18n();
 
   const { sendMessage } = useMessage({
-    containerElement,
     room: 'LOG',
-    queryKey: ['live-log'],
   });
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {

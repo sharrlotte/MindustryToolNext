@@ -2,11 +2,13 @@
 
 import { motion } from 'framer-motion';
 import { SendIcon, SmileIcon } from 'lucide-react';
-import React, { FormEvent, useRef, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
+import { useMediaQuery } from 'usehooks-ts';
 
 import LoginButton from '@/components/button/login-button';
-import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import MessageList from '@/components/common/message-list';
+import { MemberCard } from '@/components/messages/member-card';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
 import { useSession } from '@/context/session-context';
@@ -25,6 +27,7 @@ export default function Page() {
 
   return (
     <div className="flex h-full overflow-hidden">
+      <RoomPanel />
       <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
         <div className="grid h-full w-full overflow-hidden rounded-md p-2">
           <div className="flex h-full flex-col gap-1 overflow-x-hidden">
@@ -35,9 +38,10 @@ export default function Page() {
                 className="h-full overflow-y-auto"
                 ref={(ref) => setContainer(ref)}
               >
-                <InfiniteScrollList
+                <MessageList
                   className="flex flex-col gap-1 h-full"
                   queryKey={['global']}
+                  room="GLOBAL"
                   reversed
                   container={() => container}
                   params={{ page: 0, size: 40 }}
@@ -60,7 +64,7 @@ export default function Page() {
                   }
                 >
                   {(data) => <MessageCard key={data.id} message={data} />}
-                </InfiniteScrollList>
+                </MessageList>
               </div>
             )}
           </div>
@@ -94,9 +98,7 @@ function ChatInput({ containerElement }: ChatInputProps) {
 
   const t = useI18n();
   const { sendMessage } = useMessage({
-    containerElement,
     room: 'GLOBAL',
-    queryKey: ['global'],
   });
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -133,11 +135,12 @@ function ChatInput({ containerElement }: ChatInputProps) {
 
 function MemberPanel() {
   const { socket } = useSocket();
+  const isMedium = useMediaQuery('(min-width: 640px)');
 
   const [state, setState] = useState<'open' | 'close'>('open');
 
   const { data } = useQuery({
-    queryKey: ['member-count'],
+    queryKey: ['member-count', 'GLOBAL'],
     queryFn: () =>
       socket
         .onRoom('GLOBAL')
@@ -146,18 +149,43 @@ function MemberPanel() {
 
   return (
     <motion.div
-      className="h-full overflow-y-auto bg-card absolute right-0 md:relative"
+      className="h-full overflow-y-auto bg-card absolute right-0 sm:relative"
       animate={state}
       variants={{
         open: {
-          width: 250,
+          width: isMedium ? 300 : 'min(100%, 300px)',
+          minWidth: 300,
         },
         close: {
           width: 100,
         },
       }}
     >
-      {data?.map((user) => user.name)}
+      {data?.map((user) => <MemberCard key={user.id} user={user} />)}
+    </motion.div>
+  );
+}
+
+function RoomPanel() {
+  const { socket } = useSocket();
+  const isMedium = useMediaQuery('(min-width: 640px)');
+
+  const [state, setState] = useState<'open' | 'close'>('open');
+  return (
+    <motion.div
+      className="h-full overflow-y-auto bg-card absolute right-0 sm:relative"
+      animate={state}
+      variants={{
+        open: {
+          width: isMedium ? 200 : 'min(100%, 300px)',
+          minWidth: 200,
+        },
+        close: {
+          width: 50,
+        },
+      }}
+    >
+      Global
     </motion.div>
   );
 }

@@ -30,7 +30,7 @@ export default function LoadingSpinner({
         }}
       >
         <motion.div
-          className="border-2 border-emerald-600 w-3 h-3"
+          className="border-2 border-emerald-600 w-3 h-3 rotate-45 absolute"
           animate={{
             scale: [1, 1, 1, 1, 1],
             rotate: [0, 90, 270, 270, 0],
@@ -39,7 +39,6 @@ export default function LoadingSpinner({
           transition={{
             duration: 2,
             ease: 'easeInOut',
-            rotate: [45, 45, 45, 45, 45],
             times: [0, 0.2, 0.5, 0.8, 1],
             repeat: Infinity,
             repeatDelay: 1,

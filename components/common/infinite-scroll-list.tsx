@@ -1,11 +1,9 @@
 import { AxiosInstance } from 'axios';
 import React, {
   ReactNode,
-  experimental_useEffectEvent,
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 
@@ -61,10 +59,20 @@ export default function InfiniteScrollList<
   const currentContainer = container();
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
+  const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
   const [scrollTop, setScrollTop] = useState(0);
   const [lastHeight, setLastHeight] = useState(0);
 
   const t = useI18n();
+
+  const getFuncWrapper = useCallback(
+    (axios: AxiosInstance, params: P) => {
+      setLastHeight(list?.clientHeight ?? 0);
+
+      return getFunc(axios, params);
+    },
+    [getFunc, list],
+  );
 
   const {
     data,
@@ -75,7 +83,7 @@ export default function InfiniteScrollList<
     hasPreviousPage,
     isFetching,
     fetchNextPage,
-  } = useInfinitePageQuery(getFunc, params, queryKey);
+  } = useInfinitePageQuery(getFuncWrapper, params, queryKey);
 
   const pageMapper = useCallback(
     (item: T, index: number, array: T[]) =>
@@ -88,14 +96,25 @@ export default function InfiniteScrollList<
       return;
     }
 
+    if (scrollDir === 'down') {
+      return;
+    }
+
     const diff = list.clientHeight - lastHeight;
+
+    console.log(diff);
 
     currentContainer.scrollTo({
       top: diff,
       behavior: 'instant',
     });
+
     setLastHeight(list.clientHeight);
-  }, [currentContainer, list, lastHeight]);
+  }, [currentContainer, list, lastHeight, scrollDir]);
+
+  useEffect(() => {
+    setLastHeight(list?.clientHeight ?? 0);
+  }, [list]);
 
   useEffect(() => {
     remainScrollPosition();
@@ -103,11 +122,13 @@ export default function InfiniteScrollList<
   }, [data]);
 
   const pages = useMemo(() => {
-    return !data
-      ? []
-      : reversed
-        ? mapReversed(mergeNestArray(data.pages), pageMapper)
-        : mergeNestArray(data.pages).map(pageMapper);
+    if (!data) {
+      return [];
+    }
+
+    return reversed
+      ? mapReversed(mergeNestArray(data.pages), pageMapper)
+      : mergeNestArray(data.pages).map(pageMapper);
   }, [data, reversed, pageMapper]);
 
   const skeletonElements = useMemo(() => {
@@ -159,8 +180,13 @@ export default function InfiniteScrollList<
 
   useEffect(() => {
     function onScroll() {
+      if (list) {
+        setLastHeight(list.clientHeight);
+      }
+
       if (currentContainer) {
         setScrollTop(currentContainer.scrollTop);
+        setScrollDir(currentContainer.scrollTop > scrollTop ? 'down' : 'up');
       }
     }
 
@@ -172,10 +198,10 @@ export default function InfiniteScrollList<
       currentContainer?.removeEventListener('scroll', onScroll);
       list?.removeEventListener('scroll', checkIfNeedFetchMore);
     };
-  }, [checkIfNeedFetchMore, currentContainer, list]);
+  }, [checkIfNeedFetchMore, currentContainer, list, scrollTop]);
 
   useEffect(() => {
-    const interval = setInterval(() => checkIfNeedFetchMore(), 1000);
+    const interval = setInterval(() => checkIfNeedFetchMore(), 3000);
 
     return () => clearInterval(interval);
   }, [checkIfNeedFetchMore]);

@@ -103,6 +103,7 @@ export default class SocketClient {
   private disconnects: ((event: CloseEvent) => void)[] = [];
 
   private room: string = '';
+  private rooms: string[] = [];
 
   private requests: Record<string, PromiseReceiver> = {};
 
@@ -149,23 +150,64 @@ export default class SocketClient {
       this.connects.forEach((connect) => connect(event));
     };
     this.socket.onclose = (event) => {
+      this.rooms = [];
       this.disconnects.forEach((disconnect) => disconnect(event));
     };
   }
 
-  public send(payload: MessagePayload) {
+  public async send(payload: MessagePayload) {
+    if (this.room !== '' && !this.rooms.includes(this.room)) {
+      await this.joinRoom(this.room);
+      this.rooms.push(this.room);
+    }
+
     this.socket.send(JSON.stringify({ ...payload, room: this.room }));
     this.room = '';
   }
-  public async await<T extends MessagePayload>(
-    payload: T,
-  ): Promise<Extract<SocketEvent, { method: T['method'] }>['data']> {
-    const id = genId();
 
+  public async joinRoom(room: string) {
+    const id = genId();
     const promise = new Promise<any>((resolve, reject) => {
       this.requests[id] = { resolve, reject };
       this.socket.send(
-        JSON.stringify({ id, ...payload, room: this.room, acknowledge: true }),
+        JSON.stringify({
+          id,
+          method: 'JOIN_ROOM',
+          data: room,
+          room: room,
+          acknowledge: true,
+        }),
+      );
+
+      const timeout = setTimeout(() => {
+        reject('Request timeout');
+
+        return () => clearTimeout(timeout);
+      }, 10000);
+    });
+
+    return await promise;
+  }
+
+  public async await<T extends MessagePayload>(
+    payload: T,
+  ): Promise<Extract<SocketEvent, { method: T['method'] }>['data']> {
+    const room = this.room;
+
+    if (room !== '' && !this.rooms.includes(room)) {
+      try {
+        await this.joinRoom(room);
+        this.rooms.push(room);
+      } catch (err) {
+        this.rooms = this.rooms.filter((r) => r !== room);
+      }
+    }
+
+    const id = genId();
+    const promise = new Promise<any>((resolve, reject) => {
+      this.requests[id] = { resolve, reject };
+      this.socket.send(
+        JSON.stringify({ id, ...payload, room, acknowledge: true }),
       );
       this.room = '';
 
