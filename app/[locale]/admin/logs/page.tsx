@@ -99,7 +99,7 @@ function LiveLog() {
                     .await({ method: 'GET_MESSAGE', ...params })
                 }
               >
-                {(data, index) => <MessageCard key={index} message={data} />}
+                {(data) => <MessageCard key={data.id} message={data} />}
               </InfiniteScrollList>
             </div>
           )}

@@ -59,22 +59,12 @@ export default function InfiniteScrollList<
   children,
 }: InfiniteScrollListProps<T, P>) {
   const currentContainer = container();
-  const listRef = useRef<HTMLDivElement>(null);
-  const currentList = listRef.current;
+  const [list, setList] = useState<HTMLDivElement | null>(null);
 
   const [scrollTop, setScrollTop] = useState(0);
-  const [lastHeight, setLastHeight] = useState(-1);
+  const [lastHeight, setLastHeight] = useState(0);
 
   const t = useI18n();
-
-  const getFuncWrapper = useCallback(
-    (axios: AxiosInstance, params: P) => {
-      setLastHeight(currentList?.clientHeight ?? 0);
-
-      return getFunc(axios, params);
-    },
-    [currentList?.clientHeight, getFunc],
-  );
 
   const {
     data,
@@ -85,7 +75,7 @@ export default function InfiniteScrollList<
     hasPreviousPage,
     isFetching,
     fetchNextPage,
-  } = useInfinitePageQuery(getFuncWrapper, params, queryKey);
+  } = useInfinitePageQuery(getFunc, params, queryKey);
 
   const pageMapper = useCallback(
     (item: T, index: number, array: T[]) =>
@@ -93,29 +83,24 @@ export default function InfiniteScrollList<
     [children, params.size],
   );
 
-  const remainScrollPosition = experimental_useEffectEvent(() => {
-    if (!currentContainer || !currentList) {
+  const remainScrollPosition = useCallback(() => {
+    if (!currentContainer || !list) {
       return;
     }
 
-    const isScrollUp = currentContainer.scrollTop < scrollTop;
-
-    if (!isScrollUp && currentContainer.scrollTop > threshold) {
-      return;
-    }
-
-    const diff = currentList.clientHeight - lastHeight;
+    const diff = list.clientHeight - lastHeight;
 
     currentContainer.scrollTo({
       top: diff,
+      behavior: 'instant',
     });
-  });
+    setLastHeight(list.clientHeight);
+  }, [currentContainer, list, lastHeight]);
 
   useEffect(() => {
     remainScrollPosition();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, currentContainer, currentList]);
+  }, [data]);
 
   const pages = useMemo(() => {
     return !data
@@ -181,13 +166,13 @@ export default function InfiniteScrollList<
 
     currentContainer?.addEventListener('scrollend', onScroll);
     currentContainer?.addEventListener('scroll', onScroll);
-    currentList?.addEventListener('scroll', checkIfNeedFetchMore);
+    list?.addEventListener('scroll', checkIfNeedFetchMore);
     return () => {
       currentContainer?.removeEventListener('scrollend', onScroll);
       currentContainer?.removeEventListener('scroll', onScroll);
-      currentList?.removeEventListener('scroll', checkIfNeedFetchMore);
+      list?.removeEventListener('scroll', checkIfNeedFetchMore);
     };
-  }, [checkIfNeedFetchMore, currentContainer, currentList]);
+  }, [checkIfNeedFetchMore, currentContainer, list]);
 
   useEffect(() => {
     const interval = setInterval(() => checkIfNeedFetchMore(), 1000);
@@ -232,7 +217,7 @@ export default function InfiniteScrollList<
   }
 
   return (
-    <div className={className} ref={listRef}>
+    <div ref={(ref) => setList(ref)}>
       {pages}
       {isFetching && skeletonElements}
       {!hasNextPage && end}

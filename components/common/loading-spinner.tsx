@@ -19,7 +19,7 @@ export default function LoadingSpinner({
         animate={{
           scale: [1, 1.5, 1.5, 1, 1],
           rotate: [0, 0, 270, 270, 0],
-          borderRadius: ['50%', '20%', '20%', '20%', '50%'],
+          borderRadius: ['0%', '20%', '20%', '20%', '0%'],
         }}
         transition={{
           duration: 2,
@@ -39,6 +39,7 @@ export default function LoadingSpinner({
           transition={{
             duration: 2,
             ease: 'easeInOut',
+            rotate: [45, 45, 45, 45, 45],
             times: [0, 0.2, 0.5, 0.8, 1],
             repeat: Infinity,
             repeatDelay: 1,

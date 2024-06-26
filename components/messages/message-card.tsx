@@ -17,8 +17,9 @@ type Props = {
 };
 
 export function MessageCard({ className, message }: Props) {
-  const axios = useClientAPI();
   const { userId, content, createdAt } = message;
+  const axios = useClientAPI();
+
   const { data } = useQuery({
     queryKey: ['users', userId],
     queryFn: () => getUser(axios, { id: userId }),

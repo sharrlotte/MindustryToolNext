@@ -38,7 +38,6 @@ export default function useMessage({
         behavior: 'smooth',
       });
     }, 2000);
-    console.log(containerElement);
   }, [containerElement]);
 
   useEffect(() => {
