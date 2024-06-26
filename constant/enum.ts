@@ -10,8 +10,8 @@ export type MetricCollection =
   | 'DAILY_LIKE'
   | 'DAILY_USER'
   | 'LOGGED_DAILY_USER'
-  | 'METRIC_DAILY_MOD_USER'
-  | 'METRIC_DAILY_WEB_USER';
+  | 'DAILY_MOD_USER'
+  | 'DAILY_WEB_USER';
 
 export type LikeTarget = 'SCHEMATICS' | 'MAPS' | 'POSTS' | 'SERVERS';
 

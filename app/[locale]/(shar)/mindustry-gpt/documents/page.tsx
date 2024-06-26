@@ -122,7 +122,7 @@ function AddDocumentButton() {
                       <FormLabel>Description</FormLabel>
                       <FormControl>
                         <Textarea
-                          className="min-h-32"
+                          className="min-h-60"
                           placeholder="Some cool stuff"
                           {...field}
                         />

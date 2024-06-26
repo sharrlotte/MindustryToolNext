@@ -53,12 +53,12 @@ function Loading({ axios, start, end }: ChartProps) {
   const [loggedDailyUser, dailyUser] = useQueries({
     queries: [
       {
-        queryFn: () => getMetric(axios, start, end, 'METRIC_DAILY_WEB_USER'),
-        queryKey: ['logged_daily_user'],
+        queryFn: () => getMetric(axios, start, end, 'DAILY_WEB_USER'),
+        queryKey: ['daily_web_user'],
       },
       {
-        queryFn: () => getMetric(axios, start, end, 'METRIC_DAILY_MOD_USER'),
-        queryKey: ['daily_user'],
+        queryFn: () => getMetric(axios, start, end, 'DAILY_MOD_USER'),
+        queryKey: ['daily_mod_user'],
       },
     ],
   });
