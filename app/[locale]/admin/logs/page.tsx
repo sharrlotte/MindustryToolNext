@@ -107,16 +107,11 @@ function LiveLog() {
           )}
         </div>
       </div>
-      <SendMessageButton containerElement={container} />
+      <SendMessageButton />
     </div>
   );
 }
-
-type SendMessageButtonProps = {
-  containerElement: HTMLDivElement | null;
-};
-
-function SendMessageButton({ containerElement }: SendMessageButtonProps) {
+function SendMessageButton() {
   const [message, setMessage] = useState<string>('');
   const { state } = useSocket();
 

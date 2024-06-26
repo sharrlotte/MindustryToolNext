@@ -80,7 +80,7 @@ export default function Page() {
             </div>
           }
         >
-          <ChatInput containerElement={container} />
+          <ChatInput />
         </ProtectedElement>
       </div>
       <MemberPanel />
@@ -88,11 +88,7 @@ export default function Page() {
   );
 }
 
-type ChatInputProps = {
-  containerElement: HTMLDivElement | null;
-};
-
-function ChatInput({ containerElement }: ChatInputProps) {
+function ChatInput() {
   const [message, setMessage] = useState<string>('');
   const { state } = useSocket();
 

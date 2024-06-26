@@ -49,17 +49,16 @@ export default function Page() {
           )}
         </div>
       </div>
-      <ChatInput id={id} containerElement={container} />
+      <ChatInput id={id} />
     </div>
   );
 }
 
 type ChatInputProps = {
   id: string;
-  containerElement: HTMLDivElement | null;
 };
 
-function ChatInput({ id, containerElement }: ChatInputProps) {
+function ChatInput({ id }: ChatInputProps) {
   const { state } = useSocket();
 
   const [message, setMessage] = useState<string>('');
@@ -69,9 +68,7 @@ function ChatInput({ id, containerElement }: ChatInputProps) {
   let [messagesCursor, setMessageCursor] = useState(0);
 
   const { sendMessage } = useMessage({
-    containerElement,
     room: `SERVER-${id}`,
-    queryKey: [`server-${id}-message`],
   });
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
