@@ -64,14 +64,14 @@ export default function MessageList<
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
   const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
-  const [scrollTop, setScrollTop] = useState(0);
-  const [lastHeight, setLastHeight] = useState(0);
+  const [scrollTop, setScrollTop] = useState(100);
+  const [lastHeight, setLastHeight] = useState(100);
 
   const t = useI18n();
 
   const getFuncWrapper = useCallback(
     (axios: AxiosInstance, params: P) => {
-      setLastHeight(list?.clientHeight ?? 0);
+      setLastHeight(list?.clientHeight ?? 100);
 
       return getFunc(axios, params);
     },
@@ -115,7 +115,7 @@ export default function MessageList<
   }, [currentContainer, list, lastHeight, scrollDir]);
 
   useEffect(() => {
-    setLastHeight(list?.clientHeight ?? 0);
+    setLastHeight(list?.clientHeight ?? 100);
   }, [list]);
 
   useEffect(() => {
@@ -210,7 +210,7 @@ export default function MessageList<
       queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>(
         { queryKey },
         (query) => {
-          setLastHeight(list?.clientHeight ?? 0);
+          setLastHeight(list?.clientHeight ?? 100);
 
           if (!query || !query.pages) {
             return undefined;

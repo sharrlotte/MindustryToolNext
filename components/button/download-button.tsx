@@ -18,6 +18,7 @@ export default function DownloadButton({
   href,
   fileName,
   secure,
+  children,
   ...props
 }: DownloadButtonProps) {
   if (secure) {
@@ -27,7 +28,9 @@ export default function DownloadButton({
         href={href}
         fileName={fileName}
         {...props}
-      />
+      >
+        {children}
+      </SecureDownloadButton>
     );
   }
 
@@ -56,6 +59,7 @@ function SecureDownloadButton({
   className,
   fileName,
   href,
+  children,
 }: SecureDownloadButtonProps) {
   const axios = useClientAPI();
 
@@ -105,7 +109,9 @@ function SecureDownloadButton({
           </svg>
         </div>
       ) : (
-        <ArrowDownTrayIcon className="h-5 w-5" onClick={() => mutate()} />
+        <div onClick={() => mutate()}>
+          {children || <ArrowDownTrayIcon className="h-5 w-5" />}{' '}
+        </div>
       )}
     </div>
   );
