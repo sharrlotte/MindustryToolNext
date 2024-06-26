@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import AddFileDialog from '@/app/[locale]/(shar)/files/add-file-dialog';
+import DownloadButton from '@/components/button/download-button';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import FileCard from '@/components/file/file-card';
@@ -10,6 +11,7 @@ import FileHierarchy from '@/components/file/file-hierarchy';
 import { Button } from '@/components/ui/button';
 import { ContextMenuItem } from '@/components/ui/context-menu';
 import { Input } from '@/components/ui/input';
+import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useQueryState from '@/hooks/use-query-state';
@@ -96,10 +98,17 @@ export default function Page() {
                 >
                   <ContextMenuItem
                     variant="destructive"
-                    onClick={() => deleteFile(`${path}/${name}`)}
+                    onClick={() => deleteFile(`${path}/${file.name}`)}
                   >
                     Delete
                   </ContextMenuItem>
+                  <DownloadButton
+                    href={`${env.url.api}/files/download?path=${path}/${file.name}`}
+                    fileName={`file.zip`}
+                    secure
+                  >
+                    Download
+                  </DownloadButton>
                 </FileCard>
               ))
           )}
