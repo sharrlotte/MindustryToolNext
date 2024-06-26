@@ -11,13 +11,13 @@ import useMessage from '@/hooks/use-message';
 import useSearchId from '@/hooks/use-search-id-params';
 import { useI18n } from '@/locales/client';
 
-const queryParam = { page: 0, items: 40 };
+const queryParam = { page: 0, size: 40 };
 
 export default function Page() {
   const { id } = useSearchId();
 
   const { socket, state } = useSocket();
-  const container = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden bg-card px-2 pt-2">
@@ -26,12 +26,15 @@ export default function Page() {
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto" />
           ) : (
-            <div className="h-full overflow-y-auto" ref={container}>
+            <div
+              className="h-full overflow-y-auto"
+              ref={(ref) => setContainer(ref)}
+            >
               <InfiniteScrollList
                 className="flex flex-col gap-1 h-full"
                 queryKey={[`server-${id}-message`, id]}
                 reversed
-                container={() => container.current}
+                container={() => container}
                 params={queryParam}
                 end={<></>}
                 getFunc={(_, params) =>
@@ -40,23 +43,22 @@ export default function Page() {
                     .await({ method: 'GET_MESSAGE', ...params })
                 }
               >
-                {(data, index) => <MessageCard key={index} message={data} />}
+                {(data) => <MessageCard key={data.id} message={data} />}
               </InfiniteScrollList>
             </div>
           )}
         </div>
       </div>
-      <ChatInput id={id} containerElement={container.current} />
+      <ChatInput id={id} />
     </div>
   );
 }
 
 type ChatInputProps = {
   id: string;
-  containerElement: HTMLDivElement | null;
 };
 
-function ChatInput({ id, containerElement }: ChatInputProps) {
+function ChatInput({ id }: ChatInputProps) {
   const { state } = useSocket();
 
   const [message, setMessage] = useState<string>('');
@@ -66,9 +68,7 @@ function ChatInput({ id, containerElement }: ChatInputProps) {
   let [messagesCursor, setMessageCursor] = useState(0);
 
   const { sendMessage } = useMessage({
-    containerElement,
     room: `SERVER-${id}`,
-    queryKey: [`server-${id}-message`],
   });
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {

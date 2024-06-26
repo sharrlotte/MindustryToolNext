@@ -7,6 +7,7 @@ import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
 import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import MessageList from '@/components/common/message-list';
 import LogCard from '@/components/log/log-card';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
@@ -67,7 +68,7 @@ export default function LogPage() {
 
 function LiveLog() {
   const { socket, state } = useSocket();
-  const container = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
@@ -78,20 +79,21 @@ function LiveLog() {
           ) : (
             <div
               className="h-full overflow-y-auto overflow-x-hidden"
-              ref={container}
+              ref={(ref) => setContainer(ref)}
             >
-              <InfiniteScrollList
+              <MessageList
                 className="flex flex-col gap-1 h-full"
                 queryKey={['live-log']}
                 reversed
-                container={() => container.current}
-                params={{ page: 0, items: 40 }}
+                room="LOG"
+                container={() => container}
+                params={{ page: 0, size: 40 }}
                 end={<></>}
                 getFunc={(
                   _,
                   params: {
                     page: number;
-                    items: number;
+                    size: number;
                   },
                 ) =>
                   socket
@@ -99,31 +101,24 @@ function LiveLog() {
                     .await({ method: 'GET_MESSAGE', ...params })
                 }
               >
-                {(data, index) => <MessageCard key={index} message={data} />}
-              </InfiniteScrollList>
+                {(data) => <MessageCard key={data.id} message={data} />}
+              </MessageList>
             </div>
           )}
         </div>
       </div>
-      <SendMessageButton containerElement={container.current} />
+      <SendMessageButton />
     </div>
   );
 }
-
-type SendMessageButtonProps = {
-  containerElement: HTMLDivElement | null;
-};
-
-function SendMessageButton({ containerElement }: SendMessageButtonProps) {
+function SendMessageButton() {
   const [message, setMessage] = useState<string>('');
   const { state } = useSocket();
 
   const t = useI18n();
 
   const { sendMessage } = useMessage({
-    containerElement,
     room: 'LOG',
-    queryKey: ['live-log'],
   });
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -370,7 +365,7 @@ function StaticLog({ collection }: StaticLogProps) {
           className="flex w-full flex-col items-center justify-center gap-2"
           params={{
             page: 0,
-            items: 20,
+            size: 20,
             collection: collection as LogCollection,
             env: env as LogEnvironment,
             content,

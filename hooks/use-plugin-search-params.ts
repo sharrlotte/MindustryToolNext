@@ -12,6 +12,6 @@ export default function useSearchPageParams(): PluginPaginationQuery {
     page: Number.parseInt(query.get(QueryParams.page, '0')),
     name: query.get(QueryParams.name),
     tags: query.getAll(QueryParams.tags),
-    items: Number.parseInt(query.get(QueryParams.items, '20')),
+    size: Number.parseInt(query.get(QueryParams.size, '20')),
   });
 }

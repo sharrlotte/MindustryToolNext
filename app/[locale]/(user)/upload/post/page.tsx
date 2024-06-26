@@ -342,7 +342,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
       getMePosts(axios, {
         page: 0,
         name,
-        items: 20,
+        size: 20,
         tags: [],
         sort: 'time_1',
       }),

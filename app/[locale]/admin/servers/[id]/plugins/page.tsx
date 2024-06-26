@@ -43,7 +43,7 @@ export default function Page() {
       >
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
-          params={{ page: 0, items: 20 }}
+          params={{ page: 0, size: 20 }}
           queryKey={['internal-server-plugins', id]}
           getFunc={(axios, params) =>
             getInternalServerPlugins(axios, id, params)

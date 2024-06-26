@@ -1,7 +1,7 @@
+import { AxiosInstance } from 'axios';
+
 import { toForm } from '@/lib/utils';
 import { PostPluginRequest } from '@/types/request/PostPluginRequest';
-
-import { AxiosInstance } from 'axios';
 
 export default async function postPlugin(
   axios: AxiosInstance,

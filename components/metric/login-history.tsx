@@ -19,7 +19,7 @@ type LoginLogProps = {
 
 export default function LoginHistory({ axios }: LoginLogProps) {
   const { data, error, isLoading } = useQuery({
-    queryFn: () => getLoginHistories(axios, { page: 0, items: 20 }),
+    queryFn: () => getLoginHistories(axios, { page: 0, size: 20 }),
     queryKey: ['login-histories'],
   });
 

@@ -1,3 +1,9 @@
+import _ from 'lodash';
+import { cloneDeep } from 'lodash';
+import { FilterIcon } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
 import ComboBox from '@/components/common/combo-box';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import Search from '@/components/search/search-input';
@@ -15,16 +21,11 @@ import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 
-import _ from 'lodash';
-import { cloneDeep } from 'lodash';
-import { FilterIcon } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-
 type NameTagSearchProps = {
   className?: string;
   tags?: TagGroup[];
   useSort?: boolean;
+  useTag?: boolean;
 };
 
 let timeout: NodeJS.Timeout | undefined;
@@ -33,6 +34,7 @@ export default function NameTagSearch({
   className,
   tags = [],
   useSort = true,
+  useTag = true,
 }: NameTagSearchProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -99,14 +101,16 @@ export default function NameTagSearch({
 
     const handleSearch = () => {
       const params = new URLSearchParams();
-      selectedFilterTags
-        .map((group) =>
-          group.value.map((value) => `${group.name}${TAG_SEPARATOR}${value}`),
-        )
-        .forEach((values) =>
-          values.forEach((value) => params.append(QueryParams.tags, value)),
-        );
 
+      if (useTag) {
+        selectedFilterTags
+          .map((group) =>
+            group.value.map((value) => `${group.name}${TAG_SEPARATOR}${value}`),
+          )
+          .forEach((values) =>
+            values.forEach((value) => params.append(QueryParams.tags, value)),
+          );
+      }
       params.set(QueryParams.page, page.toString());
 
       if (useSort) {
@@ -196,17 +200,19 @@ export default function NameTagSearch({
             searchBar={false}
           />
         )}
-        <Button
-          className="border border-none border-border bg-card shadow-md dark:border-solid dark:bg-transparent"
-          title={t('filter')}
-          variant="outline"
-          onClick={handleShowFilterDialog}
-        >
-          <FilterIcon className="h-5 w-5" strokeWidth={1.5} />
-        </Button>
+        {useTag && (
+          <Button
+            className="border border-none border-border bg-card shadow-md dark:border-solid dark:bg-transparent"
+            title={t('filter')}
+            variant="outline"
+            onClick={handleShowFilterDialog}
+          >
+            <FilterIcon className="h-5 w-5" strokeWidth={1.5} />
+          </Button>
+        )}
       </div>
       <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
-      {showFilterDialog && (
+      {showFilterDialog && useTag && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
           <OutsideWrapper
             className="flex h-screen w-screen items-center justify-center md:h-4/5 md:w-4/5"

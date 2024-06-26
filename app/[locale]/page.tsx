@@ -20,7 +20,7 @@ export default async function Home({
   const axios = await getServerAPI();
   const users = await getUsers(axios, {
     page: 0,
-    items: 20,
+    size: 20,
     role: 'ADMIN',
   });
 

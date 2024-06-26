@@ -1,11 +1,9 @@
 import { AxiosInstance } from 'axios';
 import React, {
   ReactNode,
-  experimental_useEffectEvent,
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 
@@ -59,9 +57,9 @@ export default function InfiniteScrollList<
   children,
 }: InfiniteScrollListProps<T, P>) {
   const currentContainer = container();
-  const listRef = useRef<HTMLDivElement>(null);
-  const currentList = listRef.current;
+  const [list, setList] = useState<HTMLDivElement | null>(null);
 
+  const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
   const [scrollTop, setScrollTop] = useState(0);
   const [lastHeight, setLastHeight] = useState(0);
 
@@ -69,11 +67,11 @@ export default function InfiniteScrollList<
 
   const getFuncWrapper = useCallback(
     (axios: AxiosInstance, params: P) => {
-      setLastHeight(currentList?.clientHeight ?? 0);
+      setLastHeight(list?.clientHeight ?? 0);
 
       return getFunc(axios, params);
     },
-    [currentList?.clientHeight, getFunc],
+    [getFunc, list],
   );
 
   const {
@@ -89,40 +87,48 @@ export default function InfiniteScrollList<
 
   const pageMapper = useCallback(
     (item: T, index: number, array: T[]) =>
-      children(item, index, array.length - params.items),
-    [children, params.items],
+      children(item, index, array.length - params.size),
+    [children, params.size],
   );
 
-  const remainScrollPosition = experimental_useEffectEvent(() => {
-    if (!currentContainer || !currentList) {
+  const remainScrollPosition = useCallback(() => {
+    if (!currentContainer || !list) {
       return;
     }
 
-    const isScrollUp = currentContainer.scrollTop < scrollTop;
-
-    if (!isScrollUp && currentContainer.scrollTop > threshold) {
+    if (scrollDir === 'down') {
       return;
     }
 
-    const diff = currentList.clientHeight - lastHeight;
+    const diff = list.clientHeight - lastHeight;
+
+    console.log(diff);
 
     currentContainer.scrollTo({
       top: diff,
+      behavior: 'instant',
     });
-  });
+
+    setLastHeight(list.clientHeight);
+  }, [currentContainer, list, lastHeight, scrollDir]);
+
+  useEffect(() => {
+    setLastHeight(list?.clientHeight ?? 0);
+  }, [list]);
 
   useEffect(() => {
     remainScrollPosition();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, currentContainer, currentList]);
+  }, [data]);
 
   const pages = useMemo(() => {
-    return !data
-      ? []
-      : reversed
-        ? mapReversed(mergeNestArray(data.pages), pageMapper)
-        : mergeNestArray(data.pages).map(pageMapper);
+    if (!data) {
+      return [];
+    }
+
+    return reversed
+      ? mapReversed(mergeNestArray(data.pages), pageMapper)
+      : mergeNestArray(data.pages).map(pageMapper);
   }, [data, reversed, pageMapper]);
 
   const skeletonElements = useMemo(() => {
@@ -174,23 +180,28 @@ export default function InfiniteScrollList<
 
   useEffect(() => {
     function onScroll() {
+      if (list) {
+        setLastHeight(list.clientHeight);
+      }
+
       if (currentContainer) {
         setScrollTop(currentContainer.scrollTop);
+        setScrollDir(currentContainer.scrollTop > scrollTop ? 'down' : 'up');
       }
     }
 
     currentContainer?.addEventListener('scrollend', onScroll);
     currentContainer?.addEventListener('scroll', onScroll);
-    currentList?.addEventListener('scroll', checkIfNeedFetchMore);
+    list?.addEventListener('scroll', checkIfNeedFetchMore);
     return () => {
       currentContainer?.removeEventListener('scrollend', onScroll);
       currentContainer?.removeEventListener('scroll', onScroll);
-      currentList?.removeEventListener('scroll', checkIfNeedFetchMore);
+      list?.removeEventListener('scroll', checkIfNeedFetchMore);
     };
-  }, [checkIfNeedFetchMore, currentContainer, currentList]);
+  }, [checkIfNeedFetchMore, currentContainer, list, scrollTop]);
 
   useEffect(() => {
-    const interval = setInterval(() => checkIfNeedFetchMore(), 1000);
+    const interval = setInterval(() => checkIfNeedFetchMore(), 3000);
 
     return () => clearInterval(interval);
   }, [checkIfNeedFetchMore]);
@@ -232,7 +243,7 @@ export default function InfiniteScrollList<
   }
 
   return (
-    <div className={className} ref={listRef}>
+    <div ref={(ref) => setList(ref)}>
       {pages}
       {isFetching && skeletonElements}
       {!hasNextPage && end}
