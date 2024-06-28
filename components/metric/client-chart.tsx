@@ -86,14 +86,14 @@ function Loading({ axios, start, end }: ChartProps) {
     datasets: [
       {
         label: 'Web user',
-        data: fixedDaily.map(({ value }) => value),
+        data: fixedLoggedDaily.map(({ value }) => value),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         tension: 0.3,
       },
       {
         label: 'Mod user',
-        data: fixedLoggedDaily.map(({ value }) => value),
+        data: fixedDaily.map(({ value }) => value),
         borderColor: 'rgb(99, 255, 132)',
         backgroundColor: 'rgba(99, 255, 132)',
         tension: 0.3,
