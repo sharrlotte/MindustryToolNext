@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SendIcon, SmileIcon } from 'lucide-react';
+import { ChevronRight, SendIcon, SmileIcon } from 'lucide-react';
 import React, { FormEvent, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
@@ -133,7 +133,7 @@ function MemberPanel() {
   const { socket } = useSocket();
   const isMedium = useMediaQuery('(min-width: 640px)');
 
-  const [state, setState] = useState<'open' | 'close'>('open');
+  const [state, setState] = useState<'open' | 'close'>('close');
 
   const { data } = useQuery({
     queryKey: ['member-count', 'GLOBAL'],
@@ -144,44 +144,90 @@ function MemberPanel() {
   });
 
   return (
-    <motion.div
-      className="h-full overflow-y-auto bg-card absolute right-0 sm:relative"
-      animate={state}
-      variants={{
-        open: {
-          width: isMedium ? 300 : 'min(100%, 300px)',
-          minWidth: 300,
-        },
-        close: {
-          width: 100,
-        },
-      }}
-    >
-      {data?.map((user) => <MemberCard key={user.id} user={user} />)}
-    </motion.div>
+    <div>
+      <motion.div
+        className="h-full absolute right-0 sm:relative overflow-y-auto top-0 bg-card flex flex-col items-start"
+        animate={state}
+        variants={{
+          open: {
+            width: isMedium ? 300 : 'min(100%, 300px)',
+          },
+          close: {
+            width: 'auto',
+          },
+        }}
+      >
+        <motion.div
+          animate={state}
+          variants={{
+            open: {
+              rotate: 0,
+            },
+            close: {
+              rotate: 180,
+            },
+          }}
+        >
+          <Button
+            title="Close"
+            variant="icon"
+            onClick={() =>
+              setState((prev) => (prev === 'open' ? 'close' : 'open'))
+            }
+          >
+            <ChevronRight />
+          </Button>
+        </motion.div>
+        {state === 'open' &&
+          data?.map((user) => <MemberCard key={user.id} user={user} />)}
+      </motion.div>
+      <Button
+        title="Close"
+        variant="icon"
+        onClick={() => setState((prev) => (prev === 'open' ? 'close' : 'open'))}
+      >
+        <ChevronRight className="w-5 h-5" />
+      </Button>
+    </div>
   );
 }
 
 function RoomPanel() {
-  const { socket } = useSocket();
   const isMedium = useMediaQuery('(min-width: 640px)');
 
   const [state, setState] = useState<'open' | 'close'>('open');
   return (
-    <motion.div
-      className="h-full overflow-y-auto bg-card absolute right-0 sm:relative"
-      animate={state}
-      variants={{
-        open: {
-          width: isMedium ? 200 : 'min(100%, 300px)',
-          minWidth: 200,
-        },
-        close: {
-          width: 50,
-        },
-      }}
-    >
-      Global
-    </motion.div>
+    <div>
+      <motion.div
+        className="h-full absolute left-0 sm:relative overflow-y-auto top-0 bg-card flex flex-col items-start"
+        animate={state}
+        variants={{
+          open: {
+            width: isMedium ? 200 : 'min(100%, 300px)',
+          },
+          close: {
+            width: 'auto',
+          },
+        }}
+      >
+        <Button
+          title="Close"
+          variant="icon"
+          onClick={() =>
+            setState((prev) => (prev === 'open' ? 'close' : 'open'))
+          }
+        >
+          <ChevronRight className="w-5 h-5" />
+        </Button>
+        Global
+      </motion.div>
+      <Button
+        title="Close"
+        variant="icon"
+        onClick={() => setState((prev) => (prev === 'open' ? 'close' : 'open'))}
+      >
+        <ChevronRight className="w-5 h-5" />
+      </Button>
+    </div>
   );
 }
