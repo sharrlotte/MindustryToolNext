@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: map.name,
       description: map.description,
-      images: `${env.url.image}/maps/${map.id}`,
+      images: `${env.url.image}maps/${map.id}.png`,
     },
   };
 }
