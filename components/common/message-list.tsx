@@ -69,15 +69,6 @@ export default function MessageList<
 
   const t = useI18n();
 
-  const getFuncWrapper = useCallback(
-    (axios: AxiosInstance, params: P) => {
-      setLastHeight(list?.clientHeight ?? 100);
-
-      return getFunc(axios, params);
-    },
-    [getFunc, list],
-  );
-
   const {
     data,
     isLoading,
@@ -87,7 +78,7 @@ export default function MessageList<
     hasPreviousPage,
     isFetching,
     fetchNextPage,
-  } = useInfinitePageQuery(getFuncWrapper, params, queryKey);
+  } = useInfinitePageQuery(getFunc, params, queryKey);
 
   const pageMapper = useCallback(
     (item: T, index: number, array: T[]) =>
@@ -119,7 +110,7 @@ export default function MessageList<
   }, [list]);
 
   useEffect(() => {
-    remainScrollPosition();
+    setTimeout(() => remainScrollPosition(), 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
