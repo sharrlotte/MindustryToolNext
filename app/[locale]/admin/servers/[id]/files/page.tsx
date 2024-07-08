@@ -26,6 +26,8 @@ import getServerFiles from '@/query/server/get-internal-server-files';
 import { ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
 import { FileIcon } from '@radix-ui/react-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import DownloadButton from '@/components/button/download-button';
+import env from '@/constant/env';
 
 export default function Page() {
   const [path, setPath] = useQueryState('path', '/');
@@ -108,6 +110,14 @@ export default function Page() {
                   >
                     Delete
                   </ContextMenuItem>
+                  <DownloadButton
+                    className="border-none justify-start px-2 text-sm py-1.5 hover:bg-button rounded-sm"
+                    href={`${env.url.api}/files/download?path=${path}/${file.name}`}
+                    fileName={`file.zip`}
+                    secure
+                  >
+                    Download
+                  </DownloadButton>
                 </FileCard>
               ))
           )}
