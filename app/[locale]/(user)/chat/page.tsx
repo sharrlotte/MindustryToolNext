@@ -1,7 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ChevronRight, SendIcon, SmileIcon } from 'lucide-react';
+import {
+  ChevronRight,
+  SearchIcon,
+  SendIcon,
+  SmileIcon,
+  UsersIcon,
+} from 'lucide-react';
 import React, { FormEvent, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
@@ -26,10 +32,16 @@ export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
-    <div className="flex h-full overflow-hidden">
-      <RoomPanel />
+    <div className="flex h-full overflow-hidden flex-col">
+      <div className="py-1 px-4 border-b flex justify-between items-center">
+        <div className="flex gap-4">
+          <SearchIcon className="w-5 h-5" />
+          #Global
+        </div>
+        <MemberPanel />
+      </div>
       <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
-        <div className="grid h-full w-full overflow-hidden rounded-md p-2">
+        <div className="grid h-full w-full overflow-hidden rounded-md px-2">
           <div className="flex h-full flex-col gap-1 overflow-x-hidden">
             {state !== 'connected' ? (
               <LoadingSpinner className="m-auto" />
@@ -83,7 +95,6 @@ export default function Page() {
           <ChatInput />
         </ProtectedElement>
       </div>
-      <MemberPanel />
     </div>
   );
 }
@@ -146,67 +157,14 @@ function MemberPanel() {
   return (
     <div>
       <motion.div
-        className="h-full absolute right-0 sm:relative overflow-y-auto top-0 bg-card flex flex-col items-start"
+        className="h-full absolute right-0 sm:relative overflow-y-auto top-0 flex flex-col items-start bg-card"
         animate={state}
         variants={{
           open: {
-            width: isMedium ? 300 : 'min(100%, 300px)',
+            width: isMedium ? 300 : '100%',
           },
           close: {
-            width: 'auto',
-          },
-        }}
-      >
-        <motion.div
-          animate={state}
-          variants={{
-            open: {
-              rotate: 0,
-            },
-            close: {
-              rotate: 180,
-            },
-          }}
-        >
-          <Button
-            title="Close"
-            variant="icon"
-            onClick={() =>
-              setState((prev) => (prev === 'open' ? 'close' : 'open'))
-            }
-          >
-            <ChevronRight />
-          </Button>
-        </motion.div>
-        {state === 'open' &&
-          data?.map((user) => <MemberCard key={user.id} user={user} />)}
-      </motion.div>
-      <Button
-        title="Close"
-        variant="icon"
-        onClick={() => setState((prev) => (prev === 'open' ? 'close' : 'open'))}
-      >
-        <ChevronRight className="w-5 h-5" />
-      </Button>
-    </div>
-  );
-}
-
-function RoomPanel() {
-  const isMedium = useMediaQuery('(min-width: 640px)');
-
-  const [state, setState] = useState<'open' | 'close'>('open');
-  return (
-    <div>
-      <motion.div
-        className="h-full absolute left-0 sm:relative overflow-y-auto top-0 bg-card flex flex-col items-start"
-        animate={state}
-        variants={{
-          open: {
-            width: isMedium ? 200 : 'min(100%, 300px)',
-          },
-          close: {
-            width: 'auto',
+            width: 0,
           },
         }}
       >
@@ -217,16 +175,18 @@ function RoomPanel() {
             setState((prev) => (prev === 'open' ? 'close' : 'open'))
           }
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight />
         </Button>
-        Global
+        {state === 'open' &&
+          data?.map((user) => <MemberCard key={user.id} user={user} />)}
       </motion.div>
       <Button
+        className="p-0"
         title="Close"
         variant="icon"
         onClick={() => setState((prev) => (prev === 'open' ? 'close' : 'open'))}
       >
-        <ChevronRight className="w-5 h-5" />
+        <UsersIcon className="w-5 h-5" />
       </Button>
     </div>
   );
