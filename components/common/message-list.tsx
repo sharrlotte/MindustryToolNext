@@ -3,6 +3,7 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
@@ -66,8 +67,11 @@ export default function MessageList<
   const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
   const [scrollTop, setScrollTop] = useState(100);
   const [lastHeight, setLastHeight] = useState(100);
+  const [isFirstLoad, setFirstLoad] = useState(true);
 
   const t = useI18n();
+  const queryClient = useQueryClient();
+  const { socket } = useSocket();
 
   const {
     data,
@@ -87,11 +91,11 @@ export default function MessageList<
   );
 
   const remainScrollPosition = useCallback(() => {
-    if (!currentContainer || !list) {
+    if (!currentContainer || !list || isFirstLoad) {
       return;
     }
 
-    if (scrollDir === 'down') {
+    if (scrollDir === 'down' || isReachedEnd(currentContainer, 500)) {
       return;
     }
 
@@ -103,14 +107,14 @@ export default function MessageList<
     });
 
     setLastHeight(list.clientHeight);
-  }, [currentContainer, list, lastHeight, scrollDir]);
+  }, [currentContainer, list, lastHeight, scrollDir, isFirstLoad]);
 
   useEffect(() => {
     setLastHeight(list?.clientHeight ?? 100);
   }, [list]);
 
-  useEffect(() => {
-    setTimeout(() => remainScrollPosition(), 100);
+  useLayoutEffect(() => {
+    remainScrollPosition();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
@@ -173,28 +177,20 @@ export default function MessageList<
     reversed,
     threshold,
   ]);
-  const queryClient = useQueryClient();
-  const { socket } = useSocket();
-
-  const scrollToBottom = useCallback((containerElement: HTMLElement | null) => {
-    if (containerElement && isReachedEnd(containerElement, 500)) {
-      setTimeout(() => {
-        containerElement.scrollTo({
-          top: 9999999999999,
-          behavior: 'smooth',
-        });
-      }, 200);
-    }
-  }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      currentContainer?.scrollTo({
+    if (
+      pages.length &&
+      currentContainer &&
+      (isReachedEnd(currentContainer, 500) || isFirstLoad)
+    ) {
+      currentContainer.scrollTo({
         top: 9999999999999,
         behavior: 'smooth',
       });
-    }, 1000);
-  }, [currentContainer]);
+      setFirstLoad(false);
+    }
+  }, [currentContainer, pages, isFirstLoad]);
 
   useEffect(() => {
     socket.onRoom(room).onMessage('MESSAGE', (message) => {
@@ -227,18 +223,14 @@ export default function MessageList<
           return { ...query, pages: [...pages] };
         },
       );
-
-      scrollToBottom(currentContainer);
+      if (currentContainer && isReachedEnd(currentContainer, 500)) {
+        currentContainer.scrollTo({
+          top: 9999999999999,
+          behavior: 'smooth',
+        });
+      }
     });
-  }, [
-    queryClient,
-    queryKey,
-    room,
-    socket,
-    list,
-    scrollToBottom,
-    currentContainer,
-  ]);
+  }, [queryClient, queryKey, room, socket, list, currentContainer]);
 
   useEffect(() => {
     function onScroll() {

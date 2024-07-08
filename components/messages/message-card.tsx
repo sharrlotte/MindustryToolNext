@@ -34,7 +34,7 @@ export function MessageCard({ className, message }: Props) {
       ) : (
         <Skeleton className="rounded-full border border-border w-8 h-8" />
       )}
-      <div>
+      <div className="overflow-hidden">
         <div className="space-x-2">
           {data ? (
             <ColorAsRole
@@ -48,7 +48,7 @@ export function MessageCard({ className, message }: Props) {
           )}
           <span>{moment(createdAt).fromNow()}</span>
         </div>
-        <div className="grid gap-1">
+        <div className="grid gap-1 overflow-x-auto w-full no-scrollbar">
           {content.map((c, index) => (
             <ColorText key={index} text={c} />
           ))}

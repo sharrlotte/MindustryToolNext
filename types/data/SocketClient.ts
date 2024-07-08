@@ -161,8 +161,11 @@ export default class SocketClient {
       this.rooms.push(this.room);
     }
 
-    this.socket.send(JSON.stringify({ ...payload, room: this.room }));
+    const json = JSON.stringify({ ...payload, room: this.room });
+    this.socket.send(json);
     this.room = '';
+
+    return json;
   }
 
   public async joinRoom(room: string) {
@@ -206,9 +209,8 @@ export default class SocketClient {
     const id = genId();
     const promise = new Promise<any>((resolve, reject) => {
       this.requests[id] = { resolve, reject };
-      this.socket.send(
-        JSON.stringify({ id, ...payload, room, acknowledge: true }),
-      );
+      const json = JSON.stringify({ id, ...payload, room, acknowledge: true });
+      this.socket.send(json);
       this.room = '';
 
       const timeout = setTimeout(() => {

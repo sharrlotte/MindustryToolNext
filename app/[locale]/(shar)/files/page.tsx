@@ -103,6 +103,7 @@ export default function Page() {
                     Delete
                   </ContextMenuItem>
                   <DownloadButton
+                    className="border-none justify-start px-2 text-sm py-1.5 hover:bg-button rounded-sm"
                     href={`${env.url.api}/files/download?path=${path}/${file.name}`}
                     fileName={`file.zip`}
                     secure
