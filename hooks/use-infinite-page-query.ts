@@ -1,7 +1,6 @@
 import { AxiosInstance } from 'axios';
 
 import useClientAPI from '@/hooks/use-client';
-import useFocus from '@/hooks/use-focus';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import {
@@ -16,7 +15,6 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
   queryKey: QueryKey,
 ) {
   const axios = useClientAPI();
-  const focused = useFocus();
 
   const getNextPageParam = (
     lastPage: T[],
@@ -65,6 +63,5 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     queryFn: (context) => getFunc(axios, context.pageParam),
     getNextPageParam,
     getPreviousPageParam,
-    enabled: focused,
   });
 }
