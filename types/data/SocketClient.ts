@@ -236,7 +236,11 @@ export default class SocketClient {
   }
 
   public close() {
-    this.socket.close();
+    if (this.socket.readyState === this.socket.OPEN) {
+      this.socket.close();
+    } else {
+      this.socket.onopen = () => this.socket.close();
+    }
   }
 
   public getState(): SocketState {

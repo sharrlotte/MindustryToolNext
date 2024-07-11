@@ -56,9 +56,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     return () => {
-      if (socket && socket.getState() === 'connected') {
-        socket.close();
-      }
+      socket?.close();
     };
   }, [socket]);
 
