@@ -43,7 +43,7 @@ export default function PostServerResultCard({
             </div>
             <span className="flex flex-row gap-2">Wave: {server.wave}</span>
             <span className="flex flex-row gap-2">
-              Map: <ColorText text={server.mapname} />
+              Map: <ColorText text={server.mapName} />
             </span>
             <span className="capitalize">
               Version:
@@ -55,7 +55,7 @@ export default function PostServerResultCard({
             </span>
             <span className="overflow-hidden whitespace-nowrap capitalize">
               Game mode:
-              {server.modeName ? server.mapname : server.mode}
+              {server.modeName ? server.mapName : server.mode}
             </span>
           </div>
           <span className="col-span-full">

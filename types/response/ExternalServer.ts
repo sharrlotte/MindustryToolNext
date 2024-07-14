@@ -5,7 +5,7 @@ export default interface ExternalServer {
   name: string;
   online: boolean;
   address: string;
-  mapname: string;
+  mapName: string;
   description: string;
   wave: number;
   players: number;

@@ -45,7 +45,7 @@ export default function ExternalServerCard({
             </div>
             <span className="flex flex-row gap-2">Wave: {server.wave}</span>
             <span className="flex flex-row gap-2">
-              Map: <ColorText text={server.mapname} />
+              Map: <ColorText text={server.mapName} />
             </span>
             <span className="capitalize">
               Version:
@@ -58,7 +58,7 @@ export default function ExternalServerCard({
             <span className="overflow-hidden whitespace-nowrap capitalize">
               Game mode:
               <ColorText
-                text={server.modeName ? server.mapname : server.mode}
+                text={server.modeName ? server.mapName : server.mode}
               />
             </span>
           </div>
