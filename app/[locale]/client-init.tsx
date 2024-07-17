@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect } from 'react';
-
 import useClientAPI from '@/hooks/use-client';
+
+import { useQuery } from '@tanstack/react-query';
 
 export default function ClientInit() {
   const axios = useClientAPI();
 
-  useEffect(() => {
-    axios.get('/ping?client=web').catch();
-  }, [axios]);
+  useQuery({
+    queryFn: () => axios.get('/ping?client=web'),
+    queryKey: ['ping'],
+  });
 
   return undefined;
 }
