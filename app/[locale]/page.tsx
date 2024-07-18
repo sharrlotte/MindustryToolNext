@@ -18,11 +18,35 @@ export default async function Home({
 
   const t = await getI18n();
   const axios = await getServerAPI();
-  const users = await getUsers(axios, {
+
+  const getAdmins = getUsers(axios, {
     page: 0,
     size: 20,
     role: 'ADMIN',
   });
+
+  const getShar = getUsers(axios, {
+    page: 0,
+    size: 20,
+    role: 'SHAR',
+  });
+
+  const getContributor = getUsers(axios, {
+    page: 0,
+    size: 20,
+    role: 'CONTRIBUTOR',
+  });
+
+  let [shar, admins, contributors] = await Promise.all([
+    getShar,
+    getAdmins,
+    getContributor,
+  ]);
+
+  admins = admins.filter((user) => !shar.includes(user));
+  contributors = contributors.filter(
+    (user) => !shar.includes(user) && !admins.includes(user),
+  );
 
   return (
     <div className="grid h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center p-8 pt-10 text-white">
@@ -142,17 +166,23 @@ export default async function Home({
             <b> {t('home.website-info')}</b>
             <ul className="grid grid-cols-1 items-start justify-start gap-y-2 md:grid-cols-2">
               <p className="list-item whitespace-nowrap">{t('web-owner')}</p>
-              <IdUserCard id="64b63239e53d0c354d505733" />
+              <div className="grid gap-1">
+                {shar.map((user) => (
+                  <UserCard key={user.id} user={user} />
+                ))}
+              </div>
               <p className="list-item whitespace-nowrap">{t('admin')}</p>
               <div className="grid gap-1">
-                {users
-                  .filter((user) => user.id !== '64b63239e53d0c354d505733')
-                  .map((user) => (
-                    <UserCard key={user.id} user={user} />
-                  ))}
+                {admins.map((user) => (
+                  <UserCard key={user.id} user={user} />
+                ))}
               </div>
               <p className="list-item whitespace-nowrap">{t('contributor')}</p>
-              <IdUserCard id="64b7f3cf830ef61869872548" />
+              <div className="grid gap-1">
+                {contributors.map((user) => (
+                  <UserCard key={user.id} user={user} />
+                ))}
+              </div>
             </ul>
           </section>
         </div>
