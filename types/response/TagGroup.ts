@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 type TagGroup = {
   name: string;
-  value: string[];
+  values: string[];
   color: string;
   duplicate: boolean;
 };
@@ -40,7 +40,7 @@ export class TagGroups {
         );
         // Ignore tag that not match with server
         if (result) {
-          result.value = tag.value;
+          result.values = tag.value;
         }
 
         return result;

@@ -32,10 +32,12 @@ let timeout: NodeJS.Timeout | undefined;
 
 export default function NameTagSearch({
   className,
-  tags = [],
+  tags,
   useSort = true,
   useTag = true,
 }: NameTagSearchProps) {
+  tags = tags || [];
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchPageParams();
@@ -52,7 +54,7 @@ export default function NameTagSearch({
 
   const handleShowFilterDialog = () => setShowFilterDialog(true);
   const handleHideFilterDialog = () => setShowFilterDialog(false);
-
+  
   const tagsClone = cloneDeep(tags);
 
   useEffect(() => {
@@ -78,7 +80,7 @@ export default function NameTagSearch({
           );
           // Ignore tag that not match with server
           if (result) {
-            result.value = tag.value;
+            result.values = tag.value;
           }
 
           return result;
@@ -105,7 +107,9 @@ export default function NameTagSearch({
       if (useTag) {
         selectedFilterTags
           .map((group) =>
-            group.value.map((value) => `${group.name}${TAG_SEPARATOR}${value}`),
+            group.values.map(
+              (value) => `${group.name}${TAG_SEPARATOR}${value}`,
+            ),
           )
           .forEach((values) =>
             values.forEach((value) => params.append(QueryParams.tags, value)),
@@ -130,17 +134,17 @@ export default function NameTagSearch({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);
 
-  const handleTagGroupChange = (name: string, value: string[]) => {
+  const handleTagGroupChange = (name: string, values: string[]) => {
     const group = selectedFilterTags.find((tag) => tag.name === name);
     if (group) {
-      group.value = value;
+      group.values = values;
       setSelectedFilterTags([...selectedFilterTags]);
     } else {
       let result = tagsClone.find((tag) => tag.name === name);
 
       // Ignore tag that not match with server
       if (result) {
-        result.value = value;
+        result.values = values;
         selectedFilterTags.push(result);
         setChanged(true);
         setSelectedFilterTags([...selectedFilterTags]);
@@ -164,7 +168,7 @@ export default function NameTagSearch({
     setSelectedFilterTags((prev) => {
       const group = prev.find((item) => item.name === tag.name);
       if (group) {
-        group.value = group.value.filter((item) => item !== tag.value);
+        group.values = group.values.filter((item) => item !== tag.value);
       }
 
       return [...prev];
@@ -191,7 +195,7 @@ export default function NameTagSearch({
               label: t(selectedSortTag.toLowerCase()),
               value: selectedSortTag,
             }}
-            values={sortTagGroup.value.map((value) => ({
+            values={sortTagGroup.values.map((value) => ({
               // @ts-ignore
               label: t(value.toLowerCase()),
               value: value as SortTag,
