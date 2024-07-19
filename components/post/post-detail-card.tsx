@@ -87,7 +87,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   return (
     <Detail>
       <header className="grid gap-2 pb-4">
-        <p className="text-4xl">{post.header}</p>
+        <p className="text-4xl">{post.title}</p>
         <div className="grid gap-2">
           <IdUserCard id={post.authorId} />
           <span>{new Date(post.createdAt).toLocaleString()}</span>
@@ -101,7 +101,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
         <LikeComponent
           targetId={post.id}
           targetType="POSTS"
-          initialLikeCount={post.like}
+          initialLikeCount={post.likes}
           initialLikeData={post.userLike}
         >
           <LikeButton />
@@ -115,13 +115,13 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
         >
           <TakeDownButton
             isLoading={isLoading}
-            description={`Take down this post: ${post.header}`}
+            description={`Take down this post: ${post.title}`}
             onClick={() => removePost(post.id)}
           />
         </ProtectedElement>
         <ProtectedElement session={session} ownerId={post.authorId}>
           <DeleteButton
-            description={`${t('delete')} ${post.header}`}
+            description={`${t('delete')} ${post.title}`}
             isLoading={isLoading}
             onClick={() => deletePostById(post.id)}
           />

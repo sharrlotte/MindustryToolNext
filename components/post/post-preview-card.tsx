@@ -1,3 +1,6 @@
+import Link from 'next/link';
+import React, { HTMLAttributes } from 'react';
+
 import CopyButton from '@/components/button/copy-button';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
@@ -9,8 +12,6 @@ import { cn } from '@/lib/utils';
 import { Post } from '@/types/response/Post';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import React, { HTMLAttributes } from 'react';
 
 type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
@@ -33,7 +34,7 @@ export default function PostPreviewCard({
     >
       <div className="flex h-full flex-col justify-between gap-2">
         <Link href={`/posts/${post.id}`}>
-          <span className="flex text-2xl">{post.header}</span>
+          <span className="flex text-2xl">{post.title}</span>
         </Link>
         <div className="flex flex-col gap-2">
           <div>
@@ -53,7 +54,7 @@ export default function PostPreviewCard({
               <LikeComponent
                 targetId={post.id}
                 targetType="POSTS"
-                initialLikeCount={post.like}
+                initialLikeCount={post.likes}
                 initialLikeData={post.userLike}
               >
                 <LikeButton />

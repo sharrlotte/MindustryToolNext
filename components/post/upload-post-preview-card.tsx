@@ -24,7 +24,7 @@ export default function UploadPostPreviewCard({
     >
       <div className="flex h-full flex-col justify-between gap-2">
         <Link href={`/admin/posts/${post.id}`}>
-          <span className="flex text-2xl">{post.header}</span>
+          <span className="flex text-2xl">{post.title}</span>
         </Link>
         <div className="flex flex-col gap-2">
           <div>

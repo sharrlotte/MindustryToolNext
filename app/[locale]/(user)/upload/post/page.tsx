@@ -63,7 +63,7 @@ export default function Page() {
 
   function handlePostSelect(post: PostDetail) {
     setPost(post);
-    setHeader(post.header);
+    setHeader(post.title);
     setContent({ text: post.content, images: [] });
   }
 
@@ -366,15 +366,15 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
       return <NoResult />;
     }
 
-    return data?.map(({ id, header }) => (
+    return data?.map(({ id, title }) => (
       <Button
         className="h-full w-full items-center justify-start rounded-md border border-border p-2 text-start hover:bg-button"
         variant="outline"
         key={id}
-        title={header}
+        title={title}
         onClick={() => mutate(id)}
       >
-        {header.trim()}
+        {title.trim()}
       </Button>
     ));
   }
