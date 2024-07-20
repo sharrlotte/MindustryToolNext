@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import React, { ReactNode, useLayoutEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
@@ -18,10 +19,11 @@ export default function LoginButton({
 }) {
   const t = useI18n();
   const [_, setCookie] = useCookies();
+  const pathname = usePathname();
 
   useLayoutEffect(
     () => setCookie('redirect_uri', window.location.href),
-    [setCookie],
+    [setCookie, pathname],
   );
 
   return (
