@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 import { throttle } from 'lodash';
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
+import ErrorSpinner from '@/components/common/error-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
@@ -142,8 +143,8 @@ export default function ResponsiveInfiniteScrollGrid<
 
   if (isError || error) {
     return (
-      <div className="flex w-full justify-center">
-        {t('error')} : {error?.message}
+      <div className="flex w-full h-full justify-center">
+        <ErrorSpinner message={error?.message} />
       </div>
     );
   }
