@@ -1,18 +1,21 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+import React, { useLayoutEffect } from 'react';
+import { useCookies } from 'react-cookie';
+
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
-import React, { useLayoutEffect } from 'react';
-import { useCookies } from 'react-cookie';
 
 export default function LogoutButton({ className }: { className?: string }) {
   const [_, setCookie] = useCookies();
+  const pathname = usePathname();
 
   useLayoutEffect(
-    () => setCookie('redirect_uri', `${env.url.base}`),
-    [setCookie],
+    () => setCookie('redirect_uri', window.location.href),
+    [setCookie, pathname],
   );
 
   return (
