@@ -131,8 +131,7 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
             fileName={`{${map.name}}.msav`}
           />
           <LikeComponent
-            targetId={map.id}
-            targetType="MAPS"
+            itemId={map.itemId}
             initialLikeCount={map.like}
             initialLikeData={map.userLike}
           >

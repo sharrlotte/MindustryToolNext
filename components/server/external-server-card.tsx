@@ -1,3 +1,5 @@
+import React from 'react';
+
 import CopyButton from '@/components/button/copy-button';
 import ColorText from '@/components/common/color-text';
 import DislikeButton from '@/components/like/dislike-button';
@@ -5,8 +7,6 @@ import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import ExternalServer from '@/types/response/ExternalServer';
-
-import React from 'react';
 
 type MindustryServerCardProps = {
   server: ExternalServer;
@@ -76,8 +76,7 @@ export default function ExternalServerCard({
             <LikeComponent
               initialLikeCount={server.like}
               initialLikeData={server.userLike}
-              targetType={'SERVERS'}
-              targetId={server.id}
+              itemId={server.itemId}
             >
               <LikeButton className="w-9" />
               <LikeCount className="w-9" />

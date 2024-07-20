@@ -148,8 +148,7 @@ export default function SchematicDetailCard({
             fileName={`{${schematic.name}}.msch`}
           />
           <LikeComponent
-            targetId={schematic.id}
-            targetType="SCHEMATICS"
+            itemId={schematic.itemId}
             initialLikeCount={schematic.like}
             initialLikeData={schematic.userLike}
           >

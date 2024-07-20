@@ -13,7 +13,6 @@ export type MetricCollection =
   | 'DAILY_MOD_USER'
   | 'DAILY_WEB_USER';
 
-export type LikeTarget = 'SCHEMATICS' | 'MAPS' | 'POSTS' | 'SERVERS';
 
 export type UserRole =
   | 'ADMIN'

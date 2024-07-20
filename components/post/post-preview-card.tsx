@@ -52,8 +52,7 @@ export default function PostPreviewCard({
             </CopyButton>
             {post.status === 'VERIFIED' && (
               <LikeComponent
-                targetId={post.id}
-                targetType="POSTS"
+                itemId={post.itemId}
                 initialLikeCount={post.likes}
                 initialLikeData={post.userLike}
               >

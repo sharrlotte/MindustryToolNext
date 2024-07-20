@@ -3,7 +3,9 @@
 import React, { useState } from 'react';
 import { ReactNode } from 'react';
 
-import { LikeAction, LikeTarget } from '@/constant/enum';
+
+
+import { LikeAction } from '@/constant/enum';
 import { FakeLike, LikeContext } from '@/context/like-context';
 import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
@@ -11,22 +13,23 @@ import { useToast } from '@/hooks/use-toast';
 import postLike from '@/query/like/post-like';
 import { Like } from '@/types/response/Like';
 
+
+
 import { useMutation } from '@tanstack/react-query';
+
 
 type LikeComponentProps = {
   children: ReactNode;
   initialLikeCount: number;
   initialLikeData: Like;
-  targetType: LikeTarget;
-  targetId: string;
+  itemId: string;
 };
 
 function LikeComponent({
   initialLikeCount = 0,
   initialLikeData,
   children,
-  targetType,
-  targetId,
+  itemId,
 }: LikeComponentProps) {
   const { session } = useSession();
   const axios = useClientAPI();
@@ -40,8 +43,7 @@ function LikeComponent({
     mutationFn: async (action: LikeAction) =>
       await postLike(axios, {
         action,
-        targetType,
-        targetId,
+        itemId,
       }),
   });
 

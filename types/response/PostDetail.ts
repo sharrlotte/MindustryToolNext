@@ -19,4 +19,5 @@ export interface PostDetail {
   >;
   userLike: Like;
   createdAt: number;
+  itemId: string;
 }

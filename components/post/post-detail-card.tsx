@@ -99,8 +99,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
       </header>
       <footer className="flex gap-1 rounded-md bg-card p-2">
         <LikeComponent
-          targetId={post.id}
-          targetType="POSTS"
+          itemId={post.itemId}
           initialLikeCount={post.likes}
           initialLikeData={post.userLike}
         >

@@ -14,4 +14,5 @@ export interface MapDetail {
   status: Status;
   verifyAdmin: string;
   userLike: Like;
+  itemId: string
 }

@@ -10,4 +10,5 @@ export type Post = {
   tags: string[];
   createdAt: number;
   status: Status;
+  itemId: string;
 };

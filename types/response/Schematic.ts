@@ -8,4 +8,5 @@ export type Schematic = {
   like: number;
   userLike: Like;
   status: Status;
+  itemId: string;
 };

@@ -16,4 +16,5 @@ export interface SchematicDetail {
   status: Status;
   verifyAdmin: string;
   userLike: Like;
+  itemId: string;
 }
