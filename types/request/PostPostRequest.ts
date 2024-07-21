@@ -1,7 +1,8 @@
 import { MarkdownData } from '@/components/common/markdown-editor';
 
+
 type PostPostRequest = {
-  header: string;
+  title: string;
   content: MarkdownData;
   tags: string;
   lang: string;

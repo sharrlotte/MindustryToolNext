@@ -13,7 +13,7 @@ export interface PostDetail {
   translations: Record<
     string,
     {
-      header: string;
+      title: string;
       content: string;
     }
   >;

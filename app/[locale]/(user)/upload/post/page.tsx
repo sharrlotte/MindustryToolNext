@@ -42,8 +42,8 @@ const MarkdownEditor = dynamic(
 );
 
 type Shared = {
-  header: string;
-  setHeader: (data: string) => void;
+  title: string;
+  setTitle: (data: string) => void;
   content: MarkdownData;
   setContent: (data: MarkdownData) => void;
   language: string;
@@ -53,7 +53,7 @@ type Shared = {
 export default function Page() {
   // If post is not undefined then its a translate request
   const [post, setPost] = useState<PostDetail>();
-  const [header, setHeader] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<MarkdownData>({
     text: '',
     images: [],
@@ -63,7 +63,7 @@ export default function Page() {
 
   function handlePostSelect(post: PostDetail) {
     setPost(post);
-    setHeader(post.title);
+    setTitle(post.title);
     setContent({ text: post.content, images: [] });
   }
 
@@ -76,8 +76,8 @@ export default function Page() {
           </div>
           <UploadPage
             shared={{
-              header,
-              setHeader,
+              title,
+              setTitle,
               content,
               setContent,
               language,
@@ -103,8 +103,8 @@ export default function Page() {
         <TranslatePage
           post={post}
           shared={{
-            header,
-            setHeader,
+            title,
+            setTitle,
             content,
             setContent,
             language,
@@ -122,7 +122,7 @@ export default function Page() {
 
 function TranslatePage({
   post,
-  shared: { header, setHeader, content, setContent, language, setLanguage },
+  shared: { title, setTitle, content, setContent, language, setLanguage },
 }: {
   shared: Shared;
 } & { post: PostDetail }) {
@@ -139,7 +139,7 @@ function TranslatePage({
         title: t('upload.success'),
         variant: 'success',
       });
-      setHeader('');
+      setTitle('');
       setContent({ text: '', images: [] });
       invalidateByKey(['post-uploads']);
       invalidateByKey(['total-post-uploads']);
@@ -154,7 +154,7 @@ function TranslatePage({
   });
 
   function checkUploadRequirement() {
-    if (!header) return t('upload.no-title');
+    if (!title) return t('upload.no-title');
 
     if (!content) return t('upload.no-content');
 
@@ -184,8 +184,8 @@ function TranslatePage({
           <Input
             className="w-full rounded-sm bg-background outline-none hover:outline-none"
             placeholder={t('upload.title')}
-            value={header}
-            onChange={(event) => setHeader(event.currentTarget.value)}
+            value={title}
+            onChange={(event) => setTitle(event.currentTarget.value)}
           />
           <MarkdownEditor
             value={content}
@@ -206,7 +206,7 @@ function TranslatePage({
             onClick={() =>
               mutate({
                 id: post.id,
-                header,
+                title,
                 content,
                 lang: language,
               })
@@ -226,7 +226,7 @@ function TranslatePage({
 }
 
 function UploadPage({
-  shared: { header, setHeader, content, setContent, language, setLanguage },
+  shared: { title, setTitle, content, setContent, language, setLanguage },
 }: {
   shared: Shared;
 }) {
@@ -245,7 +245,7 @@ function UploadPage({
         title: t('upload.success'),
         variant: 'success',
       });
-      setHeader('');
+      setTitle('');
       setContent({ text: '', images: [] });
       setSelectedTags([]);
       invalidateByKey(['post-uploads']);
@@ -261,7 +261,7 @@ function UploadPage({
   });
 
   function checkUploadRequirement() {
-    if (!header) return t('upload.no-title');
+    if (!title) return t('upload.no-title');
 
     if (!content) return t('upload.no-content');
 
@@ -281,8 +281,8 @@ function UploadPage({
           <Input
             className="w-full rounded-sm bg-background outline-none hover:outline-none"
             placeholder={t('upload.title')}
-            value={header}
-            onChange={(event) => setHeader(event.currentTarget.value)}
+            value={title}
+            onChange={(event) => setTitle(event.currentTarget.value)}
           />
           <MarkdownEditor
             value={content}
@@ -311,7 +311,7 @@ function UploadPage({
             disabled={isPending || uploadCheck !== true}
             onClick={() =>
               mutate({
-                header,
+                title,
                 content,
                 lang: language,
                 tags: TagGroups.toString(selectedTags),
