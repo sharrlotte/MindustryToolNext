@@ -8,6 +8,7 @@ export type Post = {
   likes: number;
   userLike: Like;
   tags: string[];
+  imageUrls: string[];
   createdAt: number;
   status: Status;
   itemId: string;

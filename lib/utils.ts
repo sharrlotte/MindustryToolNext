@@ -3,6 +3,7 @@ import Nprogress from 'nprogress';
 import { twMerge } from 'tailwind-merge';
 import { create } from 'zustand';
 
+import env from '@/constant/env';
 import { Message } from '@/types/response/Message';
 import { ChartData, Metric } from '@/types/response/Metric';
 
@@ -311,4 +312,13 @@ export function isBelongToLastMessage(
     newMessageDate.getTime() - lastMessageDate.getTime() < 300000 &&
     lastMessage.content.length < 10
   );
+}
+
+type ImageFolder = 'schematics' | 'maps' | 'posts';
+
+export function getImageById(folder: ImageFolder, id: string) {
+  if (id) {
+    return `${env.url.image}${folder}/${id}.png`;
+  }
+  return undefined;
 }
