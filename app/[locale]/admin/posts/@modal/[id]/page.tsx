@@ -9,7 +9,5 @@ export default async function Page({ params }: { params: IdSearchParams }) {
   const axios = await getServerAPI();
   const post = await getPostUpload(axios, params);
 
-  console.log({ post });
-
   return <UploadPostDetailCard post={post} />;
 }
