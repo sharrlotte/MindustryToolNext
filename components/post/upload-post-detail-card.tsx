@@ -84,7 +84,7 @@ export default function UploadPostDetailCard({
 
   useEffect(() => {
     setSelectedTags(TagGroups.parseString(post.tags, postTags));
-  }, [post.tags, postTags]);
+  }, [postTags, post.tags]);
 
   const isLoading = isVerifying || isDeleting;
   const displayTags = Tags.fromTagGroup(selectedTags);

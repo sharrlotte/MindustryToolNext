@@ -102,8 +102,6 @@ export default function InfiniteScrollList<
 
     const diff = list.clientHeight - lastHeight;
 
-    console.log(diff);
-
     currentContainer.scrollTo({
       top: diff,
       behavior: 'instant',

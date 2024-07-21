@@ -1,4 +1,3 @@
-import { notFound } from 'next/navigation';
 import React from 'react';
 
 import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
@@ -9,6 +8,8 @@ import { IdSearchParams } from '@/types/data/id-search-schema';
 export default async function Page({ params }: { params: IdSearchParams }) {
   const axios = await getServerAPI();
   const post = await getPostUpload(axios, params);
+
+  console.log({ post });
 
   return <UploadPostDetailCard post={post} />;
 }

@@ -81,7 +81,6 @@ export default function NameTagSearch({
               tag.values.every((b) => tag.values.includes(b)),
           );
           // Ignore tag that not match with server
-          console.log({ result });
           if (result) {
             result.values = tag.values;
           }
@@ -127,8 +126,6 @@ export default function NameTagSearch({
       if (name) {
         params.set(QueryParams.name, name);
       }
-
-      console.log({ tagsClone, selectedFilterTags, searchParams });
 
       if (tags.length != 0) {
         router.replace(`${pathname}?${params.toString()}`);
