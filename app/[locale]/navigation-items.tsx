@@ -40,6 +40,7 @@ import {
   ServerStackIcon,
 } from '@heroicons/react/24/outline';
 import { useQueries } from '@tanstack/react-query';
+import getTotalPostUpload from '@/query/post/get-total-post-upload';
 
 type PathGroup = {
   name: string;
@@ -367,8 +368,8 @@ function VerifyPath() {
           placeholderData: 0,
         },
         {
-          queryFn: () => getTotalMapUpload(axios, {}),
-          queryKey: ['total-map-uploads'],
+          queryFn: () => getTotalPostUpload(axios, {}),
+          queryKey: ['total-post-uploads'],
           placeholderData: 0,
         },
       ],
