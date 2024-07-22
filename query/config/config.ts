@@ -20,9 +20,6 @@ const axiosInstance = Axios.create({
     indexes: null,
   },
   withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 axiosInstance.interceptors.response.use(

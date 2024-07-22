@@ -8,7 +8,7 @@ export interface SchematicDetail {
   name: string;
   authorId: string;
   description: string;
-  requirement: ItemRequirement[];
+  requirements: ItemRequirement[];
   tags: string[];
   like: number;
   height: number;

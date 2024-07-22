@@ -4,17 +4,17 @@ import Image from 'next/image';
 import React from 'react';
 
 interface ItemRequirementCardProps {
-  requirement: ItemRequirement[];
+  requirements: ItemRequirement[];
 }
 
 export default function ItemRequirementCard({
-  requirement,
+  requirements,
 }: ItemRequirementCardProps) {
-  if (!requirement) return <></>;
+  if (!requirements) return <></>;
 
   return (
     <section className=" flex flex-row flex-wrap gap-2">
-      {requirement.map((r, index) => (
+      {requirements.map((r, index) => (
         <span key={index} className="flex flex-row items-center justify-center">
           <Image
             className="h-5 w-5"

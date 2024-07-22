@@ -131,7 +131,7 @@ export default function SchematicDetailCard({
             <IdUserCard id={schematic.verfierId} />
           </div>
           <DetailDescription>{schematic.description}</DetailDescription>
-          <ItemRequirementCard requirement={schematic.requirement} />
+          <ItemRequirementCard requirements={schematic.requirements} />
           <DetailTagsCard tags={schematic.tags} />
         </DetailHeader>
       </DetailInfo>

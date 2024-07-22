@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 import {
   Accordion,
@@ -25,6 +25,7 @@ import ProtectedElement from '@/layout/protected-element';
 import { cn, max } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import getTotalMapUpload from '@/query/map/get-total-map-upload';
+import getTotalPostUpload from '@/query/post/get-total-post-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
 import { useVerifyCount } from '@/zustand/verify-count';
 
@@ -40,7 +41,6 @@ import {
   ServerStackIcon,
 } from '@heroicons/react/24/outline';
 import { useQueries } from '@tanstack/react-query';
-import getTotalPostUpload from '@/query/post/get-total-post-upload';
 
 type PathGroup = {
   name: string;
@@ -375,8 +375,10 @@ function VerifyPath() {
       ],
     });
 
-  set({ schematicCount, mapCount, postCount });
-
+  useEffect(
+    () => set({ schematicCount, mapCount, postCount }),
+    [mapCount, postCount, schematicCount, set],
+  );
   const amount = (schematicCount ?? 0) + (mapCount ?? 0) + (postCount ?? 0);
 
   return (

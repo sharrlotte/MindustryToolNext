@@ -129,7 +129,7 @@ export default function UploadSchematicDetailCard({
           <DetailTitle>{schematic.name}</DetailTitle>
           <IdUserCard id={schematic.authorId} />
           <DetailDescription>{schematic.description}</DetailDescription>
-          <ItemRequirementCard requirement={schematic.requirement} />
+          <ItemRequirementCard requirements={schematic.requirements} />
           <NameTagSelector
             tags={schematicTags}
             value={selectedTags}

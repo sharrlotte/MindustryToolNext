@@ -40,9 +40,7 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
+// eslint-disable @next/next/no-img-element
 
 export default function Page() {
   const axios = useClientAPI();
@@ -86,6 +84,7 @@ export default function Page() {
         setPreview(undefined);
         setSelectedTags([]);
         invalidateByKey(['schematic-uploads']);
+        invalidateByKey(['total-schematic-uploads']);
       },
       onError(error) {
         toast({
@@ -244,7 +243,7 @@ export default function Page() {
                 <IdUserCard id="community" />
               )}
               <DetailDescription>{preview.description}</DetailDescription>
-              <ItemRequirementCard requirement={preview.requirement} />
+              <ItemRequirementCard requirements={preview.requirements} />
               <NameTagSelector
                 tags={schematic}
                 value={selectedTags}

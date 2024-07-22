@@ -4,5 +4,5 @@ export default interface SchematicPreviewResponse {
   name: string;
   description: string;
   image: string;
-  requirement: ItemRequirement[];
+  requirements: ItemRequirement[];
 }
