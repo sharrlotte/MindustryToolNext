@@ -1,7 +1,7 @@
+import _ from 'lodash';
+
 import { TAG_SEPARATOR } from '@/constant/constant';
 import { Tags } from '@/types/response/Tag';
-
-import _ from 'lodash';
 
 type TagGroup = {
   name: string;
@@ -22,6 +22,11 @@ export type AllTagGroup = {
 export class TagGroups {
   static toString(tags: TagGroup[]) {
     return Tags.toString(Tags.fromTagGroup(tags));
+  }
+  static toStringArray(tags: TagGroup[]) {
+    return Tags.fromTagGroup(tags).map(
+      (tag) => tag.name + TAG_SEPARATOR + tag.value,
+    );
   }
 
   static parseString(tagsString: string[], tags: TagGroup[]) {

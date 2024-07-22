@@ -1,10 +1,10 @@
+import Image from 'next/image';
+import React, { HTMLAttributes } from 'react';
+
 import ColorText from '@/components/common/color-text';
 import TagContainer from '@/components/tag/tag-container';
 import { cn } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
-
-import Image from 'next/image';
-import React, { HTMLAttributes } from 'react';
 
 type DetailProps = HTMLAttributes<HTMLDivElement>;
 
@@ -59,7 +59,7 @@ export function DetailImage({ className, src, errorSrc, alt }: ImageProps) {
   return (
     <figure
       className={cn(
-        'overflow-hidden rounded-lg md:max-w-[min(80vh,80vw)]',
+        'overflow-hidden min-w-[40dvw] rounded-lg md:max-w-[min(80dvh,80dvw)]',
         className,
       )}
     >

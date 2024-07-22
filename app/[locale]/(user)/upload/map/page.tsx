@@ -32,6 +32,16 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   const axios = useClientAPI();
   const [file, setFile] = useState<File>();
@@ -71,6 +81,7 @@ export default function Page() {
       setPreview(undefined);
       setSelectedTags([]);
       invalidateByKey(['map-uploads']);
+      invalidateByKey(['total-map-uploads']);
     },
     onError(error) {
       toast({
@@ -108,11 +119,11 @@ export default function Page() {
   }
 
   function handleSubmit() {
-    if (!file || isLoading) {
+    if (!file || isLoading || !preview) {
       return;
     }
 
-    postNewMap({ file, tags: TagGroups.toString(selectedTags) });
+    postNewMap({ ...preview, file, tags: TagGroups.toString(selectedTags) });
   }
 
   useEffect(() => {
