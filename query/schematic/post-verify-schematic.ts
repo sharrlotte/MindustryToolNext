@@ -1,15 +1,14 @@
-import { toForm } from '@/lib/utils';
-import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
-
 import { AxiosInstance } from 'axios';
+
+import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 
 export default async function postVerifySchematic(
   axios: AxiosInstance,
   { id, tags }: VerifySchematicRequest,
 ): Promise<void> {
-  const form = toForm({ tags });
+  const data = { tags };
 
-  return axios.post(`/schematics/${id}/verify`, form, {
-    data: form,
+  return axios.post(`/schematics/${id}/verify`, data, {
+    data,
   });
 }

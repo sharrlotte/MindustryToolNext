@@ -1,17 +1,14 @@
-import { toForm } from '@/lib/utils';
+import { AxiosInstance } from 'axios';
+
 import { PostInternalServerRequest } from '@/types/request/PostInternalServerRequest';
 import PostServerResponse from '@/types/response/PostServerResponse';
-
-import { AxiosInstance } from 'axios';
 
 export default async function postInternalServer(
   axios: AxiosInstance,
   data: PostInternalServerRequest,
 ): Promise<PostServerResponse> {
-  const form = toForm(data);
-
-  const result = await axios.post('/internal-servers', form, {
-    data: form,
+  const result = await axios.post('/internal-servers', data, {
+    data,
   });
 
   return result.data;
