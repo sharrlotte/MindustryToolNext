@@ -160,7 +160,7 @@ export default function UploadSchematicDetailCard({
             onClick={() =>
               verifySchematic({
                 id: schematic.id,
-                tags: TagGroups.toString(selectedTags),
+                tags: TagGroups.toStringArray(selectedTags),
               })
             }
           />

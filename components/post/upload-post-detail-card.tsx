@@ -118,7 +118,10 @@ export default function UploadPostDetailCard({
           description={`${t('verify')} ${post.title}`}
           isLoading={isLoading}
           onClick={() =>
-            verifyPost({ id: post.id, tags: TagGroups.toString(selectedTags) })
+            verifyPost({
+              id: post.id,
+              tags: TagGroups.toStringArray(selectedTags),
+            })
           }
         />
         <BackButton className="ml-auto" />
