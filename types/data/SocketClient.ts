@@ -147,6 +147,7 @@ export default class SocketClient {
       this.errors.forEach((error) => error(event));
     };
     this.socket.onopen = (event) => {
+      this.rooms = [];
       this.connects.forEach((connect) => connect(event));
     };
     this.socket.onclose = (event) => {

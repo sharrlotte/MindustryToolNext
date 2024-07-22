@@ -1,6 +1,9 @@
 /* @type {import('next').NextConfig} */
 const removeImports = require('next-remove-imports')();
 const nextConfig = {
+  experimental: {
+    ppr: true,
+  },
   reactStrictMode: true,
   images: {
     unoptimized: true,

@@ -1,9 +1,11 @@
 export interface Metric {
   value: number;
-  time: Date;
+  metricKey: string;
+  createdAt: string;
 }
 
 export interface ChartData {
   value: number;
-  time: string;
+  metricKey: string;
+  createdAt: string;
 }
