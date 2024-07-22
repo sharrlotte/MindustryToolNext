@@ -259,7 +259,7 @@ export function NavItems({ onClick }: NavItemsProps) {
           >
             <Link
               className={cn(
-                'flex items-end gap-3 font-bold rounded-md px-3 py-2 text-sm opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                'flex items-end gap-3 font-bold text-opacity-50 rounded-md px-3 py-2 text-sm opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
                 {
                   'bg-button text-background opacity-100 dark:text-foreground':
                     path === bestMatch,
