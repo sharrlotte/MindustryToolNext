@@ -50,7 +50,9 @@ export default function Page() {
           }
           container={() => container.current}
         >
-          {(data) => <InternalServerPluginCard key={data.id} plugin={data} />}
+          {(data) => (
+            <InternalServerPluginCard key={data.pluginId} plugin={data} />
+          )}
         </InfinitePage>
       </div>
     </div>

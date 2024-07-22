@@ -279,6 +279,8 @@ export function NavItems({ onClick }: NavItemsProps) {
           </ProtectedElement>
         );
 
+      console.log(value);
+
       return (
         <ProtectedElement
           key={path.toString()}
@@ -294,7 +296,10 @@ export function NavItems({ onClick }: NavItemsProps) {
             value={value}
             onValueChange={setValue}
           >
-            <AccordionItem className="w-full" value={path.toString()}>
+            <AccordionItem
+              className="w-full"
+              value={path.reduce((prev, curr) => prev + curr.name, '')}
+            >
               <AccordionTrigger
                 className={cn(
                   'flex gap-3 rounded-md px-3 py-2 text-sm hover:bg-button hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground font-bold opacity-80 transition-colors duration-300 shadow-md',
