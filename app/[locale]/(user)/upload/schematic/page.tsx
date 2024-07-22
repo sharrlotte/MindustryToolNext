@@ -40,6 +40,10 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   const axios = useClientAPI();
   const [data, setData] = useState<File | string | undefined>();
@@ -146,11 +150,15 @@ export default function Page() {
   }
 
   function handleSubmit() {
-    if (!data || isLoading) {
+    if (!data || isLoading || !preview) {
       return;
     }
 
-    postNewSchematic({ data, tags: TagGroups.toString(selectedTags) });
+    postNewSchematic({
+      ...preview,
+      data,
+      tags: TagGroups.toString(selectedTags),
+    });
   }
 
   useEffect(() => {
