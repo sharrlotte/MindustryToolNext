@@ -118,6 +118,11 @@ export function NavItems({ onClick }: NavItemsProps) {
           icon: <BotIcon className="h-5 w-5" />,
         },
         {
+          name: t('plugin'),
+          path: '/plugins',
+          icon: <PuzzlePieceIcon className="h-5 w-5" />,
+        },
+        {
           name: t('upload'),
           icon: <ArrowUpTrayIcon className="h-5 w-5" />,
           path: [
@@ -178,6 +183,11 @@ export function NavItems({ onClick }: NavItemsProps) {
               path: '/admin/posts',
               icon: <BookOpenIcon className="h-5 w-5" />,
             },
+            {
+              name: t('plugin'),
+              path: '/admin/plugins',
+              icon: <PuzzlePieceIcon className="h-5 w-5" />,
+            },
           ],
           icon: <ShieldCheckIcon className="h-5 w-5" />,
         },
@@ -201,11 +211,6 @@ export function NavItems({ onClick }: NavItemsProps) {
           name: 'File',
           path: '/files',
           icon: <FolderIcon className="h-5 w-5" />,
-        },
-        {
-          name: t('plugin'),
-          path: '/plugins',
-          icon: <PuzzlePieceIcon className="h-5 w-5" />,
         },
         {
           name: 'MindustryGPT',

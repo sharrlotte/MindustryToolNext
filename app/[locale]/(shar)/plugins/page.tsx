@@ -105,7 +105,7 @@ function AddPluginButton() {
   });
 
   function handleSubmit(value: PostPluginRequestData) {
-    const tagString = TagGroups.toString(value.tags);
+    const tagString = TagGroups.toStringArray(value.tags);
 
     mutate({ ...value, tags: tagString });
   }
@@ -116,13 +116,13 @@ function AddPluginButton() {
         <Button title="Add plugin">Add plugin</Button>
       </DialogTrigger>
       <DialogContent>
-        <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
+        <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md p-6">
           <Form {...form}>
             <form
               className="flex flex-1 flex-col justify-between space-y-2"
               onSubmit={form.handleSubmit(handleSubmit)}
             >
-              <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md bg-card p-2">
+              <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
                 <FormField
                   control={form.control}
                   name="name"
@@ -187,7 +187,7 @@ function AddPluginButton() {
                   )}
                 />
               </div>
-              <div className="flex flex-col items-end justify-center rounded-md bg-card p-2">
+              <div className="flex flex-col items-end justify-center rounded-md p-2">
                 <Button
                   className="w-fit"
                   variant="primary"
