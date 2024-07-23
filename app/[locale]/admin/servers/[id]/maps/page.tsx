@@ -58,7 +58,7 @@ export default function ServerMaps() {
           contentOffsetHeight={112}
           gap={8}
         >
-          {(data) => <InternalServerMapCard key={data.id} map={data} />}
+          {(data) => <InternalServerMapCard key={data.mapId} map={data} />}
         </ResponsiveInfiniteScrollGrid>
       </div>
     </div>
@@ -111,7 +111,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
           {t('internal-server.add-map')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="h-full w-full">
+      <DialogContent className="p-6 w-full">
         <DialogTitle>{t('internal-server.select-map')}</DialogTitle>
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />

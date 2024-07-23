@@ -209,30 +209,14 @@ export default function MessageList({
             return undefined;
           }
 
-          let found = false;
-          let pages = query.pages.map((page) => {
-            return page.map((item) => {
-              if (item.id === message.id) {
-                found = true;
-                return message;
-              }
-              return item;
-            });
-          });
+          const [first, ...rest] = query.pages;
 
-          if (!found) {
-            const [lastPage, ...rest] = pages;
-            lastPage.unshift(message);
-            return {
-              ...query,
-              pages: [lastPage, ...rest],
-            } satisfies InfiniteData<Message[], unknown>;
-          }
+          first.unshift(message);
 
-          return { ...query, pages: [...pages] } satisfies InfiniteData<
-            Message[],
-            unknown
-          >;
+          return {
+            ...query,
+            pages: [first, ...rest],
+          } satisfies InfiniteData<Message[], unknown>;
         },
       );
       if (currentContainer && isReachedEnd(currentContainer, 500)) {

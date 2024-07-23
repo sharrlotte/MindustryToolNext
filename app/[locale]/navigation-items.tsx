@@ -279,8 +279,6 @@ export function NavItems({ onClick }: NavItemsProps) {
           </ProtectedElement>
         );
 
-      console.log(value);
-
       return (
         <ProtectedElement
           key={path.toString()}

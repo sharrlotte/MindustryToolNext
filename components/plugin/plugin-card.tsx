@@ -52,11 +52,10 @@ export default function PluginCard({
   const githubUrl = `https://github.com/${user}/${repo}`;
 
   return (
-    <Link
-      className="relative grid gap-2 rounded-md border p-2"
-      href={githubUrl}
-    >
-      <h2>{name}</h2>
+    <div className="relative grid gap-2 rounded-md border p-2">
+      <Link href={githubUrl}>
+        <h2>{name}</h2>
+      </Link>
       <span>{description}</span>
       <div className="flex gap-2">
         <DeleteButton
@@ -66,6 +65,6 @@ export default function PluginCard({
           onClick={() => deletePluginById(id)}
         />
       </div>
-    </Link>
+    </div>
   );
 }
