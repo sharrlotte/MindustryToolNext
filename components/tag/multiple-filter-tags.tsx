@@ -23,7 +23,7 @@ export default function MultipleFilerTags({
     >
       <span className="whitespace-nowrap text-lg capitalize">{group.name}</span>
       <Separator className="border-[1px]" orientation="horizontal" />
-      {group.value.map((value) => (
+      {group.values.map((value) => (
         <ToggleGroupItem
           className="capitalize hover:bg-button hover:text-background data-[state=on]:bg-button data-[state=on]:text-background dark:hover:text-foreground data-[state=on]:dark:text-foreground"
           key={value}

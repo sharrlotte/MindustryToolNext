@@ -3,6 +3,7 @@ import Nprogress from 'nprogress';
 import { twMerge } from 'tailwind-merge';
 import { create } from 'zustand';
 
+import env from '@/constant/env';
 import { Message } from '@/types/response/Message';
 import { ChartData, Metric } from '@/types/response/Metric';
 
@@ -201,7 +202,7 @@ export function fillMetric(
     return [];
   }
 
-  let result: { value: number; time: string }[] = [];
+  let result: ChartData[] = [];
 
   for (let i = numberOfDay - 1; i >= 0; i--) {
     let targetDay = new Date(start);
@@ -212,23 +213,28 @@ export function fillMetric(
       targetDay.setMonth(start.getMonth() + 1);
     }
 
-    let value = array.find(
-      (v) =>
-        v.time.getFullYear() === targetDay.getFullYear() &&
-        v.time.getMonth() === targetDay.getMonth() &&
-        v.time.getDate() === targetDay.getDate(),
-    );
+    let value = array.find((v) => {
+      const createdAt = new Date(v.createdAt);
+      return (
+        createdAt.getFullYear() === targetDay.getFullYear() &&
+        createdAt.getMonth() === targetDay.getMonth() &&
+        createdAt.getDate() === targetDay.getDate()
+      );
+    });
     if (value === undefined)
       result.push({
         value: defaultValue,
-        time: targetDay.toLocaleDateString(),
+        createdAt: targetDay.toLocaleDateString(),
+        metricKey: '',
       });
     else
       result.push({
         value: value.value,
-        time: value.time.toLocaleDateString(),
+        createdAt: new Date(value.createdAt).toLocaleDateString(),
+        metricKey: value.metricKey,
       });
   }
+
   return result;
 }
 
@@ -311,4 +317,13 @@ export function isBelongToLastMessage(
     newMessageDate.getTime() - lastMessageDate.getTime() < 300000 &&
     lastMessage.content.length < 10
   );
+}
+
+type ImageFolder = 'schematics' | 'maps' | 'posts';
+
+export function getImageById(folder: ImageFolder, id: string) {
+  if (id) {
+    return `${env.url.image}${folder}/${id}.png`;
+  }
+  return undefined;
 }

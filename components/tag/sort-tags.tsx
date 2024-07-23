@@ -17,9 +17,9 @@ export default function SortTags({
   tag,
   handleSortChange,
 }: SortTagProps) {
-  let filteredSortTags = tag.value;
+  let filteredSortTags = tag.values;
   if (!tag.name.includes(filter)) {
-    filteredSortTags = tag.value.filter((tag) => tag.includes(filter));
+    filteredSortTags = tag.values.filter((tag) => tag.includes(filter));
     if (filteredSortTags.length === 0) {
       return null;
     }

@@ -4,19 +4,20 @@ import { Status } from '@/types/response/Status';
 export interface PostDetail {
   id: string;
   authorId: string;
-  header: string;
+  title: string;
   content: string;
-  like: number;
+  likes: number;
   tags: string[];
   lang: string;
   status: Status;
   translations: Record<
     string,
     {
-      header: string;
+      title: string;
       content: string;
     }
   >;
   userLike: Like;
   createdAt: number;
+  itemId: string;
 }

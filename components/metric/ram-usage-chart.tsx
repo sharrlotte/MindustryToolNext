@@ -18,14 +18,22 @@ type Props = {
 };
 
 export default function RamUsageChart({ ramUsage, totalRam }: Props) {
-  const percentUsage = Math.round((ramUsage / totalRam) * 10000) / 100;
-  const percentFree = Math.round((100 - percentUsage) * 100) / 100;
+  ramUsage = isNaN(ramUsage) ? 0 : ramUsage;
+  totalRam = isNaN(totalRam) ? 0 : totalRam;
+
+  let percentUsage = Math.round((ramUsage / totalRam) * 10000) / 100;
+
+  percentUsage = isNaN(percentUsage) ? 0 : percentUsage;
+
+  let percentFree = Math.round((100 - percentUsage) * 100) / 100;
+
+  let ramLeft = ramUsage === 0 && totalRam === 0 ? 100 : totalRam - ramUsage;
 
   const data: ChartData<'doughnut'> = {
     labels: [`Used: ${percentUsage}%`, `Free: ${percentFree}%`],
     datasets: [
       {
-        data: [ramUsage, totalRam - ramUsage],
+        data: [ramUsage, ramLeft],
         backgroundColor: [
           percentUsage < 50
             ? 'green' //

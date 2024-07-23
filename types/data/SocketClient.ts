@@ -147,6 +147,7 @@ export default class SocketClient {
       this.errors.forEach((error) => error(event));
     };
     this.socket.onopen = (event) => {
+      this.rooms = [];
       this.connects.forEach((connect) => connect(event));
     };
     this.socket.onclose = (event) => {
@@ -236,7 +237,11 @@ export default class SocketClient {
   }
 
   public close() {
-    this.socket.close();
+    if (this.socket.readyState === this.socket.OPEN) {
+      this.socket.close();
+    } else {
+      this.socket.onopen = () => this.socket.close();
+    }
   }
 
   public getState(): SocketState {

@@ -42,9 +42,10 @@ export default function NavigationBar() {
         </Button>
         <div
           className={cn(
-            'pointer-events-none fixed inset-0 z-50 h-screen bg-transparent text-foreground',
+            'pointer-events-none fixed inset-0 z-50 h-screen bg-transparent text-foreground transition-all',
             {
-              'visible backdrop-blur-sm': isSidebarVisible,
+              'visible backdrop-blur-sm backdrop-brightness-50':
+                isSidebarVisible,
             },
           )}
         >

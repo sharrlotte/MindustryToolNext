@@ -82,7 +82,7 @@ function Loading({ axios, start, end }: ChartProps) {
   let fixedDaily = fillMetric(start, NUMBER_OF_DAY, dailyUser.data, 0);
 
   const data: ChartData<'line'> = {
-    labels: fixedLoggedDaily.map(({ time }) => time),
+    labels: fixedLoggedDaily.map(({ createdAt }) => createdAt),
     datasets: [
       {
         label: 'User',

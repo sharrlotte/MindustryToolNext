@@ -3,7 +3,7 @@ import { z } from 'zod';
 export type PostPluginRequest = {
   name: string;
   description: string;
-  tags: string;
+  tags: string[];
   url: string;
 };
 
@@ -14,7 +14,7 @@ export const PostPluginRequestSchema = z.object({
     .array(
       z.object({
         name: z.string(),
-        value: z.array(z.string()),
+        values: z.array(z.string()),
         color: z.string(),
         duplicate: z.boolean(),
       }),

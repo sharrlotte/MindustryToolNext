@@ -20,14 +20,14 @@ import {
 } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
-import { Message } from '@/types/response/Message';
+import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
 
-type MessageListProps<T, P> = {
+type MessageListProps = {
   className?: string;
   queryKey: QueryKey;
-  params: P;
+  params: PaginationQuery;
   loader?: ReactNode;
   noResult?: ReactNode;
   end?: ReactNode;
@@ -39,14 +39,18 @@ type MessageListProps<T, P> = {
   reversed?: boolean;
   room: string;
   container: () => HTMLElement | null;
-  getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
-  children: (data: T, index?: number, endIndex?: number) => ReactNode;
+  getFunc: (
+    axios: AxiosInstance,
+    params: PaginationQuery,
+  ) => Promise<Message[]>;
+  children: (
+    data: MessageGroup,
+    index?: number,
+    endIndex?: number,
+  ) => ReactNode;
 };
 
-export default function MessageList<
-  T,
-  P extends PaginationQuery = PaginationQuery,
->({
+export default function MessageList({
   className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center',
   queryKey,
   params,
@@ -60,7 +64,7 @@ export default function MessageList<
   container,
   getFunc,
   children,
-}: MessageListProps<T, P>) {
+}: MessageListProps) {
   const currentContainer = container();
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
@@ -85,7 +89,7 @@ export default function MessageList<
   } = useInfinitePageQuery(getFunc, params, queryKey);
 
   const pageMapper = useCallback(
-    (item: T, index: number, array: T[]) =>
+    (item: MessageGroup, index: number, array: MessageGroup[]) =>
       children(item, index, array.length - params.size),
     [children, params.size],
   );
@@ -128,7 +132,9 @@ export default function MessageList<
       (item, index) => array.lastIndexOf(item) === index,
     );
 
-    return reversed ? mapReversed(dedupe, pageMapper) : dedupe.map(pageMapper);
+    const group = groupMessage(dedupe);
+
+    return reversed ? mapReversed(group, pageMapper) : group.map(pageMapper);
   }, [data, reversed, pageMapper]);
 
   const skeletonElements = useMemo(() => {
@@ -203,24 +209,14 @@ export default function MessageList<
             return undefined;
           }
 
-          let found = false;
-          let pages = query.pages.map((page) => {
-            return page.map((item) => {
-              if (item.id === message.id) {
-                found = true;
-                return message;
-              }
-              return item;
-            });
-          });
+          const [first, ...rest] = query.pages;
 
-          if (!found) {
-            const [lastPage, ...rest] = pages;
-            lastPage.unshift(message);
-            return { ...query, pages: [lastPage, ...rest] };
-          }
+          first.unshift(message);
 
-          return { ...query, pages: [...pages] };
+          return {
+            ...query,
+            pages: [first, ...rest],
+          } satisfies InfiniteData<Message[], unknown>;
         },
       );
       if (currentContainer && isReachedEnd(currentContainer, 500)) {

@@ -1,4 +1,3 @@
-import { notFound } from 'next/navigation';
 import React from 'react';
 
 import UploadPostDetailCard from '@/components/post/upload-post-detail-card';

@@ -8,4 +8,5 @@ export type Map = {
   like: number;
   userLike: Like;
   status: Status;
+  itemId: string;
 };

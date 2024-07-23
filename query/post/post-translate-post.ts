@@ -1,7 +1,7 @@
+import { AxiosInstance } from 'axios';
+
 import { toForm } from '@/lib/utils';
 import TranslatePostRequest from '@/types/request/TranslatePostRequest';
-
-import { AxiosInstance } from 'axios';
 
 export default async function postTranslatePost(
   axios: AxiosInstance,
@@ -13,7 +13,7 @@ export default async function postTranslatePost(
 
   content.images.forEach(({ file, url }) => form.append('images', file, url));
 
-  return axios.post(`/posts/${id}/translate`, form, {
+  return axios.post(`/posts/${id}`, form, {
     data: form,
   });
 }

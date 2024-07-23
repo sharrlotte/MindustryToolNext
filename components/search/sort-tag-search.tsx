@@ -12,7 +12,7 @@ export default function SortTagSearch() {
     defaultSortTag,
   );
 
-  const sortTags = sortTagGroup.value.map((value) => ({
+  const sortTags = sortTagGroup.values.map((value) => ({
     label: value,
     value: value,
   }));

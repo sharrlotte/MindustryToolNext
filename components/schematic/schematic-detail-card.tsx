@@ -128,10 +128,10 @@ export default function SchematicDetailCard({
           <IdUserCard id={schematic.authorId} />
           <div className="flex items-end gap-2">
             <span>{t('verified-by')}</span>
-            <IdUserCard id={schematic.verifyAdmin} />
+            <IdUserCard id={schematic.verfierId} />
           </div>
           <DetailDescription>{schematic.description}</DetailDescription>
-          <ItemRequirementCard requirement={schematic.requirement} />
+          <ItemRequirementCard requirements={schematic.requirements} />
           <DetailTagsCard tags={schematic.tags} />
         </DetailHeader>
       </DetailInfo>
@@ -148,8 +148,7 @@ export default function SchematicDetailCard({
             fileName={`{${schematic.name}}.msch`}
           />
           <LikeComponent
-            targetId={schematic.id}
-            targetType="SCHEMATICS"
+            itemId={schematic.itemId}
             initialLikeCount={schematic.like}
             initialLikeData={schematic.userLike}
           >

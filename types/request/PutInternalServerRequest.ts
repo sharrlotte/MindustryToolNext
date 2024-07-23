@@ -14,7 +14,6 @@ export const PutInternalServerSchema = z.object({
   description: z.string().min(1).max(100),
   port: z.number().min(6567).max(7000),
   mode: z.enum(InternalServerModes).default('SURVIVAL'),
-  discordChannelId: z.string().max(100),
 });
 
 export type PutInternalServerRequest = z.infer<typeof PutInternalServerSchema>;

@@ -32,7 +32,7 @@ export class Tags {
 
   static fromTagGroup(tags: TagGroup[]): Tag[] {
     return tags.flatMap((group) =>
-      group.value.map((v) => {
+      group.values.map((v) => {
         return {
           name: group.name,
           value: v,

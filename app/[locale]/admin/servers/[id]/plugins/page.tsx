@@ -50,7 +50,9 @@ export default function Page() {
           }
           container={() => container.current}
         >
-          {(data) => <InternalServerPluginCard key={data.id} plugin={data} />}
+          {(data) => (
+            <InternalServerPluginCard key={data.pluginId} plugin={data} />
+          )}
         </InfinitePage>
       </div>
     </div>
@@ -134,7 +136,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
           {t('internal-server.add-plugin')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="h-full w-full">
+      <DialogContent className="w-full p-6">
         <DialogTitle>{t('internal-server.select-plugin')}</DialogTitle>
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={plugin} />

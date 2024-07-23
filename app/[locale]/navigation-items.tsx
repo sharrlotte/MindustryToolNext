@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 import {
   Accordion,
@@ -25,6 +25,7 @@ import ProtectedElement from '@/layout/protected-element';
 import { cn, max } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import getTotalMapUpload from '@/query/map/get-total-map-upload';
+import getTotalPostUpload from '@/query/post/get-total-post-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
 import { useVerifyCount } from '@/zustand/verify-count';
 
@@ -117,6 +118,11 @@ export function NavItems({ onClick }: NavItemsProps) {
           icon: <BotIcon className="h-5 w-5" />,
         },
         {
+          name: t('plugin'),
+          path: '/plugins',
+          icon: <PuzzlePieceIcon className="h-5 w-5" />,
+        },
+        {
           name: t('upload'),
           icon: <ArrowUpTrayIcon className="h-5 w-5" />,
           path: [
@@ -177,6 +183,11 @@ export function NavItems({ onClick }: NavItemsProps) {
               path: '/admin/posts',
               icon: <BookOpenIcon className="h-5 w-5" />,
             },
+            {
+              name: t('plugin'),
+              path: '/admin/plugins',
+              icon: <PuzzlePieceIcon className="h-5 w-5" />,
+            },
           ],
           icon: <ShieldCheckIcon className="h-5 w-5" />,
         },
@@ -200,11 +211,6 @@ export function NavItems({ onClick }: NavItemsProps) {
           name: 'File',
           path: '/files',
           icon: <FolderIcon className="h-5 w-5" />,
-        },
-        {
-          name: t('plugin'),
-          path: '/plugins',
-          icon: <PuzzlePieceIcon className="h-5 w-5" />,
         },
         {
           name: 'MindustryGPT',
@@ -258,7 +264,7 @@ export function NavItems({ onClick }: NavItemsProps) {
           >
             <Link
               className={cn(
-                'flex items-end gap-3 font-bold rounded-md px-3 py-2 text-sm opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                'flex items-end gap-3 font-bold text-opacity-50 rounded-md px-3 py-2 text-sm opacity-80 transition-colors duration-300 hover:bg-button hover:text-background hover:opacity-100 dark:hover:text-foreground',
                 {
                   'bg-button text-background opacity-100 dark:text-foreground':
                     path === bestMatch,
@@ -288,7 +294,10 @@ export function NavItems({ onClick }: NavItemsProps) {
             value={value}
             onValueChange={setValue}
           >
-            <AccordionItem className="w-full" value={path.toString()}>
+            <AccordionItem
+              className="w-full"
+              value={path.reduce((prev, curr) => prev + curr.name, '')}
+            >
               <AccordionTrigger
                 className={cn(
                   'flex gap-3 rounded-md px-3 py-2 text-sm hover:bg-button hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground font-bold opacity-80 transition-colors duration-300 shadow-md',
@@ -367,15 +376,17 @@ function VerifyPath() {
           placeholderData: 0,
         },
         {
-          queryFn: () => getTotalMapUpload(axios, {}),
-          queryKey: ['total-map-uploads'],
+          queryFn: () => getTotalPostUpload(axios, {}),
+          queryKey: ['total-post-uploads'],
           placeholderData: 0,
         },
       ],
     });
 
-  set({ schematicCount, mapCount, postCount });
-
+  useEffect(
+    () => set({ schematicCount, mapCount, postCount }),
+    [mapCount, postCount, schematicCount, set],
+  );
   const amount = (schematicCount ?? 0) + (mapCount ?? 0) + (postCount ?? 0);
 
   return (

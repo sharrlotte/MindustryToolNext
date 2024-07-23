@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPost(axios, { id });
 
   return {
-    title: post.header,
+    title: post.title,
     description: post.content,
   };
 }

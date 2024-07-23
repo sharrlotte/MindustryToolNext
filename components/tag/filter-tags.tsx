@@ -22,17 +22,17 @@ export default function FilterTags({
           if (tag.name.includes(filter)) {
             return true;
           }
-          tag.value = tag.value.filter((value) => value.includes(filter));
+          tag.values = tag.values.filter((value) => value.includes(filter));
 
-          return tag.value.length > 0;
+          return tag.values.length > 0;
         });
 
   const getSingleValue = (group: TagGroup) => {
     const result = selectedFilterTags.find(
       (value) => value.name === group.name,
     );
-    if (result && result.value) {
-      return result.value.length > 0 ? result.value[0] : '';
+    if (result && result.values) {
+      return result.values.length > 0 ? result.values[0] : '';
     }
     return '';
   };
@@ -41,8 +41,8 @@ export default function FilterTags({
     const result = selectedFilterTags.find(
       (value) => value.name === group.name,
     );
-    if (result && result.value) {
-      return result.value;
+    if (result && result.values) {
+      return result.values;
     }
     return [];
   };

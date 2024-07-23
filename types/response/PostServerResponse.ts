@@ -3,7 +3,7 @@ export default interface PostServerResponse {
   name: string;
   online: boolean;
   address: string;
-  mapname: string;
+  mapName: string;
   description: string;
   wave: number;
   players: number;

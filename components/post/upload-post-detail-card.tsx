@@ -84,7 +84,7 @@ export default function UploadPostDetailCard({
 
   useEffect(() => {
     setSelectedTags(TagGroups.parseString(post.tags, postTags));
-  }, [post.tags, postTags]);
+  }, [postTags, post.tags]);
 
   const isLoading = isVerifying || isDeleting;
   const displayTags = Tags.fromTagGroup(selectedTags);
@@ -92,7 +92,7 @@ export default function UploadPostDetailCard({
   return (
     <Detail>
       <header className="grid gap-2 pb-10">
-        <p className="text-4xl">{post.header}</p>
+        <p className="text-4xl">{post.title}</p>
         <div className="grid gap-2">
           <IdUserCard id={post.authorId} />
           <span>{new Date(post.createdAt).toLocaleString()}</span>
@@ -110,15 +110,18 @@ export default function UploadPostDetailCard({
           hideSelectedTag
         />
         <DeleteButton
-          description={`${t('delete')} ${post.header}`}
+          description={`${t('delete')} ${post.title}`}
           isLoading={isLoading}
           onClick={() => deletePostById(post.id)}
         />
         <VerifyButton
-          description={`${t('verify')} ${post.header}`}
+          description={`${t('verify')} ${post.title}`}
           isLoading={isLoading}
           onClick={() =>
-            verifyPost({ id: post.id, tags: TagGroups.toString(selectedTags) })
+            verifyPost({
+              id: post.id,
+              tags: TagGroups.toStringArray(selectedTags),
+            })
           }
         />
         <BackButton className="ml-auto" />

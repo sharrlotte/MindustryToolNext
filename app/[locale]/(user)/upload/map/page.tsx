@@ -71,6 +71,7 @@ export default function Page() {
       setPreview(undefined);
       setSelectedTags([]);
       invalidateByKey(['map-uploads']);
+      invalidateByKey(['total-map-uploads']);
     },
     onError(error) {
       toast({
@@ -108,11 +109,11 @@ export default function Page() {
   }
 
   function handleSubmit() {
-    if (!file || isLoading) {
+    if (!file || isLoading || !preview) {
       return;
     }
 
-    postNewMap({ file, tags: TagGroups.toString(selectedTags) });
+    postNewMap({ ...preview, file, tags: TagGroups.toString(selectedTags) });
   }
 
   useEffect(() => {

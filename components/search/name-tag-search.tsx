@@ -11,7 +11,7 @@ import FilterTags from '@/components/tag/filter-tags';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { TAG_SEPARATOR } from '@/constant/constant';
+import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import { defaultSortTag } from '@/constant/env';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { cn } from '@/lib/utils';
@@ -64,21 +64,25 @@ export default function NameTagSearch({
         page,
       } = searchParams;
 
-      const tagsArray = _.chain(tagsString)
+      const tagsArray: TagGroup[] = _.chain(tagsString)
         .map((value) => value.split(TAG_SEPARATOR))
         .filter((value) => value.length === 2)
         .map((value) => ({ name: value[0], value: value[1] }))
         .groupBy((value) => value.name)
-        .map((value, key) => ({ name: key, value: value.map((v) => v.value) }))
+        .map((value, key) => ({ name: key, values: value.map((v) => v.value) }))
         .map((tag) => {
+          if (tagsClone.length === 0) {
+            return { ...tag, color: TAG_DEFAULT_COLOR, duplicate: true };
+          }
+
           let result = tagsClone.find(
             (t) =>
               t.name === tag.name &&
-              tag.value.every((b) => tag.value.includes(b)),
+              tag.values.every((b) => tag.values.includes(b)),
           );
           // Ignore tag that not match with server
           if (result) {
-            result.value = tag.value;
+            result.values = tag.values;
           }
 
           return result;
@@ -105,7 +109,9 @@ export default function NameTagSearch({
       if (useTag) {
         selectedFilterTags
           .map((group) =>
-            group.value.map((value) => `${group.name}${TAG_SEPARATOR}${value}`),
+            group.values.map(
+              (value) => `${group.name}${TAG_SEPARATOR}${value}`,
+            ),
           )
           .forEach((values) =>
             values.forEach((value) => params.append(QueryParams.tags, value)),
@@ -121,7 +127,9 @@ export default function NameTagSearch({
         params.set(QueryParams.name, name);
       }
 
-      router.replace(`${pathname}?${params.toString()}`);
+      if (tags.length != 0) {
+        router.replace(`${pathname}?${params.toString()}`);
+      }
     };
 
     if (!showFilterDialog) {
@@ -130,17 +138,17 @@ export default function NameTagSearch({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);
 
-  const handleTagGroupChange = (name: string, value: string[]) => {
+  const handleTagGroupChange = (name: string, values: string[]) => {
     const group = selectedFilterTags.find((tag) => tag.name === name);
     if (group) {
-      group.value = value;
+      group.values = values;
       setSelectedFilterTags([...selectedFilterTags]);
     } else {
       let result = tagsClone.find((tag) => tag.name === name);
 
       // Ignore tag that not match with server
       if (result) {
-        result.value = value;
+        result.values = values;
         selectedFilterTags.push(result);
         setChanged(true);
         setSelectedFilterTags([...selectedFilterTags]);
@@ -164,7 +172,7 @@ export default function NameTagSearch({
     setSelectedFilterTags((prev) => {
       const group = prev.find((item) => item.name === tag.name);
       if (group) {
-        group.value = group.value.filter((item) => item !== tag.value);
+        group.values = group.values.filter((item) => item !== tag.value);
       }
 
       return [...prev];
@@ -191,7 +199,7 @@ export default function NameTagSearch({
               label: t(selectedSortTag.toLowerCase()),
               value: selectedSortTag,
             }}
-            values={sortTagGroup.value.map((value) => ({
+            values={sortTagGroup.values.map((value) => ({
               // @ts-ignore
               label: t(value.toLowerCase()),
               value: value as SortTag,

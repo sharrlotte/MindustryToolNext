@@ -1,6 +1,6 @@
 type VerifySchematicRequest = {
   id: string;
-  tags: string;
+  tags: string[];
 };
 
 export default VerifySchematicRequest;

@@ -1,5 +1,5 @@
 export interface Like {
   userId: string;
-  targetId: string;
+  itemId: string;
   state: -1 | 0 | 1;
 }

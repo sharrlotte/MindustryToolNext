@@ -1,7 +1,6 @@
-import { LikeAction, LikeTarget } from '@/constant/enum';
+import { LikeAction } from '@/constant/enum';
 
 export interface LikePostRequest {
-  targetId: string;
-  targetType: LikeTarget;
+  itemId: string;
   action: LikeAction;
 }

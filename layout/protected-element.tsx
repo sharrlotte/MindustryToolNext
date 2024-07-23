@@ -30,10 +30,6 @@ export default function ProtectedElement({
 
   const roles = session.roles;
 
-  if (roles.includes('ADMIN')) {
-    return <>{children}</>;
-  }
-
   const pred = [
     all ? all.every((role) => roles.includes(role)) : true,
     any ? any.some((role) => roles.includes(role)) : true,

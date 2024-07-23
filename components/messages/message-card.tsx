@@ -7,17 +7,17 @@ import UserAvatar from '@/components/user/user-avatar';
 import useClientAPI from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
 import getUser from '@/query/user/get-user';
-import { Message } from '@/types/response/Message';
+import { MessageGroup } from '@/types/response/Message';
 
 import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   className?: string;
-  message: Message;
+  message: MessageGroup;
 };
 
 export function MessageCard({ className, message }: Props) {
-  const { id, userId, content, createdAt } = message;
+  const { userId, contents, createdAt } = message;
   const axios = useClientAPI();
 
   const { data } = useQuery({
@@ -49,8 +49,8 @@ export function MessageCard({ className, message }: Props) {
           <span>{moment(createdAt).fromNow()}</span>
         </div>
         <div className="grid gap-1 overflow-x-auto w-full no-scrollbar">
-          {content.map((c, index) => (
-            <ColorText key={index} text={c} />
+          {contents.map(({ text }, index) => (
+            <ColorText key={index} text={text} />
           ))}
         </div>
       </div>

@@ -4,10 +4,12 @@ import { Status } from '@/types/response/Status';
 export type Post = {
   id: string;
   authorId: string;
-  header: string;
-  like: number;
+  title: string;
+  likes: number;
   userLike: Like;
   tags: string[];
+  imageUrls: string[];
   createdAt: number;
   status: Status;
+  itemId: string;
 };

@@ -42,14 +42,14 @@ export default function NameTagSelector({
   const handleTagGroupChange = (name: string, v: string[]) => {
     const group = value.find((tag) => tag.name === name);
     if (group) {
-      group.value = v;
+      group.values = v;
       onChange([...value]);
     } else {
       let result = tagsClone.find((tag) => tag.name === name);
 
       // Ignore tag that not match with server
       if (result) {
-        result.value = v;
+        result.values = v;
         value.push(result);
         onChange([...value]);
       }
@@ -59,7 +59,7 @@ export default function NameTagSelector({
   const handleDeleteTag = (tag: Tag) => {
     const group = value.find((item) => item.name === tag.name);
     if (group) {
-      group.value = group.value.filter((item) => item !== tag.value);
+      group.values = group.values.filter((item) => item !== tag.value);
     }
 
     onChange([...value]);

@@ -1,8 +1,8 @@
 'use client';
 
-import { LikeData } from '@/types/data/LikeData';
-
 import React from 'react';
+
+import { LikeData } from '@/types/data/LikeData';
 
 type LikeContextType = {
   likeData: LikeData;
@@ -12,7 +12,7 @@ type LikeContextType = {
 
 export const FakeLike: LikeData = {
   userId: '',
-  targetId: '',
+  itemId: '',
   state: 0,
   count: 0,
 };

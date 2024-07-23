@@ -61,7 +61,7 @@ const SchematicPreviewCard = memo(function SchematicPreviewCard({
         href={`/schematics/${schematic.id}`}
       >
         <PreviewImage
-          src={`${env.url.image}/schematics-previews/${schematic.id}.png`}
+          src={`${env.url.image}/schematic-previews/${schematic.id}.png`}
           errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
           alt={schematic.name}
         />
@@ -81,8 +81,7 @@ const SchematicPreviewCard = memo(function SchematicPreviewCard({
           />
           {schematic.status === 'VERIFIED' && (
             <LikeComponent
-              targetId={schematic.id}
-              targetType="SCHEMATICS"
+              itemId={schematic.itemId}
               initialLikeCount={schematic.like}
               initialLikeData={schematic.userLike}
             >

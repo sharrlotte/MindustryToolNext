@@ -1,3 +1,5 @@
+import React from 'react';
+
 import CopyButton from '@/components/button/copy-button';
 import ColorText from '@/components/common/color-text';
 import DislikeButton from '@/components/like/dislike-button';
@@ -5,8 +7,6 @@ import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import ExternalServer from '@/types/response/ExternalServer';
-
-import React from 'react';
 
 type MindustryServerCardProps = {
   server: ExternalServer;
@@ -45,7 +45,7 @@ export default function ExternalServerCard({
             </div>
             <span className="flex flex-row gap-2">Wave: {server.wave}</span>
             <span className="flex flex-row gap-2">
-              Map: <ColorText text={server.mapname} />
+              Map: <ColorText text={server.mapName} />
             </span>
             <span className="capitalize">
               Version:
@@ -58,7 +58,7 @@ export default function ExternalServerCard({
             <span className="overflow-hidden whitespace-nowrap capitalize">
               Game mode:
               <ColorText
-                text={server.modeName ? server.mapname : server.mode}
+                text={server.modeName ? server.mapName : server.mode}
               />
             </span>
           </div>
@@ -76,8 +76,7 @@ export default function ExternalServerCard({
             <LikeComponent
               initialLikeCount={server.like}
               initialLikeData={server.userLike}
-              targetType={'SERVERS'}
-              targetId={server.id}
+              itemId={''}
             >
               <LikeButton className="w-9" />
               <LikeCount className="w-9" />

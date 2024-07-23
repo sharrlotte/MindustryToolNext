@@ -41,15 +41,16 @@ export default function LoginHistory({ axios }: LoginLogProps) {
       <span className="font-bold">{t('metric.user-login-history')}</span>
       <div className={chart}>
         <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
-          {data?.map(({ id, times, ip, userId, client }) => (
+          {data?.map(({ id, counts, ip, userId, client }) => (
             <span
               className="flex justify-between gap-8 rounded-sm bg-background p-4"
               key={id}
             >
               <span>
-                User: {userId ?? 'Anonymous'} ({ip}) on {client}
+                User: {userId ?? 'Anonymous'} ({ip}) on{' '}
+                {client === 1000 ? 'web' : 'mod'}
               </span>
-              <span>Times {times}</span>
+              <span>Times {counts}</span>
             </span>
           ))}
         </section>

@@ -1,6 +1,6 @@
 type VerifyPostRequest = {
   id: string;
-  tags: string;
+  tags: string[];
 };
 
 export default VerifyPostRequest;

@@ -4,6 +4,7 @@ import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react';
 
 import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import MessageList from '@/components/common/message-list';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
 import { useSocket } from '@/context/socket-context';
@@ -30,9 +31,10 @@ export default function Page() {
               className="h-full overflow-y-auto"
               ref={(ref) => setContainer(ref)}
             >
-              <InfiniteScrollList
+              <MessageList
                 className="flex flex-col gap-1 h-full"
-                queryKey={[`server-${id}-message`, id]}
+                queryKey={[id]}
+                room={`SERVER-${id}`}
                 reversed
                 container={() => container}
                 params={queryParam}
@@ -44,7 +46,7 @@ export default function Page() {
                 }
               >
                 {(data) => <MessageCard key={data.id} message={data} />}
-              </InfiniteScrollList>
+              </MessageList>
             </div>
           )}
         </div>
@@ -122,6 +124,7 @@ function ChatInput({ id }: ChatInputProps) {
         value={message}
         onKeyDown={handleKeyPress}
         onChange={(event) => setMessage(event.currentTarget.value)}
+        placeholder="/help"
       />
       <Button
         className="h-full"

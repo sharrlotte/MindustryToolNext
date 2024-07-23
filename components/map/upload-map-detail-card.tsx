@@ -140,7 +140,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
             description={`${t('verify')} ${map.name}`}
             isLoading={isLoading}
             onClick={() =>
-              verifyMap({ id: map.id, tags: TagGroups.toString(selectedTags) })
+              verifyMap({ id: map.id, tags: TagGroups.toStringArray(selectedTags) })
             }
           />
         </div>

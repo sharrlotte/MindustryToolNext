@@ -1,3 +1,6 @@
+import Link from 'next/link';
+import React, { HTMLAttributes } from 'react';
+
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import DislikeButton from '@/components/like/dislike-button';
@@ -16,8 +19,6 @@ import { cn } from '@/lib/utils';
 import { Map } from '@/types/response/Map';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import React, { HTMLAttributes } from 'react';
 
 type MapPreviewProps = HTMLAttributes<HTMLDivElement> & {
   map: Map;
@@ -59,8 +60,7 @@ export default function MapPreview({
           />
           {map.status === 'VERIFIED' && (
             <LikeComponent
-              targetId={map.id}
-              targetType="MAPS"
+              itemId={map.itemId}
               initialLikeCount={map.like}
               initialLikeData={map.userLike}
             >
