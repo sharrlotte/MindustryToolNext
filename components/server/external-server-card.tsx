@@ -76,7 +76,7 @@ export default function ExternalServerCard({
             <LikeComponent
               initialLikeCount={server.like}
               initialLikeData={server.userLike}
-              itemId={server.itemId}
+              itemId={''}
             >
               <LikeButton className="w-9" />
               <LikeCount className="w-9" />

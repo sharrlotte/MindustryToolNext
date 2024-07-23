@@ -71,7 +71,7 @@ function Loading({ axios, start, end }: ChartProps) {
   const fixedData = fillMetric(start, NUMBER_OF_DAY, metric, 0);
 
   const data: ChartData<'line'> = {
-    labels: fixedData.map(({ time }) => time),
+    labels: fixedData.map(({ createdAt }) => createdAt),
     datasets: [
       {
         label: 'Interaction',

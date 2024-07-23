@@ -1,61 +1,40 @@
 'use client';
 
-import { useRef, useState } from 'react';
-
-import InfinitePage from '@/components/common/infinite-page';
-import LoadingWrapper from '@/components/common/loading-wrapper';
-import ExternalServerCard from '@/components/server/external-server-card';
-import PostServerResultCard from '@/components/server/post-server-result-card';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import useClientAPI from '@/hooks/use-client';
-import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
-import getServers from '@/query/server/get-servers';
-import postServer from '@/query/server/post-server';
-import PostServerRequest from '@/types/request/PostServerRequest';
-import PostServerResponse from '@/types/response/PostServerResponse';
-
-import { ClipboardIcon } from '@heroicons/react/24/outline';
-import { useMutation } from '@tanstack/react-query';
+//TODO: Rework
 
 export default function Page() {
-  const container = useRef<HTMLDivElement>(null);
-  const [address, setAddress] = useState('');
-  const [result, setResult] = useState<PostServerResponse>();
-  const params = { page: 0, size: 40 };
-  const axios = useClientAPI();
-  const { toast } = useToast();
+  // const container = useRef<HTMLDivElement>(null);
+  // const [address, setAddress] = useState('');
+  // const [result, setResult] = useState<PostServerResponse>();
+  // const params = { page: 0, size: 40 };
+  // const axios = useClientAPI();
+  // const { toast } = useToast();
 
-  const t = useI18n();
+  // const t = useI18n();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: PostServerRequest) => postServer(axios, data),
-    onError(error) {
-      toast({
-        title: t('server.upload-fail'),
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-    onSuccess: (result) => {
-      setAddress('');
-      setResult(result);
-    },
-  });
+  // const { mutate, isPending } = useMutation({
+  //   mutationFn: (data: PostServerRequest) => postServer(axios, data),
+  //   onError(error) {
+  //     toast({
+  //       title: t('server.upload-fail'),
+  //       description: error.message,
+  //       variant: 'destructive',
+  //     });
+  //   },
+  //   onSuccess: (result) => {
+  //     setAddress('');
+  //     setResult(result);
+  //   },
+  // });
 
-  function handleCopyFromClipboard() {
-    navigator.clipboard.readText().then((text) => setAddress(text));
-  }
+  // function handleCopyFromClipboard() {
+  //   navigator.clipboard.readText().then((text) => setAddress(text));
+  // }
 
   return (
     <div className="flex h-full flex-col gap-2 py-2 pl-2">
-      <div className="flex justify-end">
+      Nothing is here
+      {/* <div className="flex justify-end">
         <LoadingWrapper
           className="flex h-9 w-9 items-center justify-center rounded-md border border-border"
           isLoading={isPending}
@@ -116,7 +95,7 @@ export default function Page() {
         >
           {(data) => <ExternalServerCard key={data.id} server={data} />}
         </InfinitePage>
-      </div>
+      </div> */}
     </div>
   );
 }

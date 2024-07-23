@@ -27,7 +27,7 @@ type InternalServerMapCardProps = {
 };
 
 export default function InternalServerMapCard({
-  map: { name, mapId, id, serverId },
+  map: { name, mapId, serverId },
 }: InternalServerMapCardProps) {
   const axios = useClientAPI();
   const t = useI18n();
@@ -35,8 +35,7 @@ export default function InternalServerMapCard({
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (mapId: string) =>
-      deleteInternalServerMap(axios, serverId, mapId),
+    mutationFn: () => deleteInternalServerMap(axios, serverId, mapId),
     onError: (error) => {
       toast({
         title: t('delete-fail'),
@@ -64,7 +63,7 @@ export default function InternalServerMapCard({
           <DeleteButton
             className="absolute right-1 top-1 h-10 w-10 border-none backdrop-brightness-50"
             isLoading={isPending}
-            onClick={() => mutate(id)}
+            onClick={() => mutate()}
             description={t('delete')}
           />
         </PreviewActions>

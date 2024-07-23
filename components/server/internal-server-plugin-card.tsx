@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function InternalServerPluginCard({
-  plugin: { id, serverId, name },
+  plugin: { serverId, name, pluginId },
 }: Props) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
@@ -25,7 +25,7 @@ export default function InternalServerPluginCard({
 
   const axios = useClientAPI();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
-    mutationFn: () => deleteInternalServerPlugin(axios, serverId, id),
+    mutationFn: () => deleteInternalServerPlugin(axios, serverId, pluginId),
     onSuccess: () => {
       invalidateByKey(['internal-server-plugins']);
       toast({
