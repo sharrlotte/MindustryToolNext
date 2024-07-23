@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-import axiosInstance from '@/query/config/config';
-
 export type PostPluginRequest = {
   name: string;
   description: string;
