@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import LoginButton from '@/components/button/login-button';
 import RequireLogin from '@/components/common/require-login';
 import { UserRole } from '@/constant/enum';
 import { Session } from '@/types/response/Session';

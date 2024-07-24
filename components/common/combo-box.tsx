@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
   Popover,
@@ -10,7 +12,6 @@ import {
   ChevronUpDownIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
-import React, { useState } from 'react';
 
 type Value<T> = { label: string; value: T };
 
@@ -25,7 +26,7 @@ type ComboBoxProps<T> = {
 
 export default function ComboBox<T>({
   className,
-  placeholder,
+  placeholder = 'Select',
   values,
   value,
   searchBar = true,
@@ -44,7 +45,7 @@ export default function ComboBox<T>({
           aria-expanded={open}
           variant="outline"
         >
-          {value ? value.label.toLowerCase() : placeholder ?? 'Select'}
+          {value ? value.label.toLowerCase() || placeholder : placeholder}
           <ChevronUpDownIcon className="ml-auto h-5 w-5 shrink-0" />
         </Button>
       </PopoverTrigger>
@@ -76,7 +77,11 @@ export default function ComboBox<T>({
                 key={item.label}
                 value={item.label}
                 onClick={() => {
-                  onChange(item.value);
+                  if (value?.label === item.label) {
+                    onChange(undefined);
+                  } else {
+                    onChange(item.value);
+                  }
                   setOpen(false);
                 }}
               >

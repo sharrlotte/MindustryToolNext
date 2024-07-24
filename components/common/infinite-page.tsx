@@ -57,7 +57,6 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     <NoResult className="flex w-full items-center justify-center" />
   );
 
-
   if (!loader && !skeleton) {
     loader = (
       <LoadingSpinner
@@ -66,6 +65,14 @@ export default function InfinitePage<T, P extends PaginationQuery>({
       />
     );
   }
+
+  const loadingSkeleton =
+    skeleton &&
+    Array(skeleton.amount)
+      .fill(1)
+      .map((_, index) => (
+        <React.Fragment key={index}>{skeleton.item}</React.Fragment>
+      ));
 
   end = end ?? (
     <span
@@ -92,17 +99,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
           'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
         }
       >
-        {loader
-          ? loader
-          : skeleton && (
-              <>
-                {Array(skeleton.amount)
-                  .fill(1)
-                  .map((_, index) => (
-                    <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-                  ))}
-              </>
-            )}
+        {loader ? loader : loadingSkeleton}
       </div>
     );
   }
@@ -123,19 +120,12 @@ export default function InfinitePage<T, P extends PaginationQuery>({
       hasMore={hasNextPage}
       loader={loader}
       useWindow={false}
+      threshold={400}
       getScrollParent={container}
       isReverse={reversed}
     >
       {pages.map((data, index) => children(data, index))}
-      {isFetching && skeleton && (
-        <>
-          {Array(skeleton.amount)
-            .fill(1)
-            .map((_, index) => (
-              <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-            ))}
-        </>
-      )}
+      {isFetching && skeleton && loadingSkeleton}
       {!hasNextPage && end}
     </InfiniteScroll>
   );
