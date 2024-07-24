@@ -68,7 +68,6 @@ export default function Page() {
                     className="flex flex-col gap-1 h-full"
                     queryKey={['global']}
                     room="GLOBAL"
-                    reversed
                     container={() => container}
                     params={{ page: 0, size: 40 }}
                     end={<></>}
