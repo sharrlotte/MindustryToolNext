@@ -1,9 +1,14 @@
+import { CheckSquare, Square } from 'lucide-react';
 import React, { useState } from 'react';
 
-
-
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import UserAvatar from '@/components/user/user-avatar';
 import { useMe } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
@@ -13,10 +18,7 @@ import getRoles from '@/query/role/get-roles';
 import { Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
 
-
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
 
 type Props = {
   user: User;
@@ -25,7 +27,10 @@ type Props = {
 export default function UserManagementCard({ user }: Props) {
   return (
     <div className="flex gap-2 items-center bg-card py-2 px-4 w-full justify-between">
-      <h3>{user.name}</h3>
+      <div className="space-x-2 flex">
+        <UserAvatar user={user} />
+        <h3>{user.name}</h3>
+      </div>
       <ChangeRoleDialog user={user} />
     </div>
   );
@@ -35,7 +40,7 @@ type DialogProps = {
   user: User;
 };
 
-function ChangeRoleDialog({ user: { id, roles } }: DialogProps) {
+function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
   const axios = useClientAPI();
   const [open, setOpen] = useState(false);
   const [selectedRole, setSelectedRoles] = useState<Role[]>(roles);
@@ -89,8 +94,8 @@ function ChangeRoleDialog({ user: { id, roles } }: DialogProps) {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger>
         <section className="space-x-1">
-          {roles.length ? (
-            roles.map((role) => (
+          {selectedRole.length ? (
+            selectedRole.map((role) => (
               <span key={role.id} className={cn(role.color)}>
                 {role.name}
               </span>
@@ -100,9 +105,11 @@ function ChangeRoleDialog({ user: { id, roles } }: DialogProps) {
           )}
         </section>
       </DialogTrigger>
-      <DialogContent>
+
+      <DialogContent className="p-6">
+        <DialogTitle>Change Role for {name}</DialogTitle>
         <ToggleGroup
-          className="flex w-full flex-wrap justify-start"
+          className="flex justify-between"
           type={'multiple'}
           onValueChange={handleRoleChange}
           defaultValue={roles.map((r) => r.name)}
@@ -111,13 +118,18 @@ function ChangeRoleDialog({ user: { id, roles } }: DialogProps) {
             ?.filter((r) => r.position < highestRole)
             .map((role) => (
               <ToggleGroupItem
-                className="capitalize hover:bg-button hover:text-background data-[state=on]:bg-button data-[state=on]:text-background dark:hover:text-foreground data-[state=on]:dark:text-foreground"
+                className="capitalize px-0 hover:bg-none space-x-2"
                 key={role.id}
                 value={role.name}
               >
                 <span key={role.id} className={cn(role.color)}>
                   {role.name}
                 </span>
+                {selectedRole.map((r) => r.id).includes(role.id) ? (
+                  <CheckSquare className="w-5 h-5" />
+                ) : (
+                  <Square className="w-5 h-5" />
+                )}
               </ToggleGroupItem>
             ))}
         </ToggleGroup>

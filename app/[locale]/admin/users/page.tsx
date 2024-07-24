@@ -17,7 +17,7 @@ export default function Page() {
 
   return (
     <div className="p-2 h-full space-y-2 flex flex-col">
-      <Input value={name} onChange={(event) => setName(event.target.value)} />
+      <Input value={name} onChange={(event) => setName(event.target.value)} placeholder='Search using username' />
       <div
         className="relative flex h-full flex-col gap-4 overflow-y-auto"
         ref={container}
