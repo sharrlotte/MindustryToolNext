@@ -6,7 +6,7 @@ import { AxiosInstance } from 'axios';
 
 export default async function getUsers(
   axios: AxiosInstance,
-  params: PaginationQuery & { role: UserRole },
+  params: PaginationQuery & { role?: UserRole },
 ): Promise<User[]> {
   const result = await axios.get(`/users`, { params });
 

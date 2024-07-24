@@ -7,6 +7,7 @@ import {
   MapIcon,
   ServerIcon,
   ShieldCheckIcon,
+  UserIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -159,6 +160,11 @@ export function NavItems({ onClick }: NavItemsProps) {
           name: t('dashboard'),
           path: '/admin',
           icon: <ChartBarSquareIcon className="h-5 w-5" />,
+        },
+        {
+          name: t('user'),
+          path: '/admin/users',
+          icon: <UserIcon className="h-5 w-5" />,
         },
         {
           name: t('log'),
