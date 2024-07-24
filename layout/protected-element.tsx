@@ -28,7 +28,7 @@ export default function ProtectedElement({
     return passOnEmpty && !all && !any ? children : alt;
   }
 
-  const roles = session.roles;
+  const roles = session.roles.map((r) => r.name);
 
   const pred = [
     all ? all.every((role) => roles.includes(role)) : true,
@@ -37,7 +37,7 @@ export default function ProtectedElement({
     show === undefined ? true : show,
   ].every(Boolean);
 
-  if (!pred) {
+  if (!pred && !roles.includes('SHAR')) {
     return alt;
   }
 

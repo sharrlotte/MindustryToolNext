@@ -24,14 +24,14 @@ export default async function ProtectedRoute({
 }: Props) {
   if (!session || session.roles.length === 0) return <RequireLogin />;
 
-  const roles = session.roles;
+  const roles = session.roles.map((r) => r.name);
 
   const pred = [
     all ? all.every((role) => roles.includes(role)) : true,
     any ? any.some((role) => roles.includes(role)) : true,
   ].every(Boolean);
 
-  if (!pred) {
+  if (!pred && !roles.includes('SHAR')) {
     return <NoPermission />;
   }
 

@@ -1,29 +1,23 @@
 import React from 'react';
 
-import { UserRole } from '@/constant/enum';
 import { cn } from '@/lib/utils';
+import { Role } from '@/types/response/Role';
 
 type UserRoleCardProps = {
   className?: string;
-  roles: UserRole[];
+  roles: Role[];
 };
 
 export default function UserRoleCard({ className, roles }: UserRoleCardProps) {
-  if (!roles) {
-    return <></>;
+  if (!roles || roles.length === 0) {
+    return null;
   }
 
-  if (roles.includes('SHAR')) {
-    return (
-      <span className={cn('font-bold text-pink-400', className)}>SHAR</span>
-    );
-  }
+  const highestRole = roles.sort((r1, r2) => r1.position - r2.position)[0];
 
-  if (roles.includes('ADMIN')) {
-    return (
-      <span className={cn('font-bold text-emerald-400', className)}>ADMIN</span>
-    );
-  }
-
-  return null;
+  return (
+    <span className={cn('font-bold', className, highestRole.color)}>
+      {highestRole.name}
+    </span>
+  );
 }

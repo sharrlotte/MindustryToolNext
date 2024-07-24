@@ -1,11 +1,11 @@
-import { UserRole } from '@/constant/enum';
+import { Role } from '@/types/response/Role';
 
 export interface Session {
   id: string;
   name: string;
   email: string;
   imageUrl: string;
-  roles: UserRole[];
+  roles: Role[];
   provider: string;
   providerId: string;
   lastLogin: number;

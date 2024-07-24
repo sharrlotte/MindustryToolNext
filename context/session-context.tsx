@@ -36,6 +36,20 @@ export function useSession(): SessionContextType {
   return context;
 }
 
+export function useMe() {
+  const { session } = useSession();
+
+  if (!session) {
+    return { highestRole: 0 };
+  }
+
+  const highestRole = session?.roles.sort(
+    (r1, r2) => r1.position - r2.position,
+  )[0].position;
+
+  return { highestRole };
+}
+
 export function SessionProvider({ children }: { children: ReactNode }) {
   const axios = useClientAPI();
   const [auth, setSession] = useState<SessionContextType>({
