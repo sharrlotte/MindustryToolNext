@@ -22,6 +22,8 @@ export interface MessageGroup {
 export function groupMessage(messages: Message[]): MessageGroup[] {
   const result: MessageGroup[] = [];
 
+  console.log(messages);
+
   for (const message of messages) {
     if (result.length === 0) {
       result.push({
@@ -40,7 +42,7 @@ export function groupMessage(messages: Message[]): MessageGroup[] {
         message.userId === lastGroup.userId &&
         lastGroup.contents.length < MAX_GROUP_SIZE
       ) {
-        lastGroup.contents.push({
+        lastGroup.contents.unshift({
           text: message.content,
           attachments: message.attachments,
         });

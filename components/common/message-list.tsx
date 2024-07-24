@@ -128,11 +128,8 @@ export default function MessageList({
     }
 
     const array = mergeNestArray(data.pages);
-    const dedupe = array.filter(
-      (item, index) => array.lastIndexOf(item) === index,
-    );
 
-    const group = groupMessage(dedupe);
+    const group = groupMessage(array);
 
     return reversed ? mapReversed(group, pageMapper) : group.map(pageMapper);
   }, [data, reversed, pageMapper]);
