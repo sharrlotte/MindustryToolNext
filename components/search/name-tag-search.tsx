@@ -133,7 +133,7 @@ export default function NameTagSearch({
     };
 
     if (!showFilterDialog) {
-      timeout = setTimeout(() => handleSearch(), 0);
+      timeout = setTimeout(() => handleSearch(), 100);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);

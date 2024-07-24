@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
@@ -108,6 +109,7 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
 
       <DialogContent className="p-6">
         <DialogTitle>Change Role for {name}</DialogTitle>
+        <DialogDescription></DialogDescription>
         <ToggleGroup
           className="flex justify-between"
           type={'multiple'}
