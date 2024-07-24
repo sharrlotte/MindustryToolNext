@@ -17,7 +17,11 @@ export default function Page() {
 
   return (
     <div className="p-2 h-full space-y-2 flex flex-col">
-      <Input value={name} onChange={(event) => setName(event.target.value)} placeholder='Search using username' />
+      <Input
+        value={name}
+        onChange={(event) => setName(event.target.value)}
+        placeholder="Search using username"
+      />
       <div
         className="relative flex h-full flex-col gap-4 overflow-y-auto"
         ref={container}
@@ -29,7 +33,7 @@ export default function Page() {
           getFunc={getUsers}
           container={() => container.current}
         >
-          {(data) => <UserManagementCard key={data.name} user={data} />}
+          {(data) => <UserManagementCard key={data.id} user={data} />}
         </InfinitePage>
       </div>
     </div>
