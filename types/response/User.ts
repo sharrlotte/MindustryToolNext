@@ -1,3 +1,5 @@
+import { Role } from '@/types/response/Role';
+
 export type UserId = '@me' | string;
 export interface User {
   id: string;
