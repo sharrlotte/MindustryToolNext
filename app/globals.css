@@ -38,14 +38,14 @@
     --preview-card-height: 27rem;
     --success: 150, 73%, 55%;
     --nav: 2.5rem;
-    --button: 217 91.2% 59.8%;
+    --brand: 217 91.2% 59.8%;
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
+    --background: 0, 0%, 7%;
     --foreground: 0 0% 100%;
 
-    --card: 240 5.9% 10%;
+    --card: 0, 0%, 16%;
     --card-foreground: 60 9.1% 97.8%;
 
     --popover: 20 14.3% 4.1%;
@@ -67,7 +67,7 @@
     --input: 12 6.5% 15.1%;
     --ring: 24 5.7% 82.9%;
 
-    --button: 160 84.1% 39.4%;
+    --brand: 160 84.1% 39.4%;
   }
 }
 

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import AddFileDialog from '@/app/[locale]/admin/servers/[id]/files/add-file-dialog';
+import DownloadButton from '@/components/button/download-button';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import FileCard from '@/components/file/file-card';
@@ -15,6 +16,7 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import { Input } from '@/components/ui/input';
+import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useQueryState from '@/hooks/use-query-state';
@@ -26,8 +28,6 @@ import getServerFiles from '@/query/server/get-internal-server-files';
 import { ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
 import { FileIcon } from '@radix-ui/react-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import DownloadButton from '@/components/button/download-button';
-import env from '@/constant/env';
 
 export default function Page() {
   const [path, setPath] = useQueryState('path', '/');
@@ -111,7 +111,7 @@ export default function Page() {
                     Delete
                   </ContextMenuItem>
                   <DownloadButton
-                    className="border-none justify-start px-2 text-sm py-1.5 hover:bg-button rounded-sm"
+                    className="border-none justify-start px-2 text-sm py-1.5 hover:bg-brand rounded-sm"
                     href={`${env.url.api}/files/download?path=${path}/${file.name}`}
                     fileName={`file.zip`}
                     secure

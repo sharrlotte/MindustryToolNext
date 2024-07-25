@@ -94,7 +94,7 @@ export default function UploadPostDetailCard({
       <header className="grid gap-2 pb-10">
         <p className="text-4xl">{post.title}</p>
         <div className="grid gap-2">
-          <IdUserCard id={post.authorId} />
+          <IdUserCard id={post.userId} />
           <span>{new Date(post.createdAt).toLocaleString()}</span>
           <TagContainer tags={displayTags} />
         </div>

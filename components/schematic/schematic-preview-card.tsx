@@ -79,7 +79,7 @@ const SchematicPreviewCard = memo(function SchematicPreviewCard({
             href={`${env.url.api}/schematics/${schematic.id}/download`}
             fileName={`{${schematic.name}}.msch`}
           />
-          {schematic.status === 'VERIFIED' && (
+          {schematic.isVerified && (
             <LikeComponent
               itemId={schematic.itemId}
               initialLikeCount={schematic.like}

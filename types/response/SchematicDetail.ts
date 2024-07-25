@@ -6,7 +6,7 @@ import { Like } from './Like';
 export interface SchematicDetail {
   id: string;
   name: string;
-  authorId: string;
+  userId: string;
   description: string;
   requirements: ItemRequirement[];
   tags: string[];
@@ -14,7 +14,8 @@ export interface SchematicDetail {
   height: number;
   width: number;
   status: Status;
-  verfierId: string;
+  verifierId: string;
   userLike: Like;
   itemId: string;
+  isVerified: boolean;
 }

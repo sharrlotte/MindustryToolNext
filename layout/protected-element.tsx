@@ -24,7 +24,7 @@ export default function ProtectedElement({
   alt,
   passOnEmpty,
 }: Props) {
-  if (!session || session.roles.length === 0) {
+  if (!session || session.roles === null) {
     return passOnEmpty && !all && !any ? children : alt;
   }
 

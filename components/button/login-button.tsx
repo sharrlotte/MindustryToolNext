@@ -28,7 +28,10 @@ export default function LoginButton({
 
   return (
     <a
-      className={cn('flex w-full gap-2 rounded-md border p-2', className)}
+      className={cn(
+        'flex w-full gap-2 rounded-md border p-2 bg-brand',
+        className,
+      )}
       href={`${env.url.api}/oauth2/discord`}
     >
       {children || (

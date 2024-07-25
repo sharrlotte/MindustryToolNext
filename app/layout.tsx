@@ -48,12 +48,12 @@ type RootParam = {
   locale: string;
 };
 
-type RootProps = {
+type Props = {
   children: React.ReactNode;
   params: RootParam;
 };
 
-export default async function Root({ children, params }: RootProps) {
+export default async function Root({ children, params }: Props) {
   return (
     <html
       className={cn(
@@ -66,7 +66,7 @@ export default async function Root({ children, params }: RootProps) {
       suppressHydrationWarning
       data-color-mode="dark"
     >
-      <body className={cn('h-full w-full overflow-hidden')}>
+      <body className="h-full w-full overflow-hidden">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

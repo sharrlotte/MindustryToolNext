@@ -21,7 +21,7 @@ export default async function ProtectedRoute({
   children,
   session,
 }: Props) {
-  if (!session || session.roles.length === 0) return <RequireLogin />;
+  if (!session || session.roles === null) return <RequireLogin />;
 
   const roles = session.roles.map((r) => r.name);
 

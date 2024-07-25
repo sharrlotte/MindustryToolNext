@@ -1,7 +1,6 @@
 import { setStaticParamsLocale } from 'next-international/server';
 import Link from 'next/link';
 
-import IdUserCard from '@/components/user/id-user-card';
 import UserCard from '@/components/user/user-card';
 import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
@@ -61,7 +60,7 @@ export default async function Home({
             <ul>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://anuke.itch.io/mindustry?fbclid=IwAR2HgdkixMrQEDhcj1an_qtWnnq6YmOlm-c8VoyPsNp5bMtu5aWq_ff7K2M"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -71,16 +70,16 @@ export default async function Home({
               </li>
               <li>
                 <Link
-                  className="text-button hover:text-button"
-                  href="posts/66138f77b02b7c52c1dc6281"
+                  className="text-brand hover:text-brand"
+                  href="posts/e7610862-bf57-4ab0-9204-ae7a4a31d41b"
                 >
                   {t('home.download-tutorial')}
                 </Link>
               </li>
               <li>
                 <Link
-                  className="text-button hover:text-button"
-                  href="/posts/660c1d0a078cab34e564e269"
+                  className="text-brand hover:text-brand"
+                  href="/posts/fa6c9516-7b98-428d-9129-c86aa40ea3d6"
                 >
                   {t('home.play-with-friend-tutorial')}
                 </Link>
@@ -90,7 +89,7 @@ export default async function Home({
             <ul>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://discord.gg/mindustry"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -100,7 +99,7 @@ export default async function Home({
               </li>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://discord.gg/DCX5yrRUyp"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -110,7 +109,7 @@ export default async function Home({
               </li>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://www.reddit.com/r/Mindustry"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -123,7 +122,7 @@ export default async function Home({
             <ul>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://www.youtube.com/@FourEverNice "
                   target="_blank"
                   rel="noopener noreferrer"
@@ -133,7 +132,7 @@ export default async function Home({
               </li>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="http://www.youtube.com/@gezpil8397"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -146,7 +145,7 @@ export default async function Home({
             <ul>
               <li>
                 <Link
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="/schematics"
                 >
                   {t('schematic')}
@@ -156,7 +155,7 @@ export default async function Home({
             <b>{t('home.find-map')}</b>
             <ul>
               <li>
-                <Link className="text-button hover:text-button" href="/maps">
+                <Link className="text-brand hover:text-brand" href="/maps">
                   {t('map')}
                 </Link>
               </li>

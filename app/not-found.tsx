@@ -11,7 +11,7 @@ export default function NotFoundScreen() {
       </div>
       <div className="grid grid-flow-col gap-2">
         <Link
-          className="rounded-md border bg-button p-2 text-sm text-background dark:text-foreground"
+          className="rounded-md border bg-brand p-2 text-sm text-background dark:text-foreground"
           href="/"
         >
           Home

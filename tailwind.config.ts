@@ -26,7 +26,7 @@ module.exports = {
         nav: 'var(--nav)',
       },
       colors: {
-        button: 'hsl(var(--button))',
+        brand: 'hsl(var(--brand))',
         success: 'hsl(var(--success))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

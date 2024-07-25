@@ -3,7 +3,7 @@ import { Status } from '@/types/response/Status';
 
 export type Post = {
   id: string;
-  authorId: string;
+  userId: string;
   title: string;
   likes: number;
   userLike: Like;
@@ -12,4 +12,5 @@ export type Post = {
   createdAt: number;
   status: Status;
   itemId: string;
+  isVerified: boolean;
 };

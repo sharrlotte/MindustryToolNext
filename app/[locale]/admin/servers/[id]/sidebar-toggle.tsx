@@ -39,7 +39,7 @@ export default function SidebarToggle() {
     <div className="flex justify-center items-center w-full">
       <div
         className={cn(
-          'flex justify-center p-2 items-center cursor-pointer hover:rounded-sm hover:bg-button hover:text-white transition-transform duration-200',
+          'flex justify-center p-2 items-center cursor-pointer hover:rounded-sm hover:bg-brand hover:text-white transition-transform duration-200',
           {
             'rotate-180': !expand,
           },

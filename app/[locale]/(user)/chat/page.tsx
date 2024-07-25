@@ -101,10 +101,9 @@ export default function Page() {
         </div>
         <ProtectedElement
           session={session}
-          all={['USER']}
           alt={
             <div className="h-full w-full text-center whitespace-nowrap">
-              <LoginButton className="justify-center bg-button">
+              <LoginButton className="justify-center bg-brand">
                 Login to chat
               </LoginButton>
             </div>

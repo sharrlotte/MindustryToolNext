@@ -5,14 +5,15 @@ import { Like } from './Like';
 export interface MapDetail {
   id: string;
   name: string;
-  authorId: string;
+  userId: string;
   description: string;
   tags: string[];
   like: number;
   height: number;
   width: number;
   status: Status;
-  verfierId: string;
+  verifierId: string;
   userLike: Like;
   itemId: string;
+  isVerified: boolean;
 }

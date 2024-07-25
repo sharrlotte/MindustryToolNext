@@ -40,6 +40,8 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
 // eslint-disable @next/next/no-img-element
 
 export default function Page() {
@@ -182,7 +184,7 @@ export default function Page() {
             <DialogTrigger
               className={cn('border border-border', {
                 'rounded-md px-4 py-1.5 text-sm': !preview,
-                'bg-button font-medium text-background dark:text-foreground':
+                'bg-brand font-medium text-background dark:text-foreground':
                   !isLoadingSchematicPreview,
               })}
               disabled={isLoading}

@@ -1,5 +1,7 @@
 'use client';
 
+import React, { useRef } from 'react';
+
 import InfinitePage from '@/components/common/infinite-page';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import MapPreviewCard from '@/components/map/map-preview-card';
@@ -20,8 +22,6 @@ import getUserMaps from '@/query/user/get-user-maps';
 import getUserPosts from '@/query/user/get-user-posts';
 import getUserSchematics from '@/query/user/get-user-schematics';
 import { User } from '@/types/response/User';
-
-import React, { useRef } from 'react';
 
 type TabProps = {
   user: User;
@@ -71,7 +71,7 @@ export default function Tab({ user }: TabProps) {
               gap={8}
             >
               {(data) =>
-                data.status === 'VERIFIED' ? (
+                data.isVerified ? (
                   <SchematicPreviewCard key={data.id} schematic={data} />
                 ) : (
                   <UploadSchematicPreviewCard key={data.id} schematic={data} />
@@ -98,7 +98,7 @@ export default function Tab({ user }: TabProps) {
               gap={8}
             >
               {(data) =>
-                data.status === 'VERIFIED' ? (
+                data.isVerified ? (
                   <MapPreviewCard key={data.id} map={data} />
                 ) : (
                   <UploadMapPreview key={data.id} map={data} />
@@ -118,7 +118,7 @@ export default function Tab({ user }: TabProps) {
               container={() => container.current}
             >
               {(data) =>
-                data.status === 'VERIFIED' ? (
+                data.isVerified ? (
                   <PostPreviewCard key={data.id} post={data} />
                 ) : (
                   <UploadPostPreviewCard key={data.id} post={data} />

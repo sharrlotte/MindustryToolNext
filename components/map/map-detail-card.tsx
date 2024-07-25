@@ -115,10 +115,10 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
         </div>
         <DetailHeader>
           <DetailTitle>{map.name}</DetailTitle>
-          <IdUserCard id={map.authorId} />
+          <IdUserCard id={map.userId} />
           <div className="flex items-end gap-2">
             <span>{t('verified-by')}</span>
-            <IdUserCard id={map.verfierId} />
+            <IdUserCard id={map.verifierId} />
           </div>
           <DetailDescription>{map.description}</DetailDescription>
           <DetailTagsCard tags={map.tags} />
@@ -141,8 +141,8 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
           </LikeComponent>
           <ProtectedElement
             session={session}
-            ownerId={map.authorId}
-            show={map.status === 'VERIFIED'}
+            ownerId={map.userId}
+            show={map.isVerified}
           >
             <TakeDownButton
               isLoading={isRemoving}
@@ -150,7 +150,7 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
               onClick={() => removeMap(map.id)}
             />
           </ProtectedElement>
-          <ProtectedElement session={session} ownerId={map.authorId}>
+          <ProtectedElement session={session} ownerId={map.userId}>
             <DeleteButton
               description={`${t('delete')} ${map.name}`}
               isLoading={isLoading}

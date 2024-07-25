@@ -9,4 +9,5 @@ export type Map = {
   userLike: Like;
   status: Status;
   itemId: string;
+  isVerified: boolean;
 };

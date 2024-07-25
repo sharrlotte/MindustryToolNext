@@ -24,9 +24,9 @@ export default function NavLink({ id, href, label, icon }: Props) {
   return (
     <Link
       className={cn(
-        'items-center flex text-nowrap px-2 py-2 text-sm font-semibold opacity-70 hover:rounded-sm hover:bg-button hover:text-white hover:opacity-100 gap-2 transition-[gap]',
+        'items-center flex text-nowrap px-2 py-2 text-sm font-semibold opacity-70 hover:rounded-sm hover:bg-brand hover:text-white hover:opacity-100 gap-2 transition-[gap]',
         {
-          'rounded-sm bg-button text-white opacity-100':
+          'rounded-sm bg-brand text-white opacity-100':
             (pathname.endsWith(href) && href !== '') ||
             (id !== '' && href === '' && pathname === `/admin/servers/${id}`),
         },

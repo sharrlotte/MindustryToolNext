@@ -1,6 +1,6 @@
 export interface Document {
   id: string;
-  authorId: string;
+  userId: string;
   content: string;
   lang: string;
 }

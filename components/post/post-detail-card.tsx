@@ -89,7 +89,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
       <header className="grid gap-2 pb-4">
         <p className="text-4xl">{post.title}</p>
         <div className="grid gap-2">
-          <IdUserCard id={post.authorId} />
+          <IdUserCard id={post.userId} />
           <span>{new Date(post.createdAt).toLocaleString()}</span>
           <TagContainer tags={displayTags} />
         </div>
@@ -109,8 +109,8 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
         </LikeComponent>
         <ProtectedElement
           session={session}
-          ownerId={post.authorId}
-          show={post.status === 'VERIFIED'}
+          ownerId={post.userId}
+          show={post.isVerified}
         >
           <TakeDownButton
             isLoading={isLoading}
@@ -118,7 +118,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
             onClick={() => removePost(post.id)}
           />
         </ProtectedElement>
-        <ProtectedElement session={session} ownerId={post.authorId}>
+        <ProtectedElement session={session} ownerId={post.userId}>
           <DeleteButton
             description={`${t('delete')} ${post.title}`}
             isLoading={isLoading}

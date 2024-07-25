@@ -5,7 +5,6 @@ import React from 'react';
 
 import { NavItems } from '@/app/[locale]/navigation-items';
 import { UserDisplay } from '@/app/[locale]/user-display';
-import { UserSheet } from '@/app/[locale]/user-sheet';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import { Button } from '@/components/ui/button';
@@ -28,7 +27,7 @@ export default function NavigationBar() {
       {isLoading && (
         <LoadingSpinner className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm backdrop-brightness-50" />
       )}
-      <div className="flex h-nav w-full items-center justify-between bg-button p-1 text-white shadow-lg">
+      <div className="flex h-nav w-full items-center justify-between bg-brand p-1 text-white shadow-lg">
         <Button
           title="Navbar"
           type="button"
@@ -63,7 +62,7 @@ export default function NavigationBar() {
               onMouseLeave={hideSidebar} //
               onMouseEnter={showSidebar}
             >
-              <div className="flex h-full flex-col justify-between overflow-hidden p-2">
+              <div className="flex h-full flex-col justify-between overflow-hidden p-2 divide-y divide-foreground/70">
                 <div className="flex h-full flex-1 flex-col overflow-hidden">
                   <span className="flex flex-col gap-2">
                     <span className="flex items-end justify-start gap-2 rounded-sm p-2">
@@ -77,9 +76,6 @@ export default function NavigationBar() {
               </div>
             </div>
           </OutsideWrapper>
-        </div>
-        <div className="flex items-center justify-center gap-1">
-          <UserSheet />
         </div>
       </div>
     </>
