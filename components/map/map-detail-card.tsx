@@ -118,7 +118,7 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
           <IdUserCard id={map.userId} />
           <div className="flex items-end gap-2">
             <span>{t('verified-by')}</span>
-            <IdUserCard id={map.verfierId} />
+            <IdUserCard id={map.verifierId} />
           </div>
           <DetailDescription>{map.description}</DetailDescription>
           <DetailTagsCard tags={map.tags} />

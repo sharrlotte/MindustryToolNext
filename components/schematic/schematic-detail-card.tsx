@@ -128,7 +128,7 @@ export default function SchematicDetailCard({
           <IdUserCard id={schematic.userId} />
           <div className="flex items-end gap-2">
             <span>{t('verified-by')}</span>
-            <IdUserCard id={schematic.verfierId} />
+            <IdUserCard id={schematic.verifierId} />
           </div>
           <DetailDescription>{schematic.description}</DetailDescription>
           <ItemRequirementCard requirements={schematic.requirements} />

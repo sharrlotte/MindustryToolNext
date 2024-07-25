@@ -12,7 +12,7 @@ export interface MapDetail {
   height: number;
   width: number;
   status: Status;
-  verfierId: string;
+  verifierId: string;
   userLike: Like;
   itemId: string;
   isVerified: boolean;
