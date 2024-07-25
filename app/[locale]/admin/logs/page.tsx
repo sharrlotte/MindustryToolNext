@@ -84,7 +84,6 @@ function LiveLog() {
               <MessageList
                 className="flex flex-col gap-1 h-full"
                 queryKey={['live-log']}
-                reversed
                 room="LOG"
                 container={() => container}
                 params={{ page: 0, size: 40 }}

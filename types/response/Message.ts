@@ -32,7 +32,7 @@ export function groupMessage(messages: Message[]): MessageGroup[] {
         createdAt: message.createdAt,
       });
     } else {
-      const lastGroup = result[result.length - 1];
+      const lastGroup = result[0];
       if (
         new Date(message.createdAt).getTime() -
           new Date(lastGroup.createdAt).getTime() <=
@@ -40,12 +40,12 @@ export function groupMessage(messages: Message[]): MessageGroup[] {
         message.userId === lastGroup.userId &&
         lastGroup.contents.length < MAX_GROUP_SIZE
       ) {
-        lastGroup.contents.push({
+        lastGroup.contents.unshift({
           text: message.content,
           attachments: message.attachments,
         });
       } else {
-        result.push({
+        result.unshift({
           id: message.id,
           room: message.room,
           userId: message.userId,

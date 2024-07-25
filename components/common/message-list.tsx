@@ -12,12 +12,7 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import { useSocket } from '@/context/socket-context';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
-import {
-  isReachedEnd,
-  makeArray,
-  mapReversed,
-  mergeNestArray,
-} from '@/lib/utils';
+import { isReachedEnd, makeArray, mergeNestArray } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
@@ -36,7 +31,6 @@ type MessageListProps = {
     item: ReactNode;
   };
   threshold?: number;
-  reversed?: boolean;
   room: string;
   container: () => HTMLElement | null;
   getFunc: (
@@ -59,7 +53,6 @@ export default function MessageList({
   end,
   skeleton,
   threshold = 500,
-  reversed,
   room,
   container,
   getFunc,
@@ -128,14 +121,11 @@ export default function MessageList({
     }
 
     const array = mergeNestArray(data.pages);
-    const dedupe = array.filter(
-      (item, index) => array.lastIndexOf(item) === index,
-    );
 
-    const group = groupMessage(dedupe);
+    const group = groupMessage(array);
 
-    return reversed ? mapReversed(group, pageMapper) : group.map(pageMapper);
-  }, [data, reversed, pageMapper]);
+    return group.map(pageMapper);
+  }, [data, pageMapper]);
 
   const skeletonElements = useMemo(() => {
     if (skeleton)
@@ -159,19 +149,11 @@ export default function MessageList({
 
     if (currentContainer && !isFetching) {
       if (isReachedEnd(currentContainer, threshold)) {
-        if (reversed) {
-          handleTopReach();
-        } else {
-          handleEndReach();
-        }
+        handleTopReach();
       }
 
       if (currentContainer.scrollTop <= threshold) {
-        if (reversed) {
-          handleEndReach();
-        } else {
-          handleTopReach();
-        }
+        handleEndReach();
       }
     }
   }, [
@@ -180,7 +162,6 @@ export default function MessageList({
     hasNextPage,
     hasPreviousPage,
     isFetching,
-    reversed,
     threshold,
   ]);
 
@@ -201,7 +182,7 @@ export default function MessageList({
   useEffect(() => {
     socket.onRoom(room).onMessage('MESSAGE', (message) => {
       queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>(
-        { queryKey },
+        { queryKey, exact: false },
         (query) => {
           setLastHeight(list?.clientHeight ?? 100);
 
@@ -209,9 +190,9 @@ export default function MessageList({
             return undefined;
           }
 
-          const [first, ...rest] = query.pages;
+          let [first, ...rest] = query.pages;
 
-          first.unshift(message);
+          first = [message, ...first];
 
           return {
             ...query,

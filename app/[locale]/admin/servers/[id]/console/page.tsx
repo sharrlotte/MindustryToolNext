@@ -35,7 +35,6 @@ export default function Page() {
                 className="flex flex-col gap-1 h-full"
                 queryKey={[id]}
                 room={`SERVER-${id}`}
-                reversed
                 container={() => container}
                 params={queryParam}
                 end={<></>}
