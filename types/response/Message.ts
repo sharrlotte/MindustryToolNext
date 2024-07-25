@@ -32,7 +32,7 @@ export function groupMessage(messages: Message[]): MessageGroup[] {
         createdAt: message.createdAt,
       });
     } else {
-      const lastGroup = result[result.length - 1];
+      const lastGroup = result[0];
       if (
         new Date(message.createdAt).getTime() -
           new Date(lastGroup.createdAt).getTime() <=

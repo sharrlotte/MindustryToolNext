@@ -182,7 +182,7 @@ export default function MessageList({
   useEffect(() => {
     socket.onRoom(room).onMessage('MESSAGE', (message) => {
       queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>(
-        { queryKey },
+        { queryKey, exact: false },
         (query) => {
           setLastHeight(list?.clientHeight ?? 100);
 
@@ -190,9 +190,9 @@ export default function MessageList({
             return undefined;
           }
 
-          const [first, ...rest] = query.pages;
+          let [first, ...rest] = query.pages;
 
-          first.unshift(message);
+          first = [message, ...first];
 
           return {
             ...query,
