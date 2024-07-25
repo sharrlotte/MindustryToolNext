@@ -61,7 +61,7 @@ export default async function Home({
             <ul>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://anuke.itch.io/mindustry?fbclid=IwAR2HgdkixMrQEDhcj1an_qtWnnq6YmOlm-c8VoyPsNp5bMtu5aWq_ff7K2M"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -71,7 +71,7 @@ export default async function Home({
               </li>
               <li>
                 <Link
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="posts/66138f77b02b7c52c1dc6281"
                 >
                   {t('home.download-tutorial')}
@@ -79,7 +79,7 @@ export default async function Home({
               </li>
               <li>
                 <Link
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="/posts/660c1d0a078cab34e564e269"
                 >
                   {t('home.play-with-friend-tutorial')}
@@ -90,7 +90,7 @@ export default async function Home({
             <ul>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://discord.gg/mindustry"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -100,7 +100,7 @@ export default async function Home({
               </li>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://discord.gg/DCX5yrRUyp"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -110,7 +110,7 @@ export default async function Home({
               </li>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://www.reddit.com/r/Mindustry"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -123,7 +123,7 @@ export default async function Home({
             <ul>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="https://www.youtube.com/@FourEverNice "
                   target="_blank"
                   rel="noopener noreferrer"
@@ -133,7 +133,7 @@ export default async function Home({
               </li>
               <li>
                 <a
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="http://www.youtube.com/@gezpil8397"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -146,7 +146,7 @@ export default async function Home({
             <ul>
               <li>
                 <Link
-                  className="text-button hover:text-button"
+                  className="text-brand hover:text-brand"
                   href="/schematics"
                 >
                   {t('schematic')}
@@ -156,7 +156,7 @@ export default async function Home({
             <b>{t('home.find-map')}</b>
             <ul>
               <li>
-                <Link className="text-button hover:text-button" href="/maps">
+                <Link className="text-brand hover:text-brand" href="/maps">
                   {t('map')}
                 </Link>
               </li>

@@ -28,7 +28,7 @@ export default function NavigationBar() {
       {isLoading && (
         <LoadingSpinner className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm backdrop-brightness-50" />
       )}
-      <div className="flex h-nav w-full items-center justify-between bg-button p-1 text-white shadow-lg">
+      <div className="flex h-nav w-full items-center justify-between bg-brand p-1 text-white shadow-lg">
         <Button
           title="Navbar"
           type="button"

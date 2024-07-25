@@ -39,7 +39,10 @@ export default function ComboBox<T>({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className={cn('w-[200px] justify-between capitalize', className)}
+          className={cn(
+            'w-[200px] justify-between capitalize border-none shadow-md bg-white dark:bg-transparent dark:border-solid',
+            className,
+          )}
           title=""
           role="combobox"
           aria-expanded={open}
@@ -68,9 +71,9 @@ export default function ComboBox<T>({
             {values.map((item) => (
               <button
                 className={cn(
-                  'relative flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm font-thin capitalize text-foreground outline-none hover:bg-button hover:text-background aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-foreground',
+                  'relative flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm font-thin capitalize text-foreground outline-none hover:bg-brand hover:text-background aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-foreground',
                   {
-                    'bg-button text-background': item.label === value?.label,
+                    'bg-brand text-background': item.label === value?.label,
                   },
                 )}
                 type="button"
