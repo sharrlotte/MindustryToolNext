@@ -1,9 +1,9 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-
 import { SearchIcon } from 'lucide-react';
 import React, { HTMLAttributes } from 'react';
+
+import { cn } from '@/lib/utils';
 
 type SearchProps = HTMLAttributes<HTMLDivElement>;
 
@@ -11,7 +11,7 @@ function Search({ className, children, ...props }: SearchProps) {
   return (
     <div
       className={cn(
-        'flex h-9 items-center justify-center gap-2 rounded-md bg-card px-2 shadow-md dark:border dark:bg-transparent',
+        'flex h-9 items-center justify-center gap-2 rounded-md bg-card px-2 shadow-md border',
         className,
       )}
       {...props}
@@ -22,6 +22,7 @@ function Search({ className, children, ...props }: SearchProps) {
 }
 
 type InputProps = HTMLAttributes<HTMLInputElement> & {
+  value: string;
   placeholder: string;
 };
 

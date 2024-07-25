@@ -32,7 +32,7 @@ export default function CopyButton({
 
   return (
     <Button
-      className={cn('p-2', className)}
+      className={cn('p-2 hover:bg-brand', className)}
       title={title ?? t('copy')}
       variant={variant}
       {...props}

@@ -37,7 +37,7 @@ export default function DownloadButton({
   return (
     <a
       className={cn(
-        'flex min-h-8 items-center justify-center rounded-md border border-border',
+        'flex min-h-8 items-center justify-center rounded-md border border-border hover:bg-brand',
         className,
       )}
       {...props}
@@ -77,7 +77,7 @@ function SecureDownloadButton({
   return (
     <div
       className={cn(
-        'flex min-h-8 cursor-pointer items-center justify-center rounded-md border border-border',
+        'flex min-h-8 hover:bg-brand cursor-pointer items-center justify-center rounded-md border border-border',
         className,
       )}
     >

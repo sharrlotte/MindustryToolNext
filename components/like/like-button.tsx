@@ -1,11 +1,11 @@
 'use client';
 
+import { ThumbsUpIcon } from 'lucide-react';
+
 import { ButtonProps } from '@/components/ui/button';
 import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-
-import { ChevronDoubleUpIcon } from '@heroicons/react/24/outline';
 
 type LikeButtonProps = Omit<ButtonProps, 'title'>;
 
@@ -30,7 +30,7 @@ export default function LikeButton({ className, ...props }: LikeButtonProps) {
       disabled={isLoading}
       onClick={() => handleAction('LIKE')}
     >
-      <ChevronDoubleUpIcon className="h-5 w-5" />
+      <ThumbsUpIcon className="h-5 w-5" />
     </button>
   );
 }
