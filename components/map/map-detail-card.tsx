@@ -142,7 +142,7 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
           <ProtectedElement
             session={session}
             ownerId={map.userId}
-            show={map.status === 'VERIFIED'}
+            show={map.isVerified}
           >
             <TakeDownButton
               isLoading={isRemoving}

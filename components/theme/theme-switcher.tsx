@@ -20,7 +20,7 @@ export function ThemeSwitcher() {
         ) : (
           <MoonIcon className="w-5" />
         )}
-        {theme + 'mode'}
+        {theme + ' mode'}
       </span>
       <Switch
         checked={theme === 'light'}

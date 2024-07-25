@@ -12,4 +12,5 @@ export type Post = {
   createdAt: number;
   status: Status;
   itemId: string;
+  isVerified: boolean;
 };

@@ -1,6 +1,7 @@
 import { CheckSquare, Square } from 'lucide-react';
 import React, { useState } from 'react';
 
+import CopyButton from '@/components/button/copy-button';
 import {
   Dialog,
   DialogContent,
@@ -30,7 +31,9 @@ export default function UserManagementCard({ user }: Props) {
     <div className="flex gap-2 items-center bg-card py-2 px-4 w-full justify-between">
       <div className="space-x-2 flex">
         <UserAvatar user={user} />
-        <h3>{user.name}</h3>
+        <CopyButton data={user.id} variant="ghost" content={user.id}>
+          <h3>{user.name}</h3>
+        </CopyButton>
       </div>
       <ChangeRoleDialog user={user} />
     </div>

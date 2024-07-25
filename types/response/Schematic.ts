@@ -9,4 +9,5 @@ export type Schematic = {
   userLike: Like;
   status: Status;
   itemId: string;
+  isVerified: boolean;
 };

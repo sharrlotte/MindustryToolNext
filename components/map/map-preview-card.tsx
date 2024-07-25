@@ -58,7 +58,7 @@ export default function MapPreview({
             href={`${env.url.api}/maps/${map.id}/download`}
             fileName={`{${map.name}}.msav`}
           />
-          {map.status === 'VERIFIED' && (
+          {map.isVerified && (
             <LikeComponent
               itemId={map.itemId}
               initialLikeCount={map.like}

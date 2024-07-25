@@ -110,7 +110,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
         <ProtectedElement
           session={session}
           ownerId={post.userId}
-          show={post.status === 'VERIFIED'}
+          show={post.isVerified}
         >
           <TakeDownButton
             isLoading={isLoading}

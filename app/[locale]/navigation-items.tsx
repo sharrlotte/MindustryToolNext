@@ -352,7 +352,7 @@ export function NavItems({ onClick }: NavItemsProps) {
   }
 
   return (
-    <div className="space-y-4 overflow-y-auto no-scrollbar">
+    <div className="space-y-4 overflow-y-auto no-scrollbar divide-y divide-foreground/70">
       {pathGroups.map(({ name, roles, paths }) => (
         <ProtectedElement key={name} all={roles} session={session} passOnEmpty>
           <div className="space-y-1">

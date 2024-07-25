@@ -1,4 +1,6 @@
+import { UserActions } from '@/app/[locale]/user-sheet';
 import LoginButton from '@/components/button/login-button';
+import LogoutButton from '@/components/button/logout-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
@@ -6,8 +8,15 @@ import { useSession } from '@/context/session-context';
 import { useI18n } from '@/locales/client';
 
 export function UserDisplay() {
+  return (
+    <div className="space-y-2">
+      <UserActions />
+      <Internal />
+    </div>
+  );
+}
+export function Internal() {
   const { session, state } = useSession();
-
   const t = useI18n();
 
   if (state === 'authenticated' && session) {
@@ -20,6 +29,7 @@ export function UserDisplay() {
             <UserRoleCard roles={session.roles} />
           </div>
         </div>
+        <LogoutButton className="pr-1" />
       </div>
     );
   }
@@ -30,5 +40,5 @@ export function UserDisplay() {
     );
   }
 
-  return <LoginButton className="w-full gap-1" />;
+  return <LoginButton className="w-full gap-1">{t('login')}</LoginButton>;
 }

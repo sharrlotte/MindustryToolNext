@@ -52,7 +52,7 @@ export default function PostPreviewCard({
             >
               <LinkIcon className="h-5 w-5" />
             </CopyButton>
-            {post.status === 'VERIFIED' && (
+            {post.isVerified && (
               <LikeComponent
                 itemId={post.itemId}
                 initialLikeCount={post.likes}

@@ -159,7 +159,7 @@ export default function SchematicDetailCard({
           <ProtectedElement
             session={session}
             ownerId={schematic.userId}
-            show={schematic.status === 'VERIFIED'}
+            show={schematic.isVerified}
           >
             <TakeDownButton
               isLoading={isLoading}

@@ -1,7 +1,6 @@
 import { setStaticParamsLocale } from 'next-international/server';
 import Link from 'next/link';
 
-import IdUserCard from '@/components/user/id-user-card';
 import UserCard from '@/components/user/user-card';
 import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
@@ -72,7 +71,7 @@ export default async function Home({
               <li>
                 <Link
                   className="text-brand hover:text-brand"
-                  href="posts/66138f77b02b7c52c1dc6281"
+                  href="posts/e7610862-bf57-4ab0-9204-ae7a4a31d41b"
                 >
                   {t('home.download-tutorial')}
                 </Link>
@@ -80,7 +79,7 @@ export default async function Home({
               <li>
                 <Link
                   className="text-brand hover:text-brand"
-                  href="/posts/660c1d0a078cab34e564e269"
+                  href="/posts/fa6c9516-7b98-428d-9129-c86aa40ea3d6"
                 >
                   {t('home.play-with-friend-tutorial')}
                 </Link>
