@@ -17,4 +17,5 @@ export interface SchematicDetail {
   verfierId: string;
   userLike: Like;
   itemId: string;
+  isVerified: boolean;
 }

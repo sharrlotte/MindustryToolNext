@@ -15,4 +15,5 @@ export interface MapDetail {
   verfierId: string;
   userLike: Like;
   itemId: string;
+  isVerified: boolean;
 }
