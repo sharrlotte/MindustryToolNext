@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function DocumentCard({
-  document: { id, content, authorId },
+  document: { id, content, userId },
 }: Props) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
@@ -46,13 +46,13 @@ export default function DocumentCard({
     <Dialog>
       <DialogTrigger>
         <div className="space-y-2 text-start">
-          <IdUserCard id={authorId} />
+          <IdUserCard id={userId} />
           <p className="line-clamp-3">{content}</p>
         </div>
       </DialogTrigger>
       <DialogContent>
         <div className="space-y-2 h-full overflow-y-auto">
-          <IdUserCard id={authorId} />
+          <IdUserCard id={userId} />
           <p>{content}</p>
         </div>
         <DeleteButton

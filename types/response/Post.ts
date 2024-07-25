@@ -3,7 +3,7 @@ import { Status } from '@/types/response/Status';
 
 export type Post = {
   id: string;
-  authorId: string;
+  userId: string;
   title: string;
   likes: number;
   userLike: Like;

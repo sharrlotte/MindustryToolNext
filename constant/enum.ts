@@ -18,8 +18,6 @@ export type UserRole =
   | 'ADMIN'
   | 'USER'
   | 'SHAR'
-  | 'SERVER'
-  | 'BOT'
   | 'CONTRIBUTOR';
 
 export type LikeAction = 'LIKE' | 'DISLIKE';

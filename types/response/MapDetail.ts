@@ -5,7 +5,7 @@ import { Like } from './Like';
 export interface MapDetail {
   id: string;
   name: string;
-  authorId: string;
+  userId: string;
   description: string;
   tags: string[];
   like: number;

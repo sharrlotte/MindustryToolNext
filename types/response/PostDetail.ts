@@ -3,7 +3,7 @@ import { Status } from '@/types/response/Status';
 
 export interface PostDetail {
   id: string;
-  authorId: string;
+  userId: string;
   title: string;
   content: string;
   likes: number;

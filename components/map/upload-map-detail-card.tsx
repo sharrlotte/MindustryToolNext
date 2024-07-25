@@ -116,7 +116,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
         </div>
         <DetailHeader>
           <DetailTitle>{map.name}</DetailTitle>
-          <IdUserCard id={map.authorId} />
+          <IdUserCard id={map.userId} />
           <DetailDescription>{map.description}</DetailDescription>
           <NameTagSelector
             tags={mapTags}
@@ -140,7 +140,10 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
             description={`${t('verify')} ${map.name}`}
             isLoading={isLoading}
             onClick={() =>
-              verifyMap({ id: map.id, tags: TagGroups.toStringArray(selectedTags) })
+              verifyMap({
+                id: map.id,
+                tags: TagGroups.toStringArray(selectedTags),
+              })
             }
           />
         </div>

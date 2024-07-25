@@ -40,7 +40,7 @@ export default function PostPreviewCard({
         </Link>
         <div className="flex flex-col gap-2">
           <div>
-            <IdUserCard id={post.authorId} />
+            <IdUserCard id={post.userId} />
             <span>{new Date(post.createdAt).toLocaleString()}</span>
           </div>
           <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">

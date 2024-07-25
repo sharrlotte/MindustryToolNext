@@ -125,7 +125,7 @@ export default function SchematicDetailCard({
         </div>
         <DetailHeader>
           <DetailTitle>{schematic.name}</DetailTitle>
-          <IdUserCard id={schematic.authorId} />
+          <IdUserCard id={schematic.userId} />
           <div className="flex items-end gap-2">
             <span>{t('verified-by')}</span>
             <IdUserCard id={schematic.verfierId} />
@@ -158,7 +158,7 @@ export default function SchematicDetailCard({
           </LikeComponent>
           <ProtectedElement
             session={session}
-            ownerId={schematic.authorId}
+            ownerId={schematic.userId}
             show={schematic.status === 'VERIFIED'}
           >
             <TakeDownButton
@@ -167,7 +167,7 @@ export default function SchematicDetailCard({
               onClick={() => removeSchematic(schematic.id)}
             />
           </ProtectedElement>
-          <ProtectedElement session={session} ownerId={schematic.authorId}>
+          <ProtectedElement session={session} ownerId={schematic.userId}>
             <DeleteButton
               description={`${t('delete')} ${schematic.name}`}
               isLoading={isLoading}
