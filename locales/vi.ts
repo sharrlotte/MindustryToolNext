@@ -139,6 +139,9 @@ export default {
   reload: 'Reload',
   files: 'Files',
   chat: 'Chat',
+  time_1: 'Mới nhất',
+  'time_-1': 'Cũ nhất',
+  like_1: 'Lượt thích',
   'chat.notice':
     ' Hãy nhớ rảng bot này không hoàn hảo. Vì thế nếu có lỗi xãy ra xin hãy báo cáo với chúng tôi',
   'chat.input-place-holder': 'Tải trò chơi miễn phí',

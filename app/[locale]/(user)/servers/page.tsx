@@ -85,12 +85,12 @@ export default function Page() {
           <PostServerResultCard server={result} />
         </DialogContent>
       </Dialog>
-      <div className="h-full overflow-y-auto" ref={container}>
+      <div className="h-full overflow-y-auto" ref={(ref) => setContainer(ref)}
+>
         <InfinitePage
           className="grid w-full grid-cols-1 justify-center gap-4 md:grid-cols-2 xl:grid-cols-3"
           queryKey={['servers']}
-          container={() => container.current}
-          params={params}
+          container={() => container}          params={params}
           getFunc={getServers}
         >
           {(data) => <ExternalServerCard key={data.id} server={data} />}

@@ -188,7 +188,6 @@ export default function NameTagSearch({
           <Search.Icon className="p-1" />
           <Search.Input
             placeholder={t('search-by-name')}
-            defaultValue={name}
             value={name}
             onChange={(event) => handleNameChange(event.currentTarget.value)}
           />
@@ -241,8 +240,8 @@ export default function NameTagSearch({
               <Search className="w-full p-1">
                 <Search.Icon className="p-1" />
                 <Search.Input
-                  defaultValue={filter}
                   placeholder={t('filter')}
+                  value={filter}
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />
               </Search>

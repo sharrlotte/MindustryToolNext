@@ -35,7 +35,7 @@ import { useMutation } from '@tanstack/react-query';
 
 export default function Page() {
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const t = useI18n();
 
@@ -43,14 +43,14 @@ export default function Page() {
     <div className="flex h-full flex-col justify-between gap-4 p-4">
       <div
         className="relative flex h-full flex-col overflow-y-auto"
-        ref={container}
+        ref={(ref) => setContainer(ref)}
       >
         <InfinitePage
           className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3"
           queryKey={['documents']}
           getFunc={getDocuments}
           params={params}
-          container={() => container.current}
+          container={() => container}
         >
           {(data) => <DocumentCard key={data.id} document={data} />}
         </InfinitePage>

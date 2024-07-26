@@ -20,7 +20,6 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     lastPage: T[],
     allPages: T[][],
     lastPageParams: P,
-    allPageParams: P[],
   ) => {
     if (lastPage.length === 0 || lastPage.length < params.size) {
       return undefined;
@@ -33,7 +32,6 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     lastPage: T[],
     allPages: T[][],
     lastPageParams: P,
-    allPageParams: P[],
   ) => {
     if (
       lastPageParams.page <= 0 ||

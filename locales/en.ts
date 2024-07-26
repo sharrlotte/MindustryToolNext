@@ -139,9 +139,9 @@ export default {
   reload: 'Reload',
   files: 'Files',
   chat: 'Chat',
-  time_1: 'Mới nhất',
-  'time_-1': 'Cũ nhất',
-  like_1: 'Lượt thích',
+  time_1: 'Newest',
+  'time_-1': 'Oldest',
+  like_1: 'Most liked',
   'chat.notice':
     ' Remember that this bot is not perfect. If there is any issue, please report.',
   'chat.input-place-holder': 'How to download the game for free',

@@ -29,7 +29,7 @@ type TabProps = {
 export default function Tab({ me }: TabProps) {
   const t = useI18n();
   const { schematic, map, post } = useSearchTags();
-  const container = useRef<HTMLDivElement | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useStatusSearchParams();
 
   return (
@@ -59,7 +59,7 @@ export default function Tab({ me }: TabProps) {
               params={params}
               queryKey={['me-schematics']}
               getFunc={getMeSchematics}
-              container={() => container.current}
+              container={() => container}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -86,7 +86,7 @@ export default function Tab({ me }: TabProps) {
               params={params}
               queryKey={['me-maps']}
               getFunc={getMeMaps}
-              container={() => container.current}
+              container={() => container}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -114,7 +114,7 @@ export default function Tab({ me }: TabProps) {
               params={params}
               queryKey={['me-posts']}
               getFunc={getMePosts}
-              container={() => container.current}
+              container={() => container}
             >
               {(data) =>
                 data.isVerified ? (

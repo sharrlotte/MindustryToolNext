@@ -17,7 +17,7 @@ import { Role } from '@/types/response/Role';
 import { useQuery } from '@tanstack/react-query';
 
 export default function Page() {
-  const container = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useSearchPageParams();
   const axios = useClientAPI();
 
@@ -45,14 +45,14 @@ export default function Page() {
       </div>
       <div
         className="relative flex h-full flex-col gap-4 overflow-y-auto"
-        ref={container}
+        ref={(ref) => setContainer(ref)}
       >
         <InfinitePage
           className="grid w-full grid-cols-1 justify-center gap-4"
           params={{ ...params, role: role?.name as UserRole }}
           queryKey={['user-management']}
           getFunc={getUsers}
-          container={() => container.current}
+          container={() => container}
         >
           {(data) => <UserManagementCard key={data.id} user={data} />}
         </InfinitePage>

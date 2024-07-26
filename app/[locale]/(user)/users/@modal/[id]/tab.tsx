@@ -31,7 +31,7 @@ export default function Tab({ user }: TabProps) {
   const id = user.id;
   const { schematic, map, post } = useSearchTags();
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
     <div
@@ -60,7 +60,7 @@ export default function Tab({ user }: TabProps) {
               params={params}
               queryKey={['user-schematics', id]}
               getFunc={(axios, params) => getUserSchematics(axios, id, params)}
-              container={() => container.current}
+              container={() => container}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -87,7 +87,7 @@ export default function Tab({ user }: TabProps) {
               params={params}
               queryKey={['user-maps', id]}
               getFunc={(axios, params) => getUserMaps(axios, id, params)}
-              container={() => container.current}
+              container={() => container}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -115,7 +115,7 @@ export default function Tab({ user }: TabProps) {
               params={params}
               queryKey={['user-posts', id]}
               getFunc={(axios, params) => getUserPosts(axios, id, params)}
-              container={() => container.current}
+              container={() => container}
             >
               {(data) =>
                 data.isVerified ? (

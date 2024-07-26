@@ -396,7 +396,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
           <Search>
             <Search.Input
               placeholder={t('upload.post-name')}
-              defaultValue={name}
+              value={name}
               onChange={(event) => setName(event.currentTarget.value)}
             />
             <Search.Icon />
