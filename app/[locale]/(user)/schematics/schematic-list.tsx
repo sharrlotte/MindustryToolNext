@@ -1,7 +1,7 @@
 'use client';
 
 import { PlusIcon, UserIcon } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
