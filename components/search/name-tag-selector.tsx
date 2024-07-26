@@ -1,5 +1,8 @@
 'use client';
 
+import { cloneDeep } from 'lodash';
+import React, { useState } from 'react';
+
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import Search from '@/components/search/search-input';
 import FilterTags from '@/components/tag/filter-tags';
@@ -9,9 +12,6 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useI18n } from '@/locales/client';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
-
-import { cloneDeep } from 'lodash';
-import React, { useState } from 'react';
 
 type NameTagSelectorProps = {
   tags?: TagGroup[];
@@ -97,7 +97,7 @@ export default function NameTagSelector({
               <Search className="w-full p-1">
                 <Search.Icon className="p-1" />
                 <Search.Input
-                  defaultValue={filter}
+                  value={filter}
                   placeholder={t('filter')}
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />

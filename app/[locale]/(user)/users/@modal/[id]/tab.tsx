@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import InfinitePage from '@/components/common/infinite-page';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
@@ -31,14 +31,12 @@ export default function Tab({ user }: TabProps) {
   const id = user.id;
   const { schematic, map, post } = useSearchTags();
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
     <div
       className="absolute inset-0 space-y-2 overflow-y-auto bg-background p-4"
-      ref={(ref) => {
-        container.current = ref;
-      }}
+      ref={(ref) => setContainer(ref)}
     >
       <div className="flex gap-2 rounded-md bg-card p-2">
         <UserAvatar className="h-20 w-20" user={user} />
@@ -60,7 +58,7 @@ export default function Tab({ user }: TabProps) {
               params={params}
               queryKey={['user-schematics', id]}
               getFunc={(axios, params) => getUserSchematics(axios, id, params)}
-              container={() => container.current}
+              container={() => container}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -87,7 +85,7 @@ export default function Tab({ user }: TabProps) {
               params={params}
               queryKey={['user-maps', id]}
               getFunc={(axios, params) => getUserMaps(axios, id, params)}
-              container={() => container.current}
+              container={() => container}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -115,7 +113,7 @@ export default function Tab({ user }: TabProps) {
               params={params}
               queryKey={['user-posts', id]}
               getFunc={(axios, params) => getUserPosts(axios, id, params)}
-              container={() => container.current}
+              container={() => container}
             >
               {(data) =>
                 data.isVerified ? (

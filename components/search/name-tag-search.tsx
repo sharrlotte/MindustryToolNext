@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { cloneDeep } from 'lodash';
-import { FilterIcon } from 'lucide-react';
+import { FilterIcon, XIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -184,13 +184,23 @@ export default function NameTagSearch({
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex justify-center gap-2">
-        <Search className="w-full">
+        <Search className="w-full bg-background">
           <Search.Icon className="p-1" />
           <Search.Input
             placeholder={t('search-by-name')}
-            defaultValue={name}
+            value={name}
             onChange={(event) => handleNameChange(event.currentTarget.value)}
           />
+          {name && (
+            <Button
+              className="p-0"
+              title="reset"
+              onClick={() => handleNameChange('')}
+              variant="icon"
+            >
+              <XIcon />
+            </Button>
+          )}
         </Search>
         {useSort && (
           <ComboBox
@@ -230,8 +240,8 @@ export default function NameTagSearch({
               <Search className="w-full p-1">
                 <Search.Icon className="p-1" />
                 <Search.Input
-                  defaultValue={filter}
                   placeholder={t('filter')}
+                  value={filter}
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />
               </Search>
@@ -244,7 +254,11 @@ export default function NameTagSearch({
                 />
               </CardContent>
               <CardFooter className="flex justify-end gap-1 p-0">
-                <Button title={t('close')} onClick={handleHideFilterDialog}>
+                <Button
+                  title={t('close')}
+                  onClick={handleHideFilterDialog}
+                  variant="primary"
+                >
                   {isChanged ? t('search') : t('close')}
                 </Button>
               </CardFooter>

@@ -1,5 +1,7 @@
 'use client';
 
+import { ThumbsDownIcon } from 'lucide-react';
+
 import { ButtonProps } from '@/components/ui/button';
 import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
@@ -33,7 +35,7 @@ export default function DislikeButton({
       disabled={isLoading}
       onClick={() => handleAction('DISLIKE')}
     >
-      <ChevronDoubleDownIcon className="h-5 w-5" />
+      <ThumbsDownIcon className="h-5 w-5" />
     </button>
   );
 }

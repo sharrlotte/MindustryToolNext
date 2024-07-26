@@ -1,5 +1,6 @@
 'use client';
 
+import { MailIcon } from 'lucide-react';
 import { useState } from 'react';
 import React from 'react';
 
@@ -27,7 +28,7 @@ export default function NavigationBar() {
       {isLoading && (
         <LoadingSpinner className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm backdrop-brightness-50" />
       )}
-      <div className="flex h-nav w-full items-center justify-between bg-brand p-1 text-white shadow-lg">
+      <div className="flex h-nav w-full items-center justify-between bg-brand py-1 px-2 text-white shadow-lg">
         <Button
           title="Navbar"
           type="button"
@@ -77,6 +78,7 @@ export default function NavigationBar() {
             </div>
           </OutsideWrapper>
         </div>
+        <MailIcon />
       </div>
     </>
   );

@@ -161,7 +161,8 @@ export default function ResponsiveInfiniteScrollGrid<
     return noResult;
   }
 
-  const numberOfItems = pages.length + (isFetching ? skeleton?.amount ?? 0 : 0);
+  const numberOfItems =
+    pages.length + (isFetching ? (skeleton?.amount ?? 0) : 0);
   const clientWidth =
     currentWrapper?.clientWidth ?? currentContainer.clientWidth;
 

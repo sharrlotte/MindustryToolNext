@@ -1,5 +1,7 @@
 'use client';
 
+import React, { useRef, useState } from 'react';
+
 import InfinitePage from '@/components/common/infinite-page';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
@@ -9,25 +11,23 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import getMapUploads from '@/query/map/get-map-uploads';
 
-import React, { useRef } from 'react';
-
 export default function Page() {
   const { map } = useSearchTags();
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
     <div className="relative flex h-full flex-col gap-4 p-4">
       <NameTagSearch tags={map} />
       <div
         className="relative flex h-full flex-col gap-4 overflow-y-auto"
-        ref={container}
+        ref={(ref) => setContainer(ref)}
       >
         <ResponsiveInfiniteScrollGrid
           queryKey={['map-uploads']}
           getFunc={getMapUploads}
           params={params}
-          container={() => container.current}
+          container={() => container}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,

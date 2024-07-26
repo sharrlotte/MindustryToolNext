@@ -29,7 +29,7 @@ import postInternalServerPlugin from '@/query/server/post-internal-server-plugin
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export default function Page() {
-  const container = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const id = useSafeParam().get('id');
 
   return (
@@ -39,7 +39,7 @@ export default function Page() {
       </div>
       <div
         className="flex h-full w-full flex-col gap-2 overflow-y-auto bg-card p-2"
-        ref={container}
+        ref={(ref) => setContainer(ref)}
       >
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
@@ -48,7 +48,7 @@ export default function Page() {
           getFunc={(axios, params) =>
             getInternalServerPlugins(axios, id, params)
           }
-          container={() => container.current}
+          container={() => container}
         >
           {(data) => (
             <InternalServerPluginCard key={data.pluginId} plugin={data} />

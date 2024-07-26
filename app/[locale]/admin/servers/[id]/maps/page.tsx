@@ -32,7 +32,7 @@ import postInternalServerMap from '@/query/server/post-internal-server-map';
 import { useMutation } from '@tanstack/react-query';
 
 export default function ServerMaps() {
-  const container = useRef<HTMLDivElement | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const id = useSafeParam().get('id');
 
   return (
@@ -42,13 +42,13 @@ export default function ServerMaps() {
       </div>
       <div
         className="flex h-full w-full flex-col gap-2 overflow-y-auto"
-        ref={container}
+        ref={(ref) => setContainer(ref)}
       >
         <ResponsiveInfiniteScrollGrid
           params={{ page: 0, size: 20 }}
           queryKey={['internal-server-maps', id]}
           getFunc={(axios, params) => getInternalServerMaps(axios, id, params)}
-          container={() => container.current}
+          container={() => container}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,
@@ -80,7 +80,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
 
   //TODO: Fix search
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) =>
       postInternalServerMap(axios, serverId, { mapId }),
@@ -111,19 +111,19 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
           {t('internal-server.add-map')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-6 w-full">
+      <DialogContent className="p-6 flex flex-col overflow-hidden w-full">
         <DialogTitle>{t('internal-server.select-map')}</DialogTitle>
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />
           <div
             className="flex h-full w-full flex-col gap-2 overflow-y-auto p-2"
-            ref={container}
+            ref={(ref) => setContainer(ref)}
           >
             <InfinitePage
               params={params}
-              queryKey={['internal-server-maps']}
+              queryKey={['maps']}
               getFunc={(axios, params) => getMaps(axios, params)}
-              container={() => container.current}
+              container={() => container}
               skeleton={{
                 amount: 20,
                 item: <Skeleton className="h-preview-height" />,

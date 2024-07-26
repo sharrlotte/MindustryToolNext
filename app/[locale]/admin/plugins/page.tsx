@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import UploadPluginCard from '@/components/plugin/upload-plugin-preview-card';
@@ -12,20 +12,20 @@ import getPluginUploads from '@/query/plugin/get-plugin-uploads';
 export default function Page() {
   const { plugin } = useSearchTags();
   const params = useSearchPageParams();
-  const container = useRef<HTMLDivElement | null>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
     <div className="relative flex h-full flex-col gap-4 p-4">
       <NameTagSearch tags={plugin} />
       <div
         className="relative flex h-full flex-col gap-4 overflow-y-auto"
-        ref={container}
+        ref={(ref) => setContainer(ref)}
       >
         <ResponsiveInfiniteScrollGrid
           queryKey={['plugin-uploads', 'plugins']}
           getFunc={getPluginUploads}
           params={params}
-          container={() => container.current}
+          container={() => container}
           itemMinWidth={320}
           itemMinHeight={352}
           contentOffsetHeight={112}
