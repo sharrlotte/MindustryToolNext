@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import InfinitePage from '@/components/common/infinite-page';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
@@ -35,9 +35,7 @@ export default function Tab({ me }: TabProps) {
   return (
     <div
       className="absolute inset-0 space-y-2 overflow-auto bg-background p-4"
-      ref={(ref) => {
-        container.current = ref;
-      }}
+      ref={(ref) => setContainer(ref)}
     >
       <div className="flex gap-2 rounded-md bg-card p-2">
         <UserAvatar className="h-20 w-20" user={me} />

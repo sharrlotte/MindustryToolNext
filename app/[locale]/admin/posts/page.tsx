@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import InfinitePage from '@/components/common/infinite-page';
 import UploadPostPreviewCard from '@/components/post/upload-post-preview-card';
