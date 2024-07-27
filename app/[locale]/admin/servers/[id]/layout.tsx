@@ -58,11 +58,6 @@ export default async function Layout({
       icon: <CommandLineIcon className="h-5 w-5" />,
     },
     {
-      href: '/files',
-      label: t('files'),
-      icon: <FolderIcon className="h-5 w-5" />,
-    },
-    {
       href: '/setting',
       label: t('setting'),
       icon: <Cog6ToothIcon className="h-5 w-5" />,

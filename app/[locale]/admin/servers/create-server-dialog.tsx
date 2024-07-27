@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { revalidate } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
-import { AlertDialogFooter } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -50,6 +49,8 @@ export default function CreateServerDialog() {
     },
   });
 
+  const [open, setOpen] = useState(false);
+
   const { invalidateByKey } = useQueriesData();
   const axios = useClientAPI();
   const { toast } = useToast();
@@ -66,6 +67,7 @@ export default function CreateServerDialog() {
       });
       form.reset();
       revalidate('/admin/servers');
+      setOpen(false);
     },
     onError: (error) =>
       toast({
@@ -76,16 +78,13 @@ export default function CreateServerDialog() {
   });
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="flex justify-end">
-          <Button variant="primary" title={t('server.add')}>
-            {t('server.add')}
-          </Button>
-        </div>
+        <Button variant="primary" title={t('server.add')}>
+          {t('server.add')}
+        </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogClose />
         <Form {...form}>
           <form
             className="flex flex-1 flex-col justify-between space-y-4 rounded-md bg-card p-4"
