@@ -81,6 +81,8 @@ type MessagePayload = BaseMessagePayload &
       }
   );
 
+export type MessageMethod = MessagePayload['method'];
+
 type PromiseReceiver = {
   resolve: (value: unknown) => void;
   reject: (reason: any) => void;

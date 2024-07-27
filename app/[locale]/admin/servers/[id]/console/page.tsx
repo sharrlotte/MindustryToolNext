@@ -1,8 +1,7 @@
 'use client';
 
-import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react';
+import React, { FormEvent, KeyboardEvent, useState } from 'react';
 
-import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
 import { MessageCard } from '@/components/messages/message-card';
@@ -70,10 +69,15 @@ function ChatInput({ id }: ChatInputProps) {
 
   const { sendMessage } = useMessage({
     room: `SERVER-${id}`,
+    method: 'SERVER_MESSAGE',
   });
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-    sendMessage(message);
+    if (message.startsWith('/')) {
+      sendMessage(message);
+    } else {
+      sendMessage('say ' + message);
+    }
     setMessageHistory((prev) => [...prev, message]);
     setMessage('');
     event.preventDefault();
