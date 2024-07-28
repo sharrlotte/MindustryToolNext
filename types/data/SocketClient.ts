@@ -33,11 +33,6 @@ type SocketEvent = BaseSocketEvent &
         data: Message;
       }
     | {
-        method: 'SERVER_MESSAGE';
-        room: string;
-        data: Message;
-      }
-    | {
         method: 'ROOM_MESSAGE';
         room: string;
         data: Message;

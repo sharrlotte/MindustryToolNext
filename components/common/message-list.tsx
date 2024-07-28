@@ -231,12 +231,6 @@ export default function MessageList({
     };
   }, [checkIfNeedFetchMore, currentContainer, list, scrollTop]);
 
-  useEffect(() => {
-    const interval = setInterval(() => checkIfNeedFetchMore(), 3000);
-
-    return () => clearInterval(interval);
-  }, [checkIfNeedFetchMore]);
-
   if (!loader && !skeleton) {
     loader = (
       <LoadingSpinner
