@@ -187,6 +187,7 @@ export function NavItems({ onClick }: NavItemsProps) {
               name: t('plugin'),
               path: '/admin/plugins',
               icon: <PuzzlePieceIcon className="h-5 w-5" />,
+              roles: ['SHAR'],
             },
           ],
           icon: <ShieldCheckIcon className="h-5 w-5" />,

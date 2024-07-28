@@ -34,11 +34,7 @@ export function groupMessage(messages: Message[]): MessageGroup[] {
     } else {
       const lastGroup = result[0];
       if (
-        new Date(message.createdAt).getTime() -
-          new Date(lastGroup.createdAt).getTime() <=
-          300000 &&
-        message.userId === lastGroup.userId &&
-        lastGroup.contents.length < MAX_GROUP_SIZE
+        message.userId === lastGroup.userId
       ) {
         lastGroup.contents.unshift({
           text: message.content,
