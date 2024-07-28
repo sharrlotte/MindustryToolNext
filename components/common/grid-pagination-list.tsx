@@ -1,13 +1,20 @@
 import { AxiosInstance } from 'axios';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useMemo, useState } from 'react';
 
 import EndOfPage from '@/components/common/end-of-page';
 import ErrorSpinner from '@/components/common/error-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import {
   Pagination,
   PaginationContent,
@@ -53,6 +60,8 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     queryKey: [...queryKey, params],
   });
 
+  const [open, setOpen] = useState(false);
+  const [selectedPage, setSelectedPage] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -100,12 +109,11 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     secondNumber += 1;
   }
 
-  
   let secondLastNumber = lastPage - 1;
   let lastNumber = lastPage;
-  
-  if (secondNumber >= secondLastNumber){
-    firstNumber = 0
+
+  if (secondNumber >= secondLastNumber) {
+    firstNumber = 0;
     secondNumber = 1;
   }
 
@@ -130,6 +138,12 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     }
 
     return data.map((item, index) => children(item, index));
+  }
+
+  function handleSelectPage() {
+    if (selectedPage < 0 || selectedPage > lastPage) return;
+    handlePageChange(selectedPage);
+    setOpen(false);
   }
 
   return (
@@ -175,7 +189,36 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
               </Button>
             </PaginationItem>
             <PaginationItem>
-              <PaginationEllipsis />
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger>
+                  <PaginationEllipsis />
+                </DialogTrigger>
+                <DialogContent className="p-6">
+                  <DialogTitle>Select page</DialogTitle>
+                  <Input
+                    type="number"
+                    value={selectedPage}
+                    onChange={(event) =>
+                      setSelectedPage(event.currentTarget.valueAsNumber)
+                    }
+                  />
+                  {(selectedPage < 0 || selectedPage > lastPage) && (
+                    <span className="text-destructive text-sm">
+                      Page must above 0 and below {lastPage}
+                    </span>
+                  )}
+                  <div className="flex justify-end">
+                    <Button
+                      className="flex"
+                      onClick={handleSelectPage}
+                      title="Go to page"
+                      variant="primary"
+                    >
+                      Go
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </PaginationItem>
             <PaginationItem>
               <Button
