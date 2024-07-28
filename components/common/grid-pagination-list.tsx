@@ -21,11 +21,12 @@ import {
   PaginationEllipsis,
   PaginationItem,
 } from '@/components/ui/pagination';
+import useClientAPI from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
-import { QueryKey } from '@tanstack/react-query';
+import { QueryKey, useQueryClient } from '@tanstack/react-query';
 
 type Props<T, P> = {
   className?: string;
@@ -58,6 +59,19 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   const { data, isLoading, error } = useClientQuery({
     queryFn: (axios) => getFunc(axios, params),
     queryKey: [...queryKey, params],
+  });
+
+  const axios = useClientAPI();
+
+  const queryClient = useQueryClient();
+
+  const prefetchParams = { ...params };
+
+  prefetchParams.page += 1;
+
+  queryClient.prefetchQuery({
+    queryFn: () => getFunc(axios, prefetchParams),
+    queryKey: [...queryKey, prefetchParams],
   });
 
   const [open, setOpen] = useState(false);
@@ -96,7 +110,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   }
 
   const currentPage = params.page;
-  const lastPage = Math.ceil(numberOfItems / params.size);
+  const lastPage = Math.ceil(numberOfItems / params.size) - 1;
 
   const hasNextPage = currentPage < lastPage;
   const hasPrevPage = currentPage > 0;
