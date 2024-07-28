@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 import { throttle } from 'lodash';
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
+import EndOfPage from '@/components/common/end-of-page';
 import ErrorSpinner from '@/components/common/error-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
@@ -54,15 +55,8 @@ export default function ResponsiveInfiniteScrollGrid<
   children,
 }: ResponsiveInfiniteScrollGridProps<T, P>) {
   const t = useI18n();
-  const {
-    data,
-    isLoading,
-    error,
-    isError,
-    hasNextPage,
-    isFetching,
-    fetchNextPage,
-  } = useInfinitePageQuery(getFunc, params, queryKey);
+  const { data, isLoading, error, hasNextPage, isFetching, fetchNextPage } =
+    useInfinitePageQuery(getFunc, params, queryKey);
   const pages = useMemo(() => {
     return !data
       ? []
@@ -132,16 +126,9 @@ export default function ResponsiveInfiniteScrollGrid<
     );
   }
 
-  end = end ?? (
-    <span
-      className="col-span-full flex w-full items-center justify-center"
-      key="End"
-    >
-      {t('end-of-page')}
-    </span>
-  );
+  end = end ?? <EndOfPage />;
 
-  if (isError || error) {
+  if (error) {
     return (
       <div className="flex w-full h-full justify-center">
         <ErrorSpinner message={error?.message} />

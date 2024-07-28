@@ -1,6 +1,6 @@
 'use client';
 
-import { MailIcon } from 'lucide-react';
+import { BellIcon, MailIcon } from 'lucide-react';
 import { useState } from 'react';
 import React from 'react';
 
@@ -78,7 +78,7 @@ export default function NavigationBar() {
             </div>
           </OutsideWrapper>
         </div>
-        <MailIcon />
+        <BellIcon />
       </div>
     </>
   );
