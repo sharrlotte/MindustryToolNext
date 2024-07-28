@@ -74,7 +74,7 @@ function ChatInput({ id }: ChatInputProps) {
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     if (message.startsWith('/')) {
-      sendMessage(message);
+      sendMessage(message.substring(1));
     } else {
       sendMessage('say ' + message);
     }

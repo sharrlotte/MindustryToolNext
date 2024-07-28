@@ -74,6 +74,7 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
         title: 'Error',
         description: error.message,
       });
+      setSelectedRoles(roles)
     },
     mutationKey: ['updateRole', id],
   });
