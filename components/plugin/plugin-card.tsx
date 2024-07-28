@@ -57,6 +57,7 @@ export default function PluginCard({
         <h2>{name}</h2>
       </Link>
       <span>{description}</span>
+      <span>{description}</span>
       <div className="flex gap-2">
         <DeleteButton
           className="absolute right-1 top-1 border-none"
