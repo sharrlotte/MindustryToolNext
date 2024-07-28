@@ -142,12 +142,6 @@ export function NavItems({ onClick }: NavItemsProps) {
               name: t('post'),
               icon: <BookOpenIcon className="h-5 w-5" />,
             },
-            {
-              path: '/upload/plugin', //
-              name: t('plugin'),
-              icon: <PuzzlePieceIcon className="h-5 w-5" />,
-              roles: ['ADMIN'],
-            },
           ],
         },
       ],
