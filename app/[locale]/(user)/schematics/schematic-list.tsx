@@ -72,7 +72,7 @@ export default function SchematicList() {
           </GridPaginationList>
         }
       />
-      <div className="justify-between items-center flex">
+      <div className="justify-between items-center flex flex-wrap">
         <span>Found {data} schematics</span>
         <div className="flex gap-1">
           <Button
