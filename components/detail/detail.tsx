@@ -3,7 +3,9 @@ import React, { HTMLAttributes } from 'react';
 
 import ColorText from '@/components/common/color-text';
 import TagContainer from '@/components/tag/tag-container';
+import env from '@/constant/env';
 import { cn } from '@/lib/utils';
+import icon from '@/public/assets/icon.json';
 import { Tags } from '@/types/response/Tag';
 
 type DetailProps = HTMLAttributes<HTMLDivElement>;
@@ -113,10 +115,55 @@ type DescriptionProps = Omit<
   children: string;
 };
 
+type TextAndIcon = (string | { link: string } | TextAndIcon)[];
+
 export function DetailDescription({ className, children }: DescriptionProps) {
+  const result: ({ link: string } | string)[] = [];
+  let text = children;
+
+  function findOne(str: string) {
+    for (let i = 0; i < str.length; i++) {
+      // Get unicode in hexadecimal
+      const key = str.charCodeAt(i);
+      // In private use area off .ttf
+      if (key <= 63743 && key >= 63092) {
+        // Get block name base on icon.properties
+        return i;
+      }
+    }
+    return -1;
+  }
+  let index = -1;
+  do {
+    index = findOne(text);
+
+    if (index !== -1) {
+      const key = text.charCodeAt(index);
+      const iconName = (icon as any)[key.toString()].split('|')[1];
+
+      result.push(text.substring(0, index));
+      result.push({ link: iconName });
+
+      text = text.substring(index + 1);
+    }
+  } while (index != -1);
+
   return (
-    <section className={cn('flex flex-col gap-1', className)}>
-      <ColorText text={children} />
+    <section className={cn('flex flex-wrap gap-0.5', className)}>
+      {result.map((item, index) =>
+        typeof item === 'string' ? (
+          <ColorText className="whitespace-nowrap" key={index} text={item} />
+        ) : (
+          <Image
+            className="size-5"
+            key={index}
+            width={20}
+            height={20}
+            src={`${env.url.base}/assets/sprite/${item.link}.png`}
+            alt={item.link}
+          />
+        ),
+      )}
     </section>
   );
 }

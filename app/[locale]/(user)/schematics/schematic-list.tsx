@@ -5,7 +5,11 @@ import { PlusIcon, UserIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
-import PaginationLayout from '@/components/common/pagination-layout';
+import {
+  PaginationLayout,
+  PaginationLayoutSwitcher,
+} from '@/components/common/pagination-layout';
+import PaginationNavigator from '@/components/common/pagination-navigator';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
@@ -31,6 +35,10 @@ export default function SchematicList() {
   return (
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
       <NameTagSearch tags={schematic} />
+      <div className="flex justify-between">
+        <span>Found {data} schematics</span>
+        <PaginationLayoutSwitcher />
+      </div>
       <PaginationLayout
         list={
           <div
@@ -72,8 +80,8 @@ export default function SchematicList() {
           </GridPaginationList>
         }
       />
-      <div className="justify-between items-center flex flex-wrap">
-        <span>Found {data} schematics</span>
+      <div className="sm:justify-between justify-end items-center flex flex-wrap gap-4">
+        <PaginationNavigator numberOfItems={data ?? 0} />
         <div className="flex gap-1">
           <Button
             title="My schematic"
