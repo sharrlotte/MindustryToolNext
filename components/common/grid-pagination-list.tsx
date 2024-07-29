@@ -99,7 +99,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     <div className="h-full overflow-hidden flex">
       <div
         className={cn(
-          'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 pr-0.5',
+          'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 pr-0.5 overflow-y-auto',
           className,
         )}
       >
