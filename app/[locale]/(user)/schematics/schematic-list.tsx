@@ -80,7 +80,7 @@ export default function SchematicList() {
           </GridPaginationList>
         }
       />
-      <div className="sm:justify-between justify-end items-center flex flex-wrap gap-4">
+      <div className="sm:justify-between justify-end sm:flex-row-reverse items-center flex flex-wrap gap-4">
         <PaginationNavigator numberOfItems={data ?? 0} />
         <div className="flex gap-1">
           <Button

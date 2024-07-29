@@ -102,13 +102,15 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   }
 
   return (
-    <div
-      className={cn(
-        'overflow-hidden h-full grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 overflow-y-auto pr-0.5',
-        className,
-      )}
-    >
-      {render()}
+    <div className="h-full">
+      <div
+        className={cn(
+          'overflow-hidden grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 overflow-y-auto pr-0.5',
+          className,
+        )}
+      >
+        {render()}
+      </div>
     </div>
   );
 }
