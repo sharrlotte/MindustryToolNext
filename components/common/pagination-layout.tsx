@@ -9,28 +9,26 @@ type Props = {
   list: ReactNode;
 };
 
-export default function PaginationLayout({ grid, list }: Props) {
+export function PaginationLayoutSwitcher() {
   const { type, setType } = usePaginationType();
 
   return (
-    <div className="flex gap-2 flex-col h-full overflow-hidden">
-      <div className="flex justify-end">
-        <ToggleGroup value={type} type="single" onValueChange={setType}>
-          <ToggleGroupItem
-            className="data-[state=on]:bg-secondary"
-            value="grid"
-          >
-            <LayoutGridIcon className="size-5" />
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            className="data-[state=on]:bg-secondary"
-            value="infinite-list"
-          >
-            <ListIcon className="size-5" />
-          </ToggleGroupItem>
-        </ToggleGroup>
-      </div>
-      {type === 'grid' ? grid : list}
-    </div>
+    <ToggleGroup value={type} type="single" onValueChange={setType}>
+      <ToggleGroupItem className="data-[state=on]:bg-secondary" value="grid">
+        <LayoutGridIcon className="size-5" />
+      </ToggleGroupItem>
+      <ToggleGroupItem
+        className="data-[state=on]:bg-secondary"
+        value="infinite-list"
+      >
+        <ListIcon className="size-5" />
+      </ToggleGroupItem>
+    </ToggleGroup>
   );
+}
+
+export function PaginationLayout({ grid, list }: Props) {
+  const { type } = usePaginationType();
+
+  return type === 'grid' ? grid : list;
 }

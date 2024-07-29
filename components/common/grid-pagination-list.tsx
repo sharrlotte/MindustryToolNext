@@ -1,26 +1,10 @@
 import { AxiosInstance } from 'axios';
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { ReactNode, useMemo, useState } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 
 import EndOfPage from '@/components/common/end-of-page';
 import ErrorSpinner from '@/components/common/error-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-} from '@/components/ui/pagination';
 import useClientAPI from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import { cn } from '@/lib/utils';
@@ -52,7 +36,6 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   noResult,
   end,
   skeleton,
-  numberOfItems,
   getFunc,
   children,
 }: Props<T, P>) {
@@ -73,11 +56,6 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     queryFn: () => getFunc(axios, prefetchParams),
     queryKey: [...queryKey, prefetchParams],
   });
-
-  const [open, setOpen] = useState(false);
-  const [selectedPage, setSelectedPage] = useState(0);
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   const skeletonElements = useMemo(() => {
     if (skeleton)
@@ -103,37 +81,6 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
 
   end = end ?? <EndOfPage />;
 
-  function handlePageChange(page: number) {
-    const path = new URLSearchParams(searchParams);
-    path.set('page', page.toString());
-    router.replace(`?${path.toString()}`);
-  }
-
-  const currentPage = params.page;
-  const lastPage = Math.ceil(numberOfItems / params.size) - 1;
-
-  const hasNextPage = currentPage < lastPage;
-  const hasPrevPage = currentPage > 0;
-
-  let firstNumber = currentPage - 1;
-  let secondNumber = currentPage;
-
-  if (firstNumber <= -1) {
-    firstNumber += 1;
-    secondNumber += 1;
-  }
-
-  let secondLastNumber = lastPage - 1;
-  let lastNumber = lastPage;
-
-  if (secondNumber >= secondLastNumber) {
-    firstNumber = 0;
-    secondNumber = 1;
-  }
-
-  const nextPage = currentPage + 1;
-  const previousPage = currentPage - 1;
-
   function render() {
     if (isLoading) {
       return loader ? loader : skeletonElements;
@@ -154,118 +101,14 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     return data.map((item, index) => children(item, index));
   }
 
-  function handleSelectPage() {
-    if (selectedPage < 0 || selectedPage > lastPage) return;
-    handlePageChange(selectedPage);
-    setOpen(false);
-  }
-
   return (
-    <>
-      <div
-        className={cn(
-          'overflow-hidden h-full grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 overflow-y-auto',
-          className,
-        )}
-      >
-        {render()}
-      </div>
-      <div className="flex justify-end items-end col-span-full">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <Button
-                title="0"
-                onClick={() => handlePageChange(previousPage)}
-                variant="ghost"
-                disabled={!hasPrevPage}
-              >
-                <ChevronLeftIcon className="h-4 w-4" />
-                Previous
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                title="prev"
-                onClick={() => handlePageChange(firstNumber)}
-                variant={firstNumber === currentPage ? 'outline' : 'ghost'}
-              >
-                {firstNumber}
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                title="prev"
-                onClick={() => handlePageChange(secondNumber)}
-                variant={secondNumber === currentPage ? 'outline' : 'ghost'}
-              >
-                {secondNumber}
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger>
-                  <PaginationEllipsis />
-                </DialogTrigger>
-                <DialogContent className="p-6">
-                  <DialogTitle>Select page</DialogTitle>
-                  <Input
-                    type="number"
-                    value={selectedPage}
-                    onChange={(event) =>
-                      setSelectedPage(event.currentTarget.valueAsNumber)
-                    }
-                  />
-                  {(selectedPage < 0 || selectedPage > lastPage) && (
-                    <span className="text-destructive text-sm">
-                      Page must above 0 and below {lastPage}
-                    </span>
-                  )}
-                  <div className="flex justify-end">
-                    <Button
-                      className="flex"
-                      onClick={handleSelectPage}
-                      title="Go to page"
-                      variant="primary"
-                    >
-                      Go
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                title="prev"
-                onClick={() => handlePageChange(secondLastNumber)}
-                variant={secondLastNumber === currentPage ? 'outline' : 'ghost'}
-              >
-                {secondLastNumber}
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                title="prev"
-                onClick={() => handlePageChange(lastNumber)}
-                variant={lastNumber === currentPage ? 'outline' : 'ghost'}
-              >
-                {lastNumber}
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                title="0"
-                onClick={() => handlePageChange(nextPage)}
-                variant="ghost"
-                disabled={!hasNextPage}
-              >
-                Next
-                <ChevronRightIcon className="h-4 w-4" />
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
-    </>
+    <div
+      className={cn(
+        'overflow-hidden h-full grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 overflow-y-auto pr-0.5',
+        className,
+      )}
+    >
+      {render()}
+    </div>
   );
 }
