@@ -1,7 +1,6 @@
 import { AxiosInstance } from 'axios';
 import React, { ReactNode, useMemo } from 'react';
 
-import EndOfPage from '@/components/common/end-of-page';
 import ErrorSpinner from '@/components/common/error-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
@@ -18,12 +17,10 @@ type Props<T, P> = {
   params: P;
   loader?: ReactNode;
   noResult?: ReactNode;
-  end?: ReactNode;
   skeleton?: {
     amount: number;
     item: ReactNode;
   };
-  numberOfItems: number;
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
   children: (data: T, index?: number) => ReactNode;
 };
@@ -34,7 +31,6 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   params,
   loader,
   noResult,
-  end,
   skeleton,
   getFunc,
   children,
@@ -79,8 +75,6 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     );
   }
 
-  end = end ?? <EndOfPage />;
-
   function render() {
     if (isLoading) {
       return loader ? loader : skeletonElements;
@@ -102,7 +96,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   }
 
   return (
-    <div className="h-full">
+    <div className="h-full overflow-hidden flex">
       <div
         className={cn(
           'overflow-hidden grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 overflow-y-auto pr-0.5',

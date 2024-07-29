@@ -6,7 +6,8 @@ import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import {
-  PaginationLayout,
+  GridLayout,
+  ListLayout,
   PaginationLayoutSwitcher,
 } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
@@ -39,49 +40,46 @@ export default function SchematicList() {
         <span>Found {data} schematics</span>
         <PaginationLayoutSwitcher />
       </div>
-      <PaginationLayout
-        list={
-          <div
-            className="relative flex h-full flex-col overflow-auto"
-            ref={(ref) => setContainer(ref)}
-          >
-            <ResponsiveInfiniteScrollGrid
-              params={params}
-              queryKey={['schematics']}
-              getFunc={getSchematics}
-              container={() => container}
-              skeleton={{
-                amount: 20,
-                item: <PreviewSkeleton />,
-              }}
-              itemMinWidth={320}
-              itemMinHeight={352}
-              contentOffsetHeight={112}
-              gap={8}
-            >
-              {(data) => (
-                <SchematicPreviewCard key={data.id} schematic={data} />
-              )}
-            </ResponsiveInfiniteScrollGrid>
-          </div>
-        }
-        grid={
-          <GridPaginationList
+      <ListLayout>
+        <div
+          className="relative flex h-full flex-col overflow-auto"
+          ref={(ref) => setContainer(ref)}
+        >
+          <ResponsiveInfiniteScrollGrid
             params={params}
-            queryKey={['schematics']}
+            queryKey={['schematic']}
             getFunc={getSchematics}
+            container={() => container}
             skeleton={{
               amount: 20,
               item: <PreviewSkeleton />,
             }}
-            numberOfItems={data ?? 0}
+            itemMinWidth={320}
+            itemMinHeight={352}
+            contentOffsetHeight={112}
+            gap={8}
           >
             {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
-          </GridPaginationList>
-        }
-      />
+          </ResponsiveInfiniteScrollGrid>
+        </div>
+      </ListLayout>
+      <GridLayout>
+        <GridPaginationList
+          params={params}
+          queryKey={['schematic']}
+          getFunc={getSchematics}
+          skeleton={{
+            amount: 20,
+            item: <PreviewSkeleton />,
+          }}
+        >
+          {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+        </GridPaginationList>
+      </GridLayout>
       <div className="sm:justify-between justify-end sm:flex-row-reverse items-center flex flex-wrap gap-4">
-        <PaginationNavigator numberOfItems={data ?? 0} />
+        <GridLayout>
+          <PaginationNavigator numberOfItems={data ?? 0} />
+        </GridLayout>
         <div className="flex gap-1">
           <Button
             title="My schematic"
@@ -92,7 +90,7 @@ export default function SchematicList() {
           </Button>
           <Button title="Add" className="items-center flex gap-2 pl-1 pr-3">
             <PlusIcon />
-            Add your schematic
+            Add schematic
           </Button>
         </div>
       </div>
