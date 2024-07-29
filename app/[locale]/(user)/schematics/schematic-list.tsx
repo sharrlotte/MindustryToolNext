@@ -2,6 +2,7 @@
 
 import { omit } from 'lodash';
 import { PlusIcon, UserIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -16,9 +17,11 @@ import SchematicPreviewCard from '@/components/schematic/schematic-preview-card'
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Button } from '@/components/ui/button';
+import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
-import useSearchQuery, { ItemPaginationQuery } from '@/hooks/use-search-query';
+import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
+import { ItemPaginationQuery } from '@/query/query';
 import { getSchematicCount } from '@/query/schematic';
 import getSchematics from '@/query/schematic/get-schematics';
 
@@ -81,13 +84,14 @@ export default function SchematicList() {
           <PaginationNavigator numberOfItems={data ?? 0} />
         </GridLayout>
         <div className="flex gap-1">
-          <Button
+          <Link
+            className="items-center flex gap-2 pl-1 pr-3 border border-border rounded-md"
+            href={`${env.url.base}/users/me`}
             title="My schematic"
-            className="items-center flex gap-2 pl-1 pr-3"
           >
             <UserIcon className="size-5" />
             My schematic
-          </Button>
+          </Link>
           <Button title="Add" className="items-center flex gap-2 pl-1 pr-3">
             <PlusIcon />
             Add schematic

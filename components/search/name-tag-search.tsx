@@ -202,22 +202,6 @@ export default function NameTagSearch({
             </Button>
           )}
         </Search>
-        {useSort && (
-          <ComboBox
-            value={{
-              // @ts-ignore
-              label: t(selectedSortTag.toLowerCase()),
-              value: selectedSortTag,
-            }}
-            values={sortTagGroup.values.map((value) => ({
-              // @ts-ignore
-              label: t(value.toLowerCase()),
-              value: value as SortTag,
-            }))}
-            onChange={(value) => handleSortChange(value ?? defaultSortTag)}
-            searchBar={false}
-          />
-        )}
         {useTag && (
           <Button
             className="border border-none border-border bg-card shadow-md dark:border-solid dark:bg-transparent"
@@ -237,14 +221,34 @@ export default function NameTagSearch({
             onClickOutside={handleHideFilterDialog}
           >
             <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
-              <Search className="w-full p-1">
-                <Search.Icon className="p-1" />
-                <Search.Input
-                  placeholder={t('filter')}
-                  value={filter}
-                  onChange={(event) => setFilter(event.currentTarget.value)}
-                />
-              </Search>
+              <div className="flex gap-1">
+                <Search className="w-full p-1">
+                  <Search.Icon className="p-1" />
+                  <Search.Input
+                    placeholder={t('filter')}
+                    value={filter}
+                    onChange={(event) => setFilter(event.currentTarget.value)}
+                  />
+                </Search>
+                {useSort && (
+                  <ComboBox
+                    value={{
+                      // @ts-ignore
+                      label: t(selectedSortTag.toLowerCase()),
+                      value: selectedSortTag,
+                    }}
+                    values={sortTagGroup.values.map((value) => ({
+                      // @ts-ignore
+                      label: t(value.toLowerCase()),
+                      value: value as SortTag,
+                    }))}
+                    onChange={(value) =>
+                      handleSortChange(value ?? defaultSortTag)
+                    }
+                    searchBar={false}
+                  />
+                )}
+              </div>
               <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
                 <FilterTags
                   filter={filter}

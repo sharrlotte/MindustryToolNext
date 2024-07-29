@@ -16,7 +16,8 @@ import {
   PaginationEllipsis,
   PaginationItem,
 } from '@/components/ui/pagination';
-import useSearchQuery, { PaginationQuery } from '@/hooks/use-search-query';
+import useSearchQuery from '@/hooks/use-search-query';
+import { PaginationQuery } from '@/query/query';
 
 type Props = {
   numberOfItems: number;
