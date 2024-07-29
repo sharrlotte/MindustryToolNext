@@ -1,3 +1,5 @@
+'use server';
+
 import { AxiosInstance } from 'axios';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -21,10 +23,10 @@ export async function revalidate(path: string) {
   revalidatePath(path);
 }
 
-export function getQuery<T extends QuerySchema>(
+export async function getQuery<T extends QuerySchema>(
   params: any,
   schema: T,
-): z.infer<typeof schema> {
+): Promise<z.infer<typeof schema>> {
   const result = schema.parse(params);
 
   return result;

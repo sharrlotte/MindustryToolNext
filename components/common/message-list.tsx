@@ -166,6 +166,12 @@ export default function MessageList({
   ]);
 
   useEffect(() => {
+    const interval = setInterval(checkIfNeedFetchMore, 3000);
+
+    return () => clearInterval(interval);
+  }, [checkIfNeedFetchMore]);
+
+  useEffect(() => {
     if (
       pages.length &&
       currentContainer &&
