@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { QuerySchema } from '@/query/query';
 
 const groupParamsByKey = (params: URLSearchParams) =>
-  params.entries().reduce<Record<string, any>>((acc, tuple) => {
+  [...params.entries()].reduce<Record<string, any>>((acc, tuple) => {
     const [key, val] = tuple;
     if (acc.hasOwnProperty(key)) {
       if (Array.isArray(acc[key])) {
