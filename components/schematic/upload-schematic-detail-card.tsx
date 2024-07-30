@@ -23,7 +23,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { usePostTags } from '@/hooks/use-tags';
+import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
@@ -47,7 +47,7 @@ export default function UploadSchematicDetailCard({
   const { toast } = useToast();
   const { back } = useRouter();
   const axios = useClientAPI();
-  const { schematic: schematicTags } = usePostTags();
+  const { schematic: schematicTags } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
   const t = useI18n();

@@ -85,17 +85,21 @@ export default function SchematicList() {
         </GridLayout>
         <div className="flex gap-1">
           <Link
-            className="items-center flex gap-2 pl-1 pr-3 border border-border rounded-md"
+            className="items-center flex gap-2 py-1 pl-1 pr-3 border border-border rounded-md"
             href={`${env.url.base}/users/me`}
             title="My schematic"
           >
             <UserIcon className="size-5" />
             My schematic
           </Link>
-          <Button title="Add" className="items-center flex gap-2 pl-1 pr-3">
-            <PlusIcon />
+          <Link
+            className="items-center flex gap-2 py-1 pl-1 pr-3 border border-border rounded-md"
+            href={`${env.url.base}/upload/schematic`}
+            title="My schematic"
+          >
+            <PlusIcon className="size-5" />
             Add schematic
-          </Button>
+          </Link>
         </div>
       </div>
     </div>

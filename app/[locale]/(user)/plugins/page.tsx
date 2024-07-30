@@ -23,7 +23,7 @@ import { Input } from '@/components/ui/input';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchPageParams from '@/hooks/use-search-page-params';
-import { usePostTags, useSearchTags } from '@/hooks/use-tags';
+import { useSearchTags, useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import getPlugins from '@/query/plugin/get-plugins';
@@ -69,7 +69,7 @@ export default function Page() {
 
 function AddPluginButton() {
   const axios = useClientAPI();
-  const { plugin } = usePostTags();
+  const { plugin } = useUploadTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 

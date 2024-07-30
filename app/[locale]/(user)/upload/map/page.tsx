@@ -14,7 +14,7 @@ import { PNG_IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { usePostTags } from '@/hooks/use-tags';
+import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import postMap from '@/query/map/post-map';
@@ -32,6 +32,8 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   const axios = useClientAPI();
   const [file, setFile] = useState<File>();
@@ -39,7 +41,7 @@ export default function Page() {
   const { session } = useSession();
 
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const { map } = usePostTags();
+  const { map } = useUploadTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 

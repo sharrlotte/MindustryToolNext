@@ -22,7 +22,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { usePostTags } from '@/hooks/use-tags';
+import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import deleteMap from '@/query/map/delete-map';
@@ -42,7 +42,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
   const axios = useClientAPI();
-  const { map: mapTags } = usePostTags();
+  const { map: mapTags } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { deleteById, invalidateByKey } = useQueriesData();
   const t = useI18n();

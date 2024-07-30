@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/form';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { usePostTags } from '@/hooks/use-tags';
+import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import deletePlugin from '@/query/plugin/delete-plugin';
@@ -101,7 +101,7 @@ type DialogProps = {
 
 function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const axios = useClientAPI();
-  const { plugin } = usePostTags();
+  const { plugin } = useUploadTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 
