@@ -5,8 +5,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { usePaginationType } from '@/zustand/pagination-type';
 
 type Props = {
-  grid: ReactNode;
-  list: ReactNode;
+  children: ReactNode;
 };
 
 export function PaginationLayoutSwitcher() {
@@ -19,7 +18,7 @@ export function PaginationLayoutSwitcher() {
       </ToggleGroupItem>
       <ToggleGroupItem
         className="data-[state=on]:bg-secondary"
-        value="infinite-list"
+        value="infinite-scroll"
       >
         <ListIcon className="size-5" />
       </ToggleGroupItem>
@@ -27,8 +26,14 @@ export function PaginationLayoutSwitcher() {
   );
 }
 
-export function PaginationLayout({ grid, list }: Props) {
+export function ListLayout({ children }: Props) {
   const { type } = usePaginationType();
 
-  return type === 'grid' ? grid : list;
+  return type === 'infinite-scroll' ? children : undefined;
+}
+
+export function GridLayout({ children }: Props) {
+  const { type } = usePaginationType();
+
+  return type === 'grid' ? children : undefined;
 }

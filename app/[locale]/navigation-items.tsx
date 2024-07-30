@@ -123,27 +123,6 @@ export function NavItems({ onClick }: NavItemsProps) {
           path: '/plugins',
           icon: <PuzzlePieceIcon className="h-5 w-5" />,
         },
-        {
-          name: t('upload'),
-          icon: <ArrowUpTrayIcon className="h-5 w-5" />,
-          path: [
-            {
-              name: t('schematic'),
-              path: '/upload/schematic',
-              icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
-            },
-            {
-              path: '/upload/map',
-              name: t('map'),
-              icon: <MapIcon className="h-5 w-5" />,
-            },
-            {
-              path: '/upload/post', //
-              name: t('post'),
-              icon: <BookOpenIcon className="h-5 w-5" />,
-            },
-          ],
-        },
       ],
     },
     {

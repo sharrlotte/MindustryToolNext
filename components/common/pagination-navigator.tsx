@@ -16,7 +16,8 @@ import {
   PaginationEllipsis,
   PaginationItem,
 } from '@/components/ui/pagination';
-import useSearchQuery, { PaginationQuery } from '@/hooks/use-search-query';
+import useSearchQuery from '@/hooks/use-search-query';
+import { PaginationQuery } from '@/query/query';
 
 type Props = {
   numberOfItems: number;
@@ -88,20 +89,24 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
             {firstNumber}
           </Button>
         </PaginationItem>
-        <PaginationItem>
-          <Button
-            title="prev"
-            onClick={() => handlePageChange(secondNumber)}
-            variant={secondNumber === currentPage ? 'outline' : 'ghost'}
-          >
-            {secondNumber}
-          </Button>
-        </PaginationItem>
+        {lastPage > 1 && (
+          <PaginationItem>
+            <Button
+              title="prev"
+              onClick={() => handlePageChange(secondNumber)}
+              variant={secondNumber === currentPage ? 'outline' : 'ghost'}
+            >
+              {secondNumber}
+            </Button>
+          </PaginationItem>
+        )}
         <PaginationItem>
           <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger>
-              <PaginationEllipsis />
-            </DialogTrigger>
+            {lastPage > 1 && (
+              <DialogTrigger>
+                <PaginationEllipsis />
+              </DialogTrigger>
+            )}
             <DialogContent className="p-6">
               <DialogTitle>Select page</DialogTitle>
               <Input
@@ -129,24 +134,28 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
             </DialogContent>
           </Dialog>
         </PaginationItem>
-        <PaginationItem>
-          <Button
-            title="prev"
-            onClick={() => handlePageChange(secondLastNumber)}
-            variant={secondLastNumber === currentPage ? 'outline' : 'ghost'}
-          >
-            {secondLastNumber}
-          </Button>
-        </PaginationItem>
-        <PaginationItem>
-          <Button
-            title="prev"
-            onClick={() => handlePageChange(lastNumber)}
-            variant={lastNumber === currentPage ? 'outline' : 'ghost'}
-          >
-            {lastNumber}
-          </Button>
-        </PaginationItem>
+        {lastPage > 2 && (
+          <PaginationItem>
+            <Button
+              title="prev"
+              onClick={() => handlePageChange(secondLastNumber)}
+              variant={secondLastNumber === currentPage ? 'outline' : 'ghost'}
+            >
+              {secondLastNumber}
+            </Button>
+          </PaginationItem>
+        )}
+        {lastPage > 1 && (
+          <PaginationItem>
+            <Button
+              title="prev"
+              onClick={() => handlePageChange(lastNumber)}
+              variant={lastNumber === currentPage ? 'outline' : 'ghost'}
+            >
+              {lastNumber}
+            </Button>
+          </PaginationItem>
+        )}
         <PaginationItem>
           <Button
             className="px-1"

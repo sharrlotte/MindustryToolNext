@@ -23,7 +23,7 @@ import { Input } from '@/components/ui/input';
 import useClientAPI from '@/hooks/use-client';
 import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
-import { usePostTags } from '@/hooks/use-tags';
+import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import getMePosts from '@/query/post/get-me-posts';
@@ -234,7 +234,7 @@ function UploadPage({
   const axios = useClientAPI();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
-  const { post: postTags } = usePostTags();
+  const { post: postTags } = useUploadTags();
   const languages = useLanguages();
   const t = useI18n();
 

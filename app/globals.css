@@ -115,19 +115,20 @@
   }
 
   div::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    background-clip: padding-box;
+
+    @apply bg-white bg-opacity-20;
   }
 
   div::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
   }
 
   div::-webkit-scrollbar-thumb {
-    border: 4px solid transparent;
     background-clip: padding-box;
     border-radius: 9999px;
-    @apply border-2 border-transparent bg-white bg-clip-padding;
+    @apply bg-white bg-clip-padding;
   }
 
   div::-webkit-scrollbar-button {

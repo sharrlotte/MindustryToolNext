@@ -1,10 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import LoadingWrapper from '@/components/common/loading-wrapper';
+import UploadField from '@/components/common/upload-field';
 import { DetailDescription, DetailTitle } from '@/components/detail/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import NameTagSelector from '@/components/search/name-tag-selector';
@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
@@ -21,7 +22,7 @@ import { PNG_IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { usePostTags } from '@/hooks/use-tags';
+import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
@@ -36,22 +37,14 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-// eslint-disable @next/next/no-img-element
-
-export default function Page() {
+export default function UploadSchematic() {
   const axios = useClientAPI();
   const [data, setData] = useState<File | string | undefined>();
   const [preview, setPreview] = useState<SchematicPreviewResponse>();
   const { session } = useSession();
 
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const { schematic } = usePostTags();
+  const { schematic } = useUploadTags();
   const [isOpen, setOpen] = useState(false);
 
   const t = useI18n();
@@ -99,9 +92,8 @@ export default function Page() {
 
   const isLoading = isLoadingPostSchematic || isLoadingSchematicPreview;
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const files = event.target.files;
-    if (!files || files.length <= 0 || !files[0]) {
+  function handleFileChange(files: File[]) {
+    if (!files.length || !files[0]) {
       toast({
         title: t('upload.no-file'),
         variant: 'destructive',
@@ -176,9 +168,17 @@ export default function Page() {
 
   const uploadCheck = checkUploadRequirement();
 
+  function handleFileDrops(files: File[]) {
+    if (!files || !files.length) {
+      return;
+    }
+
+    handleFileChange(files);
+  }
+
   return (
     <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
-      <div className="flex flex-1 flex-col gap-2 rounded-md bg-card p-2">
+      <div className="flex flex-1 flex-col gap-2 rounded-md p-2">
         <section className="flex min-h-10 flex-row flex-wrap items-center gap-2 md:flex-row md:items-start">
           <Dialog open={isOpen} onOpenChange={setOpen}>
             <DialogTrigger
@@ -205,26 +205,12 @@ export default function Page() {
                 )}
               </LoadingWrapper>
             </DialogTrigger>
-            <DialogContent className="w-4/5 rounded-md">
+            <DialogContent className="w-4/5 rounded-md p-6">
               <DialogTitle> {t('upload.select-schematic')}</DialogTitle>
-              <div className="grid items-stretch justify-stretch gap-2">
-                <Button
-                  title={t('upload.select-schematic-file')}
-                  variant="primary"
-                  asChild
-                >
-                  <label className="hover:cursor-pointer" htmlFor="file">
-                    {t('upload.select-schematic-file')}
-                  </label>
-                </Button>
-                <input
-                  id="file"
-                  type="file"
-                  hidden
-                  disabled={isLoading}
-                  accept=".msch"
-                  onChange={(event) => handleFileChange(event)}
-                />
+              <DialogDescription />
+              <div className="grid items-center w-full gap-2">
+                <UploadField onFileDrop={handleFileDrops} />
+                <span className="text-center">or</span>
                 <Button
                   variant="primary"
                   title={'copy-from-clipboard'}
@@ -255,7 +241,7 @@ export default function Page() {
           )}
         </section>
       </div>
-      <div className="flex flex-col items-end justify-center rounded-md bg-card p-2">
+      <div className="flex flex-col items-end justify-center rounded-md p-2">
         <Button
           className="w-fit"
           title={t('upload')}

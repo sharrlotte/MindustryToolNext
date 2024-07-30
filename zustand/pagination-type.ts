@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { create } from 'zustand';
 
 const paginationTypes = ['grid', 'infinite-scroll'] as const;
@@ -20,10 +20,11 @@ const DEFAULT_PAGINATION_TYPE = 'grid';
 export function usePaginationType() {
   const { type, setType } = internal();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const storedType = window.localStorage.getItem(
       PAGINATION_TYPE_PERSISTENT_KEY,
     );
+
     if (storedType && paginationTypes.includes(storedType as any)) {
       setType(storedType as PaginationType);
     } else {
@@ -31,12 +32,13 @@ export function usePaginationType() {
     }
   }, [setType]);
 
-  useEffect(() => {
+  function handleSetType(type: PaginationType) {
+    setType(type);
     localStorage.setItem(PAGINATION_TYPE_PERSISTENT_KEY, type);
-  }, [type]);
+  }
 
   return {
     type,
-    setType,
+    setType: handleSetType,
   };
 }

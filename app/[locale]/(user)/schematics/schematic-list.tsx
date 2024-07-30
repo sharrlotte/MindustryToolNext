@@ -2,11 +2,13 @@
 
 import { omit } from 'lodash';
 import { PlusIcon, UserIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import {
-  PaginationLayout,
+  GridLayout,
+  ListLayout,
   PaginationLayoutSwitcher,
 } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
@@ -15,9 +17,11 @@ import SchematicPreviewCard from '@/components/schematic/schematic-preview-card'
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Button } from '@/components/ui/button';
+import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
-import useSearchQuery, { ItemPaginationQuery } from '@/hooks/use-search-query';
+import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
+import { ItemPaginationQuery } from '@/query/query';
 import { getSchematicCount } from '@/query/schematic';
 import getSchematics from '@/query/schematic/get-schematics';
 
@@ -39,61 +43,63 @@ export default function SchematicList() {
         <span>Found {data} schematics</span>
         <PaginationLayoutSwitcher />
       </div>
-      <PaginationLayout
-        list={
-          <div
-            className="relative flex h-full flex-col overflow-auto"
-            ref={(ref) => setContainer(ref)}
-          >
-            <ResponsiveInfiniteScrollGrid
-              params={params}
-              queryKey={['schematics']}
-              getFunc={getSchematics}
-              container={() => container}
-              skeleton={{
-                amount: 20,
-                item: <PreviewSkeleton />,
-              }}
-              itemMinWidth={320}
-              itemMinHeight={352}
-              contentOffsetHeight={112}
-              gap={8}
-            >
-              {(data) => (
-                <SchematicPreviewCard key={data.id} schematic={data} />
-              )}
-            </ResponsiveInfiniteScrollGrid>
-          </div>
-        }
-        grid={
-          <GridPaginationList
+      <ListLayout>
+        <div
+          className="relative flex h-full flex-col overflow-auto"
+          ref={(ref) => setContainer(ref)}
+        >
+          <ResponsiveInfiniteScrollGrid
             params={params}
-            queryKey={['schematics']}
+            queryKey={['schematic']}
             getFunc={getSchematics}
+            container={() => container}
             skeleton={{
               amount: 20,
               item: <PreviewSkeleton />,
             }}
-            numberOfItems={data ?? 0}
+            itemMinWidth={320}
+            itemMinHeight={352}
+            contentOffsetHeight={112}
+            gap={8}
           >
             {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
-          </GridPaginationList>
-        }
-      />
-      <div className="sm:justify-between justify-end items-center flex flex-wrap gap-4">
-        <PaginationNavigator numberOfItems={data ?? 0} />
+          </ResponsiveInfiniteScrollGrid>
+        </div>
+      </ListLayout>
+      <GridLayout>
+        <GridPaginationList
+          params={params}
+          queryKey={['schematic']}
+          getFunc={getSchematics}
+          skeleton={{
+            amount: 20,
+            item: <PreviewSkeleton />,
+          }}
+        >
+          {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+        </GridPaginationList>
+      </GridLayout>
+      <div className="sm:justify-between justify-end sm:flex-row-reverse items-center flex flex-wrap gap-4">
+        <GridLayout>
+          <PaginationNavigator numberOfItems={data ?? 0} />
+        </GridLayout>
         <div className="flex gap-1">
-          <Button
+          <Link
+            className="items-center flex gap-2 py-1 pl-1 pr-3 border border-border rounded-md"
+            href={`${env.url.base}/users/me`}
             title="My schematic"
-            className="items-center flex gap-2 pl-1 pr-3"
           >
             <UserIcon className="size-5" />
             My schematic
-          </Button>
-          <Button title="Add" className="items-center flex gap-2 pl-1 pr-3">
-            <PlusIcon />
-            Add your schematic
-          </Button>
+          </Link>
+          <Link
+            className="items-center flex gap-2 py-1 pl-1 pr-3 border border-border rounded-md"
+            href={`${env.url.base}/upload/schematic`}
+            title="My schematic"
+          >
+            <PlusIcon className="size-5" />
+            Add schematic
+          </Link>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
-import { cn } from '@/lib/utils';
-
 import Image from 'next/image';
 import React, { useState } from 'react';
+
+import { cn } from '@/lib/utils';
 
 type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -9,7 +9,7 @@ export function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'flex min-h-preview-height animate-appear flex-col rounded-md border bg-card shadow-md',
+        'flex min-h-preview-height  max-h-[calc(var(--preview-size)+200px)] max-w-[calc(var(--preview-size)+100px)] animate-appear flex-col rounded-md border bg-card shadow-md',
         className,
       )}
       {...props}

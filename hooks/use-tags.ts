@@ -16,7 +16,7 @@ export function useSearchTags(): AllTagGroup {
   return data ?? { schematic: [], map: [], post: [], plugin: [] };
 }
 
-export function usePostTags(): AllTagGroup {
+export function useUploadTags(): AllTagGroup {
   const { schematic, map, post, plugin } = useSearchTags();
 
   const predicate = (tag: TagGroup) => tag.name !== 'size';

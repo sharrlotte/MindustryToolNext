@@ -1,0 +1,91 @@
+import { UploadIcon } from 'lucide-react';
+import React from 'react';
+
+import { cn } from '@/lib/utils';
+
+type Props = {
+  className?: string;
+  onFileDrop: (files: File[]) => void;
+  accept?: string;
+};
+
+export default function UploadField({ className, accept, onFileDrop }: Props) {
+  function handleDrop(event: React.DragEvent) {
+    event.preventDefault();
+
+    const result = [];
+
+    if (event.dataTransfer.items) {
+      for (let item of event.dataTransfer.items) {
+        const file = item.getAsFile();
+        if (file) {
+          result.push(file);
+        }
+      }
+    } else {
+      for (let file of event.dataTransfer.files) {
+        result.push(file);
+      }
+    }
+
+    if (!isValidFiles(result)) {
+      return;
+    }
+
+    onFileDrop(result);
+  }
+
+  function handleFileSelect(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!event.currentTarget.files) {
+      return;
+    }
+
+    const files = Array.from(event.currentTarget.files);
+
+    if (!isValidFiles(files)) {
+      return;
+    }
+
+    onFileDrop(files);
+  }
+
+  function isValidFiles(files: File[]) {
+    if (accept === undefined) {
+      return true;
+    }
+
+    const extensions = accept?.split(',');
+
+    console.log(extensions);
+
+    return files.every((file) =>
+      extensions?.some((extension) => file.name.endsWith(extension)),
+    );
+  }
+
+  return (
+    <div
+      className={cn(
+        'flex justify-center items-center h-full flex-col w-full border rounded-md border-border p-10',
+        className,
+      )}
+      onDrop={handleDrop}
+      onDragOver={handleDrop}
+    >
+      <UploadIcon className="size-10" />
+      <span>Drag and drop file here</span>
+      <span>
+        <label className="hover:cursor-pointer underline" htmlFor="file">
+          or browse
+        </label>
+        <input
+          id="file"
+          type="file"
+          hidden
+          accept={accept}
+          onChange={handleFileSelect}
+        />
+      </span>
+    </div>
+  );
+}
