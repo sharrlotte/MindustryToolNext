@@ -44,11 +44,11 @@ export default function Page() {
         />
       </div>
       <div
-        className="relative flex h-full flex-col gap-4 overflow-y-auto"
+        className="relative flex h-full flex-col gap-2 overflow-y-auto"
         ref={(ref) => setContainer(ref)}
       >
         <InfinitePage
-          className="grid w-full grid-cols-1 justify-center gap-4 pr-1"
+          className="grid w-full grid-cols-1 justify-center gap-2 pr-2"
           params={{ ...params, role: role?.name as UserRole }}
           queryKey={['user-management']}
           getFunc={getUsers}

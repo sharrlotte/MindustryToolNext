@@ -10,7 +10,7 @@ export type SchematicDetail = {
   description: string;
   requirements: ItemRequirement[];
   tags: string[];
-  like: number;
+  likes: number;
   height: number;
   width: number;
   status: Status;

@@ -4,12 +4,11 @@ import React, { ReactNode, useMemo } from 'react';
 import ErrorSpinner from '@/components/common/error-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
-import useClientAPI from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
-import { QueryKey, useQueryClient } from '@tanstack/react-query';
+import { QueryKey } from '@tanstack/react-query';
 
 type Props<T, P> = {
   className?: string;
@@ -38,19 +37,6 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   const { data, isLoading, error } = useClientQuery({
     queryFn: (axios) => getFunc(axios, params),
     queryKey: [...queryKey, params],
-  });
-
-  const axios = useClientAPI();
-
-  const queryClient = useQueryClient();
-
-  const prefetchParams = { ...params };
-
-  prefetchParams.page += 1;
-
-  queryClient.prefetchQuery({
-    queryFn: () => getFunc(axios, prefetchParams),
-    queryKey: [...queryKey, prefetchParams],
   });
 
   const skeletonElements = useMemo(() => {

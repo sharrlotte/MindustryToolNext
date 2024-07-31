@@ -35,6 +35,17 @@ export default function ComboBox<T>({
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
 
+  const currentLabel = value?.label;
+
+  function handleSelect(item: Value<T>) {
+    if (currentLabel === item.label) {
+      onChange(undefined);
+    } else {
+      onChange(item.value);
+    }
+    setOpen(false);
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -45,14 +56,13 @@ export default function ComboBox<T>({
           )}
           title=""
           role="combobox"
-          aria-expanded={open}
           variant="outline"
         >
           {value ? value.label.toLowerCase() || placeholder : placeholder}
           <ChevronUpDownIcon className="ml-auto h-5 w-5 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] bg-card p-0">
+      <PopoverContent className="w-[200px] bg-card p-0 z-50">
         <div className="mt-0.5 divide-y">
           {searchBar && (
             <div className="flex gap-1 p-1">
@@ -69,27 +79,16 @@ export default function ComboBox<T>({
           )}
           <div className="grid gap-1 p-1">
             {values.map((item) => (
-              <button
-                className={cn(
-                  'relative flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm font-thin capitalize text-foreground outline-none hover:bg-brand hover:text-background aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:text-foreground',
-                  {
-                    'bg-brand text-background': item.label === value?.label,
-                  },
-                )}
-                type="button"
+              <Button
+                className={cn('justify-start capitalize hover:bg-brand', {
+                  'bg-brand text-background': item.label === currentLabel,
+                })}
                 key={item.label}
-                value={item.label}
-                onClick={() => {
-                  if (value?.label === item.label) {
-                    onChange(undefined);
-                  } else {
-                    onChange(item.value);
-                  }
-                  setOpen(false);
-                }}
+                variant="ghost"
+                onClick={() => handleSelect(item)}
               >
                 {item.label.toLowerCase()}
-              </button>
+              </Button>
             ))}
           </div>
         </div>

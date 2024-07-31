@@ -61,7 +61,7 @@ export default function MapPreview({
           {map.isVerified && (
             <LikeComponent
               itemId={map.itemId}
-              initialLikeCount={map.like}
+              initialLikeCount={map.likes}
               initialLikeData={map.userLike}
             >
               <LikeButton />

@@ -82,7 +82,7 @@ const SchematicPreviewCard = memo(function SchematicPreviewCard({
           {schematic.isVerified && (
             <LikeComponent
               itemId={schematic.itemId}
-              initialLikeCount={schematic.like}
+              initialLikeCount={schematic.likes}
               initialLikeData={schematic.userLike}
             >
               <LikeButton />

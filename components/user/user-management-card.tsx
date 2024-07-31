@@ -114,7 +114,7 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
         <DialogTitle>Change Role for {name}</DialogTitle>
         <DialogDescription></DialogDescription>
         <ToggleGroup
-          className="flex justify-between"
+          className="grid grid-cols-2"
           type={'multiple'}
           onValueChange={handleRoleChange}
           defaultValue={roles.map((r) => r.name)}
@@ -123,7 +123,7 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
             ?.filter((r) => r.position < highestRole || highestRole === 32767)
             .map((role) => (
               <ToggleGroupItem
-                className="capitalize px-0 space-x-2 hover:bg-transparent"
+                className="capitalize px-0 space-x-2 hover:bg-transparent justify-start"
                 key={role.id}
                 value={role.name}
               >

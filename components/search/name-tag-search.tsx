@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import OutsideWrapper from '@/components/common/outside-wrapper';
+import Tran from '@/components/common/tran';
 import Search from '@/components/search/search-input';
 import FilterTags from '@/components/tag/filter-tags';
 import TagContainer from '@/components/tag/tag-container';
@@ -43,9 +44,8 @@ export default function NameTagSearch({
 
   const [page, setPage] = useState(0);
   const [name, setName] = useState('');
-  const [selectedFilterTags, setSelectedFilterTags] = useState<TagGroup[]>([]);
-  const [selectedSortTag, setSelectedSortTag] =
-    useState<SortTag>(defaultSortTag);
+  const [filterBy, setFilterBy] = useState<TagGroup[]>([]);
+  const [sortBy, setSortBy] = useState<SortTag>(defaultSortTag);
   const [filter, setFilter] = useState('');
   const [isChanged, setChanged] = useState(false);
   const [showFilterDialog, setShowFilterDialog] = useState(false);
@@ -91,8 +91,8 @@ export default function NameTagSearch({
         .value();
 
       setPage(page);
-      setSelectedSortTag(sortString ?? defaultSortTag);
-      setSelectedFilterTags(tagsArray);
+      setSortBy(sortString ?? defaultSortTag);
+      setFilterBy(tagsArray);
       setName(nameString ?? '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +107,7 @@ export default function NameTagSearch({
       const params = new URLSearchParams();
 
       if (useTag) {
-        selectedFilterTags
+        filterBy
           .map((group) =>
             group.values.map(
               (value) => `${group.name}${TAG_SEPARATOR}${value}`,
@@ -120,7 +120,7 @@ export default function NameTagSearch({
       params.set(QueryParams.page, page.toString());
 
       if (useSort) {
-        params.set(QueryParams.sort, selectedSortTag);
+        params.set(QueryParams.sort, sortBy);
       }
 
       if (name) {
@@ -133,32 +133,32 @@ export default function NameTagSearch({
     };
 
     if (!showFilterDialog) {
-      timeout = setTimeout(() => handleSearch(), 100);
+      timeout = setTimeout(() => handleSearch(), 1000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, showFilterDialog, selectedFilterTags, selectedSortTag]);
+  }, [name, showFilterDialog, filterBy, sortBy]);
 
   const handleTagGroupChange = (name: string, values: string[]) => {
-    const group = selectedFilterTags.find((tag) => tag.name === name);
+    const group = filterBy.find((tag) => tag.name === name);
     if (group) {
       group.values = values;
-      setSelectedFilterTags([...selectedFilterTags]);
+      setFilterBy([...filterBy]);
     } else {
       const result = tagsClone.find((tag) => tag.name === name);
 
       // Ignore tag that not match with server
       if (result) {
         result.values = values;
-        selectedFilterTags.push(result);
+        filterBy.push(result);
         setChanged(true);
-        setSelectedFilterTags([...selectedFilterTags]);
+        setFilterBy([...filterBy]);
       }
     }
   };
 
   const handleSortChange = (value: any) => {
     if (value && sortTag.includes(value)) {
-      setSelectedSortTag(value);
+      setSortBy(value);
       setChanged(true);
     }
   };
@@ -169,7 +169,7 @@ export default function NameTagSearch({
   };
 
   const handleDeleteTag = (tag: Tag) => {
-    setSelectedFilterTags((prev) => {
+    setFilterBy((prev) => {
       const group = prev.find((item) => item.name === tag.name);
       if (group) {
         group.values = group.values.filter((item) => item !== tag.value);
@@ -179,7 +179,7 @@ export default function NameTagSearch({
     });
   };
 
-  const displayTags = Tags.fromTagGroup(selectedFilterTags);
+  const displayTags = Tags.fromTagGroup(filterBy);
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
@@ -233,8 +233,8 @@ export default function NameTagSearch({
                 {useSort && (
                   <ComboBox
                     value={{
-                      label: t(selectedSortTag.toLowerCase()),
-                      value: selectedSortTag,
+                      label: t(sortBy.toLowerCase()),
+                      value: sortBy,
                     }}
                     values={sortTagGroup.values.map((value) => ({
                       label: t(value.toLowerCase()),
@@ -250,18 +250,14 @@ export default function NameTagSearch({
               <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
                 <FilterTags
                   filter={filter}
-                  selectedFilterTags={selectedFilterTags}
+                  filterBy={filterBy}
                   tags={tagsClone}
                   handleTagGroupChange={handleTagGroupChange}
                 />
               </CardContent>
               <CardFooter className="flex justify-end gap-1 p-0">
-                <Button
-                  title={t('close')}
-                  onClick={handleHideFilterDialog}
-                  variant="primary"
-                >
-                  {isChanged ? t('search') : t('close')}
+                <Button onClick={handleHideFilterDialog} variant="primary">
+                  {isChanged ? <Tran text="search" /> : <Tran text="close" />}
                 </Button>
               </CardFooter>
             </Card>

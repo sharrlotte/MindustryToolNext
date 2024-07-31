@@ -8,7 +8,7 @@ export type MapDetail = {
   userId: string;
   description: string;
   tags: string[];
-  like: number;
+  likes: number;
   height: number;
   width: number;
   status: Status;
