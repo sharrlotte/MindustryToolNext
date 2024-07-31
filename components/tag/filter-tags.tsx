@@ -4,7 +4,7 @@ import TagGroup from '@/types/response/TagGroup';
 
 type FilterTagProps = {
   filter: string;
-  selectedFilterTags: TagGroup[];
+  filterBy: TagGroup[];
   tags: TagGroup[];
   handleTagGroupChange: (group: string, value: string[]) => void;
 };
@@ -12,7 +12,7 @@ type FilterTagProps = {
 export default function FilterTags({
   filter,
   tags,
-  selectedFilterTags,
+  filterBy,
   handleTagGroupChange,
 }: FilterTagProps) {
   const filteredTags =
@@ -28,9 +28,7 @@ export default function FilterTags({
         });
 
   const getSingleValue = (group: TagGroup) => {
-    const result = selectedFilterTags.find(
-      (value) => value.name === group.name,
-    );
+    const result = filterBy.find((value) => value.name === group.name);
     if (result && result.values) {
       return result.values.length > 0 ? result.values[0] : '';
     }
@@ -38,9 +36,7 @@ export default function FilterTags({
   };
 
   const getMultipleValue = (group: TagGroup) => {
-    const result = selectedFilterTags.find(
-      (value) => value.name === group.name,
-    );
+    const result = filterBy.find((value) => value.name === group.name);
     if (result && result.values) {
       return result.values;
     }

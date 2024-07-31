@@ -132,7 +132,7 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
           />
           <LikeComponent
             itemId={map.itemId}
-            initialLikeCount={map.like}
+            initialLikeCount={map.likes}
             initialLikeData={map.userLike}
           >
             <LikeButton />

@@ -44,7 +44,7 @@ export function useMe() {
   }
 
   const highestRole = session?.roles.sort(
-    (r1, r2) => r1.position - r2.position,
+    (r1, r2) => r2.position - r1.position,
   )[0].position;
 
   return { highestRole };

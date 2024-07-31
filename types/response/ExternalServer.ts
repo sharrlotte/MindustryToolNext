@@ -16,7 +16,7 @@ export type ExternalServer = {
   modeName: string;
   ping: number;
   port: number;
-  like: number;
+  likes: number;
   userLike: Like;
   lastOnlineTime: number;
   createdAt: number;

@@ -15,6 +15,7 @@ import { Line } from 'react-chartjs-2';
 
 import Tran from '@/components/common/tran';
 import { fillMetric } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 import { Metric } from '@/types/response/Metric';
 
 ChartJS.register(
@@ -38,24 +39,37 @@ export default function LoginChart({
   dates,
   data: { logged, daily },
 }: Props) {
+  const t = useI18n();
+
   const fixedLoggedDaily = fillMetric(start, dates, logged, 0);
   const fixedDaily = fillMetric(start, dates, daily, 0);
+  const total = fixedLoggedDaily.map((m, index) => ({
+    ...m,
+    value: m.value + fixedDaily[index].value,
+  }));
 
   const data: ChartData<'line'> = {
     labels: fixedLoggedDaily.map(({ createdAt }) => createdAt),
     datasets: [
       {
-        label: 'User',
+        label: t('metric.daily-user'),
         data: fixedDaily.map(({ value }) => value),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         tension: 0.3,
       },
       {
-        label: 'Logged in user',
+        label: t('metric.logged-user'),
         data: fixedLoggedDaily.map(({ value }) => value),
         borderColor: 'rgb(99, 255, 132)',
         backgroundColor: 'rgba(99, 255, 132)',
+        tension: 0.3,
+      },
+      {
+        label: t('metric.total-user'),
+        data: total.map(({ value }) => value),
+        borderColor: 'rgb(99, 132, 255)',
+        backgroundColor: 'rgb(99, 132, 255)',
         tension: 0.3,
       },
     ],

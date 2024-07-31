@@ -5,7 +5,7 @@ import { Like } from './Like';
 export type Map = {
   id: string;
   name: string;
-  like: number;
+  likes: number;
   userLike: Like;
   status: Status;
   itemId: string;

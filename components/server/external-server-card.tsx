@@ -74,7 +74,7 @@ export default function ExternalServerCard({
           <span>Ping: {server.ping}ms</span>
           <div className="flex justify-end gap-2">
             <LikeComponent
-              initialLikeCount={server.like}
+              initialLikeCount={server.likes}
               initialLikeData={server.userLike}
               itemId={''}
             >
