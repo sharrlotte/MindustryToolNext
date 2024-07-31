@@ -105,7 +105,7 @@ export default function NameTagSelector({
               <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
                 <FilterTags
                   filter={filter}
-                  selectedFilterTags={value}
+                  filterBy={value}
                   tags={tagsClone}
                   handleTagGroupChange={handleTagGroupChange}
                 />
