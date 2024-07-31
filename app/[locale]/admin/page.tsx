@@ -21,36 +21,31 @@ export default async function Page() {
 
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);
 
-  const [
-    like,
-    authLogin,
-    login,
-    modClient,
-    webClient,
-    visit,
-    loginLog,
-    loginHistory,
-  ] = await Promise.all([
-    getMetric(axios, start, end, 'DAILY_LIKE'),
-    getMetric(axios, start, end, 'LOGGED_DAILY_USER'),
-    getMetric(axios, start, end, 'DAILY_USER'),
-    getMetric(axios, start, end, 'DAILY_MOD_USER'),
-    getMetric(axios, start, end, 'DAILY_WEB_USER'),
-    getMetric(axios, start, end, 'DAILY_USER'),
-    getLogs(axios, { page: 0, collection: 'USER_LOGIN' }),
-    getLoginHistories(axios, { page: 0, size: 20 }),
-  ]);
+  const [like, logged, daily, mod, web, visit, loginLog, loginHistory] =
+    await Promise.all([
+      getMetric(axios, start, end, 'DAILY_LIKE'),
+      getMetric(axios, start, end, 'LOGGED_DAILY_USER'),
+      getMetric(axios, start, end, 'DAILY_USER'),
+      getMetric(axios, start, end, 'DAILY_MOD_USER'),
+      getMetric(axios, start, end, 'DAILY_WEB_USER'),
+      getMetric(axios, start, end, 'DAILY_USER'),
+      getLogs(axios, { page: 0, collection: 'USER_LOGIN' }),
+      getLoginHistories(axios, { page: 0, size: 20 }),
+    ]);
 
-  //TODO: Rework
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-4">
       <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2 lg:grid-cols-3gv">
-        {/* <LikeChart axios={axios} start={start} end={end} />
-        <LoginChart axios={axios} start={start} end={end} />
-        <ClientChart axios={axios} start={start} end={end} />
-        <WebsiteVisitRate axios={axios} start={start} end={end} />
-        <LoginLog axios={axios} />
-        <LoginHistory axios={axios} /> */}
+        <LikeChart start={start} dates={NUMBER_OF_DAY} data={like} />
+        <LoginChart
+          start={start}
+          dates={NUMBER_OF_DAY}
+          data={{ logged, daily }}
+        />
+        <ClientChart start={start} dates={NUMBER_OF_DAY} data={{ mod, web }} />
+        <WebsiteVisitRate start={start} dates={NUMBER_OF_DAY} data={visit} />
+        <LoginLog data={loginLog} />
+        <LoginHistory data={loginHistory} />
       </div>
     </div>
   );

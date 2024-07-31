@@ -7,7 +7,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
 
-interface MarkdownProps {
+type MarkdownProps = {
   className?: string;
   children: string;
 }

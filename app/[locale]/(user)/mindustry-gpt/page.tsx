@@ -98,7 +98,7 @@ export default function Page() {
               contentEditable
               role="textbox"
               data-placeholder={t('chat.input-place-holder')}
-              //@ts-ignore
+              //@ts-expect-error react error
               onInput={(event) => setPrompt(event.target.textContent ?? '')}
               onKeyDown={handleKeyPress}
             />

@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import PostServerRequest from '@/types/request/PostServerRequest';
-import PostServerResponse from '@/types/response/PostServerResponse';
+import { PostServerResponse } from '@/types/response/PostServerResponse';
 
 export default async function postServer(
   axios: AxiosInstance,

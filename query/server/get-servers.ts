@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
-import ExternalServer from '@/types/response/ExternalServer';
+import { ExternalServer } from '@/types/response/ExternalServer';
 
 export default async function getServers(
   axios: AxiosInstance,

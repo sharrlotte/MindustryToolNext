@@ -5,7 +5,6 @@ import NextTopLoader from 'nextjs-toploader';
 
 import ClientInit from '@/app/[locale]/client-init';
 import { ThemeProvider } from '@/components/theme/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
 import env from '@/constant/env';
 import { SessionProvider } from '@/context/session-context';
 import { SocketProvider } from '@/context/socket-context';
@@ -74,7 +73,6 @@ export default async function Root({ children, params }: Props) {
           disableTransitionOnChange
         >
           <NextTopLoader height={2} showSpinner={false} color="white" />
-          <Toaster />
           <SessionProvider>
             <SocketProvider>
               <QueryProvider>

@@ -1,6 +1,6 @@
 import { Like } from '@/types/response/Like';
 
-export default interface ExternalServer {
+export type ExternalServer = {
   id: string;
   name: string;
   online: boolean;
@@ -20,4 +20,4 @@ export default interface ExternalServer {
   userLike: Like;
   lastOnlineTime: number;
   createdAt: number;
-}
+};

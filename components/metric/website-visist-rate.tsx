@@ -1,6 +1,5 @@
 'use client';
 
-import { AxiosInstance } from 'axios';
 import {
   CategoryScale,
   ChartData,
@@ -15,12 +14,10 @@ import {
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
-import LoadingSpinner from '@/components/common/loading-spinner';
+import Tran from '@/components/common/tran';
 import { fillMetric } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import getMetric from '@/query/metric/get-metric';
-
-import { useQuery } from '@tanstack/react-query';
+import { Metric } from '@/types/response/Metric';
 
 ChartJS.register(
   CategoryScale,
@@ -32,50 +29,22 @@ ChartJS.register(
   Legend,
 );
 
-const NUMBER_OF_DAY = 15;
-
-type ChartProps = {
-  axios: AxiosInstance;
+type Props = {
+  data: Metric[];
   start: Date;
-  end: Date;
+  dates: number;
 };
 
-export default function WebsiteVisitRate(props: ChartProps) {
+export default function WebsiteVisitRate({ start, dates, data }: Props) {
   const t = useI18n();
+  const filledData = fillMetric(start, dates, data, 0);
 
-  return (
-    <div className="rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5] justify-between">
-      <span className="font-bold">{t('metric.user-interaction')}</span>
-      <Loading {...props} />
-    </div>
-  );
-}
-
-function Loading({ axios, start, end }: ChartProps) {
-  const {
-    data: metric,
-    error,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryFn: () => getMetric(axios, start, end, 'DAILY_LIKE'),
-    queryKey: ['daily_like'],
-  });
-
-  if (isLoading) {
-    return <LoadingSpinner className="h-full aspect-[2/1.5]" />;
-  }
-
-  if (isError || error) return <span>{error?.message}</span>;
-
-  const fixedData = fillMetric(start, NUMBER_OF_DAY, metric, 0);
-
-  const data: ChartData<'line'> = {
-    labels: fixedData.map(({ createdAt }) => createdAt),
+  const chart: ChartData<'line'> = {
+    labels: filledData.map(({ createdAt }) => createdAt),
     datasets: [
       {
-        label: 'Interaction',
-        data: fixedData.map(({ value }) => value),
+        label: t('metric.visit-rate'),
+        data: filledData.map(({ value }) => value),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         tension: 0.3,
@@ -84,26 +53,31 @@ function Loading({ axios, start, end }: ChartProps) {
   };
 
   return (
-    <div className="bg-card h-full">
-      <Line
-        options={{
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top' as const,
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                stepSize: 1,
+    <div className="rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5] justify-between">
+      <span className="font-bold">
+        <Tran text="metric.user-interaction" />
+      </span>
+      <div className="bg-card h-full">
+        <Line
+          options={{
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top' as const,
               },
             },
-          },
-        }}
-        data={data}
-      />
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                },
+              },
+            },
+          }}
+          data={chart}
+        />
+      </div>
     </div>
   );
 }

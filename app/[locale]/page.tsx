@@ -36,14 +36,14 @@ export default async function Home({
     role: 'CONTRIBUTOR',
   });
 
-  let [shar, admins, contributors] = await Promise.all([
+  const [shar, admins, contributors] = await Promise.all([
     getShar,
     getAdmins,
     getContributor,
   ]);
 
-  admins = admins.filter((user) => !shar.includes(user));
-  contributors = contributors.filter(
+  const onlyAdmins = admins.filter((user) => !shar.includes(user));
+  const onlyContributors = contributors.filter(
     (user) => !shar.includes(user) && !admins.includes(user),
   );
 
@@ -172,13 +172,13 @@ export default async function Home({
               </div>
               <p className="list-item whitespace-nowrap">{t('admin')}</p>
               <div className="grid gap-1">
-                {admins.map((user) => (
+                {onlyAdmins.map((user) => (
                   <UserCard key={user.id} user={user} />
                 ))}
               </div>
               <p className="list-item whitespace-nowrap">{t('contributor')}</p>
               <div className="grid gap-1">
-                {contributors.map((user) => (
+                {onlyContributors.map((user) => (
                   <UserCard key={user.id} user={user} />
                 ))}
               </div>

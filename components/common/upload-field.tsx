@@ -16,14 +16,14 @@ export default function UploadField({ className, accept, onFileDrop }: Props) {
     const result = [];
 
     if (event.dataTransfer.items) {
-      for (let item of event.dataTransfer.items) {
+      for (const item of event.dataTransfer.items) {
         const file = item.getAsFile();
         if (file) {
           result.push(file);
         }
       }
     } else {
-      for (let file of event.dataTransfer.files) {
+      for (const file of event.dataTransfer.files) {
         result.push(file);
       }
     }

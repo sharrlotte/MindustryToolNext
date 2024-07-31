@@ -16,7 +16,6 @@ import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinit
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import { Button } from '@/components/ui/button';
 import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';

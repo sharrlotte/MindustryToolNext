@@ -1,10 +1,10 @@
 import { AxiosInstance } from 'axios';
 
-import PostSchematicRequest from '@/types/request/PostSchematicRequest';
+import { UploadSchematicRequest } from '@/types/schema/zod-schema';
 
 export default async function postSchematic(
   axios: AxiosInstance,
-  { data, tags, name, description }: PostSchematicRequest,
+  { data, tags, name, description }: UploadSchematicRequest,
 ): Promise<void> {
   const form = new FormData();
 
@@ -15,7 +15,7 @@ export default async function postSchematic(
   }
   form.append('tags', tags);
   form.append('name', name);
-  form.append('description', description);
+  form.append('description', description ?? '');
 
   return axios.post('/schematics', form, {
     data: form,

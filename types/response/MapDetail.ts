@@ -2,7 +2,7 @@ import { Status } from '@/types/response/Status';
 
 import { Like } from './Like';
 
-export interface MapDetail {
+export type MapDetail = {
   id: string;
   name: string;
   userId: string;
@@ -16,4 +16,4 @@ export interface MapDetail {
   userLike: Like;
   itemId: string;
   isVerified: boolean;
-}
+};

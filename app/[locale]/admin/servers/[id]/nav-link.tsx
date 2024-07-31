@@ -18,7 +18,7 @@ export default function NavLink({ id, href, label, icon }: Props) {
   const expand = useExpandServerNav((state) => state.expand);
 
   let pathname = usePathname();
-  let firstSlash = pathname.indexOf('/', 1);
+  const firstSlash = pathname.indexOf('/', 1);
   pathname = pathname.slice(firstSlash);
 
   return (

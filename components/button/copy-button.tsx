@@ -25,7 +25,7 @@ export default function CopyButton({
   const copy = useClipboard();
 
   async function handleClick() {
-    let d = data instanceof Function ? await data() : data;
+    const d = data instanceof Function ? await data() : data;
 
     copy({ data: d, title, content });
   }

@@ -1,7 +1,7 @@
 import { Like } from '@/types/response/Like';
 import { Status } from '@/types/response/Status';
 
-export interface PostDetail {
+export type PostDetail = {
   id: string;
   userId: string;
   title: string;
@@ -21,4 +21,4 @@ export interface PostDetail {
   createdAt: number;
   itemId: string;
   isVerified: boolean;
-}
+};

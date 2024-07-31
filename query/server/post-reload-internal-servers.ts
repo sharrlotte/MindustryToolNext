@@ -1,6 +1,6 @@
-import PostServerResponse from '@/types/response/PostServerResponse';
-
 import { AxiosInstance } from 'axios';
+
+import { PostServerResponse } from '@/types/response/PostServerResponse';
 
 export default async function postReloadInternalServers(
   axios: AxiosInstance,

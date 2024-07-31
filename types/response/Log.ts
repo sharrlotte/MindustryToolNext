@@ -1,4 +1,4 @@
-export interface Log {
+export type Log = {
   id: string;
   content: string;
   environment: string;
@@ -6,4 +6,4 @@ export interface Log {
   requestUrl: string;
   ip: string;
   userId: string;
-}
+};

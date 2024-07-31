@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import Image from 'next/image';
@@ -21,18 +20,10 @@ import postMap from '@/query/map/post-map';
 import postMapPreview from '@/query/map/post-map-preview';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import PostMapRequest from '@/types/request/PostMapRequest';
-import MapPreviewResponse from '@/types/response/MapPreviewResponse';
+import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation } from '@tanstack/react-query';
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
 
 export default function Page() {
   const axios = useClientAPI();

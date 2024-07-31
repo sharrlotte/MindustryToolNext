@@ -1,7 +1,7 @@
-import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
-import SchematicPreviewResponse from '@/types/response/SchematicPreviewResponse';
-
 import { AxiosInstance } from 'axios';
+
+import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
+import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 
 export default async function postSchematicPreview(
   axios: AxiosInstance,

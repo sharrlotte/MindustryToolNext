@@ -1,64 +1,47 @@
 'use client';
 
-import { AxiosInstance } from 'axios';
 import moment from 'moment';
 
-import LoadingSpinner from '@/components/common/loading-spinner';
-import { useI18n } from '@/locales/client';
-import getLogs from '@/query/log/get-logs';
+import Tran from '@/components/common/tran';
+import { Log } from '@/types/response/Log';
 
-import { useQuery } from '@tanstack/react-query';
-
-const background =
-  'rounded-lg bg-card p-2 flex w-full flex-col gap-2 p-2 h-[500px]';
-
-const chart = 'h-[400px]';
-
-type LoginLogProps = {
-  axios: AxiosInstance;
+type Props = {
+  data: Log[];
 };
 
-export default function LoginLog({ axios }: LoginLogProps) {
-  const {
-    data: logs,
-    error,
-    isLoading,
-  } = useQuery({
-    queryFn: () => getLogs(axios, { page: 0, collection: 'USER_LOGIN' }),
-    queryKey: ['user_login'],
-  });
-
-  const t = useI18n();
-
-  if (isLoading) {
-    return (
-      <div className={background}>
-        <span className="font-bold">{t('metric.user-login-history')}</span>
-        <LoadingSpinner className={chart} />
-      </div>
-    );
-  }
-
-  if (error) return <span>{error?.message}</span>;
-
+export default function LoginLog({ data }: Props) {
   return (
-    <div className={background}>
-      <span className="font-bold">{t('metric.user-login-history')}</span>
-      <div className={chart}>
+    <div className="rounded-lg bg-card flex w-full flex-col gap-2 p-2 h-[500px]">
+      <span className="font-bold">
+        <Tran text="metric.user-login-history" />
+      </span>
+      <div className="h-[400px]">
         <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
-          {logs?.map((log) => (
-            <span
-              className="flex justify-between gap-8 rounded-sm bg-background p-4"
-              key={log.id}
-            >
-              <span>{`${log.content} ${moment(
-                new Date(log.createdAt).toISOString(),
-              ).fromNow()}`}</span>
-              <span>{log.ip}</span>
-            </span>
+          {data.map((log) => (
+            <LoginLogCard key={log.id} log={log} />
           ))}
         </section>
       </div>
     </div>
+  );
+}
+
+type LoginLogCardProps = {
+  log: Log;
+};
+
+function LoginLogCard({
+  log: { id, content, ip, createdAt },
+}: LoginLogCardProps) {
+  const from = moment(new Date(createdAt).toISOString()).fromNow();
+
+  return (
+    <span
+      className="flex justify-between gap-8 rounded-sm bg-background p-4"
+      key={id}
+    >
+      <span>{`${content} ${from}`}</span>
+      <span>{ip}</span>
+    </span>
   );
 }

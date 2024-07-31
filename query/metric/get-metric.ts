@@ -1,7 +1,7 @@
+import { AxiosInstance } from 'axios';
+
 import { MetricCollection } from '@/constant/enum';
 import { Metric } from '@/types/response/Metric';
-
-import { AxiosInstance } from 'axios';
 
 export default async function getMetric(
   axios: AxiosInstance,
@@ -19,8 +19,8 @@ export default async function getMetric(
     })
     .then((result) =>
       result.data.map((v: any) => {
-        let time = new Date(v.createdAt);
-        return { value: v.value, time };
+        let createdAt = new Date(v.createdAt);
+        return { ...v, createdAt };
       }),
     );
 }

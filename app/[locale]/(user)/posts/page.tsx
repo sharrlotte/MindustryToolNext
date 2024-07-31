@@ -1,8 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-import InfinitePage from '@/components/common/infinite-page';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import PostPreviewCard from '@/components/post/post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';

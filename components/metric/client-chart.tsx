@@ -1,6 +1,5 @@
 'use client';
 
-import { AxiosInstance } from 'axios';
 import {
   CategoryScale,
   ChartData,
@@ -14,12 +13,10 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
-import LoadingSpinner from '@/components/common/loading-spinner';
+import Tran from '@/components/common/tran';
 import { fillMetric } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import getMetric from '@/query/metric/get-metric';
-
-import { useQueries } from '@tanstack/react-query';
+import { Metric } from '@/types/response/Metric';
 
 ChartJS.register(
   CategoryScale,
@@ -31,69 +28,35 @@ ChartJS.register(
   Legend,
 );
 
-const NUMBER_OF_DAY = 15;
-
-type ChartProps = {
-  axios: AxiosInstance;
+type Props = {
+  data: { web: Metric[]; mod: Metric[] };
   start: Date;
-  end: Date;
+  dates: number;
 };
 
-export default function ClientChart(props: ChartProps) {
+export default function ClientChart({
+  start,
+  dates,
+  data: { web, mod },
+}: Props) {
   const t = useI18n();
-  return (
-    <div className="rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5]">
-      <span className="font-bold">Client</span>
-      <Loading {...props} />
-    </div>
-  );
-}
 
-function Loading({ axios, start, end }: ChartProps) {
-  const [loggedDailyUser, dailyUser] = useQueries({
-    queries: [
-      {
-        queryFn: () => getMetric(axios, start, end, 'DAILY_WEB_USER'),
-        queryKey: ['daily_web_user'],
-      },
-      {
-        queryFn: () => getMetric(axios, start, end, 'DAILY_MOD_USER'),
-        queryKey: ['daily_mod_user'],
-      },
-    ],
-  });
+  const fixedWeb = fillMetric(start, dates, web, 0);
+  const fixedMod = fillMetric(start, dates, mod, 0);
 
-  if (loggedDailyUser.isLoading || dailyUser.isLoading) {
-    return <LoadingSpinner className="h-full aspect-[2/1.5]" />;
-  }
-
-  if (loggedDailyUser.error || dailyUser.error)
-    return (
-      <span>{loggedDailyUser.error?.message || dailyUser.error?.message}</span>
-    );
-
-  let fixedLoggedDaily = fillMetric(
-    start,
-    NUMBER_OF_DAY,
-    loggedDailyUser.data,
-    0,
-  );
-
-  let fixedDaily = fillMetric(start, NUMBER_OF_DAY, dailyUser.data, 0);
-
-  const data: ChartData<'line'> = {
-    labels: fixedLoggedDaily.map(({ createdAt }) => createdAt),
+  const chart: ChartData<'line'> = {
+    labels: fixedWeb.map(({ createdAt }) => createdAt),
     datasets: [
       {
-        label: 'Web user',
-        data: fixedLoggedDaily.map(({ value }) => value),
+        label: t('chart.mod-user'),
+        data: fixedMod.map(({ value }) => value),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         tension: 0.3,
       },
       {
-        label: 'Mod user',
-        data: fixedDaily.map(({ value }) => value),
+        label: t('chart.web-user'),
+        data: fixedWeb.map(({ value }) => value),
         borderColor: 'rgb(99, 255, 132)',
         backgroundColor: 'rgba(99, 255, 132)',
         tension: 0.3,
@@ -102,20 +65,25 @@ function Loading({ axios, start, end }: ChartProps) {
   };
 
   return (
-    <div className="h-full">
-      <Line
-        options={{
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                stepSize: 1,
+    <div className="rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5]">
+      <span className="font-bold">
+        <Tran text="client" />
+      </span>
+      <div className="h-full">
+        <Line
+          options={{
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                },
               },
             },
-          },
-        }}
-        data={data}
-      />
+          }}
+          data={chart}
+        />
+      </div>
     </div>
   );
 }

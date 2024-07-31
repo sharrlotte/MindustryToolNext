@@ -1,13 +1,12 @@
 import { type ClassValue, clsx } from 'clsx';
 import Nprogress from 'nprogress';
 import { twMerge } from 'tailwind-merge';
-import { create } from 'zustand';
 
 import env from '@/constant/env';
 import { Message } from '@/types/response/Message';
 import { ChartData, Metric } from '@/types/response/Metric';
 
-var colours: Record<string, string> = {
+const colours: Record<string, string> = {
   aliceblue: '#f0f8ff',
   antiquewhite: '#faebd7',
   aqua: '#00ffff',
@@ -202,10 +201,10 @@ export function fillMetric(
     return [];
   }
 
-  let result: ChartData[] = [];
+  const result: ChartData[] = [];
 
   for (let i = numberOfDay - 1; i >= 0; i--) {
-    let targetDay = new Date(start);
+    const targetDay = new Date(start);
 
     targetDay.setDate(targetDay.getDate() + numberOfDay - i);
 
@@ -213,14 +212,16 @@ export function fillMetric(
       targetDay.setMonth(start.getMonth() + 1);
     }
 
-    let value = array.find((v) => {
-      const createdAt = new Date(v.createdAt);
+    const value = array.find((v) => {
+      const createdAt = v.createdAt;
+
       return (
         createdAt.getFullYear() === targetDay.getFullYear() &&
         createdAt.getMonth() === targetDay.getMonth() &&
         createdAt.getDate() === targetDay.getDate()
       );
     });
+
     if (value === undefined)
       result.push({
         value: defaultValue,
@@ -259,7 +260,7 @@ export function mapReversed<T, R>(
   array: T[],
   mapper: (data: T, index: number, array: T[]) => R,
 ) {
-  var result = [];
+  const result = [];
   for (let i = array.length - 1; i >= 0; i--) {
     result.push(mapper(array[i], i, array));
   }

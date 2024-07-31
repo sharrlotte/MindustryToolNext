@@ -7,7 +7,7 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import { byteToSize } from '@/lib/utils';
-import ServerFile from '@/types/response/ServerFile';
+import { ServerFile } from '@/types/response/ServerFile';
 
 type Props = {
   file: ServerFile;

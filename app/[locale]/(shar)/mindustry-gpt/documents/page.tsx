@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingWrapper from '@/components/common/loading-wrapper';
 import DocumentCard from '@/components/document/document-card';
-import NameTagSearch from '@/components/search/name-tag-search';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import {
@@ -36,8 +35,6 @@ import { useMutation } from '@tanstack/react-query';
 export default function Page() {
   const params = useSearchPageParams();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-
-  const t = useI18n();
 
   return (
     <div className="flex h-full flex-col justify-between gap-4 p-4">

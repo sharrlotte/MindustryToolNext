@@ -1,5 +1,5 @@
-export default interface MapPreviewResponse {
+export type MapPreviewResponse = {
   name: string;
   description: string;
   image: string;
-}
+};

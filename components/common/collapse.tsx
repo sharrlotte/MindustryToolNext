@@ -1,7 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-
 import React, { ReactNode, useState } from 'react';
+
+import { cn } from '@/lib/utils';
 
 type Props = {
   message: ReactNode;

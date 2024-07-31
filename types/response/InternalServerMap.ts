@@ -1,5 +1,5 @@
-export default interface InternalServerMap {
+export type InternalServerMap = {
   serverId: string;
   mapId: string;
   name: string;
-}
+};

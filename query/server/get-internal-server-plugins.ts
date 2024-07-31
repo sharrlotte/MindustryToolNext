@@ -1,7 +1,7 @@
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
-import InternalServerPlugin from '@/types/response/InternalServerPlugin';
-
 import { AxiosInstance } from 'axios';
+
+import { PaginationQuery } from '@/types/data/pageable-search-schema';
+import { InternalServerPlugin } from '@/types/response/InternalServerPlugin';
 
 export default async function getInternalServerPlugins(
   axios: AxiosInstance,

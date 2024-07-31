@@ -18,7 +18,7 @@ export default function LoginButton({
   children?: ReactNode;
 }) {
   const t = useI18n();
-  const [_, setCookie] = useCookies();
+  const [_ignore, setCookie] = useCookies();
   const pathname = usePathname();
 
   useLayoutEffect(

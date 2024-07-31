@@ -1,6 +1,6 @@
-export default interface ServerFile {
+export type ServerFile = {
   name: string;
   directory: boolean;
   data: string;
   size: number;
-}
+};

@@ -1,4 +1,4 @@
-export default interface PostServerResponse {
+export type PostServerResponse = {
   id: string;
   name: string;
   online: boolean;
@@ -16,4 +16,4 @@ export default interface PostServerResponse {
   port: number;
   lastOnlineTime: number;
   createdAt: number;
-}
+};

@@ -75,7 +75,7 @@ export default function NameTagSearch({
             return { ...tag, color: TAG_DEFAULT_COLOR, duplicate: true };
           }
 
-          let result = tagsClone.find(
+          const result = tagsClone.find(
             (t) =>
               t.name === tag.name &&
               tag.values.every((b) => tag.values.includes(b)),
@@ -144,7 +144,7 @@ export default function NameTagSearch({
       group.values = values;
       setSelectedFilterTags([...selectedFilterTags]);
     } else {
-      let result = tagsClone.find((tag) => tag.name === name);
+      const result = tagsClone.find((tag) => tag.name === name);
 
       // Ignore tag that not match with server
       if (result) {
@@ -233,12 +233,10 @@ export default function NameTagSearch({
                 {useSort && (
                   <ComboBox
                     value={{
-                      // @ts-ignore
                       label: t(selectedSortTag.toLowerCase()),
                       value: selectedSortTag,
                     }}
                     values={sortTagGroup.values.map((value) => ({
-                      // @ts-ignore
                       label: t(value.toLowerCase()),
                       value: value as SortTag,
                     }))}

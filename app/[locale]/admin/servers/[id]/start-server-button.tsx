@@ -6,7 +6,6 @@ import { revalidate } from '@/action/action';
 import { Button } from '@/components/ui/button';
 import useClientAPI from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
 import postStartInternalServers from '@/query/server/post-start-internal-server';
 
 import { useMutation } from '@tanstack/react-query';
@@ -17,7 +16,6 @@ type Props = {
 
 export default function StartServerButton({ id }: Props) {
   const axios = useClientAPI();
-  const t = useI18n();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({

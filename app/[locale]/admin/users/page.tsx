@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';

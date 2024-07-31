@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
-import InfinitePage from '@/components/common/infinite-page';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';

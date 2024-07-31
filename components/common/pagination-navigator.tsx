@@ -49,8 +49,8 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
     secondNumber += 1;
   }
 
-  let secondLastNumber = lastPage - 1;
-  let lastNumber = lastPage;
+  const secondLastNumber = lastPage - 1;
+  const lastNumber = lastPage;
 
   if (secondNumber >= secondLastNumber) {
     firstNumber = 0;

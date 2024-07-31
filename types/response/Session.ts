@@ -1,6 +1,6 @@
 import { Role } from '@/types/response/Role';
 
-export interface Session {
+export type Session = {
   id: string;
   name: string;
   email: string;
@@ -10,4 +10,4 @@ export interface Session {
   providerId: string;
   lastLogin: number;
   createdAt: number;
-}
+};

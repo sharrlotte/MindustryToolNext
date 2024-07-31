@@ -12,7 +12,7 @@ export default function ErrorScreen({
   error: Error & { digest?: string } & any;
   reset: () => void;
 }) {
-  let message = error.message ?? 'Something went wrong!';
+  const message = error.message ?? 'Something went wrong!';
 
   if (message === 'NEXT_NOT_FOUND') {
     throw notFound();

@@ -1,13 +1,17 @@
+import React from 'react';
+
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 import { User } from '@/types/response/User';
 
-import React from 'react';
-
 type UserCardProps = {
-  user: User;
+  user: User | null;
 };
 function UserCard({ user }: UserCardProps) {
+  if (!user) {
+    return;
+  }
+
   const { name, roles } = user;
 
   return (
