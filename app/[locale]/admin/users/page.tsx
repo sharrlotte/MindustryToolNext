@@ -29,7 +29,7 @@ export default function Page() {
   });
 
   return (
-    <div className="p-2 h-full space-y-2 flex flex-col">
+    <div className="p-6 h-full space-y-6 flex flex-col">
       <div className="space-x-2 flex">
         <Input
           value={name}
@@ -48,7 +48,7 @@ export default function Page() {
         ref={(ref) => setContainer(ref)}
       >
         <InfinitePage
-          className="grid w-full grid-cols-1 justify-center gap-4"
+          className="grid w-full grid-cols-1 justify-center gap-4 pr-1"
           params={{ ...params, role: role?.name as UserRole }}
           queryKey={['user-management']}
           getFunc={getUsers}

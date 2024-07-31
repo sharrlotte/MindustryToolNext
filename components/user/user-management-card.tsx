@@ -74,7 +74,7 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
         title: 'Error',
         description: error.message,
       });
-      setSelectedRoles(roles)
+      setSelectedRoles(roles);
     },
     mutationKey: ['updateRole', id],
   });
@@ -110,7 +110,6 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
           )}
         </section>
       </DialogTrigger>
-
       <DialogContent className="p-6">
         <DialogTitle>Change Role for {name}</DialogTitle>
         <DialogDescription></DialogDescription>
@@ -121,10 +120,10 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
           defaultValue={roles.map((r) => r.name)}
         >
           {data
-            ?.filter((r) => r.position < highestRole)
+            ?.filter((r) => r.position < highestRole || highestRole === 32767)
             .map((role) => (
               <ToggleGroupItem
-                className="capitalize px-0 hover:bg-none space-x-2"
+                className="capitalize px-0 space-x-2 hover:bg-transparent"
                 key={role.id}
                 value={role.name}
               >
