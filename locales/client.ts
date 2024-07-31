@@ -30,7 +30,7 @@ function useI18n(): TranslateFunction {
   const t = defaultUseI18n();
 
   //@ts-ignore
-  return (key: string) => t(key);
+  return (key: string, args?: Record<string, string>) => t(key, args);
 }
 
 export {

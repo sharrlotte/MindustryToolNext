@@ -1,6 +1,6 @@
 'use client';
 
-import { BellIcon, MailIcon } from 'lucide-react';
+import { BellIcon } from 'lucide-react';
 import { useState } from 'react';
 import React from 'react';
 

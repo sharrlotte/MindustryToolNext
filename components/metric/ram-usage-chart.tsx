@@ -10,6 +10,8 @@ import {
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
+import Tran from '@/components/common/tran';
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type Props = {
@@ -25,9 +27,9 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 
   percentUsage = isNaN(percentUsage) ? 0 : percentUsage;
 
-  let percentFree = Math.round((100 - percentUsage) * 100) / 100;
+  const percentFree = Math.round((100 - percentUsage) * 100) / 100;
 
-  let ramLeft = ramUsage === 0 && totalRam === 0 ? 100 : totalRam - ramUsage;
+  const ramLeft = ramUsage === 0 && totalRam === 0 ? 100 : totalRam - ramUsage;
 
   const data: ChartData<'doughnut'> = {
     labels: [`Used: ${percentUsage}%`, `Free: ${percentFree}%`],
@@ -49,7 +51,9 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 
   return (
     <div className="rounded-lg bg-card p-2 flex w-full flex-col gap-2">
-      <span className="font-bold">Ram usage</span>
+      <span className="font-bold">
+        <Tran text="metric.ram-usage" />
+      </span>
       <Doughnut className="max-h-[200px] max-w-[200px]" data={data} />
     </div>
   );

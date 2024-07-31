@@ -10,6 +10,5 @@ type Props = {
 
 export default function Tran({ text }: Props): React.ReactNode {
   const t = useI18n();
-  // @ts-ignore
   return <span>{t(text)}</span>;
 }

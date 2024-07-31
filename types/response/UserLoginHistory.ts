@@ -1,8 +1,8 @@
-export default type UserLoginHistory = {
+export type UserLoginHistory = {
   id: string;
   ip: string;
   userId: string;
   counts: number;
   client: number;
   createdAt: number;
-}
+};

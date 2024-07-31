@@ -1,1 +1,1 @@
-export type TranslateFunction = (key: string, ...args: string[]) => string;
+export type TranslateFunction = (key: string, args?: Record<string, string>) => string;

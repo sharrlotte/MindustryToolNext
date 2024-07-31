@@ -1,7 +1,7 @@
 export type Metric = {
   value: number;
   metricKey: string;
-  createdAt: string;
+  createdAt: Date;
 };
 
 export type ChartData = {

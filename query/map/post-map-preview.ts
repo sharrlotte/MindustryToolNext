@@ -1,8 +1,7 @@
-import { toForm } from '@/lib/utils';
-import MapPreviewRequest from '@/types/request/MapPreviewRequest';
-import MapPreviewResponse from '@/types/response/MapPreviewResponse';
-
 import { AxiosInstance } from 'axios';
+
+import MapPreviewRequest from '@/types/request/MapPreviewRequest';
+import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 
 export default async function postMapPreview(
   axios: AxiosInstance,

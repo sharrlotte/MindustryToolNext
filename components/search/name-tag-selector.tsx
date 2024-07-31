@@ -45,7 +45,7 @@ export default function NameTagSelector({
       group.values = v;
       onChange([...value]);
     } else {
-      let result = tagsClone.find((tag) => tag.name === name);
+      const result = tagsClone.find((tag) => tag.name === name);
 
       // Ignore tag that not match with server
       if (result) {

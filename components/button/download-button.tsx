@@ -110,7 +110,7 @@ function SecureDownloadButton({
         </div>
       ) : (
         <div onClick={() => mutate()}>
-          {children || <ArrowDownTrayIcon className="h-5 w-5" />}{' '}
+          {children || <ArrowDownTrayIcon className="h-5 w-5" />}
         </div>
       )}
     </div>

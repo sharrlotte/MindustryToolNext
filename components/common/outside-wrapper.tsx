@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
-
 import React, { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
+
+import { cn } from '@/lib/utils';
 
 type OutsideWrapperProps = HTMLAttributes<HTMLDivElement> & {
   className?: string;
@@ -17,7 +17,7 @@ export default function OutsideWrapper({
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      // @ts-ignore
+      // @ts-expect-error react error
       if (!wrapperRef.current?.contains(event.target)) {
         onClickOutside();
       }

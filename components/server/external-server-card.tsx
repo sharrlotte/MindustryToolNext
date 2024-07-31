@@ -6,7 +6,7 @@ import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
-import ExternalServer from '@/types/response/ExternalServer';
+import { ExternalServer } from '@/types/response/ExternalServer';
 
 type MindustryServerCardProps = {
   server: ExternalServer;

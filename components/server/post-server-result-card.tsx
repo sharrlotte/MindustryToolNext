@@ -1,6 +1,6 @@
 import CopyButton from '@/components/button/copy-button';
 import ColorText from '@/components/common/color-text';
-import PostServerResponse from '@/types/response/PostServerResponse';
+import { PostServerResponse } from '@/types/response/PostServerResponse';
 
 type PostServerResultCardProps = {
   server?: PostServerResponse;

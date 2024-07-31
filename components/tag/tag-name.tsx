@@ -1,12 +1,11 @@
 'use client';
 
-import { useI18n } from '@/locales/client';
-
 import React from 'react';
+
+import { useI18n } from '@/locales/client';
 
 export default function TagName({ children }: { children: string }) {
   const t = useI18n();
 
-  //@ts-ignore
   return <span>{t(children)}</span>;
 }

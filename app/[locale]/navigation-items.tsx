@@ -31,7 +31,6 @@ import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-uploa
 import { useVerifyCount } from '@/zustand/verify-count';
 
 import {
-  ArrowUpTrayIcon,
   ChartBarSquareIcon,
   ChatBubbleLeftIcon,
   CircleStackIcon,
@@ -210,7 +209,7 @@ export function NavItems({ onClick }: NavItemsProps) {
   const { session } = useSession();
 
   const pathName = usePathname();
-  const pattern = /[a-zA-Z0-9-]+\/([a-zA-Z0-9\/-]+)/;
+  const pattern = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
   const route = '/' + pattern.exec(pathName)?.at(1);
 
   const [value, setValue] = useState('');

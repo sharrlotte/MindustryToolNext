@@ -196,13 +196,13 @@ export default function MessageList({
             return undefined;
           }
 
-          let [first, ...rest] = query.pages;
+          const [first, ...rest] = query.pages;
 
-          first = [message, ...first];
+          const newFirst = [message, ...first];
 
           return {
             ...query,
-            pages: [first, ...rest],
+            pages: [newFirst, ...rest],
           } satisfies InfiniteData<Message[], unknown>;
         },
       );

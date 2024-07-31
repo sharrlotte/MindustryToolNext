@@ -1,6 +1,5 @@
 'use client';
 
-import { AxiosInstance } from 'axios';
 import {
   CategoryScale,
   ChartData,
@@ -14,12 +13,9 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
-import LoadingSpinner from '@/components/common/loading-spinner';
+import Tran from '@/components/common/tran';
 import { fillMetric } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
-import getMetric from '@/query/metric/get-metric';
-
-import { useQueries } from '@tanstack/react-query';
+import { Metric } from '@/types/response/Metric';
 
 ChartJS.register(
   CategoryScale,
@@ -31,55 +27,19 @@ ChartJS.register(
   Legend,
 );
 
-const NUMBER_OF_DAY = 15;
-
-type ChartProps = {
-  axios: AxiosInstance;
+type Props = {
+  data: { daily: Metric[]; logged: Metric[] };
   start: Date;
-  end: Date;
+  dates: number;
 };
 
-export default function LoginChart(props: ChartProps) {
-  const t = useI18n();
-  return (
-    <div className="rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5]">
-      <span className="font-bold">{t('metric.user-login')}</span>
-      <Loading {...props} />
-    </div>
-  );
-}
-
-function Loading({ axios, start, end }: ChartProps) {
-  const [loggedDailyUser, dailyUser] = useQueries({
-    queries: [
-      {
-        queryFn: () => getMetric(axios, start, end, 'LOGGED_DAILY_USER'),
-        queryKey: ['logged_daily_user'],
-      },
-      {
-        queryFn: () => getMetric(axios, start, end, 'DAILY_USER'),
-        queryKey: ['daily_user'],
-      },
-    ],
-  });
-
-  if (loggedDailyUser.isLoading || dailyUser.isLoading) {
-    return <LoadingSpinner className="h-full aspect-[2/1.5]" />;
-  }
-
-  if (loggedDailyUser.error || dailyUser.error)
-    return (
-      <span>{loggedDailyUser.error?.message || dailyUser.error?.message}</span>
-    );
-
-  let fixedLoggedDaily = fillMetric(
-    start,
-    NUMBER_OF_DAY,
-    loggedDailyUser.data,
-    0,
-  );
-
-  let fixedDaily = fillMetric(start, NUMBER_OF_DAY, dailyUser.data, 0);
+export default function LoginChart({
+  start,
+  dates,
+  data: { logged, daily },
+}: Props) {
+  const fixedLoggedDaily = fillMetric(start, dates, logged, 0);
+  const fixedDaily = fillMetric(start, dates, daily, 0);
 
   const data: ChartData<'line'> = {
     labels: fixedLoggedDaily.map(({ createdAt }) => createdAt),
@@ -100,22 +60,26 @@ function Loading({ axios, start, end }: ChartProps) {
       },
     ],
   };
-
   return (
-    <div className="h-full">
-      <Line
-        options={{
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                stepSize: 1,
+    <div className="rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5]">
+      <span className="font-bold">
+        <Tran text="metric.user-login" />
+      </span>
+      <div className="h-full">
+        <Line
+          options={{
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                },
               },
             },
-          },
-        }}
-        data={data}
-      />
+          }}
+          data={data}
+        />
+      </div>
     </div>
   );
 }

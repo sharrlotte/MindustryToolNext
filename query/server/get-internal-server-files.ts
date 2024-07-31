@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import ServerFile from '@/types/response/ServerFile';
+import { ServerFile } from '@/types/response/ServerFile';
 
 export default async function getServerFiles(
   axios: AxiosInstance,

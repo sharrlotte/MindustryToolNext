@@ -37,7 +37,7 @@ import { useI18n } from '@/locales/client';
 import postSchematic from '@/query/schematic/post-schematic';
 import postSchematicPreview from '@/query/schematic/post-schematic-preview';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
-import SchematicPreviewResponse from '@/types/response/SchematicPreviewResponse';
+import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import TagGroup from '@/types/response/TagGroup';
 import {
   UploadSchematicRequest,

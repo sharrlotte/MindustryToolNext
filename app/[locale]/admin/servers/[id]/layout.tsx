@@ -11,7 +11,6 @@ import {
   ArrowLeftIcon,
   Cog6ToothIcon,
   CommandLineIcon,
-  FolderIcon,
   MapIcon,
   PuzzlePieceIcon,
 } from '@heroicons/react/24/outline';

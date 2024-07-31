@@ -18,19 +18,19 @@ export default function ColorText({ text, className }: ColorTextProps) {
 function render(text?: string) {
   if (!text) return <></>;
 
-  let index = text.search(COLOR_REGEX);
+  const index = text.search(COLOR_REGEX);
   let key = 0;
 
   if (index < 0) return <span>{text}</span>;
 
-  let result: ReactNode[] = [];
+  const result: ReactNode[] = [];
 
   if (index !== 0) {
     key = add(result, text.substring(0, index), '', key);
     text = text.substring(index);
   }
 
-  let arr = text.match(COLOR_REGEX);
+  const arr = text.match(COLOR_REGEX);
 
   if (!arr) return <span>{text}</span>;
 
@@ -53,7 +53,7 @@ function render(text?: string) {
       break;
     }
 
-    var nextIndex = text.indexOf(arr[1], arr[0].length);
+    const nextIndex = text.indexOf(arr[1], arr[0].length);
 
     if (color) {
       key = add(result, text.substring(arr[0].length, nextIndex), color, key);
@@ -78,8 +78,8 @@ function breakdown(text: string, color: string, key: number) {
     return { result: [], key };
   }
 
-  let s = text.split('\n');
-  let r = [];
+  const s = text.split('\n');
+  const r = [];
   key += 1;
 
   if (s.length === 1) {

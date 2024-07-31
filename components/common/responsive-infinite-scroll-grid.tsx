@@ -8,7 +8,6 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
@@ -54,7 +53,6 @@ export default function ResponsiveInfiniteScrollGrid<
   getFunc,
   children,
 }: ResponsiveInfiniteScrollGridProps<T, P>) {
-  const t = useI18n();
   const { data, isLoading, error, hasNextPage, isFetching, fetchNextPage } =
     useInfinitePageQuery(getFunc, params, queryKey);
   const pages = useMemo(() => {
@@ -66,8 +64,8 @@ export default function ResponsiveInfiniteScrollGrid<
   const [scrollTop, setScrollTop] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  var currentContainer = container();
-  var currentWrapper = wrapperRef.current;
+  const currentContainer = container();
+  const currentWrapper = wrapperRef.current;
 
   const skeletonElements = useMemo(() => {
     if (skeleton)

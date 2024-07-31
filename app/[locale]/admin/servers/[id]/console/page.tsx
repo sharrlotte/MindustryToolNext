@@ -65,7 +65,7 @@ function ChatInput({ id }: ChatInputProps) {
   const t = useI18n();
 
   const [messageHistory, setMessageHistory] = useState<string[]>([]);
-  let [messagesCursor, setMessageCursor] = useState(0);
+  const [messagesCursor, setMessageCursor] = useState(0);
 
   const { sendMessage } = useMessage({
     room: `SERVER-${id}`,

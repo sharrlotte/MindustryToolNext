@@ -7,8 +7,6 @@ import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 
-import { ChevronDoubleDownIcon } from '@heroicons/react/24/outline';
-
 type LikeButtonProps = Omit<ButtonProps, 'title'>;
 
 export default function DislikeButton({
