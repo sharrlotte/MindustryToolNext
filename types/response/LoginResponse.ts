@@ -1,6 +1,6 @@
 import { UserRole } from '@/constant/enum';
 
-export interface LoginResponse {
+export type LoginResponse = {
   id: string;
   name: string;
   imageUrl?: string | null;
@@ -8,4 +8,4 @@ export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   expireTime: number;
-}
+};

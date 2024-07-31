@@ -1,4 +1,4 @@
-export default interface MapPreviewResponse {
+export default type MapPreviewResponse = {
   name: string;
   description: string;
   image: string;

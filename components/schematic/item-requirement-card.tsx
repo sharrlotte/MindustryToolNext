@@ -1,15 +1,15 @@
-import { ItemRequirement } from '@/types/response/ItemRequirement';
-
 import Image from 'next/image';
 import React from 'react';
 
-interface ItemRequirementCardProps {
+import { ItemRequirement } from '@/types/response/ItemRequirement';
+
+type Props = {
   requirements: ItemRequirement[];
-}
+};
 
 export default function ItemRequirementCard({
   requirements,
-}: ItemRequirementCardProps) {
+}: Props) {
   if (!requirements) return <></>;
 
   return (

@@ -1,11 +1,11 @@
-export interface Metric {
+export type Metric = {
   value: number;
   metricKey: string;
   createdAt: string;
-}
+};
 
-export interface ChartData {
+export type ChartData = {
   value: number;
   metricKey: string;
   createdAt: string;
-}
+};

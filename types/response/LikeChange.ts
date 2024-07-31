@@ -1,6 +1,6 @@
 import { Like } from '@/types/response/Like';
 
-export interface LikeChange {
+export type LikeChange = {
   amount: number;
   like: Like;
-}
+};

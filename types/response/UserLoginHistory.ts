@@ -1,4 +1,4 @@
-export default interface UserLoginHistory {
+export default type UserLoginHistory = {
   id: string;
   ip: string;
   userId: string;

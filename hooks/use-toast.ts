@@ -1,12 +1,12 @@
 // Inspired by react-hot-toast library
-import type { ToastActionElement, ToastProps } from '@/components/ui/toast';
-
 import * as React from 'react';
+
+import type { ToastActionElement, ToastProps } from '@/components/ui/toast';
 
 const TOAST_LIMIT = 5;
 const TOAST_REMOVE_DELAY = 10_000_000;
 
-type ToasterToast = ToastProps & {
+type ToasterToast = Omit<ToastProps, 'title'> & {
   id: string;
   title?: React.ReactNode;
   description?: React.ReactNode;

@@ -4,10 +4,10 @@ import { cn, getColor } from '@/lib/utils';
 
 const COLOR_REGEX = /\[([#a-zA-Z0-9]*)\]/g;
 
-interface ColorTextProps {
+type ColorTextProps = {
   text?: string;
   className?: string;
-}
+};
 
 export default function ColorText({ text, className }: ColorTextProps) {
   const result = useMemo(() => render(text), [text]);

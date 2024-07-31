@@ -1,14 +1,14 @@
 const MAX_GROUP_SIZE = 10;
 
-export interface Message {
+export type Message = {
   id: string;
   room: string;
   userId: string;
   content: string;
   attachments: string[];
   createdAt: number;
-}
-export interface MessageGroup {
+};
+export type MessageGroup = {
   id: string;
   room: string;
   userId: string;
@@ -17,7 +17,7 @@ export interface MessageGroup {
     attachments: string[];
   }[];
   createdAt: number;
-}
+};
 
 export function groupMessage(messages: Message[]): MessageGroup[] {
   const result: MessageGroup[] = [];
@@ -33,9 +33,7 @@ export function groupMessage(messages: Message[]): MessageGroup[] {
       });
     } else {
       const lastGroup = result[0];
-      if (
-        message.userId === lastGroup.userId
-      ) {
+      if (message.userId === lastGroup.userId) {
         lastGroup.contents.unshift({
           text: message.content,
           attachments: message.attachments,

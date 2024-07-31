@@ -1,4 +1,4 @@
-export default interface PostServerResponse {
+export default type PostServerResponse = {
   id: string;
   name: string;
   online: boolean;
