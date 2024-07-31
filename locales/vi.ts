@@ -143,7 +143,7 @@ export default {
   'time_-1': 'Cũ nhất',
   like_1: 'Lượt thích',
   'chat.notice':
-    ' Hãy nhớ rảng bot này không hoàn hảo. Vì thế nếu có lỗi xãy ra xin hãy báo cáo với chúng tôi',
+    ' Hãy nhớ rằng bot này không hoàn hảo. Vì thế nếu có lỗi xãy ra xin hãy báo cáo với chúng tôi',
   'chat.input-place-holder': 'Tải trò chơi miễn phí',
   'chat.message': 'Hãy viết câu hỏi của bạn',
   'require-login': 'Đăng nhập để tiếp tục',
