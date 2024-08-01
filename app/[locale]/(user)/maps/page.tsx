@@ -1,13 +1,31 @@
 'use client';
 
+import { Metadata } from 'next';
+import { useState } from 'react';
+
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
+import getServerAPI from '@/query/config/get-server-api';
 import getMaps from '@/query/map/get-maps';
-import { useState } from 'react';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const axios = await getServerAPI();
+  const maps = await getMaps(axios, { page: 0, size: 1 });
+
+  const map = maps[0];
+
+  return {
+    title: map.name,
+    openGraph: {
+      title: map.name,
+      images: `${env.url.image}map-previews/${map.id}.png`,
+    },
+  };
+}
 
 export default function MapPage() {
   const { map } = useSearchTags();
