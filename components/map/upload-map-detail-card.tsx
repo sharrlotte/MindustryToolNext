@@ -112,7 +112,6 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
             errorSrc={`${env.url.api}/maps/${map.id}/image`}
             alt={map.name}
           />
-          {t('map')}
         </div>
         <DetailHeader>
           <DetailTitle>{map.name}</DetailTitle>

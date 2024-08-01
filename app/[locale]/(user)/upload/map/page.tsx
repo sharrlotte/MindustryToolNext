@@ -52,11 +52,6 @@ export default function Page() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: MapPreviewRequest) => postMapPreview(axios, data),
-    onMutate: () => {
-      toast({
-        title: <Tran text="upload.uploading" />,
-      });
-    },
     onSuccess: (data) => {
       setPreview(data);
     },
@@ -155,6 +150,11 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: UploadMapRequest) => postMap(axios, data),
+    onMutate: () => {
+      toast({
+        title: <Tran text="upload.uploading" />,
+      });
+    },
     onSuccess: () => {
       toast({
         title: <Tran text="upload.success" />,
