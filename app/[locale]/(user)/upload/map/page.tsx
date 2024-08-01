@@ -1,196 +1,282 @@
 'use client';
 
 import Image from 'next/image';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import LoadingWrapper from '@/components/common/loading-wrapper';
+import {
+  EditClose,
+  EditComponent,
+  EditInput,
+  EditTrigger,
+  EditView,
+} from '@/components/common/edit-component';
+import LoadingScreen from '@/components/common/loading-screen';
+import Tran from '@/components/common/tran';
+import UploadField from '@/components/common/upload-field';
 import { DetailDescription, DetailTitle } from '@/components/detail/detail';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import { Button } from '@/components/ui/button';
-import IdUserCard from '@/components/user/id-user-card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
 import { PNG_IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import postMap from '@/query/map/post-map';
 import postMapPreview from '@/query/map/post-map-preview';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
-import PostMapRequest from '@/types/request/PostMapRequest';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import TagGroup from '@/types/response/TagGroup';
+import { UploadMapRequest, UploadMapSchema } from '@/types/schema/zod-schema';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 export default function Page() {
   const axios = useClientAPI();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState<MapPreviewResponse>();
-  const { session } = useSession();
-
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const { map } = useUploadTags();
   const { toast } = useToast();
-  const { invalidateByKey } = useQueriesData();
 
-  const t = useI18n();
-
-  const { mutate: getMapPreview, isPending: isLoadingMapPreview } = useMutation(
-    {
-      mutationFn: (data: MapPreviewRequest) => postMapPreview(axios, data),
-      onSuccess: (data) => setPreview(data),
-      onError(error) {
-        toast({
-          title: t('upload.get-preview-fail'),
-          description: error.message,
-          variant: 'destructive',
-        });
-        setFile(undefined);
-      },
-    },
-  );
-
-  const { mutate: postNewMap, isPending: isLoadingPostMap } = useMutation({
-    mutationFn: (data: PostMapRequest) => postMap(axios, data),
-    onSuccess: () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: MapPreviewRequest) => postMapPreview(axios, data),
+    onMutate: () => {
       toast({
-        title: t('upload.success'),
-        variant: 'success',
+        title: <Tran text="upload.uploading" />,
       });
-      setFile(undefined);
-      setPreview(undefined);
-      setSelectedTags([]);
-      invalidateByKey(['map-uploads']);
-      invalidateByKey(['total-map-uploads']);
     },
-    onError(error) {
+    onSuccess: (data) => {
+      setPreview(data);
+    },
+    onError: (error) => {
+      setFile(undefined);
       toast({
-        title: t('upload.fail'),
+        title: <Tran text="upload.get-preview-fail" />,
         description: error.message,
         variant: 'destructive',
       });
     },
   });
 
-  const isLoading = isLoadingPostMap || isLoadingMapPreview;
-
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const files = event.target.files;
-    if (!files || files.length <= 0 || !files[0]) {
-      toast({
-        title: t('upload.no-file'),
+  function handleFileChange(files: File[]) {
+    if (!files.length || !files[0]) {
+      return toast({
+        title: <Tran text="upload.no-file" />,
         variant: 'destructive',
       });
-      return;
     }
-    const filename = files[0].name;
+
+    const file = files[0];
+    const filename = file.name;
     const extension = filename.split('.').pop();
 
     if (extension !== 'msav') {
-      toast({
-        title: t('upload.invalid-map-file'),
+      return toast({
+        title: <Tran text="upload.invalid-map-file" />,
         variant: 'destructive',
       });
-      return;
     }
 
     setPreview(undefined);
-    setFile(files[0]);
-  }
-
-  function handleSubmit() {
-    if (!file || isLoading || !preview) {
-      return;
-    }
-
-    postNewMap({ ...preview, file, tags: TagGroups.toString(selectedTags) });
+    setFile(file);
   }
 
   useEffect(() => {
-    if (file) {
-      getMapPreview({ file });
-    }
-  }, [file, getMapPreview]);
+    if (file) mutate({ file });
+  }, [file, mutate]);
 
-  function checkUploadRequirement() {
-    if (!file) return t('upload.no-file');
-
-    return true;
+  if (isPending) {
+    return <LoadingScreen />;
   }
-
-  const uploadCheck = checkUploadRequirement();
 
   return (
     <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
-      <div className="flex flex-1 flex-col gap-2 rounded-md bg-card p-2">
-        <section className="flex min-h-10 flex-row flex-wrap gap-2 md:flex-row md:items-start">
-          <label htmlFor="file" className="hover:cursor-pointer">
-            <LoadingWrapper isLoading={isLoadingMapPreview}>
-              {preview ? (
-                <Image
-                  loader={({ src }) => src}
-                  src={PNG_IMAGE_PREFIX + preview.image.trim()}
-                  alt="Map"
-                  width={512}
-                  height={512}
-                />
-              ) : (
-                <Button
-                  className="text-sm"
-                  variant="primary"
-                  title={t('upload.select-map')}
-                  asChild
-                >
-                  <span title={t('upload.select-map')}>
-                    {t('upload.select-map')}
-                  </span>
-                </Button>
-              )}
-            </LoadingWrapper>
-          </label>
-          <input
-            id="file"
-            type="file"
-            hidden
-            accept=".msav"
-            disabled={isLoading}
-            key={file?.name}
-            onChange={(event) => handleFileChange(event)}
-          />
-          {preview && (
-            <section className="flex flex-col gap-2">
-              <DetailTitle>{preview.name}</DetailTitle>
-              {session ? (
-                <UserCard user={session} />
-              ) : (
-                <IdUserCard id="community" />
-              )}
-              <DetailDescription>{preview.description}</DetailDescription>
-              <NameTagSelector
-                tags={map}
-                value={selectedTags}
-                onChange={setSelectedTags}
-              />
-            </section>
-          )}
-        </section>
-      </div>
-      <div className="flex flex-col items-end justify-center rounded-md bg-card p-2">
-        <Button
-          className="w-fit"
-          variant="primary"
-          title={t('upload')}
-          onClick={() => handleSubmit()}
-          disabled={isLoading || uploadCheck !== true}
-        >
-          <LoadingWrapper isLoading={isLoading}>
-            {uploadCheck === true ? t('upload') : uploadCheck}
-          </LoadingWrapper>
-        </Button>
-      </div>
+      {preview && file ? (
+        <Upload
+          file={file}
+          preview={preview} //
+          setFile={setFile}
+          setPreview={setPreview}
+        />
+      ) : (
+        <div className="flex h-full items-center justify-center w-full flex-1 flex-col gap-2 rounded-md p-2">
+          <section className="flex md:w-1/2 md:h-1/2 flex-row flex-wrap items-center gap-2 md:flex-row md:items-start">
+            <UploadField onFileDrop={handleFileChange} />
+          </section>
+        </div>
+      )}
     </div>
+  );
+}
+
+type UploadProps = {
+  file: File;
+  preview: MapPreviewResponse;
+  setFile: (data?: File | undefined) => void;
+  setPreview: (data?: MapPreviewResponse) => void;
+};
+
+type FormData = {
+  name: string;
+  description: string;
+  tags: TagGroup[];
+  file: File;
+};
+
+function Upload({ file, preview, setFile, setPreview }: UploadProps) {
+  const { session } = useSession();
+  const { map } = useUploadTags();
+  const { toast } = useToast();
+
+  const t = useI18n();
+  const axios = useClientAPI();
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(UploadMapSchema(t)),
+    defaultValues: {
+      name: preview.name,
+      description: preview.description,
+      tags: [],
+      file,
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: UploadMapRequest) => postMap(axios, data),
+    onSuccess: () => {
+      toast({
+        title: <Tran text="upload.success" />,
+        variant: 'success',
+      });
+      setFile(undefined);
+      setPreview(undefined);
+      form.reset();
+    },
+    onError: (error) => {
+      toast({
+        title: <Tran text="upload.fail" />,
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+
+  function handleSubmit(data: any) {
+    mutate(data);
+  }
+
+  return (
+    <Form {...form}>
+      <form
+        className="h-full flex flex-col p-2"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
+        <div className="flex flex-col gap-2">
+          <Image
+            loader={({ src }) => src}
+            src={PNG_IMAGE_PREFIX + preview.image.trim()}
+            alt="Map"
+            width={512}
+            height={512}
+          />
+          <UserCard user={session} />
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <EditComponent>
+                  <EditView>
+                    <div className="flex gap-1">
+                      <DetailTitle>{field.value}</DetailTitle>
+                      <EditTrigger />
+                    </div>
+                  </EditView>
+                  <EditInput>
+                    <FormLabel>
+                      <Tran text="name" />
+                    </FormLabel>
+                    <FormControl>
+                      <div className="flex gap-1">
+                        <Input {...field} />
+                        <EditClose />
+                      </div>
+                    </FormControl>
+                  </EditInput>
+                </EditComponent>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <EditComponent>
+                  <EditView>
+                    <div className="flex gap-1">
+                      <DetailDescription>{field.value}</DetailDescription>
+                      <EditTrigger />
+                    </div>
+                  </EditView>
+                  <EditInput>
+                    <FormLabel>
+                      <Tran text="description" />
+                    </FormLabel>
+                    <FormControl>
+                      <div className="flex gap-1">
+                        <Textarea className="w-full min-h-20" {...field} />
+                        <EditClose />
+                      </div>
+                    </FormControl>
+                  </EditInput>
+                </EditComponent>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  <Tran text="tags" />
+                </FormLabel>
+                <FormControl>
+                  <NameTagSelector
+                    tags={map}
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex mt-auto gap-2 justify-end p-2">
+          <Button variant="outline" onClick={() => setPreview(undefined)}>
+            <Tran text="close" />
+          </Button>
+          <Button variant="primary" type="submit" disabled={isPending}>
+            <Tran text="upload" />
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }

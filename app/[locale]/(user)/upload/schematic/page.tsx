@@ -11,6 +11,7 @@ import {
   EditTrigger,
   EditView,
 } from '@/components/common/edit-component';
+import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
 import { DetailDescription, DetailTitle } from '@/components/detail/detail';
@@ -47,7 +48,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-export default function UploadSchematic() {
+export default function Page() {
   const axios = useClientAPI();
   const [data, setData] = useState<File | string | undefined>();
   const [preview, setPreview] = useState<SchematicPreviewResponse>();
@@ -119,6 +120,10 @@ export default function UploadSchematic() {
     if (data) mutate({ data });
   }, [data, mutate]);
 
+  if (isPending) {
+    return <LoadingScreen />;
+  }
+
   return (
     <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
       {preview && data ? (
@@ -184,6 +189,11 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: UploadSchematicRequest) => postSchematic(axios, data),
+    onMutate: () => {
+      toast({
+        title: <Tran text="upload.uploading" />,
+      });
+    },
     onSuccess: () => {
       toast({
         title: <Tran text="upload.success" />,
