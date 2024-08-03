@@ -3,7 +3,7 @@ import Link from 'next/link';
 import UserCard from '@/components/user/user-card';
 import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
-import getUsers from '@/query/user/get-users';;
+import getUsers from '@/query/user/get-users';
 
 export const dynamicParams = false;
 
