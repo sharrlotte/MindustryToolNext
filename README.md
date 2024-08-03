@@ -1,5 +1,13 @@
 # [MindustryTool](https://mindustry-tool.app)
 
+This is a website about Mindustry game, the content include
+
+- Schematic
+- Map
+- Guide
+- Mod/Plugin
+- Server
+
 # Contribution
 
 - If you want to please contact directly with me
