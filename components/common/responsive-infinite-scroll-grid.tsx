@@ -37,7 +37,7 @@ export default function ResponsiveInfiniteScrollGrid<
   T,
   P extends PaginationQuery,
 >({
-  className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center',
+  className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center pr-2',
   queryKey,
   params,
   container,

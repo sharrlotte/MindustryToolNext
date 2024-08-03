@@ -1,11 +1,11 @@
-import { toForm } from '@/lib/utils';
-import PostMapRequest from '@/types/request/PostMapRequest';
-
 import { AxiosInstance } from 'axios';
+
+import { toForm } from '@/lib/utils';
+import { UploadMapRequest } from '@/types/schema/zod-schema';
 
 export default async function postMap(
   axios: AxiosInstance,
-  data: PostMapRequest,
+  data: UploadMapRequest,
 ): Promise<void> {
   const form = toForm(data);
 

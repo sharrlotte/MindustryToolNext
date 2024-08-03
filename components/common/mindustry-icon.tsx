@@ -23,6 +23,10 @@ export default function MindustryIcon({ name }: Props) {
 type TextOrIcon = string | { name: string };
 
 function findOne(str: string) {
+  if (!str) {
+    return -1;
+  }
+
   for (let i = 0; i < str.length; i++) {
     // Get unicode in hexadecimal
     const key = str.charCodeAt(i);
@@ -46,11 +50,16 @@ export function parseIconString(text: string) {
       const key = text.charCodeAt(index);
       const iconName = (icon as any)[key.toString()].split('|')[1];
 
+      if (!iconName) {
+        console.error('Icon not found: ' + key);
+        continue;
+      }
+
       result.push(text.substring(0, index));
       result.push({ name: iconName });
 
       text = text.substring(index + 1);
-    } else {
+    } else if (text) {
       result.push(text);
     }
   } while (index != -1);

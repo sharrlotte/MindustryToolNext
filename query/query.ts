@@ -23,7 +23,7 @@ const ItemSearchParam = {
     .transform((value) => (Array.isArray(value) ? value : [value]))
     .default([])
     .optional(),
-  sort: sortSchema.optional(),
+  sort: sortSchema,
 };
 
 const PaginationQuery = z.object({
