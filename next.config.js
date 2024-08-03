@@ -4,6 +4,7 @@ const nextConfig = {
   experimental: {
     ppr: true,
   },
+  crossOrigin: 'anonymous',
   reactStrictMode: true,
   images: {
     unoptimized: true,
