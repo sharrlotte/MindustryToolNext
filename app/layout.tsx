@@ -84,8 +84,7 @@ export default async function Root({ children, params }: Props) {
           </SessionProvider>
         </ThemeProvider>
       </body>
-      <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1288517130363555"
-     crossorigin="anonymous"></Script>
+      <Script strategy="afterInteractive" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1288517130363555"></Script>
     </html>
   );
 }
