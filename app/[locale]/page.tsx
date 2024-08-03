@@ -3,8 +3,7 @@ import Link from 'next/link';
 import UserCard from '@/components/user/user-card';
 import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
-import getUsers from '@/query/user/get-users';
-import YoutubeVideo from '@/components/neko/YoutubeVideo';
+import getUsers from '@/query/user/get-users';;
 
 export const dynamicParams = false;
 
@@ -61,7 +60,7 @@ export default async function Home({
             <h5 className="flex w-full justify-center text-center mb-2.5">{t('home-content-platform')}</h5>
           </div>
           <div className="flex justify-center w-full md:w-1/2 h-[40vw] md:h-[20vw]">
-            <YoutubeVideo url={'https://www.youtube.com/watch?v=gUu3AhqpyHo'} />
+            <iframe src={`https://www.youtube.com/embed/gUu3AhqpyHo`} className='w-[100%] h-[100%]' allowFullScreen></iframe>
           </div>
         </div>
 
