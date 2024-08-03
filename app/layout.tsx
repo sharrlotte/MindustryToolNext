@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import NextTopLoader from 'nextjs-toploader';
+import Script from 'next/script'
 
 import ClientInit from '@/app/[locale]/client-init';
 import { ThemeProvider } from '@/components/theme/theme-provider';
@@ -83,6 +84,8 @@ export default async function Root({ children, params }: Props) {
           </SessionProvider>
         </ThemeProvider>
       </body>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1288517130363555"
+     crossorigin="anonymous"></Script>
     </html>
   );
 }
