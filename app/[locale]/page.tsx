@@ -4,7 +4,7 @@ import UserCard from '@/components/user/user-card';
 import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
 import getUsers from '@/query/user/get-users';
-
+import {SchematicRowView, MapRowView} from '@/components/common/row-page';
 export const dynamicParams = false;
 
 export default async function Home({
@@ -47,26 +47,54 @@ export default async function Home({
   );
 
   return (
-    <div className="flex h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center p-8 text-white">
-      <div className="flex flex-col no-scrollbar overflow-y-auto rounded-md bg-zinc-900/80 p-8 shadow-md backdrop-blur-sm w-full max-w-5xl mx-auto">
-        <h1 className="flex mb-5 w-full text-center justify-center text-3xl">{t('home-hero-title')}</h1>
-        <h3 className="flex px-5 mb-7 text-center text-xl">{t('home-hero-infomation')}</h3>
+    <div className="flex h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center p-[20px] text-white">
+      <div className="flex flex-col no-scrollbar overflow-y-auto rounded-md bg-zinc-900/80 p-[20px] shadow-md backdrop-blur-sm w-full max-w-5xl mx-auto">
+        <h1 className="flex mb-5 w-full text-center justify-center text-3xl">{t('home.hero-title')}</h1>
+        <h3 className="flex px-5 mb-7 text-xl">{t('home.hero-infomation')}</h3>
 
         <div className="flex flex-col md:flex-row mb-7">
           <div className="flex w-[calc(100%-12px)] md:w-1/2 flex-col m-3">
-            <h1 className="flex mb-2.5 w-full justify-center text-2xl">{t('home-content-what-is-mindustry')}</h1>
-            <h5 className="mt-2.5 mx-1.5 mb-2.5 text-center">{t('home-content-about-mindustry')}</h5>
-            <h3 className="flex w-full justify-center text-center mb-1.5 text-xl">{t('home-content-platform-info')}</h3>
-            <h5 className="flex w-full justify-center text-center mb-2.5">{t('home-content-platform')}</h5>
+            <h1 className="flex mb-2.5 w-full justify-center text-2xl">{t('home.content-what-is-mindustry')}</h1>
+            <h5 className="mt-2.5 mx-1.5 mb-2.5">{t('home.content-about-mindustry')}</h5>
+            <h3 className="flex w-full justify-center text-center mb-2 text-xl">{t('home.content-platform-info')}</h3>
+            <h5 className="flex w-full justify-center mb-2.5">{t('home.content-platform')}</h5>
           </div>
-          <div className="flex justify-center w-full md:w-1/2 h-[40vw] md:h-[20vw]">
-            <iframe src={`https://www.youtube.com/embed/gUu3AhqpyHo`} className='w-[100%] h-[100%]' allowFullScreen></iframe>
+          <div className="flex justify-center w-full md:w-1/2 ">
+            <div className="relative w-full pb-[56.25%]">
+              <iframe
+                src="https://www.youtube.com/embed/gUu3AhqpyHo"
+                className="absolute top-0 left-0 w-full h-full rounded-2xl"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+                allowFullScreen title="YouTube video player"></iframe>
+            </div>
           </div>
+        </div>
+
+        <div className='flex flex-col bg-black rounded-2xl mb-8'>
+          <div className='flex flex-row justify-between mb-4 p-4'>
+            <h3 className='flex h-10 items-center'>{t('home.schemactic-preview')}</h3>
+            <button className='flex h-10 bg-accent text-white rounded items-center justify-center'>{t('home.preview-more')}</button>
+          </div>
+
+          <ul className="flex overflow-x-auto list-none p-0 m-0 pb-4">
+            <SchematicRowView queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
+          </ul>
+        </div>
+
+        <div className='flex flex-col bg-black rounded-2xl mb-8'>
+          <div className='flex flex-row justify-between mb-4 p-4'>
+            <h3 className='flex h-10 items-center'>{t('home.map-preview')}</h3>
+            <button className='flex h-10 bg-accent text-white rounded items-center justify-center'>{t('home.preview-more')}</button>
+          </div>
+
+          <ul className="flex overflow-x-auto list-none p-0 m-0 pb-4">
+            <MapRowView queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
+          </ul>
         </div>
 
         <div className="flex flex-col md:flex-row w-full">
           <div className="flex w-full md:w-1/2 flex-col">
-            <h1 className="flex ml-12 mb-2.5 text-xl">{t('home-content-recommended-article')}</h1>
+            <h1 className="flex ml-12 mb-2.5 text-xl">{t('home.content-recommended-article')}</h1>
             <ul className="flex flex-col mb-5">
               <li>
                 <Link className="text-brand hover:text-brand text-lg" href="posts/e7610862-bf57-4ab0-9204-ae7a4a31d41b">
