@@ -7,7 +7,7 @@
     --background: 240, 3%, 94%;
     --foreground: 0, 0%, 0%, 0.87;
 
-    --card: 0 0 100%;
+    --card: 0, 0%, 91%;
     --card-foreground: 20 14.3% 4.1%;
 
     --popover: 0 0% 100%;
@@ -114,25 +114,20 @@
     @apply my-4 rounded-md border bg-background bg-opacity-60 p-1 text-foreground;
   }
 
-  div::-webkit-scrollbar-track {
-    background-clip: padding-box;
-
-    @apply bg-white bg-opacity-20;
+  *::-webkit-scrollbar-track {
+    @apply bg-white bg-opacity-20 bg-clip-padding;
   }
 
-  div::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  *::-webkit-scrollbar {
+    @apply size-2;
   }
 
-  div::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
-    border-radius: 9999px;
-    @apply bg-white bg-clip-padding;
+  *::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-white bg-clip-padding;
   }
 
-  div::-webkit-scrollbar-button {
-    display: none;
+  *::-webkit-scrollbar-button {
+    @apply hidden;
   }
 
   body {

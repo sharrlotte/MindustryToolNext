@@ -1,3 +1,5 @@
+'use client';
+
 import { saveAs } from 'file-saver';
 import React, { HTMLAttributes } from 'react';
 
@@ -37,7 +39,7 @@ export default function DownloadButton({
   return (
     <a
       className={cn(
-        'flex min-h-8 items-center justify-center rounded-md border border-border hover:bg-brand',
+        'flex min-h-8 items-center justify-center rounded-md border border-border hover:bg-brand hover:text-background hover:dark:text-foreground',
         className,
       )}
       {...props}

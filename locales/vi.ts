@@ -81,8 +81,7 @@ export default {
   'upload.fail': 'Đăng thất bại',
   'upload.get-preview-fail': 'Lấy bản xem trước thất bại',
   'upload.go-to-upload-page': 'Đến trang đăng',
-  'upload.invalid-map-file':
-    'Tệp không hợp lệ, tệp bản đồ phải có đuôi .msav',
+  'upload.invalid-map-file': 'Tệp không hợp lệ, tệp bản đồ phải có đuôi .msav',
   'upload.invalid-schematic-code': 'Mã bản thiết kế không hợp lệ',
   'upload.invalid-schematic-file':
     'Tệp không hợp lệ, tệp bản thiết kế phải có đuôi .msch',
@@ -136,18 +135,22 @@ export default {
   'require-login': 'Đăng nhập để tiếp tục',
   // nếu thông qua thì tự xóa, viết đây tiện tham khảo th
   'home.hero-title': 'Chào mừng đến với MindustryTool',
-  'home.hero-infomation': '1 trang đơn giản lưu trữ những bản thiết kế mới nhất và bản đồ đẹp nhất, nơi bạn có thể đóng góp 1 phần vào kho lưu trữ của chúng tôi và trở thành người đóng góp cho trang',
+  'home.hero-information':
+    '1 trang đơn giản lưu trữ những bản thiết kế mới nhất và bản đồ đẹp nhất, nơi bạn có thể đóng góp 1 phần vào kho lưu trữ của chúng tôi và trở thành người đóng góp cho trang',
   'home.content-what-is-mindustry': 'Mindustry là gì?',
-  'home.content-about-mindustry': 'Mindustry là một trò chơi chiến lược độc đáo kết hợp yếu tố phòng thủ tháp và xây dựng căn cứ. Khám phá thế giới rộng lớn, thu thập tài nguyên, và xây dựng các dây chuyền sản xuất phức tạp để bảo vệ căn cứ của bạn.',
+  'home.content-about-mindustry':
+    'Mindustry là một trò chơi chiến lược độc đáo kết hợp yếu tố phòng thủ tháp và xây dựng căn cứ. Khám phá thế giới rộng lớn, thu thập tài nguyên, và xây dựng các dây chuyền sản xuất phức tạp để bảo vệ căn cứ của bạn.',
   'home.content-platform-info': 'Game hiện đang có mặt trên các nền tảng:',
-  'home.content-platform': 'Windows Linux, MacOS, Điện thoại Android và Iphone (Iphone và Steam là bản trả phí)',
+  'home.content-platform':
+    'Windows Linux, MacOS, Điện thoại Android và Iphone (Iphone và Steam là bản trả phí)',
   'home.content-recommended-article': 'Bài viết đề xuất',
   'home.download-tutorial': 'Cách tải game miễn phí',
-  'home.play-with-friend-tutorial': 'Cách chơi với bạn bè thông qua scheme size',
+  'home.play-with-friend-tutorial':
+    'Cách chơi với bạn bè thông qua scheme size',
   'home.community': 'Cộng đồng',
-  'home.schemactic-preview':'BTK mới',
-  'home.map-preview':'Bản đồ mới',
-  'home.preview-more':'Xem thêm',
+  'home.schematic-preview': 'BTK mới',
+  'home.map-preview': 'Bản đồ mới',
+  'home.preview-more': 'Xem thêm',
   'home.official-discord-server': 'Mindustry discord chính chủ',
   'home.reddit': 'Reddit r/Mindustry',
   'home.vietnamese-discord-server': 'Mindustry discord Việt Nam',

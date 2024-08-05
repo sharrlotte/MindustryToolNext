@@ -135,22 +135,27 @@ export default {
   'chat.message': 'Write down your question',
   'require-login': 'Login to continute',
   // nếu thông qua thì tự xóa, viết đây tiện tham khảo th
-  "home.hero-title": "Welcome to MindustryTool",
-  "home.hero-infomation": "A simple page that stores the latest designs and the most beautiful maps, where you can contribute a part to our repository and become a contributor to the page.",
-  "home.content-what-is-mindustry": "What is Mindustry?",
-  "home.content-about-mindustry": "Mindustry is a unique strategy game that combines tower defense and base building elements. Explore vast worlds, gather resources, and build complex production chains to defend your base.",
-  "home.content-platform-info": "The game is available on the following platforms:",
-  "home.content-platform": "Windows, Linux, MacOS, Android phones, and iPhone (iPhone and Steam versions are paid).",
-  "home.content-recommended-article": "Recommended Articles",
-  "home.download-tutorial": "How to download the game for free",
-  "home.play-with-friend-tutorial": "How to play with friends through scheme size",
-  "home.community": "Community",
-  "home.schemactic-preview": "New Schemactics",
-  "home.map-preview": "New Maps",
-  "home.preview-more": "See More",
-  "home.official-discord-server": "Official Mindustry Discord Server",
-  "home.reddit": "Reddit r/Mindustry",
-  "home.vietnamese-discord-server": "Vietnamese Mindustry Discord",
-  "home.website-info": "Information",
-  "home.youtube": "Mindustry YouTube Channel"
+  'home.hero-title': 'Welcome to MindustryTool',
+  'home.hero-information':
+    'A simple page that stores the latest designs and the most beautiful maps, where you can contribute a part to our repository and become a contributor to the page.',
+  'home.content-what-is-mindustry': 'What is Mindustry?',
+  'home.content-about-mindustry':
+    'Mindustry is a unique strategy game that combines tower defense and base building elements. Explore vast worlds, gather resources, and build complex production chains to defend your base.',
+  'home.content-platform-info':
+    'The game is available on the following platforms:',
+  'home.content-platform':
+    'Windows, Linux, MacOS, Android phones, and iPhone (iPhone and Steam versions are paid).',
+  'home.content-recommended-article': 'Recommended Articles',
+  'home.download-tutorial': 'How to download the game for free',
+  'home.play-with-friend-tutorial':
+    'How to play with friends through scheme size',
+  'home.community': 'Community',
+  'home.schematic-preview': 'New Schemactics',
+  'home.map-preview': 'New Maps',
+  'home.preview-more': 'See More',
+  'home.official-discord-server': 'Official Mindustry Discord Server',
+  'home.reddit': 'Reddit r/Mindustry',
+  'home.vietnamese-discord-server': 'Vietnamese Mindustry Discord',
+  'home.website-info': 'Information',
+  'home.youtube': 'Mindustry YouTube Channel',
 } as const;

@@ -1,7 +1,7 @@
 'use client';
 
 import { omit } from 'lodash';
-import { PlusIcon, UserIcon } from 'lucide-react';
+import { UploadIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -82,9 +82,9 @@ export default function SchematicList() {
         <GridLayout>
           <PaginationNavigator numberOfItems={data ?? 0} />
         </GridLayout>
-        <div className="flex gap-1">
+        <div className="flex gap-4">
           <Link
-            className="items-center flex gap-2 py-1 pl-1 pr-3 border border-border rounded-md"
+            className="items-center flex gap-2 rounded-md bg-secondary px-2 py-1.5"
             href={`${env.url.base}/users/me`}
             title="My schematic"
           >
@@ -92,12 +92,12 @@ export default function SchematicList() {
             My schematic
           </Link>
           <Link
-            className="items-center flex gap-2 py-1 pl-1 pr-3 border border-border rounded-md"
+            className="items-center flex gap-2 rounded-md bg-secondary px-2 py-1.5"
             href={`${env.url.base}/upload/schematic`}
             title="My schematic"
           >
-            <PlusIcon className="size-5" />
-            Add schematic
+            <UploadIcon className="size-5" />
+            Upload schematic
           </Link>
         </div>
       </div>
