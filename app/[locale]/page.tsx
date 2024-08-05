@@ -50,14 +50,14 @@ export default async function Home({
     <div className="flex h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center p-[20px] text-white">
       <div className="flex flex-col no-scrollbar overflow-y-auto rounded-md bg-zinc-900/80 p-[20px] shadow-md backdrop-blur-sm w-full max-w-5xl mx-auto">
         <h1 className="flex mb-5 w-full text-center justify-center text-3xl">{t('home.hero-title')}</h1>
-        <h3 className="flex px-5 mb-7 text-xl">{t('home.hero-infomation')}</h3>
+        <b className="flex px-5 mb-7 text-xl">{t('home.hero-infomation')}</b>
 
-        <div className="flex flex-col md:flex-row mb-7">
+        <div className="flex flex-col md:flex-row">
           <div className="flex w-[calc(100%-12px)] md:w-1/2 flex-col">
-            <h1 className="flex mb-2.5 w-full justify-center text-2xl">{t('home.content-what-is-mindustry')}</h1>
-            <h5 className="mt-2.5 mx-1.5 mb-2.5">{t('home.content-about-mindustry')}</h5>
-            <h3 className="flex w-full justify-center text-center mb-2 text-xl">{t('home.content-platform-info')}</h3>
-            <h5 className="flex w-full justify-center mb-2.5">{t('home.content-platform')}</h5>
+            <h3 className="flex mb-2 w-full justify-center text-2xl">{t('home.content-what-is-mindustry')}</h3>
+            <b className="mt-2.5 mx-1.5 mb-2">{t('home.content-about-mindustry')}</b>
+            <h3 className="flex w-full justify-center text-center mb-2.5 text-xl">{t('home.content-platform-info')}</h3>
+            <b className="flex w-full justify-center mb-2.5">{t('home.content-platform')}</b>
           </div>
           <div className="flex justify-center w-full md:w-1/2">
             <div className="relative w-full pb-[56.25%]">
@@ -70,31 +70,31 @@ export default async function Home({
           </div>
         </div>
 
-        <div className='flex flex-col bg-black rounded-2xl mb-8'>
-          <div className='flex flex-row justify-between mb-4 p-4'>
+        <div className='flex flex-col'>
+          <div className='flex flex-row justify-between p-2 m-0'>
             <h3 className='flex h-10 items-center'>{t('home.schemactic-preview')}</h3>
-            <a href='/schematics' className='flex cursor-pointer h-10 pr-2 pl-2 bg-brand text-white rounded items-center justify-center'>{t('home.preview-more')}</a>
+            <a href='/schematics' className='flex cursor-pointer p-2 text-brand items-center font-bold justify-center'>{t('home.preview-more')}</a>
           </div>
 
-          <ul className="flex overflow-x-auto list-none p-0 m-0 pb-4">
+          <ul className="flex overflow-x-auto list-none p-0 m-0">
             <SchematicRowView queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
           </ul>
         </div>
 
-        <div className='flex flex-col bg-black rounded-2xl mb-8'>
-          <div className='flex flex-row justify-between mb-4 p-4'>
+        <div className='flex flex-col mb-4'>
+          <div className='flex flex-row justify-between p-2 m-0'>
             <h3 className='flex h-10 items-center'>{t('home.map-preview')}</h3>
-            <a href='/maps' className='flex cursor-pointer h-10 pr-2 pl-2 bg-brand text-white rounded items-center justify-center'>{t('home.preview-more')}</a>
+            <a href='/maps' className='flex cursor-pointer p-2 text-brand items-center font-bold justify-center'>{t('home.preview-more')}</a>
           </div>
 
-          <ul className="flex overflow-x-auto list-none p-0 m-0 pb-4">
+          <ul className="flex overflow-x-auto list-none p-0 m-0">
             <MapRowView queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
           </ul>
         </div>
 
         <div className="flex flex-col md:flex-row w-full">
           <div className="flex w-full md:w-1/2 flex-col">
-            <h1 className="flex ml-12 mb-2.5 text-xl">{t('home.content-recommended-article')}</h1>
+            <h1 className="flex ml-4 mb-2.5 text-xl">{t('home.content-recommended-article')}</h1>
             <ul className="flex flex-col mb-5">
               <li className='p-0'>
                 <Link className="text-brand hover:text-brand text-lg" href="posts/e7610862-bf57-4ab0-9204-ae7a4a31d41b">
@@ -108,7 +108,7 @@ export default async function Home({
               </li>
             </ul>
 
-            <h1 className="flex ml-12 mb-2.5 text-xl">{t('home.community')}</h1>
+            <h1 className="flex ml-4 mb-2.5 text-xl">{t('home.community')}</h1>
             <ul className="flex flex-col mb-5">
               <li className='p-0'>
                 <a className="text-brand hover:text-brand text-lg" href="https://discord.gg/mindustry" target="_blank" rel="noopener noreferrer">
@@ -127,7 +127,7 @@ export default async function Home({
               </li>
             </ul>
 
-            <h1 className="flex ml-12 mb-2.5 text-xl">{t('home.youtube')}</h1>
+            <h1 className="flex ml-4 mb-2.5 text-xl">{t('home.youtube')}</h1>
             <ul className="flex flex-col mb-5">
               <li className='p-0'>
                 <a className="text-brand hover:text-brand text-lg" href="https://www.youtube.com/@FourEverNice" target="_blank" rel="noopener noreferrer">
@@ -143,7 +143,7 @@ export default async function Home({
           </div>
 
           <div className="flex w-full md:w-1/2 flex-col">
-            <h1 className="flex ml-12 mb-5 text-xl">{t('home.website-info')}</h1>
+            <h1 className="flex ml-4 mb-5 text-xl">{t('home.website-info')}</h1>
             <ul className="grid grid-cols-1 items-start justify-start gap-y-2 md:grid-cols-2">
               <p className="list-item whitespace-nowrap">{t('web-owner')}</p>
               <div className="grid gap-1">
