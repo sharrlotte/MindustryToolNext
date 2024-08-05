@@ -1,3 +1,4 @@
+import { FacebookIcon, GithubIcon } from 'lucide-react';
 import { setStaticParamsLocale } from 'next-international/server';
 import Link from 'next/link';
 
@@ -6,6 +7,8 @@ import Tran from '@/components/common/tran';
 import UserCard from '@/components/user/user-card';
 import getServerAPI from '@/query/config/get-server-api';
 import getUsers from '@/query/user/get-users';
+
+import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
 export const dynamicParams = false;
 
@@ -52,8 +55,8 @@ export default async function Home({
   );
 
   return (
-    <div className="flex h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center text-white">
-      <div className="flex flex-col no-scrollbar gap-10 overflow-y-auto shadow-md backdrop-brightness-50 backdrop-blur-sm w-full p-4 md:px-32 mx-auto">
+    <div className="flex flex-col h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center text-white">
+      <div className="flex flex-col no-scrollbar gap-10 shadow-md backdrop-brightness-50 backdrop-blur-sm w-full p-4 md:px-32 mx-auto">
         <div>
           <h1 className="w-full text-3xl text-center">
             <Tran text="home.hero-title" />
@@ -236,6 +239,36 @@ export default async function Home({
           </div>
         </div>
       </div>
+      <footer className="bg-zinc-950/95">
+        <div className="pb-6 p-6 space-y-4">
+          <span className="text-center w-full flex justify-center text-2xl ">
+            MindustryTool
+          </span>
+          <div className="flex justify-center gap-2">
+            <Link
+              className="bg-black rounded-full p-2 aspect-square border"
+              href="https://github.com/MindustryVN"
+            >
+              <GithubIcon className="size-5" />
+            </Link>
+            <Link
+              className="bg-[rgb(66,103,178)] rounded-full p-2 aspect-square border"
+              href="https://www.facebook.com/groups/544598159439216/"
+            >
+              <FacebookIcon className="size-5" />
+            </Link>
+            <Link
+              className="bg-[rgb(88,101,242)] rounded-full p-2 aspect-square border"
+              href="https://discord.gg/72324gpuCd"
+            >
+              <DiscordLogoIcon className="size-5" />
+            </Link>
+          </div>
+        </div>
+        <div className="flex w-full bg-black text-sm text-center justify-center p-4">
+          Copyright © 2024 ‧ MindustryTool. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 }
