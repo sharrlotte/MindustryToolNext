@@ -2,7 +2,7 @@
 const removeImports = require('next-remove-imports')();
 const nextConfig = {
   experimental: {
-    ppr: true,
+    ppr: 'incremental',
   },
   crossOrigin: 'anonymous',
   reactStrictMode: true,

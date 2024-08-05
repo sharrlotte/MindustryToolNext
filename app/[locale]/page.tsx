@@ -2,15 +2,17 @@ import { FacebookIcon, GithubIcon } from 'lucide-react';
 import { setStaticParamsLocale } from 'next-international/server';
 import Link from 'next/link';
 
-import { MapRowView, SchematicRowView } from '@/app/[locale]/preview';
+import {
+  HomeMapPreview,
+  HomeSchematicPreview,
+  InformationGroup,
+} from '@/app/[locale]/home';
 import Tran from '@/components/common/tran';
-import UserCard from '@/components/user/user-card';
-import getServerAPI from '@/query/config/get-server-api';
-import getUsers from '@/query/user/get-users';
 
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
 export const dynamicParams = false;
+export const experimental_ppr = true;
 
 export default async function Home({
   params: { locale },
@@ -19,65 +21,38 @@ export default async function Home({
 }) {
   await setStaticParamsLocale(locale);
 
-  const axios = await getServerAPI();
-
-  const getAdmins = getUsers(axios, {
-    page: 0,
-    size: 20,
-    role: 'ADMIN',
-  });
-
-  const getShar = getUsers(axios, {
-    page: 0,
-    size: 20,
-    role: 'SHAR',
-  });
-
-  const getContributor = getUsers(axios, {
-    page: 0,
-    size: 20,
-    role: 'CONTRIBUTOR',
-  });
-
-  const [shar, admins, contributors] = await Promise.all([
-    getShar,
-    getAdmins,
-    getContributor,
-  ]);
-
-  const onlyAdmins = admins.filter(
-    (user) => !shar.map((u) => u.id).includes(user.id),
-  );
-  const onlyContributors = contributors.filter(
-    (user) =>
-      !shar.map((u) => u.id).includes(user.id) &&
-      !admins.map((u) => u.id).includes(user.id),
-  );
-
   return (
-    <div className="flex flex-col h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center text-white">
-      <div className="flex flex-col no-scrollbar gap-10 shadow-md backdrop-brightness-50 backdrop-blur-sm w-full p-4 md:px-32 mx-auto">
+    <div className="flex flex-col no-scrollbar h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center text-white">
+      <div className="flex flex-col gap-10 backdrop-brightness-50 backdrop-blur-sm w-full p-4 md:px-32 mx-auto">
         <div>
-          <h1 className="w-full text-3xl text-center">
+          <h1 className="w-full font-extrabold text-3xl text-center">
             <Tran text="home.hero-title" />
           </h1>
         </div>
         <div className="flex flex-col md:flex-row gap-2">
           <div className="flex md:w-1/2 flex-col space-y-4">
             <div>
-              <h3>
+              <h3 className="font-bold">
                 <Tran text="home.content-what-is-mindustry" />
               </h3>
-              <p>
+              <p className="text-foreground">
                 <Tran text="home.content-about-mindustry" />
               </p>
             </div>
             <div>
-              <h3>
+              <h3 className="font-bold">
                 <Tran text="home.content-platform-info" />
               </h3>
               <p>
                 <Tran text="home.content-platform" />
+              </p>
+            </div>
+            <div>
+              <h3 className="font-bold">
+                <Tran text="home.mindustry-tool-about" />
+              </h3>
+              <p>
+                <Tran text="home.mindustry-tool-description" />
               </p>
             </div>
           </div>
@@ -93,33 +68,30 @@ export default async function Home({
             </div>
           </div>
         </div>
-
         <div className="flex flex-col">
           <div className="flex flex-row justify-between">
             <h4 className="flex items-center">
               <Tran text="home.schematic-preview" />
             </h4>
-            <Link href="/schematics" className="cursor-pointer font-bold">
+            <Link href="/schematics" className="cursor-pointer font-light">
               <Tran text="home.preview-more" />
             </Link>
           </div>
-          <SchematicRowView
+          <HomeSchematicPreview
             queryParam={{ page: 0, size: 10, sort: 'time_1' }}
           />
         </div>
-
         <div className="flex flex-col">
           <div className="flex flex-row justify-between">
             <h4 className="flex items-center">
               <Tran text="home.map-preview" />
             </h4>
-            <Link href="/maps" className="cursor-pointer font-bold">
+            <Link href="/maps" className="cursor-pointer font-light">
               <Tran text="home.preview-more" />
             </Link>
           </div>
-          <MapRowView queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
+          <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
         </div>
-
         <div className="flex flex-col md:flex-row w-full gap-2">
           <div className="flex w-full md:w-1/2 flex-col">
             <h1 className="flex ml-4 mb-2.5 text-xl">
@@ -205,37 +177,11 @@ export default async function Home({
               </li>
             </ul>
           </div>
-
           <div className="flex w-full md:w-1/2 flex-col">
             <h1 className="flex ml-4 mb-5 text-xl">
               <Tran text="home.website-info" />
             </h1>
-            <ul className="grid grid-cols-1 items-start justify-start gap-y-8 md:grid-cols-2">
-              <p className="list-item whitespace-nowrap h-8">
-                <Tran text="web-owner" />
-              </p>
-              <div className="grid gap-1">
-                {shar.map((user) => (
-                  <UserCard key={user.id} user={user} />
-                ))}
-              </div>
-              <p className="list-item whitespace-nowrap h-8">
-                <Tran text="admin" />
-              </p>
-              <div className="grid gap-1">
-                {onlyAdmins.map((user) => (
-                  <UserCard key={user.id} user={user} />
-                ))}
-              </div>
-              <p className="list-item whitespace-nowrap h-8">
-                <Tran text="contributor" />
-              </p>
-              <div className="grid gap-1">
-                {onlyContributors.map((user) => (
-                  <UserCard key={user.id} user={user} />
-                ))}
-              </div>
-            </ul>
+            <InformationGroup />
           </div>
         </div>
       </div>

@@ -158,4 +158,7 @@ export default {
   'home.vietnamese-discord-server': 'Vietnamese Mindustry Discord',
   'home.website-info': 'Information',
   'home.youtube': 'Mindustry YouTube Channel',
+  'home.mindustry-tool-about': 'About MindustryTool',
+  'home.mindustry-tool-description':
+    'This is a website about mindustry content, provide you schematics, maps, guidelines and information that can help you in the game',
 } as const;

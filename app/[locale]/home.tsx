@@ -1,0 +1,148 @@
+import { Suspense } from 'react';
+
+import Tran from '@/components/common/tran';
+import MapPreviewCard from '@/components/map/map-preview-card';
+import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import UserCard from '@/components/user/user-card';
+import getServerAPI from '@/query/config/get-server-api';
+import getMaps from '@/query/map/get-maps';
+import getSchematics from '@/query/schematic/get-schematics';
+import getUsers from '@/query/user/get-users';
+import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
+
+const skeleton = Array(20)
+  .fill(1)
+  .map((_, index) => <PreviewSkeleton key={index} />);
+
+export async function HomeSchematicPreview({
+  queryParam,
+}: {
+  queryParam: PaginationSearchQuery;
+}) {
+  return (
+    <ul className="flex w-full overflow-y-hidden overflow-x-auto list-none snap-x gap-2 pb-1 text-foreground">
+      <Suspense fallback={skeleton}>
+        <_SchematicRowView queryParam={queryParam} />
+      </Suspense>
+    </ul>
+  );
+}
+export async function HomeMapPreview({
+  queryParam,
+}: {
+  queryParam: PaginationSearchQuery;
+}) {
+  return (
+    <ul className="flex w-full overflow-y-hidden overflow-x-auto list-none snap-x gap-2 pb-1 text-foreground">
+      <Suspense fallback={skeleton}>
+        <_HomeMapPreview queryParam={queryParam} />
+      </Suspense>
+    </ul>
+  );
+}
+
+async function _SchematicRowView({
+  queryParam,
+}: {
+  queryParam: PaginationSearchQuery;
+}) {
+  const axios = await getServerAPI();
+  const items = await getSchematics(axios, queryParam);
+
+  return items.map((schematic) => (
+    <li key={schematic.id} className="snap-center p-0 m-0">
+      <SchematicPreviewCard schematic={schematic} />
+    </li>
+  ));
+}
+
+async function _HomeMapPreview({
+  queryParam,
+}: {
+  queryParam: PaginationSearchQuery;
+}) {
+  const axios = await getServerAPI();
+  const items = await getMaps(axios, queryParam);
+
+  return items.map((map) => (
+    <li key={map.id} className="snap-center p-0 m-0">
+      <MapPreviewCard map={map} />
+    </li>
+  ));
+}
+
+export async function InformationGroup() {
+  return (
+    <Suspense>
+      <_InformationGroup />
+    </Suspense>
+  );
+}
+
+async function _InformationGroup() {
+  const axios = await getServerAPI();
+
+  const getAdmins = getUsers(axios, {
+    page: 0,
+    size: 20,
+    role: 'ADMIN',
+  });
+
+  const getShar = getUsers(axios, {
+    page: 0,
+    size: 20,
+    role: 'SHAR',
+  });
+
+  const getContributor = getUsers(axios, {
+    page: 0,
+    size: 20,
+    role: 'CONTRIBUTOR',
+  });
+
+  const [shar, admins, contributors] = await Promise.all([
+    getShar,
+    getAdmins,
+    getContributor,
+  ]);
+
+  const onlyAdmins = admins.filter(
+    (user) => !shar.map((u) => u.id).includes(user.id),
+  );
+
+  const onlyContributors = contributors.filter(
+    (user) =>
+      !shar.map((u) => u.id).includes(user.id) &&
+      !admins.map((u) => u.id).includes(user.id),
+  );
+
+  return (
+    <ul className="grid grid-cols-1 items-start justify-start gap-y-8 md:grid-cols-2">
+      <p className="list-item whitespace-nowrap h-8">
+        <Tran text="web-owner" />
+      </p>
+      <div className="grid gap-1">
+        {shar.map((user) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </div>
+      <p className="list-item whitespace-nowrap h-8">
+        <Tran text="admin" />
+      </p>
+      <div className="grid gap-1">
+        {onlyAdmins.map((user) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </div>
+      <p className="list-item whitespace-nowrap h-8">
+        <Tran text="contributor" />
+      </p>
+      <div className="grid gap-1">
+        {onlyContributors.map((user) => (
+          <UserCard key={user.id} user={user} />
+        ))}
+      </div>
+    </ul>
+  );
+}
