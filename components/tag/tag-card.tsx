@@ -1,11 +1,10 @@
+import { XIcon } from 'lucide-react';
+import React, { HTMLAttributes } from 'react';
+
 import TagName from '@/components/tag/tag-name';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import Tag from '@/types/response/Tag';
-
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import React, { HTMLAttributes } from 'react';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;
@@ -18,7 +17,6 @@ export default function TagCard({
   onDelete,
   ...props
 }: TagCardProps) {
-  const hasDeleteButton = onDelete !== undefined;
   const { name, value, color } = tag;
 
   const handleOnDelete = (tag: Tag) => {
@@ -32,26 +30,15 @@ export default function TagCard({
   return (
     <span
       className={cn(
-        'flex h-8 items-center gap-1 whitespace-nowrap rounded-md px-2 py-1 text-center text-xs capitalize text-background dark:text-foreground',
+        'flex items-center gap-0.5 cursor-pointer whitespace-nowrap rounded-full px-2 py-2 font-extralight text-center text-xs capitalize text-background dark:text-foreground',
         className,
-        {
-          group: hasDeleteButton,
-        },
       )}
       style={{ backgroundColor: color }}
+      onClick={() => handleOnDelete(tag)}
       {...props}
     >
       <TagName>{name}</TagName>(<TagName>{value}</TagName>)
-      {hasDeleteButton && (
-        <Button
-          className="w-0 p-0 transition-all duration-500 group-hover:w-5"
-          title={t('delete')}
-          variant="icon"
-          onClick={() => handleOnDelete(tag)}
-        >
-          <XMarkIcon className="h-5 w-5" />
-        </Button>
-      )}
+      <XIcon className="size-4" />
     </span>
   );
 }

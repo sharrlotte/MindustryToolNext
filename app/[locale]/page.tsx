@@ -7,6 +7,7 @@ import {
   HomeSchematicPreview,
   InformationGroup,
 } from '@/app/[locale]/home';
+import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
@@ -70,12 +71,15 @@ export default async function Home({
         </div>
         <div className="flex flex-col">
           <div className="flex flex-row justify-between">
-            <h4 className="flex items-center">
+            <h3 className="font-bold">
               <Tran text="home.schematic-preview" />
-            </h4>
-            <Link href="/schematics" className="cursor-pointer font-light">
+            </h3>
+            <InternalLink
+              className="cursor-pointer font-light"
+              href="/schematics"
+            >
               <Tran text="home.preview-more" />
-            </Link>
+            </InternalLink>
           </div>
           <HomeSchematicPreview
             queryParam={{ page: 0, size: 10, sort: 'time_1' }}
@@ -83,12 +87,12 @@ export default async function Home({
         </div>
         <div className="flex flex-col">
           <div className="flex flex-row justify-between">
-            <h4 className="flex items-center">
+            <h3 className="font-bold">
               <Tran text="home.map-preview" />
-            </h4>
-            <Link href="/maps" className="cursor-pointer font-light">
+            </h3>
+            <InternalLink href="/maps" className="cursor-pointer font-light">
               <Tran text="home.preview-more" />
-            </Link>
+            </InternalLink>
           </div>
           <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
         </div>
@@ -99,20 +103,22 @@ export default async function Home({
             </h1>
             <ul className="flex flex-col mb-5">
               <li className="p-0">
-                <Link
-                  className="text-brand hover:text-brand text-lg"
+                <InternalLink
+                  className="text-lg"
+                  variant="primary"
                   href="posts/e7610862-bf57-4ab0-9204-ae7a4a31d41b"
                 >
                   <Tran text="home.download-tutorial" />
-                </Link>
+                </InternalLink>
               </li>
               <li className="p-0">
-                <Link
-                  className="text-brand hover:text-brand text-lg"
+                <InternalLink
+                  className="text-lg"
+                  variant="primary"
                   href="/posts/fa6c9516-7b98-428d-9129-c86aa40ea3d6"
                 >
                   <Tran text="home.play-with-friend-tutorial" />
-                </Link>
+                </InternalLink>
               </li>
             </ul>
 
