@@ -9,7 +9,7 @@ export function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] max-h-[calc(var(--preview-size)+200px)] max-w-[calc(var(--preview-size)+100px)] animate-appear flex-col rounded-md overflow-hidden bg-card backdrop-filter backdrop-blur-sm shadow-md',
+        'flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] max-h-[calc(var(--preview-size)+200px)] max-w-[calc(var(--preview-size)+100px)] animate-appear flex-col rounded-md overflow-hidden bg-card/90 backdrop-filter backdrop-blur-sm shadow-md',
         className,
       )}
       {...props}

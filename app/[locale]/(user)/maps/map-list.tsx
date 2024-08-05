@@ -1,7 +1,7 @@
 'use client';
 
 import { omit } from 'lodash';
-import { PlusIcon, UserIcon } from 'lucide-react';
+import { UploadIcon, UserIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -96,8 +96,8 @@ export default function MapList() {
             href={`${env.url.base}/upload/map`}
             title="My map"
           >
-            <PlusIcon className="size-5" />
-            Add map
+            <UploadIcon className="size-5" />
+            Upload map
           </InternalLink>
         </div>
       </div>
