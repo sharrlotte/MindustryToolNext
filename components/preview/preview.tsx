@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
 
+import FallbackImage from '@/components/common/fallback-image';
 import { cn } from '@/lib/utils';
 
 type CardProps = React.HTMLAttributes<HTMLDivElement>;
@@ -9,7 +9,7 @@ export function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'flex min-h-preview-height  max-h-[calc(var(--preview-size)+200px)] max-w-[calc(var(--preview-size)+100px)] animate-appear flex-col rounded-md border bg-card shadow-md',
+        'flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] max-h-[calc(var(--preview-size)+200px)] max-w-[calc(var(--preview-size)+100px)] animate-appear flex-col rounded-md overflow-hidden bg-card backdrop-filter backdrop-blur-sm shadow-md',
         className,
       )}
       {...props}
@@ -22,12 +22,7 @@ type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function PreviewHeader({ className, children }: HeaderProps) {
   return (
-    <div
-      className={cn(
-        'h-8 overflow-hidden bg-opacity-50 px-2 capitalize',
-        className,
-      )}
-    >
+    <div className={cn('h-8 overflow-hidden px-2 capitalize', className)}>
       <h4 className="m-auto text-center">{children}</h4>
     </div>
   );
@@ -39,20 +34,17 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 };
 
 export function PreviewImage({ className, src, errorSrc, alt }: ImageProps) {
-  const [isError, setError] = useState(false);
-
   return (
-    <Image
+    <FallbackImage
       className={cn(
         'aspect-square h-full w-full overflow-hidden object-cover',
         className,
       )}
-      src={isError ? errorSrc : src}
+      src={src}
+      errorSrc={errorSrc}
       alt={alt}
       width={224}
       height={224}
-      onError={() => setError(true)}
-      priority
     />
   );
 }

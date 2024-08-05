@@ -4,17 +4,17 @@
 
 @layer base {
   :root {
-    --background: 240, 3%, 94%;
-    --foreground: 0, 0%, 0%, 0.87;
+    --background: 240 3% 94%;
+    --foreground: 0 0% 0% 0.87;
 
-    --card: 0 0 100%;
+    --card: 0 0% 91%;
     --card-foreground: 20 14.3% 4.1%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 20 14.3% 4.1%;
 
     --primary: 24 9.8% 10%;
-    --primary-foreground: 230, 8%, 15%;
+    --primary-foreground: 230 8% 15%;
 
     --secondary: 0 50% 95.9%;
     --secondary-foreground: 24 9.8% 10%;
@@ -25,7 +25,7 @@
     --accent: 60 4.8% 95.9%;
     --accent-foreground: 24 9.8% 10%;
 
-    --destructive: 0, 100%, 62%;
+    --destructive: 0 100% 62%;
     --destructive-foreground: 60 9.1% 97.8%;
 
     --border: 20 5.9% 70%;
@@ -36,16 +36,16 @@
 
     --preview-size: 20rem;
     --preview-card-height: 27rem;
-    --success: 150, 73%, 55%;
+    --success: 150 73% 55%;
     --nav: 2.5rem;
     --brand: 217 91.2% 59.8%;
   }
 
   .dark {
-    --background: 0, 0%, 7%;
+    --background: 240 10% 4%;
     --foreground: 0 0% 100%;
 
-    --card: 0, 0%, 16%;
+    --card: 0 0% 16%;
     --card-foreground: 60 9.1% 97.8%;
 
     --popover: 20 14.3% 4.1%;
@@ -54,7 +54,7 @@
     --primary: 60 9.1% 97.8%;
     --primary-foreground: 360 100% 100%;
 
-    --secondary: 222, 0%, 11%;
+    --secondary: 222 0% 11%;
     --secondary-foreground: 60 9.1% 87.8%;
 
     --muted: 12 6.5% 15.1%;
@@ -114,25 +114,20 @@
     @apply my-4 rounded-md border bg-background bg-opacity-60 p-1 text-foreground;
   }
 
-  div::-webkit-scrollbar-track {
-    background-clip: padding-box;
-
-    @apply bg-white bg-opacity-20;
+  *::-webkit-scrollbar-track {
+    @apply bg-white bg-opacity-20 bg-clip-padding;
   }
 
-  div::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  *::-webkit-scrollbar {
+    @apply size-2;
   }
 
-  div::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
-    border-radius: 9999px;
-    @apply bg-white bg-clip-padding;
+  *::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-white bg-clip-padding;
   }
 
-  div::-webkit-scrollbar-button {
-    display: none;
+  *::-webkit-scrollbar-button {
+    @apply hidden;
   }
 
   body {
@@ -162,8 +157,7 @@
     display: inline;
   }
 
-  g,
-  path {
+  g path {
     @apply focus:border-none focus:outline-none;
   }
 

@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import React, { HTMLAttributes } from 'react';
 
 import ColorText from '@/components/common/color-text';
+import FallbackImage from '@/components/common/fallback-image';
 import MindustryIcon, {
   parseIconString,
 } from '@/components/common/mindustry-icon';
@@ -66,14 +66,13 @@ export function DetailImage({ className, src, errorSrc, alt }: ImageProps) {
         className,
       )}
     >
-      <Image
+      <FallbackImage
         className="h-full w-full object-cover"
         src={src}
         alt={alt}
+        errorSrc={errorSrc}
         width={576}
         height={576}
-        priority
-        onError={(err) => (err.currentTarget.src = errorSrc)}
       />
     </figure>
   );

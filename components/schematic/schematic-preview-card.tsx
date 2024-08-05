@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import React, { HTMLAttributes, memo } from 'react';
+import React, { HTMLAttributes } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
@@ -30,7 +30,7 @@ type SchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   schematic: Schematic;
 };
 
-const SchematicPreviewCard = memo(function SchematicPreviewCard({
+export default function SchematicPreviewCard({
   className,
   schematic,
   ...rest
@@ -94,6 +94,4 @@ const SchematicPreviewCard = memo(function SchematicPreviewCard({
       </PreviewDescription>
     </Preview>
   );
-});
-
-export default SchematicPreviewCard;
+}

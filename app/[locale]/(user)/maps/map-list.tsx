@@ -84,7 +84,7 @@ export default function MapList() {
         </GridLayout>
         <div className="flex gap-1">
           <Link
-            className="items-center flex gap-2 py-1 pl-1 pr-3 border border-border rounded-md"
+            className="items-center flex gap-2 rounded-md bg-secondary px-2 py-1.5"
             href={`${env.url.base}/users/me`}
             title="My map"
           >
@@ -92,7 +92,7 @@ export default function MapList() {
             My map
           </Link>
           <Link
-            className="items-center flex gap-2 py-1 pl-1 pr-3 border border-border rounded-md"
+            className="items-center flex gap-2 rounded-md bg-secondary px-2 py-1.5"
             href={`${env.url.base}/upload/map`}
             title="My map"
           >
