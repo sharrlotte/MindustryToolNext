@@ -53,13 +53,13 @@ export default async function Home({
         <h3 className="flex px-5 mb-7 text-xl">{t('home.hero-infomation')}</h3>
 
         <div className="flex flex-col md:flex-row mb-7">
-          <div className="flex w-[calc(100%-12px)] md:w-1/2 flex-col m-3">
+          <div className="flex w-[calc(100%-12px)] md:w-1/2 flex-col">
             <h1 className="flex mb-2.5 w-full justify-center text-2xl">{t('home.content-what-is-mindustry')}</h1>
             <h5 className="mt-2.5 mx-1.5 mb-2.5">{t('home.content-about-mindustry')}</h5>
             <h3 className="flex w-full justify-center text-center mb-2 text-xl">{t('home.content-platform-info')}</h3>
             <h5 className="flex w-full justify-center mb-2.5">{t('home.content-platform')}</h5>
           </div>
-          <div className="flex justify-center w-full md:w-1/2 ">
+          <div className="flex justify-center w-full md:w-1/2">
             <div className="relative w-full pb-[56.25%]">
               <iframe
                 src="https://www.youtube.com/embed/gUu3AhqpyHo"
@@ -73,7 +73,7 @@ export default async function Home({
         <div className='flex flex-col bg-black rounded-2xl mb-8'>
           <div className='flex flex-row justify-between mb-4 p-4'>
             <h3 className='flex h-10 items-center'>{t('home.schemactic-preview')}</h3>
-            <button className='flex h-10 bg-accent text-white rounded items-center justify-center'>{t('home.preview-more')}</button>
+            <a href='/schematics' className='flex cursor-pointer h-10 pr-1 pl-1 bg-brand text-white rounded items-center justify-center'>{t('home.preview-more')}</a>
           </div>
 
           <ul className="flex overflow-x-auto list-none p-0 m-0 pb-4">
@@ -84,7 +84,7 @@ export default async function Home({
         <div className='flex flex-col bg-black rounded-2xl mb-8'>
           <div className='flex flex-row justify-between mb-4 p-4'>
             <h3 className='flex h-10 items-center'>{t('home.map-preview')}</h3>
-            <button className='flex h-10 bg-accent text-white rounded items-center justify-center'>{t('home.preview-more')}</button>
+            <a href='/maps' className='flex cursor-pointer h-10 pr-1 pl-1 bg-brand text-white rounded items-center justify-center'>{t('home.preview-more')}</a>
           </div>
 
           <ul className="flex overflow-x-auto list-none p-0 m-0 pb-4">
