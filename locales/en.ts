@@ -145,7 +145,7 @@ export default {
   "home.download-tutorial": "How to download the game for free",
   "home.play-with-friend-tutorial": "How to play with friends through scheme size",
   "home.community": "Community",
-  "home.schemactic-preview": "New Designs",
+  "home.schemactic-preview": "New Schemactics",
   "home.map-preview": "New Maps",
   "home.preview-more": "See More",
   "home.official-discord-server": "Official Mindustry Discord Server",

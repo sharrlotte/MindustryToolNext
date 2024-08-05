@@ -4,7 +4,7 @@ import UserCard from '@/components/user/user-card';
 import { getI18n } from '@/locales/server';
 import getServerAPI from '@/query/config/get-server-api';
 import getUsers from '@/query/user/get-users';
-import {SchematicRowView, MapRowView} from '@/components/common/row-page';
+import { SchematicRowView, MapRowView } from '@/components/common/row-page';
 export const dynamicParams = false;
 
 export default async function Home({
@@ -53,13 +53,13 @@ export default async function Home({
         <h3 className="flex px-5 mb-7 text-xl">{t('home.hero-infomation')}</h3>
 
         <div className="flex flex-col md:flex-row mb-7">
-          <div className="flex w-[calc(100%-12px)] md:w-1/2 flex-col m-3">
+          <div className="flex w-[calc(100%-12px)] md:w-1/2 flex-col">
             <h1 className="flex mb-2.5 w-full justify-center text-2xl">{t('home.content-what-is-mindustry')}</h1>
             <h5 className="mt-2.5 mx-1.5 mb-2.5">{t('home.content-about-mindustry')}</h5>
             <h3 className="flex w-full justify-center text-center mb-2 text-xl">{t('home.content-platform-info')}</h3>
             <h5 className="flex w-full justify-center mb-2.5">{t('home.content-platform')}</h5>
           </div>
-          <div className="flex justify-center w-full md:w-1/2 ">
+          <div className="flex justify-center w-full md:w-1/2">
             <div className="relative w-full pb-[56.25%]">
               <iframe
                 src="https://www.youtube.com/embed/gUu3AhqpyHo"
@@ -73,7 +73,7 @@ export default async function Home({
         <div className='flex flex-col bg-black rounded-2xl mb-8'>
           <div className='flex flex-row justify-between mb-4 p-4'>
             <h3 className='flex h-10 items-center'>{t('home.schemactic-preview')}</h3>
-            <button className='flex h-10 bg-accent text-white rounded items-center justify-center'>{t('home.preview-more')}</button>
+            <a href='/schematics' className='flex cursor-pointer h-10 pr-2 pl-2 bg-brand text-white rounded items-center justify-center'>{t('home.preview-more')}</a>
           </div>
 
           <ul className="flex overflow-x-auto list-none p-0 m-0 pb-4">
@@ -84,7 +84,7 @@ export default async function Home({
         <div className='flex flex-col bg-black rounded-2xl mb-8'>
           <div className='flex flex-row justify-between mb-4 p-4'>
             <h3 className='flex h-10 items-center'>{t('home.map-preview')}</h3>
-            <button className='flex h-10 bg-accent text-white rounded items-center justify-center'>{t('home.preview-more')}</button>
+            <a href='/maps' className='flex cursor-pointer h-10 pr-2 pl-2 bg-brand text-white rounded items-center justify-center'>{t('home.preview-more')}</a>
           </div>
 
           <ul className="flex overflow-x-auto list-none p-0 m-0 pb-4">
@@ -96,12 +96,12 @@ export default async function Home({
           <div className="flex w-full md:w-1/2 flex-col">
             <h1 className="flex ml-12 mb-2.5 text-xl">{t('home.content-recommended-article')}</h1>
             <ul className="flex flex-col mb-5">
-              <li>
+              <li className='p-0'>
                 <Link className="text-brand hover:text-brand text-lg" href="posts/e7610862-bf57-4ab0-9204-ae7a4a31d41b">
                   {t('home.download-tutorial')}
                 </Link>
               </li>
-              <li>
+              <li className='p-0'>
                 <Link className="text-brand hover:text-brand text-lg" href="/posts/fa6c9516-7b98-428d-9129-c86aa40ea3d6">
                   {t('home.play-with-friend-tutorial')}
                 </Link>
@@ -110,17 +110,17 @@ export default async function Home({
 
             <h1 className="flex ml-12 mb-2.5 text-xl">{t('home.community')}</h1>
             <ul className="flex flex-col mb-5">
-              <li>
+              <li className='p-0'>
                 <a className="text-brand hover:text-brand text-lg" href="https://discord.gg/mindustry" target="_blank" rel="noopener noreferrer">
                   {t('home.official-discord-server')}
                 </a>
               </li>
-              <li>
+              <li className='p-0'>
                 <a className="text-brand hover:text-brand text-lg" href="https://discord.gg/DCX5yrRUyp" target="_blank" rel="noopener noreferrer">
                   {t('home.vietnamese-discord-server')}
                 </a>
               </li>
-              <li>
+              <li className='p-0'>
                 <a className="text-brand hover:text-brand text-lg" href="https://www.reddit.com/r/Mindustry" target="_blank" rel="noopener noreferrer">
                   {t('home.reddit')}
                 </a>
@@ -129,12 +129,12 @@ export default async function Home({
 
             <h1 className="flex ml-12 mb-2.5 text-xl">{t('home.youtube')}</h1>
             <ul className="flex flex-col mb-5">
-              <li>
+              <li className='p-0'>
                 <a className="text-brand hover:text-brand text-lg" href="https://www.youtube.com/@FourEverNice" target="_blank" rel="noopener noreferrer">
                   Four Ever Nice
                 </a>
               </li>
-              <li>
+              <li className='p-0'>
                 <a className="text-brand hover:text-brand text-lg" href="http://www.youtube.com/@gezpil8397" target="_blank" rel="noopener noreferrer">
                   Gezpil
                 </a>
