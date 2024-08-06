@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 
-type Props = {} & Pick<ButtonProps, 'variant' | 'children' | 'className'>;
+type Props = Pick<ButtonProps, 'variant' | 'children' | 'className'>;
 
 const EllipsisButton = ({ className, variant, children, ...props }: Props) => {
   return (

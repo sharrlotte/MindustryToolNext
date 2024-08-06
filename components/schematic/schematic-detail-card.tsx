@@ -41,7 +41,7 @@ import getSchematicData from '@/query/schematic/get-schematic-data';
 import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 
-import { LinkIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { LinkIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
 
 type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
