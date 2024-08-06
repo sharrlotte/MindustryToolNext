@@ -9,7 +9,7 @@ export function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] max-h-[calc(var(--preview-size)+200px)] max-w-[calc(var(--preview-size)*2)] animate-appear flex-col rounded-md overflow-hidden bg-card/90 backdrop-filter backdrop-blur-sm shadow-md',
+        'flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] max-w-[calc(var(--preview-size)*2)] flex-col rounded-md overflow-hidden bg-card/90 shadow-md',
         className,
       )}
       {...props}
@@ -37,7 +37,7 @@ export function PreviewImage({ className, src, errorSrc, alt }: ImageProps) {
   return (
     <FallbackImage
       className={cn(
-        'aspect-square h-full w-full overflow-hidden object-cover',
+        'aspect-square w-full overflow-hidden object-cover',
         className,
       )}
       src={src}
