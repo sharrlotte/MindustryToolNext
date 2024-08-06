@@ -19,13 +19,13 @@ export default function TagCard({
 }: TagCardProps) {
   const { name, value, color } = tag;
 
+  const hasDelete = !!onDelete;
+
   const handleOnDelete = (tag: Tag) => {
     if (onDelete) {
       onDelete(tag);
     }
   };
-
-  const t = useI18n();
 
   return (
     <span
@@ -38,7 +38,7 @@ export default function TagCard({
       {...props}
     >
       <TagName>{name}</TagName>(<TagName>{value}</TagName>)
-      <XIcon className="size-4" />
+      {hasDelete && <XIcon className="size-4" />}
     </span>
   );
 }
