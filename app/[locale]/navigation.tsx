@@ -1,6 +1,5 @@
 'use client';
 
-import { BellIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import React from 'react';
 
@@ -11,6 +10,7 @@ import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 
 import { Bars3Icon } from '@heroicons/react/24/outline';
+import { NotificationIcon } from '@/components/common/icons';
 
 export default function NavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
@@ -25,7 +25,7 @@ export default function NavigationBar() {
   );
 
   return (
-    <div className="flex h-nav w-full items-center justify-between bg-brand py-1 px-2 text-white shadow-lg">
+    <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-1 text-white shadow-lg">
       <Button
         title="Navbar"
         type="button"
@@ -59,7 +59,7 @@ export default function NavigationBar() {
             onMouseEnter={showSidebar}
           >
             <div className="flex h-full flex-col justify-between overflow-hidden p-2">
-              <div className="h-full flex flex-col overflow-hidden">
+              <div className="flex h-full flex-col overflow-hidden">
                 <span className="flex flex-col gap-2">
                   <span className="space-x-2 rounded-sm p-2">
                     <span className="text-xl font-medium">MindustryTool</span>
@@ -73,7 +73,7 @@ export default function NavigationBar() {
           </div>
         </div>
       </div>
-      <BellIcon />
+      <NotificationIcon />
     </div>
   );
 }

@@ -39,8 +39,8 @@ import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 
 import { useMutation } from '@tanstack/react-query';
-import Icons from '@/components/common/icons';
 import UpdateButton from '@/components/button/update-button';
+import { LinkIcon } from '@/components/common/icons';
 
 type SchematicDetailCardProps = {
   schematic: SchematicDetail;
@@ -84,7 +84,7 @@ export default function SchematicDetailCard({
       <DetailInfo>
         <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
         <CopyButton variant="ghost" data={link} content={link}>
-          <Icons.Link />
+          <LinkIcon />
         </CopyButton>
         <DetailHeader>
           <DetailTitle>{name}</DetailTitle>

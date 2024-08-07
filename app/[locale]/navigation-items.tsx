@@ -1,14 +1,3 @@
-import {
-  BookOpenIcon,
-  BotIcon,
-  FileIcon,
-  FolderIcon,
-  HomeIcon,
-  MapIcon,
-  ServerIcon,
-  ShieldCheckIcon,
-  UserIcon,
-} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { ReactNode, useEffect, useMemo, useState } from 'react';
@@ -30,17 +19,25 @@ import getTotalPostUpload from '@/query/post/get-total-post-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
 import { useVerifyCount } from '@/zustand/verify-count';
 
-import {
-  ChartBarSquareIcon,
-  ChatBubbleLeftIcon,
-  CircleStackIcon,
-  ClipboardDocumentListIcon,
-  Cog6ToothIcon,
-  CommandLineIcon,
-  PuzzlePieceIcon,
-  ServerStackIcon,
-} from '@heroicons/react/24/outline';
 import { useQueries } from '@tanstack/react-query';
+import {
+  ChartIcon,
+  ChatIcon,
+  CmdIcon,
+  DocumentIcon,
+  FileIcon,
+  HomeIcon,
+  LogIcon,
+  MapIcon,
+  MindustryGptIcon,
+  PluginIcon,
+  PostIcon,
+  SchematicIcon,
+  ServerIcon,
+  SettingIcon,
+  UserIcon,
+  VerifyIcon,
+} from '@/components/common/icons';
 
 type PathGroup = {
   key: string;
@@ -85,47 +82,47 @@ export function NavItems({ onClick }: NavItemsProps) {
           {
             path: '/', //
             name: <Tran text="home" />,
-            icon: <HomeIcon className="h-5 w-5" />,
+            icon: <HomeIcon />,
           },
           {
             path: '/schematics', //
             name: <Tran text="schematic" />,
-            icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
+            icon: <SchematicIcon />,
           },
           {
             path: '/maps',
             name: <Tran text="map" />,
-            icon: <MapIcon className="h-5 w-5" />,
+            icon: <MapIcon />,
           },
           {
             path: '/posts', //
             name: <Tran text="post" />,
-            icon: <BookOpenIcon className="h-5 w-5" />,
+            icon: <PostIcon />,
           },
           {
             path: '/servers', //
             name: <Tran text="server" />,
-            icon: <ServerStackIcon className="h-5 w-5" />,
+            icon: <ServerIcon />,
           },
           {
             path: '/logic', //
             name: <Tran text="logic" />,
-            icon: <CommandLineIcon className="h-5 w-5" />,
+            icon: <CmdIcon />,
           },
           {
             path: '/chat', //
             name: <Tran text="chat" />,
-            icon: <ChatBubbleLeftIcon className="h-5 w-5" />,
+            icon: <ChatIcon />,
           },
           {
             path: '/mindustry-gpt', //
             name: 'MindustryGpt',
-            icon: <BotIcon className="h-5 w-5" />,
+            icon: <MindustryGptIcon />,
           },
           {
             name: <Tran text="plugin" />,
             path: '/plugins',
-            icon: <PuzzlePieceIcon className="h-5 w-5" />,
+            icon: <PluginIcon />,
           },
         ],
       },
@@ -137,17 +134,17 @@ export function NavItems({ onClick }: NavItemsProps) {
           {
             name: <Tran text="dashboard" />,
             path: '/admin',
-            icon: <ChartBarSquareIcon className="h-5 w-5" />,
+            icon: <ChartIcon />,
           },
           {
             name: <Tran text="user" />,
             path: '/admin/users',
-            icon: <UserIcon className="h-5 w-5" />,
+            icon: <UserIcon />,
           },
           {
             name: <Tran text="log" />,
             path: '/admin/logs',
-            icon: <CircleStackIcon className="h-5 w-5" />,
+            icon: <LogIcon />,
           },
           {
             name: <VerifyPath />,
@@ -155,36 +152,36 @@ export function NavItems({ onClick }: NavItemsProps) {
               {
                 name: <SchematicPath />,
                 path: '/admin/schematics',
-                icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
+                icon: <SchematicIcon />,
               },
               {
                 name: <MapPath />,
                 path: '/admin/maps',
-                icon: <MapIcon className="h-5 w-5" />,
+                icon: <MapIcon />,
               },
               {
                 name: <PostPath />,
                 path: '/admin/posts',
-                icon: <BookOpenIcon className="h-5 w-5" />,
+                icon: <PostIcon />,
               },
               {
                 name: <Tran text="plugin" />,
                 path: '/admin/plugins',
-                icon: <PuzzlePieceIcon className="h-5 w-5" />,
+                icon: <PluginIcon />,
                 roles: ['SHAR'],
               },
             ],
-            icon: <ShieldCheckIcon className="h-5 w-5" />,
+            icon: <VerifyIcon />,
           },
           {
             name: <Tran text="server" />,
             path: '/admin/servers',
-            icon: <ServerIcon className="h-5 w-5" />,
+            icon: <ServerIcon />,
           },
           {
             name: <Tran text="setting" />,
             path: '/admin/settings',
-            icon: <Cog6ToothIcon className="h-5 w-5" />,
+            icon: <SettingIcon />,
           },
         ],
       },
@@ -196,16 +193,16 @@ export function NavItems({ onClick }: NavItemsProps) {
           {
             name: 'File',
             path: '/files',
-            icon: <FolderIcon className="h-5 w-5" />,
+            icon: <FileIcon />,
           },
           {
             name: 'MindustryGPT',
-            icon: <BotIcon className="h-5 w-5" />,
+            icon: <MindustryGptIcon />,
             path: [
               {
                 name: 'Document',
                 path: '/mindustry-gpt/documents',
-                icon: <FileIcon className="h-5 w-5" />,
+                icon: <DocumentIcon />,
               },
             ],
           },
