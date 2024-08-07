@@ -7,13 +7,27 @@ import { Button, ButtonProps } from '@/components/ui/button';
 import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
+import { cva, VariantProps } from 'class-variance-authority';
 
-type CopyButtonProps = Omit<ButtonProps, 'title'> & {
-  data: string | (() => Promise<string>);
-  title?: string;
-  content?: string;
-};
+const copyButtonVariants = cva('p-2 hover:bg-brand bg-transparent', {
+  variants: {
+    variant: {
+      default: 'border border-border',
+      ghost:
+        'absolute left-1 top-1 aspect-square transition-opacity duration-500',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
+export type CopyButtonProps = VariantProps<typeof copyButtonVariants> &
+  Omit<ButtonProps, 'title'> & {
+    data: string | (() => Promise<string>);
+    title?: string;
+    content?: string;
+  };
 export default function CopyButton({
   className,
   title,
@@ -34,9 +48,9 @@ export default function CopyButton({
 
   return (
     <Button
-      className={cn('p-2 hover:bg-brand', className)}
+      className={cn(copyButtonVariants({ className, variant }))}
       title={title ?? t('copy')}
-      variant={variant}
+      variant="ghost"
       {...props}
       onClick={handleClick}
     >

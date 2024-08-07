@@ -9,7 +9,7 @@ export function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] max-w-[calc(var(--preview-size)*2)] flex-col rounded-md overflow-hidden bg-card/90 shadow-md',
+        'group relative flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] max-w-[calc(var(--preview-size)*2)] flex-col overflow-hidden rounded-md bg-card/90 shadow-md',
         className,
       )}
       {...props}
@@ -22,7 +22,7 @@ type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function PreviewHeader({ className, children }: HeaderProps) {
   return (
-    <div className={cn('h-8 overflow-hidden px-2 capitalize', className)}>
+    <div className={cn('h-12 overflow-hidden px-2 capitalize', className)}>
       <h4 className="m-auto text-center">{children}</h4>
     </div>
   );

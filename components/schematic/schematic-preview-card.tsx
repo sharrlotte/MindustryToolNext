@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import React, { HTMLAttributes } from 'react';
+import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
@@ -19,68 +19,55 @@ import {
 import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
-import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import getSchematicData from '@/query/schematic/get-schematic-data';
 import { Schematic } from '@/types/response/Schematic';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
 
-type SchematicPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
+type SchematicPreviewCardProps = {
   schematic: Schematic;
 };
 
 export default function SchematicPreviewCard({
-  className,
-  schematic,
-  ...rest
+  schematic: { id, itemId, name, isVerified, likes, userLike },
 }: SchematicPreviewCardProps) {
   const t = useI18n();
   const axios = useClientAPI();
 
-  const link = `${env.url.base}/schematics/${schematic.id}`;
+  const link = `${env.url.base}/schematics/${id}`;
 
   const getData = useToastAction({
     title: t('copying'),
     content: t('downloading-data'),
-    action: async () => await getSchematicData(axios, schematic.id),
+    action: async () => await getSchematicData(axios, id),
   });
 
   return (
-    <Preview className={cn('group relative', className)} {...rest}>
-      <CopyButton
-        className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
-        variant="ghost"
-        data={link}
-        content={link}
-      >
+    <Preview>
+      <CopyButton variant="ghost" data={link} content={link}>
         <LinkIcon className="h-5 w-5" />
       </CopyButton>
-      <Link href={`/schematics/${schematic.id}`}>
+      <Link href={`/schematics/${id}`}>
         <PreviewImage
-          src={`${env.url.image}/schematic-previews/${schematic.id}.png`}
-          errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
-          alt={schematic.name}
+          src={`${env.url.image}/schematic-previews/${id}.png`}
+          errorSrc={`${env.url.api}/schematics/${id}/image`}
+          alt={name}
         />
       </Link>
       <PreviewDescription>
-        <PreviewHeader className="h-12">{schematic.name}</PreviewHeader>
+        <PreviewHeader>{name}</PreviewHeader>
         <PreviewActions>
-          <CopyButton
-            className="border border-border "
-            variant="outline"
-            content={`Copied schematic ${schematic.name}`}
-            data={getData}
-          />
+          <CopyButton content={`Copied schematic ${name}`} data={getData} />
           <DownloadButton
-            href={`${env.url.api}/schematics/${schematic.id}/download`}
-            fileName={`{${schematic.name}}.msch`}
+            href={`${env.url.api}/schematics/${id}/download`}
+            fileName={`{${name}}.msch`}
           />
-          {schematic.isVerified && (
+          {isVerified && (
             <LikeComponent
-              itemId={schematic.itemId}
-              initialLikeCount={schematic.likes}
-              initialLikeData={schematic.userLike}
+              itemId={itemId}
+              initialLikeCount={likes}
+              initialLikeData={userLike}
             >
               <LikeButton />
               <LikeCount />

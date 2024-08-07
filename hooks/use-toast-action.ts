@@ -1,4 +1,5 @@
 import { useToast } from '@/hooks/use-toast';
+import { useCallback } from 'react';
 
 type UseToastActionParam<T> = {
   title: string;
@@ -13,7 +14,7 @@ export default function useToastAction<T>({
 }: UseToastActionParam<T>) {
   const { toast } = useToast();
 
-  return async () => {
+  return useCallback(async () => {
     const { dismiss } = toast({
       title,
       content,
@@ -21,5 +22,5 @@ export default function useToastAction<T>({
     const result = await action();
     dismiss();
     return result;
-  };
+  }, [toast, action, title, content]);
 }

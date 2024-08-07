@@ -8,6 +8,9 @@ import MindustryIcon, {
 import TagContainer from '@/components/tag/tag-container';
 import { cn } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
+import Tran from '@/components/common/tran';
+import IdUserCard from '@/components/user/id-user-card';
+import BackButton from '@/components/ui/back-button';
 
 type DetailProps = HTMLAttributes<HTMLDivElement>;
 
@@ -34,7 +37,7 @@ type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailInfo({ className, children }: InfoProps) {
   return (
-    <div className={cn('flex flex-col gap-2 md:flex-row', className)}>
+    <div className={cn('relative flex flex-col gap-2 md:flex-row', className)}>
       {children}
     </div>
   );
@@ -58,23 +61,16 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
   errorSrc: string;
 };
 
-export function DetailImage({ className, src, errorSrc, alt }: ImageProps) {
+export function DetailImage({ src, errorSrc, alt }: ImageProps) {
   return (
-    <figure
-      className={cn(
-        'overflow-hidden min-w-[40dvw] rounded-lg md:max-w-[min(80dvh,80dvw)]',
-        className,
-      )}
-    >
-      <FallbackImage
-        className="h-full w-full object-cover"
-        src={src}
-        alt={alt}
-        errorSrc={errorSrc}
-        width={576}
-        height={576}
-      />
-    </figure>
+    <FallbackImage
+      className="h-full w-full min-w-[40dvw] overflow-hidden rounded-lg object-cover md:max-w-[min(80dvh,80dvw)]"
+      src={src}
+      alt={alt}
+      errorSrc={errorSrc}
+      width={576}
+      height={576}
+    />
   );
 }
 
@@ -92,8 +88,11 @@ type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailActions({ className, children }: ActionsProps) {
   return (
-    <section className={cn('flex items-end gap-1', className)}>
-      {children}
+    <section className={cn('flex items-end justify-between gap-1', className)}>
+      <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
+        {children}
+      </div>
+      <BackButton />
     </section>
   );
 }
@@ -128,5 +127,18 @@ export function DetailDescription({ className, children }: DescriptionProps) {
         ),
       )}
     </section>
+  );
+}
+
+type VerifierProps = {
+  verifierId: string;
+};
+
+export function Verifier({ verifierId }: VerifierProps) {
+  return (
+    <div className="flex items-end gap-2">
+      <Tran text="verified-by" />
+      <IdUserCard id={verifierId} />
+    </div>
   );
 }
