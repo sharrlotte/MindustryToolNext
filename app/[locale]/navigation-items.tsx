@@ -228,11 +228,11 @@ export function NavItems({ onClick }: NavItemsProps) {
   }, [pathGroups, pathName]);
 
   return (
-    <div className="space-y-4 overflow-y-auto no-scrollbar divide-y divide-foreground/70">
+    <div className="no-scrollbar space-y-4 overflow-y-auto">
       {pathGroups.map(({ key, name, roles, paths }) => (
         <ProtectedElement key={key} all={roles} session={session} passOnEmpty>
           <div className="space-y-1">
-            <div className="font-extrabold pt-2">{name}</div>
+            <div className="pt-2 font-extrabold">{name}</div>
             <PathGroup
               paths={paths}
               bestMatch={bestMatch}
@@ -255,13 +255,13 @@ type PathGroupProps = {
   onClick: () => void;
 };
 
-function PathGroup({
+const _PathGroup = ({
   paths,
   bestMatch,
   value,
   setValue,
   onClick,
-}: PathGroupProps): ReactNode {
+}: PathGroupProps): ReactNode => {
   const { session } = useSession();
 
   return paths.map(({ path, icon, name, roles }) => {
@@ -270,7 +270,7 @@ function PathGroup({
         <ProtectedElement key={path} session={session} all={roles} passOnEmpty>
           <Link
             className={cn(
-              'flex items-end gap-3 font-bold text-opacity-50 rounded-md px-3 py-2 text-sm opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+              'flex items-end gap-3 rounded-md px-3 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
               {
                 'bg-brand text-background opacity-100 dark:text-foreground':
                   path === bestMatch,
@@ -305,7 +305,7 @@ function PathGroup({
           >
             <AccordionTrigger
               className={cn(
-                'flex gap-3 rounded-md px-3 py-2 text-sm hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground font-bold opacity-80 transition-colors duration-300',
+                'flex gap-3 rounded-md px-3 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground',
                 {
                   'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
                     path.some((path) => path.path === bestMatch) && !value,
@@ -328,7 +328,7 @@ function PathGroup({
                   <Link
                     key={item.path}
                     className={cn(
-                      'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                      'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
                       {
                         'bg-brand text-background opacity-100 dark:text-foreground':
                           item.path === bestMatch,
@@ -348,7 +348,8 @@ function PathGroup({
       </ProtectedElement>
     );
   });
-}
+};
+const PathGroup = React.memo(_PathGroup);
 
 function VerifyPath() {
   const axios = useClientAPI();

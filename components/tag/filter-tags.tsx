@@ -1,3 +1,5 @@
+import React, { useCallback, useMemo } from 'react';
+
 import MultipleFilerTags from '@/components/tag/multiple-filter-tags';
 import SingeFilerTags from '@/components/tag/single-filter-tags';
 import TagGroup from '@/types/response/TagGroup';
@@ -9,59 +11,102 @@ type FilterTagProps = {
   handleTagGroupChange: (group: string, value: string[]) => void;
 };
 
+const empty: string[] = [];
+
 export default function FilterTags({
   filter,
   tags,
   filterBy,
   handleTagGroupChange,
 }: FilterTagProps) {
-  const filteredTags =
-    filter.length === 0
-      ? tags
-      : tags.filter((tag) => {
-          if (tag.name.includes(filter)) {
-            return true;
-          }
-          tag.values = tag.values.filter((value) => value.includes(filter));
+  const filteredTags = useMemo(
+    () =>
+      filter.length === 0
+        ? tags
+        : tags.filter((tag) => {
+            if (tag.name.includes(filter)) {
+              return true;
+            }
+            const v = { ...tag };
+            v.values = tag.values.filter((value) => value.includes(filter));
 
-          return tag.values.length > 0;
-        });
-
-  const getSingleValue = (group: TagGroup) => {
-    const result = filterBy.find((value) => value.name === group.name);
-    if (result && result.values) {
-      return result.values.length > 0 ? result.values[0] : '';
-    }
-    return '';
-  };
-
-  const getMultipleValue = (group: TagGroup) => {
-    const result = filterBy.find((value) => value.name === group.name);
-    if (result && result.values) {
-      return result.values;
-    }
-    return [];
-  };
-
-  return filteredTags.map((group) =>
-    group.duplicate ? (
-      <MultipleFilerTags
-        key={group.name}
-        group={group}
-        selectedValue={getMultipleValue(group)}
-        handleTagGroupChange={(value) =>
-          handleTagGroupChange(group.name, value)
-        }
-      />
-    ) : (
-      <SingeFilerTags
-        key={group.name}
-        group={group}
-        selectedValue={getSingleValue(group)}
-        handleTagGroupChange={(value) =>
-          handleTagGroupChange(group.name, [value])
-        }
-      />
-    ),
+            return v.values.length > 0;
+          }),
+    [filter, tags],
   );
+
+  return filteredTags.map((group) => (
+    <FilterTagGroup
+      key={group.name}
+      filterBy={filterBy}
+      group={group}
+      handleTagGroupChange={handleTagGroupChange}
+    />
+  ));
 }
+
+type FilterTagGroupProps = {
+  group: TagGroup;
+  filterBy: TagGroup[];
+  handleTagGroupChange: (group: string, value: string[]) => void;
+};
+
+const _FilterTagGroup = ({
+  group,
+  filterBy,
+  handleTagGroupChange,
+}: FilterTagGroupProps) => {
+  const getSingleValue = useCallback(
+    (group: TagGroup) => {
+      const result = filterBy.find((value) => value.name === group.name);
+      if (result && result.values) {
+        return result.values.length > 0 ? result.values[0] : '';
+      }
+      return '';
+    },
+    [filterBy],
+  );
+
+  const getMultipleValue = useCallback(
+    (group: TagGroup) => {
+      const result = filterBy.find((value) => value.name === group.name);
+      if (result && result.values) {
+        return result.values;
+      }
+      return empty;
+    },
+    [filterBy],
+  );
+
+  const handleMultipleValueChange = useCallback(
+    (value: string[]) => {
+      handleTagGroupChange(group.name, value);
+    },
+    [group, handleTagGroupChange],
+  );
+
+  const handleSingleValueChange = useCallback(
+    (value: string) => {
+      handleTagGroupChange(group.name, [value]);
+    },
+    [group, handleTagGroupChange],
+  );
+
+  return group.duplicate ? (
+    <MultipleFilerTags
+      key={group.name}
+      group={group}
+      selectedValue={getMultipleValue(group)}
+      handleTagGroupChange={handleMultipleValueChange}
+    />
+  ) : (
+    <SingeFilerTags
+      key={group.name}
+      group={group}
+      selectedValue={getSingleValue(group)}
+      handleTagGroupChange={handleSingleValueChange}
+    />
+  );
+};
+
+const FilterTagGroup = React.memo(_FilterTagGroup);

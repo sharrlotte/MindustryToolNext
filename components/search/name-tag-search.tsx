@@ -1,8 +1,7 @@
 import _ from 'lodash';
-import { cloneDeep } from 'lodash';
 import { FilterIcon, XIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import OutsideWrapper from '@/components/common/outside-wrapper';
@@ -50,10 +49,14 @@ export default function NameTagSearch({
   const [isChanged, setChanged] = useState(false);
   const [showFilterDialog, setShowFilterDialog] = useState(false);
 
-  const handleShowFilterDialog = () => setShowFilterDialog(true);
-  const handleHideFilterDialog = () => setShowFilterDialog(false);
-
-  const tagsClone = cloneDeep(tags);
+  const handleShowFilterDialog = useCallback(
+    () => setShowFilterDialog(true),
+    [setShowFilterDialog],
+  );
+  const handleHideFilterDialog = useCallback(
+    () => setShowFilterDialog(false),
+    [setShowFilterDialog],
+  );
 
   useEffect(() => {
     if (tags.length > 0) {
@@ -71,18 +74,18 @@ export default function NameTagSearch({
         .groupBy((value) => value.name)
         .map((value, key) => ({ name: key, values: value.map((v) => v.value) }))
         .map((tag) => {
-          if (tagsClone.length === 0) {
+          if (tags.length === 0) {
             return { ...tag, color: TAG_DEFAULT_COLOR, duplicate: true };
           }
 
-          const result = tagsClone.find(
+          const result = tags.find(
             (t) =>
               t.name === tag.name &&
               tag.values.every((b) => tag.values.includes(b)),
           );
           // Ignore tag that not match with server
           if (result) {
-            result.values = tag.values;
+            result.values = { ...tag.values };
           }
 
           return result;
@@ -138,37 +141,41 @@ export default function NameTagSearch({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, showFilterDialog, filterBy, sortBy]);
 
-  const handleTagGroupChange = (name: string, values: string[]) => {
-    const group = filterBy.find((tag) => tag.name === name);
-    if (group) {
-      group.values = values;
-      setFilterBy([...filterBy]);
-    } else {
-      const result = tagsClone.find((tag) => tag.name === name);
-
-      // Ignore tag that not match with server
-      if (result) {
-        result.values = values;
-        filterBy.push(result);
-        setChanged(true);
+  const handleTagGroupChange = useCallback(
+    (name: string, values: string[]) => {
+      const group = filterBy.find((tag) => tag.name === name);
+      if (group) {
+        group.values = values;
         setFilterBy([...filterBy]);
-      }
-    }
-  };
+      } else {
+        const result = tags.find((tag) => tag.name === name);
 
-  const handleSortChange = (value: any) => {
+        // Ignore tag that not match with server
+        if (result) {
+          const t = { ...result };
+          t.values = values;
+          filterBy.push(t);
+          setChanged(true);
+          setFilterBy([...filterBy]);
+        }
+      }
+    },
+    [filterBy, setChanged, setFilterBy],
+  );
+
+  function handleSortChange(value: any) {
     if (value && sortTag.includes(value)) {
       setSortBy(value);
       setChanged(true);
     }
-  };
+  }
 
-  const handleNameChange = (value: string) => {
+  function handleNameChange(value: string) {
     setName(value);
     setChanged(true);
-  };
+  }
 
-  const handleDeleteTag = (tag: Tag) => {
+  function handleDeleteTag(tag: Tag) {
     setFilterBy((prev) => {
       const group = prev.find((item) => item.name === tag.name);
       if (group) {
@@ -177,9 +184,9 @@ export default function NameTagSearch({
 
       return [...prev];
     });
-  };
+  }
 
-  const displayTags = Tags.fromTagGroup(filterBy);
+  const displayTags = useMemo(() => Tags.fromTagGroup(filterBy), [filterBy]);
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
@@ -214,13 +221,20 @@ export default function NameTagSearch({
         )}
       </div>
       <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
-      {showFilterDialog && useTag && (
-        <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center backdrop-blur-sm">
+      {useTag && (
+        <div
+          className={cn(
+            'fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm',
+            {
+              flex: showFilterDialog,
+            },
+          )}
+        >
           <OutsideWrapper
-            className="flex h-screen w-screen items-center justify-center md:h-4/5 md:w-4/5"
+            className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6"
             onClickOutside={handleHideFilterDialog}
           >
-            <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
+            <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
               <div className="flex gap-1">
                 <Search className="w-full p-1">
                   <Search.Icon className="p-1" />
@@ -251,7 +265,7 @@ export default function NameTagSearch({
                 <FilterTags
                   filter={filter}
                   filterBy={filterBy}
-                  tags={tagsClone}
+                  tags={tags}
                   handleTagGroupChange={handleTagGroupChange}
                 />
               </CardContent>
