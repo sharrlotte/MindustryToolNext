@@ -36,7 +36,7 @@ export default async function Home({
               <h3 className="font-bold">
                 <Tran text="home.content-what-is-mindustry" />
               </h3>
-              <p className="text-foreground">
+              <p>
                 <Tran text="home.content-about-mindustry" />
               </p>
             </div>
