@@ -2,10 +2,10 @@
 
 import { omit } from 'lodash';
 import { UploadIcon, UserIcon } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
+import InternalLink from '@/components/common/internal-link';
 import {
   GridLayout,
   ListLayout,
@@ -83,22 +83,22 @@ export default function SchematicList() {
           <PaginationNavigator numberOfItems={data ?? 0} />
         </GridLayout>
         <div className="flex gap-4">
-          <Link
-            className="items-center flex gap-2 rounded-md bg-secondary px-2 py-1.5"
+          <InternalLink
+            variant="button-secondary"
             href={`${env.url.base}/users/me`}
             title="My schematic"
           >
             <UserIcon className="size-5" />
             My schematic
-          </Link>
-          <Link
-            className="items-center flex gap-2 rounded-md bg-secondary px-2 py-1.5"
+          </InternalLink>
+          <InternalLink
+            variant="button-secondary"
             href={`${env.url.base}/upload/schematic`}
             title="My schematic"
           >
             <UploadIcon className="size-5" />
             Upload schematic
-          </Link>
+          </InternalLink>
         </div>
       </div>
     </div>

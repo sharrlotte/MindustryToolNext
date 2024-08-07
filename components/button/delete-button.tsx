@@ -1,6 +1,9 @@
 'use client';
 
+import React from 'react';
+
 import LoadingWrapper from '@/components/common/loading-wrapper';
+import Tran from '@/components/common/tran';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,13 +20,12 @@ import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import React from 'react';
 
 type DeleteButtonProps = {
   className?: string;
   isLoading: boolean;
-  onClick: () => void;
   description: string;
+  onClick: () => void;
 };
 
 export default function DeleteButton({
@@ -36,16 +38,18 @@ export default function DeleteButton({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger
-        className={cn(
-          'flex items-center justify-center rounded-md border p-2',
-          className,
-        )}
-        disabled={isLoading}
-      >
-        <LoadingWrapper isLoading={isLoading}>
-          <XMarkIcon className="h-5 w-5" />
-        </LoadingWrapper>
+      <AlertDialogTrigger asChild>
+        <Button
+          className={cn(className)}
+          variant="command"
+          size="command"
+          disabled={isLoading}
+        >
+          <LoadingWrapper isLoading={isLoading}>
+            <XMarkIcon className="size-5" />
+            <Tran text="delete" />
+          </LoadingWrapper>
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

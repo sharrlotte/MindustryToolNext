@@ -1,6 +1,9 @@
 'use client';
 
+import React from 'react';
+
 import LoadingWrapper from '@/components/common/loading-wrapper';
+import Tran from '@/components/common/tran';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +19,6 @@ import { Button } from '@/components/ui/button';
 import { useI18n } from '@/locales/client';
 
 import { TrashIcon } from '@heroicons/react/24/outline';
-import React from 'react';
 
 type TakeDownButtonProps = {
   isLoading: boolean;
@@ -33,13 +35,13 @@ export default function TakeDownButton({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger
-        className="flex h-9 min-w-9 items-center justify-center rounded-md border p-2"
-        disabled={isLoading}
-      >
-        <LoadingWrapper isLoading={isLoading}>
-          <TrashIcon className="h-5 w-5" />
-        </LoadingWrapper>
+      <AlertDialogTrigger asChild disabled={isLoading}>
+        <Button variant="command" size="command" disabled={isLoading}>
+          <LoadingWrapper isLoading={isLoading}>
+            <TrashIcon className="h-5 w-5" />
+            <Tran text="take-down" />
+          </LoadingWrapper>
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

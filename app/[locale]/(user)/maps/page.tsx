@@ -12,7 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const map = maps[0];
 
   return {
-    title: map.name,
+    title: 'Mindustry maps',
+    description: map.name,
     openGraph: {
       title: map.name,
       images: `${env.url.image}map-previews/${map.id}.png`,

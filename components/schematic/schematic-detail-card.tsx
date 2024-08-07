@@ -1,5 +1,6 @@
 'use client';
 
+import { PencilIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { HTMLAttributes } from 'react';
 
@@ -7,6 +8,8 @@ import CopyButton from '@/components/button/copy-button';
 import DeleteButton from '@/components/button/delete-button';
 import DownloadButton from '@/components/button/download-button';
 import TakeDownButton from '@/components/button/take-down-button';
+import InternalLink from '@/components/common/internal-link';
+import Tran from '@/components/common/tran';
 import {
   Detail,
   DetailActions,
@@ -23,6 +26,7 @@ import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import BackButton from '@/components/ui/back-button';
+import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
@@ -156,24 +160,30 @@ export default function SchematicDetailCard({
             <LikeCount />
             <DislikeButton />
           </LikeComponent>
-          <ProtectedElement
-            session={session}
-            ownerId={schematic.userId}
-            show={schematic.isVerified}
-          >
-            <TakeDownButton
-              isLoading={isLoading}
-              description={t('take-down-alert', { name: schematic.name })}
-              onClick={() => removeSchematic(schematic.id)}
-            />
-          </ProtectedElement>
-          <ProtectedElement session={session} ownerId={schematic.userId}>
-            <DeleteButton
-              description={`${t('delete')} ${schematic.name}`}
-              isLoading={isLoading}
-              onClick={() => deleteSchematicById(schematic.id)}
-            />
-          </ProtectedElement>
+          <EllipsisButton>
+            <InternalLink variant="command" href="">
+              <PencilIcon className="size-5" />
+              <Tran text="update" />
+            </InternalLink>
+            <ProtectedElement
+              session={session}
+              ownerId={schematic.userId}
+              show={schematic.isVerified}
+            >
+              <TakeDownButton
+                isLoading={isLoading}
+                description={t('take-down-alert', { name: schematic.name })}
+                onClick={() => removeSchematic(schematic.id)}
+              />
+            </ProtectedElement>
+            <ProtectedElement session={session} ownerId={schematic.userId}>
+              <DeleteButton
+                description={`${t('delete')} ${schematic.name}`}
+                isLoading={isLoading}
+                onClick={() => deleteSchematicById(schematic.id)}
+              />
+            </ProtectedElement>
+          </EllipsisButton>
         </div>
         <BackButton />
       </DetailActions>

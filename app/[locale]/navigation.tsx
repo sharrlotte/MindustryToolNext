@@ -1,7 +1,7 @@
 'use client';
 
 import { BellIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import React from 'react';
 
 import { NavItems } from '@/app/[locale]/navigation-items';
@@ -18,8 +18,14 @@ import { Bars3Icon } from '@heroicons/react/24/outline';
 export default function NavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
 
-  const showSidebar = () => setSidebarVisibility(true);
-  const hideSidebar = () => setSidebarVisibility(false);
+  const showSidebar = useCallback(
+    () => setSidebarVisibility(true),
+    [setSidebarVisibility],
+  );
+  const hideSidebar = useCallback(
+    () => setSidebarVisibility(false),
+    [setSidebarVisibility],
+  );
 
   const isLoading = useLoadingState((state) => state.isLoading);
 
