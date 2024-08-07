@@ -47,21 +47,21 @@ export default function NavigationBar() {
       >
         <div
           className={cn(
-            'pointer-events-auto fixed bottom-0 top-0 flex min-w-[250px] translate-x-[-100%] flex-c ol justify-between overflow-hidden bg-background transition-transform duration-300',
+            'pointer-events-auto fixed bottom-0 top-0 min-w-[250px] translate-x-[-100%] justify-between overflow-hidden bg-background duration-300',
             {
               'translate-x-0': isSidebarVisible,
             },
           )}
         >
           <div
-            className="flex h-full flex-col overflow-hidden"
+            className="h-full overflow-hidden"
             onMouseLeave={hideSidebar} //
             onMouseEnter={showSidebar}
           >
-            <div className="flex h-full flex-col justify-between overflow-hidden p-2 divide-y divide-foreground/70">
-              <div className="flex h-full flex-1 flex-col overflow-hidden">
+            <div className="flex h-full flex-col justify-between overflow-hidden p-2">
+              <div className="h-full flex flex-col overflow-hidden">
                 <span className="flex flex-col gap-2">
-                  <span className="flex items-end justify-start gap-2 rounded-sm p-2">
+                  <span className="space-x-2 rounded-sm p-2">
                     <span className="text-xl font-medium">MindustryTool</span>
                     <span className="text-xs">{env.webVersion}</span>
                   </span>
