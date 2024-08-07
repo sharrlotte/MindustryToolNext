@@ -76,48 +76,78 @@ export default function UserAvatar({
   user: { id, imageUrl, name },
   clickable = true,
 }: UserAvatarProps) {
+  if (clickable) {
+    return (
+      <Link href={url ?? `/users/${id}`}>
+        <AvatarImage
+          className={className}
+          user={{
+            name,
+            imageUrl,
+          }}
+        />
+      </Link>
+    );
+  }
+
+  return (
+    <AvatarImage
+      className={className}
+      user={{
+        name,
+        imageUrl,
+      }}
+    />
+  );
+}
+
+type AvatarImageProps = {
+  className?: string;
+  user: {
+    name?: string | null;
+    imageUrl?: string | null;
+  };
+};
+
+function AvatarImage({
+  className,
+  user: { imageUrl, name },
+}: AvatarImageProps) {
   const [isError, setError] = useState(false);
 
   useEffect(() => setError(false), [imageUrl]);
 
   const username = name ?? '';
 
-  const render = () => {
-    if (isError || !imageUrl) {
-      let total = 0;
-      for (let i = 0; i < username.length; i++) {
-        total += username.charCodeAt(i);
-      }
-      const color = colorArray[total % colorArray.length];
-
-      return (
-        <div
-          className={cn(
-            'flex h-8 w-8 items-center justify-center rounded-full border border-border capitalize',
-            className,
-          )}
-          style={{ backgroundColor: color }}
-        >
-          {username.at(0)}
-        </div>
-      );
+  if (isError || !imageUrl) {
+    let total = 0;
+    for (let i = 0; i < username.length; i++) {
+      total += username.charCodeAt(i);
     }
+    const color = colorArray[total % colorArray.length];
 
     return (
-      <Image
-        className={cn('rounded-full border border-border', className)}
-        height={32}
-        width={32}
-        src={imageUrl}
-        alt={username}
-        priority
-        onError={() => setError(true)}
-      />
+      <div
+        className={cn(
+          'flex h-8 w-8 items-center justify-center rounded-full border border-border capitalize',
+          className,
+        )}
+        style={{ backgroundColor: color }}
+      >
+        {username.at(0)}
+      </div>
     );
-  };
-  if (clickable) {
-    return <Link href={url ?? `/users/${id}`}>{render()}</Link>;
   }
 
-  return <div>{render()}</div>;
+  return (
+    <Image
+      className={cn('rounded-full border border-border', className)}
+      height={32}
+      width={32}
+      src={imageUrl}
+      alt={username}
+      priority
+      onError={() => setError(true)}
+    />
+  );
 }

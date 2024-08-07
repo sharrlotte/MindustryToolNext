@@ -11,8 +11,9 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
+import Tran from '@/components/common/tran';
 import {
   Accordion,
   AccordionContent,
@@ -24,7 +25,6 @@ import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, max } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
 import getTotalMapUpload from '@/query/map/get-total-map-upload';
 import getTotalPostUpload from '@/query/post/get-total-post-upload';
 import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
@@ -43,7 +43,8 @@ import {
 import { useQueries } from '@tanstack/react-query';
 
 type PathGroup = {
-  name: string;
+  key: string;
+  name: ReactNode;
   paths: Path[];
   roles?: UserRole[];
 };
@@ -71,271 +72,282 @@ type NavItemsProps = {
 };
 
 export function NavItems({ onClick }: NavItemsProps) {
-  const t = useI18n();
-
-  const pathGroups: PathGroup[] = [
-    {
-      name: '',
-      paths: [
-        {
-          path: '/', //
-          name: t('home'),
-          icon: <HomeIcon className="h-5 w-5" />,
-        },
-        {
-          path: '/schematics', //
-          name: t('schematic'),
-          icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
-        },
-        {
-          path: '/maps',
-          name: t('map'),
-          icon: <MapIcon className="h-5 w-5" />,
-        },
-        {
-          path: '/posts', //
-          name: t('post'),
-          icon: <BookOpenIcon className="h-5 w-5" />,
-        },
-        {
-          path: '/servers', //
-          name: t('server'),
-          icon: <ServerStackIcon className="h-5 w-5" />,
-        },
-        {
-          path: '/logic', //
-          name: t('logic'),
-          icon: <CommandLineIcon className="h-5 w-5" />,
-        },
-        {
-          path: '/chat', //
-          name: t('chat'),
-          icon: <ChatBubbleLeftIcon className="h-5 w-5" />,
-        },
-        {
-          path: '/mindustry-gpt', //
-          name: 'MindustryGpt',
-          icon: <BotIcon className="h-5 w-5" />,
-        },
-        {
-          name: t('plugin'),
-          path: '/plugins',
-          icon: <PuzzlePieceIcon className="h-5 w-5" />,
-        },
-      ],
-    },
-    {
-      name: t('admin'),
-      roles: ['ADMIN'],
-      paths: [
-        {
-          name: t('dashboard'),
-          path: '/admin',
-          icon: <ChartBarSquareIcon className="h-5 w-5" />,
-        },
-        {
-          name: t('user'),
-          path: '/admin/users',
-          icon: <UserIcon className="h-5 w-5" />,
-        },
-        {
-          name: t('log'),
-          path: '/admin/logs',
-          icon: <CircleStackIcon className="h-5 w-5" />,
-        },
-        {
-          name: <VerifyPath />,
-          path: [
-            {
-              name: <SchematicPath />,
-              path: '/admin/schematics',
-              icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
-            },
-            {
-              name: <MapPath />,
-              path: '/admin/maps',
-              icon: <MapIcon className="h-5 w-5" />,
-            },
-            {
-              name: <PostPath />,
-              path: '/admin/posts',
-              icon: <BookOpenIcon className="h-5 w-5" />,
-            },
-            {
-              name: t('plugin'),
-              path: '/admin/plugins',
-              icon: <PuzzlePieceIcon className="h-5 w-5" />,
-              roles: ['SHAR'],
-            },
-          ],
-          icon: <ShieldCheckIcon className="h-5 w-5" />,
-        },
-        {
-          name: t('server'),
-          path: '/admin/servers',
-          icon: <ServerIcon className="h-5 w-5" />,
-        },
-        {
-          name: t('setting'),
-          path: '/admin/settings',
-          icon: <Cog6ToothIcon className="h-5 w-5" />,
-        },
-      ],
-    },
-    {
-      name: 'Shar',
-      roles: ['SHAR'],
-      paths: [
-        {
-          name: 'File',
-          path: '/files',
-          icon: <FolderIcon className="h-5 w-5" />,
-        },
-        {
-          name: 'MindustryGPT',
-          icon: <BotIcon className="h-5 w-5" />,
-          path: [
-            {
-              name: 'Document',
-              path: '/mindustry-gpt/documents',
-              icon: <FileIcon className="h-5 w-5" />,
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
   const { session } = useSession();
-
-  const pathName = usePathname();
-  const pattern = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
-  const route = '/' + pattern.exec(pathName)?.at(1);
-
   const [value, setValue] = useState('');
+  const pathName = usePathname();
 
-  function getPath(path: SubPath): string[] {
-    if (typeof path === 'string') {
-      return [path];
-    }
+  const pathGroups = useMemo(() => {
+    return [
+      {
+        key: 'user',
+        name: '',
+        paths: [
+          {
+            path: '/', //
+            name: <Tran text="home" />,
+            icon: <HomeIcon className="h-5 w-5" />,
+          },
+          {
+            path: '/schematics', //
+            name: <Tran text="schematic" />,
+            icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
+          },
+          {
+            path: '/maps',
+            name: <Tran text="map" />,
+            icon: <MapIcon className="h-5 w-5" />,
+          },
+          {
+            path: '/posts', //
+            name: <Tran text="post" />,
+            icon: <BookOpenIcon className="h-5 w-5" />,
+          },
+          {
+            path: '/servers', //
+            name: <Tran text="server" />,
+            icon: <ServerStackIcon className="h-5 w-5" />,
+          },
+          {
+            path: '/logic', //
+            name: <Tran text="logic" />,
+            icon: <CommandLineIcon className="h-5 w-5" />,
+          },
+          {
+            path: '/chat', //
+            name: <Tran text="chat" />,
+            icon: <ChatBubbleLeftIcon className="h-5 w-5" />,
+          },
+          {
+            path: '/mindustry-gpt', //
+            name: 'MindustryGpt',
+            icon: <BotIcon className="h-5 w-5" />,
+          },
+          {
+            name: <Tran text="plugin" />,
+            path: '/plugins',
+            icon: <PuzzlePieceIcon className="h-5 w-5" />,
+          },
+        ],
+      },
+      {
+        key: 'admin',
+        name: <Tran text="admin" />,
+        roles: ['ADMIN'],
+        paths: [
+          {
+            name: <Tran text="dashboard" />,
+            path: '/admin',
+            icon: <ChartBarSquareIcon className="h-5 w-5" />,
+          },
+          {
+            name: <Tran text="user" />,
+            path: '/admin/users',
+            icon: <UserIcon className="h-5 w-5" />,
+          },
+          {
+            name: <Tran text="log" />,
+            path: '/admin/logs',
+            icon: <CircleStackIcon className="h-5 w-5" />,
+          },
+          {
+            name: <VerifyPath />,
+            path: [
+              {
+                name: <SchematicPath />,
+                path: '/admin/schematics',
+                icon: <ClipboardDocumentListIcon className="h-5 w-5" />,
+              },
+              {
+                name: <MapPath />,
+                path: '/admin/maps',
+                icon: <MapIcon className="h-5 w-5" />,
+              },
+              {
+                name: <PostPath />,
+                path: '/admin/posts',
+                icon: <BookOpenIcon className="h-5 w-5" />,
+              },
+              {
+                name: <Tran text="plugin" />,
+                path: '/admin/plugins',
+                icon: <PuzzlePieceIcon className="h-5 w-5" />,
+                roles: ['SHAR'],
+              },
+            ],
+            icon: <ShieldCheckIcon className="h-5 w-5" />,
+          },
+          {
+            name: <Tran text="server" />,
+            path: '/admin/servers',
+            icon: <ServerIcon className="h-5 w-5" />,
+          },
+          {
+            name: <Tran text="setting" />,
+            path: '/admin/settings',
+            icon: <Cog6ToothIcon className="h-5 w-5" />,
+          },
+        ],
+      },
+      {
+        key: 'shar',
+        name: 'Shar',
+        roles: ['SHAR'],
+        paths: [
+          {
+            name: 'File',
+            path: '/files',
+            icon: <FolderIcon className="h-5 w-5" />,
+          },
+          {
+            name: 'MindustryGPT',
+            icon: <BotIcon className="h-5 w-5" />,
+            path: [
+              {
+                name: 'Document',
+                path: '/mindustry-gpt/documents',
+                icon: <FileIcon className="h-5 w-5" />,
+              },
+            ],
+          },
+        ],
+      },
+    ] satisfies PathGroup[];
+  }, []);
 
-    return path.reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
-  }
+  const bestMatch = useMemo(() => {
+    const pattern = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
+    const route = '/' + pattern.exec(pathName)?.at(1);
+    const allPaths: string[] = pathGroups
+      .reduce<Path[]>((prev, curr) => prev.concat(curr.paths), [])
+      .reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
 
-  const allPaths: string[] = pathGroups
-    .reduce<Path[]>((prev, curr) => prev.concat(curr.paths), [])
-    .reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
-
-  const bestMatch = max(
-    allPaths,
-    (value) => value.length * (route.startsWith(value) ? 1 : 0),
-  );
-
-  function render(paths: Path[]): ReactNode {
-    return paths.map(({ path, icon, name, roles }) => {
-      if (typeof path === 'string')
-        return (
-          <ProtectedElement
-            key={path}
-            session={session}
-            all={roles}
-            passOnEmpty
-          >
-            <Link
-              className={cn(
-                'flex items-end gap-3 font-bold text-opacity-50 rounded-md px-3 py-2 text-sm opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
-                {
-                  'bg-brand text-background opacity-100 dark:text-foreground':
-                    path === bestMatch,
-                },
-              )}
-              href={path}
-              onClick={onClick}
-            >
-              <span> {icon}</span>
-              <span>{name}</span>
-            </Link>
-          </ProtectedElement>
-        );
-
-      return (
-        <ProtectedElement
-          key={path.toString()}
-          session={session}
-          all={roles}
-          passOnEmpty
-        >
-          <Accordion
-            key={name?.toString()}
-            type="single"
-            collapsible
-            className="w-full"
-            value={value}
-            onValueChange={setValue}
-          >
-            <AccordionItem
-              className="w-full"
-              value={path.reduce((prev, curr) => prev + curr.name, '')}
-            >
-              <AccordionTrigger
-                className={cn(
-                  'flex gap-3 rounded-md px-3 py-2 text-sm hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground font-bold opacity-80 transition-colors duration-300',
-                  {
-                    'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
-                      path.some((path) => path.path === bestMatch) && !value,
-                  },
-                )}
-              >
-                <div className="flex items-end gap-3">
-                  <span>{icon}</span>
-                  <span>{name}</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="space-y-1 pl-6">
-                {path.map((item) => (
-                  <ProtectedElement
-                    key={item.path}
-                    session={session}
-                    all={item.roles}
-                    passOnEmpty
-                  >
-                    <Link
-                      key={item.path}
-                      className={cn(
-                        'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
-                        {
-                          'bg-brand text-background opacity-100 dark:text-foreground':
-                            item.path === bestMatch,
-                        },
-                      )}
-                      href={item.path}
-                      onClick={onClick}
-                    >
-                      <span>{item.icon}</span>
-                      <span>{item.name}</span>
-                    </Link>
-                  </ProtectedElement>
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </ProtectedElement>
-      );
-    });
-  }
+    return max(
+      allPaths,
+      (value) => value.length * (route.startsWith(value) ? 1 : 0),
+    );
+  }, [pathGroups, pathName]);
 
   return (
     <div className="space-y-4 overflow-y-auto no-scrollbar divide-y divide-foreground/70">
-      {pathGroups.map(({ name, roles, paths }) => (
-        <ProtectedElement key={name} all={roles} session={session} passOnEmpty>
+      {pathGroups.map(({ key, name, roles, paths }) => (
+        <ProtectedElement key={key} all={roles} session={session} passOnEmpty>
           <div className="space-y-1">
             <div className="font-extrabold pt-2">{name}</div>
-            {render(paths)}
+            <PathGroup
+              paths={paths}
+              bestMatch={bestMatch}
+              onClick={onClick}
+              value={value}
+              setValue={setValue}
+            />
           </div>
         </ProtectedElement>
       ))}
     </div>
   );
+}
+
+type PathGroupProps = {
+  paths: Path[];
+  bestMatch: string | null;
+  value: string;
+  setValue: (value: string) => void;
+  onClick: () => void;
+};
+
+function PathGroup({
+  paths,
+  bestMatch,
+  value,
+  setValue,
+  onClick,
+}: PathGroupProps): ReactNode {
+  const { session } = useSession();
+
+  return paths.map(({ path, icon, name, roles }) => {
+    if (typeof path === 'string')
+      return (
+        <ProtectedElement key={path} session={session} all={roles} passOnEmpty>
+          <Link
+            className={cn(
+              'flex items-end gap-3 font-bold text-opacity-50 rounded-md px-3 py-2 text-sm opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+              {
+                'bg-brand text-background opacity-100 dark:text-foreground':
+                  path === bestMatch,
+              },
+            )}
+            href={path}
+            onClick={onClick}
+          >
+            <span> {icon}</span>
+            <span>{name}</span>
+          </Link>
+        </ProtectedElement>
+      );
+
+    return (
+      <ProtectedElement
+        key={path.toString()}
+        session={session}
+        all={roles}
+        passOnEmpty
+      >
+        <Accordion
+          type="single"
+          collapsible
+          className="w-full"
+          value={value}
+          onValueChange={setValue}
+        >
+          <AccordionItem
+            className="w-full"
+            value={path.reduce((prev, curr) => prev + curr.name, '')}
+          >
+            <AccordionTrigger
+              className={cn(
+                'flex gap-3 rounded-md px-3 py-2 text-sm hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground font-bold opacity-80 transition-colors duration-300',
+                {
+                  'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
+                    path.some((path) => path.path === bestMatch) && !value,
+                },
+              )}
+            >
+              <div className="flex items-end gap-3">
+                <span>{icon}</span>
+                <span>{name}</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="space-y-1 pl-6">
+              {path.map((item) => (
+                <ProtectedElement
+                  key={item.path}
+                  session={session}
+                  all={item.roles}
+                  passOnEmpty
+                >
+                  <Link
+                    key={item.path}
+                    className={cn(
+                      'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                      {
+                        'bg-brand text-background opacity-100 dark:text-foreground':
+                          item.path === bestMatch,
+                      },
+                    )}
+                    href={item.path}
+                    onClick={onClick}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.name}</span>
+                  </Link>
+                </ProtectedElement>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </ProtectedElement>
+    );
+  });
 }
 
 function VerifyPath() {
@@ -370,42 +382,47 @@ function VerifyPath() {
 
   return (
     <>
-      <span>Verify</span>
+      <Tran text="verify" />
       {amount > 0 && <span> ({amount})</span>}
     </>
   );
 }
 
 function SchematicPath() {
-  const t = useI18n();
   const schematicCount = useVerifyCount((data) => data.schematicCount);
 
   return (
     <>
-      <span> {t('schematic')}</span>
+      <Tran text="schematic" />
       {schematicCount > 0 && <span> ({schematicCount})</span>}
     </>
   );
 }
 function MapPath() {
-  const t = useI18n();
   const mapCount = useVerifyCount((data) => data.mapCount);
 
   return (
     <>
-      <span>{t('map')}</span>
+      <Tran text="map" />
       {mapCount > 0 && <span> ({mapCount})</span>}
     </>
   );
 }
 function PostPath() {
-  const t = useI18n();
   const postCount = useVerifyCount((data) => data.postCount);
 
   return (
     <>
-      <span>{t('post')}</span>
+      <Tran text="post" />
       {postCount > 0 && <span> ({postCount})</span>}
     </>
   );
+}
+
+function getPath(path: SubPath): string[] {
+  if (typeof path === 'string') {
+    return [path];
+  }
+
+  return path.reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
 }

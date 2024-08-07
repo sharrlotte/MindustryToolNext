@@ -2,7 +2,7 @@
 
 import { GlobeIcon } from 'lucide-react';
 import Link from 'next/link';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
@@ -32,26 +32,29 @@ type Tab = {
 export function UserActions() {
   const t = useI18n();
 
-  const tabs: Tab = [
-    [
-      {
-        icon: <GlobeIcon className="h-5 w-5" />,
-        action: <ChangeLanguageDialog />,
-      },
-      {
-        icon: undefined,
-        action: <ThemeSwitcher />,
-      },
-      {
-        icon: <Cog6ToothIcon className="h-6 w-6" />,
-        action: (
-          <Link className="w-full" href="/users/me/setting">
-            {t('setting')}
-          </Link>
-        ),
-      },
+  const tabs: Tab = useMemo(
+    () => [
+      [
+        {
+          icon: <GlobeIcon className="h-5 w-5" />,
+          action: <ChangeLanguageDialog />,
+        },
+        {
+          icon: undefined,
+          action: <ThemeSwitcher />,
+        },
+        {
+          icon: <Cog6ToothIcon className="h-6 w-6" />,
+          action: (
+            <Link className="w-full" href="/users/me/setting">
+              {t('setting')}
+            </Link>
+          ),
+        },
+      ],
     ],
-  ];
+    [t],
+  );
 
   return (
     <div className="divide-y-2 space-y-4 text-opacity-90">
