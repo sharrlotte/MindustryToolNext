@@ -1,6 +1,7 @@
 'use client';
 
 import { createI18nClient } from 'next-international/client';
+import { useCallback } from 'react';
 
 import { TranslateFunction } from '@/i18n/config';
 
@@ -29,8 +30,12 @@ export type Locale = (typeof locales)[number];
 function useI18n(): TranslateFunction {
   const t = defaultUseI18n();
 
-  //@ts-ignore
-  return (key: string, args?: Record<string, string>) => t(key, args);
+  return useCallback(
+    (key: string, args?: Record<string, string>) =>
+      //@ts-expect-error fix later
+      t(key, args),
+    [t],
+  );
 }
 
 export {

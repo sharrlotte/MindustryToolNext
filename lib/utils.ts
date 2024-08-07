@@ -2,9 +2,11 @@ import { type ClassValue, clsx } from 'clsx';
 import Nprogress from 'nprogress';
 import { twMerge } from 'tailwind-merge';
 
+import { UserRole } from '@/constant/enum';
 import env from '@/constant/env';
 import { Message } from '@/types/response/Message';
 import { ChartData, Metric } from '@/types/response/Metric';
+import { Session } from '@/types/response/Session';
 
 const colours: Record<string, string> = {
   aliceblue: '#f0f8ff',
@@ -327,4 +329,36 @@ export function getImageById(folder: ImageFolder, id: string) {
     return `${env.url.image}${folder}/${id}.png`;
   }
   return undefined;
+}
+
+export function hasAccess({
+  all,
+  any,
+  show,
+  ownerId,
+  session,
+  passOnEmpty,
+}: {
+  any?: UserRole[];
+  all?: UserRole[];
+  show?: boolean;
+  ownerId?: string;
+  session: Session | null;
+  passOnEmpty?: boolean;
+}) {
+  if (!session || session.roles === null) {
+    return passOnEmpty && !all && !any ? true : false;
+  }
+  const roles = session.roles.map((r) => r.name);
+
+  if (roles.includes('SHAR')) {
+    return true;
+  }
+
+  return [
+    all ? all.every((role) => roles.includes(role)) : true,
+    any ? any.some((role) => roles.includes(role)) : true,
+    ownerId ? ownerId === session.id : true,
+    show === undefined ? true : show,
+  ].every(Boolean);
 }
