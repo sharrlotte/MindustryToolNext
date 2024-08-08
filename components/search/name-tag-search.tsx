@@ -160,7 +160,7 @@ export default function NameTagSearch({
         }
       }
     },
-    [filterBy, setChanged, setFilterBy],
+    [tags, filterBy, setChanged, setFilterBy],
   );
 
   function handleSortChange(value: any) {

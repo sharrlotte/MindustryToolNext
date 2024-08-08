@@ -148,7 +148,7 @@ export default {
   'home.play-with-friend-tutorial':
     'Cách chơi với bạn bè thông qua scheme size',
   'home.community': 'Cộng đồng',
-  'home.schematic-preview': 'BTK mới',
+  'home.schematic-preview': 'Bản thiết kế mới',
   'home.map-preview': 'Bản đồ mới',
   'home.preview-more': 'Xem thêm',
   'home.official-discord-server': 'Mindustry discord chính chủ',

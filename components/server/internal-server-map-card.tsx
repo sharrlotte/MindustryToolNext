@@ -61,7 +61,7 @@ export default function InternalServerMapCard({
         <PreviewHeader className="h-12">{name}</PreviewHeader>
         <PreviewActions>
           <DeleteButton
-            className="absolute right-1 top-1 h-10 w-10 border-none backdrop-brightness-50"
+            variant="ghost"
             isLoading={isPending}
             onClick={() => mutate()}
             description={t('delete')}

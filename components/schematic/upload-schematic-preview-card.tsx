@@ -64,8 +64,6 @@ export default function UploadSchematicPreviewCard({
         <PreviewHeader className="h-12">{schematic.name}</PreviewHeader>
         <PreviewActions>
           <CopyButton
-            className="border border-border "
-            variant="outline"
             content={`Copied schematic ${schematic.name}`}
             data={getData}
           />

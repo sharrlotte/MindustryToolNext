@@ -29,12 +29,12 @@ export default function PostPreviewCard({
     <div
       style={{ backgroundImage: `url(${getImageById('posts', firstImage)})` }}
       className={cn(
-        'relative flex flex-col rounded-lg border border-border bg-center bg-cover',
+        'relative flex flex-col rounded-lg border border-border bg-cover bg-center',
         className,
       )}
       {...rest}
     >
-      <div className="flex h-full flex-col justify-between gap-2 backdrop-brightness-50 p-4">
+      <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-brightness-50">
         <Link href={`/posts/${post.id}`}>
           <span className="flex text-2xl">{post.title}</span>
         </Link>
@@ -44,12 +44,7 @@ export default function PostPreviewCard({
             <span>{new Date(post.createdAt).toLocaleString()}</span>
           </div>
           <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-            <CopyButton
-              className="border border-border "
-              variant="outline"
-              data={link}
-              content={link}
-            >
+            <CopyButton data={link} content={link}>
               <LinkIcon className="h-5 w-5" />
             </CopyButton>
             {post.isVerified && (

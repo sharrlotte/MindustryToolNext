@@ -14,7 +14,7 @@ const copyButtonVariants = cva('p-2 hover:bg-brand bg-transparent', {
     variant: {
       default: 'border border-border',
       ghost:
-        'absolute left-1 top-1 aspect-square transition-opacity duration-500',
+        'absolute left-1 top-1 aspect-square duration-500',
     },
   },
   defaultVariants: {
