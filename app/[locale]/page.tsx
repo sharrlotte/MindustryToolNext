@@ -1,4 +1,3 @@
-import { FacebookIcon, GithubIcon } from 'lucide-react';
 import { setStaticParamsLocale } from 'next-international/server';
 import Link from 'next/link';
 
@@ -9,8 +8,11 @@ import {
 } from '@/app/[locale]/home';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
-
-import { DiscordLogoIcon } from '@radix-ui/react-icons';
+import {
+  DiscordIcon,
+  FacebookIcon,
+  GithubIcon,
+} from '@/components/common/icons';
 
 export const dynamicParams = false;
 export const experimental_ppr = true;
@@ -23,15 +25,15 @@ export default async function Home({
   await setStaticParamsLocale(locale);
 
   return (
-    <div className="flex flex-col no-scrollbar h-full overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center text-white">
-      <div className="flex flex-col gap-10 backdrop-brightness-50 backdrop-blur-sm w-full p-4 md:px-32 mx-auto">
+    <div className="no-scrollbar flex h-full flex-col overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center text-white">
+      <div className="mx-auto flex w-full flex-col gap-10 p-4 backdrop-blur-sm backdrop-brightness-50 md:px-32">
         <div>
-          <h1 className="w-full font-extrabold text-3xl text-center">
+          <h1 className="w-full text-center text-3xl font-extrabold">
             <Tran text="home.hero-title" />
           </h1>
         </div>
-        <div className="flex flex-col md:flex-row gap-2">
-          <div className="flex md:w-1/2 flex-col space-y-4">
+        <div className="flex flex-col gap-2 md:flex-row">
+          <div className="flex flex-col space-y-4 md:w-1/2">
             <div>
               <h3 className="font-bold">
                 <Tran text="home.content-what-is-mindustry" />
@@ -57,11 +59,11 @@ export default async function Home({
               </p>
             </div>
           </div>
-          <div className="flex justify-center w-full md:w-1/2">
+          <div className="flex w-full justify-center md:w-1/2">
             <div className="relative w-full pb-[56.25%]">
               <iframe
                 title="YouTube video player"
-                className="absolute top-0 left-0 w-full h-full rounded-md"
+                className="absolute left-0 top-0 h-full w-full rounded-md"
                 src="https://www.youtube.com/embed/gUu3AhqpyHo?autoplay=1&loop=1&controls=1"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; controls; loop;"
                 allowFullScreen
@@ -96,12 +98,12 @@ export default async function Home({
           </div>
           <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
         </div>
-        <div className="flex flex-col md:flex-row w-full gap-2">
-          <div className="flex w-full md:w-1/2 flex-col">
-            <h1 className="flex ml-4 mb-2.5 text-xl">
+        <div className="flex w-full flex-col gap-2 md:flex-row">
+          <div className="flex w-full flex-col md:w-1/2">
+            <h1 className="mb-2.5 ml-4 flex text-xl">
               <Tran text="home.content-recommended-article" />
             </h1>
-            <ul className="flex flex-col mb-5">
+            <ul className="mb-5 flex flex-col">
               <li className="p-0">
                 <InternalLink
                   className="text-lg"
@@ -122,13 +124,13 @@ export default async function Home({
               </li>
             </ul>
 
-            <h1 className="flex ml-4 mb-2.5 text-xl">
+            <h1 className="mb-2.5 ml-4 flex text-xl">
               <Tran text="home.community" />
             </h1>
-            <ul className="flex flex-col mb-5">
+            <ul className="mb-5 flex flex-col">
               <li className="p-0">
                 <a
-                  className="text-brand hover:text-brand text-lg"
+                  className="text-lg text-brand hover:text-brand"
                   href="https://discord.gg/mindustry"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -138,7 +140,7 @@ export default async function Home({
               </li>
               <li className="p-0">
                 <a
-                  className="text-brand hover:text-brand text-lg"
+                  className="text-lg text-brand hover:text-brand"
                   href="https://discord.gg/DCX5yrRUyp"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -148,7 +150,7 @@ export default async function Home({
               </li>
               <li className="p-0">
                 <a
-                  className="text-brand hover:text-brand text-lg"
+                  className="text-lg text-brand hover:text-brand"
                   href="https://www.reddit.com/r/Mindustry"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -157,13 +159,13 @@ export default async function Home({
                 </a>
               </li>
             </ul>
-            <h1 className="flex ml-4 mb-2.5 text-xl">
+            <h1 className="mb-2.5 ml-4 flex text-xl">
               <Tran text="home.youtube" />
             </h1>
-            <ul className="flex flex-col mb-5">
+            <ul className="mb-5 flex flex-col">
               <li className="p-0">
                 <a
-                  className="text-brand hover:text-brand text-lg"
+                  className="text-lg text-brand hover:text-brand"
                   href="https://www.youtube.com/@FourEverNice"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -173,7 +175,7 @@ export default async function Home({
               </li>
               <li className="p-0">
                 <a
-                  className="text-brand hover:text-brand text-lg"
+                  className="text-lg text-brand hover:text-brand"
                   href="http://www.youtube.com/@gezpil8397"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -183,8 +185,8 @@ export default async function Home({
               </li>
             </ul>
           </div>
-          <div className="flex w-full md:w-1/2 flex-col">
-            <h1 className="flex ml-4 mb-5 text-xl">
+          <div className="flex w-full flex-col md:w-1/2">
+            <h1 className="mb-5 ml-4 flex text-xl">
               <Tran text="home.website-info" />
             </h1>
             <InformationGroup />
@@ -192,32 +194,32 @@ export default async function Home({
         </div>
       </div>
       <footer className="bg-zinc-950/95">
-        <div className="pb-6 p-6 space-y-4">
-          <span className="text-center w-full flex justify-center text-2xl ">
+        <div className="space-y-4 p-6 pb-6">
+          <span className="flex w-full justify-center text-center text-2xl ">
             MindustryTool
           </span>
           <div className="flex justify-center gap-2">
             <Link
-              className="bg-black rounded-full p-2 aspect-square border"
+              className="aspect-square rounded-full border bg-black p-2"
               href="https://github.com/MindustryVN"
             >
-              <GithubIcon className="size-5" />
+              <GithubIcon />
             </Link>
             <Link
-              className="bg-[rgb(66,103,178)] rounded-full p-2 aspect-square border"
+              className="aspect-square rounded-full border bg-[rgb(66,103,178)] p-2"
               href="https://www.facebook.com/groups/544598159439216/"
             >
-              <FacebookIcon className="size-5" />
+              <FacebookIcon />
             </Link>
             <Link
-              className="bg-[rgb(88,101,242)] rounded-full p-2 aspect-square border"
+              className="aspect-square rounded-full border bg-[rgb(88,101,242)] p-2"
               href="https://discord.gg/72324gpuCd"
             >
-              <DiscordLogoIcon className="size-5" />
+              <DiscordIcon />
             </Link>
           </div>
         </div>
-        <div className="flex w-full bg-black text-sm text-center justify-center p-4">
+        <div className="flex w-full justify-center bg-black p-4 text-center text-sm">
           Copyright © 2024 ‧ MindustryTool. All rights reserved.
         </div>
       </footer>

@@ -36,7 +36,7 @@ export default function TakeDownButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild disabled={isLoading}>
-        <Button variant="command" size="command" disabled={isLoading}>
+        <Button className='hover:bg-destructive/80' variant="command" size="command" disabled={isLoading}>
           <LoadingWrapper isLoading={isLoading}>
             <TrashIcon className="h-5 w-5" />
             <Tran text="take-down" />

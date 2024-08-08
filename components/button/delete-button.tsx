@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import LoadingWrapper from '@/components/common/loading-wrapper';
 import Tran from '@/components/common/tran';
@@ -16,54 +16,66 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { cva, VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+
+const buttonVariants = cva('hover:bg-destructive/80', {
+  variants: {
+    variant: {
+      default: 'border border-border',
+      ghost: 'border-none top-1 left-1 absolute',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
 type DeleteButtonProps = {
-  className?: string;
   isLoading: boolean;
-  description: string;
+  description: ReactNode;
   onClick: () => void;
-};
-
+} & VariantProps<typeof buttonVariants>;
 export default function DeleteButton({
-  className,
   isLoading,
+  variant,
   description,
   onClick,
 }: DeleteButtonProps) {
-  const t = useI18n();
-
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          className={cn(className)}
+          className={cn(buttonVariants({ variant }))}
           variant="command"
           size="command"
           disabled={isLoading}
         >
           <LoadingWrapper isLoading={isLoading}>
             <XMarkIcon className="size-5" />
-            <Tran text="delete" />
+            {variant === 'default' && <Tran text="delete" />}
           </LoadingWrapper>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('are-you-sure')}</AlertDialogTitle>
+          <AlertDialogTitle>
+            <Tran text="are-you-sure" />
+          </AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+          <AlertDialogCancel>
+            <Tran text="cancel" />
+          </AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive hover:bg-destructive"
             asChild
           >
-            <Button title={t('delete')} onClick={onClick}>
-              {t('delete')}
+            <Button onClick={onClick}>
+              <Tran text="delete" />
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

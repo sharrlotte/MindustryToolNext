@@ -1,6 +1,7 @@
 import { QueryClient, QueryKey, useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
 
-function deleteById(queryClient: QueryClient, queryKey: QueryKey, id: string) {
+function _deleteById(queryClient: QueryClient, queryKey: QueryKey, id: string) {
   queryClient.setQueriesData<{ pages: any[][] }>(
     { predicate: (q) => queryKey.some((key) => q.queryKey.includes(key)) },
     (data) => {
@@ -15,19 +16,21 @@ function deleteById(queryClient: QueryClient, queryKey: QueryKey, id: string) {
   );
 }
 
-function invalidateByKey(queryClient: QueryClient, queryKey: QueryKey) {
-  queryClient.invalidateQueries({
-    predicate: (q) => queryKey.some((key) => q.queryKey.includes(key)),
-  });
-}
-
 export default function useQueriesData() {
   const queryClient = useQueryClient();
 
+  const deleteById = useCallback(
+    (queryKey: QueryKey, id: string) => _deleteById(queryClient, queryKey, id),
+    [queryClient],
+  );
+
+  const invalidateByKey = useCallback(
+    (queryKey: QueryKey) => queryClient.invalidateQueries({ queryKey }),
+    [queryClient],
+  );
+
   return {
-    deleteById: (queryKey: QueryKey, id: string) =>
-      deleteById(queryClient, queryKey, id),
-    invalidateByKey: (queryKey: QueryKey) =>
-      invalidateByKey(queryClient, queryKey),
+    deleteById,
+    invalidateByKey,
   };
 }

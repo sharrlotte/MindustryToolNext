@@ -1,15 +1,12 @@
 'use client';
 
-import { PencilIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { HTMLAttributes } from 'react';
+import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DeleteButton from '@/components/button/delete-button';
 import DownloadButton from '@/components/button/download-button';
 import TakeDownButton from '@/components/button/take-down-button';
-import InternalLink from '@/components/common/internal-link';
-import Tran from '@/components/common/tran';
 import {
   Detail,
   DetailActions,
@@ -19,13 +16,13 @@ import {
   DetailInfo,
   DetailTagsCard,
   DetailTitle,
+  Verifier,
 } from '@/components/detail/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import BackButton from '@/components/ui/back-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
@@ -41,29 +38,111 @@ import getSchematicData from '@/query/schematic/get-schematic-data';
 import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 
-import { LinkIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
+import UpdateButton from '@/components/button/update-button';
+import { LinkIcon } from '@/components/common/icons';
 
-type SchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
+type SchematicDetailCardProps = {
   schematic: SchematicDetail;
 };
 
 export default function SchematicDetailCard({
-  schematic,
+  schematic: {
+    id,
+    name,
+    description,
+    tags,
+    requirements,
+    verifierId,
+    itemId,
+    likes,
+    userLike,
+    userId,
+    isVerified,
+  },
 }: SchematicDetailCardProps) {
   const axios = useClientAPI();
-  const { deleteById, invalidateByKey } = useQueriesData();
-  const { back } = useRouter();
-  const { toast } = useToast();
   const { session } = useSession();
 
   const t = useI18n();
 
-  const { mutate: removeSchematic, isPending: isRemoving } = useMutation({
+  const getData = useToastAction({
+    title: t('copying'),
+    content: t('downloading-data'),
+    action: async () => await getSchematicData(axios, id),
+  });
+
+  const link = `${env.url.base}/schematics/${id}`;
+  const copyContent = t('copied-name', { name: name });
+  const imageUrl = `${env.url.image}/schematics/${id}.png`;
+  const errorImageUrl = `${env.url.api}/schematics/${id}/image`;
+  const downloadUrl = `${env.url.api}/schematics/${id}/download`;
+  const downloadName = `{${name}}.msch`;
+
+  return (
+    <Detail>
+      <DetailInfo>
+        <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
+        <CopyButton variant="ghost" data={link} content={link}>
+          <LinkIcon />
+        </CopyButton>
+        <DetailHeader>
+          <DetailTitle>{name}</DetailTitle>
+          <IdUserCard id={userId} />
+          <Verifier verifierId={verifierId} />
+          <DetailDescription>{description}</DetailDescription>
+          <ItemRequirementCard requirements={requirements} />
+          <DetailTagsCard tags={tags} />
+        </DetailHeader>
+      </DetailInfo>
+      <DetailActions>
+        <CopyButton content={copyContent} data={getData} />
+        <DownloadButton href={downloadUrl} fileName={downloadName} />
+        <LikeComponent
+          itemId={itemId}
+          initialLikeCount={likes}
+          initialLikeData={userLike}
+        >
+          <LikeButton />
+          <LikeCount />
+          <DislikeButton />
+        </LikeComponent>
+        <EllipsisButton>
+          <ProtectedElement
+            session={session}
+            ownerId={userId}
+            show={isVerified}
+          >
+            <UpdateButton href="" />
+            <TakeDownSchematicButton id={id} name={name} />
+            <DeleteSchematicButton id={id} name={name} />
+          </ProtectedElement>
+        </EllipsisButton>
+      </DetailActions>
+    </Detail>
+  );
+}
+
+type TakeDownSchematicButtonProps = {
+  id: string;
+  name: string;
+};
+
+function TakeDownSchematicButton({ id, name }: TakeDownSchematicButtonProps) {
+  const axios = useClientAPI();
+  const t = useI18n();
+  const { back } = useRouter();
+  const { deleteById, invalidateByKey } = useQueriesData();
+  const { toast } = useToast();
+
+  const { mutate, isPending } = useMutation({
+    scope: {
+      id,
+    },
     mutationFn: (id: string) => putRemoveSchematic(axios, id),
     onSuccess: () => {
-      deleteById(['schematics'], schematic.id);
-      invalidateByKey(['schematic-uploads']);
+      deleteById(['schematic'], id);
+      invalidateByKey(['schematic', 'total']);
       back();
       toast({
         title: t('take-down-success'),
@@ -79,11 +158,35 @@ export default function SchematicDetailCard({
     },
   });
 
-  const { mutate: deleteSchematicById, isPending: isDeleting } = useMutation({
+  return (
+    <TakeDownButton
+      isLoading={isPending}
+      description={t('take-down-alert', { name: name })}
+      onClick={() => mutate(id)}
+    />
+  );
+}
+
+type DeleteSchematicButtonProps = {
+  id: string;
+  name: string;
+};
+
+function DeleteSchematicButton({ id, name }: DeleteSchematicButtonProps) {
+  const axios = useClientAPI();
+  const t = useI18n();
+  const { back } = useRouter();
+  const { deleteById, invalidateByKey } = useQueriesData();
+  const { toast } = useToast();
+
+  const { mutate, isPending } = useMutation({
+    scope: {
+      id,
+    },
     mutationFn: (id: string) => deleteSchematic(axios, id),
     onSuccess: () => {
-      deleteById(['schematic-uploads'], schematic.id);
-      invalidateByKey(['total-schematic-uploads']);
+      deleteById(['schematic'], id);
+      invalidateByKey(['schematic', 'total']);
       back();
       toast({
         title: t('delete-success'),
@@ -99,94 +202,11 @@ export default function SchematicDetailCard({
     },
   });
 
-  const isLoading = isRemoving || isDeleting;
-
-  const link = `${env.url.base}/schematics/${schematic.id}`;
-
-  const getData = useToastAction({
-    title: t('copying'),
-    content: t('downloading-data'),
-    action: async () => await getSchematicData(axios, schematic.id),
-  });
-
   return (
-    <Detail>
-      <DetailInfo>
-        <div className="relative">
-          <CopyButton
-            className="absolute left-1 top-1 "
-            variant="ghost"
-            data={link}
-            content={link}
-          >
-            <LinkIcon className="h-5 w-5" />
-          </CopyButton>
-          <DetailImage
-            src={`${env.url.image}/schematics/${schematic.id}.png`}
-            errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
-            alt={schematic.name}
-          />
-        </div>
-        <DetailHeader>
-          <DetailTitle>{schematic.name}</DetailTitle>
-          <IdUserCard id={schematic.userId} />
-          <div className="flex items-end gap-2">
-            <span>{t('verified-by')}</span>
-            <IdUserCard id={schematic.verifierId} />
-          </div>
-          <DetailDescription>{schematic.description}</DetailDescription>
-          <ItemRequirementCard requirements={schematic.requirements} />
-          <DetailTagsCard tags={schematic.tags} />
-        </DetailHeader>
-      </DetailInfo>
-      <DetailActions className="flex justify-between">
-        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <CopyButton
-            className="border border-border "
-            variant="outline"
-            content={t('copied-name', { name: schematic.name })}
-            data={getData}
-          />
-          <DownloadButton
-            href={`${env.url.api}/schematics/${schematic.id}/download`}
-            fileName={`{${schematic.name}}.msch`}
-          />
-          <LikeComponent
-            itemId={schematic.itemId}
-            initialLikeCount={schematic.likes}
-            initialLikeData={schematic.userLike}
-          >
-            <LikeButton />
-            <LikeCount />
-            <DislikeButton />
-          </LikeComponent>
-          <EllipsisButton>
-            <InternalLink variant="command" href="">
-              <PencilIcon className="size-5" />
-              <Tran text="update" />
-            </InternalLink>
-            <ProtectedElement
-              session={session}
-              ownerId={schematic.userId}
-              show={schematic.isVerified}
-            >
-              <TakeDownButton
-                isLoading={isLoading}
-                description={t('take-down-alert', { name: schematic.name })}
-                onClick={() => removeSchematic(schematic.id)}
-              />
-            </ProtectedElement>
-            <ProtectedElement session={session} ownerId={schematic.userId}>
-              <DeleteButton
-                description={`${t('delete')} ${schematic.name}`}
-                isLoading={isLoading}
-                onClick={() => deleteSchematicById(schematic.id)}
-              />
-            </ProtectedElement>
-          </EllipsisButton>
-        </div>
-        <BackButton />
-      </DetailActions>
-    </Detail>
+    <DeleteButton
+      description={t('delete-alert', { name })}
+      isLoading={isPending}
+      onClick={() => mutate(id)}
+    />
   );
 }

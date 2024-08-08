@@ -12,4 +12,5 @@ export type InternalServerDetail = {
   totalRam: number;
   players: number;
   mapName: string;
+  mapImage?: string;
 };

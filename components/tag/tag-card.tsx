@@ -3,8 +3,8 @@ import React, { HTMLAttributes } from 'react';
 
 import TagName from '@/components/tag/tag-name';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
 import Tag from '@/types/response/Tag';
+import TagTooltip from '@/components/tag/tag-tooltip';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;
@@ -30,14 +30,16 @@ export default function TagCard({
   return (
     <span
       className={cn(
-        'flex items-center gap-0.5 cursor-pointer whitespace-nowrap rounded-full px-2 py-2 font-extralight text-center text-xs capitalize text-background dark:text-foreground',
+        'flex cursor-pointer items-center gap-0.5 whitespace-nowrap rounded-full px-2 py-2 text-center text-xs font-extralight text-background dark:text-foreground',
         className,
       )}
       style={{ backgroundColor: color }}
       onClick={() => handleOnDelete(tag)}
       {...props}
     >
-      <TagName>{name}</TagName>(<TagName>{value}</TagName>)
+      <TagTooltip name={name} value={value}>
+        <TagName>{name}</TagName>(<TagName>{value}</TagName>)
+      </TagTooltip>
       {hasDelete && <XIcon className="size-4" />}
     </span>
   );

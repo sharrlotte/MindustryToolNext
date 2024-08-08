@@ -22,10 +22,12 @@ export class Tags {
       return [];
     }
     const result = [];
-    for (let tag of arr) {
+    for (const tag of arr) {
       try {
         result.push(Tags.parseString(tag));
-      } catch (err) {}
+      } catch (err) {
+        // ignore
+      }
     }
     return result;
   }

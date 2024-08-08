@@ -1,7 +1,9 @@
 import TagName from '@/components/tag/tag-name';
+import TagTooltip from '@/components/tag/tag-tooltip';
 import { Separator } from '@/components/ui/separator';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import TagGroup from '@/types/response/TagGroup';
+import React from 'react';
 
 type MultipleFilerTagsProps = {
   group: TagGroup;
@@ -9,7 +11,7 @@ type MultipleFilerTagsProps = {
   handleTagGroupChange: (value: string[]) => void;
 };
 
-export default function MultipleFilerTags({
+function _MultipleFilerTags({
   group,
   selectedValue,
   handleTagGroupChange,
@@ -19,19 +21,24 @@ export default function MultipleFilerTags({
       className="flex w-full flex-wrap justify-start"
       type={'multiple'}
       onValueChange={handleTagGroupChange}
-      defaultValue={selectedValue}
+      value={selectedValue}
     >
       <span className="whitespace-nowrap text-lg capitalize">{group.name}</span>
       <Separator className="border-[1px]" orientation="horizontal" />
-      {group.values.map((value) => (
-        <ToggleGroupItem
-          className="capitalize hover:bg-brand hover:text-background data-[state=on]:bg-brand data-[state=on]:text-background dark:hover:text-foreground data-[state=on]:dark:text-foreground"
-          key={value}
-          value={value}
-        >
-          <TagName>{value}</TagName>
-        </ToggleGroupItem>
+      {group.values.sort().map((value) => (
+        <TagTooltip name={group.name} value={value} key={value}>
+          <ToggleGroupItem
+            className="capitalize hover:bg-brand hover:text-background data-[state=on]:bg-brand data-[state=on]:text-background dark:hover:text-foreground data-[state=on]:dark:text-foreground"
+            key={value}
+            value={value}
+          >
+            <TagName>{value}</TagName>
+          </ToggleGroupItem>
+        </TagTooltip>
       ))}
     </ToggleGroup>
   );
 }
+
+const MultipleFilerTags = React.memo(_MultipleFilerTags);
+export default MultipleFilerTags;
