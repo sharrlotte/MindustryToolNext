@@ -39,7 +39,6 @@ import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 
 import { useMutation } from '@tanstack/react-query';
-import EditButton from '@/components/button/edit-button';
 import { LinkIcon } from '@/components/common/icons';
 
 type SchematicDetailCardProps = {
@@ -113,7 +112,6 @@ export default function SchematicDetailCard({
             ownerId={userId}
             show={isVerified}
           >
-            <EditButton />
             <TakeDownSchematicButton id={id} name={name} />
             <DeleteSchematicButton id={id} name={name} />
           </ProtectedElement>

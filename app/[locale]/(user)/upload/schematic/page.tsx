@@ -7,9 +7,9 @@ import { useForm } from 'react-hook-form';
 import {
   EditClose,
   EditComponent,
-  EditInput,
+  EditOn,
   EditTrigger,
-  EditView,
+  EditOff,
 } from '@/components/common/edit-component';
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
@@ -134,9 +134,9 @@ export default function Page() {
           setPreview={setPreview}
         />
       ) : (
-        <div className="flex h-full items-center justify-center w-full flex-1 flex-col gap-2 rounded-md p-2">
-          <section className="flex  md:w-1/2 md:h-1/2 flex-row flex-wrap items-center gap-2 md:flex-row md:items-start">
-            <div className="grid items-center w-full gap-2">
+        <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-2 rounded-md p-2">
+          <section className="flex  flex-row flex-wrap items-center gap-2 md:h-1/2 md:w-1/2 md:flex-row md:items-start">
+            <div className="grid w-full items-center gap-2">
               <UploadField onFileDrop={handleFileChange} />
               <span className="text-center">or</span>
               <Button
@@ -219,7 +219,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   return (
     <Form {...form}>
       <form
-        className="h-full flex flex-col p-2"
+        className="flex h-full flex-col p-2"
         onSubmit={form.handleSubmit(handleSubmit)}
       >
         <div className="flex flex-col gap-2">
@@ -237,13 +237,13 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
             render={({ field }) => (
               <FormItem>
                 <EditComponent>
-                  <EditView>
+                  <EditOff>
                     <div className="flex gap-1">
                       <DetailTitle>{field.value}</DetailTitle>
                       <EditTrigger />
                     </div>
-                  </EditView>
-                  <EditInput>
+                  </EditOff>
+                  <EditOn>
                     <FormLabel>
                       <Tran text="name" />
                     </FormLabel>
@@ -253,7 +253,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                         <EditClose />
                       </div>
                     </FormControl>
-                  </EditInput>
+                  </EditOn>
                 </EditComponent>
                 <FormMessage />
               </FormItem>
@@ -265,23 +265,23 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
             render={({ field }) => (
               <FormItem>
                 <EditComponent>
-                  <EditView>
+                  <EditOff>
                     <div className="flex gap-1">
                       <DetailDescription>{field.value}</DetailDescription>
                       <EditTrigger />
                     </div>
-                  </EditView>
-                  <EditInput>
+                  </EditOff>
+                  <EditOn>
                     <FormLabel>
                       <Tran text="description" />
                     </FormLabel>
                     <FormControl>
                       <div className="flex gap-1">
-                        <Textarea className="w-full min-h-20" {...field} />
+                        <Textarea className="min-h-20 w-full" {...field} />
                         <EditClose />
                       </div>
                     </FormControl>
-                  </EditInput>
+                  </EditOn>
                 </EditComponent>
                 <FormMessage />
               </FormItem>
@@ -308,7 +308,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
             )}
           />
         </div>
-        <div className="flex mt-auto gap-2 justify-end p-2">
+        <div className="mt-auto flex justify-end gap-2 p-2">
           <Button variant="outline" onClick={() => setPreview(undefined)}>
             <Tran text="close" />
           </Button>
