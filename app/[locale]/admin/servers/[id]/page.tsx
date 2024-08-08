@@ -30,6 +30,8 @@ export default async function Page({ params: { id } }: Props) {
     mapImage,
   } = server;
 
+  console.log(mapImage);
+
   return (
     <div className="flex flex-col gap-4 overflow-y-auto p-2 md:p-4">
       <div className="flex flex-wrap gap-4">
