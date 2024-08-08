@@ -18,7 +18,7 @@ export default function TagTooltip({ name, value, children }: Props) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <>{children}</>
+          <span>{children}</span>
         </TooltipTrigger>
         <TooltipContent className="bg-foreground normal-case text-background">
           <Tran text={`tag.${name}.${value}.description`} />
