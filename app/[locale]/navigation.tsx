@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { NotificationIcon } from '@/components/common/icons';
+import OutsideWrapper from '@/components/common/outside-wrapper';
 
 export default function NavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
@@ -58,18 +59,20 @@ export default function NavigationBar() {
             onMouseLeave={hideSidebar} //
             onMouseEnter={showSidebar}
           >
-            <div className="flex h-full flex-col justify-between overflow-hidden p-2">
-              <div className="flex h-full flex-col overflow-hidden">
-                <span className="flex flex-col gap-2">
-                  <span className="space-x-2 rounded-sm p-2">
-                    <span className="text-xl font-medium">MindustryTool</span>
-                    <span className="text-xs">{env.webVersion}</span>
+            <OutsideWrapper onClickOutside={hideSidebar}>
+              <div className="flex h-full flex-col justify-between overflow-hidden p-2">
+                <div className="flex h-full flex-col overflow-hidden">
+                  <span className="flex flex-col gap-2">
+                    <span className="space-x-2 rounded-sm p-2">
+                      <span className="text-xl font-medium">MindustryTool</span>
+                      <span className="text-xs">{env.webVersion}</span>
+                    </span>
                   </span>
-                </span>
-                <NavItems onClick={hideSidebar} />
+                  <NavItems onClick={hideSidebar} />
+                </div>
+                <UserDisplay />
               </div>
-              <UserDisplay />
-            </div>
+            </OutsideWrapper>
           </div>
         </div>
       </div>

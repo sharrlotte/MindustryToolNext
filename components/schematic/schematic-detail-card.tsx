@@ -39,7 +39,7 @@ import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 
 import { useMutation } from '@tanstack/react-query';
-import UpdateButton from '@/components/button/update-button';
+import EditButton from '@/components/button/edit-button';
 import { LinkIcon } from '@/components/common/icons';
 
 type SchematicDetailCardProps = {
@@ -113,7 +113,7 @@ export default function SchematicDetailCard({
             ownerId={userId}
             show={isVerified}
           >
-            <UpdateButton href="" />
+            <EditButton />
             <TakeDownSchematicButton id={id} name={name} />
             <DeleteSchematicButton id={id} name={name} />
           </ProtectedElement>
@@ -204,6 +204,7 @@ function DeleteSchematicButton({ id, name }: DeleteSchematicButtonProps) {
 
   return (
     <DeleteButton
+      variant="command"
       description={t('delete-alert', { name })}
       isLoading={isPending}
       onClick={() => mutate(id)}

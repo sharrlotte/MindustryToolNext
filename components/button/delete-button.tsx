@@ -25,6 +25,7 @@ const buttonVariants = cva('hover:bg-destructive/80', {
   variants: {
     variant: {
       default: 'border border-border',
+      command: '',
       ghost: 'border-none top-1 left-1 absolute',
     },
   },
@@ -55,7 +56,7 @@ export default function DeleteButton({
         >
           <LoadingWrapper isLoading={isLoading}>
             <XMarkIcon className="size-5" />
-            {variant === 'default' && <Tran text="delete" />}
+            {variant === 'command' && <Tran text="delete" />}
           </LoadingWrapper>
         </Button>
       </AlertDialogTrigger>

@@ -4,14 +4,14 @@ import { PencilIcon } from 'lucide-react';
 import React from 'react';
 
 type Props = {
-  href: string;
+  href?: string;
 };
 
-export default function UpdateButton({ href }: Props) {
+export default function EditButton({ href }: Props) {
   return (
-    <InternalLink variant="command" href={href}>
+    <InternalLink variant="command" href={href ?? 'edit'}>
       <PencilIcon className="size-5" />
-      <Tran text="update" />
+      <Tran text="edit" />
     </InternalLink>
   );
 }
