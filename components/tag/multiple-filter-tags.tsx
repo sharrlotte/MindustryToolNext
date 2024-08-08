@@ -3,6 +3,7 @@ import TagTooltip from '@/components/tag/tag-tooltip';
 import { Separator } from '@/components/ui/separator';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import TagGroup from '@/types/response/TagGroup';
+import React from 'react';
 
 type MultipleFilerTagsProps = {
   group: TagGroup;
@@ -10,7 +11,7 @@ type MultipleFilerTagsProps = {
   handleTagGroupChange: (value: string[]) => void;
 };
 
-export default function MultipleFilerTags({
+function _MultipleFilerTags({
   group,
   selectedValue,
   handleTagGroupChange,
@@ -20,7 +21,7 @@ export default function MultipleFilerTags({
       className="flex w-full flex-wrap justify-start"
       type={'multiple'}
       onValueChange={handleTagGroupChange}
-      defaultValue={selectedValue}
+      value={selectedValue}
     >
       <span className="whitespace-nowrap text-lg capitalize">{group.name}</span>
       <Separator className="border-[1px]" orientation="horizontal" />
@@ -38,3 +39,6 @@ export default function MultipleFilerTags({
     </ToggleGroup>
   );
 }
+
+const MultipleFilerTags = React.memo(_MultipleFilerTags);
+export default MultipleFilerTags;

@@ -3,6 +3,7 @@ import TagTooltip from '@/components/tag/tag-tooltip';
 import { Separator } from '@/components/ui/separator';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import TagGroup from '@/types/response/TagGroup';
+import React from 'react';
 
 type SingeFilerTagsProps = {
   group: TagGroup;
@@ -10,7 +11,7 @@ type SingeFilerTagsProps = {
   handleTagGroupChange: (value: string) => void;
 };
 
-export default function SingeFilerTags({
+function _SingeFilerTags({
   group,
   selectedValue,
   handleTagGroupChange,
@@ -37,3 +38,6 @@ export default function SingeFilerTags({
     </ToggleGroup>
   );
 }
+const SingeFilerTags = React.memo(_SingeFilerTags);
+
+export default SingeFilerTags;

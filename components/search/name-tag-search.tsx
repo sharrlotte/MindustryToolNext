@@ -28,8 +28,6 @@ type NameTagSearchProps = {
   useTag?: boolean;
 };
 
-let timeout: NodeJS.Timeout | undefined;
-
 export default function NameTagSearch({
   className,
   tags = [],
@@ -85,7 +83,7 @@ export default function NameTagSearch({
           );
           // Ignore tag that not match with server
           if (result) {
-            result.values = { ...tag.values };
+            result.values = [...tag.values];
           }
 
           return result;
@@ -102,10 +100,6 @@ export default function NameTagSearch({
   }, [tags]);
 
   useEffect(() => {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-
     const handleSearch = () => {
       const params = new URLSearchParams();
 
@@ -136,7 +130,7 @@ export default function NameTagSearch({
     };
 
     if (!showFilterDialog) {
-      timeout = setTimeout(() => handleSearch(), 1000);
+      handleSearch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, showFilterDialog, filterBy, sortBy]);
@@ -144,6 +138,7 @@ export default function NameTagSearch({
   const handleTagGroupChange = useCallback(
     (name: string, values: string[]) => {
       const group = filterBy.find((tag) => tag.name === name);
+
       if (group) {
         group.values = values;
         setFilterBy([...filterBy]);
@@ -152,13 +147,11 @@ export default function NameTagSearch({
 
         // Ignore tag that not match with server
         if (result) {
-          const t = { ...result };
-          t.values = values;
-          filterBy.push(t);
-          setChanged(true);
-          setFilterBy([...filterBy]);
+          const t = { ...result, values };
+          setFilterBy([...filterBy, t]);
         }
       }
+      setChanged(true);
     },
     [tags, filterBy, setChanged, setFilterBy],
   );

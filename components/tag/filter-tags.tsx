@@ -56,54 +56,34 @@ const _FilterTagGroup = ({
   filterBy,
   handleTagGroupChange,
 }: FilterTagGroupProps) => {
-  const getSingleValue = useCallback(
-    (group: TagGroup) => {
-      const result = filterBy.find((value) => value.name === group.name);
-      if (result && result.values) {
-        return result.values.length > 0 ? result.values[0] : '';
-      }
-      return '';
-    },
-    [filterBy],
-  );
-
-  const getMultipleValue = useCallback(
-    (group: TagGroup) => {
-      const result = filterBy.find((value) => value.name === group.name);
-      if (result && result.values) {
-        return result.values;
-      }
-      return empty;
-    },
-    [filterBy],
-  );
-
   const handleMultipleValueChange = useCallback(
     (value: string[]) => {
       handleTagGroupChange(group.name, value);
     },
-    [group, handleTagGroupChange],
+    [group],
   );
 
   const handleSingleValueChange = useCallback(
     (value: string) => {
       handleTagGroupChange(group.name, [value]);
     },
-    [group, handleTagGroupChange],
+    [group],
   );
+
+  const selectedGroup = filterBy.find((value) => value.name === group.name);
 
   return group.duplicate ? (
     <MultipleFilerTags
       key={group.name}
       group={group}
-      selectedValue={getMultipleValue(group)}
+      selectedValue={selectedGroup?.values ?? empty}
       handleTagGroupChange={handleMultipleValueChange}
     />
   ) : (
     <SingeFilerTags
       key={group.name}
       group={group}
-      selectedValue={getSingleValue(group)}
+      selectedValue={selectedGroup?.values[0] ?? ''}
       handleTagGroupChange={handleSingleValueChange}
     />
   );

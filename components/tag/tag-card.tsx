@@ -4,13 +4,7 @@ import React, { HTMLAttributes } from 'react';
 import TagName from '@/components/tag/tag-name';
 import { cn } from '@/lib/utils';
 import Tag from '@/types/response/Tag';
-import Tran from '@/components/common/tran';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import TagTooltip from '@/components/tag/tag-tooltip';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;
@@ -43,16 +37,9 @@ export default function TagCard({
       onClick={() => handleOnDelete(tag)}
       {...props}
     >
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger>
-            <TagName>{name}</TagName>(<TagName>{value}</TagName>)
-          </TooltipTrigger>
-          <TooltipContent className="bg-foreground normal-case text-background">
-            <Tran text={`tag.${name}.${value}.description`} />
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <TagTooltip name={name} value={value}>
+        <TagName>{name}</TagName>(<TagName>{value}</TagName>)
+      </TagTooltip>
       {hasDelete && <XIcon className="size-4" />}
     </span>
   );
