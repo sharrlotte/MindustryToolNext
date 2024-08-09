@@ -1,5 +1,6 @@
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
+import { LinkIcon } from '@/components/common/icons';
 import {
   Preview,
   PreviewActions,
@@ -8,48 +9,37 @@ import {
   PreviewImage,
 } from '@/components/preview/preview';
 import env from '@/constant/env';
-import { cn } from '@/lib/utils';
-import { Map } from '@/types/response/Map';
+import { MapPreview } from '@/types/response/MapPreview';
 
-import { LinkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import React, { HTMLAttributes } from 'react';
+import React from 'react';
 
-type UploadMapPreviewProps = HTMLAttributes<HTMLDivElement> & {
-  map: Map;
+type UploadMapPreviewCardProps = {
+  map: MapPreview;
 };
 
-export default function UploadMapPreview({
-  className,
-  map,
-  ...rest
-}: UploadMapPreviewProps) {
-  const link = `${env.url.base}/admin/maps/${map.id}`;
+export default function UploadMapPreviewCard({
+  map: { id, name },
+}: UploadMapPreviewCardProps) {
+  const link = `${env.url.base}/admin/maps/${id}`;
+  const detailLink = `/admin/maps/${id}`;
+  const imageLink = `${env.url.image}/map-previews/${id}.png`;
+  const errorImageLink = `${env.url.api}/maps/${id}/image`;
+  const downloadLink = `${env.url.api}/maps/${id}/download`;
+  const downloadName = `{${name}}.msav`;
 
   return (
-    <Preview className={cn('group relative', className)} {...rest}>
-      <CopyButton
-        className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
-        variant="ghost"
-        data={link}
-        content={link}
-      >
-        <LinkIcon className="h-5 w-5" />
+    <Preview>
+      <CopyButton variant="ghost" data={link} content={link}>
+        <LinkIcon />
       </CopyButton>
-      <Link href={`/admin/maps/${map.id}`}>
-        <PreviewImage
-          src={`${env.url.image}/map-previews/${map.id}.png`}
-          errorSrc={`${env.url.api}/maps/${map.id}/image`}
-          alt={map.name}
-        />
+      <Link href={detailLink}>
+        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </Link>
       <PreviewDescription>
-        <PreviewHeader className="h-12">{map.name}</PreviewHeader>
+        <PreviewHeader>{name}</PreviewHeader>
         <PreviewActions>
-          <DownloadButton
-            href={`${env.url.api}/maps/${map.id}/download`}
-            fileName={`{${map.name}}.msav`}
-          />
+          <DownloadButton href={downloadLink} fileName={downloadName} />
         </PreviewActions>
       </PreviewDescription>
     </Preview>

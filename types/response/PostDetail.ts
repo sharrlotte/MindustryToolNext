@@ -21,4 +21,5 @@ export type PostDetail = {
   createdAt: number;
   itemId: string;
   isVerified: boolean;
+  updateForId: string;
 };

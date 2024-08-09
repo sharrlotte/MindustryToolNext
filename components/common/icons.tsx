@@ -12,6 +12,7 @@ import {
   BellIcon,
   GithubIcon as _GithubIcon,
   FacebookIcon as _FacebookIcon,
+  ArrowDownIcon as _ArrowDownIcon,
 } from 'lucide-react';
 
 import {
@@ -48,3 +49,4 @@ export const NotificationIcon = () => <BellIcon className="size-5" />;
 export const GithubIcon = () => <_GithubIcon className="size-5" />;
 export const FacebookIcon = () => <_FacebookIcon className="size-5" />;
 export const DiscordIcon = () => <DiscordLogoIcon className="size-5" />;
+export const ArrowDownIcon = () => <_ArrowDownIcon className="size-7" />;

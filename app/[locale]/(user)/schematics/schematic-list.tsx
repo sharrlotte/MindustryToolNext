@@ -31,7 +31,7 @@ export default function SchematicList() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const { data } = useClientQuery({
-    queryKey: ['schematics', 'count', omit(params, 'page', 'size', 'sort')],
+    queryKey: ['schematics', 'total', omit(params, 'page', 'size', 'sort')],
     queryFn: (axios) => getSchematicCount(axios, params),
   });
 
@@ -78,7 +78,7 @@ export default function SchematicList() {
           {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
         </GridPaginationList>
       </GridLayout>
-      <div className="sm:justify-between justify-end sm:flex-row-reverse items-center flex flex-wrap gap-4">
+      <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
           <PaginationNavigator numberOfItems={data ?? 0} />
         </GridLayout>

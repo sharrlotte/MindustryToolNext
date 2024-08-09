@@ -1,12 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { HTMLAttributes, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
-import DeleteButton from '@/components/button/delete-button';
 import DownloadButton from '@/components/button/download-button';
-import VerifyButton from '@/components/button/verify-button';
 import {
   Detail,
   DetailActions,
@@ -18,152 +15,77 @@ import {
 } from '@/components/detail/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import NameTagSelector from '@/components/search/name-tag-selector';
-import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
-import { useToast } from '@/hooks/use-toast';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
-import deleteSchematic from '@/query/schematic/delete-schematic';
 import getSchematicData from '@/query/schematic/get-schematic-data';
-import postVerifySchematic from '@/query/schematic/post-verify-schematic';
-import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
+import VerifySchematicButton from '@/components/schematic/verify-schematic-button';
+import { LinkIcon } from '@/components/common/icons';
 
-import { LinkIcon } from '@heroicons/react/24/outline';
-import { useMutation } from '@tanstack/react-query';
-
-type UploadSchematicDetailCardProps = HTMLAttributes<HTMLDivElement> & {
+type UploadSchematicDetailCardProps = {
   schematic: SchematicDetail;
 };
 
 export default function UploadSchematicDetailCard({
-  schematic,
+  schematic: { id, name, tags, requirements, description, userId },
 }: UploadSchematicDetailCardProps) {
-  const { toast } = useToast();
-  const { back } = useRouter();
   const axios = useClientAPI();
-  const { schematic: schematicTags } = useUploadTags();
+  const { schematic } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const { deleteById, invalidateByKey } = useQueriesData();
+
   const t = useI18n();
 
-  const { mutate: verifySchematic, isPending: isVerifying } = useMutation({
-    mutationFn: (data: VerifySchematicRequest) =>
-      postVerifySchematic(axios, data),
-    onSuccess: () => {
-      deleteById(['schematic-uploads'], schematic.id);
-      invalidateByKey(['total-schematic-uploads']);
-      invalidateByKey(['schematics']);
-      back();
-      toast({
-        title: t('verify-success'),
-        variant: 'success',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: t('verify-fail'),
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-
-  const { mutate: deleteSchematicById, isPending: isDeleting } = useMutation({
-    mutationFn: (id: string) => deleteSchematic(axios, id),
-    onSuccess: () => {
-      deleteById(['schematic-uploads'], schematic.id);
-      invalidateByKey(['total-schematic-uploads']);
-      back();
-      toast({
-        title: t('delete-success'),
-        variant: 'success',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: t('delete-fail'),
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-
   useEffect(() => {
-    setSelectedTags(TagGroups.parseString(schematic.tags, schematicTags));
-  }, [schematic.tags, schematicTags]);
+    setSelectedTags(TagGroups.parseString(tags, schematic));
+  }, [tags, schematic]);
 
-  const isLoading = isVerifying || isDeleting;
-  const link = `${env.url.base}/schematics/${schematic.id}`;
+  const link = `${env.url.base}/schematics/${id}`;
+  const imageUrl = `${env.url.image}/schematics/${id}.png`;
+  const errorImageUrl = `${env.url.api}/schematics/${id}/image`;
+  const copyMessage = `Copied schematic ${name}`;
+  const downloadUrl = `${env.url.api}/schematics/${id}/download`;
+  const downloadName = `{${name}}.msch`;
 
   const getData = useToastAction({
     title: t('copying'),
     content: t('downloading-data'),
-    action: async () => await getSchematicData(axios, schematic.id),
+    action: async () => await getSchematicData(axios, id),
   });
 
   return (
     <Detail>
       <DetailInfo>
-        <div className="relative">
-          <CopyButton
-            className="absolute left-1 top-1 "
-            variant="ghost"
-            data={link}
-            content={link}
-          >
-            <LinkIcon className="h-5 w-5" />
-          </CopyButton>
-          <DetailImage
-            src={`${env.url.image}/schematics/${schematic.id}.png`}
-            errorSrc={`${env.url.api}/schematics/${schematic.id}/image`}
-            alt={schematic.name}
-          />
-        </div>
+        <CopyButton variant="ghost" data={link} content={link}>
+          <LinkIcon />
+        </CopyButton>
+        <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
         <DetailHeader>
-          <DetailTitle>{schematic.name}</DetailTitle>
-          <IdUserCard id={schematic.userId} />
-          <DetailDescription>{schematic.description}</DetailDescription>
-          <ItemRequirementCard requirements={schematic.requirements} />
+          <DetailTitle>{name}</DetailTitle>
+          <IdUserCard id={userId} />
+          <DetailDescription>{description}</DetailDescription>
+          <ItemRequirementCard requirements={requirements} />
           <NameTagSelector
-            tags={schematicTags}
+            tags={schematic}
             value={selectedTags}
             onChange={setSelectedTags}
           />
         </DetailHeader>
       </DetailInfo>
-      <DetailActions className="flex justify-between">
-        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <CopyButton
-            content={`Copied schematic ${schematic.name}`}
-            data={getData}
-          />
-          <DownloadButton
-            href={`${env.url.api}/schematics/${schematic.id}/download`}
-            fileName={`{${schematic.name}}.msch`}
-          />
-          <DeleteButton
-            description={`${t('delete')} ${schematic.name}`}
-            isLoading={isLoading}
-            onClick={() => deleteSchematicById(schematic.id)}
-          />
-          <VerifyButton
-            description={`${t('verify')} ${schematic.name}`}
-            isLoading={isLoading}
-            onClick={() =>
-              verifySchematic({
-                id: schematic.id,
-                tags: TagGroups.toStringArray(selectedTags),
-              })
-            }
-          />
-        </div>
-        <BackButton />
+      <DetailActions>
+        <CopyButton content={copyMessage} data={getData} />
+        <DownloadButton href={downloadUrl} fileName={downloadName} />
+        <DeleteSchematicButton id={id} name={name} />
+        <VerifySchematicButton
+          id={id}
+          name={name}
+          selectedTags={selectedTags}
+        />
       </DetailActions>
     </Detail>
   );

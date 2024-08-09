@@ -1,6 +1,8 @@
 'use client';
 
-import DeleteButton from '@/components/button/delete-button';
+import DeleteButton, {
+  DeleteButtonProps,
+} from '@/components/button/delete-button';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
@@ -12,11 +14,13 @@ import { useRouter } from 'next/navigation';
 type DeleteSchematicButtonProps = {
   id: string;
   name: string;
+  variant?: DeleteButtonProps['variant'];
 };
 
 export function DeleteSchematicButton({
   id,
   name,
+  variant,
 }: DeleteSchematicButtonProps) {
   const axios = useClientAPI();
   const t = useI18n();
@@ -49,7 +53,7 @@ export function DeleteSchematicButton({
 
   return (
     <DeleteButton
-      variant="command"
+      variant={variant}
       description={t('delete-alert', { name })}
       isLoading={isPending}
       onClick={() => mutate(id)}

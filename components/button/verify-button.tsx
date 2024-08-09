@@ -34,7 +34,7 @@ export default function VerifyButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger
-        className="flex items-center justify-center rounded-md border p-2"
+        className="flex items-center justify-center rounded-md border p-2 hover:bg-success"
         disabled={isLoading}
       >
         <LoadingWrapper isLoading={isLoading}>

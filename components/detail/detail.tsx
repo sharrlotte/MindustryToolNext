@@ -16,12 +16,7 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 export function Detail({ className, children }: DetailProps) {
   return (
-    <div
-      className={cn(
-        'absolute inset-0 w-full overflow-y-auto bg-background p-4',
-        {},
-      )}
-    >
+    <div className="absolute inset-0 w-full overflow-y-auto bg-background p-4">
       <div
         className={cn(
           'relative flex min-h-full w-full flex-col justify-between gap-2 lg:items-stretch',
@@ -37,7 +32,12 @@ type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailInfo({ className, children }: InfoProps) {
   return (
-    <div className={cn('relative flex flex-col gap-2 md:flex-row', className)}>
+    <div
+      className={cn(
+        'relative flex flex-col items-start gap-2 md:flex-row',
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -64,7 +64,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
   return (
     <FallbackImage
-      className="h-full w-full min-w-[40dvw] overflow-hidden rounded-lg object-cover md:max-w-[min(80dvh,80dvw)]"
+      className="aspect-square w-full min-w-[30dvw] overflow-hidden rounded-lg object-cover md:max-w-[min(min(80dvh,80dvw),1920px)]"
       src={src}
       alt={alt}
       errorSrc={errorSrc}
@@ -73,9 +73,7 @@ export function DetailImage({ src, errorSrc, alt }: ImageProps) {
     />
   );
 }
-
-type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
-
+type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 export function DetailHeader({ className, children }: HeaderProps) {
   return (
     <section className={cn('flex flex-col gap-1', className)}>
@@ -84,15 +82,20 @@ export function DetailHeader({ className, children }: HeaderProps) {
   );
 }
 
-type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
-
-export function DetailActions({ className, children }: ActionsProps) {
+type ActionsProps = React.HTMLAttributes<HTMLDivElement> & {
+  back?: boolean;
+};
+export function DetailActions({
+  className,
+  children,
+  back = true,
+}: ActionsProps) {
   return (
     <section className={cn('flex items-end justify-between gap-1', className)}>
       <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
         {children}
       </div>
-      <BackButton />
+      {back && <BackButton />}
     </section>
   );
 }

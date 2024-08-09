@@ -32,7 +32,6 @@ import { SchematicDetail } from '@/types/response/SchematicDetail';
 import { LinkIcon } from '@/components/common/icons';
 import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
 import { TakeDownSchematicButton } from '@/components/schematic/take-down-schematic-button';
-import EditButton from '@/components/button/edit-button';
 
 type SchematicDetailCardProps = {
   schematic: SchematicDetail;
@@ -70,7 +69,6 @@ export default function SchematicDetailCard({
   const errorImageUrl = `${env.url.api}/schematics/${id}/image`;
   const downloadUrl = `${env.url.api}/schematics/${id}/download`;
   const downloadName = `{${name}}.msch`;
-  const editLink = `/upload/schematic?updateForId=${id}`;
 
   return (
     <Detail>
@@ -106,9 +104,8 @@ export default function SchematicDetailCard({
             ownerId={userId}
             show={isVerified}
           >
-            <EditButton variant="command" href={editLink} />
             <TakeDownSchematicButton id={id} name={name} />
-            <DeleteSchematicButton id={id} name={name} />
+            <DeleteSchematicButton variant="command" id={id} name={name} />
           </ProtectedElement>
         </EllipsisButton>
       </DetailActions>
