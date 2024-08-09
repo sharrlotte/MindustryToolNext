@@ -35,14 +35,16 @@ export default function FilterTags({
     [filter, tags],
   );
 
-  return filteredTags.map((group) => (
-    <FilterTagGroup
-      key={group.name}
-      filterBy={filterBy}
-      group={group}
-      handleTagGroupChange={handleTagGroupChange}
-    />
-  ));
+  return filteredTags
+    .sort()
+    .map((group) => (
+      <FilterTagGroup
+        key={group.name}
+        filterBy={filterBy}
+        group={group}
+        handleTagGroupChange={handleTagGroupChange}
+      />
+    ));
 }
 
 type FilterTagGroupProps = {

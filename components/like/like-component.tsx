@@ -3,8 +3,6 @@
 import React, { useState } from 'react';
 import { ReactNode } from 'react';
 
-
-
 import { LikeAction } from '@/constant/enum';
 import { FakeLike, LikeContext } from '@/context/like-context';
 import { useSession } from '@/context/session-context';
@@ -13,15 +11,12 @@ import { useToast } from '@/hooks/use-toast';
 import postLike from '@/query/like/post-like';
 import { Like } from '@/types/response/Like';
 
-
-
 import { useMutation } from '@tanstack/react-query';
-
 
 type LikeComponentProps = {
   children: ReactNode;
   initialLikeCount: number;
-  initialLikeData: Like;
+  initialLikeData?: Like;
   itemId: string;
 };
 

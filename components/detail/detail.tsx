@@ -131,14 +131,16 @@ export function DetailDescription({ className, children }: DescriptionProps) {
 }
 
 type VerifierProps = {
-  verifierId: string;
+  verifierId?: string;
 };
 
 export function Verifier({ verifierId }: VerifierProps) {
-  return (
-    <div className="flex items-end gap-2">
-      <Tran text="verified-by" />
-      <IdUserCard id={verifierId} />
-    </div>
-  );
+  if (verifierId) {
+    return (
+      <div className="flex items-end gap-2">
+        <Tran text="verified-by" />
+        <IdUserCard id={verifierId} />
+      </div>
+    );
+  }
 }

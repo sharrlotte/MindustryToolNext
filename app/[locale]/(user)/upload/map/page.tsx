@@ -96,22 +96,21 @@ export default function Page() {
     return <LoadingScreen />;
   }
 
+  if (preview && file)
+    return (
+      <Upload
+        file={file}
+        preview={preview} //
+        setFile={setFile}
+        setPreview={setPreview}
+      />
+    );
+
   return (
-    <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
-      {preview && file ? (
-        <Upload
-          file={file}
-          preview={preview} //
-          setFile={setFile}
-          setPreview={setPreview}
-        />
-      ) : (
-        <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-2 rounded-md p-2">
-          <section className="flex flex-row flex-wrap items-center gap-2 md:h-1/2 md:w-1/2 md:flex-row md:items-start">
-            <UploadField onFileDrop={handleFileChange} />
-          </section>
-        </div>
-      )}
+    <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-2 rounded-md p-2">
+      <section className="flex flex-row flex-wrap items-center gap-2 md:h-1/2 md:w-1/2 md:flex-row md:items-start">
+        <UploadField onFileDrop={handleFileChange} />
+      </section>
     </div>
   );
 }
