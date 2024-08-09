@@ -355,6 +355,10 @@ export function hasAccess({
     return true;
   }
 
+  if (!roles.includes('ADMIN') && !all?.includes('SHAR')) {
+    return true;
+  }
+
   return [
     all ? all.every((role) => roles.includes(role)) : true,
     any ? any.some((role) => roles.includes(role)) : true,

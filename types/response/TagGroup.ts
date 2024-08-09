@@ -51,11 +51,7 @@ export class TagGroups {
       )
       .map(([key, value]) => ({
         name: key,
-        values:
-          value
-            .values()
-            .map(({ value }) => value)
-            .toArray() ?? [],
+        values: value.map(({ value }) => value) ?? [],
       }))
       .map((tag) => {
         if (tags.length === 0) {

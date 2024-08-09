@@ -1,17 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import LoginButton from '@/components/button/login-button';
 import { useI18n } from '@/locales/client';
 
-export default function RequireLogin() {
+export default function RequireLogin(): ReactNode {
   const t = useI18n();
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-      <span className="font-bold text-lg">{t('require-login')}</span>
-      <LoginButton className="min-w-[100px] w-fit" />
+      <span className="text-lg font-bold">{t('require-login')}</span>
+      <LoginButton className="w-fit min-w-[100px]" />
     </div>
   );
 }

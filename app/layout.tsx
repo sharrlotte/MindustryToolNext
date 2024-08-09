@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
-import Script from 'next/script';
 import NextTopLoader from 'nextjs-toploader';
 
 import ClientInit from '@/app/[locale]/client-init';

@@ -15,15 +15,18 @@ function NoPermission() {
   return <span>You don have permission to access this page</span>;
 }
 
-export default async function ProtectedRoute({
-  all,
-  any,
-  children,
-  session,
-}: Props) {
+export default function ProtectedRoute({ all, any, children, session }: Props) {
   if (!session || session.roles === null) return <RequireLogin />;
 
   const roles = session.roles.map((r) => r.name);
+
+  if (roles.includes('SHAR')) {
+    return children;
+  }
+
+  if (!roles.includes('ADMIN') && !all?.includes('SHAR')) {
+    return children;
+  }
 
   const pred = [
     all ? all.every((role) => roles.includes(role)) : true,
@@ -34,5 +37,5 @@ export default async function ProtectedRoute({
     return <NoPermission />;
   }
 
-  return <>{children}</>;
+  return children;
 }

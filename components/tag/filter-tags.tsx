@@ -62,14 +62,14 @@ const _FilterTagGroup = ({
     (value: string[]) => {
       handleTagGroupChange(group.name, value);
     },
-    [group],
+    [group, handleTagGroupChange],
   );
 
   const handleSingleValueChange = useCallback(
     (value: string) => {
       handleTagGroupChange(group.name, [value]);
     },
-    [group],
+    [group, handleTagGroupChange],
   );
 
   const selectedGroup = filterBy.find((value) => value.name === group.name);
