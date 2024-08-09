@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { TAG_SEPARATOR } from '@/constant/constant';
+import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import { Tags } from '@/types/response/Tag';
 
 type TagGroup = {
@@ -29,30 +29,48 @@ export class TagGroups {
     );
   }
 
-  static parseString(tagsString: string[], tags: TagGroup[]) {
-    const tagsClone = _.cloneDeep(tags);
-    const tagsArray = _.chain(tagsString)
-      .map((value) => value.split(TAG_SEPARATOR))
-      .filter((value) => value.length === 2)
-      .map((value) => ({ name: value[0], value: value[1] }))
-      .groupBy((value) => value.name)
-      .map((value, key) => ({ name: key, value: value.map((v) => v.value) }))
+  static parseString(str: string[], tags: TagGroup[]) {
+    const tagsArray =
+      str
+        ?.map((value) => value.split(TAG_SEPARATOR))
+        .filter((value) => value.length === 2)
+        .map((value) => ({ name: value[0], value: value[1] })) ?? [];
+
+    const tagGroup = Object.entries(
+      Object.groupBy(tagsArray, ({ name }) => name),
+    )
+      .map(
+        ([key, value]) =>
+          [
+            key,
+            value as {
+              name: string;
+              value: string;
+            }[],
+          ] as const,
+      )
+      .map(([key, value]) => ({
+        name: key,
+        values: value.map(({ value }) => value) ?? [],
+      }))
       .map((tag) => {
-        let result = tagsClone.find(
+        if (tags.length === 0) {
+          return { ...tag, color: TAG_DEFAULT_COLOR, duplicate: true };
+        }
+
+        const result = tags.find(
           (t) =>
             t.name === tag.name &&
-            tag.value.every((b) => tag.value.includes(b)),
+            tag.values.every((b) => tag.values.includes(b)),
         );
         // Ignore tag that not match with server
         if (result) {
-          result.values = tag.value;
+          const r = { ...result, values: tag.values };
+          return r;
         }
-
-        return result;
       })
-      .compact()
-      .value();
+      .filter((value) => !!value);
 
-    return tagsArray;
+    return tagGroup;
   }
 }

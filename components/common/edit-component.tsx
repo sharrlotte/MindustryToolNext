@@ -66,13 +66,13 @@ export function EditClose({ children, ...props }: ButtonProps) {
   );
 }
 
-export function EditInput({ children }: Props) {
+export function EditOn({ children }: Props) {
   const { open } = useEditor();
 
   return open ? children : undefined;
 }
 
-export function EditView({ children }: Props) {
+export function EditOff({ children }: Props) {
   const { open } = useEditor();
 
   return open ? undefined : children;

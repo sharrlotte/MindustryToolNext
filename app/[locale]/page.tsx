@@ -13,6 +13,8 @@ import {
   FacebookIcon,
   GithubIcon,
 } from '@/components/common/icons';
+import Image from 'next/image';
+import Ads from '@/components/common/ads';
 
 export const dynamicParams = false;
 export const experimental_ppr = true;
@@ -25,7 +27,14 @@ export default async function Home({
   await setStaticParamsLocale(locale);
 
   return (
-    <div className="no-scrollbar flex h-full flex-col overflow-y-auto bg-[url(https://mindustrygame.github.io/1.d25af17a.webp)] bg-cover bg-center text-white">
+    <div className="no-scrollbar flex h-full flex-col overflow-y-auto text-white">
+      <Image
+        className="fixed inset-0 bg-cover bg-center"
+        src="https://mindustrygame.github.io/1.d25af17a.webp"
+        fill
+        priority
+        alt="mindustry"
+      />
       <div className="mx-auto flex w-full flex-col gap-10 p-4 backdrop-blur-sm backdrop-brightness-50 md:px-32">
         <div>
           <h1 className="w-full text-center text-3xl font-extrabold">
@@ -193,7 +202,7 @@ export default async function Home({
           </div>
         </div>
       </div>
-      <footer className="bg-zinc-950/95">
+      <footer className="z-10 bg-zinc-950/95">
         <div className="space-y-4 p-6 pb-6">
           <span className="flex w-full justify-center text-center text-2xl ">
             MindustryTool
@@ -223,6 +232,7 @@ export default async function Home({
           Copyright © 2024 ‧ MindustryTool. All rights reserved.
         </div>
       </footer>
+      <Ads />
     </div>
   );
 }

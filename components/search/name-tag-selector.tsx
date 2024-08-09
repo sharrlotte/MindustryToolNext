@@ -1,7 +1,6 @@
 'use client';
 
-import { cloneDeep } from 'lodash';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import Search from '@/components/search/search-input';
@@ -12,6 +11,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useI18n } from '@/locales/client';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
+import { cn } from '@/lib/utils';
 
 type NameTagSelectorProps = {
   tags?: TagGroup[];
@@ -37,33 +37,36 @@ export default function NameTagSelector({
 
   const t = useI18n();
 
-  const tagsClone = cloneDeep(tags);
-
-  const handleTagGroupChange = (name: string, v: string[]) => {
-    const group = value.find((tag) => tag.name === name);
-    if (group) {
-      group.values = v;
-      onChange([...value]);
-    } else {
-      const result = tagsClone.find((tag) => tag.name === name);
-
-      // Ignore tag that not match with server
-      if (result) {
-        result.values = v;
-        value.push(result);
+  const handleTagGroupChange = useCallback(
+    (name: string, values: string[]) => {
+      const group = value.find((tag) => tag.name === name);
+      if (group) {
+        group.values = values;
         onChange([...value]);
+      } else {
+        const result = tags.find((tag) => tag.name === name);
+
+        // Ignore tag that not match with server
+        if (result) {
+          const r = { ...result, values };
+          onChange([...value, r]);
+        }
       }
-    }
-  };
+    },
+    [value, tags, onChange],
+  );
 
-  const handleDeleteTag = (tag: Tag) => {
-    const group = value.find((item) => item.name === tag.name);
-    if (group) {
-      group.values = group.values.filter((item) => item !== tag.value);
-    }
+  const handleDeleteTag = useCallback(
+    (tag: Tag) => {
+      const group = value.find((item) => item.name === tag.name);
+      if (group) {
+        group.values = group.values.filter((item) => item !== tag.value);
+      }
 
-    onChange([...value]);
-  };
+      onChange([...value]);
+    },
+    [value, onChange],
+  );
 
   const displayTags = Tags.fromTagGroup(value);
 
@@ -87,42 +90,45 @@ export default function NameTagSelector({
           />
         )}
       </div>
-      {showFilterDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
-          <OutsideWrapper
-            className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6"
-            onClickOutside={handleHideFilterDialog}
-          >
-            <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
-              <Search className="w-full p-1">
-                <Search.Icon className="p-1" />
-                <Search.Input
-                  value={filter}
-                  placeholder={t('filter')}
-                  onChange={(event) => setFilter(event.currentTarget.value)}
-                />
-              </Search>
-              <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
-                <FilterTags
-                  filter={filter}
-                  filterBy={value}
-                  tags={tagsClone}
-                  handleTagGroupChange={handleTagGroupChange}
-                />
-              </CardContent>
-              <CardFooter className="flex justify-end gap-1 p-0">
-                <Button
-                  title={t('close')}
-                  variant="outline"
-                  onClick={handleHideFilterDialog}
-                >
-                  {t('close')}
-                </Button>
-              </CardFooter>
-            </Card>
-          </OutsideWrapper>
-        </div>
-      )}
+      <div
+        className={cn(
+          'fixed inset-0 z-50 hidden items-center justify-center backdrop-blur-sm',
+          { flex: showFilterDialog },
+        )}
+      >
+        <OutsideWrapper
+          className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6"
+          onClickOutside={handleHideFilterDialog}
+        >
+          <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
+            <Search className="w-full p-1">
+              <Search.Icon className="p-1" />
+              <Search.Input
+                value={filter}
+                placeholder={t('filter')}
+                onChange={(event) => setFilter(event.currentTarget.value)}
+              />
+            </Search>
+            <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
+              <FilterTags
+                filter={filter}
+                filterBy={value}
+                tags={tags}
+                handleTagGroupChange={handleTagGroupChange}
+              />
+            </CardContent>
+            <CardFooter className="flex justify-end gap-1 p-0">
+              <Button
+                title={t('close')}
+                variant="outline"
+                onClick={handleHideFilterDialog}
+              >
+                {t('close')}
+              </Button>
+            </CardFooter>
+          </Card>
+        </OutsideWrapper>
+      </div>
     </div>
   );
 }

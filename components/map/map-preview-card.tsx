@@ -16,19 +16,19 @@ import {
 } from '@/components/preview/preview';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
-import { Map } from '@/types/response/Map';
+import { MapPreview } from '@/types/response/MapPreview';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
 
-type MapPreviewProps = HTMLAttributes<HTMLDivElement> & {
-  map: Map;
+type MapPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
+  map: MapPreview;
 };
 
-export default function MapPreview({
+export default function MapPreviewCard({
   className,
   map,
   ...rest
-}: MapPreviewProps) {
+}: MapPreviewCardProps) {
   const link = `${env.url.base}/maps/${map.id}`;
 
   return (

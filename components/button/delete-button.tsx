@@ -25,6 +25,7 @@ const buttonVariants = cva('hover:bg-destructive/80', {
   variants: {
     variant: {
       default: 'border border-border',
+      command: '',
       ghost: 'border-none top-1 left-1 absolute',
     },
   },
@@ -33,7 +34,7 @@ const buttonVariants = cva('hover:bg-destructive/80', {
   },
 });
 
-type DeleteButtonProps = {
+export type DeleteButtonProps = {
   isLoading: boolean;
   description: ReactNode;
   onClick: () => void;
@@ -49,13 +50,13 @@ export default function DeleteButton({
       <AlertDialogTrigger asChild>
         <Button
           className={cn(buttonVariants({ variant }))}
-          variant="command"
+          variant={variant}
           size="command"
           disabled={isLoading}
         >
           <LoadingWrapper isLoading={isLoading}>
             <XMarkIcon className="size-5" />
-            {variant === 'default' && <Tran text="delete" />}
+            {variant === 'command' && <Tran text="delete" />}
           </LoadingWrapper>
         </Button>
       </AlertDialogTrigger>

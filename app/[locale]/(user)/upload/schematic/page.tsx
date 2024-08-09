@@ -7,9 +7,9 @@ import { useForm } from 'react-hook-form';
 import {
   EditClose,
   EditComponent,
-  EditInput,
+  EditOn,
   EditTrigger,
-  EditView,
+  EditOff,
 } from '@/components/common/edit-component';
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
@@ -36,7 +36,6 @@ import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import postSchematic from '@/query/schematic/post-schematic';
-import postSchematicPreview from '@/query/schematic/post-schematic-preview';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import TagGroup from '@/types/response/TagGroup';
@@ -47,8 +46,13 @@ import {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { getSchematicPreview } from '@/query/schematic';
 
 export default function Page() {
+  return <Preview />;
+}
+
+function Preview() {
   const axios = useClientAPI();
   const [data, setData] = useState<File | string | undefined>();
   const [preview, setPreview] = useState<SchematicPreviewResponse>();
@@ -56,7 +60,7 @@ export default function Page() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: SchematicPreviewRequest) =>
-      postSchematicPreview(axios, data),
+      getSchematicPreview(axios, data),
     onSuccess: (data) => {
       setPreview(data);
     },
@@ -69,6 +73,39 @@ export default function Page() {
       });
     },
   });
+
+  useEffect(() => {
+    if (data) mutate({ data });
+  }, [data, mutate]);
+
+  if (isPending) {
+    return <LoadingScreen />;
+  }
+
+  if (preview && data)
+    return (
+      <Upload
+        data={data}
+        preview={preview} //
+        setData={setData}
+        setPreview={setPreview}
+      />
+    );
+
+  function handleSchematicSelected(data: File | string) {
+    setData(data);
+    setPreview(undefined);
+  }
+
+  return <SchematicSelector onSchematicSelected={handleSchematicSelected} />;
+}
+
+type SchematicSelectorProps = {
+  onSchematicSelected: (data: File | string) => void;
+};
+
+function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
+  const { toast } = useToast();
 
   function handleFileChange(files: File[]) {
     if (!files.length || !files[0]) {
@@ -89,8 +126,7 @@ export default function Page() {
       });
     }
 
-    setPreview(undefined);
-    setData(file);
+    onSchematicSelected(file);
   }
 
   function handleCopyCode() {
@@ -111,46 +147,25 @@ export default function Page() {
           });
         }
 
-        setPreview(undefined);
-        setData(text);
+        onSchematicSelected(text);
       });
   }
 
-  useEffect(() => {
-    if (data) mutate({ data });
-  }, [data, mutate]);
-
-  if (isPending) {
-    return <LoadingScreen />;
-  }
-
   return (
-    <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
-      {preview && data ? (
-        <Upload
-          data={data}
-          preview={preview} //
-          setData={setData}
-          setPreview={setPreview}
-        />
-      ) : (
-        <div className="flex h-full items-center justify-center w-full flex-1 flex-col gap-2 rounded-md p-2">
-          <section className="flex  md:w-1/2 md:h-1/2 flex-row flex-wrap items-center gap-2 md:flex-row md:items-start">
-            <div className="grid items-center w-full gap-2">
-              <UploadField onFileDrop={handleFileChange} />
-              <span className="text-center">or</span>
-              <Button
-                variant="primary"
-                title={'copy-from-clipboard'}
-                onClick={handleCopyCode}
-                disabled={isPending}
-              >
-                <Tran text="copy-from-clipboard" />
-              </Button>
-            </div>
-          </section>
+    <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-2 rounded-md p-2">
+      <section className="flex flex-row flex-wrap items-center gap-2 md:max-h-[50dvh] md:max-w-[50dvw] md:flex-row md:items-start">
+        <div className="grid w-full items-center gap-2">
+          <UploadField onFileDrop={handleFileChange} />
+          <span className="text-center">or</span>
+          <Button
+            variant="primary"
+            title={'copy-from-clipboard'}
+            onClick={handleCopyCode}
+          >
+            <Tran text="copy-from-clipboard" />
+          </Button>
         </div>
-      )}
+      </section>
     </div>
   );
 }
@@ -162,7 +177,7 @@ type UploadProps = {
   setPreview: (data?: SchematicPreviewResponse) => void;
 };
 
-type FormData = {
+type UploadFormData = {
   name: string;
   description: string;
   tags: TagGroup[];
@@ -177,7 +192,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   const t = useI18n();
   const axios = useClientAPI();
 
-  const form = useForm<FormData>({
+  const form = useForm<UploadFormData>({
     resolver: zodResolver(UploadSchematicSchema(t)),
     defaultValues: {
       name: preview.name,
@@ -219,7 +234,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   return (
     <Form {...form}>
       <form
-        className="h-full flex flex-col p-2"
+        className="flex h-full flex-col p-2"
         onSubmit={form.handleSubmit(handleSubmit)}
       >
         <div className="flex flex-col gap-2">
@@ -237,13 +252,13 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
             render={({ field }) => (
               <FormItem>
                 <EditComponent>
-                  <EditView>
+                  <EditOff>
                     <div className="flex gap-1">
                       <DetailTitle>{field.value}</DetailTitle>
                       <EditTrigger />
                     </div>
-                  </EditView>
-                  <EditInput>
+                  </EditOff>
+                  <EditOn>
                     <FormLabel>
                       <Tran text="name" />
                     </FormLabel>
@@ -253,7 +268,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                         <EditClose />
                       </div>
                     </FormControl>
-                  </EditInput>
+                  </EditOn>
                 </EditComponent>
                 <FormMessage />
               </FormItem>
@@ -265,23 +280,23 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
             render={({ field }) => (
               <FormItem>
                 <EditComponent>
-                  <EditView>
+                  <EditOff>
                     <div className="flex gap-1">
                       <DetailDescription>{field.value}</DetailDescription>
                       <EditTrigger />
                     </div>
-                  </EditView>
-                  <EditInput>
+                  </EditOff>
+                  <EditOn>
                     <FormLabel>
                       <Tran text="description" />
                     </FormLabel>
                     <FormControl>
                       <div className="flex gap-1">
-                        <Textarea className="w-full min-h-20" {...field} />
+                        <Textarea className="min-h-20 w-full" {...field} />
                         <EditClose />
                       </div>
                     </FormControl>
-                  </EditInput>
+                  </EditOn>
                 </EditComponent>
                 <FormMessage />
               </FormItem>
@@ -308,7 +323,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
             )}
           />
         </div>
-        <div className="flex mt-auto gap-2 justify-end p-2">
+        <div className="mt-auto flex justify-end gap-2 p-2">
           <Button variant="outline" onClick={() => setPreview(undefined)}>
             <Tran text="close" />
           </Button>

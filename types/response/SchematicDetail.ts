@@ -14,8 +14,8 @@ export type SchematicDetail = {
   height: number;
   width: number;
   status: Status;
-  verifierId: string;
-  userLike: Like;
+  verifierId?: string;
+  userLike?: Like;
   itemId: string;
   isVerified: boolean;
 };

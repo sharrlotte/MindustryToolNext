@@ -31,7 +31,7 @@ export default function MapList() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const { data } = useClientQuery({
-    queryKey: ['maps', 'count', omit(params, 'page', 'size', 'sort')],
+    queryKey: ['maps', 'total', omit(params, 'page', 'size', 'sort')],
     queryFn: (axios) => getMapCount(axios, params),
   });
 
@@ -78,7 +78,7 @@ export default function MapList() {
           {(data) => <MapPreviewCard key={data.id} map={data} />}
         </GridPaginationList>
       </GridLayout>
-      <div className="sm:justify-between justify-end sm:flex-row-reverse items-center flex flex-wrap gap-4">
+      <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
           <PaginationNavigator numberOfItems={data ?? 0} />
         </GridLayout>

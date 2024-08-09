@@ -8,6 +8,5 @@ import { IdSearchParams } from '@/types/data/id-search-schema';
 export default async function Page({ params }: { params: IdSearchParams }) {
   const axios = await getServerAPI();
   const schematic = await getSchematicUpload(axios, params);
-
   return <UploadSchematicDetailCard schematic={schematic} />;
 }

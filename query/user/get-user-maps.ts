@@ -1,13 +1,13 @@
 import { AxiosInstance } from 'axios';
 
 import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
-import { Map } from '@/types/response/Map';
+import { MapPreview } from '@/types/response/MapPreview';
 
 export default async function getUserMaps(
   axios: AxiosInstance,
   userId: string,
   params: PaginationSearchQuery,
-): Promise<Map[]> {
+): Promise<MapPreview[]> {
   const result = await axios.get(`/users/${userId}/maps`, {
     params,
   });

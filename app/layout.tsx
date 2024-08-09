@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
-import Script from 'next/script';
 import NextTopLoader from 'nextjs-toploader';
 
 import ClientInit from '@/app/[locale]/client-init';
@@ -54,9 +53,6 @@ type Props = {
 };
 
 export default async function Root({ children, params }: Props) {
-  const env = process.env.NODE_ENV;
-  const isProduction = env === 'production';
-
   return (
     <html
       className={cn(
@@ -86,12 +82,6 @@ export default async function Root({ children, params }: Props) {
             </SocketProvider>
           </SessionProvider>
         </ThemeProvider>
-        {isProduction && (
-          <Script
-            strategy="afterInteractive"
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1288517130363555"
-          />
-        )}
       </body>
     </html>
   );
