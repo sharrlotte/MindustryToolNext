@@ -29,9 +29,9 @@ export class TagGroups {
     );
   }
 
-  static parseString(tagsString: string[], tags: TagGroup[]) {
+  static parseString(str: string[], tags: TagGroup[]) {
     const tagsArray =
-      tagsString
+      str
         ?.map((value) => value.split(TAG_SEPARATOR))
         .filter((value) => value.length === 2)
         .map((value) => ({ name: value[0], value: value[1] })) ?? [];
@@ -69,10 +69,9 @@ export class TagGroups {
         );
         // Ignore tag that not match with server
         if (result) {
-          result.values = [...tag.values];
+          const r = { ...result, values: tag.values };
+          return r;
         }
-
-        return result;
       })
       .filter((value) => !!value);
 

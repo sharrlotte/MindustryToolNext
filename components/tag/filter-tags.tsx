@@ -35,6 +35,8 @@ export default function FilterTags({
     [filter, tags],
   );
 
+  console.log(tags);
+
   return filteredTags
     .sort()
     .map((group) => (
