@@ -25,14 +25,13 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deleteMap from '@/query/map/delete-map';
-import postVerifyMap from '@/query/map/post-verify-map';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 import { MapDetail } from '@/types/response/MapDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
+import { deleteMap, verifyMap } from '@/query/map';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;
@@ -47,8 +46,8 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { invalidateByKey } = useQueriesData();
   const t = useI18n();
 
-  const { mutate: verifyMap, isPending: isVerifying } = useMutation({
-    mutationFn: (data: VerifyMapRequest) => postVerifyMap(axios, data),
+  const { mutate: verifyMapById, isPending: isVerifying } = useMutation({
+    mutationFn: (data: VerifyMapRequest) => verifyMap(axios, data),
     onSuccess: () => {
       invalidateByKey(['maps']);
       back();
@@ -136,7 +135,7 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
             description={`${t('verify')} ${map.name}`}
             isLoading={isLoading}
             onClick={() =>
-              verifyMap({
+              verifyMapById({
                 id: map.id,
                 tags: TagGroups.toStringArray(selectedTags),
               })

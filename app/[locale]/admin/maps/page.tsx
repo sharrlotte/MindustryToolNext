@@ -8,7 +8,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
-import getMapUploads from '@/query/map/get-map-uploads';
+import { getMapUploads } from '@/query/map';
 
 export default function Page() {
   const { map } = useSearchTags();
@@ -23,7 +23,7 @@ export default function Page() {
         ref={(ref) => setContainer(ref)}
       >
         <ResponsiveInfiniteScrollGrid
-          queryKey={['map-uploads']}
+          queryKey={['maps', 'upload']}
           getFunc={getMapUploads}
           params={params}
           container={() => container}

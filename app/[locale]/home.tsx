@@ -6,10 +6,10 @@ import SchematicPreviewCard from '@/components/schematic/schematic-preview-card'
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import UserCard from '@/components/user/user-card';
 import getServerAPI from '@/query/config/get-server-api';
-import getMaps from '@/query/map/get-maps';
 import getUsers from '@/query/user/get-users';
 import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
 import { getSchematics } from '@/query/schematic';
+import { getMaps } from '@/query/map';
 
 const skeleton = Array(20)
   .fill(1)

@@ -20,8 +20,7 @@ import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
-import { getMapCount } from '@/query/map';
-import getMaps from '@/query/map/get-maps';
+import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/query';
 
 export default function MapList() {
@@ -49,7 +48,7 @@ export default function MapList() {
         >
           <ResponsiveInfiniteScrollGrid
             params={params}
-            queryKey={['map']}
+            queryKey={['maps']}
             getFunc={getMaps}
             container={() => container}
             skeleton={{
@@ -68,7 +67,7 @@ export default function MapList() {
       <GridLayout>
         <GridPaginationList
           params={params}
-          queryKey={['map']}
+          queryKey={['maps']}
           getFunc={getMaps}
           skeleton={{
             amount: 20,

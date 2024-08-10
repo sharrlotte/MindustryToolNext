@@ -53,7 +53,7 @@ export default function Page() {
         >
           <ResponsiveInfiniteScrollGrid
             params={params}
-            queryKey={['schematic', 'upload']}
+            queryKey={['schematics', 'upload']}
             getFunc={getSchematicUploads}
             container={() => container}
             skeleton={{
@@ -74,7 +74,7 @@ export default function Page() {
       <GridLayout>
         <GridPaginationList
           params={params}
-          queryKey={['schematic', 'upload']}
+          queryKey={['schematics', 'upload']}
           getFunc={getSchematicUploads}
           skeleton={{
             amount: 20,

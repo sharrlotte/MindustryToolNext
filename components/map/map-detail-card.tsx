@@ -30,12 +30,11 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
 import { useI18n } from '@/locales/client';
-import deleteMap from '@/query/map/delete-map';
-import putRemoveMap from '@/query/map/put-remove-map';
 import { MapDetail } from '@/types/response/MapDetail';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
 import { useMutation } from '@tanstack/react-query';
+import { deleteMap, unverifyMap } from '@/query/map';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -53,7 +52,7 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
   const t = useI18n();
 
   const { mutate: removeMap, isPending: isRemoving } = useMutation({
-    mutationFn: (id: string) => putRemoveMap(axios, id),
+    mutationFn: (id: string) => unverifyMap(axios, id),
     onSuccess: () => {
       invalidateByKey(['maps']);
       back();

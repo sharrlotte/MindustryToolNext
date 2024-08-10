@@ -22,7 +22,7 @@ export default function Page() {
         ref={(ref) => setContainer(ref)}
       >
         <ResponsiveInfiniteScrollGrid
-          queryKey={['plugin-uploads', 'plugins']}
+          queryKey={['plugins', 'upload']}
           getFunc={getPluginUploads}
           params={params}
           container={() => container}

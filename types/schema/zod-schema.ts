@@ -26,7 +26,7 @@ export type CreateSchematicRequest = z.infer<
   ReturnType<typeof CreateSchematicSchema>
 >;
 
-export const UploadMapSchema = (t: TranslateFunction) =>
+export const CreateMapSchema = (t: TranslateFunction) =>
   z.object({
     name: z.string().min(1).max(128),
     description: z.string().max(1024).optional(),
@@ -38,4 +38,4 @@ export const UploadMapSchema = (t: TranslateFunction) =>
       .transform<string>((value) => TagGroups.toString(value)),
   });
 
-export type UploadMapRequest = z.infer<ReturnType<typeof UploadMapSchema>>;
+export type CreateMapRequest = z.infer<ReturnType<typeof CreateMapSchema>>;

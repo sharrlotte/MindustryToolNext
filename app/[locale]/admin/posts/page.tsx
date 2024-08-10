@@ -23,7 +23,7 @@ export default function Page() {
         <InfinitePage
           className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
           params={params}
-          queryKey={['post-uploads']}
+          queryKey={['posts', 'upload']}
           getFunc={getPostUploads}
           container={() => container}
         >

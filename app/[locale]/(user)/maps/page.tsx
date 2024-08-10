@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import MapList from '@/app/[locale]/(user)/maps/map-list';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/get-server-api';
-import getMaps from '@/query/map/get-maps';
+import { getMaps } from '@/query/map';
 
 export async function generateMetadata(): Promise<Metadata> {
   const axios = await getServerAPI();

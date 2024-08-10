@@ -25,11 +25,11 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import getMaps from '@/query/map/get-maps';
 import postInternalServerMap from '@/query/server/post-internal-server-map';
 
 import { useMutation } from '@tanstack/react-query';
 import getInternalServerMaps from '@/query/server/get-internal-server-maps';
+import { getMaps } from '@/query/map';
 
 export default function ServerMaps() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -46,7 +46,7 @@ export default function ServerMaps() {
       >
         <ResponsiveInfiniteScrollGrid
           params={{ page: 0, size: 20 }}
-          queryKey={['server-maps', id]}
+          queryKey={['servers', id, 'maps']}
           getFunc={(axios, params) => getInternalServerMaps(axios, id, params)}
           container={() => container}
           skeleton={{
@@ -92,7 +92,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
       });
     },
     onSuccess: () => {
-      invalidateByKey(['server-maps']);
+      invalidateByKey(['servers', serverId, 'maps']);
     },
   });
 

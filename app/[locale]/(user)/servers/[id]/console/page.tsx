@@ -31,8 +31,8 @@ export default function Page() {
               ref={(ref) => setContainer(ref)}
             >
               <MessageList
-                className="flex flex-col gap-1 h-full"
-                queryKey={[id]}
+                className="flex h-full flex-col gap-1"
+                queryKey={['servers', id, 'messages']}
                 room={`SERVER-${id}`}
                 container={() => container}
                 params={queryParam}

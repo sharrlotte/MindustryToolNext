@@ -48,7 +48,7 @@ export default function SchematicList() {
         >
           <ResponsiveInfiniteScrollGrid
             params={params}
-            queryKey={['schematic']}
+            queryKey={['schematics']}
             getFunc={getSchematics}
             container={() => container}
             skeleton={{
@@ -67,7 +67,7 @@ export default function SchematicList() {
       <GridLayout>
         <GridPaginationList
           params={params}
-          queryKey={['schematic']}
+          queryKey={['schematics']}
           getFunc={getSchematics}
           skeleton={{
             amount: 20,

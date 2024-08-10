@@ -55,7 +55,7 @@ export default function Tab({ me }: TabProps) {
             <NameTagSearch tags={schematic} />
             <ResponsiveInfiniteScrollGrid
               params={params}
-              queryKey={['me-schematics']}
+              queryKey={['me', 'schematics']}
               getFunc={getMeSchematics}
               container={() => container}
               skeleton={{
@@ -82,7 +82,7 @@ export default function Tab({ me }: TabProps) {
             <NameTagSearch tags={map} />
             <ResponsiveInfiniteScrollGrid
               params={params}
-              queryKey={['me-maps']}
+              queryKey={['me', 'maps']}
               getFunc={getMeMaps}
               container={() => container}
               skeleton={{
@@ -110,7 +110,7 @@ export default function Tab({ me }: TabProps) {
             <InfinitePage
               className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
               params={params}
-              queryKey={['me-posts']}
+              queryKey={['me', 'posts']}
               getFunc={getMePosts}
               container={() => container}
             >
