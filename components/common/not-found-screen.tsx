@@ -1,5 +1,5 @@
-import InternalLink from '@/components/common/internal-link';
 import BackButton from '@/components/ui/back-button';
+import Link from 'next/link';
 
 export default function NotFoundScreen() {
   return (
@@ -9,9 +9,7 @@ export default function NotFoundScreen() {
         <p>Could not find requested resource</p>
       </div>
       <div className="grid grid-flow-col gap-2">
-        <InternalLink variant="button-primary" href="/">
-          Home
-        </InternalLink>
+        <Link href="/">Home</Link>
         <BackButton variant="primary" />
       </div>
     </div>
