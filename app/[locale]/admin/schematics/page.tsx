@@ -16,12 +16,12 @@ import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
-import { omit } from 'lodash';
 import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
 import {
   getSchematicUploadCount,
   getSchematicUploads,
 } from '@/query/schematic';
+import { omit } from '@/lib/utils';
 
 export default function Page() {
   const { schematic } = useSearchTags();

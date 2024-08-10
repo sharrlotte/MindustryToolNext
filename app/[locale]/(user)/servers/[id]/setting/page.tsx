@@ -1,6 +1,5 @@
 'use client';
 
-import { isEqual } from 'lodash';
 import { notFound, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -140,7 +139,8 @@ function ServerSettingEditor({ server }: Props) {
       }),
   });
 
-  const isChanged = !isEqual(form.getValues(), currentServer);
+  const isChanged =
+    JSON.stringify(form.getValues()) !== JSON.stringify(currentServer);
   const isLoading = isPending || isDeleting;
 
   return (

@@ -1,6 +1,5 @@
 'use client';
 
-import { omit } from 'lodash';
 import { UploadIcon, UserIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -22,6 +21,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
+import { omit } from '@/lib/utils';
 
 export default function MapList() {
   const { map } = useSearchTags();
