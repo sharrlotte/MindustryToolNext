@@ -17,7 +17,7 @@ import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import deletePost from '@/query/post/delete-post';
-import veifyPost from '@/query/post/post-verify-post';
+import verifyPost from '@/query/post/post-verify-post';
 import VerifyCreateRequest from '@/types/request/VerifyPostRequest';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
@@ -42,7 +42,7 @@ export default function UploadPostDetailCard({
   const t = useI18n();
 
   const { mutate: verifyPost, isPending: isVerifying } = useMutation({
-    mutationFn: (data: VerifyPostRequest) => veifyPost(axios, data),
+    mutationFn: (data: VerifyPostRequest) => verifyPost(axios, data),
     onSuccess: () => {
       invalidateByKey(['posts']);
       back();

@@ -2,9 +2,9 @@ import React from 'react';
 
 import InternalServerCard from '@/components/server/internal-server-card';
 import getServerAPI from '@/query/config/get-server-api';
-import getInternalServers from '@/query/server/get-internal-servers';
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import ReloadServerDialog from '@/app/[locale]/(user)/servers/reload-server-dialog';
+import { getInternalServers } from '@/query/server';
 
 export default async function Page() {
   const axios = await getServerAPI();

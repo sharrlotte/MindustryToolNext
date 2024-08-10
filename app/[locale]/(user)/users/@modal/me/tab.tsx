@@ -18,10 +18,8 @@ import UserRoleCard from '@/components/user/user-role';
 import useStatusSearchParams from '@/hooks/use-status-search-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useI18n } from '@/locales/client';
-import getMePosts from '@/query/post/get-me-posts';
-import getMeMaps from '@/query/user/get-me-maps';
-import getMeSchematics from '@/query/user/get-me-schematics';
 import { User } from '@/types/response/User';
+import { getMeSchematics, getMeMaps, getMePosts } from '@/query/user';
 
 type TabProps = {
   me: User;

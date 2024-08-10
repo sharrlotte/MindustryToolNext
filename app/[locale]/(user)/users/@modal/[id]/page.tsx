@@ -1,6 +1,6 @@
 import Tab from '@/app/[locale]/(user)/users/@modal/[id]/tab';
 import getServerAPI from '@/query/config/get-server-api';
-import getUser from '@/query/user/get-user';
+import { getUser } from '@/query/user';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const axios = await getServerAPI();

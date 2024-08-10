@@ -33,9 +33,6 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import deleteInternalServer from '@/query/server/delete-internal-server';
-import getInternalServer from '@/query/server/get-internal-server';
-import updateInternalServer from '@/query/server/put-internal-server';
 import {
   InternalServerModes,
   PutInternalServerRequest,
@@ -45,6 +42,11 @@ import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  deleteInternalServer,
+  getInternalServer,
+  updateInternalServer,
+} from '@/query/server';
 
 type PageProps = {
   params: { id: string };

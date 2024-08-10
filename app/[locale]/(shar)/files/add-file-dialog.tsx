@@ -20,10 +20,10 @@ import {
 import { Input } from '@/components/ui/input';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import createServerFile from '@/query/files/post-server-file';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { createServerFile } from '@/query/file';
 
 const addFileSchema = z.object({
   file: z

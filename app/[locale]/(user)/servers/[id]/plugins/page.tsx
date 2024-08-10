@@ -22,11 +22,13 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import getPlugins from '@/query/plugin/get-plugins';
-import createInternalServerPlugin from '@/query/server/post-internal-server-plugin';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import getInternalServerPlugins from '@/query/server/get-internal-server-plugins';
+import {
+  createInternalServerPlugin,
+  getInternalServerPlugins,
+} from '@/query/server';
+import { getPlugins } from '@/query/plugin';
 
 export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);

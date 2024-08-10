@@ -25,11 +25,10 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import createInternalServerMap from '@/query/server/post-internal-server-map';
 
 import { useMutation } from '@tanstack/react-query';
-import getInternalServerMaps from '@/query/server/get-internal-server-maps';
 import { getMaps } from '@/query/map';
+import { createInternalServerMap, getInternalServerMaps } from '@/query/server';
 
 export default function ServerMaps() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);

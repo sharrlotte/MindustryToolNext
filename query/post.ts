@@ -14,22 +14,18 @@ export async function deletePost(
   return result.data;
 }
 
-export async function getMePosts(
-  axios: AxiosInstance,
-  params: PaginationSearchQuery,
-): Promise<Post[]> {
-  const result = await axios.get('users/@me/posts', {
-    params,
-  });
-
-  return result.data;
-}
-
 export async function getPostUpload(
   axios: AxiosInstance,
   { id }: IdSearchParams,
 ): Promise<PostDetail> {
   const result = await axios.get(`/posts/upload/${id}`);
+  return result.data;
+}
+export async function getPostUploadCount(
+  axios: AxiosInstance,
+  params: Omit<PaginationSearchQuery, 'page' | 'size'>,
+): Promise<number> {
+  const result = await axios.get(`/posts/upload/total`, { params });
   return result.data;
 }
 
@@ -83,7 +79,7 @@ export async function postTranslatePost(
 
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 
-export async function veifyPost(
+export async function verifyPost(
   axios: AxiosInstance,
   { id, tags }: VerifyPostRequest,
 ): Promise<void> {

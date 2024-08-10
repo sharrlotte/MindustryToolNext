@@ -21,7 +21,7 @@ import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
 import { getMapCount, getMaps } from '@/query/map';
-import { ItemPaginationQuery } from '@/query/query';
+import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function MapList() {
   const { map } = useSearchTags();

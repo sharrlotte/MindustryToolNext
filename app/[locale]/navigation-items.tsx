@@ -14,7 +14,6 @@ import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, max } from '@/lib/utils';
-import getTotalPostUpload from '@/query/post/get-total-post-upload';
 import { useVerifyCount } from '@/zustand/verify-count';
 
 import { useQueries } from '@tanstack/react-query';
@@ -38,6 +37,7 @@ import {
 } from '@/components/common/icons';
 import { getSchematicUploadCount } from '@/query/schematic';
 import { getMapUploadCount } from '@/query/map';
+import { getPostUploadCount } from '@/query/post';
 
 type PathGroup = {
   key: string;
@@ -365,7 +365,7 @@ function VerifyPath() {
           placeholderData: 0,
         },
         {
-          queryFn: () => getTotalPostUpload(axios, {}),
+          queryFn: () => getPostUploadCount(axios, {}),
           queryKey: ['posts', 'total', 'upload'],
           placeholderData: 0,
         },

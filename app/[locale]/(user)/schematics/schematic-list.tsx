@@ -20,7 +20,7 @@ import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
-import { ItemPaginationQuery } from '@/query/query';
+import { ItemPaginationQuery } from '@/query/search-query';
 import { getSchematicCount, getSchematics } from '@/query/schematic';
 
 export default function SchematicList() {

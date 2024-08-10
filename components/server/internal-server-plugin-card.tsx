@@ -7,10 +7,10 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deleteInternalServerPlugin from '@/query/server/delete-internal-server-plugin';
 import { InternalServerPlugin } from '@/types/response/InternalServerPlugin';
 
 import { useMutation } from '@tanstack/react-query';
+import { deleteInternalServerPlugin } from '@/query/server';
 
 type Props = {
   plugin: InternalServerPlugin;
@@ -27,7 +27,7 @@ export default function InternalServerPluginCard({
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: () => deleteInternalServerPlugin(axios, serverId, pluginId),
     onSuccess: () => {
-      invalidateByKey(['server-plugins']);
+      invalidateByKey(['servers', serverId, 'plugins']);
       toast({
         title: t('delete-success'),
         variant: 'success',

@@ -6,9 +6,9 @@ import { revalidate } from '@/action/action';
 import { Button } from '@/components/ui/button';
 import useClientAPI from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
-import startInternalServers from '@/query/server/post-start-internal-server';
 
 import { useMutation } from '@tanstack/react-query';
+import { startInternalServers } from '@/query/server';
 
 type Props = {
   id: string;

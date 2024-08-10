@@ -13,11 +13,11 @@ import {
 } from '@/components/ui/popover';
 import useClientAPI from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
-import getInternalServers from '@/query/server/get-internal-servers';
 import { useExpandServerNav } from '@/zustand/expand-nav';
 
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { useQuery } from '@tanstack/react-query';
+import { getInternalServers } from '@/query/server';
 
 export default function SidebarToggle() {
   const { id } = useParams();

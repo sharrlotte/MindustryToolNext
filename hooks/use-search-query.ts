@@ -1,7 +1,7 @@
 import { useSearchParams } from 'next/navigation';
 import { z } from 'zod';
 
-import { QuerySchema } from '@/query/query';
+import { QuerySchema } from '@/query/search-query';
 
 const groupParamsByKey = (params: URLSearchParams) =>
   [...params.entries()].reduce<Record<string, any>>((acc, tuple) => {
