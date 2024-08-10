@@ -44,13 +44,12 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const axios = useClientAPI();
   const { map: mapTags } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const { deleteById, invalidateByKey } = useQueriesData();
+  const {  invalidateByKey } = useQueriesData();
   const t = useI18n();
 
   const { mutate: verifyMap, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifyMapRequest) => postVerifyMap(axios, data),
     onSuccess: () => {
-      deleteById(['map-uploads'], map.id);
       invalidateByKey(['total-map-uploads']);
       back();
       toast({
@@ -70,7 +69,6 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { mutate: deleteMapById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deleteMap(axios, id),
     onSuccess: () => {
-      deleteById(['map-uploads'], map.id);
       invalidateByKey(['total-map-uploads']);
       invalidateByKey(['maps']);
       back();

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import ReloadServerButton from '@/app/[locale]/admin/servers/[id]/reload-server-button';
-import ShutdownServerButton from '@/app/[locale]/admin/servers/[id]/shutdown-server-button';
-import StartServerButton from '@/app/[locale]/admin/servers/[id]/start-server-button';
+import ReloadServerButton from '@/app/[locale]/(user)/servers/[id]/reload-server-button';
+import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-server-button';
+import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-button';
 import ColorText from '@/components/common/color-text';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
 import getServerAPI from '@/query/config/get-server-api';
@@ -29,8 +29,6 @@ export default async function Page({ params: { id } }: Props) {
     mapName,
     mapImage,
   } = server;
-
-  console.log(mapImage);
 
   return (
     <div className="flex flex-col gap-4 overflow-y-auto p-2 md:p-4">

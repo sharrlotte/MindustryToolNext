@@ -34,7 +34,7 @@ type PostDetailCardProps = {
 export default function PostDetailCard({ post }: PostDetailCardProps) {
   const displayTags = Tags.parseStringArray(post.tags);
   const axios = useClientAPI();
-  const { deleteById, invalidateByKey } = useQueriesData();
+  const {  invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();
   const { session } = useSession();
@@ -44,7 +44,6 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   const { mutate: removePost, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => putRemovePost(axios, id),
     onSuccess: () => {
-      deleteById(['posts'], post.id);
       invalidateByKey(['post-uploads']);
       back();
       toast({
@@ -64,7 +63,6 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   const { mutate: deletePostById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
-      deleteById(['post-uploads'], post.id);
       invalidateByKey(['total-post-uploads']);
       invalidateByKey(['posts']);
       back();

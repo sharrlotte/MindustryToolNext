@@ -20,7 +20,7 @@ export default function VerifySchematicButton({
   name,
   selectedTags,
 }: VerifySchematicButtonProps) {
-  const { deleteById, invalidateByKey } = useQueriesData();
+  const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
   const { back } = useRouter();
   const t = useI18n();
@@ -30,7 +30,6 @@ export default function VerifySchematicButton({
     mutationFn: (data: VerifySchematicRequest) =>
       postVerifySchematic(axios, data),
     onSuccess: () => {
-      deleteById(['schematic'], id);
       invalidateByKey(['schematic']);
       back();
       toast({

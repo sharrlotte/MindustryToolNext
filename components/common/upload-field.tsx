@@ -56,8 +56,6 @@ export default function UploadField({ className, accept, onFileDrop }: Props) {
 
     const extensions = accept?.split(',');
 
-    console.log(extensions);
-
     return files.every((file) =>
       extensions?.some((extension) => file.name.endsWith(extension)),
     );
@@ -66,7 +64,7 @@ export default function UploadField({ className, accept, onFileDrop }: Props) {
   return (
     <div
       className={cn(
-        'flex justify-center items-center h-full flex-col w-full border rounded-md border-border p-10',
+        'flex h-full w-full flex-col items-center justify-center rounded-md border border-border p-10',
         className,
       )}
       onDrop={handleDrop}
@@ -75,7 +73,7 @@ export default function UploadField({ className, accept, onFileDrop }: Props) {
       <UploadIcon className="size-10" />
       <span>Drag and drop file here</span>
       <span>
-        <label className="hover:cursor-pointer underline" htmlFor="file">
+        <label className="underline hover:cursor-pointer" htmlFor="file">
           or browse
         </label>
         <input

@@ -45,7 +45,7 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
   const link = `${env.url.base}/maps/${map.id}`;
 
   const axios = useClientAPI();
-  const { deleteById, invalidateByKey } = useQueriesData();
+  const { invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();
   const { session } = useSession();
@@ -55,7 +55,6 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
   const { mutate: removeMap, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => putRemoveMap(axios, id),
     onSuccess: () => {
-      deleteById(['maps'], map.id);
       invalidateByKey(['map-uploads']);
       back();
       toast({
@@ -75,7 +74,6 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
   const { mutate: deleteMapById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deleteMap(axios, id),
     onSuccess: () => {
-      deleteById(['map-uploads'], map.id);
       invalidateByKey(['total-map-uploads']);
       invalidateByKey(['maps']);
       back();
