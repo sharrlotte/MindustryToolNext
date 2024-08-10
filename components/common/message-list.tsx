@@ -18,6 +18,7 @@ import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
+import { useSession } from '@/context/session-context';
 
 type MessageListProps = {
   className?: string;
@@ -42,6 +43,7 @@ type MessageListProps = {
     index?: number,
     endIndex?: number,
   ) => ReactNode;
+  showNotification?: boolean;
 };
 
 export default function MessageList({
@@ -54,11 +56,13 @@ export default function MessageList({
   skeleton,
   threshold = 500,
   room,
+  showNotification = true,
   container,
   getFunc,
   children,
 }: MessageListProps) {
   const currentContainer = container();
+  const { session } = useSession();
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
   const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
@@ -165,6 +169,26 @@ export default function MessageList({
     threshold,
   ]);
 
+  const processNotification = useCallback((message: Message) => {
+    if (message.userId === session?.id) return;
+
+    new Notification(message.content);
+  }, []);
+
+  const displayNotification = useCallback((message: Message) => {
+    if ('Notification' in window) {
+      if (Notification.permission === 'granted') {
+        processNotification(message);
+      } else {
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            processNotification(message);
+          }
+        });
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(checkIfNeedFetchMore, 3000);
 
@@ -190,6 +214,9 @@ export default function MessageList({
       queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>(
         { queryKey, exact: false },
         (query) => {
+          if (showNotification) {
+            displayNotification(message);
+          }
           setLastHeight(list?.clientHeight ?? 100);
 
           if (!query || !query.pages) {

@@ -37,6 +37,7 @@ export default function Page() {
                 container={() => container}
                 params={queryParam}
                 end={<></>}
+                showNotification={false}
                 getFunc={(_, params) =>
                   socket
                     .onRoom(`SERVER-${id}`)
