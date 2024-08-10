@@ -47,7 +47,7 @@ export default function DownloadButton({
       download={fileName ?? true}
       onClick={fixProgressBar}
     >
-      <ArrowDownTrayIcon className="h-5 w-5" />
+      <ArrowDownTrayIcon className="size-5" />
     </a>
   );
 }
@@ -79,14 +79,14 @@ function SecureDownloadButton({
   return (
     <div
       className={cn(
-        'flex min-h-8 hover:bg-brand cursor-pointer items-center justify-center rounded-md border border-border',
+        'flex min-h-8 cursor-pointer items-center justify-center rounded-md border border-border hover:bg-brand',
         className,
       )}
     >
       {isPending ? (
         <div className="relative flex h-full w-full cursor-pointer items-center justify-center">
           <svg
-            className="absolute h-5 w-5 animate-bounce"
+            className="absolute size-5 animate-bounce"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -96,7 +96,7 @@ function SecureDownloadButton({
             <path d="M 16.5 12 L 12 16.5 L 16.5 12 Z M 12 16.5 L 7.5 12 L 12 16.5 Z M 12 16.5 L 12 3 L 12 16.5 Z"></path>
           </svg>
           <svg
-            className="absolute h-5 w-5"
+            className="absolute size-5"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -112,7 +112,7 @@ function SecureDownloadButton({
         </div>
       ) : (
         <div onClick={() => mutate()}>
-          {children || <ArrowDownTrayIcon className="h-5 w-5" />}
+          {children || <ArrowDownTrayIcon className="size-5" />}
         </div>
       )}
     </div>

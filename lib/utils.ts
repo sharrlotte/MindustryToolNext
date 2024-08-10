@@ -331,6 +331,14 @@ export function getImageById(folder: ImageFolder, id: string) {
   return undefined;
 }
 
+export function omit<T extends Record<string, any>>(
+  obj: T,
+  ...keys: Array<keyof T>
+) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key]) => !keys.includes(key)),
+  );
+}
 export function hasAccess({
   all,
   any,

@@ -1,6 +1,5 @@
 import { MarkdownData } from '@/components/common/markdown-editor';
 
-
 type TranslatePostRequest = {
   id: string;
   title: string;

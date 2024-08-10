@@ -10,17 +10,17 @@ import {
   PreviewDescription,
   PreviewHeader,
   PreviewImage,
-} from '@/components/preview/preview';
+} from '@/components/common/preview';
 import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import deleteInternalServerMap from '@/query/server/delete-internal-server-map';
 import { InternalServerMap } from '@/types/response/InternalServerMap';
 
 import { useMutation } from '@tanstack/react-query';
+import { deleteInternalServerMap } from '@/query/server';
 
 type InternalServerMapCardProps = {
   map: InternalServerMap;
@@ -44,7 +44,7 @@ export default function InternalServerMapCard({
       });
     },
     onSuccess: () => {
-      invalidateByKey(['internal-server-maps']);
+      invalidateByKey(['server', serverId, 'maps']);
     },
   });
 

@@ -11,7 +11,7 @@ function Search({ className, children, ...props }: SearchProps) {
   return (
     <div
       className={cn(
-        'flex h-9 items-center justify-center gap-2 rounded-md bg-secondary w-full px-2 shadow-md dark:border dark:bg-transparent',
+        'flex h-9 w-full items-center justify-center gap-2 rounded-sm bg-secondary px-2 shadow-md',
         className,
       )}
       {...props}

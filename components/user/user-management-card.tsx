@@ -15,12 +15,11 @@ import { useMe } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import changeRoles from '@/query/role/change-role';
-import getRoles from '@/query/role/get-roles';
 import { Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { changeRoles, getRoles } from '@/query/role';
 
 type Props = {
   user: User;
@@ -28,8 +27,8 @@ type Props = {
 
 export default function UserManagementCard({ user }: Props) {
   return (
-    <div className="flex gap-2 items-center bg-card py-2 px-4 w-full justify-between">
-      <div className="space-x-2 flex">
+    <div className="flex w-full items-center justify-between gap-2 bg-card px-4 py-2">
+      <div className="flex space-x-2">
         <UserAvatar user={user} />
         <CopyButton data={user.id} variant="ghost" content={user.id}>
           <h3>{user.name}</h3>
@@ -123,7 +122,7 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
             ?.filter((r) => r.position < highestRole || highestRole === 32767)
             .map((role) => (
               <ToggleGroupItem
-                className="capitalize px-0 space-x-2 hover:bg-transparent justify-start"
+                className="justify-start space-x-2 px-0 capitalize hover:bg-transparent"
                 key={role.id}
                 value={role.name}
               >
@@ -131,9 +130,9 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
                   {role.name}
                 </span>
                 {selectedRole.map((r) => r.id).includes(role.id) ? (
-                  <CheckSquare className="w-5 h-5" />
+                  <CheckSquare className="size-5" />
                 ) : (
-                  <Square className="w-5 h-5" />
+                  <Square className="size-5" />
                 )}
               </ToggleGroupItem>
             ))}

@@ -6,10 +6,10 @@ import SchematicPreviewCard from '@/components/schematic/schematic-preview-card'
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import UserCard from '@/components/user/user-card';
 import getServerAPI from '@/query/config/get-server-api';
-import getMaps from '@/query/map/get-maps';
-import getSchematics from '@/query/schematic/get-schematics';
-import getUsers from '@/query/user/get-users';
 import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
+import { getSchematics } from '@/query/schematic';
+import { getMaps } from '@/query/map';
+import { getUsers } from '@/query/user';
 
 const skeleton = Array(20)
   .fill(1)
@@ -21,7 +21,7 @@ export async function HomeSchematicPreview({
   queryParam: PaginationSearchQuery;
 }) {
   return (
-    <ul className="flex w-full overflow-y-hidden overflow-x-auto list-none snap-x gap-2 pb-1 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
         <_SchematicRowView queryParam={queryParam} />
       </Suspense>
@@ -34,7 +34,7 @@ export async function HomeMapPreview({
   queryParam: PaginationSearchQuery;
 }) {
   return (
-    <ul className="flex w-full overflow-y-hidden overflow-x-auto list-none snap-x gap-2 pb-1 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
         <_HomeMapPreview queryParam={queryParam} />
       </Suspense>
@@ -51,7 +51,7 @@ async function _SchematicRowView({
   const items = await getSchematics(axios, queryParam);
 
   return items.map((schematic) => (
-    <li key={schematic.id} className="snap-center p-0 m-0">
+    <li key={schematic.id} className="m-0 snap-center p-0">
       <SchematicPreviewCard schematic={schematic} />
     </li>
   ));
@@ -66,7 +66,7 @@ async function _HomeMapPreview({
   const items = await getMaps(axios, queryParam);
 
   return items.map((map) => (
-    <li key={map.id} className="snap-center p-0 m-0">
+    <li key={map.id} className="m-0 snap-center p-0">
       <MapPreviewCard map={map} />
     </li>
   ));
@@ -119,7 +119,7 @@ async function _InformationGroup() {
 
   return (
     <ul className="grid grid-cols-1 items-start justify-start gap-y-8 md:grid-cols-2">
-      <p className="list-item whitespace-nowrap h-8">
+      <p className="list-item h-8 whitespace-nowrap">
         <Tran text="web-owner" />
       </p>
       <div className="grid gap-1">
@@ -127,7 +127,7 @@ async function _InformationGroup() {
           <UserCard key={user.id} user={user} />
         ))}
       </div>
-      <p className="list-item whitespace-nowrap h-8">
+      <p className="list-item h-8 whitespace-nowrap">
         <Tran text="admin" />
       </p>
       <div className="grid gap-1">
@@ -135,7 +135,7 @@ async function _InformationGroup() {
           <UserCard key={user.id} user={user} />
         ))}
       </div>
-      <p className="list-item whitespace-nowrap h-8">
+      <p className="list-item h-8 whitespace-nowrap">
         <Tran text="contributor" />
       </p>
       <div className="grid gap-1">

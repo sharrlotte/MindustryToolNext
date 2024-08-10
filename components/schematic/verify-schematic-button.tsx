@@ -3,7 +3,7 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import postVerifySchematic from '@/query/schematic/post-verify-schematic';
+import { verifySchematic } from '@/query/schematic';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { useMutation } from '@tanstack/react-query';
@@ -27,10 +27,9 @@ export default function VerifySchematicButton({
   const axios = useClientAPI();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: VerifySchematicRequest) =>
-      postVerifySchematic(axios, data),
+    mutationFn: (data: VerifySchematicRequest) => verifySchematic(axios, data),
     onSuccess: () => {
-      invalidateByKey(['schematic']);
+      invalidateByKey(['schematics']);
       back();
       toast({
         title: t('verify-success'),

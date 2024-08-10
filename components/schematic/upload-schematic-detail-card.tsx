@@ -12,7 +12,7 @@ import {
   DetailImage,
   DetailInfo,
   DetailTitle,
-} from '@/components/detail/detail';
+} from '@/components/common/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
@@ -21,12 +21,12 @@ import useClientAPI from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
-import getSchematicData from '@/query/schematic/get-schematic-data';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
 import VerifySchematicButton from '@/components/schematic/verify-schematic-button';
 import { LinkIcon } from '@/components/common/icons';
+import { getSchematicData } from '@/query/schematic';
 
 type UploadSchematicDetailCardProps = {
   schematic: SchematicDetail;
@@ -61,7 +61,12 @@ export default function UploadSchematicDetailCard({
   return (
     <Detail>
       <DetailInfo>
-        <CopyButton variant="ghost" data={link} content={link}>
+        <CopyButton
+          position="absolute"
+          variant="ghost"
+          data={link}
+          content={link}
+        >
           <LinkIcon />
         </CopyButton>
         <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />

@@ -5,10 +5,10 @@ import React from 'react';
 import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import UserCard from '@/components/user/user-card';
 import useClientAPI from '@/hooks/use-client';
-import getUser from '@/query/user/get-user';
 import { User } from '@/types/response/User';
 
 import { useQuery } from '@tanstack/react-query';
+import { getUser } from '@/query/user';
 
 type IdUserCardProps = {
   id: string | 'community';

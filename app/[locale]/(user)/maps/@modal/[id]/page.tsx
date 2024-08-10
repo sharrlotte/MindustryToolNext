@@ -4,8 +4,8 @@ import React from 'react';
 import MapDetailCard from '@/components/map/map-detail-card';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/get-server-api';
-import getMap from '@/query/map/get-map';
 import { IdSearchParams } from '@/types/data/id-search-schema';
+import { getMap } from '@/query/map';
 
 type Props = {
   params: { id: string };

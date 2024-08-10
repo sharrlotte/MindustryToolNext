@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { throttle } from 'lodash';
+import { throttle } from 'throttle-debounce';
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 import EndOfPage from '@/components/common/end-of-page';
@@ -83,7 +83,7 @@ export default function ResponsiveInfiniteScrollGrid<
       }
     }
 
-    const throttled = throttle(() => {
+    const throttled = throttle(200, () => {
       handleScroll();
       if (currentContainer) {
         const offsetFromBottom =
@@ -94,7 +94,7 @@ export default function ResponsiveInfiniteScrollGrid<
           fetchNextPage();
         }
       }
-    }, 200);
+    });
 
     currentContainer?.addEventListener('scroll', throttled);
     currentContainer?.addEventListener('scrollend', handleScroll);
@@ -119,7 +119,7 @@ export default function ResponsiveInfiniteScrollGrid<
     loader = (
       <LoadingSpinner
         key="loading"
-        className="col-span-full flex h-full w-full items-center justify-center absolute inset-0"
+        className="absolute inset-0 col-span-full flex h-full w-full items-center justify-center"
       />
     );
   }
@@ -128,7 +128,7 @@ export default function ResponsiveInfiniteScrollGrid<
 
   if (error) {
     return (
-      <div className="flex w-full h-full justify-center">
+      <div className="flex h-full w-full justify-center">
         <ErrorSpinner message={error?.message} />
       </div>
     );

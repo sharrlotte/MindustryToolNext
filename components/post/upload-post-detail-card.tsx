@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import DeleteButton from '@/components/button/delete-button';
 import VerifyButton from '@/components/button/verify-button';
 import Markdown from '@/components/common/markdown';
-import { Detail } from '@/components/detail/detail';
+import { Detail } from '@/components/common/detail';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
@@ -16,14 +16,13 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deletePost from '@/query/post/delete-post';
-import postVerifyPost from '@/query/post/post-verify-post';
-import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation } from '@tanstack/react-query';
+import VerifyPostRequest from '@/types/request/VerifyPostRequest';
+import { deletePost, verifyPost } from '@/query/post';
 
 type UploadPostDetailCardProps = {
   post: PostDetail;
@@ -37,14 +36,14 @@ export default function UploadPostDetailCard({
   const axios = useClientAPI();
   const { post: postTags } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const {  invalidateByKey } = useQueriesData();
+  const { invalidateByKey } = useQueriesData();
 
   const t = useI18n();
 
-  const { mutate: verifyPost, isPending: isVerifying } = useMutation({
-    mutationFn: (data: VerifyPostRequest) => postVerifyPost(axios, data),
+  const { mutate: verifyPostById, isPending: isVerifying } = useMutation({
+    mutationFn: (data: VerifyPostRequest) => verifyPost(axios, data),
     onSuccess: () => {
-      invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
       back();
       toast({
         title: t('verify-success'),
@@ -63,7 +62,7 @@ export default function UploadPostDetailCard({
   const { mutate: deletePostById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
       invalidateByKey(['posts']);
       back();
       toast({
@@ -116,7 +115,7 @@ export default function UploadPostDetailCard({
           description={`${t('verify')} ${post.title}`}
           isLoading={isLoading}
           onClick={() =>
-            verifyPost({
+            verifyPostById({
               id: post.id,
               tags: TagGroups.toStringArray(selectedTags),
             })

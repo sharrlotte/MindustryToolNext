@@ -2,7 +2,6 @@
 
 import React, { ReactNode } from 'react';
 
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import Tran from '@/components/common/tran';
 import {
   AlertDialog,
@@ -54,10 +53,8 @@ export default function DeleteButton({
           size="command"
           disabled={isLoading}
         >
-          <LoadingWrapper isLoading={isLoading}>
-            <XMarkIcon className="size-5" />
-            {variant === 'command' && <Tran text="delete" />}
-          </LoadingWrapper>
+          <XMarkIcon className="size-5" />
+          {variant === 'command' && <Tran text="delete" />}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

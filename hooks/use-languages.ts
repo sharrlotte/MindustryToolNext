@@ -1,5 +1,5 @@
 import useClientAPI from '@/hooks/use-client';
-import getLanguages from '@/query/language/get-languages';
+import { getLanguages } from '@/query/language';
 
 import { useQuery } from '@tanstack/react-query';
 

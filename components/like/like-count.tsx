@@ -15,7 +15,7 @@ export default function LikeCount({ className, ...props }: LikeButtonProps) {
   return (
     <button
       className={cn(
-        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border text-xl',
+        'flex h-9 min-w-9 items-center justify-center rounded-md border border-border text-xl hover:bg-accent',
         className,
         {
           'text-destructive hover:text-destructive': count < 0,

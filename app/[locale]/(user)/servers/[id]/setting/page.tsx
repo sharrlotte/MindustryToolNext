@@ -1,6 +1,5 @@
 'use client';
 
-import { isEqual } from 'lodash';
 import { notFound, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -33,18 +32,20 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import deleteInternalServer from '@/query/server/delete-internal-server';
-import getInternalServer from '@/query/server/get-internal-server';
-import putInternalServer from '@/query/server/put-internal-server';
 import {
   InternalServerModes,
   PutInternalServerRequest,
   PutInternalServerSchema,
-} from '@/types/request/PutInternalServerRequest';
+} from '@/types/request/UpdateInternalServerRequest';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  deleteInternalServer,
+  getInternalServer,
+  updateInternalServer,
+} from '@/query/server';
 
 type PageProps = {
   params: { id: string };
@@ -60,7 +61,7 @@ export default function Page({ params: { id } }: PageProps) {
     isPending,
     error,
   } = useQuery({
-    queryKey: ['internal-servers', id],
+    queryKey: ['servers', id],
     queryFn: () => getInternalServer(axios, { id }),
   });
 
@@ -98,11 +99,11 @@ function ServerSettingEditor({ server }: Props) {
   const { id } = currentServer;
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-servers'],
+    mutationKey: ['servers'],
     mutationFn: (data: PutInternalServerRequest) =>
-      putInternalServer(axios, id, data),
+      updateInternalServer(axios, id, data),
     onSuccess: (_, data) => {
-      invalidateByKey(['internal-servers']);
+      invalidateByKey(['servers']);
       server = { ...currentServer, ...form.getValues() };
       toast({
         title: t('update.success'),
@@ -119,10 +120,10 @@ function ServerSettingEditor({ server }: Props) {
   });
 
   const { mutate: deleteServer, isPending: isDeleting } = useMutation({
-    mutationKey: ['internal-servers'],
+    mutationKey: ['servers'],
     mutationFn: () => deleteInternalServer(axios, id),
     onSuccess: () => {
-      invalidateByKey(['internal-servers']);
+      invalidateByKey(['servers']);
       toast({
         title: t('delete-success'),
         variant: 'success',
@@ -138,7 +139,8 @@ function ServerSettingEditor({ server }: Props) {
       }),
   });
 
-  const isChanged = !isEqual(form.getValues(), currentServer);
+  const isChanged =
+    JSON.stringify(form.getValues()) !== JSON.stringify(currentServer);
   const isLoading = isPending || isDeleting;
 
   return (
@@ -220,7 +222,6 @@ function ServerSettingEditor({ server }: Props) {
                   <FormLabel>Mode</FormLabel>
                   <FormControl>
                     <ComboBox
-                      className="bg-transparent capitalize"
                       placeholder={InternalServerModes[0]}
                       value={{ label: field.value, value: field.value }}
                       values={InternalServerModes.map((value) => ({
@@ -236,7 +237,7 @@ function ServerSettingEditor({ server }: Props) {
               )}
             />
           </div>
-          <div className="flex justify-end p-2 gap-2">
+          <div className="flex justify-end gap-2 p-2">
             <Button
               className={cn(
                 'flex translate-y-[100vh] justify-end transition-transform duration-500',

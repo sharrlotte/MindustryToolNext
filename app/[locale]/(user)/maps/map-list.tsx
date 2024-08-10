@@ -1,6 +1,5 @@
 'use client';
 
-import { omit } from 'lodash';
 import { UploadIcon, UserIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -20,9 +19,9 @@ import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
-import { getMapCount } from '@/query/map';
-import getMaps from '@/query/map/get-maps';
-import { ItemPaginationQuery } from '@/query/query';
+import { getMapCount, getMaps } from '@/query/map';
+import { ItemPaginationQuery } from '@/query/search-query';
+import { omit } from '@/lib/utils';
 
 export default function MapList() {
   const { map } = useSearchTags();
@@ -49,7 +48,7 @@ export default function MapList() {
         >
           <ResponsiveInfiniteScrollGrid
             params={params}
-            queryKey={['map']}
+            queryKey={['maps']}
             getFunc={getMaps}
             container={() => container}
             skeleton={{
@@ -68,7 +67,7 @@ export default function MapList() {
       <GridLayout>
         <GridPaginationList
           params={params}
-          queryKey={['map']}
+          queryKey={['maps']}
           getFunc={getMaps}
           skeleton={{
             amount: 20,
@@ -80,9 +79,9 @@ export default function MapList() {
       </GridLayout>
       <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
-          <PaginationNavigator numberOfItems={data ?? 0} />
+          <PaginationNavigator numberOfItems={data} />
         </GridLayout>
-        <div className="flex gap-1">
+        <div className="flex gap-2">
           <InternalLink
             variant="button-secondary"
             href={`${env.url.base}/users/me`}

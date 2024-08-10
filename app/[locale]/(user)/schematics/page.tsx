@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import SchematicList from '@/app/[locale]/(user)/schematics/schematic-list';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/get-server-api';
-import getSchematics from '@/query/schematic/get-schematics';
+import { getSchematics } from '@/query/schematic';
 
 export async function generateMetadata(): Promise<Metadata> {
   const axios = await getServerAPI();

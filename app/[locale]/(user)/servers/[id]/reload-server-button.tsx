@@ -15,9 +15,9 @@ import { Button } from '@/components/ui/button';
 import useClientAPI from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import postReloadInternalServer from '@/query/server/post-reload-internal-server';
 
 import { useMutation } from '@tanstack/react-query';
+import { createReloadInternalServer } from '@/query/server';
 
 type Props = {
   id: string;
@@ -30,13 +30,13 @@ export default function ReloadServerButton({ id }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['internal-server, internal-servers'],
-    mutationFn: () => postReloadInternalServer(axios, id),
+    mutationFn: () => createReloadInternalServer(axios, id),
     onSuccess: () => {
       toast({
         title: 'Reload server successfully',
         variant: 'success',
       });
-      revalidate('/admin/servers');
+      revalidate('/servers');
     },
     onError: (error) =>
       toast({

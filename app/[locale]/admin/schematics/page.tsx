@@ -6,7 +6,6 @@ import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinit
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { useSearchTags } from '@/hooks/use-tags';
-import getSchematicUploads from '@/query/schematic/get-schematic-uploads';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import {
   PaginationLayoutSwitcher,
@@ -16,10 +15,13 @@ import {
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
-import { ItemPaginationQuery } from '@/query/query';
-import { getUploadSchematicCount } from '@/query/schematic';
-import { omit } from 'lodash';
+import { ItemPaginationQuery } from '@/query/search-query';
 import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
+import {
+  getSchematicUploadCount,
+  getSchematicUploads,
+} from '@/query/schematic';
+import { omit } from '@/lib/utils';
 
 export default function Page() {
   const { schematic } = useSearchTags();
@@ -29,12 +31,12 @@ export default function Page() {
 
   const { data } = useClientQuery({
     queryKey: [
-      'schematic',
+      'schematics',
       'total',
       'upload',
       omit(params, 'page', 'size', 'sort'),
     ],
-    queryFn: (axios) => getUploadSchematicCount(axios, params),
+    queryFn: (axios) => getSchematicUploadCount(axios, params),
   });
 
   return (
@@ -51,7 +53,7 @@ export default function Page() {
         >
           <ResponsiveInfiniteScrollGrid
             params={params}
-            queryKey={['schematic', 'upload']}
+            queryKey={['schematics', 'upload']}
             getFunc={getSchematicUploads}
             container={() => container}
             skeleton={{
@@ -72,7 +74,7 @@ export default function Page() {
       <GridLayout>
         <GridPaginationList
           params={params}
-          queryKey={['schematic', 'upload']}
+          queryKey={['schematics', 'upload']}
           getFunc={getSchematicUploads}
           skeleton={{
             amount: 20,
@@ -86,7 +88,7 @@ export default function Page() {
       </GridLayout>
       <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
-          <PaginationNavigator numberOfItems={data ?? 0} />
+          <PaginationNavigator numberOfItems={data} />
         </GridLayout>
       </div>
     </div>

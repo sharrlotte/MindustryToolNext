@@ -6,8 +6,8 @@ import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-b
 import ColorText from '@/components/common/color-text';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
 import getServerAPI from '@/query/config/get-server-api';
-import getInternalServer from '@/query/server/get-internal-server';
 import RawImage from '@/components/common/raw-image';
+import { getInternalServer } from '@/query/server';
 
 type Props = {
   params: { id: string; locale: string };

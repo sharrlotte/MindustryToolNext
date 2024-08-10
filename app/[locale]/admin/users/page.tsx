@@ -10,11 +10,11 @@ import { UserRole } from '@/constant/enum';
 import useClientAPI from '@/hooks/use-client';
 import useQueryState from '@/hooks/use-query-state';
 import useSearchPageParams from '@/hooks/use-search-page-params';
-import getRoles from '@/query/role/get-roles';
-import getUsers from '@/query/user/get-users';
 import { Role } from '@/types/response/Role';
 
 import { useQuery } from '@tanstack/react-query';
+import { getRoles } from '@/query/role';
+import { getUsers } from '@/query/user';
 
 export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -29,8 +29,8 @@ export default function Page() {
   });
 
   return (
-    <div className="p-6 h-full space-y-6 flex flex-col">
-      <div className="space-x-2 flex">
+    <div className="flex h-full flex-col space-y-6 p-6">
+      <div className="flex space-x-2">
         <Input
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -50,7 +50,7 @@ export default function Page() {
         <InfinitePage
           className="grid w-full grid-cols-1 justify-center gap-2 pr-2"
           params={{ ...params, role: role?.name as UserRole }}
-          queryKey={['user-management']}
+          queryKey={['users', 'management']}
           getFunc={getUsers}
           container={() => container}
         >

@@ -20,7 +20,7 @@ export default function LogoutButton({ className }: { className?: string }) {
 
   return (
     <a className={cn(className)} href={`${env.url.api}/auth/logout`}>
-      <ArrowRightStartOnRectangleIcon className="h-5 w-5" />
+      <ArrowRightStartOnRectangleIcon className="size-5" />
     </a>
   );
 }

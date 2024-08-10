@@ -7,7 +7,7 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deleteSchematic from '@/query/schematic/delete-schematic';
+import { deleteSchematic } from '@/query/schematic';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -25,7 +25,7 @@ export function DeleteSchematicButton({
   const axios = useClientAPI();
   const t = useI18n();
   const { back } = useRouter();
-  const {  invalidateByKey } = useQueriesData();
+  const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
@@ -34,7 +34,7 @@ export function DeleteSchematicButton({
     },
     mutationFn: (id: string) => deleteSchematic(axios, id),
     onSuccess: () => {
-      invalidateByKey(['schematic', 'total']);
+      invalidateByKey(['schematics']);
       back();
       toast({
         title: t('delete-success'),

@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import { Tags } from '@/types/response/Tag';
 

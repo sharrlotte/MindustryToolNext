@@ -19,12 +19,12 @@ import {
 } from '@/components/ui/pagination';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
-import { PaginationQuery } from '@/query/query';
+import { PaginationQuery } from '@/query/search-query';
 
 type Props = {
-  numberOfItems: number;
+  numberOfItems?: number;
 };
-export default function PaginationNavigator({ numberOfItems }: Props) {
+export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
   const params = useSearchQuery(PaginationQuery);
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(0);
@@ -72,7 +72,7 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
       <PaginationContent>
         <PaginationItem>
           <Button
-            className="p-0 w-full px-2 py-1 min-w-9"
+            className="w-full min-w-9 rounded-sm p-0 px-2 py-1"
             title="0"
             onClick={() => handlePageChange(previousPage)}
             variant="icon"
@@ -83,8 +83,9 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         </PaginationItem>
         <PaginationItem>
           <Button
-            className={cn('p-0 w-full px-2 py-1 min-w-9', {
-              'bg-brand text-background dark:text-foreground': firstNumber === currentPage,
+            className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+              'bg-accent text-background dark:text-foreground':
+                firstNumber === currentPage,
             })}
             title="prev"
             onClick={() => handlePageChange(firstNumber)}
@@ -96,8 +97,9 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         {lastPage > 1 && (
           <PaginationItem>
             <Button
-              className={cn('p-0 w-full px-2 py-1 min-w-9', {
-                'bg-brand text-background dark:text-foreground': secondNumber === currentPage,
+              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+                'bg-accent text-background dark:text-foreground':
+                  secondNumber === currentPage,
               })}
               title="prev"
               onClick={() => handlePageChange(secondNumber)}
@@ -127,7 +129,7 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
                 }
               />
               {(selectedPage < 0 || selectedPage > lastPage) && (
-                <span className="text-destructive text-sm">
+                <span className="text-sm text-destructive">
                   Page must above 0 and below {lastPage}
                 </span>
               )}
@@ -147,8 +149,9 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         {lastPage > 2 && (
           <PaginationItem>
             <Button
-              className={cn('p-0 w-full px-2 py-1 min-w-9', {
-                'bg-brand text-background dark:text-foreground': secondLastNumber === currentPage,
+              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+                'bg-accent text-background dark:text-foreground':
+                  secondLastNumber === currentPage,
               })}
               title="prev"
               onClick={() => handlePageChange(secondLastNumber)}
@@ -161,8 +164,9 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         {lastPage > 1 && (
           <PaginationItem>
             <Button
-              className={cn('p-0 w-full px-2 py-1 min-w-9', {
-                'bg-brand text-background dark:text-foreground': lastNumber === currentPage,
+              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+                'bg-accent text-background dark:text-foreground':
+                  lastNumber === currentPage,
               })}
               title="prev"
               onClick={() => handlePageChange(lastNumber)}
@@ -174,7 +178,7 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         )}
         <PaginationItem>
           <Button
-            className="p-0 w-full px-2 py-1 min-w-9"
+            className="w-full min-w-9 rounded-sm p-0 px-2 py-1"
             title="0"
             onClick={() => handlePageChange(nextPage)}
             variant="icon"

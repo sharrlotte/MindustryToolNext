@@ -18,10 +18,8 @@ import UserRoleCard from '@/components/user/user-role';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useI18n } from '@/locales/client';
-import getUserMaps from '@/query/user/get-user-maps';
-import getUserPosts from '@/query/user/get-user-posts';
-import getUserSchematics from '@/query/user/get-user-schematics';
 import { User } from '@/types/response/User';
+import { getUserSchematics, getUserMaps, getUserPosts } from '@/query/user';
 
 type TabProps = {
   user: User;
@@ -56,7 +54,7 @@ export default function Tab({ user }: TabProps) {
             <NameTagSearch tags={schematic} />
             <ResponsiveInfiniteScrollGrid
               params={params}
-              queryKey={['user-schematics', id]}
+              queryKey={['users', id, 'schematics']}
               getFunc={(axios, params) => getUserSchematics(axios, id, params)}
               container={() => container}
               skeleton={{
@@ -83,7 +81,7 @@ export default function Tab({ user }: TabProps) {
             <NameTagSearch tags={map} />
             <ResponsiveInfiniteScrollGrid
               params={params}
-              queryKey={['user-maps', id]}
+              queryKey={['users', id, 'maps']}
               getFunc={(axios, params) => getUserMaps(axios, id, params)}
               container={() => container}
               skeleton={{
@@ -111,7 +109,7 @@ export default function Tab({ user }: TabProps) {
             <InfinitePage
               className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
               params={params}
-              queryKey={['user-posts', id]}
+              queryKey={['users', id, 'posts']}
               getFunc={(axios, params) => getUserPosts(axios, id, params)}
               container={() => container}
             >

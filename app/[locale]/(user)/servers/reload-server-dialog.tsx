@@ -15,9 +15,9 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { toast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import postReloadInternalServers from '@/query/server/post-reload-internal-servers';
 
 import { useMutation } from '@tanstack/react-query';
+import { reloadInternalServers } from '@/query/server';
 
 export default function ReloadServerDialog() {
   const t = useI18n();
@@ -25,9 +25,9 @@ export default function ReloadServerDialog() {
   const { invalidateByKey } = useQueriesData();
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: () => postReloadInternalServers(axios),
+    mutationFn: () => reloadInternalServers(axios),
     onSuccess: () => {
-      invalidateByKey(['internal-servers']);
+      invalidateByKey(['servers']);
       toast({
         title: t('update.success'),
         variant: 'success',

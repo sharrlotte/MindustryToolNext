@@ -20,10 +20,10 @@ import {
 import { Input } from '@/components/ui/input';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import postServerFile from '@/query/files/post-server-file';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { createServerFile } from '@/query/file';
 
 const addFileSchema = z.object({
   file: z
@@ -52,7 +52,7 @@ export default function AddFileDialog({ path }: Props) {
 
   const { mutate: addFile, isPending: isAddingFile } = useMutation({
     mutationKey: ['add-file'],
-    mutationFn: async (file: File) => postServerFile(axios, path, file),
+    mutationFn: async (file: File) => createServerFile(axios, path, file),
     onSuccess: () => {
       invalidateByKey(['server-files', path]);
     },
@@ -69,7 +69,7 @@ export default function AddFileDialog({ path }: Props) {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="w-fit whitespace-nowrap h-9"
+          className="h-9 w-fit whitespace-nowrap"
           title="Add file"
           variant="outline"
         >

@@ -12,7 +12,7 @@ import {
   DetailTagsCard,
   DetailTitle,
   Verifier,
-} from '@/components/detail/detail';
+} from '@/components/common/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
@@ -26,12 +26,12 @@ import useClientAPI from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import ProtectedElement from '@/layout/protected-element';
 import { useI18n } from '@/locales/client';
-import getSchematicData from '@/query/schematic/get-schematic-data';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 
 import { LinkIcon } from '@/components/common/icons';
 import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
 import { TakeDownSchematicButton } from '@/components/schematic/take-down-schematic-button';
+import { getSchematicData } from '@/query/schematic';
 
 type SchematicDetailCardProps = {
   schematic: SchematicDetail;
@@ -74,7 +74,12 @@ export default function SchematicDetailCard({
     <Detail>
       <DetailInfo>
         <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-        <CopyButton variant="ghost" data={link} content={link}>
+        <CopyButton
+          position="absolute"
+          variant="ghost"
+          data={link}
+          content={link}
+        >
           <LinkIcon />
         </CopyButton>
         <DetailHeader>

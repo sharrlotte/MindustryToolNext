@@ -1,6 +1,5 @@
 'use client';
 
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,9 +36,7 @@ export default function RemoveButton({
         className="flex items-center justify-center rounded-md border p-2"
         disabled={isLoading}
       >
-        <LoadingWrapper isLoading={isLoading}>
-          <TrashIcon className="h-5 w-5" />
-        </LoadingWrapper>
+        <TrashIcon className="size-5" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

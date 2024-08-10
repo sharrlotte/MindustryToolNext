@@ -1,7 +1,5 @@
 'use client';
 
-import { omit } from 'lodash';
-import { UploadIcon, UserIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -20,13 +18,18 @@ import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
-import { ItemPaginationQuery } from '@/query/query';
-import { getSchematicCount } from '@/query/schematic';
-import getSchematics from '@/query/schematic/get-schematics';
+import { ItemPaginationQuery } from '@/query/search-query';
+import { getSchematicCount, getSchematics } from '@/query/schematic';
+import { omit } from '@/lib/utils';
+import Tran from '@/components/common/tran';
+import { UploadIcon, UserIcon } from '@/components/common/icons';
 
 export default function SchematicList() {
   const { schematic } = useSearchTags();
   const params = useSearchQuery(ItemPaginationQuery);
+
+  const uploadLink = `${env.url.base}/upload/schematic`;
+  const mySchematicLink = `${env.url.base}/users/me`;
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
@@ -39,7 +42,7 @@ export default function SchematicList() {
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
       <NameTagSearch tags={schematic} />
       <div className="flex justify-between">
-        <span>Found {data} schematics</span>
+        <Tran text={`Found ${data} schematics`} />
         <PaginationLayoutSwitcher />
       </div>
       <ListLayout>
@@ -49,7 +52,7 @@ export default function SchematicList() {
         >
           <ResponsiveInfiniteScrollGrid
             params={params}
-            queryKey={['schematic']}
+            queryKey={['schematics']}
             getFunc={getSchematics}
             container={() => container}
             skeleton={{
@@ -68,7 +71,7 @@ export default function SchematicList() {
       <GridLayout>
         <GridPaginationList
           params={params}
-          queryKey={['schematic']}
+          queryKey={['schematics']}
           getFunc={getSchematics}
           skeleton={{
             amount: 20,
@@ -80,24 +83,24 @@ export default function SchematicList() {
       </GridLayout>
       <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
-          <PaginationNavigator numberOfItems={data ?? 0} />
+          <PaginationNavigator numberOfItems={data} />
         </GridLayout>
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <InternalLink
             variant="button-secondary"
-            href={`${env.url.base}/users/me`}
-            title="My schematic"
+            title="my-schematic"
+            href={mySchematicLink}
           >
-            <UserIcon className="size-5" />
-            My schematic
+            <UserIcon />
+            <Tran text="my-schematic" />
           </InternalLink>
           <InternalLink
             variant="button-secondary"
-            href={`${env.url.base}/upload/schematic`}
-            title="My schematic"
+            title="upload-schematic"
+            href={uploadLink}
           >
-            <UploadIcon className="size-5" />
-            Upload schematic
+            <UploadIcon />
+            <Tran text="upload-schematic" />
           </InternalLink>
         </div>
       </div>

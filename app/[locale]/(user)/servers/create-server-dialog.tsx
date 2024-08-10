@@ -22,20 +22,20 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import postInternalServer from '@/query/server/post-internal-server';
-import {
-  PostInternalServerRequest,
-  PostInternalServerSchema,
-} from '@/types/request/PostInternalServerRequest';
-import { InternalServerModes } from '@/types/request/PutInternalServerRequest';
+import { InternalServerModes } from '@/types/request/UpdateInternalServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import {
+  CreateInternalServerRequest,
+  CreateInternalServerSchema,
+} from '@/types/request/CreateInternalServerRequest';
+import { createInternalServer } from '@/query/server';
 
 export default function CreateServerDialog() {
   const t = useI18n();
-  const form = useForm<PostInternalServerRequest>({
-    resolver: zodResolver(PostInternalServerSchema),
+  const form = useForm<CreateInternalServerRequest>({
+    resolver: zodResolver(CreateInternalServerSchema),
     defaultValues: {
       name: '',
       description: '',
@@ -51,17 +51,17 @@ export default function CreateServerDialog() {
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-servers'],
-    mutationFn: (data: PostInternalServerRequest) =>
-      postInternalServer(axios, data),
+    mutationKey: ['servers'],
+    mutationFn: (data: CreateInternalServerRequest) =>
+      createInternalServer(axios, data),
     onSuccess: () => {
-      invalidateByKey(['internal-servers']);
+      invalidateByKey(['servers']);
       toast({
         title: t('upload.success'),
         variant: 'success',
       });
       form.reset();
-      revalidate('/admin/servers');
+      revalidate('/servers');
       setOpen(false);
     },
     onError: (error) =>
@@ -157,7 +157,6 @@ export default function CreateServerDialog() {
                     <FormLabel>Mode</FormLabel>
                     <FormControl>
                       <ComboBox
-                        className="bg-transparent"
                         placeholder={InternalServerModes[0]}
                         value={{ label: field.value, value: field.value }}
                         values={InternalServerModes.map((value) => ({

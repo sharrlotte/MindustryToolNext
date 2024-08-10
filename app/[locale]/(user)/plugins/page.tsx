@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import InfinitePage from '@/components/common/infinite-page';
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import PluginCard from '@/components/plugin/plugin-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import NameTagSelector from '@/components/search/name-tag-selector';
@@ -26,17 +25,16 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags, useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import getPlugins from '@/query/plugin/get-plugins';
-import postPlugin from '@/query/plugin/post-plugin';
 import {
-  PostPluginRequest,
-  PostPluginRequestData,
-  PostPluginRequestSchema,
-} from '@/types/request/PostPluginRequest';
+  CreatePluginRequest,
+  CreatePluginRequestData,
+  CreatePluginSchema,
+} from '@/types/request/CreatePluginRequest';
 import { TagGroups } from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { createPlugin, getPlugins } from '@/query/plugin';
 
 export default function Page() {
   const { plugin } = useSearchTags();
@@ -75,8 +73,8 @@ function AddPluginButton() {
 
   const t = useI18n();
 
-  const form = useForm<PostPluginRequestData>({
-    resolver: zodResolver(PostPluginRequestSchema),
+  const form = useForm<CreatePluginRequestData>({
+    resolver: zodResolver(CreatePluginSchema),
     defaultValues: {
       name: '',
       description: '',
@@ -86,7 +84,7 @@ function AddPluginButton() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: PostPluginRequest) => postPlugin(axios, data),
+    mutationFn: (data: CreatePluginRequest) => createPlugin(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),
@@ -104,7 +102,7 @@ function AddPluginButton() {
     },
   });
 
-  function handleSubmit(value: PostPluginRequestData) {
+  function handleSubmit(value: CreatePluginRequestData) {
     const tagString = TagGroups.toStringArray(value.tags);
 
     mutate({ ...value, tags: tagString });
@@ -195,9 +193,7 @@ function AddPluginButton() {
                   title={t('upload')}
                   disabled={isPending}
                 >
-                  <LoadingWrapper isLoading={isPending}>
-                    {t('upload')}
-                  </LoadingWrapper>
+                  {t('upload')}
                 </Button>
               </div>
             </form>

@@ -22,11 +22,13 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import getPlugins from '@/query/plugin/get-plugins';
-import getInternalServerPlugins from '@/query/server/get-internal-server-plugins';
-import postInternalServerPlugin from '@/query/server/post-internal-server-plugin';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  createInternalServerPlugin,
+  getInternalServerPlugins,
+} from '@/query/server';
+import { getPlugins } from '@/query/plugin';
 
 export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -44,7 +46,7 @@ export default function Page() {
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
           params={{ page: 0, size: 20 }}
-          queryKey={['internal-server-plugins', id]}
+          queryKey={['servers', id, 'plugins']}
           getFunc={(axios, params) =>
             getInternalServerPlugins(axios, id, params)
           }
@@ -80,7 +82,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (pluginId: string) =>
-      postInternalServerPlugin(axios, serverId, { pluginId }),
+      createInternalServerPlugin(axios, serverId, { pluginId }),
     onError: (error) => {
       toast({
         title: t('server.upload-fail'),
@@ -90,7 +92,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     },
     onSuccess: () => {
       setShow(false);
-      invalidateByKey(['internal-server-plugins']);
+      invalidateByKey(['servers', serverId, 'plugins']);
     },
   });
 

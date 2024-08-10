@@ -33,7 +33,7 @@ export default function DislikeButton({
       disabled={isLoading}
       onClick={() => handleAction('DISLIKE')}
     >
-      <ThumbsDownIcon className="h-5 w-5" />
+      <ThumbsDownIcon className="size-5" />
     </button>
   );
 }

@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 import axiosInstance from '@/query/config/config';
 import getServerAPI from '@/query/config/get-server-api';
-import { QuerySchema } from '@/query/query';
+import { QuerySchema } from '@/query/search-query';
 
 import {
   DefaultError,

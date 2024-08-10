@@ -39,27 +39,27 @@ export default async function Layout({
     {
       href: '',
       label: t('dashboard'),
-      icon: <LayoutDashboardIcon className="h-5 w-5" />,
+      icon: <LayoutDashboardIcon className="size-5" />,
     },
     {
       href: '/maps',
       label: t('map'),
-      icon: <MapIcon className="h-5 w-5" />,
+      icon: <MapIcon className="size-5" />,
     },
     {
       href: '/plugins',
       label: t('plugin'),
-      icon: <PuzzlePieceIcon className="h-5 w-5" />,
+      icon: <PuzzlePieceIcon className="size-5" />,
     },
     {
       href: '/console',
       label: t('console'),
-      icon: <CommandLineIcon className="h-5 w-5" />,
+      icon: <CommandLineIcon className="size-5" />,
     },
     {
       href: '/setting',
       label: t('setting'),
-      icon: <Cog6ToothIcon className="h-5 w-5" />,
+      icon: <Cog6ToothIcon className="size-5" />,
     },
   ];
 
@@ -80,7 +80,7 @@ export default async function Layout({
               id=""
               href=""
               label={'Back to server list'}
-              icon={<ArrowLeftIcon className="h-5 w-5" />}
+              icon={<ArrowLeftIcon className="size-5" />}
             />
           </div>
         </div>

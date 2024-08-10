@@ -6,10 +6,10 @@ import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 import useClientAPI from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
-import getUser from '@/query/user/get-user';
 import { MessageGroup } from '@/types/response/Message';
 
 import { useQuery } from '@tanstack/react-query';
+import { getUser } from '@/query/user';
 
 type Props = {
   className?: string;
@@ -27,12 +27,12 @@ export function MessageCard({ className, message }: Props) {
 
   return (
     <div
-      className={cn('w-full text-wrap rounded-lg flex p-2 gap-2', className)}
+      className={cn('flex w-full gap-2 text-wrap rounded-lg p-2', className)}
     >
       {data ? (
         <UserAvatar user={data} />
       ) : (
-        <Skeleton className="rounded-full border border-border w-8 h-8" />
+        <Skeleton className="h-8 w-8 rounded-full border border-border" />
       )}
       <div className="overflow-hidden">
         <div className="space-x-2">
@@ -44,11 +44,11 @@ export function MessageCard({ className, message }: Props) {
               {data.name}
             </ColorAsRole>
           ) : (
-            <Skeleton className="w-24 h-6" />
+            <Skeleton className="h-6 w-24" />
           )}
           <span>{moment(createdAt).fromNow()}</span>
         </div>
-        <div className="grid gap-1 overflow-x-auto w-full no-scrollbar">
+        <div className="no-scrollbar grid w-full gap-1 overflow-x-auto">
           {contents.map(({ text }, index) => (
             <ColorText key={index} text={text} />
           ))}

@@ -6,7 +6,6 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import DeleteButton from '@/components/button/delete-button';
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -24,17 +23,16 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deletePlugin from '@/query/plugin/delete-plugin';
-import verifyPlugin from '@/query/plugin/verify-plugin';
 import VerifyPluginRequest, {
   VerifyPluginRequestData,
-  VerifyPluginRequestSchema,
+  VerifyPluginSchema,
 } from '@/types/request/VerifyPluginRequest';
 import { Plugin } from '@/types/response/Plugin';
 import { TagGroups } from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import verifyPlugin, { deletePlugin } from '@/query/plugin';
 
 type Props = {
   plugin: Plugin;
@@ -79,10 +77,10 @@ export default function UploadPluginCard({ plugin }: Props) {
       <span>{description}</span>
       <div className="flex gap-2">
         <Link
-          className="absolute m-1 right-1 top-1 border-none"
+          className="absolute right-1 top-1 m-1 border-none"
           href={githubUrl}
         >
-          <ExternalLink className="w-5 h-5" />
+          <ExternalLink className="size-5" />
         </Link>
         <VerifyPluginDialog plugin={plugin} />
         <DeleteButton
@@ -108,7 +106,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const t = useI18n();
 
   const form = useForm<VerifyPluginRequestData>({
-    resolver: zodResolver(VerifyPluginRequestSchema),
+    resolver: zodResolver(VerifyPluginSchema),
     defaultValues: {
       tags: [],
     },
@@ -145,7 +143,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="aspect-square p-0" variant="outline" title="verify">
-          <CheckIcon className="h-5 w-5" />
+          <CheckIcon className="size-5" />
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -183,9 +181,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                   title={t('upload')}
                   disabled={isPending}
                 >
-                  <LoadingWrapper isLoading={isPending}>
-                    {t('upload')}
-                  </LoadingWrapper>
+                  {t('upload')}
                 </Button>
               </div>
             </form>

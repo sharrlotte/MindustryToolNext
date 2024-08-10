@@ -14,9 +14,6 @@ import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, max } from '@/lib/utils';
-import getTotalMapUpload from '@/query/map/get-total-map-upload';
-import getTotalPostUpload from '@/query/post/get-total-post-upload';
-import getTotalSchematicUpload from '@/query/schematic/get-total-schematic-upload';
 import { useVerifyCount } from '@/zustand/verify-count';
 
 import { useQueries } from '@tanstack/react-query';
@@ -38,6 +35,9 @@ import {
   UserIcon,
   VerifyIcon,
 } from '@/components/common/icons';
+import { getSchematicUploadCount } from '@/query/schematic';
+import { getMapUploadCount } from '@/query/map';
+import { getPostUploadCount } from '@/query/post';
 
 type PathGroup = {
   key: string;
@@ -355,18 +355,18 @@ function VerifyPath() {
     useQueries({
       queries: [
         {
-          queryFn: () => getTotalSchematicUpload(axios, {}),
-          queryKey: ['schematic', 'total', 'upload'],
+          queryFn: () => getSchematicUploadCount(axios, {}),
+          queryKey: ['schematics', 'total', 'upload'],
           placeholderData: 0,
         },
         {
-          queryFn: () => getTotalMapUpload(axios, {}),
-          queryKey: ['map', 'total', 'upload'],
+          queryFn: () => getMapUploadCount(axios, {}),
+          queryKey: ['maps', 'total', 'upload'],
           placeholderData: 0,
         },
         {
-          queryFn: () => getTotalPostUpload(axios, {}),
-          queryKey: ['post', 'total', 'upload'],
+          queryFn: () => getPostUploadCount(axios, {}),
+          queryKey: ['posts', 'total', 'upload'],
           placeholderData: 0,
         },
       ],

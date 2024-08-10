@@ -14,7 +14,7 @@ import {
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
-import { DetailDescription, DetailTitle } from '@/components/detail/detail';
+import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import { Button } from '@/components/ui/button';
 import {
@@ -34,15 +34,14 @@ import useClientAPI from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import postMap from '@/query/map/post-map';
-import postMapPreview from '@/query/map/post-map-preview';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 import TagGroup from '@/types/response/TagGroup';
-import { UploadMapRequest, UploadMapSchema } from '@/types/schema/zod-schema';
+import { CreateMapRequest, CreateMapSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { createMap, getMapPreview } from '@/query/map';
 
 export default function Page() {
   const axios = useClientAPI();
@@ -51,7 +50,7 @@ export default function Page() {
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: MapPreviewRequest) => postMapPreview(axios, data),
+    mutationFn: (data: MapPreviewRequest) => getMapPreview(axios, data),
     onSuccess: (data) => {
       setPreview(data);
     },
@@ -138,7 +137,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
   const axios = useClientAPI();
 
   const form = useForm<FormData>({
-    resolver: zodResolver(UploadMapSchema(t)),
+    resolver: zodResolver(CreateMapSchema(t)),
     defaultValues: {
       name: preview.name,
       description: preview.description,
@@ -148,7 +147,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: UploadMapRequest) => postMap(axios, data),
+    mutationFn: (data: CreateMapRequest) => createMap(axios, data),
     onMutate: () => {
       toast({
         title: <Tran text="upload.uploading" />,

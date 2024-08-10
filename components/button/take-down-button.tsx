@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import Tran from '@/components/common/tran';
 import {
   AlertDialog,
@@ -36,11 +35,14 @@ export default function TakeDownButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild disabled={isLoading}>
-        <Button className='hover:bg-destructive/80' variant="command" size="command" disabled={isLoading}>
-          <LoadingWrapper isLoading={isLoading}>
-            <TrashIcon className="h-5 w-5" />
-            <Tran text="take-down" />
-          </LoadingWrapper>
+        <Button
+          className="hover:bg-destructive/80"
+          variant="command"
+          size="command"
+          disabled={isLoading}
+        >
+          <TrashIcon className="size-5" />
+          <Tran text="take-down" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

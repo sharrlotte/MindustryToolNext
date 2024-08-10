@@ -29,9 +29,9 @@ export default function FileCard({ file, children, onClick }: Props) {
         }}
       >
         {directory ? (
-          <FolderIcon className="h-5 w-5" />
+          <FolderIcon className="size-5" />
         ) : (
-          <FileIcon className="h-5 w-5" />
+          <FileIcon className="size-5" />
         )}
         <span>{name}</span>
         <span className="ml-auto">{byteToSize(size)}</span>

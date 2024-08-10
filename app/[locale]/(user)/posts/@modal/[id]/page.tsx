@@ -3,8 +3,8 @@ import React from 'react';
 
 import PostDetailCard from '@/components/post/post-detail-card';
 import getServerAPI from '@/query/config/get-server-api';
-import getPost from '@/query/post/get-post';
 import { IdSearchParams } from '@/types/data/id-search-schema';
+import { getPost } from '@/query/post';
 
 type Props = {
   params: { id: string };

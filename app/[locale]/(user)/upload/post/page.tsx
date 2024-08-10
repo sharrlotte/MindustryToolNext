@@ -7,7 +7,6 @@ import { useDebounceValue } from 'usehooks-ts';
 import ComboBox from '@/components/common/combo-box';
 import LoadingScreen from '@/components/common/loading-screen';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import { MarkdownData } from '@/components/common/markdown-editor';
 import NoResult from '@/components/common/no-result';
 import NameTagSelector from '@/components/search/name-tag-selector';
@@ -26,16 +25,14 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import getMePosts from '@/query/post/get-me-posts';
-import getPost from '@/query/post/get-post';
-import postPost from '@/query/post/post-post';
-import postTranslatePost from '@/query/post/post-translate-post';
-import PostPostRequest from '@/types/request/PostPostRequest';
-import TranslatePostRequest from '@/types/request/TranslatePostRequest';
 import { PostDetail } from '@/types/response/PostDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { createPost, getPost, translatePost } from '@/query/post';
+import TranslatePostRequest from '@/types/request/TranslatePostRequest';
+import CreatePostRequest from '@/types/request/CreatePostRequest';
+import { getMePosts } from '@/query/user';
 
 const MarkdownEditor = dynamic(
   () => import('@/components/common/markdown-editor'),
@@ -133,7 +130,7 @@ function TranslatePage({
   const t = useI18n();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: TranslatePostRequest) => postTranslatePost(axios, data),
+    mutationFn: (data: TranslatePostRequest) => translatePost(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),
@@ -141,8 +138,7 @@ function TranslatePage({
       });
       setTitle('');
       setContent({ text: '', images: [] });
-      invalidateByKey(['post-uploads']);
-      invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
     },
     onError(error) {
       toast({
@@ -212,9 +208,7 @@ function TranslatePage({
               })
             }
           >
-            <LoadingWrapper isLoading={isPending}>
-              {uploadCheck === true ? t('upload') : uploadCheck}
-            </LoadingWrapper>
+            {uploadCheck === true ? t('upload') : uploadCheck}
           </Button>
         </div>
       </div>
@@ -239,7 +233,7 @@ function UploadPage({
   const t = useI18n();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: PostPostRequest) => postPost(axios, data),
+    mutationFn: (data: CreatePostRequest) => createPost(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),
@@ -248,8 +242,7 @@ function UploadPage({
       setTitle('');
       setContent({ text: '', images: [] });
       setSelectedTags([]);
-      invalidateByKey(['post-uploads']);
-      invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
     },
     onError(error) {
       toast({
@@ -318,9 +311,7 @@ function UploadPage({
               })
             }
           >
-            <LoadingWrapper isLoading={isPending}>
-              {uploadCheck === true ? t('upload') : uploadCheck}
-            </LoadingWrapper>
+            {uploadCheck === true ? t('upload') : uploadCheck}
           </Button>
         </div>
       </div>
@@ -345,6 +336,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         size: 20,
         tags: [],
         sort: 'time_1',
+        status: 'VERIFIED',
       }),
   });
 
