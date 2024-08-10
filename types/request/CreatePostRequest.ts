@@ -1,10 +1,10 @@
 import { MarkdownData } from '@/components/common/markdown-editor';
 
-type TranslatePostRequest = {
-  id: string;
+type CreateCreateRequest = {
   title: string;
   content: MarkdownData;
+  tags: string;
   lang: string;
 };
 
-export default TranslatePostRequest;
+export default CreatePostRequest;

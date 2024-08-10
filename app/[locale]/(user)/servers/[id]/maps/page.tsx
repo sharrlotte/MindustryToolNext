@@ -25,7 +25,7 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import postInternalServerMap from '@/query/server/post-internal-server-map';
+import createInternalServerMap from '@/query/server/post-internal-server-map';
 
 import { useMutation } from '@tanstack/react-query';
 import getInternalServerMaps from '@/query/server/get-internal-server-maps';
@@ -83,7 +83,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) =>
-      postInternalServerMap(axios, serverId, { mapId }),
+      createInternalServerMap(axios, serverId, { mapId }),
     onError: (error) => {
       toast({
         title: t('server.upload-fail'),

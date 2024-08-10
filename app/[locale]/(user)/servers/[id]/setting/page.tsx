@@ -35,12 +35,12 @@ import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import deleteInternalServer from '@/query/server/delete-internal-server';
 import getInternalServer from '@/query/server/get-internal-server';
-import putInternalServer from '@/query/server/put-internal-server';
+import updateInternalServer from '@/query/server/put-internal-server';
 import {
   InternalServerModes,
   PutInternalServerRequest,
   PutInternalServerSchema,
-} from '@/types/request/PutInternalServerRequest';
+} from '@/types/request/UpdateInternalServerRequest';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -100,7 +100,7 @@ function ServerSettingEditor({ server }: Props) {
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
     mutationFn: (data: PutInternalServerRequest) =>
-      putInternalServer(axios, id, data),
+      updateInternalServer(axios, id, data),
     onSuccess: (_, data) => {
       invalidateByKey(['servers']);
       server = { ...currentServer, ...form.getValues() };

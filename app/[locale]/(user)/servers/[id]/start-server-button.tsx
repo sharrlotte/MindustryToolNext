@@ -6,7 +6,7 @@ import { revalidate } from '@/action/action';
 import { Button } from '@/components/ui/button';
 import useClientAPI from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
-import postStartInternalServers from '@/query/server/post-start-internal-server';
+import startInternalServers from '@/query/server/post-start-internal-server';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -20,7 +20,7 @@ export default function StartServerButton({ id }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['internal-server, internal-servers'],
-    mutationFn: () => postStartInternalServers(axios, id),
+    mutationFn: () => startInternalServers(axios, id),
     onSuccess: () => {
       toast({
         title: 'Start server successfully',

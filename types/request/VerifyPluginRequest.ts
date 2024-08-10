@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const VerifyPluginRequestSchema = z.object({
+export const VerifyPluginSchema = z.object({
   tags: z
     .array(
       z.object({
@@ -13,7 +13,7 @@ export const VerifyPluginRequestSchema = z.object({
     .min(1),
 });
 
-export type VerifyPluginRequestData = z.infer<typeof VerifyPluginRequestSchema>;
+export type VerifyPluginRequestData = z.infer<typeof VerifyPluginSchema>;
 
 type VerifyPluginRequest = {
   id: string;

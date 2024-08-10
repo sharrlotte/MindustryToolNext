@@ -23,7 +23,7 @@ import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import getPlugins from '@/query/plugin/get-plugins';
-import postInternalServerPlugin from '@/query/server/post-internal-server-plugin';
+import createInternalServerPlugin from '@/query/server/post-internal-server-plugin';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import getInternalServerPlugins from '@/query/server/get-internal-server-plugins';
@@ -80,7 +80,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (pluginId: string) =>
-      postInternalServerPlugin(axios, serverId, { pluginId }),
+      createInternalServerPlugin(axios, serverId, { pluginId }),
     onError: (error) => {
       toast({
         title: t('server.upload-fail'),

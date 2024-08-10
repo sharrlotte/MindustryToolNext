@@ -29,8 +29,8 @@ import getMePosts from '@/query/post/get-me-posts';
 import getPost from '@/query/post/get-post';
 import postPost from '@/query/post/post-post';
 import postTranslatePost from '@/query/post/post-translate-post';
-import PostPostRequest from '@/types/request/PostPostRequest';
-import TranslatePostRequest from '@/types/request/TranslatePostRequest';
+import CreateCreateRequestfrom '@/types/request/PostPostRequest';
+import TranslateCreateRequest from '@/types/request/TranslatePostRequest';
 import { PostDetail } from '@/types/response/PostDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
@@ -235,7 +235,7 @@ function UploadPage({
   const t = useI18n();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: PostPostRequest) => postPost(axios, data),
+    mutationFn: (data: CreatePostRequest) => postPost(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),

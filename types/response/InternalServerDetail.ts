@@ -1,4 +1,4 @@
-import { InternalServerMode } from '@/types/request/PutInternalServerRequest';
+import { InternalServerMode } from '@/types/request/UpdateInternalServerRequest';
 
 export type InternalServerDetail = {
   id: string;

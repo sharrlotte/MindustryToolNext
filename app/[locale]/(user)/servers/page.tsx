@@ -3,7 +3,7 @@ import React from 'react';
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import InternalServerCard from '@/components/server/internal-server-card';
 import getServerAPI from '@/query/config/get-server-api';
-import getInternalServers from '@/query/server/get-internal-servers';
+import { getInternalServers } from '@/query/server';
 
 export default async function Page() {
   const axios = await getServerAPI();

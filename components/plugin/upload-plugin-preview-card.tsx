@@ -27,7 +27,7 @@ import deletePlugin from '@/query/plugin/delete-plugin';
 import verifyPlugin from '@/query/plugin/verify-plugin';
 import VerifyPluginRequest, {
   VerifyPluginRequestData,
-  VerifyPluginRequestSchema,
+  VerifyPluginSchema,
 } from '@/types/request/VerifyPluginRequest';
 import { Plugin } from '@/types/response/Plugin';
 import { TagGroups } from '@/types/response/TagGroup';
@@ -107,7 +107,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const t = useI18n();
 
   const form = useForm<VerifyPluginRequestData>({
-    resolver: zodResolver(VerifyPluginRequestSchema),
+    resolver: zodResolver(VerifyPluginSchema),
     defaultValues: {
       tags: [],
     },

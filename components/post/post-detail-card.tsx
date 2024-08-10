@@ -21,7 +21,7 @@ import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
 import { useI18n } from '@/locales/client';
 import deletePost from '@/query/post/delete-post';
-import putRemovePost from '@/query/post/put-remove-post';
+import unverifyPost from '@/query/post/put-remove-post';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 
@@ -42,7 +42,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   const t = useI18n();
 
   const { mutate: removePost, isPending: isRemoving } = useMutation({
-    mutationFn: (id: string) => putRemovePost(axios, id),
+    mutationFn: (id: string) => unverifyPost(axios, id),
     onSuccess: () => {
       invalidateByKey(['posts']);
       back();

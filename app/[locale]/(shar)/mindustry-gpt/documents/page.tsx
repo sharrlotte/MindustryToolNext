@@ -24,9 +24,9 @@ import { useI18n } from '@/locales/client';
 import getDocuments from '@/query/documents/get-documents';
 import postDocument from '@/query/documents/post-document';
 import {
-  PostDocumentRequest,
-  PostDocumentRequestSchema,
-} from '@/types/request/PostDocumentRequest';
+  CreateDocumentRequest,
+  CreateDocumentSchema,
+} from '@/types/request/CreateDocumentRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -65,15 +65,15 @@ function AddDocumentButton() {
 
   const t = useI18n();
 
-  const form = useForm<PostDocumentRequest>({
-    resolver: zodResolver(PostDocumentRequestSchema),
+  const form = useForm<CreateDocumentRequest>({
+    resolver: zodResolver(CreateDocumentSchema),
     defaultValues: {
       content: '',
     },
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: PostDocumentRequest) => postDocument(axios, data),
+    mutationFn: (data: CreateDocumentRequest) => postDocument(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),
@@ -91,7 +91,7 @@ function AddDocumentButton() {
     },
   });
 
-  function handleSubmit(value: PostDocumentRequest) {
+  function handleSubmit(value: CreateDocumentRequest) {
     mutate(value);
   }
 

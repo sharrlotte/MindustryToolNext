@@ -26,12 +26,12 @@ import { useSearchTags, useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import getPlugins from '@/query/plugin/get-plugins';
-import postPlugin from '@/query/plugin/post-plugin';
+import createPlugin from '@/query/plugin/post-plugin';
 import {
-  PostPluginRequest,
-  PostPluginRequestData,
-  PostPluginRequestSchema,
-} from '@/types/request/PostPluginRequest';
+  CreatePluginRequest,
+  CreatePluginRequestData,
+  CreatePluginSchema,
+} from '@/types/request/CreatePluginRequest';
 import { TagGroups } from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -74,8 +74,8 @@ function AddPluginButton() {
 
   const t = useI18n();
 
-  const form = useForm<PostPluginRequestData>({
-    resolver: zodResolver(PostPluginRequestSchema),
+  const form = useForm<CreatePluginRequestData>({
+    resolver: zodResolver(CreatePluginSchema),
     defaultValues: {
       name: '',
       description: '',
@@ -85,7 +85,7 @@ function AddPluginButton() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: PostPluginRequest) => postPlugin(axios, data),
+    mutationFn: (data: CreatePluginRequest) => createPlugin(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),
@@ -103,7 +103,7 @@ function AddPluginButton() {
     },
   });
 
-  function handleSubmit(value: PostPluginRequestData) {
+  function handleSubmit(value: CreatePluginRequestData) {
     const tagString = TagGroups.toStringArray(value.tags);
 
     mutate({ ...value, tags: tagString });
