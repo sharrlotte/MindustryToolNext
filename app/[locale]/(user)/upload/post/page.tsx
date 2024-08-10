@@ -25,16 +25,14 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import getMePosts from '@/query/post/get-me-posts';
-import getPost from '@/query/post/get-post';
-import postPost from '@/query/post/post-post';
-import postTranslatePost from '@/query/post/post-translate-post';
-import CreateCreateRequestfrom '@/types/request/PostPostRequest';
-import TranslateCreateRequest from '@/types/request/TranslatePostRequest';
 import { PostDetail } from '@/types/response/PostDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { createPost, getPost, translatePost } from '@/query/post';
+import TranslatePostRequest from '@/types/request/TranslatePostRequest';
+import CreatePostRequest from '@/types/request/CreatePostRequest';
+import { getMePosts } from '@/query/user';
 
 const MarkdownEditor = dynamic(
   () => import('@/components/common/markdown-editor'),
@@ -132,7 +130,7 @@ function TranslatePage({
   const t = useI18n();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: TranslatePostRequest) => postTranslatePost(axios, data),
+    mutationFn: (data: TranslatePostRequest) => translatePost(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),
@@ -235,7 +233,7 @@ function UploadPage({
   const t = useI18n();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: CreatePostRequest) => postPost(axios, data),
+    mutationFn: (data: CreatePostRequest) => createPost(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),
@@ -338,6 +336,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         size: 20,
         tags: [],
         sort: 'time_1',
+        status: 'VERIFIED',
       }),
   });
 

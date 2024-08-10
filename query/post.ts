@@ -5,6 +5,9 @@ import { IdSearchParams } from '@/types/data/id-search-schema';
 import { PostDetail } from '@/types/response/PostDetail';
 import { AxiosInstance } from 'axios';
 
+import VerifyPostRequest from '@/types/request/VerifyPostRequest';
+import CreatePostRequest from '@/types/request/CreatePostRequest';
+
 export async function deletePost(
   axios: AxiosInstance,
   id: string,
@@ -13,7 +16,6 @@ export async function deletePost(
 
   return result.data;
 }
-
 export async function getPostUpload(
   axios: AxiosInstance,
   { id }: IdSearchParams,
@@ -62,7 +64,7 @@ export async function getPosts(
 import { toForm } from '@/lib/utils';
 import TranslatePostRequest from '@/types/request/TranslatePostRequest';
 
-export async function postTranslatePost(
+export async function translatePost(
   axios: AxiosInstance,
   { id, content, ...rest }: TranslatePostRequest,
 ): Promise<void> {
@@ -76,8 +78,6 @@ export async function postTranslatePost(
     data: form,
   });
 }
-
-import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 
 export async function verifyPost(
   axios: AxiosInstance,
@@ -96,4 +96,19 @@ export async function unverifyPost(
   const result = await axios.put(`/posts/${id}`);
 
   return result.data;
+}
+
+export async function createPost(
+  axios: AxiosInstance,
+  { content, ...data }: CreatePostRequest,
+): Promise<void> {
+  const form = toForm(data);
+
+  form.append('content', content.text);
+
+  content.images.forEach(({ file, url }) => form.append('images', file, url));
+
+  return axios.post('/posts', form, {
+    data: form,
+  });
 }

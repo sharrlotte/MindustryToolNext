@@ -8,10 +8,10 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deletePlugin from '@/query/plugin/delete-plugin';
 import { Plugin } from '@/types/response/Plugin';
 
 import { useMutation } from '@tanstack/react-query';
+import { deletePlugin } from '@/query/plugin';
 
 type Props = {
   plugin: Plugin;

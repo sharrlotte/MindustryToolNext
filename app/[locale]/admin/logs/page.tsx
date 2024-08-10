@@ -25,13 +25,12 @@ import useMessage from '@/hooks/use-message';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import getLogCollections from '@/query/log/get-log-collections';
-import getLogs from '@/query/log/get-logs';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
+import getLogs, { getLogCollections } from '@/query/log';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
@@ -45,7 +44,7 @@ export default function LogPage() {
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-4">
-      <div className="p-2 bg-card rounded-md">
+      <div className="rounded-md bg-card p-2">
         <ComboBox
           value={{ label: collection, value: collection }}
           values={['LIVE', ...(data ?? [])].map((item) => ({
@@ -81,7 +80,7 @@ function LiveLog() {
               ref={(ref) => setContainer(ref)}
             >
               <MessageList
-                className="flex flex-col gap-1 h-full"
+                className="flex h-full flex-col gap-1"
                 queryKey={['live-log']}
                 room="LOG"
                 container={() => container}

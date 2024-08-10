@@ -7,10 +7,10 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deleteDocument from '@/query/documents/delete-document';
 import { Document } from '@/types/response/Document';
 
 import { useMutation } from '@tanstack/react-query';
+import { deleteDocument } from '@/query/document';
 
 type Props = {
   document: Document;
@@ -51,7 +51,7 @@ export default function DocumentCard({
         </div>
       </DialogTrigger>
       <DialogContent>
-        <div className="space-y-2 h-full overflow-y-auto">
+        <div className="h-full space-y-2 overflow-y-auto">
           <IdUserCard id={userId} />
           <p>{content}</p>
         </div>

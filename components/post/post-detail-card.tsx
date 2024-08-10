@@ -20,12 +20,11 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
 import { useI18n } from '@/locales/client';
-import deletePost from '@/query/post/delete-post';
-import unverifyPost from '@/query/post/put-remove-post';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 
 import { useMutation } from '@tanstack/react-query';
+import { deletePost, unverifyPost } from '@/query/post';
 
 type PostDetailCardProps = {
   post: PostDetail;

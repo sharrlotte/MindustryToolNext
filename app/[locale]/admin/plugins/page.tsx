@@ -7,7 +7,7 @@ import UploadPluginCard from '@/components/plugin/upload-plugin-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
-import getPluginUploads from '@/query/plugin/get-plugin-uploads';
+import { getPluginUploads } from '@/query/plugin';
 
 export default function Page() {
   const { plugin } = useSearchTags();

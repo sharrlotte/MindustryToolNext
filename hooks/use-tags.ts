@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
 import useClientAPI from '@/hooks/use-client';
-import getTags from '@/query/tag/get-tags';
 import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
 
 import { useQuery } from '@tanstack/react-query';
+import { getTags } from '@/query/tag';
 
 export function useSearchTags(): AllTagGroup {
   const axios = useClientAPI();

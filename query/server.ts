@@ -207,6 +207,23 @@ export async function startInternalServers(
   return result.data;
 }
 
+export async function reloadInternalServer(
+  axios: AxiosInstance,
+  id: string,
+): Promise<PostServerResponse> {
+  const result = await axios.post(`/internal-servers/${id}/reload`);
+
+  return result.data;
+}
+
+export async function reloadInternalServers(
+  axios: AxiosInstance,
+): Promise<PostServerResponse> {
+  const result = await axios.post('/internal-servers/reload');
+
+  return result.data;
+}
+
 export async function updateInternalServer(
   axios: AxiosInstance,
   serverId: string,

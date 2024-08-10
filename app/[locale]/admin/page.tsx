@@ -7,9 +7,9 @@ import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import WebsiteVisitRate from '@/components/metric/website-visist-rate';
 import getServerAPI from '@/query/config/get-server-api';
-import getLogs from '@/query/log/get-logs';
-import getLoginHistories from '@/query/login-history/get-login-histories';
-import getMetric from '@/query/metric/get-metric';
+import getLogs from '@/query/log';
+import { getLoginHistories } from '@/query/login-history';
+import { getMetric } from '@/query/metric';
 
 const NUMBER_OF_DAY = 15;
 
@@ -36,7 +36,7 @@ export default async function Page() {
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-4">
-      <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2 lg:grid-cols-3gv">
+      <div className="lg:grid-cols-3gv grid grid-cols-1 items-start gap-2 md:grid-cols-2">
         <LikeChart start={start} dates={NUMBER_OF_DAY} data={like} />
         <LoginChart
           start={start}

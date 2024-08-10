@@ -21,8 +21,6 @@ import useQueriesData from '@/hooks/use-queries-data';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import getDocuments from '@/query/documents/get-documents';
-import postDocument from '@/query/documents/post-document';
 import {
   CreateDocumentRequest,
   CreateDocumentSchema,
@@ -30,6 +28,7 @@ import {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import createDocument, { getDocuments } from '@/query/document';
 
 export default function Page() {
   const params = useSearchPageParams();
@@ -73,7 +72,7 @@ function AddDocumentButton() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: CreateDocumentRequest) => postDocument(axios, data),
+    mutationFn: (data: CreateDocumentRequest) => createDocument(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),

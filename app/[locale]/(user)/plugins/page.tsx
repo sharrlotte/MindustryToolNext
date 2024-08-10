@@ -25,8 +25,6 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags, useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import getPlugins from '@/query/plugin/get-plugins';
-import createPlugin from '@/query/plugin/post-plugin';
 import {
   CreatePluginRequest,
   CreatePluginRequestData,
@@ -36,6 +34,7 @@ import { TagGroups } from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { createPlugin, getPlugins } from '@/query/plugin';
 
 export default function Page() {
   const { plugin } = useSearchTags();

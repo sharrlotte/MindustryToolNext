@@ -1,5 +1,6 @@
 import { DocumentPaginationQuery } from '@/types/data/pageable-search-schema';
 import { CreateDocumentRequest } from '@/types/request/CreateDocumentRequest';
+import { Document } from '@/types/response/Document';
 import { AxiosInstance } from 'axios';
 
 export async function deleteDocument(

@@ -17,6 +17,7 @@ import { toast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 
 import { useMutation } from '@tanstack/react-query';
+import { reloadInternalServers } from '@/query/server';
 
 export default function ReloadServerDialog() {
   const t = useI18n();
@@ -24,7 +25,7 @@ export default function ReloadServerDialog() {
   const { invalidateByKey } = useQueriesData();
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: () => createReloadInternalServers(axios),
+    mutationFn: () => reloadInternalServers(axios),
     onSuccess: () => {
       invalidateByKey(['servers']);
       toast({

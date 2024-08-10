@@ -8,10 +8,10 @@ import { FakeLike, LikeContext } from '@/context/like-context';
 import { useSession } from '@/context/session-context';
 import useClientAPI from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
-import postLike from '@/query/like/post-like';
 import { Like } from '@/types/response/Like';
 
 import { useMutation } from '@tanstack/react-query';
+import { postLike } from '@/query/like';
 
 type LikeComponentProps = {
   children: ReactNode;

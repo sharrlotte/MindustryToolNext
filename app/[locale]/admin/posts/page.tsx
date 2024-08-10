@@ -7,7 +7,7 @@ import UploadPostPreviewCard from '@/components/post/upload-post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
-import getPostUploads from '@/query/post/get-post-uploads';
+import { getPostUploads } from '@/query/post';
 
 export default function Page() {
   const { post } = useSearchTags();

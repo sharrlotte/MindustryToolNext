@@ -23,8 +23,6 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deletePlugin from '@/query/plugin/delete-plugin';
-import verifyPlugin from '@/query/plugin/verify-plugin';
 import VerifyPluginRequest, {
   VerifyPluginRequestData,
   VerifyPluginSchema,
@@ -34,6 +32,7 @@ import { TagGroups } from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import verifyPlugin, { deletePlugin } from '@/query/plugin';
 
 type Props = {
   plugin: Plugin;

@@ -16,11 +16,10 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useQueryState from '@/hooks/use-query-state';
 import { useToast } from '@/hooks/use-toast';
-import deleteServerFile from '@/query/files/delete-server-file';
-import getServerFiles from '@/query/files/get-server-files';
 
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { deleteServerFile, getServerFiles } from '@/query/file';
 
 export default function Page() {
   const [path, setPath] = useQueryState('path', '/');
@@ -64,7 +63,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden py-2 p-2">
+    <div className="flex h-full flex-col gap-2 overflow-hidden p-2 py-2">
       <FileHierarchy path={path} onClick={setFilePath} />
       <div className="flex gap-2">
         <Input
@@ -103,7 +102,7 @@ export default function Page() {
                     Delete
                   </ContextMenuItem>
                   <DownloadButton
-                    className="border-none justify-start px-2 text-sm py-1.5 hover:bg-brand rounded-sm"
+                    className="justify-start rounded-sm border-none px-2 py-1.5 text-sm hover:bg-brand"
                     href={`${env.url.api}/files/download?path=${path}/${file.name}`}
                     fileName={`file.zip`}
                     secure
