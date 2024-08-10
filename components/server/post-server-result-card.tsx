@@ -20,6 +20,7 @@ export default function PostServerResultCard({
         content={server.address}
         data={server.address}
         variant="ghost"
+        position="absolute"
       >
         <ColorText
           className="overflow-hidden whitespace-nowrap"

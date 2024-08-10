@@ -50,7 +50,12 @@ export default function SchematicPreviewCard({
 
   return (
     <Preview>
-      <CopyButton variant="ghost" data={link} content={link}>
+      <CopyButton
+        position="absolute"
+        variant="ghost"
+        data={link}
+        content={link}
+      >
         <LinkIcon />
       </CopyButton>
       <Link href={detailLink}>

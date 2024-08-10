@@ -13,11 +13,16 @@ const copyButtonVariants = cva('p-2 hover:bg-brand bg-transparent', {
   variants: {
     variant: {
       default: 'border border-border',
-      ghost: 'absolute left-1 top-1 aspect-square duration-500',
+      ghost: '',
+    },
+    position: {
+      relative: '',
+      absolute: 'absolute left-1 top-1 aspect-square',
     },
   },
   defaultVariants: {
     variant: 'default',
+    position: 'relative',
   },
 });
 

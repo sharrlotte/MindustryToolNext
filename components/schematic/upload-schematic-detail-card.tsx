@@ -61,7 +61,12 @@ export default function UploadSchematicDetailCard({
   return (
     <Detail>
       <DetailInfo>
-        <CopyButton variant="ghost" data={link} content={link}>
+        <CopyButton
+          position="absolute"
+          variant="ghost"
+          data={link}
+          content={link}
+        >
           <LinkIcon />
         </CopyButton>
         <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />

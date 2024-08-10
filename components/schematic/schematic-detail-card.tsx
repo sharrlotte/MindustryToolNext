@@ -74,7 +74,12 @@ export default function SchematicDetailCard({
     <Detail>
       <DetailInfo>
         <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-        <CopyButton variant="ghost" data={link} content={link}>
+        <CopyButton
+          position="absolute"
+          variant="ghost"
+          data={link}
+          content={link}
+        >
           <LinkIcon />
         </CopyButton>
         <DetailHeader>
