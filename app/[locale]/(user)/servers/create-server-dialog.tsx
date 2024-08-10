@@ -61,7 +61,7 @@ export default function CreateServerDialog() {
         variant: 'success',
       });
       form.reset();
-      revalidate('/admin/servers');
+      revalidate('/servers');
       setOpen(false);
     },
     onError: (error) =>

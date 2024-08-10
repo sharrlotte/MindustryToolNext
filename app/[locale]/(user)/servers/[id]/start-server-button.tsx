@@ -26,7 +26,7 @@ export default function StartServerButton({ id }: Props) {
         title: 'Start server successfully',
         variant: 'success',
       });
-      revalidate('/admin/servers');
+      revalidate('/servers');
     },
     onError: (error) =>
       toast({

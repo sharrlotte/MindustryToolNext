@@ -36,7 +36,7 @@ export default function ReloadServerButton({ id }: Props) {
         title: 'Reload server successfully',
         variant: 'success',
       });
-      revalidate('/admin/servers');
+      revalidate('/servers');
     },
     onError: (error) =>
       toast({

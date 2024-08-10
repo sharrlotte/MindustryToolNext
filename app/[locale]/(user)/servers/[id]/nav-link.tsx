@@ -24,11 +24,11 @@ export default function NavLink({ id, href, label, icon }: Props) {
   return (
     <Link
       className={cn(
-        'items-center flex text-nowrap px-2 py-2 text-sm font-semibold opacity-70 hover:rounded-sm hover:bg-brand hover:text-white hover:opacity-100 gap-2 transition-[gap]',
+        'flex items-center gap-2 text-nowrap px-2 py-2 text-sm font-semibold opacity-70 transition-[gap] hover:rounded-sm hover:bg-brand hover:text-white hover:opacity-100',
         {
           'rounded-sm bg-brand text-white opacity-100':
             (pathname.endsWith(href) && href !== '') ||
-            (id !== '' && href === '' && pathname === `/admin/servers/${id}`),
+            (id !== '' && href === '' && pathname === `/servers/${id}`),
         },
         {
           'gap-0 delay-200': !expand,
@@ -36,7 +36,7 @@ export default function NavLink({ id, href, label, icon }: Props) {
         },
       )}
       key={href}
-      href={`/admin/servers/${id}/${href}`}
+      href={`/servers/${id}/${href}`}
     >
       {icon}
       <span

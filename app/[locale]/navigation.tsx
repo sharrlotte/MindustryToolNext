@@ -55,11 +55,14 @@ export default function NavigationBar() {
           )}
         >
           <div
-            className="h-full overflow-hidden"
+            className="h-full w-full overflow-hidden"
             onMouseLeave={hideSidebar} //
             onMouseEnter={showSidebar}
           >
-            <OutsideWrapper onClickOutside={hideSidebar}>
+            <OutsideWrapper
+              className="h-full w-full overflow-hidden"
+              onClickOutside={hideSidebar}
+            >
               <div className="flex h-full flex-col justify-between overflow-hidden p-2">
                 <div className="flex h-full flex-col overflow-hidden">
                   <span className="flex flex-col gap-2">
