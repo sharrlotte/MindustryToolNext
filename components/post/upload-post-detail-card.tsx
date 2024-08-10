@@ -37,14 +37,13 @@ export default function UploadPostDetailCard({
   const axios = useClientAPI();
   const { post: postTags } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const { deleteById, invalidateByKey } = useQueriesData();
+  const {  invalidateByKey } = useQueriesData();
 
   const t = useI18n();
 
   const { mutate: verifyPost, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifyPostRequest) => postVerifyPost(axios, data),
     onSuccess: () => {
-      deleteById(['post-uploads'], post.id);
       invalidateByKey(['total-post-uploads']);
       back();
       toast({
@@ -64,7 +63,6 @@ export default function UploadPostDetailCard({
   const { mutate: deletePostById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
-      deleteById(['post-uploads'], post.id);
       invalidateByKey(['total-post-uploads']);
       invalidateByKey(['posts']);
       back();

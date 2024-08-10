@@ -15,7 +15,7 @@ export default async function InternalServerCard({
 
   return (
     <div className="flex justify-between rounded-md bg-card p-2">
-      <Link className="flex flex-1 flex-col" href={`/admin/servers/${id}`}>
+      <Link className="flex flex-1 flex-col" href={`/servers/${id}`}>
         <ColorText className="text-2xl" text={name} />
         <div>Port: {port}</div>
         <div>{status}</div>
