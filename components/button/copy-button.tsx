@@ -39,6 +39,7 @@ export default function CopyButton({
   data,
   children,
   variant,
+  position,
   ...props
 }: CopyButtonProps) {
   const t = useI18n();
@@ -52,7 +53,7 @@ export default function CopyButton({
 
   return (
     <Button
-      className={cn(copyButtonVariants({ className, variant }))}
+      className={cn(copyButtonVariants({ className, variant, position }))}
       title={title ?? t('copy')}
       variant="ghost"
       {...props}
