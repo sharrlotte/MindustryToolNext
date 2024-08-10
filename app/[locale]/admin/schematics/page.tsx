@@ -29,7 +29,7 @@ export default function Page() {
 
   const { data } = useClientQuery({
     queryKey: [
-      'schematic',
+      'schematics',
       'total',
       'upload',
       omit(params, 'page', 'size', 'sort'),

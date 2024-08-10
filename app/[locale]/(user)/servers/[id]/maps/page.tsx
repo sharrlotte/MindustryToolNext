@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingScreen from '@/components/common/loading-screen';
 import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
-import { PreviewImage } from '@/components/preview/preview';
+import { PreviewImage } from '@/components/common/preview';
 import NameTagSearch from '@/components/search/name-tag-search';
 import InternalServerMapCard from '@/components/server/internal-server-map-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
@@ -26,10 +26,10 @@ import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import getMaps from '@/query/map/get-maps';
-import getInternalServerMaps from '@/query/server/get-internal-server-maps';
 import postInternalServerMap from '@/query/server/post-internal-server-map';
 
 import { useMutation } from '@tanstack/react-query';
+import getInternalServerMaps from '@/query/server/get-internal-server-maps';
 
 export default function ServerMaps() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -46,7 +46,7 @@ export default function ServerMaps() {
       >
         <ResponsiveInfiniteScrollGrid
           params={{ page: 0, size: 20 }}
-          queryKey={['internal-server-maps', id]}
+          queryKey={['server-maps', id]}
           getFunc={(axios, params) => getInternalServerMaps(axios, id, params)}
           container={() => container}
           skeleton={{
@@ -92,7 +92,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
       });
     },
     onSuccess: () => {
-      invalidateByKey(['internal-server-maps']);
+      invalidateByKey(['server-maps']);
     },
   });
 
@@ -111,7 +111,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
           {t('internal-server.add-map')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-6 flex flex-col overflow-hidden w-full">
+      <DialogContent className="flex w-full flex-col overflow-hidden p-6">
         <DialogTitle>{t('internal-server.select-map')}</DialogTitle>
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />
@@ -131,7 +131,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
             >
               {({ id, name }) => (
                 <Button
-                  className="relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start hover:border-button"
+                  className="hover:border-button relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start"
                   variant="outline"
                   key={id}
                   title={name}

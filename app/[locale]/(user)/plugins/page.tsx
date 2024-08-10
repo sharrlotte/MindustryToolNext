@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import InfinitePage from '@/components/common/infinite-page';
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import PluginCard from '@/components/plugin/plugin-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import NameTagSelector from '@/components/search/name-tag-selector';
@@ -195,9 +194,7 @@ function AddPluginButton() {
                   title={t('upload')}
                   disabled={isPending}
                 >
-                  <LoadingWrapper isLoading={isPending}>
-                    {t('upload')}
-                  </LoadingWrapper>
+                  {t('upload')}
                 </Button>
               </div>
             </form>

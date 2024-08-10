@@ -51,11 +51,11 @@ export default function CreateServerDialog() {
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-servers'],
+    mutationKey: ['servers'],
     mutationFn: (data: PostInternalServerRequest) =>
       postInternalServer(axios, data),
     onSuccess: () => {
-      invalidateByKey(['internal-servers']);
+      invalidateByKey(['servers']);
       toast({
         title: t('upload.success'),
         variant: 'success',

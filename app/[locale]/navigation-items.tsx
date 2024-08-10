@@ -356,17 +356,17 @@ function VerifyPath() {
       queries: [
         {
           queryFn: () => getTotalSchematicUpload(axios, {}),
-          queryKey: ['schematic', 'total', 'upload'],
+          queryKey: ['schematics', 'total', 'upload'],
           placeholderData: 0,
         },
         {
           queryFn: () => getTotalMapUpload(axios, {}),
-          queryKey: ['map', 'total', 'upload'],
+          queryKey: ['maps', 'total', 'upload'],
           placeholderData: 0,
         },
         {
           queryFn: () => getTotalPostUpload(axios, {}),
-          queryKey: ['post', 'total', 'upload'],
+          queryKey: ['posts', 'total', 'upload'],
           placeholderData: 0,
         },
       ],

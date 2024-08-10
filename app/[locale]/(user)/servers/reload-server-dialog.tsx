@@ -27,7 +27,7 @@ export default function ReloadServerDialog() {
     mutationKey: ['servers'],
     mutationFn: () => postReloadInternalServers(axios),
     onSuccess: () => {
-      invalidateByKey(['internal-servers']);
+      invalidateByKey(['servers']);
       toast({
         title: t('update.success'),
         variant: 'success',

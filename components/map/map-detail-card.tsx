@@ -16,7 +16,7 @@ import {
   DetailInfo,
   DetailTagsCard,
   DetailTitle,
-} from '@/components/detail/detail';
+} from '@/components/common/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
@@ -55,7 +55,7 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
   const { mutate: removeMap, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => putRemoveMap(axios, id),
     onSuccess: () => {
-      invalidateByKey(['map-uploads']);
+      invalidateByKey(['maps']);
       back();
       toast({
         title: t('take-down-success'),
@@ -74,7 +74,6 @@ export default function MapDetailCard({ map }: MapDetailCardProps) {
   const { mutate: deleteMapById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deleteMap(axios, id),
     onSuccess: () => {
-      invalidateByKey(['total-map-uploads']);
       invalidateByKey(['maps']);
       back();
       toast({

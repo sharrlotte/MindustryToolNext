@@ -6,7 +6,7 @@ import React from 'react';
 import DeleteButton from '@/components/button/delete-button';
 import TakeDownButton from '@/components/button/take-down-button';
 import Markdown from '@/components/common/markdown';
-import { Detail } from '@/components/detail/detail';
+import { Detail } from '@/components/common/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
@@ -34,7 +34,7 @@ type PostDetailCardProps = {
 export default function PostDetailCard({ post }: PostDetailCardProps) {
   const displayTags = Tags.parseStringArray(post.tags);
   const axios = useClientAPI();
-  const {  invalidateByKey } = useQueriesData();
+  const { invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();
   const { session } = useSession();
@@ -44,7 +44,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   const { mutate: removePost, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => putRemovePost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['post-uploads']);
+      invalidateByKey(['posts']);
       back();
       toast({
         title: t('take-down-success'),
@@ -63,7 +63,6 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   const { mutate: deletePostById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['total-post-uploads']);
       invalidateByKey(['posts']);
       back();
       toast({
@@ -91,7 +90,7 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
           <span>{new Date(post.createdAt).toLocaleString()}</span>
           <TagContainer tags={displayTags} />
         </div>
-        <div className="h-full flex flex-1">
+        <div className="flex h-full flex-1">
           <Markdown>{post.content}</Markdown>
         </div>
       </header>

@@ -7,7 +7,7 @@ import {
   PreviewDescription,
   PreviewHeader,
   PreviewImage,
-} from '@/components/preview/preview';
+} from '@/components/common/preview';
 import env from '@/constant/env';
 import { MapPreview } from '@/types/response/MapPreview';
 

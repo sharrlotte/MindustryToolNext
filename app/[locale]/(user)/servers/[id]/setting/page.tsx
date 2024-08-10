@@ -60,7 +60,7 @@ export default function Page({ params: { id } }: PageProps) {
     isPending,
     error,
   } = useQuery({
-    queryKey: ['internal-servers', id],
+    queryKey: ['servers', id],
     queryFn: () => getInternalServer(axios, { id }),
   });
 
@@ -98,11 +98,11 @@ function ServerSettingEditor({ server }: Props) {
   const { id } = currentServer;
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-servers'],
+    mutationKey: ['servers'],
     mutationFn: (data: PutInternalServerRequest) =>
       putInternalServer(axios, id, data),
     onSuccess: (_, data) => {
-      invalidateByKey(['internal-servers']);
+      invalidateByKey(['servers']);
       server = { ...currentServer, ...form.getValues() };
       toast({
         title: t('update.success'),
@@ -119,10 +119,10 @@ function ServerSettingEditor({ server }: Props) {
   });
 
   const { mutate: deleteServer, isPending: isDeleting } = useMutation({
-    mutationKey: ['internal-servers'],
+    mutationKey: ['servers'],
     mutationFn: () => deleteInternalServer(axios, id),
     onSuccess: () => {
-      invalidateByKey(['internal-servers']);
+      invalidateByKey(['servers']);
       toast({
         title: t('delete-success'),
         variant: 'success',
@@ -236,7 +236,7 @@ function ServerSettingEditor({ server }: Props) {
               )}
             />
           </div>
-          <div className="flex justify-end p-2 gap-2">
+          <div className="flex justify-end gap-2 p-2">
             <Button
               className={cn(
                 'flex translate-y-[100vh] justify-end transition-transform duration-500',

@@ -12,7 +12,7 @@ import {
   DetailImage,
   DetailInfo,
   DetailTitle,
-} from '@/components/detail/detail';
+} from '@/components/common/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import IdUserCard from '@/components/user/id-user-card';

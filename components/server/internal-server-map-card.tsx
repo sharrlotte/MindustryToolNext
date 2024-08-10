@@ -10,7 +10,7 @@ import {
   PreviewDescription,
   PreviewHeader,
   PreviewImage,
-} from '@/components/preview/preview';
+} from '@/components/common/preview';
 import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -44,7 +44,7 @@ export default function InternalServerMapCard({
       });
     },
     onSuccess: () => {
-      invalidateByKey(['internal-server-maps']);
+      invalidateByKey(['server-maps']);
     },
   });
 

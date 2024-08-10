@@ -14,7 +14,7 @@ import {
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
-import { DetailDescription, DetailTitle } from '@/components/detail/detail';
+import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import { Button } from '@/components/ui/button';

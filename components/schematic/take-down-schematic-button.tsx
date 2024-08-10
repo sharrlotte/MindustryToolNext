@@ -21,7 +21,7 @@ export function TakeDownSchematicButton({
   const axios = useClientAPI();
   const t = useI18n();
   const { back } = useRouter();
-  const {  invalidateByKey } = useQueriesData();
+  const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
@@ -30,7 +30,7 @@ export function TakeDownSchematicButton({
     },
     mutationFn: (id: string) => putRemoveSchematic(axios, id),
     onSuccess: () => {
-      invalidateByKey(['schematic', 'total']);
+      invalidateByKey(['schematics']);
       back();
       toast({
         title: t('take-down-success'),

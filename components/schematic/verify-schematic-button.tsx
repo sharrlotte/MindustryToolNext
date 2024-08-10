@@ -30,7 +30,7 @@ export default function VerifySchematicButton({
     mutationFn: (data: VerifySchematicRequest) =>
       postVerifySchematic(axios, data),
     onSuccess: () => {
-      invalidateByKey(['schematic']);
+      invalidateByKey(['schematics']);
       back();
       toast({
         title: t('verify-success'),

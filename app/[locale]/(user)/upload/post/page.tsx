@@ -7,7 +7,6 @@ import { useDebounceValue } from 'usehooks-ts';
 import ComboBox from '@/components/common/combo-box';
 import LoadingScreen from '@/components/common/loading-screen';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import { MarkdownData } from '@/components/common/markdown-editor';
 import NoResult from '@/components/common/no-result';
 import NameTagSelector from '@/components/search/name-tag-selector';
@@ -141,8 +140,7 @@ function TranslatePage({
       });
       setTitle('');
       setContent({ text: '', images: [] });
-      invalidateByKey(['post-uploads']);
-      invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
     },
     onError(error) {
       toast({
@@ -212,9 +210,7 @@ function TranslatePage({
               })
             }
           >
-            <LoadingWrapper isLoading={isPending}>
-              {uploadCheck === true ? t('upload') : uploadCheck}
-            </LoadingWrapper>
+            {uploadCheck === true ? t('upload') : uploadCheck}
           </Button>
         </div>
       </div>
@@ -248,8 +244,7 @@ function UploadPage({
       setTitle('');
       setContent({ text: '', images: [] });
       setSelectedTags([]);
-      invalidateByKey(['post-uploads']);
-      invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
     },
     onError(error) {
       toast({
@@ -318,9 +313,7 @@ function UploadPage({
               })
             }
           >
-            <LoadingWrapper isLoading={isPending}>
-              {uploadCheck === true ? t('upload') : uploadCheck}
-            </LoadingWrapper>
+            {uploadCheck === true ? t('upload') : uploadCheck}
           </Button>
         </div>
       </div>

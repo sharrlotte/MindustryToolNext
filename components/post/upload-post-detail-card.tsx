@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import DeleteButton from '@/components/button/delete-button';
 import VerifyButton from '@/components/button/verify-button';
 import Markdown from '@/components/common/markdown';
-import { Detail } from '@/components/detail/detail';
+import { Detail } from '@/components/common/detail';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
@@ -37,14 +37,14 @@ export default function UploadPostDetailCard({
   const axios = useClientAPI();
   const { post: postTags } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const {  invalidateByKey } = useQueriesData();
+  const { invalidateByKey } = useQueriesData();
 
   const t = useI18n();
 
   const { mutate: verifyPost, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifyPostRequest) => postVerifyPost(axios, data),
     onSuccess: () => {
-      invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
       back();
       toast({
         title: t('verify-success'),
@@ -63,7 +63,7 @@ export default function UploadPostDetailCard({
   const { mutate: deletePostById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['total-post-uploads']);
+      invalidateByKey(['posts']);
       invalidateByKey(['posts']);
       back();
       toast({

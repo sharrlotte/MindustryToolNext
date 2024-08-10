@@ -12,7 +12,7 @@ import {
   DetailTagsCard,
   DetailTitle,
   Verifier,
-} from '@/components/detail/detail';
+} from '@/components/common/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';

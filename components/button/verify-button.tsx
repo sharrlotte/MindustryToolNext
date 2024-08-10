@@ -1,6 +1,5 @@
 'use client';
 
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,9 +36,7 @@ export default function VerifyButton({
         className="flex items-center justify-center rounded-md border p-2 hover:bg-success"
         disabled={isLoading}
       >
-        <LoadingWrapper isLoading={isLoading}>
-          <CheckIcon className="h-5 w-5" />
-        </LoadingWrapper>
+        <CheckIcon className="h-5 w-5" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

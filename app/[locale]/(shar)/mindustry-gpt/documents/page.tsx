@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import InfinitePage from '@/components/common/infinite-page';
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import DocumentCard from '@/components/document/document-card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -137,9 +136,7 @@ function AddDocumentButton() {
                   title={t('upload')}
                   disabled={isPending}
                 >
-                  <LoadingWrapper isLoading={isPending}>
-                    {t('upload')}
-                  </LoadingWrapper>
+                  {t('upload')}
                 </Button>
               </div>
             </form>

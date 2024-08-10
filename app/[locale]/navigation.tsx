@@ -9,8 +9,7 @@ import { Button } from '@/components/ui/button';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 
-import { Bars3Icon } from '@heroicons/react/24/outline';
-import { NotificationIcon } from '@/components/common/icons';
+import { MenuIcon, NotificationIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 
 export default function NavigationBar() {
@@ -36,7 +35,7 @@ export default function NavigationBar() {
         onClick={showSidebar}
         onMouseEnter={showSidebar}
       >
-        <Bars3Icon className="h-8 w-8 text-white" />
+        <MenuIcon />
       </Button>
       <div
         className={cn(

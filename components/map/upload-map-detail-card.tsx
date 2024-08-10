@@ -15,7 +15,7 @@ import {
   DetailImage,
   DetailInfo,
   DetailTitle,
-} from '@/components/detail/detail';
+} from '@/components/common/detail';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
@@ -44,13 +44,13 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const axios = useClientAPI();
   const { map: mapTags } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const {  invalidateByKey } = useQueriesData();
+  const { invalidateByKey } = useQueriesData();
   const t = useI18n();
 
   const { mutate: verifyMap, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifyMapRequest) => postVerifyMap(axios, data),
     onSuccess: () => {
-      invalidateByKey(['total-map-uploads']);
+      invalidateByKey(['maps']);
       back();
       toast({
         title: t('verify-success'),
@@ -69,7 +69,6 @@ export default function UploadMapDetailCard({ map }: UploadMapDetailCardProps) {
   const { mutate: deleteMapById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deleteMap(axios, id),
     onSuccess: () => {
-      invalidateByKey(['total-map-uploads']);
       invalidateByKey(['maps']);
       back();
       toast({

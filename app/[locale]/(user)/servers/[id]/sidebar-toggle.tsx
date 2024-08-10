@@ -29,30 +29,30 @@ export default function SidebarToggle() {
 
   const { data } = useQuery({
     queryFn: () => getInternalServers(axios),
-    queryKey: ['internal-servers'],
+    queryKey: ['servers'],
   });
 
   const servers = data ?? [];
   const serverId = id as string;
 
   return (
-    <div className="flex justify-center items-center w-full">
+    <div className="flex w-full items-center justify-center">
       <div
         className={cn(
-          'flex justify-center p-2 items-center cursor-pointer hover:rounded-sm hover:bg-brand hover:text-white transition-transform duration-200',
+          'flex cursor-pointer items-center justify-center p-2 transition-transform duration-200 hover:rounded-sm hover:bg-brand hover:text-white',
           {
             'rotate-180': !expand,
           },
         )}
         onClick={() => setExpand(!expand)}
       >
-        <ChevronRight className="w-5 h-5" />
+        <ChevronRight className="h-5 w-5" />
       </div>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           aria-expanded={open}
           className={cn(
-            'justify-between w-full overflow-hidden p-0 pl-2 flex flex-row items-center font-bold',
+            'flex w-full flex-row items-center justify-between overflow-hidden p-0 pl-2 font-bold',
             {
               'w-0 p-0': !expand,
             },
@@ -67,7 +67,7 @@ export default function SidebarToggle() {
           )}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] grid p-2 gap-1">
+        <PopoverContent className="grid w-[200px] gap-1 p-2">
           {servers.map(({ id, name }) => (
             <Link
               key={id}

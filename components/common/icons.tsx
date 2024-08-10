@@ -13,6 +13,7 @@ import {
   GithubIcon as _GithubIcon,
   FacebookIcon as _FacebookIcon,
   ArrowDownIcon as _ArrowDownIcon,
+  Menu,
 } from 'lucide-react';
 
 import {
@@ -50,3 +51,4 @@ export const GithubIcon = () => <_GithubIcon className="size-5" />;
 export const FacebookIcon = () => <_FacebookIcon className="size-5" />;
 export const DiscordIcon = () => <DiscordLogoIcon className="size-5" />;
 export const ArrowDownIcon = () => <_ArrowDownIcon className="size-7" />;
+export const MenuIcon = () => <Menu className="h-8 w-8 text-white" />;

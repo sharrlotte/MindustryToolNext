@@ -6,7 +6,6 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import DeleteButton from '@/components/button/delete-button';
-import LoadingWrapper from '@/components/common/loading-wrapper';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -79,10 +78,10 @@ export default function UploadPluginCard({ plugin }: Props) {
       <span>{description}</span>
       <div className="flex gap-2">
         <Link
-          className="absolute m-1 right-1 top-1 border-none"
+          className="absolute right-1 top-1 m-1 border-none"
           href={githubUrl}
         >
-          <ExternalLink className="w-5 h-5" />
+          <ExternalLink className="h-5 w-5" />
         </Link>
         <VerifyPluginDialog plugin={plugin} />
         <DeleteButton
@@ -183,9 +182,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                   title={t('upload')}
                   disabled={isPending}
                 >
-                  <LoadingWrapper isLoading={isPending}>
-                    {t('upload')}
-                  </LoadingWrapper>
+                  {t('upload')}
                 </Button>
               </div>
             </form>

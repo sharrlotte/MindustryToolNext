@@ -23,10 +23,10 @@ import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 import getPlugins from '@/query/plugin/get-plugins';
-import getInternalServerPlugins from '@/query/server/get-internal-server-plugins';
 import postInternalServerPlugin from '@/query/server/post-internal-server-plugin';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import getInternalServerPlugins from '@/query/server/get-internal-server-plugins';
 
 export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -44,7 +44,7 @@ export default function Page() {
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
           params={{ page: 0, size: 20 }}
-          queryKey={['internal-server-plugins', id]}
+          queryKey={['server-plugins', id]}
           getFunc={(axios, params) =>
             getInternalServerPlugins(axios, id, params)
           }
@@ -90,7 +90,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     },
     onSuccess: () => {
       setShow(false);
-      invalidateByKey(['internal-server-plugins']);
+      invalidateByKey(['server-plugins']);
     },
   });
 
