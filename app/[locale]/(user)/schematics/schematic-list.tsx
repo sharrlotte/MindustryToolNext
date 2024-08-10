@@ -21,8 +21,7 @@ import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
 import { ItemPaginationQuery } from '@/query/query';
-import { getSchematicCount } from '@/query/schematic';
-import getSchematics from '@/query/schematic/get-schematics';
+import { getSchematicCount, getSchematics } from '@/query/schematic';
 
 export default function SchematicList() {
   const { schematic } = useSearchTags();

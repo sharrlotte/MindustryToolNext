@@ -6,7 +6,6 @@ import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinit
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { useSearchTags } from '@/hooks/use-tags';
-import getSchematicUploads from '@/query/schematic/get-schematic-uploads';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import {
   PaginationLayoutSwitcher,
@@ -17,9 +16,12 @@ import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/query';
-import { getUploadSchematicCount } from '@/query/schematic';
 import { omit } from 'lodash';
 import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
+import {
+  getSchematicUploadCount,
+  getSchematicUploads,
+} from '@/query/schematic';
 
 export default function Page() {
   const { schematic } = useSearchTags();
@@ -34,7 +36,7 @@ export default function Page() {
       'upload',
       omit(params, 'page', 'size', 'sort'),
     ],
-    queryFn: (axios) => getUploadSchematicCount(axios, params),
+    queryFn: (axios) => getSchematicUploadCount(axios, params),
   });
 
   return (

@@ -10,7 +10,7 @@ export const TAG_GROUP_SCHEMA = z.object({
   duplicate: z.boolean(),
 });
 
-export const UploadSchematicSchema = (t: TranslateFunction) =>
+export const CreateSchematicSchema = (t: TranslateFunction) =>
   z.object({
     name: z.string().min(1).max(128),
     description: z.string().max(1024).optional(),
@@ -22,8 +22,8 @@ export const UploadSchematicSchema = (t: TranslateFunction) =>
       .transform<string>((value) => TagGroups.toString(value)),
   });
 
-export type UploadSchematicRequest = z.infer<
-  ReturnType<typeof UploadSchematicSchema>
+export type CreateSchematicRequest = z.infer<
+  ReturnType<typeof CreateSchematicSchema>
 >;
 
 export const UploadMapSchema = (t: TranslateFunction) =>

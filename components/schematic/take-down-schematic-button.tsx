@@ -5,7 +5,7 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import putRemoveSchematic from '@/query/schematic/put-remove-schematic';
+import { unverifySchematic } from '@/query/schematic';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -28,7 +28,7 @@ export function TakeDownSchematicButton({
     scope: {
       id,
     },
-    mutationFn: (id: string) => putRemoveSchematic(axios, id),
+    mutationFn: (id: string) => unverifySchematic(axios, id),
     onSuccess: () => {
       invalidateByKey(['schematics']);
       back();

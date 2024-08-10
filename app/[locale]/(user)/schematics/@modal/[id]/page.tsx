@@ -5,8 +5,8 @@ import React from 'react';
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import env from '@/constant/env';
 import getServerAPI from '@/query/config/get-server-api';
-import getSchematic from '@/query/schematic/get-schematic';
 import { IdSearchParams } from '@/types/data/id-search-schema';
+import { getSchematic } from '@/query/schematic';
 
 type Props = {
   params: { id: string };

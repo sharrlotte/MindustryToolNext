@@ -35,18 +35,17 @@ import useClientAPI from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import postSchematic from '@/query/schematic/post-schematic';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import TagGroup from '@/types/response/TagGroup';
 import {
-  UploadSchematicRequest,
-  UploadSchematicSchema,
+  CreateSchematicRequest,
+  CreateSchematicSchema,
 } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { getSchematicPreview } from '@/query/schematic';
+import { createSchematic, getSchematicPreview } from '@/query/schematic';
 
 export default function Page() {
   return <Preview />;
@@ -193,7 +192,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   const axios = useClientAPI();
 
   const form = useForm<UploadFormData>({
-    resolver: zodResolver(UploadSchematicSchema(t)),
+    resolver: zodResolver(CreateSchematicSchema(t)),
     defaultValues: {
       name: preview.name,
       description: preview.description,
@@ -203,7 +202,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: UploadSchematicRequest) => postSchematic(axios, data),
+    mutationFn: (data: CreateSchematicRequest) => createSchematic(axios, data),
     onMutate: () => {
       toast({
         title: <Tran text="upload.uploading" />,

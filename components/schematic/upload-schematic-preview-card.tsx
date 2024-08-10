@@ -14,9 +14,9 @@ import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
-import getSchematicData from '@/query/schematic/get-schematic-data';
 import { Schematic } from '@/types/response/Schematic';
 import { LinkIcon } from '@/components/common/icons';
+import { getSchematicData } from '@/query/schematic';
 
 type UploadSchematicPreviewCardProps = {
   schematic: Schematic;

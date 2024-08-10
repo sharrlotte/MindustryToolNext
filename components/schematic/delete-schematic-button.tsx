@@ -7,7 +7,7 @@ import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
-import deleteSchematic from '@/query/schematic/delete-schematic';
+import { deleteSchematic } from '@/query/schematic';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
