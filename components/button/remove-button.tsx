@@ -36,7 +36,7 @@ export default function RemoveButton({
         className="flex items-center justify-center rounded-md border p-2"
         disabled={isLoading}
       >
-        <TrashIcon className="h-5 w-5" />
+        <TrashIcon className="size-5" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

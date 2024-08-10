@@ -3,8 +3,9 @@ import Link from 'next/link';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/locales/client';
 
-const linkVariants = cva('', {
+const linkVariants = cva('flex gap-2', {
   variants: {
     variant: {
       default: '',
@@ -34,12 +35,16 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
 export default function InternalLink({
   className,
   variant,
+  title,
   ...props
 }: InternalLinkProps) {
+  const t = useI18n();
+
   return (
     <Link
       className={cn(linkVariants({ variant, className }))}
       {...props}
+      title={title ? t(title) : ''}
     ></Link>
   );
 }

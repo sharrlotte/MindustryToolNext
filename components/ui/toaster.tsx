@@ -24,10 +24,10 @@ export function Toaster() {
               {title && (
                 <ToastTitle className="flex items-center justify-start gap-0.5 text-start">
                   {props.variant === 'success' && (
-                    <CheckCircleIcon className="h-5 w-5" />
+                    <CheckCircleIcon className="size-5" />
                   )}
                   {props.variant === 'destructive' && (
-                    <XCircleIcon className="h-5 w-5" />
+                    <XCircleIcon className="size-5" />
                   )}
                   {title}
                 </ToastTitle>

@@ -1,6 +1,8 @@
+import Link from 'next/link';
+import React from 'react';
+
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import { LinkIcon } from '@/components/common/icons';
 import {
   Preview,
   PreviewActions,
@@ -10,9 +12,7 @@ import {
 } from '@/components/common/preview';
 import env from '@/constant/env';
 import { MapPreview } from '@/types/response/MapPreview';
-
-import Link from 'next/link';
-import React from 'react';
+import { LinkIcon } from '@/components/common/icons';
 
 type UploadMapPreviewCardProps = {
   map: MapPreview;
@@ -26,7 +26,7 @@ export default function UploadMapPreviewCard({
   const imageLink = `${env.url.image}/map-previews/${id}.png`;
   const errorImageLink = `${env.url.api}/maps/${id}/image`;
   const downloadLink = `${env.url.api}/maps/${id}/download`;
-  const downloadName = `{${name}}.msav`;
+  const downloadName = `{${name}}.msch`;
 
   return (
     <Preview>

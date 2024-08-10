@@ -1,12 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React from 'react';
-
 import CopyButton from '@/components/button/copy-button';
-import DeleteButton from '@/components/button/delete-button';
 import DownloadButton from '@/components/button/download-button';
-import TakeDownButton from '@/components/button/take-down-button';
 import {
   Detail,
   DetailActions,
@@ -16,145 +11,85 @@ import {
   DetailInfo,
   DetailTagsCard,
   DetailTitle,
+  Verifier,
 } from '@/components/common/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
-import BackButton from '@/components/ui/back-button';
+import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
-import useClientAPI from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
-import { useI18n } from '@/locales/client';
 import { MapDetail } from '@/types/response/MapDetail';
 
-import { LinkIcon } from '@heroicons/react/24/outline';
-import { useMutation } from '@tanstack/react-query';
-import { deleteMap, unverifyMap } from '@/query/map';
+import { LinkIcon } from '@/components/common/icons';
+import { DeleteMapButton } from '@/components/map/delete-map-button';
+import { TakeDownMapButton } from '@/components/map/take-down-map-button';
 
 type MapDetailCardProps = {
   map: MapDetail;
 };
 
-export default function MapDetailCard({ map }: MapDetailCardProps) {
-  const link = `${env.url.base}/maps/${map.id}`;
-
-  const axios = useClientAPI();
-  const { invalidateByKey } = useQueriesData();
-  const { back } = useRouter();
-  const { toast } = useToast();
+export default function MapDetailCard({
+  map: {
+    id,
+    name,
+    description,
+    tags,
+    verifierId,
+    itemId,
+    likes,
+    userLike,
+    userId,
+    isVerified,
+  },
+}: MapDetailCardProps) {
   const { session } = useSession();
 
-  const t = useI18n();
-
-  const { mutate: removeMap, isPending: isRemoving } = useMutation({
-    mutationFn: (id: string) => unverifyMap(axios, id),
-    onSuccess: () => {
-      invalidateByKey(['maps']);
-      back();
-      toast({
-        title: t('take-down-success'),
-        variant: 'success',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: t('take-down-fail'),
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-
-  const { mutate: deleteMapById, isPending: isDeleting } = useMutation({
-    mutationFn: (id: string) => deleteMap(axios, id),
-    onSuccess: () => {
-      invalidateByKey(['maps']);
-      back();
-      toast({
-        title: t('delete-success'),
-        variant: 'success',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: t('delete-fail'),
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-
-  const isLoading = isDeleting || isRemoving;
+  const link = `${env.url.base}/maps/${id}`;
+  const imageUrl = `${env.url.image}/maps/${id}.png`;
+  const errorImageUrl = `${env.url.api}/maps/${id}/image`;
+  const downloadUrl = `${env.url.api}/maps/${id}/download`;
+  const downloadName = `{${name}}.msch`;
 
   return (
     <Detail>
       <DetailInfo>
-        <div className="relative">
-          <CopyButton
-            className="absolute left-1 top-1"
-            variant="ghost"
-            data={link}
-            content={link}
-          >
-            <LinkIcon className="h-5 w-5" />
-          </CopyButton>
-          <DetailImage
-            src={`${env.url.image}/maps/${map.id}.png`}
-            errorSrc={`${env.url.api}/maps/${map.id}/image`}
-            alt={map.name}
-          />
-        </div>
+        <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
+        <CopyButton variant="ghost" data={link} content={link}>
+          <LinkIcon />
+        </CopyButton>
         <DetailHeader>
-          <DetailTitle>{map.name}</DetailTitle>
-          <IdUserCard id={map.userId} />
-          <div className="flex items-end gap-2">
-            <span>{t('verified-by')}</span>
-            <IdUserCard id={map.verifierId} />
-          </div>
-          <DetailDescription>{map.description}</DetailDescription>
-          <DetailTagsCard tags={map.tags} />
+          <DetailTitle>{name}</DetailTitle>
+          <IdUserCard id={userId} />
+          <Verifier verifierId={verifierId} />
+          <DetailDescription>{description}</DetailDescription>
+          <DetailTagsCard tags={tags} />
         </DetailHeader>
       </DetailInfo>
-      <DetailActions className="flex justify-between">
-        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <DownloadButton
-            href={`${env.url.api}/maps/${map.id}/download`}
-            fileName={`{${map.name}}.msav`}
-          />
-          <LikeComponent
-            itemId={map.itemId}
-            initialLikeCount={map.likes}
-            initialLikeData={map.userLike}
-          >
-            <LikeButton />
-            <LikeCount />
-            <DislikeButton />
-          </LikeComponent>
+      <DetailActions>
+        <DownloadButton href={downloadUrl} fileName={downloadName} />
+        <LikeComponent
+          itemId={itemId}
+          initialLikeCount={likes}
+          initialLikeData={userLike}
+        >
+          <LikeButton />
+          <LikeCount />
+          <DislikeButton />
+        </LikeComponent>
+        <EllipsisButton>
           <ProtectedElement
             session={session}
-            ownerId={map.userId}
-            show={map.isVerified}
+            ownerId={userId}
+            show={isVerified}
           >
-            <TakeDownButton
-              isLoading={isRemoving}
-              description={`Take down this map: ${map.name}`}
-              onClick={() => removeMap(map.id)}
-            />
+            <TakeDownMapButton id={id} name={name} />
+            <DeleteMapButton variant="command" id={id} name={name} />
           </ProtectedElement>
-          <ProtectedElement session={session} ownerId={map.userId}>
-            <DeleteButton
-              description={`${t('delete')} ${map.name}`}
-              isLoading={isLoading}
-              onClick={() => deleteMapById(map.id)}
-            />
-          </ProtectedElement>
-        </div>
-        <BackButton />
+        </EllipsisButton>
       </DetailActions>
     </Detail>
   );

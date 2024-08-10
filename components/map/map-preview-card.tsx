@@ -1,5 +1,7 @@
+'use client';
+
 import Link from 'next/link';
-import React, { HTMLAttributes } from 'react';
+import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
@@ -15,54 +17,40 @@ import {
   PreviewImage,
 } from '@/components/common/preview';
 import env from '@/constant/env';
-import { cn } from '@/lib/utils';
 import { MapPreview } from '@/types/response/MapPreview';
+import { LinkIcon } from '@/components/common/icons';
 
-import { LinkIcon } from '@heroicons/react/24/outline';
-
-type MapPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
+type MapPreviewCardProps = {
   map: MapPreview;
 };
 
 export default function MapPreviewCard({
-  className,
-  map,
-  ...rest
+  map: { id, itemId, name, isVerified, likes, userLike },
 }: MapPreviewCardProps) {
-  const link = `${env.url.base}/maps/${map.id}`;
+  const link = `${env.url.base}/admin/maps/${id}`;
+  const detailLink = `/maps/${id}`;
+  const imageLink = `${env.url.image}/map-previews/${id}.png`;
+  const errorImageLink = `${env.url.api}/maps/${id}/image`;
+  const downloadLink = `${env.url.api}/maps/${id}/download`;
+  const downloadName = `{${name}}.msch`;
 
   return (
-    <Preview
-      className={cn('group relative flex flex-col justify-between', className)}
-      {...rest}
-    >
-      <CopyButton
-        className="absolute left-1 top-1 aspect-square transition-opacity duration-500 group-hover:opacity-100 md:opacity-0"
-        variant="ghost"
-        data={link}
-        content={link}
-      >
-        <LinkIcon className="h-5 w-5" />
+    <Preview>
+      <CopyButton variant="ghost" data={link} content={link}>
+        <LinkIcon />
       </CopyButton>
-      <Link className="h-full w-full overflow-hidden" href={`/maps/${map.id}`}>
-        <PreviewImage
-          src={`${env.url.image}/map-previews/${map.id}.png`}
-          errorSrc={`${env.url.api}/maps/${map.id}/image`}
-          alt={map.name}
-        />
+      <Link href={detailLink}>
+        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </Link>
       <PreviewDescription>
-        <PreviewHeader className="h-12">{map.name}</PreviewHeader>
+        <PreviewHeader>{name}</PreviewHeader>
         <PreviewActions>
-          <DownloadButton
-            href={`${env.url.api}/maps/${map.id}/download`}
-            fileName={`{${map.name}}.msav`}
-          />
-          {map.isVerified && (
+          <DownloadButton href={downloadLink} fileName={downloadName} />
+          {isVerified && (
             <LikeComponent
-              itemId={map.itemId}
-              initialLikeCount={map.likes}
-              initialLikeData={map.userLike}
+              itemId={itemId}
+              initialLikeCount={likes}
+              initialLikeData={userLike}
             >
               <LikeButton />
               <LikeCount />

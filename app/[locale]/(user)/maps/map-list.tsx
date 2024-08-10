@@ -79,9 +79,9 @@ export default function MapList() {
       </GridLayout>
       <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
-          <PaginationNavigator numberOfItems={data ?? 0} />
+          <PaginationNavigator numberOfItems={data} />
         </GridLayout>
-        <div className="flex gap-1">
+        <div className="flex gap-2">
           <InternalLink
             variant="button-secondary"
             href={`${env.url.base}/users/me`}

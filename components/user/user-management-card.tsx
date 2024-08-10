@@ -130,9 +130,9 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
                   {role.name}
                 </span>
                 {selectedRole.map((r) => r.id).includes(role.id) ? (
-                  <CheckSquare className="h-5 w-5" />
+                  <CheckSquare className="size-5" />
                 ) : (
-                  <Square className="h-5 w-5" />
+                  <Square className="size-5" />
                 )}
               </ToggleGroupItem>
             ))}

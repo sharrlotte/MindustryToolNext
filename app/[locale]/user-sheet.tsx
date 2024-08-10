@@ -36,7 +36,7 @@ export function UserActions() {
     () => [
       [
         {
-          icon: <GlobeIcon className="h-5 w-5" />,
+          icon: <GlobeIcon className="size-5" />,
           action: <ChangeLanguageDialog />,
         },
         {
@@ -57,12 +57,12 @@ export function UserActions() {
   );
 
   return (
-    <div className="divide-y-2 space-y-4 text-opacity-90">
+    <div className="space-y-4 divide-y-2 text-opacity-90">
       {tabs.map((tab, index) => (
         <div key={index}>
           {tab.map(({ action, icon }, index) => (
             <div
-              className="grid grid-cols-[20px,1fr] w-full gap-4 rounded-sm p-2 hover:bg-brand hover:text-white items-center cursor-pointer min-w-52"
+              className="grid w-full min-w-52 cursor-pointer grid-cols-[20px,1fr] items-center gap-4 rounded-sm p-2 hover:bg-brand hover:text-white"
               key={index}
             >
               {icon}

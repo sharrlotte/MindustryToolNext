@@ -80,7 +80,7 @@ export default function UploadPluginCard({ plugin }: Props) {
           className="absolute right-1 top-1 m-1 border-none"
           href={githubUrl}
         >
-          <ExternalLink className="h-5 w-5" />
+          <ExternalLink className="size-5" />
         </Link>
         <VerifyPluginDialog plugin={plugin} />
         <DeleteButton
@@ -143,7 +143,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="aspect-square p-0" variant="outline" title="verify">
-          <CheckIcon className="h-5 w-5" />
+          <CheckIcon className="size-5" />
         </Button>
       </DialogTrigger>
       <DialogContent>

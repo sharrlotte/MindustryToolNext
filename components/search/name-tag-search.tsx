@@ -175,12 +175,12 @@ export default function NameTagSearch({
         </Search>
         {useTag && (
           <Button
-            className="border border-none border-border bg-card shadow-md dark:border-solid dark:bg-transparent"
+            className="border-none bg-secondary shadow-md"
             title={t('filter')}
             variant="outline"
             onClick={handleShowFilterDialog}
           >
-            <FilterIcon className="h-5 w-5" strokeWidth={1.5} />
+            <FilterIcon className="size-5" strokeWidth={1.5} />
           </Button>
         )}
       </div>

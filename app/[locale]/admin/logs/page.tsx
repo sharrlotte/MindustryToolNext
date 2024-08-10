@@ -229,7 +229,7 @@ function StaticLog({ collection }: StaticLogProps) {
                   disabled={!content}
                   onClick={() => setContent('')}
                 >
-                  <XMarkIcon className="h-5 w-5" />
+                  <XMarkIcon className="size-5" />
                 </Button>
               </div>
             </div>
@@ -247,7 +247,7 @@ function StaticLog({ collection }: StaticLogProps) {
                   disabled={!ip}
                   onClick={() => setIp('')}
                 >
-                  <XMarkIcon className="h-5 w-5" />
+                  <XMarkIcon className="size-5" />
                 </Button>
               </div>
             </div>
@@ -265,7 +265,7 @@ function StaticLog({ collection }: StaticLogProps) {
                   disabled={!userId}
                   onClick={() => setUserId('')}
                 >
-                  <XMarkIcon className="h-5 w-5" />
+                  <XMarkIcon className="size-5" />
                 </Button>
               </div>
             </div>
@@ -283,7 +283,7 @@ function StaticLog({ collection }: StaticLogProps) {
                   disabled={!url}
                   onClick={() => setUrl('')}
                 >
-                  <XMarkIcon className="h-5 w-5" />
+                  <XMarkIcon className="size-5" />
                 </Button>
               </div>
             </div>

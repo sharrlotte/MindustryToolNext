@@ -561,7 +561,7 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
                         htmlFor="image"
                         hidden
                       >
-                        <ImageIcon className="h-5 w-5" />
+                        <ImageIcon className="size-5" />
                       </label>
                       <input
                         id="image"

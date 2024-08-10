@@ -41,7 +41,7 @@ export default function TakeDownButton({
           size="command"
           disabled={isLoading}
         >
-          <TrashIcon className="h-5 w-5" />
+          <TrashIcon className="size-5" />
           <Tran text="take-down" />
         </Button>
       </AlertDialogTrigger>

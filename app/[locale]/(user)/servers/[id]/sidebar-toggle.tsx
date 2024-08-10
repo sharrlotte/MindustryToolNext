@@ -46,7 +46,7 @@ export default function SidebarToggle() {
         )}
         onClick={() => setExpand(!expand)}
       >
-        <ChevronRight className="h-5 w-5" />
+        <ChevronRight className="size-5" />
       </div>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger

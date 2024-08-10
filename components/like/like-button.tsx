@@ -30,7 +30,7 @@ export default function LikeButton({ className, ...props }: LikeButtonProps) {
       disabled={isLoading}
       onClick={() => handleAction('LIKE')}
     >
-      <ThumbsUpIcon className="h-5 w-5" />
+      <ThumbsUpIcon className="size-5" />
     </button>
   );
 }

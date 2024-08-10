@@ -7,9 +7,7 @@ type Props = {
   requirements: ItemRequirement[];
 };
 
-export default function ItemRequirementCard({
-  requirements,
-}: Props) {
+export default function ItemRequirementCard({ requirements }: Props) {
   if (!requirements) return <></>;
 
   return (
@@ -17,7 +15,7 @@ export default function ItemRequirementCard({
       {requirements.map((r, index) => (
         <span key={index} className="flex flex-row items-center justify-center">
           <Image
-            className="h-5 w-5"
+            className="size-5"
             width={24}
             height={24}
             src={`/assets/items/item-${r.name}.png`}

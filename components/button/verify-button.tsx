@@ -36,7 +36,7 @@ export default function VerifyButton({
         className="flex items-center justify-center rounded-md border p-2 hover:bg-success"
         disabled={isLoading}
       >
-        <CheckIcon className="h-5 w-5" />
+        <CheckIcon className="size-5" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

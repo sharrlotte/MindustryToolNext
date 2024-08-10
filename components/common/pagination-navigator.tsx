@@ -22,9 +22,9 @@ import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
 
 type Props = {
-  numberOfItems: number;
+  numberOfItems?: number;
 };
-export default function PaginationNavigator({ numberOfItems }: Props) {
+export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
   const params = useSearchQuery(PaginationQuery);
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(0);
@@ -72,7 +72,7 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
       <PaginationContent>
         <PaginationItem>
           <Button
-            className="w-full min-w-9 p-0 px-2 py-1"
+            className="w-full min-w-9 rounded-sm p-0 px-2 py-1"
             title="0"
             onClick={() => handlePageChange(previousPage)}
             variant="icon"
@@ -83,8 +83,8 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         </PaginationItem>
         <PaginationItem>
           <Button
-            className={cn('w-full min-w-9 p-0 px-2 py-1', {
-              'bg-brand text-background dark:text-foreground':
+            className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+              'bg-accent text-background dark:text-foreground':
                 firstNumber === currentPage,
             })}
             title="prev"
@@ -97,8 +97,8 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         {lastPage > 1 && (
           <PaginationItem>
             <Button
-              className={cn('w-full min-w-9 p-0 px-2 py-1', {
-                'bg-brand text-background dark:text-foreground':
+              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+                'bg-accent text-background dark:text-foreground':
                   secondNumber === currentPage,
               })}
               title="prev"
@@ -149,8 +149,8 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         {lastPage > 2 && (
           <PaginationItem>
             <Button
-              className={cn('w-full min-w-9 p-0 px-2 py-1', {
-                'bg-brand text-background dark:text-foreground':
+              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+                'bg-accent text-background dark:text-foreground':
                   secondLastNumber === currentPage,
               })}
               title="prev"
@@ -164,8 +164,8 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         {lastPage > 1 && (
           <PaginationItem>
             <Button
-              className={cn('w-full min-w-9 p-0 px-2 py-1', {
-                'bg-brand text-background dark:text-foreground':
+              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+                'bg-accent text-background dark:text-foreground':
                   lastNumber === currentPage,
               })}
               title="prev"
@@ -178,7 +178,7 @@ export default function PaginationNavigator({ numberOfItems }: Props) {
         )}
         <PaginationItem>
           <Button
-            className="w-full min-w-9 p-0 px-2 py-1"
+            className="w-full min-w-9 rounded-sm p-0 px-2 py-1"
             title="0"
             onClick={() => handlePageChange(nextPage)}
             variant="icon"

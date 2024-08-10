@@ -45,7 +45,7 @@ export default function PostPreviewCard({
           </div>
           <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
             <CopyButton data={link} content={link}>
-              <LinkIcon className="h-5 w-5" />
+              <LinkIcon className="size-5" />
             </CopyButton>
             {post.isVerified && (
               <LikeComponent
