@@ -86,6 +86,7 @@ function LiveLog() {
                 container={() => container}
                 params={{ page: 0, size: 40 }}
                 end={<></>}
+                showNotification={false}
                 getFunc={(
                   _,
                   params: {
