@@ -157,7 +157,6 @@ export default function CreateServerDialog() {
                     <FormLabel>Mode</FormLabel>
                     <FormControl>
                       <ComboBox
-                        className="bg-transparent"
                         placeholder={InternalServerModes[0]}
                         value={{ label: field.value, value: field.value }}
                         values={InternalServerModes.map((value) => ({

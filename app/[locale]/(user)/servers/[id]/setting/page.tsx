@@ -222,7 +222,6 @@ function ServerSettingEditor({ server }: Props) {
                   <FormLabel>Mode</FormLabel>
                   <FormControl>
                     <ComboBox
-                      className="bg-transparent capitalize"
                       placeholder={InternalServerModes[0]}
                       value={{ label: field.value, value: field.value }}
                       values={InternalServerModes.map((value) => ({
