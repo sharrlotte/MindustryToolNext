@@ -15,6 +15,8 @@ import {
   ArrowDownIcon as _ArrowDownIcon,
   Menu,
   UploadIcon as _UploadIcon,
+  ExpandIcon as _ExpandIcon,
+  ShrinkIcon as _ShrinkIcon,
 } from 'lucide-react';
 
 import {
@@ -54,3 +56,5 @@ export const DiscordIcon = () => <DiscordLogoIcon className="size-5" />;
 export const ArrowDownIcon = () => <_ArrowDownIcon className="size-7" />;
 export const MenuIcon = () => <Menu className="h-8 w-8 text-white" />;
 export const UploadIcon = () => <_UploadIcon className="size-5" />;
+export const ExpandIcon = () => <_ExpandIcon className="size-5" />;
+export const ShrinkIcon = () => <_ShrinkIcon className="size-5" />;
