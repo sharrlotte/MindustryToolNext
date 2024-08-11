@@ -231,8 +231,8 @@ export default async function Home({
         <div className="flex w-full justify-center bg-black p-4 text-center text-sm">
           Copyright © 2024 ‧ MindustryTool. All rights reserved.
         </div>
+        <Ads />
       </footer>
-      <Ads />
     </div>
   );
 }
