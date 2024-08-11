@@ -1,6 +1,7 @@
 'use client';
 
 import Tran from '@/components/common/tran';
+import MetricWrapper from '@/components/metric/metric-wrapper';
 import { UserLoginHistory } from '@/types/response/UserLoginHistory';
 
 type Props = {
@@ -9,18 +10,20 @@ type Props = {
 
 export default function LoginHistory({ data }: Props) {
   return (
-    <div className="rounded-lg bg-card flex w-full flex-col gap-2 p-2 h-[500px]">
-      <span className="font-bold">
-        <Tran text="metric.user-login-history" />
-      </span>
-      <div className="h-[400px]">
-        <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
-          {data.map((history) => (
-            <LoginHistoryCard key={history.id} history={history} />
-          ))}
-        </section>
+    <MetricWrapper>
+      <div className="flex h-[500px] w-full flex-col gap-2 bg-card p-2">
+        <span className="font-bold">
+          <Tran text="metric.user-login-history" />
+        </span>
+        <div className="h-[400px]">
+          <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
+            {data.map((history) => (
+              <LoginHistoryCard key={history.id} history={history} />
+            ))}
+          </section>
+        </div>
       </div>
-    </div>
+    </MetricWrapper>
   );
 }
 

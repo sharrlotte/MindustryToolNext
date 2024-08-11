@@ -18,6 +18,7 @@ import Tran from '@/components/common/tran';
 import { fillMetric } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { Metric } from '@/types/response/Metric';
+import MetricWrapper from '@/components/metric/metric-wrapper';
 
 ChartJS.register(
   CategoryScale,
@@ -53,31 +54,33 @@ export default function LikeChart({ start, dates, data }: Props) {
   };
 
   return (
-    <div className="rounded-lg bg-card flex w-full flex-col h-full gap-2 p-2 aspect-[2/1.5] justify-between">
-      <span className="font-bold">
-        <Tran text="metric.user-interaction" />
-      </span>
-      <div className="bg-card h-full">
-        <Line
-          options={{
-            responsive: true,
-            plugins: {
-              legend: {
-                position: 'top' as const,
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  stepSize: 1,
+    <MetricWrapper>
+      <div className="flex aspect-[2/1.5] h-full w-full flex-col justify-between gap-2 bg-card p-2">
+        <span className="font-bold">
+          <Tran text="metric.user-interaction" />
+        </span>
+        <div className="h-full bg-card">
+          <Line
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top' as const,
                 },
               },
-            },
-          }}
-          data={chart}
-        />
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    stepSize: 1,
+                  },
+                },
+              },
+            }}
+            data={chart}
+          />
+        </div>
       </div>
-    </div>
+    </MetricWrapper>
   );
 }
