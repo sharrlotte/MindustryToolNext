@@ -1,11 +1,15 @@
 /* @type {import('next').NextConfig} */
-const removeImports = require('next-remove-imports')();
 const nextConfig = {
   experimental: {
     ppr: 'incremental',
+    reactCompiler: true,
   },
   crossOrigin: 'anonymous',
   reactStrictMode: true,
+  webpack: (config) => {
+    config.externals = [...config.externals, { canvas: 'canvas' }]; // required to make Konva & react-konva work
+    return config;
+  },
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -37,10 +41,10 @@ const nextConfig = {
   },
 };
 
-const analyze = process.env.ANALYZE === 'true';
+// const analyze = process.env.ANALYZE === 'true';
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: analyze,
-});
+// const withBundleAnalyzer = require('@next/bundle-analyzer')({
+//   enabled: analyze,
+// });
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = nextConfig;
