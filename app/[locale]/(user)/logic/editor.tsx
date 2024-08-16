@@ -1,38 +1,49 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer, Group, Line, Rect } from 'react-konva';
-import Konva from 'konva';
-import { KonvaEventObject } from 'konva/lib/Node';
 
-interface ItemType {
-  show(): React.JSX.Element;
+enum inputType {
+  text
 }
 
-type kstring = {
-
+interface FieldType {
+  x: number;
+  y: number;
+  expand: number;
+  afterText: string | null;
+  inputType: inputType
 }
 
-interface Field {
-  line: number,
-  index: number,
-  width: number,
-  text: boolean | string,
-  itemType: ItemType
+interface Command {
+  name: string;
+  gridSize: number; 
+  value: FieldType[];
+  isStart: false;
+  output1: -1;
+  output2: -1;
 }
 
-interface Logic {
-  name: string,
-  field: {
-    gridSize: number,
-    content: Field[]
-  }
+const defaultCommand: Command = {
+  name: "",
+  gridSize: 0,
+  value: [],
+  isStart: false,
+  output1: -1,
+  output2: -1,
 }
 
+const read: Command = {
+  ...defaultCommand,
+  name: "read",
+  gridSize: 2, 
+  value: [], // Mảng rỗng
+};
 
 
 
 
 
+const logicList = [[read, ]]
 
 export default function Editor() {
   const [addingPanel, setAddingPanel] = useState({
@@ -53,7 +64,8 @@ export default function Editor() {
     psy: 0,
     dragx: 0,
     dragy: 0,
-    maxContext: 1000
+    maxContext: 2000,
+    negMaxContext: -2000
   });
 
   useEffect(() => {
@@ -72,8 +84,35 @@ export default function Editor() {
   }, []);
 
   function dstart(dragx: number, dragy: number) { setPosition({ ...position, dragx: dragx, dragy: dragy, psx: position.posx, psy: position.posy }); setDrag({ isDrag: true }) };
-  function dmove(dragx: number, dragy: number) { if (isDrag.isDrag) { setPosition({ ...position, posx: (dragx - position.dragx) + position.psx, posy: (dragy - position.dragy) + position.psy }) } }
   function dend() { setDrag({ isDrag: false }) }
+  function dmove(dragx: number, dragy: number) {
+    if (isDrag.isDrag) {
+      let newPosx = ((dragx - position.dragx) * 1.5) + position.psx;
+      let newPosy = ((dragy - position.dragy) * 1.5) + position.psy;
+
+      if (newPosx > position.maxContext - position.windowWidth) {
+        newPosx = position.maxContext - position.windowWidth;
+      } else if (newPosx < position.negMaxContext) {
+        newPosx = position.negMaxContext;
+      }
+
+      if (newPosy > position.maxContext - position.windowHeight) {
+        newPosy = position.maxContext - position.windowHeight;
+      } else if (newPosy < position.negMaxContext) {
+        newPosy = position.negMaxContext;
+      }
+
+      setPosition({
+        ...position,
+        posx: newPosx,
+        posy: newPosy
+      });
+    }
+  }
+
+
+
+
 
 
   return (
@@ -83,7 +122,7 @@ export default function Editor() {
           <Line
             points={[
               0 - position.posx,
-              0 - position.posy,
+              position.negMaxContext - position.posy,
               0 - position.posx,
               position.maxContext - position.posy,
             ]}
@@ -94,7 +133,7 @@ export default function Editor() {
           ></Line>
           <Line
             points={[
-              0 - position.posx,
+              position.negMaxContext - position.posx,
               0 - position.posy,
               position.maxContext - position.posx,
               0 - position.posy,
@@ -113,12 +152,12 @@ export default function Editor() {
           ></Rect>
         </Layer>
 
-        {}
+        { }
       </Stage>
 
 
 
-
+      <div className='flex fixed top-12 left-4 text-xl'>{`Pos: ${position.posx}, ${position.posy}`}</div>
       <button
         onClick={() => {
           setAddingPanel({ display: 'flex' });
@@ -129,14 +168,18 @@ export default function Editor() {
         key={"logic-table"}
         className={`flex-col absolute m-8 bg-[#707070aa] backdrop-blur-md w-[calc(100%-4rem)] h-[calc(100%-4rem)] rounded-xl ${addingPanel.display}`}
       >
-        <div className='flex justify-between w-full p-4 pb-2 pt-2'>
-          <span className='text-2xl'>Danh sách thêm phần tử logic</span>
+        <div className='flex items-center justify-between w-full p-4 pb-0 pt-2'>
+          <p className='text-xl'>Danh sách thêm phần tử logic</p>
+          <div className='flex item-center space-x-2'>
+          <button className='p-2'>Nhập</button>
+          <button className='p-2'>Xuất</button>
           <button
-            onClick={() => {
-              setAddingPanel({ display: 'hidden' });
-            }}
-            className='w-8 h-8 bg-white rounded-md'
-          ></button>
+              onClick={() => {
+                setAddingPanel({ display: 'hidden' });
+              }}
+              className='w-8 h-8 bg-white rounded-md'
+            ></button>
+          </div>
         </div>
         <div className='flex w-[calc(100%-1rem)] h-1 bg-white rounded-md mr-2 ml-2'></div>
       </div>
