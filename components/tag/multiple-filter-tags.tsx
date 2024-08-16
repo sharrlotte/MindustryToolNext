@@ -23,7 +23,9 @@ function _MultipleFilerTags({
       onValueChange={handleTagGroupChange}
       value={selectedValue}
     >
-      <span className="whitespace-nowrap text-lg capitalize">{group.name}</span>
+      <TagName className="whitespace-nowrap text-lg capitalize">
+        {group.name}
+      </TagName>
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.sort().map((value) => (
         <TagTooltip name={group.name} value={value} key={value}>
