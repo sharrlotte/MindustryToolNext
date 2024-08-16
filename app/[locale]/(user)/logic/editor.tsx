@@ -4,9 +4,44 @@ import { Stage, Layer, Group, Line, Rect } from 'react-konva';
 import Konva from 'konva';
 import { KonvaEventObject } from 'konva/lib/Node';
 
+interface ItemType {
+  show(): React.JSX.Element;
+}
+
+type kstring = {
+
+}
+
+interface Field {
+  line: number,
+  index: number,
+  width: number,
+  text: boolean | string,
+  itemType: ItemType
+}
+
+interface Logic {
+  name: string,
+  field: {
+    gridSize: number,
+    content: Field[]
+  }
+}
+
+
+
+
+
+
+
 export default function Editor() {
   const [addingPanel, setAddingPanel] = useState({
     display: 'hidden'
+  });
+
+  // fuck. debug
+  const [isDrag, setDrag] = useState({
+    isDrag: false
   });
 
   const [position, setPosition] = useState({
@@ -18,7 +53,6 @@ export default function Editor() {
     psy: 0,
     dragx: 0,
     dragy: 0,
-    isDrag: false,
     maxContext: 1000
   });
 
@@ -37,34 +71,15 @@ export default function Editor() {
     };
   }, []);
 
-  function dstart(dragx: number, dragy: number) { setPosition({ ...position, dragx: dragx, dragy: dragy, psx: position.posx, psy: position.posy, isDrag: true }) };
-  function dmove(dragx: number, dragy: number) { if (position.isDrag) { setPosition({ ...position, posx: (dragx - position.dragx) + position.psx, posy: (dragy - position.dragy) + position.psy }) } }
-  function dend() { if (position.isDrag) { setPosition({ ...position, isDrag: false }) } }
+  function dstart(dragx: number, dragy: number) { setPosition({ ...position, dragx: dragx, dragy: dragy, psx: position.posx, psy: position.posy }); setDrag({ isDrag: true }) };
+  function dmove(dragx: number, dragy: number) { if (isDrag.isDrag) { setPosition({ ...position, posx: (dragx - position.dragx) + position.psx, posy: (dragy - position.dragy) + position.psy }) } }
+  function dend() { setDrag({ isDrag: false }) }
+
 
   return (
     <div className='flex w-full h-full'>
       <Stage width={position.windowWidth} height={position.windowHeight}>
         <Layer>
-          <Rect
-            onMouseDown={(e) => { dstart(e.evt.x, e.evt.y); console.log('down') }}
-            onMouseMove={(e) => { dmove(e.evt.x, e.evt.y); if (position.isDrag) { console.log('move') } }}
-            onMouseUp={(e) => { dend(); console.log("up") }}
-
-            x={0}
-            y={0}
-            width={position.windowWidth}
-            height={position.windowHeight}
-            fill={"#ff0000aa"}
-          ></Rect>
-
-          <Rect
-            draggable
-            x={100}
-            y={100}
-            width={100}
-            height={100}
-            fill={"yellow"}
-          ></Rect>
           <Line
             points={[
               0 - position.posx,
@@ -90,7 +105,19 @@ export default function Editor() {
             lineJoin='round'
           ></Line>
         </Layer>
+        <Layer>
+          <Rect x={0} y={0} width={position.windowWidth} height={position.windowHeight}
+            onMouseDown={(e) => { dstart(e.evt.x, e.evt.y) }}
+            onMouseMove={(e) => { dmove(e.evt.x, e.evt.y) }}
+            onMouseUp={() => { dend() }}
+          ></Rect>
+        </Layer>
+
+        {}
       </Stage>
+
+
+
 
       <button
         onClick={() => {
