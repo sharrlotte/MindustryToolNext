@@ -1,11 +1,13 @@
 import Script from 'next/script';
 import React from 'react';
 
+const showAds = false;
+
 export default function Ads() {
   const env = process.env.NODE_ENV;
   const isProduction = env === 'production';
 
-  if (isProduction) {
+  if (isProduction && showAds) {
     return (
       <Script
         strategy="afterInteractive"
