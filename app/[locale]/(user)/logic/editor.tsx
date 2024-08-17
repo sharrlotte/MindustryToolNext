@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState, useCallback } from 'react';
-import { Stage, Layer, Line, Rect, Group, Text, Path } from 'react-konva';
+import { Stage, Layer, Line, Rect, Group, Text } from 'react-konva';
 import { Plus, X, ArrowDownToLine, ArrowUpToLine } from "lucide-react";
 import { Command, start, read } from './command';
 
@@ -19,7 +19,7 @@ export default function Editor() {
     dragy: 0,
     maxContext: 4000,
     negMaxContext: -4000,
-    elementSizeMultiplier: 1
+    scale: 1
   });
 
   const dstart = useCallback((dragx: number, dragy: number) => {
@@ -31,22 +31,45 @@ export default function Editor() {
   const dmove = useCallback((dragx: number, dragy: number) => {
     if (isDrag) {
       setPosition((prev) => {
+        const displayableWidth = prev.windowWidth * (1 / prev.scale);
+        const displayableHeight = prev.windowHeight * (1 / prev.scale);
+  
         let newPosx = ((dragx - prev.dragx) * 1.5) + prev.psx;
         let newPosy = ((dragy - prev.dragy) * 1.5) + prev.psy;
-
-        newPosx = Math.min(Math.max(newPosx, prev.negMaxContext), prev.maxContext - prev.windowWidth);
-        newPosy = Math.min(Math.max(newPosy, prev.negMaxContext), prev.maxContext - prev.windowHeight);
-
+  
+        newPosx = Math.min(Math.max(newPosx, prev.negMaxContext), prev.maxContext - displayableWidth);
+        newPosy = Math.min(Math.max(newPosy, prev.negMaxContext), prev.maxContext - displayableHeight);
+  
         return { ...prev, posx: newPosx, posy: newPosy };
       });
     }
   }, [isDrag]);
+  
+
+  const handleWheel = useCallback((e: { evt: { preventDefault: () => void; deltaY: number; }; target: { getStage: () => any; }; }) => {
+    e.evt.preventDefault();
+    const scaleBy = 1.05;
+    const oldScale = position.scale;
+    let newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
+    if (newScale <= 0.25) {
+      newScale = 0.25;
+    } else if (newScale >= 2) {
+      newScale = 2;
+    }
+
+    setPosition((prev) => ({
+      ...prev,
+      scale: newScale,
+      windowWidth: window.innerWidth,
+      windowHeight: (window.innerHeight - 40),
+    }));
+  }, [position]);
 
   useEffect(() => {
     const resize = () => setPosition((prev) => ({
       ...prev,
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight - 40,
+      windowWidth: window.innerWidth * prev.scale,
+      windowHeight: (window.innerHeight - 40) * prev.scale,
     }));
 
     window.addEventListener('resize', resize);
@@ -62,18 +85,6 @@ export default function Editor() {
     setItem(() => { const map = new Map(); map.set(0, command); return map })
   };
 
-  function getAndChange(id: number, exec: (object: Command) => Command) {
-
-  };
-
-  function remove(id: number) {
-
-  };
-
-  async function reomveFirstLayer(params: any) {
-
-  }
-
   function render(): React.JSX.Element {
     const layers: React.JSX.Element[] = [];
     layers.push(
@@ -81,55 +92,53 @@ export default function Editor() {
         key='touching'
         x={0}
         y={0}
-        width={position.windowWidth}
-        height={position.windowHeight}
+        width={position.windowWidth * (1 / position.scale)}
+        height={position.windowHeight * (1 / position.scale)}
         onMouseDown={(e) => dstart(e.evt.clientX, e.evt.clientY)}
-      ></Rect>)
+      ></Rect>
+    );
 
     item.forEach((object, id) => {
-      const display = (<Group
-        key={"Element" + id}
-        draggable
-        x={object.posx - position.posx}
-        y={object.posy - position.posy}
-        width={300 * position.elementSizeMultiplier}
-        height={50 + (object.gridSize * 50) * position.elementSizeMultiplier} // header 30px + 20px + grid size
-        onDragStart={(e) => { object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
-        onDragMove={(e) => { object.posx += e.evt.clientX - object.lastx; object.posy += e.evt.clientY - object.lasty; object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
-      >
-        <Rect
-          key={'backgroundBox' + id}
-          x={0}
-          y={0}
-          width={300 * position.elementSizeMultiplier}
-          height={(50 + (object.gridSize * 50)) * position.elementSizeMultiplier}
-          cornerRadius={5}
-          fill={object.color}
-        ></Rect>
+      const display = (
+        <Group
+          key={"Element" + id}
+          draggable
+          x={object.posx - position.posx}
+          y={object.posy - position.posy}
+          width={300}
+          height={50 + (object.gridSize * 50)} // header 30px + 20px + grid size
+          onDragStart={(e) => { object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
+          onDragMove={(e) => { object.posx += (e.evt.clientX - object.lastx) / position.scale; object.posy += (e.evt.clientY - object.lasty) / position.scale; object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
+          onDragEnd={(e) => { object.posx += (e.evt.clientX - object.lastx) / position.scale; object.posy += (e.evt.clientY - object.lasty) / position.scale; object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
+        >
+          <Rect
+            key={'backgroundBox' + id}
+            x={0}
+            y={0}
+            width={300}
+            height={(50 + (object.gridSize * 50))}
+            cornerRadius={5}
+            fill={object.color}
+          ></Rect>
 
-        <Rect
-          key={'content' + id}
-          x={5}
-          y={35 * position.elementSizeMultiplier}
-          width={(300 * position.elementSizeMultiplier) - 10}
-          height={(10 + (object.gridSize * 50)) * position.elementSizeMultiplier}
-          fill={'#000000aa'}
-          cornerRadius={5}
-        ></Rect>
+          <Rect
+            key={'content' + id}
+            x={5}
+            y={35}
+            width={(300) - 10}
+            height={(10 + (object.gridSize * 50))}
+            fill={'#000000aa'}
+            cornerRadius={5}
+          ></Rect>
 
-        <Text
-          x={5}
-          y={10}
-          text={object.name}
-          fontSize={19 * position.elementSizeMultiplier}
-        ></Text>
-        {object.value.map((a, b) => (
-          <Group
-            key={"Group" + id + b}
-            
-          ></Group>
-        ))}
-      </Group>);
+          <Text
+            x={5}
+            y={10}
+            text={object.name}
+            fontSize={19}
+          ></Text>
+        </Group>
+      );
 
       layers.push(display);
     });
@@ -140,19 +149,28 @@ export default function Editor() {
         onMouseMove={(e) => dmove(e.evt.clientX, e.evt.clientY)}
         onMouseUp={() => dend()}
         onMouseLeave={() => dend()}
-      >{layers}</Layer>);
+      >
+        {layers}
+      </Layer>
+    );
   }
 
   return (
     <div className='flex w-full h-full'>
-      <Stage width={position.windowWidth} height={position.windowHeight}>
+      <Stage
+        width={position.windowWidth}
+        height={position.windowHeight}
+        scaleX={position.scale}
+        scaleY={position.scale}
+        onWheel={handleWheel}
+      >
         <Layer>
           <Line
             points={[
               0 - position.posx,
               position.negMaxContext - position.posy,
               0 - position.posx,
-              position.maxContext - position.posy
+              position.maxContext - position.posy,
             ]}
             stroke="white"
             strokeWidth={5}
@@ -175,7 +193,7 @@ export default function Editor() {
         {render()}
       </Stage>
 
-      <div className='flex fixed top-12 left-4 text-xl'>{`Pos: ${position.posx}, ${position.posy}`}</div>
+      <div className='flex fixed top-12 left-4 text-xl'>{`Pos: ${position.posx}, ${position.posy}. Scale ${position.scale}. Width ${position.windowWidth}`}</div>
       <Plus onClick={() => setAddingPanel('flex')} className='fixed left-4 bottom-4 w-16 h-16 rounded-2xl border-4' />
       <div key="logic-table" className={`flex-col absolute m-8 bg-[#707070aa] backdrop-blur-md w-[calc(100%-4rem)] h-[calc(100%-4rem)] rounded-xl ${addingPanel}`}>
         <div className='flex items-center justify-between w-full p-4 pb-0 pt-2'>
