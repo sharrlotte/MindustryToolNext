@@ -1,69 +1,10 @@
 'use client';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Stage, Layer, Line, Rect } from 'react-konva';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Stage, Layer, Line, Rect, Group, Text, Path } from 'react-konva';
 import { Plus, X, ArrowDownToLine, ArrowUpToLine } from "lucide-react";
-
-interface inputType {
-  show(): React.JSX.Element;
-  value: string;
-}
-
-interface FieldType {
-  x: number;
-  y: number;
-  expand: number;
-  afterText: string | null;
-  inputType: inputType;
-}
-
-interface Command {
-  name: string;
-  color: string;
-  gridSize: number;
-  value: FieldType[];
-  isStart: false;
-  displayFirst: false;
-  lastx: 0;
-  lasty: 0;
-  posx: 0;
-  posy: 0;
-  output1: -1;
-  output2: -1;
-}
-
-const defaultCommand: Command = {
-  name: "",
-  color: "#5ABFFA",
-  gridSize: 0,
-  value: [],
-  isStart: false,
-  displayFirst: false,
-  lastx: 0,
-  lasty: 0,
-  posx: 0,
-  posy: 0,
-  output1: -1,
-  output2: -1,
-};
-
-const start: Command = {
-  ...defaultCommand,
-  name: "Start",
-  color: "#5ABFFA",
-  gridSize: 0,
-  value: []
-}
-
-const read: Command = {
-  ...defaultCommand,
-  name: "Read",
-  color: "#8782FE",
-  gridSize: 2,
-  value: [],
-};
+import { Command, start, read } from './command';
 
 const logicList = [[start], [read, read, read, read, read, read, read]];
-
 export default function Editor() {
   const [addingPanel, setAddingPanel] = useState('hidden');
   const [isDrag, setDrag] = useState(false);
@@ -81,23 +22,12 @@ export default function Editor() {
     elementSizeMultiplier: 1
   });
 
-  useEffect(() => {
-    const resize = () => setPosition((prev) => ({
-      ...prev,
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight - 40,
-    }));
-    window.addEventListener('resize', resize);
-    return () => window.removeEventListener('resize', resize);
-  }, []);
-
   const dstart = useCallback((dragx: number, dragy: number) => {
     setPosition((prev) => ({ ...prev, dragx, dragy, psx: prev.posx, psy: prev.posy }));
     setDrag(true);
   }, []);
 
   const dend = useCallback(() => setDrag(false), []);
-
   const dmove = useCallback((dragx: number, dragy: number) => {
     if (isDrag) {
       setPosition((prev) => {
@@ -112,11 +42,24 @@ export default function Editor() {
     }
   }, [isDrag]);
 
+  useEffect(() => {
+    const resize = () => setPosition((prev) => ({
+      ...prev,
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight - 40,
+    }));
+
+    window.addEventListener('resize', resize);
+    return () => {
+      window.removeEventListener('resize', resize);
+    };
+  }, [dmove, dend]);
+
   const [item, setItem] = useState(new Map<number, Command>);
-  const [codeLayer, setCodeLayer] = useState([]);
+  const [codeLayer, setCodeLayer] = useState(new Map<number, number>);
 
   function adding(command: Command) {
-    console.log(command);
+    setItem(() => { const map = new Map(); map.set(0, command); return map })
   };
 
   function getAndChange(id: number, exec: (object: Command) => Command) {
@@ -128,35 +71,76 @@ export default function Editor() {
   };
 
   async function reomveFirstLayer(params: any) {
-    
+
   }
 
-  function render(): React.JSX.Element[] {
+  function render(): React.JSX.Element {
     const layers: React.JSX.Element[] = [];
+    layers.push(
+      <Rect
+        key='touching'
+        x={0}
+        y={0}
+        width={position.windowWidth}
+        height={position.windowHeight}
+        onMouseDown={(e) => dstart(e.evt.clientX, e.evt.clientY)}
+      ></Rect>)
 
     item.forEach((object, id) => {
-      const display = (<Layer
-        id={"Layer " + id}
+      const display = (<Group
+        key={"Element" + id}
         draggable
         x={object.posx - position.posx}
         y={object.posy - position.posy}
         width={300 * position.elementSizeMultiplier}
-        height={50 + (object.gridSize * 50) * position.elementSizeMultiplier} // header size + 10px + grid size
-        onDragStart={() => { }}
+        height={50 + (object.gridSize * 50) * position.elementSizeMultiplier} // header 30px + 20px + grid size
+        onDragStart={(e) => { object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
+        onDragMove={(e) => { object.posx += e.evt.clientX - object.lastx; object.posy += e.evt.clientY - object.lasty; object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
       >
         <Rect
+          key={'backgroundBox' + id}
           x={0}
           y={0}
           width={300 * position.elementSizeMultiplier}
-          height={50 + (object.gridSize * 50) * position.elementSizeMultiplier}
+          height={(50 + (object.gridSize * 50)) * position.elementSizeMultiplier}
+          cornerRadius={5}
           fill={object.color}
         ></Rect>
-      </Layer>);
+
+        <Rect
+          key={'content' + id}
+          x={5}
+          y={35 * position.elementSizeMultiplier}
+          width={(300 * position.elementSizeMultiplier) - 10}
+          height={(10 + (object.gridSize * 50)) * position.elementSizeMultiplier}
+          fill={'#000000aa'}
+          cornerRadius={5}
+        ></Rect>
+
+        <Text
+          x={5}
+          y={10}
+          text={object.name}
+          fontSize={19 * position.elementSizeMultiplier}
+        ></Text>
+        {object.value.map((a, b) => (
+          <Group
+            key={"Group" + id + b}
+            
+          ></Group>
+        ))}
+      </Group>);
 
       layers.push(display);
     });
 
-    return layers;
+    return (
+      <Layer
+        key='logicShow'
+        onMouseMove={(e) => dmove(e.evt.clientX, e.evt.clientY)}
+        onMouseUp={() => dend()}
+        onMouseLeave={() => dend()}
+      >{layers}</Layer>);
   }
 
   return (
@@ -168,7 +152,7 @@ export default function Editor() {
               0 - position.posx,
               position.negMaxContext - position.posy,
               0 - position.posx,
-              position.maxContext - position.posy,
+              position.maxContext - position.posy
             ]}
             stroke="white"
             strokeWidth={5}
@@ -186,17 +170,6 @@ export default function Editor() {
             strokeWidth={5}
             lineCap='round'
             lineJoin='round'
-          />
-        </Layer>
-        <Layer>
-          <Rect
-            x={0}
-            y={0}
-            width={position.windowWidth}
-            height={position.windowHeight}
-            onMouseDown={(e) => dstart(e.evt.x, e.evt.y)}
-            onMouseMove={(e) => dmove(e.evt.x, e.evt.y)}
-            onMouseUp={dend}
           />
         </Layer>
         {render()}
@@ -230,7 +203,6 @@ export default function Editor() {
             </ul>
           ))}
         </div>
-
       </div>
     </div>
   );
