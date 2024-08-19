@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState, useCallback } from 'react';
 import { Stage, Layer, Line, Rect, Group, Text } from 'react-konva';
-import { Plus, X, ArrowDownToLine, ArrowUpToLine } from "lucide-react";
+import { Plus, X, ArrowDownToLine, ArrowUpToLine } from 'lucide-react';
 import { Command, start, read } from './command';
 
 const logicList = [[start], [read, read, read, read, read, read, read]];
@@ -193,7 +193,7 @@ export default function Editor() {
         {render()}
       </Stage>
 
-      <div className='flex fixed top-12 left-4 text-xl'>{`Pos: ${position.posx}, ${position.posy}. Scale ${position.scale}. Width ${position.windowWidth}`}</div>
+      <div className='flex fixed top-12 left-4 text-xl'>{`Pos: ${position.posx}, ${position.posy}. Scale ${position.scale}.`}</div>
       <Plus onClick={() => setAddingPanel('flex')} className='fixed left-4 bottom-4 w-16 h-16 rounded-2xl border-4' />
       <div key="logic-table" className={`flex-col absolute m-8 bg-[#707070aa] backdrop-blur-md w-[calc(100%-4rem)] h-[calc(100%-4rem)] rounded-xl ${addingPanel}`}>
         <div className='flex items-center justify-between w-full p-4 pb-0 pt-2'>
