@@ -1,12 +1,13 @@
 'use client';
+
 import React, { useEffect, useState, useCallback } from 'react';
-import { Stage, Layer, Line, Rect, Group, Text } from 'react-konva';
-import { Plus, X, ArrowDownToLine, ArrowUpToLine } from 'lucide-react';
+import { Stage, Layer, Line, Rect, Group, Text, Circle } from 'react-konva';
 import { Command, start, read } from './command';
 
 const logicList = [[start], [read, read, read, read, read, read, read]];
+
 export default function Editor() {
-  const [addingPanel, setAddingPanel] = useState('hidden');
+  const [isLnav, setLnav] = useState(false);
   const [isDrag, setDrag] = useState(false);
   const [position, setPosition] = useState({
     windowWidth: window.innerWidth,
@@ -19,7 +20,7 @@ export default function Editor() {
     dragy: 0,
     maxContext: 4000,
     negMaxContext: -4000,
-    scale: 1
+    scale: 1,
   });
 
   const dstart = useCallback((dragx: number, dragy: number) => {
@@ -28,42 +29,39 @@ export default function Editor() {
   }, []);
 
   const dend = useCallback(() => setDrag(false), []);
+
   const dmove = useCallback((dragx: number, dragy: number) => {
     if (isDrag) {
       setPosition((prev) => {
-        const displayableWidth = prev.windowWidth * (1 / prev.scale);
-        const displayableHeight = prev.windowHeight * (1 / prev.scale);
-  
+        const displayableWidth = prev.windowWidth / prev.scale;
+        const displayableHeight = prev.windowHeight / prev.scale;
+
         let newPosx = ((dragx - prev.dragx) * 1.5) + prev.psx;
         let newPosy = ((dragy - prev.dragy) * 1.5) + prev.psy;
-  
+
         newPosx = Math.min(Math.max(newPosx, prev.negMaxContext), prev.maxContext - displayableWidth);
         newPosy = Math.min(Math.max(newPosy, prev.negMaxContext), prev.maxContext - displayableHeight);
-  
+
         return { ...prev, posx: newPosx, posy: newPosy };
       });
     }
   }, [isDrag]);
-  
 
   const handleWheel = useCallback((e: { evt: { preventDefault: () => void; deltaY: number; }; target: { getStage: () => any; }; }) => {
     e.evt.preventDefault();
     const scaleBy = 1.05;
     const oldScale = position.scale;
     let newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
-    if (newScale <= 0.25) {
-      newScale = 0.25;
-    } else if (newScale >= 2) {
-      newScale = 2;
-    }
+
+    newScale = Math.min(Math.max(newScale, 0.25), 2);
 
     setPosition((prev) => ({
       ...prev,
       scale: newScale,
       windowWidth: window.innerWidth,
-      windowHeight: (window.innerHeight - 40),
+      windowHeight: window.innerHeight - 40,
     }));
-  }, [position]);
+  }, [position.scale]);
 
   useEffect(() => {
     const resize = () => setPosition((prev) => ({
@@ -76,14 +74,30 @@ export default function Editor() {
     return () => {
       window.removeEventListener('resize', resize);
     };
-  }, [dmove, dend]);
+  }, [position.scale]);
 
-  const [item, setItem] = useState(new Map<number, Command>);
-  const [codeLayer, setCodeLayer] = useState(new Map<number, number>);
+  const [item, setItem] = useState<Map<number, Command>>(new Map());
 
-  function adding(command: Command) {
-    setItem(() => { const map = new Map(); map.set(0, command); return map })
-  };
+  function addingCommand(command: Command) {
+    setItem((prevItems) => {
+      const newItems = new Map(prevItems);
+      let id;
+      do {
+        id = Math.floor(Math.random() * 100000);
+      } while (newItems.has(id));
+
+      newItems.set(id, command);
+      return newItems;
+    });
+  }
+
+  function removeCommand(id: number) {
+    setItem((prevItems) => {
+      const newItems = new Map(prevItems);
+      newItems.delete(id);
+      return newItems;
+    });
+  }
 
   function render(): React.JSX.Element {
     const layers: React.JSX.Element[] = [];
@@ -92,51 +106,79 @@ export default function Editor() {
         key='touching'
         x={0}
         y={0}
-        width={position.windowWidth * (1 / position.scale)}
-        height={position.windowHeight * (1 / position.scale)}
+        width={position.windowWidth / position.scale}
+        height={position.windowHeight / position.scale}
         onMouseDown={(e) => dstart(e.evt.clientX, e.evt.clientY)}
-      ></Rect>
+      />
     );
 
     item.forEach((object, id) => {
       const display = (
         <Group
-          key={"Element" + id}
+          key={`element-${id}`}
           draggable
           x={object.posx - position.posx}
           y={object.posy - position.posy}
-          width={300}
-          height={50 + (object.gridSize * 50)} // header 30px + 20px + grid size
           onDragStart={(e) => { object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
-          onDragMove={(e) => { object.posx += (e.evt.clientX - object.lastx) / position.scale; object.posy += (e.evt.clientY - object.lasty) / position.scale; object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
-          onDragEnd={(e) => { object.posx += (e.evt.clientX - object.lastx) / position.scale; object.posy += (e.evt.clientY - object.lasty) / position.scale; object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
+          onDragMove={(e) => {
+            object.posx += (e.evt.clientX - object.lastx) / position.scale;
+            object.posy += (e.evt.clientY - object.lasty) / position.scale;
+            object.lastx = e.evt.clientX;
+            object.lasty = e.evt.clientY;
+          }}
+          onDragEnd={(e) => {
+            object.posx += (e.evt.clientX - object.lastx) / position.scale;
+            object.posy += (e.evt.clientY - object.lasty) / position.scale;
+            object.lastx = e.evt.clientX;
+            object.lasty = e.evt.clientY;
+          }}
         >
           <Rect
-            key={'backgroundBox' + id}
+            key={`backgroundBox-${id}`}
             x={0}
             y={0}
             width={300}
-            height={(50 + (object.gridSize * 50))}
+            height={(object.gridSize + 1.2) * 50}
             cornerRadius={5}
             fill={object.color}
-          ></Rect>
-
+          />
           <Rect
-            key={'content' + id}
+            key={`content-${id}`}
             x={5}
             y={35}
-            width={(300) - 10}
-            height={(10 + (object.gridSize * 50))}
+            width={290}
+            height={(object.gridSize + 0.4) * 50}
             fill={'#000000aa'}
             cornerRadius={5}
-          ></Rect>
-
+          />
           <Text
+            key={`elementName-${id}`}
             x={5}
             y={10}
             text={object.name}
             fontSize={19}
-          ></Text>
+          />
+          <Group
+            key={`fieldType-${id}`}
+            x={5}
+            y={35}
+            width={290}
+            height={20 + (object.gridSize * 50)}
+          >
+            {object.value.map((value, index) => (
+              <Rect
+                key={'filling' + id + "aaa" + index}
+                x={(290 / object.columnCount) * value.x}
+                y={(value.y * 50) + ((20 / object.gridSize) * value.y)}
+                width={(290 / object.columnCount) * value.expand}
+                height={50 + (20 / object.gridSize)}
+                fill={"green"}
+              />
+            ))}
+          </Group>
+          <Group key={`connection-${id}`}>
+            {/* Add any connection-related elements here */}
+          </Group>
         </Group>
       );
 
@@ -147,7 +189,7 @@ export default function Editor() {
       <Layer
         key='logicShow'
         onMouseMove={(e) => dmove(e.evt.clientX, e.evt.clientY)}
-        onMouseUp={() => dend()}
+        onMouseUp={(e) => { dmove(e.evt.clientX, e.evt.clientY); dend(); }}
         onMouseLeave={() => dend()}
       >
         {layers}
@@ -193,27 +235,21 @@ export default function Editor() {
         {render()}
       </Stage>
 
-      <div className='flex fixed top-12 left-4 text-xl'>{`Pos: ${position.posx}, ${position.posy}. Scale ${position.scale}.`}</div>
-      <Plus onClick={() => setAddingPanel('flex')} className='fixed left-4 bottom-4 w-16 h-16 rounded-2xl border-4' />
-      <div key="logic-table" className={`flex-col absolute m-8 bg-[#707070aa] backdrop-blur-md w-[calc(100%-4rem)] h-[calc(100%-4rem)] rounded-xl ${addingPanel}`}>
-        <div className='flex items-center justify-between w-full p-4 pb-0 pt-2'>
+      <div className='flex fixed top-1.5 left-11 text-xl'>{`Pos: ${position.posx}, ${position.posy}, Scale: ${position.scale}`}</div>
+      <div key='Lnav' className={`${isLnav ? 'bottom-0' : 'rounded-2xl'} flex fixed flex-col top-[40px] left-0 w-[300px] bg-[#707070aa] backdrop-blur-sm p-2`}>
+        <div className='bg-[#999999ba] rounded-2xl p-2' onClick={() => setLnav((value) => !value)}>
           <p className='text-xl'>Danh sách thêm phần tử logic</p>
-          <div className='flex item-center space-x-4 h-8'>
-            <div className='w-8'><ArrowDownToLine className='w-8 h-full' /></div>
-            <div className='w-8'><ArrowUpToLine className='w-8 h-full' /></div>
-            <div className='w-8'><X onClick={() => setAddingPanel('hidden')} className='w-8 h-full' /></div>
-          </div>
+          <p>Ấn vào đây để mở/đóng</p>
         </div>
-        <div className='flex w-[calc(100%-1rem)] h-1 bg-white rounded-md m-2 ml-2' />
-        <div className='flex flex-col w-full p-4 pt-2 gap-4'>
+        <div key="LnavShowing" className={isLnav ? 'flex-1 overflow-y-auto mt-4' : 'hidden'}>
           {logicList.map((elementArray, a) => (
-            <ul key={a + '123456789'} className='flex flex-row flex-wrap w-full gap-2'>
-              {elementArray.map((element, a) => (
+            <ul key={`logic-${a}`} className='flex flex-row flex-wrap w-full gap-2 mb-4'>
+              {elementArray.map((element, b) => (
                 <button
-                  key={element.name + " " + a}
-                  className={`flex p-2 pl-4 pr-4 mr-4 min-w-20 text-xl rounded-2xl bg-black`}
+                  key={`element-${element.name}-${b}`}
+                  className='flex p-2 pl-4 pr-4 mr-4 w-full text-xl rounded-2xl bg-black'
                   style={{ backgroundColor: element.color }}
-                  onClick={() => { adding(element); setAddingPanel('hidden') }}
+                  onClick={() => addingCommand({ ...element, posx: 0, posy: 0 })}
                 >
                   {element.name}
                 </button>
