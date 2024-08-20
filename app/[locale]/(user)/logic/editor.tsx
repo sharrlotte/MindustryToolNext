@@ -1,14 +1,14 @@
 'use client';
-
 import React, { useEffect, useState, useCallback } from 'react';
-import { Stage, Layer, Line, Rect, Group, Text, Circle } from 'react-konva';
-import { Command, start, read } from './command';
+import { Stage, Layer, Line, Rect } from 'react-konva';
+import { start, read, fieldType } from './command';
+import Render from './render';
 
 const logicList = [[start], [read, read, read, read, read, read, read]];
 
 export default function Editor() {
-  const [isLnav, setLnav] = useState(false);
-  const [isDrag, setDrag] = useState(false);
+  const [isLeftNav, setLeftNav] = useState(false);
+  const [isDragging, setDragging] = useState(false);
   const [position, setPosition] = useState({
     windowWidth: window.innerWidth,
     windowHeight: window.innerHeight - 40,
@@ -23,38 +23,32 @@ export default function Editor() {
     scale: 1,
   });
 
-  const dstart = useCallback((dragx: number, dragy: number) => {
-    setPosition((prev) => ({ ...prev, dragx, dragy, psx: prev.posx, psy: prev.posy }));
-    setDrag(true);
+  const handleDragEnd = useCallback(() => setDragging(false), []);
+  const handleDragStart = useCallback((dragx: number, dragy: number) => {
+    setPosition((prev) => ({
+      ...prev,
+      dragx,
+      dragy,
+      psx: prev.posx,
+      psy: prev.posy,
+    }));
+    setDragging(true);
   }, []);
 
-  const dend = useCallback(() => setDrag(false), []);
-
-  const dmove = useCallback((dragx: number, dragy: number) => {
-    if (isDrag) {
+  const handleDragMove = useCallback((dragx: number, dragy: number) => {
+    if (isDragging) {
       setPosition((prev) => {
-        const displayableWidth = prev.windowWidth / prev.scale;
-        const displayableHeight = prev.windowHeight / prev.scale;
-
-        let newPosx = ((dragx - prev.dragx) * 1.5) + prev.psx;
-        let newPosy = ((dragy - prev.dragy) * 1.5) + prev.psy;
-
-        newPosx = Math.min(Math.max(newPosx, prev.negMaxContext), prev.maxContext - displayableWidth);
-        newPosy = Math.min(Math.max(newPosy, prev.negMaxContext), prev.maxContext - displayableHeight);
-
+        const newPosx = Math.min(Math.max(((dragx - prev.dragx) * 1.5) + prev.psx, prev.negMaxContext), prev.maxContext - prev.windowWidth / prev.scale);
+        const newPosy = Math.min(Math.max(((dragy - prev.dragy) * 1.5) + prev.psy, prev.negMaxContext), prev.maxContext - prev.windowHeight / prev.scale);
         return { ...prev, posx: newPosx, posy: newPosy };
       });
     }
-  }, [isDrag]);
+  }, [isDragging]);
 
-  const handleWheel = useCallback((e: { evt: { preventDefault: () => void; deltaY: number; }; target: { getStage: () => any; }; }) => {
+  const handleWheel = useCallback((e: { evt: { preventDefault: () => void; deltaY: number; }; }) => {
     e.evt.preventDefault();
-    const scaleBy = 1.05;
-    const oldScale = position.scale;
-    let newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
-
-    newScale = Math.min(Math.max(newScale, 0.25), 2);
-
+    const scaleBy = 1.07;
+    const newScale = Math.min(Math.max(e.evt.deltaY > 0 ? position.scale / scaleBy : position.scale * scaleBy, 0.25), 2);
     setPosition((prev) => ({
       ...prev,
       scale: newScale,
@@ -69,133 +63,42 @@ export default function Editor() {
       windowWidth: window.innerWidth * prev.scale,
       windowHeight: (window.innerHeight - 40) * prev.scale,
     }));
-
     window.addEventListener('resize', resize);
-    return () => {
-      window.removeEventListener('resize', resize);
-    };
+    return () => window.removeEventListener('resize', resize);
   }, [position.scale]);
 
-  const [item, setItem] = useState<Map<number, Command>>(new Map());
+  const [commandMap, setCommandMap] = useState(new Map());
 
-  function addingCommand(command: Command) {
-    setItem((prevItems) => {
+  const addingCommand = (command: { posx: number; posy: number; name: string; color: string; gridSize: number; columnCount: number; value: fieldType[]; isStart: boolean; displayFirst: boolean; lastx: number; lasty: number; output1: number; output2: number; }) => {
+    setCommandMap((prevItems) => {
       const newItems = new Map(prevItems);
       let id;
       do {
         id = Math.floor(Math.random() * 100000);
       } while (newItems.has(id));
-
       newItems.set(id, command);
       return newItems;
     });
-  }
+  };
 
-  function removeCommand(id: number) {
-    setItem((prevItems) => {
-      const newItems = new Map(prevItems);
-      newItems.delete(id);
-      return newItems;
-    });
-  }
-
-  function render(): React.JSX.Element {
-    const layers: React.JSX.Element[] = [];
-    layers.push(
+  const render = () => (
+    <Layer
+      key='logicShow'
+      onMouseMove={(e) => handleDragMove(e.evt.clientX, e.evt.clientY)}
+      onMouseUp={(e) => { handleDragMove(e.evt.clientX, e.evt.clientY); handleDragEnd(); }}
+      onMouseLeave={handleDragEnd}
+    >
       <Rect
         key='touching'
         x={0}
         y={0}
         width={position.windowWidth / position.scale}
         height={position.windowHeight / position.scale}
-        onMouseDown={(e) => dstart(e.evt.clientX, e.evt.clientY)}
+        onMouseDown={(e) => handleDragStart(e.evt.clientX, e.evt.clientY)}
       />
-    );
-
-    item.forEach((object, id) => {
-      const display = (
-        <Group
-          key={`element-${id}`}
-          draggable
-          x={object.posx - position.posx}
-          y={object.posy - position.posy}
-          onDragStart={(e) => { object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
-          onDragMove={(e) => {
-            object.posx += (e.evt.clientX - object.lastx) / position.scale;
-            object.posy += (e.evt.clientY - object.lasty) / position.scale;
-            object.lastx = e.evt.clientX;
-            object.lasty = e.evt.clientY;
-          }}
-          onDragEnd={(e) => {
-            object.posx += (e.evt.clientX - object.lastx) / position.scale;
-            object.posy += (e.evt.clientY - object.lasty) / position.scale;
-            object.lastx = e.evt.clientX;
-            object.lasty = e.evt.clientY;
-          }}
-        >
-          <Rect
-            key={`backgroundBox-${id}`}
-            x={0}
-            y={0}
-            width={300}
-            height={(object.gridSize + 1.2) * 50}
-            cornerRadius={5}
-            fill={object.color}
-          />
-          <Rect
-            key={`content-${id}`}
-            x={5}
-            y={35}
-            width={290}
-            height={(object.gridSize + 0.4) * 50}
-            fill={'#000000aa'}
-            cornerRadius={5}
-          />
-          <Text
-            key={`elementName-${id}`}
-            x={5}
-            y={10}
-            text={object.name}
-            fontSize={19}
-          />
-          <Group
-            key={`fieldType-${id}`}
-            x={5}
-            y={35}
-            width={290}
-            height={20 + (object.gridSize * 50)}
-          >
-            {object.value.map((value, index) => (
-              <Rect
-                key={'filling' + id + "aaa" + index}
-                x={(290 / object.columnCount) * value.x}
-                y={(value.y * 50) + ((20 / object.gridSize) * value.y)}
-                width={(290 / object.columnCount) * value.expand}
-                height={50 + (20 / object.gridSize)}
-                fill={"green"}
-              />
-            ))}
-          </Group>
-          <Group key={`connection-${id}`}>
-            {/* Add any connection-related elements here */}
-          </Group>
-        </Group>
-      );
-
-      layers.push(display);
-    });
-
-    return (
-      <Layer
-        key='logicShow'
-        onMouseMove={(e) => dmove(e.evt.clientX, e.evt.clientY)}
-        onMouseUp={(e) => { dmove(e.evt.clientX, e.evt.clientY); dend(); }}
-        onMouseLeave={() => dend()}
-      >
-        {layers}
-      </Layer>
-    );
-  }
+      {Render(commandMap, position)}
+    </Layer>
+  );
 
   return (
     <div className='flex w-full h-full'>
@@ -236,12 +139,12 @@ export default function Editor() {
       </Stage>
 
       <div className='flex fixed top-1.5 left-11 text-xl'>{`Pos: ${position.posx}, ${position.posy}, Scale: ${position.scale}`}</div>
-      <div key='Lnav' className={`${isLnav ? 'bottom-0' : 'rounded-2xl'} flex fixed flex-col top-[40px] left-0 w-[300px] bg-[#707070aa] backdrop-blur-sm p-2`}>
-        <div className='bg-[#999999ba] rounded-2xl p-2' onClick={() => setLnav((value) => !value)}>
+      <div className={`${isLeftNav ? 'bottom-0' : 'rounded-2xl'} flex fixed flex-col top-[40px] left-0 w-[300px] bg-[#707070aa] backdrop-blur-sm p-2`}>
+        <div className='bg-[#999999ba] rounded-2xl p-2' onClick={() => setLeftNav((value) => !value)}>
           <p className='text-xl'>Danh sách thêm phần tử logic</p>
           <p>Ấn vào đây để mở/đóng</p>
         </div>
-        <div key="LnavShowing" className={isLnav ? 'flex-1 overflow-y-auto mt-4' : 'hidden'}>
+        <div className={isLeftNav ? 'flex-1 overflow-y-auto mt-4' : 'hidden'}>
           {logicList.map((elementArray, a) => (
             <ul key={`logic-${a}`} className='flex flex-row flex-wrap w-full gap-2 mb-4'>
               {elementArray.map((element, b) => (
