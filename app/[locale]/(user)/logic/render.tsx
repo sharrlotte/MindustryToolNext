@@ -18,6 +18,13 @@ interface a {
   scale: number;
 }
 
+const gridHeight = 30;
+const spaceOfElement = 10;
+const elementWidth = 300;
+const padding = 5;
+const elementWidthPadded = elementWidth - (padding * 2);
+const topHeigh = 30;
+
 export default function render(commandMap: Map<number, Command>, position: a) {
   const display: React.JSX.Element[] = [];
   display[0] = (<Group></Group>);
@@ -47,47 +54,57 @@ export default function render(commandMap: Map<number, Command>, position: a) {
           key={`background_box_${id}`}
           x={0}
           y={0}
-          width={300}
-          height={(object.gridSize + 1.2) * 50}
-          cornerRadius={5}
+          width={elementWidth}
+          height={topHeigh + spaceOfElement + (object.gridSize * gridHeight) + (padding * 2)}
+          cornerRadius={padding}
           fill={object.color}
         />
 
-        <Rect
-          key={`content_box${id}`}
-          x={5}
-          y={35}
-          width={290}
-          height={(object.gridSize + 0.4) * 50}
-          fill={'#000000aa'}
-          cornerRadius={5}
-        />
-
-        <Text
-          key={`element_name${id}`}
-          x={5}
-          y={10}
-          text={object.name}
-          fontSize={19}
-        />
+        <Group
+          key={`header_${id}`}
+          x={padding}
+          y={padding}
+          width={elementWidthPadded}
+          height={topHeigh - (padding * 2)}
+        >
+          <Text
+            key={`element_name${id}`}
+            x={0}
+            y={padding}
+            text={object.name}
+            fontSize={20}
+          />
+        </Group>
 
         <Group
-          key={`field_${id}`}
-          x={5}
-          y={35}
-          width={290}
-          height={20 + (object.gridSize * 50)}
+          key={`inside_content_${id}`}
+          x={padding}
+          y={topHeigh + padding}
+          width={elementWidthPadded}
+          height={topHeigh + spaceOfElement + (object.gridSize * gridHeight) + (padding * 2)}
         >
-          {object.value.map((value, index) => (
-            <Rect
-              key={'filling_rect' + id + index}
-              x={(290 / object.columnCount) * value.x}
-              y={(value.y * 50) + ((20 / object.gridSize) * value.y)}
-              width={(290 / object.columnCount) * value.expand}
-              height={50 + (20 / object.gridSize)}
-              fill={"green"}
-            />
-          ))}
+          <Rect
+            key={`filling_content_${id}`}
+            x={0}
+            y={0}
+            width={elementWidthPadded}
+            height={spaceOfElement + (object.gridSize * gridHeight)}
+            fill={'#000000aa'}
+            cornerRadius={5}
+          />
+
+          {object.value.map((value, index) => {
+            (
+              x = value.x * (elementWidthPadded / object.columnCount),
+              y = 100
+            ) => (
+              <Group
+                key={`display_object_${id + '_' + index}`}
+                x={x}
+
+              ></Group>
+            )
+          })}
         </Group>
 
         <Group key={`connection_node_${id}`}>

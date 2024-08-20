@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useEffect, useState, useCallback } from 'react';
 import { Stage, Layer, Line, Rect } from 'react-konva';
 import { start, read, fieldType } from './command';
@@ -138,11 +139,12 @@ export default function Editor() {
         {render()}
       </Stage>
 
-      <div className='flex fixed top-1.5 left-11 text-xl'>{`Pos: ${position.posx}, ${position.posy}, Scale: ${position.scale}`}</div>
+      <div className='flex fixed top-2 left-11 text-md'>{`Pos: ${position.posx}, ${position.posy}, Scale: ${position.scale}`}</div>
       <div className={`${isLeftNav ? 'bottom-0' : 'rounded-2xl'} flex fixed flex-col top-[40px] left-0 w-[300px] bg-[#707070aa] backdrop-blur-sm p-2`}>
         <div className='bg-[#999999ba] rounded-2xl p-2' onClick={() => setLeftNav((value) => !value)}>
           <p className='text-xl'>Danh sách thêm phần tử logic</p>
           <p>Ấn vào đây để mở/đóng</p>
+          <p>Mobile không khả dụng</p>
         </div>
         <div className={isLeftNav ? 'flex-1 overflow-y-auto mt-4' : 'hidden'}>
           {logicList.map((elementArray, a) => (
