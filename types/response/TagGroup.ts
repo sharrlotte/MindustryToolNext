@@ -1,4 +1,5 @@
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
+import { groupBy } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
 
 type TagGroup = {
@@ -34,20 +35,8 @@ export class TagGroups {
         .filter((value) => value.length === 2)
         .map((value) => ({ name: value[0], value: value[1] })) ?? [];
 
-    const tagGroup = Object.entries(
-      Object.groupBy(tagsArray, ({ name }) => name),
-    )
-      .map(
-        ([key, value]) =>
-          [
-            key,
-            value as {
-              name: string;
-              value: string;
-            }[],
-          ] as const,
-      )
-      .map(([key, value]) => ({
+    const tagGroup = groupBy(tagsArray, ({ name }) => name)
+      .map(({ key, value }) => ({
         name: key,
         values: value.map(({ value }) => value) ?? [],
       }))

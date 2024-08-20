@@ -5,7 +5,7 @@ import React from 'react';
 import { useI18n } from '@/locales/client';
 import { cn } from '@/lib/utils';
 
-export default function TagName({
+function _TagName({
   className,
   children,
 }: {
@@ -20,3 +20,5 @@ export default function TagName({
     </span>
   );
 }
+
+export const TagName = React.memo(_TagName)
