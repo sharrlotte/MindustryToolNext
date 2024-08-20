@@ -1,7 +1,7 @@
 import { XIcon } from 'lucide-react';
 import React, { HTMLAttributes } from 'react';
 
-import TagName from '@/components/tag/tag-name';
+import { TagName } from '@/components/tag/tag-name';
 import { cn } from '@/lib/utils';
 import Tag from '@/types/response/Tag';
 import TagTooltip from '@/components/tag/tag-tooltip';
