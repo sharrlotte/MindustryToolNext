@@ -4,7 +4,7 @@ import React from "react";
 import { Command } from "./command";
 import { Rect, Group, Text } from 'react-konva';
 
-interface a {
+interface Position {
   windowWidth: number;
   windowHeight: number;
   posx: number;
@@ -23,9 +23,9 @@ const spaceOfElement = 10;
 const elementWidth = 300;
 const padding = 5;
 const elementWidthPadded = elementWidth - (padding * 2);
-const topHeigh = 30;
+const topHeight = 30;
 
-export default function render(commandMap: Map<number, Command>, position: a) {
+export default function render(commandMap: Map<number, Command>, position: Position) {
   const display: React.JSX.Element[] = [];
   display[0] = (<Group></Group>);
 
@@ -55,7 +55,7 @@ export default function render(commandMap: Map<number, Command>, position: a) {
           x={0}
           y={0}
           width={elementWidth}
-          height={topHeigh + spaceOfElement + (object.gridSize * gridHeight) + (padding * 2)}
+          height={topHeight + spaceOfElement + (object.gridSize * gridHeight) + (padding * 2)}
           cornerRadius={padding}
           fill={object.color}
         />
@@ -65,7 +65,7 @@ export default function render(commandMap: Map<number, Command>, position: a) {
           x={padding}
           y={padding}
           width={elementWidthPadded}
-          height={topHeigh - (padding * 2)}
+          height={topHeight - (padding * 2)}
         >
           <Text
             key={`element_name${id}`}
@@ -79,9 +79,9 @@ export default function render(commandMap: Map<number, Command>, position: a) {
         <Group
           key={`inside_content_${id}`}
           x={padding}
-          y={topHeigh + padding}
+          y={topHeight + padding}
           width={elementWidthPadded}
-          height={topHeigh + spaceOfElement + (object.gridSize * gridHeight) + (padding * 2)}
+          height={spaceOfElement + (object.gridSize * gridHeight)}
         >
           <Rect
             key={`filling_content_${id}`}
@@ -94,15 +94,26 @@ export default function render(commandMap: Map<number, Command>, position: a) {
           />
 
           {object.value.map((value, index) => {
-            (
-              x = value.x * (elementWidthPadded / object.columnCount),
-              y = 100
-            ) => (
+            const correctWidth = (elementWidthPadded / object.columnCount);
+            const width = correctWidth * value.expand;
+            const height = gridHeight + (spaceOfElement / object.gridSize);
+            return (
               <Group
                 key={`display_object_${id + '_' + index}`}
-                x={x}
-
-              ></Group>
+                x={value.x * correctWidth}
+                y={value.y * height}
+                width={width}
+                height={height}
+              >
+                <Rect
+                  key={`bg_${id + '_' + index}`}
+                  x={0}
+                  y={0}
+                  width={width}
+                  height={height}
+                  fill={'yellow'}
+                />
+              </Group>
             )
           })}
         </Group>
