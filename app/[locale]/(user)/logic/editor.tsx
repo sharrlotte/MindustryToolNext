@@ -147,11 +147,11 @@ export default function Editor() {
           <p>Mobile không khả dụng</p>
         </div>
         <div className={isLeftNav ? 'flex-1 overflow-y-auto mt-4' : 'hidden'}>
-          {logicList.map((elementArray, a) => (
+          {logicList.map((elements, a) => (
             <ul key={`logic-${a}`} className='flex flex-row flex-wrap w-full gap-2 mb-4'>
-              {elementArray.map((element, b) => (
+              {elements.map((element, b) => (
                 <button
-                  key={`element-${element.name}-${b}`}
+                  key={`${element.name}${b}`}
                   className='flex p-2 pl-4 pr-4 mr-4 w-full text-xl rounded-2xl bg-black'
                   style={{ backgroundColor: element.color }}
                   onClick={() => addingCommand({ ...element, posx: 0, posy: 0 })}

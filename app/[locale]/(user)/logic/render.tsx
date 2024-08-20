@@ -27,16 +27,40 @@ const topHeight = 30;
 
 export default function render(commandMap: Map<number, Command>, position: Position) {
   const display: React.JSX.Element[] = [];
+  let markToNotRemove = -1;
   display[0] = (<Group></Group>);
 
   commandMap.forEach((object, id) => {
+    if (object.displayFirst) {
+      if (markToNotRemove === -1) {
+        markToNotRemove = id;
+      } else if (markToNotRemove !== id) {
+        object.displayFirst = false;
+      }
+    }
+
     const meow = (
       <Group
-        key={`element-${id}`}
+        key={id}
         draggable
         x={object.posx - position.posx}
         y={object.posy - position.posy}
-        onDragStart={(e) => { object.lastx = e.evt.clientX; object.lasty = e.evt.clientY }}
+        onTap={() => { 
+          commandMap.forEach((obj, i) => {
+            if (i !== id) obj.displayFirst = false;
+          });
+          object.displayFirst = true; 
+          markToNotRemove = id; 
+        }}
+        onDragStart={(e) => { 
+          object.lastx = e.evt.clientX; 
+          object.lasty = e.evt.clientY; 
+          commandMap.forEach((obj, i) => {
+            if (i !== id) obj.displayFirst = false;
+          });
+          object.displayFirst = true; 
+          markToNotRemove = id; 
+        }}
         onDragMove={(e) => {
           object.posx += (e.evt.clientX - object.lastx) / position.scale;
           object.posy += (e.evt.clientY - object.lasty) / position.scale;
@@ -51,7 +75,7 @@ export default function render(commandMap: Map<number, Command>, position: Posit
         }}
       >
         <Rect
-          key={`background_box_${id}`}
+          key={`bgb${id}`}
           x={0}
           y={0}
           width={elementWidth}
@@ -61,14 +85,14 @@ export default function render(commandMap: Map<number, Command>, position: Posit
         />
 
         <Group
-          key={`header_${id}`}
+          key={`he${id}`}
           x={padding}
           y={padding}
           width={elementWidthPadded}
           height={topHeight - (padding * 2)}
         >
           <Text
-            key={`element_name${id}`}
+            key={`hen${id}`}
             x={0}
             y={padding}
             text={object.name}
@@ -77,19 +101,19 @@ export default function render(commandMap: Map<number, Command>, position: Posit
         </Group>
 
         <Group
-          key={`inside_content_${id}`}
+          key={`ic${id}`}
           x={padding}
           y={topHeight + padding}
           width={elementWidthPadded}
           height={spaceOfElement + (object.gridSize * gridHeight)}
         >
           <Rect
-            key={`filling_content_${id}`}
+            key={`fc${id}`}
             x={0}
             y={0}
             width={elementWidthPadded}
             height={spaceOfElement + (object.gridSize * gridHeight)}
-            fill={'#000000aa'}
+            fill={'#000a'}
             cornerRadius={5}
           />
 
@@ -99,14 +123,14 @@ export default function render(commandMap: Map<number, Command>, position: Posit
             const height = gridHeight + (spaceOfElement / object.gridSize);
             return (
               <Group
-                key={`display_object_${id + '_' + index}`}
+                key={`do${id + '_' + index}`}
                 x={value.x * correctWidth}
                 y={value.y * height}
                 width={width}
                 height={height}
               >
                 <Rect
-                  key={`bg_${id + '_' + index}`}
+                  key={`bg${id + '_' + index}`}
                   x={0}
                   y={0}
                   width={width}
@@ -114,15 +138,15 @@ export default function render(commandMap: Map<number, Command>, position: Posit
                   fill={'yellow'}
                 />
               </Group>
-            )
+            );
           })}
         </Group>
 
-        <Group key={`connection_node_${id}`}>
+        <Group key={`cn${id}`}>
           {/* Add any connection-related elements here */}
         </Group>
 
-        <Group key={`connection_${id}`}>
+        <Group key={`c${id}`}>
           {/* Add any connection-related elements here */}
         </Group>
       </Group>);

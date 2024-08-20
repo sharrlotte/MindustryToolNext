@@ -25,7 +25,7 @@ export interface Command {
     readonly columnCount: number;
     readonly value: fieldType[];
     readonly isStart: boolean;
-    readonly displayFirst: boolean;
+    displayFirst: boolean;
     lastx: number;
     lasty: number;
     posx: number;
