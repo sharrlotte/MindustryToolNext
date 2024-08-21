@@ -1,7 +1,8 @@
 'use client';
+import React from "react";
 
 export interface inputTypeParam {
-    px: number; py: number; contextSize: number;
+    px: number; py: number; // middle
 }
 
 export interface inputType {
@@ -24,7 +25,7 @@ export interface Command {
     readonly columnCount: number;
     readonly value: fieldType[];
     readonly isStart: boolean;
-    readonly displayFirst: boolean;
+    displayFirst: boolean;
     lastx: number;
     lasty: number;
     posx: number;
@@ -41,7 +42,7 @@ export const textInput: fieldType = {
     afterText: "type",
     inputType: {
         show: function (props: inputTypeParam): React.JSX.Element {
-            return <div></div>
+            return <div id={props.px+''}></div>
         },
         value: 'coin card'
     }
@@ -50,7 +51,7 @@ export const textInput: fieldType = {
 // commands
 export const defaultCommand: Command = {
     name: "",
-    color: "#5ABFFA",
+    color: "white",
     gridSize: 0,
     columnCount: 0,
     value: [],
@@ -64,13 +65,12 @@ export const defaultCommand: Command = {
     output2: -1,
 };
 
-// start operator
+// start operation
 export const start: Command = {
     ...defaultCommand,
     name: "Start Command",
     color: "#5ABFFA",
-    gridSize: 0,
-    value: []
+    isStart: true,
 }
 
 // io control

@@ -1,4 +1,3 @@
-import InternalLink from '@/components/common/internal-link';
 import BackButton from '@/components/ui/back-button';
 import Link from 'next/link';
 
