@@ -25,7 +25,7 @@ const EllipsisButton = ({ className, variant, children, ...props }: Props) => {
           <EllipsisHorizontalIcon className="size-5" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-1 text-sm font-light space-y-1">
+      <PopoverContent className="space-y-1 p-1 text-sm font-light">
         {children}
       </PopoverContent>
     </Popover>

@@ -37,6 +37,7 @@
     --preview-size: 20rem;
     --preview-card-height: 27rem;
     --success: 150 73% 55%;
+    --warning: 60 100% 55%;
     --nav: 2.5rem;
     --brand: 217 91.2% 59.8%;
   }
@@ -129,11 +130,6 @@
   *::-webkit-scrollbar-button {
     @apply hidden;
   }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-
   ul {
     list-style-type: disc;
     list-style-position: inside;

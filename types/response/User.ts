@@ -6,4 +6,7 @@ export type User = {
   name: string;
   imageUrl?: string | null;
   roles: Role[];
+  stats: {
+    EXP: number;
+  };
 };

@@ -10,6 +10,8 @@ import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
 import { getSchematics } from '@/query/schematic';
 import { getMaps } from '@/query/map';
 import { getUsers } from '@/query/user';
+import InternalLink from '@/components/common/internal-link';
+import { Preview } from '@/components/common/preview';
 
 const skeleton = Array(20)
   .fill(1)
@@ -24,6 +26,16 @@ export async function HomeSchematicPreview({
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
         <_SchematicRowView queryParam={queryParam} />
+        <li key="more" className="m-0 snap-center text-nowrap p-0">
+          <Preview>
+            <InternalLink
+              href="/maps"
+              className="cursor-pointer px-2 font-light"
+            >
+              <Tran text="home.preview-more" />
+            </InternalLink>
+          </Preview>
+        </li>
       </Suspense>
     </ul>
   );
@@ -37,6 +49,16 @@ export async function HomeMapPreview({
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
         <_HomeMapPreview queryParam={queryParam} />
+        <li key="more" className="m-0 snap-center text-nowrap p-0">
+          <Preview>
+            <InternalLink
+              href="/maps"
+              className="cursor-pointer px-2 font-light"
+            >
+              <Tran text="home.preview-more" />
+            </InternalLink>
+          </Preview>
+        </li>
       </Suspense>
     </ul>
   );
