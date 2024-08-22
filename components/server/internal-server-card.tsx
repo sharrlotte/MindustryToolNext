@@ -16,7 +16,6 @@ export default async function InternalServerCard({
     <div className="flex cursor-pointer justify-between rounded-md bg-card p-2">
       <Link className="flex flex-1 flex-col" href={`/servers/${id}`}>
         <ColorText className="text-2xl" text={name} />
-        <div>Port: {port}</div>
         {!alive ? (
           <div className="flex items-center gap-1">
             <span className="size-2 rounded-full bg-destructive" />
@@ -33,7 +32,10 @@ export default async function InternalServerCard({
             <Tran text="server.offline" />
           </div>
         )}
-        <div>Player: {players}</div>
+        <div className="flex justify-between">
+          <div>Player: {players}</div>
+          <div>Port: {port}</div>
+        </div>
       </Link>
     </div>
   );

@@ -10,4 +10,7 @@ export type Session = {
   providerId: string;
   lastLogin: number;
   createdAt: number;
+  stats: {
+    EXP: number;
+  };
 };
