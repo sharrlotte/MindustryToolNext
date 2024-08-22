@@ -363,7 +363,7 @@ export function hasAccess({
     return true;
   }
 
-  if (!roles.includes('ADMIN') && !all?.includes('SHAR')) {
+  if (roles.includes('ADMIN') && !all?.includes('SHAR')) {
     return true;
   }
 
