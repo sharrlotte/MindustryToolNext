@@ -50,7 +50,7 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
   };
 
   return (
-    <div className="rounded-lg bg-card p-2 flex w-full flex-col gap-2">
+    <div className="space-y-2 rounded-lg bg-card p-2">
       <span className="font-bold">
         <Tran text="metric.ram-usage" />
       </span>
