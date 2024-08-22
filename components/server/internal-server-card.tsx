@@ -33,8 +33,12 @@ export default async function InternalServerCard({
           </div>
         )}
         <div className="flex justify-between">
-          <div>Player: {players}</div>
-          <div>Port: {port}</div>
+          <div>
+            <Tran text="server.players" />: {players}
+          </div>
+          <div>
+            <Tran text="server.port" />: {port}
+          </div>
         </div>
       </Link>
     </div>
