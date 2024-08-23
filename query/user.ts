@@ -12,6 +12,15 @@ import { IdSearchParams } from '@/types/data/id-search-schema';
 import { MapPreview } from '@/types/response/MapPreview';
 import { Post } from '@/types/response/Post';
 import { Schematic } from '@/types/response/Schematic';
+import { InternalServerDetail } from '@/types/response/InternalServerDetail';
+
+export async function getMeServers(
+  axios: AxiosInstance,
+): Promise<InternalServerDetail[]> {
+  const result = await axios.get(`/users/@me/servers`);
+
+  return result.data;
+}
 
 export async function getMeMaps(
   axios: AxiosInstance,
