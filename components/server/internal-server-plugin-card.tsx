@@ -43,19 +43,18 @@ export default function InternalServerPluginCard({
   });
 
   return (
-    <div className="relative grid gap-2 rounded-md border bg-card p-2">
+    <div className="relative grid gap-2 rounded-sm bg-card p-2">
       <h2>{name}</h2>
       <span className="text-muted-foreground">
         {isVerified ? 'Verified' : 'Unverified'}
       </span>
-      <div className="flex gap-2">
-        <DeleteButton
-          variant="ghost"
-          description={`${t('delete')} ${name}`}
-          isLoading={isDeleting}
-          onClick={() => deletePluginById()}
-        />
-      </div>
+      <DeleteButton
+        className="right-1 top-1"
+        variant="ghost"
+        description={`${t('delete')} ${name}`}
+        isLoading={isDeleting}
+        onClick={() => deletePluginById()}
+      />
     </div>
   );
 }

@@ -36,7 +36,7 @@ export default function SidebarToggle() {
   const serverId = id as string;
 
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="flex h-9 w-full items-center justify-center">
       <div
         className={cn(
           'flex cursor-pointer items-center justify-center p-2 transition-transform duration-200 hover:rounded-sm hover:bg-brand hover:text-white',

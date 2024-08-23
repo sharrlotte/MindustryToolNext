@@ -33,9 +33,9 @@ export default async function Page({ params: { id } }: Props) {
   } = server;
 
   return (
-    <div className="flex flex-col gap-4 overflow-y-auto p-2 md:p-4">
-      <div className="flex flex-wrap gap-4">
-        <div className="flex min-w-60 flex-1 flex-col flex-wrap gap-1 rounded-lg bg-card p-4 shadow-lg">
+    <div className="flex flex-col gap-2 overflow-y-auto p-2 md:pl-2">
+      <div className="flex flex-wrap gap-2">
+        <div className="flex min-w-60 flex-1 flex-col flex-wrap gap-1 bg-card p-4 shadow-lg">
           <ColorText className="text-xl font-bold" text={name} />
           <ColorText text={description} />
           <div>
@@ -59,27 +59,27 @@ export default async function Page({ params: { id } }: Props) {
             </div>
           ) : (
             <div className="flex items-center gap-1">
-              <span className="bg-warning size-2 rounded-full" />
+              <span className="size-2 rounded-full bg-warning" />
               <Tran text="server.offline" />
             </div>
           )}
         </div>
-        <div className="flex min-w-60 flex-[3] flex-col gap-1 rounded-lg bg-card p-4 shadow-lg">
+        <div className="flex min-w-60 flex-[3] flex-col gap-1 bg-card p-4 shadow-lg">
           <div>
             <Tran text="server.players" />: <span>{players}</span>
           </div>
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-2">
-        <div className="text-xl">System status</div>
-        <div className="flex h-full flex-1 flex-row items-start justify-between gap-1 rounded-lg bg-card p-4 shadow-lg">
+        <div className="flex h-full flex-1 flex-col items-start gap-1 bg-card p-4 shadow-lg">
+          <h3 className="text-xl">System status</h3>
           <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
           {mapImage && (
             <RawImage className="flex w-full rounded-sm" data={mapImage} />
           )}
         </div>
       </div>
-      <div className="flex flex-row justify-end gap-2 rounded-lg bg-card p-4 shadow-lg">
+      <div className="flex flex-row justify-end gap-2 bg-card p-4 shadow-lg">
         <ReloadServerButton id={id} />
         {started ? (
           <ShutdownServerButton id={id} />

@@ -17,7 +17,7 @@ export default function ServerName({ name }: Props) {
     return (
       <div
         className={cn('w-40 transition-[width] duration-200 overflow-hidden', {
-          'w-0': !expand,
+          'w-0 h-0': !expand,
         })}
       >
         <ColorText text={name} />
