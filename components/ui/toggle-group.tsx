@@ -44,6 +44,7 @@ const ToggleGroupItem = React.forwardRef<
       ref={ref}
       className={cn(
         toggleVariants({
+          className: 'hover:bg-secondary data-[state=on]:bg-secondary',
           variant: context.variant || variant,
           size: context.size || size,
         }),

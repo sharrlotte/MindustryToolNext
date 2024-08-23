@@ -13,13 +13,10 @@ export function PaginationLayoutSwitcher() {
 
   return (
     <ToggleGroup value={type} type="single" onValueChange={setType}>
-      <ToggleGroupItem className="data-[state=on]:bg-secondary" value="grid">
+      <ToggleGroupItem value="grid">
         <LayoutGridIcon className="size-5" />
       </ToggleGroupItem>
-      <ToggleGroupItem
-        className="data-[state=on]:bg-secondary"
-        value="infinite-scroll"
-      >
+      <ToggleGroupItem value="infinite-scroll">
         <ListIcon className="size-5" />
       </ToggleGroupItem>
     </ToggleGroup>
