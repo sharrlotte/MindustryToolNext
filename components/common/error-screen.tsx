@@ -22,7 +22,7 @@ export default function ErrorScreen({
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-      <h2 className="text-base">{message}</h2>
+      <h2 className="text-base font-bold">{message}</h2>
       <div className="grid grid-cols-2 items-center justify-center gap-2">
         <a
           className="h-9 flex-1 text-nowrap rounded-md border border-border px-2 py-1.5"
