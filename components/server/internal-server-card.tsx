@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import ColorText from '@/components/common/color-text';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
