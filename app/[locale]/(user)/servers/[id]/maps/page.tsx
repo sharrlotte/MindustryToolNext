@@ -35,7 +35,7 @@ export default function ServerMaps() {
   const id = useSafeParam().get('id');
 
   return (
-    <div className="flex flex-col gap-2 overflow-hidden p-4">
+    <div className="flex flex-col gap-2 overflow-hidden pl-2">
       <div className=" flex justify-end bg-card p-2">
         <AddMapDialog serverId={id} />
       </div>

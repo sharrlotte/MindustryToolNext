@@ -20,7 +20,7 @@ export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
-    <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden bg-card px-2 pt-2">
+    <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden px-2 pt-2">
       <div className="grid h-full w-full overflow-hidden">
         <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-black/80 text-white">
           {state !== 'connected' ? (

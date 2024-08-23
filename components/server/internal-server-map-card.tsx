@@ -15,7 +15,6 @@ import env from '@/constant/env';
 import useClientAPI from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
 import { InternalServerMap } from '@/types/response/InternalServerMap';
 
@@ -49,7 +48,7 @@ export default function InternalServerMapCard({
   });
 
   return (
-    <Preview className={cn('group relative flex flex-col justify-between')}>
+    <Preview className="group relative flex flex-col justify-between">
       <Link href={`/maps/${mapId}`}>
         <PreviewImage
           src={`${env.url.image}/map-previews/${mapId}.png`}
@@ -59,14 +58,13 @@ export default function InternalServerMapCard({
       </Link>
       <PreviewDescription>
         <PreviewHeader className="h-12">{name}</PreviewHeader>
-        <PreviewActions>
-          <DeleteButton
-            variant="ghost"
-            isLoading={isPending}
-            onClick={() => mutate()}
-            description={t('delete')}
-          />
-        </PreviewActions>
+        <DeleteButton
+          className="right-1 top-1"
+          variant="ghost"
+          isLoading={isPending}
+          onClick={() => mutate()}
+          description={t('delete')}
+        />
       </PreviewDescription>
     </Preview>
   );

@@ -24,7 +24,7 @@ export default function NavLink({ id, href, label, icon }: Props) {
   return (
     <Link
       className={cn(
-        'flex items-center gap-2 text-nowrap px-2 py-2 text-sm font-semibold opacity-70 transition-[gap] hover:rounded-sm hover:bg-brand hover:text-white hover:opacity-100',
+        'flex h-9 items-center gap-2 text-nowrap px-2 py-2 text-sm font-semibold opacity-70 transition-[gap] hover:rounded-sm hover:bg-brand hover:text-white hover:opacity-100',
         {
           'rounded-sm bg-brand text-white opacity-100':
             (pathname.endsWith(href) && href !== '') ||

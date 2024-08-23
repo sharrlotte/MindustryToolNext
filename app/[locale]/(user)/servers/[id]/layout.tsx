@@ -64,8 +64,8 @@ export default async function Layout({
   ];
 
   return (
-    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] divide-y overflow-hidden md:grid-cols-[auto,1fr] md:grid-rows-1 md:divide-x md:divide-y-0">
-      <div className="relative flex flex-col flex-wrap">
+    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] overflow-hidden md:grid-cols-[auto,1fr] md:grid-rows-1">
+      <div className="relative flex flex-col flex-wrap bg-card">
         <div className="flex flex-1 flex-wrap gap-2 overflow-x-auto p-2 font-extrabold antialiased md:flex-col md:overflow-x-hidden">
           <div className="flex items-center justify-between gap-1">
             <SidebarToggle />
