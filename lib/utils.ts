@@ -374,3 +374,7 @@ export function hasAccess({
     show === undefined ? true : show,
   ].every(Boolean);
 }
+
+export async function sleep(seconds: number) {
+  await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+}

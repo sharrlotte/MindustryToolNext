@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import InternalServerCard from '@/components/server/internal-server-card';
@@ -7,18 +7,19 @@ import { getInternalServers } from '@/query/server';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Tran from '@/components/common/tran';
 import { getMeServers } from '@/query/user';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default async function Page() {
-  const axios = await getServerAPI();
-  const [servers, myServers] = await Promise.all([
-    getInternalServers(axios),
-    getMeServers(axios),
-  ]);
+export const experimental_ppr = true;
 
+const skeleton = Array(3)
+  .fill(1)
+  .map((_, index) => <InternalServerCardSkeleton key={index} />);
+
+export default function Page() {
   return (
-    <div className="flex flex-col gap-2 p-4">
+    <div className="flex flex-col gap-4 p-4">
       <Tabs defaultValue="my-server">
-        <div className="flex justify-between gap-2 rounded-md bg-card p-2">
+        <div className="flex justify-between gap-2">
           <div>
             <TabsList>
               <TabsTrigger value="my-server">
@@ -31,23 +32,42 @@ export default async function Page() {
           </div>
           <CreateServerDialog />
         </div>
-        <TabsContent
-          className="flex justify-between gap-2 rounded-md bg-card p-2"
-          value="server-list"
-        >
-          {servers.map((server) => (
-            <InternalServerCard server={server} key={server.port} />
-          ))}
+        <TabsContent value="server-list">
+          <section className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <Suspense fallback={skeleton}>
+              <CommunityServer />
+            </Suspense>
+          </section>
         </TabsContent>
-        <TabsContent
-          className="flex justify-between gap-2 rounded-md bg-card p-2"
-          value="my-server"
-        >
-          {myServers.map((server) => (
-            <InternalServerCard server={server} key={server.port} />
-          ))}
+        <TabsContent value="my-server">
+          <section className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <Suspense fallback={skeleton}>
+              <MeServer />
+            </Suspense>
+          </section>
         </TabsContent>
       </Tabs>
     </div>
   );
+}
+
+async function CommunityServer() {
+  const axios = await getServerAPI();
+  const servers = await getInternalServers(axios);
+
+  return servers.map((server) => (
+    <InternalServerCard server={server} key={server.port} />
+  ));
+}
+async function MeServer() {
+  const axios = await getServerAPI();
+  const servers = await getMeServers(axios);
+
+  return servers.map((server) => (
+    <InternalServerCard server={server} key={server.port} />
+  ));
+}
+
+function InternalServerCardSkeleton() {
+  return <Skeleton className="flex h-28 w-full rounded-md bg-card" />;
 }
