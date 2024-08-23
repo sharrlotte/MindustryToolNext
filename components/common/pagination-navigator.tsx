@@ -84,7 +84,7 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
         <PaginationItem>
           <Button
             className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-              'bg-accent text-background dark:text-foreground':
+              'bg-secondary text-background dark:text-foreground':
                 firstNumber === currentPage,
             })}
             title="prev"
@@ -98,7 +98,7 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
           <PaginationItem>
             <Button
               className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-accent text-background dark:text-foreground':
+                'bg-secondary text-background dark:text-foreground':
                   secondNumber === currentPage,
               })}
               title="prev"
@@ -150,7 +150,7 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
           <PaginationItem>
             <Button
               className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-accent text-background dark:text-foreground':
+                'bg-secondary text-background dark:text-foreground':
                   secondLastNumber === currentPage,
               })}
               title="prev"
@@ -165,7 +165,7 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
           <PaginationItem>
             <Button
               className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-accent text-background dark:text-foreground':
+                'bg-secondary text-background dark:text-foreground':
                   lastNumber === currentPage,
               })}
               title="prev"

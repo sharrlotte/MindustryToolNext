@@ -29,6 +29,8 @@ import {
   PuzzlePieceIcon,
 } from '@heroicons/react/24/outline';
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
+import Image from 'next/image';
+import googleIcon from '@/public/icons/google.svg';
 
 export const LinkIcon = () => <_LinkIcon className="size-5" />;
 export const PostIcon = () => <BookOpenIcon className="size-5" />;
@@ -58,3 +60,6 @@ export const MenuIcon = () => <Menu className="h-8 w-8 text-white" />;
 export const UploadIcon = () => <_UploadIcon className="size-5" />;
 export const ExpandIcon = () => <_ExpandIcon className="size-5" />;
 export const ShrinkIcon = () => <_ShrinkIcon className="size-5" />;
+export const GoogleIcon = () => (
+  <Image className="size-5" src={googleIcon} alt="google"></Image>
+);
