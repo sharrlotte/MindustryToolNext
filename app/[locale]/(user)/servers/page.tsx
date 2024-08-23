@@ -11,28 +11,28 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export const experimental_ppr = true;
 
-const skeleton = Array(3)
+const skeleton = Array(8)
   .fill(1)
   .map((_, index) => <InternalServerCardSkeleton key={index} />);
 
 export default function Page() {
   return (
     <div className="flex flex-col gap-4 p-4">
-      <Tabs defaultValue="my-server">
+      <Tabs defaultValue="community-server">
         <div className="flex justify-between gap-2">
           <div>
             <TabsList>
+              <TabsTrigger value="community-server">
+                <Tran text="server.community-server" />
+              </TabsTrigger>
               <TabsTrigger value="my-server">
                 <Tran text="server.my-server" />
-              </TabsTrigger>
-              <TabsTrigger value="server-list">
-                <Tran text="server.server-list" />
               </TabsTrigger>
             </TabsList>
           </div>
           <CreateServerDialog />
         </div>
-        <TabsContent value="server-list">
+        <TabsContent value="community-server">
           <section className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] justify-center gap-2">
             <Suspense fallback={skeleton}>
               <CommunityServer />
