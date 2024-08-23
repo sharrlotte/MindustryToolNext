@@ -33,14 +33,14 @@ export default function Page() {
           <CreateServerDialog />
         </div>
         <TabsContent value="server-list">
-          <section className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <section className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] justify-center gap-2">
             <Suspense fallback={skeleton}>
               <CommunityServer />
             </Suspense>
           </section>
         </TabsContent>
         <TabsContent value="my-server">
-          <section className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <section className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] justify-center gap-2">
             <Suspense fallback={skeleton}>
               <MeServer />
             </Suspense>
