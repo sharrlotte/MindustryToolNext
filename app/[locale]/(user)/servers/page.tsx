@@ -69,5 +69,7 @@ async function MeServer() {
 }
 
 function InternalServerCardSkeleton() {
-  return <Skeleton className="flex h-28 w-full rounded-md bg-card" />;
+  return (
+    <Skeleton className="flex h-28 w-full max-w-[559px] rounded-md bg-card" />
+  );
 }
