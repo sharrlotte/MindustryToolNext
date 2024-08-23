@@ -36,10 +36,10 @@ export default function Page() {
   );
 
   return (
-    <div className="flex h-full overflow-hidden flex-col">
-      <div className="py-1 px-4 border-b flex justify-between items-center">
+    <div className="flex h-full flex-col overflow-hidden">
+      <div className="flex items-center justify-between border-b px-4 py-1">
         <div className="flex gap-4">
-          <SearchIcon className="w-5 h-5" />
+          <SearchIcon className="h-5 w-5" />
           #Global
         </div>
         <Button
@@ -50,29 +50,29 @@ export default function Page() {
             setOpenMemberPanel((prev) => (prev === 'open' ? 'close' : 'open'))
           }
         >
-          <UsersIcon className="w-5 h-5" />
+          <UsersIcon className="h-5 w-5" />
         </Button>
       </div>
       <div className="grid h-full w-full grid-rows-[1fr_auto] overflow-hidden">
-        <div className="grid h-full w-full overflow-hidden rounded-md pl-2">
+        <div className="grid h-full w-full overflow-hidden pl-2">
           <div className="flex h-full flex-col gap-1 overflow-x-hidden">
             {state !== 'connected' ? (
               <LoadingSpinner className="m-auto" />
             ) : (
-              <div className="h-full overflow-hidden flex">
+              <div className="flex h-full overflow-hidden">
                 <div
-                  className="h-full overflow-y-auto w-full"
+                  className="h-full w-full overflow-y-auto"
                   ref={(ref) => setContainer(ref)}
                 >
                   <MessageList
-                    className="flex flex-col gap-1 h-full"
+                    className="flex h-full flex-col gap-1"
                     queryKey={['global']}
                     room="GLOBAL"
                     container={() => container}
                     params={{ page: 0, size: 40 }}
                     end={<></>}
                     noResult={
-                      <div className="h-full w-full flex justify-center font-semibold items-center">
+                      <div className="flex h-full w-full items-center justify-center font-semibold">
                         {"Let's start a conversation"}
                       </div>
                     }
@@ -102,7 +102,7 @@ export default function Page() {
         <ProtectedElement
           session={session}
           alt={
-            <div className="h-full w-full text-center whitespace-nowrap">
+            <div className="h-full w-full whitespace-nowrap text-center">
               <LoginButton className="justify-center bg-brand">
                 Login to chat
               </LoginButton>
@@ -132,18 +132,18 @@ function ChatInput() {
   };
   return (
     <form
-      className="flex h-14 flex-1 gap-1 px-2 border-t py-2"
+      className="flex h-14 flex-1 gap-1 border-t px-2 py-2"
       name="text"
       onSubmit={handleFormSubmit}
     >
-      <div className="rounded-md border border-border bg-background px-2 w-full flex items-center gap-2">
+      <div className="flex w-full items-center gap-2 rounded-md border border-border bg-background px-2">
         <input
-          className="h-full w-full outline-none bg-transparent"
+          className="h-full w-full bg-transparent outline-none"
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
-        <PaperclipIcon className="w-6 h-6" />
-        <SmileIcon className="w-6 h-6" />
+        <PaperclipIcon className="h-6 w-6" />
+        <SmileIcon className="h-6 w-6" />
       </div>
       <Button
         className="h-full"
@@ -152,7 +152,7 @@ function ChatInput() {
         title={t('send')}
         disabled={state !== 'connected' || !message}
       >
-        <SendIcon className="w-5 h-5" />
+        <SendIcon className="h-5 w-5" />
       </Button>
     </form>
   );
@@ -177,7 +177,7 @@ function MemberPanel({ state, setState }: MemberPanelProps) {
 
   return (
     <motion.div
-      className="h-full absolute right-0 sm:relative overflow-y-auto top-0 flex flex-col items-start bg-card"
+      className="absolute right-0 top-0 flex h-full flex-col items-start overflow-y-auto bg-card sm:relative"
       animate={state}
       variants={{
         open: {
