@@ -32,6 +32,12 @@ export function useSession(): SessionContextType {
   if (!context) {
     throw new Error('Can not use out side of context');
   }
+  // TEST 
+  // const session = context.session;
+
+  // if (session) {
+  //   context.session = { ...session, roles: [] };
+  // }
 
   return context;
 }

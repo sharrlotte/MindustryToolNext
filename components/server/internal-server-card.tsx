@@ -1,24 +1,45 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import ColorText from '@/components/common/color-text';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
+import Tran from '@/components/common/tran';
 
 type ServerInstancesCardProps = {
   server: InternalServerDetail;
 };
 
 export default async function InternalServerCard({
-  server: { id, name, port, alive, started },
+  server: { id, name, players, port, alive, started },
 }: ServerInstancesCardProps) {
-  const status = `Status: ${alive ? 'Alive' : 'Downed'} ${started ? 'Started' : 'Not started'}`;
-
   return (
-    <div className="flex justify-between rounded-md bg-card p-2">
+    <div className="flex cursor-pointer justify-between rounded-md bg-card p-2">
       <Link className="flex flex-1 flex-col" href={`/servers/${id}`}>
         <ColorText className="text-2xl" text={name} />
-        <div>Port: {port}</div>
-        <div>{status}</div>
+        {!alive ? (
+          <div className="flex items-center gap-1">
+            <span className="size-2 rounded-full bg-destructive" />
+            <Tran text="server.stopped" />
+          </div>
+        ) : started ? (
+          <div className="flex items-center gap-1">
+            <span className="size-2 rounded-full bg-success" />
+            <Tran text="server.online" />
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            <span className="bg-warning size-2 rounded-full" />
+            <Tran text="server.offline" />
+          </div>
+        )}
+        <div className="flex justify-between">
+          <div>
+            <Tran text="server.players" />: {players}
+          </div>
+          <div>
+            <Tran text="server.port" />: {port}
+          </div>
+        </div>
       </Link>
     </div>
   );
