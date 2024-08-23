@@ -31,18 +31,22 @@ export default async function Page() {
           </div>
           <CreateServerDialog />
         </div>
-        <section className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
-          <TabsContent value="server-list">
-            {servers.map((server) => (
-              <InternalServerCard server={server} key={server.port} />
-            ))}
-          </TabsContent>
-          <TabsContent value="my-server">
-            {myServers.map((server) => (
-              <InternalServerCard server={server} key={server.port} />
-            ))}
-          </TabsContent>
-        </section>
+        <TabsContent
+          className="flex justify-between gap-2 rounded-md bg-card p-2"
+          value="server-list"
+        >
+          {servers.map((server) => (
+            <InternalServerCard server={server} key={server.port} />
+          ))}
+        </TabsContent>
+        <TabsContent
+          className="flex justify-between gap-2 rounded-md bg-card p-2"
+          value="my-server"
+        >
+          {myServers.map((server) => (
+            <InternalServerCard server={server} key={server.port} />
+          ))}
+        </TabsContent>
       </Tabs>
     </div>
   );
