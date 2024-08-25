@@ -40,7 +40,6 @@ export default function CreateServerDialog() {
       name: '',
       description: '',
       mode: 'SURVIVAL',
-      port: 6567,
     },
   });
 
@@ -121,29 +120,6 @@ export default function CreateServerDialog() {
                       ) : (
                         'The server description that displayed in game'
                       )}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="port"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Port</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="6567"
-                        type="number"
-                        {...field}
-                        onChange={(event) =>
-                          field.onChange(event.target.valueAsNumber)
-                        }
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      The port that server hosting on
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
