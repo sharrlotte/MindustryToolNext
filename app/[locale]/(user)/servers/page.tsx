@@ -33,14 +33,14 @@ export default function Page() {
           <CreateServerDialog />
         </div>
         <TabsContent value="community-server">
-          <section className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] justify-center gap-2">
+          <section className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] gap-2">
             <Suspense fallback={skeleton}>
               <CommunityServer />
             </Suspense>
           </section>
         </TabsContent>
         <TabsContent value="my-server">
-          <section className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] justify-center gap-2">
+          <section className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] gap-2">
             <Suspense fallback={skeleton}>
               <MeServer />
             </Suspense>
@@ -70,6 +70,6 @@ async function MeServer() {
 
 function InternalServerCardSkeleton() {
   return (
-    <Skeleton className="flex h-28 w-full max-w-[559px] rounded-md bg-card" />
+    <Skeleton className="flex h-28 w-full max-w-[799px] rounded-md bg-card" />
   );
 }
