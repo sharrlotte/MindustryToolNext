@@ -193,29 +193,6 @@ function ServerSettingEditor({ server }: Props) {
             />
             <FormField
               control={form.control}
-              name="port"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Port</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="6567"
-                      type="number"
-                      {...field}
-                      onChange={(event) =>
-                        field.onChange(event.target.valueAsNumber)
-                      }
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    The port that server hosting on
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="mode"
               render={({ field }) => (
                 <FormItem className="grid">
