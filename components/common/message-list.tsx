@@ -169,25 +169,31 @@ export default function MessageList({
     threshold,
   ]);
 
-  const processNotification = useCallback((message: Message) => {
-    if (message.userId === session?.id) return;
+  const processNotification = useCallback(
+    (message: Message) => {
+      if (message.userId === session?.id) return;
 
-    new Notification(message.content);
-  }, []);
+      new Notification(message.content);
+    },
+    [session?.id],
+  );
 
-  const displayNotification = useCallback((message: Message) => {
-    if ('Notification' in window) {
-      if (Notification.permission === 'granted') {
-        processNotification(message);
-      } else {
+  const displayNotification = useCallback(
+    (message: Message) => {
+      if ('Notification' in window) {
+        if (Notification.permission === 'granted') {
+          return processNotification(message);
+        }
+
         Notification.requestPermission().then((permission) => {
           if (permission === 'granted') {
             processNotification(message);
           }
         });
       }
-    }
-  }, []);
+    },
+    [processNotification],
+  );
 
   useEffect(() => {
     const interval = setInterval(checkIfNeedFetchMore, 3000);
@@ -240,7 +246,16 @@ export default function MessageList({
         });
       }
     });
-  }, [queryClient, queryKey, room, socket, list, currentContainer]);
+  }, [
+    queryClient,
+    queryKey,
+    room,
+    socket,
+    list,
+    currentContainer,
+    showNotification,
+    displayNotification,
+  ]);
 
   useEffect(() => {
     function onScroll() {

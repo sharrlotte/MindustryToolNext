@@ -44,37 +44,33 @@ type SocketEvent = BaseSocketEvent &
       }
   );
 
-type BaseMessagePayload = {};
-
-type MessagePayload = BaseMessagePayload &
-  (
-    | {
-        method: 'MESSAGE';
-        data: string;
-      }
-    | {
-        method: 'SERVER_MESSAGE';
-        data: string;
-      }
-    | {
-        method: 'GET_MESSAGE';
-        page: number;
-        size: number;
-      }
-    | {
-        method: 'JOIN_ROOM';
-        data: string;
-      }
-    | {
-        method: 'LEAVE_ROOM';
-        data: string;
-      }
-    | {
-        method: 'GET_MEMBER';
-        page: number;
-        size: number;
-      }
-  );
+type MessagePayload =
+  | {
+      method: 'MESSAGE';
+      data: string;
+    }
+  | {
+      method: 'SERVER_MESSAGE';
+      data: string;
+    }
+  | {
+      method: 'GET_MESSAGE';
+      page: number;
+      size: number;
+    }
+  | {
+      method: 'JOIN_ROOM';
+      data: string;
+    }
+  | {
+      method: 'LEAVE_ROOM';
+      data: string;
+    }
+  | {
+      method: 'GET_MEMBER';
+      page: number;
+      size: number;
+    };
 
 export type MessageMethod = MessagePayload['method'];
 
@@ -104,11 +100,16 @@ export default class SocketClient {
 
   private requests: Record<string, PromiseReceiver> = {};
 
-  public onMessage<T extends SocketEvent['method']>(
+  public async onMessage<T extends SocketEvent['method']>(
     method: T,
     handler: (data: Extract<SocketEvent, { method: T }>['data']) => void,
   ) {
     this.handlers[method + this.room] = handler;
+
+    if (this.room !== '' && !this.rooms.includes(this.room)) {
+      await this.joinRoom(this.room);
+      this.rooms.push(this.room);
+    }
     this.room = '';
   }
 
