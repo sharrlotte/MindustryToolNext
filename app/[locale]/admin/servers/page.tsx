@@ -11,12 +11,12 @@ export default async function Page() {
   const servers = await getInternalServers(axios);
 
   return (
-    <div className="flex flex-col gap-2 p-4">
+    <div className="flex h-full flex-col gap-2 overflow-hidden p-4">
       <div className="flex justify-end gap-2 rounded-md bg-card p-2">
         <ReloadServerDialog />
         <CreateServerDialog />
       </div>
-      <section className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+      <section className="grid gap-2 overflow-y-auto pr-1 md:grid-cols-2 lg:grid-cols-3">
         {servers.map((server) => (
           <InternalServerCard server={server} key={server.port} />
         ))}
