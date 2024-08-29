@@ -233,7 +233,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   return (
     <Form {...form}>
       <form
-        className="flex h-full flex-col p-2"
+        className="flex h-full flex-col p-2 overflow-y-auto"
         onSubmit={form.handleSubmit(handleSubmit)}
       >
         <div className="flex flex-col gap-2">
