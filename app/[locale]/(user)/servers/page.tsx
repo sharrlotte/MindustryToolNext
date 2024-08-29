@@ -17,9 +17,12 @@ const skeleton = Array(8)
 
 export default function Page() {
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <Tabs defaultValue="community-server">
-        <div className="flex justify-between gap-2">
+    <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
+      <Tabs
+        className="flex flex-col overflow-hidden"
+        defaultValue="community-server"
+      >
+        <div className="flex flex-wrap justify-between gap-2">
           <div>
             <TabsList>
               <TabsTrigger value="community-server">
@@ -32,19 +35,21 @@ export default function Page() {
           </div>
           <CreateServerDialog />
         </div>
-        <TabsContent value="community-server">
-          <section className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] gap-2">
-            <Suspense fallback={skeleton}>
-              <CommunityServer />
-            </Suspense>
-          </section>
+        <TabsContent
+          className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          value="community-server"
+        >
+          <Suspense fallback={skeleton}>
+            <CommunityServer />
+          </Suspense>
         </TabsContent>
-        <TabsContent value="my-server">
-          <section className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] gap-2">
-            <Suspense fallback={skeleton}>
-              <MeServer />
-            </Suspense>
-          </section>
+        <TabsContent
+          className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          value="my-server"
+        >
+          <Suspense fallback={skeleton}>
+            <MeServer />
+          </Suspense>
         </TabsContent>
       </Tabs>
     </div>
