@@ -7,7 +7,7 @@ import LogicDisplay from './component/logic';
 import Command from "./command";
 import { useState } from 'react';
 
-export default function editor() {
+export default function Editor() {
   const [commands, setCommands] = useState<Command[]>([]);
 
   return (<div>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { Stage, Layer, Group, Rect, Line } from 'react-konva';
+import { Stage, Layer, Rect } from 'react-konva';
 import Command from '../command'; 
 import CommandCard from './command-card';
 
@@ -10,10 +10,11 @@ type LogicProp = {
 };
 
 export default function LogicDisplay({ commands }: LogicProp) {
-  const [position, setPosition] = useState({ windowWidth: 0, windowHeight: 0, posx: 0, posy: 0, scale: 1, ldx: 0, ldy: 0, drag: false });
+  const [position, setPosition] = 
+    useState({ windowWidth: 0, windowHeight: 0, posx: 0, posy: 0, scale: 1, lastDragX: 0, LastDragY: 0, drag: false });
 
   useEffect(() => {
-    function handleResize() { setPosition((prev) => ({ ...prev, windowWidth: window.innerWidth, windowHeight: window.innerHeight - 40 })) };
+    function handleResize() { setPosition((prev) => ({ ...prev, windowWidth: window.innerWidth, windowHeight: window.innerHeight - 40 })) }
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -27,16 +28,16 @@ export default function LogicDisplay({ commands }: LogicProp) {
   }, [position]);
 
   const handleDragStart = useCallback((dx: number, dy: number) => {
-    setPosition((prev) => ({ ...prev, ldx: dx, ldy: dy, drag: true}));
+    setPosition((prev) => ({ ...prev, lastDragX: dx, LastDragY: dy, drag: true}));
   }, [position]);
 
   const handleDragMove = useCallback((dx: number, dy: number) => {
     setPosition((prev) => ({
       ...prev,
-      posx: prev.posx + (prev.ldx - dx),
-      posy: prev.posy + (prev.ldy - dy),
-      ldx: dx,
-      ldy: dy
+      posx: prev.posx + (prev.lastDragX - dx),
+      posy: prev.posy + (prev.LastDragY - dy),
+      lastDragX: dx,
+      LastDragY: dy
     }));
   }, [position]);
 
@@ -56,6 +57,7 @@ export default function LogicDisplay({ commands }: LogicProp) {
         y={position.posy}
         onWheel={handleWheel}
         onMouseMove={(e) => {if (position.drag) handleDragMove(e.evt.clientX, e.evt.clientY)}}
+        onMouseLeave={handleDragEnd}
       >
         <Layer>
           <Rect
@@ -65,14 +67,12 @@ export default function LogicDisplay({ commands }: LogicProp) {
             height={8000}
             onMouseDown={(e) => handleDragStart(e.evt.clientX, e.evt.clientY)}
             onMouseUp={handleDragEnd}
-            onMouseLeave={handleDragEnd}
             fill={'#7777'}
           />
         </Layer>
-        <Layer> {/** test layer */}
+        <Layer> 
           <Rect x={500} y={100} width={200} height={200} fill={'yellow'} draggable />
         </Layer>
-        <CommandCard commands={commands} />
       </Stage>
     </div>
   );
