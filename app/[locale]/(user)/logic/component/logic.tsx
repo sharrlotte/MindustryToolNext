@@ -73,6 +73,7 @@ export default function LogicDisplay({ commands }: LogicProp) {
         <Layer> 
           <Rect x={500} y={100} width={200} height={200} fill={'yellow'} draggable />
         </Layer>
+        <CommandCard commands={commands}/>
       </Stage>
     </div>
   );

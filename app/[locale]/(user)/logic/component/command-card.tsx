@@ -7,9 +7,7 @@ import { Layer } from 'react-konva';
 
 export default function CommandCard({ commands }: { commands: Command[] }) {
 
-	return (
-		<Layer>
+	return (<Layer>
 
-		</Layer>
-	);
+	</Layer>);
 }
