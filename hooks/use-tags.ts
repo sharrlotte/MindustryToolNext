@@ -6,6 +6,8 @@ import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
 import { useQuery } from '@tanstack/react-query';
 import { getTags } from '@/query/tag';
 
+const EMPTY = { schematic: [], map: [], post: [], plugin: [] };
+
 export function useSearchTags(): AllTagGroup {
   const axios = useClientAPI();
   const { data } = useQuery({
@@ -13,7 +15,24 @@ export function useSearchTags(): AllTagGroup {
     queryKey: ['tags'],
   });
 
-  return data ?? { schematic: [], map: [], post: [], plugin: [] };
+  const groups = data ?? EMPTY;
+  return useMemo(
+    () => ({
+      schematic: groups.schematic
+        .sort()
+        .map((item) => ({ ...item, values: item.values.sort() })),
+      map: groups.map
+        .sort()
+        .map((item) => ({ ...item, values: item.values.sort() })),
+      post: groups.post
+        .sort()
+        .map((item) => ({ ...item, values: item.values.sort() })),
+      plugin: groups.plugin
+        .sort()
+        .map((item) => ({ ...item, values: item.values.sort() })),
+    }),
+    [groups],
+  );
 }
 
 export function useUploadTags(): AllTagGroup {

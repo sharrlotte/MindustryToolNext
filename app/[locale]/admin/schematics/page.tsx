@@ -37,6 +37,7 @@ export default function Page() {
       omit(params, 'page', 'size', 'sort'),
     ],
     queryFn: (axios) => getSchematicUploadCount(axios, params),
+    placeholderData: 0,
   });
 
   return (

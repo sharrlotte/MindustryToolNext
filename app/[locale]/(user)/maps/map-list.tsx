@@ -32,6 +32,7 @@ export default function MapList() {
   const { data } = useClientQuery({
     queryKey: ['maps', 'total', omit(params, 'page', 'size', 'sort')],
     queryFn: (axios) => getMapCount(axios, params),
+    placeholderData: 0,
   });
 
   return (
