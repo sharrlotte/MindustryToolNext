@@ -27,6 +27,7 @@ export default function Page() {
   const { data } = useClientQuery({
     queryKey: ['maps', 'total', 'upload', omit(params, 'page', 'size', 'sort')],
     queryFn: (axios) => getMapUploadCount(axios, params),
+    placeholderData: 0,
   });
 
   return (

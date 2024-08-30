@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import env from '@/constant/env';
 import Tran from '@/components/common/tran';
 import BackButton from '@/components/ui/back-button';
+
 type Props = {
   params: { id: string };
 };

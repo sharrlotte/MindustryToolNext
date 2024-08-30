@@ -35,16 +35,14 @@ export default function FilterTags({
     [filter, tags],
   );
 
-  return filteredTags
-    .sort()
-    .map((group) => (
-      <FilterTagGroup
-        key={group.name}
-        filterBy={filterBy}
-        group={group}
-        handleTagGroupChange={handleTagGroupChange}
-      />
-    ));
+  return filteredTags.map((group) => (
+    <FilterTagGroup
+      key={group.name}
+      filterBy={filterBy}
+      group={group}
+      handleTagGroupChange={handleTagGroupChange}
+    />
+  ));
 }
 
 type FilterTagGroupProps = {
@@ -59,16 +57,12 @@ const _FilterTagGroup = ({
   handleTagGroupChange,
 }: FilterTagGroupProps) => {
   const handleMultipleValueChange = useCallback(
-    (value: string[]) => {
-      handleTagGroupChange(group.name, value);
-    },
+    (value: string[]) => handleTagGroupChange(group.name, value),
     [group, handleTagGroupChange],
   );
 
   const handleSingleValueChange = useCallback(
-    (value: string) => {
-      handleTagGroupChange(group.name, [value]);
-    },
+    (value: string) => handleTagGroupChange(group.name, [value]),
     [group, handleTagGroupChange],
   );
 
