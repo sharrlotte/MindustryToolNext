@@ -44,7 +44,7 @@ export default async function Page({ params: { id } }: Props) {
 
   return (
     <div className="flex flex-col gap-2 overflow-y-auto p-2 md:pl-2">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-col gap-2">
         <div className="flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card p-4">
           <div className="flex items-center gap-2">
             <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />

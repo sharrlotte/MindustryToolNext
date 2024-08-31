@@ -7,6 +7,17 @@ import { PluginPaginationQuery } from '@/types/data/pageable-search-schema';
 import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
 import { Plugin } from '@/types/response/Plugin';
 
+export async function getPluginUploadCount(
+  axios: AxiosInstance,
+  params: Omit<PaginationSearchQuery, 'page' | 'size'>,
+): Promise<number> {
+  const result = await axios.get('/plugins/upload/total', {
+    params,
+  });
+
+  return result.data;
+}
+
 export async function deletePlugin(
   axios: AxiosInstance,
   id: string,

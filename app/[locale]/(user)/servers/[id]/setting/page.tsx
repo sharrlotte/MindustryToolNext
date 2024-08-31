@@ -46,6 +46,8 @@ import {
   getInternalServer,
   updateInternalServer,
 } from '@/query/server';
+import Tran from '@/components/common/tran';
+import { Textarea } from '@/components/ui/textarea';
 
 type PageProps = {
   params: { id: string };
@@ -209,6 +211,24 @@ function ServerSettingEditor({ server }: Props) {
                     />
                   </FormControl>
                   <FormDescription>Server game mode</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="startCommand"
+              render={({ field }) => (
+                <FormItem className="grid">
+                  <FormLabel>
+                    <Tran text="server.start-command" />
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Command that run when server start to host
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
