@@ -60,7 +60,7 @@ export default function PluginCard({
       <span>{description}</span>
       <div className="flex gap-2">
         <DeleteButton
-          className="left-1 top-1"
+          className="right-1"
           variant="ghost"
           description={`${t('delete')} ${name}`}
           isLoading={isDeleting}

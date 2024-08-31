@@ -23,9 +23,9 @@ import { cn } from '@/lib/utils';
 const buttonVariants = cva('hover:bg-destructive/80', {
   variants: {
     variant: {
-      default: 'border border-border',
       command: '',
-      ghost: 'border-none absolute w-fit',
+      default: 'border border-border',
+      ghost: 'border-none absolute w-fit backdrop-brightness-50',
     },
   },
   defaultVariants: {
