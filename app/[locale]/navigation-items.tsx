@@ -28,16 +28,19 @@ import {
   MapIcon,
   MindustryGptIcon,
   PluginIcon,
-  PostIcon,
-  SchematicIcon,
   ServerIcon,
-  SettingIcon,
   UserIcon,
   VerifyIcon,
 } from '@/components/common/icons';
 import { getSchematicUploadCount } from '@/query/schematic';
 import { getMapUploadCount } from '@/query/map';
 import { getPostUploadCount } from '@/query/post';
+import { getPluginUploadCount } from '@/query/plugin';
+import {
+  SchematicIcon,
+  PostIcon,
+  SettingIcon,
+} from '@/components/common/icons';
 
 type PathGroup = {
   key: string;
@@ -165,7 +168,7 @@ export function NavItems({ onClick }: NavItemsProps) {
                 icon: <PostIcon />,
               },
               {
-                name: <Tran text="plugin" />,
+                name: <PluginPath />,
                 path: '/admin/plugins',
                 icon: <PluginIcon />,
                 roles: ['SHAR'],
@@ -351,32 +354,45 @@ const PathGroup = React.memo(_PathGroup);
 function VerifyPath() {
   const axios = useClientAPI();
   const set = useVerifyCount((data) => data.set);
-  const [{ data: schematicCount }, { data: mapCount }, { data: postCount }] =
-    useQueries({
-      queries: [
-        {
-          queryFn: () => getSchematicUploadCount(axios, {}),
-          queryKey: ['schematics', 'total', 'upload'],
-          placeholderData: 0,
-        },
-        {
-          queryFn: () => getMapUploadCount(axios, {}),
-          queryKey: ['maps', 'total', 'upload'],
-          placeholderData: 0,
-        },
-        {
-          queryFn: () => getPostUploadCount(axios, {}),
-          queryKey: ['posts', 'total', 'upload'],
-          placeholderData: 0,
-        },
-      ],
-    });
+  const [
+    { data: schematicCount },
+    { data: mapCount },
+    { data: postCount },
+    { data: pluginCount },
+  ] = useQueries({
+    queries: [
+      {
+        queryFn: () => getSchematicUploadCount(axios, {}),
+        queryKey: ['schematics', 'total', 'upload'],
+        placeholderData: 0,
+      },
+      {
+        queryFn: () => getMapUploadCount(axios, {}),
+        queryKey: ['maps', 'total', 'upload'],
+        placeholderData: 0,
+      },
+      {
+        queryFn: () => getPostUploadCount(axios, {}),
+        queryKey: ['posts', 'total', 'upload'],
+        placeholderData: 0,
+      },
+      {
+        queryFn: () => getPluginUploadCount(axios, {}),
+        queryKey: ['plugins', 'total', 'upload'],
+        placeholderData: 0,
+      },
+    ],
+  });
 
   useEffect(
-    () => set({ schematicCount, mapCount, postCount }),
-    [mapCount, postCount, schematicCount, set],
+    () => set({ schematicCount, mapCount, postCount, pluginCount }),
+    [mapCount, postCount, schematicCount, pluginCount, set],
   );
-  const amount = (schematicCount ?? 0) + (mapCount ?? 0) + (postCount ?? 0);
+  const amount =
+    (schematicCount ?? 0) +
+    (mapCount ?? 0) +
+    (postCount ?? 0) +
+    (pluginCount ?? 0);
 
   return (
     <>
@@ -416,7 +432,16 @@ function PostPath() {
     </>
   );
 }
+function PluginPath() {
+  const pluginCount = useVerifyCount((data) => data.pluginCount);
 
+  return (
+    <>
+      <Tran text="plugin" />
+      {pluginCount > 0 && <span> ({pluginCount})</span>}
+    </>
+  );
+}
 function getPath(path: SubPath): string[] {
   if (typeof path === 'string') {
     return [path];

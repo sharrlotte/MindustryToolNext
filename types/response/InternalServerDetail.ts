@@ -14,4 +14,5 @@ export type InternalServerDetail = {
   players: number;
   mapName: string;
   mapImage?: string;
+  startCommand?: string;
 };
