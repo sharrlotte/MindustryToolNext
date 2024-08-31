@@ -12,6 +12,10 @@ export type InternalServerDetail = {
   ramUsage: number;
   totalRam: number;
   players: number;
+  playerList: {
+    name: string;
+    uuid: string;
+  }[];
   mapName: string;
   mapImage?: string;
   startCommand?: string;
