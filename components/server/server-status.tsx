@@ -11,8 +11,8 @@ export default function ServerStatus({ alive, started }: Props) {
     if (!alive) {
       return (
         <Fragment>
-          <span className="size-2 rounded-full bg-destructive" />
           <Tran text="server.stopped" />
+          <span className="size-2 rounded-full bg-destructive" />
         </Fragment>
       );
     }
@@ -20,16 +20,16 @@ export default function ServerStatus({ alive, started }: Props) {
     if (started) {
       return (
         <Fragment>
-          <span className="size-2 rounded-full bg-success" />
           <Tran text="server.online" />
+          <span className="size-2 rounded-full bg-success" />
         </Fragment>
       );
     }
 
     return (
       <Fragment>
-        <span className="size-2 rounded-full bg-warning" />
         <Tran text="server.offline" />
+        <span className="size-2 rounded-full bg-warning" />
       </Fragment>
     );
   }

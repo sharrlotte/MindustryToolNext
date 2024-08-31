@@ -36,7 +36,7 @@ export default function Page() {
           <CreateServerDialog />
         </div>
         <TabsContent
-          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(400px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
           value="community-server"
         >
           <Suspense fallback={skeleton}>
@@ -44,7 +44,7 @@ export default function Page() {
           </Suspense>
         </TabsContent>
         <TabsContent
-          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(400px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
           value="my-server"
         >
           <Suspense fallback={skeleton}>
