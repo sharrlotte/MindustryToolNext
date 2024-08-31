@@ -9,6 +9,7 @@ import getServerAPI from '@/query/config/get-server-api';
 import RawImage from '@/components/common/raw-image';
 import { getInternalServer } from '@/query/server';
 import Tran from '@/components/common/tran';
+import ServerStatus from '@/components/server/server-status';
 
 type Props = {
   params: { id: string; locale: string };
@@ -47,22 +48,7 @@ export default async function Page({ params: { id } }: Props) {
           <div>
             <Tran text="server.map-name" />: <span>{mapName}</span>
           </div>
-          {!alive ? (
-            <div className="flex items-center gap-1">
-              <span className="size-2 rounded-full bg-destructive" />
-              <Tran text="server.stopped" />
-            </div>
-          ) : started ? (
-            <div className="flex items-center gap-1">
-              <span className="size-2 rounded-full bg-success" />
-              <Tran text="server.online" />
-            </div>
-          ) : (
-            <div className="flex items-center gap-1">
-              <span className="size-2 rounded-full bg-warning" />
-              <Tran text="server.offline" />
-            </div>
-          )}
+          <ServerStatus alive={alive} started={started} />
         </div>
         <div className="flex min-w-60 flex-[3] flex-col gap-1 bg-card p-4 shadow-lg">
           <div>

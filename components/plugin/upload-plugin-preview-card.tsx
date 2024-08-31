@@ -33,6 +33,7 @@ import { TagGroups } from '@/types/response/TagGroup';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import verifyPlugin, { deletePlugin } from '@/query/plugin';
+import IdUserCard from '@/components/user/id-user-card';
 
 type Props = {
   plugin: Plugin;
@@ -41,7 +42,7 @@ type Props = {
 const GITHUB_PATTERN =
   /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
 export default function UploadPluginCard({ plugin }: Props) {
-  const { id, name, description, url } = plugin;
+  const { id, name, description, url, userId } = plugin;
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const t = useI18n();
@@ -73,15 +74,13 @@ export default function UploadPluginCard({ plugin }: Props) {
 
   return (
     <div className="relative grid gap-2 rounded-md border p-2">
+      <Link className="absolute right-1 top-1 m-1 border-none" href={githubUrl}>
+        <ExternalLink className="size-5" />
+      </Link>
       <h2>{name}</h2>
       <span>{description}</span>
+      <IdUserCard id={userId} />
       <div className="flex gap-2">
-        <Link
-          className="absolute right-1 top-1 m-1 border-none"
-          href={githubUrl}
-        >
-          <ExternalLink className="size-5" />
-        </Link>
         <VerifyPluginDialog plugin={plugin} />
         <DeleteButton
           description={`${t('delete')} ${name}`}
@@ -142,7 +141,11 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="aspect-square p-0" variant="outline" title="verify">
+        <Button
+          className="flex h-9 w-full p-0"
+          variant="outline"
+          title="verify"
+        >
           <CheckIcon className="size-5" />
         </Button>
       </DialogTrigger>
