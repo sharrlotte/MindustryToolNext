@@ -81,12 +81,12 @@ export default function UploadPluginCard({ plugin }: Props) {
       <span>{description}</span>
       <IdUserCard id={userId} />
       <div className="flex gap-2">
-        <VerifyPluginDialog plugin={plugin} />
         <DeleteButton
           description={`${t('delete')} ${name}`}
           isLoading={isDeleting}
           onClick={() => deletePluginById(id)}
         />
+        <VerifyPluginDialog plugin={plugin} />
       </div>
     </div>
   );
@@ -184,7 +184,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                   title={t('upload')}
                   disabled={isPending}
                 >
-                  {t('upload')}
+                  {t('verify')}
                 </Button>
               </div>
             </form>
