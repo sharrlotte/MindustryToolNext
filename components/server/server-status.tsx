@@ -1,5 +1,5 @@
 import Tran from '@/components/common/tran';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 type Props = {
   alive: boolean;
@@ -9,29 +9,14 @@ type Props = {
 export default function ServerStatus({ alive, started }: Props) {
   function render() {
     if (!alive) {
-      return (
-        <Fragment>
-          <Tran text="server.stopped" />
-          <span className="size-2 rounded-full bg-destructive" />
-        </Fragment>
-      );
+      return <Tran className="text-destructive" text="server.stopped" />;
     }
 
     if (started) {
-      return (
-        <Fragment>
-          <Tran text="server.online" />
-          <span className="size-2 rounded-full bg-success" />
-        </Fragment>
-      );
+      return <Tran className="text-success" text="server.online" />;
     }
 
-    return (
-      <Fragment>
-        <Tran text="server.offline" />
-        <span className="size-2 rounded-full bg-warning" />
-      </Fragment>
-    );
+    return <Tran className="text-warning" text="server.offline" />;
   }
 
   return <div className="flex items-center gap-1">{render()}</div>;
