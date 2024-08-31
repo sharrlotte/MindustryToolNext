@@ -53,7 +53,7 @@ export default async function Page({ params: { id } }: Props) {
           <div className="grid grid-cols-2 gap-3 text-sm font-medium capitalize">
             <div className="flex flex-col gap-0.5">
               <Tran text="server.description" />
-              <span>{description}</span>
+              <ColorText text={description} />
             </div>
             <div className="flex flex-col gap-0.5">
               <Tran text="server.owner" />
