@@ -6,7 +6,6 @@ import React from 'react';
 import DeleteButton from '@/components/button/delete-button';
 import {
   Preview,
-  PreviewActions,
   PreviewDescription,
   PreviewHeader,
   PreviewImage,
