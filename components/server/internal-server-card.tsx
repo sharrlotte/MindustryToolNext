@@ -48,7 +48,7 @@ export default async function InternalServerCard({
           {mapName && (
             <Fragment>
               <Tran text="server.map" />
-              <span>{mapName}</span>
+              <ColorText text={mapName} />
             </Fragment>
           )}
         </div>
