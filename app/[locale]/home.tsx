@@ -27,14 +27,11 @@ export async function HomeSchematicPreview({
       <Suspense fallback={skeleton}>
         <_SchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
-          <Preview>
-            <InternalLink
-              href="/maps"
-              className="cursor-pointer px-2 font-light"
-            >
+          <InternalLink href="/maps" className="cursor-pointer px-2 font-light">
+            <Preview className="flex items-center justify-center">
               <Tran text="home.preview-more" />
-            </InternalLink>
-          </Preview>
+            </Preview>
+          </InternalLink>
         </li>
       </Suspense>
     </ul>
@@ -50,14 +47,14 @@ export async function HomeMapPreview({
       <Suspense fallback={skeleton}>
         <_HomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
-          <Preview>
-            <InternalLink
-              href="/maps"
-              className="cursor-pointer px-2 font-light"
-            >
+          <InternalLink
+            href="/maps"
+            className="cursor-pointer px-2 text-center font-light"
+          >
+            <Preview className="flex items-center justify-center">
               <Tran text="home.preview-more" />
-            </InternalLink>
-          </Preview>
+            </Preview>
+          </InternalLink>
         </li>
       </Suspense>
     </ul>

@@ -12,6 +12,8 @@ import { Plugin } from '@/types/response/Plugin';
 
 import { useMutation } from '@tanstack/react-query';
 import { deletePlugin } from '@/query/plugin';
+import { useSession } from '@/context/session-context';
+import ProtectedElement from '@/layout/protected-element';
 
 type Props = {
   plugin: Plugin;
@@ -20,11 +22,12 @@ type Props = {
 const GITHUB_PATTERN =
   /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
 export default function PluginCard({
-  plugin: { id, name, description, url },
+  plugin: { id, name, description, url, userId },
 }: Props) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const t = useI18n();
+  const { session } = useSession();
 
   const axios = useClientAPI();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
@@ -59,13 +62,15 @@ export default function PluginCard({
       <span>{description}</span>
       <span>{description}</span>
       <div className="flex gap-2">
-        <DeleteButton
-          className="right-1"
-          variant="ghost"
-          description={`${t('delete')} ${name}`}
-          isLoading={isDeleting}
-          onClick={() => deletePluginById(id)}
-        />
+        <ProtectedElement session={session} ownerId={userId}>
+          <DeleteButton
+            className="right-1 top-1 backdrop-brightness-100"
+            variant="ghost"
+            description={`${t('delete')} ${name}`}
+            isLoading={isDeleting}
+            onClick={() => deletePluginById(id)}
+          />
+        </ProtectedElement>
       </div>
     </div>
   );
