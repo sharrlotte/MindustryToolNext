@@ -10,7 +10,6 @@ export default function ErrorScreen({
   error,
 }: {
   error: Error & { digest?: string } & any;
-  reset: () => void;
 }) {
   const message = error.message ?? 'Something went wrong!';
 
