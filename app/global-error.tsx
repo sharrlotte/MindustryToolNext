@@ -4,11 +4,10 @@ import { notFound } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 
-export default function ErrorScreen({
+export default function Error({
   error,
 }: {
   error: Error & { digest?: string } & any;
-  reset: () => void;
 }) {
   const message = error.message ?? 'Something went wrong!';
 

@@ -7,7 +7,7 @@ import { getInternalServers } from '@/query/server';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Tran from '@/components/common/tran';
 import { getMeServers } from '@/query/user';
-import { Skeleton } from '@/components/ui/skeleton';
+import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 
 export const experimental_ppr = true;
 
@@ -71,8 +71,4 @@ async function MeServer() {
   return servers.map((server) => (
     <InternalServerCard server={server} key={server.port} />
   ));
-}
-
-function InternalServerCardSkeleton() {
-  return <Skeleton className="flex h-28 w-full rounded-md bg-card" />;
 }
