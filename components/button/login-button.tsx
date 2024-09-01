@@ -10,6 +10,8 @@ import { useI18n } from '@/locales/client';
 import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import InternalLink from '@/components/common/internal-link';
 
+const ignored = ['login'];
+
 export default function LoginButton({
   className,
   children,
@@ -21,10 +23,15 @@ export default function LoginButton({
   const [_ignore, setCookie] = useCookies();
   const pathname = usePathname();
 
-  useLayoutEffect(
-    () => setCookie('redirect_uri', window.location.href),
-    [setCookie, pathname],
-  );
+  useLayoutEffect(() => {
+    const path = window.location.href;
+
+    if (!ignored.some((ig) => pathname.includes(ig))) {
+      setCookie('redirect_uri', path, {
+        path: '/',
+      });
+    }
+  }, [setCookie, pathname]);
 
   return (
     <InternalLink

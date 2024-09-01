@@ -5,7 +5,6 @@ import { TagName } from '@/components/tag/tag-name';
 import { cn } from '@/lib/utils';
 import Tag from '@/types/response/Tag';
 import TagTooltip from '@/components/tag/tag-tooltip';
-import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;
