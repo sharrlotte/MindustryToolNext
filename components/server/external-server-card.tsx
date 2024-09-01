@@ -58,7 +58,7 @@ export default function ExternalServerCard({
             <span className="overflow-hidden whitespace-nowrap capitalize">
               Game mode:
               <ColorText
-                text={server.modeName ? server.mapName : server.mode}
+                text={server.modeName ? server.modeName : server.mode}
               />
             </span>
           </div>

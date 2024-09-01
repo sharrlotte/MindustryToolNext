@@ -83,7 +83,7 @@ export default async function Page({ params: { id } }: Props) {
               {mapName && (
                 <Fragment>
                   <Tran text="server.map" />
-                  <span>{mapName}</span>
+                  <ColorText text={mapName} />
                 </Fragment>
               )}
             </div>

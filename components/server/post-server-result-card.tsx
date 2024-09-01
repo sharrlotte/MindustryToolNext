@@ -56,7 +56,7 @@ export default function PostServerResultCard({
             </span>
             <span className="overflow-hidden whitespace-nowrap capitalize">
               Game mode:
-              {server.modeName ? server.mapName : server.mode}
+              {server.modeName ? server.modeName : server.mode}
             </span>
           </div>
           <span className="col-span-full">
