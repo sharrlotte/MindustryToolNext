@@ -16,6 +16,8 @@ type Props = {
   message: MessageGroup;
 };
 
+const ONE_HOUR = 1000 * 60 * 60;
+
 export function MessageCard({ className, message }: Props) {
   const { userId, contents, createdAt } = message;
   const axios = useClientApi();
@@ -24,6 +26,11 @@ export function MessageCard({ className, message }: Props) {
     queryKey: ['users', userId],
     queryFn: () => getUser(axios, { id: userId }),
   });
+
+  const time =
+    Date.now() - Date.parse(createdAt) > ONE_HOUR
+      ? new Date(createdAt).toLocaleTimeString()
+      : moment(createdAt).fromNow();
 
   return (
     <div
@@ -46,7 +53,7 @@ export function MessageCard({ className, message }: Props) {
           ) : (
             <Skeleton className="h-6 w-24" />
           )}
-          <span>{moment(createdAt).fromNow()}</span>
+          <span>{time}</span>
         </div>
         <div className="no-scrollbar grid w-full gap-1 overflow-x-auto">
           {contents.map(({ text }, index) => (

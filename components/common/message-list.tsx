@@ -19,6 +19,7 @@ import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
 import { useSession } from '@/context/session-context';
+import useWindow from '@/hooks/use-window';
 
 type MessageListProps = {
   className?: string;
@@ -71,6 +72,7 @@ export default function MessageList({
   const [isFirstLoad, setFirstLoad] = useState(true);
 
   const t = useI18n();
+  const isTabActive = useWindow();
   const queryClient = useQueryClient();
   const { socket } = useSocket();
 
@@ -196,10 +198,18 @@ export default function MessageList({
   );
 
   useEffect(() => {
-    const interval = setInterval(checkIfNeedFetchMore, 3000);
+    let interval: any;
 
-    return () => clearInterval(interval);
-  }, [checkIfNeedFetchMore]);
+    if (isTabActive) {
+      interval = setInterval(checkIfNeedFetchMore, 3000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [checkIfNeedFetchMore, isTabActive]);
 
   useEffect(() => {
     if (
