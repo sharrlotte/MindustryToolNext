@@ -29,17 +29,17 @@ export default function ShutdownServerButton({ id }: Props) {
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-server, internal-servers'],
+    mutationKey: ['internal-servers'],
     mutationFn: () => shutdownInternalServer(axios, id),
     onSuccess: () => {
       toast({
-        title: 'Reload server successfully',
+        title: 'Shutdown server successfully',
         variant: 'success',
       });
     },
     onError: (error) =>
       toast({
-        title: 'Reload server failed',
+        title: 'Shutdown server failed',
         description: error.message,
         variant: 'destructive',
       }),

@@ -20,7 +20,7 @@ export default function StartServerButton({ id }: Props) {
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-server, internal-servers'],
+    mutationKey: ['internal-servers'],
     mutationFn: () => startInternalServer(axios, id),
     onSuccess: () => {
       toast({
