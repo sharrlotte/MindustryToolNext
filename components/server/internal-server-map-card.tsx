@@ -34,6 +34,12 @@ export default function InternalServerMapCard({
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => deleteInternalServerMap(axios, serverId, mapId),
+    onSuccess: () => {
+      toast({
+        title: t('delete-success'),
+        variant: 'success',
+      });
+    },
     onError: (error) => {
       toast({
         title: t('delete-fail'),
@@ -41,7 +47,7 @@ export default function InternalServerMapCard({
         variant: 'destructive',
       });
     },
-    onSuccess: () => {
+    onSettled: () => {
       invalidateByKey(['server', serverId, 'maps']);
     },
   });

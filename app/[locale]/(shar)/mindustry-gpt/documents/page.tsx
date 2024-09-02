@@ -78,7 +78,6 @@ function AddDocumentButton() {
         title: t('upload.success'),
         variant: 'success',
       });
-      invalidateByKey(['documents']);
       form.reset();
     },
     onError(error) {
@@ -87,6 +86,9 @@ function AddDocumentButton() {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['documents']);
     },
   });
 

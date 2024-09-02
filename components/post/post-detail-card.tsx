@@ -43,7 +43,6 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   const { mutate: removePost, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => unverifyPost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['posts']);
       back();
       toast({
         title: t('take-down-success'),
@@ -57,12 +56,14 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
         variant: 'destructive',
       });
     },
+    onSettled: () => {
+      invalidateByKey(['posts']);
+    },
   });
 
   const { mutate: deletePostById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['posts']);
       back();
       toast({
         title: t('delete-success'),
@@ -75,6 +76,9 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['posts']);
     },
   });
 

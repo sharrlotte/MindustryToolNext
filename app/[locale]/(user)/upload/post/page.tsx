@@ -138,7 +138,6 @@ function TranslatePage({
       });
       setTitle('');
       setContent({ text: '', images: [] });
-      invalidateByKey(['posts']);
     },
     onError(error) {
       toast({
@@ -146,6 +145,9 @@ function TranslatePage({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['posts']);
     },
   });
 
@@ -242,7 +244,6 @@ function UploadPage({
       setTitle('');
       setContent({ text: '', images: [] });
       setSelectedTags([]);
-      invalidateByKey(['posts']);
     },
     onError(error) {
       toast({
@@ -250,6 +251,9 @@ function UploadPage({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['posts']);
     },
   });
 

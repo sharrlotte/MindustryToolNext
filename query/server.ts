@@ -189,7 +189,7 @@ export async function createServer(
   return result.data;
 }
 
-export async function shutdownInternalServers(
+export async function shutdownInternalServer(
   axios: AxiosInstance,
   id: string,
 ): Promise<PostServerResponse> {
@@ -198,7 +198,7 @@ export async function shutdownInternalServers(
   return result.data;
 }
 
-export async function startInternalServers(
+export async function startInternalServer(
   axios: AxiosInstance,
   id: string,
 ): Promise<PostServerResponse> {

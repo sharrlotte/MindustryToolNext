@@ -30,7 +30,6 @@ export function DeleteMapButton({ id, name, variant }: DeleteMapButtonProps) {
     },
     mutationFn: (id: string) => deleteMap(axios, id),
     onSuccess: () => {
-      invalidateByKey(['maps']);
       back();
       toast({
         title: t('delete-success'),
@@ -43,6 +42,9 @@ export function DeleteMapButton({ id, name, variant }: DeleteMapButtonProps) {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['maps']);
     },
   });
 

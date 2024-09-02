@@ -90,7 +90,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
         variant: 'destructive',
       });
     },
-    onSuccess: () => {
+    onSettled: () => {
       invalidateByKey(['servers', serverId, 'maps']);
     },
   });

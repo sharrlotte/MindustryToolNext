@@ -62,8 +62,6 @@ export default function UploadPostDetailCard({
   const { mutate: deletePostById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['posts']);
-      invalidateByKey(['posts']);
       back();
       toast({
         title: t('delete-success'),
@@ -76,6 +74,9 @@ export default function UploadPostDetailCard({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['posts']);
     },
   });
 

@@ -105,7 +105,6 @@ function ServerSettingEditor({ server }: Props) {
     mutationFn: (data: PutInternalServerRequest) =>
       updateInternalServer(axios, id, data),
     onSuccess: (_, data) => {
-      invalidateByKey(['servers']);
       server = { ...currentServer, ...form.getValues() };
       toast({
         title: t('update.success'),
@@ -119,18 +118,19 @@ function ServerSettingEditor({ server }: Props) {
         description: error.message,
         variant: 'destructive',
       }),
+    onSettled: () => {
+      invalidateByKey(['servers']);
+    },
   });
 
   const { mutate: deleteServer, isPending: isDeleting } = useMutation({
     mutationKey: ['servers'],
     mutationFn: () => deleteInternalServer(axios, id),
     onSuccess: () => {
-      invalidateByKey(['servers']);
       toast({
         title: t('delete-success'),
         variant: 'success',
       });
-      revalidate('/admin/servers');
       router.push('/admin/servers');
     },
     onError: (error) =>
@@ -139,6 +139,10 @@ function ServerSettingEditor({ server }: Props) {
         description: error.message,
         variant: 'destructive',
       }),
+    onSettled: () => {
+      revalidate('/admin/servers');
+      invalidateByKey(['servers']);
+    },
   });
 
   const isChanged =

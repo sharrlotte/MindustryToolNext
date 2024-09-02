@@ -92,6 +92,8 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     },
     onSuccess: () => {
       setShow(false);
+    },
+    onSettled: () => {
       invalidateByKey(['servers', serverId, 'plugins']);
     },
   });

@@ -51,7 +51,6 @@ export default function UploadPluginCard({ plugin }: Props) {
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePlugin(axios, id),
     onSuccess: () => {
-      invalidateByKey(['plugins']);
       toast({
         title: t('delete-success'),
         variant: 'success',
@@ -63,6 +62,9 @@ export default function UploadPluginCard({ plugin }: Props) {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['plugins']);
     },
   });
 
@@ -118,7 +120,6 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: VerifyPluginRequest) => verifyPlugin(axios, data),
     onSuccess: () => {
-      invalidateByKey(['plugins']);
       toast({
         title: t('verify-success'),
         variant: 'success',
@@ -130,6 +131,9 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['plugins']);
     },
   });
   function handleSubmit(value: VerifyPluginRequestData) {
