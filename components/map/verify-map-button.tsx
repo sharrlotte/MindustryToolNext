@@ -29,7 +29,6 @@ export default function VerifyMapButton({
   const { mutate, isPending } = useMutation({
     mutationFn: (data: VerifyMapRequest) => verifyMap(axios, data),
     onSuccess: () => {
-      invalidateByKey(['maps']);
       back();
       toast({
         title: t('verify-success'),
@@ -42,6 +41,9 @@ export default function VerifyMapButton({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['maps']);
     },
   });
 

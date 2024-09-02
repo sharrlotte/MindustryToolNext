@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 
 import { useMutation } from '@tanstack/react-query';
 import { startInternalServers } from '@/query/server';
+import Tran from '@/components/common/tran';
 
 type Props = {
   id: string;
@@ -26,7 +27,6 @@ export default function StartServerButton({ id }: Props) {
         title: 'Start server successfully',
         variant: 'success',
       });
-      revalidate('/servers');
     },
     onError: (error) =>
       toast({
@@ -34,6 +34,9 @@ export default function StartServerButton({ id }: Props) {
         description: error.message,
         variant: 'destructive',
       }),
+    onSettled: () => {
+      revalidate('/servers');
+    },
   });
 
   return (
@@ -44,7 +47,7 @@ export default function StartServerButton({ id }: Props) {
       disabled={isPending}
       onClick={() => mutate()}
     >
-      Start
+      <Tran text="server.start" />
     </Button>
   );
 }

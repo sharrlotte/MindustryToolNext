@@ -30,7 +30,6 @@ export function TakeDownSchematicButton({
     },
     mutationFn: (id: string) => unverifySchematic(axios, id),
     onSuccess: () => {
-      invalidateByKey(['schematics']);
       back();
       toast({
         title: t('take-down-success'),
@@ -43,6 +42,9 @@ export function TakeDownSchematicButton({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['schematics']);
     },
   });
 

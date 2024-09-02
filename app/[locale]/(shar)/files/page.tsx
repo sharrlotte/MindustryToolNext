@@ -38,15 +38,15 @@ export default function Page() {
   const { mutate: deleteFile } = useMutation({
     mutationKey: ['delete-file'],
     mutationFn: async (path: string) => deleteServerFile(axios, path),
-    onSuccess: () => {
-      invalidateByKey(['server-files', path]);
-    },
     onError: (error) => {
       toast({
         variant: 'destructive',
         title: 'Failed to delete file',
         description: error.message,
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['server-files', path]);
     },
   });
 

@@ -56,13 +56,11 @@ export default function CreateServerDialog() {
     mutationFn: (data: CreateInternalServerRequest) =>
       createInternalServer(axios, data),
     onSuccess: () => {
-      invalidateByKey(['servers']);
       toast({
         title: t('upload.success'),
         variant: 'success',
       });
       form.reset();
-      revalidate('/servers');
       setOpen(false);
     },
     onError: (error) =>
@@ -71,6 +69,10 @@ export default function CreateServerDialog() {
         description: error.message,
         variant: 'destructive',
       }),
+    onSettled: () => {
+      invalidateByKey(['servers']);
+      revalidate('/servers');
+    },
   });
 
   return (

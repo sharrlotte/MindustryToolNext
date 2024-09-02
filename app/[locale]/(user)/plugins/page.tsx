@@ -90,7 +90,6 @@ function AddPluginButton() {
         title: t('upload.success'),
         variant: 'success',
       });
-      invalidateByKey(['plugins']);
       form.reset();
     },
     onError(error) {
@@ -99,6 +98,9 @@ function AddPluginButton() {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['plugins']);
     },
   });
 

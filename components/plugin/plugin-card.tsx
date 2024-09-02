@@ -33,7 +33,6 @@ export default function PluginCard({
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePlugin(axios, id),
     onSuccess: () => {
-      invalidateByKey(['plugins']);
       toast({
         title: t('delete-success'),
         variant: 'success',
@@ -45,6 +44,9 @@ export default function PluginCard({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['plugins']);
     },
   });
 

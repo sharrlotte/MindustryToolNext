@@ -29,7 +29,6 @@ export default function VerifySchematicButton({
   const { mutate, isPending } = useMutation({
     mutationFn: (data: VerifySchematicRequest) => verifySchematic(axios, data),
     onSuccess: () => {
-      invalidateByKey(['schematics']);
       back();
       toast({
         title: t('verify-success'),
@@ -42,6 +41,9 @@ export default function VerifySchematicButton({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['schematics']);
     },
   });
 

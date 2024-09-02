@@ -27,7 +27,6 @@ export default function InternalServerPluginCard({
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: () => deleteInternalServerPlugin(axios, serverId, pluginId),
     onSuccess: () => {
-      invalidateByKey(['servers', serverId, 'plugins']);
       toast({
         title: t('delete-success'),
         variant: 'success',
@@ -39,6 +38,9 @@ export default function InternalServerPluginCard({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['servers', serverId, 'plugins']);
     },
   });
 

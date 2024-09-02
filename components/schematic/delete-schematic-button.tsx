@@ -34,7 +34,6 @@ export function DeleteSchematicButton({
     },
     mutationFn: (id: string) => deleteSchematic(axios, id),
     onSuccess: () => {
-      invalidateByKey(['schematics']);
       back();
       toast({
         title: t('delete-success'),
@@ -47,6 +46,9 @@ export function DeleteSchematicButton({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['schematics']);
     },
   });
 

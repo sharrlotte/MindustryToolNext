@@ -27,7 +27,6 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
     },
     mutationFn: (id: string) => unverifyMap(axios, id),
     onSuccess: () => {
-      invalidateByKey(['maps']);
       back();
       toast({
         title: t('take-down-success'),
@@ -40,6 +39,9 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['maps']);
     },
   });
 
