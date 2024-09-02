@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 import { LikeAction } from '@/constant/enum';
 import { FakeLike, LikeContext } from '@/context/like-context';
 import { useSession } from '@/context/session-context';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { Like } from '@/types/response/Like';
 
@@ -27,7 +27,7 @@ function LikeComponent({
   itemId,
 }: LikeComponentProps) {
   const { session } = useSession();
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const [likeData, setLikeData] = useState({
     ...(initialLikeData ?? FakeLike),
     count: initialLikeCount,

@@ -3,7 +3,7 @@
 import DeleteButton, {
   DeleteButtonProps,
 } from '@/components/button/delete-button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -22,7 +22,7 @@ export function DeleteSchematicButton({
   name,
   variant,
 }: DeleteSchematicButtonProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
   const { back } = useRouter();
   const { invalidateByKey } = useQueriesData();

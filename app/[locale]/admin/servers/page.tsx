@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 
 import InternalServerCard from '@/components/server/internal-server-card';
-import getServerAPI from '@/query/config/get-server-api';
+import getServerApi from '@/query/config/get-server-api';
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import ReloadServerDialog from '@/app/[locale]/(user)/servers/reload-server-dialog';
 import { getInternalServers } from '@/query/server';
@@ -30,7 +30,7 @@ export default async function Page() {
 }
 
 async function Servers() {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const servers = await getInternalServers(axios);
 
   return (

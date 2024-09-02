@@ -3,7 +3,7 @@ import React from 'react';
 
 import MapDetailCard from '@/components/map/map-detail-card';
 import env from '@/constant/env';
-import getServerAPI from '@/query/config/get-server-api';
+import getServerApi from '@/query/config/get-server-api';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getMap } from '@/query/map';
 
@@ -13,7 +13,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const map = await getMap(axios, { id });
 
   return {
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: { params: IdSearchParams }) {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const map = await getMap(axios, params);
 
   return <MapDetailCard map={map} />;

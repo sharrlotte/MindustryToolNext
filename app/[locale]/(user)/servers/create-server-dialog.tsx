@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -48,7 +48,7 @@ export default function CreateServerDialog() {
   const [open, setOpen] = useState(false);
 
   const { invalidateByKey } = useQueriesData();
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({

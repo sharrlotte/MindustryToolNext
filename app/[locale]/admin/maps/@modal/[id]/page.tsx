@@ -1,7 +1,7 @@
 import React from 'react';
 
 import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
-import getServerAPI from '@/query/config/get-server-api';
+import getServerApi from '@/query/config/get-server-api';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getMapUpload } from '@/query/map';
 import { Metadata } from 'next';
@@ -15,7 +15,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const map = await getMapUpload(axios, { id });
 
   return {
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: { params: IdSearchParams }) {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const map = await getMapUpload(axios, params);
 
   if (map.isVerified === true) {

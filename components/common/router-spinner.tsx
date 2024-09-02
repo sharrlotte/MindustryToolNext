@@ -7,9 +7,9 @@ type Props = {
   message?: string;
 };
 
-export default function ErrorSpinner({ message }: Props) {
+export default function RouterSpinner({ message }: Props) {
   return (
-    <div className="flex justify-center items-center flex-col">
+    <div className="flex flex-col items-center justify-center">
       <h2>{message}</h2>
       <Image className="animate-spin" src={router} alt="router spinning" />
     </div>

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import ProtectedRoute from '@/layout/protected-route';
-import { getSession } from '@/query/auth';
+import { getSession } from '@/action/action';
 
 type PageProps = {
   children: ReactNode;

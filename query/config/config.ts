@@ -29,7 +29,10 @@ axiosInstance.interceptors.response.use(
       throw new Error('Service is unavailable, please try again later');
     }
 
-    if (error.response?.data?.status === 404) {
+    if (
+      error.response?.data?.status === 404 &&
+      error?.config?.method === 'get'
+    ) {
       return notFound();
     }
 

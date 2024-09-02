@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import React, { ReactNode, useMemo } from 'react';
 
-import ErrorSpinner from '@/components/common/error-spinner';
+import RouterSpinner from '@/components/common/router-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useClientQuery from '@/hooks/use-client-query';
@@ -69,7 +69,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     if (error) {
       return (
         <div className="col-span-full flex h-full w-full justify-center">
-          <ErrorSpinner message={error?.message} />
+          <RouterSpinner message={error?.message} />
         </div>
       );
     }

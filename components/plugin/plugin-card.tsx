@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -29,7 +29,7 @@ export default function PluginCard({
   const t = useI18n();
   const { session } = useSession();
 
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePlugin(axios, id),
     onSuccess: () => {

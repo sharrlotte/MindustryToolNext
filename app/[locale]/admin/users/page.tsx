@@ -7,7 +7,7 @@ import InfinitePage from '@/components/common/infinite-page';
 import { Input } from '@/components/ui/input';
 import UserManagementCard from '@/components/user/user-management-card';
 import { UserRole } from '@/constant/enum';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueryState from '@/hooks/use-query-state';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { Role } from '@/types/response/Role';
@@ -19,7 +19,7 @@ import { getUsers } from '@/query/user';
 export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useSearchPageParams();
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const [name, setName] = useQueryState('name', '');
   const [role, setRole] = useState<Role>();

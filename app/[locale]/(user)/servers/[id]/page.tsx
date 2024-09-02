@@ -5,14 +5,14 @@ import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-se
 import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-button';
 import ColorText from '@/components/common/color-text';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
-import getServerAPI from '@/query/config/get-server-api';
+import getServerApi from '@/query/config/get-server-api';
 import RawImage from '@/components/common/raw-image';
 import { getInternalServer } from '@/query/server';
 import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import { ServerIcon } from '@/components/common/icons';
 import IdUserCard from '@/components/user/id-user-card';
-import { getSession } from '@/query/auth';
+import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 
 type Props = {
@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default async function Page({ params: { id } }: Props) {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
 
   const [server, session] = await Promise.all([
     getInternalServer(axios, { id }),

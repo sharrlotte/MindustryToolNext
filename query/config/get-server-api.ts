@@ -4,7 +4,7 @@ import 'server-only';
 
 import axiosInstance from '@/query/config/config';
 
-const getServerAPI = async (): Promise<AxiosInstance> => {
+const getServerApi = async (): Promise<AxiosInstance> => {
   const cookie = cookies().toString();
 
   axiosInstance.defaults.headers['Cookie'] = cookie;
@@ -12,4 +12,4 @@ const getServerAPI = async (): Promise<AxiosInstance> => {
   return axiosInstance;
 };
 
-export default getServerAPI;
+export default getServerApi;
