@@ -8,7 +8,7 @@ import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 
 import { useMutation } from '@tanstack/react-query';
-import { startInternalServers } from '@/query/server';
+import { startInternalServer } from '@/query/server';
 import Tran from '@/components/common/tran';
 
 type Props = {
@@ -21,7 +21,7 @@ export default function StartServerButton({ id }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['internal-server, internal-servers'],
-    mutationFn: () => startInternalServers(axios, id),
+    mutationFn: () => startInternalServer(axios, id),
     onSuccess: () => {
       toast({
         title: 'Start server successfully',

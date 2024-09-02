@@ -17,7 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 
 import { useMutation } from '@tanstack/react-query';
-import { createReloadInternalServer } from '@/query/server';
+import { shutdownInternalServer } from '@/query/server';
 
 type Props = {
   id: string;
@@ -30,7 +30,7 @@ export default function ShutdownServerButton({ id }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['internal-server, internal-servers'],
-    mutationFn: () => createReloadInternalServer(axios, id),
+    mutationFn: () => shutdownInternalServer(axios, id),
     onSuccess: () => {
       toast({
         title: 'Reload server successfully',
