@@ -6,7 +6,7 @@ import LoginChart from '@/components/metric/login-chart';
 import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import WebsiteVisitRate from '@/components/metric/website-visist-rate';
-import getServerAPI from '@/query/config/get-server-api';
+import getServerApi from '@/query/config/get-server-api';
 import getLogs from '@/query/log';
 import { getLoginHistories } from '@/query/login-history';
 import { getMetric } from '@/query/metric';
@@ -14,7 +14,7 @@ import { getMetric } from '@/query/metric';
 const NUMBER_OF_DAY = 15;
 
 export default async function Page() {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
 
   const start = new Date();
   const end = new Date();

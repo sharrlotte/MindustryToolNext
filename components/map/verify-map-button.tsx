@@ -1,5 +1,5 @@
 import VerifyButton from '@/components/button/verify-button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -24,7 +24,7 @@ export default function VerifyMapButton({
   const { toast } = useToast();
   const { back } = useRouter();
   const t = useI18n();
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: VerifyMapRequest) => verifyMap(axios, data),

@@ -17,7 +17,7 @@ import {
   PreviewImage,
 } from '@/components/common/preview';
 import env from '@/constant/env';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
 import { Schematic } from '@/types/response/Schematic';
@@ -32,7 +32,7 @@ export default function SchematicPreviewCard({
   schematic: { id, itemId, name, isVerified, likes, userLike },
 }: SchematicPreviewCardProps) {
   const t = useI18n();
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const link = `${env.url.base}/admin/schematics/${id}`;
   const detailLink = `/schematics/${id}`;

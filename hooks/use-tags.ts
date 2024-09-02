@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
 
 import { useQuery } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ import { getTags } from '@/query/tag';
 const EMPTY = { schematic: [], map: [], post: [], plugin: [] };
 
 export function useSearchTags(): AllTagGroup {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { data } = useQuery({
     queryFn: () => getTags(axios),
     queryKey: ['tags'],

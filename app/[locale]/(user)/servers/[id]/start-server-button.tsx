@@ -4,7 +4,7 @@ import React from 'react';
 
 import { revalidate } from '@/action/action';
 import { Button } from '@/components/ui/button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 
 import { useMutation } from '@tanstack/react-query';
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function StartServerButton({ id }: Props) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({

@@ -1,7 +1,7 @@
 'use client';
 
 import TakeDownButton from '@/components/button/take-down-button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -14,11 +14,8 @@ type TakeDownMapButtonProps = {
   name: string;
 };
 
-export function TakeDownMapButton({
-  id,
-  name,
-}: TakeDownMapButtonProps) {
-  const axios = useClientAPI();
+export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
+  const axios = useClientApi();
   const t = useI18n();
   const { back } = useRouter();
   const { invalidateByKey } = useQueriesData();

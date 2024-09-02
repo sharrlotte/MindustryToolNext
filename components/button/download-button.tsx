@@ -3,7 +3,7 @@
 import { saveAs } from 'file-saver';
 import React, { HTMLAttributes } from 'react';
 
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { cn, fixProgressBar } from '@/lib/utils';
 
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
@@ -63,7 +63,7 @@ function SecureDownloadButton({
   href,
   children,
 }: SecureDownloadButtonProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const { mutate, isPending } = useMutation({
     mutationFn: () =>

@@ -11,7 +11,7 @@ import {
   PreviewImage,
 } from '@/components/common/preview';
 import env from '@/constant/env';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
 import { Schematic } from '@/types/response/Schematic';
@@ -25,7 +25,7 @@ type UploadSchematicPreviewCardProps = {
 export default function UploadSchematicPreviewCard({
   schematic: { id, name },
 }: UploadSchematicPreviewCardProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
 
   const link = `${env.url.base}/admin/schematics/${id}`;

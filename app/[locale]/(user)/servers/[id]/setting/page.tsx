@@ -27,7 +27,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -54,7 +54,7 @@ type PageProps = {
 };
 
 export default function Page({ params: { id } }: PageProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const {
     data: server,
@@ -95,7 +95,7 @@ function ServerSettingEditor({ server }: Props) {
     defaultValues: currentServer,
   });
   const { invalidateByKey } = useQueriesData();
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
 
   const { id } = currentServer;

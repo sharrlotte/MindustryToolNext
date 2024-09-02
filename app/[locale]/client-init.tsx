@@ -2,7 +2,7 @@
 
 import { useSession } from '@/context/session-context';
 import { useSocket } from '@/context/socket-context';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { Message } from '@/types/response/Message';
 
 import { useQuery } from '@tanstack/react-query';
@@ -12,7 +12,7 @@ export default function ClientInit() {
   const { session } = useSession();
   const { socket } = useSocket();
 
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   useQuery({
     queryFn: () => axios.get('/ping?client=web'),

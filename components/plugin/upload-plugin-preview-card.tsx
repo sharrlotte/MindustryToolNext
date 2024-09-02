@@ -18,7 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
@@ -47,7 +47,7 @@ export default function UploadPluginCard({ plugin }: Props) {
   const { invalidateByKey } = useQueriesData();
   const t = useI18n();
 
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePlugin(axios, id),
     onSuccess: () => {
@@ -97,7 +97,7 @@ type DialogProps = {
 };
 
 function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { plugin } = useUploadTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();

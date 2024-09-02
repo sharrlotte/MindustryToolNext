@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/accordion';
 import { UserRole } from '@/constant/enum';
 import { useSession } from '@/context/session-context';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, max } from '@/lib/utils';
 import { useVerifyCount } from '@/zustand/verify-count';
@@ -352,7 +352,7 @@ const _PathGroup = ({
 const PathGroup = React.memo(_PathGroup);
 
 function VerifyPath() {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const set = useVerifyCount((data) => data.set);
   const [
     { data: schematicCount },

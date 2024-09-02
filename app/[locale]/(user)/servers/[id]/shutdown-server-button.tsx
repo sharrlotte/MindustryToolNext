@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 
@@ -24,7 +24,7 @@ type Props = {
 };
 
 export default function ShutdownServerButton({ id }: Props) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
   const { toast } = useToast();
 

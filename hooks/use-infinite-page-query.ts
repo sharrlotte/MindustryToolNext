@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import {
@@ -14,7 +14,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
   params: P,
   queryKey: QueryKey,
 ) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const getNextPageParam = (
     lastPage: T[],

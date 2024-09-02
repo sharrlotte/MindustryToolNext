@@ -2,7 +2,7 @@
 
 import Tran from '@/components/common/tran';
 import { Input } from '@/components/ui/input';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
 import React, { useState } from 'react';
@@ -20,7 +20,7 @@ async function toggleDebug(
 
 export default function Page() {
   const [value, setValue] = useState<boolean>(false);
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['debug'],

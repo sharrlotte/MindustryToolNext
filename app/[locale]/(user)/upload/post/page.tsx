@@ -19,7 +19,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
@@ -123,7 +123,7 @@ function TranslatePage({
 }: {
   shared: Shared;
 } & { post: PostDetail }) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const languages = useLanguages();
@@ -225,7 +225,7 @@ function UploadPage({
   shared: Shared;
 }) {
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const { post: postTags } = useUploadTags();
@@ -325,7 +325,7 @@ type AddTranslationDialogProps = {
 
 function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
   const [name, setName] = useDebounceValue('', 500);
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['me-posts', name],

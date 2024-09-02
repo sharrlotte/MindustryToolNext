@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSafeParam from '@/hooks/use-safe-param';
 import useSearchPageParams from '@/hooks/use-search-page-params';
@@ -69,7 +69,7 @@ function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const { toast } = useToast();
   const { plugin } = useSearchTags();
   const [show, setShow] = useState(false);
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
 
   const params = useSearchPageParams();

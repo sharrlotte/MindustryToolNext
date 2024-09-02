@@ -3,7 +3,7 @@
 import React, { ReactNode, useLayoutEffect, useState } from 'react';
 import { useInterval } from 'usehooks-ts';
 
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { Session } from '@/types/response/Session';
 
 export type SessionState = 'loading' | 'authenticated' | 'unauthenticated';
@@ -32,7 +32,7 @@ export function useSession(): SessionContextType {
   if (!context) {
     throw new Error('Can not use out side of context');
   }
-  // TEST 
+  // TEST
   // const session = context.session;
 
   // if (session) {
@@ -57,7 +57,7 @@ export function useMe() {
 }
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const [auth, setSession] = useState<SessionContextType>({
     state: 'loading',
     session: null,

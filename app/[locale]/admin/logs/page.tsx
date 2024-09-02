@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/popover';
 import { LogCollection } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useMessage from '@/hooks/use-message';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
@@ -35,7 +35,7 @@ import getLogs, { getLogCollections } from '@/query/log';
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
 
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const { data } = useQuery({
     queryKey: ['log-collections'],

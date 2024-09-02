@@ -17,7 +17,7 @@ import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import NameTagSelector from '@/components/search/name-tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/locales/client';
@@ -35,7 +35,7 @@ type UploadSchematicDetailCardProps = {
 export default function UploadSchematicDetailCard({
   schematic: { id, name, tags, requirements, description, userId },
 }: UploadSchematicDetailCardProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { schematic } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
 
