@@ -199,7 +199,7 @@ function StaticLog({ collection }: StaticLogProps) {
 
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
-      <div className="flex gap-1">
+      <div className="flex gap-1 rounded-md bg-card p-2">
         <ComboBox
           value={{ label: env, value: env }}
           values={[
@@ -208,14 +208,17 @@ function StaticLog({ collection }: StaticLogProps) {
           ]}
           onChange={setEnv}
         />
-
         <Dialog>
           <DialogTrigger asChild>
-            <Button title="Filter">
+            <Button
+              className="border-none bg-secondary shadow-md"
+              variant="outline"
+              title="Filter"
+            >
               <FilterIcon />
             </Button>
           </DialogTrigger>
-          <DialogContent className="grid gap-2">
+          <DialogContent className="grid gap-2 p-6">
             <div>
               <label>Content</label>
               <div className="flex gap-1">
