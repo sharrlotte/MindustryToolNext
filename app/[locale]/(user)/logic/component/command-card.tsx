@@ -12,6 +12,7 @@ const emptyValueListHeight = 20;
 type ComponentProp = {
   commands: { key: number, value: Command }[],
   setCommands: Dispatch<SetStateAction<{ key: number; value: Command }[]>>
+  zoom: number
 };
 
 function updateCommand(commands: { key: number; value: Command }[], changes: { key: number; value: Command }): { key: number; value: Command }[] {
@@ -21,11 +22,22 @@ function updateCommand(commands: { key: number; value: Command }[], changes: { k
 }
 
 export default function CommandCard({ commands, setCommands }: ComponentProp) {
-  
+
   return (
     <Layer>
       {commands.map(element => (
-        <Group key={element.key} x={element.value.x} y={element.value.y}>
+        <Group
+          key={element.key}
+          x={element.value.x}
+          y={element.value.y}
+          draggable
+          onDragEnd={(e) => {
+            const ele = element;
+            ele.value.x = e.target.position().x;
+            ele.value.y = e.target.position().y;
+            setCommands(updateCommand(commands, ele));
+          }}
+        >
           <Rect
             x={0} y={0}
             width={width}
@@ -34,16 +46,11 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
             cornerRadius={10}
             stroke="black"
             strokeWidth={2}
-            draggable
-            onDragEnd={(event) => {
-              const e = element;
-              e.value.x = event.target.attrs.x;
-              e.value.y = event.target.attrs.y;
-              setCommands(updateCommand(commands, e))
-            }}
           />
         </Group>
       ))}
     </Layer>
   );
 }
+
+
