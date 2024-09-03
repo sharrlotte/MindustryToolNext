@@ -2,7 +2,7 @@
 
 import { LogicNavBar, AddingElement } from './component/common';
 import LogicDisplay from './component/logic';
-import Command, { CommandList, start } from "./command";
+import Command, { } from "./command";
 import { useState } from 'react';
 
 export default function Editor() {

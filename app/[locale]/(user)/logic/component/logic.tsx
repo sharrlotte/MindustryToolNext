@@ -37,7 +37,7 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
       setCommands(updatedCommands);
       console.log(commands);
     }
-  }, [commands]);
+  }, [commands, position.posx, position.posy, position.scale, position.windowWidth, position.windowHeight, setCommands]);
 
   const handleWheel = useCallback((e: any) => {
     e.evt.preventDefault();
@@ -46,11 +46,11 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
     setPosition((prev) => ({ ...prev, scale: Math.max(0.25, Math.min(4, e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy)) }));
   }, [position]);
 
-  const handleOutside = useCallback(() => setPosition((prev) => ({ ...prev, posx: 0, posy: 0 })), [position]);
+  const handleOutside = useCallback(() => setPosition((prev) => ({ ...prev, posx: 0, posy: 0 })), []);
 
   const handleDragStart = useCallback((dx: number, dy: number) => {
     setPosition((prev) => ({ ...prev, lastDragX: dx, lastDragY: dy, drag: true }));
-  }, [position]);
+  }, []);
 
   const handleDragMove = useCallback((dx: number, dy: number) => {
     setPosition((prev) => ({
@@ -60,11 +60,11 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
       lastDragX: dx,
       lastDragY: dy
     }));
-  }, [position]);
+  }, []);
 
   const handleDragEnd = useCallback(() => {
     setPosition((prev) => ({ ...prev, drag: false }));
-  }, [position]);
+  }, []);
 
   return (
     <div className="w-full h-full">
