@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,7 +36,7 @@ type Props = {
 };
 
 export default function AddFileDialog({ path }: Props) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
 
   type AddFileRequest = z.infer<typeof addFileSchema>;

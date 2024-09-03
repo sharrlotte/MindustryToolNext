@@ -27,7 +27,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -46,13 +46,15 @@ import {
   getInternalServer,
   updateInternalServer,
 } from '@/query/server';
+import Tran from '@/components/common/tran';
+import { Textarea } from '@/components/ui/textarea';
 
 type PageProps = {
   params: { id: string };
 };
 
 export default function Page({ params: { id } }: PageProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const {
     data: server,
@@ -93,7 +95,7 @@ function ServerSettingEditor({ server }: Props) {
     defaultValues: currentServer,
   });
   const { invalidateByKey } = useQueriesData();
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
 
   const { id } = currentServer;
@@ -103,7 +105,6 @@ function ServerSettingEditor({ server }: Props) {
     mutationFn: (data: PutInternalServerRequest) =>
       updateInternalServer(axios, id, data),
     onSuccess: (_, data) => {
-      invalidateByKey(['servers']);
       server = { ...currentServer, ...form.getValues() };
       toast({
         title: t('update.success'),
@@ -117,18 +118,19 @@ function ServerSettingEditor({ server }: Props) {
         description: error.message,
         variant: 'destructive',
       }),
+    onSettled: () => {
+      invalidateByKey(['servers']);
+    },
   });
 
   const { mutate: deleteServer, isPending: isDeleting } = useMutation({
     mutationKey: ['servers'],
     mutationFn: () => deleteInternalServer(axios, id),
     onSuccess: () => {
-      invalidateByKey(['servers']);
       toast({
         title: t('delete-success'),
         variant: 'success',
       });
-      revalidate('/admin/servers');
       router.push('/admin/servers');
     },
     onError: (error) =>
@@ -137,6 +139,10 @@ function ServerSettingEditor({ server }: Props) {
         description: error.message,
         variant: 'destructive',
       }),
+    onSettled: () => {
+      revalidate('/admin/servers');
+      invalidateByKey(['servers']);
+    },
   });
 
   const isChanged =
@@ -209,6 +215,24 @@ function ServerSettingEditor({ server }: Props) {
                     />
                   </FormControl>
                   <FormDescription>Server game mode</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="startCommand"
+              render={({ field }) => (
+                <FormItem className="grid">
+                  <FormLabel>
+                    <Tran text="server.start-command" />
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Command that run when server start to host
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

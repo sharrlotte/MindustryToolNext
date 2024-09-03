@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -12,6 +12,8 @@ import { Plugin } from '@/types/response/Plugin';
 
 import { useMutation } from '@tanstack/react-query';
 import { deletePlugin } from '@/query/plugin';
+import { useSession } from '@/context/session-context';
+import ProtectedElement from '@/layout/protected-element';
 
 type Props = {
   plugin: Plugin;
@@ -20,17 +22,17 @@ type Props = {
 const GITHUB_PATTERN =
   /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
 export default function PluginCard({
-  plugin: { id, name, description, url },
+  plugin: { id, name, description, url, userId },
 }: Props) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const t = useI18n();
+  const { session } = useSession();
 
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePlugin(axios, id),
     onSuccess: () => {
-      invalidateByKey(['plugins']);
       toast({
         title: t('delete-success'),
         variant: 'success',
@@ -42,6 +44,9 @@ export default function PluginCard({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['plugins']);
     },
   });
 
@@ -59,13 +64,15 @@ export default function PluginCard({
       <span>{description}</span>
       <span>{description}</span>
       <div className="flex gap-2">
-        <DeleteButton
-          className="left-1 top-1"
-          variant="ghost"
-          description={`${t('delete')} ${name}`}
-          isLoading={isDeleting}
-          onClick={() => deletePluginById(id)}
-        />
+        <ProtectedElement session={session} ownerId={userId}>
+          <DeleteButton
+            className="right-1 top-1 backdrop-brightness-100"
+            variant="ghost"
+            description={`${t('delete')} ${name}`}
+            isLoading={isDeleting}
+            onClick={() => deletePluginById(id)}
+          />
+        </ProtectedElement>
       </div>
     </div>
   );

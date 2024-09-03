@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 
@@ -24,7 +24,7 @@ type Props = {
 };
 
 export default function ReloadServerButton({ id }: Props) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
   const { toast } = useToast();
 
@@ -36,7 +36,6 @@ export default function ReloadServerButton({ id }: Props) {
         title: 'Reload server successfully',
         variant: 'success',
       });
-      revalidate('/servers');
     },
     onError: (error) =>
       toast({
@@ -44,6 +43,9 @@ export default function ReloadServerButton({ id }: Props) {
         description: error.message,
         variant: 'destructive',
       }),
+    onSettled: () => {
+      revalidate('/servers');
+    },
   });
 
   return (

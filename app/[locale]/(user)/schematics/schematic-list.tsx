@@ -36,6 +36,7 @@ export default function SchematicList() {
   const { data } = useClientQuery({
     queryKey: ['schematics', 'total', omit(params, 'page', 'size', 'sort')],
     queryFn: (axios) => getSchematicCount(axios, params),
+    placeholderData: 0,
   });
 
   return (

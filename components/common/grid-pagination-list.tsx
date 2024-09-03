@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import React, { ReactNode, useMemo } from 'react';
 
-import ErrorSpinner from '@/components/common/error-spinner';
+import RouterSpinner from '@/components/common/router-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useClientQuery from '@/hooks/use-client-query';
@@ -34,7 +34,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   getFunc,
   children,
 }: Props<T, P>) {
-  const { data, isLoading, error } = useClientQuery({
+  const { data, isFetching, error } = useClientQuery({
     queryFn: (axios) => getFunc(axios, params),
     queryKey: [...queryKey, params],
   });
@@ -56,20 +56,20 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     loader = (
       <LoadingSpinner
         key="loading"
-        className="col-span-full flex h-full w-full items-center justify-center absolute inset-0"
+        className="absolute inset-0 col-span-full flex h-full w-full items-center justify-center"
       />
     );
   }
 
   function render() {
-    if (isLoading) {
+    if (isFetching) {
       return loader ? loader : skeletonElements;
     }
 
     if (error) {
       return (
-        <div className="flex w-full h-full justify-center col-span-full">
-          <ErrorSpinner message={error?.message} />
+        <div className="col-span-full flex h-full w-full justify-center">
+          <RouterSpinner message={error?.message} />
         </div>
       );
     }
@@ -82,7 +82,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   }
 
   return (
-    <div className="h-full overflow-auto">
+    <div className="pagination-container h-full overflow-auto">
       <div
         className={cn(
           'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 pr-2',

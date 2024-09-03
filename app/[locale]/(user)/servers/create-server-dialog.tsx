@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -31,6 +31,8 @@ import {
   CreateInternalServerSchema,
 } from '@/types/request/CreateInternalServerRequest';
 import { createInternalServer } from '@/query/server';
+import Tran from '@/components/common/tran';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function CreateServerDialog() {
   const t = useI18n();
@@ -46,7 +48,7 @@ export default function CreateServerDialog() {
   const [open, setOpen] = useState(false);
 
   const { invalidateByKey } = useQueriesData();
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
@@ -54,13 +56,11 @@ export default function CreateServerDialog() {
     mutationFn: (data: CreateInternalServerRequest) =>
       createInternalServer(axios, data),
     onSuccess: () => {
-      invalidateByKey(['servers']);
       toast({
         title: t('upload.success'),
         variant: 'success',
       });
       form.reset();
-      revalidate('/servers');
       setOpen(false);
     },
     onError: (error) =>
@@ -69,6 +69,10 @@ export default function CreateServerDialog() {
         description: error.message,
         variant: 'destructive',
       }),
+    onSettled: () => {
+      invalidateByKey(['servers']);
+      revalidate('/servers');
+    },
   });
 
   return (
@@ -143,6 +147,24 @@ export default function CreateServerDialog() {
                       />
                     </FormControl>
                     <FormDescription>Server game mode</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="startCommand"
+                render={({ field }) => (
+                  <FormItem className="grid">
+                    <FormLabel>
+                      <Tran text="server.start-command" />
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Command that run when server start to host
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

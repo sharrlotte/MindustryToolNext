@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/popover';
 import { LogCollection } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useMessage from '@/hooks/use-message';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
@@ -35,7 +35,7 @@ import getLogs, { getLogCollections } from '@/query/log';
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
 
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const { data } = useQuery({
     queryKey: ['log-collections'],
@@ -199,7 +199,7 @@ function StaticLog({ collection }: StaticLogProps) {
 
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
-      <div className="flex gap-1">
+      <div className="flex gap-1 rounded-md bg-card p-2">
         <ComboBox
           value={{ label: env, value: env }}
           values={[
@@ -208,14 +208,17 @@ function StaticLog({ collection }: StaticLogProps) {
           ]}
           onChange={setEnv}
         />
-
         <Dialog>
           <DialogTrigger asChild>
-            <Button title="Filter">
+            <Button
+              className="border-none bg-secondary shadow-md"
+              variant="outline"
+              title="Filter"
+            >
               <FilterIcon />
             </Button>
           </DialogTrigger>
-          <DialogContent className="grid gap-2">
+          <DialogContent className="grid gap-2 p-6">
             <div>
               <label>Content</label>
               <div className="flex gap-1">

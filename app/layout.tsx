@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 
 import './globals.css';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
@@ -76,8 +77,10 @@ export default async function Root({ children, params }: Props) {
           <SessionProvider>
             <SocketProvider>
               <QueryProvider>
-                <ClientInit />
-                {children}
+                <TooltipProvider>
+                  <ClientInit />
+                  {children}
+                </TooltipProvider>
               </QueryProvider>
             </SocketProvider>
           </SessionProvider>

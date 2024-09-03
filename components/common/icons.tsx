@@ -31,6 +31,11 @@ import {
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import googleIcon from '@/public/icons/google.svg';
+import { cn } from '@/lib/utils';
+
+type Props = {
+  className?: string;
+};
 
 export const LinkIcon = () => <_LinkIcon className="size-5" />;
 export const PostIcon = () => <BookOpenIcon className="size-5" />;
@@ -39,7 +44,9 @@ export const FileIcon = () => <_FileIcon className="size-5" />;
 export const DocumentIcon = () => <FolderIcon className="size-5" />;
 export const HomeIcon = () => <_HomeIcon className="size-5" />;
 export const MapIcon = () => <_MapIcon className="size-5" />;
-export const ServerIcon = () => <_ServerIcon className="size-5" />;
+export const ServerIcon = ({ className }: Props) => (
+  <_ServerIcon className={cn('size-5', className)} />
+);
 export const VerifyIcon = () => <ShieldCheckIcon className="size-5" />;
 export const UserIcon = () => <_UserIcon className="size-5" />;
 export const ChartIcon = () => <ChartBarSquareIcon className="size-5" />;

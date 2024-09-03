@@ -31,7 +31,7 @@ import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
 import { PNG_IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -52,7 +52,7 @@ export default function Page() {
 }
 
 function Preview() {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const [data, setData] = useState<File | string | undefined>();
   const [preview, setPreview] = useState<SchematicPreviewResponse>();
   const { toast } = useToast();
@@ -189,7 +189,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   const { toast } = useToast();
 
   const t = useI18n();
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const form = useForm<UploadFormData>({
     resolver: zodResolver(CreateSchematicSchema(t)),
@@ -233,7 +233,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   return (
     <Form {...form}>
       <form
-        className="flex h-full flex-col p-2 overflow-y-auto"
+        className="flex h-full flex-col overflow-y-auto p-2"
         onSubmit={form.handleSubmit(handleSubmit)}
       >
         <div className="flex flex-col gap-2">

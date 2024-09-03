@@ -12,38 +12,40 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
 
 import { useMutation } from '@tanstack/react-query';
-import { createReloadInternalServer } from '@/query/server';
+import { shutdownInternalServer } from '@/query/server';
 
 type Props = {
   id: string;
 };
 
 export default function ShutdownServerButton({ id }: Props) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-server, internal-servers'],
-    mutationFn: () => createReloadInternalServer(axios, id),
+    mutationKey: ['internal-servers'],
+    mutationFn: () => shutdownInternalServer(axios, id),
     onSuccess: () => {
       toast({
-        title: 'Reload server successfully',
+        title: 'Shutdown server successfully',
         variant: 'success',
       });
-      revalidate('/servers');
     },
     onError: (error) =>
       toast({
-        title: 'Reload server failed',
+        title: 'Shutdown server failed',
         description: error.message,
         variant: 'destructive',
       }),
+    onSettled: () => {
+      revalidate('/servers');
+    },
   });
 
   return (

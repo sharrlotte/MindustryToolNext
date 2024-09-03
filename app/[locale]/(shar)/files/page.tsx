@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { ContextMenuItem } from '@/components/ui/context-menu';
 import { Input } from '@/components/ui/input';
 import env from '@/constant/env';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useQueryState from '@/hooks/use-query-state';
 import { useToast } from '@/hooks/use-toast';
@@ -23,7 +23,7 @@ import { deleteServerFile, getServerFiles } from '@/query/file';
 
 export default function Page() {
   const [path, setPath] = useQueryState('path', '/');
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const [search, setSearch] = useState('');
   const { toast } = useToast();
 
@@ -38,15 +38,15 @@ export default function Page() {
   const { mutate: deleteFile } = useMutation({
     mutationKey: ['delete-file'],
     mutationFn: async (path: string) => deleteServerFile(axios, path),
-    onSuccess: () => {
-      invalidateByKey(['server-files', path]);
-    },
     onError: (error) => {
       toast({
         variant: 'destructive',
         title: 'Failed to delete file',
         description: error.message,
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['server-files', path]);
     },
   });
 

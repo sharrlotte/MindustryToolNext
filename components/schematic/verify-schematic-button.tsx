@@ -1,5 +1,5 @@
 import VerifyButton from '@/components/button/verify-button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -24,12 +24,11 @@ export default function VerifySchematicButton({
   const { toast } = useToast();
   const { back } = useRouter();
   const t = useI18n();
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: VerifySchematicRequest) => verifySchematic(axios, data),
     onSuccess: () => {
-      invalidateByKey(['schematics']);
       back();
       toast({
         title: t('verify-success'),
@@ -42,6 +41,9 @@ export default function VerifySchematicButton({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['schematics']);
     },
   });
 

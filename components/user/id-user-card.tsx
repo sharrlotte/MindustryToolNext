@@ -4,7 +4,7 @@ import React from 'react';
 
 import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import UserCard from '@/components/user/user-card';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { User } from '@/types/response/User';
 
 import { useQuery } from '@tanstack/react-query';
@@ -23,7 +23,7 @@ export default function IdUserCard({ id }: IdUserCardProps) {
 }
 
 function FletchUserCard({ id }: IdUserCardProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { data, isLoading, isError, error } = useQuery<User>({
     queryKey: ['users', id],
     queryFn: () => getUser(axios, { id }),

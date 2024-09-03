@@ -1,4 +1,4 @@
-const MAX_GROUP_SIZE = 10;
+const MESSAGE_TIME_GAP = 300000;
 
 export type Message = {
   id: string;
@@ -6,7 +6,7 @@ export type Message = {
   userId: string;
   content: string;
   attachments: string[];
-  createdAt: number;
+  createdAt: string;
 };
 export type MessageGroup = {
   id: string;
@@ -16,7 +16,7 @@ export type MessageGroup = {
     text: string;
     attachments: string[];
   }[];
-  createdAt: number;
+  createdAt: string;
 };
 
 export function groupMessage(messages: Message[]): MessageGroup[] {
@@ -31,24 +31,29 @@ export function groupMessage(messages: Message[]): MessageGroup[] {
         contents: [{ text: message.content, attachments: message.attachments }],
         createdAt: message.createdAt,
       });
+      continue;
+    }
+
+    const lastGroup = result[0];
+
+    if (
+      message.userId === lastGroup.userId &&
+      new Date(lastGroup.createdAt).getTime() -
+        new Date(message.createdAt).getTime() <
+        MESSAGE_TIME_GAP
+    ) {
+      lastGroup.contents.unshift({
+        text: message.content,
+        attachments: message.attachments,
+      });
     } else {
-      const lastGroup = result[0];
-      if (message.userId === lastGroup.userId) {
-        lastGroup.contents.unshift({
-          text: message.content,
-          attachments: message.attachments,
-        });
-      } else {
-        result.unshift({
-          id: message.id,
-          room: message.room,
-          userId: message.userId,
-          contents: [
-            { text: message.content, attachments: message.attachments },
-          ],
-          createdAt: message.createdAt,
-        });
-      }
+      result.unshift({
+        id: message.id,
+        room: message.room,
+        userId: message.userId,
+        contents: [{ text: message.content, attachments: message.attachments }],
+        createdAt: message.createdAt,
+      });
     }
   }
 

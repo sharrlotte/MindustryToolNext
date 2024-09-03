@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags, useUploadTags } from '@/hooks/use-tags';
@@ -66,7 +66,7 @@ export default function Page() {
 }
 
 function AddPluginButton() {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { plugin } = useUploadTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
@@ -90,7 +90,6 @@ function AddPluginButton() {
         title: t('upload.success'),
         variant: 'success',
       });
-      invalidateByKey(['plugins']);
       form.reset();
     },
     onError(error) {
@@ -99,6 +98,9 @@ function AddPluginButton() {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['plugins']);
     },
   });
 

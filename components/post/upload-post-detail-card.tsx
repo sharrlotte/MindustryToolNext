@@ -11,7 +11,7 @@ import NameTagSelector from '@/components/search/name-tag-selector';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
@@ -33,7 +33,7 @@ export default function UploadPostDetailCard({
 }: UploadPostDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { post: postTags } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { invalidateByKey } = useQueriesData();
@@ -62,8 +62,6 @@ export default function UploadPostDetailCard({
   const { mutate: deletePostById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['posts']);
-      invalidateByKey(['posts']);
       back();
       toast({
         title: t('delete-success'),
@@ -76,6 +74,9 @@ export default function UploadPostDetailCard({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['posts']);
     },
   });
 

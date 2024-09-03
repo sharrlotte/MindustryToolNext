@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 import axiosInstance from '@/query/config/config';
 
-export default function useClientAPI(): AxiosInstance {
+export default function useClientApi(): AxiosInstance {
   const { locale } = useParams();
 
   useEffect(() => {

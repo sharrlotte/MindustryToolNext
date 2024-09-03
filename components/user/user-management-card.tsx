@@ -12,14 +12,15 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import UserAvatar from '@/components/user/user-avatar';
 import { useMe } from '@/context/session-context';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { changeRoles, getRoles } from '@/query/role';
+import useQueriesData from '@/hooks/use-queries-data';
 
 type Props = {
   user: User;
@@ -44,13 +45,12 @@ type DialogProps = {
 };
 
 function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const [open, setOpen] = useState(false);
   const [selectedRole, setSelectedRoles] = useState<Role[]>(roles);
   const { highestRole } = useMe();
   const [isChanged, setIsChanged] = useState(false);
-  const queryClient = useQueryClient();
-
+  const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
 
   const { data } = useQuery({
@@ -63,9 +63,7 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
     mutationFn: async (roleIds: number[]) =>
       changeRoles(axios, { userId: id, roleIds }),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['user-management'],
-      });
+      invalidateByKey(['user-management']);
     },
     onError: (error) => {
       toast({

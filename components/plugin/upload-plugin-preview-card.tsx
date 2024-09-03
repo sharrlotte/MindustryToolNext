@@ -18,7 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
@@ -33,6 +33,7 @@ import { TagGroups } from '@/types/response/TagGroup';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import verifyPlugin, { deletePlugin } from '@/query/plugin';
+import IdUserCard from '@/components/user/id-user-card';
 
 type Props = {
   plugin: Plugin;
@@ -41,16 +42,15 @@ type Props = {
 const GITHUB_PATTERN =
   /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
 export default function UploadPluginCard({ plugin }: Props) {
-  const { id, name, description, url } = plugin;
+  const { id, name, description, url, userId } = plugin;
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const t = useI18n();
 
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePlugin(axios, id),
     onSuccess: () => {
-      invalidateByKey(['plugins']);
       toast({
         title: t('delete-success'),
         variant: 'success',
@@ -63,6 +63,9 @@ export default function UploadPluginCard({ plugin }: Props) {
         variant: 'destructive',
       });
     },
+    onSettled: () => {
+      invalidateByKey(['plugins']);
+    },
   });
 
   const matches = GITHUB_PATTERN.exec(url);
@@ -73,21 +76,19 @@ export default function UploadPluginCard({ plugin }: Props) {
 
   return (
     <div className="relative grid gap-2 rounded-md border p-2">
+      <Link className="absolute right-1 top-1 m-1 border-none" href={githubUrl}>
+        <ExternalLink className="size-5" />
+      </Link>
       <h2>{name}</h2>
       <span>{description}</span>
+      <IdUserCard id={userId} />
       <div className="flex gap-2">
-        <Link
-          className="absolute right-1 top-1 m-1 border-none"
-          href={githubUrl}
-        >
-          <ExternalLink className="size-5" />
-        </Link>
-        <VerifyPluginDialog plugin={plugin} />
         <DeleteButton
           description={`${t('delete')} ${name}`}
           isLoading={isDeleting}
           onClick={() => deletePluginById(id)}
         />
+        <VerifyPluginDialog plugin={plugin} />
       </div>
     </div>
   );
@@ -98,7 +99,7 @@ type DialogProps = {
 };
 
 function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { plugin } = useUploadTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
@@ -119,7 +120,6 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: VerifyPluginRequest) => verifyPlugin(axios, data),
     onSuccess: () => {
-      invalidateByKey(['plugins']);
       toast({
         title: t('verify-success'),
         variant: 'success',
@@ -132,6 +132,9 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
         variant: 'destructive',
       });
     },
+    onSettled: () => {
+      invalidateByKey(['plugins']);
+    },
   });
   function handleSubmit(value: VerifyPluginRequestData) {
     const tagString = TagGroups.toStringArray(value.tags);
@@ -142,7 +145,11 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="aspect-square p-0" variant="outline" title="verify">
+        <Button
+          className="flex h-9 w-full p-0"
+          variant="outline"
+          title="verify"
+        >
           <CheckIcon className="size-5" />
         </Button>
       </DialogTrigger>
@@ -181,7 +188,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                   title={t('upload')}
                   disabled={isPending}
                 >
-                  {t('upload')}
+                  {t('verify')}
                 </Button>
               </div>
             </form>

@@ -4,7 +4,7 @@ import ColorText from '@/components/common/color-text';
 import { Skeleton } from '@/components/ui/skeleton';
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
 import { MessageGroup } from '@/types/response/Message';
 
@@ -16,14 +16,21 @@ type Props = {
   message: MessageGroup;
 };
 
+const ONE_HOUR = 1000 * 60 * 60;
+
 export function MessageCard({ className, message }: Props) {
   const { userId, contents, createdAt } = message;
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const { data } = useQuery({
     queryKey: ['users', userId],
     queryFn: () => getUser(axios, { id: userId }),
   });
+
+  const time =
+    Date.now() - Date.parse(createdAt) > ONE_HOUR
+      ? new Date(createdAt).toLocaleTimeString()
+      : moment(createdAt).fromNow();
 
   return (
     <div
@@ -46,7 +53,7 @@ export function MessageCard({ className, message }: Props) {
           ) : (
             <Skeleton className="h-6 w-24" />
           )}
-          <span>{moment(createdAt).fromNow()}</span>
+          <span>{time}</span>
         </div>
         <div className="no-scrollbar grid w-full gap-1 overflow-x-auto">
           {contents.map(({ text }, index) => (

@@ -32,6 +32,17 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
   const searchParams = useSearchParams();
 
   function handlePageChange(page: number) {
+    const containers = document.getElementsByClassName('pagination-container');
+
+    if (containers && containers[0]) {
+      const container = containers[0];
+
+      container.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+
     const path = new URLSearchParams(searchParams);
     path.set('page', page.toString());
     router.replace(`?${path.toString()}`);
@@ -64,6 +75,7 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
 
   function handleSelectPage() {
     if (selectedPage < 0 || selectedPage > lastPage) return;
+
     handlePageChange(selectedPage);
     setOpen(false);
   }
@@ -94,7 +106,7 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
             {firstNumber}
           </Button>
         </PaginationItem>
-        {lastPage > 1 && (
+        {lastPage > 0 && (
           <PaginationItem>
             <Button
               className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {

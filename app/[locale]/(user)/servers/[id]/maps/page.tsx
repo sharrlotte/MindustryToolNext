@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import env from '@/constant/env';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSafeParam from '@/hooks/use-safe-param';
 import useSearchPageParams from '@/hooks/use-search-page-params';
@@ -72,7 +72,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
   const { toast } = useToast();
   const { map } = useSearchTags();
   const [show, setShow] = useState(false);
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
 
   const { invalidateByKey } = useQueriesData();
@@ -90,7 +90,7 @@ function AddMapDialog({ serverId }: AddMapDialogProps) {
         variant: 'destructive',
       });
     },
-    onSuccess: () => {
+    onSettled: () => {
       invalidateByKey(['servers', serverId, 'maps']);
     },
   });

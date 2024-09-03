@@ -3,7 +3,7 @@ import React from 'react';
 import DeleteButton from '@/components/button/delete-button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import IdUserCard from '@/components/user/id-user-card';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -23,11 +23,10 @@ export default function DocumentCard({
   const { invalidateByKey } = useQueriesData();
   const t = useI18n();
 
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { mutate, isPending } = useMutation({
     mutationFn: () => deleteDocument(axios, id),
     onSuccess: () => {
-      invalidateByKey(['documents']);
       toast({
         title: t('delete-success'),
         variant: 'success',
@@ -39,6 +38,9 @@ export default function DocumentCard({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['documents']);
     },
   });
 

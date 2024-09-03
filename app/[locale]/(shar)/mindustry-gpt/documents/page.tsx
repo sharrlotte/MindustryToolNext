@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useToast } from '@/hooks/use-toast';
@@ -58,7 +58,7 @@ export default function Page() {
 }
 
 function AddDocumentButton() {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 
@@ -78,7 +78,6 @@ function AddDocumentButton() {
         title: t('upload.success'),
         variant: 'success',
       });
-      invalidateByKey(['documents']);
       form.reset();
     },
     onError(error) {
@@ -87,6 +86,9 @@ function AddDocumentButton() {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['documents']);
     },
   });
 

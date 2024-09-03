@@ -15,7 +15,7 @@ import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
 import { useSession } from '@/context/session-context';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
@@ -32,7 +32,7 @@ type PostDetailCardProps = {
 
 export default function PostDetailCard({ post }: PostDetailCardProps) {
   const displayTags = Tags.parseStringArray(post.tags);
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
   const { back } = useRouter();
   const { toast } = useToast();
@@ -43,7 +43,6 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   const { mutate: removePost, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => unverifyPost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['posts']);
       back();
       toast({
         title: t('take-down-success'),
@@ -57,12 +56,14 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
         variant: 'destructive',
       });
     },
+    onSettled: () => {
+      invalidateByKey(['posts']);
+    },
   });
 
   const { mutate: deletePostById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
-      invalidateByKey(['posts']);
       back();
       toast({
         title: t('delete-success'),
@@ -75,6 +76,9 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['posts']);
     },
   });
 

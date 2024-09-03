@@ -19,7 +19,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
@@ -123,7 +123,7 @@ function TranslatePage({
 }: {
   shared: Shared;
 } & { post: PostDetail }) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const languages = useLanguages();
@@ -138,7 +138,6 @@ function TranslatePage({
       });
       setTitle('');
       setContent({ text: '', images: [] });
-      invalidateByKey(['posts']);
     },
     onError(error) {
       toast({
@@ -146,6 +145,9 @@ function TranslatePage({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['posts']);
     },
   });
 
@@ -225,7 +227,7 @@ function UploadPage({
   shared: Shared;
 }) {
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const { post: postTags } = useUploadTags();
@@ -242,7 +244,6 @@ function UploadPage({
       setTitle('');
       setContent({ text: '', images: [] });
       setSelectedTags([]);
-      invalidateByKey(['posts']);
     },
     onError(error) {
       toast({
@@ -250,6 +251,9 @@ function UploadPage({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['posts']);
     },
   });
 
@@ -325,7 +329,7 @@ type AddTranslationDialogProps = {
 
 function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
   const [name, setName] = useDebounceValue('', 500);
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['me-posts', name],

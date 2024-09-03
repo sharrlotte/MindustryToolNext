@@ -6,13 +6,12 @@ import React from 'react';
 import DeleteButton from '@/components/button/delete-button';
 import {
   Preview,
-  PreviewActions,
   PreviewDescription,
   PreviewHeader,
   PreviewImage,
 } from '@/components/common/preview';
 import env from '@/constant/env';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -28,13 +27,19 @@ type InternalServerMapCardProps = {
 export default function InternalServerMapCard({
   map: { name, mapId, serverId },
 }: InternalServerMapCardProps) {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const t = useI18n();
   const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => deleteInternalServerMap(axios, serverId, mapId),
+    onSuccess: () => {
+      toast({
+        title: t('delete-success'),
+        variant: 'success',
+      });
+    },
     onError: (error) => {
       toast({
         title: t('delete-fail'),
@@ -42,7 +47,7 @@ export default function InternalServerMapCard({
         variant: 'destructive',
       });
     },
-    onSuccess: () => {
+    onSettled: () => {
       invalidateByKey(['server', serverId, 'maps']);
     },
   });

@@ -5,7 +5,7 @@ import MapPreviewCard from '@/components/map/map-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import UserCard from '@/components/user/user-card';
-import getServerAPI from '@/query/config/get-server-api';
+import getServerApi from '@/query/config/get-server-api';
 import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
 import { getSchematics } from '@/query/schematic';
 import { getMaps } from '@/query/map';
@@ -27,14 +27,11 @@ export async function HomeSchematicPreview({
       <Suspense fallback={skeleton}>
         <_SchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
-          <Preview>
-            <InternalLink
-              href="/maps"
-              className="cursor-pointer px-2 font-light"
-            >
+          <InternalLink href="/maps" className="cursor-pointer px-2 font-light">
+            <Preview className="flex items-center justify-center">
               <Tran text="home.preview-more" />
-            </InternalLink>
-          </Preview>
+            </Preview>
+          </InternalLink>
         </li>
       </Suspense>
     </ul>
@@ -50,14 +47,14 @@ export async function HomeMapPreview({
       <Suspense fallback={skeleton}>
         <_HomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
-          <Preview>
-            <InternalLink
-              href="/maps"
-              className="cursor-pointer px-2 font-light"
-            >
+          <InternalLink
+            href="/maps"
+            className="cursor-pointer px-2 text-center font-light"
+          >
+            <Preview className="flex items-center justify-center">
               <Tran text="home.preview-more" />
-            </InternalLink>
-          </Preview>
+            </Preview>
+          </InternalLink>
         </li>
       </Suspense>
     </ul>
@@ -69,7 +66,7 @@ async function _SchematicRowView({
 }: {
   queryParam: PaginationSearchQuery;
 }) {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const items = await getSchematics(axios, queryParam);
 
   return items.map((schematic) => (
@@ -84,7 +81,7 @@ async function _HomeMapPreview({
 }: {
   queryParam: PaginationSearchQuery;
 }) {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const items = await getMaps(axios, queryParam);
 
   return items.map((map) => (
@@ -103,7 +100,7 @@ export async function InformationGroup() {
 }
 
 async function _InformationGroup() {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
 
   const getAdmins = getUsers(axios, {
     page: 0,

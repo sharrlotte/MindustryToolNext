@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
 import axiosInstance from '@/query/config/config';
-import getServerAPI from '@/query/config/get-server-api';
+import getServerApi from '@/query/config/get-server-api';
 import { QuerySchema } from '@/query/search-query';
 
 import {
@@ -17,6 +17,7 @@ import {
   QueryKey,
   dehydrate,
 } from '@tanstack/react-query';
+import { Session } from '@/types/response/Session';
 
 export async function revalidate(path: string) {
   'use server';
@@ -65,7 +66,7 @@ export default async function prefetch<
 ) {
   const { queryFn } = options;
   const queryClient = new QueryClient();
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
 
   await queryClient.prefetchQuery({
     ...options,
@@ -73,4 +74,10 @@ export default async function prefetch<
   });
 
   return dehydrate(queryClient);
+}
+
+export async function getSession(): Promise<Session> {
+  const result = await getServerApi().then((api) => api.get('/auth/session'));
+
+  return result.data;
 }

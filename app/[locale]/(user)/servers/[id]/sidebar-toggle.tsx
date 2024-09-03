@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
 import { useExpandServerNav } from '@/zustand/expand-nav';
 
@@ -25,7 +25,7 @@ export default function SidebarToggle() {
   const { expand, setExpand } = useExpandServerNav();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(id);
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const { data } = useQuery({
     queryFn: () => getInternalServers(axios),

@@ -2,12 +2,12 @@ import React, { Suspense } from 'react';
 
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import InternalServerCard from '@/components/server/internal-server-card';
-import getServerAPI from '@/query/config/get-server-api';
+import getServerApi from '@/query/config/get-server-api';
 import { getInternalServers } from '@/query/server';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Tran from '@/components/common/tran';
 import { getMeServers } from '@/query/user';
-import { Skeleton } from '@/components/ui/skeleton';
+import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 
 export const experimental_ppr = true;
 
@@ -36,7 +36,7 @@ export default function Page() {
           <CreateServerDialog />
         </div>
         <TabsContent
-          className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
           value="community-server"
         >
           <Suspense fallback={skeleton}>
@@ -44,7 +44,7 @@ export default function Page() {
           </Suspense>
         </TabsContent>
         <TabsContent
-          className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
           value="my-server"
         >
           <Suspense fallback={skeleton}>
@@ -57,7 +57,7 @@ export default function Page() {
 }
 
 async function CommunityServer() {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const servers = await getInternalServers(axios);
 
   return servers.map((server) => (
@@ -65,16 +65,10 @@ async function CommunityServer() {
   ));
 }
 async function MeServer() {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const servers = await getMeServers(axios);
 
   return servers.map((server) => (
     <InternalServerCard server={server} key={server.port} />
   ));
-}
-
-function InternalServerCardSkeleton() {
-  return (
-    <Skeleton className="flex h-28 w-full max-w-[799px] rounded-md bg-card" />
-  );
 }

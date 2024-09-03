@@ -3,7 +3,7 @@ import { throttle } from 'throttle-debounce';
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 import EndOfPage from '@/components/common/end-of-page';
-import ErrorSpinner from '@/components/common/error-spinner';
+import RouterSpinner from '@/components/common/router-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
@@ -129,7 +129,7 @@ export default function ResponsiveInfiniteScrollGrid<
   if (error) {
     return (
       <div className="flex h-full w-full justify-center">
-        <ErrorSpinner message={error?.message} />
+        <RouterSpinner message={error?.message} />
       </div>
     );
   }

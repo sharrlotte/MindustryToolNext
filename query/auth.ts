@@ -1,8 +1,7 @@
-import getServerAPI from '@/query/config/get-server-api';
-import { Session } from '@/types/response/Session';
+import { AxiosInstance } from 'axios';
 
-export async function getSession(): Promise<Session> {
-  const result = await getServerAPI().then((api) => api.get('/auth/session'));
+export async function verifyPlayer(axios: AxiosInstance, token: string) {
+  const result = await axios.post('/auth/verify-uuid', { token });
 
   return result.data;
 }

@@ -30,6 +30,9 @@ export default function Tab({ me }: TabProps) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useStatusSearchParams();
 
+  const { stats } = me;
+  const level = Math.floor(Math.sqrt(stats?.EXP ?? 0));
+
   return (
     <div
       className="absolute inset-0 space-y-2 overflow-auto bg-background p-4"
@@ -40,6 +43,7 @@ export default function Tab({ me }: TabProps) {
         <div className="flex h-full flex-col justify-between">
           <span className="text-2xl capitalize">{me.name}</span>
           <UserRoleCard className="text-2xl" roles={me.roles} />
+          <span className="font-bold">LV.{level}</span>
         </div>
       </div>
       <Tabs className="w-full" defaultValue="schematic">

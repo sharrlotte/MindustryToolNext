@@ -30,7 +30,7 @@ import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
 import { PNG_IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -44,7 +44,7 @@ import { useMutation } from '@tanstack/react-query';
 import { createMap, getMapPreview } from '@/query/map';
 
 export default function Page() {
-  const axios = useClientAPI();
+  const axios = useClientApi();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState<MapPreviewResponse>();
   const { toast } = useToast();
@@ -134,7 +134,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
   const { toast } = useToast();
 
   const t = useI18n();
-  const axios = useClientAPI();
+  const axios = useClientApi();
 
   const form = useForm<FormData>({
     resolver: zodResolver(CreateMapSchema(t)),

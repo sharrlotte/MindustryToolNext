@@ -3,7 +3,7 @@
 import DeleteButton, {
   DeleteButtonProps,
 } from '@/components/button/delete-button';
-import useClientAPI from '@/hooks/use-client';
+import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/locales/client';
@@ -17,12 +17,8 @@ type DeleteMapButtonProps = {
   variant?: DeleteButtonProps['variant'];
 };
 
-export function DeleteMapButton({
-  id,
-  name,
-  variant,
-}: DeleteMapButtonProps) {
-  const axios = useClientAPI();
+export function DeleteMapButton({ id, name, variant }: DeleteMapButtonProps) {
+  const axios = useClientApi();
   const t = useI18n();
   const { back } = useRouter();
   const { invalidateByKey } = useQueriesData();
@@ -34,7 +30,6 @@ export function DeleteMapButton({
     },
     mutationFn: (id: string) => deleteMap(axios, id),
     onSuccess: () => {
-      invalidateByKey(['maps']);
       back();
       toast({
         title: t('delete-success'),
@@ -47,6 +42,9 @@ export function DeleteMapButton({
         description: error.message,
         variant: 'destructive',
       });
+    },
+    onSettled: () => {
+      invalidateByKey(['maps']);
     },
   });
 

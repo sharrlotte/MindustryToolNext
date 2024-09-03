@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 
 import SchematicList from '@/app/[locale]/(user)/schematics/schematic-list';
 import env from '@/constant/env';
-import getServerAPI from '@/query/config/get-server-api';
+import getServerApi from '@/query/config/get-server-api';
 import { getSchematics } from '@/query/schematic';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const axios = await getServerAPI();
+  const axios = await getServerApi();
   const schematics = await getSchematics(axios, { page: 0, size: 1 });
 
   const schematic = schematics[0];
