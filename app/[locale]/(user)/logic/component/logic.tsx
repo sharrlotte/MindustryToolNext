@@ -15,7 +15,7 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
     useState({ windowWidth: 0, windowHeight: 0, posx: 0, posy: 0, scale: 1, lastDragX: 0, lastDragY: 0, drag: false });
 
   useEffect(() => {
-    function handleResize() { 
+    function handleResize() {
       setPosition((prev) => ({ ...prev, windowWidth: window.innerWidth, windowHeight: window.innerHeight - 40 }));
     }
     handleResize();
@@ -26,8 +26,8 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
   useEffect(() => {
     const elementToCenter = commands.find(command => command.value.x === 0 && command.value.y === 0);
     if (elementToCenter) {
-      const centerX = -position.posx + (((position.windowWidth / position.scale) / 2 ) - 150);
-      const centerY = -position.posy + (((position.windowHeight / position.scale) / 2) - 100);
+      const centerX = (-position.posx / position.scale) + (((position.windowWidth / position.scale) / 2) - 150);
+      const centerY = (-position.posy / position.scale) + (((position.windowHeight / position.scale) / 2));
       const updatedCommands = commands.map(command =>
         command.key === elementToCenter.key
           ? { ...command, value: { ...command.value, x: centerX, y: centerY } }
@@ -35,6 +35,7 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
       );
 
       setCommands(updatedCommands);
+      console.log(commands);
     }
   }, [commands]);
 
@@ -67,7 +68,7 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
 
   return (
     <div className="w-full h-full">
-      <h3 className="fixed top-1.5 left-10">{`Pos: ${position.posx.toFixed(2)}, ${position.posy.toFixed(2)} Zoom: x${(1 / position.scale).toFixed(2)}`}</h3>
+      <h3 className="fixed top-1.5 left-10">{`Pos: ${position.posx}, ${position.posy} Zoom: x${(1 / position.scale).toFixed(2)}`}</h3>
       <Stage
         width={position.windowWidth}
         height={position.windowHeight}
@@ -110,7 +111,7 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
         <Layer>
           <Rect x={500} y={100} width={200} height={200} fill={'yellow'} draggable />
         </Layer>
-        <CommandCard commands={commands} setCommands={setCommands} zoom={position.scale}/>
+        <CommandCard commands={commands} setCommands={setCommands} zoom={position.scale} />
       </Stage>
     </div>
   );

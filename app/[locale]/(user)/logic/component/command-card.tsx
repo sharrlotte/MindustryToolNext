@@ -1,6 +1,7 @@
 'use client';
 
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
+import { Delete } from "./icon";
 import Command from "../command";
 import { Layer, Group, Rect, Text } from 'react-konva';
 
@@ -14,7 +15,7 @@ const emptyValueListHeight = 20;
 const widthPadded = width - doublePadding;
 
 function caculateHeigh(rows: number) {
-  return rows == 0 ? emptyValueListHeight : valueHeight * rows;
+  return rows === 0 ? emptyValueListHeight : valueHeight * rows;
 }
 
 function caculateFullHeigh(rows: number) {
@@ -34,6 +35,10 @@ function updateCommand(commands: { key: number; value: Command }[], changes: { k
 }
 
 export default function CommandCard({ commands, setCommands }: ComponentProp) {
+  
+  const deleteCommandByKey = (key: number) => {
+    setCommands(commands.filter(command => command.key !== key));
+  };
 
   return (
     <Layer>
@@ -63,16 +68,21 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
 
           <Group x={5} y={5} key={`b${element.key}`}>
             <Text key={`ba${element.key}`} x={0} y={0} text={element.value.value.name} fill={'white'} fontSize={19} />
+            <Delete x={widthPadded - 20} y={2} size={16} strokeWidth={2} fill={"black"} onClick={() => deleteCommandByKey(element.key)} />
           </Group>
 
           <Group x={padding} y={headerHeight} key={`c${element.key}`}>
-            <Rect key={`ca${element.key}`} x={0} y={0} width={widthPadded} height={caculateHeigh(element.value.value.rows)} fill={'#0009'} cornerRadius={5} />
-
+            <Rect
+              key={`ca${element.key}`}
+              x={0} y={0}
+              width={widthPadded}
+              height={caculateHeigh(element.value.value.rows)}
+              fill={'#0009'}
+              cornerRadius={5}
+            />
           </Group>
         </Group>
       ))}
     </Layer>
   );
 }
-
-
