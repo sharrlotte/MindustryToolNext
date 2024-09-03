@@ -17,9 +17,6 @@ export interface FieldType {
 export default interface Command {
     x: number;
     y: number;
-    dragX: number;
-    dragY: number;
-    drag: boolean;
     value: CommandValue
     // How to encode? idk 
 }
@@ -46,9 +43,6 @@ const defaultField: FieldType = {
 const defaultSettings: Command = {
     x: 0,
     y: 0,
-    dragX: 0,
-    dragY: 0,
-    drag: false,
     value: {
         name: '',
         color: 'white',
