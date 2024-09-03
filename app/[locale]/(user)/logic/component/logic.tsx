@@ -15,11 +15,28 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
     useState({ windowWidth: 0, windowHeight: 0, posx: 0, posy: 0, scale: 1, lastDragX: 0, lastDragY: 0, drag: false });
 
   useEffect(() => {
-    function handleResize() { setPosition((prev) => ({ ...prev, windowWidth: window.innerWidth, windowHeight: window.innerHeight - 40 })) }
+    function handleResize() { 
+      setPosition((prev) => ({ ...prev, windowWidth: window.innerWidth, windowHeight: window.innerHeight - 40 }));
+    }
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    const elementToCenter = commands.find(command => command.value.x === 0 && command.value.y === 0);
+    if (elementToCenter) {
+      const centerX = -position.posx + (((position.windowWidth / position.scale) / 2 ) - 150);
+      const centerY = -position.posy + (((position.windowHeight / position.scale) / 2) - 100);
+      const updatedCommands = commands.map(command =>
+        command.key === elementToCenter.key
+          ? { ...command, value: { ...command.value, x: centerX, y: centerY } }
+          : command
+      );
+
+      setCommands(updatedCommands);
+    }
+  }, [commands]);
 
   const handleWheel = useCallback((e: any) => {
     e.evt.preventDefault();
