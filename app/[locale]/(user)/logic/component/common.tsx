@@ -1,9 +1,40 @@
 'use client';
 import React, { useState } from 'react';
+import Command, { CommandList } from '../command';
 
+export function AddingElement({ addCommand }: { addCommand: (command: Command) => void }) {
+  const [isVisible, setIsVisible] = useState(true);
 
-
-
+  return (
+    <div className="w-full bg-[#555] p-2 rounded-xl gap-2">
+      <header
+        className="bg-brand rounded-xl p-1 cursor-pointer"
+        onClick={() => setIsVisible(!isVisible)}
+      >
+        Add element - Click to toggle
+      </header>
+      <ul className={`list-none pt-2 w-full gap-2 ${isVisible ? '' : 'hidden'}`}>
+        {CommandList.map((child, index) => (
+          <li key={index} className="m-0 p-1 w-full bg-[#333a] rounded-xl">
+            <p className="pl-6 p-1">{child.key}</p>
+            <div className="flex flex-wrap w-full">
+              {child.value.map((command, idx) => (
+                <p
+                  key={`${index}${idx}`}
+                  className="p-1 rounded-xl w-full"
+                  style={{ backgroundColor: command.value.color }}
+                  onClick={() => addCommand(command)}
+                >
+                  {command.value.name}
+                </p>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export function LogicNavBar({ toggleText, children, side = 'left' }: { toggleText: string; side?: 'left' | 'right'; children: React.ReactNode }) {
   const [toggle, setToggle] = useState(true);

@@ -1,26 +1,28 @@
 'use client';
 
-import {
-  LogicNavBar,
-} from './component/common';
+import { LogicNavBar, AddingElement } from './component/common';
 import LogicDisplay from './component/logic';
-import Command from "./command";
+import Command, { CommandList, start } from "./command";
 import { useState } from 'react';
 
 export default function Editor() {
-  const [commands, setCommands] = useState<Command[]>([]);
+  const [commands, setCommands] = useState<{ key: number, value: Command }[]>([]);
+  function addCommand(command: Command) {
+    const newCommand = { key: (() => { let key = 0; do { key = Math.floor(Math.random() * 100000); } while (commands.some(cmd => cmd.key === key)); return key })(), value: command };
+    setCommands(commands => [...commands, newCommand]);
+  }
 
   return (<div>
-    <LogicDisplay
-      commands={commands}
-    />
+    <LogicDisplay commands={commands} setCommands={setCommands} />
 
     <LogicNavBar toggleText={'Click here to hidden'}>
-      <div></div>
+      <AddingElement addCommand={addCommand} />
     </LogicNavBar>
 
     <LogicNavBar toggleText={'Click here to hidden'} side='right'>
-      <div></div>
+      <div>
+
+      </div>
     </LogicNavBar>
   </div>);
 }
