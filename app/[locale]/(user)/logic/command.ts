@@ -37,7 +37,7 @@ const defaultField: FieldType = {
   placeHolder: '',
   placeHolderWidth: 100,
   inputType: InputType.TextInput,
-  value: ''
+  value: 'test'
 };
 
 const defaultSettings: Command = {

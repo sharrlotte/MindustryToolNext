@@ -1,9 +1,10 @@
 'use client';
 
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Delete } from "./icon";
-import Command from "../command";
+import Command, { FieldType } from "../command";
 import { Layer, Group, Rect, Text } from 'react-konva';
+import { CommandPair } from "./common";
 
 const padding = 5;
 const doublePadding = padding * 2;
@@ -24,24 +25,61 @@ function caculateFullHeigh(rows: number) {
 
 type ComponentProp = {
   commands: { key: number, value: Command }[],
-  setCommands: Dispatch<SetStateAction<{ key: number; value: Command }[]>>
-  zoom: number
+  setCommands: Dispatch<SetStateAction<CommandPair[]>>
+  zoom: number;
 };
 
-function updateCommand(commands: { key: number; value: Command }[], changes: { key: number; value: Command }): { key: number; value: Command }[] {
+function updateCommand(commands: CommandPair[], changes: CommandPair): CommandPair[] {
   return commands.map(command =>
     command.key === changes.key ? { ...command, value: changes.value } : command
   );
 }
 
+type InputEditor = { x: number; y: number; w: number; h: number; t: number; filedType: FieldType };
+
+type TextEditorProp = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  text: string;
+  onSubmit: (output: string) => void;
+};
+
+function TextEditor({ x, y, width, height, text, onSubmit }: TextEditorProp) {
+  const [value, setValue] = useState(text);
+
+  return (
+    <textarea
+      style={{ position: 'absolute', top: `${y}px`, left: `${x}px`, width: `${width}px`, height: `${height}px`, }}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={() => onSubmit(value)}
+      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); onSubmit(value); } }}
+    />
+  );
+}
+
+function ValueEditor({ }: {inp: InputEditor | null, submitFunc: (o: string) => void}) {
+  return (<Group>
+
+  </Group>);
+}
+
 export default function CommandCard({ commands, setCommands }: ComponentProp) {
-  
+  const [input, setInput] = useState<InputEditor | null>(null);
+
+  const submit = (output: string) => {
+
+  }
+
   const deleteCommandByKey = (key: number) => {
     setCommands(commands.filter(command => command.key !== key));
   };
 
   return (
     <Layer>
+      <ValueEditor inp={input} submitFunc={submit}/>
       {commands.map(element => (
         <Group
           key={element.key}
@@ -80,6 +118,17 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
               fill={'#0009'}
               cornerRadius={5}
             />
+            {element.value.value.fields.map((meow) => {
+              const fieldSize = meow.value.fieldSize * (widthPadded / element.value.value.columns);
+              const x = meow.value.x * fieldSize;
+              const y = meow.value.y * valueHeight;
+
+              return (<Group x={x} y={y}>
+                <Text x={padding} y={doublePadding + 2} fontSize={14} text={meow.value.placeHolder} fill='white' />
+                <Rect x={meow.value.placeHolderWidth} y={padding} width={fieldSize - padding - meow.value.placeHolderWidth} height={30 - padding} fill={element.value.value.color} cornerRadius={5} />
+
+              </Group>)
+            })}
           </Group>
         </Group>
       ))}

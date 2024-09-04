@@ -2,12 +2,14 @@
 
 import React, { useEffect, useState, useCallback, Dispatch, SetStateAction } from 'react';
 import { Stage, Layer, Rect, Line } from 'react-konva';
+import { CommandPair } from './common';
 import Command from '../command';
 import CommandCard from './command-card';
 
+
 type LogicProp = {
-  commands: { key: number, value: Command }[],
-  setCommands: Dispatch<SetStateAction<{ key: number; value: Command }[]>>
+  commands: CommandPair[],
+  setCommands: Dispatch<SetStateAction<CommandPair[]>>
 };
 
 export default function LogicDisplay({ commands, setCommands }: LogicProp) {
@@ -26,16 +28,10 @@ export default function LogicDisplay({ commands, setCommands }: LogicProp) {
   useEffect(() => {
     const elementToCenter = commands.find(command => command.value.x === 0 && command.value.y === 0);
     if (elementToCenter) {
-      const centerX = (-position.posx / position.scale) + (((position.windowWidth / position.scale) / 2) - 150);
+      const centerX = (-position.posx / position.scale) + (((position.windowWidth / position.scale) / 2) - (150 ));
       const centerY = (-position.posy / position.scale) + (((position.windowHeight / position.scale) / 2));
-      const updatedCommands = commands.map(command =>
-        command.key === elementToCenter.key
-          ? { ...command, value: { ...command.value, x: centerX, y: centerY } }
-          : command
-      );
-
+      const updatedCommands = commands.map(command => command.key === elementToCenter.key ? { ...command, value: { ...command.value, x: centerX, y: centerY } }: command);
       setCommands(updatedCommands);
-      console.log(commands);
     }
   }, [commands, position.posx, position.posy, position.scale, position.windowWidth, position.windowHeight, setCommands]);
 
