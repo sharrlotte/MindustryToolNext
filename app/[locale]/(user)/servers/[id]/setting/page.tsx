@@ -228,10 +228,10 @@ function ServerSettingEditor({ server }: Props) {
                     <Tran text="server.start-command" />
                   </FormLabel>
                   <FormControl>
-                    <Textarea {...field} />
+                    <Textarea {...field} placeholder="host" />
                   </FormControl>
                   <FormDescription>
-                    Command that run when server start to host
+                    Command that run when server start, default: host
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

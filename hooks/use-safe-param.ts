@@ -1,4 +1,4 @@
-import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
+import { Params } from 'next/dist/client/components/params';
 import { useParams } from 'next/navigation';
 
 export default function useSafeParam() {
@@ -14,11 +14,11 @@ class SafeParams {
   }
 
   get(key: string, defaultValue: string = ''): string {
-    return this.params[key] ?? defaultValue;
+    return (this.params[key] as string) ?? defaultValue;
   }
 
   getAll(key: string, defaultValue: string[] = []): string[] {
-    return this.params[key] ?? defaultValue;
+    return (this.params[key] as string[]) ?? defaultValue;
   }
 
   raw() {

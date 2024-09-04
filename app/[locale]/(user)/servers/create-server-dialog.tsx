@@ -160,10 +160,10 @@ export default function CreateServerDialog() {
                       <Tran text="server.start-command" />
                     </FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
+                      <Textarea {...field} placeholder="host" />
                     </FormControl>
                     <FormDescription>
-                      Command that run when server start to host
+                      Command that run when server start to host, default: host
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
