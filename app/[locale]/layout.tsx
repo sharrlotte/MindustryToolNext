@@ -10,6 +10,15 @@ type RootProps = {
   };
 };
 
+export async function generateStaticParams() {
+  return [{
+    locale: 'vi',
+  },{
+    locale: 'en',
+  }]
+}
+
+
 export default async function Root({ children, params }: RootProps) {
   return (
     <I18nProviderClient locale={params.locale}>
