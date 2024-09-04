@@ -2,9 +2,8 @@
 
 import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Delete, Copy } from './icon';
-import Command, { InputType, } from '../command';
+import Command, { InputType } from '../command';
 import { Layer, Group, Rect, Text } from 'react-konva';
-import { Html } from 'react-konva-utils';
 import { CommandPair } from './common';
 
 const padding = 5;
@@ -30,7 +29,11 @@ type ComponentProp = {
 };
 
 function updateCommand(commands: CommandPair[], changes: CommandPair) {
-  return commands.map((command) => command.key === changes.key ? { ...command, value: changes.value } : command);
+  return commands.map((command) =>
+    command.key === changes.key
+      ? { ...command, value: changes.value }
+      : command,
+  );
 }
 
 type InputEditor = {
@@ -57,7 +60,7 @@ function TextEditor({ x, y, width, height, text, onSubmit }: TextEditorProp) {
   const [value, setValue] = useState(text);
 
   return (
-    <Html>
+    <div>
       <textarea
         className={`fixed top-[${y + 40}px] left-[${x}px] w-[${width}px] h-[${height}px]`}
         value={value}
@@ -70,34 +73,45 @@ function TextEditor({ x, y, width, height, text, onSubmit }: TextEditorProp) {
           }
         }}
       />
-    </Html>
-
+    </div>
   );
 }
 
-function ValueEditor(i: { inp: InputEditor; submitFunc: (o: string, od?: string) => void }) {
-  function onClick(output: string, displayOutput?: string) {
+function ValueEditor(i: {
+  inp: InputEditor;
+  submitFunc: (o: string, od?: string) => void;
+}) {
+  function onClick(output: string, displayOutput?: string) {}
 
-  }
-
-  return <Group>
-    {() => {
-      if (i.inp?.inputType == InputType.TextInput) {
-        return;
-      } else {
-        return (<TextEditor x={i.inp.x} y={i.inp.y} width={i.inp.w} height={i.inp.h} text={i.inp.t}
-          onSubmit={onClick} />)
-      }
-    }}
-  </Group>;
+  return (
+    <Group>
+      {() => {
+        if (i.inp?.inputType == InputType.TextInput) {
+          return;
+        } else {
+          return (
+            <TextEditor
+              x={i.inp.x}
+              y={i.inp.y}
+              width={i.inp.w}
+              height={i.inp.h}
+              text={i.inp.t}
+              onSubmit={onClick}
+            />
+          );
+        }
+      }}
+    </Group>
+  );
 }
 
 export default function CommandCard({ commands, setCommands }: ComponentProp) {
   const [input, setInput] = useState<InputEditor | null>(null);
 
   const submit = (output: string, displayOutput?: string) => {
-    const cmn = commands.find((c) => c.key === input?.commandKey)?.value.value.fields
-      .find((i) => i.key === input?.fieldKey);
+    const cmn = commands
+      .find((c) => c.key === input?.commandKey)
+      ?.value.value.fields.find((i) => i.key === input?.fieldKey);
 
     if (cmn) {
       cmn.value.value = output;
@@ -115,16 +129,41 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
 
   function addCommand(command: Command) {
     const newCowq = { ...command, x: 0, y: 0 };
-    const newCommand = { key: (() => { let key = 0; do { key = Math.floor(Math.random() * 100000); } while (commands.some(cmd => cmd.key === key)); return key })(), value: newCowq };
-    setCommands(commands => [...commands, newCommand]);
+    const newCommand = {
+      key: (() => {
+        let key = 0;
+        do {
+          key = Math.floor(Math.random() * 100000);
+        } while (commands.some((cmd) => cmd.key === key));
+        return key;
+      })(),
+      value: newCowq,
+    };
+    setCommands((commands) => [...commands, newCommand]);
   }
 
   return (
     <Layer>
-      <Html></Html>
-      <ValueEditor inp={input ? input : { x: 0, y: 0, w: 0, h: 0, t: '', commandKey: -1, fieldKey: -1, inputType: InputType.TextInput }} submitFunc={submit} />
+      <ValueEditor
+        inp={
+          input
+            ? input
+            : {
+                x: 0,
+                y: 0,
+                w: 0,
+                h: 0,
+                t: '',
+                commandKey: -1,
+                fieldKey: -1,
+                inputType: InputType.TextInput,
+              }
+        }
+        submitFunc={submit}
+      />
       {commands.map((element) => (
         <Group
+          key={element.key}
           x={element.value.x}
           y={element.value.y}
           draggable
@@ -163,8 +202,10 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
               y={2}
               size={16}
               strokeWidth={2}
-              fill='black'
-              onClick={() => { addCommand(element.value) }}
+              fill="black"
+              onClick={() => {
+                addCommand(element.value);
+              }}
             />
           </Group>
 
@@ -176,12 +217,18 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
               cornerRadius={5}
             />
             {element.value.value.fields.map((meow) => {
-              const fieldSize = meow.value.fieldSize * (widthPadded / element.value.value.columns);
+              const fieldSize =
+                meow.value.fieldSize *
+                (widthPadded / element.value.value.columns);
               const x = meow.value.x * fieldSize;
               const y = meow.value.y * valueHeight;
 
               return (
-                <Group x={x} y={y} key={`${meow.key}${element.value.value.name}`}>
+                <Group
+                  x={x}
+                  y={y}
+                  key={`${meow.key}${element.value.value.name}`}
+                >
                   <Text
                     x={padding}
                     y={doublePadding + 2}
@@ -200,9 +247,12 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
                   <Text
                     x={meow.value.placeHolderWidth + padding}
                     y={doublePadding + 5}
-                    width={fieldSize - doublePadding - meow.value.placeHolderWidth}
+                    width={
+                      fieldSize - doublePadding - meow.value.placeHolderWidth
+                    }
                     fill={'white'}
-                    fontSize={11} height={11}
+                    fontSize={11}
+                    height={11}
                     text={`${meow.value.displayValue ? meow.value.displayValue : meow.value.value}`}
                     ellipsis={true}
                   />
@@ -221,7 +271,7 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
                         commandKey: element.key,
                         fieldKey: meow.key,
                         inputType: meow.value.inputType,
-                      })
+                      });
                     }}
                   />
                 </Group>
