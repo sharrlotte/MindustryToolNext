@@ -167,6 +167,9 @@ importers:
       react-konva:
         specifier: 19.0.0-1
         version: 19.0.0-1(konva@9.3.14)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      react-konva-utils:
+        specifier: ^1.0.6
+        version: 1.0.6(konva@9.3.14)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       react-markdown:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.3.5)(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -3385,6 +3388,20 @@ packages:
   react-is@19.0.0-rc-a26e3f403e-20240611:
     resolution: {integrity: sha512-vOTGUadk9/0r7xBICNp6kssADmNJZgIG4vg5PWR0QCuokus/QjAemIHugtzgMZQ+Ur/EHf3N6qcLC40J4hMYAQ==}
 
+  react-konva-utils@1.0.6:
+    resolution: {integrity: sha512-011+jyXwadFDkbIUdlTarKwbqME0ljX1vPeW5oyLQx4rtHdcsDr43tdOdSsMT3XpZyl8clgM9I/eK0lBuBuFHg==}
+    peerDependencies:
+      konva: ^8.3.5 || ^9.0.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
+
+  react-konva@18.2.10:
+    resolution: {integrity: sha512-ohcX1BJINL43m4ynjZ24MxFI1syjBdrXhqVxYVDw2rKgr3yuS0x/6m1Y2Z4sl4T/gKhfreBx8KHisd0XC6OT1g==}
+    peerDependencies:
+      konva: ^8.0.1 || ^7.2.5 || ^9.0.0
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+
   react-konva@19.0.0-1:
     resolution: {integrity: sha512-DKKys0qaAbtL/u0x5CYWQtmjlvfX3eE7GxB/ekyA763w2KV2Nd6IBgm/2azu+L+VO2O0l6AefXy7ry6Lfrhz4w==}
     peerDependencies:
@@ -3397,6 +3414,12 @@ packages:
     peerDependencies:
       '@types/react': '>=18'
       react: '>=18'
+
+  react-reconciler@0.29.2:
+    resolution: {integrity: sha512-zZQqIiYgDCTP/f1N/mAR10nJGrPD2ZR+jDSEsKWJHYC7Cm2wodlwbR3upZRdC3cjIjSlTLNVyO7Iu0Yy7t2AYg==}
+    engines: {node: '>=0.10.0'}
+    peerDependencies:
+      react: ^18.3.1
 
   react-reconciler@0.31.0-beta-73bcdfbae5-20240502:
     resolution: {integrity: sha512-Q+S5Au6HZI2RxhjpWiCuo5SRE94JWvtpSSx8r9q0eHQZx+CVJ/Yw83ZXkeu0ONI9y+xF00wYSTlBwhh9RUzBjw==}
@@ -3532,6 +3555,9 @@ packages:
   safe-regex-test@1.0.3:
     resolution: {integrity: sha512-CdASjNJPvRa7roO6Ra/gLYBTzYzzPyyBXxIMdGW3USQLyjWEls2RgW5UBTXaQVp+OrpeCK3bLem8smtmheoRuw==}
     engines: {node: '>= 0.4'}
+
+  scheduler@0.23.2:
+    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
 
   scheduler@0.25.0-beta-73bcdfbae5-20240502:
     resolution: {integrity: sha512-iKGFGP2oQk0lUIHT3+uA/4gy6LEmVUTj/cKPWjE+d9Rm2YNPVObESaaQ0jv26WeW4Mt4jmYdXdsz6OEGZuz2ng==}
@@ -3888,6 +3914,12 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
+
+  use-image@1.1.1:
+    resolution: {integrity: sha512-n4YO2k8AJG/BcDtxmBx8Aa+47kxY5m335dJiCQA5tTeVU4XdhrhqR6wT0WISRXwdMEOv5CSjqekDZkEMiiWaYQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   use-sidecar@1.1.2:
     resolution: {integrity: sha512-epTbsLuzZ7lPClpz2TyryBfztm7m+28DlEv2ZCQ3MDr5ssiwyOwGH/e5F9CkfWjJ1t4clvI58yF822/GUkjjhw==}
@@ -7565,6 +7597,24 @@ snapshots:
 
   react-is@19.0.0-rc-a26e3f403e-20240611: {}
 
+  react-konva-utils@1.0.6(konva@9.3.14)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
+    dependencies:
+      konva: 9.3.14
+      react: 19.0.0-rc-cc1ec60d0d-20240607
+      react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
+      react-konva: 18.2.10(konva@9.3.14)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      use-image: 1.1.1(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+
+  react-konva@18.2.10(konva@9.3.14)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
+    dependencies:
+      '@types/react-reconciler': 0.28.8
+      its-fine: 1.2.5(react@19.0.0-rc-cc1ec60d0d-20240607)
+      konva: 9.3.14
+      react: 19.0.0-rc-cc1ec60d0d-20240607
+      react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
+      react-reconciler: 0.29.2(react@19.0.0-rc-cc1ec60d0d-20240607)
+      scheduler: 0.23.2
+
   react-konva@19.0.0-1(konva@9.3.14)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
     dependencies:
       '@types/react-reconciler': 0.28.8
@@ -7591,6 +7641,12 @@ snapshots:
       vfile: 6.0.3
     transitivePeerDependencies:
       - supports-color
+
+  react-reconciler@0.29.2(react@19.0.0-rc-cc1ec60d0d-20240607):
+    dependencies:
+      loose-envify: 1.4.0
+      react: 19.0.0-rc-cc1ec60d0d-20240607
+      scheduler: 0.23.2
 
   react-reconciler@0.31.0-beta-73bcdfbae5-20240502(react@19.0.0-rc-cc1ec60d0d-20240607):
     dependencies:
@@ -7754,6 +7810,10 @@ snapshots:
       call-bind: 1.0.7
       es-errors: 1.3.0
       is-regex: 1.1.4
+
+  scheduler@0.23.2:
+    dependencies:
+      loose-envify: 1.4.0
 
   scheduler@0.25.0-beta-73bcdfbae5-20240502: {}
 
@@ -8193,6 +8253,11 @@ snapshots:
       tslib: 2.7.0
     optionalDependencies:
       '@types/react': 18.3.5
+
+  use-image@1.1.1(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607):
+    dependencies:
+      react: 19.0.0-rc-cc1ec60d0d-20240607
+      react-dom: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
 
   use-sidecar@1.1.2(@types/react@18.3.5)(react@19.0.0-rc-cc1ec60d0d-20240607):
     dependencies:
