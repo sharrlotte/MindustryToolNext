@@ -1,13 +1,13 @@
 import { AxiosInstance } from 'axios';
 
-import { MetricCollection } from '@/constant/enum';
+import { MetricType } from '@/constant/enum';
 import { Metric } from '@/types/response/Metric';
 
 export async function getMetric(
   axios: AxiosInstance,
   start: Date,
   end: Date,
-  collection: MetricCollection,
+  collection: MetricType,
 ): Promise<Metric[]> {
   return axios
     .get('metrics', {

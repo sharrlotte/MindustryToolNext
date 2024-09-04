@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { LogCollection } from '@/constant/enum';
+import { LogType } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
 import useClientApi from '@/hooks/use-client';
 import useMessage from '@/hooks/use-message';
@@ -165,7 +165,7 @@ type Filter = {
 };
 
 type LogPaginationQuery = PaginationQuery & {
-  collection: LogCollection;
+  collection: LogType;
   env: LogEnvironment;
 } & Filter;
 
@@ -367,7 +367,7 @@ function StaticLog({ collection }: StaticLogProps) {
           params={{
             page: 0,
             size: 20,
-            collection: collection as LogCollection,
+            collection: collection as LogType,
             env: env as LogEnvironment,
             content,
             userId,
