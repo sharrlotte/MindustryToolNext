@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { LogCollection } from '@/constant/enum';
+import { LogType } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
 import useClientApi from '@/hooks/use-client';
 import useMessage from '@/hooks/use-message';
@@ -165,7 +165,7 @@ type Filter = {
 };
 
 type LogPaginationQuery = PaginationQuery & {
-  collection: LogCollection;
+  collection: LogType;
   env: LogEnvironment;
 } & Filter;
 
@@ -199,7 +199,7 @@ function StaticLog({ collection }: StaticLogProps) {
 
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
-      <div className="flex gap-1">
+      <div className="flex gap-1 rounded-md bg-card p-2">
         <ComboBox
           value={{ label: env, value: env }}
           values={[
@@ -208,14 +208,17 @@ function StaticLog({ collection }: StaticLogProps) {
           ]}
           onChange={setEnv}
         />
-
         <Dialog>
           <DialogTrigger asChild>
-            <Button title="Filter">
+            <Button
+              className="border-none bg-secondary shadow-md"
+              variant="outline"
+              title="Filter"
+            >
               <FilterIcon />
             </Button>
           </DialogTrigger>
-          <DialogContent className="grid gap-2">
+          <DialogContent className="grid gap-2 p-6">
             <div>
               <label>Content</label>
               <div className="flex gap-1">
@@ -364,7 +367,7 @@ function StaticLog({ collection }: StaticLogProps) {
           params={{
             page: 0,
             size: 20,
-            collection: collection as LogCollection,
+            collection: collection as LogType,
             env: env as LogEnvironment,
             content,
             userId,

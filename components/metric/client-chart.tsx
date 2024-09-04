@@ -2,7 +2,6 @@
 
 import {
   CategoryScale,
-  ChartData,
   Chart as ChartJS,
   Legend,
   LineElement,
@@ -30,7 +29,7 @@ ChartJS.register(
 );
 
 type Props = {
-  data: { web: Metric[]; mod: Metric[] };
+  data: { web: Metric[]; mod: Metric[]; server: Metric[] };
   start: Date;
   dates: number;
 };
@@ -38,18 +37,19 @@ type Props = {
 export default function ClientChart({
   start,
   dates,
-  data: { web, mod },
+  data: { web, mod, server },
 }: Props) {
   const t = useI18n();
 
   const fixedWeb = fillMetric(start, dates, web, 0);
   const fixedMod = fillMetric(start, dates, mod, 0);
+  const fixedServer = fillMetric(start, dates, server, 0);
   const total = fixedMod.map((m, index) => ({
     ...m,
-    value: m.value + fixedWeb[index].value,
+    value: m.value + fixedWeb[index].value + fixedServer[index].value,
   }));
 
-  const chart: ChartData<'line'> = {
+  const chart = {
     labels: fixedWeb.map(({ createdAt }) => createdAt),
     datasets: [
       {
@@ -64,6 +64,13 @@ export default function ClientChart({
         data: fixedWeb.map(({ value }) => value),
         borderColor: 'rgb(99, 255, 132)',
         backgroundColor: 'rgba(99, 255, 132)',
+        tension: 0.3,
+      },
+      {
+        label: t('metric.server-user'),
+        data: fixedServer.map(({ value }) => value),
+        borderColor: 'rgb(255, 255, 132)',
+        backgroundColor: 'rgba(255, 255, 132)',
         tension: 0.3,
       },
       {

@@ -8,12 +8,12 @@ export async function getLogCollections(
   return result.data;
 }
 
-import { LogCollection } from '@/constant/enum';
+import { LogType } from '@/constant/enum';
 import Pageable from '@/types/data/pageable-schema';
 import { Log } from '@/types/response/Log';
 
 type GetLogParams = Pageable & {
-  collection: LogCollection;
+  collection: LogType;
   env?: 'Prod' | 'Dev';
 };
 

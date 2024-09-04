@@ -2,7 +2,7 @@
 
 import {
   ArcElement,
-  ChartData,
+  
   Chart as ChartJS,
   Legend,
   Tooltip,
@@ -31,7 +31,7 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 
   const ramLeft = ramUsage === 0 && totalRam === 0 ? 100 : totalRam - ramUsage;
 
-  const data: ChartData<'doughnut'> = {
+  const data = {
     labels: [`Used: ${percentUsage}%`, `Free: ${percentFree}%`],
     datasets: [
       {

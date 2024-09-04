@@ -15,7 +15,7 @@ import {
 } from '@/components/common/icons';
 import Ads from '@/components/common/ads';
 
-export const dynamicParams = false;
+// export const dynamicParams = false;
 export const experimental_ppr = true;
 
 export default async function Home({
