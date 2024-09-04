@@ -8,6 +8,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Tran from '@/components/common/tran';
 import { getMeServers } from '@/query/user';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
+import { getSession } from '@/action/action';
+import ProtectedElement from '@/layout/protected-element';
+import LoginButton from '@/components/button/login-button';
 
 export const experimental_ppr = true;
 
@@ -15,7 +18,9 @@ const skeleton = Array(8)
   .fill(1)
   .map((_, index) => <InternalServerCardSkeleton key={index} />);
 
-export default function Page() {
+export default async function Page() {
+  const session = await getSession();
+
   return (
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
       <Tabs
@@ -33,7 +38,9 @@ export default function Page() {
               </TabsTrigger>
             </TabsList>
           </div>
-          <CreateServerDialog />
+          <ProtectedElement session={session} alt={<RequireLogin />}>
+            <CreateServerDialog />
+          </ProtectedElement>
         </div>
         <TabsContent
           className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
@@ -47,11 +54,22 @@ export default function Page() {
           className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
           value="my-server"
         >
-          <Suspense fallback={skeleton}>
-            <MeServer />
-          </Suspense>
+          <ProtectedElement session={session} alt={<RequireLogin />}>
+            <Suspense fallback={skeleton}>
+              <MeServer />
+            </Suspense>
+          </ProtectedElement>
         </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+function RequireLogin() {
+  return (
+    <div>
+      <p>Please login to access your server list.</p>
+      <LoginButton />
     </div>
   );
 }
