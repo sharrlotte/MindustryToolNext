@@ -22,13 +22,14 @@ export default async function Page() {
 
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);
 
-  const [like, logged, daily, mod, web, visit, loginLog, loginHistory] =
+  const [like, logged, daily, mod, web, server, visit, loginLog, loginHistory] =
     await Promise.all([
       getMetric(axios, start, end, 'DAILY_LIKE'),
       getMetric(axios, start, end, 'LOGGED_DAILY_USER'),
       getMetric(axios, start, end, 'DAILY_USER'),
       getMetric(axios, start, end, 'DAILY_MOD_USER'),
       getMetric(axios, start, end, 'DAILY_WEB_USER'),
+      getMetric(axios, start, end, 'DAILY_SERVER_USER'),
       getMetric(axios, start, end, 'DAILY_USER'),
       getLogs(axios, { page: 0, collection: 'USER_LOGIN' }),
       getLoginHistories(axios, { page: 0, size: 20 }),
@@ -43,7 +44,11 @@ export default async function Page() {
           dates={NUMBER_OF_DAY}
           data={{ logged, daily }}
         />
-        <ClientChart start={start} dates={NUMBER_OF_DAY} data={{ mod, web }} />
+        <ClientChart
+          start={start}
+          dates={NUMBER_OF_DAY}
+          data={{ mod, web, server }}
+        />
         <WebsiteVisitRate start={start} dates={NUMBER_OF_DAY} data={visit} />
         <LoginLog data={loginLog} />
         <LoginHistory data={loginHistory} />
