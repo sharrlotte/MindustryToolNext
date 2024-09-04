@@ -10,7 +10,7 @@ export default function useClientApi(): AxiosInstance {
   const { locale } = useParams();
 
   useEffect(() => {
-    axiosInstance.defaults.headers['Accept-Language'] = locale;
+    axiosInstance.defaults.headers['Accept-Language'] = locale as string;
   }, [locale]);
 
   return axiosInstance;
