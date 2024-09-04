@@ -1,7 +1,7 @@
 'use client';
 
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Delete } from './icon';
+import { Delete, Copy } from './icon';
 import Command, { FieldType } from '../command';
 import { Layer, Group, Rect, Text } from 'react-konva';
 import { CommandPair } from './common';
@@ -12,7 +12,6 @@ const width = 300;
 const headerHeight = 30;
 const valueHeight = 30;
 const emptyValueListHeight = 20;
-
 const widthPadded = width - doublePadding;
 
 function caculateHeigh(rows: number) {
@@ -99,6 +98,12 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
     setCommands(commands.filter((command) => command.key !== key));
   };
 
+  function addCommand(command: Command) {
+    const newCowq = {...command, x: 0, y: 0}; 
+    const newCommand = { key: (() => { let key = 0; do { key = Math.floor(Math.random() * 100000); } while (commands.some(cmd => cmd.key === key)); return key })(), value: newCowq };
+    setCommands(commands => [...commands, newCommand]);
+  }
+
   return (
     <Layer>
       <ValueEditor inp={input} submitFunc={submit} />
@@ -143,6 +148,14 @@ export default function CommandCard({ commands, setCommands }: ComponentProp) {
               strokeWidth={2}
               fill={'black'}
               onClick={() => deleteCommandByKey(element.key)}
+            />
+            <Copy 
+              x={widthPadded - 20 - 20 - padding}
+              y={2}
+              size={16}
+              strokeWidth={2}
+              fill='black'
+              onClick={() => {addCommand(element.value)}}
             />
           </Group>
 
