@@ -2,7 +2,7 @@
 
 import {
   CategoryScale,
-  ChartData,
+  
   Chart as ChartJS,
   Legend,
   LineElement,
@@ -49,7 +49,7 @@ export default function LoginChart({
     value: m.value + fixedDaily[index].value,
   }));
 
-  const data: ChartData<'line'> = {
+  const data = {
     labels: fixedLoggedDaily.map(({ createdAt }) => createdAt),
     datasets: [
       {

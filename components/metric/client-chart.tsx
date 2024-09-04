@@ -2,7 +2,6 @@
 
 import {
   CategoryScale,
-  ChartData,
   Chart as ChartJS,
   Legend,
   LineElement,
@@ -50,7 +49,7 @@ export default function ClientChart({
     value: m.value + fixedWeb[index].value + fixedServer[index].value,
   }));
 
-  const chart: ChartData<'line'> = {
+  const chart = {
     labels: fixedWeb.map(({ createdAt }) => createdAt),
     datasets: [
       {

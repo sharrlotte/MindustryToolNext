@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import { UserRole } from '@/constant/enum';
 import env from '@/constant/env';
 import { Message } from '@/types/response/Message';
-import { ChartData, Metric } from '@/types/response/Metric';
+import {  ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
 
 const colours: Record<string, string> = {

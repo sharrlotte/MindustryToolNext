@@ -2,7 +2,6 @@
 const nextConfig = {
   experimental: {
     ppr: 'incremental',
-    reactCompiler: false,
   },
   crossOrigin: 'anonymous',
   reactStrictMode: true,

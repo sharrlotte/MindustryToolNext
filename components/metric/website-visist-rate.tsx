@@ -2,7 +2,7 @@
 
 import {
   CategoryScale,
-  ChartData,
+  
   Chart as ChartJS,
   Legend,
   LineElement,
@@ -40,7 +40,7 @@ export default function WebsiteVisitRate({ start, dates, data }: Props) {
   const t = useI18n();
   const filledData = fillMetric(start, dates, data, 0);
 
-  const chart: ChartData<'line'> = {
+  const chart = {
     labels: filledData.map(({ createdAt }) => createdAt),
     datasets: [
       {

@@ -1,7 +1,7 @@
 'use client';
 
-import { LogicNavBar, AddingElement, CommandPair } from './component/common';
-import LogicDisplay from './component/logic';
+import { LogicNavBar, AddingElement, CommandPair } from './_component/common';
+import LogicDisplay from './_component/logic';
 import Command, { } from "./command";
 import { useState } from 'react';
 

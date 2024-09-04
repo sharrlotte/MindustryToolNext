@@ -2,7 +2,6 @@
 
 import {
   CategoryScale,
-  ChartData,
   Chart as ChartJS,
   Legend,
   LineElement,
@@ -40,7 +39,7 @@ export default function LikeChart({ start, dates, data }: Props) {
   const filledData = fillMetric(start, dates, data, 0);
   const t = useI18n();
 
-  const chart: ChartData<'line'> = {
+  const chart = {
     labels: filledData.map(({ createdAt }) => createdAt),
     datasets: [
       {
