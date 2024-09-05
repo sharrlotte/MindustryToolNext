@@ -33,8 +33,6 @@ export default function Tab({ me }: TabProps) {
   const { stats } = me;
   const level = Math.floor(Math.sqrt(stats?.EXP ?? 0));
 
-  console.log({ me });
-
   return (
     <div
       className="absolute inset-0 space-y-2 overflow-auto bg-background p-4"
