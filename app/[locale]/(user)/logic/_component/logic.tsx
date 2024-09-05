@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useCallback, Dispatch, SetStateAction } from 'react';
 import { Stage, Layer, Rect, Line } from 'react-konva';
 import { CommandPair } from './common';
-import Command from '../command';
 import CommandCard from './command-card';
 
 
