@@ -19,6 +19,10 @@ export type PaginationQuery = {
   size: number;
 };
 
+export type MessageQuery = {
+  size: number;
+};
+
 export const statusSearchSchema = z.object({
   page: z.number().gte(0).default(0),
   name: z.string().default('').optional(),

@@ -65,7 +65,7 @@ export default function LogPage() {
 }
 
 function LiveLog() {
-  const { socket, state } = useSocket();
+  const { state } = useSocket();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
@@ -84,20 +84,8 @@ function LiveLog() {
                 queryKey={['live-log']}
                 room="LOG"
                 container={() => container}
-                params={{ page: 0, size: 40 }}
-                end={<></>}
+                params={{ size: 50 }}
                 showNotification={false}
-                getFunc={(
-                  _,
-                  params: {
-                    page: number;
-                    size: number;
-                  },
-                ) =>
-                  socket
-                    .onRoom('LOG')
-                    .await({ method: 'GET_MESSAGE', ...params })
-                }
               >
                 {(data) => <MessageCard key={data.id} message={data} />}
               </MessageList>
