@@ -9,7 +9,7 @@ type Props = {
   any?: UserRole[];
   all?: UserRole[];
   session: Session | null;
-  ownerId: string;
+  ownerId?: string;
 };
 
 function NoPermission() {
