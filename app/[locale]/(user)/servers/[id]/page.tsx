@@ -17,7 +17,6 @@ import ProtectedElement from '@/layout/protected-element';
 import ProtectedRoute from '@/layout/protected-route';
 import { Player } from '@/types/response/Player';
 import { Skeleton } from '@/components/ui/skeleton';
-import { sleep } from '@/lib/utils';
 
 type Props = {
   params: { id: string; locale: string };
