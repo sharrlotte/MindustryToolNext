@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { Fragment } from 'react';
 
 import ColorText from '@/components/common/color-text';
@@ -6,15 +7,18 @@ import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import { ServerIcon } from '@/components/common/icons';
 
-type ServerInstancesCardProps = {
+type MyServerInstancesCardProps = {
   server: InternalServerDetail;
 };
 
-export default async function InternalServerCard({
-  server: { name, players, port, alive, started, mapName, mode },
-}: ServerInstancesCardProps) {
+export default async function MyInternalServerCard({
+  server: { id, name, players, port, alive, started, mapName, mode },
+}: MyServerInstancesCardProps) {
   return (
-    <div className="flex h-full flex-1 cursor-pointer flex-col gap-4 rounded-md bg-card p-2">
+    <Link
+      className="flex h-full flex-1 cursor-pointer flex-col gap-4 rounded-md bg-card p-2"
+      href={`/servers/${id}`}
+    >
       <div className="flex items-center gap-2">
         <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
         <ColorText className="text-2xl font-bold" text={name} />
@@ -49,6 +53,6 @@ export default async function InternalServerCard({
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

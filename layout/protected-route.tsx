@@ -9,13 +9,20 @@ type Props = {
   any?: UserRole[];
   all?: UserRole[];
   session: Session | null;
+  ownerId?: string;
 };
 
 function NoPermission() {
   return <span>You don have permission to access this page</span>;
 }
 
-export default function ProtectedRoute({ all, any, children, session }: Props) {
+export default function ProtectedRoute({
+  all,
+  any,
+  children,
+  session,
+  ownerId,
+}: Props) {
   if (!session || session.roles === null) return <RequireLogin />;
 
   const roles = session.roles.map((r) => r.name);
@@ -31,6 +38,7 @@ export default function ProtectedRoute({ all, any, children, session }: Props) {
   const pred = [
     all ? all.every((role) => roles.includes(role)) : true,
     any ? any.some((role) => roles.includes(role)) : true,
+    ownerId ? ownerId === session.id : true,
   ].every(Boolean);
 
   if (!pred && !roles.includes('SHAR')) {

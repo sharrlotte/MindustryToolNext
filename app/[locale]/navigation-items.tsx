@@ -180,6 +180,7 @@ export function NavItems({ onClick }: NavItemsProps) {
             name: <Tran text="server" />,
             path: '/admin/servers',
             icon: <ServerIcon />,
+            roles: ['SHAR'],
           },
           {
             name: <Tran text="setting" />,
