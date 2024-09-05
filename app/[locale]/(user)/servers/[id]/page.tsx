@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Suspense } from 'react';
 
 import ReloadServerButton from '@/app/[locale]/(user)/servers/[id]/reload-server-button';
 import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-server-button';
@@ -16,6 +16,8 @@ import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import ProtectedRoute from '@/layout/protected-route';
 import { Player } from '@/types/response/Player';
+import { Skeleton } from '@/components/ui/skeleton';
+import { sleep } from '@/lib/utils';
 
 type Props = {
   params: { id: string; locale: string };
@@ -95,7 +97,14 @@ export default async function Page({ params: { id } }: Props) {
             </div>
           </div>
           <div className="flex min-w-60 flex-[3] flex-col gap-1 bg-card p-4 shadow-lg">
-            <PlayersCard id={id} />
+            <div className="flex flex-col gap-2">
+              <h3 className="text-xl">
+                <Tran text="server.players" />
+              </h3>
+              <Suspense fallback={<PlayersCardSkeleton />}>
+                <PlayersCard id={id} />
+              </Suspense>
+            </div>
           </div>
         </div>
         <div className="flex flex-1 flex-col gap-2">
@@ -132,23 +141,24 @@ async function PlayersCard({ id }: PlayersCardProps) {
   const players = await getServerPlayers(axios, id);
 
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-xl">
-        <Tran text="server.players" />
-      </h3>
-      <div className="grid grid-cols-2 gap-4">
-        {players.map((player) => (
-          <PlayerCard key={player.uuid} player={player} />
-        ))}
-      </div>
+    <div className="grid grid-cols-2 gap-4">
+      {players.map((player) => (
+        <PlayerCard key={player.uuid} player={player} />
+      ))}
     </div>
   );
+}
+
+function PlayersCardSkeleton() {
+  return Array(10)
+    .fill(1)
+    .map((_, index) => <Skeleton className="h-10 w-24" key={index} />);
 }
 
 type PlayerCardProps = {
   player: Player;
 };
-function PlayerCard({ player: { userId, name, uuid } }: PlayerCardProps) {
+async function PlayerCard({ player: { userId, name, uuid } }: PlayerCardProps) {
   return (
     <div className="flex flex-col gap-1">
       <IdUserCard id={userId} />
