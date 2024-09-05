@@ -33,7 +33,7 @@ export default function Page() {
                 queryKey={['servers', id, 'messages']}
                 room={`SERVER-${id}`}
                 container={() => container}
-                params={{ size: 2 }}
+                params={{ size: 50 }}
                 end={<></>}
                 showNotification={false}
               >
