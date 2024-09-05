@@ -30,7 +30,7 @@ export default function Tab({ user }: TabProps) {
   const { schematic, map, post } = useSearchTags();
   const params = useSearchPageParams();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const { stats } = me;
+  const { stats } = user;
   const level = Math.floor(Math.sqrt(stats?.EXP ?? 0));
 
   return (
