@@ -27,7 +27,7 @@ import { useI18n } from '@/locales/client';
 import { useQuery } from '@tanstack/react-query';
 
 export default function Page() {
-  const { socket, state } = useSocket();
+  const { state } = useSocket();
   const { session } = useSession();
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -69,23 +69,11 @@ export default function Page() {
                     queryKey={['global']}
                     room="GLOBAL"
                     container={() => container}
-                    params={{ page: 0, size: 40 }}
-                    end={<></>}
+                    params={{ size: 50 }}
                     noResult={
                       <div className="flex h-full w-full items-center justify-center font-semibold">
                         {"Let's start a conversation"}
                       </div>
-                    }
-                    getFunc={(
-                      _,
-                      params: {
-                        page: number;
-                        size: number;
-                      },
-                    ) =>
-                      socket
-                        .onRoom('GLOBAL')
-                        .await({ method: 'GET_MESSAGE', ...params })
                     }
                   >
                     {(data) => <MessageCard key={data.id} message={data} />}

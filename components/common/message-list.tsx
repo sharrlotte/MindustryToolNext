@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import React, {
   ReactNode,
   useCallback,
@@ -11,20 +10,20 @@ import React, {
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import { useSocket } from '@/context/socket-context';
-import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { isReachedEnd, makeArray, mergeNestArray } from '@/lib/utils';
 import { useI18n } from '@/locales/client';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
 import { useSession } from '@/context/session-context';
 import useWindow from '@/hooks/use-window';
+import useMessageQuery from '@/hooks/use-message-query';
+import { MessageQuery } from '@/types/data/pageable-search-schema';
 
 type MessageListProps = {
   className?: string;
   queryKey: QueryKey;
-  params: PaginationQuery;
+  params: MessageQuery;
   loader?: ReactNode;
   noResult?: ReactNode;
   end?: ReactNode;
@@ -35,10 +34,6 @@ type MessageListProps = {
   threshold?: number;
   room: string;
   container: () => HTMLElement | null;
-  getFunc: (
-    axios: AxiosInstance,
-    params: PaginationQuery,
-  ) => Promise<Message[]>;
   children: (
     data: MessageGroup,
     index?: number,
@@ -59,7 +54,6 @@ export default function MessageList({
   room,
   showNotification = true,
   container,
-  getFunc,
   children,
 }: MessageListProps) {
   const currentContainer = container();
@@ -82,10 +76,9 @@ export default function MessageList({
     error,
     isError,
     hasNextPage,
-    hasPreviousPage,
-    isFetching,
     fetchNextPage,
-  } = useInfinitePageQuery(getFunc, params, queryKey);
+    hasPreviousPage,
+  } = useMessageQuery(room, params, queryKey);
 
   const pageMapper = useCallback(
     (item: MessageGroup, index: number, array: MessageGroup[]) =>
@@ -127,7 +120,6 @@ export default function MessageList({
     }
 
     const array = mergeNestArray(data.pages);
-
     const group = groupMessage(array);
 
     return group.map(pageMapper);
@@ -147,29 +139,12 @@ export default function MessageList({
       }
     };
 
-    const handleTopReach = () => {
-      if (hasPreviousPage) {
-        // fetchPreviousPage();
-      }
-    };
-
-    if (currentContainer && !isFetching) {
-      if (isReachedEnd(currentContainer, threshold)) {
-        handleTopReach();
-      }
-
+    if (currentContainer && !isLoading) {
       if (currentContainer.scrollTop <= threshold) {
         handleEndReach();
       }
     }
-  }, [
-    currentContainer,
-    fetchNextPage,
-    hasNextPage,
-    hasPreviousPage,
-    isFetching,
-    threshold,
-  ]);
+  }, [currentContainer, fetchNextPage, hasNextPage, isLoading, threshold]);
 
   const processNotification = useCallback(
     (message: Message) => {
@@ -327,9 +302,9 @@ export default function MessageList({
 
   return (
     <div ref={(ref) => setList(ref)}>
-      {pages}
-      {isFetching && skeletonElements}
       {!hasNextPage && end}
+      {pages}
+      {isLoading && skeletonElements}
     </div>
   );
 }
