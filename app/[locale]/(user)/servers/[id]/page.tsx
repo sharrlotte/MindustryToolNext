@@ -7,7 +7,7 @@ import ColorText from '@/components/common/color-text';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
 import getServerApi from '@/query/config/get-server-api';
 import RawImage from '@/components/common/raw-image';
-import { getInternalServer } from '@/query/server';
+import { getInternalServer, getServerPlayers } from '@/query/server';
 import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import { ServerIcon } from '@/components/common/icons';
@@ -15,10 +15,13 @@ import IdUserCard from '@/components/user/id-user-card';
 import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import ProtectedRoute from '@/layout/protected-route';
+import { Player } from '@/types/response/Player';
 
 type Props = {
   params: { id: string; locale: string };
 };
+
+export const experimental_ppr = true;
 
 export default async function Page({ params: { id } }: Props) {
   const axios = await getServerApi();
@@ -92,9 +95,7 @@ export default async function Page({ params: { id } }: Props) {
             </div>
           </div>
           <div className="flex min-w-60 flex-[3] flex-col gap-1 bg-card p-4 shadow-lg">
-            <div>
-              <Tran text="server.players" />: <span>{players}</span>
-            </div>
+            <PlayersCard id={id} />
           </div>
         </div>
         <div className="flex flex-1 flex-col gap-2">
@@ -120,5 +121,41 @@ export default async function Page({ params: { id } }: Props) {
         </ProtectedElement>
       </div>
     </ProtectedRoute>
+  );
+}
+
+type PlayersCardProps = {
+  id: string;
+};
+async function PlayersCard({ id }: PlayersCardProps) {
+  const axios = await getServerApi();
+  const players = await getServerPlayers(axios, id);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <h3 className="text-xl">
+        <Tran text="server.players" />
+      </h3>
+      <div className="grid grid-cols-2 gap-4">
+        {players.map((player) => (
+          <PlayerCard key={player.uuid} player={player} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+type PlayerCardProps = {
+  player: Player;
+};
+function PlayerCard({ player: { userId, name, uuid } }: PlayerCardProps) {
+  return (
+    <div className="flex flex-col gap-1">
+      <IdUserCard id={userId} />
+      <ColorText className="text-lg font-semibold" text={name} />
+      <div>
+        <span>UUID: {uuid}</span>
+      </div>
+    </div>
   );
 }
