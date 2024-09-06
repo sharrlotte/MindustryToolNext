@@ -3,7 +3,6 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -82,16 +81,10 @@ export default function MessageList({
     [children, params.size],
   );
 
-  function updateLastHeight() {
-    lastHeight.current = list?.clientHeight ?? threshold;
-  }
+  lastHeight.current = list?.clientHeight ?? threshold;
 
   const remainScrollPosition = useCallback(() => {
     if (!currentContainer || !list || isFirstLoad) {
-      return;
-    }
-
-    if (scrollDir === 'down' || isEndReached) {
       return;
     }
 
@@ -102,8 +95,6 @@ export default function MessageList({
       top: diff,
       behavior: 'instant',
     });
-
-    lastHeight.current = list?.clientHeight ?? threshold;
   }, [
     currentContainer,
     list,
@@ -113,7 +104,7 @@ export default function MessageList({
     isEndReached,
   ]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     remainScrollPosition();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -141,7 +132,6 @@ export default function MessageList({
   const checkIfNeedFetchMore = useCallback(() => {
     const handleEndReach = () => {
       if (hasNextPage) {
-        updateLastHeight();
         fetchNextPage();
       }
     };
@@ -187,8 +177,6 @@ export default function MessageList({
           if (showNotification) {
             postNotification(message);
           }
-
-          updateLastHeight();
 
           if (!query || !query.pages) {
             return undefined;
@@ -286,7 +274,7 @@ export default function MessageList({
   }
 
   return (
-    <div ref={setList}>
+    <div className="h-fit" ref={(ref) => setList(ref)}>
       {!hasNextPage && end}
       {isLoading && skeletonElements}
       {pages}
