@@ -60,7 +60,7 @@ export default function MessageList({
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
   const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
-  const [scrollTop, setScrollTop] = useState(100);
+  const scrollTop = useRef(100);
   const lastHeight = useRef(100);
   const [isFirstLoad, setFirstLoad] = useState(true);
 
@@ -68,7 +68,7 @@ export default function MessageList({
   const isEndReached = isReachedEnd(currentContainer, threshold);
   const { socket } = useSocket();
 
-  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
+  const { data, isFetching, error, isError, hasNextPage, fetchNextPage } =
     useMessageQuery(room, params, queryKey);
 
   const { postNotification } = useNotification();
@@ -131,12 +131,12 @@ export default function MessageList({
       }
     };
 
-    if (currentContainer && !isLoading) {
+    if (currentContainer && !isFetching) {
       if (currentContainer.scrollTop <= threshold) {
         handleEndReach();
       }
     }
-  }, [currentContainer, fetchNextPage, hasNextPage, isLoading, threshold]);
+  }, [currentContainer, fetchNextPage, hasNextPage, isFetching, threshold]);
 
   useEffect(() => {
     const interval = setInterval(checkIfNeedFetchMore, 100);
@@ -203,8 +203,10 @@ export default function MessageList({
   useEffect(() => {
     function onScroll() {
       if (currentContainer) {
-        setScrollTop(currentContainer.scrollTop);
-        setScrollDir(currentContainer.scrollTop > scrollTop ? 'down' : 'up');
+        scrollTop.current = currentContainer.scrollTop;
+        setScrollDir(
+          currentContainer.scrollTop > scrollTop.current ? 'down' : 'up',
+        );
       }
     }
 
@@ -245,7 +247,7 @@ export default function MessageList({
     );
   }
 
-  if (isLoading || !data || !currentContainer) {
+  if (!data || !currentContainer) {
     return (
       <div
         className={cn(
@@ -265,7 +267,7 @@ export default function MessageList({
   return (
     <div className="h-fit" ref={(ref) => setList(ref)}>
       {!hasNextPage && end}
-      {isLoading && skeletonElements}
+      {isFetching && skeletonElements}
       {pages}
     </div>
   );
