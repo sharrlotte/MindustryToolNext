@@ -7,7 +7,7 @@ import { getInternalServers } from '@/query/server';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorScreen from '@/components/common/error-screen';
-import MyInternalServerCard from '@/components/server/my-internal-server-card';
+import InternalServerCard from '@/components/server/internal-server-card';
 
 const skeleton = Array(8)
   .fill(1)
@@ -36,7 +36,7 @@ async function Servers() {
   return (
     <section className="grid gap-2 overflow-y-auto pr-1 md:grid-cols-2 lg:grid-cols-3">
       {servers.map((server) => (
-        <MyInternalServerCard server={server} key={server.port} />
+        <InternalServerCard server={server} key={server.port} />
       ))}
     </section>
   );
