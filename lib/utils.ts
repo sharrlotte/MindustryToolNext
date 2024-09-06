@@ -4,8 +4,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { UserRole } from '@/constant/enum';
 import env from '@/constant/env';
-import { Message } from '@/types/response/Message';
-import {  ChartData, Metric } from '@/types/response/Metric';
+import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
 
 const colours: Record<string, string> = {
@@ -250,7 +249,12 @@ export function toForm(data: Record<string, string | number | File>) {
   return form;
 }
 
-export function isReachedEnd(element: HTMLElement, offset: number = 100) {
+export function isReachedEnd(
+  element?: HTMLElement | null,
+  offset: number = 100,
+) {
+  if (!element) return false;
+
   return (
     Math.abs(
       element.scrollHeight - (element.scrollTop + element.clientHeight),
@@ -306,20 +310,6 @@ export function byteToSize(bytes: number) {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
 
   return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + '' + sizes[i];
-}
-
-export function isBelongToLastMessage(
-  lastMessage: Message,
-  newMessage: Message,
-) {
-  const lastMessageDate = new Date(lastMessage.createdAt);
-  const newMessageDate = new Date(newMessage.createdAt);
-
-  return (
-    lastMessage.userId === newMessage.userId &&
-    newMessageDate.getTime() - lastMessageDate.getTime() < 300000 &&
-    lastMessage.content.length < 10
-  );
 }
 
 type ImageFolder = 'schematics' | 'maps' | 'posts';

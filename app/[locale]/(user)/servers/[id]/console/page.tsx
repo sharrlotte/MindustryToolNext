@@ -34,7 +34,6 @@ export default function Page() {
                 room={`SERVER-${id}`}
                 container={() => container}
                 params={{ size: 50 }}
-                end={<></>}
                 showNotification={false}
               >
                 {(data) => <MessageCard key={data.id} message={data} />}

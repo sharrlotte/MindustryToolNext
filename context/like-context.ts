@@ -20,7 +20,7 @@ export const FakeLike: LikeData = {
 const defaultContextValue: LikeContextType = {
   likeData: FakeLike,
   isLoading: false,
-  handleAction: (action: 'LIKE' | 'DISLIKE') => {},
+  handleAction: (_action: 'LIKE' | 'DISLIKE') => {},
 };
 
 export const LikeContext = React.createContext(defaultContextValue);

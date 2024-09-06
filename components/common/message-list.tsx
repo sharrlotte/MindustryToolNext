@@ -1,24 +1,24 @@
 import React, {
+  Fragment,
   ReactNode,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import { useSocket } from '@/context/socket-context';
-import { isReachedEnd, makeArray, mergeNestArray } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { cn, isReachedEnd, makeArray, mergeNestArray } from '@/lib/utils';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
-import { useSession } from '@/context/session-context';
-import useWindow from '@/hooks/use-window';
 import useMessageQuery from '@/hooks/use-message-query';
 import { MessageQuery } from '@/types/data/pageable-search-schema';
+import useNotification from '@/hooks/use-notification';
+import Tran from '@/components/common/tran';
 
 type MessageListProps = {
   className?: string;
@@ -27,19 +27,19 @@ type MessageListProps = {
   loader?: ReactNode;
   noResult?: ReactNode;
   end?: ReactNode;
+  threshold?: number;
+  room: string;
+  showNotification?: boolean;
   skeleton?: {
     amount: number;
     item: ReactNode;
   };
-  threshold?: number;
-  room: string;
   container: () => HTMLElement | null;
   children: (
     data: MessageGroup,
     index?: number,
     endIndex?: number,
   ) => ReactNode;
-  showNotification?: boolean;
 };
 
 export default function MessageList({
@@ -57,28 +57,21 @@ export default function MessageList({
   children,
 }: MessageListProps) {
   const currentContainer = container();
-  const { session } = useSession();
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
   const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
   const [scrollTop, setScrollTop] = useState(100);
-  const [lastHeight, setLastHeight] = useState(100);
+  const lastHeight = useRef(100);
   const [isFirstLoad, setFirstLoad] = useState(true);
 
-  const t = useI18n();
-  const isTabActive = useWindow();
   const queryClient = useQueryClient();
+  const isEndReached = isReachedEnd(currentContainer, threshold);
   const { socket } = useSocket();
 
-  const {
-    data,
-    isLoading,
-    error,
-    isError,
-    hasNextPage,
-    fetchNextPage,
-    hasPreviousPage,
-  } = useMessageQuery(room, params, queryKey);
+  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
+    useMessageQuery(room, params, queryKey);
+
+  const { postNotification } = useNotification();
 
   const pageMapper = useCallback(
     (item: MessageGroup, index: number, array: MessageGroup[]) =>
@@ -86,30 +79,30 @@ export default function MessageList({
     [children, params.size],
   );
 
+  lastHeight.current = list?.clientHeight ?? threshold;
+
   const remainScrollPosition = useCallback(() => {
     if (!currentContainer || !list || isFirstLoad) {
       return;
     }
 
-    if (scrollDir === 'down' || isReachedEnd(currentContainer, 500)) {
-      return;
-    }
-
-    const diff = list.clientHeight - lastHeight + currentContainer.scrollTop;
+    const diff =
+      list.clientHeight - lastHeight.current + currentContainer.scrollTop;
 
     currentContainer.scrollTo({
       top: diff,
       behavior: 'instant',
     });
-
-    setLastHeight(list.clientHeight);
-  }, [currentContainer, list, lastHeight, scrollDir, isFirstLoad]);
+  }, [
+    currentContainer,
+    list,
+    lastHeight,
+    scrollDir,
+    isFirstLoad,
+    isEndReached,
+  ]);
 
   useEffect(() => {
-    setLastHeight(list?.clientHeight ?? 100);
-  }, [list]);
-
-  useLayoutEffect(() => {
     remainScrollPosition();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -125,12 +118,14 @@ export default function MessageList({
     return group.map(pageMapper);
   }, [data, pageMapper]);
 
-  const skeletonElements = useMemo(() => {
-    if (skeleton)
-      return makeArray(skeleton.amount).map((_, index) => (
-        <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-      ));
-  }, [skeleton]);
+  const skeletonElements = useMemo(
+    () =>
+      skeleton
+        ? makeArray(skeleton.amount) //
+            .map((_, index) => <Fragment key={index}>{skeleton.item}</Fragment>)
+        : null,
+    [skeleton],
+  );
 
   const checkIfNeedFetchMore = useCallback(() => {
     const handleEndReach = () => {
@@ -146,69 +141,34 @@ export default function MessageList({
     }
   }, [currentContainer, fetchNextPage, hasNextPage, isLoading, threshold]);
 
-  const processNotification = useCallback(
-    (message: Message) => {
-      if (message.userId === session?.id) return;
-
-      new Notification(message.content);
-    },
-    [session?.id],
-  );
-
-  const displayNotification = useCallback(
-    (message: Message) => {
-      if ('Notification' in window) {
-        if (Notification.permission === 'granted') {
-          return processNotification(message);
-        }
-
-        Notification.requestPermission().then((permission) => {
-          if (permission === 'granted') {
-            processNotification(message);
-          }
-        });
-      }
-    },
-    [processNotification],
-  );
-
   useEffect(() => {
-    let interval: any;
-
-    if (isTabActive) {
-      interval = setInterval(checkIfNeedFetchMore, 3000);
-    }
+    const interval = setInterval(checkIfNeedFetchMore, 100);
 
     return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
+      clearInterval(interval);
     };
-  }, [checkIfNeedFetchMore, isTabActive]);
+  }, [checkIfNeedFetchMore]);
 
   useEffect(() => {
-    if (
-      pages.length &&
-      currentContainer &&
-      (isReachedEnd(currentContainer, 500) || isFirstLoad)
-    ) {
+    if (pages.length && currentContainer && (isEndReached || isFirstLoad)) {
       currentContainer.scrollTo({
         top: 9999999999999,
         behavior: 'smooth',
       });
       setFirstLoad(false);
     }
-  }, [currentContainer, pages, isFirstLoad]);
+  }, [currentContainer, pages, isFirstLoad, isEndReached]);
 
   useEffect(() => {
-    socket.onRoom(room).onMessage('MESSAGE', (message) => {
-      queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>(
-        { queryKey, exact: false },
-        (query) => {
+    socket
+      .onRoom(room) //
+      .onMessage('MESSAGE', (message) => {
+        queryClient.setQueriesData<
+          InfiniteData<Message[], unknown> | undefined
+        >({ queryKey, exact: false }, (query) => {
           if (showNotification) {
-            displayNotification(message);
+            postNotification(message);
           }
-          setLastHeight(list?.clientHeight ?? 100);
 
           if (!query || !query.pages) {
             return undefined;
@@ -222,32 +182,29 @@ export default function MessageList({
             ...query,
             pages: [newFirst, ...rest],
           } satisfies InfiniteData<Message[], unknown>;
-        },
-      );
-      if (currentContainer && isReachedEnd(currentContainer, 500)) {
-        currentContainer.scrollTo({
-          top: 9999999999999,
-          behavior: 'smooth',
         });
-      }
-    });
+
+        if (currentContainer && isEndReached) {
+          currentContainer.scrollTo({
+            top: 9999999999999,
+            behavior: 'smooth',
+          });
+        }
+      });
   }, [
-    queryClient,
-    queryKey,
     room,
-    socket,
+    queryKey,
     list,
+    socket,
+    queryClient,
+    isEndReached,
     currentContainer,
     showNotification,
-    displayNotification,
+    postNotification,
   ]);
 
   useEffect(() => {
     function onScroll() {
-      if (list) {
-        setLastHeight(list.clientHeight);
-      }
-
       if (currentContainer) {
         setScrollTop(currentContainer.scrollTop);
         setScrollDir(currentContainer.scrollTop > scrollTop ? 'down' : 'up');
@@ -256,10 +213,13 @@ export default function MessageList({
 
     currentContainer?.addEventListener('scrollend', onScroll);
     currentContainer?.addEventListener('scroll', onScroll);
+
     list?.addEventListener('scroll', checkIfNeedFetchMore);
+
     return () => {
       currentContainer?.removeEventListener('scrollend', onScroll);
       currentContainer?.removeEventListener('scroll', onScroll);
+
       list?.removeEventListener('scroll', checkIfNeedFetchMore);
     };
   }, [checkIfNeedFetchMore, currentContainer, list, scrollTop]);
@@ -274,25 +234,30 @@ export default function MessageList({
   }
 
   end = end ?? (
-    <span
+    <Tran
       className="col-span-full flex w-full items-center justify-center"
-      key="End"
-    >
-      {t('end-of-page')}
-    </span>
+      text="end-of-page"
+    />
   );
 
   if (isError || error) {
     return (
-      <div className="flex w-full justify-center">
-        {t('error')} : {error?.message}
+      <div className="col-span-full flex w-full items-center justify-center">
+        <Tran text="error" />: {error?.message}
       </div>
     );
   }
 
   if (isLoading || !data || !currentContainer) {
     return (
-      <div className={className}>{loader ? loader : skeletonElements}</div>
+      <div
+        className={cn(
+          'col-span-full flex h-full w-full items-center justify-center',
+          className,
+        )}
+      >
+        {loader ?? skeletonElements}
+      </div>
     );
   }
 
@@ -301,10 +266,10 @@ export default function MessageList({
   }
 
   return (
-    <div ref={(ref) => setList(ref)}>
+    <div className="h-fit" ref={(ref) => setList(ref)}>
       {!hasNextPage && end}
-      {pages}
       {isLoading && skeletonElements}
+      {pages}
     </div>
   );
 }
