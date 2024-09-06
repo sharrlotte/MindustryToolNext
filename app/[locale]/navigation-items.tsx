@@ -186,22 +186,18 @@ export function NavItems({ onClick }: NavItemsProps) {
             name: <Tran text="setting" />,
             path: '/admin/settings',
             icon: <SettingIcon />,
+            roles: ['SHAR'],
           },
-        ],
-      },
-      {
-        key: 'shar',
-        name: 'Shar',
-        roles: ['SHAR'],
-        paths: [
           {
             name: 'File',
             path: '/files',
             icon: <FileIcon />,
+            roles: ['SHAR'],
           },
           {
             name: 'MindustryGPT',
             icon: <MindustryGptIcon />,
+            roles: ['SHAR'],
             path: [
               {
                 name: 'Document',
