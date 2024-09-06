@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
 
-import InternalServerCard from '@/components/server/internal-server-card';
 import getServerApi from '@/query/config/get-server-api';
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import ReloadServerDialog from '@/app/[locale]/(user)/servers/reload-server-dialog';

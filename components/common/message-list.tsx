@@ -70,15 +70,8 @@ export default function MessageList({
   const queryClient = useQueryClient();
   const { socket } = useSocket();
 
-  const {
-    data,
-    isLoading,
-    error,
-    isError,
-    hasNextPage,
-    fetchNextPage,
-    hasPreviousPage,
-  } = useMessageQuery(room, params, queryKey);
+  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
+    useMessageQuery(room, params, queryKey);
 
   const pageMapper = useCallback(
     (item: MessageGroup, index: number, array: MessageGroup[]) =>
