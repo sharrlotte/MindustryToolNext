@@ -36,7 +36,10 @@ export default function CommandCard({
   replaceCommand,
   copyCommand,
 }: CommandCardProp) {
-  const [inputKeys, setInputKeys] = useState<{cKey: number, cValue: number} | null>(null);
+  const [inputKeys, setInputKeys] = useState<{
+    cKey: number;
+    cValue: number;
+  } | null>(null);
   const [input, setInput] = useState<InputControlProp | null>({
     position: {
       x: 0,
@@ -46,7 +49,7 @@ export default function CommandCard({
     inputType: InputType.TextInput,
     onSubmit: onSubmit,
   });
-  
+
   function selectInput(
     x: number,
     y: number,
@@ -100,6 +103,7 @@ export default function CommandCard({
           >
             {element.value.fields.map((field, fIndex) => (
               <CommandField
+                key={fIndex}
                 x={
                   field.x *
                   field.fieldSize *
