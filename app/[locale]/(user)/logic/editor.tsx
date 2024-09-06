@@ -15,28 +15,44 @@ export default function Editor() {
     });
   }, []);
 
-  const deleteCommand = useCallback((index: number) => {
-    if (commands[index]) {
-      setCommands((commands) => {
-        commands.splice(index, 1); // Thêm tham số thứ hai là 1 để chỉ định số phần tử cần xóa
-        commands.forEach((cmd) =>
-          cmd.value.outputs.forEach(
-            (value) => value.value > index && value.value--,
-          ),
-        );
-        return [...commands];
-      });
-    }
-  }, [commands]);
+  const deleteCommand = useCallback(
+    (index: number) => {
+      if (commands[index]) {
+        setCommands((commands) => {
+          commands.splice(index, 1);
+          commands.forEach((cmd) =>
+            cmd.value.outputs.forEach(
+              (value) => value.value > index && value.value--,
+            ),
+          );
+          return [...commands];
+        });
+      }
+    },
+    [commands],
+  );
 
-  const replaceCommand = useCallback((command: Command, index: number) => {
-    if (commands[index]) {
-      setCommands((commands) => {
-        commands[index] = command;
-        return [...commands];
-      });
-    }
-  }, [commands]);
+  const replaceCommand = useCallback(
+    (command: Command, index: number) => {
+      if (commands[index]) {
+        setCommands((commands) => {
+          commands[index] = command;
+          return [...commands];
+        });
+      }
+    },
+    [commands],
+  );
+
+  const copyCommand = useCallback((command: Command) => {
+    addCommand({
+      ...command,
+      value: {
+        ...command.value,
+        outputs: command.value.outputs.map(output => ({ ...output, value: -1 }))
+      },
+    });
+  }, []);
 
   return (
     <div>
@@ -46,6 +62,7 @@ export default function Editor() {
         addCommand={addCommand}
         deleteCommand={deleteCommand}
         replaceCommand={replaceCommand}
+        copyCommand={copyCommand}
       />
 
       <LogicNavBar toggleText={'Click here to hidden'}>

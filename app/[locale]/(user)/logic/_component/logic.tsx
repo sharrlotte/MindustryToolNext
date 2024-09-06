@@ -17,6 +17,7 @@ type LogicProp = {
   addCommand: (command: Command) => void;
   deleteCommand: (index: number) => void;
   replaceCommand: (command: Command, index: number) => void;
+  copyCommand: (command: Command) => void;
 };
 
 export default function LogicDisplay({
@@ -24,7 +25,8 @@ export default function LogicDisplay({
   setCommands,
   addCommand,
   deleteCommand,
-  replaceCommand
+  replaceCommand,
+  copyCommand
 }: LogicProp) {
   
   const [position, setPosition] = useState({
@@ -176,10 +178,12 @@ export default function LogicDisplay({
         </Layer>
         <CommandCard
           commands={commands}
+          scale={position.scale}
           setCommands={setCommands}
           addCommand={addCommand}
           deleteCommand={deleteCommand}
           replaceCommand={replaceCommand}
+          copyCommand={copyCommand}
         />
       </Stage>
     </div>
