@@ -2,18 +2,6 @@ export enum InputType {
   TextInput,
 }
 
-export interface FieldType {
-  readonly x: number;
-  readonly y: number;
-  readonly fieldSize: number;
-  readonly placeHolder: string;
-  readonly placeHolderWidth: number; // px, not %!
-  readonly inputType: InputType;
-  readonly linkedOutput?: number;
-  value: string;
-  displayValue?: string | CommandValue;
-}
-
 export default interface Command {
   x: number;
   y: number;
@@ -26,8 +14,20 @@ export interface CommandValue {
   readonly color: string;
   readonly rows: number;
   readonly columns: number;
-  readonly fields: { key: number; value: FieldType }[];
+  readonly fields: FieldType[];
   readonly outputs: { key: number; value: number }[];
+}
+
+export interface FieldType {
+  readonly x: number;
+  readonly y: number;
+  readonly fieldSize: number;
+  readonly placeHolder: string;
+  readonly placeHolderWidth: number; // px, not %!
+  readonly inputType: InputType;
+  readonly linkedOutput?: number;
+  value: string;
+  displayValue?: string | CommandValue;
 }
 
 const defaultField: FieldType = {
@@ -71,12 +71,9 @@ const read: Command = {
     columns: 2,
     fields: [
       {
-        key: 0,
-        value: {
-          ...defaultField,
-          placeHolder: 'read',
-          placeHolderWidth: 40,
-        },
+        ...defaultField,
+        placeHolder: 'read',
+        placeHolderWidth: 40,
       },
     ],
     outputs: [],
