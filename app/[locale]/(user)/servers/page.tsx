@@ -11,7 +11,6 @@ import InternalServerCardSkeleton from '@/components/server/internal-server-card
 import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import LoginButton from '@/components/button/login-button';
-import MyInternalServerCard from '@/components/server/my-internal-server-card';
 
 export const experimental_ppr = true;
 
@@ -88,6 +87,6 @@ async function MeServer() {
   const servers = await getMeServers(axios);
 
   return servers.map((server) => (
-    <MyInternalServerCard server={server} key={server.port} />
+    <InternalServerCard server={server} key={server.port} />
   ));
 }

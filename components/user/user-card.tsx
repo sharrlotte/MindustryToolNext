@@ -15,7 +15,7 @@ function UserCard({ user }: UserCardProps) {
   const { name, roles } = user;
 
   return (
-    <div className="flex h-8 w-56 items-end gap-2 overflow-hidden">
+    <div className="flex h-8 items-end gap-2 overflow-hidden">
       <UserAvatar user={user} />
       <ColorAsRole className="font-semibold capitalize" roles={roles}>
         {name}

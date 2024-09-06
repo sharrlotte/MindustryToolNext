@@ -129,7 +129,7 @@ function AvatarImage({
     return (
       <div
         className={cn(
-          'flex h-8 w-8 items-center justify-center rounded-full border border-border capitalize',
+          'flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize',
           className,
         )}
         style={{ backgroundColor: color }}

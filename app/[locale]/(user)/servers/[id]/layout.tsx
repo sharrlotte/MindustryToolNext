@@ -5,7 +5,6 @@ import React, { ReactNode } from 'react';
 import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
 import SidebarToggle from '@/app/[locale]/(user)/servers/[id]/sidebar-toggle';
 import Divider from '@/components/ui/divider';
-import { getI18n } from '@/locales/server';
 
 import {
   ArrowLeftIcon,
@@ -14,6 +13,9 @@ import {
   MapIcon,
   PuzzlePieceIcon,
 } from '@heroicons/react/24/outline';
+import { getSession } from '@/action/action';
+import ProtectedElement from '@/layout/protected-element';
+import Tran from '@/components/common/tran';
 
 type PageProps = {
   params: {
@@ -29,37 +31,43 @@ export default async function Layout({
 }: PageProps) {
   await setStaticParamsLocale(locale);
 
-  const t = await getI18n();
+  const session = await getSession();
 
-  const links: {
+  let links: {
     href: string;
     label: ReactNode;
     icon: ReactNode;
+    show: boolean;
   }[] = [
     {
       href: '',
-      label: t('dashboard'),
+      label: <Tran text="dashboard" />,
       icon: <LayoutDashboardIcon className="size-5" />,
+      show: true,
     },
     {
       href: '/maps',
-      label: t('map'),
+      label: <Tran text="map" />,
       icon: <MapIcon className="size-5" />,
+      show: true,
     },
     {
       href: '/plugins',
-      label: t('plugin'),
+      label: <Tran text="plugin" />,
       icon: <PuzzlePieceIcon className="size-5" />,
+      show: true,
     },
     {
       href: '/console',
-      label: t('console'),
+      label: <Tran text="console" />,
       icon: <CommandLineIcon className="size-5" />,
+      show: true,
     },
     {
       href: '/setting',
-      label: t('setting'),
+      label: <Tran text="setting" />,
       icon: <Cog6ToothIcon className="size-5" />,
+      show: true,
     },
   ];
 
@@ -72,7 +80,13 @@ export default async function Layout({
           </div>
           <Divider className="hidden md:block" />
           {links.map((item) => (
-            <NavLink key={item.href} {...item} id={id} />
+            <ProtectedElement
+              key={item.href}
+              session={session}
+              show={item.show}
+            >
+              <NavLink {...item} id={id} />
+            </ProtectedElement>
           ))}
           <div className="mt-auto flex flex-col gap-2">
             <Divider className="hidden md:block" />

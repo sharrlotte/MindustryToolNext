@@ -17,7 +17,7 @@ import { useExpandServerNav } from '@/zustand/expand-nav';
 
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { useQuery } from '@tanstack/react-query';
-import { getInternalServers } from '@/query/server';
+import { getMeServers } from '@/query/user';
 
 export default function SidebarToggle() {
   const { id } = useParams();
@@ -28,8 +28,8 @@ export default function SidebarToggle() {
   const axios = useClientApi();
 
   const { data } = useQuery({
-    queryFn: () => getInternalServers(axios),
-    queryKey: ['servers'],
+    queryFn: () => getMeServers(axios),
+    queryKey: ['me-servers'],
   });
 
   const servers = data ?? [];
@@ -39,7 +39,7 @@ export default function SidebarToggle() {
     <div className="flex h-9 w-full items-center justify-center">
       <div
         className={cn(
-          'flex cursor-pointer items-center justify-center p-2 transition-transform duration-200 hover:rounded-sm hover:bg-brand hover:text-white',
+          'flex cursor-pointer items-center justify-center rounded-sm p-2 transition-transform duration-200 hover:bg-brand hover:text-white',
           {
             'rotate-180': !expand,
           },
@@ -60,6 +60,7 @@ export default function SidebarToggle() {
         >
           {value ? (
             <ColorText
+              className="text-lg font-bold"
               text={servers.find((server) => server.id === value)?.name}
             />
           ) : (
