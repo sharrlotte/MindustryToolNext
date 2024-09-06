@@ -86,6 +86,10 @@ export default function MessageList({
       return;
     }
 
+    if (scrollDir === 'down') {
+      return;
+    }
+
     const diff =
       list.clientHeight - lastHeight.current + currentContainer.scrollTop;
 
@@ -93,14 +97,7 @@ export default function MessageList({
       top: diff,
       behavior: 'instant',
     });
-  }, [
-    currentContainer,
-    list,
-    lastHeight,
-    scrollDir,
-    isFirstLoad,
-    isEndReached,
-  ]);
+  }, [currentContainer, list, lastHeight, scrollDir, isFirstLoad]);
 
   useEffect(() => {
     remainScrollPosition();

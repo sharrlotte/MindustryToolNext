@@ -6,7 +6,6 @@ import {
 import { Message } from '@/types/response/Message';
 import { useSocket } from '@/context/socket-context';
 import { MessageQuery } from '@/types/data/pageable-search-schema';
-import { useMemo } from 'react';
 
 export default function useMessageQuery<P extends MessageQuery>(
   room: string,
