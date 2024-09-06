@@ -142,9 +142,7 @@ export default function MessageList({
   }, [currentContainer, fetchNextPage, hasNextPage, isLoading, threshold]);
 
   useEffect(() => {
-    let interval: any;
-
-    interval = setInterval(checkIfNeedFetchMore, 100);
+    const interval = setInterval(checkIfNeedFetchMore, 100);
 
     return () => {
       clearInterval(interval);
