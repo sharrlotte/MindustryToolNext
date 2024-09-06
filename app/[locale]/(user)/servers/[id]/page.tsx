@@ -216,9 +216,11 @@ async function PlayersCard({ id }: PlayersCardProps) {
 
   return (
     <div className="grid gap-1">
-      {players.map((player) => (
-        <PlayerCard key={player.uuid} player={player} />
-      ))}
+      {players
+        .sort((a, b) => a.team.name.localeCompare(b.team.name))
+        .map((player) => (
+          <PlayerCard key={player.uuid} player={player} />
+        ))}
     </div>
   );
 }
