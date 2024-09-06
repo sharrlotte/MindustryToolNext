@@ -16,7 +16,7 @@ import {
   QuoteIcon,
   StrikethroughIcon,
   TitleIcon,
-} from '@/components/icon/icons';
+} from '@/components/common/icons';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

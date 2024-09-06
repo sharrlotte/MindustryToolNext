@@ -1,20 +1,10 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import {
-  PaperclipIcon,
-  SearchIcon,
-  SendIcon,
-  SmileIcon,
-  UsersIcon,
-} from 'lucide-react';
-import React, { FormEvent, useEffect, useState } from 'react';
-import { useMediaQuery } from 'usehooks-ts';
+import React, { FormEvent, useState } from 'react';
 
 import LoginButton from '@/components/button/login-button';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
-import { MemberCard } from '@/components/messages/member-card';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
 import { useSession } from '@/context/session-context';
@@ -23,86 +13,80 @@ import useMessage from '@/hooks/use-message';
 import ProtectedElement from '@/layout/protected-element';
 import { useI18n } from '@/locales/client';
 
-import { useQuery } from '@tanstack/react-query';
+import {
+  MemberPanel,
+  MemberPanelProvider,
+  MemberPanelTrigger,
+} from '@/app/[locale]/(user)/chat/member-pannel';
+import {
+  PaperclipIcon,
+  SearchIcon,
+  SendIcon,
+  SmileIcon,
+} from '@/components/common/icons';
 
 export default function Page() {
   const { state } = useSocket();
   const { session } = useSession();
 
-  const isMedium = useMediaQuery('(min-width: 640px)');
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const [openMemberPanel, setOpenMemberPanel] = useState<'open' | 'close'>(
-    isMedium ? 'open' : 'close',
-  );
-
-  useEffect(() => setOpenMemberPanel(isMedium ? 'open' : 'close'), [isMedium]);
 
   return (
-    <div className="flex h-full flex-col overflow-hidden">
-      <div className="flex items-center justify-between border-b px-4 py-1">
-        <div className="flex gap-4">
-          <SearchIcon className="h-5 w-5" />
-          #Global
-        </div>
-        <Button
-          className="p-0"
-          title="Close"
-          variant="icon"
-          onClick={() =>
-            setOpenMemberPanel((prev) => (prev === 'open' ? 'close' : 'open'))
-          }
-        >
-          <UsersIcon className="h-5 w-5" />
-        </Button>
-      </div>
-      <div className="grid h-full w-full grid-rows-[1fr_auto] overflow-hidden">
-        <div className="grid h-full w-full overflow-hidden">
-          <div className="flex h-full flex-col gap-1 overflow-x-hidden">
-            {state !== 'connected' ? (
-              <LoadingSpinner className="m-auto" />
-            ) : (
-              <div className="relative flex h-full overflow-hidden">
-                <div
-                  className="h-full w-full overflow-y-auto"
-                  ref={(ref) => setContainer(ref)}
-                >
-                  <MessageList
-                    className="flex h-full flex-col gap-1"
-                    queryKey={['global']}
-                    room="GLOBAL"
-                    container={() => container}
-                    params={{ size: 50 }}
-                    noResult={
-                      <div className="flex h-full w-full items-center justify-center font-semibold">
-                        {"Let's start a conversation"}
-                      </div>
-                    }
-                  >
-                    {(data) => <MessageCard key={data.id} message={data} />}
-                  </MessageList>
-                </div>
-                <MemberPanel
-                  state={openMemberPanel}
-                  setState={setOpenMemberPanel}
-                />
-              </div>
-            )}
+    <MemberPanelProvider>
+      <div className="flex h-full flex-col overflow-hidden">
+        <div className="flex items-center justify-between border-b px-4 py-1">
+          <div className="flex gap-4">
+            <SearchIcon />
+            #Global
           </div>
+          <MemberPanelTrigger />
         </div>
-        <ProtectedElement
-          session={session}
-          alt={
-            <div className="h-full w-full whitespace-nowrap text-center">
-              <LoginButton className="justify-center bg-brand">
-                Login to chat
-              </LoginButton>
+        <div className="grid h-full w-full grid-rows-[1fr_auto] overflow-hidden">
+          <div className="grid h-full w-full overflow-hidden">
+            <div className="flex h-full flex-col gap-1 overflow-x-hidden">
+              {state !== 'connected' ? (
+                <LoadingSpinner className="m-auto" />
+              ) : (
+                <div className="relative flex h-full overflow-hidden">
+                  <div
+                    className="h-full w-full overflow-y-auto"
+                    ref={(ref) => setContainer(ref)}
+                  >
+                    <MessageList
+                      className="flex h-full flex-col gap-1"
+                      queryKey={['global']}
+                      room="GLOBAL"
+                      container={() => container}
+                      params={{ size: 50 }}
+                      noResult={
+                        <div className="flex h-full w-full items-center justify-center font-semibold">
+                          {"Let's start a conversation"}
+                        </div>
+                      }
+                    >
+                      {(data) => <MessageCard key={data.id} message={data} />}
+                    </MessageList>
+                  </div>
+                  <MemberPanel room="GLOBAL" />
+                </div>
+              )}
             </div>
-          }
-        >
-          <ChatInput />
-        </ProtectedElement>
+          </div>
+          <ProtectedElement
+            session={session}
+            alt={
+              <div className="h-full w-full whitespace-nowrap text-center">
+                <LoginButton className="justify-center bg-brand">
+                  Login to chat
+                </LoginButton>
+              </div>
+            }
+          >
+            <ChatInput />
+          </ProtectedElement>
+        </div>
       </div>
-    </div>
+    </MemberPanelProvider>
   );
 }
 
@@ -132,8 +116,8 @@ function ChatInput() {
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
         />
-        <PaperclipIcon className="h-6 w-6" />
-        <SmileIcon className="h-6 w-6" />
+        <PaperclipIcon />
+        <SmileIcon />
       </div>
       <Button
         className="h-full"
@@ -142,43 +126,8 @@ function ChatInput() {
         title={t('send')}
         disabled={state !== 'connected' || !message}
       >
-        <SendIcon className="h-5 w-5" />
+        <SendIcon />
       </Button>
     </form>
-  );
-}
-
-type MemberPanelProps = {
-  state: 'open' | 'close';
-  setState: (func: (prev: 'open' | 'close') => 'open' | 'close') => void;
-};
-
-function MemberPanel({ state }: MemberPanelProps) {
-  const { socket } = useSocket();
-  const isMedium = useMediaQuery('(min-width: 640px)');
-
-  const { data } = useQuery({
-    queryKey: ['member-count', 'GLOBAL'],
-    queryFn: () =>
-      socket
-        .onRoom('GLOBAL')
-        .await({ method: 'GET_MEMBER', page: 0, size: 10 }),
-  });
-
-  return (
-    <motion.div
-      className="absolute right-0 flex h-full flex-col items-start overflow-y-auto overflow-x-hidden border-l bg-background sm:relative"
-      animate={state}
-      variants={{
-        open: {
-          width: isMedium ? 300 : '100%',
-        },
-        close: {
-          width: 0,
-        },
-      }}
-    >
-      {data?.map((user) => <MemberCard key={user.id} user={user} />)}
-    </motion.div>
   );
 }

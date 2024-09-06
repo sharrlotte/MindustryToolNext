@@ -33,8 +33,7 @@ export default function Page() {
                 queryKey={['servers', id, 'messages']}
                 room={`SERVER-${id}`}
                 container={() => container}
-                params={{ size: 2 }}
-                end={<></>}
+                params={{ size: 50 }}
                 showNotification={false}
               >
                 {(data) => <MessageCard key={data.id} message={data} />}

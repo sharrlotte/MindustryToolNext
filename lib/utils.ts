@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import { UserRole } from '@/constant/enum';
 import env from '@/constant/env';
 import { Message } from '@/types/response/Message';
-import {  ChartData, Metric } from '@/types/response/Metric';
+import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
 
 const colours: Record<string, string> = {
@@ -250,7 +250,12 @@ export function toForm(data: Record<string, string | number | File>) {
   return form;
 }
 
-export function isReachedEnd(element: HTMLElement, offset: number = 100) {
+export function isReachedEnd(
+  element?: HTMLElement | null,
+  offset: number = 100,
+) {
+  if (!element) return false;
+
   return (
     Math.abs(
       element.scrollHeight - (element.scrollTop + element.clientHeight),
