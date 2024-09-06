@@ -33,7 +33,7 @@ export default async function Layout({
 
   const session = await getSession();
 
-  let links: {
+  const links: {
     href: string;
     label: ReactNode;
     icon: ReactNode;

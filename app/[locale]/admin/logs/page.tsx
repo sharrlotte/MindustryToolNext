@@ -31,11 +31,6 @@ import { Log } from '@/types/response/Log';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import getLogs, { getLogCollections } from '@/query/log';
-import {
-  MemberPanel,
-  MemberPanelProvider,
-  MemberPanelTrigger,
-} from '@/app/[locale]/(user)/chat/member-pannel';
 
 export default function LogPage() {
   const [collection, setCollection] = useQueryState('collection', 'LIVE');
