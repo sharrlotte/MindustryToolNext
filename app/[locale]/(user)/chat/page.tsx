@@ -2,14 +2,13 @@
 
 import { motion } from 'framer-motion';
 import {
-  ChevronRight,
   PaperclipIcon,
   SearchIcon,
   SendIcon,
   SmileIcon,
   UsersIcon,
 } from 'lucide-react';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 import LoginButton from '@/components/button/login-button';
@@ -30,10 +29,13 @@ export default function Page() {
   const { state } = useSocket();
   const { session } = useSession();
 
+  const isMedium = useMediaQuery('(min-width: 640px)');
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const [openMemberPanel, setOpenMemberPanel] = useState<'open' | 'close'>(
-    'close',
+    isMedium ? 'open' : 'close',
   );
+
+  useEffect(() => setOpenMemberPanel(isMedium ? 'open' : 'close'), [isMedium]);
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
@@ -54,12 +56,12 @@ export default function Page() {
         </Button>
       </div>
       <div className="grid h-full w-full grid-rows-[1fr_auto] overflow-hidden">
-        <div className="grid h-full w-full overflow-hidden pl-2">
+        <div className="grid h-full w-full overflow-hidden">
           <div className="flex h-full flex-col gap-1 overflow-x-hidden">
             {state !== 'connected' ? (
               <LoadingSpinner className="m-auto" />
             ) : (
-              <div className="flex h-full overflow-hidden">
+              <div className="relative flex h-full overflow-hidden">
                 <div
                   className="h-full w-full overflow-y-auto"
                   ref={(ref) => setContainer(ref)}
@@ -151,7 +153,7 @@ type MemberPanelProps = {
   setState: (func: (prev: 'open' | 'close') => 'open' | 'close') => void;
 };
 
-function MemberPanel({ state, setState }: MemberPanelProps) {
+function MemberPanel({ state }: MemberPanelProps) {
   const { socket } = useSocket();
   const isMedium = useMediaQuery('(min-width: 640px)');
 
@@ -165,7 +167,7 @@ function MemberPanel({ state, setState }: MemberPanelProps) {
 
   return (
     <motion.div
-      className="absolute right-0 top-0 flex h-full flex-col items-start overflow-y-auto bg-card sm:relative"
+      className="absolute right-0 flex h-full flex-col items-start overflow-y-auto overflow-x-hidden border-l bg-background sm:relative"
       animate={state}
       variants={{
         open: {
@@ -176,15 +178,7 @@ function MemberPanel({ state, setState }: MemberPanelProps) {
         },
       }}
     >
-      <Button
-        title="Close"
-        variant="icon"
-        onClick={() => setState((prev) => (prev === 'open' ? 'close' : 'open'))}
-      >
-        <ChevronRight />
-      </Button>
-      {state === 'open' &&
-        data?.map((user) => <MemberCard key={user.id} user={user} />)}
+      {data?.map((user) => <MemberCard key={user.id} user={user} />)}
     </motion.div>
   );
 }
