@@ -18,7 +18,7 @@ function meow(commands: any[]) {
             ele.y = e.target.position().y;
             replaceCommand(ele, index);
           }}
-        >
+        > ///
           <Rect
             width={width}
             height={calculateFullHeigh(element.value.rows)}
@@ -26,21 +26,21 @@ function meow(commands: any[]) {
             cornerRadius={10}
             stroke="black"
             strokeWidth={2}
-          />
+          /> ///
 
           <CommandHeader
             command={element}
             index={index}
             onCopy={(meow) => {}}
             onDelete={(meow) => {}}
-          />
+          /> ///
 
           <Group x={padding} y={headerHeight}>
             <Rect
               width={widthPadded}
               height={calculateValueHeigh(element.value.rows)}
               fill={'#0009'}
-              cornerRadius={5}
+              cornerRadius={5} ////
             />
             {element.value.fields.map((meow, key) => {
               const fieldSize =
