@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
 
-import InternalServerCard from '@/components/server/internal-server-card';
 import getServerApi from '@/query/config/get-server-api';
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import ReloadServerDialog from '@/app/[locale]/(user)/servers/reload-server-dialog';
@@ -8,6 +7,7 @@ import { getInternalServers } from '@/query/server';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorScreen from '@/components/common/error-screen';
+import InternalServerCard from '@/components/server/internal-server-card';
 
 const skeleton = Array(8)
   .fill(1)

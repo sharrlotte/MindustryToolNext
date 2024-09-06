@@ -44,7 +44,7 @@ export default function LogPage() {
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-4">
-      <div className="rounded-md bg-card p-2">
+      <div className="bg-card p-2">
         <ComboBox
           value={{ label: collection, value: collection }}
           values={['LIVE', ...(data ?? [])].map((item) => ({
@@ -65,39 +65,27 @@ export default function LogPage() {
 }
 
 function LiveLog() {
-  const { socket, state } = useSocket();
+  const { state } = useSocket();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
-      <div className="grid h-full w-full overflow-hidden rounded-md bg-card p-2">
-        <div className="flex h-full flex-col gap-1 overflow-hidden">
+      <div className="flex h-full w-full overflow-hidden bg-card">
+        <div className="flex h-full w-full overflow-hidden">
           {state !== 'connected' ? (
-            <LoadingSpinner className="m-auto" />
+            <LoadingSpinner className="flex h-full w-full items-center justify-center" />
           ) : (
             <div
-              className="h-full overflow-y-auto overflow-x-hidden"
-              ref={(ref) => setContainer(ref)}
+              className="flex h-full w-full overflow-y-auto overflow-x-hidden"
+              ref={setContainer}
             >
               <MessageList
                 className="flex h-full flex-col gap-1"
                 queryKey={['live-log']}
                 room="LOG"
                 container={() => container}
-                params={{ page: 0, size: 40 }}
-                end={<></>}
+                params={{ size: 50 }}
                 showNotification={false}
-                getFunc={(
-                  _,
-                  params: {
-                    page: number;
-                    size: number;
-                  },
-                ) =>
-                  socket
-                    .onRoom('LOG')
-                    .await({ method: 'GET_MESSAGE', ...params })
-                }
               >
                 {(data) => <MessageCard key={data.id} message={data} />}
               </MessageList>
@@ -132,7 +120,7 @@ function SendMessageButton() {
       onSubmit={handleFormSubmit}
     >
       <input
-        className="h-full w-full rounded-md border border-border bg-background px-2 outline-none"
+        className="h-full w-full border border-border bg-background px-2 outline-none"
         value={message}
         onChange={(event) => setMessage(event.currentTarget.value)}
       />
@@ -199,7 +187,7 @@ function StaticLog({ collection }: StaticLogProps) {
 
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
-      <div className="flex gap-1 rounded-md bg-card p-2">
+      <div className="flex gap-1 bg-card p-2">
         <ComboBox
           value={{ label: env, value: env }}
           values={[

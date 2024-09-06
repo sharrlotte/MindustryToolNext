@@ -30,6 +30,8 @@ export default function Tab({ user }: TabProps) {
   const { schematic, map, post } = useSearchTags();
   const params = useSearchPageParams();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const { stats } = user;
+  const level = Math.floor(Math.sqrt(stats?.EXP ?? 0));
 
   return (
     <div
@@ -41,6 +43,7 @@ export default function Tab({ user }: TabProps) {
         <div className="flex h-full flex-col justify-between">
           <span className="text-2xl capitalize">{user.name}</span>
           <UserRoleCard className="text-2xl" roles={user.roles} />
+          <span className="font-bold">LV.{level}</span>
         </div>
       </div>
       <Tabs className="w-full" defaultValue="schematic">

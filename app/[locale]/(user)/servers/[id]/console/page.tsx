@@ -11,12 +11,10 @@ import useMessage from '@/hooks/use-message';
 import useSearchId from '@/hooks/use-search-id-params';
 import { useI18n } from '@/locales/client';
 
-const queryParam = { page: 0, size: 40 };
-
 export default function Page() {
   const { id } = useSearchId();
 
-  const { socket, state } = useSocket();
+  const { state } = useSocket();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
@@ -35,14 +33,8 @@ export default function Page() {
                 queryKey={['servers', id, 'messages']}
                 room={`SERVER-${id}`}
                 container={() => container}
-                params={queryParam}
-                end={<></>}
+                params={{ size: 50 }}
                 showNotification={false}
-                getFunc={(_, params) =>
-                  socket
-                    .onRoom(`SERVER-${id}`)
-                    .await({ method: 'GET_MESSAGE', ...params })
-                }
               >
                 {(data) => <MessageCard key={data.id} message={data} />}
               </MessageList>

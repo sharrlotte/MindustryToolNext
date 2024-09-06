@@ -1,0 +1,22 @@
+.server-layout {
+  display: grid;
+  grid-template-areas:
+    'info'
+    'usage'
+    'player'
+    'action';
+
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .server-layout {
+    display: grid;
+    grid-template-areas:
+      'info player'
+      'usage player'
+      'action player';
+
+    grid-template-columns: 4fr 250px;
+  }
+}

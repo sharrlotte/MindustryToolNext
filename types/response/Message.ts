@@ -1,5 +1,3 @@
-const MESSAGE_TIME_GAP = 300000;
-
 export type Message = {
   id: string;
   room: string;
@@ -36,12 +34,7 @@ export function groupMessage(messages: Message[]): MessageGroup[] {
 
     const lastGroup = result[0];
 
-    if (
-      message.userId === lastGroup.userId &&
-      new Date(lastGroup.createdAt).getTime() -
-        new Date(message.createdAt).getTime() <
-        MESSAGE_TIME_GAP
-    ) {
+    if (message.userId === lastGroup.userId) {
       lastGroup.contents.unshift({
         text: message.content,
         attachments: message.attachments,

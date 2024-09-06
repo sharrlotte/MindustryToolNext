@@ -10,6 +10,7 @@ import { ExternalServer } from '@/types/response/ExternalServer';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 import { InternalServerMap } from '@/types/response/InternalServerMap';
 import { InternalServerPlugin } from '@/types/response/InternalServerPlugin';
+import { Player } from '@/types/response/Player';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
 import { ServerFile } from '@/types/response/ServerFile';
 import { AxiosInstance } from 'axios';
@@ -22,6 +23,15 @@ export async function deleteServerFile(
   const result = await axios.delete(`/internal-servers/${id}/files`, {
     params: { path },
   });
+
+  return result.data;
+}
+
+export async function getServerPlayers(
+  axios: AxiosInstance,
+  id: string,
+): Promise<Player[]> {
+  const result = await axios.get(`/internal-servers/${id}/players`);
 
   return result.data;
 }

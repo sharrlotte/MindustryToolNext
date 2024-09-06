@@ -7,13 +7,13 @@ import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import { ServerIcon } from '@/components/common/icons';
 
-type ServerInstancesCardProps = {
+type MyServerInstancesCardProps = {
   server: InternalServerDetail;
 };
 
 export default async function InternalServerCard({
   server: { id, name, players, port, alive, started, mapName, mode },
-}: ServerInstancesCardProps) {
+}: MyServerInstancesCardProps) {
   return (
     <Link
       className="flex h-full flex-1 cursor-pointer flex-col gap-4 rounded-md bg-card p-2"

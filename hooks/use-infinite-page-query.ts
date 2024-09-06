@@ -44,6 +44,8 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     return { ...lastPageParams, page: allPages.length - 1 };
   };
 
+  // Remove page and size from key
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { page, size, ...rest } = params;
 
   let filteredQueryKey: any[];
@@ -57,7 +59,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
   return useInfiniteQuery<T[], Error, InfiniteData<T[], P>, QueryKey, P>({
     queryKey: filteredQueryKey,
     initialPageParam: params,
-    // @ts-ignore
+    // @ts-expect-error idk
     queryFn: (context) => getFunc(axios, context.pageParam),
     getNextPageParam,
     getPreviousPageParam,

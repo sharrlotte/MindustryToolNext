@@ -55,7 +55,7 @@ type MessagePayload =
     }
   | {
       method: 'GET_MESSAGE';
-      page: number;
+      cursor: string | null;
       size: number;
     }
   | {

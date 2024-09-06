@@ -38,7 +38,9 @@ export default async function Page() {
               </TabsTrigger>
             </TabsList>
           </div>
-          <CreateServerDialog />
+          <ProtectedElement session={session} alt={<RequireLogin />}>
+            <CreateServerDialog />
+          </ProtectedElement>
         </div>
         <TabsContent
           className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
