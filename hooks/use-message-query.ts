@@ -48,6 +48,8 @@ export default function useMessageQuery<P extends MessageQuery>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { size, ..._rest } = params;
 
+  console.log({ queryKey });
+
   return useInfiniteQuery<
     Message[],
     Error,
