@@ -12,7 +12,7 @@ import React, {
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import { useSocket } from '@/context/socket-context';
-import { isReachedEnd, makeArray, mergeNestArray } from '@/lib/utils';
+import { cn, isReachedEnd, makeArray, mergeNestArray } from '@/lib/utils';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
@@ -269,7 +269,16 @@ export default function MessageList({
   }
 
   if (isLoading || !data || !currentContainer) {
-    return <div className={className}>{loader ?? skeletonElements}</div>;
+    return (
+      <div
+        className={cn(
+          'col-span-full flex h-full w-full items-center justify-center',
+          className,
+        )}
+      >
+        {loader ?? skeletonElements}
+      </div>
+    );
   }
 
   if (pages.length === 0) {

@@ -78,10 +78,10 @@ function LiveLog() {
       <div className="flex h-full w-full overflow-hidden bg-card">
         <div className="flex h-full w-full overflow-hidden">
           {state !== 'connected' ? (
-            <LoadingSpinner className="m-auto" />
+            <LoadingSpinner className="flex h-full w-full items-center justify-center" />
           ) : (
             <div
-              className="flex h-full overflow-y-auto overflow-x-hidden"
+              className="flex h-full w-full overflow-y-auto overflow-x-hidden"
               ref={setContainer}
             >
               <MessageList
