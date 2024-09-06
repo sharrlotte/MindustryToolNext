@@ -15,7 +15,6 @@ import { cn, isReachedEnd, makeArray, mergeNestArray } from '@/lib/utils';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
-import useWindow from '@/hooks/use-window';
 import useMessageQuery from '@/hooks/use-message-query';
 import { MessageQuery } from '@/types/data/pageable-search-schema';
 import useNotification from '@/hooks/use-notification';
@@ -65,7 +64,6 @@ export default function MessageList({
   const lastHeight = useRef(100);
   const [isFirstLoad, setFirstLoad] = useState(true);
 
-  const isTabActive = useWindow();
   const queryClient = useQueryClient();
   const isEndReached = isReachedEnd(currentContainer, threshold);
   const { socket } = useSocket();
@@ -146,16 +144,12 @@ export default function MessageList({
   useEffect(() => {
     let interval: any;
 
-    if (isTabActive) {
-      interval = setInterval(checkIfNeedFetchMore, 100);
-    }
+    interval = setInterval(checkIfNeedFetchMore, 100);
 
     return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
+      clearInterval(interval);
     };
-  }, [checkIfNeedFetchMore, isTabActive]);
+  }, [checkIfNeedFetchMore]);
 
   useEffect(() => {
     if (pages.length && currentContainer && (isEndReached || isFirstLoad)) {

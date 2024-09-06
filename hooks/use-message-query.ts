@@ -6,6 +6,7 @@ import {
 import { Message } from '@/types/response/Message';
 import { useSocket } from '@/context/socket-context';
 import { MessageQuery } from '@/types/data/pageable-search-schema';
+import { useMemo } from 'react';
 
 export default function useMessageQuery<P extends MessageQuery>(
   room: string,
@@ -46,15 +47,7 @@ export default function useMessageQuery<P extends MessageQuery>(
 
   // Remove page and size from key
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { size, ...rest } = params;
-
-  let filteredQueryKey: any[];
-
-  if (Object.keys(rest).length > 0) {
-    filteredQueryKey = [...queryKey, rest];
-  } else {
-    filteredQueryKey = [...queryKey];
-  }
+  const { size, ..._rest } = params;
 
   return useInfiniteQuery<
     Message[],
@@ -63,7 +56,7 @@ export default function useMessageQuery<P extends MessageQuery>(
     QueryKey,
     P
   >({
-    queryKey: filteredQueryKey,
+    queryKey,
     initialPageParam: params,
     queryFn: (context) =>
       socket.onRoom(room).await({
