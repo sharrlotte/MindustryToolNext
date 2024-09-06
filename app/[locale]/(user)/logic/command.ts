@@ -2,6 +2,22 @@ export enum InputType {
   TextInput,
 }
 
+export default interface Command {
+  x: number;
+  y: number;
+  value: CommandValue;
+  // How to encode? idk
+}
+
+export interface CommandValue {
+  readonly name: string;
+  readonly color: string;
+  readonly rows: number;
+  readonly columns: number;
+  readonly fields: FieldType[];
+  readonly outputs: { key: number; value: number }[];
+}
+
 export interface FieldType {
   readonly x: number;
   readonly y: number;
@@ -14,22 +30,6 @@ export interface FieldType {
   displayValue?: string | CommandValue;
 }
 
-export default interface Command {
-  x: number;
-  y: number;
-  value: CommandValue
-  // How to encode? idk 
-}
-
-export interface CommandValue {
-  readonly name: string;
-  readonly color: string;
-  readonly rows: number;
-  readonly columns: number;
-  readonly fields: { key: number, value: FieldType }[];
-  readonly outputs: { key: number, value: number }[];
-}
-
 const defaultField: FieldType = {
   x: 0,
   y: 0,
@@ -37,7 +37,7 @@ const defaultField: FieldType = {
   placeHolder: '',
   placeHolderWidth: 100,
   inputType: InputType.TextInput,
-  value: 'test'
+  value: 'test',
 };
 
 const defaultSettings: Command = {
@@ -49,10 +49,9 @@ const defaultSettings: Command = {
     rows: 0,
     columns: 0,
     fields: [],
-    outputs: []
-  }
+    outputs: [],
+  },
 };
-
 
 export const start: Command = {
   ...defaultSettings,
@@ -60,7 +59,7 @@ export const start: Command = {
     ...defaultSettings.value,
     name: 'Start',
     color: '#0AA4FE',
-  }
+  },
 };
 
 const read: Command = {
@@ -72,19 +71,16 @@ const read: Command = {
     columns: 2,
     fields: [
       {
-        key: 0, value: {
-          ...defaultField,
-          placeHolder: 'read',
-          placeHolderWidth: 40,
-        }
+        ...defaultField,
+        placeHolder: 'read',
+        placeHolderWidth: 40,
       },
-
     ],
-    outputs: []
-  }
-}
+    outputs: [],
+  },
+};
 
-export const CommandList: { key: string, value: Command[] }[] = [
+export const CommandList: { key: string; value: Command[] }[] = [
   { key: 'Start commands', value: [start] },
-  { key: 'IO control', value: [read]}
+  { key: 'IO control', value: [read] },
 ];
