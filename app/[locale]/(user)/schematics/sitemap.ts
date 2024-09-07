@@ -10,12 +10,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return data.map(({ id }) => ({
     url: `${env.url.base}/schematics/${id}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly',
-    priority: 1,
     alternates: {
       languages: Object.fromEntries(
-        env.locales.map((lang) => [lang, `${env.url.base}/${lang}/schematics/${id}`]),
+        env.locales.map((lang) => [
+          lang,
+          `${env.url.base}/${lang}/schematics/${id}`,
+        ]),
       ),
     },
   }));
