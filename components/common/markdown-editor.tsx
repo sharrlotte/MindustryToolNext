@@ -567,7 +567,7 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
                         id="image"
                         className="w-16"
                         hidden
-                        accept=".png, .jpg"
+                        accept=".png, .jpg, .jpeg"
                         type="file"
                         onChange={handleFilePick}
                       />

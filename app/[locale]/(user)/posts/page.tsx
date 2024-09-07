@@ -19,7 +19,7 @@ export default function PostsPage() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const uploadLink = `${env.url.base}/upload/post`;
-  const myPostLink = `${env.url.base}/users/me`;
+  const myPostLink = `${env.url.base}/users/@me`;
   return (
     <div className="flex h-full w-full flex-col gap-4 p-4">
       <NameTagSearch tags={post} />

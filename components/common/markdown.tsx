@@ -34,7 +34,7 @@ function MarkdownImage({ src, alt }: any) {
 
   return (
     <Image
-      className="markdown-image h-full w-full"
+      className="markdown-image"
       alt={alt}
       src={src}
       width={1024}

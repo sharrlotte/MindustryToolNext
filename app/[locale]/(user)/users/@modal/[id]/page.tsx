@@ -1,10 +1,22 @@
-import Tab from '@/app/[locale]/(user)/users/@modal/[id]/tab';
+import Me from '@/app/[locale]/(user)/users/@modal/[id]/me';
+import Other from '@/app/[locale]/(user)/users/@modal/[id]/other';
 import getServerApi from '@/query/config/get-server-api';
-import { getUser } from '@/query/user';
+import { getMe, getUser } from '@/query/user';
 
-export default async function Page({ params }: { params: { id: string } }) {
+type Props = {
+  params: { id: string };
+};
+
+export default async function Page({ params: { id } }: Props) {
   const axios = await getServerApi();
-  const user = await getUser(axios, params);
 
-  return <Tab user={user} />;
+  if (id === '@me') {
+    const me = await getMe(axios);
+
+    return <Me me={me} />;
+  }
+
+  const user = await getUser(axios, { id });
+
+  return <Other user={user} />;
 }
