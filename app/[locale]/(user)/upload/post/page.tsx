@@ -386,7 +386,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
           {t('upload.translate-post')}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className='p-6'>
         <DialogTitle>{t('upload.select-post')}</DialogTitle>
         <div className="flex flex-col gap-2">
           <Search>

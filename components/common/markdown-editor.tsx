@@ -411,7 +411,7 @@ function LinkDialog({ children, onAccept }: LinkDialogProps) {
           {children}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="overflow-auto p-6">
         <DialogTitle>{t('add-link')}</DialogTitle>
         <Form {...form}>
           <form
@@ -527,7 +527,7 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
           {children}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="overflow-auto p-6">
         <DialogTitle>{t('add-image')}</DialogTitle>
         <Form {...form}>
           <form

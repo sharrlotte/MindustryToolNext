@@ -25,6 +25,7 @@ import { Tags } from '@/types/response/Tag';
 
 import { useMutation } from '@tanstack/react-query';
 import { deletePost, unverifyPost } from '@/query/post';
+import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
 type PostDetailCardProps = {
   post: PostDetail;
@@ -97,34 +98,39 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
           <Markdown>{post.content}</Markdown>
         </div>
       </header>
-      <footer className="flex gap-1 rounded-md bg-card p-2">
-        <LikeComponent
-          itemId={post.itemId}
-          initialLikeCount={post.likes}
-          initialLikeData={post.userLike}
-        >
-          <LikeButton />
-          <LikeCount />
-          <DislikeButton />
-        </LikeComponent>
-        <ProtectedElement
-          session={session}
-          ownerId={post.userId}
-          show={post.isVerified}
-        >
-          <TakeDownButton
-            isLoading={isLoading}
-            description={`Take down this post: ${post.title}`}
-            onClick={() => removePost(post.id)}
-          />
-        </ProtectedElement>
-        <ProtectedElement session={session} ownerId={post.userId}>
-          <DeleteButton
-            description={`${t('delete')} ${post.title}`}
-            isLoading={isLoading}
-            onClick={() => deletePostById(post.id)}
-          />
-        </ProtectedElement>
+      <footer className="flex justify-between rounded-md bg-card p-2">
+        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
+          <LikeComponent
+            itemId={post.itemId}
+            initialLikeCount={post.likes}
+            initialLikeData={post.userLike}
+          >
+            <LikeButton />
+            <LikeCount />
+            <DislikeButton />
+          </LikeComponent>
+          <EllipsisButton>
+            <ProtectedElement
+              session={session}
+              ownerId={post.userId}
+              show={post.isVerified}
+            >
+              <TakeDownButton
+                isLoading={isLoading}
+                description={`Take down this post: ${post.title}`}
+                onClick={() => removePost(post.id)}
+              />
+            </ProtectedElement>
+            <ProtectedElement session={session} ownerId={post.userId}>
+              <DeleteButton
+                variant="command"
+                description={`${t('delete')} ${post.title}`}
+                isLoading={isLoading}
+                onClick={() => deletePostById(post.id)}
+              />
+            </ProtectedElement>
+          </EllipsisButton>
+        </div>
         <BackButton className="ml-auto" />
       </footer>
     </Detail>

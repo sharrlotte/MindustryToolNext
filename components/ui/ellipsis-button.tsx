@@ -17,7 +17,7 @@ const EllipsisButton = ({ className, variant, children, ...props }: Props) => {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          className={cn(className, 'p-0')}
+          className={cn(className, 'p-0 bg-transparent')}
           variant={variant}
           type="button"
           {...props}
