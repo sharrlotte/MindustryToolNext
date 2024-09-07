@@ -1,4 +1,3 @@
-import { UpdateThumbnail } from '@/app/[locale]/(user)/users/@modal/[id]/setting/update-thumbnail';
 import { AxiosInstance } from 'axios';
 
 import {
