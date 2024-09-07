@@ -22,6 +22,7 @@ import {
   SearchIcon as _SearchIcon,
   SendIcon as _SendIcon,
   SmileIcon as _SmileIcon,
+  PencilIcon as _EditIcon,
 } from 'lucide-react';
 
 import {
@@ -82,6 +83,7 @@ export const PaperclipIcon = () => <_PaperclipIcon className="size-6" />;
 export const SmileIcon = () => <_SmileIcon className="size-6" />;
 export const SearchIcon = () => <_SearchIcon className="size-5" />;
 export const SendIcon = () => <_SendIcon className="size-5" />;
+export const EditIcon = () => <_EditIcon className="size-5" />;
 
 export function HRIcon({ className }: Props) {
   return (

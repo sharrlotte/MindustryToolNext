@@ -1,3 +1,4 @@
+import { UpdateThumbnail } from '@/app/[locale]/(user)/users/@modal/[id]/setting/update-thumbnail';
 import { AxiosInstance } from 'axios';
 
 import {
@@ -110,6 +111,17 @@ export async function getUsers(
   params: PaginationQuery & { role?: UserRole },
 ): Promise<User[]> {
   const result = await axios.get(`/users`, { params });
+
+  return result.data;
+}
+export async function updateThumbnail(
+  axios: AxiosInstance,
+  file: File,
+): Promise<User[]> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const result = await axios.post(`/users/@me/thumbnail`, formData);
 
   return result.data;
 }

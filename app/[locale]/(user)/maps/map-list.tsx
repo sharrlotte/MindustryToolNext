@@ -85,7 +85,7 @@ export default function MapList() {
         <div className="flex gap-2">
           <InternalLink
             variant="button-secondary"
-            href={`${env.url.base}/users/me`}
+            href={`${env.url.base}/users/@me`}
             title="My map"
           >
             <UserIcon className="size-5" />

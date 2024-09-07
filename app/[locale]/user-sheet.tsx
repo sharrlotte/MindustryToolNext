@@ -46,7 +46,7 @@ export function UserActions() {
         {
           icon: <Cog6ToothIcon className="h-6 w-6" />,
           action: (
-            <Link className="w-full" href="/users/me/setting">
+            <Link className="w-full" href="/users/@me/setting">
               {t('setting')}
             </Link>
           ),
