@@ -111,12 +111,12 @@ export default function MessageList({
 
   const checkIfNeedFetchMore = useCallback(() => {
     const handleEndReach = () => {
-      if (hasNextPage) {
+      if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     };
 
-    if (currentContainer && !isFetching) {
+    if (currentContainer) {
       if (currentContainer.scrollTop <= threshold) {
         handleEndReach();
       }

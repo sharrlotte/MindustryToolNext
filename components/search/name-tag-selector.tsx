@@ -74,7 +74,7 @@ export default function NameTagSelector({
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <Button
-          className="w-fit"
+          className="w-fit text-nowrap"
           variant="primary"
           title={t('add-tag')}
           disabled={disabled}

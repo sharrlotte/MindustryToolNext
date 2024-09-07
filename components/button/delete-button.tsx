@@ -24,7 +24,7 @@ const buttonVariants = cva('hover:bg-destructive/80', {
   variants: {
     variant: {
       command: '',
-      default: 'border border-border',
+      default: 'border border-border bg-transparent',
       ghost: 'border-none absolute w-fit backdrop-brightness-50',
     },
   },
