@@ -1,5 +1,4 @@
 import React, {
-  Fragment,
   ReactNode,
   useCallback,
   useEffect,
@@ -11,7 +10,7 @@ import React, {
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import { useSocket } from '@/context/socket-context';
-import { cn, isReachedEnd, makeArray, mergeNestArray } from '@/lib/utils';
+import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
@@ -30,10 +29,6 @@ type MessageListProps = {
   threshold?: number;
   room: string;
   showNotification?: boolean;
-  skeleton?: {
-    amount: number;
-    item: ReactNode;
-  };
   container: () => HTMLElement | null;
   children: (
     data: MessageGroup,
@@ -49,7 +44,6 @@ export default function MessageList({
   loader,
   noResult = <NoResult className="flex w-full items-center justify-center" />,
   end,
-  skeleton,
   threshold = 500,
   room,
   showNotification = true,
@@ -115,23 +109,14 @@ export default function MessageList({
     return group.map(pageMapper);
   }, [data, pageMapper]);
 
-  const skeletonElements = useMemo(
-    () =>
-      skeleton
-        ? makeArray(skeleton.amount) //
-            .map((_, index) => <Fragment key={index}>{skeleton.item}</Fragment>)
-        : null,
-    [skeleton],
-  );
-
   const checkIfNeedFetchMore = useCallback(() => {
     const handleEndReach = () => {
-      if (hasNextPage) {
+      if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     };
 
-    if (currentContainer && !isFetching) {
+    if (currentContainer) {
       if (currentContainer.scrollTop <= threshold) {
         handleEndReach();
       }
@@ -223,7 +208,7 @@ export default function MessageList({
     };
   }, [checkIfNeedFetchMore, currentContainer, list, scrollTop]);
 
-  if (!loader && !skeleton) {
+  if (!loader) {
     loader = (
       <LoadingSpinner
         key="loading"
@@ -255,7 +240,7 @@ export default function MessageList({
           className,
         )}
       >
-        {loader ?? skeletonElements}
+        {loader}
       </div>
     );
   }
@@ -267,7 +252,7 @@ export default function MessageList({
   return (
     <div className="h-fit" ref={(ref) => setList(ref)}>
       {!hasNextPage && end}
-      {isFetching && skeletonElements}
+      {isFetching && loader}
       {pages}
     </div>
   );

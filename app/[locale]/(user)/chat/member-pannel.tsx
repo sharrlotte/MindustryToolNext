@@ -5,7 +5,7 @@ import { useSocket } from '@/context/socket-context';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
@@ -28,10 +28,12 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
         .await({ method: 'GET_MEMBER', page: 0, size: 10 }),
   });
 
+  const members = useMemo(() => (data ? [...new Set(data)] : []), [data]);
+
   return (
     <motion.div
       className={cn(
-        'absolute right-0 flex h-full flex-col items-start overflow-y-auto overflow-x-hidden border-l bg-background sm:relative flex-shrink-0' ,
+        'absolute right-0 flex h-full flex-shrink-0 flex-col items-start overflow-y-auto overflow-x-hidden border-l bg-background sm:relative',
         className,
       )}
       animate={state}
@@ -44,7 +46,9 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
         },
       }}
     >
-      {data?.map((user) => <MemberCard key={user.id} user={user} />)}
+      {members.map((user) => (
+        <MemberCard key={user.id} user={user} />
+      ))}
     </motion.div>
   );
 }
