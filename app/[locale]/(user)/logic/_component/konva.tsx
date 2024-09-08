@@ -1,12 +1,16 @@
 'use client';
 
-import { Group, Rect, Text} from "react-konva";
-import Command, { FieldType } from "../command";
-import { doublePadding, padding, valueHeight, widthPadded } from "./command-card";
-import { useCallback } from "react";
-import { KonvaEventObject } from "konva/lib/Node";
-import { Copy, Delete } from "./icon";
-
+import { Group, Rect, Text } from 'react-konva';
+import Command, { FieldType } from '../command';
+import {
+  doublePadding,
+  padding,
+  valueHeight,
+  widthPadded,
+} from './command-card';
+import { useCallback } from 'react';
+import { KonvaEventObject } from 'konva/lib/Node';
+import { Copy, Delete } from './icon';
 
 export const CommandField = ({
   x,
@@ -148,6 +152,3 @@ export const CommandHeader = ({
     />
   </Group>
 );
-
-
-
