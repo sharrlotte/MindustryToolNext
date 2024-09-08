@@ -85,7 +85,7 @@ export default function ClientChart({
 
   return (
     <MetricWrapper>
-      <div className="flex aspect-[2/1.5] h-full w-full flex-col gap-2 bg-card p-2">
+      <div className="flex  h-full w-full flex-col gap-2 bg-card p-2">
         <span className="font-bold">
           <Tran text="client" />
         </span>
