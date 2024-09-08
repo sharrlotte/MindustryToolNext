@@ -1,10 +1,12 @@
 import { useSession } from '@/context/session-context';
+import { useToast } from '@/hooks/use-toast';
 import { Message } from '@/types/response/Message';
 import { useCallback } from 'react';
 
 export default function useNotification() {
   const { session } = useSession();
   const userId = session?.id;
+  const { toast } = useToast();
 
   const processNotification = useCallback(
     (message: Message) => {
@@ -25,11 +27,19 @@ export default function useNotification() {
         Notification.requestPermission().then((permission) => {
           if (permission === 'granted') {
             processNotification(message);
+          } else {
+            toast({
+              title: <a href="/chat">{message.content}</a>,
+            });
           }
+        });
+      } else {
+        toast({
+          title: <a href="/chat">{message.content}</a>,
         });
       }
     },
-    [processNotification],
+    [processNotification, toast],
   );
 
   return {

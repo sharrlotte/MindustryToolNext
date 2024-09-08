@@ -8,7 +8,7 @@ import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
-import { cn, getImageById } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Post } from '@/types/response/Post';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
@@ -27,14 +27,14 @@ export default function PostPreviewCard({
 
   return (
     <div
-      style={{ backgroundImage: `url(${getImageById('posts', firstImage)})` }}
+      style={{ backgroundImage: `url(${firstImage})` }}
       className={cn(
         'relative flex flex-col rounded-lg border border-border bg-cover bg-center',
         className,
       )}
       {...rest}
     >
-      <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-brightness-50">
+      <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-brightness-50 backdrop-blur-sm">
         <Link href={`/posts/${post.id}`}>
           <span className="flex text-2xl">{post.title}</span>
         </Link>
