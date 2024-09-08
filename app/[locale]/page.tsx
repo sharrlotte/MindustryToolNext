@@ -14,6 +14,7 @@ import {
   GithubIcon,
 } from '@/components/common/icons';
 import Ads from '@/components/common/ads';
+import YoutubeEmbed from '@/components/common/youtube-embed';
 
 // export const dynamicParams = false;
 export const experimental_ppr = true;
@@ -61,15 +62,7 @@ export default async function Home({
             </div>
           </div>
           <div className="flex h-fit w-full justify-center md:w-1/2">
-            <div className="relative h-fit w-full pb-[56.25%]">
-              <iframe
-                title="YouTube video player"
-                className="absolute left-0 top-0 h-full w-full rounded-md"
-                src="https://www.youtube.com/embed/gUu3AhqpyHo?autoplay=1&loop=1&controls=1"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; controls; loop;"
-                allowFullScreen
-              />
-            </div>
+            <YoutubeEmbed url="https://www.youtube.com/embed/gUu3AhqpyHo?autoplay=1&loop=1&controls=1" />
           </div>
         </div>
         <div className="flex flex-col gap-2">

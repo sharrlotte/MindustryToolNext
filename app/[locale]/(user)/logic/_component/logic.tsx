@@ -10,6 +10,7 @@ import React, {
 import { Stage, Layer, Rect, Line } from 'react-konva';
 import Command from '../command';
 import CommandCard from './command-card';
+import { selectInuptProps } from '../editor';
 
 type LogicProp = {
   commands: Command[];
@@ -18,6 +19,7 @@ type LogicProp = {
   deleteCommand: (index: number) => void;
   replaceCommand: (command: Command, index: number) => void;
   copyCommand: (command: Command) => void;
+  selectInput: (arg0: selectInuptProps) => void;
 };
 
 export default function LogicDisplay({
@@ -26,7 +28,8 @@ export default function LogicDisplay({
   addCommand,
   deleteCommand,
   replaceCommand,
-  copyCommand
+  copyCommand,
+  selectInput
 }: LogicProp) {
   
   const [position, setPosition] = useState({
@@ -184,6 +187,7 @@ export default function LogicDisplay({
           deleteCommand={deleteCommand}
           replaceCommand={replaceCommand}
           copyCommand={copyCommand}
+          selectInput={selectInput}
         />
       </Stage>
     </div>

@@ -29,7 +29,7 @@ export default function UserDetail({ user }: Props) {
       {thumbnail && (
         <Image
           className="object-cover max-h-[50vh]"
-          src={`${thumbnail}.png`}
+          src={`${thumbnail}`}
           width={1920}
           height={1080}
           alt={name}
