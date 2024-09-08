@@ -108,6 +108,8 @@ export default function UploadPostDetailCard({
           hideSelectedTag
         />
         <DeleteButton
+          variant="default"
+          className="w-fit"
           description={`${t('delete')} ${post.title}`}
           isLoading={isLoading}
           onClick={() => deletePostById(post.id)}

@@ -101,6 +101,7 @@ export default function CommandCard({
           >
             {element.value.fields.map((field, fIndex) => (
               <CommandField
+                key={fIndex}
                 x={
                   field.x *
                   field.fieldSize *

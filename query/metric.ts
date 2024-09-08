@@ -19,7 +19,7 @@ export async function getMetric(
     })
     .then((result) =>
       result.data.map((v: any) => {
-        let createdAt = new Date(v.createdAt);
+        const createdAt = new Date(v.createdAt);
         return { ...v, createdAt };
       }),
     );

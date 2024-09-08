@@ -1,5 +1,4 @@
 import React, {
-  Fragment,
   ReactNode,
   useCallback,
   useEffect,
@@ -11,7 +10,7 @@ import React, {
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import { useSocket } from '@/context/socket-context';
-import { cn, isReachedEnd, makeArray, mergeNestArray } from '@/lib/utils';
+import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
@@ -30,10 +29,6 @@ type MessageListProps = {
   threshold?: number;
   room: string;
   showNotification?: boolean;
-  skeleton?: {
-    amount: number;
-    item: ReactNode;
-  };
   container: () => HTMLElement | null;
   children: (
     data: MessageGroup,
@@ -49,7 +44,6 @@ export default function MessageList({
   loader,
   noResult = <NoResult className="flex w-full items-center justify-center" />,
   end,
-  skeleton,
   threshold = 500,
   room,
   showNotification = true,
@@ -60,7 +54,7 @@ export default function MessageList({
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
   const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
-  const [scrollTop, setScrollTop] = useState(100);
+  const scrollTop = useRef(100);
   const lastHeight = useRef(100);
   const [isFirstLoad, setFirstLoad] = useState(true);
 
@@ -68,7 +62,7 @@ export default function MessageList({
   const isEndReached = isReachedEnd(currentContainer, threshold);
   const { socket } = useSocket();
 
-  const { data, isLoading, error, isError, hasNextPage, fetchNextPage } =
+  const { data, isFetching, error, isError, hasNextPage, fetchNextPage } =
     useMessageQuery(room, params, queryKey);
 
   const { postNotification } = useNotification();
@@ -86,6 +80,10 @@ export default function MessageList({
       return;
     }
 
+    if (scrollDir === 'down') {
+      return;
+    }
+
     const diff =
       list.clientHeight - lastHeight.current + currentContainer.scrollTop;
 
@@ -93,14 +91,7 @@ export default function MessageList({
       top: diff,
       behavior: 'instant',
     });
-  }, [
-    currentContainer,
-    list,
-    lastHeight,
-    scrollDir,
-    isFirstLoad,
-    isEndReached,
-  ]);
+  }, [currentContainer, list, lastHeight, scrollDir, isFirstLoad]);
 
   useEffect(() => {
     remainScrollPosition();
@@ -118,28 +109,19 @@ export default function MessageList({
     return group.map(pageMapper);
   }, [data, pageMapper]);
 
-  const skeletonElements = useMemo(
-    () =>
-      skeleton
-        ? makeArray(skeleton.amount) //
-            .map((_, index) => <Fragment key={index}>{skeleton.item}</Fragment>)
-        : null,
-    [skeleton],
-  );
-
   const checkIfNeedFetchMore = useCallback(() => {
     const handleEndReach = () => {
-      if (hasNextPage) {
+      if (hasNextPage && !isFetching) {
         fetchNextPage();
       }
     };
 
-    if (currentContainer && !isLoading) {
+    if (currentContainer) {
       if (currentContainer.scrollTop <= threshold) {
         handleEndReach();
       }
     }
-  }, [currentContainer, fetchNextPage, hasNextPage, isLoading, threshold]);
+  }, [currentContainer, fetchNextPage, hasNextPage, isFetching, threshold]);
 
   useEffect(() => {
     const interval = setInterval(checkIfNeedFetchMore, 100);
@@ -206,8 +188,10 @@ export default function MessageList({
   useEffect(() => {
     function onScroll() {
       if (currentContainer) {
-        setScrollTop(currentContainer.scrollTop);
-        setScrollDir(currentContainer.scrollTop > scrollTop ? 'down' : 'up');
+        scrollTop.current = currentContainer.scrollTop;
+        setScrollDir(
+          currentContainer.scrollTop > scrollTop.current ? 'down' : 'up',
+        );
       }
     }
 
@@ -224,7 +208,7 @@ export default function MessageList({
     };
   }, [checkIfNeedFetchMore, currentContainer, list, scrollTop]);
 
-  if (!loader && !skeleton) {
+  if (!loader) {
     loader = (
       <LoadingSpinner
         key="loading"
@@ -248,7 +232,7 @@ export default function MessageList({
     );
   }
 
-  if (isLoading || !data || !currentContainer) {
+  if (!data || !currentContainer) {
     return (
       <div
         className={cn(
@@ -256,7 +240,7 @@ export default function MessageList({
           className,
         )}
       >
-        {loader ?? skeletonElements}
+        {loader}
       </div>
     );
   }
@@ -268,7 +252,7 @@ export default function MessageList({
   return (
     <div className="h-fit" ref={(ref) => setList(ref)}>
       {!hasNextPage && end}
-      {isLoading && skeletonElements}
+      {isFetching && loader}
       {pages}
     </div>
   );

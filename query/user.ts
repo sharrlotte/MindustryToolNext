@@ -113,3 +113,14 @@ export async function getUsers(
 
   return result.data;
 }
+export async function updateThumbnail(
+  axios: AxiosInstance,
+  file: File,
+): Promise<User[]> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const result = await axios.post(`/users/@me/thumbnail`, formData);
+
+  return result.data;
+}

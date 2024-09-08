@@ -29,7 +29,7 @@ export default function SchematicList() {
   const params = useSearchQuery(ItemPaginationQuery);
 
   const uploadLink = `${env.url.base}/upload/schematic`;
-  const mySchematicLink = `${env.url.base}/users/me`;
+  const mySchematicLink = `${env.url.base}/users/@me`;
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 

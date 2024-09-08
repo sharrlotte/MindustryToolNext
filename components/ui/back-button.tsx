@@ -22,7 +22,7 @@ export default function BackButton({
 
   return (
     <Button
-      className="whitespace-nowrap gap-1 pl-1.5"
+      className="whitespace-nowrap text-nowrap gap-1 pl-1.5"
       title="back"
       variant="outline"
       {...props}
