@@ -1,3 +1,4 @@
+import YoutubeEmbed from '@/components/common/youtube-embed';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 
@@ -10,10 +11,19 @@ import rehypeSanitize from 'rehype-sanitize';
 type MarkdownProps = {
   className?: string;
   children: string;
-}
+};
+
+const YOUTUBE_VIDEO_REGEX =
+  /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+
+const OTHER_WEBSITE_URL_REGEX = /^(https?:)?\/\//;
 
 function RouterLink({ href, children }: any) {
-  return href.match(/^(https?:)?\/\//) ? (
+  if (href.match(YOUTUBE_VIDEO_REGEX)) {
+    return <YoutubeEmbed url={href} />;
+  }
+
+  return href.match(OTHER_WEBSITE_URL_REGEX) ? (
     <a
       className="text-emerald-500"
       href={href}
