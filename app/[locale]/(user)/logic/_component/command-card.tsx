@@ -2,7 +2,6 @@
 
 import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import Command, { FieldType, InputType } from '../command';
-import { Html } from 'react-konva-utils';
 import { Layer, Group, Rect, Text } from 'react-konva';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Copy, Delete } from './icon';
@@ -36,7 +35,10 @@ export default function CommandCard({
   replaceCommand,
   copyCommand,
 }: CommandCardProp) {
-  const [inputKeys, setInputKeys] = useState<{cKey: number, cValue: number} | null>(null);
+  const [inputKeys, setInputKeys] = useState<{
+    cKey: number;
+    cValue: number;
+  } | null>(null);
   const [input, setInput] = useState<InputControlProp | null>({
     position: {
       x: 0,
@@ -46,7 +48,7 @@ export default function CommandCard({
     inputType: InputType.TextInput,
     onSubmit: onSubmit,
   });
-  
+
   function selectInput(
     x: number,
     y: number,
@@ -68,7 +70,6 @@ export default function CommandCard({
 
   return (
     <Layer>
-      <InputControl input={input} />
       {commands.map((element, index) => (
         <InteractCard
           key={index}
@@ -118,7 +119,6 @@ export default function CommandCard({
                 }}
               />
             ))}
-            <Rect></Rect>
           </CommandBody>
         </InteractCard>
       ))}
@@ -144,20 +144,7 @@ function TextEditorView({ position, onSubmit }: ValueEditorDefaultProp) {
   const top = position.y + 40;
 
   return (
-    <Html>
-      <div
-        className="fixed"
-        style={{
-          top: `${top}px`,
-          left: `${position.x}px`,
-          width: `${position.width}px`,
-          height: `${position.height}px`,
-        }}
-      >
-        <input type="text" placeholder="" defaultValue={'meow'} />
-        <button className="">Meow</button>
-      </div>
-    </Html>
+    <Group></Group>
   );
 }
 
