@@ -4,6 +4,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import Command from '../command';
 import { Layer, Rect } from 'react-konva';
 import { InteractCard, CommandHeader, CommandBody, CommandField } from './konva';
+import { selectInuptProps } from '../editor';
 
 export const padding = 5;
 export const doublePadding = padding * 2;
@@ -26,6 +27,7 @@ type CommandCardProp = {
   deleteCommand: (index: number) => void;
   replaceCommand: (command: Command, index: number) => void;
   copyCommand: (command: Command) => void;
+  selectInput: (arg0: selectInuptProps) => void;
 };
 
 export default function CommandCard({
@@ -33,6 +35,7 @@ export default function CommandCard({
   deleteCommand,
   replaceCommand,
   copyCommand,
+  selectInput
 }: CommandCardProp) {
 
   return (
