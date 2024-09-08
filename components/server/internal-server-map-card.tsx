@@ -48,7 +48,7 @@ export default function InternalServerMapCard({
       });
     },
     onSettled: () => {
-      invalidateByKey(['server', serverId, 'maps']);
+      invalidateByKey(['servers', serverId, 'maps']);
     },
   });
 

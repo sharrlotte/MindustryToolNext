@@ -51,7 +51,7 @@ export default function InternalServerPluginCard({
         {isVerified ? 'Verified' : 'Unverified'}
       </span>
       <DeleteButton
-        className="right-1 top-1"
+        className="right-1 top-1 backdrop-brightness-100"
         variant="ghost"
         description={`${t('delete')} ${name}`}
         isLoading={isDeleting}
