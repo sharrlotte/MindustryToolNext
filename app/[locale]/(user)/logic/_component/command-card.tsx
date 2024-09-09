@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import Command from '../command';
 import { Group, Layer, Rect } from 'react-konva';
 import {
@@ -12,6 +12,7 @@ import {
 } from './konva';
 import { selectInputProps } from '../editor';
 import { Position } from './logic';
+import { KonvaEventObject } from 'konva/lib/Node';
 
 export const padding = 5;
 export const doublePadding = padding * 2;
@@ -23,7 +24,7 @@ export const widthPadded = width - doublePadding;
 
 const calculateValueHeigh = (rows: number) =>
   rows === 0 ? emptyValueListHeight : valueHeight * rows;
-const calculateFullHeigh = (rows: number) =>
+export const calculateFullHeigh = (rows: number) =>
   calculateValueHeigh(rows) + headerHeight + doublePadding;
 
 type CommandCardProp = {
@@ -48,15 +49,19 @@ export default function CommandCard({
   const calculatePosition = (pos: number, element: number) =>
     (element - -pos / position.scale) * position.scale;
 
+  const handleMove = useCallback(
+    (e: KonvaEventObject<DragEvent>, command: Command, key: number) => {
+      const x = e.target.position().x + command.x;
+      const y = e.target.position().y + command.y;
+      replaceCommand({ ...command, x, y }, key);
+    },
+    [replaceCommand],
+  );
+
   return (
     <Layer>
       {commands.map((element, index) => (
-        <InteractCard
-          key={index}
-          index={index}
-          command={element}
-          replaceFunction={replaceCommand}
-        >
+        <InteractCard key={index} command={element}>
           <Rect
             width={width}
             height={calculateFullHeigh(element.value.rows)}
@@ -71,6 +76,16 @@ export default function CommandCard({
             index={index}
             onCopy={copyCommand}
             onDelete={deleteCommand}
+          />
+
+          <Rect
+            x={0}
+            y={0}
+            width={width}
+            height={calculateFullHeigh(element.value.rows)}
+            draggable
+            onDragMove={(e) => handleMove(e, element, index)}
+            onDragEnd={(e) => handleMove(e, element, index)}
           />
 
           <CommandBody

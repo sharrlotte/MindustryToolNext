@@ -3,6 +3,7 @@
 import { Circle, Group, Line, Rect, Text } from 'react-konva';
 import Command, { FieldType } from '../command';
 import {
+  calculateFullHeigh,
   doublePadding,
   padding,
   valueHeight,
@@ -88,10 +89,52 @@ export const CommandConnectNode = ({
               radius={circleRadius / 2}
               fill={'white'}
             />
+            <AutoCurvedLine
+              startX={circleRadius / 2}
+              startY={circleRadius / 2}
+              endX={500}
+              endY={500}
+            />
           </Group>
         );
       })}
     </Group>
+  );
+};
+
+export const AutoCurvedLine = ({
+  startX,
+  startY,
+  endX,
+  endY,
+}: {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+}) => {
+  const controlPointX1 = (startX + endX) / 2;
+  const controlPointY1 = startY;
+  const controlPointX2 = (startX + endX) / 2;
+  const controlPointY2 = endY;
+
+  return (
+    <Line
+      points={[
+        startX,
+        startY,
+        controlPointX1,
+        controlPointY1,
+        controlPointX2,
+        controlPointY2,
+        endX,
+        endY,
+      ]}
+      stroke="white"
+      strokeWidth={4}
+      lineCap="round"
+      bezier={true}
+    />
   );
 };
 
@@ -168,27 +211,14 @@ export const CommandBody = ({
 );
 
 export function InteractCard({
-  index: key,
   command,
-  replaceFunction,
   children,
 }: {
-  index: number;
   command: Command;
-  replaceFunction: (command: Command, index: number) => void;
   children: React.ReactNode;
 }) {
-  const handleDragEnd = useCallback(
-    (e: KonvaEventObject<DragEvent>) => {
-      const x = e.target.position().x;
-      const y = e.target.position().y;
-      replaceFunction({ ...command, x, y }, key);
-    },
-    [command, key, replaceFunction],
-  );
-
   return (
-    <Group x={command.x} y={command.y} draggable onDragEnd={handleDragEnd}>
+    <Group x={command.x} y={command.y}>
       {children}
     </Group>
   );
