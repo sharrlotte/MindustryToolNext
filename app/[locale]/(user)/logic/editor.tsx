@@ -138,12 +138,14 @@ export default function Editor() {
       x,
       y,
       width,
+      height
     }: selectInputProps) => {
       setInput({
         position: {
           x: x,
           y: y,
           width: width,
+          height: height,
         },
         defaultValue: defaultValue,
         inputType: inputType,

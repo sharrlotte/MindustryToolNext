@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import Command from '../command';
 import { Group, Layer, Rect } from 'react-konva';
 import {
@@ -12,7 +12,6 @@ import {
 } from './konva';
 import { selectInputProps } from '../editor';
 import { Position } from './logic';
-import { KonvaEventObject } from 'konva/lib/Node';
 
 export const padding = 5;
 export const doublePadding = padding * 2;
@@ -49,19 +48,15 @@ export default function CommandCard({
   const calculatePosition = (pos: number, element: number) =>
     (element - -pos / position.scale) * position.scale;
 
-  const handleMove = useCallback(
-    (e: KonvaEventObject<DragEvent>, command: Command, key: number) => {
-      const x = e.target.position().x + command.x;
-      const y = e.target.position().y + command.y;
-      replaceCommand({ ...command, x, y }, key);
-    },
-    [replaceCommand],
-  );
-
   return (
     <Layer>
       {commands.map((element, index) => (
-        <InteractCard key={index} command={element}>
+        <InteractCard
+          key={index}
+          index={index}
+          command={element}
+          replaceFunction={replaceCommand}
+        >
           <Rect
             width={width}
             height={calculateFullHeigh(element.value.rows)}
@@ -76,16 +71,6 @@ export default function CommandCard({
             index={index}
             onCopy={copyCommand}
             onDelete={deleteCommand}
-          />
-
-          <Rect
-            x={0}
-            y={0}
-            width={width}
-            height={calculateFullHeigh(element.value.rows)}
-            draggable
-            onDragMove={(e) => handleMove(e, element, index)}
-            onDragEnd={(e) => handleMove(e, element, index)}
           />
 
           <CommandBody
@@ -137,10 +122,14 @@ export default function CommandCard({
                             field.y * valueHeight,
                         ),
                         width:
-                          field.fieldSize *
+                          (field.fieldSize *
                             (widthPadded / element.value.columns) -
-                          field.placeHolderWidth -
-                          padding,
+                            field.placeHolderWidth -
+                            padding) *
+                          (position.scale < 1 ? 1 : position.scale),
+                        height:
+                          (valueHeight - padding) *
+                          (position.scale < 1 ? 1 : position.scale),
                       });
                     }}
                   />

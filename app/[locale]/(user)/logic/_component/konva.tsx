@@ -3,62 +3,14 @@
 import { Circle, Group, Line, Rect, Text } from 'react-konva';
 import Command, { FieldType } from '../command';
 import {
-  calculateFullHeigh,
   doublePadding,
   padding,
   valueHeight,
-  width,
   widthPadded,
 } from './command-card';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Copy, Delete } from './icon';
-
-const CircleLine = ({
-  startX,
-  startY,
-  lineLength,
-  circleDiameter,
-  spacing,
-  numCircles,
-}: {
-  startX: number;
-  startY: number;
-  lineLength: number;
-  circleDiameter: number;
-  spacing: number;
-  numCircles: number;
-}) => {
-  const totalCirclesLength = numCircles * circleDiameter;
-  const totalSpacingLength = (numCircles - 1) * spacing;
-  const offset = (lineLength - (totalCirclesLength + totalSpacingLength)) / 2;
-
-  const circles = [];
-  for (let i = 0; i < numCircles; i++) {
-    const x =
-      startX + offset + i * (circleDiameter + spacing) + circleDiameter / 2;
-    const y = startY + circleDiameter / 2; // Tọa độ y giữa đường thẳng
-    circles.push(
-      <Circle key={i} x={x} y={y} radius={circleDiameter / 2} fill="blue" />,
-    );
-  }
-
-  return (
-    <Group>
-      <Line
-        points={[
-          startX,
-          startY + circleDiameter / 2,
-          startX + lineLength,
-          startY + circleDiameter / 2,
-        ]}
-        stroke="black"
-        strokeWidth={2}
-      />
-      {circles}
-    </Group>
-  );
-};
 
 export const CommandConnectNode = ({
   commands,
@@ -81,19 +33,48 @@ export const CommandConnectNode = ({
   return (
     <Group x={x} y={elementStart}>
       {element.value.outputs.map((output, index) => {
+        const center = circleRadius / 2;
+        const [{ endX, endY }, setConnectionLine] = useState({
+          endX: 0,
+          endY: 0,
+        });
+
+        const setPos = (x?: number, y?: number) =>
+          setConnectionLine({ endX: x ? x : center, endY: y ? y : center });
+        
+        useEffect(() => {
+          setPos();
+        }, []);
+
         return (
           <Group x={0} y={index * (circleRadius + spacingElement)} key={index}>
             <Circle
-              x={circleRadius / 2}
-              y={circleRadius / 2}
-              radius={circleRadius / 2}
+              x={center}
+              y={center}
+              radius={center}
               fill={'white'}
+              onClick={() => setPos}
             />
             <AutoCurvedLine
-              startX={circleRadius / 2}
-              startY={circleRadius / 2}
-              endX={500}
-              endY={500}
+              startX={center}
+              startY={center}
+              endX={endX}
+              endY={endY}
+            />
+            <Circle
+              x={endX}
+              y={endY}
+              radius={center}
+              fill={'white'}
+              draggable
+              onDragMove={(e) => {
+                e.cancelBubble = true;
+                setPos(e.target.position().x, e.target.position().y);
+              }}
+              onDragEnd={(e) => {
+                e.cancelBubble = true;
+                setPos();
+              }}
             />
           </Group>
         );
@@ -134,6 +115,7 @@ export const AutoCurvedLine = ({
       strokeWidth={4}
       lineCap="round"
       bezier={true}
+      listening={false}
     />
   );
 };
@@ -211,14 +193,27 @@ export const CommandBody = ({
 );
 
 export function InteractCard({
+  index: key,
   command,
+  replaceFunction,
   children,
 }: {
+  index: number;
   command: Command;
+  replaceFunction: (command: Command, index: number) => void;
   children: React.ReactNode;
 }) {
+  const handleDragEnd = useCallback(
+    (e: KonvaEventObject<DragEvent>) => {
+      const x = e.target.position().x;
+      const y = e.target.position().y;
+      replaceFunction({ ...command, x, y }, key);
+    },
+    [command, key, replaceFunction],
+  );
+
   return (
-    <Group x={command.x} y={command.y}>
+    <Group x={command.x} y={command.y} draggable onDragEnd={handleDragEnd}>
       {children}
     </Group>
   );

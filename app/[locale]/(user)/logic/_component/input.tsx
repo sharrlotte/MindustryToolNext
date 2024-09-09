@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useCallback, useState } from "react";
-import { InputType } from "../command";
+import React, { useCallback, useState } from 'react';
+import { InputType } from '../command';
 
 export type Position = {
   x: number;
   y: number;
   width?: number;
+  height?: number;
 };
 
 type submitFunction = (value: string, displayValue?: string) => void;
@@ -16,8 +17,19 @@ type ValueEditorDefaultProp = {
   onSubmit: submitFunction;
 };
 
-function TextEditorView({ position, onSubmit }: ValueEditorDefaultProp) {
-  const [inputValue, setInputValue] = useState('');
+function TextEditorView({
+  position,
+  defaultValue,
+  onSubmit,
+}: ValueEditorDefaultProp) {
+  const [inputValue, setInputValue] = useState<string>(defaultValue);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const regex = /^[a-zA-Z0-9@_\-'""]*$/;
+    if (regex.test(e.target.value)) {
+      setInputValue(e.target.value);
+    }
+  };
 
   const handleSubmit = useCallback(() => {
     onSubmit(inputValue);
@@ -38,10 +50,14 @@ function TextEditorView({ position, onSubmit }: ValueEditorDefaultProp) {
       <input
         type="text"
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        className="w-full p-1 mb-1 text-[13px]"
+        onChange={handleInputChange}
+        className="mb-1 w-full p-1"
+        style={{
+          fontSize: `${position.height ? position.height - 8 : 13}px`,
+          height: `${position.height ? position.height : 0}px`,
+        }}
       />
-      <button onClick={handleSubmit} className="w-full bg-brand rounded-xl">
+      <button onClick={handleSubmit} className="w-full rounded-xl bg-brand">
         Xác nhận
       </button>
     </div>

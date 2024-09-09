@@ -145,7 +145,7 @@ export default function LogicDisplay({
 
   return (
     <div className="h-full w-full">
-      <h3 className="fixed left-10 top-1.5">{`Pos: ${position.posx}, ${position.posy} Zoom: x${(1 / position.scale).toFixed(2)}`}</h3>
+      <h3 className="fixed left-10 top-1.5">{`Pos: ${-position.posx}, ${-position.posy} Zoom: x${(1 / position.scale).toFixed(2)}`}</h3>
       <Stage
         width={position.windowWidth}
         height={position.windowHeight}
