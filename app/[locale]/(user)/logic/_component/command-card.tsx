@@ -8,6 +8,7 @@ import {
   CommandHeader,
   CommandBody,
   CommandField,
+  CommandConnectNode,
 } from './konva';
 import { selectInputProps } from '../editor';
 import { Position } from './logic';
@@ -80,7 +81,7 @@ export default function CommandCard({
           >
             {element.value.fields.map((field, fIndex) => {
               if (field.linkedOutput) {
-                return <Group></Group>;
+                return <Group key={fIndex}></Group>;
               } else {
                 return (
                   <CommandField
@@ -132,7 +133,12 @@ export default function CommandCard({
               }
             })}
           </CommandBody>
-          
+          <CommandConnectNode
+            commands={commands}
+            element={element}
+            elementHeigh={calculateFullHeigh(element.value.rows)}
+            x={width + doublePadding}
+          />
         </InteractCard>
       ))}
     </Layer>

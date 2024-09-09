@@ -63,34 +63,34 @@ export const CommandConnectNode = ({
   commands,
   element,
   elementHeigh,
+  x,
 }: {
   commands: Command[];
   element: Command;
   elementHeigh: number;
+  x: number;
 }) => {
-  const circleRadius = 40;
-  const spacingElement = 10;
+  const circleRadius = 20;
+  const spacingElement = 5;
   const totalElementHeigh =
     element.value.outputs.length * (circleRadius + spacingElement) -
     spacingElement;
   const elementStart = (elementHeigh - totalElementHeigh) / 2;
 
   return (
-    <Group x={width + doublePadding} y={elementStart}>
+    <Group x={x} y={elementStart}>
       {element.value.outputs.map((output, index) => {
         return (
-          <Group
-            x={0}
-            y={index * (circleRadius + spacingElement)}
-            key={index}
-          >
-            
-
-
+          <Group x={0} y={index * (circleRadius + spacingElement)} key={index}>
+            <Circle
+              x={circleRadius / 2}
+              y={circleRadius / 2}
+              radius={circleRadius / 2}
+              fill={'white'}
+            />
           </Group>
         );
       })}
-      ;
     </Group>
   );
 };

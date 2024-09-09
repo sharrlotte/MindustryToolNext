@@ -49,7 +49,7 @@ const defaultSettings: Command = {
     rows: 0,
     columns: 0,
     fields: [],
-    outputs: [{key: 0, value: -1}],
+    outputs: [{ key: 0, value: -1 }],
   },
 };
 
@@ -65,6 +65,7 @@ export const start: Command = {
 const read: Command = {
   ...defaultSettings,
   value: {
+    ...defaultSettings.value,
     name: 'Read',
     color: '#9E7FB3',
     rows: 2,
@@ -88,13 +89,13 @@ const read: Command = {
         placeHolderWidth: 30,
       },
     ],
-    outputs: [],
   },
 };
 
 const write: Command = {
   ...defaultSettings,
   value: {
+    ...defaultSettings.value,
     name: 'Write',
     color: '#9E7FB3',
     rows: 2,
@@ -118,7 +119,6 @@ const write: Command = {
         placeHolderWidth: 30,
       },
     ],
-    outputs: [],
   },
 };
 
