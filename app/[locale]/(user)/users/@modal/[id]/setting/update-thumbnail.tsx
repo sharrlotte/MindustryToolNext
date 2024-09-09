@@ -29,7 +29,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
         : data?.thumbnail
           ? `${data.thumbnail}.png`
           : undefined,
-    [file],
+    [file, data?.thumbnail],
   );
 
   function handleFilePick(event: React.ChangeEvent<HTMLInputElement>) {
