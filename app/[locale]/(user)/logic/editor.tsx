@@ -6,7 +6,7 @@ import LogicDisplay from './_component/logic';
 import Command, { InputType } from './command';
 import { useState, useCallback } from 'react';
 
-export type selectInuptProps = {
+export type selectInputProps = {
   commandIndex: number;
   fieldIndex: number;
   defaultValue: string;
@@ -21,10 +21,17 @@ export default function Editor() {
   const [commands, setCommands] = useState<Command[]>([]);
 
   const addCommand = useCallback((command: Command) => {
-    setCommands((prevCommands) => {
-      const newCommands = [...prevCommands, { ...command, x: 0, y: 0 }];
-      return newCommands;
-    });
+    const newCommand = {
+      ...command,
+      value: {
+        ...command.value,
+        fields: command.value.fields.map((field) => ({ ...field })),
+        outputs: command.value.outputs.map((output) => ({ ...output })),
+      },
+      x: 0,
+      y: 0,
+    };
+    setCommands((prevCommands) => [...prevCommands, newCommand]);
   }, []);
 
   const deleteCommand = useCallback(
@@ -53,8 +60,21 @@ export default function Editor() {
   const updateCommand = useCallback(
     (cIndex: number, callback: (c: Command) => Command) => {
       setCommands((prev) => {
-        prev[cIndex] = callback(prev[cIndex]);
-        return prev;
+        const newCommands = [...prev];
+        if (newCommands[cIndex]) {
+          const updatedCommand = callback(newCommands[cIndex]);
+          // Ensure deep copy of fields
+          newCommands[cIndex] = {
+            ...updatedCommand,
+            value: {
+              ...updatedCommand.value,
+              fields: updatedCommand.value.fields.map((field) => ({
+                ...field,
+              })),
+            },
+          };
+        }
+        return newCommands;
       });
     },
     [],
@@ -83,6 +103,31 @@ export default function Editor() {
   }>({ commandIndex: null, fieldIndex: null });
 
   const [input, setInput] = useState<InputControlProp | null>(null);
+  const onSubmit = useCallback(
+    (value: string, displayValue?: string) => {
+      setInputKeys((prev) => {
+        if (prev.commandIndex !== null && prev.fieldIndex !== null) {
+          const cIndex = prev.commandIndex;
+          const fIndex = prev.fieldIndex;
+          updateCommand(cIndex, (command) => {
+            const newFields = [...command.value.fields];
+            newFields[fIndex] = {
+              ...newFields[fIndex],
+              value: value,
+              displayValue: displayValue,
+            };
+            return {
+              ...command,
+              value: { ...command.value, fields: newFields },
+            };
+          });
+          setInput(null);
+        }
+        return { commandIndex: null, fieldIndex: null };
+      });
+    },
+    [updateCommand],
+  );
 
   const selectInput = useCallback(
     ({
@@ -93,8 +138,8 @@ export default function Editor() {
       x,
       y,
       width,
-      height,
-    }: selectInuptProps) => {
+      height
+    }: selectInputProps) => {
       setInput({
         position: {
           x: x,
@@ -112,26 +157,7 @@ export default function Editor() {
         fieldIndex: fieldIndex,
       });
     },
-    [],
-  );
-
-  const onSubmit = useCallback(
-    (value: string, displayValue?: string) => {
-      setInputKeys((prev) => {
-        if (prev.commandIndex !== null && prev.fieldIndex !== null) {
-          const cIndex = prev.commandIndex;
-          const fIndex = prev.fieldIndex;
-          updateCommand(cIndex, (command) => {
-            command.value.fields[fIndex].value = value;
-            command.value.fields[fIndex].displayValue = displayValue;
-            return command;
-          });
-          setInput(null);
-        }
-        return { commandIndex: null, fieldIndex: null };
-      });
-    },
-    [updateCommand],
+    [onSubmit],
   );
 
   return (

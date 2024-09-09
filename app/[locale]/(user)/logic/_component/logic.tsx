@@ -10,7 +10,7 @@ import React, {
 import { Stage, Layer, Rect, Line } from 'react-konva';
 import Command from '../command';
 import CommandCard from './command-card';
-import { selectInuptProps } from '../editor';
+import { selectInputProps } from '../editor';
 
 type LogicProp = {
   commands: Command[];
@@ -19,7 +19,18 @@ type LogicProp = {
   deleteCommand: (index: number) => void;
   replaceCommand: (command: Command, index: number) => void;
   copyCommand: (command: Command) => void;
-  selectInput: (arg0: selectInuptProps) => void;
+  selectInput: (arg0: selectInputProps) => void;
+};
+
+export type Position = {
+  windowWidth: number;
+  windowHeight: number;
+  posx: number;
+  posy: number;
+  scale: number;
+  lastDragX: number;
+  lastDragY: number;
+  drag: boolean;
 };
 
 export default function LogicDisplay({
@@ -29,9 +40,8 @@ export default function LogicDisplay({
   deleteCommand,
   replaceCommand,
   copyCommand,
-  selectInput
+  selectInput,
 }: LogicProp) {
-  
   const [position, setPosition] = useState({
     windowWidth: 0,
     windowHeight: 0,
@@ -135,7 +145,7 @@ export default function LogicDisplay({
 
   return (
     <div className="h-full w-full">
-      <h3 className="fixed left-10 top-1.5">{`Pos: ${position.posx}, ${position.posy} Zoom: x${(1 / position.scale).toFixed(2)}`}</h3>
+      <h3 className="fixed left-10 top-1.5">{`Pos: ${-position.posx}, ${-position.posy} Zoom: x${(1 / position.scale).toFixed(2)}`}</h3>
       <Stage
         width={position.windowWidth}
         height={position.windowHeight}
@@ -181,7 +191,7 @@ export default function LogicDisplay({
         </Layer>
         <CommandCard
           commands={commands}
-          scale={position.scale}
+          position={position}
           setCommands={setCommands}
           addCommand={addCommand}
           deleteCommand={deleteCommand}

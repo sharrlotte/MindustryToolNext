@@ -1,6 +1,6 @@
 'use client';
 
-import { Group, Rect, Text } from 'react-konva';
+import { Circle, Group, Line, Rect, Text } from 'react-konva';
 import Command, { FieldType } from '../command';
 import {
   doublePadding,
@@ -8,9 +8,143 @@ import {
   valueHeight,
   widthPadded,
 } from './command-card';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Copy, Delete } from './icon';
+
+// Component con để quản lý logic của từng vòng lặp
+const ConnectionPoint = ({
+  index,
+  circleRadius,
+  spacingElement,
+  command,
+  totalCommands,
+}: {
+  index: number;
+  circleRadius: number;
+  spacingElement: number;
+  command: Command;
+  totalCommands: number;
+}) => {
+  const center = circleRadius / 2;
+  const [{ endX, endY }, setConnectionLine] = useState({
+    endX: 0,
+    endY: 0,
+  });
+
+  const setPos = useCallback((x?: number, y?: number) => {
+    setConnectionLine({
+      endX: x !== undefined ? x : center,
+      endY: y !== undefined ? y : center,
+    });
+  }, [setConnectionLine, center]);
+
+  useEffect(() => {
+    setPos();
+  }, [setPos]);
+
+  
+
+  return (
+    <Group x={0} y={index * (circleRadius + spacingElement)} key={index}>
+      <Circle
+        x={center}
+        y={center}
+        radius={center}
+        fill={'white'}
+        onClick={() => setPos()} 
+      />
+      <AutoCurvedLine startX={center} startY={center} endX={endX} endY={endY} />
+      <Circle
+        x={endX}
+        y={endY}
+        radius={center}
+        fill={'white'}
+        draggable
+        onDragMove={(e) => {
+          e.cancelBubble = true;
+          const { x, y } = e.target.position();
+          setPos(x, y);
+        }}
+        onDragEnd={(e) => {
+          e.cancelBubble = true;
+          setPos();
+        }}
+      />
+    </Group>
+  );
+};
+
+export const CommandConnectNode = ({
+  commands,
+  element,
+  elementHeigh,
+  x,
+}: {
+  commands: Command[];
+  element: Command;
+  elementHeigh: number;
+  x: number;
+}) => {
+  const circleRadius = 20;
+  const spacingElement = 5;
+  const totalElementHeigh =
+    element.value.outputs.length * (circleRadius + spacingElement) -
+    spacingElement;
+  const elementStart = (elementHeigh - totalElementHeigh) / 2;
+
+  return (
+    <Group x={x} y={elementStart}>
+      {element.value.outputs.map((output, index) => (
+        <ConnectionPoint
+          key={index}
+          index={index}
+          circleRadius={circleRadius}
+          spacingElement={spacingElement}
+          command={element}
+          totalCommands={commands.length}
+        />
+      ))}
+    </Group>
+  );
+};
+
+export const AutoCurvedLine = ({
+  startX,
+  startY,
+  endX,
+  endY,
+}: {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+}) => {
+  const controlPointX1 = (startX + endX) / 2;
+  const controlPointY1 = startY;
+  const controlPointX2 = (startX + endX) / 2;
+  const controlPointY2 = endY;
+
+  return (
+    <Line
+      points={[
+        startX,
+        startY,
+        controlPointX1,
+        controlPointY1,
+        controlPointX2,
+        controlPointY2,
+        endX,
+        endY,
+      ]}
+      stroke="white"
+      strokeWidth={4}
+      lineCap="round"
+      bezier={true}
+      listening={false}
+    />
+  );
+};
 
 export const CommandField = ({
   x,
@@ -18,8 +152,6 @@ export const CommandField = ({
   fieldSize,
   color,
   field,
-  commandIndex,
-  fieldIndex,
   onClickField,
 }: {
   x: number;
@@ -27,9 +159,7 @@ export const CommandField = ({
   fieldSize: number;
   color: string;
   field: FieldType;
-  commandIndex: number;
-  fieldIndex: number;
-  onClickField: (cIndex: number, fIndex: number) => void;
+  onClickField: () => void;
 }) => (
   <Group x={x} y={y}>
     <Text
@@ -63,7 +193,7 @@ export const CommandField = ({
       width={fieldSize - padding - field.placeHolderWidth}
       height={valueHeight - padding}
       onClick={() => {
-        onClickField(commandIndex, fieldIndex);
+        onClickField();
       }}
     />
   </Group>
@@ -130,7 +260,7 @@ export const CommandHeader = ({
     <Text
       x={padding}
       y={2}
-      text={command.value.name}
+      text={`${command.value.name} - ${command.x.toFixed(0)}, ${command.y.toFixed(0)}`}
       fill={'white'}
       fontSize={18}
     />
