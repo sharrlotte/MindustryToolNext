@@ -18,8 +18,6 @@ export const CommandField = ({
   fieldSize,
   color,
   field,
-  commandIndex,
-  fieldIndex,
   onClickField,
 }: {
   x: number;
@@ -27,9 +25,7 @@ export const CommandField = ({
   fieldSize: number;
   color: string;
   field: FieldType;
-  commandIndex: number;
-  fieldIndex: number;
-  onClickField: (cIndex: number, fIndex: number) => void;
+  onClickField: () => void;
 }) => (
   <Group x={x} y={y}>
     <Text
@@ -63,7 +59,7 @@ export const CommandField = ({
       width={fieldSize - padding - field.placeHolderWidth}
       height={valueHeight - padding}
       onClick={() => {
-        onClickField(commandIndex, fieldIndex);
+        onClickField();
       }}
     />
   </Group>
@@ -130,7 +126,7 @@ export const CommandHeader = ({
     <Text
       x={padding}
       y={2}
-      text={command.value.name}
+      text={`${command.value.name} - ${command.x.toFixed(0)}, ${command.y.toFixed(0)}`}
       fill={'white'}
       fontSize={18}
     />

@@ -26,8 +26,8 @@ export interface FieldType {
   readonly placeHolderWidth: number; // px, not %!
   readonly inputType: InputType;
   readonly linkedOutput?: number;
-  value: string;
-  displayValue?: string | CommandValue;
+  value: string | CommandValue;
+  displayValue?: string;
 }
 
 const defaultField: FieldType = {

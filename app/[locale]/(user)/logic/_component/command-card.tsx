@@ -3,8 +3,14 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import Command from '../command';
 import { Layer, Rect } from 'react-konva';
-import { InteractCard, CommandHeader, CommandBody, CommandField } from './konva';
+import {
+  InteractCard,
+  CommandHeader,
+  CommandBody,
+  CommandField,
+} from './konva';
 import { selectInuptProps } from '../editor';
+import { Position } from './logic';
 
 export const padding = 5;
 export const doublePadding = padding * 2;
@@ -21,7 +27,7 @@ const calculateFullHeigh = (rows: number) =>
 
 type CommandCardProp = {
   commands: Command[];
-  scale: number;
+  position: Position;
   setCommands: Dispatch<SetStateAction<Command[]>>;
   addCommand: (command: Command) => void;
   deleteCommand: (index: number) => void;
@@ -32,11 +38,14 @@ type CommandCardProp = {
 
 export default function CommandCard({
   commands,
+  position,
   deleteCommand,
   replaceCommand,
   copyCommand,
-  selectInput
+  selectInput,
 }: CommandCardProp) {
+  const calculatePosition = (pos: number, element: number) =>
+    (element - (-pos / position.scale)) * position.scale;
 
   return (
     <Layer>
@@ -83,10 +92,29 @@ export default function CommandCard({
                 }
                 color={element.value.color}
                 field={field}
-                commandIndex={index}
-                fieldIndex={fIndex}
                 onClickField={() => {
-                  console.log('meow');
+                  const value =
+                    typeof field.value === 'string' ? field.value : '';
+                  selectInput({
+                    commandIndex: index,
+                    fieldIndex: fIndex,
+                    defaultValue: field.displayValue
+                      ? field.displayValue
+                      : value,
+                    inputType: field.inputType,
+                    x: calculatePosition(
+                      position.posx,
+                      element.x + field.placeHolderWidth + padding,
+                    ),
+                    y: calculatePosition(
+                      position.posy,
+                      element.y + headerHeight + padding,
+                    ),
+                    width:
+                      field.fieldSize * (widthPadded / element.value.columns) -
+                      field.placeHolderWidth -
+                      padding,
+                  });
                 }}
               />
             ))}
@@ -96,4 +124,3 @@ export default function CommandCard({
     </Layer>
   );
 }
-

@@ -22,6 +22,17 @@ type LogicProp = {
   selectInput: (arg0: selectInuptProps) => void;
 };
 
+export type Position = {
+  windowWidth: number;
+  windowHeight: number;
+  posx: number;
+  posy: number;
+  scale: number;
+  lastDragX: number;
+  lastDragY: number;
+  drag: boolean;
+};
+
 export default function LogicDisplay({
   commands,
   setCommands,
@@ -29,9 +40,8 @@ export default function LogicDisplay({
   deleteCommand,
   replaceCommand,
   copyCommand,
-  selectInput
+  selectInput,
 }: LogicProp) {
-  
   const [position, setPosition] = useState({
     windowWidth: 0,
     windowHeight: 0,
@@ -178,10 +188,18 @@ export default function LogicDisplay({
             fill={'yellow'}
             draggable
           />
+          <Rect
+            x={700}
+            y={100}
+            width={200}
+            height={200}
+            fill={'yellow'}
+            draggable
+          />
         </Layer>
         <CommandCard
           commands={commands}
-          scale={position.scale}
+          position={position}
           setCommands={setCommands}
           addCommand={addCommand}
           deleteCommand={deleteCommand}

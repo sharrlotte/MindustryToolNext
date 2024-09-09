@@ -34,16 +34,15 @@ function TextEditorView({ position, onSubmit }: ValueEditorDefaultProp) {
         top: `${top}px`,
         left: `${position.x}px`,
         width: `${position.width ? position.width : 0}px`,
-        height: `${position.height ? position.height : 0}px`,
       }}
     >
       <input
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        style={{ width: '100%', padding: '5px', marginBottom: '10px' }}
+        className="w-full p-1 mb-1 text-[13px]"
       />
-      <button onClick={handleSubmit} style={{ width: '100%' }}>
+      <button onClick={handleSubmit} className="w-full bg-brand rounded-xl">
         Xác nhận
       </button>
     </div>
