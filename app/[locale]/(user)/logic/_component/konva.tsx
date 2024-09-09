@@ -1,16 +1,99 @@
 'use client';
 
-import { Group, Rect, Text } from 'react-konva';
+import { Circle, Group, Line, Rect, Text } from 'react-konva';
 import Command, { FieldType } from '../command';
 import {
   doublePadding,
   padding,
   valueHeight,
+  width,
   widthPadded,
 } from './command-card';
 import { useCallback } from 'react';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Copy, Delete } from './icon';
+
+const CircleLine = ({
+  startX,
+  startY,
+  lineLength,
+  circleDiameter,
+  spacing,
+  numCircles,
+}: {
+  startX: number;
+  startY: number;
+  lineLength: number;
+  circleDiameter: number;
+  spacing: number;
+  numCircles: number;
+}) => {
+  const totalCirclesLength = numCircles * circleDiameter;
+  const totalSpacingLength = (numCircles - 1) * spacing;
+  const offset = (lineLength - (totalCirclesLength + totalSpacingLength)) / 2;
+
+  const circles = [];
+  for (let i = 0; i < numCircles; i++) {
+    const x =
+      startX + offset + i * (circleDiameter + spacing) + circleDiameter / 2;
+    const y = startY + circleDiameter / 2; // Tọa độ y giữa đường thẳng
+    circles.push(
+      <Circle key={i} x={x} y={y} radius={circleDiameter / 2} fill="blue" />,
+    );
+  }
+
+  return (
+    <Group>
+      <Line
+        points={[
+          startX,
+          startY + circleDiameter / 2,
+          startX + lineLength,
+          startY + circleDiameter / 2,
+        ]}
+        stroke="black"
+        strokeWidth={2}
+      />
+      {circles}
+    </Group>
+  );
+};
+
+export const CommandConnectNode = ({
+  commands,
+  element,
+  elementHeigh,
+}: {
+  commands: Command[];
+  element: Command;
+  elementHeigh: number;
+}) => {
+  const circleRadius = 40;
+  const spacingElement = 10;
+  const totalElementHeigh =
+    element.value.outputs.length * (circleRadius + spacingElement) -
+    spacingElement;
+  const elementStart = (elementHeigh - totalElementHeigh) / 2;
+
+  return (
+    <Group x={width + doublePadding} y={elementStart}>
+      {element.value.outputs.map((output, index) => {
+        return (
+          <Group
+            x={0}
+            y={index * (circleRadius + spacingElement)}
+            key={index}
+          >
+            
+
+
+          </Group>
+        );
+      })}
+      ;
+    </Group>
+  );
+};
 
 export const CommandField = ({
   x,

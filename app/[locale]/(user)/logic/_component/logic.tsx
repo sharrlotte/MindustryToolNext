@@ -188,14 +188,6 @@ export default function LogicDisplay({
             fill={'yellow'}
             draggable
           />
-          <Rect
-            x={700}
-            y={100}
-            width={200}
-            height={200}
-            fill={'yellow'}
-            draggable
-          />
         </Layer>
         <CommandCard
           commands={commands}

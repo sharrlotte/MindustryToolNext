@@ -92,7 +92,37 @@ const read: Command = {
   },
 };
 
+const write: Command = {
+  ...defaultSettings,
+  value: {
+    name: 'Write',
+    color: '#9E7FB3',
+    rows: 2,
+    columns: 2,
+    fields: [
+      {
+        ...defaultField,
+        placeHolder: 'write',
+        placeHolderWidth: 40,
+      },
+      {
+        ...defaultField,
+        x: 1,
+        placeHolder: '=',
+        placeHolderWidth: 30,
+      },
+      {
+        ...defaultField,
+        y: 1,
+        placeHolder: 'at',
+        placeHolderWidth: 30,
+      },
+    ],
+    outputs: [],
+  },
+};
+
 export const CommandList: { key: string; value: Command[] }[] = [
   { key: 'Start commands', value: [start] },
-  { key: 'IO control', value: [read] },
+  { key: 'IO control', value: [read, write] },
 ];

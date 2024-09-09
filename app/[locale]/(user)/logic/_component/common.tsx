@@ -21,7 +21,7 @@ export function AddingElement({
         {CommandList.map((child, index) => (
           <li key={index} className="m-0 mb-2 w-full rounded-xl bg-[#333a] p-1">
             <p className="p-1 pl-6">{child.key}</p>
-            <div className="flex w-full flex-wrap">
+            <div className="flex w-full flex-wrap gap-2">
               {child.value.map((command, idx) => (
                 <p
                   key={index + '' + idx}
