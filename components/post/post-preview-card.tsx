@@ -29,12 +29,12 @@ export default function PostPreviewCard({
     <div
       style={{ backgroundImage: `url(${firstImage})` }}
       className={cn(
-        'relative flex flex-col rounded-lg border border-border bg-cover bg-center',
+        'relative flex flex-col rounded-lg border border-border bg-cover bg-center overflow-hidden',
         className,
       )}
       {...rest}
     >
-      <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-brightness-50 backdrop-blur-sm">
+      <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-brightness-50 backdrop-blur-sm overflow-hidden">
         <Link href={`/posts/${post.id}`}>
           <span className="flex text-2xl">{post.title}</span>
         </Link>
