@@ -49,7 +49,7 @@ const defaultSettings: Command = {
     rows: 0,
     columns: 0,
     fields: [],
-    outputs: [],
+    outputs: [{key: 0, value: -1}],
   },
 };
 
@@ -74,6 +74,18 @@ const read: Command = {
         ...defaultField,
         placeHolder: 'read',
         placeHolderWidth: 40,
+      },
+      {
+        ...defaultField,
+        x: 1,
+        placeHolder: '=',
+        placeHolderWidth: 30,
+      },
+      {
+        ...defaultField,
+        y: 1,
+        placeHolder: 'at',
+        placeHolderWidth: 30,
       },
     ],
     outputs: [],

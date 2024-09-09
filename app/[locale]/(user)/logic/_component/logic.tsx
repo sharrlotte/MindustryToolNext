@@ -10,7 +10,7 @@ import React, {
 import { Stage, Layer, Rect, Line } from 'react-konva';
 import Command from '../command';
 import CommandCard from './command-card';
-import { selectInuptProps } from '../editor';
+import { selectInputProps } from '../editor';
 
 type LogicProp = {
   commands: Command[];
@@ -19,7 +19,7 @@ type LogicProp = {
   deleteCommand: (index: number) => void;
   replaceCommand: (command: Command, index: number) => void;
   copyCommand: (command: Command) => void;
-  selectInput: (arg0: selectInuptProps) => void;
+  selectInput: (arg0: selectInputProps) => void;
 };
 
 export type Position = {
