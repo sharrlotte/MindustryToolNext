@@ -33,7 +33,6 @@ function TextEditorView({
 
   const handleSubmit = useCallback(() => {
     onSubmit(inputValue);
-    console.log(inputValue);
   }, [inputValue, onSubmit]);
 
   const top = position.y + 40;
@@ -56,6 +55,7 @@ function TextEditorView({
           fontSize: `${position.height ? position.height - 8 : 13}px`,
           height: `${position.height ? position.height : 0}px`,
         }}
+        onBlur={handleSubmit}
       />
       <button onClick={handleSubmit} className="w-full rounded-xl bg-brand">
         Xác nhận

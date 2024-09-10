@@ -1,7 +1,7 @@
 'use client';
 
 import { Circle, Group, Line, Rect, Text } from 'react-konva';
-import Command, { FieldType } from '../command';
+import Command, { CommandValue, FieldType } from '../command';
 import {
   doublePadding,
   padding,
@@ -12,7 +12,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Copy, Delete } from './icon';
 
-// Component con để quản lý logic của từng vòng lặp
 const ConnectionPoint = ({
   index,
   circleRadius,
@@ -175,7 +174,7 @@ export const CommandField = ({
       width={fieldSize - padding - field.placeHolderWidth}
       height={valueHeight - padding}
       fill={color}
-      cornerRadius={5}
+      cornerRadius={2}
     />
     <Text
       x={field.placeHolderWidth + padding}
@@ -246,21 +245,21 @@ export function InteractCard({
 }
 
 export const CommandHeader = ({
-  command,
+  value,
   index,
   onCopy,
   onDelete,
 }: {
-  command: Command;
+  value: CommandValue;
   index: number;
-  onCopy: (command: Command) => void;
+  onCopy: (index: number) => void;
   onDelete: (index: number) => void;
 }) => (
   <Group x={padding} y={padding}>
     <Text
       x={padding}
       y={2}
-      text={`${command.value.name} - ${command.x.toFixed(0)}, ${command.y.toFixed(0)}`}
+      text={value.name}
       fill={'white'}
       fontSize={18}
     />
@@ -278,7 +277,7 @@ export const CommandHeader = ({
       size={16}
       strokeWidth={2}
       fill="black"
-      onClick={() => onCopy(command)}
+      onClick={() => onCopy(index)}
     />
   </Group>
 );

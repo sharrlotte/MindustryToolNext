@@ -1,17 +1,10 @@
 'use client';
 
-import React, { Dispatch, SetStateAction } from 'react';
-import Command from '../command';
-import { Group, Layer, Rect } from 'react-konva';
-import {
-  InteractCard,
-  CommandHeader,
-  CommandBody,
-  CommandField,
-  CommandConnectNode,
-} from './konva';
+import React, { useMemo, useCallback } from 'react';
+import { Group, Rect, Text, Circle, Line } from 'react-konva';
+import Command, { CommandValue, FieldType } from '../command';
 import { selectInputProps } from '../editor';
-import { Position } from './logic';
+import { Position } from '../logic';
 
 export const padding = 5;
 export const doublePadding = padding * 2;
@@ -21,130 +14,173 @@ export const valueHeight = 30;
 export const emptyValueListHeight = 20;
 export const widthPadded = width - doublePadding;
 
-const calculateValueHeigh = (rows: number) =>
+const calculateValueHeight = (rows: number) =>
   rows === 0 ? emptyValueListHeight : valueHeight * rows;
-export const calculateFullHeigh = (rows: number) =>
-  calculateValueHeigh(rows) + headerHeight + doublePadding;
+
+export const calculateFullHeight = (rows: number) =>
+  calculateValueHeight(rows) + headerHeight + doublePadding;
 
 type CommandCardProp = {
-  commands: Command[];
+  elementValue: CommandValue;
+  index: number;
   position: Position;
-  setCommands: Dispatch<SetStateAction<Command[]>>;
-  addCommand: (command: Command) => void;
   deleteCommand: (index: number) => void;
-  replaceCommand: (command: Command, index: number) => void;
-  copyCommand: (command: Command) => void;
+  copyCommand: (index: number) => void;
   selectInput: (arg0: selectInputProps) => void;
+  findCommandByIndex: (index: number) => Command;
 };
 
 export default function CommandCard({
-  commands,
+  elementValue,
+  index,
   position,
   deleteCommand,
-  replaceCommand,
   copyCommand,
   selectInput,
+  findCommandByIndex,
 }: CommandCardProp) {
-  const calculatePosition = (pos: number, element: number) =>
-    (element - -pos / position.scale) * position.scale;
+  const calculatePosition = useMemo(
+    () => (pos: number, element: number) =>
+      (element + pos / position.scale) * position.scale,
+    [position.scale],
+  );
+
+  const handleFieldClick = useMemo(
+    () => (field: any, fIndex: number) => {
+      const value = typeof field.value === 'string' ? field.value : '';
+      selectInput({
+        commandIndex: index,
+        fieldIndex: fIndex,
+        defaultValue: field.displayValue ? field.displayValue : value,
+        inputType: field.inputType,
+        x: calculatePosition(
+          position.posx,
+          findCommandByIndex(index).x +
+            field.placeHolderWidth +
+            padding +
+            field.x * (widthPadded / elementValue.columns),
+        ),
+        y: calculatePosition(
+          position.posy,
+          findCommandByIndex(index).y +
+            headerHeight +
+            padding +
+            field.y * valueHeight,
+        ),
+        width:
+          (field.fieldSize * (widthPadded / elementValue.columns) -
+            field.placeHolderWidth -
+            padding) *
+          (position.scale < 1 ? 1 : position.scale),
+        height:
+          (valueHeight - padding) * (position.scale < 1 ? 1 : position.scale),
+      });
+    },
+    [
+      calculatePosition,
+      elementValue.columns,
+      findCommandByIndex,
+      index,
+      position.posx,
+      position.posy,
+      position.scale,
+      selectInput,
+    ],
+  );
 
   return (
-    <Layer>
-      {commands.map((element, index) => (
-        <InteractCard
-          key={index}
-          index={index}
-          command={element}
-          replaceFunction={replaceCommand}
-        >
-          <Rect
-            width={width}
-            height={calculateFullHeigh(element.value.rows)}
-            fill={element.value.color}
-            cornerRadius={10}
-            stroke="black"
-            strokeWidth={2}
-          />
-
-          <CommandHeader
-            command={element}
-            index={index}
-            onCopy={copyCommand}
-            onDelete={deleteCommand}
-          />
-
-          <CommandBody
-            x={padding}
-            y={headerHeight}
-            width={widthPadded}
-            height={calculateValueHeigh(element.value.rows) + padding}
+    <Group>
+      <Rect
+        width={width}
+        height={calculateFullHeight(elementValue.rows)}
+        fill={elementValue.color}
+        cornerRadius={padding}
+        stroke="black"
+        strokeWidth={1}
+      />
+      <Group x={padding} y={padding}>
+        <Text
+          x={padding}
+          y={2}
+          text={elementValue.name}
+          fill={'white'}
+          fontSize={18}
+        />
+        <Rect
+          x={widthPadded - 20}
+          y={2}
+          width={16}
+          height={16}
+          fill={'red'}
+          cornerRadius={5}
+          onClick={() => deleteCommand(index)}
+        />
+        <Rect
+          x={widthPadded - 40}
+          y={2}
+          width={16}
+          height={16}
+          cornerRadius={5}
+          fill={'green'}
+          onClick={() => copyCommand(index)}
+        />
+      </Group>
+      <Group
+        x={padding}
+        y={headerHeight}
+        width={widthPadded}
+        height={calculateValueHeight(elementValue.rows) + padding}
+      >
+        <Rect
+          width={widthPadded}
+          height={calculateValueHeight(elementValue.rows) + padding}
+          fill={'#0009'}
+          cornerRadius={5}
+        />
+        {elementValue.fields.map((field, fIndex) => (
+          <Group
+            key={fIndex}
+            x={field.x * field.fieldSize * (widthPadded / elementValue.columns)}
+            y={field.y * valueHeight}
           >
-            {element.value.fields.map((field, fIndex) => {
-              if (field.linkedOutput) {
-                return <Group key={fIndex}></Group>;
-              } else {
-                return (
-                  <CommandField
-                    key={fIndex}
-                    x={
-                      field.x *
-                      field.fieldSize *
-                      (widthPadded / element.value.columns)
-                    }
-                    y={field.y * valueHeight}
-                    fieldSize={
-                      field.fieldSize * (widthPadded / element.value.columns)
-                    }
-                    color={element.value.color}
-                    field={field}
-                    onClickField={() => {
-                      const value =
-                        typeof field.value === 'string' ? field.value : '';
-                      selectInput({
-                        commandIndex: index,
-                        fieldIndex: fIndex,
-                        defaultValue: field.displayValue
-                          ? field.displayValue
-                          : value,
-                        inputType: field.inputType,
-                        x: calculatePosition(
-                          position.posx,
-                          element.x +
-                            field.placeHolderWidth +
-                            padding +
-                            field.x * (widthPadded / element.value.columns),
-                        ),
-                        y: calculatePosition(
-                          position.posy,
-                          element.y +
-                            headerHeight +
-                            padding +
-                            field.y * valueHeight,
-                        ),
-                        width:
-                          (field.fieldSize *
-                            (widthPadded / element.value.columns) -
-                            field.placeHolderWidth -
-                            padding) *
-                          (position.scale < 1 ? 1 : position.scale),
-                        height:
-                          (valueHeight - padding) *
-                          (position.scale < 1 ? 1 : position.scale),
-                      });
-                    }}
-                  />
-                );
+            <Text
+              x={padding}
+              y={doublePadding + 2}
+              fontSize={14}
+              text={field.placeHolder}
+              fill="white"
+            />
+            <Rect
+              x={field.placeHolderWidth}
+              y={padding}
+              width={
+                field.fieldSize * (widthPadded / elementValue.columns) -
+                padding -
+                field.placeHolderWidth
               }
-            })}
-          </CommandBody>
-          <CommandConnectNode
-            commands={commands}
-            element={element}
-            elementHeigh={calculateFullHeigh(element.value.rows)}
-            x={width + doublePadding}
-          />
-        </InteractCard>
-      ))}
-    </Layer>
+              height={valueHeight - padding}
+              fill={elementValue.color}
+              cornerRadius={2}
+              onClick={() => handleFieldClick(field, fIndex)}
+            />
+            <Text
+              x={field.placeHolderWidth + padding}
+              y={doublePadding + 5}
+              width={
+                field.fieldSize * (widthPadded / elementValue.columns) -
+                doublePadding -
+                field.placeHolderWidth
+              }
+              fill={'white'}
+              fontSize={14}
+              height={11}
+              text={`${field.displayValue ? field.displayValue : field.value}`}
+              listening={false}
+              ellipsis={true}
+            />
+          </Group>
+        ))}
+      </Group>
+    </Group>
   );
 }
