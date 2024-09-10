@@ -314,7 +314,7 @@ const ConnectionPoint = ({
 
       return commands;
     });
-  }, [commands, setCommands, setWirePos]);
+  }, [commands, setCommands, setWirePos, cIndex, calculateNowX, calculateNowY, oIndex]);
 
   return (
     <Group x={0} y={calculateConnectHeigh(oIndex)}>
