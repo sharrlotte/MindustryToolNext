@@ -10,22 +10,22 @@ export function AddingElement({
   const [isVisible, setIsVisible] = useState(true);
 
   return (
-    <div className="w-full gap-2 rounded-xl bg-[#555] p-2">
+    <div className="w-full rounded-md bg-[#555] p-2">
       <header
-        className="cursor-pointer rounded-xl bg-brand p-1"
+        className="cursor-pointer rounded-md bg-brand p-1"
         onClick={() => setIsVisible(!isVisible)}
       >
         Add element - Click to toggle
       </header>
       <ul className={`w-full list-none pt-2 ${isVisible ? '' : 'hidden'}`}>
         {CommandList.map((child, index) => (
-          <li key={index} className="m-0 mb-2 w-full rounded-xl bg-[#333a] p-1">
-            <p className="p-1 pl-6">{child.key}</p>
-            <div className="flex w-full flex-wrap">
+          <li key={index} className="m-0 mb-4 w-full rounded-md bg-[#333a] p-2 pt-1">
+            <p className="pl-6 p-1">{child.key}</p>
+            <div className="flex w-full flex-wrap gap-2">
               {child.value.map((command, idx) => (
                 <p
                   key={index + '' + idx}
-                  className="w-full rounded-xl p-1"
+                  className="w-full rounded-md p-1"
                   style={{ backgroundColor: command.value.color }}
                   onClick={() => addCommand(command)}
                 >
@@ -55,10 +55,10 @@ export function LogicNavBar({
   };
   return (
     <nav
-      className={`flex ${toggle ? 'h-full' : ''} fixed top-nav flex-col ${side}-0 w-[300px] gap-2 overflow-y-auto rounded-xl bg-[#aaaa] p-2 backdrop-blur-sm`}
+      className={`flex ${toggle ? 'h-full' : ''} fixed top-nav flex-col ${side}-0 w-[300px] gap-2 overflow-y-auto rounded-md bg-[#aaaa] p-2 backdrop-blur-sm`}
     >
       <header
-        className="flex w-full cursor-pointer rounded-xl bg-[#555] p-2"
+        className="flex w-full cursor-pointer rounded-md bg-[#555] p-2"
         onClick={handleClick}
       >
         <p>{toggleText}</p>

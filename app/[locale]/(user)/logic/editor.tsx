@@ -2,11 +2,11 @@
 
 import { LogicNavBar, AddingElement } from './_component/common';
 import { InputControl, InputControlProp } from './_component/input';
-import LogicDisplay from './_component/logic';
+import LogicDisplay from './logic';
 import Command, { InputType } from './command';
 import { useState, useCallback } from 'react';
 
-export type selectInuptProps = {
+export type selectInputProps = {
   commandIndex: number;
   fieldIndex: number;
   defaultValue: string;
@@ -21,10 +21,17 @@ export default function Editor() {
   const [commands, setCommands] = useState<Command[]>([]);
 
   const addCommand = useCallback((command: Command) => {
-    setCommands((prevCommands) => {
-      const newCommands = [...prevCommands, { ...command, x: 0, y: 0 }];
-      return newCommands;
-    });
+    const newCommand = {
+      ...command,
+      value: {
+        ...command.value,
+        fields: command.value.fields.map((field) => ({ ...field })),
+        outputs: command.value.outputs.map((output) => ({ ...output })),
+      },
+      x: 0,
+      y: 0,
+    };
+    setCommands((prevCommands) => [...prevCommands, newCommand]);
   }, []);
 
   const deleteCommand = useCallback(
@@ -53,28 +60,58 @@ export default function Editor() {
   const updateCommand = useCallback(
     (cIndex: number, callback: (c: Command) => Command) => {
       setCommands((prev) => {
-        prev[cIndex] = callback(prev[cIndex]);
-        return prev;
+        const newCommands = [...prev];
+        if (newCommands[cIndex]) {
+          const updatedCommand = callback(newCommands[cIndex]);
+          // Ensure deep copy of fields
+          newCommands[cIndex] = {
+            ...updatedCommand,
+            value: {
+              ...updatedCommand.value,
+              fields: updatedCommand.value.fields.map((field) => ({
+                ...field,
+              })),
+            },
+          };
+        }
+        return newCommands;
       });
     },
     [],
   );
 
   const copyCommand = useCallback(
-    (command: Command) => {
-      addCommand({
-        ...command,
-        value: {
-          ...command.value,
-          outputs: command.value.outputs.map((output) => ({
-            ...output,
-            value: -1,
-          })),
-        },
+    (index: number) => {
+      setCommands((prev) => {
+        if (prev[index]) {
+          addCommand({
+            ...prev[index],
+            value: {
+              ...prev[index].value,
+              outputs: prev[index].value.outputs.map((output) => ({
+                ...output,
+                value: -1,
+              })),
+            },
+          });
+        }
+
+        return prev;
       });
     },
     [addCommand],
   );
+
+  const findCommandByIndex = (index: number) => {
+    let command = commands[index];
+    setCommands((prev) => {
+      command = prev[index];
+      return prev;
+    });
+
+    return command;
+  };
+  
 
   //input controller.
   const [inputKeys, setInputKeys] = useState<{
@@ -83,6 +120,31 @@ export default function Editor() {
   }>({ commandIndex: null, fieldIndex: null });
 
   const [input, setInput] = useState<InputControlProp | null>(null);
+  const onSubmit = useCallback(
+    (value: string, displayValue?: string) => {
+      setInputKeys((prev) => {
+        if (prev.commandIndex !== null && prev.fieldIndex !== null) {
+          const cIndex = prev.commandIndex;
+          const fIndex = prev.fieldIndex;
+          updateCommand(cIndex, (command) => {
+            const newFields = [...command.value.fields];
+            newFields[fIndex] = {
+              ...newFields[fIndex],
+              value: value,
+              displayValue: displayValue,
+            };
+            return {
+              ...command,
+              value: { ...command.value, fields: newFields },
+            };
+          });
+          setInput(null);
+        }
+        return { commandIndex: null, fieldIndex: null };
+      });
+    },
+    [updateCommand],
+  );
 
   const selectInput = useCallback(
     ({
@@ -94,7 +156,7 @@ export default function Editor() {
       y,
       width,
       height,
-    }: selectInuptProps) => {
+    }: selectInputProps) => {
       setInput({
         position: {
           x: x,
@@ -112,26 +174,7 @@ export default function Editor() {
         fieldIndex: fieldIndex,
       });
     },
-    [],
-  );
-
-  const onSubmit = useCallback(
-    (value: string, displayValue?: string) => {
-      setInputKeys((prev) => {
-        if (prev.commandIndex !== null && prev.fieldIndex !== null) {
-          const cIndex = prev.commandIndex;
-          const fIndex = prev.fieldIndex;
-          updateCommand(cIndex, (command) => {
-            command.value.fields[fIndex].value = value;
-            command.value.fields[fIndex].displayValue = displayValue;
-            return command;
-          });
-          setInput(null);
-        }
-        return { commandIndex: null, fieldIndex: null };
-      });
-    },
-    [updateCommand],
+    [onSubmit],
   );
 
   return (
@@ -144,6 +187,7 @@ export default function Editor() {
         replaceCommand={replaceCommand}
         copyCommand={copyCommand}
         selectInput={selectInput}
+        findCommandByIndex={findCommandByIndex}
       />
       <InputControl input={input} />
       <h3 className="fixed right-10 top-1.5">{`Inputs: cIndex: ${inputKeys?.commandIndex}, fIndex: ${inputKeys?.fieldIndex}`}</h3>
