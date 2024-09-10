@@ -9,9 +9,6 @@ import {
   widthPadded,
 } from './command-card';
 import { useCallback, useEffect, useState } from 'react';
-import { KonvaEventObject } from 'konva/lib/Node';
-import { Copy, Delete } from './icon';
-
 const ConnectionPoint = ({
   index,
   circleRadius,
@@ -41,8 +38,6 @@ const ConnectionPoint = ({
   useEffect(() => {
     setPos();
   }, [setPos]);
-
-  
 
   return (
     <Group x={0} y={index * (circleRadius + spacingElement)} key={index}>
@@ -119,20 +114,16 @@ export const AutoCurvedLine = ({
   endX: number;
   endY: number;
 }) => {
-  const controlPointX1 = (startX + endX) / 2;
-  const controlPointY1 = startY;
-  const controlPointX2 = (startX + endX) / 2;
-  const controlPointY2 = endY;
 
   return (
     <Line
       points={[
         startX,
         startY,
-        controlPointX1,
-        controlPointY1,
-        controlPointX2,
-        controlPointY2,
+        (startX + endX) / 2,
+        startY,
+        (startX + endX) / 2,
+        endY,
         endX,
         endY,
       ]}
@@ -144,140 +135,3 @@ export const AutoCurvedLine = ({
     />
   );
 };
-
-export const CommandField = ({
-  x,
-  y,
-  fieldSize,
-  color,
-  field,
-  onClickField,
-}: {
-  x: number;
-  y: number;
-  fieldSize: number;
-  color: string;
-  field: FieldType;
-  onClickField: () => void;
-}) => (
-  <Group x={x} y={y}>
-    <Text
-      x={padding}
-      y={doublePadding + 2}
-      fontSize={14}
-      text={field.placeHolder}
-      fill="white"
-    />
-    <Rect
-      x={field.placeHolderWidth}
-      y={padding}
-      width={fieldSize - padding - field.placeHolderWidth}
-      height={valueHeight - padding}
-      fill={color}
-      cornerRadius={2}
-    />
-    <Text
-      x={field.placeHolderWidth + padding}
-      y={doublePadding + 5}
-      width={fieldSize - doublePadding - field.placeHolderWidth}
-      fill={'white'}
-      fontSize={14}
-      height={11}
-      text={`${field.displayValue ? field.displayValue : field.value}`}
-      ellipsis={true}
-    />
-    <Rect
-      x={field.placeHolderWidth}
-      y={padding}
-      width={fieldSize - padding - field.placeHolderWidth}
-      height={valueHeight - padding}
-      onClick={() => {
-        onClickField();
-      }}
-    />
-  </Group>
-);
-
-export const CommandBody = ({
-  x,
-  y,
-  width,
-  height,
-  children,
-}: {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  children: React.ReactNode;
-}) => (
-  <Group x={x} y={y}>
-    <Rect width={width} height={height} fill={'#0009'} cornerRadius={5} />
-    {children}
-  </Group>
-);
-
-export function InteractCard({
-  index: key,
-  command,
-  replaceFunction,
-  children,
-}: {
-  index: number;
-  command: Command;
-  replaceFunction: (command: Command, index: number) => void;
-  children: React.ReactNode;
-}) {
-  const handleDragEnd = useCallback(
-    (e: KonvaEventObject<DragEvent>) => {
-      const x = e.target.position().x;
-      const y = e.target.position().y;
-      replaceFunction({ ...command, x, y }, key);
-    },
-    [command, key, replaceFunction],
-  );
-
-  return (
-    <Group x={command.x} y={command.y} draggable onDragEnd={handleDragEnd}>
-      {children}
-    </Group>
-  );
-}
-
-export const CommandHeader = ({
-  value,
-  index,
-  onCopy,
-  onDelete,
-}: {
-  value: CommandValue;
-  index: number;
-  onCopy: (index: number) => void;
-  onDelete: (index: number) => void;
-}) => (
-  <Group x={padding} y={padding}>
-    <Text
-      x={padding}
-      y={2}
-      text={value.name}
-      fill={'white'}
-      fontSize={18}
-    />
-    <Delete
-      x={widthPadded - 20}
-      y={2}
-      size={16}
-      strokeWidth={2}
-      fill={'black'}
-      onClick={() => onDelete(index)}
-    />
-    <Copy
-      x={widthPadded - 20 - 20 - padding}
-      y={2}
-      size={16}
-      strokeWidth={2}
-      fill="black"
-      onClick={() => onCopy(index)}
-    />
-  </Group>
-);

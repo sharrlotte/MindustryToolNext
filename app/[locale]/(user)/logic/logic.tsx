@@ -206,6 +206,7 @@ export default function LogicDisplay({
         <Test
           commands={commands}
           position={position}
+          setCommands={setCommands}
           dragElement={dragElement}
           deleteCommand={deleteCommand}
           copyCommand={copyCommand}
@@ -221,6 +222,7 @@ const Test = ({
   commands,
   dragElement,
   position,
+  setCommands,
   deleteCommand,
   copyCommand,
   selectInput,
@@ -233,13 +235,13 @@ const Test = ({
     index: number,
   ) => void;
   position: Position;
+  setCommands: Dispatch<SetStateAction<Command[]>>;
   deleteCommand: (index: number) => void;
   copyCommand: (index: number) => void;
   selectInput: (arg0: selectInputProps) => void;
   findCommandByIndex: (index: number) => Command;
 }) => {
   return useMemo(() => {
-    console.log('why it rerender?');
     return (
       <Layer>
         {commands.map((element, index) => (
@@ -250,9 +252,11 @@ const Test = ({
             dragEvent={dragElement}
           >
             <CommandCard
+              commands={commands}
               elementValue={element.value}
               index={index}
               position={position}
+              setCommands={setCommands}
               deleteCommand={deleteCommand}
               copyCommand={copyCommand}
               selectInput={selectInput}
@@ -276,8 +280,8 @@ const CommandDisplay = ({
   dragEvent: (e: KonvaEventObject<DragEvent>, a: Command, i: number) => void;
   children: React.ReactNode;
 }) => {
-  const memoizedElement = useMemo(
-    () => (
+  const memoizedElement = useMemo(() => {
+    return (
       <Group
         x={element.x}
         y={element.y}
@@ -286,9 +290,8 @@ const CommandDisplay = ({
       >
         {children}
       </Group>
-    ),
-    [element.x, element.y, element.value],
-  );
+    );
+  }, [element.x, element.y, element.value]);
 
   return memoizedElement;
 };

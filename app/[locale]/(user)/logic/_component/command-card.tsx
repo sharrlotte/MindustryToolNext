@@ -1,10 +1,18 @@
 'use client';
 
-import React, { useMemo, useCallback } from 'react';
+import React, {
+  useMemo,
+  useCallback,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+} from 'react';
 import { Group, Rect, Text, Circle, Line } from 'react-konva';
 import Command, { CommandValue, FieldType } from '../command';
 import { selectInputProps } from '../editor';
 import { Position } from '../logic';
+import { boolean } from 'zod';
 
 export const padding = 5;
 export const doublePadding = padding * 2;
@@ -14,6 +22,14 @@ export const valueHeight = 30;
 export const emptyValueListHeight = 20;
 export const widthPadded = width - doublePadding;
 
+// connect
+export const connectCircleRadius = 10;
+export const connectSpacingBetweenConnect = 10;
+
+const calculateConnectHeigh = (totalIndex: number) =>
+  totalIndex * (2 * connectCircleRadius + connectSpacingBetweenConnect) +
+  connectSpacingBetweenConnect;
+
 const calculateValueHeight = (rows: number) =>
   rows === 0 ? emptyValueListHeight : valueHeight * rows;
 
@@ -21,9 +37,11 @@ export const calculateFullHeight = (rows: number) =>
   calculateValueHeight(rows) + headerHeight + doublePadding;
 
 type CommandCardProp = {
+  commands: Command[];
   elementValue: CommandValue;
   index: number;
   position: Position;
+  setCommands: Dispatch<SetStateAction<Command[]>>;
   deleteCommand: (index: number) => void;
   copyCommand: (index: number) => void;
   selectInput: (arg0: selectInputProps) => void;
@@ -34,6 +52,8 @@ export default function CommandCard({
   elementValue,
   index,
   position,
+  commands,
+  setCommands,
   deleteCommand,
   copyCommand,
   selectInput,
@@ -46,7 +66,7 @@ export default function CommandCard({
   );
 
   const handleFieldClick = useMemo(
-    () => (field: any, fIndex: number) => {
+    () => (field: FieldType, fIndex: number) => {
       const value = typeof field.value === 'string' ? field.value : '';
       selectInput({
         commandIndex: index,
@@ -181,6 +201,180 @@ export default function CommandCard({
           </Group>
         ))}
       </Group>
+      <Group
+        x={width + padding}
+        y={
+          (calculateFullHeight(elementValue.rows) -
+            calculateConnectHeigh(elementValue.outputs.length)) /
+          2
+        }
+      >
+        {elementValue.outputs.map((_, oIndex) => (
+          <ConnectionPoint
+            key={oIndex}
+            cIndex={index}
+            oIndex={oIndex}
+            commands={commands}
+            elementValue={elementValue}
+            setCommands={setCommands}
+            findCommandByIndex={findCommandByIndex}
+          />
+        ))}
+      </Group>
     </Group>
   );
 }
+const ConnectionPoint = ({
+  cIndex,
+  oIndex,
+  commands,
+  elementValue,
+  setCommands,
+  findCommandByIndex,
+}: {
+  cIndex: number;
+  oIndex: number;
+  commands: Command[];
+  elementValue: CommandValue;
+  setCommands: Dispatch<SetStateAction<Command[]>>;
+  findCommandByIndex: (index: number) => Command;
+}) => {
+  const calculateNowX = () => findCommandByIndex(cIndex).x + width + padding;
+  const calculateNowY = () =>
+    findCommandByIndex(cIndex).y +
+    (calculateFullHeight(elementValue.rows) -
+      calculateConnectHeigh(elementValue.outputs.length)) /
+      2 +
+    calculateConnectHeigh(oIndex);
+
+  const [{ endX, endY, isDrag }, setPos] = useState({
+    endX: connectCircleRadius,
+    endY: connectCircleRadius,
+    isDrag: false,
+  });
+
+  const setPosition = useCallback(
+    (x: number, y: number, isDrag: boolean = false) =>
+      setPos({ endX: x, endY: y, isDrag }),
+    [],
+  );
+
+  const reset = useCallback(() => {
+    setCommands((prevCommands) =>
+      prevCommands.map((command, index) =>
+        index === cIndex
+          ? {
+              ...command,
+              value: {
+                ...command.value,
+                outputs: command.value.outputs.map((output, outputIndex) =>
+                  outputIndex === oIndex ? { ...output, value: -1 } : output,
+                ),
+              },
+            }
+          : command,
+      ),
+    );
+    setPos((prev) => {
+      return { ...prev, isDrag: false };
+    });
+  }, [cIndex, oIndex, setCommands]);
+
+  const handleDragEnd = useCallback(
+    (x: number, y: number) => {
+      const ncx = calculateNowX() + x;
+      const ncy = calculateNowY() + y;
+      setCommands((prevCommands) =>
+        prevCommands.map((command, index) => {
+          if (
+            command.x < ncx &&
+            ncx < command.x + width &&
+            command.y < ncy &&
+            ncy < command.y + calculateFullHeight(command.value.rows) &&
+            index !== cIndex
+          ) {
+            return {
+              ...command,
+              value: {
+                ...command.value,
+                outputs: command.value.outputs.map((output, outputIndex) =>
+                  outputIndex === oIndex ? { ...output, value: index } : output,
+                ),
+              },
+            };
+          }
+          return command;
+        }),
+      );
+      setPos((prev) => {
+        return { ...prev, isDrag: false };
+      });
+    },
+    [cIndex, oIndex, setCommands],
+  );
+
+  useEffect(() => {
+    setCommands((prevCommands) => {
+      const outputValue = prevCommands[cIndex].value.outputs[oIndex].value;
+      if (outputValue !== -1) {
+        setPos({
+          endX: prevCommands[outputValue].x - calculateNowX(),
+          endY: prevCommands[outputValue].y - calculateNowY(),
+          isDrag: false,
+        });
+      } else if (!isDrag) {
+        setPos({
+          endX: connectCircleRadius,
+          endY: connectCircleRadius,
+          isDrag: false,
+        });
+      }
+      return prevCommands;
+    });
+  }, [commands, endX, endY, isDrag, cIndex, oIndex, setCommands]);
+
+  return (
+    <Group x={0} y={calculateConnectHeigh(oIndex)}>
+      <Line
+        points={[
+          connectCircleRadius,
+          connectCircleRadius,
+          (connectCircleRadius + endX) / 2,
+          connectCircleRadius,
+          (connectCircleRadius + endX) / 2,
+          endY,
+          endX,
+          endY,
+        ]}
+        stroke="white"
+        strokeWidth={4}
+        lineCap="round"
+        bezier={true}
+        listening={false}
+      />
+      <Circle
+        x={connectCircleRadius}
+        y={connectCircleRadius}
+        radius={connectCircleRadius}
+        fill="yellow"
+        onClick={reset}
+      />
+      <Circle
+        x={endX}
+        y={endY}
+        radius={connectCircleRadius}
+        fill="white"
+        draggable
+        onDragMove={(e) => {
+          e.cancelBubble = true;
+          const { x, y } = e.target.position();
+          setPosition(x, y, true);
+        }}
+        onDragEnd={(e) => {
+          e.cancelBubble = true;
+          handleDragEnd(e.target.position().x, e.target.position().y);
+        }}
+      />
+    </Group>
+  );
+};
