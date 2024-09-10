@@ -239,13 +239,20 @@ const ConnectionPoint = ({
   setCommands: Dispatch<SetStateAction<Command[]>>;
   findCommandByIndex: (index: number) => Command;
 }) => {
-  const calculateNowX = () => findCommandByIndex(cIndex).x + width + padding;
-  const calculateNowY = () =>
-    findCommandByIndex(cIndex).y +
-    (calculateFullHeight(elementValue.rows) -
-      calculateConnectHeigh(elementValue.outputs.length)) /
-      2 +
-    calculateConnectHeigh(oIndex);
+  const calculateNowX = useCallback(
+    () => findCommandByIndex(cIndex).x + width + padding,
+    [cIndex, findCommandByIndex],
+  );
+
+  const calculateNowY = useCallback(
+    () =>
+      findCommandByIndex(cIndex).y +
+      (calculateFullHeight(elementValue.rows) -
+        calculateConnectHeigh(elementValue.outputs.length)) /
+        2 +
+      calculateConnectHeigh(oIndex),
+    [cIndex, findCommandByIndex, elementValue.rows, oIndex],
+  );
 
   const [{ posX, posY }, setWirePos] = useState({
     posX: connectCircleRadius,
@@ -294,6 +301,11 @@ const ConnectionPoint = ({
   };
 
   useEffect(() => {
+    console.log(commands);
+    console.log(
+      commands[cIndex].value.outputs[oIndex].value,
+      commands[commands[cIndex].value.outputs[oIndex].value],
+    );
     setCommands((commands) => {
       if (commands[cIndex].value.outputs[oIndex].value != -1) {
         setWirePos({
@@ -314,7 +326,17 @@ const ConnectionPoint = ({
 
       return commands;
     });
-  }, [commands, setCommands, setWirePos, cIndex, calculateNowX, calculateNowY, oIndex]);
+  }, [
+    commands,
+    commands[cIndex],
+    commands[commands[cIndex].value.outputs[oIndex].value],
+    setCommands,
+    setWirePos,
+    cIndex,
+    calculateNowX,
+    calculateNowY,
+    oIndex,
+  ]);
 
   return (
     <Group x={0} y={calculateConnectHeigh(oIndex)}>
