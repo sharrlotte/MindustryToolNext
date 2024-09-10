@@ -12,7 +12,6 @@ import { Group, Rect, Text, Circle, Line } from 'react-konva';
 import Command, { CommandValue, FieldType } from '../command';
 import { selectInputProps } from '../editor';
 import { Position } from '../logic';
-import { boolean } from 'zod';
 
 export const padding = 5;
 export const doublePadding = padding * 2;
@@ -224,6 +223,7 @@ export default function CommandCard({
     </Group>
   );
 }
+
 const ConnectionPoint = ({
   cIndex,
   oIndex,
@@ -247,91 +247,74 @@ const ConnectionPoint = ({
       2 +
     calculateConnectHeigh(oIndex);
 
-  const [{ endX, endY, isDrag }, setPos] = useState({
-    endX: connectCircleRadius,
-    endY: connectCircleRadius,
-    isDrag: false,
+  const [{ posX, posY }, setWirePos] = useState({
+    posX: connectCircleRadius,
+    posY: connectCircleRadius,
   });
 
-  const setPosition = useCallback(
-    (x: number, y: number, isDrag: boolean = false) =>
-      setPos({ endX: x, endY: y, isDrag }),
-    [],
-  );
+  const handleDrag = (x: number, y: number) => {
+    setWirePos({ posX: x, posY: y });
+  };
 
-  const reset = useCallback(() => {
-    setCommands((prevCommands) =>
-      prevCommands.map((command, index) =>
-        index === cIndex
-          ? {
-              ...command,
-              value: {
-                ...command.value,
-                outputs: command.value.outputs.map((output, outputIndex) =>
-                  outputIndex === oIndex ? { ...output, value: -1 } : output,
-                ),
-              },
-            }
-          : command,
-      ),
-    );
-    setPos((prev) => {
-      return { ...prev, isDrag: false };
-    });
-  }, [cIndex, oIndex, setCommands]);
-
-  const handleDragEnd = useCallback(
-    (x: number, y: number) => {
-      const ncx = calculateNowX() + x;
-      const ncy = calculateNowY() + y;
-      setCommands((prevCommands) =>
-        prevCommands.map((command, index) => {
-          if (
-            command.x < ncx &&
-            ncx < command.x + width &&
-            command.y < ncy &&
-            ncy < command.y + calculateFullHeight(command.value.rows) &&
-            index !== cIndex
-          ) {
-            return {
-              ...command,
-              value: {
-                ...command.value,
-                outputs: command.value.outputs.map((output, outputIndex) =>
-                  outputIndex === oIndex ? { ...output, value: index } : output,
-                ),
-              },
-            };
-          }
-          return command;
-        }),
-      );
-      setPos((prev) => {
-        return { ...prev, isDrag: false };
+  const handleFinish = (x: number, y: number) => {
+    const dragX = x + calculateNowX();
+    const dragY = y + calculateNowY();
+    setCommands((commands) => {
+      commands.forEach((command, index) => {
+        if (
+          command.x < dragX &&
+          dragX < command.x + width &&
+          command.y < dragY &&
+          dragY < command.y + calculateFullHeight(command.value.rows) &&
+          index != cIndex
+        ) {
+          commands[cIndex].value.outputs[oIndex].value = index;
+          return commands;
+        }
       });
-    },
-    [cIndex, oIndex, setCommands],
-  );
+
+      if (commands[cIndex].value.outputs[oIndex].value == -1) {
+        setWirePos({ posX: connectCircleRadius, posY: connectCircleRadius });
+      }
+
+      return commands;
+    });
+  };
+
+  const handleReset = () => {
+    setCommands((commands) => {
+      commands[cIndex].value.outputs[oIndex].value = -1;
+      return commands;
+    });
+
+    setWirePos({
+      posX: connectCircleRadius,
+      posY: connectCircleRadius,
+    });
+  };
 
   useEffect(() => {
-    setCommands((prevCommands) => {
-      const outputValue = prevCommands[cIndex].value.outputs[oIndex].value;
-      if (outputValue !== -1) {
-        setPos({
-          endX: prevCommands[outputValue].x - calculateNowX(),
-          endY: prevCommands[outputValue].y - calculateNowY(),
-          isDrag: false,
-        });
-      } else if (!isDrag) {
-        setPos({
-          endX: connectCircleRadius,
-          endY: connectCircleRadius,
-          isDrag: false,
+    setCommands((commands) => {
+      if (commands[cIndex].value.outputs[oIndex].value != -1) {
+        setWirePos({
+          posX:
+            commands[commands[cIndex].value.outputs[oIndex].value].x -
+            calculateNowX() -
+            padding -
+            connectCircleRadius,
+          posY:
+            commands[commands[cIndex].value.outputs[oIndex].value].y -
+            calculateNowY() +
+            calculateFullHeight(
+              commands[commands[cIndex].value.outputs[oIndex].value].value.rows,
+            ) /
+              2,
         });
       }
-      return prevCommands;
+
+      return commands;
     });
-  }, [commands, endX, endY, isDrag, cIndex, oIndex, setCommands]);
+  }, [commands, setCommands, setWirePos]);
 
   return (
     <Group x={0} y={calculateConnectHeigh(oIndex)}>
@@ -339,12 +322,12 @@ const ConnectionPoint = ({
         points={[
           connectCircleRadius,
           connectCircleRadius,
-          (connectCircleRadius + endX) / 2,
+          (connectCircleRadius + posX) / 2,
           connectCircleRadius,
-          (connectCircleRadius + endX) / 2,
-          endY,
-          endX,
-          endY,
+          (connectCircleRadius + posX) / 2,
+          posY,
+          posX,
+          posY,
         ]}
         stroke="white"
         strokeWidth={4}
@@ -357,22 +340,23 @@ const ConnectionPoint = ({
         y={connectCircleRadius}
         radius={connectCircleRadius}
         fill="yellow"
-        onClick={reset}
+        onClick={handleReset}
       />
       <Circle
-        x={endX}
-        y={endY}
+        x={posX}
+        y={posY}
         radius={connectCircleRadius}
         fill="white"
         draggable
         onDragMove={(e) => {
           e.cancelBubble = true;
           const { x, y } = e.target.position();
-          setPosition(x, y, true);
+          handleDrag(x, y);
         }}
         onDragEnd={(e) => {
           e.cancelBubble = true;
-          handleDragEnd(e.target.position().x, e.target.position().y);
+          const { x, y } = e.target.position();
+          handleFinish(x, y);
         }}
       />
     </Group>
