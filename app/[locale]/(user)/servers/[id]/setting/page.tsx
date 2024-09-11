@@ -231,7 +231,7 @@ function ServerSettingEditor({ server }: Props) {
                     <Textarea {...field} placeholder="host" />
                   </FormControl>
                   <FormDescription>
-                    Command that run when server start, default: host
+                    Command that run when server start, default: host (Do not fill this if you don know exactly what this do)
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

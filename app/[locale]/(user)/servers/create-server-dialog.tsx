@@ -162,7 +162,8 @@ export default function CreateServerDialog() {
                     <Textarea {...field} placeholder="host" />
                   </FormControl>
                   <FormDescription>
-                    Command that run when server start to host, default: host
+                    Command that run when server start, default: host (Do not
+                    fill this if you don know exactly what this do)
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
