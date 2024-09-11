@@ -203,7 +203,7 @@ export default function LogicDisplay({
             draggable
           />
         </Layer>
-        <Test
+        <CommandListDisplay
           commands={commands}
           position={position}
           setCommands={setCommands}
@@ -218,7 +218,7 @@ export default function LogicDisplay({
   );
 }
 
-const Test = ({
+const CommandListDisplay = ({
   commands,
   dragElement,
   position,
@@ -241,7 +241,18 @@ const Test = ({
   selectInput: (arg0: selectInputProps) => void;
   findCommandByIndex: (index: number) => Command;
 }) => {
+  const [update, setUpdate] = useState(0);
+  const handleDragEvent = (
+    e: KonvaEventObject<DragEvent>,
+    command: Command,
+    index: number,
+  ) => {
+    dragElement(e, command, index);
+    setUpdate((prev) => prev + 1);
+  };
+
   return useMemo(() => {
+    console.log('Rerendering...');
     return (
       <Layer>
         {commands.map((element, index) => (
@@ -249,7 +260,7 @@ const Test = ({
             key={index}
             element={element}
             index={index}
-            dragEvent={dragElement}
+            dragEvent={handleDragEvent} // Sử dụng handleDragEvent để kích hoạt force update
           >
             <CommandCard
               commands={commands}
@@ -266,7 +277,7 @@ const Test = ({
         ))}
       </Layer>
     );
-  }, [commands]);
+  }, [commands, update]);
 };
 
 const CommandDisplay = ({
@@ -280,18 +291,15 @@ const CommandDisplay = ({
   dragEvent: (e: KonvaEventObject<DragEvent>, a: Command, i: number) => void;
   children: React.ReactNode;
 }) => {
-  const memoizedElement = useMemo(() => {
-    return (
-      <Group
-        x={element.x}
-        y={element.y}
-        draggable
-        onDragEnd={(e) => dragEvent(e, element, index)}
-      >
-        {children}
-      </Group>
-    );
-  }, [element.x, element.y, element.value]);
+  const { x, y } = element;
+  const handleDragEnd = (e: KonvaEventObject<DragEvent>) => {
+    dragEvent(e, element, index);
+  };
 
-  return memoizedElement;
+  console.log('Unit rerendering...');
+  return (
+    <Group x={x} y={y} draggable onDragEnd={handleDragEnd}>
+      {children}
+    </Group>
+  );
 };

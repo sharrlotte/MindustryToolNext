@@ -251,7 +251,13 @@ const ConnectionPoint = ({
         calculateConnectHeigh(elementValue.outputs.length)) /
         2 +
       calculateConnectHeigh(oIndex),
-    [cIndex, findCommandByIndex, elementValue.rows, oIndex],
+    [
+      cIndex,
+      findCommandByIndex,
+      elementValue.rows,
+      oIndex,
+      elementValue.outputs.length,
+    ],
   );
 
   const [{ posX, posY }, setWirePos] = useState({
@@ -275,6 +281,17 @@ const ConnectionPoint = ({
           dragY < command.y + calculateFullHeight(command.value.rows) &&
           index != cIndex
         ) {
+          setWirePos({
+            posX:
+              commands[index].x -
+              calculateNowX() -
+              padding -
+              connectCircleRadius,
+            posY:
+              commands[index].y -
+              calculateNowY() +
+              calculateFullHeight(commands[index].value.rows) / 2,
+          });
           commands[cIndex].value.outputs[oIndex].value = index;
           return commands;
         }
@@ -288,9 +305,11 @@ const ConnectionPoint = ({
     });
   };
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setCommands((commands) => {
-      commands[cIndex].value.outputs[oIndex].value = -1;
+      if (commands[cIndex]) {
+        commands[cIndex].value.outputs[oIndex].value = -1;
+      }
       return commands;
     });
 
@@ -298,38 +317,41 @@ const ConnectionPoint = ({
       posX: connectCircleRadius,
       posY: connectCircleRadius,
     });
-  };
+  }, [setCommands, setWirePos, cIndex, oIndex]);
 
   useEffect(() => {
-    console.log(commands);
-    console.log(
-      commands[cIndex].value.outputs[oIndex].value,
-      commands[commands[cIndex].value.outputs[oIndex].value],
-    );
-    setCommands((commands) => {
-      if (commands[cIndex].value.outputs[oIndex].value != -1) {
+    setCommands((elements) => {
+      if (
+        elements[cIndex].value.outputs[oIndex].value != -1 &&
+        elements[elements[cIndex].value.outputs[oIndex].value] == undefined
+      ) {
+        elements[cIndex].value.outputs[oIndex].value = -1;
+        handleReset();
+        return elements;
+      }
+
+      if (elements[cIndex].value.outputs[oIndex].value != -1) {
         setWirePos({
           posX:
-            commands[commands[cIndex].value.outputs[oIndex].value].x -
+            elements[elements[cIndex].value.outputs[oIndex].value].x -
             calculateNowX() -
             padding -
             connectCircleRadius,
           posY:
-            commands[commands[cIndex].value.outputs[oIndex].value].y -
+            elements[elements[cIndex].value.outputs[oIndex].value].y -
             calculateNowY() +
             calculateFullHeight(
-              commands[commands[cIndex].value.outputs[oIndex].value].value.rows,
+              elements[elements[cIndex].value.outputs[oIndex].value].value.rows,
             ) /
               2,
         });
       }
 
-      return commands;
+      return elements;
     });
   }, [
     commands,
-    commands[cIndex],
-    commands[commands[cIndex].value.outputs[oIndex].value],
+    handleReset,
     setCommands,
     setWirePos,
     cIndex,
