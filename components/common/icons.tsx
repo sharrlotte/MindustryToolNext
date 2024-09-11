@@ -23,6 +23,7 @@ import {
   SendIcon as _SendIcon,
   SmileIcon as _SmileIcon,
   PencilIcon as _EditIcon,
+  Globe as _Glob
 } from 'lucide-react';
 
 import {
@@ -44,6 +45,7 @@ type Props = {
   className?: string;
 };
 
+export const GlobIcon = () => <_Glob className="size-5" />;
 export const LinkIcon = () => <_LinkIcon className="size-5" />;
 export const PostIcon = () => <BookOpenIcon className="size-5" />;
 export const MindustryGptIcon = () => <BotIcon className="size-5" />;

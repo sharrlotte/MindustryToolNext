@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import NextTopLoader from 'nextjs-toploader';
 
-import ClientInit from '@/app/[locale]/client-init';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import env from '@/constant/env';
 import { SessionProvider } from '@/context/session-context';
@@ -13,6 +12,12 @@ import QueryProvider from '@/query/config/query-provider';
 
 import './globals.css';
 import { TooltipProvider } from '@/components/ui/tooltip';
+
+import dynamic from 'next/dynamic';
+
+const ClientInit = dynamic(() => import('@/app/[locale]/client-init'), {
+  ssr: false,
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
@@ -54,14 +59,15 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-
-  return [{
-    locale: 'vi',
-  },{
-    locale: 'en',
-  }]
+  return [
+    {
+      locale: 'vi',
+    },
+    {
+      locale: 'en',
+    },
+  ];
 }
-
 
 export default async function Root({ children, params }: Props) {
   return (
