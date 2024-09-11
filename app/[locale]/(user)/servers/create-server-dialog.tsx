@@ -88,88 +88,86 @@ export default function CreateServerDialog() {
             className="flex flex-1 flex-col justify-between space-y-4 rounded-md bg-card p-4"
             onSubmit={form.handleSubmit((value) => mutate(value))}
           >
-            <div>
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Server name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Test" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      {field.value ? (
-                        <ColorText text={field.value} />
-                      ) : (
-                        'The server name that displayed in game'
-                      )}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Some cool stuff" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      {field.value ? (
-                        <ColorText text={field.value} />
-                      ) : (
-                        'The server description that displayed in game'
-                      )}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="mode"
-                render={({ field }) => (
-                  <FormItem className="grid">
-                    <FormLabel>Mode</FormLabel>
-                    <FormControl>
-                      <ComboBox
-                        placeholder={InternalServerModes[0]}
-                        value={{ label: field.value, value: field.value }}
-                        values={InternalServerModes.map((value) => ({
-                          label: value,
-                          value,
-                        }))}
-                        onChange={(value) => field.onChange(value)}
-                      />
-                    </FormControl>
-                    <FormDescription>Server game mode</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="startCommand"
-                render={({ field }) => (
-                  <FormItem className="grid">
-                    <FormLabel>
-                      <Tran text="server.start-command" />
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea {...field} placeholder="host" />
-                    </FormControl>
-                    <FormDescription>
-                      Command that run when server start to host, default: host
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Server name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Test" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    {field.value ? (
+                      <ColorText text={field.value} />
+                    ) : (
+                      'The server name that displayed in game'
+                    )}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Some cool stuff" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    {field.value ? (
+                      <ColorText text={field.value} />
+                    ) : (
+                      'The server description that displayed in game'
+                    )}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="mode"
+              render={({ field }) => (
+                <FormItem className="grid">
+                  <FormLabel>Mode</FormLabel>
+                  <FormControl>
+                    <ComboBox
+                      placeholder={InternalServerModes[0]}
+                      value={{ label: field.value, value: field.value }}
+                      values={InternalServerModes.map((value) => ({
+                        label: value,
+                        value,
+                      }))}
+                      onChange={(value) => field.onChange(value)}
+                    />
+                  </FormControl>
+                  <FormDescription>Server game mode</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="startCommand"
+              render={({ field }) => (
+                <FormItem className="grid">
+                  <FormLabel>
+                    <Tran text="server.start-command" />
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea {...field} placeholder="host" />
+                  </FormControl>
+                  <FormDescription>
+                    Command that run when server start to host, default: host
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="flex justify-end gap-1">
               <Button
                 variant="secondary"

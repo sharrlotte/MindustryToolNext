@@ -23,7 +23,7 @@ const {
   },
 );
 
-export const locales = ['en', 'vi'] as const;
+export const locales = ['EN', 'VI'] as const;
 
 export type Locale = (typeof locales)[number];
 
@@ -31,9 +31,15 @@ function useI18n(): TranslateFunction {
   const t = defaultUseI18n();
 
   return useCallback(
-    (key: string, args?: Record<string, string>) =>
+    (key: string, args?: Record<string, string>) => {
+      const parts = key.split('.');
+
+      if (parts.length === 0) {
+        throw new Error('Bad key');
+      }
       //@ts-expect-error fix later
-      t(key, args),
+      return t(key, args);
+    },
     [t],
   );
 }
