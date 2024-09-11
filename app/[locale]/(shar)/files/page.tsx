@@ -22,7 +22,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { deleteServerFile, getServerFiles } from '@/query/file';
 
 export default function Page() {
-  const [path, setPath] = useQueryState('path', '/');
+  const [path, setPath] = useQueryState<string>('path', '/');
   const axios = useClientApi();
   const [search, setSearch] = useState('');
   const { toast } = useToast();

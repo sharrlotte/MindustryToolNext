@@ -3,17 +3,17 @@ import useSafeSearchParams from '@/hooks/use-safe-search-params';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function useQueryState(
+export default function useQueryState<T extends string>(
   name: string,
-  initialState: string,
+  initialState: T,
 ) {
   const params = useSafeSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const queryState = params.get(name) as string;
+  const queryState = params.get(name) as T;
 
-  const [state, setState] = useState<string>(queryState ?? initialState);
+  const [state, setState] = useState<T>(queryState ?? initialState);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(params.raw());
@@ -34,7 +34,7 @@ export default function useQueryState(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialState, name, pathname, router]);
 
-  const setter = (value?: string) => {
+  const setter = (value?: T) => {
     const queryParams = new URLSearchParams(params.raw());
 
     if (!value) value = initialState;
@@ -45,7 +45,7 @@ export default function useQueryState(
       queryParams.delete(name);
     }
 
-    setState(value as string);
+    setState(value as T);
     const timer = setTimeout(() => {
       router.replace(`${pathname}?${queryParams.toString()}`);
 
