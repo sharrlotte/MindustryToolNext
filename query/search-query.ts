@@ -27,7 +27,7 @@ const ItemSearchParam = {
   sort: sortSchema,
 };
 
-const Language = z.enum(locales).default('VI');
+const Language = z.enum(locales).default('vi');
 
 export const PaginationQuery = z.object({
   ...PaginationParam,

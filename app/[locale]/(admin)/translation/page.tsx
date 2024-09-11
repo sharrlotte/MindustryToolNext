@@ -57,7 +57,7 @@ type TranslateMode = (typeof translateModes)[number];
 
 export default function Page() {
   const [mode, setMode] = useState<TranslateMode>('compare');
-  const [language, setLanguage] = useQueryState<Locale>('language', 'VI');
+  const [language, setLanguage] = useQueryState<Locale>('language', 'vi');
 
   return (
     <div className="flex h-full flex-col gap-4 p-4">
@@ -277,7 +277,7 @@ function CompareCard({
   return (
     <TableRow key={key}>
       <TableCell className="align-top">{key}</TableCell>
-      <TableCell className="align-top">{value['EN']}</TableCell>
+      <TableCell className="align-top">{value['en']}</TableCell>
       <TableCell>
         <Textarea
           className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
@@ -294,7 +294,7 @@ function AddNewKeyDialog() {
   const form = useForm<CreateTranslationRequest>({
     resolver: zodResolver(CreateTranslationSchema),
     defaultValues: {
-      language: 'EN',
+      language: 'en',
     },
   });
 
