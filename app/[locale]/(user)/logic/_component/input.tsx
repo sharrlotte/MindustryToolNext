@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
-import { InputType } from '../command';
+import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import Command, { InputType } from '../command';
 
 export type Position = {
   x: number;
@@ -71,7 +71,15 @@ export type InputControlProp = {
   onSubmit: submitFunction;
 };
 
-export function InputControl({ input }: { input: InputControlProp | null }) {
+export function InputControl({
+  input,
+  setCommands,
+  cIndex
+}: {
+  input: InputControlProp | null;
+  setCommands: Dispatch<SetStateAction<Command[]>>;
+  cIndex: number | null;
+}) {
   return (
     <div>
       {input?.inputType == InputType.TextInput && (
