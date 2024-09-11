@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
-import { InputType } from '../command';
+import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import Command, { InputType } from '../command';
 
 export type Position = {
   x: number;
@@ -33,7 +33,6 @@ function TextEditorView({
 
   const handleSubmit = useCallback(() => {
     onSubmit(inputValue);
-    console.log(inputValue);
   }, [inputValue, onSubmit]);
 
   const top = position.y + 40;
@@ -56,6 +55,7 @@ function TextEditorView({
           fontSize: `${position.height ? position.height - 8 : 13}px`,
           height: `${position.height ? position.height : 0}px`,
         }}
+        onBlur={handleSubmit}
       />
       <button onClick={handleSubmit} className="w-full rounded-xl bg-brand">
         Xác nhận
@@ -71,7 +71,15 @@ export type InputControlProp = {
   onSubmit: submitFunction;
 };
 
-export function InputControl({ input }: { input: InputControlProp | null }) {
+export function InputControl({
+  input,
+  setCommands,
+  cIndex
+}: {
+  input: InputControlProp | null;
+  setCommands: Dispatch<SetStateAction<Command[]>>;
+  cIndex: number | null;
+}) {
   return (
     <div>
       {input?.inputType == InputType.TextInput && (

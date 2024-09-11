@@ -23,6 +23,7 @@ import {
   CmdIcon,
   DocumentIcon,
   FileIcon,
+  GlobIcon,
   HomeIcon,
   LogIcon,
   MapIcon,
@@ -146,7 +147,7 @@ export function NavItems({ onClick }: NavItemsProps) {
           },
           {
             name: <Tran text="log" />,
-            path: '/admin/logs',
+            path: '/logs',
             icon: <LogIcon />,
           },
           {
@@ -183,6 +184,12 @@ export function NavItems({ onClick }: NavItemsProps) {
             roles: ['SHAR'],
           },
           {
+            name: 'Translation',
+            path: '/translation',
+            icon: <GlobIcon />,
+            roles: ['ADMIN'],
+          },
+          {
             name: <Tran text="setting" />,
             path: '/admin/settings',
             icon: <SettingIcon />,
@@ -194,6 +201,7 @@ export function NavItems({ onClick }: NavItemsProps) {
             icon: <FileIcon />,
             roles: ['SHAR'],
           },
+
           {
             name: 'MindustryGPT',
             icon: <MindustryGptIcon />,

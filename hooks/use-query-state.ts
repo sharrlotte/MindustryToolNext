@@ -11,9 +11,9 @@ export default function useQueryState<T extends string>(
   const router = useRouter();
   const pathname = usePathname();
 
-  const queryState = params.get(name);
+  const queryState = params.get(name) as T;
 
-  const [state, setState] = useState<string>(queryState ?? initialState);
+  const [state, setState] = useState<T>(queryState ?? initialState);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(params.raw());
@@ -34,7 +34,7 @@ export default function useQueryState<T extends string>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialState, name, pathname, router]);
 
-  const setter = (value?: string) => {
+  const setter = (value?: T) => {
     const queryParams = new URLSearchParams(params.raw());
 
     if (!value) value = initialState;
@@ -45,7 +45,7 @@ export default function useQueryState<T extends string>(
       queryParams.delete(name);
     }
 
-    setState(value);
+    setState(value as T);
     const timer = setTimeout(() => {
       router.replace(`${pathname}?${queryParams.toString()}`);
 

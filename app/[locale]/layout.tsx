@@ -1,7 +1,11 @@
-import { Toaster } from '@/components/ui/toaster';
 import { I18nProviderClient } from '@/locales/client';
 
-import NavigationBar from './navigation';
+import dynamic from 'next/dynamic';
+
+const NavigationBar = dynamic(() => import('./navigation'), { ssr: false });
+const Toaster = dynamic(() => import('@/components/ui/toaster'), {
+  ssr: false,
+});
 
 type RootProps = {
   children: React.ReactNode;
@@ -11,13 +15,15 @@ type RootProps = {
 };
 
 export async function generateStaticParams() {
-  return [{
-    locale: 'vi',
-  },{
-    locale: 'en',
-  }]
+  return [
+    {
+      locale: 'vi',
+    },
+    {
+      locale: 'en',
+    },
+  ];
 }
-
 
 export default async function Root({ children, params }: RootProps) {
   return (

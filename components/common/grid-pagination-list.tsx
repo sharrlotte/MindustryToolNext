@@ -20,6 +20,7 @@ type Props<T, P> = {
     amount: number;
     item: ReactNode;
   };
+  asChild?: boolean;
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
   children: (data: T, index?: number) => ReactNode;
 };
@@ -31,6 +32,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   loader,
   noResult,
   skeleton,
+  asChild,
   getFunc,
   children,
 }: Props<T, P>) {
@@ -79,6 +81,10 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
     }
 
     return data.map((item, index) => children(item, index));
+  }
+
+  if (asChild) {
+    return render();
   }
 
   return (

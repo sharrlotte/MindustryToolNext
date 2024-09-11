@@ -13,6 +13,7 @@ import { useState, useMemo } from 'react';
 type UpdateThumbnailProps = {
   id: string;
 };
+
 export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
   const axios = useClientApi();
   const [file, setFile] = useState<File>();
@@ -74,6 +75,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
         hidden
       >
         {imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
           <img className="object-scale-down" src={imageUrl} alt="preview" />
         )}
       </label>

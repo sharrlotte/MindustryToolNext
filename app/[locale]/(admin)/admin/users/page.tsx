@@ -21,7 +21,7 @@ export default function Page() {
   const params = useSearchPageParams();
   const axios = useClientApi();
 
-  const [name, setName] = useQueryState('name', '');
+  const [name, setName] = useQueryState<string>('name', '');
   const [role, setRole] = useState<Role>();
   const { data } = useQuery({
     queryFn: () => getRoles(axios),

@@ -2,7 +2,7 @@
 
 import { LogicNavBar, AddingElement } from './_component/common';
 import { InputControl, InputControlProp } from './_component/input';
-import LogicDisplay from './_component/logic';
+import LogicDisplay from './logic';
 import Command, { InputType } from './command';
 import { useState, useCallback } from 'react';
 
@@ -63,7 +63,6 @@ export default function Editor() {
         const newCommands = [...prev];
         if (newCommands[cIndex]) {
           const updatedCommand = callback(newCommands[cIndex]);
-          // Ensure deep copy of fields
           newCommands[cIndex] = {
             ...updatedCommand,
             value: {
@@ -81,20 +80,37 @@ export default function Editor() {
   );
 
   const copyCommand = useCallback(
-    (command: Command) => {
-      addCommand({
-        ...command,
-        value: {
-          ...command.value,
-          outputs: command.value.outputs.map((output) => ({
-            ...output,
-            value: -1,
-          })),
-        },
+    (index: number) => {
+      setCommands((prev) => {
+        if (prev[index]) {
+          addCommand({
+            ...prev[index],
+            value: {
+              ...prev[index].value,
+              outputs: prev[index].value.outputs.map((output) => ({
+                ...output,
+                value: -1,
+              })),
+            },
+          });
+        }
+
+        return prev;
       });
     },
     [addCommand],
   );
+
+  const findCommandByIndex = (index: number) => {
+    let command = commands[index];
+    setCommands((prev) => {
+      command = prev[index];
+      return prev;
+    });
+
+    return command;
+  };
+  
 
   //input controller.
   const [inputKeys, setInputKeys] = useState<{
@@ -138,7 +154,7 @@ export default function Editor() {
       x,
       y,
       width,
-      height
+      height,
     }: selectInputProps) => {
       setInput({
         position: {
@@ -170,8 +186,9 @@ export default function Editor() {
         replaceCommand={replaceCommand}
         copyCommand={copyCommand}
         selectInput={selectInput}
+        findCommandByIndex={findCommandByIndex}
       />
-      <InputControl input={input} />
+      <InputControl input={input} setCommands={setCommands} cIndex={inputKeys.commandIndex} />
       <h3 className="fixed right-10 top-1.5">{`Inputs: cIndex: ${inputKeys?.commandIndex}, fIndex: ${inputKeys?.fieldIndex}`}</h3>
 
       <LogicNavBar toggleText={'Click here to hidden'}>

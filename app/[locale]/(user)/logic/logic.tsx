@@ -1,16 +1,18 @@
 'use client';
 
+import { Stage, Layer, Rect, Line, Group } from 'react-konva';
+import Command from './command';
+import { selectInputProps } from './editor';
+import { KonvaEventObject } from 'konva/lib/Node';
+import CommandCard from './_component/command-card';
 import React, {
   useEffect,
   useState,
   useCallback,
   Dispatch,
   SetStateAction,
+  useMemo,
 } from 'react';
-import { Stage, Layer, Rect, Line } from 'react-konva';
-import Command from '../command';
-import CommandCard from './command-card';
-import { selectInputProps } from '../editor';
 
 type LogicProp = {
   commands: Command[];
@@ -18,8 +20,9 @@ type LogicProp = {
   addCommand: (command: Command) => void;
   deleteCommand: (index: number) => void;
   replaceCommand: (command: Command, index: number) => void;
-  copyCommand: (command: Command) => void;
+  copyCommand: (index: number) => void;
   selectInput: (arg0: selectInputProps) => void;
+  findCommandByIndex: (index: number) => Command;
 };
 
 export type Position = {
@@ -36,11 +39,11 @@ export type Position = {
 export default function LogicDisplay({
   commands,
   setCommands,
-  addCommand,
   deleteCommand,
   replaceCommand,
   copyCommand,
   selectInput,
+  findCommandByIndex,
 }: LogicProp) {
   const [position, setPosition] = useState({
     windowWidth: 0,
@@ -69,19 +72,20 @@ export default function LogicDisplay({
 
   // auto center new command
   useEffect(() => {
-    commands.forEach((command, index) => {
-      if (command.x === 0 && command.y === 0) {
-        const centerX =
-          -position.posx / position.scale +
-          (position.windowWidth / position.scale / 2 - 150);
-        const centerY =
-          -position.posy / position.scale +
-          position.windowHeight / position.scale / 2;
-        setCommands((commands) => {
+    setCommands((commands) => {
+      commands.forEach((command, index) => {
+        if (command.x === 0 && command.y === 0) {
+          const centerX =
+            -position.posx / position.scale +
+            (position.windowWidth / position.scale / 2 - 150);
+          const centerY =
+            -position.posy / position.scale +
+            position.windowHeight / position.scale / 2;
           commands[index] = { ...command, x: centerX, y: centerY };
-          return commands;
-        });
-      }
+        }
+      });
+
+      return commands;
     });
   }, [
     commands,
@@ -143,9 +147,19 @@ export default function LogicDisplay({
     [],
   );
 
+  // element move
+  const dragElement = useCallback(
+    (e: KonvaEventObject<DragEvent>, command: Command, index: number) => {
+      const x = e.target.position().x;
+      const y = e.target.position().y;
+      replaceCommand({ ...command, x, y }, index);
+    },
+    [replaceCommand],
+  );
+
   return (
     <div className="h-full w-full">
-      <h3 className="fixed left-10 top-1.5">{`Pos: ${-position.posx}, ${-position.posy} Zoom: x${(1 / position.scale).toFixed(2)}`}</h3>
+      <h3 className="fixed left-10 top-1.5">{`Pos: ${-position.posx}, ${-position.posy}. Zoom: x${(1 / position.scale).toFixed(2)}. Total element: ${commands.length}`}</h3>
       <Stage
         width={position.windowWidth}
         height={position.windowHeight}
@@ -189,17 +203,103 @@ export default function LogicDisplay({
             draggable
           />
         </Layer>
-        <CommandCard
+        <CommandListDisplay
           commands={commands}
           position={position}
           setCommands={setCommands}
-          addCommand={addCommand}
+          dragElement={dragElement}
           deleteCommand={deleteCommand}
-          replaceCommand={replaceCommand}
           copyCommand={copyCommand}
           selectInput={selectInput}
+          findCommandByIndex={findCommandByIndex}
         />
       </Stage>
     </div>
   );
 }
+
+const CommandListDisplay = ({
+  commands,
+  dragElement,
+  position,
+  setCommands,
+  deleteCommand,
+  copyCommand,
+  selectInput,
+  findCommandByIndex,
+}: {
+  commands: Command[];
+  dragElement: (
+    e: KonvaEventObject<DragEvent>,
+    command: Command,
+    index: number,
+  ) => void;
+  position: Position;
+  setCommands: Dispatch<SetStateAction<Command[]>>;
+  deleteCommand: (index: number) => void;
+  copyCommand: (index: number) => void;
+  selectInput: (arg0: selectInputProps) => void;
+  findCommandByIndex: (index: number) => Command;
+}) => {
+  const [update, setUpdate] = useState(0);
+  const handleDragEvent = (
+    e: KonvaEventObject<DragEvent>,
+    command: Command,
+    index: number,
+  ) => {
+    dragElement(e, command, index);
+    setUpdate((prev) => prev + 1);
+  };
+
+  return useMemo(() => {
+    console.log('Rerendering...');
+    return (
+      <Layer>
+        {commands.map((element, index) => (
+          <CommandDisplay
+            key={index}
+            element={element}
+            index={index}
+            dragEvent={handleDragEvent} // Sử dụng handleDragEvent để kích hoạt force update
+          >
+            <CommandCard
+              commands={commands}
+              elementValue={element.value}
+              index={index}
+              position={position}
+              setCommands={setCommands}
+              deleteCommand={deleteCommand}
+              copyCommand={copyCommand}
+              selectInput={selectInput}
+              findCommandByIndex={findCommandByIndex}
+            />
+          </CommandDisplay>
+        ))}
+      </Layer>
+    );
+  }, [commands, update]);
+};
+
+const CommandDisplay = ({
+  element,
+  index,
+  dragEvent,
+  children,
+}: {
+  element: Command;
+  index: number;
+  dragEvent: (e: KonvaEventObject<DragEvent>, a: Command, i: number) => void;
+  children: React.ReactNode;
+}) => {
+  const { x, y } = element;
+  const handleDragEnd = (e: KonvaEventObject<DragEvent>) => {
+    dragEvent(e, element, index);
+  };
+
+  console.log('Unit rerendering...');
+  return (
+    <Group x={x} y={y} draggable onDragEnd={handleDragEnd}>
+      {children}
+    </Group>
+  );
+};

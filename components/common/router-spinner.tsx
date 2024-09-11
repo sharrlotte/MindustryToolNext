@@ -9,7 +9,7 @@ type Props = {
 
 export default function RouterSpinner({ message }: Props) {
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center p-4">
       <h2>{message}</h2>
       <Image className="animate-spin" src={router} alt="router spinning" />
     </div>

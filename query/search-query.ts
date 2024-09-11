@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { defaultSortTag } from '@/constant/env';
 import { sortTag } from '@/types/response/SortTag';
+import { locales } from '@/locales/client';
 
 export const sortSchema = z
   .enum(sortTag)
@@ -26,13 +27,18 @@ const ItemSearchParam = {
   sort: sortSchema,
 };
 
-const PaginationQuery = z.object({
+const Language = z.enum(locales).default('vi');
+
+export const PaginationQuery = z.object({
   ...PaginationParam,
 });
 
-const ItemPaginationQuery = z.object({
+export const ItemPaginationQuery = z.object({
   ...PaginationParam,
   ...ItemSearchParam,
 });
 
-export { PaginationQuery, ItemPaginationQuery };
+export const TranslationPaginationQuery = z.object({
+  ...PaginationParam,
+  language: Language,
+});

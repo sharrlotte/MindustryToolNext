@@ -11,6 +11,7 @@ export default interface Command {
 
 export interface CommandValue {
   readonly name: string;
+  readonly parseName: string;
   readonly color: string;
   readonly rows: number;
   readonly columns: number;
@@ -45,6 +46,7 @@ const defaultSettings: Command = {
   y: 0,
   value: {
     name: '',
+    parseName: '',
     color: 'white',
     rows: 0,
     columns: 0,
@@ -53,6 +55,7 @@ const defaultSettings: Command = {
   },
 };
 
+//#region Start - End
 export const start: Command = {
   ...defaultSettings,
   value: {
@@ -62,11 +65,26 @@ export const start: Command = {
   },
 };
 
+export const end: Command = {
+  ...defaultSettings,
+  value: {
+    ...defaultSettings.value,
+    name: 'End',
+    parseName: 'end',
+    color: '#0AA4FE',
+    fields: [],
+    outputs: [],
+  }
+}
+//#endregion
+
+//#region IO control
 const read: Command = {
   ...defaultSettings,
   value: {
     ...defaultSettings.value,
     name: 'Read',
+    parseName: 'read',
     color: '#9E7FB3',
     rows: 2,
     columns: 2,
@@ -121,8 +139,46 @@ const write: Command = {
     ],
   },
 };
+//#endregion
+
+//#region Test command
+const test: Command = {
+  ...defaultSettings,
+  value: {
+    ...defaultSettings.value,
+    name: 'Test',
+    color: '#79EECA',
+    rows: 2,
+    columns: 2,
+    fields: [
+      {
+        ...defaultField,
+        placeHolder: 'write',
+        placeHolderWidth: 40,
+      },
+      {
+        ...defaultField,
+        x: 1,
+        placeHolder: '=',
+        placeHolderWidth: 30,
+      },
+      {
+        ...defaultField,
+        y: 1,
+        placeHolder: 'at',
+        placeHolderWidth: 30,
+      },
+    ],
+    outputs: [
+      { key: 0, value: -1 },
+      { key: 1, value: -1 },
+      { key: 2, value: -1 }
+    ]
+  },
+};
 
 export const CommandList: { key: string; value: Command[] }[] = [
-  { key: 'Start commands', value: [start] },
+  { key: 'Start - End', value: [start, end] },
   { key: 'IO control', value: [read, write] },
+  { key: 'Testing', value: [test] },
 ];
