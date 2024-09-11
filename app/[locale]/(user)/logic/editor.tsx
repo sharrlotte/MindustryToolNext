@@ -63,7 +63,6 @@ export default function Editor() {
         const newCommands = [...prev];
         if (newCommands[cIndex]) {
           const updatedCommand = callback(newCommands[cIndex]);
-          // Ensure deep copy of fields
           newCommands[cIndex] = {
             ...updatedCommand,
             value: {
@@ -189,7 +188,7 @@ export default function Editor() {
         selectInput={selectInput}
         findCommandByIndex={findCommandByIndex}
       />
-      <InputControl input={input} />
+      <InputControl input={input} setCommands={setCommands} cIndex={inputKeys.commandIndex} />
       <h3 className="fixed right-10 top-1.5">{`Inputs: cIndex: ${inputKeys?.commandIndex}, fIndex: ${inputKeys?.fieldIndex}`}</h3>
 
       <LogicNavBar toggleText={'Click here to hidden'}>

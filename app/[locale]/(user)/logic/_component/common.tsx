@@ -1,6 +1,14 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Command, { CommandList } from '../command';
+
+export const useForceUpdate = () => {
+  const [, setTick] = useState(0);
+  const update = useCallback(() => {
+    setTick((tick) => tick + 1);
+  }, []);
+  return update;
+};
 
 export function AddingElement({
   addCommand,
