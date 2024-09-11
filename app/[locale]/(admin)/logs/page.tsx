@@ -33,7 +33,7 @@ import { useQuery } from '@tanstack/react-query';
 import getLogs, { getLogCollections } from '@/query/log';
 
 export default function LogPage() {
-  const [collection, setCollection] = useQueryState('collection', 'LIVE');
+  const [collection, setCollection] = useQueryState<string>('collection', 'LIVE');
 
   const axios = useClientApi();
 
@@ -159,12 +159,12 @@ type LogPaginationQuery = PaginationQuery & {
 
 function StaticLog({ collection }: StaticLogProps) {
   const [env, setEnv] = useQueryState<LogEnvironment>('environment', 'Prod');
-  const [content, setContent] = useQueryState('content', '');
-  const [ip, setIp] = useQueryState('ip', '');
-  const [url, setUrl] = useQueryState('url', '');
-  const [userId, setUserId] = useQueryState('userId', '');
-  const [before, setBefore] = useQueryState('before', '');
-  const [after, setAfter] = useQueryState('after', '');
+  const [content, setContent] = useQueryState<string>('content', '');
+  const [ip, setIp] = useQueryState<string>('ip', '');
+  const [url, setUrl] = useQueryState<string>('url', '');
+  const [userId, setUserId] = useQueryState<string>('userId', '');
+  const [before, setBefore] = useQueryState<string>('before', '');
+  const [after, setAfter] = useQueryState<string>('after', '');
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   function setFilter({ ip, userId, url, content }: Filter) {
