@@ -23,7 +23,8 @@ import {
   SendIcon as _SendIcon,
   SmileIcon as _SmileIcon,
   PencilIcon as _EditIcon,
-  Globe as _Glob
+  Globe as _Glob,
+  CrownIcon as _CrownIcon,
 } from 'lucide-react';
 
 import {
@@ -86,6 +87,9 @@ export const SmileIcon = () => <_SmileIcon className="size-6" />;
 export const SearchIcon = () => <_SearchIcon className="size-5" />;
 export const SendIcon = () => <_SendIcon className="size-5" />;
 export const EditIcon = () => <_EditIcon className="size-5" />;
+export const CrownIcon = ({ className }: Props) => (
+  <_CrownIcon className={cn('size-5', className)} />
+);
 
 export function HRIcon({ className }: Props) {
   return (

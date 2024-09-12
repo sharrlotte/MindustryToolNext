@@ -1,6 +1,7 @@
 'use client';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
+import { CrownIcon } from '@/components/common/icons';
 import { GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
@@ -81,7 +82,9 @@ export default function UserRankCard({ user, rank }: UserCardRankProps) {
 
   return (
     <TableRow className={cn({ 'bg-secondary': session?.id === user.id })}>
-      <TableCell>{rank}</TableCell>
+      <TableCell>
+        <RankNumber rank={rank} />
+      </TableCell>
       <TableCell className="align-top">
         <UserCard user={user} />
       </TableCell>
@@ -120,7 +123,7 @@ function MyRankCard() {
     return;
   }
 
-  if (!session || isFetching) {
+  if (!session || isFetching || data === undefined) {
     return <RankCardSkeleton />;
   }
 
@@ -136,7 +139,9 @@ function MyRankCard() {
 
   return (
     <TableRow className="bg-secondary">
-      <TableCell className="align-top">{data}</TableCell>
+      <TableCell className="align-top">
+        <RankNumber rank={data} />
+      </TableCell>
       <TableCell className="align-top">
         <UserCard user={session} />
       </TableCell>
@@ -161,4 +166,24 @@ export function RankPaginationNavigator() {
       </GridLayout>
     </div>
   );
+}
+
+type RankNumberProps = {
+  rank: number;
+};
+
+function RankNumber({ rank }: RankNumberProps) {
+  if (rank > 3) {
+    return <span className="font-semibold">{rank}</span>;
+  }
+
+  if (rank === 1) {
+    return <CrownIcon className="text-[#d4af37]" />;
+  }
+
+  if (rank === 2) {
+    return <CrownIcon className="text-[#c0c0c0]" />;
+  }
+
+  return <CrownIcon className="text-[#cd7f32]" />;
 }
