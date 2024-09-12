@@ -18,7 +18,7 @@ type Props<T, P> = {
   noResult?: ReactNode;
   skeleton?: {
     amount: number;
-    item: ReactNode;
+    item: ReactNode | ((index: number) => ReactNode);
   };
   asChild?: boolean;
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
@@ -36,7 +36,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   getFunc,
   children,
 }: Props<T, P>) {
-  const { data, isFetching, error } = useClientQuery({
+  const { data, isLoading, error } = useClientQuery({
     queryFn: (axios) => getFunc(axios, params),
     queryKey: [...queryKey, params],
   });
@@ -46,7 +46,11 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
       return Array(skeleton.amount)
         .fill(1)
         .map((_, index) => (
-          <React.Fragment key={index}>{skeleton.item}</React.Fragment>
+          <React.Fragment key={index}>
+            {typeof skeleton.item === 'function'
+              ? skeleton.item(index)
+              : skeleton.item}
+          </React.Fragment>
         ));
   }, [skeleton]);
 
@@ -64,7 +68,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   }
 
   function render() {
-    if (isFetching) {
+    if (isLoading) {
       return loader ? loader : skeletonElements;
     }
 

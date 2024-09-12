@@ -5,7 +5,8 @@ import Link from 'next/link';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { useCurrentLocale, useI18n } from '@/locales/client';
+import { locales, useCurrentLocale, useI18n } from '@/locales/client';
+import env from '@/constant/env';
 
 const linkVariants = cva('flex gap-2', {
   variants: {
@@ -44,11 +45,18 @@ export default function InternalLink({
   const t = useI18n();
   const locale = useCurrentLocale();
 
+  const stripBase = href.replace(env.url.base + '/', '');
+  const parts = stripBase.split('/');
+
+  if (parts.length > 0 && !locales.includes(parts[0] as any)) {
+    href = env.url.base + '/' + locale + '/' + stripBase;
+  }
+
   return (
     <Link
       className={cn(linkVariants({ variant, className }))}
       {...props}
-      href={`/${locale}${href}`}
+      href={href}
       title={title ? t(title) : ''}
     ></Link>
   );
