@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export default function useWindow() {
-  const [windowIsActive, setWindowIsActive] = useState(true);
+  const [windowIsActive, setWindowIsActive] = useState(false);
 
   function handleActivity(forcedFlag: boolean | Event) {
     if (typeof forcedFlag === 'boolean') {
