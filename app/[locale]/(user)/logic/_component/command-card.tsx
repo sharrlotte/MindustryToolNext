@@ -130,7 +130,7 @@ export default function CommandCard({
           y={2}
           width={16}
           height={16}
-          fill={'red'}
+          fill={'#FF4C4C'}
           cornerRadius={5}
           onClick={() => deleteCommand(index)}
         />
@@ -140,7 +140,7 @@ export default function CommandCard({
           width={16}
           height={16}
           cornerRadius={5}
-          fill={'green'}
+          fill={'#4CAF50'}
           onClick={() => copyCommand(index)}
         />
       </Group>

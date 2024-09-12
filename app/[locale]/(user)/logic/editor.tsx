@@ -5,6 +5,7 @@ import { InputControl, InputControlProp } from './_component/input';
 import LogicDisplay from './logic';
 import Command, { InputType } from './command';
 import { useState, useCallback } from 'react';
+import CommandStorage from './function/storage';
 
 export type selectInputProps = {
   commandIndex: number;
@@ -36,18 +37,24 @@ export default function Editor() {
 
   const deleteCommand = useCallback(
     (index: number) => {
-      setCommands((prevCommands) => {
-        const newCommands = prevCommands.filter((_, i) => i !== index);
-        newCommands.forEach((cmd) =>
-          cmd.value.outputs.forEach(
-            (value) => value.value > index && value.value--,
-          ),
-        );
-        return newCommands;
+      setCommands(prevCommands => {
+        return prevCommands
+          .filter((_, i) => i !== index)
+          .map(cmd => ({
+            ...cmd,
+            value: {
+              ...cmd.value,
+              outputs: cmd.value.outputs.map(value => ({
+                ...value,
+                value: value.value > index ? value.value - 1 : value.value === index ? -1 : value.value
+              }))
+            }
+          }));
       });
     },
-    [setCommands],
+    [setCommands]
   );
+  
 
   const replaceCommand = useCallback((command: Command, index: number) => {
     setCommands((prevCommands) => {
@@ -177,7 +184,7 @@ export default function Editor() {
   );
 
   return (
-    <div>
+    <div className='text-white'>
       <LogicDisplay
         commands={commands}
         setCommands={setCommands}
@@ -189,13 +196,12 @@ export default function Editor() {
         findCommandByIndex={findCommandByIndex}
       />
       <InputControl input={input} setCommands={setCommands} cIndex={inputKeys.commandIndex} />
-      <h3 className="fixed right-10 top-1.5">{`Inputs: cIndex: ${inputKeys?.commandIndex}, fIndex: ${inputKeys?.fieldIndex}`}</h3>
-
-      <LogicNavBar toggleText={'Click here to hidden'}>
+      <LogicNavBar toggleText={'Click here to toggle'}>
         <AddingElement addCommand={addCommand} />
+        <CommandStorage commands={commands} setCommands={setCommands}/>
       </LogicNavBar>
 
-      <LogicNavBar toggleText={'Click here to hidden'} side="right">
+      <LogicNavBar toggleText={'Click here to toggle'} side="right">
         <div></div>
       </LogicNavBar>
     </div>
