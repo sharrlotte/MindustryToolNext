@@ -18,6 +18,7 @@ import useMessageQuery from '@/hooks/use-message-query';
 import { MessageQuery } from '@/types/data/pageable-search-schema';
 import useNotification from '@/hooks/use-notification';
 import Tran from '@/components/common/tran';
+import useWindow from '@/hooks/use-window';
 
 type MessageListProps = {
   className?: string;
@@ -62,8 +63,16 @@ export default function MessageList({
   const isEndReached = isReachedEnd(currentContainer, threshold);
   const { socket } = useSocket();
 
+  const isFocused = useWindow();
+
+  const [shouldCheck, setShouldCheck] = useState(true);
+
   const { data, isFetching, error, isError, hasNextPage, fetchNextPage } =
     useMessageQuery(room, params, queryKey);
+
+  useEffect(() => {
+    setShouldCheck(isFocused);
+  }, [isFocused]);
 
   const { postNotification } = useNotification();
 
@@ -110,6 +119,8 @@ export default function MessageList({
   }, [data, pageMapper]);
 
   const checkIfNeedFetchMore = useCallback(() => {
+    if (!shouldCheck) return;
+
     const handleEndReach = () => {
       if (hasNextPage && !isFetching) {
         fetchNextPage();
@@ -121,7 +132,14 @@ export default function MessageList({
         handleEndReach();
       }
     }
-  }, [currentContainer, fetchNextPage, hasNextPage, isFetching, threshold]);
+  }, [
+    currentContainer,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    shouldCheck,
+    threshold,
+  ]);
 
   useEffect(() => {
     const interval = setInterval(checkIfNeedFetchMore, 100);
@@ -187,6 +205,8 @@ export default function MessageList({
 
   useEffect(() => {
     function onScroll() {
+      setShouldCheck(true);
+
       if (currentContainer) {
         scrollTop.current = currentContainer.scrollTop;
         setScrollDir(
