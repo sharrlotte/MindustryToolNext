@@ -128,6 +128,11 @@ export function NavItems({ onClick }: NavItemsProps) {
             path: '/plugins',
             icon: <PluginIcon />,
           },
+          {
+            name: <Tran text="rank" />,
+            path: '/rank',
+            icon: <PluginIcon />,
+          },
         ],
       },
       {

@@ -6,7 +6,9 @@ import {
   searchSchema,
 } from '@/types/data/pageable-search-schema';
 
-export default function useSearchPageParams(): PaginationSearchQuery {
+export default function useSearchPageParams(
+  size?: number,
+): PaginationSearchQuery {
   const query = useSafeSearchParams();
 
   return searchSchema.parse({
@@ -16,6 +18,6 @@ export default function useSearchPageParams(): PaginationSearchQuery {
     tags: query.getAll(QueryParams.tags),
     authorId: query.get(QueryParams.authorId),
     status: query.get(QueryParams.status),
-    size: Number.parseInt(query.get(QueryParams.size, '10')),
+    size: size ?? 10,
   });
 }

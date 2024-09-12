@@ -22,6 +22,28 @@ export async function getMeServers(
   return result.data;
 }
 
+export async function getRank(
+  axios: AxiosInstance,
+  params: PaginationQuery,
+): Promise<User[]> {
+  const result = await axios.get(`/users/rank`, {
+    params,
+  });
+
+  return result.data;
+}
+
+export async function getUsersCount(axios: AxiosInstance): Promise<number> {
+  const result = await axios.get(`/users/count`);
+
+  return result.data;
+}
+export async function getMyRank(axios: AxiosInstance): Promise<number> {
+  const result = await axios.get(`/users/@me/rank`);
+
+  return result.data;
+}
+
 export async function getMeMaps(
   axios: AxiosInstance,
   params: StatusPaginationSearchQuery,
@@ -113,6 +135,7 @@ export async function getUsers(
 
   return result.data;
 }
+
 export async function updateThumbnail(
   axios: AxiosInstance,
   file: File,
