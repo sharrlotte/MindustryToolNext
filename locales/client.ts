@@ -4,6 +4,8 @@ import { createI18nClient } from 'next-international/client';
 import { useCallback } from 'react';
 
 import { TranslateFunction } from '@/i18n/config';
+import { useLocaleStore } from '@/zustand/locale-store';
+import useClientApi from '@/hooks/use-client';
 
 const {
   useI18n: defaultUseI18n,
@@ -28,19 +30,39 @@ export const locales = ['en', 'vi'] as const;
 export type Locale = (typeof locales)[number];
 
 function useI18n(): TranslateFunction {
-  const t = defaultUseI18n();
+  const { keys, setKeys } = useLocaleStore();
+  const axios = useClientApi();
 
   return useCallback(
-    (key: string, args?: Record<string, string>) => {
-      const parts = key.split('.');
+    (text: string, args?: Record<string, string>) => {
+      const parts = text.split('.');
 
       if (parts.length === 0) {
         throw new Error('Bad key');
       }
-      //@ts-expect-error fix later
-      return t(key, args);
+
+      const group = parts.length === 1 ? 'common' : parts[0];
+      const key = parts.length === 1 ? parts[0] : parts[1];
+
+      const value = keys[group];
+
+      if (value === undefined) {
+        keys[group] = {};
+
+        axios
+          .get('/translations', {
+            params: {
+              group,
+            },
+          })
+          .then((result) => {
+            setKeys({ [group]: result.data });
+          });
+      }
+
+      return value ? (value[key] ?? text) : text;
     },
-    [t],
+    [keys],
   );
 }
 

@@ -18,5 +18,6 @@
       'action player';
 
     grid-template-columns: 4fr 250px;
+    grid-template-rows: 1fr auto auto;
   }
 }

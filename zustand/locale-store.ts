@@ -7,7 +7,9 @@ type State = {
   setKeys: (data: TranslationGroup) => void;
 };
 
-export const useExpandServerNav = create<State>((set) => ({
+export const useLocaleStore = create<State>((set) => ({
   keys: {},
-  setKeys: (keys: TranslationGroup) => set({ keys }),
+  setKeys: (value: TranslationGroup) => {
+    set((prev) => ({ keys: { ...prev.keys, ...value } }));
+  },
 }));

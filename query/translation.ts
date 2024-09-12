@@ -57,10 +57,10 @@ export async function getTranslationCompareCount(
 }
 
 export const CreateTranslationSchema = z.object({
-  keyGroup: z.string().min(1).max(128),
-  key: z.string().max(1024),
+  keyGroup: z.string().min(1).max(20),
+  key: z.string().max(60),
   value: z.string().max(1024),
-  language: z.string().max(1024),
+  language: z.string().max(2),
 });
 
 export type CreateTranslationRequest = z.infer<typeof CreateTranslationSchema>;
@@ -70,6 +70,12 @@ export async function createTranslation(
   payload: CreateTranslationRequest,
 ) {
   const result = await axios.post('/translations', payload);
+
+  return result.data;
+}
+
+export async function deleteTranslation(axios: AxiosInstance, id: string) {
+  const result = await axios.delete(`/translations/${id}`);
 
   return result.data;
 }

@@ -1,11 +1,13 @@
 'use client';
 
+import DeleteButton from '@/components/button/delete-button';
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import {
   Form,
   FormControl,
@@ -37,6 +39,7 @@ import {
   createTranslation,
   CreateTranslationRequest,
   CreateTranslationSchema,
+  deleteTranslation,
   getTranslationCompare,
   getTranslationCompareCount,
   getTranslationDiff,
@@ -49,7 +52,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { debounce } from 'lodash';
-import { ChangeEvent, Fragment, useCallback, useState } from 'react';
+import { ChangeEvent, Fragment, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const translateModes = ['diff', 'compare'] as const;
@@ -125,8 +128,14 @@ function CompareTable({ language }: CompareTableProps) {
             <TableHead>
               <Tran text="translation.key" />
             </TableHead>
+            <TableHead>
+              <Tran text="translation.key-group" />
+            </TableHead>
             <TableHead>en</TableHead>
             <TableHead>{language}</TableHead>
+            <TableHead>
+              <Tran text="translation.action" />
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -140,7 +149,7 @@ function CompareTable({ language }: CompareTableProps) {
           >
             {(data) => (
               <CompareCard
-                key={data.key}
+                key={data.id}
                 translation={data}
                 language={language}
               />
@@ -175,6 +184,9 @@ function DiffTable({ language }: DiffTableProps) {
             <TableHead>
               <Tran text="translation.key" />
             </TableHead>
+            <TableHead>
+              <Tran text="translation.key-group" />
+            </TableHead>
             <TableHead>EN</TableHead>
             <TableHead>{language}</TableHead>
           </TableRow>
@@ -189,7 +201,7 @@ function DiffTable({ language }: DiffTableProps) {
             asChild
           >
             {(data) => (
-              <DiffCard key={data.key} translation={data} language={language} />
+              <DiffCard key={data.id} translation={data} language={language} />
             )}
           </GridPaginationList>
         </TableBody>
@@ -231,8 +243,9 @@ function DiffCard({
   );
 
   return (
-    <TableRow key={key}>
+    <TableRow>
       <TableCell className="align-top">{key}</TableCell>
+      <TableCell className="align-top">{keyGroup}</TableCell>
       <TableCell className="align-top">{value}</TableCell>
       <TableCell>
         <Textarea
@@ -251,7 +264,7 @@ type CompareCardProps = {
 };
 
 function CompareCard({
-  translation: { key, value, keyGroup },
+  translation: { key, id, value, keyGroup },
   language,
 }: CompareCardProps) {
   const axios = useClientApi();
@@ -275,8 +288,9 @@ function CompareCard({
   );
 
   return (
-    <TableRow key={key}>
+    <TableRow>
       <TableCell className="align-top">{key}</TableCell>
+      <TableCell className="align-top">{keyGroup}</TableCell>
       <TableCell className="align-top">{value['en']}</TableCell>
       <TableCell>
         <Textarea
@@ -284,6 +298,11 @@ function CompareCard({
           defaultValue={value[language]}
           onChange={handleChange}
         />
+      </TableCell>
+      <TableCell className="flex justify-end">
+        <EllipsisButton variant="ghost">
+          <DeleteTranslationDialog value={{ key, id }} />
+        </EllipsisButton>
       </TableCell>
     </TableRow>
   );
@@ -405,5 +424,34 @@ function AddNewKeyDialog() {
         </Form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+type DeleteTranslationDialogProps = {
+  value: {
+    id: string;
+    key: string;
+  };
+};
+
+function DeleteTranslationDialog({
+  value: { id, key },
+}: DeleteTranslationDialogProps) {
+  const axios = useClientApi();
+  const { invalidateByKey } = useQueriesData();
+  const { mutate, isPending } = useMutation({
+    mutationFn: (id: string) => deleteTranslation(axios, id),
+    onSuccess: () => {
+      invalidateByKey(['translations']);
+    },
+  });
+
+  return (
+    <DeleteButton
+      variant="command"
+      isLoading={isPending}
+      description={`Delete ${key}`}
+      onClick={() => mutate(id)}
+    />
   );
 }

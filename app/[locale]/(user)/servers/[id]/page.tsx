@@ -61,9 +61,9 @@ export default async function Page({ params: { id } }: Props) {
     return (
       <ProtectedRoute session={session} ownerId={userId}>
         <div className="flex flex-col gap-2 overflow-y-auto p-2 md:pl-2">
-          <div className="flex w-full flex-col gap-2 md:flex-row">
-            <div className="server-layout flex w-full flex-col gap-2 [grid-area:info]">
-              <div className="flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card p-4">
+          <div className="h-full">
+            <div className="server-layout flex min-h-full w-full flex-col gap-2">
+              <div className="flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card p-4 [grid-area:info]">
                 <div className="flex items-center gap-2">
                   <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
                   <ColorText className="text-2xl font-bold" text={name} />
