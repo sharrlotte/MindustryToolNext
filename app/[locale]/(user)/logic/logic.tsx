@@ -74,7 +74,7 @@ export default function LogicDisplay({
   useEffect(() => {
     setCommands((commands) => {
       commands.forEach((command, index) => {
-        if (command.x === 0 && command.y === 0) {
+        if (command.x == 0 && command.y == 0) {
           const centerX =
             -position.posx / position.scale +
             (position.windowWidth / position.scale / 2 - 150);
@@ -89,11 +89,7 @@ export default function LogicDisplay({
     });
   }, [
     commands,
-    position.posx,
-    position.posy,
-    position.scale,
-    position.windowWidth,
-    position.windowHeight,
+    position,
     setCommands,
   ]);
 

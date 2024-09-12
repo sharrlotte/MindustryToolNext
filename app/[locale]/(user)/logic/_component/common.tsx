@@ -18,7 +18,7 @@ export function AddingElement({
   const [isVisible, setIsVisible] = useState(true);
 
   return (
-    <div className="w-full rounded-md bg-[#555] p-2">
+    <div className="w-full rounded-md bg-[#5555] p-2">
       <header
         className="cursor-pointer rounded-md bg-brand p-1"
         onClick={() => setIsVisible(!isVisible)}
@@ -71,7 +71,7 @@ export function LogicNavBar({
       >
         <p>{toggleText}</p>
       </header>
-      <div className={`${toggle ? '' : 'hidden'} w-full`}>{children}</div>
+      <div className={`${toggle ? 'flex flex-col' : 'hidden'} w-full gap-2`}>{children}</div>
     </nav>
   );
 }

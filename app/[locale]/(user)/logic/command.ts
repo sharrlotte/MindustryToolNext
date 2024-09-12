@@ -147,7 +147,7 @@ const test: Command = {
   value: {
     ...defaultSettings.value,
     name: 'Test',
-    color: '#79EECA',
+    color: '#33A3A4',
     rows: 2,
     columns: 2,
     fields: [
