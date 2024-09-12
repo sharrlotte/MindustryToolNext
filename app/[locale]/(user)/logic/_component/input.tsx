@@ -73,8 +73,6 @@ export type InputControlProp = {
 
 export function InputControl({
   input,
-  setCommands,
-  cIndex
 }: {
   input: InputControlProp | null;
   setCommands: Dispatch<SetStateAction<Command[]>>;

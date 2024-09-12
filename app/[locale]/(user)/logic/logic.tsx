@@ -87,11 +87,7 @@ export default function LogicDisplay({
 
       return commands;
     });
-  }, [
-    commands,
-    position,
-    setCommands,
-  ]);
+  }, [commands, position, setCommands]);
 
   // inputs
   const handleWheel = useCallback(
@@ -256,7 +252,7 @@ const CommandListDisplay = ({
             key={index}
             element={element}
             index={index}
-            dragEvent={handleDragEvent} // Sử dụng handleDragEvent để kích hoạt force update
+            dragEvent={handleDragEvent}
           >
             <CommandCard
               commands={commands}
