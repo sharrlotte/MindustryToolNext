@@ -184,7 +184,7 @@ export default function Editor() {
   );
 
   return (
-    <div>
+    <div className='text-white'>
       <LogicDisplay
         commands={commands}
         setCommands={setCommands}

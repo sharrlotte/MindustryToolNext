@@ -23,7 +23,7 @@ export default function CommandStorage({
   const [isPageReady, setIsPageReady] = useState(false);
   const [currentSaveName, setCurrentSaveName] = useState('untitled');
   const [newSaveName, setNewSaveName] = useState('');
-  const [isStorageAvailable, setIsStorageAvailable] = useState(true);
+  const [isStorageAvailable, setIsStorageAvailable] = useState(false);
 
   useEffect(() => {
     const handleDOMContentLoaded = () => {
@@ -174,9 +174,7 @@ export default function CommandStorage({
   if (!isStorageAvailable) {
     return (
       <div className="flex w-full flex-col gap-2 rounded-md bg-[#5555] p-2">
-        <p className="text-red-500">
-          Lưu trữ không khả dụng do không cho phép sử dụng cookie.
-        </p>
+        <p>Lưu trữ không khả dụng do không cho phép sử dụng cookie.</p>
       </div>
     );
   }

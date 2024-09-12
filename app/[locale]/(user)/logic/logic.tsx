@@ -184,7 +184,7 @@ export default function LogicDisplay({
             width={8000}
             height={8000}
             onMouseDown={(e) => handleDragStart(e.evt.clientX, e.evt.clientY)}
-            fill={'#7777'}
+            fill={'#200'}
           />
           <Line points={[-4000, 0, 4000, 0]} stroke="white" strokeWidth={4} />
           <Line points={[0, -4000, 0, 4000]} stroke="white" strokeWidth={4} />
