@@ -2,7 +2,15 @@ import { MetadataRoute } from 'next';
 
 import env from '@/constant/env';
 
-const routes = ['schematics', 'maps', 'posts', 'servers', 'upload'];
+const routes = [
+  'schematics',
+  'maps',
+  'posts',
+  'servers',
+  'upload/schematic',
+  'upload/map',
+  'upload/post',
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((route) => ({

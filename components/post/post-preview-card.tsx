@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import React, { HTMLAttributes } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -12,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { Post } from '@/types/response/Post';
 
 import { LinkIcon } from '@heroicons/react/24/outline';
+import InternalLink from '@/components/common/internal-link';
 
 type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
@@ -29,15 +29,15 @@ export default function PostPreviewCard({
     <div
       style={{ backgroundImage: `url(${firstImage})` }}
       className={cn(
-        'relative flex flex-col rounded-lg border border-border bg-cover bg-center overflow-hidden',
+        'relative flex flex-col overflow-hidden rounded-lg border border-border bg-cover bg-center',
         className,
       )}
       {...rest}
     >
-      <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-brightness-50 backdrop-blur-sm overflow-hidden">
-        <Link href={`/posts/${post.id}`}>
+      <div className="flex h-full flex-col justify-between gap-2 overflow-hidden p-4 backdrop-blur-sm backdrop-brightness-50">
+        <InternalLink href={`/posts/${post.id}`}>
           <span className="flex text-2xl">{post.title}</span>
-        </Link>
+        </InternalLink>
         <div className="flex flex-col gap-2">
           <div>
             <IdUserCard id={post.userId} />
