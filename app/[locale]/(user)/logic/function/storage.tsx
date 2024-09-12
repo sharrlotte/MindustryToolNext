@@ -128,11 +128,10 @@ export default function CommandStorage({
   const isValidSaveName = (name: string) => /^[a-zA-Z0-9-_]+$/.test(name);
 
   const handleNewSave = () => {
-    if (newSaveName.length > 50) {
-      // Đổi thành 50 ký tự
+    if (newSaveName.length > 20) {
       showToast(
         'Save name too long',
-        'Please use a shorter name (max 50 characters).',
+        'Please use a shorter name (max 20 characters).',
         'destructive',
       );
       return;
@@ -224,7 +223,7 @@ export default function CommandStorage({
                   ) : (
                     <div className="p-2">
                       <DialogDescription>
-                        Are you sure you want to delete the save "{save}"?
+                        Are you sure you want to delete the save {save}?
                       </DialogDescription>
                       <DialogFooter className="p-2">
                         <DialogClose className="w-20 rounded-md bg-gray-500 p-2">
