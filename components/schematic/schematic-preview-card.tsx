@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -23,6 +22,7 @@ import { useI18n } from '@/locales/client';
 import { Schematic } from '@/types/response/Schematic';
 import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';
+import InternalLink from '@/components/common/internal-link';
 
 type SchematicPreviewCardProps = {
   schematic: Schematic;
@@ -58,9 +58,9 @@ export default function SchematicPreviewCard({
       >
         <LinkIcon />
       </CopyButton>
-      <Link href={detailLink}>
+      <InternalLink href={detailLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
-      </Link>
+      </InternalLink>
       <PreviewDescription>
         <PreviewHeader>{name}</PreviewHeader>
         <PreviewActions>

@@ -74,7 +74,7 @@ export default function LogicDisplay({
   useEffect(() => {
     setCommands((commands) => {
       commands.forEach((command, index) => {
-        if (command.x === 0 && command.y === 0) {
+        if (command.x == 0 && command.y == 0) {
           const centerX =
             -position.posx / position.scale +
             (position.windowWidth / position.scale / 2 - 150);
@@ -87,15 +87,7 @@ export default function LogicDisplay({
 
       return commands;
     });
-  }, [
-    commands,
-    position.posx,
-    position.posy,
-    position.scale,
-    position.windowWidth,
-    position.windowHeight,
-    setCommands,
-  ]);
+  }, [commands, position, setCommands]);
 
   // inputs
   const handleWheel = useCallback(
@@ -188,7 +180,7 @@ export default function LogicDisplay({
             width={8000}
             height={8000}
             onMouseDown={(e) => handleDragStart(e.evt.clientX, e.evt.clientY)}
-            fill={'#7777'}
+            fill={'#200'}
           />
           <Line points={[-4000, 0, 4000, 0]} stroke="white" strokeWidth={4} />
           <Line points={[0, -4000, 0, 4000]} stroke="white" strokeWidth={4} />
@@ -260,7 +252,7 @@ const CommandListDisplay = ({
             key={index}
             element={element}
             index={index}
-            dragEvent={handleDragEvent} // Sử dụng handleDragEvent để kích hoạt force update
+            dragEvent={handleDragEvent}
           >
             <CommandCard
               commands={commands}
