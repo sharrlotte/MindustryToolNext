@@ -52,7 +52,9 @@ export function PageClient() {
           getFunc={getRank}
           skeleton={{
             amount: 20,
-            item: <RankCardSkeleton />,
+            item: (index) => (
+              <RankCardSkeleton rank={page * size + index + 1} />
+            ),
           }}
           asChild
         >
@@ -93,14 +95,18 @@ export default function UserRankCard({ user, rank }: UserCardRankProps) {
   );
 }
 
-function RankCardSkeleton() {
+type RankCardSkeletonProps = {
+  rank: number;
+};
+
+function RankCardSkeleton({ rank }: RankCardSkeletonProps) {
   return (
     <TableRow>
+      <TableCell>
+        <RankNumber rank={rank} />
+      </TableCell>
       <TableCell className="align-top">
         <UserCardSkeleton />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-8 w-full" />
       </TableCell>
       <TableCell>
         <Skeleton className="h-8 w-full" />
@@ -124,7 +130,7 @@ function MyRankCard() {
   }
 
   if (!session || isFetching || data === undefined) {
-    return <RankCardSkeleton />;
+    return <RankCardSkeleton rank={0} />;
   }
 
   const index = (data ?? 0) - 1;
