@@ -3,7 +3,7 @@
 import { LogicNavBar, AddingElement } from './_component/common';
 import { InputControl, InputControlProp } from './_component/input';
 import LogicDisplay from './logic';
-import Command, { InputType, start } from './command';
+import Command, { InputType } from './command';
 import { useState, useCallback } from 'react';
 import CommandStorage from './function/storage';
 
