@@ -264,6 +264,7 @@ const ConnectionPoint = ({
     posX: connectCircleRadius,
     posY: connectCircleRadius,
   });
+  const [isDrag, setDrag] = useState(false);
 
   const handleDrag = (x: number, y: number) => {
     setWirePos({ posX: x, posY: y });
@@ -330,6 +331,14 @@ const ConnectionPoint = ({
         return elements;
       }
 
+      if (elements[cIndex].value.outputs[oIndex].value == -1 && !isDrag) {
+        setWirePos({
+          posX: connectCircleRadius,
+          posY: connectCircleRadius,
+        });
+        return elements;
+      }
+
       if (elements[cIndex].value.outputs[oIndex].value != -1) {
         setWirePos({
           posX:
@@ -350,6 +359,7 @@ const ConnectionPoint = ({
       return elements;
     });
   }, [
+    isDrag,
     commands,
     handleReset,
     setCommands,
@@ -396,11 +406,13 @@ const ConnectionPoint = ({
           e.cancelBubble = true;
           const { x, y } = e.target.position();
           handleDrag(x, y);
+          setDrag(true);
         }}
         onDragEnd={(e) => {
           e.cancelBubble = true;
           const { x, y } = e.target.position();
           handleFinish(x, y);
+          setDrag(false);
         }}
       />
     </Group>

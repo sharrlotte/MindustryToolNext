@@ -6,6 +6,7 @@ import LogicDisplay from './logic';
 import Command, { InputType } from './command';
 import { useState, useCallback } from 'react';
 import CommandStorage from './function/storage';
+import LiveCode from './function/live';
 
 export type selectInputProps = {
   commandIndex: number;
@@ -202,7 +203,7 @@ export default function Editor() {
       </LogicNavBar>
 
       <LogicNavBar toggleText={'Click here to toggle'} side="right">
-        <div></div>
+        <LiveCode commands={commands}/>
       </LogicNavBar>
     </div>
   );
