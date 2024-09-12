@@ -125,7 +125,7 @@ function CompareTable({ language }: CompareTableProps) {
             <TableHead>
               <Tran text="translation.key" />
             </TableHead>
-            <TableHead>EN</TableHead>
+            <TableHead>en</TableHead>
             <TableHead>{language}</TableHead>
           </TableRow>
         </TableHeader>

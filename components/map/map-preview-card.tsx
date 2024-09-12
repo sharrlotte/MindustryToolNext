@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -19,6 +18,7 @@ import {
 import env from '@/constant/env';
 import { MapPreview } from '@/types/response/MapPreview';
 import { LinkIcon } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
 
 type MapPreviewCardProps = {
   map: MapPreview;
@@ -44,9 +44,9 @@ export default function MapPreviewCard({
       >
         <LinkIcon />
       </CopyButton>
-      <Link href={detailLink}>
+      <InternalLink href={detailLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
-      </Link>
+      </InternalLink>
       <PreviewDescription>
         <PreviewHeader>{name}</PreviewHeader>
         <PreviewActions>
