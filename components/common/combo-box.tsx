@@ -53,7 +53,7 @@ export default function ComboBox<T>({
           role="combobox"
           variant="outline"
         >
-          {value ? value.label.toLowerCase() : placeholder}
+          {value ? value.label?.toLowerCase() : placeholder}
           <ChevronUpDownIcon className="ml-auto size-5 shrink-0" />
         </Button>
       </PopoverTrigger>
@@ -82,7 +82,7 @@ export default function ComboBox<T>({
                 variant="ghost"
                 onClick={() => handleSelect(item)}
               >
-                {item.label.toLowerCase()}
+                {item.label?.toLowerCase()}
               </Button>
             ))}
           </div>
