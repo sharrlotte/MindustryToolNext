@@ -7,25 +7,20 @@ import { TranslateFunction } from '@/i18n/config';
 import { useLocaleStore } from '@/zustand/locale-store';
 import useClientApi from '@/hooks/use-client';
 
-const {
-  useI18n: defaultUseI18n,
-  useScopedI18n,
-  useChangeLocale,
-  I18nProviderClient,
-  useCurrentLocale,
-} = createI18nClient(
-  {
-    en: () => import('./en'),
-    vi: () => import('./vi'),
-    kr: () => import('./vi'),
-    cn: () => import('./vi'),
-  },
-  {
-    fallbackLocale: {
-      vi: 'en',
+const { useScopedI18n, useChangeLocale, I18nProviderClient, useCurrentLocale } =
+  createI18nClient(
+    {
+      en: () => import('./en'),
+      vi: () => import('./vi'),
+      kr: () => import('./vi'),
+      cn: () => import('./vi'),
     },
-  },
-);
+    {
+      fallbackLocale: {
+        vi: 'en',
+      },
+    },
+  );
 
 export const locales = ['en', 'vi', 'kr', 'cn'] as const;
 
@@ -50,6 +45,8 @@ function useI18n(): TranslateFunction {
       const group = parts.length === 1 ? 'common' : parts[0];
       const key = parts.length === 1 ? parts[0] : parts[1];
 
+      text = `${group}.${key}`;
+
       const value = keys[group];
 
       if (value === undefined) {
@@ -66,10 +63,22 @@ function useI18n(): TranslateFunction {
           });
       }
 
-      return value ? (value[key] ?? text) : text;
+      return value ? (format(value[key], args) ?? text) : text;
     },
     [axios, keys, setKeys],
   );
+}
+
+function format(text: string, args?: Record<string, string>) {
+  if (!args || !text) {
+    return text;
+  }
+
+  Object.entries(args).forEach(([key, value]) => {
+    text = text.replace(`${key}`, value);
+  });
+
+  return text;
 }
 
 export {
