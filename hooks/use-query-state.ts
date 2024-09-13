@@ -1,57 +1,59 @@
 import useSafeSearchParams from '@/hooks/use-safe-search-params';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
-export default function useQueryState<T extends string>(
-  name: string,
-  initialState: T,
-) {
+export default function useQueryState(initialState: Record<string, string>) {
   const params = useSafeSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const queryState = params.get(name) as T;
-
-  const [state, setState] = useState<T>(queryState ?? initialState);
-
   useEffect(() => {
     const queryParams = new URLSearchParams(params.raw());
 
-    if (state) {
-      queryParams.set(name, state);
-      setState(state);
-    } else {
-      queryParams.set(name, initialState);
-      setState(initialState);
-    }
+    Object.entries(initialState).forEach(([key, value]) => {
+      queryParams.set(key, value);
+    });
 
-    if (!queryParams.get(name)) {
-      queryParams.delete(name);
-    }
+    Object.entries(queryParams).forEach(([key]) => {
+      if (!queryParams.get(key)) {
+        queryParams.delete(key);
+      }
+    });
 
     router.replace(`${pathname}?${queryParams.toString()}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialState, name, pathname, router]);
+  }, [initialState, pathname, router]);
 
-  const setter = (value?: T) => {
-    const queryParams = new URLSearchParams(params.raw());
+  const setter = useCallback(
+    (value: Record<string, string | undefined>) => {
+      const queryParams = new URLSearchParams(params.raw());
 
-    if (!value) value = initialState;
+      Object.entries(value).forEach(([key]) => {
+        value[key] = initialState[key];
+      });
 
-    queryParams.set(name, value);
+      Object.entries({ ...value }).forEach(([key, value]) => {
+        if (value) queryParams.set(key, value);
+      });
 
-    if (!queryParams.get(name)) {
-      queryParams.delete(name);
-    }
+      Object.entries(queryParams).forEach(([key]) => {
+        if (!queryParams.get(key)) {
+          queryParams.delete(key);
+        }
+      });
 
-    setState(value as T);
-    const timer = setTimeout(() => {
-      router.replace(`${pathname}?${queryParams.toString()}`);
+      const timer = setTimeout(() => {
+        router.replace(`${pathname}?${queryParams.toString()}`);
+      }, 100);
 
       return () => clearTimeout(timer);
-    }, 100);
-  };
+    },
+    [initialState, params, pathname, router],
+  );
 
-  return [state, setter] as const;
+  return [
+    { ...initialState, ...Object.fromEntries(Object.entries(params.raw())) },
+    setter,
+  ] as const;
 }

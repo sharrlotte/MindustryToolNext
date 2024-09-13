@@ -21,7 +21,7 @@ import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { InternalServerModes } from '@/types/request/UpdateInternalServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';

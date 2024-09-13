@@ -6,7 +6,7 @@ import useSearchPageParams from '@/hooks/use-plugin-search-params';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { getPlugins } from '@/query/plugin';
 import { createInternalServerPlugin } from '@/query/server';
 import {

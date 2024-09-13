@@ -3,6 +3,7 @@
 import { notFound } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
 
 export default function Error({
   error,
@@ -14,6 +15,10 @@ export default function Error({
   if (message === 'NEXT_NOT_FOUND') {
     throw notFound();
   }
+
+  useEffect(() => {
+    reportError(JSON.stringify(error));
+  }, [error]);
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4">

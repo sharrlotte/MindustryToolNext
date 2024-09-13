@@ -15,7 +15,7 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';

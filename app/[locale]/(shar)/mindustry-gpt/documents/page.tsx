@@ -20,7 +20,7 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import {
   CreateDocumentRequest,
   CreateDocumentSchema,

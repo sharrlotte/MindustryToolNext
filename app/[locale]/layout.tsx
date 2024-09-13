@@ -1,4 +1,4 @@
-import { I18nProviderClient } from '@/locales/client';
+import { I18nProviderClient } from '@/i18n/client';
 
 import dynamic from 'next/dynamic';
 

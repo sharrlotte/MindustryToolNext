@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 type Props = {
   className?: string;

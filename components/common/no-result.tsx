@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 import React, { HTMLAttributes } from 'react';
 

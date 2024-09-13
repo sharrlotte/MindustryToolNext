@@ -25,7 +25,7 @@ import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import ProtectedElement from '@/layout/protected-element';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 
 import { LinkIcon } from '@/components/common/icons';

@@ -6,7 +6,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { Document } from '@/types/response/Document';
 
 import { useMutation } from '@tanstack/react-query';

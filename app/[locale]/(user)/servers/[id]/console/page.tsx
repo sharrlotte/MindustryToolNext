@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import useSearchId from '@/hooks/use-search-id-params';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 export default function Page() {
   const { id } = useSearchId();

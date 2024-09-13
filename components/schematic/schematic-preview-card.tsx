@@ -18,7 +18,7 @@ import {
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { Schematic } from '@/types/response/Schematic';
 import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';

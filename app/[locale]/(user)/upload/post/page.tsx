@@ -24,7 +24,7 @@ import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
@@ -386,7 +386,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
           {t('upload.translate-post')}
         </Button>
       </DialogTrigger>
-      <DialogContent className='p-6'>
+      <DialogContent className="p-6">
         <DialogTitle>{t('upload.select-post')}</DialogTitle>
         <div className="flex flex-col gap-2">
           <Search>

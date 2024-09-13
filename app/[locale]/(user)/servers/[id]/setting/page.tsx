@@ -31,7 +31,7 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import {
   InternalServerModes,
   PutInternalServerRequest,
@@ -231,7 +231,8 @@ function ServerSettingEditor({ server }: Props) {
                     <Textarea {...field} placeholder="host" />
                   </FormControl>
                   <FormDescription>
-                    Command that run when server start, default: host (Do not fill this if you don know exactly what this do)
+                    Command that run when server start, default: host (Do not
+                    fill this if you don know exactly what this do)
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

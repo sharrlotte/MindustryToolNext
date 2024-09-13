@@ -1,5 +1,5 @@
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 import { useCallback } from 'react';
 

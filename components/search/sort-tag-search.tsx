@@ -4,12 +4,15 @@ import ComboBox from '@/components/common/combo-box';
 import { defaultSortTag } from '@/constant/env';
 import useQueryState from '@/hooks/use-query-state';
 import SortTag, { sortTagGroup } from '@/types/response/SortTag';
+import { useI18n } from '@/i18n/client';
+
+const defaultState = {
+  sort: defaultSortTag,
+};
 
 export default function SortTagSearch() {
-  const [selectedSortTag, setSelectedSortTag] = useQueryState<SortTag>(
-    'sort',
-    defaultSortTag,
-  );
+  const [{ selectedSortTag }, setSelectedSortTag] = useQueryState(defaultState);
+  const t = useI18n();
 
   const sortTags = sortTagGroup.values.map((value) => ({
     label: value,
@@ -18,9 +21,9 @@ export default function SortTagSearch() {
 
   return (
     <ComboBox<SortTag>
-      value={{ label: selectedSortTag, value: selectedSortTag }}
+      value={{ label: t(selectedSortTag), value: selectedSortTag as SortTag }}
       values={sortTags}
-      onChange={setSelectedSortTag}
+      onChange={(sort) => setSelectedSortTag({ sort })}
     />
   );
 }

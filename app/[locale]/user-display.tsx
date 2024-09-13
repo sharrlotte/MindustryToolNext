@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
 import { useSession } from '@/context/session-context';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 export function UserDisplay() {
   return (

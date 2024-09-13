@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 
 import LoginButton from '@/components/button/login-button';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 export default function RequireLogin(): ReactNode {
   const t = useI18n();

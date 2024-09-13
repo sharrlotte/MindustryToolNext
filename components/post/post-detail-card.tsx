@@ -19,7 +19,7 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { locales, useCurrentLocale, useI18n } from '@/locales/client';
+import { locales, useCurrentLocale, useI18n } from '@/i18n/client';
 import env from '@/constant/env';
 
 const linkVariants = cva('flex gap-2', {

@@ -21,8 +21,12 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { deleteServerFile, getServerFiles } from '@/query/file';
 
+const defaultState = {
+  path: '/',
+};
+
 export default function Page() {
-  const [path, setPath] = useQueryState<string>('path', '/');
+  const [{ path }, setQueryState] = useQueryState(defaultState);
   const axios = useClientApi();
   const [search, setSearch] = useState('');
   const { toast } = useToast();
@@ -51,7 +55,7 @@ export default function Page() {
   });
 
   function setFilePath(path: string) {
-    setPath(path.replaceAll('//', '/'));
+    setQueryState({ path: path.replaceAll('//', '/') });
   }
 
   if (error) {
