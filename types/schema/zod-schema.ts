@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { TranslateFunction } from '@/i18n/config';
 import { TagGroups } from '@/types/response/TagGroup';
+import { TranslateFunction } from '@/i18n/config';
 
 export const TAG_GROUP_SCHEMA = z.object({
   name: z.string(),

@@ -14,15 +14,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import {
-  Locale,
-  locales,
-  useChangeLocale,
-  useCurrentLocale,
-  useI18n,
-} from '@/i18n/client';
+import { useChangeLocale, useI18n } from '@/i18n/client';
 
 import { Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { useLocaleStore } from '@/zustand/locale-store';
+import { Locale, locales } from '@/i18n/config';
 
 type Tab = {
   icon: ReactNode;
@@ -76,8 +72,8 @@ export function UserActions() {
 }
 
 function ChangeLanguageDialog() {
-  const changeLocale = useChangeLocale({ preserveSearchParams: true });
-  const locale = useCurrentLocale();
+  const { currentLocale } = useLocaleStore();
+  const setCurrentLocale = useChangeLocale();
   const t = useI18n();
 
   return (
@@ -90,13 +86,13 @@ function ChangeLanguageDialog() {
           <DialogTitle>Choose your language</DialogTitle>
         </DialogHeader>
         <ComboBox<Locale>
-          value={{ label: t(locale), value: locale }}
+          value={{ label: t(currentLocale), value: currentLocale }}
           values={locales.map((value: Locale) => ({
             label: t(value),
             value,
           }))}
           searchBar={false}
-          onChange={(value) => changeLocale(value ?? 'en')}
+          onChange={(value) => setCurrentLocale(value ?? 'en')}
         />
         <DialogDescription>
           <a href="https://github.com/sharrlotte/MindustryToolNext/issues">

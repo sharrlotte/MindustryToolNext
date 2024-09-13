@@ -1,34 +1,20 @@
 'use client';
 
-import { createI18nClient } from 'next-international/client';
 import { useCallback } from 'react';
 
-import { TranslateFunction } from '@/i18n/config';
 import { useLocaleStore } from '@/zustand/locale-store';
 import useClientApi from '@/hooks/use-client';
-
-const { useScopedI18n, useChangeLocale, I18nProviderClient, useCurrentLocale } =
-  createI18nClient(
-    {
-      en: () => import('./en'),
-      vi: () => import('./vi'),
-      kr: () => import('./vi'),
-      cn: () => import('./vi'),
-    },
-    {
-      fallbackLocale: {
-        vi: 'en',
-      },
-    },
-  );
-
-export const locales = ['en', 'vi', 'kr', 'cn'] as const;
-
-export type Locale = (typeof locales)[number];
+import { Locale, locales, TranslateFunction } from '@/i18n/config';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 function useI18n(): TranslateFunction {
-  const { keys, setKeys } = useLocaleStore();
+  const { currentLocale, translation, setTranslation } = useLocaleStore();
   const axios = useClientApi();
+
+  if (!translation[currentLocale]) {
+    translation[currentLocale] = {};
+  }
+  const keys = translation[currentLocale];
 
   return useCallback(
     (text: string, args?: Record<string, string>) => {
@@ -59,13 +45,13 @@ function useI18n(): TranslateFunction {
             },
           })
           .then((result) => {
-            setKeys({ [group]: result.data });
+            setTranslation({ [group]: result.data });
           });
       }
 
       return value ? (format(value[key], args) ?? text) : text;
     },
-    [axios, keys, setKeys],
+    [axios, keys, setTranslation],
   );
 }
 
@@ -81,10 +67,24 @@ function format(text: string, args?: Record<string, string>) {
   return text;
 }
 
-export {
-  I18nProviderClient,
-  useI18n,
-  useScopedI18n,
-  useChangeLocale,
-  useCurrentLocale,
-};
+export function useChangeLocale() {
+  const { setCurrentLocale } = useLocaleStore();
+  const pathname = usePathname();
+  const router = useRouter();
+  const params = useSearchParams();
+
+  return (locale: Locale) => {
+    const pathnameHasLocale = locales.some(
+      (locale) =>
+        pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+    );
+
+    const url = pathnameHasLocale
+      ? `/${locale}/${pathname.slice(4)}`
+      : `/${locale}${pathname}`;
+
+    router.push(`${url}?${new URLSearchParams(params).toString()}`);
+  };
+}
+
+export { useI18n };

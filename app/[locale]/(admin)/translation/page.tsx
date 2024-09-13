@@ -34,7 +34,7 @@ import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useToast } from '@/hooks/use-toast';
 import { omit } from '@/lib/utils';
-import { Locale, locales, useI18n } from '@/i18n/client';
+import { useI18n } from '@/i18n/client';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import {
   createTranslation,
@@ -55,6 +55,7 @@ import { useMutation } from '@tanstack/react-query';
 import { debounce } from 'lodash';
 import { ChangeEvent, Fragment, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Locale, locales } from '@/i18n/config';
 
 const translateModes = ['diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];
