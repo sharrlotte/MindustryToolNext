@@ -32,8 +32,6 @@ export function middleware(request: NextRequest) {
     ? `/${locale}/${pathname.slice(4)}`
     : `/${locale}${pathname}`;
 
-  console.log(request.cookies.toString());
-
   return NextResponse.redirect(request.nextUrl);
 }
 

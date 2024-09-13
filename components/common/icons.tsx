@@ -25,6 +25,7 @@ import {
   PencilIcon as _EditIcon,
   Globe as _Glob,
   CrownIcon as _CrownIcon,
+  SigmaIcon as _SigmaIcon,
 } from 'lucide-react';
 
 import {
@@ -87,6 +88,7 @@ export const SmileIcon = () => <_SmileIcon className="size-6" />;
 export const SearchIcon = () => <_SearchIcon className="size-5" />;
 export const SendIcon = () => <_SendIcon className="size-5" />;
 export const EditIcon = () => <_EditIcon className="size-5" />;
+export const RatioIcon = () => <_SigmaIcon className="size-5" />;
 export const CrownIcon = ({ className }: Props) => (
   <_CrownIcon className={cn('size-5', className)} />
 );
