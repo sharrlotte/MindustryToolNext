@@ -16,6 +16,7 @@ function useI18n(): TranslateFunction {
   if (translation[currentLocale] === undefined) {
     translation[currentLocale] = {};
   }
+
   const keys = translation[currentLocale];
 
   return useCallback(
@@ -39,7 +40,7 @@ function useI18n(): TranslateFunction {
 
       if (value === undefined) {
         if (!isCurrentLocaleSet) {
-          return;
+          return text;
         }
 
         keys[group] = {};
