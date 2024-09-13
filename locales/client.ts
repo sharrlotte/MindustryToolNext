@@ -17,6 +17,8 @@ const {
   {
     en: () => import('./en'),
     vi: () => import('./vi'),
+    kr: () => import('./vi'),
+    cn: () => import('./vi'),
   },
   {
     fallbackLocale: {
