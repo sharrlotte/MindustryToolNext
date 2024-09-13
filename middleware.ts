@@ -27,12 +27,15 @@ export function middleware(request: NextRequest) {
 
   if (pathnameHasLocale && currentLocale === locale) return;
 
-  request.cookies.set('Next-Locale', locale);
   request.nextUrl.pathname = pathnameHasLocale
     ? `/${locale}/${pathname.slice(4)}`
     : `/${locale}${pathname}`;
 
-  return NextResponse.redirect(request.nextUrl);
+  const response = NextResponse.redirect(request.nextUrl);
+
+  response.cookies.set('Next-Locale', locale, { path: '/' });
+
+  return response;
 }
 
 export const config = {
