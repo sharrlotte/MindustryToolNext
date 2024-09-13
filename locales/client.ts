@@ -63,7 +63,7 @@ function useI18n(): TranslateFunction {
           });
       }
 
-      return value ? (format(value[key]) ?? text) : text;
+      return value ? (format(value[key], args) ?? text) : text;
     },
     [axios, keys, setKeys],
   );
