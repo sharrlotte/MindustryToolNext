@@ -1,4 +1,4 @@
-import { Locale } from '@/i18n/client';
+import { Locale } from '@/i18n/config';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import {
   TranslationDiff,
