@@ -6,6 +6,7 @@ import { useLocaleStore } from '@/zustand/locale-store';
 import useClientApi from '@/hooks/use-client';
 import { Locale, locales, TranslateFunction } from '@/i18n/config';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCookies } from 'react-cookie';
 
 function useI18n(): TranslateFunction {
   const { currentLocale, translation, setTranslation } = useLocaleStore();
@@ -68,6 +69,7 @@ function format(text: string, args?: Record<string, string>) {
 }
 
 export function useChangeLocale() {
+  const [_, setCookie] = useCookies();
   const { setCurrentLocale } = useLocaleStore();
   const pathname = usePathname();
   const router = useRouter();
@@ -82,6 +84,9 @@ export function useChangeLocale() {
     const url = pathnameHasLocale
       ? `/${locale}/${pathname.slice(4)}`
       : `/${locale}${pathname}`;
+
+    setCurrentLocale(locale);
+    setCookie('Next-Locale', locale);
 
     router.push(`${url}?${new URLSearchParams(params).toString()}`);
   };
