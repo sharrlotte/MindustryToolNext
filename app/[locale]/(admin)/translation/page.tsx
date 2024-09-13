@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -52,7 +53,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { debounce } from 'lodash';
-import { ChangeEvent, Fragment, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, Fragment, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const translateModes = ['diff', 'compare'] as const;
@@ -63,30 +64,35 @@ export default function Page() {
   const [language, setLanguage] = useQueryState<Locale>('language', 'vi');
 
   return (
-    <div className="flex h-full flex-col gap-4 p-4">
-      <div className="flex gap-2">
-        <ComboBox<Locale>
-          value={{ label: language, value: language }}
-          values={locales.map((locale) => ({ label: locale, value: locale }))}
-          onChange={setLanguage}
-        />
-        <ComboBox<TranslateMode>
-          value={{ label: mode, value: mode }}
-          values={translateModes.map((value) => ({
-            label: value,
-            value,
-          }))}
-          onChange={(mode) => setMode(mode ?? 'compare')}
-        />
-        <RefreshButton />
-        <AddNewKeyDialog />
+    <Fragment>
+      <div className="hidden h-full flex-col gap-4 p-4 landscape:flex">
+        <div className="flex gap-2">
+          <ComboBox<Locale>
+            value={{ label: language, value: language }}
+            values={locales.map((locale) => ({ label: locale, value: locale }))}
+            onChange={setLanguage}
+          />
+          <ComboBox<TranslateMode>
+            value={{ label: mode, value: mode }}
+            values={translateModes.map((value) => ({
+              label: value,
+              value,
+            }))}
+            onChange={(mode) => setMode(mode ?? 'compare')}
+          />
+          <RefreshButton />
+          <AddNewKeyDialog />
+        </div>
+        {mode === 'compare' ? (
+          <CompareTable language={language} />
+        ) : (
+          <DiffTable language={language} />
+        )}
       </div>
-      {mode === 'compare' ? (
-        <CompareTable language={language} />
-      ) : (
-        <DiffTable language={language} />
-      )}
-    </div>
+      <div className="flex h-full w-full items-center justify-center">
+        <Tran text='translation.only-work-on-landscape' />
+      </div>
+    </Fragment>
   );
 }
 
@@ -122,29 +128,31 @@ function CompareTable({ language }: CompareTableProps) {
 
   return (
     <Fragment>
-      <Table>
+      <Table className="table-fixed">
         <TableHeader>
           <TableRow>
-            <TableHead>
-              <Tran text="translation.key" />
-            </TableHead>
-            <TableHead>
+            <TableHead className="w-40 overflow-x-auto">
               <Tran text="translation.key-group" />
+            </TableHead>
+            <TableHead className="w-40 overflow-x-auto">
+              <Tran text="translation.key" />
             </TableHead>
             <TableHead>en</TableHead>
             <TableHead>{language}</TableHead>
-            <TableHead>
-              <Tran text="translation.action" />
-            </TableHead>
+            <TableHead className="w-20"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <GridPaginationList
-            params={{ size: 20, page: 0, language }}
+            params={{ ...params, size: 20, language }}
             queryKey={['translations', 'compare']}
             getFunc={getTranslationCompare}
             loader={<></>}
             noResult={<></>}
+            skeleton={{
+              amount: 20,
+              item: (index) => <TranslationCardSkeleton key={index} />,
+            }}
             asChild
           >
             {(data) => (
@@ -178,14 +186,14 @@ function DiffTable({ language }: DiffTableProps) {
 
   return (
     <Fragment>
-      <Table>
+      <Table className="table-fixed">
         <TableHeader>
           <TableRow>
-            <TableHead>
-              <Tran text="translation.key" />
-            </TableHead>
-            <TableHead>
+            <TableHead className="w-40 overflow-x-auto">
               <Tran text="translation.key-group" />
+            </TableHead>
+            <TableHead className="w-40 overflow-x-auto">
+              <Tran text="translation.key" />
             </TableHead>
             <TableHead>EN</TableHead>
             <TableHead>{language}</TableHead>
@@ -193,11 +201,15 @@ function DiffTable({ language }: DiffTableProps) {
         </TableHeader>
         <TableBody>
           <GridPaginationList
-            params={{ size: 20, page: 0, language }}
+            params={{ ...params, size: 20, language }}
             queryKey={['translations', 'diff']}
             getFunc={getTranslationDiff}
             loader={<></>}
             noResult={<></>}
+            skeleton={{
+              amount: 20,
+              item: (index) => <TranslationCardSkeleton key={index} />,
+            }}
             asChild
           >
             {(data) => (
@@ -244,8 +256,8 @@ function DiffCard({
 
   return (
     <TableRow>
-      <TableCell className="align-top">{key}</TableCell>
       <TableCell className="align-top">{keyGroup}</TableCell>
+      <TableCell className="align-top">{key}</TableCell>
       <TableCell className="align-top">{value}</TableCell>
       <TableCell>
         <Textarea
@@ -289,8 +301,8 @@ function CompareCard({
 
   return (
     <TableRow>
-      <TableCell className="align-top">{key}</TableCell>
       <TableCell className="align-top">{keyGroup}</TableCell>
+      <TableCell className="align-top">{key}</TableCell>
       <TableCell className="align-top">{value['en']}</TableCell>
       <TableCell>
         <Textarea
@@ -299,7 +311,7 @@ function CompareCard({
           onChange={handleChange}
         />
       </TableCell>
-      <TableCell className="flex justify-end">
+      <TableCell className="flex justify-center">
         <EllipsisButton variant="ghost">
           <DeleteTranslationDialog value={{ key, id }} />
         </EllipsisButton>
@@ -454,4 +466,10 @@ function DeleteTranslationDialog({
       onClick={() => mutate(id)}
     />
   );
+}
+
+function TranslationCardSkeleton() {
+  const width = 10 + Math.random() * 10;
+
+  return <Skeleton style={{ width }} className="h-8" />;
 }

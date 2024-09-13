@@ -17,6 +17,8 @@ const {
   {
     en: () => import('./en'),
     vi: () => import('./vi'),
+    kr: () => import('./vi'),
+    cn: () => import('./vi'),
   },
   {
     fallbackLocale: {
@@ -25,7 +27,7 @@ const {
   },
 );
 
-export const locales = ['en', 'vi'] as const;
+export const locales = ['en', 'vi', 'kr', 'cn'] as const;
 
 export type Locale = (typeof locales)[number];
 
@@ -35,6 +37,10 @@ function useI18n(): TranslateFunction {
 
   return useCallback(
     (text: string, args?: Record<string, string>) => {
+      if (!text) {
+        throw new Error('Bad key');
+      }
+
       const parts = text.split('.');
 
       if (parts.length === 0) {
@@ -62,7 +68,7 @@ function useI18n(): TranslateFunction {
 
       return value ? (value[key] ?? text) : text;
     },
-    [keys],
+    [axios, keys, setKeys],
   );
 }
 

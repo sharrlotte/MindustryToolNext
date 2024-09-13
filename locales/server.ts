@@ -5,6 +5,8 @@ export const { getI18n, getScopedI18n, getStaticParams } = createI18nServer(
   {
     en: () => import('./en'),
     vi: () => import('./vi'),
+    kr: () => import('./vi'),
+    cn: () => import('./vi'),
   },
   {
     fallbackLocale: {
