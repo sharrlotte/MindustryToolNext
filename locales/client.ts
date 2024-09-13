@@ -35,6 +35,10 @@ function useI18n(): TranslateFunction {
 
   return useCallback(
     (text: string, args?: Record<string, string>) => {
+      if (!text) {
+        throw new Error('Bad key');
+      }
+
       const parts = text.split('.');
 
       if (parts.length === 0) {
@@ -62,7 +66,7 @@ function useI18n(): TranslateFunction {
 
       return value ? (value[key] ?? text) : text;
     },
-    [keys],
+    [axios, keys, setKeys],
   );
 }
 

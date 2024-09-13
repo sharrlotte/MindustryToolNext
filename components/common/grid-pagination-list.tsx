@@ -36,7 +36,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   getFunc,
   children,
 }: Props<T, P>) {
-  const { data, isLoading, error } = useClientQuery({
+  const { data, isFetching, error } = useClientQuery({
     queryFn: (axios) => getFunc(axios, params),
     queryKey: [...queryKey, params],
   });
@@ -68,7 +68,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
   }
 
   function render() {
-    if (isLoading) {
+    if (isFetching) {
       return loader ? loader : skeletonElements;
     }
 
