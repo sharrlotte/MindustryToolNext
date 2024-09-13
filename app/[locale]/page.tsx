@@ -1,4 +1,3 @@
-import { setStaticParamsLocale } from 'next-international/server';
 import Link from 'next/link';
 
 import {
@@ -19,13 +18,7 @@ import YoutubeEmbed from '@/components/common/youtube-embed';
 // export const dynamicParams = false;
 export const experimental_ppr = true;
 
-export default async function Home({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
-  await setStaticParamsLocale(locale);
-
+export default async function Home() {
   return (
     <div className="no-scrollbar flex h-full flex-col overflow-y-auto bg-[url('https://mindustrygame.github.io/1.d25af17a.webp')] bg-cover bg-center text-white">
       <div className="mx-auto flex w-full flex-col gap-20 p-4 backdrop-blur-sm backdrop-brightness-50 md:px-32">

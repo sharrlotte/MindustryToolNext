@@ -1,4 +1,4 @@
-import { Locale } from '@/i18n/client';
+import { Locale } from '@/i18n/config';
 
 export type TranslationDiff = {
   id: string;
