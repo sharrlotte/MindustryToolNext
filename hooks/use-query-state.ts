@@ -15,7 +15,7 @@ export default function useQueryState(initialState: Record<string, string>) {
       queryParams.set(key, value);
     });
 
-    queryParams.entries().forEach(([key]) => {
+    Object.entries(queryParams).forEach(([key]) => {
       if (!queryParams.get(key)) {
         queryParams.delete(key);
       }
@@ -37,7 +37,7 @@ export default function useQueryState(initialState: Record<string, string>) {
         if (value) queryParams.set(key, value);
       });
 
-      queryParams.entries().forEach(([key]) => {
+      Object.entries(queryParams).forEach(([key]) => {
         if (!queryParams.get(key)) {
           queryParams.delete(key);
         }
@@ -53,7 +53,7 @@ export default function useQueryState(initialState: Record<string, string>) {
   );
 
   return [
-    { ...initialState, ...Object.fromEntries(params.raw().entries()) },
+    { ...initialState, ...Object.fromEntries(Object.entries(params.raw())) },
     setter,
   ] as const;
 }
