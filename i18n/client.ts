@@ -57,9 +57,9 @@ function useI18n(): TranslateFunction {
           });
       }
 
-      return value ? format(value[key], args) : text;
+      return value ? (format(value[key], args) ?? text) : text;
     },
-    [axios, keys, isCurrentLocaleSet, setTranslation],
+    [keys, isCurrentLocaleSet, axios, currentLocale, setTranslation],
   );
 }
 
