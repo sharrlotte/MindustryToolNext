@@ -2,16 +2,20 @@ import { defaultLocale, Locale, locales } from '@/i18n/config';
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const headers = request.headers;
-  const acceptedLanguages = headers
-    .get('Accept-Language')
-    ?.split(/[;\-,]/)
-    .filter((lang) => lang) //
-    .filter((lang) => locales.includes(lang as Locale));
+  let locale = request.cookies.get('Next-Locale')?.value as string;
 
-  const locale = acceptedLanguages //
-    ? acceptedLanguages[0]
-    : defaultLocale;
+  if (!locale) {
+    const headers = request.headers;
+    const acceptedLanguages = headers
+      .get('Accept-Language')
+      ?.split(/[;\-,]/)
+      .filter((lang) => lang) //
+      .filter((lang) => locales.includes(lang.trim().toLowerCase() as Locale));
+
+    locale = acceptedLanguages //
+      ? acceptedLanguages[0]
+      : defaultLocale;
+  }
 
   const { pathname } = request.nextUrl;
 
@@ -19,9 +23,16 @@ export function middleware(request: NextRequest) {
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
-  if (pathnameHasLocale) return;
+  const currentLocale = pathname.slice(1, 3);
 
-  request.nextUrl.pathname = `/${locale}${pathname}`;
+  if (pathnameHasLocale && currentLocale === locale) return;
+
+  request.cookies.set('Next-Locale', locale);
+  request.nextUrl.pathname = pathnameHasLocale
+    ? `/${locale}/${pathname.slice(4)}`
+    : `/${locale}${pathname}`;
+
+  console.log(request.cookies.toString());
 
   return NextResponse.redirect(request.nextUrl);
 }
