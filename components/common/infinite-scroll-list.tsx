@@ -16,7 +16,7 @@ import {
   mapReversed,
   mergeNestArray,
 } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';

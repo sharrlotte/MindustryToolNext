@@ -15,7 +15,7 @@ import { Line } from 'react-chartjs-2';
 
 import Tran from '@/components/common/tran';
 import { fillMetric } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { Metric } from '@/types/response/Metric';
 import MetricWrapper from '@/components/metric/metric-wrapper';
 

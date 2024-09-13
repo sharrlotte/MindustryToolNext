@@ -3,7 +3,7 @@
 import { notFound } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import Tran from '@/components/common/tran';
 
 export default function ErrorScreen({

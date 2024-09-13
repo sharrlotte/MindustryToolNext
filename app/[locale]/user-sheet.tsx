@@ -20,7 +20,7 @@ import {
   useChangeLocale,
   useCurrentLocale,
   useI18n,
-} from '@/locales/client';
+} from '@/i18n/client';
 
 import { Cog6ToothIcon } from '@heroicons/react/24/outline';
 

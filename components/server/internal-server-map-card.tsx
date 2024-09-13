@@ -14,7 +14,7 @@ import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { InternalServerMap } from '@/types/response/InternalServerMap';
 
 import { useMutation } from '@tanstack/react-query';

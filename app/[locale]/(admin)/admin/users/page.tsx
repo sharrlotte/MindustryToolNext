@@ -16,12 +16,16 @@ import { useQuery } from '@tanstack/react-query';
 import { getRoles } from '@/query/role';
 import { getUsers } from '@/query/user';
 
+const defaultState = {
+  name: '',
+};
+
 export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useSearchPageParams();
   const axios = useClientApi();
 
-  const [name, setName] = useQueryState<string>('name', '');
+  const [{ name }, setQueryState] = useQueryState(defaultState);
   const [role, setRole] = useState<Role>();
   const { data } = useQuery({
     queryFn: () => getRoles(axios),
@@ -33,7 +37,7 @@ export default function Page() {
       <div className="flex space-x-2">
         <Input
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          onChange={(event) => setQueryState({ name: event.target.value })}
           placeholder="Search using username"
         />
         <ComboBox

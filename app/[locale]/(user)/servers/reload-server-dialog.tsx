@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { toast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 import { useMutation } from '@tanstack/react-query';
 import { reloadInternalServers } from '@/query/server';

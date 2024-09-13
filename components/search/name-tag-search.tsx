@@ -13,7 +13,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { defaultSortTag } from '@/constant/env';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { QueryParams } from '@/query/config/search-query-params';
 import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';

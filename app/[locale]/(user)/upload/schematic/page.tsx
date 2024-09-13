@@ -34,7 +34,7 @@ import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import TagGroup from '@/types/response/TagGroup';

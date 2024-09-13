@@ -5,7 +5,7 @@ import React, { ReactNode, useLayoutEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import InternalLink from '@/components/common/internal-link';

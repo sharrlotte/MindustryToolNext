@@ -2,7 +2,7 @@ import VerifyButton from '@/components/button/verify-button';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { verifyMap } from '@/query/map';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';

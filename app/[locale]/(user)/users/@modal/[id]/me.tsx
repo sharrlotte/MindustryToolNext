@@ -15,7 +15,7 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useStatusSearchParams from '@/hooks/use-status-search-params';
 import { useSearchTags } from '@/hooks/use-tags';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { User } from '@/types/response/User';
 import { getMeSchematics, getMeMaps, getMePosts } from '@/query/user';
 import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';

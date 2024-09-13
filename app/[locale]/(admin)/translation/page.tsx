@@ -34,7 +34,7 @@ import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useToast } from '@/hooks/use-toast';
 import { omit } from '@/lib/utils';
-import { Locale, locales, useI18n } from '@/locales/client';
+import { Locale, locales, useI18n } from '@/i18n/client';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import {
   createTranslation,
@@ -59,38 +59,51 @@ import { useForm } from 'react-hook-form';
 const translateModes = ['diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];
 
+const defaultState = {
+  language: 'vi',
+  mode: 'compare',
+};
+
 export default function Page() {
-  const [mode, setMode] = useState<TranslateMode>('compare');
-  const [language, setLanguage] = useQueryState<Locale>('language', 'vi');
+  const [{ language, mode }, setQueryState] = useQueryState(defaultState);
+  const t = useI18n();
 
   return (
     <Fragment>
       <div className="hidden h-full flex-col gap-4 p-4 landscape:flex">
         <div className="flex gap-2">
           <ComboBox<Locale>
-            value={{ label: language, value: language }}
-            values={locales.map((locale) => ({ label: locale, value: locale }))}
-            onChange={setLanguage}
+            value={{ label: t(language), value: language as Locale }}
+            values={locales.map((locale) => ({
+              label: t(locale),
+              value: locale,
+            }))}
+            onChange={(language) =>
+              setQueryState({ language: language ?? 'en' })
+            }
           />
           <ComboBox<TranslateMode>
-            value={{ label: mode, value: mode }}
+            value={{
+              label: t(`translation.${mode}`),
+              value: mode as TranslateMode,
+            }}
             values={translateModes.map((value) => ({
-              label: value,
+              label: t(`translation.${value}`),
               value,
             }))}
-            onChange={(mode) => setMode(mode ?? 'compare')}
+            onChange={(mode) => setQueryState({ mode: mode ?? 'compare' })}
           />
           <RefreshButton />
           <AddNewKeyDialog />
         </div>
         {mode === 'compare' ? (
-          <CompareTable language={language} />
+          <CompareTable language={language as Locale} />
         ) : (
-          <DiffTable language={language} />
+          <DiffTable language={language as Locale} />
         )}
       </div>
       <div className="flex h-full w-full items-center justify-center">
-        <Tran text='translation.only-work-on-landscape' />
+        <Tran text="translation.only-work-on-landscape" />
       </div>
     </Fragment>
   );
@@ -471,5 +484,13 @@ function DeleteTranslationDialog({
 function TranslationCardSkeleton() {
   const width = 10 + Math.random() * 10;
 
-  return <Skeleton style={{ width }} className="h-8" />;
+  console.log('card');
+
+  return (
+    <TableRow>
+      <TableCell>
+        <Skeleton style={{ width }} className="h-8" />{' '}
+      </TableCell>
+    </TableRow>
+  );
 }

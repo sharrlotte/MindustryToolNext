@@ -24,7 +24,7 @@ import useClientApi from '@/hooks/use-client';
 import useMessage from '@/hooks/use-message';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
 
@@ -32,8 +32,12 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
 import getLogs, { getLogCollections } from '@/query/log';
 
+const defaultState = {
+  collection: 'LIVE',
+};
+
 export default function LogPage() {
-  const [collection, setCollection] = useQueryState<string>('collection', 'LIVE');
+  const [{ collection }, setQueryState] = useQueryState(defaultState);
 
   const axios = useClientApi();
 
@@ -51,7 +55,7 @@ export default function LogPage() {
             label: item,
             value: item,
           }))}
-          onChange={setCollection}
+          onChange={(collection) => setQueryState({ collection })}
         />
       </div>
 
@@ -158,13 +162,14 @@ type LogPaginationQuery = PaginationQuery & {
 } & Filter;
 
 function StaticLog({ collection }: StaticLogProps) {
-  const [env, setEnv] = useQueryState<LogEnvironment>('environment', 'Prod');
-  const [content, setContent] = useQueryState<string>('content', '');
-  const [ip, setIp] = useQueryState<string>('ip', '');
-  const [url, setUrl] = useQueryState<string>('url', '');
-  const [userId, setUserId] = useQueryState<string>('userId', '');
-  const [before, setBefore] = useQueryState<string>('before', '');
-  const [after, setAfter] = useQueryState<string>('after', '');
+  const [env, setEnv] = useState<LogEnvironment>('Prod');
+  const [content, setContent] = useState<string>('');
+  const [ip, setIp] = useState<string>('');
+  const [url, setUrl] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
+  const [before, setBefore] = useState<string>('');
+  const [after, setAfter] = useState<string>('');
+
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   function setFilter({ ip, userId, url, content }: Filter) {
@@ -188,13 +193,13 @@ function StaticLog({ collection }: StaticLogProps) {
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
       <div className="flex gap-1 bg-card p-2">
-        <ComboBox
+        <ComboBox<'Prod' | 'Dev'>
           value={{ label: env, value: env }}
           values={[
             { value: 'Prod', label: 'Prod' },
             { value: 'Dev', label: 'Dev' },
           ]}
-          onChange={setEnv}
+          onChange={(env) => setEnv(env ?? 'Prod')}
         />
         <Dialog>
           <DialogTrigger asChild>

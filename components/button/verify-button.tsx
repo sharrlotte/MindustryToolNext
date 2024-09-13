@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 import { CheckIcon } from '@heroicons/react/24/outline';
 import React from 'react';

@@ -11,7 +11,7 @@ import { useSession } from '@/context/session-context';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import ProtectedElement from '@/layout/protected-element';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 import {
   MemberPanel,

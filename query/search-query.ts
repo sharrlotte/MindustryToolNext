@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { defaultSortTag } from '@/constant/env';
 import { sortTag } from '@/types/response/SortTag';
-import { locales } from '@/locales/client';
+import { locales } from '@/i18n/client';
 
 export const sortSchema = z
   .enum(sortTag)

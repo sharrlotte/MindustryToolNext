@@ -8,7 +8,7 @@ import FilterTags from '@/components/tag/filter-tags';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 import { cn } from '@/lib/utils';

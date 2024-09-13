@@ -6,7 +6,7 @@ import React from 'react';
 import { Button, ButtonProps } from '@/components/ui/button';
 import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { cva, VariantProps } from 'class-variance-authority';
 
 const copyButtonVariants = cva('p-2 hover:bg-brand bg-transparent', {

@@ -5,7 +5,7 @@ import { ThumbsUpIcon } from 'lucide-react';
 import { ButtonProps } from '@/components/ui/button';
 import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 type LikeButtonProps = Omit<ButtonProps, 'title'>;
 

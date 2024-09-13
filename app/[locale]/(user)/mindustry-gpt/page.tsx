@@ -13,7 +13,7 @@ import { useSession } from '@/context/session-context';
 import useMindustryGpt from '@/hooks/use-mindustry-gpt';
 import ProtectedElement from '@/layout/protected-element';
 import { isReachedEnd } from '@/lib/utils';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 
 const url = `${env.url.api}/mindustry-gpt/chat`;
 
@@ -53,21 +53,21 @@ export default function Page() {
   }
 
   return (
-    <div className="grid grid-rows-[1fr,auto,auto] h-full p-2 overflow-hidden gap-2">
-      <div className="p-2 h-full overflow-y-auto space-y-4 flex flex-col">
+    <div className="grid h-full grid-rows-[1fr,auto,auto] gap-2 overflow-hidden p-2">
+      <div className="flex h-full flex-col space-y-4 overflow-y-auto p-2">
         {data.length === 0 && !isLoading ? (
-          <div className="font-bold text-center h-full flex justify-center items-center">
+          <div className="flex h-full items-center justify-center text-center font-bold">
             {t('chat.message')}
           </div>
         ) : (
           data.map(({ text, prompt }, index) => (
             <Fragment key={index}>
               <div className="flex justify-end">
-                <span className="rounded-lg shadow-lg bg-card px-4 py-2">
+                <span className="rounded-lg bg-card px-4 py-2 shadow-lg">
                   {prompt}
                 </span>
               </div>
-              <div className="border rounded-lg shadow-lg p-4 space-y-2">
+              <div className="space-y-2 rounded-lg border p-4 shadow-lg">
                 {user && <UserAvatar user={user} />}
                 <Markdown>{text}</Markdown>
               </div>
@@ -83,7 +83,7 @@ export default function Page() {
       <ProtectedElement
         session={session}
         alt={
-          <div className="h-full w-full text-center whitespace-nowrap">
+          <div className="h-full w-full whitespace-nowrap text-center">
             <LoginButton className="justify-center bg-brand">
               Login to chat
             </LoginButton>
@@ -91,10 +91,10 @@ export default function Page() {
         }
       >
         <div className="flex flex-col gap-2">
-          <div className="flex gap-2 border rounded-md mx-auto items-end p-2 w-dvw md:w-2/3">
+          <div className="mx-auto flex w-dvw items-end gap-2 rounded-md border p-2 md:w-2/3">
             <div
               key={reset}
-              className="min-h-full focus-visible:outline-none max-h-56 overflow-y-auto overflow-x-hidden w-full max-w-[100vw] p-1"
+              className="max-h-56 min-h-full w-full max-w-[100vw] overflow-y-auto overflow-x-hidden p-1 focus-visible:outline-none"
               contentEditable
               role="textbox"
               data-placeholder={t('chat.input-place-holder')}
@@ -108,10 +108,10 @@ export default function Page() {
               disabled={isPending}
               onClick={handleSubmit}
             >
-              <SendIcon className="w-5 h-5" />
+              <SendIcon className="h-5 w-5" />
             </Button>
           </div>
-          <div className="text-xs text-center">{t('chat.notice')}</div>
+          <div className="text-center text-xs">{t('chat.notice')}</div>
         </div>
       </ProtectedElement>
     </div>

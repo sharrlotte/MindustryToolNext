@@ -7,7 +7,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
-import { useI18n } from '@/locales/client';
+import { useI18n } from '@/i18n/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
