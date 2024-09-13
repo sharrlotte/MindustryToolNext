@@ -78,6 +78,7 @@ export function UserActions() {
 function ChangeLanguageDialog() {
   const changeLocale = useChangeLocale({ preserveSearchParams: true });
   const locale = useCurrentLocale();
+  const t = useI18n();
 
   return (
     <Dialog>
@@ -89,9 +90,9 @@ function ChangeLanguageDialog() {
           <DialogTitle>Choose your language</DialogTitle>
         </DialogHeader>
         <ComboBox<Locale>
-          value={{ label: locale, value: locale }}
+          value={{ label: t(locale), value: locale }}
           values={locales.map((value: Locale) => ({
-            label: value,
+            label: t(value),
             value,
           }))}
           searchBar={false}
