@@ -49,6 +49,7 @@ function useI18n(): TranslateFunction {
           .get('/translations', {
             params: {
               group,
+              language: currentLocale,
             },
           })
           .then((result) => {
