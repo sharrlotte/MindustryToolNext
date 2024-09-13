@@ -9,12 +9,14 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 
 function useI18n(): TranslateFunction {
-  const { currentLocale, translation, setTranslation } = useLocaleStore();
+  const { isCurrentLocaleSet, currentLocale, translation, setTranslation } =
+    useLocaleStore();
   const axios = useClientApi();
 
-  if (!translation[currentLocale]) {
+  if (translation[currentLocale] === undefined) {
     translation[currentLocale] = {};
   }
+
   const keys = translation[currentLocale];
 
   return useCallback(
@@ -37,6 +39,10 @@ function useI18n(): TranslateFunction {
       const value = keys[group];
 
       if (value === undefined) {
+        if (!isCurrentLocaleSet) {
+          return text;
+        }
+
         keys[group] = {};
 
         axios
@@ -50,9 +56,9 @@ function useI18n(): TranslateFunction {
           });
       }
 
-      return value ? (format(value[key], args) ?? text) : text;
+      return value ? format(value[key], args) : text;
     },
-    [axios, keys, setTranslation],
+    [axios, keys, isCurrentLocaleSet, setTranslation],
   );
 }
 

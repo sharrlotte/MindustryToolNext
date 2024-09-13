@@ -5,6 +5,7 @@ type TranslationGroup = Record<string, Record<string, string>>;
 type LocaleData = Record<string, TranslationGroup>;
 
 type State = {
+  isCurrentLocaleSet: boolean;
   currentLocale: Locale;
   translation: LocaleData;
   setCurrentLocale: (value: Locale) => void;
@@ -13,8 +14,10 @@ type State = {
 
 export const useLocaleStore = create<State>((set) => ({
   currentLocale: 'en',
+  isCurrentLocaleSet: false,
   translation: {},
-  setCurrentLocale: (value: Locale) => set({ currentLocale: value }),
+  setCurrentLocale: (value: Locale) =>
+    set({ isCurrentLocaleSet: true, currentLocale: value }),
   setTranslation: (value: TranslationGroup) => {
     set((prev) => ({
       translation: {
