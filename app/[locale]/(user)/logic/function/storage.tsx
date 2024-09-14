@@ -21,7 +21,7 @@ export default function CommandStorage({
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(true);
   const [isPageReady, setIsPageReady] = useState(false);
-  const [currentSaveName, setCurrentSaveName] = useState('untitled');
+  const [currentSaveName, setCurrentSaveName] = useState('');
   const [newSaveName, setNewSaveName] = useState('');
   const [isStorageAvailable, setIsStorageAvailable] = useState(false);
 
@@ -44,7 +44,6 @@ export default function CommandStorage({
       handleDOMContentLoaded();
     }
 
-    // Cleanup
     return () => {
       document.removeEventListener('DOMContentLoaded', handleDOMContentLoaded);
     };

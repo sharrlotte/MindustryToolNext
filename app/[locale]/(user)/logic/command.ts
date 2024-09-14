@@ -27,7 +27,7 @@ export interface FieldType {
   readonly placeHolderWidth: number; // px, not %!
   readonly inputType: InputType;
   readonly linkedOutput?: number;
-  value: string | CommandValue;
+  value: string | CommandValue[];
   displayValue?: string;
 }
 
@@ -36,7 +36,7 @@ const defaultField: FieldType = {
   y: 0,
   fieldSize: 1,
   placeHolder: '',
-  placeHolderWidth: 100,
+  placeHolderWidth: 10,
   inputType: InputType.TextInput,
   value: '',
 };
@@ -55,13 +55,48 @@ const defaultSettings: Command = {
   },
 };
 
-//#region Start - End
+//#region Start - Flow
 export const start: Command = {
   ...defaultSettings,
   value: {
     ...defaultSettings.value,
     name: 'Start',
+    parseName: 'start',
     color: '#0AA4FE',
+  },
+};
+
+const jump: Command = {
+  ...defaultSettings,
+  value: {
+    ...defaultSettings.value,
+    name: 'Jump',
+    parseName: 'jump',
+    color: '#0AA4FE',
+    rows: 1,
+    columns: 3,
+    fields: [
+      {
+        ...defaultField,
+        linkedOutput: 1,
+      },
+      {
+        ...defaultField,
+        placeHolder: 'if',
+        placeHolderWidth: 20,
+      },
+      {
+        ...defaultField,
+        x: 1,
+        placeHolderWidth: 0,
+      },
+      {
+        ...defaultField,
+        x: 2,
+        placeHolderWidth: 0,
+      },
+    ],
+    outputs: [...defaultSettings.value.outputs, { key: 1, value: -1 }],
   },
 };
 
@@ -74,8 +109,8 @@ export const end: Command = {
     color: '#0AA4FE',
     fields: [],
     outputs: [],
-  }
-}
+  },
+};
 //#endregion
 
 //#region IO control
@@ -115,6 +150,7 @@ const write: Command = {
   value: {
     ...defaultSettings.value,
     name: 'Write',
+    parseName: 'write',
     color: '#9E7FB3',
     rows: 2,
     columns: 2,
@@ -169,16 +205,12 @@ const test: Command = {
         placeHolderWidth: 30,
       },
     ],
-    outputs: [
-      { key: 0, value: -1 },
-      { key: 1, value: -1 },
-      { key: 2, value: -1 }
-    ]
+    outputs: [...defaultSettings.value.outputs, { key: 1, value: -1 }],
   },
 };
 
 export const CommandList: { key: string; value: Command[] }[] = [
-  { key: 'Start - End', value: [start, end] },
+  { key: 'Start - Flow control', value: [start, jump, end] },
   { key: 'IO control', value: [read, write] },
   { key: 'Testing', value: [test] },
 ];
