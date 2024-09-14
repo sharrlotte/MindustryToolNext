@@ -21,7 +21,7 @@ export default function CommandStorage({
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(true);
   const [isPageReady, setIsPageReady] = useState(false);
-  const [currentSaveName, setCurrentSaveName] = useState('');
+  const [currentSaveName, setCurrentSaveName] = useState('untitled');
   const [newSaveName, setNewSaveName] = useState('');
   const [isStorageAvailable, setIsStorageAvailable] = useState(false);
 
@@ -30,6 +30,8 @@ export default function CommandStorage({
       localStorage.setItem('test', 'test');
       localStorage.removeItem('test');
       setIsStorageAvailable(true);
+      const untitledSave = localStorage.getItem('logic-untitled');
+      if (untitledSave) loadCommands('untitled');
     } catch (error) {
       setIsStorageAvailable(false);
       setIsVisible(false);
@@ -103,15 +105,6 @@ export default function CommandStorage({
   useEffect(() => {
     if (isPageReady) saveCommands(currentSaveName);
   }, [currentSaveName, commands, isPageReady]);
-
-  if (currentSaveName === '') {
-    const untitledSave = localStorage.getItem('logic-untitled');
-    if (untitledSave != null) {
-      loadCommands('untitled');
-    } else {
-      saveCommands('untitled');
-    }
-  }
 
   const isValidSaveName = (name: string) => /^[a-zA-Z0-9-_]+$/.test(name);
 
