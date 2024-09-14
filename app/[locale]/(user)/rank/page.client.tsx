@@ -157,8 +157,6 @@ function MyRankCard() {
 }
 
 export function RankPaginationNavigator() {
-  const params = useSearchPageParams(20);
-
   const { data } = useClientQuery({
     queryKey: ['rank', 'total'],
     queryFn: (axios) => getUsersCount(axios),

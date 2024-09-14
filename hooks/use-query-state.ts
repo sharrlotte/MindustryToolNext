@@ -29,12 +29,9 @@ export default function useQueryState(initialState: Record<string, string>) {
     (value: Record<string, string | undefined>) => {
       const queryParams = new URLSearchParams(params.raw());
 
-      Object.entries(value).forEach(([key]) => {
-        value[key] = initialState[key];
-      });
-
       Object.entries({ ...value }).forEach(([key, value]) => {
         if (value) queryParams.set(key, value);
+        else queryParams.set(key, initialState[key]);
       });
 
       Object.entries(queryParams).forEach(([key]) => {
@@ -52,8 +49,10 @@ export default function useQueryState(initialState: Record<string, string>) {
     [initialState, params, pathname, router],
   );
 
-  return [
-    { ...initialState, ...Object.fromEntries(Object.entries(params.raw())) },
-    setter,
-  ] as const;
+  const state = {
+    ...initialState,
+    ...Object.fromEntries(params.raw()),
+  };
+
+  return [state, setter] as const;
 }

@@ -5,8 +5,10 @@ import Link from 'next/link';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
-import { locales, useCurrentLocale, useI18n } from '@/i18n/client';
+import { useI18n } from '@/i18n/client';
 import env from '@/constant/env';
+import { useLocaleStore } from '@/zustand/locale-store';
+import { locales } from '@/i18n/config';
 
 const linkVariants = cva('flex gap-2', {
   variants: {
@@ -43,13 +45,13 @@ export default function InternalLink({
   ...props
 }: InternalLinkProps) {
   const t = useI18n();
-  const locale = useCurrentLocale();
+  const { currentLocale } = useLocaleStore();
 
   const stripBase = href.replace(env.url.base + '/', '');
   const parts = stripBase.split('/');
 
   if (parts.length > 0 && !locales.includes(parts[0] as any)) {
-    href = env.url.base + '/' + locale + '/' + stripBase;
+    href = env.url.base + '/' + currentLocale + '/' + stripBase;
   }
 
   return (
