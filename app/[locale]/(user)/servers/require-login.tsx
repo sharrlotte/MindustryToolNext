@@ -1,9 +1,12 @@
 import LoginButton from '@/components/button/login-button';
+import Tran from '@/components/common/tran';
 
 export function RequireLogin() {
   return (
     <div>
-      <p>Please login to access your server list.</p>
+      <p>
+        <Tran text="server.require-login" />
+      </p>
       <LoginButton />
     </div>
   );

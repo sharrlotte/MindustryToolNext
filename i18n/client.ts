@@ -69,7 +69,7 @@ function format(text: string, args?: Record<string, string>) {
   }
 
   Object.entries(args).forEach(([key, value]) => {
-    text = text.replace(`${key}`, value);
+    text = text.replace(`{${key}}`, value);
   });
 
   return text;

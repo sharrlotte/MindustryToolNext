@@ -29,6 +29,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import createDocument, { getDocuments } from '@/query/document';
+import Tran from '@/components/common/tran';
 
 export default function Page() {
   const params = useSearchPageParams();
@@ -100,7 +101,7 @@ function AddDocumentButton() {
     <Dialog>
       <DialogTrigger asChild>
         <Button title="Add document" variant="primary">
-          Add document
+          <Tran text="document.add" />
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -116,7 +117,9 @@ function AddDocumentButton() {
                   name="content"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>
+                        <Tran text="document.description" />
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           className="min-h-60"

@@ -24,6 +24,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { createServerFile } from '@/query/file';
+import Tran from '@/components/common/tran';
 
 const addFileSchema = z.object({
   file: z
@@ -73,7 +74,7 @@ export default function AddFileDialog({ path }: Props) {
           title="Add file"
           variant="outline"
         >
-          Add file
+          <Tran text="upload.add-file" />
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -87,7 +88,9 @@ export default function AddFileDialog({ path }: Props) {
               name="file"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>File to upload</FormLabel>
+                  <FormLabel>
+                    <Tran text="upload.file-to-upload" />
+                  </FormLabel>
                   <FormControl>
                     <div>
                       <Input
@@ -116,7 +119,7 @@ export default function AddFileDialog({ path }: Props) {
                   type="submit"
                   disabled={isPending}
                 >
-                  Save
+                  <Tran text="save" />
                 </Button>
               </DialogClose>
             </div>

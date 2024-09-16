@@ -18,6 +18,7 @@ import {
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
 import { omit } from 'lodash';
+import Tran from '@/components/common/tran';
 
 export default function Page() {
   const { map } = useSearchTags();
@@ -34,7 +35,7 @@ export default function Page() {
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
       <NameTagSearch tags={map} />
       <div className="flex justify-between">
-        <span>Found {data} maps</span>
+        <Tran text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
       <ListLayout>

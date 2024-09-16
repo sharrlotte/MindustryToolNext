@@ -20,6 +20,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { deleteServerFile, getServerFiles } from '@/query/file';
+import Tran from '@/components/common/tran';
 
 const defaultState = {
   path: '/',
@@ -103,7 +104,7 @@ export default function Page() {
                     variant="destructive"
                     onClick={() => deleteFile(`${path}/${file.name}`)}
                   >
-                    Delete
+                    <Tran text="delete" />
                   </ContextMenuItem>
                   <DownloadButton
                     className="justify-start rounded-sm border-none px-2 py-1.5 text-sm hover:bg-brand"
@@ -111,7 +112,7 @@ export default function Page() {
                     fileName={`file.zip`}
                     secure
                   >
-                    Download
+                    <Tran text="download" />
                   </DownloadButton>
                 </FileCard>
               ))

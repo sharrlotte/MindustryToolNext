@@ -20,6 +20,7 @@ import {
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
+import Tran from '@/components/common/tran';
 
 type Props = {
   numberOfItems?: number;
@@ -131,7 +132,9 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
               </DialogTrigger>
             )}
             <DialogContent className="p-6">
-              <DialogTitle>Select page</DialogTitle>
+              <DialogTitle>
+                <Tran text="select-page" />
+              </DialogTitle>
               <DialogDescription />
               <Input
                 type="number"
@@ -142,7 +145,7 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
               />
               {(selectedPage < 0 || selectedPage > lastPage) && (
                 <span className="text-sm text-destructive">
-                  Page must above 0 and below {lastPage}
+                  <Tran text="page-constrain" args={{ max: lastPage }} />
                 </span>
               )}
               <div className="flex justify-end">

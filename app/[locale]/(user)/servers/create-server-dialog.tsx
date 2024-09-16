@@ -93,7 +93,9 @@ export default function CreateServerDialog() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Server name</FormLabel>
+                  <FormLabel>
+                    <Tran text="server.name" />
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Test" {...field} />
                   </FormControl>
@@ -101,7 +103,7 @@ export default function CreateServerDialog() {
                     {field.value ? (
                       <ColorText text={field.value} />
                     ) : (
-                      'The server name that displayed in game'
+                      <Tran text="server.name-description" />
                     )}
                   </FormDescription>
                   <FormMessage />
@@ -113,7 +115,9 @@ export default function CreateServerDialog() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>
+                    <Tran text="server.description" />
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Some cool stuff" {...field} />
                   </FormControl>
@@ -121,7 +125,7 @@ export default function CreateServerDialog() {
                     {field.value ? (
                       <ColorText text={field.value} />
                     ) : (
-                      'The server description that displayed in game'
+                      <Tran text="server.description-description" />
                     )}
                   </FormDescription>
                   <FormMessage />
@@ -133,7 +137,9 @@ export default function CreateServerDialog() {
               name="mode"
               render={({ field }) => (
                 <FormItem className="grid">
-                  <FormLabel>Mode</FormLabel>
+                  <FormLabel>
+                    <Tran text="server.game-mode" />
+                  </FormLabel>
                   <FormControl>
                     <ComboBox
                       placeholder={InternalServerModes[0]}
@@ -145,7 +151,9 @@ export default function CreateServerDialog() {
                       onChange={(value) => field.onChange(value)}
                     />
                   </FormControl>
-                  <FormDescription>Server game mode</FormDescription>
+                  <FormDescription>
+                    <Tran text="server.game-mode-description" />
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -162,8 +170,7 @@ export default function CreateServerDialog() {
                     <Textarea {...field} placeholder="host" />
                   </FormControl>
                   <FormDescription>
-                    Command that run when server start, default: host (Do not
-                    fill this if you don know exactly what this do)
+                    <Tran text="server.start-command-description" />
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

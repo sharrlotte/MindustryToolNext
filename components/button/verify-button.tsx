@@ -40,7 +40,7 @@ export default function VerifyButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('are-you-sure')}</AlertDialogTitle>
+          <AlertDialogTitle>{t('verify.confirm')}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

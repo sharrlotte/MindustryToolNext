@@ -52,8 +52,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
       invalidateByKey(['users']);
       setFile(undefined);
       toast({
-        title: 'Thumbnail updated successfully',
-        description: 'Your profile picture has been updated.',
+        title: <Tran text="user.update-thumbnail-success" />,
         variant: 'success',
       });
     },

@@ -53,7 +53,7 @@ export default function InternalServerPluginCard({
       <DeleteButton
         className="right-1 top-1 backdrop-brightness-100"
         variant="ghost"
-        description={`${t('delete')} ${name}`}
+        description={t('delete-alert', { name })}
         isLoading={isDeleting}
         onClick={() => deletePluginById()}
       />

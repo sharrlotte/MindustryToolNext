@@ -162,7 +162,9 @@ function ServerSettingEditor({ server }: Props) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Server name</FormLabel>
+                  <FormLabel>
+                    <Tran text="server.name" />
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Test" {...field} />
                   </FormControl>
@@ -170,7 +172,7 @@ function ServerSettingEditor({ server }: Props) {
                     {field.value ? (
                       <ColorText text={field.value} />
                     ) : (
-                      'The server name that displayed in game'
+                      <Tran text="server.name-description" />
                     )}
                   </FormDescription>
                   <FormMessage />
@@ -182,7 +184,7 @@ function ServerSettingEditor({ server }: Props) {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <Tran text="server.description" />
                   <FormControl>
                     <Input placeholder="Some cool stuff" {...field} />
                   </FormControl>
@@ -190,7 +192,7 @@ function ServerSettingEditor({ server }: Props) {
                     {field.value ? (
                       <ColorText text={field.value} />
                     ) : (
-                      'The server description that displayed in game'
+                      <Tran text="server.description-description" />
                     )}
                   </FormDescription>
                   <FormMessage />
@@ -202,7 +204,9 @@ function ServerSettingEditor({ server }: Props) {
               name="mode"
               render={({ field }) => (
                 <FormItem className="grid">
-                  <FormLabel>Mode</FormLabel>
+                  <FormLabel>
+                    <Tran text="server.game-mode" />
+                  </FormLabel>
                   <FormControl>
                     <ComboBox
                       placeholder={InternalServerModes[0]}
@@ -214,7 +218,9 @@ function ServerSettingEditor({ server }: Props) {
                       onChange={(value) => field.onChange(value)}
                     />
                   </FormControl>
-                  <FormDescription>Server game mode</FormDescription>
+                  <FormDescription>
+                    <Tran text="server.game-mode-description" />
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -231,8 +237,7 @@ function ServerSettingEditor({ server }: Props) {
                     <Textarea {...field} placeholder="host" />
                   </FormControl>
                   <FormDescription>
-                    Command that run when server start, default: host (Do not
-                    fill this if you don know exactly what this do)
+                    <Tran text="server.start-command-description" />
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -276,11 +281,11 @@ function ServerSettingEditor({ server }: Props) {
                   variant="destructive"
                   disabled={isLoading}
                 >
-                  Delete
+                  <Tran text="delete" />
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
-                Are you sure you want to delete
+                <Tran text="delete-confirm" />
                 <AlertDialogFooter>
                   <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                   <AlertDialogAction asChild>

@@ -22,6 +22,7 @@ import {
   getSchematicUploads,
 } from '@/query/schematic';
 import { omit } from '@/lib/utils';
+import Tran from '@/components/common/tran';
 
 export default function Page() {
   const { schematic } = useSearchTags();
@@ -44,7 +45,7 @@ export default function Page() {
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
       <NameTagSearch tags={schematic} />
       <div className="flex justify-between">
-        <span>Found {data} schematics</span>
+        <Tran text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
       <ListLayout>

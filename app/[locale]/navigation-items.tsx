@@ -195,7 +195,7 @@ export function NavItems({ onClick }: NavItemsProps) {
             roles: ['SHAR'],
           },
           {
-            name: 'Translation',
+            name: <Tran text="translation" />,
             path: '/translation',
             icon: <GlobIcon />,
             roles: ['ADMIN'],
@@ -207,7 +207,7 @@ export function NavItems({ onClick }: NavItemsProps) {
             roles: ['SHAR'],
           },
           {
-            name: 'File',
+            name: <Tran text="file" />,
             path: '/files',
             icon: <FileIcon />,
             roles: ['SHAR'],
