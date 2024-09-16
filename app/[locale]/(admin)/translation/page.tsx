@@ -159,7 +159,7 @@ function CompareTable({ language }: CompareTableProps) {
         <TableBody>
           <GridPaginationList
             params={{ ...params, size: 20, language }}
-            queryKey={['translations', 'compare']}
+            queryKey={['translations', 'compare', language]}
             getFunc={getTranslationCompare}
             loader={<></>}
             noResult={<></>}
@@ -216,7 +216,7 @@ function DiffTable({ language }: DiffTableProps) {
         <TableBody>
           <GridPaginationList
             params={{ ...params, size: 20, language }}
-            queryKey={['translations', 'diff']}
+            queryKey={['translations', 'diff', language]}
             getFunc={getTranslationDiff}
             loader={<></>}
             noResult={<></>}
