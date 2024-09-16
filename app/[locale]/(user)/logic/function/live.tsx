@@ -6,7 +6,7 @@ export default function LiveCode({ commands }: { commands: Command[] }) {
 
   useEffect(() => {
     try {
-
+      // Ahhhh
     } catch {
       setDisplay([]);
     }
