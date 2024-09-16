@@ -140,14 +140,21 @@ function AvatarImage({
   }
 
   return (
-    <Image
-      className={cn('rounded-full border border-border', className)}
-      height={32}
-      width={32}
-      src={imageUrl}
-      alt={username}
-      priority
-      onError={() => setError(true)}
-    />
+    <div
+      className={cn(
+        'flex size-8 min-h-8 min-w-8 items-center justify-center overflow-hidden rounded-full border border-border capitalize',
+        className,
+      )}
+    >
+      <Image
+        className={cn('object-cover h-full w-full', className)}
+        height={32}
+        width={32}
+        src={imageUrl}
+        alt={username}
+        priority
+        onError={() => setError(true)}
+      />
+    </div>
   );
 }
