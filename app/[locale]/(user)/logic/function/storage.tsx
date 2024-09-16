@@ -26,28 +26,17 @@ export default function CommandStorage({
   const [isStorageAvailable, setIsStorageAvailable] = useState(false);
 
   useEffect(() => {
-    const handleDOMContentLoaded = () => {
-      try {
-        localStorage.setItem('test', 'test');
-        localStorage.removeItem('test');
-        setIsStorageAvailable(true);
-      } catch (error) {
-        setIsStorageAvailable(false);
-        setIsVisible(false);
-      }
-      setIsPageReady(true);
-    };
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
-    } else {
-      handleDOMContentLoaded();
+    try {
+      localStorage.setItem('test', 'test');
+      localStorage.removeItem('test');
+      setIsStorageAvailable(true);
+      const untitledSave = localStorage.getItem('logic-untitled');
+      if (untitledSave) loadCommands('untitled');
+    } catch (error) {
+      setIsStorageAvailable(false);
+      setIsVisible(false);
     }
-
-    // Cleanup
-    return () => {
-      document.removeEventListener('DOMContentLoaded', handleDOMContentLoaded);
-    };
+    setIsPageReady(true);
   }, []);
 
   function showToast(
@@ -61,7 +50,10 @@ export default function CommandStorage({
   function saveCommands(saveName: string) {
     if (!isStorageAvailable) return;
     try {
-      localStorage.setItem('logic-' + saveName, JSON.stringify(commands));
+      localStorage.setItem(
+        'logic-' + currentSaveName,
+        JSON.stringify(commands),
+      );
       setCurrentSaveName(saveName);
     } catch (error) {
       showToast(
@@ -111,17 +103,6 @@ export default function CommandStorage({
   };
 
   useEffect(() => {
-    if (isPageReady && isStorageAvailable) {
-      const untitledSave = localStorage.getItem('logic-untitled');
-      if (untitledSave != null) {
-        loadCommands('untitled');
-      } else {
-        saveCommands('untitled');
-      }
-    }
-  }, [isPageReady, isStorageAvailable]);
-
-  useEffect(() => {
     if (isPageReady) saveCommands(currentSaveName);
   }, [currentSaveName, commands, isPageReady]);
 
@@ -155,6 +136,7 @@ export default function CommandStorage({
           'success',
         );
         setNewSaveName('');
+        setCommands([]);
       } catch (error) {
         showToast(
           'Save failed',
