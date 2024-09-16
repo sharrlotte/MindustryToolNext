@@ -18,11 +18,12 @@ type Props = {
 export default function UserDetail({ user }: Props) {
   const { session } = useSession();
   const { name, roles, stats, thumbnail } = user;
-  const level = Math.floor(Math.sqrt(stats?.EXP ?? 0));
+  const exp = stats?.EXP ?? 0;
+  const level = Math.floor(Math.sqrt(exp));
 
   const nextLevel = level + 1;
-  const nextLevelExp = level * level;
-  const progress = (stats?.EXP ?? 0) / nextLevelExp;
+  const nextLevelExp = nextLevel * nextLevel;
+  const progress = (exp / nextLevelExp) * 100;
 
   const style = thumbnail ? { backgroundImage: thumbnail } : undefined;
 
@@ -61,11 +62,16 @@ export default function UserDetail({ user }: Props) {
           <span className="text-2xl capitalize">{name}</span>
           <UserRoleCard className="text-2xl" roles={roles} />
           <span className="font-bold">LV.{level}</span>
+        </div>
+      </div>
+      <div className="flex w-full items-center gap-1 text-xs">
+        <div className="h-3 max-h-3 w-full overflow-hidden rounded-full border">
           <div
-            className="h-2 w-full rounded-full bg-success"
-            style={{ width: progress }}
+            className="h-full w-full rounded-full bg-success"
+            style={{ width: `${progress}%` }}
           />
         </div>
+        {exp}/{nextLevelExp}
       </div>
     </div>
   );
