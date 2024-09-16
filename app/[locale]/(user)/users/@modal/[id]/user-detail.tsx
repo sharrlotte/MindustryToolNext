@@ -22,8 +22,12 @@ export default function UserDetail({ user }: Props) {
   const level = Math.floor(Math.sqrt(exp));
 
   const nextLevel = level + 1;
+  const levelExp = level * level;
   const nextLevelExp = nextLevel * nextLevel;
-  const progress = (exp / nextLevelExp) * 100;
+  const levelUpExp = nextLevelExp - levelExp;
+  const currentExp = nextLevelExp - exp;
+
+  const progress = (currentExp / levelUpExp) * 100;
 
   const style = thumbnail ? { backgroundImage: thumbnail } : undefined;
 
@@ -71,7 +75,7 @@ export default function UserDetail({ user }: Props) {
             style={{ width: `${progress}%` }}
           />
         </div>
-        {exp}/{nextLevelExp}
+        {currentExp}/{levelUpExp}
       </div>
     </div>
   );
