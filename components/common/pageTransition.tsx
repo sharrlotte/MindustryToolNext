@@ -1,4 +1,6 @@
+'use client';
 import { motion } from 'framer-motion';
+import { createContext, useContext } from 'react';
 
 interface PageTransitionProps {
   children: React.ReactNode;
@@ -10,7 +12,11 @@ const variants = {
   exit: { opacity: 0 },
 };
 
+const PageTransitionContext = createContext({});
+
 const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
+  const context = useContext(PageTransitionContext);
+
   return (
     <motion.div
       initial="initial"
@@ -18,6 +24,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
       exit="exit"
       variants={variants}
       transition={{ duration: 0.5 }}
+      key={typeof window !== 'undefined' ? window.location.pathname : ''}
+      {...context}
     >
       {children}
     </motion.div>
