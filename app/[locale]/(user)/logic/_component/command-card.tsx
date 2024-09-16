@@ -158,7 +158,7 @@ export default function CommandCard({
         />
         {elementValue.fields.map((field, fIndex) =>
           field.linkedOutput ? (
-            <Group></Group>
+            <Group key={fIndex}>Wtf</Group>
           ) : (
             <Group
               key={fIndex}
