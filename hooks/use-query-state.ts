@@ -11,8 +11,8 @@ export default function useQueryState(initialState: Record<string, string>) {
   useEffect(() => {
     const queryParams = new URLSearchParams(params.raw());
 
-    Object.entries(initialState).forEach(([key, value]) => {
-      queryParams.set(key, value);
+    Object.entries({ ...initialState }).forEach(([key, value]) => {
+      if (!params.get(key)) queryParams.set(key, value);
     });
 
     Object.entries(queryParams).forEach(([key]) => {
