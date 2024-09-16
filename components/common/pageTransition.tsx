@@ -19,6 +19,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
 
   return (
     <motion.div
+      className="h-full overflow-hidden"
       initial="initial"
       animate="enter"
       exit="exit"
