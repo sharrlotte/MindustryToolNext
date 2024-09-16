@@ -27,7 +27,10 @@ export async function HomeSchematicPreview({
       <Suspense fallback={skeleton}>
         <_SchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
-          <InternalLink href="/maps" className="cursor-pointer px-2 font-light">
+          <InternalLink
+            href="/schematics"
+            className="cursor-pointer px-2 font-light"
+          >
             <Preview className="flex items-center justify-center">
               <Tran text="home.preview-more" />
             </Preview>
