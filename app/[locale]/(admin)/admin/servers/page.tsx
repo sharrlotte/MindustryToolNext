@@ -7,6 +7,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ErrorScreen from '@/components/common/error-screen';
 import { Servers } from '@/app/[locale]/(admin)/admin/servers/server-list';
 
+export const experimental_ppr = true;
+
 const skeleton = Array(8)
   .fill(1)
   .map((_, index) => <InternalServerCardSkeleton key={index} />);
