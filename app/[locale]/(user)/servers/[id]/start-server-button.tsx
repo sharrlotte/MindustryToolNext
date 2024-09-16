@@ -24,13 +24,13 @@ export default function StartServerButton({ id }: Props) {
     mutationFn: () => startInternalServer(axios, id),
     onSuccess: () => {
       toast({
-        title: 'Start server successfully',
+        title: <Tran text="server.start-success" />,
         variant: 'success',
       });
     },
     onError: (error) =>
       toast({
-        title: 'Start server failed',
+        title: <Tran text="server.start-fail" />,
         description: error.message,
         variant: 'destructive',
       }),

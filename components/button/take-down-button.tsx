@@ -47,7 +47,7 @@ export default function TakeDownButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('are-you-sure')}</AlertDialogTitle>
+          <AlertDialogTitle>{t('take-down.confirm')}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

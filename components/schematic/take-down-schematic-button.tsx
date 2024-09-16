@@ -51,7 +51,7 @@ export function TakeDownSchematicButton({
   return (
     <TakeDownButton
       isLoading={isPending}
-      description={t('take-down-alert', { name: name })}
+      description={t('take-down-alert', { name })}
       onClick={() => mutate(id)}
     />
   );

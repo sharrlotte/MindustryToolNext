@@ -40,7 +40,7 @@ export default function RemoveButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('are-you-sure')}</AlertDialogTitle>
+          <AlertDialogTitle>{t('remove.confirm')}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

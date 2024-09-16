@@ -12,7 +12,6 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -34,6 +33,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import verifyPlugin, { deletePlugin } from '@/query/plugin';
 import IdUserCard from '@/components/user/id-user-card';
+import Tran from '@/components/common/tran';
 
 type Props = {
   plugin: Plugin;
@@ -166,7 +166,9 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                   name="tags"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tags</FormLabel>
+                      <FormLabel>
+                        <Tran text="plugin.tags" />
+                      </FormLabel>
                       <FormControl>
                         <NameTagSelector
                           tags={plugin}
@@ -174,7 +176,6 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                           onChange={field.onChange}
                         />
                       </FormControl>
-                      <FormDescription>The plugin tags</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -12,6 +12,7 @@ import { Like } from '@/types/response/Like';
 
 import { useMutation } from '@tanstack/react-query';
 import { postLike } from '@/query/like';
+import Tran from '@/components/common/tran';
 
 type LikeComponentProps = {
   children: ReactNode;
@@ -49,8 +50,7 @@ function LikeComponent({
 
     if (!session) {
       return toast({
-        title: 'You are not logged in',
-        description: 'Login in to like',
+        title: <Tran text="like.require-login" />,
       });
     }
 

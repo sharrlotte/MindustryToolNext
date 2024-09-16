@@ -24,6 +24,7 @@ import {
   SendIcon,
   SmileIcon,
 } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
 
 export default function Page() {
   const { state } = useSocket();
@@ -77,7 +78,7 @@ export default function Page() {
             alt={
               <div className="h-full w-full whitespace-nowrap text-center">
                 <LoginButton className="justify-center bg-brand">
-                  Login to chat
+                  <Tran text="chat.require-login" />
                 </LoginButton>
               </div>
             }

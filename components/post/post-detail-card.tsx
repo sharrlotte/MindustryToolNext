@@ -31,8 +31,21 @@ type PostDetailCardProps = {
   post: PostDetail;
 };
 
-export default function PostDetailCard({ post }: PostDetailCardProps) {
-  const displayTags = Tags.parseStringArray(post.tags);
+export default function PostDetailCard({
+  post: {
+    title,
+    content,
+    tags,
+    id,
+    userId,
+    userLike,
+    likes,
+    isVerified,
+    itemId,
+    createdAt,
+  },
+}: PostDetailCardProps) {
+  const displayTags = Tags.parseStringArray(tags);
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
   const { back } = useRouter();
@@ -88,22 +101,22 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
   return (
     <Detail>
       <header className="grid gap-2 pb-4">
-        <p className="text-4xl">{post.title}</p>
+        <p className="text-4xl">{title}</p>
         <div className="grid gap-2">
-          <IdUserCard id={post.userId} />
-          <span>{new Date(post.createdAt).toLocaleString()}</span>
+          <IdUserCard id={userId} />
+          <span>{new Date(createdAt).toLocaleString()}</span>
           <TagContainer tags={displayTags} />
         </div>
         <div className="flex h-full flex-1">
-          <Markdown>{post.content}</Markdown>
+          <Markdown>{content}</Markdown>
         </div>
       </header>
       <footer className="flex justify-between rounded-md bg-card p-2">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <LikeComponent
-            itemId={post.itemId}
-            initialLikeCount={post.likes}
-            initialLikeData={post.userLike}
+            itemId={itemId}
+            initialLikeCount={likes}
+            initialLikeData={userLike}
           >
             <LikeButton />
             <LikeCount />
@@ -112,21 +125,21 @@ export default function PostDetailCard({ post }: PostDetailCardProps) {
           <EllipsisButton>
             <ProtectedElement
               session={session}
-              ownerId={post.userId}
-              show={post.isVerified}
+              ownerId={userId}
+              show={isVerified}
             >
               <TakeDownButton
                 isLoading={isLoading}
-                description={`Take down this post: ${post.title}`}
-                onClick={() => removePost(post.id)}
+                description={t('take-down-alert', { name: title })}
+                onClick={() => removePost(id)}
               />
             </ProtectedElement>
-            <ProtectedElement session={session} ownerId={post.userId}>
+            <ProtectedElement session={session} ownerId={userId}>
               <DeleteButton
                 variant="command"
-                description={`${t('delete')} ${post.title}`}
+                description={t('delete-alert', { name: title })}
                 isLoading={isLoading}
-                onClick={() => deletePostById(post.id)}
+                onClick={() => deletePostById(id)}
               />
             </ProtectedElement>
           </EllipsisButton>

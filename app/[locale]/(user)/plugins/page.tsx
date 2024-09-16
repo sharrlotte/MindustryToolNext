@@ -35,6 +35,7 @@ import { TagGroups } from '@/types/response/TagGroup';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { createPlugin, getPlugins } from '@/query/plugin';
+import Tran from '@/components/common/tran';
 
 export default function Page() {
   const { plugin } = useSearchTags();
@@ -113,7 +114,9 @@ function AddPluginButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button title="Add plugin">Add plugin</Button>
+        <Button title="Add plugin">
+          <Tran text="plugin.add" />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md p-6">
@@ -128,11 +131,12 @@ function AddPluginButton() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Plugin name</FormLabel>
+                      <FormLabel>
+                        <Tran text="plugin.name" />
+                      </FormLabel>
                       <FormControl>
                         <Input placeholder="RTV plugin" {...field} />
                       </FormControl>
-                      <FormDescription>The plugin name</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -142,11 +146,12 @@ function AddPluginButton() {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>
+                        <Tran text="plugin.description" />
+                      </FormLabel>
                       <FormControl>
-                        <Input placeholder="Some cool stuff" {...field} />
+                        <Input {...field} />
                       </FormControl>
-                      <FormDescription>The plugin description</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -156,14 +161,18 @@ function AddPluginButton() {
                   name="url"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>URL</FormLabel>
+                      <FormLabel>
+                        <Tran text="plugin.url" />
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="https://github.com/sharrlotte/MindustryToolPlugin"
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>The plugin url</FormDescription>
+                      <FormDescription>
+                        <Tran text="plugin.url-description" />
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -173,7 +182,9 @@ function AddPluginButton() {
                   name="tags"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tags</FormLabel>
+                      <FormLabel>
+                        <Tran text="plugin.tags" />
+                      </FormLabel>
                       <FormControl>
                         <NameTagSelector
                           tags={plugin}
@@ -181,7 +192,6 @@ function AddPluginButton() {
                           onChange={field.onChange}
                         />
                       </FormControl>
-                      <FormDescription>The plugin tags</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}

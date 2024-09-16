@@ -56,7 +56,6 @@ export default function ReloadServerDialog() {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        Are you sure you want to reload all servers
         <AlertDialogFooter>
           <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction asChild>

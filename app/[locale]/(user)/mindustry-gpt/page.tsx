@@ -14,6 +14,7 @@ import useMindustryGpt from '@/hooks/use-mindustry-gpt';
 import ProtectedElement from '@/layout/protected-element';
 import { isReachedEnd } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
+import Tran from '@/components/common/tran';
 
 const url = `${env.url.api}/mindustry-gpt/chat`;
 
@@ -85,7 +86,7 @@ export default function Page() {
         alt={
           <div className="h-full w-full whitespace-nowrap text-center">
             <LoginButton className="justify-center bg-brand">
-              Login to chat
+              <Tran text="mindustry-gpt.require-login" />
             </LoginButton>
           </div>
         }

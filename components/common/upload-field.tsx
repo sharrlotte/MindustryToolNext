@@ -2,6 +2,7 @@ import { UploadIcon } from 'lucide-react';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
+import Tran from '@/components/common/tran';
 
 type Props = {
   className?: string;
@@ -71,10 +72,12 @@ export default function UploadField({ className, accept, onFileDrop }: Props) {
       onDragOver={handleDrop}
     >
       <UploadIcon className="size-10" />
-      <span>Drag and drop file here</span>
+      <span>
+        <Tran text="upload.drag-drop-file" />
+      </span>
       <span>
         <label className="underline hover:cursor-pointer" htmlFor="file">
-          or browse
+          <Tran text="upload.browse-file" />
         </label>
         <input
           id="file"

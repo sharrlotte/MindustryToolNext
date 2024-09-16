@@ -1,7 +1,5 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import {
   Popover,

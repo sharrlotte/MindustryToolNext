@@ -10,8 +10,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useChangeLocale, useI18n } from '@/i18n/client';
@@ -19,6 +17,7 @@ import { useChangeLocale, useI18n } from '@/i18n/client';
 import { Cog6ToothIcon } from '@heroicons/react/24/outline';
 import { useLocaleStore } from '@/zustand/locale-store';
 import { Locale, locales } from '@/i18n/config';
+import Tran from '@/components/common/tran';
 
 type Tab = {
   icon: ReactNode;
@@ -79,12 +78,9 @@ function ChangeLanguageDialog() {
   return (
     <Dialog>
       <DialogTrigger className="w-full text-start">
-        Change language
+        <Tran text="switch-language" />
       </DialogTrigger>
       <DialogContent className="p-6">
-        <DialogHeader>
-          <DialogTitle>Choose your language</DialogTitle>
-        </DialogHeader>
         <ComboBox<Locale>
           value={{ label: t(currentLocale), value: currentLocale }}
           values={locales.map((value: Locale) => ({

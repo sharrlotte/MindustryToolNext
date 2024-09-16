@@ -22,6 +22,7 @@ import { useSearchTags } from '@/hooks/use-tags';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { omit } from '@/lib/utils';
+import Tran from '@/components/common/tran';
 
 export default function MapList() {
   const { map } = useSearchTags();
@@ -39,7 +40,7 @@ export default function MapList() {
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
       <NameTagSearch tags={map} />
       <div className="flex justify-between">
-        <span>Found {data} maps</span>
+        <Tran text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
       <ListLayout>
@@ -89,7 +90,7 @@ export default function MapList() {
             title="My map"
           >
             <UserIcon className="size-5" />
-            My map
+            <Tran text="map.my-map" />
           </InternalLink>
           <InternalLink
             variant="button-secondary"
@@ -97,7 +98,7 @@ export default function MapList() {
             title="My map"
           >
             <UploadIcon className="size-5" />
-            Upload map
+            <Tran text="map.upload" />
           </InternalLink>
         </div>
       </div>

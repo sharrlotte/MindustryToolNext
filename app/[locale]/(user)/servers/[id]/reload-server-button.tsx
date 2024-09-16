@@ -61,7 +61,6 @@ export default function ReloadServerButton({ id }: Props) {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        Are you sure you want to reload server
         <AlertDialogFooter>
           <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction variant="destructive" asChild>

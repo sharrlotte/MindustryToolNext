@@ -18,6 +18,7 @@ import { useI18n } from '@/i18n/client';
 
 import { useMutation } from '@tanstack/react-query';
 import { shutdownInternalServer } from '@/query/server';
+import Tran from '@/components/common/tran';
 
 type Props = {
   id: string;
@@ -57,11 +58,11 @@ export default function ShutdownServerButton({ id }: Props) {
           variant="destructive"
           disabled={isPending}
         >
-          Shutdown
+          <Tran text="server.shutdown" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        Are you sure you want to shutdown server
+        <Tran text="server.shutdown-confirm" />
         <AlertDialogFooter>
           <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction variant="destructive" asChild>
@@ -70,7 +71,7 @@ export default function ShutdownServerButton({ id }: Props) {
               disabled={isPending}
               onClick={() => mutate()}
             >
-              Shutdown
+              <Tran text="server.shutdown" />
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>
