@@ -156,49 +156,55 @@ export default function CommandCard({
           fill={'#0009'}
           cornerRadius={5}
         />
-        {elementValue.fields.map((field, fIndex) => (
-          <Group
-            key={fIndex}
-            x={field.x * field.fieldSize * (widthPadded / elementValue.columns)}
-            y={field.y * valueHeight}
-          >
-            <Text
-              x={padding}
-              y={doublePadding + 2}
-              fontSize={14}
-              text={field.placeHolder}
-              fill="white"
-            />
-            <Rect
-              x={field.placeHolderWidth}
-              y={padding}
-              width={
-                field.fieldSize * (widthPadded / elementValue.columns) -
-                padding -
-                field.placeHolderWidth
+        {elementValue.fields.map((field, fIndex) =>
+          field.linkedOutput ? (
+            <Group key={fIndex}>Wtf</Group>
+          ) : (
+            <Group
+              key={fIndex}
+              x={
+                field.x * field.fieldSize * (widthPadded / elementValue.columns)
               }
-              height={valueHeight - padding}
-              fill={elementValue.color}
-              cornerRadius={2}
-              onClick={() => handleFieldClick(field, fIndex)}
-            />
-            <Text
-              x={field.placeHolderWidth + padding}
-              y={doublePadding + 5}
-              width={
-                field.fieldSize * (widthPadded / elementValue.columns) -
-                doublePadding -
-                field.placeHolderWidth
-              }
-              fill={'white'}
-              fontSize={14}
-              height={11}
-              text={`${field.displayValue ? field.displayValue : field.value}`}
-              listening={false}
-              ellipsis={true}
-            />
-          </Group>
-        ))}
+              y={field.y * valueHeight}
+            >
+              <Text
+                x={padding}
+                y={doublePadding + 2}
+                fontSize={14}
+                text={field.placeHolder}
+                fill="white"
+              />
+              <Rect
+                x={field.placeHolderWidth}
+                y={padding}
+                width={
+                  field.fieldSize * (widthPadded / elementValue.columns) -
+                  padding -
+                  field.placeHolderWidth
+                }
+                height={valueHeight - padding}
+                fill={elementValue.color}
+                cornerRadius={2}
+                onClick={() => handleFieldClick(field, fIndex)}
+              />
+              <Text
+                x={field.placeHolderWidth + padding}
+                y={doublePadding + 5}
+                width={
+                  field.fieldSize * (widthPadded / elementValue.columns) -
+                  doublePadding -
+                  field.placeHolderWidth
+                }
+                fill={'white'}
+                fontSize={14}
+                height={11}
+                text={`${field.displayValue ? field.displayValue : field.value}`}
+                listening={false}
+                ellipsis={true}
+              />
+            </Group>
+          ),
+        )}
       </Group>
       <Group
         x={width + padding}
@@ -323,10 +329,14 @@ const ConnectionPoint = ({
   useEffect(() => {
     setCommands((elements) => {
       if (
-        elements[cIndex].value.outputs[oIndex].value != -1 &&
-        elements[elements[cIndex].value.outputs[oIndex].value] == undefined
+        (elements[cIndex].value.outputs[oIndex].value != -1 &&
+          elements[elements[cIndex].value.outputs[oIndex].value] ==
+            undefined) ||
+        (elements[cIndex].value.outputs[oIndex].value != -1 &&
+          elements[elements[cIndex].value.outputs[oIndex].value] != undefined &&
+          elements[elements[cIndex].value.outputs[oIndex].value].value.name ==
+            'Start')
       ) {
-        elements[cIndex].value.outputs[oIndex].value = -1;
         handleReset();
         return elements;
       }

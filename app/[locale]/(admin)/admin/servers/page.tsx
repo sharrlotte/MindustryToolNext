@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
 
-import getServerApi from '@/query/config/get-server-api';
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import ReloadServerDialog from '@/app/[locale]/(user)/servers/reload-server-dialog';
-import { getInternalServers } from '@/query/server';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorScreen from '@/components/common/error-screen';
-import InternalServerCard from '@/components/server/internal-server-card';
+import { Servers } from '@/app/[locale]/(admin)/admin/servers/server-list';
+
+export const experimental_ppr = true;
 
 const skeleton = Array(8)
   .fill(1)
@@ -26,18 +26,5 @@ export default async function Page() {
         </Suspense>
       </ErrorBoundary>
     </div>
-  );
-}
-
-async function Servers() {
-  const axios = await getServerApi();
-  const servers = await getInternalServers(axios);
-
-  return (
-    <section className="grid gap-2 overflow-y-auto pr-1 md:grid-cols-2 lg:grid-cols-3">
-      {servers.map((server) => (
-        <InternalServerCard server={server} key={server.port} />
-      ))}
-    </section>
   );
 }

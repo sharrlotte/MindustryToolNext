@@ -1,16 +1,14 @@
 import React, { Suspense } from 'react';
 
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
-import InternalServerCard from '@/components/server/internal-server-card';
-import getServerApi from '@/query/config/get-server-api';
-import { getInternalServers } from '@/query/server';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Tran from '@/components/common/tran';
-import { getMeServers } from '@/query/user';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
-import LoginButton from '@/components/button/login-button';
+import { RequireLogin } from '@/app/[locale]/(user)/servers/require-login';
+import { CommunityServer } from '@/app/[locale]/(user)/servers/comunity-server';
+import { MeServer } from '@/app/[locale]/(user)/servers/my-server';
 
 export const experimental_ppr = true;
 
@@ -63,30 +61,4 @@ export default async function Page() {
       </Tabs>
     </div>
   );
-}
-
-function RequireLogin() {
-  return (
-    <div>
-      <p>Please login to access your server list.</p>
-      <LoginButton />
-    </div>
-  );
-}
-
-async function CommunityServer() {
-  const axios = await getServerApi();
-  const servers = await getInternalServers(axios);
-
-  return servers.map((server) => (
-    <InternalServerCard server={server} key={server.port} />
-  ));
-}
-async function MeServer() {
-  const axios = await getServerApi();
-  const servers = await getMeServers(axios);
-
-  return servers.map((server) => (
-    <InternalServerCard server={server} key={server.port} />
-  ));
 }

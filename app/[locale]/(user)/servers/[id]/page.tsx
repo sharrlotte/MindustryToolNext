@@ -25,11 +25,11 @@ import {
 
 import './style.css';
 
+export const experimental_ppr = true;
+
 type Props = {
   params: { id: string; locale: string };
 };
-
-export const experimental_ppr = true;
 
 export default async function Page({ params: { id } }: Props) {
   const axios = await getServerApi();

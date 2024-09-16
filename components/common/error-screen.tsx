@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/i18n/client';
 import Tran from '@/components/common/tran';
+import { useEffect } from 'react';
 
 export default function ErrorScreen({
   error,
@@ -16,6 +17,10 @@ export default function ErrorScreen({
   if (message === 'NEXT_NOT_FOUND') {
     throw notFound();
   }
+
+  useEffect(() => {
+    reportError(JSON.stringify(error));
+  }, [error]);
 
   const t = useI18n();
 
