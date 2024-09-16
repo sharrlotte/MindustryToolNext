@@ -20,6 +20,10 @@ export default function UserDetail({ user }: Props) {
   const { name, roles, stats, thumbnail } = user;
   const level = Math.floor(Math.sqrt(stats?.EXP ?? 0));
 
+  const nextLevel = level + 1;
+  const nextLevelExp = level * level;
+  const progress = (stats?.EXP ?? 0) / nextLevelExp;
+
   const style = thumbnail ? { backgroundImage: thumbnail } : undefined;
 
   return (
@@ -57,6 +61,10 @@ export default function UserDetail({ user }: Props) {
           <span className="text-2xl capitalize">{name}</span>
           <UserRoleCard className="text-2xl" roles={roles} />
           <span className="font-bold">LV.{level}</span>
+          <div
+            className="h-2 w-full rounded-full bg-success"
+            style={{ width: progress }}
+          />
         </div>
       </div>
     </div>
