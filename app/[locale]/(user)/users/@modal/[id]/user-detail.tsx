@@ -40,7 +40,7 @@ export default function UserDetail({ user }: Props) {
         <Dialog>
           <DialogTrigger>
             <Image
-              className="max-h-[50vh] w-full object-cover"
+              className="max-h-[80vh] w-full object-cover"
               src={`${thumbnail}`}
               width={1920}
               height={1080}
@@ -52,7 +52,7 @@ export default function UserDetail({ user }: Props) {
           </DialogContent>
         </Dialog>
       )}
-      <div className="relative flex gap-2 rounded-md bg-card bg-cover bg-center p-2">
+      <div className="relative flex gap-2 bg-card bg-cover bg-center p-2">
         <UserAvatar className="h-20 w-20" user={user} />
         <EllipsisButton className="absolute right-2 top-2 aspect-square border-none bg-transparent">
           <ProtectedElement session={session} ownerId={user.id}>
@@ -62,20 +62,20 @@ export default function UserDetail({ user }: Props) {
             </InternalLink>
           </ProtectedElement>
         </EllipsisButton>
-        <div className="flex h-full flex-col justify-between">
+        <div className="flex h-full w-full flex-col justify-between">
           <span className="text-2xl capitalize">{name}</span>
           <UserRoleCard className="text-2xl" roles={roles} />
           <span className="font-bold">LV.{level}</span>
+          <div className="flex w-full items-center gap-1 text-xs">
+            <div className="h-3 max-h-3 w-full overflow-hidden rounded-full border">
+              <div
+                className="h-full w-full rounded-full bg-success"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            {currentExp}/{levelUpExp}
+          </div>
         </div>
-      </div>
-      <div className="flex w-full items-center gap-1 text-xs">
-        <div className="h-3 max-h-3 w-full overflow-hidden rounded-full border">
-          <div
-            className="h-full w-full rounded-full bg-success"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        {currentExp}/{levelUpExp}
       </div>
     </div>
   );
