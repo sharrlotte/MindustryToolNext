@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import React from 'react';
 
 import { NavItems } from '@/app/[locale]/navigation-items';
 import { UserDisplay } from '@/app/[locale]/user-display';

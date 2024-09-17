@@ -2,7 +2,6 @@
 
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 
 import Tran from '@/components/common/tran';
 import { Button, ButtonProps } from '@/components/ui/button';
@@ -15,14 +14,14 @@ export default function BackButton({
 
   children = children ?? (
     <>
-      <ArrowLeft className="w-5 h-5" />
+      <ArrowLeft className="h-5 w-5" />
       <Tran text="back" />
     </>
   );
 
   return (
     <Button
-      className="whitespace-nowrap text-nowrap gap-1 pl-1.5"
+      className="gap-1 whitespace-nowrap text-nowrap"
       title="back"
       variant="outline"
       {...props}

@@ -5,14 +5,14 @@ import {
   HomeSchematicPreview,
   InformationGroup,
 } from '@/app/[locale]/home';
-import InternalLink from '@/components/common/internal-link';
-import Tran from '@/components/common/tran';
+import Ads from '@/components/common/ads';
 import {
   DiscordIcon,
   FacebookIcon,
   GithubIcon,
 } from '@/components/common/icons';
-import Ads from '@/components/common/ads';
+import InternalLink from '@/components/common/internal-link';
+import Tran from '@/components/common/tran';
 import YoutubeEmbed from '@/components/common/youtube-embed';
 
 // export const dynamicParams = false;
@@ -21,13 +21,13 @@ export const experimental_ppr = true;
 export default async function Home() {
   return (
     <div className="no-scrollbar flex h-full flex-col overflow-y-auto bg-[url('https://mindustrygame.github.io/1.d25af17a.webp')] bg-cover bg-center text-white">
-      <div className="mx-auto flex w-full flex-col gap-20 p-4 backdrop-blur-sm backdrop-brightness-50 md:px-32">
+      <div className="mx-auto flex w-full flex-col gap-10 p-4 pt-10 backdrop-blur-sm backdrop-brightness-50 md:gap-20 md:px-32">
         <div>
           <h1 className="w-full text-center text-xl font-extrabold">
             <Tran text="home.hero-title" />
           </h1>
         </div>
-        <div className="flex flex-col gap-2 md:flex-row">
+        <div className="flex flex-col gap-4 md:flex-row">
           <div className="flex flex-col space-y-8 md:w-1/2">
             <div>
               <h3 className="font-bold">

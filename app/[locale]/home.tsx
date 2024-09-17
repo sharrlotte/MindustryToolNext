@@ -1,17 +1,16 @@
-import { Suspense } from 'react';
-
+import InternalLink from '@/components/common/internal-link';
+import { Preview } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import UserCard from '@/components/user/user-card';
 import getServerApi from '@/query/config/get-server-api';
-import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
-import { getSchematics } from '@/query/schematic';
 import { getMaps } from '@/query/map';
+import { getSchematics } from '@/query/schematic';
 import { getUsers } from '@/query/user';
-import InternalLink from '@/components/common/internal-link';
-import { Preview } from '@/components/common/preview';
+import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
+import { Suspense } from 'react';
 
 const skeleton = Array(20)
   .fill(1)
