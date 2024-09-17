@@ -249,14 +249,10 @@ function DiffCard({
   language,
 }: DiffCardProps) {
   const axios = useClientApi();
-  const { invalidateByKey } = useQueriesData();
 
   const { mutate } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) =>
       createTranslation(axios, payload),
-    onSuccess: () => {
-      invalidateByKey(['translations']);
-    },
   });
 
   const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
