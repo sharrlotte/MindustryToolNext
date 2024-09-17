@@ -1,20 +1,17 @@
 import { ThemeProvider } from '@/components/theme/theme-provider';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import env from '@/constant/env';
 import { SessionProvider } from '@/context/session-context';
 import { SocketProvider } from '@/context/socket-context';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import NextTopLoader from 'nextjs-toploader';
 import React from 'react';
-
-import { TooltipProvider } from '@/components/ui/tooltip';
 import './globals.css';
-
-import PageTransition from '@/components/common/pageTransition';
-import dynamic from 'next/dynamic';
 
 const ClientInit = dynamic(() => import('@/app/[locale]/client-init'), {
   ssr: false,
@@ -95,10 +92,8 @@ export default async function Root({ children, params }: Props) {
             <SocketProvider>
               <QueryProvider>
                 <TooltipProvider>
-                  <PageTransition>
-                    <ClientInit />
-                    {children}
-                  </PageTransition>
+                  <ClientInit />
+                  {children}
                 </TooltipProvider>
               </QueryProvider>
             </SocketProvider>

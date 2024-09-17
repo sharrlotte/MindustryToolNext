@@ -42,6 +42,7 @@ export default function CreateServerDialog() {
       name: '',
       description: '',
       mode: 'SURVIVAL',
+      startCommand: '',
     },
   });
 

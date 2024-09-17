@@ -92,7 +92,10 @@ function ServerSettingEditor({ server }: Props) {
   const [currentServer, setCurrentServer] = useState(server);
   const form = useForm<PutInternalServerRequest>({
     resolver: zodResolver(PutInternalServerSchema),
-    defaultValues: currentServer,
+    defaultValues: {
+      ...currentServer,
+      startCommand: currentServer.startCommand ?? '',
+    },
   });
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
