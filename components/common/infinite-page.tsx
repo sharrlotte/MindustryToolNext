@@ -131,9 +131,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     );
   }
 
-  const pages = data.pages.reduce((prev, curr) => prev.concat(curr), []);
-
-  if (pages.length === 0) {
+  if (!data.pages || data.pages[0].length === 0) {
     return noResult;
   }
 
@@ -151,7 +149,9 @@ export default function InfinitePage<T, P extends PaginationQuery>({
       getScrollParent={container}
       isReverse={reversed}
     >
-      {pages.map((data, index) => children(data, index))}
+      {data.pages.map((page) =>
+        page.map((data, index) => children(data, index)),
+      )}
       {isFetching && skeleton && loadingSkeleton}
       {!hasNextPage && end}
     </InfiniteScroll>

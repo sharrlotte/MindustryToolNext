@@ -23,16 +23,6 @@ export const metadata: Metadata = {
   description: 'A website about mindustry',
 };
 
-// const font = localFont({
-//   src: [
-//     {
-//       path: '../public/fonts/font.woff',
-//       weight: '500',
-//     },
-//   ],
-//   variable: '--font-mindustry',
-// });
-
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['vietnamese'],
@@ -41,7 +31,7 @@ const inter = Inter({
 const noto = Noto_Sans_KR({
   variable: '--font-noto',
   subsets: ['cyrillic'],
-  weight: '900',
+  weight: '700',
 });
 
 const icon = localFont({
@@ -62,24 +52,13 @@ type Props = {
   params: RootParam;
 };
 
-export async function generateStaticParams() {
-  return [
-    {
-      locale: 'vi',
-    },
-    {
-      locale: 'en',
-    },
-  ];
-}
-
 export default async function Root({ children, params }: Props) {
   return (
     <html
       className={cn(
         'dark h-full w-full overflow-hidden bg-background text-foreground antialiased',
-        // font.variable,
-        params.locale === 'kr' ? noto.variable : inter.variable,
+        noto.variable,
+        inter.variable,
         icon.variable,
       )}
       lang={params.locale ?? 'en'}

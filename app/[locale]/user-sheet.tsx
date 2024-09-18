@@ -75,6 +75,10 @@ function ChangeLanguageDialog() {
   const setCurrentLocale = useChangeLocale();
   const t = useI18n();
 
+  function onLanguageChange(value: any) {
+    setCurrentLocale(value ?? 'en');
+  }
+
   return (
     <Dialog>
       <DialogTrigger className="w-full text-start">
@@ -88,7 +92,7 @@ function ChangeLanguageDialog() {
             value,
           }))}
           searchBar={false}
-          onChange={(value) => setCurrentLocale(value ?? 'en')}
+          onChange={onLanguageChange}
         />
         <DialogDescription>
           <a href="https://github.com/sharrlotte/MindustryToolNext/issues">

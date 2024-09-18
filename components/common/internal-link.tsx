@@ -42,12 +42,13 @@ export default function InternalLink({
   variant,
   title,
   href,
+  children,
   ...props
 }: InternalLinkProps) {
   const t = useI18n();
   const { currentLocale } = useLocaleStore();
 
-  const stripBase = href.replace(env.url.base + '/', '');
+  const stripBase = href.replace(env.url.base, '');
   const parts = stripBase.split('/');
 
   if (parts.length > 0 && !locales.includes(parts[0] as any)) {
@@ -60,6 +61,8 @@ export default function InternalLink({
       {...props}
       href={href}
       title={title ? t(title) : ''}
-    ></Link>
+    >
+      {children}
+    </Link>
   );
 }

@@ -280,7 +280,7 @@ const _PathGroup = ({
 }: PathGroupProps): ReactNode => {
   const { session } = useSession();
 
-  return paths.map(({ path, icon, name, roles }) => {
+  return paths.map(({ path, icon, name, roles }, index) => {
     if (typeof path === 'string')
       return (
         <ProtectedElement key={path} session={session} all={roles} passOnEmpty>
@@ -302,12 +302,7 @@ const _PathGroup = ({
       );
 
     return (
-      <ProtectedElement
-        key={path.toString()}
-        session={session}
-        all={roles}
-        passOnEmpty
-      >
+      <ProtectedElement key={index} session={session} all={roles} passOnEmpty>
         <Accordion
           type="single"
           collapsible

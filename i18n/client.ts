@@ -8,7 +8,7 @@ import { Locale, locales, TranslateFunction } from '@/i18n/config';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 
-function useI18n(): TranslateFunction {
+export function useI18n(): TranslateFunction {
   const { isCurrentLocaleSet, currentLocale, translation, setTranslation } =
     useLocaleStore();
   const axios = useClientApi();
@@ -98,5 +98,3 @@ export function useChangeLocale() {
     router.push(`${url}?${new URLSearchParams(params).toString()}`);
   };
 }
-
-export { useI18n };
