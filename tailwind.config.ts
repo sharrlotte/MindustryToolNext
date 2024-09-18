@@ -8,7 +8,9 @@ module.exports = {
         screen: ['100vh /* fallback for Opera, IE and etc. */', '100dvh'],
       },
       fontFamily: {
-        sans: ['var(--font-icon)'],
+        icon: ['var(--font-icon)'],
+        noto: ['var(--font-noto)'],
+        inter: ['var(--font-inter)'],
       },
       minHeight: (theme: any) => ({
         ...theme('spacing'),
