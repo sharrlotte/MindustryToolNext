@@ -18,12 +18,18 @@ export default function useClipboard() {
   return useCallback(
     async ({ data, title = t('copied'), content = '' }: CopyProps) => {
       await navigator.clipboard.writeText(data);
-      if (dismissLast) dismissLast();
+
+      if (dismissLast) {
+        dismissLast();
+      }
+
       const { dismiss } = toast({
         title: title,
         description: content,
       });
+
       dismissLast = dismiss;
+
       return dismiss;
     },
     [t, toast],
