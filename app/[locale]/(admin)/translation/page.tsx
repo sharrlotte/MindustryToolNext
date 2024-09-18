@@ -63,10 +63,11 @@ type TranslateMode = (typeof translateModes)[number];
 const defaultState = {
   language: 'vi',
   mode: 'compare',
+  key: '',
 };
 
 export default function Page() {
-  const [{ language, mode }, setQueryState] = useQueryState(defaultState);
+  const [{ language, mode, key }, setQueryState] = useQueryState(defaultState);
   const t = useI18n();
 
   return (
@@ -93,6 +94,12 @@ export default function Page() {
               value,
             }))}
             onChange={(mode) => setQueryState({ mode: mode ?? 'compare' })}
+          />
+          <Input
+            value={key}
+            onChange={(event) =>
+              setQueryState({ key: event.currentTarget.value })
+            }
           />
           <RefreshButton />
           <AddNewKeyDialog />
@@ -136,7 +143,7 @@ function CompareTable({ language }: CompareTableProps) {
       'total',
       omit(params, 'page', 'size'),
     ],
-    queryFn: (axios) => getTranslationCompareCount(axios, params.language),
+    queryFn: (axios) => getTranslationCompareCount(axios, params),
     placeholderData: 0,
   });
 
@@ -194,7 +201,7 @@ function DiffTable({ language }: DiffTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
   const { data } = useClientQuery({
     queryKey: ['translations', 'diff', 'total', omit(params, 'page', 'size')],
-    queryFn: (axios) => getTranslationDiffCount(axios, params.language),
+    queryFn: (axios) => getTranslationDiffCount(axios, params),
     placeholderData: 0,
   });
 

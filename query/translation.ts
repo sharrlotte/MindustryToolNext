@@ -27,10 +27,10 @@ export async function getTranslationDiff(
 
 export async function getTranslationDiffCount(
   axios: AxiosInstance,
-  language: Locale,
+  params: { language: Locale; key?: string },
 ) {
   const result = await axios.get('/translations/diff/count', {
-    params: { language },
+    params,
   });
 
   return result.data;
@@ -47,10 +47,10 @@ export async function getTranslationCompare(
 
 export async function getTranslationCompareCount(
   axios: AxiosInstance,
-  language: Locale,
+  params: { language: Locale; key?: string },
 ) {
   const result = await axios.get('/translations/compare/count', {
-    params: { language },
+    params,
   });
 
   return result.data;

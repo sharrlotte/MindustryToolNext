@@ -1,12 +1,19 @@
 import useSafeSearchParams from '@/hooks/use-safe-search-params';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
+let timeout: any = undefined;
 
 export default function useQueryState(initialState: Record<string, string>) {
   const params = useSafeSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+
+  const [state, setState] = useState({
+    ...initialState,
+    ...Object.fromEntries(params.raw()),
+  });
 
   useEffect(() => {
     const queryParams = new URLSearchParams(params.raw());
@@ -27,11 +34,22 @@ export default function useQueryState(initialState: Record<string, string>) {
 
   const setter = useCallback(
     (value: Record<string, string | undefined>) => {
-      const queryParams = new URLSearchParams(params.raw());
+      setState((prev) => ({ ...prev, ...(value as Record<string, string>) }));
+    },
+    [initialState],
+  );
 
-      Object.entries({ ...value }).forEach(([key, value]) => {
+  useEffect(() => {
+    const queryParams = new URLSearchParams(params.raw());
+
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+
+    timeout = setTimeout(() => {
+      Object.entries(state).forEach(([key, value]) => {
         if (value) queryParams.set(key, value);
-        else queryParams.set(key, initialState[key]);
+        else queryParams.delete(key);
       });
 
       Object.entries(queryParams).forEach(([key]) => {
@@ -40,19 +58,11 @@ export default function useQueryState(initialState: Record<string, string>) {
         }
       });
 
-      const timer = setTimeout(() => {
-        router.replace(`${pathname}?${queryParams.toString()}`);
-      }, 100);
+      router.replace(`${pathname}?${queryParams.toString()}`);
+    }, 200);
 
-      return () => clearTimeout(timer);
-    },
-    [initialState, params, pathname, router],
-  );
-
-  const state = {
-    ...initialState,
-    ...Object.fromEntries(params.raw()),
-  };
+    return () => timeout && clearTimeout(timeout);
+  }, [state]);
 
   return [state, setter] as const;
 }
