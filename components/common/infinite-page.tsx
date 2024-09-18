@@ -1,7 +1,12 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
+import React, {
+  JSXElementConstructor,
+  ReactElement,
+  ReactNode,
+  useCallback,
+} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -52,6 +57,13 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     isFetching,
     fetchNextPage,
   } = useInfinitePageQuery(getFunc, params, queryKey);
+
+  const loadMore = useCallback(
+    (_: number) => {
+      fetchNextPage();
+    },
+    [fetchNextPage],
+  );
 
   noResult = noResult ?? (
     <NoResult className="flex w-full items-center justify-center" />
@@ -110,13 +122,15 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     return noResult;
   }
 
+  console.count('inf');
+
   return (
     <InfiniteScroll
       className={
         className ??
-        'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
+        'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 pr-1'
       }
-      loadMore={(_: number) => fetchNextPage()}
+      loadMore={loadMore}
       hasMore={hasNextPage}
       loader={loader}
       useWindow={false}

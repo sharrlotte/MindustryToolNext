@@ -10,7 +10,6 @@ import {
   PaginationLayoutSwitcher,
 } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
-import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
@@ -23,6 +22,7 @@ import { getSchematicCount, getSchematics } from '@/query/schematic';
 import { omit } from '@/lib/utils';
 import Tran from '@/components/common/tran';
 import { UploadIcon, UserIcon } from '@/components/common/icons';
+import InfinitePage from '@/components/common/infinite-page';
 
 export default function SchematicList() {
   const { schematic } = useSearchTags();
@@ -51,7 +51,7 @@ export default function SchematicList() {
           className="relative flex h-full flex-col overflow-auto"
           ref={(ref) => setContainer(ref)}
         >
-          <ResponsiveInfiniteScrollGrid
+          <InfinitePage
             params={params}
             queryKey={['schematics']}
             getFunc={getSchematics}
@@ -60,13 +60,9 @@ export default function SchematicList() {
               amount: 20,
               item: <PreviewSkeleton />,
             }}
-            itemMinWidth={320}
-            itemMinHeight={352}
-            contentOffsetHeight={112}
-            gap={8}
           >
             {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
-          </ResponsiveInfiniteScrollGrid>
+          </InfinitePage>
         </div>
       </ListLayout>
       <GridLayout>

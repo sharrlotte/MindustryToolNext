@@ -19,6 +19,9 @@ import YoutubeEmbed from '@/components/common/youtube-embed';
 export const experimental_ppr = true;
 
 export default async function Home() {
+
+  console.count('render')
+
   return (
     <div className="no-scrollbar flex h-full flex-col overflow-y-auto bg-[url('https://mindustrygame.github.io/1.d25af17a.webp')] bg-cover bg-center text-white">
       <div className="mx-auto flex w-full flex-col gap-10 p-4 pt-10 backdrop-blur-sm backdrop-brightness-50 md:gap-20 md:px-32">

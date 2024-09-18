@@ -93,7 +93,7 @@ export function useChangeLocale() {
       : `/${locale}${pathname}`;
 
     setCurrentLocale(locale);
-    setCookie('Next-Locale', locale, { path: '/' });
+    setCookie('Locale', locale, { path: '/' });
 
     router.push(`${url}?${new URLSearchParams(params).toString()}`);
   };

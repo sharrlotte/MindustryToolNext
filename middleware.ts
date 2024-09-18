@@ -2,7 +2,7 @@ import { defaultLocale, Locale, locales } from '@/i18n/config';
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  let locale = request.cookies.get('Next-Locale')?.value as string;
+  let locale = request.cookies.get('Locale')?.value as string;
 
   if (!locale) {
     const headers = request.headers;
@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
 
   const response = NextResponse.redirect(request.nextUrl);
 
-  response.cookies.set('Next-Locale', locale, { path: '/' });
+  response.cookies.set('Locale', locale, { path: '/' });
 
   return response;
 }

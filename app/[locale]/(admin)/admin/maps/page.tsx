@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 
-import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
@@ -19,6 +18,7 @@ import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
 import { omit } from 'lodash';
 import Tran from '@/components/common/tran';
+import InfiniteScrollList from '@/components/common/infinite-scroll-list';
 
 export default function Page() {
   const { map } = useSearchTags();
@@ -43,7 +43,7 @@ export default function Page() {
           className="relative flex h-full flex-col overflow-auto"
           ref={(ref) => setContainer(ref)}
         >
-          <ResponsiveInfiniteScrollGrid
+          <InfiniteScrollList
             params={params}
             queryKey={['maps', 'upload']}
             getFunc={getMapUploads}
@@ -52,13 +52,9 @@ export default function Page() {
               amount: 20,
               item: <PreviewSkeleton />,
             }}
-            itemMinWidth={320}
-            itemMinHeight={352}
-            contentOffsetHeight={112}
-            gap={8}
           >
             {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
-          </ResponsiveInfiniteScrollGrid>
+          </InfiniteScrollList>
         </div>
       </ListLayout>
       <GridLayout>

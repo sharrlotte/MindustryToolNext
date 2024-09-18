@@ -9,7 +9,7 @@ type UploadPostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
-export default function UploadPostPreviewCard({
+function _UploadPostPreviewCard({
   className,
   post,
   ...rest
@@ -25,7 +25,7 @@ export default function UploadPostPreviewCard({
       )}
       {...rest}
     >
-      <div className="flex h-full flex-col justify-between gap-2 backdrop-brightness-50 p-4">
+      <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-brightness-50">
         <Link href={`/admin/posts/${post.id}`}>
           <span className="flex text-2xl">{post.title}</span>
         </Link>
@@ -39,3 +39,7 @@ export default function UploadPostPreviewCard({
     </div>
   );
 }
+
+const UploadPostPreviewCard = React.memo(_UploadPostPreviewCard);
+
+export default UploadPostPreviewCard;

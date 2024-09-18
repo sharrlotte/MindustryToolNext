@@ -18,7 +18,7 @@ type UploadMapPreviewCardProps = {
   map: MapPreview;
 };
 
-export default function UploadMapPreviewCard({
+function _UploadMapPreviewCard({
   map: { id, name },
 }: UploadMapPreviewCardProps) {
   const link = `${env.url.base}/admin/maps/${id}`;
@@ -50,3 +50,7 @@ export default function UploadMapPreviewCard({
     </Preview>
   );
 }
+
+const UploadMapPreviewCard = React.memo(_UploadMapPreviewCard);
+
+export default UploadMapPreviewCard;
