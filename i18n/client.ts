@@ -53,7 +53,7 @@ function useI18n(): TranslateFunction {
             },
           })
           .then((result) => {
-            setTranslation({ [group]: result.data });
+            if (result.data) setTranslation({ [group]: result.data });
           });
       }
 

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 
-import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { useSearchTags } from '@/hooks/use-tags';
@@ -23,6 +22,7 @@ import {
 } from '@/query/schematic';
 import { omit } from '@/lib/utils';
 import Tran from '@/components/common/tran';
+import InfinitePage from '@/components/common/infinite-page';
 
 export default function Page() {
   const { schematic } = useSearchTags();
@@ -53,7 +53,7 @@ export default function Page() {
           className="relative flex h-full flex-col overflow-auto"
           ref={(ref) => setContainer(ref)}
         >
-          <ResponsiveInfiniteScrollGrid
+          <InfinitePage
             params={params}
             queryKey={['schematics', 'upload']}
             getFunc={getSchematicUploads}
@@ -62,15 +62,11 @@ export default function Page() {
               amount: 20,
               item: <PreviewSkeleton />,
             }}
-            itemMinWidth={320}
-            itemMinHeight={352}
-            contentOffsetHeight={112}
-            gap={8}
           >
             {(data) => (
               <UploadSchematicPreviewCard key={data.id} schematic={data} />
             )}
-          </ResponsiveInfiniteScrollGrid>
+          </InfinitePage>
         </div>
       </ListLayout>
       <GridLayout>

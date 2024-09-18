@@ -6,6 +6,7 @@ import React, {
   ReactElement,
   ReactNode,
   useCallback,
+  useMemo,
 } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -65,34 +66,48 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     [fetchNextPage],
   );
 
-  noResult = noResult ?? (
-    <NoResult className="flex w-full items-center justify-center" />
+  noResult = useMemo(
+    () =>
+      noResult ?? (
+        <NoResult className="flex w-full items-center justify-center" />
+      ),
+    [noResult],
   );
 
-  if (!loader && !skeleton) {
-    loader = (
-      <LoadingSpinner
-        key="loading"
-        className="col-span-full flex h-full w-full items-center justify-center"
-      />
-    );
-  }
+  loader = useMemo(
+    () =>
+      !loader && !skeleton ? (
+        <LoadingSpinner
+          key="loading"
+          className="col-span-full flex h-full w-full items-center justify-center"
+        />
+      ) : undefined,
+    [loader, skeleton],
+  );
 
-  const loadingSkeleton =
-    skeleton &&
-    Array(skeleton.amount)
-      .fill(1)
-      .map((_, index) => (
-        <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-      ));
+  const loadingSkeleton = useMemo(
+    () =>
+      skeleton
+        ? Array(skeleton.amount)
+            .fill(1)
+            .map((_, index) => (
+              <React.Fragment key={index}>{skeleton.item}</React.Fragment>
+            ))
+        : undefined,
+    [skeleton],
+  );
 
-  end = end ?? (
-    <span
-      className="col-span-full flex w-full items-center justify-center"
-      key="End"
-    >
-      {t('end-of-page')}
-    </span>
+  end = useMemo(
+    () =>
+      end ?? (
+        <span
+          className="col-span-full flex w-full items-center justify-center"
+          key="End"
+        >
+          {t('end-of-page')}
+        </span>
+      ),
+    [end, t],
   );
 
   if (isError || error) {
@@ -121,8 +136,6 @@ export default function InfinitePage<T, P extends PaginationQuery>({
   if (pages.length === 0) {
     return noResult;
   }
-
-  console.count('inf');
 
   return (
     <InfiniteScroll

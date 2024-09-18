@@ -32,6 +32,7 @@ export default function NameTagSearch({
   useSort = true,
   useTag = true,
 }: NameTagSearchProps) {
+  const [filter, setFilter] = useState('');
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchPageParams();
@@ -39,9 +40,8 @@ export default function NameTagSearch({
 
   const [page, setPage] = useState(0);
   const [name, setName] = useState('');
-  const [filterBy, setFilterBy] = useState<TagGroup[]>([]);
   const [sortBy, setSortBy] = useState<SortTag>(defaultSortTag);
-  const [filter, setFilter] = useState('');
+  const [filterBy, setFilterBy] = useState<TagGroup[]>([]);
   const [isChanged, setChanged] = useState(false);
   const [showFilterDialog, setShowFilterDialog] = useState(false);
 
@@ -124,7 +124,8 @@ export default function NameTagSearch({
       }
       setChanged(true);
     },
-    [tags, filterBy, setChanged, setFilterBy],
+
+    [tags],
   );
 
   function handleSortChange(value: any) {
@@ -139,6 +140,14 @@ export default function NameTagSearch({
     setChanged(true);
   }
 
+  function handleEditName(event: any) {
+    handleNameChange(event.currentTarget.value);
+  }
+
+  function handleResetName() {
+    handleNameChange('');
+  }
+
   function handleDeleteTag(tag: Tag) {
     setFilterBy((prev) => {
       const group = prev.find((item) => item.name === tag.name);
@@ -148,6 +157,10 @@ export default function NameTagSearch({
 
       return [...prev];
     });
+  }
+
+  function handleFilterChange(event: any) {
+    setFilter(event.currentTarget.value);
   }
 
   const displayTags = useMemo(() => Tags.fromTagGroup(filterBy), [filterBy]);
@@ -160,13 +173,13 @@ export default function NameTagSearch({
           <Search.Input
             placeholder={t('search-by-name')}
             value={name}
-            onChange={(event) => handleNameChange(event.currentTarget.value)}
+            onChange={handleEditName}
           />
           {name && (
             <Button
               className="p-0"
               title="reset"
-              onClick={() => handleNameChange('')}
+              onClick={handleResetName}
               variant="icon"
             >
               <XIcon />
@@ -205,7 +218,7 @@ export default function NameTagSearch({
                   <Search.Input
                     placeholder={t('filter')}
                     value={filter}
-                    onChange={(event) => setFilter(event.currentTarget.value)}
+                    onChange={handleFilterChange}
                   />
                 </Search>
                 {useSort && (

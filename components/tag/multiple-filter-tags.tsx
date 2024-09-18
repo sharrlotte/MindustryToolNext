@@ -11,7 +11,7 @@ type MultipleFilerTagsProps = {
   handleTagGroupChange: (value: string[]) => void;
 };
 
-function _MultipleFilerTags({
+export default function MultipleFilerTags({
   group,
   selectedValue,
   handleTagGroupChange,
@@ -41,6 +41,3 @@ function _MultipleFilerTags({
     </ToggleGroup>
   );
 }
-
-const MultipleFilerTags = React.memo(_MultipleFilerTags);
-export default MultipleFilerTags;

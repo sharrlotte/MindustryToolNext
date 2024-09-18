@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import PostPreviewCard from '@/components/post/post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useSearchPageParams from '@/hooks/use-search-page-params';
@@ -12,6 +11,7 @@ import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import { UserIcon, UploadIcon } from 'lucide-react';
 import env from '@/constant/env';
+import InfinitePage from '@/components/common/infinite-page';
 
 export default function PostsPage() {
   const { post } = useSearchTags();
@@ -27,19 +27,15 @@ export default function PostsPage() {
         className="flex h-full w-full flex-col overflow-y-auto"
         ref={(ref) => setContainer(ref)}
       >
-        <ResponsiveInfiniteScrollGrid
+        <InfinitePage
           className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
           params={params}
           queryKey={['posts']}
           getFunc={getPosts}
           container={() => container}
-          itemMinWidth={320}
-          itemMinHeight={352}
-          contentOffsetHeight={112}
-          gap={8}
         >
           {(data) => <PostPreviewCard key={data.id} post={data} />}
-        </ResponsiveInfiniteScrollGrid>
+        </InfinitePage>
       </div>
       <div className="flex gap-2">
         <InternalLink

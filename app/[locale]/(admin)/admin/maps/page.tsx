@@ -18,7 +18,7 @@ import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
 import { omit } from 'lodash';
 import Tran from '@/components/common/tran';
-import InfiniteScrollList from '@/components/common/infinite-scroll-list';
+import InfinitePage from '@/components/common/infinite-page';
 
 export default function Page() {
   const { map } = useSearchTags();
@@ -43,7 +43,7 @@ export default function Page() {
           className="relative flex h-full flex-col overflow-auto"
           ref={(ref) => setContainer(ref)}
         >
-          <InfiniteScrollList
+          <InfinitePage
             params={params}
             queryKey={['maps', 'upload']}
             getFunc={getMapUploads}
@@ -54,7 +54,7 @@ export default function Page() {
             }}
           >
             {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
-          </InfiniteScrollList>
+          </InfinitePage>
         </div>
       </ListLayout>
       <GridLayout>
