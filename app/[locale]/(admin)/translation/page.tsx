@@ -63,10 +63,11 @@ type TranslateMode = (typeof translateModes)[number];
 const defaultState = {
   language: 'vi',
   mode: 'compare',
+  key: '',
 };
 
 export default function Page() {
-  const [{ language, mode }, setQueryState] = useQueryState(defaultState);
+  const [{ language, mode, key }, setQueryState] = useQueryState(defaultState);
   const t = useI18n();
 
   return (
@@ -93,6 +94,12 @@ export default function Page() {
               value,
             }))}
             onChange={(mode) => setQueryState({ mode: mode ?? 'compare' })}
+          />
+          <Input
+            value={key}
+            onChange={(event) =>
+              setQueryState({ key: event.currentTarget.value })
+            }
           />
           <RefreshButton />
           <AddNewKeyDialog />
