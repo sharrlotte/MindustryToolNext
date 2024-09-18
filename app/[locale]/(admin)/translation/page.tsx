@@ -143,7 +143,7 @@ function CompareTable({ language }: CompareTableProps) {
       'total',
       omit(params, 'page', 'size'),
     ],
-    queryFn: (axios) => getTranslationCompareCount(axios, params.language),
+    queryFn: (axios) => getTranslationCompareCount(axios, params),
     placeholderData: 0,
   });
 
@@ -201,7 +201,7 @@ function DiffTable({ language }: DiffTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
   const { data } = useClientQuery({
     queryKey: ['translations', 'diff', 'total', omit(params, 'page', 'size')],
-    queryFn: (axios) => getTranslationDiffCount(axios, params.language),
+    queryFn: (axios) => getTranslationDiffCount(axios, params),
     placeholderData: 0,
   });
 
