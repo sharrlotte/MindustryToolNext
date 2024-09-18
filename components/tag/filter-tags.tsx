@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import MultipleFilerTags from '@/components/tag/multiple-filter-tags';
 import SingeFilerTags from '@/components/tag/single-filter-tags';
@@ -38,7 +38,7 @@ export default function FilterTags({
   return filteredTags.map((group) => (
     <FilterTagGroup
       key={group.name}
-      filterBy={filterBy}
+      selectedGroup={filterBy.find((value) => value.name === group.name)}
       group={group}
       handleTagGroupChange={handleTagGroupChange}
     />
@@ -47,13 +47,13 @@ export default function FilterTags({
 
 type FilterTagGroupProps = {
   group: TagGroup;
-  filterBy: TagGroup[];
+  selectedGroup?: TagGroup;
   handleTagGroupChange: (group: string, value: string[]) => void;
 };
 
 const _FilterTagGroup = ({
   group,
-  filterBy,
+  selectedGroup,
   handleTagGroupChange,
 }: FilterTagGroupProps) => {
   const handleMultipleValueChange = useCallback(
@@ -65,8 +65,6 @@ const _FilterTagGroup = ({
     (value: string) => handleTagGroupChange(group.name, [value]),
     [group, handleTagGroupChange],
   );
-
-  const selectedGroup = filterBy.find((value) => value.name === group.name);
 
   return group.duplicate ? (
     <MultipleFilerTags

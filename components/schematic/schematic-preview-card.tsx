@@ -28,7 +28,7 @@ type SchematicPreviewCardProps = {
   schematic: Schematic;
 };
 
-export default function SchematicPreviewCard({
+function _SchematicPreviewCard({
   schematic: { id, itemId, name, isVerified, likes, userLike },
 }: SchematicPreviewCardProps) {
   const t = useI18n();
@@ -82,3 +82,7 @@ export default function SchematicPreviewCard({
     </Preview>
   );
 }
+
+const SchematicPreviewCard = React.memo(_SchematicPreviewCard);
+
+export default SchematicPreviewCard;

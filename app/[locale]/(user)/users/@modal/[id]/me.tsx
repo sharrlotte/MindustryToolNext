@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 
 import InfinitePage from '@/components/common/infinite-page';
-import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import UploadMapPreview from '@/components/map/upload-map-preview-card';
 import PostPreviewCard from '@/components/post/post-preview-card';
@@ -44,7 +43,7 @@ export default function Me({ me }: TabProps) {
         <TabsContent value="schematic">
           <div className="relative flex h-full flex-col gap-4">
             <NameTagSearch tags={schematic} />
-            <ResponsiveInfiniteScrollGrid
+            <InfinitePage
               params={params}
               queryKey={['me', 'schematics']}
               getFunc={getMeSchematics}
@@ -53,10 +52,6 @@ export default function Me({ me }: TabProps) {
                 amount: 20,
                 item: <PreviewSkeleton />,
               }}
-              itemMinWidth={320}
-              itemMinHeight={352}
-              contentOffsetHeight={112}
-              gap={8}
             >
               {(data) =>
                 data.isVerified ? (
@@ -65,13 +60,13 @@ export default function Me({ me }: TabProps) {
                   <UploadSchematicPreviewCard key={data.id} schematic={data} />
                 )
               }
-            </ResponsiveInfiniteScrollGrid>
+            </InfinitePage>
           </div>
         </TabsContent>
         <TabsContent value="map">
           <div className="flex h-full w-full flex-col gap-4">
             <NameTagSearch tags={map} />
-            <ResponsiveInfiniteScrollGrid
+            <InfinitePage
               params={params}
               queryKey={['me', 'maps']}
               getFunc={getMeMaps}
@@ -80,10 +75,6 @@ export default function Me({ me }: TabProps) {
                 amount: 20,
                 item: <PreviewSkeleton />,
               }}
-              itemMinWidth={320}
-              itemMinHeight={352}
-              contentOffsetHeight={112}
-              gap={8}
             >
               {(data) =>
                 data.isVerified ? (
@@ -92,7 +83,7 @@ export default function Me({ me }: TabProps) {
                   <UploadMapPreview key={data.id} map={data} />
                 )
               }
-            </ResponsiveInfiniteScrollGrid>
+            </InfinitePage>
           </div>
         </TabsContent>
         <TabsContent value="post">

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { Inter } from 'next/font/google';
+import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import NextTopLoader from 'nextjs-toploader';
 import React from 'react';
@@ -36,6 +36,12 @@ export const metadata: Metadata = {
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['vietnamese'],
+});
+
+const noto = Noto_Sans_KR({
+  variable: '--font-noto',
+  subsets: ['cyrillic'],
+  weight: '900',
 });
 
 const icon = localFont({
@@ -73,7 +79,7 @@ export default async function Root({ children, params }: Props) {
       className={cn(
         'dark h-full w-full overflow-hidden bg-background text-foreground antialiased',
         // font.variable,
-        inter.variable,
+        params.locale === 'kr' ? noto.variable : inter.variable,
         icon.variable,
       )}
       lang={params.locale ?? 'en'}

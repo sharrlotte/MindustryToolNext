@@ -11,7 +11,6 @@ import {
   PaginationLayoutSwitcher,
 } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
-import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
@@ -23,6 +22,7 @@ import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { omit } from '@/lib/utils';
 import Tran from '@/components/common/tran';
+import InfinitePage from '@/components/common/infinite-page';
 
 export default function MapList() {
   const { map } = useSearchTags();
@@ -48,7 +48,7 @@ export default function MapList() {
           className="relative flex h-full flex-col overflow-auto"
           ref={(ref) => setContainer(ref)}
         >
-          <ResponsiveInfiniteScrollGrid
+          <InfinitePage
             params={params}
             queryKey={['maps']}
             getFunc={getMaps}
@@ -57,13 +57,9 @@ export default function MapList() {
               amount: 20,
               item: <PreviewSkeleton />,
             }}
-            itemMinWidth={320}
-            itemMinHeight={352}
-            contentOffsetHeight={112}
-            gap={8}
           >
             {(data) => <MapPreviewCard key={data.id} map={data} />}
-          </ResponsiveInfiniteScrollGrid>
+          </InfinitePage>
         </div>
       </ListLayout>
       <GridLayout>

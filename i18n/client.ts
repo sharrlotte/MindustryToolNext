@@ -53,7 +53,7 @@ function useI18n(): TranslateFunction {
             },
           })
           .then((result) => {
-            setTranslation({ [group]: result.data });
+            if (result.data) setTranslation({ [group]: result.data });
           });
       }
 
@@ -93,7 +93,7 @@ export function useChangeLocale() {
       : `/${locale}${pathname}`;
 
     setCurrentLocale(locale);
-    setCookie('Next-Locale', locale, { path: '/' });
+    setCookie('Locale', locale, { path: '/' });
 
     router.push(`${url}?${new URLSearchParams(params).toString()}`);
   };

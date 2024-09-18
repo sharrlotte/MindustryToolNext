@@ -17,11 +17,7 @@ type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
-export default function PostPreviewCard({
-  className,
-  post,
-  ...rest
-}: PostPreviewCardProps) {
+function _PostPreviewCard({ className, post, ...rest }: PostPreviewCardProps) {
   const link = `${env.url.base}/posts/${post.id}`;
   const firstImage = post.imageUrls ? post.imageUrls[0] : '';
 
@@ -64,3 +60,7 @@ export default function PostPreviewCard({
     </div>
   );
 }
+
+const PostPreviewCard = React.memo(_PostPreviewCard);
+
+export default PostPreviewCard;

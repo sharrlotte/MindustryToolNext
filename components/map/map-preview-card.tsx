@@ -24,7 +24,7 @@ type MapPreviewCardProps = {
   map: MapPreview;
 };
 
-export default function MapPreviewCard({
+function _MapPreviewCard({
   map: { id, itemId, name, isVerified, likes, userLike },
 }: MapPreviewCardProps) {
   const link = `${env.url.base}/admin/maps/${id}`;
@@ -67,3 +67,7 @@ export default function MapPreviewCard({
     </Preview>
   );
 }
+
+const MapPreviewCard = React.memo(_MapPreviewCard);
+
+export default MapPreviewCard;

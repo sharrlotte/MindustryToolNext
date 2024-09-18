@@ -21,7 +21,7 @@ function _TagTooltip({ name, value, children }: Props) {
           <span>{children}</span>
         </TooltipTrigger>
         <TooltipContent className="bg-foreground normal-case text-background">
-          <Tran text={`tag.${name}.${value}.description`} />
+          <Tran text={`tag.${name}-${value}.description`} />
         </TooltipContent>
       </Tooltip>
     </ErrorBoundary>

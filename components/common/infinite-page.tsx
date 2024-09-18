@@ -1,7 +1,13 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
+import React, {
+  JSXElementConstructor,
+  ReactElement,
+  ReactNode,
+  useCallback,
+  useMemo,
+} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -53,34 +59,55 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     fetchNextPage,
   } = useInfinitePageQuery(getFunc, params, queryKey);
 
-  noResult = noResult ?? (
-    <NoResult className="flex w-full items-center justify-center" />
+  const loadMore = useCallback(
+    (_: number) => {
+      fetchNextPage();
+    },
+    [fetchNextPage],
   );
 
-  if (!loader && !skeleton) {
-    loader = (
-      <LoadingSpinner
-        key="loading"
-        className="col-span-full flex h-full w-full items-center justify-center"
-      />
-    );
-  }
+  noResult = useMemo(
+    () =>
+      noResult ?? (
+        <NoResult className="flex w-full items-center justify-center" />
+      ),
+    [noResult],
+  );
 
-  const loadingSkeleton =
-    skeleton &&
-    Array(skeleton.amount)
-      .fill(1)
-      .map((_, index) => (
-        <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-      ));
+  loader = useMemo(
+    () =>
+      !loader && !skeleton ? (
+        <LoadingSpinner
+          key="loading"
+          className="col-span-full flex h-full w-full items-center justify-center"
+        />
+      ) : undefined,
+    [loader, skeleton],
+  );
 
-  end = end ?? (
-    <span
-      className="col-span-full flex w-full items-center justify-center"
-      key="End"
-    >
-      {t('end-of-page')}
-    </span>
+  const loadingSkeleton = useMemo(
+    () =>
+      skeleton
+        ? Array(skeleton.amount)
+            .fill(1)
+            .map((_, index) => (
+              <React.Fragment key={index}>{skeleton.item}</React.Fragment>
+            ))
+        : undefined,
+    [skeleton],
+  );
+
+  end = useMemo(
+    () =>
+      end ?? (
+        <span
+          className="col-span-full flex w-full items-center justify-center"
+          key="End"
+        >
+          {t('end-of-page')}
+        </span>
+      ),
+    [end, t],
   );
 
   if (isError || error) {
@@ -114,9 +141,9 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     <InfiniteScroll
       className={
         className ??
-        'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
+        'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 pr-1'
       }
-      loadMore={(_: number) => fetchNextPage()}
+      loadMore={loadMore}
       hasMore={hasNextPage}
       loader={loader}
       useWindow={false}

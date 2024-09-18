@@ -41,7 +41,8 @@ type Props = {
 
 const GITHUB_PATTERN =
   /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
-export default function UploadPluginCard({ plugin }: Props) {
+
+function _UploadPluginCard({ plugin }: Props) {
   const { id, name, description, url, userId } = plugin;
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
@@ -93,6 +94,10 @@ export default function UploadPluginCard({ plugin }: Props) {
     </div>
   );
 }
+
+const UploadPluginCard = React.memo(_UploadPluginCard);
+
+export default UploadPluginCard;
 
 type DialogProps = {
   plugin: Plugin;

@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 
-import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import UploadPluginCard from '@/components/plugin/upload-plugin-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { getPluginUploads } from '@/query/plugin';
+import InfinitePage from '@/components/common/infinite-page';
 
 export default function Page() {
   const { plugin } = useSearchTags();
@@ -21,18 +21,14 @@ export default function Page() {
         className="relative flex h-full flex-col gap-4 overflow-y-auto"
         ref={(ref) => setContainer(ref)}
       >
-        <ResponsiveInfiniteScrollGrid
+        <InfinitePage
           queryKey={['plugins', 'upload']}
           getFunc={getPluginUploads}
           params={params}
           container={() => container}
-          itemMinWidth={320}
-          itemMinHeight={352}
-          contentOffsetHeight={112}
-          gap={8}
         >
           {(data) => <UploadPluginCard key={data.id} plugin={data} />}
-        </ResponsiveInfiniteScrollGrid>
+        </InfinitePage>
       </div>
     </div>
   );

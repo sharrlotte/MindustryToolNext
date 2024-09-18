@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 
-import InfinitePage from '@/components/common/infinite-page';
-import ResponsiveInfiniteScrollGrid from '@/components/common/responsive-infinite-scroll-grid';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import UploadMapPreview from '@/components/map/upload-map-preview-card';
 import PostPreviewCard from '@/components/post/post-preview-card';
@@ -19,6 +17,7 @@ import { useI18n } from '@/i18n/client';
 import { User } from '@/types/response/User';
 import { getUserSchematics, getUserMaps, getUserPosts } from '@/query/user';
 import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
+import InfinitePage from '@/components/common/infinite-page';
 
 type TabProps = {
   user: User;
@@ -45,7 +44,7 @@ export default function Other({ user }: TabProps) {
         <TabsContent value="schematic">
           <div className="relative flex h-full flex-col gap-4">
             <NameTagSearch tags={schematic} />
-            <ResponsiveInfiniteScrollGrid
+          <InfinitePage
               params={params}
               queryKey={['users', id, 'schematics']}
               getFunc={(axios, params) => getUserSchematics(axios, id, params)}
@@ -54,10 +53,6 @@ export default function Other({ user }: TabProps) {
                 amount: 20,
                 item: <PreviewSkeleton />,
               }}
-              itemMinWidth={320}
-              itemMinHeight={352}
-              contentOffsetHeight={112}
-              gap={8}
             >
               {(data) =>
                 data.isVerified ? (
@@ -66,13 +61,13 @@ export default function Other({ user }: TabProps) {
                   <UploadSchematicPreviewCard key={data.id} schematic={data} />
                 )
               }
-            </ResponsiveInfiniteScrollGrid>
+            </InfinitePage>
           </div>
         </TabsContent>
         <TabsContent value="map">
           <div className="flex h-full w-full flex-col gap-4">
             <NameTagSearch tags={map} />
-            <ResponsiveInfiniteScrollGrid
+            <InfinitePage
               params={params}
               queryKey={['users', id, 'maps']}
               getFunc={(axios, params) => getUserMaps(axios, id, params)}
@@ -81,10 +76,6 @@ export default function Other({ user }: TabProps) {
                 amount: 20,
                 item: <PreviewSkeleton />,
               }}
-              itemMinWidth={320}
-              itemMinHeight={352}
-              contentOffsetHeight={112}
-              gap={8}
             >
               {(data) =>
                 data.isVerified ? (
@@ -93,7 +84,7 @@ export default function Other({ user }: TabProps) {
                   <UploadMapPreview key={data.id} map={data} />
                 )
               }
-            </ResponsiveInfiniteScrollGrid>
+            </InfinitePage>
           </div>
         </TabsContent>
         <TabsContent value="post">
