@@ -1,6 +1,7 @@
 'use client';
 
 import { Locale } from '@/i18n/config';
+import axiosInstance from '@/query/config/config';
 import { useLocaleStore } from '@/zustand/locale-store';
 import { useEffect } from 'react';
 
@@ -12,6 +13,11 @@ export default function I18nProvider({ locale }: Props) {
   useEffect(() => {
     setCurrentLocale(locale);
   }, [locale, setCurrentLocale]);
+
+
+  useEffect(() => {
+    axiosInstance.defaults.headers['Accept-Language'] = locale as string;
+  }, [locale]);
 
   return undefined;
 }

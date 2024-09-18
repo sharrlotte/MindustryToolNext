@@ -43,7 +43,7 @@ export default function SchematicList() {
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
       <NameTagSearch tags={schematic} />
       <div className="flex justify-between">
-        <Tran text={`Found ${data} schematics`} />
+        <Tran text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
       <ListLayout>

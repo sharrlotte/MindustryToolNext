@@ -132,6 +132,9 @@ export default function NameTagSearch({
     if (value && sortTag.includes(value)) {
       setSortBy(value);
       setChanged(true);
+    } else {
+      setSortBy(defaultSortTag);
+      setChanged(true);
     }
   }
 
@@ -231,9 +234,7 @@ export default function NameTagSearch({
                       label: t(value.toLowerCase()),
                       value: value as SortTag,
                     }))}
-                    onChange={(value) =>
-                      handleSortChange(value ?? defaultSortTag)
-                    }
+                    onChange={handleSortChange}
                     searchBar={false}
                   />
                 )}
