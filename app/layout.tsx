@@ -41,6 +41,7 @@ const icon = localFont({
     },
   ],
   variable: '--font-icon',
+  display: 'fallback',
 });
 
 type RootParam = {

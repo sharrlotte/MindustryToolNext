@@ -9,8 +9,8 @@ module.exports = {
       },
       fontFamily: {
         icon: ['var(--font-icon)'],
-        noto: ['var(--font-noto)'],
-        inter: ['var(--font-inter)'],
+        noto: ['var(--font-noto)', 'var(--font-icon)'],
+        inter: ['var(--font-inter)', 'var(--font-icon)'],
       },
       minHeight: (theme: any) => ({
         ...theme('spacing'),
