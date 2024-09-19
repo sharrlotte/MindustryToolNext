@@ -125,6 +125,7 @@ export default function NameTagSearch({
       setChanged(true);
     },
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [tags],
   );
 

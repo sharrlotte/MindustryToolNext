@@ -96,6 +96,7 @@ export default function Page() {
             onChange={(mode) => setQueryState({ mode: mode ?? 'compare' })}
           />
           <Input
+            placeholder={t('translation.search-by-key')}
             value={key}
             onChange={(event) =>
               setQueryState({ key: event.currentTarget.value })

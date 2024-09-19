@@ -8,12 +8,11 @@ import React, { ReactNode } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 type Props = {
-  name: string;
   value: string;
   children: ReactNode;
 };
 
-function _TagTooltip({ name, value, children }: Props) {
+function _TagTooltip({ value, children }: Props) {
   return (
     <ErrorBoundary fallback={<span>{children}</span>}>
       <Tooltip>
@@ -21,7 +20,7 @@ function _TagTooltip({ name, value, children }: Props) {
           <span>{children}</span>
         </TooltipTrigger>
         <TooltipContent className="bg-foreground normal-case text-background">
-          <Tran text={`tag.${name}-${value}.description`} />
+          <Tran text={`tags.${value}.description`} />
         </TooltipContent>
       </Tooltip>
     </ErrorBoundary>
