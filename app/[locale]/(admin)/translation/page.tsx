@@ -96,6 +96,7 @@ export default function Page() {
             onChange={(mode) => setQueryState({ mode: mode ?? 'compare' })}
           />
           <Input
+            placeholder={t('translation.search-by-key')}
             value={key}
             onChange={(event) =>
               setQueryState({ key: event.currentTarget.value })
@@ -498,7 +499,7 @@ function TranslationCardSkeleton() {
   return (
     <TableRow>
       <TableCell>
-        <Skeleton style={{ width }} className="h-8" />{' '}
+        <Skeleton style={{ width }} className="h-8" />
       </TableCell>
     </TableRow>
   );

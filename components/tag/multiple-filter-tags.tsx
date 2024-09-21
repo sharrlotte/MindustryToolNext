@@ -28,7 +28,7 @@ export default function MultipleFilerTags({
       </TagName>
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map((value) => (
-        <TagTooltip name={group.name} value={value} key={value}>
+        <TagTooltip value={value} key={value}>
           <ToggleGroupItem
             className="capitalize hover:bg-brand hover:text-background data-[state=on]:bg-brand data-[state=on]:text-background dark:hover:text-foreground data-[state=on]:dark:text-foreground"
             key={value}

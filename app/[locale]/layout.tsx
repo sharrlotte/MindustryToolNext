@@ -30,7 +30,7 @@ export default async function Root({
       <Toaster />
       <div
         className={cn(
-          'font-icon grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden',
+          'grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden',
           locale === 'kr' ? 'font-noto' : 'font-inter',
         )}
       >

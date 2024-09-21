@@ -31,7 +31,7 @@ export default async function Home() {
           <div className="flex flex-col space-y-8 md:w-1/2">
             <div>
               <h3 className="font-bold">
-                <Tran text="home.content-what-is-mindustry" />
+                <Tran text="home.about-mindustry" />
               </h3>
               <p>
                 <Tran text="home.content-about-mindustry" />

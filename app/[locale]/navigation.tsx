@@ -46,7 +46,7 @@ export default function NavigationBar() {
       >
         <div
           className={cn(
-            'pointer-events-auto fixed bottom-0 top-0 min-w-[250px] translate-x-[-100%] justify-between overflow-hidden bg-background duration-300',
+            'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background duration-300',
             {
               'translate-x-0': isSidebarVisible,
             },

@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 
 type Props = { locale: Locale };
 
+
+
 export default function I18nProvider({ locale }: Props) {
   const { setCurrentLocale } = useLocaleStore();
 
