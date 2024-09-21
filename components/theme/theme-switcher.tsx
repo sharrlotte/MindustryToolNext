@@ -6,21 +6,23 @@ import * as React from 'react';
 import { Switch } from '@/components/ui/switch';
 
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
+import { useI18n } from '@/i18n/client';
 
 export const themes = ['light', 'dark', 'system'] as const;
 
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
+  const t = useI18n();
 
   return (
-    <div className="flex w-full capitalize justify-between rounded-sm col-span-full">
+    <div className="col-span-full flex w-full justify-between rounded-sm capitalize">
       <span className="flex gap-4">
         {theme === 'light' ? (
           <SunIcon className="w-5" />
         ) : (
           <MoonIcon className="w-5" />
         )}
-        {theme + ' mode'}
+        {t(theme + '-mode')}
       </span>
       <Switch
         checked={theme === 'light'}

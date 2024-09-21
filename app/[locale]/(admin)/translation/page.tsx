@@ -499,7 +499,7 @@ function TranslationCardSkeleton() {
   return (
     <TableRow>
       <TableCell>
-        <Skeleton style={{ width }} className="h-8" />{' '}
+        <Skeleton style={{ width }} className="h-8" />
       </TableCell>
     </TableRow>
   );
