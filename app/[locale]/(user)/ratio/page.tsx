@@ -118,7 +118,7 @@ type RequirementCardProps = {
   input: Value;
 };
 
-export function RequirementCard({ input }: RequirementCardProps) {
+function RequirementCard({ input }: RequirementCardProps) {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState('');
 
