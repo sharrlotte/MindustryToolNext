@@ -76,7 +76,7 @@ export const CommandListDisplay = ({
       selectInput,
       findCommandByIndex,
       setCommands,
-      position.scale,
+      position,
     ],
   );
 };
@@ -99,7 +99,7 @@ const CommandDisplay = ({
   const handleDragEnd = (e: KonvaEventObject<DragEvent>) => {
     dragElement(e, command, index);
   };
-  
+
   return (
     <Group x={command.x} y={command.y} draggable onDragEnd={handleDragEnd}>
       {children}

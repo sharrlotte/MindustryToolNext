@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import Command from '../command';
 import {
   Dialog,
@@ -27,13 +27,13 @@ export default function CommandStorage({
   const [newSaveName, setNewSaveName] = useState('');
   const [isStorageAvailable, setIsStorageAvailable] = useState(false);
 
-  const showToast = (
+  const showToast = useCallback((
     title: string,
     description: string,
     variant: 'default' | 'destructive' | 'success',
   ) => {
     toast({ title, description, variant });
-  };
+  }, [toast]); 
 
   useEffect(() => {
     const saveCommands = (saveName: string) => {
@@ -54,9 +54,9 @@ export default function CommandStorage({
     if (isPageReady) {
       saveCommands(currentSaveName);
     }
-  }, [commands, currentSaveName, isStorageAvailable, isPageReady]);
+  }, [commands, currentSaveName, isStorageAvailable, isPageReady, showToast]);
 
-  const loadCommands = (saveName: string) => {
+  const loadCommands =useCallback((saveName: string) => {
     if (!isStorageAvailable) return;
     const savedCommands = localStorage.getItem('logic-' + saveName);
     if (savedCommands) {
@@ -64,7 +64,7 @@ export default function CommandStorage({
       setCurrentSaveName(saveName);
       showToast('Load command successfully', `Loaded save "${saveName}"`, 'success');
     }
-  };
+  }, [showToast, setCommands, isStorageAvailable]);
 
   const deleteSave = (saveName: string) => {
     if (!isStorageAvailable) return;
@@ -98,7 +98,7 @@ export default function CommandStorage({
       setIsVisible(false);
     }
     setIsPageReady(true);
-  }, []);
+  }, [loadCommands]);
 
   const isValidSaveName = (name: string) => /^[a-zA-Z0-9-_]+$/.test(name);
 
