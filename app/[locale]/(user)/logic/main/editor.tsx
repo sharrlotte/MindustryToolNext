@@ -1,12 +1,12 @@
 'use client';
 
-import { LogicNavBar, AddingElement } from './_component/common';
-import { InputControl, InputControlProp } from './_component/input';
+import { LogicNavBar, AddingElement } from '../_component/common';
+import { InputControl, InputControlProp } from '../_component/input';
 import LogicDisplay from './logic';
-import Command, { InputType } from './command';
-import { useState, useCallback } from 'react';
-import CommandStorage from './function/storage';
-import LiveCode from './function/live';
+import Command, { InputType } from '../command';
+import { useState, useCallback, SetStateAction } from 'react';
+import CommandStorage from '../function/storage';
+import LiveCode from '../function/live';
 
 export type selectInputProps = {
   commandIndex: number;
@@ -189,7 +189,6 @@ export default function Editor() {
       <LogicDisplay
         commands={commands}
         setCommands={setCommands}
-        addCommand={addCommand}
         deleteCommand={deleteCommand}
         replaceCommand={replaceCommand}
         copyCommand={copyCommand}
@@ -199,7 +198,7 @@ export default function Editor() {
       <InputControl input={input} setCommands={setCommands} cIndex={inputKeys.commandIndex} />
       <LogicNavBar toggleText={'Click here to toggle'}>
         <AddingElement addCommand={addCommand} />
-        <CommandStorage commands={commands} setCommands={setCommands}/>
+        <CommandStorage commands={commands} setCommands={setCommands} />
       </LogicNavBar>
 
       <LogicNavBar toggleText={'Click here to toggle'} side="right">
