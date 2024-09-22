@@ -27,44 +27,34 @@ export default function CommandStorage({
   const [newSaveName, setNewSaveName] = useState('');
   const [isStorageAvailable, setIsStorageAvailable] = useState(false);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('test', 'test');
-      localStorage.removeItem('test');
-      setIsStorageAvailable(true);
-      const untitledSave = localStorage.getItem('logic-untitled');
-      if (untitledSave) loadCommands('untitled');
-    } catch (error) {
-      setIsStorageAvailable(false);
-      setIsVisible(false);
-    }
-    setIsPageReady(true);
-  }, []);
-
-  function showToast(
+  const showToast = (
     title: string,
     description: string,
     variant: 'default' | 'destructive' | 'success',
-  ) {
-    toast({ title: title, description: description, variant: variant });
-  }
+  ) => {
+    toast({ title, description, variant });
+  };
 
-  function saveCommands(saveName: string) {
-    if (!isStorageAvailable) return;
-    try {
-      localStorage.setItem(
-        'logic-' + currentSaveName,
-        JSON.stringify(commands),
-      );
-      setCurrentSaveName(saveName);
-    } catch (error) {
-      showToast(
-        'Error saving commands',
-        'Could not save commands due to storage limit.',
-        'destructive',
-      );
+  useEffect(() => {
+    const saveCommands = (saveName: string) => {
+      if (isStorageAvailable) {
+        try {
+          localStorage.setItem('logic-' + currentSaveName, JSON.stringify(commands));
+          setCurrentSaveName(saveName);
+        } catch (error) {
+          showToast(
+            'Error saving commands',
+            'Could not save commands due to storage limit.',
+            'destructive',
+          );
+        }
+      }
+    };
+
+    if (isPageReady) {
+      saveCommands(currentSaveName);
     }
-  }
+  }, [commands, currentSaveName, isStorageAvailable, isPageReady]);
 
   const loadCommands = (saveName: string) => {
     if (!isStorageAvailable) return;
@@ -72,11 +62,7 @@ export default function CommandStorage({
     if (savedCommands) {
       setCommands(JSON.parse(savedCommands));
       setCurrentSaveName(saveName);
-      showToast(
-        'Load command successfully',
-        `Loaded save "${saveName}"`,
-        'success',
-      );
+      showToast('Load command successfully', `Loaded save "${saveName}"`, 'success');
     }
   };
 
@@ -84,11 +70,7 @@ export default function CommandStorage({
     if (!isStorageAvailable) return;
     if (saveName !== currentSaveName) {
       localStorage.removeItem('logic-' + saveName);
-      showToast(
-        'Delete command successfully',
-        `Deleted save "${saveName}"`,
-        'success',
-      );
+      showToast('Delete command successfully', `Deleted save "${saveName}"`, 'success');
     }
   };
 
@@ -105,53 +87,43 @@ export default function CommandStorage({
   };
 
   useEffect(() => {
-    if (isPageReady) saveCommands(currentSaveName);
-  }, [currentSaveName, commands, isPageReady]);
+    try {
+      localStorage.setItem('test', 'test');
+      localStorage.removeItem('test');
+      setIsStorageAvailable(true);
+      const untitledSave = localStorage.getItem('logic-untitled');
+      if (untitledSave) loadCommands('untitled');
+    } catch (error) {
+      setIsStorageAvailable(false);
+      setIsVisible(false);
+    }
+    setIsPageReady(true);
+  }, []);
 
   const isValidSaveName = (name: string) => /^[a-zA-Z0-9-_]+$/.test(name);
 
   const handleNewSave = () => {
     if (newSaveName.length > 20) {
-      showToast(
-        'Save name too long',
-        'Please use a shorter name (max 20 characters).',
-        'destructive',
-      );
+      showToast('Save name too long', 'Please use a shorter name (max 20 characters).', 'destructive');
       return;
     }
 
     if (getAllSave().includes(newSaveName)) {
-      showToast(
-        'This save has been used',
-        'Please use another save name',
-        'destructive',
-      );
+      showToast('This save has been used', 'Please use another save name', 'destructive');
       return;
     }
 
     if (isValidSaveName(newSaveName)) {
       try {
-        saveCommands(newSaveName);
-        showToast(
-          'Create successfully',
-          `Save '${newSaveName}' successfully created`,
-          'success',
-        );
+        localStorage.setItem('logic-' + newSaveName, JSON.stringify(commands));
+        showToast('Create successfully', `Save '${newSaveName}' successfully created`, 'success');
         setNewSaveName('');
         setCommands([]);
       } catch (error) {
-        showToast(
-          'Save failed',
-          'Could not save the new save name.',
-          'destructive',
-        );
+        showToast('Save failed', 'Could not save the new save name.', 'destructive');
       }
     } else {
-      showToast(
-        'Invalid save name',
-        'Only a-Z, 0-9, -, and _ are allowed.',
-        'destructive',
-      );
+      showToast('Invalid save name', 'Only a-Z, 0-9, -, and _ are allowed.', 'destructive');
     }
   };
 
@@ -212,9 +184,7 @@ export default function CommandStorage({
                           Cancel
                         </DialogClose>
                         <DialogClose
-                          onClick={() => {
-                            deleteSave(save);
-                          }}
+                          onClick={() => deleteSave(save)}
                           className="w-20 rounded-md bg-red-500 p-2 text-white"
                         >
                           Delete
@@ -242,8 +212,7 @@ export default function CommandStorage({
                 className="p-2"
               />
               <DialogDescription>
-                Save name cannot contain any special chars, only a-Z, 0-9, -,
-                and _.
+                Save name cannot contain any special chars, only a-Z, 0-9, -, and _.
               </DialogDescription>
             </div>
             <DialogFooter className="p-2">
