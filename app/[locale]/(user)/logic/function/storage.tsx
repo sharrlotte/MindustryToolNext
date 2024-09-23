@@ -1,6 +1,12 @@
 'use client';
 
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import Command from '../command';
 import {
   Dialog,
@@ -22,115 +28,117 @@ export default function CommandStorage({
 }) {
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(true);
-  const [isPageReady, setIsPageReady] = useState(false);
-  const [currentSaveName, setCurrentSaveName] = useState('untitled');
+  const [currentSaveName, setCurrentSaveName] = useState<null | string>(null);
   const [newSaveName, setNewSaveName] = useState('');
   const [isStorageAvailable, setIsStorageAvailable] = useState(false);
 
-  const showToast = useCallback((
-    title: string,
-    description: string,
-    variant: 'default' | 'destructive' | 'success',
-  ) => {
-    toast({ title, description, variant });
-  }, [toast]); 
+  const showToast = useCallback(
+    (
+      title: string,
+      description: string,
+      variant: 'default' | 'destructive' | 'success',
+    ) => toast({ title, description, variant }),
+    [toast],
+  );
 
-  useEffect(() => {
-    const saveCommands = (saveName: string) => {
-      if (isStorageAvailable) {
-        try {
-          localStorage.setItem('logic-' + currentSaveName, JSON.stringify(commands));
+  const getAllSave = useCallback(() => {
+    return Array.from({ length: localStorage.length })
+      .map((_, i) => localStorage.key(i))
+      .filter((key) => key?.startsWith('ls-'))
+      .map((key) => key?.slice(3) || '');
+  }, []);  
+
+  const getCommandBySaveName = useCallback((saveName: string) => {
+    return JSON.parse(localStorage.getItem('ls-' + saveName) || 'null');
+  }, []);  
+
+  const isHaveCommand = useCallback((saveName: string) => {
+    return getAllSave().includes(saveName);
+  }, [getAllSave]);  
+
+  const loadCommandToSave = useCallback((saveName: string) => {
+    localStorage.setItem('ls-' + saveName, JSON.stringify(commands));
+  }, [commands]);
+
+  const newSaveCommand = useCallback((saveName: string) => {
+    localStorage.setItem('ls-' + saveName, '');
+    setCurrentSaveName(saveName);
+    showToast('Save created', 'Your save has been successfully created.', 'success');
+  }, [showToast]);  
+
+  const loadSaveCommand = useCallback((saveName: string) => {
+    if (isHaveCommand(saveName)) {
+      try {
+        const savedCommands = getCommandBySaveName(saveName);
+        if (savedCommands) {
+          setCommands(savedCommands);
           setCurrentSaveName(saveName);
-        } catch (error) {
-          showToast(
-            'Error saving commands',
-            'Could not save commands due to storage limit.',
-            'destructive',
-          );
+          showToast('Loaded', `Save "${saveName}" has been loaded.`, 'success');
+        } else {
+          throw new Error('Invalid save data');
         }
+      } catch {
+        showToast(
+          'Failed to load',
+          'This save has the wrong type. Your data is corrupted.',
+          'destructive',
+        );
       }
-    };
-
-    if (isPageReady) {
-      saveCommands(currentSaveName);
+    } else {
+      newSaveCommand(saveName);
     }
-  }, [commands, currentSaveName, isStorageAvailable, isPageReady, showToast]);
+  }, [isHaveCommand, getCommandBySaveName, setCommands, showToast, newSaveCommand]);  
 
-  const loadCommands =useCallback((saveName: string) => {
-    if (!isStorageAvailable) return;
-    const savedCommands = localStorage.getItem('logic-' + saveName);
-    if (savedCommands) {
-      setCommands(JSON.parse(savedCommands));
-      setCurrentSaveName(saveName);
-      showToast('Load command successfully', `Loaded save "${saveName}"`, 'success');
-    }
-  }, [showToast, setCommands, isStorageAvailable]);
-
-  const deleteSave = (saveName: string) => {
-    if (!isStorageAvailable) return;
+  function deleteSaveCommand(saveName: string) {
     if (saveName !== currentSaveName) {
-      localStorage.removeItem('logic-' + saveName);
-      showToast('Delete command successfully', `Deleted save "${saveName}"`, 'success');
+      localStorage.removeItem('ls-' + saveName);
+      showToast('Deleted', `Save "${saveName}" has been deleted.`, 'success');
+    } else {
+      showToast(
+        'Deletion error',
+        'Cannot delete the currently active save.',
+        'destructive',
+      );
     }
-  };
+  }
 
-  const getAllSave = (): string[] => {
-    if (!isStorageAvailable) return [];
-    const saves: string[] = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && key.startsWith('logic-')) {
-        saves.push(key.slice(6));
-      }
+  function handleNewSave() {
+    if (isHaveCommand(newSaveName)) {
+      showToast(
+        'Failed to create',
+        'This save name is already used. Please choose another name.',
+        'destructive',
+      );
+      setNewSaveName('');
+    } else {
+      newSaveCommand(newSaveName);
+      setNewSaveName('');
     }
-    return saves;
-  };
+  }
 
   useEffect(() => {
     try {
-      localStorage.setItem('test', 'test');
-      localStorage.removeItem('test');
+      localStorage.setItem('test-item-for-logic', 'meow');
       setIsStorageAvailable(true);
-      const untitledSave = localStorage.getItem('logic-untitled');
-      if (untitledSave) loadCommands('untitled');
-    } catch (error) {
+      loadSaveCommand('untitled');
+    } catch {
+      showToast(
+        'Storage not available',
+        'Storage is not available due to cookie restrictions.',
+        'destructive',
+      );
       setIsStorageAvailable(false);
-      setIsVisible(false);
     }
-    setIsPageReady(true);
-  }, [loadCommands]);
+  }, [setIsStorageAvailable, loadSaveCommand, showToast]);
 
-  const isValidSaveName = (name: string) => /^[a-zA-Z0-9-_]+$/.test(name);
-
-  const handleNewSave = () => {
-    if (newSaveName.length > 20) {
-      showToast('Save name too long', 'Please use a shorter name (max 20 characters).', 'destructive');
-      return;
-    }
-
-    if (getAllSave().includes(newSaveName)) {
-      showToast('This save has been used', 'Please use another save name', 'destructive');
-      return;
-    }
-
-    if (isValidSaveName(newSaveName)) {
-      try {
-        localStorage.setItem('logic-' + newSaveName, JSON.stringify(commands));
-        showToast('Create successfully', `Save '${newSaveName}' successfully created`, 'success');
-        setNewSaveName('');
-        setCommands([]);
-      } catch (error) {
-        showToast('Save failed', 'Could not save the new save name.', 'destructive');
-      }
-    } else {
-      showToast('Invalid save name', 'Only a-Z, 0-9, -, and _ are allowed.', 'destructive');
-    }
-  };
+  useEffect(() => {
+    if (currentSaveName) loadCommandToSave(currentSaveName);
+  }, [commands, currentSaveName, loadCommandToSave]);
 
   if (!isStorageAvailable) {
     return (
       <div className="flex w-full flex-col gap-2 rounded-md bg-[#5555] p-2">
-        <p>Lưu trữ không khả dụng do không cho phép sử dụng cookie.</p>
+        <p>Storage is not available due to cookie restrictions.</p>
       </div>
     );
   }
@@ -153,7 +161,9 @@ export default function CommandStorage({
             <div className="flex gap-2">
               <button
                 className="rounded-md bg-[#444a] p-1"
-                onClick={() => currentSaveName !== save && loadCommands(save)}
+                onClick={() =>
+                  currentSaveName !== save && loadSaveCommand(save)
+                }
               >
                 {currentSaveName === save ? 'Current use' : 'Use'}
               </button>
@@ -184,7 +194,7 @@ export default function CommandStorage({
                           Cancel
                         </DialogClose>
                         <DialogClose
-                          onClick={() => deleteSave(save)}
+                          onClick={() => deleteSaveCommand(save)}
                           className="w-20 rounded-md bg-red-500 p-2 text-white"
                         >
                           Delete
@@ -212,7 +222,8 @@ export default function CommandStorage({
                 className="p-2"
               />
               <DialogDescription>
-                Save name cannot contain any special chars, only a-Z, 0-9, -, and _.
+                Save name cannot contain any special chars, only a-Z, 0-9, -,
+                and _.
               </DialogDescription>
             </div>
             <DialogFooter className="p-2">
