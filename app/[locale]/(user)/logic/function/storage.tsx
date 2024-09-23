@@ -46,48 +46,74 @@ export default function CommandStorage({
       .map((_, i) => localStorage.key(i))
       .filter((key) => key?.startsWith('ls-'))
       .map((key) => key?.slice(3) || '');
-  }, []);  
+  }, []);
 
   const getCommandBySaveName = useCallback((saveName: string) => {
     return JSON.parse(localStorage.getItem('ls-' + saveName) || 'null');
-  }, []);  
+  }, []);
 
-  const isHaveCommand = useCallback((saveName: string) => {
-    return getAllSave().includes(saveName);
-  }, [getAllSave]);  
+  const isHaveCommand = useCallback(
+    (saveName: string) => {
+      return getAllSave().includes(saveName);
+    },
+    [getAllSave],
+  );
 
-  const loadCommandToSave = useCallback((saveName: string) => {
-    localStorage.setItem('ls-' + saveName, JSON.stringify(commands));
-  }, [commands]);
+  const loadCommandToSave = useCallback(
+    (saveName: string) => {
+      localStorage.setItem('ls-' + saveName, JSON.stringify(commands));
+    },
+    [commands],
+  );
 
-  const newSaveCommand = useCallback((saveName: string) => {
-    localStorage.setItem('ls-' + saveName, '');
-    setCurrentSaveName(saveName);
-    showToast('Save created', 'Your save has been successfully created.', 'success');
-  }, [showToast]);  
+  const newSaveCommand = useCallback(
+    (saveName: string) => {
+      localStorage.setItem('ls-' + saveName, '');
+      setCurrentSaveName(saveName);
+      showToast(
+        'Save created',
+        'Your save has been successfully created.',
+        'success',
+      );
+    },
+    [showToast],
+  );
 
-  const loadSaveCommand = useCallback((saveName: string) => {
-    if (isHaveCommand(saveName)) {
-      try {
-        const savedCommands = getCommandBySaveName(saveName);
-        if (savedCommands) {
-          setCommands(savedCommands);
-          setCurrentSaveName(saveName);
-          showToast('Loaded', `Save "${saveName}" has been loaded.`, 'success');
-        } else {
-          throw new Error('Invalid save data');
+  const loadSaveCommand = useCallback(
+    (saveName: string) => {
+      if (isHaveCommand(saveName)) {
+        try {
+          const savedCommands = getCommandBySaveName(saveName);
+          if (savedCommands) {
+            setCommands(savedCommands);
+            setCurrentSaveName(saveName);
+            showToast(
+              'Loaded',
+              `Save "${saveName}" has been loaded.`,
+              'success',
+            );
+          } else {
+            throw new Error('Invalid save data');
+          }
+        } catch {
+          showToast(
+            'Failed to load',
+            'This save has the wrong type. Your data is corrupted.',
+            'destructive',
+          );
         }
-      } catch {
-        showToast(
-          'Failed to load',
-          'This save has the wrong type. Your data is corrupted.',
-          'destructive',
-        );
+      } else {
+        newSaveCommand(saveName);
       }
-    } else {
-      newSaveCommand(saveName);
-    }
-  }, [isHaveCommand, getCommandBySaveName, setCommands, showToast, newSaveCommand]);  
+    },
+    [
+      isHaveCommand,
+      getCommandBySaveName,
+      setCommands,
+      showToast,
+      newSaveCommand,
+    ],
+  );
 
   function deleteSaveCommand(saveName: string) {
     if (saveName !== currentSaveName) {
@@ -103,6 +129,18 @@ export default function CommandStorage({
   }
 
   function handleNewSave() {
+    const isValidName = /^[a-zA-Z0-9-_]+$/.test(newSaveName);
+
+    if (!isValidName || newSaveName.length > 21) {
+      showToast(
+        'Invalid Save Name',
+        'The save name contains invalid characters. Only letters, numbers, hyphens, underscores and not over 20 letter are allowed.',
+        'destructive',
+      );
+      setNewSaveName('');
+      return;
+    }
+
     if (isHaveCommand(newSaveName)) {
       showToast(
         'Failed to create',
@@ -157,7 +195,7 @@ export default function CommandStorage({
       >
         {getAllSave().map((save, index) => (
           <div key={index} className="flex w-full justify-between rounded-md">
-            <p>{save}</p>
+            <p className="max-w-[150px] truncate">{save}</p>
             <div className="flex gap-2">
               <button
                 className="rounded-md bg-[#444a] p-1"
