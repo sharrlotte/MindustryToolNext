@@ -111,12 +111,12 @@ const ConnectionPoint = ({
               calculateNowY() +
               calculateFullHeight(commands[index].value.rows) / 2,
           });
-          commands[cIndex].value.outputs[oIndex].value = index;
+          commands[cIndex].value.outputs[oIndex] = index;
           return commands;
         }
       });
 
-      if (commands[cIndex].value.outputs[oIndex].value == -1) {
+      if (commands[cIndex].value.outputs[oIndex] == -1) {
         setWirePos({ posX: connectCircleRadius, posY: connectCircleRadius });
       }
 
@@ -127,7 +127,7 @@ const ConnectionPoint = ({
   const handleReset = useCallback(() => {
     setCommands((commands) => {
       if (commands[cIndex]) {
-        commands[cIndex].value.outputs[oIndex].value = -1;
+        commands[cIndex].value.outputs[oIndex] = -1;
       }
       return commands;
     });
@@ -141,19 +141,19 @@ const ConnectionPoint = ({
   useEffect(() => {
     setCommands((elements) => {
       if (
-        (elements[cIndex].value.outputs[oIndex].value != -1 &&
-          elements[elements[cIndex].value.outputs[oIndex].value] ==
+        (elements[cIndex].value.outputs[oIndex] != -1 &&
+          elements[elements[cIndex].value.outputs[oIndex]] ==
             undefined) ||
-        (elements[cIndex].value.outputs[oIndex].value != -1 &&
-          elements[elements[cIndex].value.outputs[oIndex].value] != undefined &&
-          elements[elements[cIndex].value.outputs[oIndex].value].value.name ==
+        (elements[cIndex].value.outputs[oIndex] != -1 &&
+          elements[elements[cIndex].value.outputs[oIndex]] != undefined &&
+          elements[elements[cIndex].value.outputs[oIndex]].value.name ==
             'Start')
       ) {
         handleReset();
         return elements;
       }
 
-      if (elements[cIndex].value.outputs[oIndex].value == -1 && !isDrag) {
+      if (elements[cIndex].value.outputs[oIndex] == -1 && !isDrag) {
         setWirePos({
           posX: connectCircleRadius,
           posY: connectCircleRadius,
@@ -161,18 +161,18 @@ const ConnectionPoint = ({
         return elements;
       }
 
-      if (elements[cIndex].value.outputs[oIndex].value != -1) {
+      if (elements[cIndex].value.outputs[oIndex] != -1) {
         setWirePos({
           posX:
-            elements[elements[cIndex].value.outputs[oIndex].value].x -
+            elements[elements[cIndex].value.outputs[oIndex]].x -
             calculateNowX() -
             padding -
             connectCircleRadius,
           posY:
-            elements[elements[cIndex].value.outputs[oIndex].value].y -
+            elements[elements[cIndex].value.outputs[oIndex]].y -
             calculateNowY() +
             calculateFullHeight(
-              elements[elements[cIndex].value.outputs[oIndex].value].value.rows,
+              elements[elements[cIndex].value.outputs[oIndex]].value.rows,
             ) /
               2,
         });

@@ -16,7 +16,7 @@ export interface CommandValue {
   readonly rows: number;
   readonly columns: number;
   readonly fields: FieldType[];
-  readonly outputs: { key: number; value: number }[];
+  readonly outputs: number[];
 }
 
 export interface FieldType {
@@ -27,7 +27,8 @@ export interface FieldType {
   readonly placeHolderWidth: number; // px, not %!
   readonly inputType: InputType;
   readonly linkedOutput?: number;
-  value: string | CommandValue[];
+  commandValue?: CommandValue[];
+  value: string;
   displayValue?: string;
 }
 
@@ -51,7 +52,7 @@ const defaultSettings: Command = {
     rows: 0,
     columns: 0,
     fields: [],
-    outputs: [{ key: 0, value: -1 }],
+    outputs: [-1],
   },
 };
 
@@ -96,7 +97,7 @@ const jump: Command = {
         placeHolderWidth: 0,
       },
     ],
-    outputs: [...defaultSettings.value.outputs, { key: 1, value: -1 }],
+    outputs: [...defaultSettings.value.outputs, -1],
   },
 };
 
@@ -205,7 +206,7 @@ const test: Command = {
         placeHolderWidth: 30,
       },
     ],
-    outputs: [...defaultSettings.value.outputs, { key: 1, value: -1 }],
+    outputs: [...defaultSettings.value.outputs, -1],
   },
 };
 

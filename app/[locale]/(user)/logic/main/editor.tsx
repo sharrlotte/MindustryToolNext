@@ -28,7 +28,7 @@ export default function Editor() {
       value: {
         ...command.value,
         fields: command.value.fields.map((field) => ({ ...field })),
-        outputs: command.value.outputs.map((output) => ({ ...output })),
+        outputs: command.value.outputs.map((output) => output),
       },
       x: 0,
       y: 0,
@@ -38,24 +38,22 @@ export default function Editor() {
 
   const deleteCommand = useCallback(
     (index: number) => {
-      setCommands(prevCommands => {
+      setCommands((prevCommands) => {
         return prevCommands
           .filter((_, i) => i !== index)
-          .map(cmd => ({
+          .map((cmd) => ({
             ...cmd,
             value: {
               ...cmd.value,
-              outputs: cmd.value.outputs.map(value => ({
-                ...value,
-                value: value.value > index ? value.value - 1 : value.value === index ? -1 : value.value
-              }))
-            }
+              outputs: cmd.value.outputs.map((value) =>
+                value > index ? value - 1 : value === index ? -1 : value,
+              ),
+            },
           }));
       });
     },
-    [setCommands]
+    [setCommands],
   );
-  
 
   const replaceCommand = useCallback((command: Command, index: number) => {
     setCommands((prevCommands) => {
@@ -95,10 +93,7 @@ export default function Editor() {
             ...prev[index],
             value: {
               ...prev[index].value,
-              outputs: prev[index].value.outputs.map((output) => ({
-                ...output,
-                value: -1,
-              })),
+              outputs: prev[index].value.outputs.map(() => -1),
             },
           });
         }
@@ -118,7 +113,6 @@ export default function Editor() {
 
     return command;
   };
-  
 
   //input controller.
   const [inputKeys, setInputKeys] = useState<{
@@ -185,7 +179,7 @@ export default function Editor() {
   );
 
   return (
-    <div className='text-white'>
+    <div className="text-white">
       <LogicDisplay
         commands={commands}
         setCommands={setCommands}
@@ -195,14 +189,18 @@ export default function Editor() {
         selectInput={selectInput}
         findCommandByIndex={findCommandByIndex}
       />
-      <InputControl input={input} setCommands={setCommands} cIndex={inputKeys.commandIndex} />
+      <InputControl
+        input={input}
+        setCommands={setCommands}
+        cIndex={inputKeys.commandIndex}
+      />
       <LogicNavBar toggleText={'Click here to toggle'}>
         <AddingElement addCommand={addCommand} />
         <CommandStorage commands={commands} setCommands={setCommands} />
       </LogicNavBar>
 
       <LogicNavBar toggleText={'Click here to toggle'} side="right">
-        <LiveCode commands={commands}/>
+        <LiveCode commands={commands} />
       </LogicNavBar>
     </div>
   );
