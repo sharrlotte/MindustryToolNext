@@ -56,7 +56,7 @@ export default function CommandCard({
 
   const handleFieldClick = useMemo(
     () => (field: FieldType, fIndex: number) => {
-      const value = typeof field.value === 'string' ? field.value : '';
+      const value = typeof field.parseValue === 'string' ? field.parseValue : '';
       selectInput({
         commandIndex: index,
         fieldIndex: fIndex,
@@ -188,7 +188,7 @@ export default function CommandCard({
                 fill={'white'}
                 fontSize={14}
                 height={11}
-                text={`${field.displayValue ? field.displayValue : field.value}`}
+                text={`${field.displayValue ? field.displayValue : field.parseValue}`}
                 listening={false}
                 ellipsis={true}
               />

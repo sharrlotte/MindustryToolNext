@@ -17,6 +17,7 @@ export interface CommandValue {
   readonly columns: number;
   readonly fields: FieldType[];
   readonly outputs: number[];
+  commandValue?: CommandValue[];
 }
 
 export interface FieldType {
@@ -27,8 +28,7 @@ export interface FieldType {
   readonly placeHolderWidth: number; // px, not %!
   readonly inputType: InputType;
   readonly linkedOutput?: number;
-  commandValue?: CommandValue[];
-  value: string;
+  parseValue: string;
   displayValue?: string;
 }
 
@@ -39,7 +39,7 @@ const defaultField: FieldType = {
   placeHolder: '',
   placeHolderWidth: 10,
   inputType: InputType.TextInput,
-  value: '',
+  parseValue: '',
 };
 
 const defaultSettings: Command = {
@@ -178,40 +178,7 @@ const write: Command = {
 };
 //#endregion
 
-//#region Test command
-const test: Command = {
-  ...defaultSettings,
-  value: {
-    ...defaultSettings.value,
-    name: 'Test',
-    color: '#33A3A4',
-    rows: 2,
-    columns: 2,
-    fields: [
-      {
-        ...defaultField,
-        placeHolder: 'write',
-        placeHolderWidth: 40,
-      },
-      {
-        ...defaultField,
-        x: 1,
-        placeHolder: '=',
-        placeHolderWidth: 30,
-      },
-      {
-        ...defaultField,
-        y: 1,
-        placeHolder: 'at',
-        placeHolderWidth: 30,
-      },
-    ],
-    outputs: [...defaultSettings.value.outputs, -1],
-  },
-};
-
 export const CommandList: { key: string; value: Command[] }[] = [
   { key: 'Start - Flow control', value: [start, jump, end] },
   { key: 'IO control', value: [read, write] },
-  { key: 'Testing', value: [test] },
 ];

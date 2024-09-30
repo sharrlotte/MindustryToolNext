@@ -131,7 +131,7 @@ export default function Editor() {
             const newFields = [...command.value.fields];
             newFields[fIndex] = {
               ...newFields[fIndex],
-              value: value,
+              parseValue: value,
               displayValue: displayValue,
             };
             return {

@@ -1,43 +1,109 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Command from '../command';
+import Command, { CommandValue } from '../command';
+
+type LiveData = {
+  startAt: number;
+  value: string[];
+};
 
 export default function LiveCode({ commands }: { commands: Command[] }) {
-  const [display, setDisplay] = useState<string[][]>([]);
+  const [display, setDisplay] = useState<LiveData[]>([]);
+
+  function findZeroOutputIndex(cValue: CommandValue) {
+    return cValue.outputs ? cValue.outputs[0] : -1;
+  }
 
   useEffect(() => {
     try {
-      const displaySetList: string[][] = [];
-      commands.forEach((command) => {
-        if (command.value.name === 'Start') {
+      const displaySetList: LiveData[] = [];
+      commands.forEach((startCommand, index) => {
+        if (startCommand.value.name === 'Start') {
           const commandStringList: string[] = [];
-          let decodeTree = new Map<number, Command>();
-          let decodeIndex = new Map<number, number>();
-          let laterProcess = new Set<number>();
+          const decodeStep: (number | string | CommandValue)[] = [];
+          const decodeContain = new Map<number, number>();
 
-          function appendDecodeValues() {}
+          let nextIndex = findZeroOutputIndex(startCommand.value);
+          primary(nextIndex);
 
-          function appendNextDecodeTree(nowCommandIndex: number) {
-            while (
-              nowCommandIndex &&
-              nowCommandIndex > -1 &&
-              commands[nowCommandIndex]
-            ) {
-              const firstField = commands[nowCommandIndex].value.fields[0].commandValue;
-              if (firstField) {
-                for (const command of firstField) {
-                  // meow meow meow
+          for (let cData of decodeStep) {
+            if (typeof cData === 'number') {
+              if (commands.length < cData || cData < -1) {
+                commandStringList.push('end');
+              } else {
+                const nowCommand = commands[cData].value;
+                let cParse = nowCommand.parseName;
+
+                for (let field of nowCommand.fields) {
+                  if (field.linkedOutput) {
+                    let position = decodeContain.get(
+                      nowCommand.outputs[field.linkedOutput],
+                    );
+                    cParse += ` ${position}`;
+                  } else {
+                    cParse += ` ${field.parseValue}`;
+                  }
                 }
 
-                nowCommandIndex = commands[nowCommandIndex].value.outputs[0];
-              } else {
-                const decodeNowIndex = decodeTree.size;
+                commandStringList.push(cParse);
+              }
+            } else if (typeof cData === 'string') {
+              commandStringList.push(cData);
+            } else {
+              commandStringList.push(JSON.stringify(cData));
+            }
+          }
+
+          function primary(nextIndex: number) {
+            for (let nextAppendIndex of decode(nextIndex)) {
+              if (!decodeContain.has(nextAppendIndex)) {
+                primary(nextAppendIndex);
               }
             }
           }
 
-          displaySetList.push(commandStringList);
+          function decode(nextIndex: number) {
+            const laterProces = new Set<number>();
+            while (nextIndex && nextIndex > -1 && nextIndex < commands.length) {
+              const command = commands[nextIndex];
+              if (command.value.commandValue) {
+                for (let cValue of command.value.commandValue) {
+                } // later uhhhhhh
+              } else if (commands[nextIndex].value.parseName === 'end') {
+                decodeStep.push('end');
+                break;
+              } else {
+                decodeStep.push(nextIndex);
+                decodeContain.set(nextIndex, decodeStep.length - 1);
+
+                for (let field of command.value.fields) {
+                  if (
+                    field.linkedOutput &&
+                    command.value.outputs.length > field.linkedOutput &&
+                    field.linkedOutput > 0 &&
+                    !decodeContain.has(
+                      command.value.outputs[field.linkedOutput],
+                    )
+                  ) {
+                    laterProces.add(command.value.outputs[field.linkedOutput]);
+                  }
+                }
+              }
+
+              if (decodeContain.has(findZeroOutputIndex(command.value))) {
+                decodeStep.push(
+                  `jump ${decodeContain.get(findZeroOutputIndex(command.value))} always`,
+                );
+                break;
+              }
+
+              nextIndex = findZeroOutputIndex(command.value);
+            }
+            return laterProces;
+          }
+
+          displaySetList.push({ startAt: index, value: commandStringList });
         }
       });
       setDisplay(displaySetList);
@@ -53,13 +119,26 @@ export default function LiveCode({ commands }: { commands: Command[] }) {
           ? 'No start command defined'
           : 'Commands - Multiple start support'}
       </p>
-      {display.map((commandList, index) => (
-        <div key={index} className="command-output">
-          {commandList.map((cmd, idx) => (
-            <div key={idx}>{cmd}</div>
+
+      {display.length > 0 && (
+        <div>
+          {display.map((liveData, index) => (
+            <div
+              key={index}
+              className="command-block mb-4 rounded bg-[#3333] p-2"
+            >
+              <p className="font-bold">Start At: {liveData.startAt}</p>
+              <ul>
+                {liveData.value.map((commandString, idx) => (
+                  <li key={idx} className="command-string mb-1">
+                    {commandString}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
-      ))}
+      )}
     </div>
   );
 }
