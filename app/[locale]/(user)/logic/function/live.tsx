@@ -24,52 +24,21 @@ export default function LiveCode({ commands }: { commands: Command[] }) {
           const decodeStep: (number | string | CommandValue)[] = [];
           const decodeContain = new Map<number, number>();
 
-          let nextIndex = findZeroOutputIndex(startCommand.value);
-          primary(nextIndex);
-
-          for (let cData of decodeStep) {
-            if (typeof cData === 'number') {
-              if (commands.length < cData || cData < -1) {
-                commandStringList.push('end');
-              } else {
-                const nowCommand = commands[cData].value;
-                let cParse = nowCommand.parseName;
-
-                for (let field of nowCommand.fields) {
-                  if (field.linkedOutput) {
-                    let position = decodeContain.get(
-                      nowCommand.outputs[field.linkedOutput],
-                    );
-                    cParse += ` ${position}`;
-                  } else {
-                    cParse += ` ${field.parseValue}`;
-                  }
-                }
-
-                commandStringList.push(cParse);
-              }
-            } else if (typeof cData === 'string') {
-              commandStringList.push(cData);
-            } else {
-              commandStringList.push(JSON.stringify(cData));
-            }
-          }
-
-          function primary(nextIndex: number) {
-            for (let nextAppendIndex of decode(nextIndex)) {
+          const primary = (nextIndex: number) => {
+            for (const nextAppendIndex of decode(nextIndex)) {
               if (!decodeContain.has(nextAppendIndex)) {
                 primary(nextAppendIndex);
               }
             }
-          }
+          };
 
-          function decode(nextIndex: number) {
+          const decode = (nextIndex: number) => {
             const laterProces = new Set<number>();
             while (nextIndex && nextIndex > -1 && nextIndex < commands.length) {
               const command = commands[nextIndex];
               if (command.value.commandValue) {
-                for (let cValue of command.value.commandValue) {
-                } // later uhhhhhh
+                // for (const _ of command.value.commandValue) {
+                // } // later uhhhhhh
               } else if (commands[nextIndex].value.parseName === 'end') {
                 decodeStep.push('end');
                 break;
@@ -77,7 +46,7 @@ export default function LiveCode({ commands }: { commands: Command[] }) {
                 decodeStep.push(nextIndex);
                 decodeContain.set(nextIndex, decodeStep.length - 1);
 
-                for (let field of command.value.fields) {
+                for (const field of command.value.fields) {
                   if (
                     field.linkedOutput &&
                     command.value.outputs.length > field.linkedOutput &&
@@ -101,6 +70,37 @@ export default function LiveCode({ commands }: { commands: Command[] }) {
               nextIndex = findZeroOutputIndex(command.value);
             }
             return laterProces;
+          };
+
+          const nextIndex = findZeroOutputIndex(startCommand.value);
+          primary(nextIndex);
+
+          for (const cData of decodeStep) {
+            if (typeof cData === 'number') {
+              if (commands.length < cData || cData < -1) {
+                commandStringList.push('end');
+              } else {
+                const nowCommand = commands[cData].value;
+                let cParse = nowCommand.parseName;
+
+                for (const field of nowCommand.fields) {
+                  if (field.linkedOutput) {
+                    const position = decodeContain.get(
+                      nowCommand.outputs[field.linkedOutput],
+                    );
+                    cParse += ` ${position}`;
+                  } else {
+                    cParse += ` ${field.parseValue}`;
+                  }
+                }
+
+                commandStringList.push(cParse);
+              }
+            } else if (typeof cData === 'string') {
+              commandStringList.push(cData);
+            } else {
+              commandStringList.push(JSON.stringify(cData));
+            }
           }
 
           displaySetList.push({ startAt: index, value: commandStringList });
