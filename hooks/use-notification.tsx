@@ -9,37 +9,33 @@ export default function useNotification() {
   const { toast } = useToast();
 
   const processNotification = useCallback(
-    (message: Message) => {
+    (message: Message, isGranted: boolean) => {
       if (message.userId === userId) return;
 
-      new Notification(message.content);
-    },
-    [userId],
-  );
-
-  const postNotification = useCallback(
-    (message: Message) => {
-      if ('Notification' in window) {
-        if (Notification.permission === 'granted') {
-          return processNotification(message);
-        }
-
-        Notification.requestPermission().then((permission) => {
-          if (permission === 'granted') {
-            processNotification(message);
-          } else {
-            toast({
-              title: <a href="/chat">{message.content}</a>,
-            });
-          }
-        });
+      if (isGranted) {
+        new Notification(message.content);
       } else {
         toast({
           title: <a href="/chat">{message.content}</a>,
         });
       }
     },
-    [processNotification, toast],
+    [userId, toast],
+  );
+
+  const postNotification = useCallback(
+    async (message: Message) => {
+      if ('Notification' in window) {
+        if (Notification.permission !== 'granted') {
+          await Notification.requestPermission();
+        }
+
+        processNotification(message, Notification.permission === 'granted');
+      } else {
+        processNotification(message, false);
+      }
+    },
+    [processNotification],
   );
 
   return {

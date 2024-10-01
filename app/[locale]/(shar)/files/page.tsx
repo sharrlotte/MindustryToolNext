@@ -94,6 +94,7 @@ export default function Page() {
           ) : (
             data
               .filter(({ name }) => name.includes(search))
+              .sort()
               .map((file) => (
                 <FileCard
                   key={file.name}
