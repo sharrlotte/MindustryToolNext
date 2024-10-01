@@ -4,8 +4,8 @@ import { KonvaEventObject } from 'konva/lib/Node';
 import { Layer, Group } from 'react-konva';
 import CommandCard from './command-card';
 import Command from '../command';
-import { selectInputProps } from './editor';
-import { Position } from './position';
+import { SelectInputProps } from './editor';
+import { Position } from './logic';
 import CommandConnectPoint from './command-connect';
 import { useMemo } from 'react';
 
@@ -27,7 +27,7 @@ export const CommandListDisplay = ({
   ) => void;
   deleteCommand: (index: number) => void;
   copyCommand: (index: number) => void;
-  selectInput: (arg0: selectInputProps) => void;
+  selectInput: (arg0: SelectInputProps) => void;
   findCommandByIndex: (index: number) => Command;
   position: Position;
   setCommands: React.Dispatch<React.SetStateAction<Command[]>>;

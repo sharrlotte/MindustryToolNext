@@ -8,7 +8,7 @@ import { useState, useCallback } from 'react';
 import CommandStorage from '../function/storage';
 import LiveCode from '../function/live';
 
-export type selectInputProps = {
+export type SelectInputProps = {
   commandIndex: number;
   fieldIndex: number;
   defaultValue: string;
@@ -21,162 +21,78 @@ export type selectInputProps = {
 
 export default function Editor() {
   const [commands, setCommands] = useState<Command[]>([]);
+  const [inputKeys, setInputKeys] = useState<{ commandIndex: number | null; fieldIndex: number | null }>({ commandIndex: null, fieldIndex: null });
+  const [input, setInput] = useState<InputControlProp | null>(null);
+
+  const updateCommands = (updateFn: (prev: Command[]) => Command[]) => {
+    setCommands(prev => updateFn(prev));
+  };
 
   const addCommand = useCallback((command: Command) => {
-    const newCommand = {
-      ...command,
-      value: {
-        ...command.value,
-        fields: command.value.fields.map((field) => ({ ...field })),
-        outputs: command.value.outputs.map((output) => output),
-      },
-      x: 0,
-      y: 0,
-    };
-    setCommands((prevCommands) => [...prevCommands, newCommand]);
+    updateCommands(prev => [
+      ...prev,
+      { ...command, value: { ...command.value, fields: [...command.value.fields], outputs: [...command.value.outputs] }, x: 0, y: 0 }
+    ]);
   }, []);
 
-  const deleteCommand = useCallback(
-    (index: number) => {
-      setCommands((prevCommands) => {
-        return prevCommands
-          .filter((_, i) => i !== index)
-          .map((cmd) => ({
-            ...cmd,
-            value: {
-              ...cmd.value,
-              outputs: cmd.value.outputs.map((value) =>
-                value > index ? value - 1 : value === index ? -1 : value,
-              ),
-            },
-          }));
-      });
-    },
-    [setCommands],
-  );
+  const deleteCommand = useCallback((index: number) => {
+    updateCommands(prev => prev
+      .filter((_, i) => i !== index)
+      .map((cmd) => ({
+        ...cmd,
+        value: { ...cmd.value, outputs: cmd.value.outputs.map(value => (value > index ? value - 1 : value === index ? -1 : value)) }
+      }))
+    );
+  }, []);
 
   const replaceCommand = useCallback((command: Command, index: number) => {
-    setCommands((prevCommands) => {
-      const newCommands = [...prevCommands];
+    updateCommands(prev => {
+      const newCommands = [...prev];
       newCommands[index] = command;
       return newCommands;
     });
   }, []);
 
-  const updateCommand = useCallback(
-    (cIndex: number, callback: (c: Command) => Command) => {
-      setCommands((prev) => {
-        const newCommands = [...prev];
-        if (newCommands[cIndex]) {
-          const updatedCommand = callback(newCommands[cIndex]);
-          newCommands[cIndex] = {
-            ...updatedCommand,
-            value: {
-              ...updatedCommand.value,
-              fields: updatedCommand.value.fields.map((field) => ({
-                ...field,
-              })),
-            },
-          };
-        }
-        return newCommands;
-      });
-    },
-    [],
-  );
+  const updateCommand = useCallback((cIndex: number, callback: (c: Command) => Command) => {
+    updateCommands(prev => {
+      const newCommands = [...prev];
+      if (newCommands[cIndex]) {
+        newCommands[cIndex] = callback(newCommands[cIndex]);
+      }
+      return newCommands;
+    });
+  }, []);
 
-  const copyCommand = useCallback(
-    (index: number) => {
-      setCommands((prev) => {
-        if (prev[index]) {
-          addCommand({
-            ...prev[index],
-            value: {
-              ...prev[index].value,
-              outputs: prev[index].value.outputs.map(() => -1),
-            },
-          });
-        }
-
-        return prev;
-      });
-    },
-    [addCommand],
-  );
-
-  const findCommandByIndex = (index: number) => {
-    let command = commands[index];
-    setCommands((prev) => {
-      command = prev[index];
+  const copyCommand = useCallback((index: number) => {
+    updateCommands(prev => {
+      if (prev[index]) {
+        addCommand({ ...prev[index], value: { ...prev[index].value, outputs: prev[index].value.outputs.map(() => -1) } });
+      }
       return prev;
     });
+  }, [addCommand]);
 
-    return command;
-  };
+  const findCommandByIndex = (index: number) => commands[index];
 
-  //input controller.
-  const [inputKeys, setInputKeys] = useState<{
-    commandIndex: number | null;
-    fieldIndex: number | null;
-  }>({ commandIndex: null, fieldIndex: null });
+  const onSubmit = useCallback((value: string, displayValue?: string) => {
+    setInputKeys(prev => {
+      const { commandIndex, fieldIndex } = prev;
+      if (commandIndex !== null && fieldIndex !== null) {
+        updateCommand(commandIndex, command => {
+          const newFields = [...command.value.fields];
+          newFields[fieldIndex] = { ...newFields[fieldIndex], parseValue: value, displayValue };
+          return { ...command, value: { ...command.value, fields: newFields } };
+        });
+        setInput(null); 
+      }
+      return { commandIndex: null, fieldIndex: null };
+    });
+  }, [updateCommand]);
 
-  const [input, setInput] = useState<InputControlProp | null>(null);
-  const onSubmit = useCallback(
-    (value: string, displayValue?: string) => {
-      setInputKeys((prev) => {
-        if (prev.commandIndex !== null && prev.fieldIndex !== null) {
-          const cIndex = prev.commandIndex;
-          const fIndex = prev.fieldIndex;
-          updateCommand(cIndex, (command) => {
-            const newFields = [...command.value.fields];
-            newFields[fIndex] = {
-              ...newFields[fIndex],
-              value: value,
-              displayValue: displayValue,
-            };
-            return {
-              ...command,
-              value: { ...command.value, fields: newFields },
-            };
-          });
-          setInput(null);
-        }
-        return { commandIndex: null, fieldIndex: null };
-      });
-    },
-    [updateCommand],
-  );
-
-  const selectInput = useCallback(
-    ({
-      commandIndex,
-      fieldIndex,
-      defaultValue,
-      inputType,
-      x,
-      y,
-      width,
-      height,
-    }: selectInputProps) => {
-      setInput({
-        position: {
-          x: x,
-          y: y,
-          width: width,
-          height: height,
-        },
-        defaultValue: defaultValue,
-        inputType: inputType,
-        onSubmit: onSubmit,
-      });
-
-      setInputKeys({
-        commandIndex: commandIndex,
-        fieldIndex: fieldIndex,
-      });
-    },
-    [onSubmit],
-  );
+  const selectInput = useCallback(({ commandIndex, fieldIndex, defaultValue, inputType, x, y, width, height }: SelectInputProps) => {
+    setInput({ position: { x, y, width, height }, defaultValue, inputType, onSubmit });
+    setInputKeys({ commandIndex, fieldIndex });
+  }, [onSubmit]);
 
   return (
     <div className="text-white">
@@ -189,16 +105,11 @@ export default function Editor() {
         selectInput={selectInput}
         findCommandByIndex={findCommandByIndex}
       />
-      <InputControl
-        input={input}
-        setCommands={setCommands}
-        cIndex={inputKeys.commandIndex}
-      />
+      <InputControl input={input} setCommands={setCommands} cIndex={inputKeys.commandIndex} />
       <LogicNavBar toggleText={'Click here to toggle'}>
         <AddingElement addCommand={addCommand} />
         <CommandStorage commands={commands} setCommands={setCommands} />
       </LogicNavBar>
-
       <LogicNavBar toggleText={'Click here to toggle'} side="right">
         <LiveCode commands={commands} />
       </LogicNavBar>
