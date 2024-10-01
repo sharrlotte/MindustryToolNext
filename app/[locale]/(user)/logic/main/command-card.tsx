@@ -3,8 +3,8 @@
 import React, { useMemo, Dispatch, SetStateAction } from 'react';
 import { Group, Rect, Text } from 'react-konva';
 import Command, { CommandValue, FieldType } from '../command';
-import { selectInputProps } from './editor';
-import { Position } from './position';
+import { SelectInputProps } from '@/app/[locale]/(user)/logic/main/editor';
+import { Position } from '@/app/[locale]/(user)/logic/main/logic';
 
 export const padding = 5;
 export const doublePadding = padding * 2;
@@ -35,7 +35,7 @@ type CommandCardProp = {
   setCommands: Dispatch<SetStateAction<Command[]>>;
   deleteCommand: (index: number) => void;
   copyCommand: (index: number) => void;
-  selectInput: (arg0: selectInputProps) => void;
+  selectInput: (arg0: SelectInputProps) => void;
   findCommandByIndex: (index: number) => Command;
 };
 
@@ -56,7 +56,8 @@ export default function CommandCard({
 
   const handleFieldClick = useMemo(
     () => (field: FieldType, fIndex: number) => {
-      const value = typeof field.parseValue === 'string' ? field.parseValue : '';
+      const value =
+        typeof field.parseValue === 'string' ? field.parseValue : '';
       selectInput({
         commandIndex: index,
         fieldIndex: fIndex,
