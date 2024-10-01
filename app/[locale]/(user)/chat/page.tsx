@@ -54,6 +54,7 @@ export default function Page() {
                     ref={(ref) => setContainer(ref)}
                   >
                     <MessageList
+                      showNotification
                       className="flex h-full flex-col gap-1"
                       queryKey={['global']}
                       room="GLOBAL"

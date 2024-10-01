@@ -21,6 +21,7 @@ import {
   ChartIcon,
   ChatIcon,
   CmdIcon,
+  CrownIcon,
   DocumentIcon,
   FileIcon,
   GlobIcon,
@@ -132,7 +133,7 @@ export function NavItems({ onClick }: NavItemsProps) {
           {
             name: <Tran text="rank" />,
             path: '/rank',
-            icon: <PluginIcon />,
+            icon: <CrownIcon />,
           },
           {
             name: <Tran text="ratio" />,

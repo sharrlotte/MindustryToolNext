@@ -169,8 +169,8 @@ function CompareTable({ language }: CompareTableProps) {
             params={{ ...params, size: 20, language }}
             queryKey={['translations', 'compare', language]}
             getFunc={getTranslationCompare}
-            loader={<></>}
-            noResult={<></>}
+            loader={<Fragment></Fragment>}
+            noResult={<Fragment></Fragment>}
             skeleton={{
               amount: 20,
               item: (index) => <TranslationCardSkeleton key={index} />,
@@ -226,8 +226,8 @@ function DiffTable({ language }: DiffTableProps) {
             params={{ ...params, size: 20, language }}
             queryKey={['translations', 'diff', language]}
             getFunc={getTranslationDiff}
-            loader={<></>}
-            noResult={<></>}
+            loader={<Fragment></Fragment>}
+            noResult={<Fragment></Fragment>}
             skeleton={{
               amount: 20,
               item: (index) => <TranslationCardSkeleton key={index} />,
