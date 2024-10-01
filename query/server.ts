@@ -5,7 +5,10 @@ import CreateInternalServerPluginRequest from '@/types/request/CreaeteInternalSe
 import CreateInternalServerMapRequest from '@/types/request/CreateInternalServerMapRequest';
 import { CreateInternalServerRequest } from '@/types/request/CreateInternalServerRequest';
 import CreateServerRequest from '@/types/request/CreateServerRequest';
-import { PutInternalServerRequest } from '@/types/request/UpdateInternalServerRequest';
+import {
+  PutInternalServerPortRequest,
+  PutInternalServerRequest,
+} from '@/types/request/UpdateInternalServerRequest';
 import { ExternalServer } from '@/types/response/ExternalServer';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 import { InternalServerMap } from '@/types/response/InternalServerMap';
@@ -240,6 +243,16 @@ export async function updateInternalServer(
   data: PutInternalServerRequest,
 ): Promise<void> {
   return axios.put(`/internal-servers/${serverId}`, data, {
+    data,
+  });
+}
+
+export async function updateInternalServerPort(
+  axios: AxiosInstance,
+  serverId: string,
+  data: PutInternalServerPortRequest,
+): Promise<void> {
+  return axios.put(`/internal-servers/${serverId}/port`, data, {
     data,
   });
 }
