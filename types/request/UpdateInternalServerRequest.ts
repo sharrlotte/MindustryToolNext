@@ -17,3 +17,14 @@ export const PutInternalServerSchema = z.object({
 });
 
 export type PutInternalServerRequest = z.infer<typeof PutInternalServerSchema>;
+
+export const PutInternalServerPortSchema = z.object({
+  port: z.coerce
+    .number()
+    .int()
+    .refine((value) => value === 0 || (value >= 6567 && value <= 6577)),
+});
+
+export type PutInternalServerPortRequest = z.infer<
+  typeof PutInternalServerPortSchema
+>;
