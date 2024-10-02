@@ -1,7 +1,7 @@
 'use server';
 
 import { AxiosInstance } from 'axios';
-import { revalidatePath, unstable_cache } from 'next/cache';
+import { revalidatePath, unstable_cache, unstable_noStore } from 'next/cache';
 import { z } from 'zod';
 
 import { QuerySchema } from '@/query/search-query';
@@ -45,9 +45,11 @@ export type ApiError = { error: any };
 
 export async function serverApi<T>(
   queryFn: ServerApi<T>,
+  options?: { cookies?: boolean },
 ): Promise<T | ApiError> {
+  unstable_noStore(); // To opt out of static renderer
   try {
-    const axios = await getServerApi();
+    const axios = await getServerApi(options);
 
     const data =
       'queryFn' in queryFn
@@ -56,30 +58,8 @@ export async function serverApi<T>(
 
     return data;
   } catch (error) {
-    return { error };
-  }
-}
-
-type ServerApis<T> =
-  | {
-      queryFn: QueryFn<T>[];
-    }
-  | QueryFn<T>[];
-
-export async function serverApis<T>(
-  queryFn: ServerApis<T>,
-): Promise<T[] | ApiError> {
-  try {
-    const axios = await getServerApi();
-
-    const data =
-      'queryFn' in queryFn
-        ? await Promise.all(queryFn.queryFn.map((fn) => fn(axios)))
-        : await Promise.all(queryFn.map((fn) => fn(axios)));
-
-    return data;
-  } catch (error) {
-    return { error };
+    console.error(error);
+    return { error: JSON.stringify(error) };
   }
 }
 
@@ -129,10 +109,14 @@ export async function getSession(): Promise<Session | null> {
   return result;
 }
 
-export const getServerApi = async (): Promise<AxiosInstance> => {
-  const cookie = cookies().toString();
+export const getServerApi = async (options?: {
+  cookies?: boolean;
+}): Promise<AxiosInstance> => {
+  if (options?.cookies) {
+    const cookie = cookies().toString();
 
-  axiosInstance.defaults.headers['Cookie'] = cookie;
+    axiosInstance.defaults.headers['Cookie'] = cookie;
+  }
 
   return axiosInstance;
 };
