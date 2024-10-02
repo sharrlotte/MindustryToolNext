@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const schematic = schematics[0];
 
   return {
-    title: 'Mindustry schematics',
+    title: `${env.webName} > Schematic`,
     description: schematic.name,
     openGraph: {
       title: schematic.name,

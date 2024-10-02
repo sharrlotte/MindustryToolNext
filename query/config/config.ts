@@ -3,17 +3,6 @@ import { notFound } from 'next/navigation';
 
 import env from '@/constant/env';
 
-export class RestApiError extends Error {
-  message: string;
-  status: number;
-
-  constructor(message: string, status: number) {
-    super();
-    this.message = message;
-    this.status = status;
-  }
-}
-
 const axiosInstance = Axios.create({
   baseURL: env.url.api,
   paramsSerializer: {
@@ -37,10 +26,10 @@ axiosInstance.interceptors.response.use(
     }
 
     if (error?.response?.data) {
-      throw new RestApiError(
-        error.response.data.message,
-        error.response.data.status,
-      );
+      throw {
+        message: error.response.data.message,
+        status: error.response.data.status,
+      };
     }
 
     console.error({ Custom: error });

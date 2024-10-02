@@ -21,12 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   );
 
   if ('error' in schematic) {
-    return {};
+    throw schematic;
   }
 
   return {
-    title: schematic.name,
-    description: schematic.description,
+    title: `${env.webName} > Schematic`,
+    description: `${schematic.name} | ${schematic.description}`,
     openGraph: {
       title: schematic.name,
       description: schematic.description,

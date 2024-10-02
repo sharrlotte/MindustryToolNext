@@ -6,6 +6,8 @@ import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getPost } from '@/query/post';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
+import env from '@/constant/env';
+import removeMd from 'remove-markdown';
 
 type Props = {
   params: { id: string };
@@ -20,8 +22,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: post.title,
-    description: post.content,
+    title: `${env.webName} > Post`,
+    description: `${post.title} | ${removeMd(post.content)}`,
   };
 }
 

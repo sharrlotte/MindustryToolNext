@@ -19,12 +19,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const map = await serverApi((axios) => getMapUpload(axios, { id }));
 
   if ('error' in map) {
-    return {};
+    throw map;
   }
 
   return {
-    title: map.name,
-    description: map.description,
+    title: `${env.webName} > Map`,
+    description: `${map.name} | ${map.description}`,
     openGraph: {
       title: map.name,
       description: map.description,

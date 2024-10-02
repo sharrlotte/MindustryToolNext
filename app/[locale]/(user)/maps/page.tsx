@@ -9,14 +9,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const maps = await serverApi((axios) => getMaps(axios, { page: 0, size: 1 }));
 
   if ('error' in maps) {
-    return {};
+    throw maps;
   }
 
   const map = maps[0];
 
   return {
-    title: 'Mindustry maps',
-    description: map.name,
+    title: `${env.webName} > Map`,
+    description: `${map.name}`,
     openGraph: {
       title: map.name,
       images: `${env.url.image}map-previews/${map.id}.png`,

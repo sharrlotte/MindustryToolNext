@@ -57,8 +57,8 @@ export default async function Page({ params: { id } }: Props) {
   } = server;
 
   if (
-    userId === session.id ||
-    session.roles.map((role) => role.name).includes('SHAR')
+    userId === session?.id ||
+    session?.roles.map((role) => role.name).includes('SHAR')
   ) {
     return (
       <ProtectedRoute session={session} ownerId={userId}>
