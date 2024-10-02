@@ -3,7 +3,6 @@ import React from 'react';
 import { getInternalServer } from '@/query/server';
 import ServerUpdateForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-form';
 import ServerUpdatePortForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-port-form';
-import getServerApi from '@/query/config/get-server-api';
 
 import {
   Dialog,
@@ -13,21 +12,25 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import Tran from '@/components/common/tran';
-import { getSession } from '@/action/action';
+import { getSession, serverApi } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import { Hidden } from '@/components/common/hidden';
+import ErrorScreen from '@/components/common/error-screen';
 
 type PageProps = {
   params: { id: string };
 };
 
 export default async function Page({ params: { id } }: PageProps) {
-  const axios = await getServerApi();
-  const server = await getInternalServer(axios, { id });
+  const server = await serverApi((axios) => getInternalServer(axios, { id }));
   const session = await getSession();
 
+  if ('error' in server) {
+    return <ErrorScreen error={server} />;
+  }
+
   return (
-    <div className="flex flex-col gap-2 p-2">
+    <div className="flex h-full flex-col gap-2 overflow-y-auto p-2">
       <ProtectedElement session={session} all={['SHAR']}>
         <Dialog>
           <div className="flex bg-card p-2">

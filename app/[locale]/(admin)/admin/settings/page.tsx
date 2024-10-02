@@ -35,7 +35,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex items-center gap-1 p-4">
+    <div className="flex h-full items-center gap-1 bg-card p-4">
       <Input
         className="aspect-square w-4"
         type="checkbox"

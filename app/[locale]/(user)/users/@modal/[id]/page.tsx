@@ -1,6 +1,7 @@
+import { serverApi } from '@/action/action';
 import Me from '@/app/[locale]/(user)/users/@modal/[id]/me';
 import Other from '@/app/[locale]/(user)/users/@modal/[id]/other';
-import getServerApi from '@/query/config/get-server-api';
+import ErrorScreen from '@/components/common/error-screen';
 import { getMe, getUser } from '@/query/user';
 
 type Props = {
@@ -8,15 +9,21 @@ type Props = {
 };
 
 export default async function Page({ params: { id } }: Props) {
-  const axios = await getServerApi();
-
   if (id === '@me') {
-    const me = await getMe(axios);
+    const me = await serverApi((axios) => getMe(axios));
+
+    if ('error' in me) {
+      return <ErrorScreen error={me} />;
+    }
 
     return <Me me={me} />;
   }
 
-  const user = await getUser(axios, { id });
+  const user = await serverApi((axios) => getUser(axios, { id }));
+
+  if ('error' in user) {
+    return <ErrorScreen error={user} />;
+  }
 
   return <Other user={user} />;
 }

@@ -1,13 +1,14 @@
 import React from 'react';
 
 import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
-import getServerApi from '@/query/config/get-server-api';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getMapUpload } from '@/query/map';
 import { Metadata } from 'next';
 import env from '@/constant/env';
 import Tran from '@/components/common/tran';
 import BackButton from '@/components/ui/back-button';
+import { serverApi } from '@/action/action';
+import ErrorScreen from '@/components/common/error-screen';
 
 type Props = {
   params: { id: string };
@@ -15,12 +16,15 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const axios = await getServerApi();
-  const map = await getMapUpload(axios, { id });
+  const map = await serverApi((axios) => getMapUpload(axios, { id }));
+
+  if ('error' in map) {
+    throw map;
+  }
 
   return {
-    title: map.name,
-    description: map.description,
+    title: `${env.webName} > Map`,
+    description: `${map.name} | ${map.description}`,
     openGraph: {
       title: map.name,
       description: map.description,
@@ -30,8 +34,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: { params: IdSearchParams }) {
-  const axios = await getServerApi();
-  const map = await getMapUpload(axios, params);
+  const map = await serverApi((axios) => getMapUpload(axios, params));
+
+  if ('error' in map) {
+    return <ErrorScreen error={map} />;
+  }
 
   if (map.isVerified === true) {
     return (

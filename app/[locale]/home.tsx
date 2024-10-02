@@ -1,3 +1,5 @@
+import { serverApi } from '@/action/action';
+import ErrorScreen from '@/components/common/error-screen';
 import InternalLink from '@/components/common/internal-link';
 import { Preview } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
@@ -5,7 +7,6 @@ import MapPreviewCard from '@/components/map/map-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import UserCard from '@/components/user/user-card';
-import getServerApi from '@/query/config/get-server-api';
 import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
 import { getUsers } from '@/query/user';
@@ -68,10 +69,13 @@ async function _SchematicRowView({
 }: {
   queryParam: PaginationSearchQuery;
 }) {
-  const axios = await getServerApi();
-  const items = await getSchematics(axios, queryParam);
+  const result = await serverApi((axios) => getSchematics(axios, queryParam));
 
-  return items.map((schematic) => (
+  if ('error' in result) {
+    return <ErrorScreen error={result} />;
+  }
+
+  return result.map((schematic) => (
     <li key={schematic.id} className="m-0 snap-center p-0">
       <SchematicPreviewCard schematic={schematic} />
     </li>
@@ -83,10 +87,13 @@ async function _HomeMapPreview({
 }: {
   queryParam: PaginationSearchQuery;
 }) {
-  const axios = await getServerApi();
-  const items = await getMaps(axios, queryParam);
+  const result = await serverApi((axios) => getMaps(axios, queryParam));
 
-  return items.map((map) => (
+  if ('error' in result) {
+    return <ErrorScreen error={result} />;
+  }
+
+  return result.map((map) => (
     <li key={map.id} className="m-0 snap-center p-0">
       <MapPreviewCard map={map} />
     </li>
@@ -102,31 +109,47 @@ export async function InformationGroup() {
 }
 
 async function _InformationGroup() {
-  const axios = await getServerApi();
+  const getAdmins = serverApi((axios) =>
+    getUsers(axios, {
+      page: 0,
+      size: 20,
+      role: 'ADMIN',
+    }),
+  );
 
-  const getAdmins = getUsers(axios, {
-    page: 0,
-    size: 20,
-    role: 'ADMIN',
-  });
+  const getShar = serverApi((axios) =>
+    getUsers(axios, {
+      page: 0,
+      size: 20,
+      role: 'SHAR',
+    }),
+  );
 
-  const getShar = getUsers(axios, {
-    page: 0,
-    size: 20,
-    role: 'SHAR',
-  });
-
-  const getContributor = getUsers(axios, {
-    page: 0,
-    size: 20,
-    role: 'CONTRIBUTOR',
-  });
+  const getContributor = serverApi((axios) =>
+    getUsers(axios, {
+      page: 0,
+      size: 20,
+      role: 'CONTRIBUTOR',
+    }),
+  );
 
   const [shar, admins, contributors] = await Promise.all([
     getShar,
     getAdmins,
     getContributor,
   ]);
+
+  if ('error' in shar) {
+    return <ErrorScreen error={shar} />;
+  }
+
+  if ('error' in admins) {
+    return <ErrorScreen error={admins} />;
+  }
+
+  if ('error' in contributors) {
+    return <ErrorScreen error={contributors} />;
+  }
 
   const onlyAdmins = admins.filter(
     (user) => !shar.map((u) => u.id).includes(user.id),

@@ -2,6 +2,7 @@ import SortTag from '@/types/response/SortTag';
 
 const env = {
   webVersion: 'v1.1.1',
+  webName: 'Mindustry Tool',
   locales: ['vi', 'en'],
   defaultLocale: 'en',
   url: {
@@ -15,3 +16,4 @@ const env = {
 export default env;
 
 export const defaultSortTag: SortTag = 'time_1';
+    

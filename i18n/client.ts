@@ -57,13 +57,13 @@ export function useI18n(): TranslateFunction {
           });
       }
 
-      return value ? (format(value[key], args) ?? text) : text;
+      return value ? (formatTranslation(value[key], args) ?? text) : text;
     },
     [keys, isCurrentLocaleSet, axios, currentLocale, setTranslation],
   );
 }
 
-function format(text: string, args?: Record<string, string>) {
+export function formatTranslation(text: string, args?: Record<string, string>) {
   if (!args || !text) {
     return text;
   }

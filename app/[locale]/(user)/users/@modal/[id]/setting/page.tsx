@@ -5,8 +5,12 @@ import React from 'react';
 export default async function Page() {
   const session = await getSession();
 
+  if (!session) {
+    throw { error: 'Unauthorized' };
+  }
+
   return (
-    <div className="h-full p-4 overflow-y-auto">
+    <div className="h-full overflow-y-auto p-4">
       <UpdateThumbnail id={session.id} />
     </div>
   );

@@ -5,14 +5,13 @@ import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-se
 import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-button';
 import ColorText from '@/components/common/color-text';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
-import getServerApi from '@/query/config/get-server-api';
 import RawImage from '@/components/common/raw-image';
 import { getInternalServer, getServerPlayers } from '@/query/server';
 import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import { ServerIcon } from '@/components/common/icons';
 import IdUserCard from '@/components/user/id-user-card';
-import { getSession } from '@/action/action';
+import { getSession, serverApi } from '@/action/action';
 import ProtectedRoute from '@/layout/protected-route';
 import { Player } from '@/types/response/Player';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -24,6 +23,7 @@ import {
 } from '@/components/ui/context-menu';
 
 import './style.css';
+import ErrorScreen from '@/components/common/error-screen';
 
 export const experimental_ppr = true;
 
@@ -32,12 +32,14 @@ type Props = {
 };
 
 export default async function Page({ params: { id } }: Props) {
-  const axios = await getServerApi();
-
   const [server, session] = await Promise.all([
-    getInternalServer(axios, { id }),
+    serverApi((axios) => getInternalServer(axios, { id })),
     getSession(),
   ]);
+
+  if ('error' in server) {
+    return <ErrorScreen error={server} />;
+  }
 
   const {
     started,
@@ -55,8 +57,8 @@ export default async function Page({ params: { id } }: Props) {
   } = server;
 
   if (
-    userId === session.id ||
-    session.roles.map((role) => role.name).includes('SHAR')
+    userId === session?.id ||
+    session?.roles.map((role) => role.name).includes('SHAR')
   ) {
     return (
       <ProtectedRoute session={session} ownerId={userId}>
@@ -211,8 +213,11 @@ type PlayersCardProps = {
   id: string;
 };
 async function PlayersCard({ id }: PlayersCardProps) {
-  const axios = await getServerApi();
-  const players = await getServerPlayers(axios, id);
+  const players = await serverApi((axios) => getServerPlayers(axios, id));
+
+  if ('error' in players) {
+    return <ErrorScreen error={players} />;
+  }
 
   return (
     <div className="grid gap-1">
