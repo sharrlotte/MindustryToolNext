@@ -12,9 +12,9 @@ const routes = [
   'upload/post',
 ];
 
-import getServerApi from '@/query/config/get-server-api';
 import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
+import { getServerApi } from '@/action/action';
 
 export const revalidate = 60 * 60 * 24;
 

@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import React from 'react';
 
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import env from '@/constant/env';
-import getServerApi from '@/query/config/get-server-api';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getSchematic } from '@/query/schematic';
+import { serverApi } from '@/action/action';
+import ErrorScreen from '@/components/common/error-screen';
 
 type Props = {
   params: { id: string };
@@ -14,8 +14,11 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const axios = await getServerApi();
-  const schematic = await getSchematic(axios, { id });
+  const schematic = await serverApi((axios) => getSchematic(axios, { id }));
+
+  if ('error' in schematic) {
+    throw schematic;
+  }
 
   return {
     title: schematic.name,
@@ -29,11 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: { params: IdSearchParams }) {
-  const axios = await getServerApi();
-  const schematic = await getSchematic(axios, params);
+  const schematic = await serverApi((axios) => getSchematic(axios, params));
 
-  if (!schematic) {
-    return notFound();
+  if ('error' in schematic) {
+    return <ErrorScreen error={schematic} />;
   }
 
   return <SchematicDetailCard schematic={schematic} />;

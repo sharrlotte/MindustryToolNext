@@ -2,13 +2,10 @@
 
 import { AxiosInstance } from 'axios';
 import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
-import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
-import axiosInstance from '@/query/config/config';
-import getServerApi from '@/query/config/get-server-api';
 import { QuerySchema } from '@/query/search-query';
+import 'server-only';
 
 import {
   DefaultError,
@@ -18,6 +15,8 @@ import {
   dehydrate,
 } from '@tanstack/react-query';
 import { Session } from '@/types/response/Session';
+import { cookies } from 'next/headers';
+import axiosInstance from '@/query/config/config';
 
 export async function revalidate(path: string) {
   'use server';
@@ -33,22 +32,54 @@ export async function getQuery<T extends QuerySchema>(
   return result;
 }
 
-type Props<T> = {
-  queryFn: (axios: AxiosInstance) => Promise<T>;
-};
+type QueryFn<T> = (axios: AxiosInstance) => Promise<T>;
 
-export async function serverApi<T>({ queryFn }: Props<T>) {
-  const cookie = cookies().toString();
+type ServerApi<T> =
+  | {
+      queryFn: QueryFn<T>;
+    }
+  | QueryFn<T>;
 
-  axiosInstance.defaults.headers['Cookie'] = cookie;
+export type ApiError = { error: any };
 
-  const data = await queryFn(axiosInstance);
+export async function serverApi<T>(
+  queryFn: ServerApi<T>,
+): Promise<T | ApiError> {
+  try {
+    const axios = await getServerApi();
 
-  if (!data) {
-    return notFound();
+    const data =
+      'queryFn' in queryFn
+        ? await queryFn.queryFn(axios)
+        : await queryFn(axios);
+
+    return data;
+  } catch (error) {
+    return { error };
   }
+}
 
-  return data;
+type ServerApis<T> =
+  | {
+      queryFn: QueryFn<T>[];
+    }
+  | QueryFn<T>[];
+
+export async function serverApis<T>(
+  queryFn: ServerApis<T>,
+): Promise<T[] | ApiError> {
+  try {
+    const axios = await getServerApi();
+
+    const data =
+      'queryFn' in queryFn
+        ? await Promise.all(queryFn.queryFn.map((fn) => fn(axios)))
+        : await Promise.all(queryFn.map((fn) => fn(axios)));
+
+    return data;
+  } catch (error) {
+    return { error };
+  }
 }
 
 export default async function prefetch<
@@ -77,7 +108,17 @@ export default async function prefetch<
 }
 
 export async function getSession(): Promise<Session> {
-  const result = await getServerApi().then((api) => api.get('/auth/session'));
+  const result = serverApi((axios) =>
+    axios.get('/auth/session').then((r) => r.data),
+  );
 
-  return result.data;
+  return result;
 }
+
+export const getServerApi = async (): Promise<AxiosInstance> => {
+  const cookie = cookies().toString();
+
+  axiosInstance.defaults.headers['Cookie'] = cookie;
+
+  return axiosInstance;
+};

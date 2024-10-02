@@ -2,4 +2,6 @@
 
 import ErrorScreen from '@/app/global-error';
 
-export default ErrorScreen;
+const Error = ErrorScreen;
+
+export default Error;

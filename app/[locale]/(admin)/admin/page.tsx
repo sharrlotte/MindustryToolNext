@@ -6,10 +6,10 @@ import LoginChart from '@/components/metric/login-chart';
 import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import WebsiteVisitRate from '@/components/metric/website-visist-rate';
-import getServerApi from '@/query/config/get-server-api';
 import getLogs from '@/query/log';
 import { getLoginHistories } from '@/query/login-history';
 import { getMetric } from '@/query/metric';
+import { getServerApi } from '@/action/action';
 
 const NUMBER_OF_DAY = 15;
 

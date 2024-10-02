@@ -10,8 +10,12 @@ import { useEffect } from 'react';
 export default function ErrorScreen({
   error,
 }: {
-  error: Error & { digest?: string } & any;
+  error: (Error & { digest?: string }) | { error: Error };
 }) {
+  if ('error' in error) {
+    error = error.error;
+  }
+
   const message = error.message ?? 'Something went wrong!';
 
   if (message === 'NEXT_NOT_FOUND') {

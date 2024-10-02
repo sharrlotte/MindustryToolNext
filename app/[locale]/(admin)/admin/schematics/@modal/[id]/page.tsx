@@ -1,13 +1,14 @@
 import React from 'react';
 
 import UploadSchematicDetailCard from '@/components/schematic/upload-schematic-detail-card';
-import getServerApi from '@/query/config/get-server-api';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getSchematicUpload } from '@/query/schematic';
 import { Metadata } from 'next';
 import env from '@/constant/env';
 import Tran from '@/components/common/tran';
 import BackButton from '@/components/ui/back-button';
+import { serverApi } from '@/action/action';
+import ErrorScreen from '@/components/common/error-screen';
 
 type Props = {
   params: { id: string };
@@ -15,8 +16,13 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const axios = await getServerApi();
-  const schematic = await getSchematicUpload(axios, { id });
+  const schematic = await serverApi((axios) =>
+    getSchematicUpload(axios, { id }),
+  );
+
+  if ('error' in schematic) {
+    return {};
+  }
 
   return {
     title: schematic.name,
@@ -30,8 +36,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: { params: IdSearchParams }) {
-  const axios = await getServerApi();
-  const schematic = await getSchematicUpload(axios, params);
+  const schematic = await serverApi((axios) =>
+    getSchematicUpload(axios, params),
+  );
+
+  if ('error' in schematic) {
+    return <ErrorScreen error={schematic} />;
+  }
 
   if (schematic.isVerified === true) {
     return (
