@@ -34,12 +34,12 @@ type Props = {
   server: InternalServerDetail;
 };
 
-export default function ServerUpdatePortForm({ server: { id } }: Props) {
+export default function ServerUpdatePortForm({ server: { id, port } }: Props) {
   const t = useI18n();
   const form = useForm<PutInternalServerPortRequest>({
     resolver: zodResolver(PutInternalServerPortSchema),
     defaultValues: {
-      port: 0,
+      port,
     },
   });
   const { invalidateByKey } = useQueriesData();
