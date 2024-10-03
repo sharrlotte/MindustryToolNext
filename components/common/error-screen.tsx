@@ -6,27 +6,28 @@ import { Button } from '@/components/ui/button';
 import { useI18n } from '@/i18n/client';
 import Tran from '@/components/common/tran';
 import { useEffect } from 'react';
+import { reportError } from '@/query/api';
+import useClientApi from '@/hooks/use-client';
 
 export default function ErrorScreen({
   error,
 }: {
-  error: (Error & { digest?: string }) | { error: Error };
+  error: (Error & { digest?: string }) | { error: { message: string } };
 }) {
-  if ('error' in error) {
-    error = error.error;
-  }
+  const t = useI18n();
+  const axios = useClientApi();
 
-  const message = error.message ?? 'Something went wrong!';
+  const message =
+    ('error' in error ? error.error.message : error.message) ??
+    'Something went wrong!';
+
+  useEffect(() => {
+    reportError(axios, JSON.stringify(error));
+  }, [axios, error]);
 
   if (message === 'NEXT_NOT_FOUND') {
     throw notFound();
   }
-
-  useEffect(() => {
-    reportError(JSON.stringify(error));
-  }, [error]);
-
-  const t = useI18n();
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4">

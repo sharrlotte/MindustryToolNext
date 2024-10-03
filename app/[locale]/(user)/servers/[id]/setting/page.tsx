@@ -22,8 +22,10 @@ type PageProps = {
 };
 
 export default async function Page({ params: { id } }: PageProps) {
-  const server = await serverApi((axios) => getInternalServer(axios, { id }));
-  const session = await getSession();
+  const [server, session] = await Promise.all([
+    serverApi((axios) => getInternalServer(axios, { id })),
+    getSession(),
+  ]);
 
   if ('error' in server) {
     return <ErrorScreen error={server} />;
