@@ -117,9 +117,12 @@ export default function Page() {
           <AddNewKeyDialog />
         </div>
         {mode === 'compare' ? (
-          <CompareTable language={language as Locale} />
+          <CompareTable
+            language={language as Locale}
+            target={target as Locale}
+          />
         ) : (
-          <DiffTable language={language as Locale} />
+          <DiffTable language={language as Locale} target={target as Locale} />
         )}
       </div>
       <div className="flex h-full w-full items-center justify-center">
@@ -131,6 +134,7 @@ export default function Page() {
 
 type CompareTableProps = {
   language: Locale;
+  target: Locale;
 };
 
 function RefreshButton() {
@@ -146,7 +150,7 @@ function RefreshButton() {
   );
 }
 
-function CompareTable({ language }: CompareTableProps) {
+function CompareTable({ language, target }: CompareTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
   const { data } = useClientQuery({
     queryKey: [
@@ -170,8 +174,8 @@ function CompareTable({ language }: CompareTableProps) {
             <TableHead className="w-40 overflow-x-auto">
               <Tran text="translation.key" />
             </TableHead>
-            <TableHead>en</TableHead>
             <TableHead>{language}</TableHead>
+            <TableHead>{target}</TableHead>
             <TableHead className="w-20"></TableHead>
           </TableRow>
         </TableHeader>
@@ -193,6 +197,7 @@ function CompareTable({ language }: CompareTableProps) {
                 key={data.id}
                 translation={data}
                 language={language}
+                target={target}
               />
             )}
           </GridPaginationList>
@@ -207,9 +212,10 @@ function CompareTable({ language }: CompareTableProps) {
 
 type DiffTableProps = {
   language: Locale;
+  target: Locale;
 };
 
-function DiffTable({ language }: DiffTableProps) {
+function DiffTable({ language, target }: DiffTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
   const { data } = useClientQuery({
     queryKey: ['translations', 'diff', 'total', omit(params, 'page', 'size')],
@@ -228,8 +234,8 @@ function DiffTable({ language }: DiffTableProps) {
             <TableHead className="w-40 overflow-x-auto">
               <Tran text="translation.key" />
             </TableHead>
-            <TableHead>EN</TableHead>
             <TableHead>{language}</TableHead>
+            <TableHead>{target}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -307,11 +313,13 @@ function DiffCard({
 type CompareCardProps = {
   translation: TranslationCompare;
   language: Locale;
+  target: Locale;
 };
 
 function CompareCard({
   translation: { key, id, value, keyGroup },
   language,
+  target,
 }: CompareCardProps) {
   const axios = useClientApi();
   const { mutate } = useMutation({
@@ -337,11 +345,11 @@ function CompareCard({
     <TableRow>
       <TableCell className="align-top">{keyGroup}</TableCell>
       <TableCell className="align-top">{key}</TableCell>
-      <TableCell className="align-top">{value['en']}</TableCell>
+      <TableCell className="align-top">{value[language]}</TableCell>
       <TableCell>
         <Textarea
           className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
-          defaultValue={value[language]}
+          defaultValue={value[target]}
           onChange={handleChange}
         />
       </TableCell>
