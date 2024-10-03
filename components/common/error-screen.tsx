@@ -1,6 +1,6 @@
 'use client';
 
-import { notFound } from 'next/navigation';
+import { notFound, usePathname } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/i18n/client';
@@ -15,6 +15,7 @@ export default function ErrorScreen({
   error: (Error & { digest?: string }) | { error: { message: string } };
 }) {
   const t = useI18n();
+  const path = usePathname();
   const axios = useClientApi();
 
   console.error(error);
@@ -24,8 +25,8 @@ export default function ErrorScreen({
     'Something went wrong!';
 
   useEffect(() => {
-    reportError(axios, JSON.stringify(error));
-  }, [axios, error]);
+    reportError(axios, { message: JSON.stringify(error), path });
+  }, [axios, path, error]);
 
   if (message === 'NEXT_NOT_FOUND') {
     throw notFound();

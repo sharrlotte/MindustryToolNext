@@ -98,7 +98,7 @@ export default function ServerUpdateForm({ server }: Props) {
           className="flex flex-1 flex-col justify-between bg-card p-4"
           onSubmit={form.handleSubmit((value) => mutate(value))}
         >
-          <div className="space-y-6 overflow-y-auto">
+          <div className="space-y-6 overflow-y-auto p-0.5">
             <FormField
               control={form.control}
               name="name"
@@ -216,7 +216,7 @@ export default function ServerUpdateForm({ server }: Props) {
               {t('update')}
             </Button>
             <DeleteServerButton id={id} />
-          </div>  
+          </div>
         </form>
       </Form>
     </div>
