@@ -6,6 +6,7 @@ import { UserRole } from '@/constant/enum';
 import env from '@/constant/env';
 import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
+import TagGroup from '@/types/response/TagGroup';
 
 const colours: Record<string, string> = {
   aliceblue: '#f0f8ff',
@@ -367,4 +368,50 @@ export function hasAccess({
 
 export async function sleep(seconds: number) {
   await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+}
+
+export const PRESET_LOCAL_STORAGE_NAME = 'TAG_PRESET';
+
+export type TagPreset = {
+  name: string;
+  tags: TagGroup[];
+};
+
+export function getTagPreset(): TagPreset[] {
+  const str = localStorage.getItem(PRESET_LOCAL_STORAGE_NAME);
+
+  if (!str) {
+    return [];
+  }
+
+  try {
+    const value = JSON.parse(str);
+
+    if (!Array.isArray(value)) {
+      return [];
+    }
+
+    return value;
+  } catch (e) {
+    return [];
+  }
+}
+
+export function deleteTagPreset(name: string) {
+  const value = getTagPreset().filter((item) => item.name !== name);
+
+  return localStorage.setItem(PRESET_LOCAL_STORAGE_NAME, JSON.stringify(value));
+}
+
+export function addTagPreset(newPreset: TagPreset) {
+  const preset = getTagPreset();
+
+  const sameName = preset.find((item) => item.name === newPreset.name);
+  if (sameName) {
+    sameName.tags = newPreset.tags;
+  } else {
+    preset.push(newPreset);
+  }
+
+  localStorage.setItem(PRESET_LOCAL_STORAGE_NAME, JSON.stringify(preset));
 }

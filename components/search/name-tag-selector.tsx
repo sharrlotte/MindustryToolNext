@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
-import OutsideWrapper from '@/components/common/outside-wrapper';
 import Search from '@/components/search/search-input';
 import FilterTags from '@/components/tag/filter-tags';
 import TagContainer from '@/components/tag/tag-container';
@@ -13,13 +12,14 @@ import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 import { cn } from '@/lib/utils';
 import TagPreset from '@/components/search/tag-preset';
+import CreatePresetButton from '@/components/search/create-preset-button';
 
 type NameTagSelectorProps = {
   tags?: TagGroup[];
   disabled?: boolean;
   hideSelectedTag?: boolean;
   value: TagGroup[];
-  onChange: (value: TagGroup[]) => void;
+  onChange: (fn: (value: TagGroup[]) => TagGroup[]) => void;
 };
 
 export default function NameTagSelector({
@@ -33,43 +33,67 @@ export default function NameTagSelector({
 
   const [showFilterDialog, setShowFilterDialog] = useState(false);
 
-  const handleShowFilterDialog = () => setShowFilterDialog(true);
-  const handleHideFilterDialog = () => setShowFilterDialog(false);
+  const handleShowFilterDialog = useCallback(
+    () => setShowFilterDialog(true),
+    [setShowFilterDialog],
+  );
+  const handleHideFilterDialog = useCallback(
+    () => setShowFilterDialog(false),
+    [setShowFilterDialog],
+  );
 
   const t = useI18n();
 
   const handleTagGroupChange = useCallback(
     (name: string, values: string[]) => {
-      const group = value.find((tag) => tag.name === name);
-      if (group) {
-        group.values = values;
-        onChange([...value]);
-      } else {
-        const result = tags.find((tag) => tag.name === name);
+      onChange((value) => {
+        const group = value.find((tag) => tag.name === name);
+        if (group) {
+          group.values = values;
 
-        // Ignore tag that not match with server
-        if (result) {
-          const r = { ...result, values };
-          onChange([...value, r]);
+          return value.map((item) =>
+            item.name === name ? { ...item, values } : item,
+          );
+        } else {
+          const result = tags.find((tag) => tag.name === name);
+
+          // Ignore tag that not match with server
+          if (result) {
+            const r = { ...result, values };
+
+            return [...value, r];
+          }
+
+          return [];
         }
-      }
+      });
     },
-    [value, tags, onChange],
+    [tags, onChange],
   );
 
   const handleDeleteTag = useCallback(
     (tag: Tag) => {
-      const group = value.find((item) => item.name === tag.name);
-      if (group) {
-        group.values = group.values.filter((item) => item !== tag.value);
-      }
+      onChange((value) => {
+        const group = value.find((item) => item.name === tag.name);
 
-      onChange([...value]);
+        if (group) {
+          return value.map((item) =>
+            item.name === tag.name
+              ? {
+                  ...item,
+                  values: group.values.filter((item) => item !== tag.value),
+                }
+              : item,
+          );
+        }
+
+        return [...value];
+      });
     },
-    [value, onChange],
+    [onChange],
   );
 
-  const displayTags = Tags.fromTagGroup(value);
+  const displayTags = useMemo(() => Tags.fromTagGroup(value), [value]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -97,10 +121,7 @@ export default function NameTagSelector({
           { flex: showFilterDialog },
         )}
       >
-        <OutsideWrapper
-          className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6"
-          onClickOutside={handleHideFilterDialog}
-        >
+        <div className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6">
           <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
             <div className="flex w-full gap-2">
               <Search className="w-full p-1">
@@ -111,7 +132,7 @@ export default function NameTagSelector({
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />
               </Search>
-              <TagPreset />
+              <TagPreset onPresetChoose={(value) => onChange(() => value)} />
             </div>
             <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
               <FilterTags
@@ -122,6 +143,7 @@ export default function NameTagSelector({
               />
             </CardContent>
             <CardFooter className="flex justify-end gap-1 p-0">
+              <CreatePresetButton tags={value} />
               <Button
                 title={t('close')}
                 variant="outline"
@@ -131,7 +153,7 @@ export default function NameTagSelector({
               </Button>
             </CardFooter>
           </Card>
-        </OutsideWrapper>
+        </div>
       </div>
     </div>
   );
