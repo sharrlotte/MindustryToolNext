@@ -50,7 +50,6 @@ type Props = {
 
 export default function ServerUpdateForm({ server }: Props) {
   const t = useI18n();
-  const router = useRouter();
   const [currentServer, setCurrentServer] = useState(server);
   const form = useForm<PutInternalServerRequest>({
     resolver: zodResolver(PutInternalServerSchema),
@@ -89,31 +88,8 @@ export default function ServerUpdateForm({ server }: Props) {
     },
   });
 
-  const { mutate: deleteServer, isPending: isDeleting } = useMutation({
-    mutationKey: ['servers'],
-    mutationFn: () => deleteInternalServer(axios, id),
-    onSuccess: () => {
-      toast({
-        title: t('delete-success'),
-        variant: 'success',
-      });
-      router.push('/servers');
-    },
-    onError: (error) =>
-      toast({
-        title: t('delete-fail'),
-        description: error.message,
-        variant: 'destructive',
-      }),
-    onSettled: () => {
-      revalidate('/servers');
-      invalidateByKey(['servers']);
-    },
-  });
-
   const isChanged =
     JSON.stringify(form.getValues()) !== JSON.stringify(currentServer);
-  const isLoading = isPending || isDeleting;
 
   return (
     <div className="relative flex h-full flex-col justify-between gap-2">
@@ -221,7 +197,7 @@ export default function ServerUpdateForm({ server }: Props) {
               variant="secondary"
               title={t('reset')}
               onClick={() => form.reset()}
-              disabled={isLoading}
+              disabled={isPending}
             >
               {t('reset')}
             </Button>
@@ -239,37 +215,73 @@ export default function ServerUpdateForm({ server }: Props) {
             >
               {t('update')}
             </Button>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  className="min-w-20"
-                  title="Delete"
-                  variant="destructive"
-                  disabled={isLoading}
-                >
-                  <Tran text="delete" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <Tran text="delete-confirm" />
-                <AlertDialogFooter>
-                  <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-                  <AlertDialogAction asChild>
-                    <Button
-                      className="bg-destructive hover:bg-destructive"
-                      title={t('delete')}
-                      onClick={() => deleteServer()}
-                      disabled={isLoading}
-                    >
-                      {t('delete')}
-                    </Button>
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
+            <DeleteServerButton id={id} />
+          </div>  
         </form>
       </Form>
     </div>
+  );
+}
+
+type DeleteServerButtonProps = {
+  id: string;
+};
+
+function DeleteServerButton({ id }: DeleteServerButtonProps) {
+  const axios = useClientApi();
+  const router = useRouter();
+  const { invalidateByKey } = useQueriesData();
+  const t = useI18n();
+  const { toast } = useToast();
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['servers'],
+    mutationFn: () => deleteInternalServer(axios, id),
+    onSuccess: () => {
+      toast({
+        title: t('delete-success'),
+        variant: 'success',
+      });
+      router.push('/servers');
+    },
+    onError: (error) =>
+      toast({
+        title: t('delete-fail'),
+        description: error.message,
+        variant: 'destructive',
+      }),
+    onSettled: () => {
+      revalidate('/servers');
+      invalidateByKey(['servers']);
+    },
+  });
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button
+          className="min-w-20"
+          title="Delete"
+          variant="destructive"
+          disabled={isPending}
+        >
+          <Tran text="delete" />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <Tran text="delete-confirm" />
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+          <AlertDialogAction asChild>
+            <Button
+              className="bg-destructive hover:bg-destructive"
+              title={t('delete')}
+              onClick={() => mutate()}
+              disabled={isPending}
+            >
+              {t('delete')}
+            </Button>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
