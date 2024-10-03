@@ -40,10 +40,10 @@ const nextConfig = {
   },
 };
 
-// const analyze = process.env.ANALYZE === 'true';
+const analyze = process.env.ANALYZE === 'true';
 
-// const withBundleAnalyzer = require('@next/bundle-analyzer')({
-//   enabled: analyze,
-// });
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: analyze,
+});
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

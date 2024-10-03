@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import Tran from '@/components/common/tran';
 import { Log } from '@/types/response/Log';
 import MetricWrapper from '@/components/metric/metric-wrapper';
@@ -47,7 +45,7 @@ async function LoginTable() {
 function LoginLogCard({
   log: { id, content, ip, createdAt },
 }: LoginLogCardProps) {
-  const from = moment(new Date(createdAt).toISOString()).fromNow();
+  const from = new Date(createdAt).toLocaleString();
 
   return (
     <span

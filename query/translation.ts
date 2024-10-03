@@ -18,7 +18,7 @@ export async function getTranslation(
 
 export async function getTranslationDiff(
   axios: AxiosInstance,
-  params: PaginationQuery & { language: Locale },
+  params: PaginationQuery & { language: Locale; target: Locale },
 ): Promise<TranslationDiff[]> {
   const result = await axios.get('/translations/diff', { params });
 
@@ -27,7 +27,7 @@ export async function getTranslationDiff(
 
 export async function getTranslationDiffCount(
   axios: AxiosInstance,
-  params: { language: Locale; key?: string },
+  params: { language: Locale; target: Locale; key?: string },
 ) {
   const result = await axios.get('/translations/diff/count', {
     params,
@@ -38,7 +38,7 @@ export async function getTranslationDiffCount(
 
 export async function getTranslationCompare(
   axios: AxiosInstance,
-  params: PaginationQuery & { language: Locale },
+  params: PaginationQuery & { language: Locale; target: Locale },
 ): Promise<TranslationCompare[]> {
   const result = await axios.get('/translations/compare', { params });
 
@@ -47,7 +47,7 @@ export async function getTranslationCompare(
 
 export async function getTranslationCompareCount(
   axios: AxiosInstance,
-  params: { language: Locale; key?: string },
+  params: { language: Locale; target: Locale; key?: string },
 ) {
   const result = await axios.get('/translations/compare/count', {
     params,

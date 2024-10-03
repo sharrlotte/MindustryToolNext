@@ -61,19 +61,21 @@ const translateModes = ['diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];
 
 const defaultState = {
-  language: 'vi',
+  target: 'vi',
+  language: 'en',
   mode: 'compare',
   key: '',
 };
 
 export default function Page() {
-  const [{ language, mode, key }, setQueryState] = useQueryState(defaultState);
+  const [{ language, target, mode, key }, setQueryState] =
+    useQueryState(defaultState);
   const t = useI18n();
 
   return (
     <Fragment>
       <div className="hidden h-full flex-col gap-4 p-4 landscape:flex">
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <ComboBox<Locale>
             value={{ label: t(language), value: language as Locale }}
             values={locales.map((locale) => ({
@@ -83,6 +85,15 @@ export default function Page() {
             onChange={(language) =>
               setQueryState({ language: language ?? 'en' })
             }
+          />
+          {'=>'}
+          <ComboBox<Locale>
+            value={{ label: t(target), value: target as Locale }}
+            values={locales.map((locale) => ({
+              label: t(locale),
+              value: locale,
+            }))}
+            onChange={(target) => setQueryState({ target: target ?? 'en' })}
           />
           <ComboBox<TranslateMode>
             value={{

@@ -41,5 +41,6 @@ export const ItemPaginationQuery = z.object({
 export const TranslationPaginationQuery = z.object({
   ...PaginationParam,
   language: Language,
+  target: Language,
   key: z.string().optional(),
 });
