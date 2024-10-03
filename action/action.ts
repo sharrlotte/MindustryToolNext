@@ -45,11 +45,10 @@ export type ApiError = { error: any };
 
 export async function serverApi<T>(
   queryFn: ServerApi<T>,
-  options?: { cookies?: boolean },
 ): Promise<T | ApiError> {
   unstable_noStore(); // To opt out of static renderer
   try {
-    const axios = await getServerApi(options);
+    const axios = await getServerApi();
 
     const data =
       'queryFn' in queryFn
@@ -108,14 +107,10 @@ export async function getSession(): Promise<Session | null> {
   return result;
 }
 
-export const getServerApi = async (options?: {
-  cookies?: boolean;
-}): Promise<AxiosInstance> => {
-  if (options?.cookies) {
-    const cookie = cookies().toString();
+export const getServerApi = async (): Promise<AxiosInstance> => {
+  const cookie = cookies().toString();
 
-    axiosInstance.defaults.headers['Cookie'] = cookie;
-  }
+  axiosInstance.defaults.headers['Cookie'] = cookie;
 
   return axiosInstance;
 };

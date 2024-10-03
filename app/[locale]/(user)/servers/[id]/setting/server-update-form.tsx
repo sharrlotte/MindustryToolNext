@@ -122,7 +122,7 @@ export default function ServerUpdateForm({ server }: Props) {
           className="flex flex-1 flex-col justify-between bg-card p-4"
           onSubmit={form.handleSubmit((value) => mutate(value))}
         >
-          <div className="space-y-6">
+          <div className="space-y-6 overflow-y-auto">
             <FormField
               control={form.control}
               name="name"

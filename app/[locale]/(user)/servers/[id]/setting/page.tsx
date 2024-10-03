@@ -32,7 +32,7 @@ export default async function Page({ params: { id } }: PageProps) {
   }
 
   return (
-    <div className="flex h-full flex-col gap-2 overflow-y-auto p-2">
+    <div className="flex h-full flex-col gap-2 p-2">
       <ProtectedElement session={session} all={['SHAR']}>
         <Dialog>
           <div className="flex bg-card p-2">
