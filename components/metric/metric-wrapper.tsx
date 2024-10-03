@@ -1,3 +1,5 @@
+'use client';
+
 import { ExpandIcon, ShrinkIcon } from '@/components/common/icons';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -12,7 +14,7 @@ export default function MetricWrapper({ children }: Props) {
 
   return (
     <div
-      className={cn('relative', {
+      className={cn('relative flex bg-card h-full', {
         'absolute inset-0 z-10 max-h-[calc(100dvh-var(--nav))]': expand,
       })}
     >

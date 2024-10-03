@@ -1,29 +1,40 @@
-'use client';
-
+import { serverApi } from '@/action/action';
+import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
 import MetricWrapper from '@/components/metric/metric-wrapper';
+import { getLoginHistories } from '@/query/login-history';
 import { UserLoginHistory } from '@/types/response/UserLoginHistory';
 
-type Props = {
-  data: UserLoginHistory[];
-};
-
-export default function LoginHistory({ data }: Props) {
+export default function LoginHistory() {
   return (
     <MetricWrapper>
-      <div className="flex h-[500px] w-full flex-col gap-2 bg-card p-2">
-        <span className="font-bold">
-          <Tran text="metric.user-login-history" />
-        </span>
-        <div className="h-[400px]">
-          <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
-            {data.map((history) => (
-              <LoginHistoryCard key={history.id} history={history} />
-            ))}
-          </section>
-        </div>
-      </div>
+      <LoginTable />
     </MetricWrapper>
+  );
+}
+
+async function LoginTable() {
+  const data = await serverApi((axios) =>
+    getLoginHistories(axios, { page: 0, size: 20 }),
+  );
+
+  if ('error' in data) {
+    return <ErrorScreen error={data} />;
+  }
+
+  return (
+    <div className="flex h-[500px] w-full flex-col gap-2 bg-card p-2">
+      <span className="font-bold">
+        <Tran text="metric.user-login-history" />
+      </span>
+      <div className="h-[400px]">
+        <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
+          {data.map((history) => (
+            <LoginHistoryCard key={history.id} history={history} />
+          ))}
+        </section>
+      </div>
+    </div>
   );
 }
 

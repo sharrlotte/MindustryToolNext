@@ -1,45 +1,33 @@
-'use client';
-
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-
-import Tran from '@/components/common/tran';
 import { fillMetric } from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
-import { Metric } from '@/types/response/Metric';
-import MetricWrapper from '@/components/metric/metric-wrapper';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+import { serverApi } from '@/action/action';
+import { getMetric } from '@/query/metric';
+import ErrorScreen from '@/components/common/error-screen';
+import ClientChartClient from '@/components/metric/client-chart.client';
 
 type Props = {
-  data: { web: Metric[]; mod: Metric[]; server: Metric[] };
   start: Date;
+  end: Date;
   dates: number;
 };
 
-export default function ClientChart({
-  start,
-  dates,
-  data: { web, mod, server },
-}: Props) {
-  const t = useI18n();
+export default async function ClientChart({ start, end, dates }: Props) {
+  const [mod, web, server] = await Promise.all([
+    serverApi((axios) => getMetric(axios, start, end, 'DAILY_MOD_USER')),
+    serverApi((axios) => getMetric(axios, start, end, 'DAILY_WEB_USER')),
+    serverApi((axios) => getMetric(axios, start, end, 'DAILY_SERVER_USER')),
+  ]);
+
+  if ('error' in mod) {
+    return <ErrorScreen error={mod} />;
+  }
+
+  if ('error' in web) {
+    return <ErrorScreen error={web} />;
+  }
+
+  if ('error' in server) {
+    return <ErrorScreen error={server} />;
+  }
 
   const fixedWeb = fillMetric(start, dates, web, 0);
   const fixedMod = fillMetric(start, dates, mod, 0);
@@ -49,62 +37,12 @@ export default function ClientChart({
     value: m.value + fixedWeb[index].value + fixedServer[index].value,
   }));
 
-  const chart = {
-    labels: fixedWeb.map(({ createdAt }) => createdAt),
-    datasets: [
-      {
-        label: t('metric.mod-user'),
-        data: fixedMod.map(({ value }) => value),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        tension: 0.3,
-      },
-      {
-        label: t('metric.web-user'),
-        data: fixedWeb.map(({ value }) => value),
-        borderColor: 'rgb(99, 255, 132)',
-        backgroundColor: 'rgba(99, 255, 132)',
-        tension: 0.3,
-      },
-      {
-        label: t('metric.server-user'),
-        data: fixedServer.map(({ value }) => value),
-        borderColor: 'rgb(255, 255, 132)',
-        backgroundColor: 'rgba(255, 255, 132)',
-        tension: 0.3,
-      },
-      {
-        label: t('metric.total-user'),
-        data: total.map(({ value }) => value),
-        borderColor: 'rgb(99, 132, 255)',
-        backgroundColor: 'rgb(99, 132, 255)',
-        tension: 0.3,
-      },
-    ],
-  };
-
   return (
-    <MetricWrapper>
-      <div className="flex  h-full w-full flex-col gap-2 bg-card p-2">
-        <span className="font-bold">
-          <Tran text="client" />
-        </span>
-        <div className="h-full">
-          <Line
-            options={{
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: {
-                    stepSize: 1,
-                  },
-                },
-              },
-            }}
-            data={chart}
-          />
-        </div>
-      </div>
-    </MetricWrapper>
+    <ClientChartClient
+      mod={fixedMod}
+      web={fixedWeb}
+      server={fixedServer}
+      total={total}
+    />
   );
 }
