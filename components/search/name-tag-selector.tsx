@@ -12,6 +12,7 @@ import { useI18n } from '@/i18n/client';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 import { cn } from '@/lib/utils';
+import TagPreset from '@/components/search/tag-preset';
 
 type NameTagSelectorProps = {
   tags?: TagGroup[];
@@ -101,14 +102,17 @@ export default function NameTagSelector({
           onClickOutside={handleHideFilterDialog}
         >
           <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
-            <Search className="w-full p-1">
-              <Search.Icon className="p-1" />
-              <Search.Input
-                value={filter}
-                placeholder={t('filter')}
-                onChange={(event) => setFilter(event.currentTarget.value)}
-              />
-            </Search>
+            <div className="flex w-full gap-2">
+              <Search className="w-full p-1">
+                <Search.Icon className="p-1" />
+                <Search.Input
+                  value={filter}
+                  placeholder={t('filter')}
+                  onChange={(event) => setFilter(event.currentTarget.value)}
+                />
+              </Search>
+              <TagPreset />
+            </div>
             <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
               <FilterTags
                 filter={filter}

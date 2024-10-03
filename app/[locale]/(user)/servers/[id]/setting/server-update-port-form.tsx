@@ -71,7 +71,7 @@ export default function ServerUpdatePortForm({ server: { id, port } }: Props) {
   return (
     <Form {...form}>
       <form
-        className="flex flex-1 flex-col justify-between gap-4 bg-card p-4"
+        className="relative flex flex-1 flex-col justify-between gap-4 bg-card p-4"
         onSubmit={form.handleSubmit((value) => mutate(value))}
       >
         <div className="space-y-6">

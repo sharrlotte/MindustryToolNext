@@ -45,11 +45,10 @@ export type ApiError = { error: any };
 
 export async function serverApi<T>(
   queryFn: ServerApi<T>,
-  options?: { cookies?: boolean },
 ): Promise<T | ApiError> {
   unstable_noStore(); // To opt out of static renderer
   try {
-    const axios = await getServerApi(options);
+    const axios = await getServerApi();
 
     const data =
       'queryFn' in queryFn
@@ -58,8 +57,7 @@ export async function serverApi<T>(
 
     return data;
   } catch (error) {
-    console.error(error);
-    return { error: JSON.stringify(error) };
+    return { error: JSON.parse(JSON.stringify(error)) };
   }
 }
 
@@ -89,18 +87,16 @@ export default async function prefetch<
 }
 
 const getCachedSession = unstable_cache(
-  (cookie) => {
-    axiosInstance.defaults.headers['Cookie'] = cookie;
-
-    return axiosInstance.get('/auth/session').then((r) => r.data);
+  (axios: AxiosInstance) => {
+    return axios.get('/auth/session').then((r) => r.data);
   },
   ['session'],
   { revalidate: 60 },
 );
 
 export async function getSession(): Promise<Session | null> {
-  const cookie = cookies().toString();
-  const result = serverApi(() => getCachedSession(cookie));
+  const axios = await getServerApi();
+  const result = serverApi(() => getCachedSession(axios));
 
   if ('error' in result) {
     return null;
@@ -109,14 +105,10 @@ export async function getSession(): Promise<Session | null> {
   return result;
 }
 
-export const getServerApi = async (options?: {
-  cookies?: boolean;
-}): Promise<AxiosInstance> => {
-  if (options?.cookies) {
-    const cookie = cookies().toString();
+export const getServerApi = async (): Promise<AxiosInstance> => {
+  const cookie = cookies().toString();
 
-    axiosInstance.defaults.headers['Cookie'] = cookie;
-  }
+  axiosInstance.defaults.headers['Cookie'] = cookie;
 
   return axiosInstance;
 };
