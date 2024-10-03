@@ -20,12 +20,15 @@ import {
   DialogContent,
   DialogTitle,
   DialogDescription,
+  DialogClose,
 } from '@/components/ui/dialog';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
+import TagContainer from '@/components/tag/tag-container';
+import { Tags } from '@/types/response/Tag';
 
 type CreatePresetButtonProps = {
   tags: TagGroup[];
@@ -42,6 +45,8 @@ export default function CreatePresetButton({ tags }: CreatePresetButtonProps) {
       name: '',
     },
   });
+
+  const values = useMemo(() => Tags.fromTagGroup(tags), [tags]);
 
   function createPreset({ name }: { name: string }) {
     addTagPreset({ name, tags: tags || [] });
@@ -84,7 +89,13 @@ export default function CreatePresetButton({ tags }: CreatePresetButtonProps) {
                 </FormItem>
               )}
             />
-            <div className="flex justify-end">
+            <TagContainer tags={values} />
+            <div className="flex justify-end gap-1">
+              <DialogClose asChild>
+                <Button variant="secondary" type="submit">
+                  <Tran text="close" />
+                </Button>
+              </DialogClose>
               <Button variant="secondary" type="submit">
                 <Tran text="tags.create-preset" />
               </Button>
