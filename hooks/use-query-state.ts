@@ -53,7 +53,7 @@ export default function useQueryState(initialState: Record<string, string>) {
       });
 
       Object.entries(queryParams).forEach(([key]) => {
-        if (!queryParams.get(key)) {
+        if (queryParams.get(key) == null) {
           queryParams.delete(key);
         }
       });
