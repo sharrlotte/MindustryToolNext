@@ -1,6 +1,5 @@
 import { Log } from '@/types/response/Log';
 
-import moment from 'moment';
 import React from 'react';
 
 type LogCardProps = {
@@ -29,8 +28,7 @@ export default function LogCard({
         <span onClick={() => onClick({ userId })}>UserID: {userId}</span>
       )}
       <span onClick={() => onClick({ content })}>Content: {content}</span>
-      <span>Created at: {moment(createdAt).fromNow()}</span>
-      <span>Created at: {new Date(createdAt).toLocaleString('vi')}</span>
+      <span>Created at: {new Date(createdAt).toLocaleString()}</span>
     </div>
   );
 }

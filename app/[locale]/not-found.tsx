@@ -1,3 +1,5 @@
 import NotFoundScreen from '@/components/common/not-found-screen';
 
-export default NotFoundScreen;
+const NotFound = NotFoundScreen;
+
+export default NotFound;

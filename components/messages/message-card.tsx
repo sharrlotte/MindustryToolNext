@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import ColorText from '@/components/common/color-text';
 import { Skeleton } from '@/components/ui/skeleton';
 import ColorAsRole from '@/components/user/color-as-role';
@@ -30,15 +28,16 @@ export function MessageCard({ className, message }: Props) {
 
   const diff = Date.now() - Date.parse(createdAt);
   const time =
-    diff > ONE_HOUR
-      ? diff > ONE_DAY
-        ? new Date(createdAt).toLocaleString()
-        : new Date(createdAt).toLocaleTimeString()
-      : moment(createdAt).fromNow();
+    diff > ONE_DAY
+      ? new Date(createdAt).toLocaleString()
+      : new Date(createdAt).toLocaleTimeString();
 
   return (
     <div
-      className={cn('flex w-full gap-2 text-wrap rounded-lg p-2', className)}
+      className={cn(
+        'flex w-full gap-2 text-wrap rounded-lg p-2 text-xs',
+        className,
+      )}
     >
       {data ? (
         <UserAvatar user={data} />

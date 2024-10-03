@@ -56,7 +56,9 @@ export default function Page() {
   });
 
   function setFilePath(path: string) {
-    setQueryState({ path: path.replaceAll('//', '/') });
+    const newPath = path.replaceAll('//', '/') || '/';
+
+    setQueryState({ path: newPath });
   }
 
   if (error) {
@@ -94,7 +96,7 @@ export default function Page() {
           ) : (
             data
               .filter(({ name }) => name.includes(search))
-              .sort()
+              .sort((a, b) => a.name.localeCompare(b.name))
               .map((file) => (
                 <FileCard
                   key={file.name}

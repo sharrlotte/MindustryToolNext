@@ -1,85 +1,27 @@
-'use client';
-
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-} from 'chart.js';
 import React from 'react';
-import { Line } from 'react-chartjs-2';
 
-import Tran from '@/components/common/tran';
 import { fillMetric } from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
-import { Metric } from '@/types/response/Metric';
-import MetricWrapper from '@/components/metric/metric-wrapper';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+import { serverApi } from '@/action/action';
+import { getMetric } from '@/query/metric';
+import ErrorScreen from '@/components/common/error-screen';
+import LikeChartClient from '@/components/metric/like-chart.client';
 
 type Props = {
-  data: Metric[];
   start: Date;
+  end: Date;
   dates: number;
 };
 
-export default function LikeChart({ start, dates, data }: Props) {
-  const filledData = fillMetric(start, dates, data, 0);
-  const t = useI18n();
-
-  const chart = {
-    labels: filledData.map(({ createdAt }) => createdAt),
-    datasets: [
-      {
-        label: t('metric.like'),
-        data: filledData.map(({ value }) => value),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        tension: 0.3,
-      },
-    ],
-  };
-
-  return (
-    <MetricWrapper>
-      <div className="flex  h-full w-full flex-col justify-between gap-2 bg-card p-2">
-        <span className="font-bold">
-          <Tran text="metric.user-interaction" />
-        </span>
-        <div className="h-full bg-card">
-          <Line
-            options={{
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: 'top' as const,
-                },
-              },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: {
-                    stepSize: 1,
-                  },
-                },
-              },
-            }}
-            data={chart}
-          />
-        </div>
-      </div>
-    </MetricWrapper>
+export default async function LikeChart({ start, dates, end }: Props) {
+  const data = await serverApi((axios) =>
+    getMetric(axios, start, end, 'DAILY_LIKE'),
   );
+
+  if ('error' in data) {
+    return <ErrorScreen error={data} />;
+  }
+
+  const filledData = fillMetric(start, dates, data, 0);
+
+  return <LikeChartClient data={filledData} />;
 }
