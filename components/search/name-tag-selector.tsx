@@ -10,29 +10,9 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useI18n } from '@/i18n/client';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
-import { addTagPreset, cn } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import TagPreset from '@/components/search/tag-preset';
-import Tran from '@/components/common/tran';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Hidden } from '@/components/common/hidden';
-import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import CreatePresetButton from '@/components/search/create-preset-button';
 
 type NameTagSelectorProps = {
   tags?: TagGroup[];
@@ -152,7 +132,7 @@ export default function NameTagSelector({
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />
               </Search>
-              <TagPreset />
+              <TagPreset onPresetChoose={(value) => onChange(() => value)} />
             </div>
             <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
               <FilterTags
@@ -163,7 +143,7 @@ export default function NameTagSelector({
               />
             </CardContent>
             <CardFooter className="flex justify-end gap-1 p-0">
-              <CreatePresetButton />
+              <CreatePresetButton tags={value} />
               <Button
                 title={t('close')}
                 variant="outline"
@@ -176,68 +156,5 @@ export default function NameTagSelector({
         </div>
       </div>
     </div>
-  );
-}
-
-type CreatePresetButtonProps = {
-  tags?: TagGroup[];
-};
-
-function CreatePresetButton({ tags }: CreatePresetButtonProps) {
-  const [open, setOpen] = useState(false);
-
-  const form = useForm({
-    resolver: zodResolver(z.object({ name: z.string().min(1).max(100) })),
-    defaultValues: {
-      name: '',
-    },
-  });
-
-  function createPreset({ name }: { name: string }) {
-    addTagPreset({ name, tags: tags ?? [] });
-    setOpen(false);
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="secondary">
-          <Tran text="tags.create-preset" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="bg-card p-6">
-        <Hidden>
-          <DialogTitle />
-          <DialogDescription />
-        </Hidden>
-        <Form {...form}>
-          <form
-            className="relative flex flex-1 flex-col justify-between gap-4 bg-card p-4"
-            onSubmit={form.handleSubmit((value) => createPreset(value))}
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    <Tran text="tags.preset-name" />
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="Silicon" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-end">
-              <Button variant="secondary" type="submit">
-                <Tran text="tags.create-preset" />
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
   );
 }

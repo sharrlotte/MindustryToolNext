@@ -372,7 +372,7 @@ export async function sleep(seconds: number) {
 
 export const PRESET_LOCAL_STORAGE_NAME = 'TAG_PRESET';
 
-type TagPreset = {
+export type TagPreset = {
   name: string;
   tags: TagGroup[];
 };
@@ -395,6 +395,12 @@ export function getTagPreset(): TagPreset[] {
   } catch (e) {
     return [];
   }
+}
+
+export function deleteTagPreset(name: string) {
+  const value = getTagPreset().filter((item) => item.name !== name);
+
+  return localStorage.setItem(PRESET_LOCAL_STORAGE_NAME, JSON.stringify(value));
 }
 
 export function addTagPreset(newPreset: TagPreset) {
