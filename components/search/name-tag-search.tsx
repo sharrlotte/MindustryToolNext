@@ -108,25 +108,29 @@ export default function NameTagSearch({
 
   const handleTagGroupChange = useCallback(
     (name: string, values: string[]) => {
-      const group = filterBy.find((tag) => tag.name === name);
+      setFilterBy((prev) => {
+        const group = prev.find((tag) => tag.name === name);
 
-      if (group) {
-        group.values = values;
-        setFilterBy([...filterBy]);
-      } else {
-        const result = tags.find((tag) => tag.name === name);
+        if (group) {
+          return prev.map((item) =>
+            item.name === name ? { ...item, values } : item,
+          );
+        } else {
+          const result = tags.find((tag) => tag.name === name);
 
-        // Ignore tag that not match with server
-        if (result) {
-          const t = { ...result, values };
-          setFilterBy([...filterBy, t]);
+          // Ignore tag that not match with server
+          if (result) {
+            const t = { ...result, values };
+            return [...prev, t];
+          }
+
+          return [];
         }
-      }
+      });
       setChanged(true);
     },
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [tags],
+    [tags, setFilterBy],
   );
 
   function handleSortChange(value: any) {
@@ -156,7 +160,14 @@ export default function NameTagSearch({
     setFilterBy((prev) => {
       const group = prev.find((item) => item.name === tag.name);
       if (group) {
-        group.values = group.values.filter((item) => item !== tag.value);
+        return prev.map((item) =>
+          item.name === tag.name
+            ? {
+                ...item,
+                values: group.values.filter((item) => item !== tag.value),
+              }
+            : item,
+        );
       }
 
       return [...prev];
