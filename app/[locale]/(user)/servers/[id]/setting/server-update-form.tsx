@@ -116,7 +116,7 @@ export default function ServerUpdateForm({ server }: Props) {
   const isLoading = isPending || isDeleting;
 
   return (
-    <div className="flex h-full flex-col justify-between gap-2">
+    <div className="relative flex h-full flex-col justify-between gap-2">
       <Form {...form}>
         <form
           className="flex flex-1 flex-col justify-between bg-card p-4"

@@ -58,8 +58,7 @@ export async function serverApi<T>(
 
     return data;
   } catch (error) {
-    console.error(error);
-    return { error: JSON.stringify(error) };
+    return { error: JSON.parse(JSON.stringify(error)) };
   }
 }
 

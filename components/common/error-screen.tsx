@@ -17,6 +17,8 @@ export default function ErrorScreen({
   const t = useI18n();
   const axios = useClientApi();
 
+  console.error(error);
+
   const message =
     ('error' in error ? error.error.message : error.message) ??
     'Something went wrong!';
