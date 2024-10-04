@@ -117,8 +117,9 @@ export async function getInternalServer(
 
 export async function getInternalServers(
   axios: AxiosInstance,
+  params?: { official: boolean },
 ): Promise<InternalServerDetail[]> {
-  const result = await axios.get(`/internal-servers`);
+  const result = await axios.get(`/internal-servers`, { params });
 
   return result.data;
 }

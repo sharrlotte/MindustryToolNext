@@ -1,15 +1,19 @@
 import React from 'react';
 
 import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getPostUpload } from '@/query/post';
 import Tran from '@/components/common/tran';
 import BackButton from '@/components/ui/back-button';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 
-export default async function Page({ params }: { params: IdSearchParams }) {
-  const post = await serverApi((axios) => getPostUpload(axios, params));
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+  const post = await serverApi((axios) => getPostUpload(axios, { id }));
 
   if ('error' in post) {
     return <ErrorScreen error={post} />;

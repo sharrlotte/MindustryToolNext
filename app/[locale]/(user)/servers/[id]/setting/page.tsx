@@ -18,10 +18,12 @@ import { Hidden } from '@/components/common/hidden';
 import ErrorScreen from '@/components/common/error-screen';
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export default async function Page({ params: { id } }: PageProps) {
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
+
   const [server, session] = await Promise.all([
     serverApi((axios) => getInternalServer(axios, { id })),
     getSession(),
@@ -38,7 +40,7 @@ export default async function Page({ params: { id } }: PageProps) {
           <div className="flex bg-card p-2">
             <DialogTrigger asChild>
               <Button className="ml-auto" variant="secondary">
-                <Tran text="server.update-port" />
+                <Tran text="server.update" />
               </Button>
             </DialogTrigger>
           </div>

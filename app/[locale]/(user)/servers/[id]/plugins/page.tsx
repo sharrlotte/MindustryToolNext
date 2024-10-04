@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 
 import InfinitePage from '@/components/common/infinite-page';
 import InternalServerPluginCard from '@/components/server/internal-server-plugin-card';
-import useSafeParam from '@/hooks/use-safe-param';
 
 import { getInternalServerPlugins } from '@/query/server';
 import { AddPluginDialog } from '@/app/[locale]/(user)/servers/[id]/plugins/add-plugin-dialog';
+import useSearchId from '@/hooks/use-search-id-params';
 
 export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const id = useSafeParam().get('id');
+  const { id } = useSearchId();
 
   return (
     <div className="flex flex-col gap-2 overflow-hidden pl-2">

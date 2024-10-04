@@ -5,10 +5,12 @@ import ErrorScreen from '@/components/common/error-screen';
 import { getMe, getUser } from '@/query/user';
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export default async function Page({ params: { id } }: Props) {
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+
   if (id === '@me') {
     const me = await serverApi((axios) => getMe(axios));
 

@@ -1,4 +1,3 @@
-import { Params } from 'next/dist/client/components/params';
 import { useParams } from 'next/navigation';
 
 export default function useSafeParam() {
@@ -7,9 +6,9 @@ export default function useSafeParam() {
 }
 
 class SafeParams {
-  private params: Params;
+  private params: any;
 
-  constructor(params: Params) {
+  constructor(params: any) {
     this.params = params;
   }
 

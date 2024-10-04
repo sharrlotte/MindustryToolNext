@@ -1,6 +1,6 @@
 'use client';
 
-import { notFound, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/i18n/client';
@@ -18,8 +18,6 @@ export default function ErrorScreen({
   const path = usePathname();
   const axios = useClientApi();
 
-  console.error(error);
-
   const message =
     ('error' in error ? error.error.message : error.message) ??
     'Something went wrong!';
@@ -27,10 +25,6 @@ export default function ErrorScreen({
   useEffect(() => {
     reportError(axios, { message: JSON.stringify(error), path });
   }, [axios, path, error]);
-
-  if (message === 'NEXT_NOT_FOUND') {
-    throw notFound();
-  }
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4">

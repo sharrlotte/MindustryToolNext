@@ -25,6 +25,7 @@ export function ThemeSwitcher() {
         {t(theme + '-mode')}
       </span>
       <Switch
+        className="data-[state=checked]:bg-white data-[state=checked]:dark:bg-primary"
         checked={theme === 'light'}
         onCheckedChange={(value) => setTheme(value ? 'light' : 'dark')}
       />

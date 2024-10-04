@@ -97,9 +97,9 @@ const getCachedSession = unstable_cache(
 );
 
 export async function getSession(): Promise<Session | null> {
-  const cookie = cookies().toString();
+  const cookie = await cookies();
 
-  const result = serverApi(() => getCachedSession(cookie));
+  const result = serverApi(() => getCachedSession(cookie.toString()));
 
   if ('error' in result) {
     return null;
@@ -109,9 +109,9 @@ export async function getSession(): Promise<Session | null> {
 }
 
 export const getServerApi = async (): Promise<AxiosInstance> => {
-  const cookie = cookies().toString();
+  const cookie = await cookies();
 
-  axiosInstance.defaults.headers['Cookie'] = cookie;
+  axiosInstance.defaults.headers['Cookie'] = cookie.toString();
 
   return axiosInstance;
 };

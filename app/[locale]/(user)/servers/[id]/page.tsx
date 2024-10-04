@@ -28,10 +28,12 @@ import ErrorScreen from '@/components/common/error-screen';
 export const experimental_ppr = true;
 
 type Props = {
-  params: { id: string; locale: string };
+  params: Promise<{ id: string; locale: string }>;
 };
 
-export default async function Page({ params: { id } }: Props) {
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+
   const [server, session] = await Promise.all([
     serverApi((axios) => getInternalServer(axios, { id })),
     getSession(),

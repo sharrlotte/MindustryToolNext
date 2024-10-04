@@ -6,6 +6,7 @@ export type InternalServerDetail = {
   userId: string;
   description: string;
   port: number;
+  official: boolean;
   mode: InternalServerMode;
   started: boolean;
   alive: boolean;

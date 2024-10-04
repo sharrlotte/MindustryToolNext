@@ -4,26 +4,23 @@ import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 import { Fragment } from 'react';
 
-const NavigationBar = dynamic(() => import('./navigation'), { ssr: false });
-const Toaster = dynamic(() => import('@/components/ui/toaster'), {
-  ssr: false,
-});
+const NavigationBar = dynamic(() => import('./navigation'));
+const Toaster = dynamic(() => import('@/components/ui/toaster'));
 
 type RootProps = {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     locale: Locale;
-  };
+  }>;
 };
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-export default async function Root({
-  children,
-  params: { locale },
-}: RootProps) {
+export default async function Root({ children, params }: RootProps) {
+  const { locale } = await params;
+
   return (
     <Fragment>
       <I18nProvider locale={locale} />
