@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@/components/theme/theme-provider';
-import { TooltipProvider } from '@/components/ui/tooltip';
 import env from '@/constant/env';
 import { SessionProvider } from '@/context/session-context';
 import { SocketProvider } from '@/context/socket-context';
@@ -77,10 +76,8 @@ export default async function Root({ children, params }: Props) {
           <SessionProvider>
             <SocketProvider>
               <QueryProvider>
-                <TooltipProvider>
-                  <ClientInit />
-                  {children}
-                </TooltipProvider>
+                <ClientInit />
+                {children}
               </QueryProvider>
             </SocketProvider>
           </SessionProvider>

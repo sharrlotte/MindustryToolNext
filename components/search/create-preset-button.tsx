@@ -29,6 +29,7 @@ import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import TagContainer from '@/components/tag/tag-container';
 import { Tags } from '@/types/response/Tag';
+import useQueriesData from '@/hooks/use-queries-data';
 
 type CreatePresetButtonProps = {
   tags: TagGroup[];
@@ -37,6 +38,7 @@ type CreatePresetButtonProps = {
 export default function CreatePresetButton({ tags }: CreatePresetButtonProps) {
   const [open, setOpen] = useState(false);
 
+  const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
 
   const form = useForm({
@@ -51,6 +53,7 @@ export default function CreatePresetButton({ tags }: CreatePresetButtonProps) {
   function createPreset({ name }: { name: string }) {
     addTagPreset({ name, tags: tags || [] });
     setOpen(false);
+    invalidateByKey(['preset']);
     toast({
       variant: 'success',
       title: <Tran text="tags.preset-create-success" />,

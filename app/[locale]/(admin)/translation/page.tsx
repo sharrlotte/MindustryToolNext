@@ -513,8 +513,6 @@ function DeleteTranslationDialog({
 function TranslationCardSkeleton() {
   const width = 10 + Math.random() * 10;
 
-  console.log('card');
-
   return (
     <TableRow>
       <TableCell>
