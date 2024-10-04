@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
 import ComboBox from '@/components/common/combo-box';
@@ -67,7 +67,7 @@ export default function Page() {
   function render() {
     if (post === undefined) {
       return (
-        <>
+        <Fragment>
           <div className="rounded-md bg-card p-2">
             <AddTranslationDialog onPostSelect={handlePostSelect} />
           </div>
@@ -81,12 +81,12 @@ export default function Page() {
               setLanguage,
             }}
           />
-        </>
+        </Fragment>
       );
     }
 
     return (
-      <>
+      <Fragment>
         <div className="space-x-2 rounded-sm bg-card p-2">
           <Button
             title={t('upload.go-to-upload-page')}
@@ -108,7 +108,7 @@ export default function Page() {
             setLanguage,
           }}
         />
-      </>
+      </Fragment>
     );
   }
 

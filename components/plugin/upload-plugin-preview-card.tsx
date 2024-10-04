@@ -178,7 +178,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                         <NameTagSelector
                           tags={plugin}
                           value={field.value}
-                          onChange={field.onChange}
+                          onChange={(fn) => field.onChange(fn(field.value))}
                         />
                       </FormControl>
                       <FormMessage />
