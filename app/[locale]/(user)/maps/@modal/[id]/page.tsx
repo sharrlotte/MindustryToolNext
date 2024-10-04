@@ -31,8 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: { params: IdSearchParams }) {
-  const map = await serverApi((axios) => getMap(axios, params));
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+  const map = await serverApi((axios) => getMap(axios, { id }));
 
   if ('error' in map) {
     return <ErrorScreen error={map} />;

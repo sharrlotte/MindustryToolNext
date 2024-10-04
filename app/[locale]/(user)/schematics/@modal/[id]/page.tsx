@@ -3,7 +3,6 @@ import React from 'react';
 
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import env from '@/constant/env';
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getSchematic } from '@/query/schematic';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
@@ -31,8 +30,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: { params: IdSearchParams }) {
-  const schematic = await serverApi((axios) => getSchematic(axios, params));
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+  const schematic = await serverApi((axios) => getSchematic(axios, { id }));
 
   if ('error' in schematic) {
     return <ErrorScreen error={schematic} />;

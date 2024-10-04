@@ -1,7 +1,6 @@
 import React from 'react';
 
 import UploadSchematicDetailCard from '@/components/schematic/upload-schematic-detail-card';
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getSchematicUpload } from '@/query/schematic';
 import { Metadata } from 'next';
 import env from '@/constant/env';
@@ -35,9 +34,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: { params: IdSearchParams }) {
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+
   const schematic = await serverApi((axios) =>
-    getSchematicUpload(axios, params),
+    getSchematicUpload(axios, { id }),
   );
 
   if ('error' in schematic) {

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getMapUpload } from '@/query/map';
 import { Metadata } from 'next';
 import env from '@/constant/env';
@@ -33,8 +32,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: { params: IdSearchParams }) {
-  const map = await serverApi((axios) => getMapUpload(axios, params));
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+  const map = await serverApi((axios) => getMapUpload(axios, { id }));
 
   if ('error' in map) {
     return <ErrorScreen error={map} />;
