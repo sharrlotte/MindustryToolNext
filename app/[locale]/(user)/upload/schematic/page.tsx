@@ -314,7 +314,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                   <NameTagSelector
                     tags={schematic}
                     value={field.value}
-                    onChange={field.onChange}
+                    onChange={(fn) => field.onChange(fn(field.value))}
                   />
                 </FormControl>
                 <FormMessage />

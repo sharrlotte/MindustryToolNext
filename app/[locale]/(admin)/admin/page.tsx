@@ -20,7 +20,7 @@ export default async function Page() {
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-4">
-      <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2">
         <Suspense fallback={<ChartSkeleton />}>
           <LikeChart start={start} end={end} dates={NUMBER_OF_DAY} />
         </Suspense>
@@ -30,12 +30,14 @@ export default async function Page() {
         <Suspense fallback={<ChartSkeleton />}>
           <ClientChart start={start} end={end} dates={NUMBER_OF_DAY} />
         </Suspense>
-        <Suspense fallback={<ChartSkeleton />}>
-          <LoginLog />
-        </Suspense>
-        <Suspense fallback={<ChartSkeleton />}>
-          <LoginHistory />
-        </Suspense>
+        <div className="space-y-2">
+          <Suspense fallback={<ChartSkeleton />}>
+            <LoginLog />
+          </Suspense>
+          <Suspense fallback={<ChartSkeleton />}>
+            <LoginHistory />
+          </Suspense>
+        </div>
       </div>
     </div>
   );
