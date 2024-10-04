@@ -24,7 +24,8 @@ type PageProps = {
   children: ReactNode;
 };
 
-export default async function Layout({ params: { id }, children }: PageProps) {
+export default async function Layout({ params, children }: PageProps) {
+  const { id } = await params;
   const session = await getSession();
 
   const links: {

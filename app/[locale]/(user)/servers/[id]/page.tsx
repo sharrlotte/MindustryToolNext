@@ -31,7 +31,9 @@ type Props = {
   params: { id: string; locale: string };
 };
 
-export default async function Page({ params: { id } }: Props) {
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+
   const [server, session] = await Promise.all([
     serverApi((axios) => getInternalServer(axios, { id })),
     getSession(),

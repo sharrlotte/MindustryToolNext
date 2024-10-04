@@ -4,15 +4,15 @@ import React, { useState } from 'react';
 
 import InternalServerMapCard from '@/components/server/internal-server-map-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import useSafeParam from '@/hooks/use-safe-param';
 
 import { getInternalServerMaps } from '@/query/server';
 import { AddMapDialog } from '@/app/[locale]/(user)/servers/[id]/maps/add-map-dialog';
 import InfinitePage from '@/components/common/infinite-page';
+import useSearchId from '@/hooks/use-search-id-params';
 
 export default function ServerMaps() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const id = useSafeParam().get('id');
+  const { id } = useSearchId();
 
   return (
     <div className="flex flex-col gap-2 overflow-hidden pl-2">

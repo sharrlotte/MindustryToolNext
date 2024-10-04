@@ -21,7 +21,9 @@ type PageProps = {
   params: { id: string };
 };
 
-export default async function Page({ params: { id } }: PageProps) {
+export default async function Page({ params }: PageProps) {
+  const { id } = await params;
+
   const [server, session] = await Promise.all([
     serverApi((axios) => getInternalServer(axios, { id })),
     getSession(),
