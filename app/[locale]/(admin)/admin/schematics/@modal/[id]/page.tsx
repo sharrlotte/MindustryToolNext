@@ -11,11 +11,11 @@ import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id;
+  const { id } = await params;
   const schematic = await serverApi((axios) =>
     getSchematicUpload(axios, { id }),
   );

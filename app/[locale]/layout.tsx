@@ -9,9 +9,9 @@ const Toaster = dynamic(() => import('@/components/ui/toaster'));
 
 type RootProps = {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     locale: Locale;
-  };
+  }>;
 };
 
 export async function generateStaticParams() {

@@ -18,7 +18,7 @@ import { Hidden } from '@/components/common/hidden';
 import ErrorScreen from '@/components/common/error-screen';
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function Page({ params }: PageProps) {

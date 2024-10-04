@@ -28,7 +28,7 @@ import ErrorScreen from '@/components/common/error-screen';
 export const experimental_ppr = true;
 
 type Props = {
-  params: { id: string; locale: string };
+  params: Promise<{ id: string; locale: string }>;
 };
 
 export default async function Page({ params }: Props) {
