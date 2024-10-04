@@ -59,7 +59,7 @@ export default function TagPresetList({ onPresetChoose }: TagPresetListProps) {
           <Tran text="tags.preset" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex max-h-dvh flex-col overflow-hidden p-6">
+      <DialogContent className="flex h-full max-h-dvh w-full flex-col overflow-hidden p-6 sm:max-w-[calc(100%-24px)]">
         <DialogTitle>
           <Tran text="tags.preset" />
         </DialogTitle>
@@ -74,7 +74,7 @@ export default function TagPresetList({ onPresetChoose }: TagPresetListProps) {
             onChange={(event) => setFilter(event.currentTarget.value)}
           />
         </Search>
-        <div className="grid h-full gap-2 overflow-y-auto pr-1">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1">
           {preset.map((item) => (
             <TagPresetCard
               key={item.name}
@@ -105,12 +105,17 @@ function TagPresetCard({
   }
 
   return (
-    <div className="flex cursor-pointer items-center justify-between rounded-sm bg-card p-2">
+    <div className="flex cursor-pointer items-start justify-between rounded-sm bg-card p-2">
       <div className="space-y-1" onClick={() => onClick(tags)}>
-        <span>{name}</span>
+        <span className="font-bold">{name}</span>
         <TagContainer tags={Tags.fromTagGroup(tags)} />
       </div>
-      <Button className="p-0" variant="icon" onClick={handleDeletePreset}>
+      <Button
+        className="p-0"
+        variant="icon"
+        size="icon"
+        onClick={handleDeletePreset}
+      >
         <XMarkIcon className="size-5" />
       </Button>
     </div>
