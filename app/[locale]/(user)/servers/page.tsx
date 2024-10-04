@@ -9,6 +9,7 @@ import ProtectedElement from '@/layout/protected-element';
 import { RequireLogin } from '@/app/[locale]/(user)/servers/require-login';
 import { CommunityServer } from '@/app/[locale]/(user)/servers/comunity-server';
 import { MeServer } from '@/app/[locale]/(user)/servers/my-server';
+import { OfficialServer } from '@/app/[locale]/(user)/servers/official-server';
 
 export const experimental_ppr = true;
 
@@ -23,11 +24,14 @@ export default async function Page() {
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
       <Tabs
         className="flex flex-col overflow-hidden"
-        defaultValue="community-server"
+        defaultValue="official-server"
       >
         <div className="flex flex-wrap justify-between gap-2">
           <div>
             <TabsList>
+              <TabsTrigger value="official-server">
+                <Tran text="server.official-server" />
+              </TabsTrigger>
               <TabsTrigger value="community-server">
                 <Tran text="server.community-server" />
               </TabsTrigger>
@@ -40,6 +44,14 @@ export default async function Page() {
             <CreateServerDialog />
           </ProtectedElement>
         </div>
+        <TabsContent
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          value="official-server"
+        >
+          <Suspense fallback={skeleton}>
+            <OfficialServer />
+          </Suspense>
+        </TabsContent>
         <TabsContent
           className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
           value="community-server"

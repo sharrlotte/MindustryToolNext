@@ -1,8 +1,9 @@
 'use client';
 
-import { notFound } from 'next/navigation';
-
 import { Button } from '@/components/ui/button';
+import useClientApi from '@/hooks/use-client';
+import { reportError } from '@/query/api';
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function Error({
@@ -11,14 +12,12 @@ export default function Error({
   error: Error & { digest?: string } & any;
 }) {
   const message = error.message ?? 'Something went wrong!';
-
-  if (message === 'NEXT_NOT_FOUND') {
-    throw notFound();
-  }
+  const path = usePathname();
+  const axios = useClientApi();
 
   useEffect(() => {
-    reportError(JSON.stringify(error));
-  }, [error]);
+    reportError(axios, { message: JSON.stringify(error), path });
+  }, [axios, path, error]);
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4">

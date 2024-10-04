@@ -4,8 +4,10 @@ import RouterSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
 import useClientApi from '@/hooks/use-client';
 import useSafeSearchParams from '@/hooks/use-safe-search-params';
+import { useToast } from '@/hooks/use-toast';
 import { verifyPlayer } from '@/query/auth';
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
 export default function Page() {
@@ -23,10 +25,20 @@ export default function Page() {
 
 function Verify({ token }: { token: string }) {
   const axios = useClientApi();
+  const router = useRouter();
 
-  const { mutate, status, error } = useMutation({
+  const { toast } = useToast();
+
+  const { mutate, status } = useMutation({
     mutationKey: ['verify-player'],
     mutationFn: (token: string) => verifyPlayer(axios, token),
+    onError: (error) => {
+      toast({
+        title: <Tran text="token.verification-failed" />,
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 
   useEffect(() => mutate(token), [mutate, token]);
@@ -37,30 +49,18 @@ function Verify({ token }: { token: string }) {
         <RouterSpinner />
       </div>
     );
-  }
-
-  if (status === 'pending') {
+  } else if (status === 'pending') {
     return (
       <div className="flex h-full flex-col items-center justify-center text-3xl font-bold text-gray-500">
         <Tran text="token.verifying" />
         <RouterSpinner />
       </div>
     );
+  } else if (status === 'error') {
+    router.push('/error');
+  } else {
+    router.push('/success');
   }
 
-  if (status === 'error') {
-    return (
-      <div className="text-danger flex h-full flex-col items-center justify-center text-3xl font-bold">
-        <Tran text="token.verification-failed" />
-        <span className="text-base">{error.message}</span>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex h-full items-center justify-center text-3xl font-bold text-success">
-      <Tran text="token.verified" />
-      <Tran text="token.you-can-go-back-to-game-now" />
-    </div>
-  );
+  return undefined;
 }

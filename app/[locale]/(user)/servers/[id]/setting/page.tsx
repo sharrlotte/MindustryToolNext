@@ -38,7 +38,7 @@ export default async function Page({ params: { id } }: PageProps) {
           <div className="flex bg-card p-2">
             <DialogTrigger asChild>
               <Button className="ml-auto" variant="secondary">
-                <Tran text="server.update-port" />
+                <Tran text="server.update" />
               </Button>
             </DialogTrigger>
           </div>

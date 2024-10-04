@@ -23,6 +23,7 @@ export const PutInternalServerPortSchema = z.object({
     .number()
     .int()
     .refine((value) => value === 0 || (value >= 6567 && value <= 6577)),
+  official: z.boolean(),
 });
 
 export type PutInternalServerPortRequest = z.infer<

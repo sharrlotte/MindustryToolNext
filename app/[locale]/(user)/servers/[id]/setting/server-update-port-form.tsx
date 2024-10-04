@@ -29,17 +29,21 @@ import { useMutation } from '@tanstack/react-query';
 import { updateInternalServerPort } from '@/query/server';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 
 type Props = {
   server: InternalServerDetail;
 };
 
-export default function ServerUpdatePortForm({ server: { id, port } }: Props) {
+export default function ServerUpdatePortForm({
+  server: { id, port, official },
+}: Props) {
   const t = useI18n();
   const form = useForm<PutInternalServerPortRequest>({
     resolver: zodResolver(PutInternalServerPortSchema),
     defaultValues: {
       port,
+      official,
     },
   });
   const { invalidateByKey } = useQueriesData();
@@ -89,6 +93,26 @@ export default function ServerUpdatePortForm({ server: { id, port } }: Props) {
                 <FormDescription>
                   <Tran text="server.port-description" />
                 </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="official"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-1">
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={(value) => field.onChange(value)}
+                    />
+                  </FormControl>
+                  <FormLabel>
+                    <Tran text="server.is-official" />
+                  </FormLabel>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

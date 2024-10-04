@@ -3,9 +3,9 @@ import ErrorScreen from '@/components/common/error-screen';
 import InternalServerCard from '@/components/server/internal-server-card';
 import { getInternalServers } from '@/query/server';
 
-export async function CommunityServer() {
+export async function OfficialServer() {
   const servers = await serverApi((axios) =>
-    getInternalServers(axios, { official: false }),
+    getInternalServers(axios, { official: true }),
   );
 
   if ('error' in servers) {

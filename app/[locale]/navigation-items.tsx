@@ -101,6 +101,11 @@ export function NavItems({ onClick }: NavItemsProps) {
             icon: <MapIcon />,
           },
           {
+            name: <Tran text="plugin" />,
+            path: '/plugins',
+            icon: <PluginIcon />,
+          },
+          {
             path: '/posts', //
             name: <Tran text="post" />,
             icon: <PostIcon />,
@@ -124,11 +129,6 @@ export function NavItems({ onClick }: NavItemsProps) {
             path: '/mindustry-gpt', //
             name: 'MindustryGpt',
             icon: <MindustryGptIcon />,
-          },
-          {
-            name: <Tran text="plugin" />,
-            path: '/plugins',
-            icon: <PluginIcon />,
           },
           {
             name: <Tran text="rank" />,

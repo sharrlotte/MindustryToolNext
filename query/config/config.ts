@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import { notFound } from 'next/navigation';
 
 import env from '@/constant/env';
 
@@ -18,21 +17,12 @@ axiosInstance.interceptors.response.use(
       throw new Error('Service is unavailable, please try again later');
     }
 
-    if (
-      error.response?.data?.status === 404 &&
-      error?.config?.method === 'get'
-    ) {
-      return notFound();
-    }
-
     if (error?.response?.data) {
       throw {
         message: error.response.data.message,
         status: error.response.data.status,
       };
     }
-
-    console.error({ Custom: error });
 
     throw error;
   },

@@ -12,9 +12,7 @@ import NextTopLoader from 'nextjs-toploader';
 import React from 'react';
 import './globals.css';
 
-const ClientInit = dynamic(() => import('@/app/[locale]/client-init'), {
-  ssr: false,
-});
+const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
