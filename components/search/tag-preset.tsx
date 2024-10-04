@@ -52,10 +52,7 @@ export default function TagPresetList({ onPresetChoose }: TagPresetListProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="border-none bg-secondary shadow-md"
-          variant="outline"
-        >
+        <Button variant="primary">
           <Tran text="tags.preset" />
         </Button>
       </DialogTrigger>

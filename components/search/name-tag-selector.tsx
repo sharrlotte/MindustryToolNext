@@ -98,15 +98,18 @@ export default function NameTagSelector({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <Button
-          className="w-fit text-nowrap"
-          variant="primary"
-          title={t('add-tag')}
-          disabled={disabled}
-          onClick={handleShowFilterDialog}
-        >
-          {t('add-tag')} ({displayTags.length})
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            className="w-fit text-nowrap"
+            variant="primary"
+            title={t('add-tag')}
+            disabled={disabled}
+            onClick={handleShowFilterDialog}
+          >
+            {t('add-tag')} ({displayTags.length})
+          </Button>
+          <TagPreset onPresetChoose={(value) => onChange(() => value)} />
+        </div>
         {!hideSelectedTag && (
           <TagContainer
             className="justify-start"
@@ -132,7 +135,6 @@ export default function NameTagSelector({
                   onChange={(event) => setFilter(event.currentTarget.value)}
                 />
               </Search>
-              <TagPreset onPresetChoose={(value) => onChange(() => value)} />
             </div>
             <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
               <FilterTags
