@@ -4,10 +4,12 @@ import { useSocket } from '@/context/socket-context';
 import useClientApi from '@/hooks/use-client';
 import useNotification from '@/hooks/use-notification';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function ClientInit() {
   const { socket } = useSocket();
+  const router = useRouter();
 
   const axios = useClientApi();
   const { postNotification } = useNotification();
@@ -15,6 +17,18 @@ export default function ClientInit() {
   useQuery({
     queryFn: () => axios.get('/ping?client=web'),
     queryKey: ['ping'],
+  });
+
+  useEffect(() => {
+    function keyHandler(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        router.back();
+      }
+    }
+
+    document.addEventListener('keydown', keyHandler);
+
+    return () => document.removeEventListener('keydown', keyHandler);
   });
 
   useEffect(() => {
