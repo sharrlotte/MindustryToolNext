@@ -26,6 +26,8 @@ import {
   Globe as _Glob,
   CrownIcon as _CrownIcon,
   SigmaIcon as _SigmaIcon,
+  SquareIcon as _SquareIcon,
+  CheckSquare2 as _SquareCheckIcon,
 } from 'lucide-react';
 
 import {
@@ -47,6 +49,12 @@ type Props = {
   className?: string;
 };
 
+export const SquareIcon = ({ className }: Props) => (
+  <_SquareIcon className={cn('size-5', className)} />
+);
+export const SquareCheckedIcon = ({ className }: Props) => (
+  <_SquareCheckIcon className={cn('size-5', className)} />
+);
 export const GlobIcon = () => <_Glob className="size-5" />;
 export const LinkIcon = () => <_LinkIcon className="size-5" />;
 export const PostIcon = () => <BookOpenIcon className="size-5" />;

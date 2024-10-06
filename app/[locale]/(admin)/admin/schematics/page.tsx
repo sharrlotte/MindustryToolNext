@@ -17,17 +17,27 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
 import {
+  deleteSchematic,
   getSchematicUploadCount,
   getSchematicUploads,
 } from '@/query/schematic';
 import { omit } from '@/lib/utils';
 import Tran from '@/components/common/tran';
 import InfinitePage from '@/components/common/infinite-page';
+import {
+  BulkActionContainer,
+  BulkDeleteToggle,
+} from '@/components/common/bulk-action';
+import { useMutation } from '@tanstack/react-query';
+import useClientApi from '@/hooks/use-client';
+import { toast } from '@/hooks/use-toast';
+import useQueriesData from '@/hooks/use-queries-data';
 
 export default function Page() {
   const { schematic } = useSearchTags();
   const params = useSearchQuery(ItemPaginationQuery);
 
+  const { invalidateByKey } = useQueriesData();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const { data } = useClientQuery({
@@ -41,23 +51,70 @@ export default function Page() {
     placeholderData: 0,
   });
 
+  const axios = useClientApi();
+  const { mutate } = useMutation({
+    mutationFn: (id: string) => deleteSchematic(axios, id),
+    onSuccess: () => {
+      toast({
+        title: <Tran text="delete-success" />,
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: <Tran text="delete-fail" />,
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+    onSettled: () => {
+      invalidateByKey(['schematics']);
+    },
+  });
+
+  async function handleBulkDeleteSchematic(value: string[]) {
+    for (const id of value) {
+      mutate(id);
+    }
+  }
+
   return (
-    <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
-      <NameTagSearch tags={schematic} />
-      <div className="flex justify-between">
-        <Tran text="found" args={{ number: data }} />
-        <PaginationLayoutSwitcher />
-      </div>
-      <ListLayout>
-        <div
-          className="relative flex h-full flex-col overflow-auto"
-          ref={(ref) => setContainer(ref)}
-        >
-          <InfinitePage
+    <BulkActionContainer onDelete={handleBulkDeleteSchematic}>
+      <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
+        <NameTagSearch tags={schematic} />
+        <div className="flex items-center justify-between">
+          <Tran text="found" args={{ number: data }} />
+          <div className="flex items-center gap-2">
+            <BulkDeleteToggle />
+            <PaginationLayoutSwitcher />
+          </div>
+        </div>
+        <ListLayout>
+          <div
+            className="relative flex h-full flex-col overflow-auto"
+            ref={(ref) => setContainer(ref)}
+          >
+            <InfinitePage
+              params={params}
+              queryKey={['schematics', 'upload']}
+              getFunc={getSchematicUploads}
+              container={() => container}
+              skeleton={{
+                amount: 20,
+                item: <PreviewSkeleton />,
+              }}
+            >
+              {(data) => (
+                <UploadSchematicPreviewCard key={data.id} schematic={data} />
+              )}
+            </InfinitePage>
+          </div>
+        </ListLayout>
+        <GridLayout>
+          <GridPaginationList
             params={params}
             queryKey={['schematics', 'upload']}
             getFunc={getSchematicUploads}
-            container={() => container}
             skeleton={{
               amount: 20,
               item: <PreviewSkeleton />,
@@ -66,29 +123,14 @@ export default function Page() {
             {(data) => (
               <UploadSchematicPreviewCard key={data.id} schematic={data} />
             )}
-          </InfinitePage>
-        </div>
-      </ListLayout>
-      <GridLayout>
-        <GridPaginationList
-          params={params}
-          queryKey={['schematics', 'upload']}
-          getFunc={getSchematicUploads}
-          skeleton={{
-            amount: 20,
-            item: <PreviewSkeleton />,
-          }}
-        >
-          {(data) => (
-            <UploadSchematicPreviewCard key={data.id} schematic={data} />
-          )}
-        </GridPaginationList>
-      </GridLayout>
-      <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
-        <GridLayout>
-          <PaginationNavigator numberOfItems={data} />
+          </GridPaginationList>
         </GridLayout>
+        <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
+          <GridLayout>
+            <PaginationNavigator numberOfItems={data} />
+          </GridLayout>
+        </div>
       </div>
-    </div>
+    </BulkActionContainer>
   );
 }

@@ -17,6 +17,7 @@ import { useI18n } from '@/i18n/client';
 import { Schematic } from '@/types/response/Schematic';
 import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';
+import { BulkActionSelector } from '@/components/common/bulk-action';
 
 type UploadSchematicPreviewCardProps = {
   schematic: Schematic;
@@ -52,6 +53,7 @@ function _UploadSchematicPreviewCard({
       >
         <LinkIcon />
       </CopyButton>
+      <BulkActionSelector value={id} />
       <Link href={detailLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </Link>
