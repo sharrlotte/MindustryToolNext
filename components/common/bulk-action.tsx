@@ -20,7 +20,7 @@ type ContextType = {
   setShow: (value: boolean) => void;
   value: string[];
   onSelect: (value: string) => void;
-  onDelete: (value: string[]) => void;
+  onActionPerform: (value: string[]) => void;
 };
 
 const defaultContextValue: ContextType = {
@@ -28,7 +28,7 @@ const defaultContextValue: ContextType = {
   setShow: () => {},
   value: [],
   onSelect: () => {},
-  onDelete: () => {},
+  onActionPerform: () => {},
 };
 
 const context = React.createContext(defaultContextValue);
@@ -44,11 +44,14 @@ export function useBulkAction() {
 }
 
 type BulkActionProps = {
-  onDelete: (value: string[]) => void;
+  onActionPerform: (value: string[]) => void;
   children: ReactNode;
 };
 
-export function BulkActionContainer({ onDelete, children }: BulkActionProps) {
+export function BulkActionContainer({
+  onActionPerform,
+  children,
+}: BulkActionProps) {
   const [selected, setSelected] = useState<string[]>([]);
   const [show, setShow] = useState(false);
 
@@ -64,7 +67,7 @@ export function BulkActionContainer({ onDelete, children }: BulkActionProps) {
 
   return (
     <context.Provider
-      value={{ show, value: selected, onSelect, setShow, onDelete }}
+      value={{ show, value: selected, onSelect, setShow, onActionPerform }}
     >
       {children}
     </context.Provider>
@@ -72,7 +75,7 @@ export function BulkActionContainer({ onDelete, children }: BulkActionProps) {
 }
 
 export function BulkDeleteToggle() {
-  const { show, setShow, value, onDelete } = useBulkAction();
+  const { show, setShow, value, onActionPerform } = useBulkAction();
 
   if (value.length > 0) {
     return (
@@ -99,7 +102,7 @@ export function BulkDeleteToggle() {
               className="bg-destructive hover:bg-destructive"
               asChild
             >
-              <Button onClick={() => onDelete(value)}>
+              <Button onClick={() => onActionPerform(value)}>
                 <Tran text="delete" />
               </Button>
             </AlertDialogAction>

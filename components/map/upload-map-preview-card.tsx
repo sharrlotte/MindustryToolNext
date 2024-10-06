@@ -13,6 +13,7 @@ import {
 import env from '@/constant/env';
 import { MapPreview } from '@/types/response/MapPreview';
 import { LinkIcon } from '@/components/common/icons';
+import { BulkActionSelector } from '@/components/common/bulk-action';
 
 type UploadMapPreviewCardProps = {
   map: MapPreview;
@@ -38,6 +39,7 @@ function _UploadMapPreviewCard({
       >
         <LinkIcon />
       </CopyButton>
+      <BulkActionSelector value={id} />
       <Link href={detailLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </Link>

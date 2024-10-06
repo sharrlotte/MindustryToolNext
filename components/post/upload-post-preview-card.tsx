@@ -15,6 +15,7 @@ function _UploadPostPreviewCard({
   ...rest
 }: UploadPostPreviewCardProps) {
   const firstImage = post.imageUrls ? post.imageUrls[0] : '';
+  const { id, title, userId, createdAt } = post;
 
   return (
     <div
@@ -26,13 +27,13 @@ function _UploadPostPreviewCard({
       {...rest}
     >
       <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-brightness-50">
-        <Link href={`/admin/posts/${post.id}`}>
-          <span className="flex text-2xl">{post.title}</span>
+        <Link href={`/admin/posts/${id}`}>
+          <span className="flex text-2xl">{title}</span>
         </Link>
         <div className="flex flex-col gap-2">
           <div>
-            <IdUserCard id={post.userId} />
-            <span>{new Date(post.createdAt).toLocaleString()}</span>
+            <IdUserCard id={userId} />
+            <span>{new Date(createdAt).toLocaleString()}</span>
           </div>
         </div>
       </div>

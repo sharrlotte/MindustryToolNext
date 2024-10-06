@@ -7,7 +7,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
-import { getMapUploadCount, getMapUploads } from '@/query/map';
+import { deleteMap, getMapUploadCount, getMapUploads } from '@/query/map';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import {
   PaginationLayoutSwitcher,
@@ -19,6 +19,14 @@ import useClientQuery from '@/hooks/use-client-query';
 import { omit } from 'lodash';
 import Tran from '@/components/common/tran';
 import InfinitePage from '@/components/common/infinite-page';
+import useQueriesData from '@/hooks/use-queries-data';
+import useClientApi from '@/hooks/use-client';
+import { toast } from '@/hooks/use-toast';
+import { useMutation } from '@tanstack/react-query';
+import {
+  BulkActionContainer,
+  BulkDeleteToggle,
+} from '@/components/common/bulk-action';
 
 export default function Page() {
   const { map } = useSearchTags();
@@ -31,50 +39,83 @@ export default function Page() {
     placeholderData: 0,
   });
 
+  const { invalidateByKey } = useQueriesData();
+  const axios = useClientApi();
+  const { mutate } = useMutation({
+    mutationFn: (id: string) => deleteMap(axios, id),
+    onSuccess: () => {
+      toast({
+        title: <Tran text="delete-success" />,
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: <Tran text="delete-fail" />,
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+    onSettled: () => {
+      invalidateByKey(['maps']);
+    },
+  });
+
+  async function handleBulkDelete(value: string[]) {
+    for (const id of value) {
+      mutate(id);
+    }
+  }
+
   return (
-    <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
-      <NameTagSearch tags={map} />
-      <div className="flex justify-between">
-        <Tran text="found" args={{ number: data }} />
-        <PaginationLayoutSwitcher />
-      </div>
-      <ListLayout>
-        <div
-          className="relative flex h-full flex-col overflow-auto"
-          ref={(ref) => setContainer(ref)}
-        >
-          <InfinitePage
+    <BulkActionContainer onActionPerform={handleBulkDelete}>
+      <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
+        <NameTagSearch tags={map} />
+        <div className="flex items-center justify-between">
+          <Tran text="found" args={{ number: data }} />
+          <div className="flex items-center gap-2">
+            <BulkDeleteToggle />
+            <PaginationLayoutSwitcher />
+          </div>
+        </div>
+        <ListLayout>
+          <div
+            className="relative flex h-full flex-col overflow-auto"
+            ref={(ref) => setContainer(ref)}
+          >
+            <InfinitePage
+              params={params}
+              queryKey={['maps', 'upload']}
+              getFunc={getMapUploads}
+              container={() => container}
+              skeleton={{
+                amount: 20,
+                item: <PreviewSkeleton />,
+              }}
+            >
+              {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
+            </InfinitePage>
+          </div>
+        </ListLayout>
+        <GridLayout>
+          <GridPaginationList
             params={params}
             queryKey={['maps', 'upload']}
             getFunc={getMapUploads}
-            container={() => container}
             skeleton={{
               amount: 20,
               item: <PreviewSkeleton />,
             }}
           >
             {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
-          </InfinitePage>
-        </div>
-      </ListLayout>
-      <GridLayout>
-        <GridPaginationList
-          params={params}
-          queryKey={['maps', 'upload']}
-          getFunc={getMapUploads}
-          skeleton={{
-            amount: 20,
-            item: <PreviewSkeleton />,
-          }}
-        >
-          {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
-        </GridPaginationList>
-      </GridLayout>
-      <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
-        <GridLayout>
-          <PaginationNavigator numberOfItems={data} />
+          </GridPaginationList>
         </GridLayout>
+        <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
+          <GridLayout>
+            <PaginationNavigator numberOfItems={data} />
+          </GridLayout>
+        </div>
       </div>
-    </div>
+    </BulkActionContainer>
   );
 }

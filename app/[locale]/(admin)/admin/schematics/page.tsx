@@ -37,7 +37,6 @@ export default function Page() {
   const { schematic } = useSearchTags();
   const params = useSearchQuery(ItemPaginationQuery);
 
-  const { invalidateByKey } = useQueriesData();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const { data } = useClientQuery({
@@ -51,6 +50,7 @@ export default function Page() {
     placeholderData: 0,
   });
 
+  const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
   const { mutate } = useMutation({
     mutationFn: (id: string) => deleteSchematic(axios, id),
@@ -72,14 +72,14 @@ export default function Page() {
     },
   });
 
-  async function handleBulkDeleteSchematic(value: string[]) {
+  async function handleBulkDelete(value: string[]) {
     for (const id of value) {
       mutate(id);
     }
   }
 
   return (
-    <BulkActionContainer onDelete={handleBulkDeleteSchematic}>
+    <BulkActionContainer onActionPerform={handleBulkDelete}>
       <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
         <NameTagSearch tags={schematic} />
         <div className="flex items-center justify-between">
