@@ -53,7 +53,8 @@ export default function Page() {
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
   const { mutate } = useMutation({
-    mutationFn: (id: string) => deleteSchematic(axios, id),
+    mutationFn: (ids: string[]) =>
+      Promise.all(ids.map((id) => deleteSchematic(axios, id))),
     onSuccess: () => {
       toast({
         title: <Tran text="delete-success" />,
@@ -73,9 +74,7 @@ export default function Page() {
   });
 
   async function handleBulkDelete(value: string[]) {
-    for (const id of value) {
-      mutate(id);
-    }
+    mutate(value);
   }
 
   return (

@@ -24,7 +24,7 @@ export default function NavigationBar() {
   );
 
   return (
-    <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-1 text-white shadow-lg">
+    <nav className="flex h-nav w-full items-center justify-between bg-brand px-2 py-1 text-white shadow-lg">
       <Button
         title="Navbar"
         type="button"
@@ -65,7 +65,7 @@ export default function NavigationBar() {
                 <div className="flex h-full flex-col overflow-hidden">
                   <span className="flex flex-col gap-2">
                     <span className="space-x-2 rounded-sm p-2">
-                      <span className="text-xl font-medium">MindustryTool</span>
+                      <h1 className="text-xl font-medium">MindustryTool</h1>
                       <span className="text-xs">{env.webVersion}</span>
                     </span>
                   </span>
@@ -78,6 +78,6 @@ export default function NavigationBar() {
         </div>
       </div>
       <NotificationIcon />
-    </div>
+    </nav>
   );
 }
