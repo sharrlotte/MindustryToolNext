@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import {  useCallback } from 'react';
 
 import { useLocaleStore } from '@/zustand/locale-store';
 import useClientApi from '@/hooks/use-client';
@@ -44,6 +44,7 @@ export function useI18n(): TranslateFunction {
         }
 
         keys[group] = {};
+
 
         axios
           .get('/translations', {
