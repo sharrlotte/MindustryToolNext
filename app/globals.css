@@ -73,6 +73,14 @@
 }
 
 @layer base {
+  body {
+    background-image: linear-gradient(
+      10deg,
+      #000000 0%,
+      #121212 70%,
+      #121212 100%
+    );
+  }
   * {
     @apply border-border;
   }
