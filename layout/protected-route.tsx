@@ -24,7 +24,9 @@ export default function ProtectedRoute({
   session,
   ownerId,
 }: Props) {
-  if (!session || session.roles === null) return <RequireLogin />;
+  
+
+  if (!session || session.roles === undefined) return <RequireLogin />;
 
   const roles = session.roles.map((r) => r.name);
 

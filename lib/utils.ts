@@ -345,7 +345,7 @@ export function hasAccess({
   session: Session | null;
   passOnEmpty?: boolean;
 }) {
-  if (!session || session.roles === null) {
+  if (!session || !session.roles === undefined ) {
     return passOnEmpty && !all && !any ? true : false;
   }
   const roles = session.roles.map((r) => r.name);

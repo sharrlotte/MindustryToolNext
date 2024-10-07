@@ -33,7 +33,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
   return (
     <motion.div
       className={cn(
-        'absolute right-0 flex h-full flex-shrink-0 flex-col items-start overflow-y-auto overflow-x-hidden border-l bg-background sm:relative',
+        'absolute right-0 flex h-full flex-shrink-0 flex-col items-start overflow-y-auto overflow-x-hidden border-l bg-background/20 sm:relative',
         className,
       )}
       animate={state}
