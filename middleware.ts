@@ -1,7 +1,14 @@
 import { defaultLocale, Locale, locales } from '@/i18n/config';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, userAgent } from 'next/server';
 
 export function middleware(request: NextRequest) {
+  const { isBot } = userAgent(request);
+
+  // For google bot to index all languages
+  if (isBot) {
+    return;
+  }
+
   let locale = request.cookies.get('Locale')?.value as string;
 
   if (!locale) {
