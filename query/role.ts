@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { Role } from '@/types/response/Role';
+import { RoleWithAuthorities } from '@/types/response/Role';
 
 export async function changeRoles(
   axios: AxiosInstance,
@@ -16,7 +16,9 @@ export async function changeRoles(
   return result.data;
 }
 
-export async function getRoles(axios: AxiosInstance): Promise<Role[]> {
+export async function getRoles(
+  axios: AxiosInstance,
+): Promise<RoleWithAuthorities[]> {
   const result = await axios.get(`/roles`);
 
   return result.data;

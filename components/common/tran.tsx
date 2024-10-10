@@ -7,6 +7,7 @@ import { useI18n } from '@/i18n/client';
 type Props = {
   className?: string;
   text: string;
+  style?: React.CSSProperties;
   args?: Record<string, any>;
 };
 
@@ -14,7 +15,12 @@ export default function Tran({
   className,
   text,
   args,
+  style,
 }: Props): React.ReactNode {
   const t = useI18n();
-  return <span className={className}>{t(text, args)}</span>;
+  return (
+    <span className={className} style={style}>
+      {t(text, args)}
+    </span>
+  );
 }
