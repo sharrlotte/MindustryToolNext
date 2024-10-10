@@ -1,10 +1,14 @@
 import Tran from '@/components/common/tran';
 import React from 'react';
 
-export default function page() {
+export default function Page({ searchParams: { message } }: any) {
   return (
-    <div className="text-danger flex h-full flex-col items-center justify-center text-3xl font-bold">
-      <Tran text="token.verification-failed" />
+    <div className="flex h-full flex-col items-center justify-center p-8">
+      <Tran
+        className="text-danger text-3xl font-bold"
+        text="token.verification-failed"
+      />
+      <p>{message}</p>
     </div>
   );
 }
