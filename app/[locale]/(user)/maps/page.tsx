@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import { Metadata } from 'next/dist/types';
 
 import MapList from '@/app/[locale]/(user)/maps/map-list';
 import env from '@/constant/env';

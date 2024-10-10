@@ -1,9 +1,8 @@
-import { Metadata } from 'next';
+import { Metadata } from 'next/dist/types';
 import React from 'react';
 
 import MapDetailCard from '@/components/map/map-detail-card';
 import env from '@/constant/env';
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import { getMap } from '@/query/map';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';

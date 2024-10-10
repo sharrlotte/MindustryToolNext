@@ -15,8 +15,6 @@ import { getSchematics } from '@/query/schematic';
 import { getServerApi } from '@/action/action';
 import { MetadataRoute } from 'next/dist/types';
 
-export const revalidate = 60 * 60 * 24;
-
 async function schematicSitemap(): Promise<MetadataRoute.Sitemap> {
   const axios = await getServerApi();
   const data = await getSchematics(axios, { page: 0, size: 100 });

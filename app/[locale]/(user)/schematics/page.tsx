@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import { Metadata } from 'next/dist/types';
 
 import SchematicList from '@/app/[locale]/(user)/schematics/schematic-list';
 import env from '@/constant/env';
