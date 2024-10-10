@@ -26,12 +26,9 @@ export default async function Page() {
           <TableHead className="w-40 overflow-x-auto">
             <Tran text="role" />
           </TableHead>
-          <TableHead className="w-40 overflow-x-auto">
+          <TableHead className="w-full overflow-x-auto">
             <Tran text="authorities" />
           </TableHead>
-          <TableHead></TableHead>
-          <TableHead></TableHead>
-          <TableHead className="w-20"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

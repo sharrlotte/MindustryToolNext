@@ -1,5 +1,3 @@
-import { MetadataRoute } from 'next';
-
 import env from '@/constant/env';
 
 const routes = [
@@ -15,6 +13,7 @@ const routes = [
 import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
 import { getServerApi } from '@/action/action';
+import { MetadataRoute } from 'next/dist/types';
 
 export const revalidate = 60 * 60 * 24;
 
