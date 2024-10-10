@@ -29,7 +29,7 @@ function Verify({ token }: { token: string }) {
 
   const { toast } = useToast();
 
-  const { mutate, status } = useMutation({
+  const { mutate, status, error } = useMutation({
     mutationKey: ['verify-player'],
     mutationFn: (token: string) => verifyPlayer(axios, token),
     onError: (error) => {
@@ -57,9 +57,9 @@ function Verify({ token }: { token: string }) {
       </div>
     );
   } else if (status === 'error') {
-    router.push('/error');
+    router.push(`verify-player/error?message=${error.message}`);
   } else {
-    router.push('/success');
+    router.push('verify-player/success');
   }
 
   return undefined;

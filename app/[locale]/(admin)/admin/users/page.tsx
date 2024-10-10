@@ -53,7 +53,7 @@ export default function Page() {
       >
         <InfinitePage
           className="grid w-full grid-cols-1 justify-center gap-2 pr-2"
-          params={{ ...params, role: role?.name as UserRole }}
+          params={{ ...params, role: role?.name as UserRole, size: 40 }}
           queryKey={['users', 'management']}
           getFunc={getUsers}
           container={() => container}
