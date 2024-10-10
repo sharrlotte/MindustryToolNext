@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import { Metadata } from 'next/dist/types';
 import React from 'react';
 
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';

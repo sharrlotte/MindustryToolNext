@@ -2,7 +2,7 @@ import React from 'react';
 
 import UploadSchematicDetailCard from '@/components/schematic/upload-schematic-detail-card';
 import { getSchematicUpload } from '@/query/schematic';
-import { Metadata } from 'next';
+import { Metadata } from 'next/dist/types';
 import env from '@/constant/env';
 import Tran from '@/components/common/tran';
 import BackButton from '@/components/ui/back-button';

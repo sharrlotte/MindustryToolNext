@@ -1,5 +1,3 @@
-import { MetadataRoute } from 'next';
-
 import env from '@/constant/env';
 
 const routes = [
@@ -15,8 +13,7 @@ const routes = [
 import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
 import { getServerApi } from '@/action/action';
-
-export const revalidate = 60 * 60 * 24;
+import { MetadataRoute } from 'next/dist/types';
 
 async function schematicSitemap(): Promise<MetadataRoute.Sitemap> {
   const axios = await getServerApi();
