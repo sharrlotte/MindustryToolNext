@@ -4,6 +4,8 @@ import Tran from '@/components/common/tran';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import React from 'react';
 
+export const experimental_ppr = true;
+
 export default function Page() {
   return (
     <Tabs
