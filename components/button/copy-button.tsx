@@ -8,6 +8,7 @@ import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
 import { cva, VariantProps } from 'class-variance-authority';
+import { useMutation } from '@tanstack/react-query';
 
 const copyButtonVariants = cva('p-2 hover:bg-brand bg-transparent', {
   variants: {
@@ -45,10 +46,15 @@ export default function CopyButton({
   const t = useI18n();
   const copy = useClipboard();
 
-  async function handleClick() {
-    const d = data instanceof Function ? await data() : data;
+  const { mutate } = useMutation({
+    mutationFn: async () => (data instanceof Function ? await data() : data),
+    onSuccess: (data) => {
+      copy({ data, title, content });
+    },
+  });
 
-    copy({ data: d, title, content });
+  async function handleClick() {
+    mutate();
   }
 
   return (

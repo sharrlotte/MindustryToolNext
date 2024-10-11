@@ -1,5 +1,5 @@
 import { serverApi } from '@/action/action';
-import RoleCard from '@/app/[locale]/(admin)/admin/roles/role-card';
+import RoleCard from '@/app/[locale]/(admin)/admin/users/role-card';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
 import {
@@ -12,7 +12,7 @@ import {
 import { getRoles } from '@/query/role';
 import React from 'react';
 
-export default async function Page() {
+export async function RoleTable() {
   const result = await serverApi((axios) => getRoles(axios));
 
   if ('error' in result) {
