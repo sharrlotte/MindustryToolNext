@@ -34,7 +34,7 @@ export default function Page() {
 
   return (
     <MemberPanelProvider>
-      <div className="flex h-full flex-col overflow-hidden">
+      <div className="flex h-full flex-col overflow-hidden bg-background">
         <div className="flex items-center justify-between border-b px-4 py-1">
           <div className="flex gap-4">
             <SearchIcon />

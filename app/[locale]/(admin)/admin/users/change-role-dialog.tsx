@@ -37,6 +37,10 @@ export function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
     placeholderData: [],
   });
 
+  const filteredRole =
+    data?.filter((r) => r.position < highestRole || highestRole === 32767) ||
+    [];
+
   const { mutate } = useMutation({
     mutationFn: async (roleIds: number[]) =>
       changeRoles(axios, { userId: id, roleIds }),
@@ -45,13 +49,13 @@ export function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
     },
     onError: (error) => {
       toast({
+        title: 'error',
         variant: 'destructive',
-        title: 'Error',
         description: error.message,
       });
       setSelectedRoles(roles);
     },
-    mutationKey: ['updateRole', id],
+    mutationKey: ['update-role', id],
   });
 
   function handleRoleChange(value: string[]) {
@@ -94,24 +98,22 @@ export function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
           onValueChange={handleRoleChange}
           defaultValue={roles.map((r) => r.name)}
         >
-          {data
-            ?.filter((r) => r.position < highestRole || highestRole === 32767)
-            .map((role) => (
-              <ToggleGroupItem
-                className="justify-start space-x-2 px-0 capitalize hover:bg-transparent"
-                key={role.id}
-                value={role.name}
-              >
-                <span key={role.id} className={cn(role.color)}>
-                  {role.name}
-                </span>
-                {selectedRole.map((r) => r.id).includes(role.id) ? (
-                  <CheckSquare className="size-5" />
-                ) : (
-                  <Square className="size-5" />
-                )}
-              </ToggleGroupItem>
-            ))}
+          {filteredRole.map(({ id, name, color }) => (
+            <ToggleGroupItem
+              className="justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent"
+              key={id}
+              value={name}
+            >
+              <span key={id} className={cn(color)}>
+                {name}
+              </span>
+              {selectedRole.map((r) => r.id).includes(id) ? (
+                <CheckSquare className="size-5" />
+              ) : (
+                <Square className="size-5" />
+              )}
+            </ToggleGroupItem>
+          ))}
         </ToggleGroup>
       </DialogContent>
     </Dialog>
