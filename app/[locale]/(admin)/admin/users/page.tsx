@@ -12,7 +12,7 @@ export default function Page() {
       className="flex h-full w-full flex-col overflow-hidden p-4"
       defaultValue="user"
     >
-      <div className="flex flex-wrap justify-start gap-2">
+      <div className="flex w-full flex-wrap justify-start gap-2">
         <TabsList>
           <TabsTrigger value="user">
             <Tran text="user" />

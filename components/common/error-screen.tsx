@@ -27,7 +27,7 @@ export default function ErrorScreen({
   }, [axios, path, error]);
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+    <div className="col-span-full row-span-full flex h-full w-full flex-col items-center justify-center gap-4">
       <h2 className="text-base font-bold">{message}</h2>
       <div className="grid grid-cols-2 items-center justify-center gap-2">
         <a

@@ -10,5 +10,12 @@ export type RoleWithAuthorities = {
   name: string;
   position: number;
   color: string;
-  authorities: string[];
+  authorities: Authority[];
+};
+
+export type Authority = {
+  id: string;
+  name: string;
+  authorityGroup: string;
+  description: string;
 };

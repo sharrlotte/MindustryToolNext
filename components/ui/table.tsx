@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -5,22 +7,40 @@ import { cn } from '@/lib/utils';
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto pr-1">
-    <table
-      ref={ref}
-      className={cn('w-full caption-bottom text-sm relative', className)}
-      {...props}
-    />
-  </div>
-));
+>(({ className, ...props }, ref) => {
+  const [container, setContainer] = React.useState<HTMLDivElement | null>();
+
+  const scrollHeight = container?.scrollHeight || 0;
+  const clientHeigh = container?.clientHeight || 0;
+
+  const hasGapForScrollbar = scrollHeight > clientHeigh;
+
+  return (
+    <div
+      className={cn('relative w-full overflow-y-auto overflow-x-hidden', {
+        'pr-2': hasGapForScrollbar,
+      })}
+      ref={setContainer}
+    >
+      <table
+        ref={ref}
+        className={cn('relative w-full caption-bottom text-sm', className)}
+        {...props}
+      />
+    </div>
+  );
+});
 Table.displayName = 'Table';
 
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn('[&_tr]:border-b sticky top-0 bg-background', className)} {...props} />
+  <thead
+    ref={ref}
+    className={cn('sticky top-0 bg-background [&_tr]:border-b', className)}
+    {...props}
+  />
 ));
 TableHeader.displayName = 'TableHeader';
 
