@@ -28,7 +28,13 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
         .await({ method: 'GET_MEMBER', page: 0, size: 10 }),
   });
 
-  const members = useMemo(() => (data ? [...new Set(data)] : []), [data]);
+  const members = useMemo(
+    () =>
+      data?.filter(
+        (item, index) => data.findIndex((v) => v.id === item.id) === index,
+      ) || [],
+    [data],
+  );
 
   return (
     <motion.div
