@@ -9,7 +9,7 @@ import LoadingScreen from '@/components/common/loading-screen';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { MarkdownData } from '@/components/common/markdown-editor';
 import NoResult from '@/components/common/no-result';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import TagSelector from '@/components/search/tag-selector';
 import Search from '@/components/search/search-input';
 import { Button } from '@/components/ui/button';
 import {
@@ -295,7 +295,7 @@ function UploadPage({
             }))}
             onChange={(value) => setLanguage(value ?? '')}
           />
-          <NameTagSelector
+          <TagSelector
             tags={postTags}
             value={selectedTags}
             onChange={setSelectedTags}

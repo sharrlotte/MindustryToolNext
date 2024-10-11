@@ -101,9 +101,13 @@ function TagPresetCard({
     invalidateByKey(['preset']);
   }
 
+  function handleClick() {
+    onClick([...tags]);
+  }
+
   return (
     <div className="flex cursor-pointer items-start justify-between rounded-sm bg-card p-2">
-      <div className="space-y-1" onClick={() => onClick(tags)}>
+      <div className="space-y-1" onClick={handleClick}>
         <span className="font-bold">{name}</span>
         <TagContainer tags={Tags.fromTagGroup(tags)} />
       </div>

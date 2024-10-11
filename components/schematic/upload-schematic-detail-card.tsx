@@ -14,7 +14,7 @@ import {
   DetailTitle,
 } from '@/components/common/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
@@ -75,7 +75,7 @@ export default function UploadSchematicDetailCard({
           <IdUserCard id={userId} />
           <DetailDescription>{description}</DetailDescription>
           <ItemRequirementCard requirements={requirements} />
-          <NameTagSelector
+          <TagSelector
             tags={schematic}
             value={selectedTags}
             onChange={setSelectedTags}

@@ -16,7 +16,7 @@ import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -311,7 +311,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <NameTagSelector
+                  <TagSelector
                     tags={schematic}
                     value={field.value}
                     onChange={(fn) => field.onChange(fn(field.value))}
