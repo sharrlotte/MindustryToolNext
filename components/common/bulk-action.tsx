@@ -65,9 +65,23 @@ export function BulkActionContainer({
     });
   }, []);
 
+  const handleAction = useCallback(
+    (value: string[]) => {
+      setSelected([]);
+      onActionPerform(value);
+    },
+    [onActionPerform],
+  );
+
   return (
     <context.Provider
-      value={{ show, value: selected, onSelect, setShow, onActionPerform }}
+      value={{
+        show,
+        value: selected,
+        onSelect,
+        setShow,
+        onActionPerform: handleAction,
+      }}
     >
       {children}
     </context.Provider>
