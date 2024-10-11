@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import DeleteButton from '@/components/button/delete-button';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import {
@@ -175,7 +175,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                         <Tran text="plugin.tags" />
                       </FormLabel>
                       <FormControl>
-                        <NameTagSelector
+                        <TagSelector
                           tags={plugin}
                           value={field.value}
                           onChange={(fn) => field.onChange(fn(field.value))}

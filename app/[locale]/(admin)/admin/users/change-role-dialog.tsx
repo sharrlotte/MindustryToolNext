@@ -1,7 +1,3 @@
-import { CheckSquare, Square } from 'lucide-react';
-import React, { useState } from 'react';
-
-import CopyButton from '@/components/button/copy-button';
 import {
   Dialog,
   DialogContent,
@@ -10,41 +6,23 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import UserAvatar from '@/components/user/user-avatar';
 import { useMe } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { getRoles, changeRoles } from '@/query/role';
 import { Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
-
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { changeRoles, getRoles } from '@/query/role';
-import useQueriesData from '@/hooks/use-queries-data';
-
-type Props = {
-  user: User;
-};
-
-export default function UserManagementCard({ user }: Props) {
-  return (
-    <div className="flex w-full items-center justify-between gap-2 bg-card px-4 py-2">
-      <div className="flex space-x-2">
-        <UserAvatar user={user} />
-        <CopyButton data={user.id} variant="ghost" content={user.id}>
-          <h3>{user.name}</h3>
-        </CopyButton>
-      </div>
-      <ChangeRoleDialog user={user} />
-    </div>
-  );
-}
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { CheckSquare, Square } from 'lucide-react';
+import { useState } from 'react';
 
 type DialogProps = {
   user: User;
 };
 
-function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
+export function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
   const axios = useClientApi();
   const [open, setOpen] = useState(false);
   const [selectedRole, setSelectedRoles] = useState<Role[]>(roles);
@@ -59,6 +37,10 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
     placeholderData: [],
   });
 
+  const filteredRole =
+    data?.filter((r) => r.position < highestRole || highestRole === 32767) ||
+    [];
+
   const { mutate } = useMutation({
     mutationFn: async (roleIds: number[]) =>
       changeRoles(axios, { userId: id, roleIds }),
@@ -67,13 +49,13 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
     },
     onError: (error) => {
       toast({
+        title: 'error',
         variant: 'destructive',
-        title: 'Error',
         description: error.message,
       });
       setSelectedRoles(roles);
     },
-    mutationKey: ['updateRole', id],
+    mutationKey: ['update-role', id],
   });
 
   function handleRoleChange(value: string[]) {
@@ -116,24 +98,22 @@ function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
           onValueChange={handleRoleChange}
           defaultValue={roles.map((r) => r.name)}
         >
-          {data
-            ?.filter((r) => r.position < highestRole || highestRole === 32767)
-            .map((role) => (
-              <ToggleGroupItem
-                className="justify-start space-x-2 px-0 capitalize hover:bg-transparent"
-                key={role.id}
-                value={role.name}
-              >
-                <span key={role.id} className={cn(role.color)}>
-                  {role.name}
-                </span>
-                {selectedRole.map((r) => r.id).includes(role.id) ? (
-                  <CheckSquare className="size-5" />
-                ) : (
-                  <Square className="size-5" />
-                )}
-              </ToggleGroupItem>
-            ))}
+          {filteredRole.map(({ id, name, color }) => (
+            <ToggleGroupItem
+              className="justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent"
+              key={id}
+              value={name}
+            >
+              <span key={id} className={cn(color)}>
+                {name}
+              </span>
+              {selectedRole.map((r) => r.id).includes(id) ? (
+                <CheckSquare className="size-5" />
+              ) : (
+                <Square className="size-5" />
+              )}
+            </ToggleGroupItem>
+          ))}
         </ToggleGroup>
       </DialogContent>
     </Dialog>

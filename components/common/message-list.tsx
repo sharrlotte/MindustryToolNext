@@ -54,7 +54,6 @@ export default function MessageList({
   const currentContainer = container();
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
-  const [scrollDir, setScrollDir] = useState<'up' | 'down'>('down');
   const scrollTop = useRef(100);
   const lastHeight = useRef(100);
   const [isFirstLoad, setFirstLoad] = useState(true);
@@ -66,6 +65,22 @@ export default function MessageList({
   const isFocused = useWindow();
 
   const [shouldCheck, setShouldCheck] = useState(true);
+
+  const clientHeight = list?.clientHeight || 0;
+
+  useEffect(() => {
+    if (!currentContainer || !list || isFirstLoad) {
+      return;
+    }
+
+    const diff =
+      list.clientHeight - lastHeight.current + currentContainer.scrollTop;
+
+    currentContainer.scrollTo({
+      top: diff,
+      behavior: 'instant',
+    });
+  }, [clientHeight]);
 
   const { data, isFetching, error, isError, hasNextPage, fetchNextPage } =
     useMessageQuery(room, params, queryKey);
@@ -82,30 +97,7 @@ export default function MessageList({
     [children, params.size],
   );
 
-  lastHeight.current = list?.clientHeight ?? threshold;
-
-  const remainScrollPosition = useCallback(() => {
-    if (!currentContainer || !list || isFirstLoad) {
-      return;
-    }
-
-    if (scrollDir === 'down') {
-      return;
-    }
-
-    const diff =
-      list.clientHeight - lastHeight.current + currentContainer.scrollTop;
-
-    currentContainer.scrollTo({
-      top: diff,
-      behavior: 'instant',
-    });
-  }, [currentContainer, list, lastHeight, scrollDir, isFirstLoad]);
-
-  useEffect(() => {
-    remainScrollPosition();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  lastHeight.current = list?.clientHeight || threshold;
 
   const pages = useMemo(() => {
     if (!data) {
@@ -140,14 +132,6 @@ export default function MessageList({
     shouldCheck,
     threshold,
   ]);
-
-  useEffect(() => {
-    const interval = setInterval(checkIfNeedFetchMore, 100);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [checkIfNeedFetchMore]);
 
   useEffect(() => {
     if (pages.length && currentContainer && (isEndReached || isFirstLoad)) {
@@ -206,12 +190,10 @@ export default function MessageList({
   useEffect(() => {
     function onScroll() {
       setShouldCheck(true);
+      checkIfNeedFetchMore();
 
       if (currentContainer) {
         scrollTop.current = currentContainer.scrollTop;
-        setScrollDir(
-          currentContainer.scrollTop > scrollTop.current ? 'down' : 'up',
-        );
       }
     }
 

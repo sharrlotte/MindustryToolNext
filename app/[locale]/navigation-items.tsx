@@ -158,11 +158,6 @@ export function NavItems({ onClick }: NavItemsProps) {
             icon: <UserIcon />,
           },
           {
-            name: <Tran text="role" />,
-            path: '/admin/roles',
-            icon: <UserIcon />,
-          },
-          {
             name: <Tran text="log" />,
             path: '/logs',
             icon: <LogIcon />,

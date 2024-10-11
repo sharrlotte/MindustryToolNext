@@ -1,6 +1,5 @@
-import { serverApi } from '@/action/action';
-import RoleCard from '@/app/[locale]/(admin)/admin/roles/role-card';
-import ErrorScreen from '@/components/common/error-screen';
+import { RoleList } from '@/app/[locale]/(admin)/admin/users/role-list';
+import { RoleListSkeleton } from '@/app/[locale]/(admin)/admin/users/role-list-skeleton';
 import Tran from '@/components/common/tran';
 import {
   Table,
@@ -9,16 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { getRoles } from '@/query/role';
-import React from 'react';
+import React, { Suspense } from 'react';
 
-export default async function Page() {
-  const result = await serverApi((axios) => getRoles(axios));
-
-  if ('error' in result) {
-    return <ErrorScreen error={result} />;
-  }
-
+export async function RoleTable() {
   return (
     <Table className="table-fixed">
       <TableHeader>
@@ -32,9 +24,9 @@ export default async function Page() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {result.map((role) => (
-          <RoleCard key={role.id} role={role} />
-        ))}
+        <Suspense fallback={<RoleListSkeleton />}>
+          <RoleList />
+        </Suspense>
       </TableBody>
     </Table>
   );

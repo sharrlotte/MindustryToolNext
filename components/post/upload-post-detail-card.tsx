@@ -7,7 +7,7 @@ import DeleteButton from '@/components/button/delete-button';
 import VerifyButton from '@/components/button/verify-button';
 import Markdown from '@/components/common/markdown';
 import { Detail } from '@/components/common/detail';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import TagSelector from '@/components/search/tag-selector';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
@@ -101,7 +101,7 @@ export default function UploadPostDetailCard({
         </div>
       </header>
       <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
-        <NameTagSelector
+        <TagSelector
           tags={postTags}
           value={selectedTags}
           onChange={setSelectedTags}

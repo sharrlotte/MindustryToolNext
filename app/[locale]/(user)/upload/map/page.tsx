@@ -15,7 +15,7 @@ import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -255,7 +255,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <NameTagSelector
+                  <TagSelector
                     tags={map}
                     value={field.value}
                     onChange={(fn) => field.onChange(fn(field.value))}

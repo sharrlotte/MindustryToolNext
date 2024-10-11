@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import TagPreset from '@/components/search/tag-preset';
 import CreatePresetButton from '@/components/search/create-preset-button';
 
-type NameTagSelectorProps = {
+type TagSelectorProps = {
   tags?: TagGroup[];
   disabled?: boolean;
   hideSelectedTag?: boolean;
@@ -22,13 +22,13 @@ type NameTagSelectorProps = {
   onChange: (fn: (value: TagGroup[]) => TagGroup[]) => void;
 };
 
-export default function NameTagSelector({
+export default function TagSelector({
   tags = [],
   value,
   onChange,
   disabled = false,
   hideSelectedTag,
-}: NameTagSelectorProps) {
+}: TagSelectorProps) {
   const [filter, setFilter] = useState('');
 
   const [showFilterDialog, setShowFilterDialog] = useState(false);

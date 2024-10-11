@@ -13,7 +13,7 @@ import {
   DetailInfo,
   DetailTitle,
 } from '@/components/common/detail';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { useUploadTags } from '@/hooks/use-tags';
@@ -59,7 +59,7 @@ export default function UploadMapDetailCard({
           <DetailTitle>{name}</DetailTitle>
           <IdUserCard id={userId} />
           <DetailDescription>{description}</DetailDescription>
-          <NameTagSelector
+          <TagSelector
             tags={map}
             value={selectedTags}
             onChange={setSelectedTags}

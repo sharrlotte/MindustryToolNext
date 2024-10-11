@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import InfinitePage from '@/components/common/infinite-page';
 import PluginCard from '@/components/plugin/plugin-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import NameTagSelector from '@/components/search/name-tag-selector';
+import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import {
@@ -186,7 +186,7 @@ function AddPluginButton() {
                         <Tran text="plugin.tags" />
                       </FormLabel>
                       <FormControl>
-                        <NameTagSelector
+                        <TagSelector
                           tags={plugin}
                           value={field.value}
                           onChange={(fn) => field.onChange(fn(field.value))}
