@@ -2,23 +2,19 @@ import { serverApi } from '@/action/action';
 import RoleCard from '@/app/[locale]/(admin)/admin/users/role-card';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
 import { getRoles } from '@/query/role';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 export async function RoleTable() {
-  const result = await serverApi((axios) => getRoles(axios));
-
-  if ('error' in result) {
-    return <ErrorScreen error={result} />;
-  }
-
   return (
     <Table className="table-fixed">
       <TableHeader>
@@ -32,10 +28,33 @@ export async function RoleTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {result.map((role) => (
-          <RoleCard key={role.id} role={role} />
-        ))}
+        <Suspense fallback={<RoleListSkeleton />}>
+          <RoleList />
+        </Suspense>
       </TableBody>
     </Table>
   );
+}
+
+function RoleListSkeleton() {
+  return new Array(10).fill(1).map(() => (
+    <TableRow>
+      <TableCell>
+        <Skeleton className="h-8 w-full" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-8 w-full" />
+      </TableCell>
+    </TableRow>
+  ));
+}
+
+async function RoleList() {
+  const result = await serverApi((axios) => getRoles(axios));
+
+  if ('error' in result) {
+    return <ErrorScreen error={result} />;
+  }
+
+  return result.map((role) => <RoleCard key={role.id} role={role} />);
 }

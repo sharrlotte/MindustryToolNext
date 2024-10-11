@@ -1,9 +1,8 @@
 import { RoleTable } from '@/app/[locale]/(admin)/admin/users/role-table';
 import { UserTable } from '@/app/[locale]/(admin)/admin/users/user-table';
-import RouterSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import React, { Suspense } from 'react';
+import React from 'react';
 
 export default function Page() {
   return (
@@ -25,9 +24,7 @@ export default function Page() {
         <UserTable />
       </TabsContent>
       <TabsContent className="h-full overflow-hidden" value="role">
-        <Suspense fallback={<RouterSpinner />}>
-          <RoleTable />
-        </Suspense>
+        <RoleTable />
       </TabsContent>
     </Tabs>
   );
