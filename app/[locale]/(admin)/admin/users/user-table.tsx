@@ -53,7 +53,7 @@ export function UserTable() {
       >
         <InfinitePage
           className="flex h-full w-full flex-col justify-start gap-2 pr-2"
-          params={{ ...params, role: role?.name as UserRole, size: 40 }}
+          params={{ ...params, role: role?.name as UserRole }}
           queryKey={['users', 'management']}
           getFunc={getUsers}
           container={() => container}

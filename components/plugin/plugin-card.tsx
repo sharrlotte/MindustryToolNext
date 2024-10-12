@@ -57,11 +57,10 @@ export default function PluginCard({
   const githubUrl = `https://github.com/${user}/${repo}`;
 
   return (
-    <div className="relative grid gap-2 rounded-md border p-2">
+    <div className="relative flex h-28 flex-col gap-2 rounded-md bg-card p-2">
       <Link href={githubUrl}>
         <h2>{name}</h2>
       </Link>
-      <span>{description}</span>
       <span>{description}</span>
       <div className="flex gap-2">
         <ProtectedElement session={session} filter={{ authorId: userId }}>

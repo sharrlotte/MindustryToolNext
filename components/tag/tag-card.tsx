@@ -27,7 +27,7 @@ function _TagCard({ tag, className, onDelete, ...props }: TagCardProps) {
   return (
     <span
       className={cn(
-        'flex cursor-pointer items-center gap-0.5 whitespace-nowrap rounded-full px-2 py-2 text-center text-xs font-extralight text-background dark:text-foreground',
+        'flex cursor-pointer items-center gap-0.5 whitespace-nowrap rounded-full px-2 py-2 text-center text-xs font-medium text-background dark:text-foreground',
         className,
       )}
       style={{ backgroundColor: color }}

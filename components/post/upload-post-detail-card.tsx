@@ -40,6 +40,8 @@ export default function UploadPostDetailCard({
 
   const t = useI18n();
 
+  const { id, title, userId, content, createdAt, tags } = post;
+
   const { mutate: verifyPostById, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifyPostRequest) => verifyPost(axios, data),
     onSuccess: () => {
@@ -81,8 +83,8 @@ export default function UploadPostDetailCard({
   });
 
   useEffect(() => {
-    setSelectedTags(TagGroups.parseString(post.tags, postTags));
-  }, [postTags, post.tags]);
+    setSelectedTags(TagGroups.parseString(tags, postTags));
+  }, [postTags, tags]);
 
   const isLoading = isVerifying || isDeleting;
   const displayTags = Tags.fromTagGroup(selectedTags);
@@ -90,14 +92,14 @@ export default function UploadPostDetailCard({
   return (
     <Detail>
       <header className="grid gap-2 pb-10">
-        <p className="text-4xl">{post.title}</p>
+        <p className="text-4xl">{title}</p>
         <div className="grid gap-2">
-          <IdUserCard id={post.userId} />
-          <span>{new Date(post.createdAt).toLocaleString()}</span>
+          <IdUserCard id={userId} />
+          <span>{new Date(createdAt).toLocaleString()}</span>
           <TagContainer tags={displayTags} />
         </div>
         <div>
-          <Markdown>{post.content}</Markdown>
+          <Markdown>{content}</Markdown>
         </div>
       </header>
       <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
@@ -110,16 +112,16 @@ export default function UploadPostDetailCard({
         <DeleteButton
           variant="default"
           className="w-fit"
-          description={`${t('delete')} ${post.title}`}
+          description={`${t('delete')} ${title}`}
           isLoading={isLoading}
-          onClick={() => deletePostById(post.id)}
+          onClick={() => deletePostById(id)}
         />
         <VerifyButton
-          description={`${t('verify')} ${post.title}`}
+          description={t('verify-alert', { name: title })}
           isLoading={isLoading}
           onClick={() =>
             verifyPostById({
-              id: post.id,
+              id,
               tags: TagGroups.toStringArray(selectedTags),
             })
           }

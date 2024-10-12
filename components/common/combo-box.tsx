@@ -16,6 +16,7 @@ import {
 type Value<T> = { label: string; value: T };
 
 type ComboBoxProps<T> = {
+  className?: string;
   placeholder?: string;
   value?: Value<T>;
   values: Array<Value<T>>;
@@ -24,6 +25,7 @@ type ComboBoxProps<T> = {
 };
 
 export default function ComboBox<T>({
+  className,
   placeholder = 'Select',
   values,
   value,
@@ -48,7 +50,10 @@ export default function ComboBox<T>({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className="w-[200px] justify-between border-none bg-secondary capitalize shadow-md"
+          className={cn(
+            'w-[200px] justify-between border-none bg-secondary capitalize shadow-md',
+            className,
+          )}
           title=""
           role="combobox"
           variant="outline"
@@ -57,7 +62,7 @@ export default function ComboBox<T>({
           <ChevronUpDownIcon className="ml-auto size-5 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="z-50 w-[200px] bg-card p-0">
+      <PopoverContent className="z-50 w-full min-w-20 bg-card p-0">
         <div className="mt-0.5 divide-y">
           {searchBar && (
             <div className="flex gap-1 p-1">
