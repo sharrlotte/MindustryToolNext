@@ -1,3 +1,4 @@
+import { Hidden } from '@/components/common/hidden';
 import {
   Dialog,
   DialogContent,
@@ -5,43 +6,79 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import Divider from '@/components/ui/divider';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { useMe } from '@/context/session-context';
+import { useMe, useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
+import { cn, groupBy } from '@/lib/utils';
+import { getAuthorities } from '@/query/authorities';
 import { getRoles, changeRoles } from '@/query/role';
-import { Role } from '@/types/response/Role';
+import { changeAuthorities } from '@/query/user';
+import { Authority, Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { CheckSquare, Square } from 'lucide-react';
-import { useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 
 type DialogProps = {
   user: User;
 };
 
-export function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
+export function ChangeRoleDialog({
+  user: { id, roles, name, authorities },
+}: DialogProps) {
+  const { session } = useSession();
   const axios = useClientApi();
   const [open, setOpen] = useState(false);
-  const [selectedRole, setSelectedRoles] = useState<Role[]>(roles);
   const { highestRole } = useMe();
   const [isChanged, setIsChanged] = useState(false);
   const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
 
-  const { data } = useQuery({
+  const [selectedAuthorities, setSelectedAuthorities] =
+    useState<Authority[]>(authorities);
+  const [selectedRole, setSelectedRoles] = useState<Role[]>(roles);
+
+  const { data: allRoles } = useQuery({
     queryFn: () => getRoles(axios),
     queryKey: ['roles'],
     placeholderData: [],
   });
 
-  const filteredRole =
-    data?.filter((r) => r.position < highestRole || highestRole === 32767) ||
-    [];
+  const { data: allAuthorities } = useQuery({
+    queryFn: () => getAuthorities(axios),
+    queryKey: ['authorities'],
+    placeholderData: [],
+  });
 
-  const { mutate } = useMutation({
+  const filteredRole =
+    allRoles?.filter(
+      (r) =>
+        r.position < highestRole ||
+        session?.roles.map((r) => r.name).includes('SHAR'),
+    ) || [];
+
+  const filteredAuthority =
+    allAuthorities?.filter((a) =>
+      a.authorityGroup === 'Shar'
+        ? session?.roles.map((r) => r.name).includes('SHAR')
+        : true,
+    ) || [];
+
+  const groups = useMemo(
+    () =>
+      groupBy(
+        filteredAuthority?.sort((a, b) =>
+          a.authorityGroup.localeCompare(b.authorityGroup),
+        ) || [],
+        (v) => v.authorityGroup,
+      ),
+    [filteredAuthority],
+  );
+
+  const { mutate: updateRole } = useMutation({
     mutationFn: async (roleIds: number[]) =>
       changeRoles(axios, { userId: id, roleIds }),
     onSuccess: () => {
@@ -55,21 +92,48 @@ export function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
       });
       setSelectedRoles(roles);
     },
-    mutationKey: ['update-role', id],
+    mutationKey: ['update-user-role', id],
+  });
+
+  const { mutate: updateAuthority } = useMutation({
+    mutationFn: async (authorityIds: string[]) =>
+      changeAuthorities(axios, { userId: id, authorityIds }),
+    onSuccess: () => {
+      invalidateByKey(['user-management']);
+    },
+    onError: (error) => {
+      toast({
+        title: 'error',
+        variant: 'destructive',
+        description: error.message,
+      });
+      setSelectedAuthorities(authorities);
+    },
+    mutationKey: ['update-user-authority', id],
   });
 
   function handleRoleChange(value: string[]) {
     const role = value
-      .map((v) => data?.find((r) => r.name === v))
+      .map((v) => allRoles?.find((r) => r.name === v))
       .filter((r) => r) as any as Role[];
 
     setSelectedRoles(role);
     setIsChanged(true);
   }
 
+  function handleAuthorityChange(value: string[]) {
+    const authority = value
+      .map((v) => filteredAuthority?.find((r) => r.name === v))
+      .filter((r) => r) as any as Authority[];
+
+    setSelectedAuthorities(authority);
+    setIsChanged(true);
+  }
+
   function handleOpenChange(value: boolean) {
     if (value === false && isChanged) {
-      mutate(selectedRole.map((r) => r.id));
+      updateRole(selectedRole.map((r) => r.id));
+      updateAuthority(selectedAuthorities.map((a) => a.id));
     }
     setOpen(value);
   }
@@ -89,9 +153,14 @@ export function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
           )}
         </section>
       </DialogTrigger>
-      <DialogContent className="p-6">
-        <DialogTitle>Change Role for {name}</DialogTitle>
-        <DialogDescription></DialogDescription>
+      <DialogContent className="h-full space-y-2 overflow-y-auto p-6">
+        <div className="space-y-2">
+          <DialogTitle>Change Role for {name}</DialogTitle>
+          <Hidden>
+            <DialogDescription />
+          </Hidden>
+          <Divider />
+        </div>
         <ToggleGroup
           className="grid grid-cols-2"
           type={'multiple'}
@@ -113,6 +182,43 @@ export function ChangeRoleDialog({ user: { id, roles, name } }: DialogProps) {
                 <Square className="size-5" />
               )}
             </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <div className="space-y-2">
+          <span className="font-bold">Authority</span>
+          <Divider />
+        </div>
+        <ToggleGroup
+          className="flex flex-col items-start justify-start gap-4"
+          type={'multiple'}
+          onValueChange={handleAuthorityChange}
+          defaultValue={authorities.map((r) => r.name)}
+        >
+          {groups.map(({ key, value }) => (
+            <Fragment key={key}>
+              <span className="font-bold">{key}</span>
+              {value.map(({ id, name, description }) => (
+                <ToggleGroupItem
+                  key={id}
+                  className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent"
+                  value={name}
+                >
+                  <div className="w-full space-y-1">
+                    <div className="flex w-full justify-between gap-1">
+                      <span className="text-sm lowercase">{name}</span>
+                      {selectedAuthorities.map((r) => r.id).includes(id) ? (
+                        <CheckSquare className="size-5" />
+                      ) : (
+                        <Square className="size-5" />
+                      )}
+                    </div>
+                    <p className="text-start text-xs lowercase">
+                      {description}
+                    </p>
+                  </div>
+                </ToggleGroupItem>
+              ))}
+            </Fragment>
           ))}
         </ToggleGroup>
       </DialogContent>

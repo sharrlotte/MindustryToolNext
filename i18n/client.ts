@@ -1,6 +1,6 @@
 'use client';
 
-import {  useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { useLocaleStore } from '@/zustand/locale-store';
 import useClientApi from '@/hooks/use-client';
@@ -40,11 +40,10 @@ export function useI18n(): TranslateFunction {
 
       if (value === undefined) {
         if (!isCurrentLocaleSet) {
-          return text;
+          return key;
         }
 
         keys[group] = {};
-
 
         axios
           .get('/translations', {
@@ -58,7 +57,7 @@ export function useI18n(): TranslateFunction {
           });
       }
 
-      return value ? (formatTranslation(value[key], args) ?? text) : text;
+      return value ? (formatTranslation(value[key], args) ?? key) : key;
     },
     [keys, isCurrentLocaleSet, axios, currentLocale, setTranslation],
   );

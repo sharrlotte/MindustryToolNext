@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
@@ -26,6 +27,7 @@ type Props = {
 export default function ChangeRoleAuthorityDialog({ role }: Props) {
   const { id: roleId, name, authorities } = role;
 
+  const { session } = useSession();
   const axios = useClientApi();
   const [open, setOpen] = useState(false);
   const [selectedAuthorities, setSelectedAuthorities] =
@@ -40,6 +42,13 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
     queryKey: ['authorities'],
     placeholderData: [],
   });
+
+  const filteredAuthority =
+    data?.filter((a) =>
+      a.authorityGroup === 'Shar'
+        ? session?.roles.map((r) => r.name).includes('SHAR')
+        : true,
+    ) || [];
 
   const { mutate } = useMutation({
     mutationFn: async (authorityIds: string[]) =>
@@ -61,7 +70,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 
   function handleAuthorityChange(value: string[]) {
     const authority = value
-      .map((v) => data?.find((r) => r.name === v))
+      .map((v) => filteredAuthority?.find((r) => r.name === v))
       .filter((r) => r) as any as Authority[];
 
     setSelectedAuthorities(authority);
@@ -78,12 +87,12 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
   const groups = useMemo(
     () =>
       groupBy(
-        data?.sort((a, b) =>
+        filteredAuthority?.sort((a, b) =>
           a.authorityGroup.localeCompare(b.authorityGroup),
         ) || [],
         (v) => v.authorityGroup,
       ),
-    [data],
+    [filteredAuthority],
   );
 
   return (
@@ -92,7 +101,9 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
         <section className="space-x-2">
           {selectedAuthorities.length ? (
             selectedAuthorities.map(({ id, name }) => (
-              <span key={id}>{name}</span>
+              <span key={id} className="lowercase">
+                {name}
+              </span>
             ))
           ) : (
             <span>Add authority</span>
@@ -119,14 +130,16 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
                 >
                   <div className="w-full space-y-1">
                     <div className="flex w-full justify-between gap-1">
-                      <span className="text-sm">{name}</span>
+                      <span className="text-sm lowercase">{name}</span>
                       {selectedAuthorities.map((r) => r.id).includes(id) ? (
                         <CheckSquare className="size-5" />
                       ) : (
                         <Square className="size-5" />
                       )}
                     </div>
-                    <p className="text-start text-xs">{description}</p>
+                    <p className="text-start text-xs lowercase">
+                      {description}
+                    </p>
                   </div>
                 </ToggleGroupItem>
               ))}
