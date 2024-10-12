@@ -12,7 +12,9 @@ export default async function Layout({ children }: LayoutProps) {
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-4">
-      <ProtectedRoute session={data}>{children}</ProtectedRoute>
+      <ProtectedRoute session={data} filter={true}>
+        {children}
+      </ProtectedRoute>
     </div>
   );
 }

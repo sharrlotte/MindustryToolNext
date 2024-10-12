@@ -2,11 +2,11 @@ import { type ClassValue, clsx } from 'clsx';
 import Nprogress from 'nprogress';
 import { twMerge } from 'tailwind-merge';
 
-import { UserRole } from '@/constant/enum';
 import env from '@/constant/env';
 import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
 import TagGroup from '@/types/response/TagGroup';
+import { AuthorityEnum, UserRole } from '@/constant/enum';
 
 const colours: Record<string, string> = {
   aliceblue: '#f0f8ff',
@@ -331,49 +331,56 @@ export function omit<T extends Record<string, any>>(
   );
 }
 
-type Filter =
+export type Filter =
   | {
-      all: Filter;
+      all: Filter[];
     }
   | {
-      any: Filter;
+      any: Filter[];
     }
-  | boolean;
+  | boolean
+  | { role: UserRole }
+  | { authority: AuthorityEnum }
+  | { authorId: string }
+  | undefined;
 
-export function hasAccess({
-  all,
-  any,
-  show,
-  ownerId,
-  session,
-  passOnEmpty,
-}: {
-  any?: UserRole[];
-  all?: UserRole[];
-  show?: boolean;
-  ownerId?: string;
-  session: Session | null;
-  passOnEmpty?: boolean;
-}) {
-  if (!session || !session.roles === undefined) {
-    return passOnEmpty && !all && !any ? true : false;
-  }
-  const roles = session.roles.map((r) => r.name);
-
-  if (roles.includes('SHAR')) {
+export function hasAccess(
+  session: Session | undefined | null,
+  filter: Filter,
+): boolean {
+  if (filter === undefined) {
     return true;
   }
 
-  if (roles.includes('ADMIN') && !all?.includes('SHAR')) {
+  if (!session) {
+    return false;
+  }
+
+  if (session?.roles.map((r) => r.name).includes('SHAR')) {
     return true;
   }
 
-  return [
-    all ? all.every((role) => roles.includes(role)) : true,
-    any ? any.some((role) => roles.includes(role)) : true,
-    ownerId ? ownerId === session.id : true,
-    show === undefined ? true : show,
-  ].every(Boolean);
+  if (typeof filter === 'boolean') {
+    return filter;
+  }
+
+  if ('all' in filter) {
+    return filter.all.every((f) => hasAccess(session, f));
+  }
+
+  if ('any' in filter) {
+    return filter.any.some((f) => hasAccess(session, f));
+  }
+
+  if ('role' in filter) {
+    return session.roles?.map((r) => r.name).includes(filter.role);
+  }
+
+  if ('authority' in filter) {
+    return session.authorities?.includes(filter.authority);
+  }
+
+  return session.id === filter.authorId;
 }
 
 export async function sleep(seconds: number) {

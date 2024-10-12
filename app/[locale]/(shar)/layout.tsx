@@ -11,7 +11,7 @@ export default async function Layout({ children }: PageProps) {
   const session = await getSession();
 
   return (
-    <ProtectedRoute session={session} all={['SHAR']}>
+    <ProtectedRoute session={session} filter={{ role: 'SHAR' }}>
       {children}
     </ProtectedRoute>
   );

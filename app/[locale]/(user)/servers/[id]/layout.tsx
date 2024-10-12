@@ -78,7 +78,7 @@ export default async function Layout({ params, children }: PageProps) {
             <ProtectedElement
               key={item.href}
               session={session}
-              show={item.show}
+              filter={item.show}
             >
               <NavLink {...item} id={id} />
             </ProtectedElement>
