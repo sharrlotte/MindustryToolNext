@@ -28,4 +28,9 @@ axiosInstance.interceptors.response.use(
   },
 );
 
+axiosInstance.interceptors.request.use((req) => {
+  console.log(req.url);
+  return req;
+});
+
 export default axiosInstance;

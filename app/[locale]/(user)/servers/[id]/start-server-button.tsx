@@ -35,7 +35,7 @@ export default function StartServerButton({ id }: Props) {
         variant: 'destructive',
       }),
     onSettled: () => {
-      revalidate('/servers');
+      revalidate({ path: '/servers' });
     },
   });
 

@@ -84,7 +84,7 @@ export default function ServerUpdateForm({ server }: Props) {
       }),
     onSettled: () => {
       invalidateByKey(['servers']);
-      revalidate('/servers');
+      revalidate({ path: '/servers' });
     },
   });
 
@@ -250,7 +250,7 @@ function DeleteServerButton({ id }: DeleteServerButtonProps) {
         variant: 'destructive',
       }),
     onSettled: () => {
-      revalidate('/servers');
+      revalidate({ path: '/servers' });
       invalidateByKey(['servers']);
     },
   });

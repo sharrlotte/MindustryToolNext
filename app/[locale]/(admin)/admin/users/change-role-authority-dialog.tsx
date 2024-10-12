@@ -46,7 +46,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
       changeAuthorities(axios, { roleId, authorityIds }),
     onSuccess: () => {
       invalidateByKey(['roles']);
-      revalidate('/users');
+      revalidate({ path: '/users' });
     },
     onError: (error) => {
       toast({

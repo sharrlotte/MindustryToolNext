@@ -68,7 +68,7 @@ export default function ServerUpdatePortForm({
       }),
     onSettled: () => {
       invalidateByKey(['servers']);
-      revalidate('/servers');
+      revalidate({ path: '/servers' });
     },
   });
 
