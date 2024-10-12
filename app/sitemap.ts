@@ -14,6 +14,8 @@ import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
 import { getServerApi } from '@/action/action';
 import { MetadataRoute } from 'next/dist/types';
+import { getPosts } from '@/query/post';
+import { getImageById } from '@/lib/utils';
 
 async function schematicSitemap(): Promise<MetadataRoute.Sitemap> {
   const axios = await getServerApi();
@@ -21,6 +23,10 @@ async function schematicSitemap(): Promise<MetadataRoute.Sitemap> {
 
   return data.map(({ id }) => ({
     url: `${env.url.base}/schematics/${id}`,
+    changeFrequency: 'daily',
+    lastModified: new Date(),
+    priority: 1,
+    images: [getImageById('schematics', id)],
     alternates: {
       languages: Object.fromEntries(
         env.locales.map((lang) => [
@@ -37,6 +43,10 @@ async function mapSitemap(): Promise<MetadataRoute.Sitemap> {
 
   return data.map(({ id }) => ({
     url: `${env.url.base}/maps/${id}`,
+    changeFrequency: 'daily',
+    lastModified: new Date(),
+    images: [getImageById('maps', id)],
+    priority: 1,
     alternates: {
       languages: Object.fromEntries(
         env.locales.map((lang) => [lang, `${env.url.base}/${lang}/maps/${id}`]),
@@ -45,10 +55,32 @@ async function mapSitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 }
 
+async function postSitemap(): Promise<MetadataRoute.Sitemap> {
+  const axios = await getServerApi();
+  const data = await getPosts(axios, { page: 0, size: 100 });
+
+  return data.map(({ id }) => ({
+    url: `${env.url.base}/posts/${id}`,
+    changeFrequency: 'daily',
+    lastModified: new Date(),
+    images: [getImageById('posts', id)],
+    alternates: {
+      priority: 1,
+      languages: Object.fromEntries(
+        env.locales.map((lang) => [
+          lang,
+          `${env.url.base}/${lang}/posts/${id}`,
+        ]),
+      ),
+    },
+  }));
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [maps, schematics] = await Promise.all([
+  const [maps, schematics, posts] = await Promise.all([
     mapSitemap(),
     schematicSitemap(),
+    postSitemap(),
   ]);
 
   const defaultSitemap: MetadataRoute.Sitemap = routes.map((route) => ({
@@ -60,5 +92,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   }));
 
-  return defaultSitemap.concat(maps).concat(schematics);
+  return defaultSitemap.concat(maps).concat(schematics).concat(posts);
 }

@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /api/v3/
-
-Sitemap: https://mindustry-tool.app/sitemap.xml
