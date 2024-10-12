@@ -17,10 +17,10 @@ import ProtectedElement from '@/layout/protected-element';
 import Tran from '@/components/common/tran';
 
 type PageProps = {
-  params: {
+  params: Promise<{
     id: string;
     locale: string;
-  };
+  }>;
   children: ReactNode;
 };
 
