@@ -1,12 +1,5 @@
 'use client';
 
-import GridPaginationList from '@/components/common/grid-pagination-list';
-import { CrownIcon } from '@/components/common/icons';
-import { GridLayout } from '@/components/common/pagination-layout';
-import PaginationNavigator from '@/components/common/pagination-navigator';
-import Tran from '@/components/common/tran';
-import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -15,11 +8,19 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import GridPaginationList from '@/components/common/grid-pagination-list';
+import { CrownIcon } from '@/components/common/icons';
+import { GridLayout } from '@/components/common/pagination-layout';
+import PaginationNavigator from '@/components/common/pagination-navigator';
+import Tran from '@/components/common/tran';
+import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 import UserCard from '@/components/user/user-card';
 import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchPageParams from '@/hooks/use-search-page-params';
+import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
 import { getMyRank, getRank, getUsersCount } from '@/query/user';
 import { User } from '@/types/response/User';
@@ -28,6 +29,7 @@ import React from 'react';
 
 export function PageClient() {
   const params = useSearchPageParams(20);
+  const { session } = useSession();
   const { page, size } = params;
 
   return (
@@ -45,7 +47,7 @@ export function PageClient() {
           </TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody className="h-full overflow-y-auto">
+      <TableBody className="h-full">
         <GridPaginationList
           params={params}
           queryKey={['rank']}
@@ -66,7 +68,9 @@ export function PageClient() {
             />
           )}
         </GridPaginationList>
-        <MyRankCard />
+        <ProtectedElement session={session} filter={true}>
+          <MyRankCard />
+        </ProtectedElement>
       </TableBody>
     </Table>
   );
@@ -120,6 +124,7 @@ function MyRankCard() {
   const { session, state } = useSession();
   const params = useSearchPageParams(20);
   const { page, size } = params;
+
   const { data, isFetching } = useQuery({
     queryKey: ['my-rank'],
     queryFn: () => getMyRank(axios),
