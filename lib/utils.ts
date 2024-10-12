@@ -316,10 +316,7 @@ export function byteToSize(bytes: number) {
 type ImageFolder = 'schematics' | 'maps' | 'posts';
 
 export function getImageById(folder: ImageFolder, id: string) {
-  if (id) {
-    return `${env.url.image}${folder}/${id}.png`;
-  }
-  return undefined;
+  return `${env.url.image}${folder}/${id}.png`;
 }
 
 export function omit<T extends Record<string, any>>(
