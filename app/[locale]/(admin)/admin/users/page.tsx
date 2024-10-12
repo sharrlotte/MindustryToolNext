@@ -1,33 +1,42 @@
 import { RoleTable } from '@/app/[locale]/(admin)/admin/users/role-table';
 import { UserTable } from '@/app/[locale]/(admin)/admin/users/user-table';
 import Tran from '@/components/common/tran';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  ServerTabs,
+  ServerTabsContent,
+  ServerTabsList,
+  ServerTabsTrigger,
+} from '@/components/ui/server-tabs';
 import React from 'react';
 
 export const experimental_ppr = true;
+type Props = {
+  searchParams: Promise<{
+    tab?: string;
+  }>;
+};
 
-export default function Page() {
+export default async function Page({ searchParams }: Props) {
+  const { tab } = await searchParams;
+
   return (
-    <Tabs
-      className="flex h-full w-full flex-col overflow-hidden p-4"
-      defaultValue="user"
-    >
+    <ServerTabs value={tab} values={['user', 'role']} name="tab">
       <div className="flex w-full flex-wrap justify-start gap-2">
-        <TabsList>
-          <TabsTrigger value="user">
+        <ServerTabsList>
+          <ServerTabsTrigger value="user">
             <Tran text="user" />
-          </TabsTrigger>
-          <TabsTrigger value="role">
+          </ServerTabsTrigger>
+          <ServerTabsTrigger value="role">
             <Tran text="role" />
-          </TabsTrigger>
-        </TabsList>
+          </ServerTabsTrigger>
+        </ServerTabsList>
       </div>
-      <TabsContent className="h-full overflow-hidden" value="user">
+      <ServerTabsContent value="user">
         <UserTable />
-      </TabsContent>
-      <TabsContent className="h-full overflow-hidden" value="role">
+      </ServerTabsContent>
+      <ServerTabsContent value="role">
         <RoleTable />
-      </TabsContent>
-    </Tabs>
+      </ServerTabsContent>
+    </ServerTabs>
   );
 }

@@ -136,7 +136,7 @@ export default function MessageList({
   useEffect(() => {
     if (pages.length && currentContainer && (isEndReached || isFirstLoad)) {
       currentContainer.scrollTo({
-        top: 9999999999999,
+        top: currentContainer.scrollHeight,
         behavior: 'smooth',
       });
       setFirstLoad(false);
@@ -170,7 +170,7 @@ export default function MessageList({
 
         if (currentContainer && isEndReached) {
           currentContainer.scrollTo({
-            top: 9999999999999,
+            top: currentContainer.scrollHeight,
             behavior: 'smooth',
           });
         }

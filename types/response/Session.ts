@@ -6,8 +6,7 @@ export type Session = {
   email: string;
   imageUrl: string;
   roles: Role[];
-  provider: string;
-  providerId: string;
+  authorities: string[];
   lastLogin: number;
   createdAt: number;
   stats: {
