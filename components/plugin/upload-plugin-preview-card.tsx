@@ -41,6 +41,7 @@ import { useMutation } from '@tanstack/react-query';
 import verifyPlugin, { deletePlugin } from '@/query/plugin';
 import IdUserCard from '@/components/user/id-user-card';
 import Tran from '@/components/common/tran';
+import { Hidden } from '@/components/common/hidden';
 
 type Props = {
   plugin: Plugin;

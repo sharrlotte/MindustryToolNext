@@ -68,19 +68,15 @@ export default function MessageList({
 
   const clientHeight = list?.clientHeight || 0;
 
-  useEffect(() => {
-    if (!currentContainer || !list || isFirstLoad) {
-      return;
-    }
+  if (clientHeight != lastHeight.current && currentContainer && list) {
+    const diff = list.clientHeight - lastHeight.current;
 
-    const diff =
-      list.clientHeight - lastHeight.current + currentContainer.scrollTop;
+    lastHeight.current = list.clientHeight;
 
     currentContainer.scrollTo({
       top: diff,
-      behavior: 'instant',
     });
-  }, [clientHeight]);
+  }
 
   const { data, isFetching, error, isError, hasNextPage, fetchNextPage } =
     useMessageQuery(room, params, queryKey);
@@ -96,8 +92,6 @@ export default function MessageList({
       children(item, index, array.length - params.size),
     [children, params.size],
   );
-
-  lastHeight.current = list?.clientHeight || threshold;
 
   const pages = useMemo(() => {
     if (!data) {
