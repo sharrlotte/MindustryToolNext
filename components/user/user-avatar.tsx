@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
+import InternalLink from '@/components/common/internal-link';
 
 const colorArray = [
   '#FF6633',
@@ -78,7 +78,7 @@ export default function UserAvatar({
 }: UserAvatarProps) {
   if (clickable) {
     return (
-      <Link href={url ?? `/users/${id}`}>
+      <InternalLink href={url ?? `/users/${id}`}>
         <AvatarImage
           className={className}
           user={{
@@ -86,7 +86,7 @@ export default function UserAvatar({
             imageUrl,
           }}
         />
-      </Link>
+      </InternalLink>
     );
   }
 
@@ -147,7 +147,7 @@ function AvatarImage({
       )}
     >
       <Image
-        className={cn('object-cover h-full w-full', className)}
+        className={cn('h-full w-full object-cover', className)}
         height={32}
         width={32}
         src={imageUrl}

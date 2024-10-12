@@ -1,7 +1,11 @@
 'use server';
 
-import { AxiosInstance } from 'axios';
-import { revalidatePath, unstable_cache, unstable_noStore } from 'next/cache';
+import {
+  revalidatePath,
+  revalidateTag,
+  unstable_cache,
+  unstable_noStore,
+} from 'next/cache';
 import { z } from 'zod';
 
 import { QuerySchema } from '@/query/search-query';
@@ -18,10 +22,17 @@ import { Session } from '@/types/response/Session';
 import { cookies } from 'next/headers';
 import axiosInstance from '@/query/config/config';
 import { formatTranslation } from '@/i18n/client';
+import { AxiosInstance } from 'axios';
 
-export async function revalidate(path: string) {
+export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
   'use server';
-  revalidatePath(path);
+  if (path) {
+    revalidatePath(path);
+  }
+
+  if (tag) {
+    revalidateTag(tag);
+  }
 }
 
 export async function getQuery<T extends QuerySchema>(

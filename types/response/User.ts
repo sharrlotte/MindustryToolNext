@@ -1,4 +1,4 @@
-import { Role } from '@/types/response/Role';
+import { Authority, Role } from '@/types/response/Role';
 
 export type UserId = '@me' | string;
 export type User = {
@@ -7,6 +7,7 @@ export type User = {
   imageUrl?: string | null;
   thumbnail?: string | null;
   roles: Role[];
+  authorities: Authority[];
   stats?: {
     EXP: number;
   };

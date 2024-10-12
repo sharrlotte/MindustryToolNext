@@ -330,6 +330,16 @@ export function omit<T extends Record<string, any>>(
     Object.entries(obj).filter(([key]) => !keys.includes(key)),
   );
 }
+
+type Filter =
+  | {
+      all: Filter;
+    }
+  | {
+      any: Filter;
+    }
+  | boolean;
+
 export function hasAccess({
   all,
   any,
@@ -345,7 +355,7 @@ export function hasAccess({
   session: Session | null;
   passOnEmpty?: boolean;
 }) {
-  if (!session || !session.roles === undefined ) {
+  if (!session || !session.roles === undefined) {
     return passOnEmpty && !all && !any ? true : false;
   }
   const roles = session.roles.map((r) => r.name);

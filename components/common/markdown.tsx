@@ -1,9 +1,9 @@
+import InternalLink from '@/components/common/internal-link';
 import YoutubeEmbed from '@/components/common/youtube-embed';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
@@ -33,7 +33,7 @@ function RouterLink({ href, children }: any) {
       {children}
     </a>
   ) : (
-    <Link href={href}>{children}</Link>
+    <InternalLink href={href}>{children}</InternalLink>
   );
 }
 

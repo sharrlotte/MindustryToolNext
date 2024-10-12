@@ -45,7 +45,7 @@ export default function ShutdownServerButton({ id }: Props) {
         variant: 'destructive',
       }),
     onSettled: () => {
-      revalidate('/servers');
+      revalidate({ path: '/servers' });
     },
   });
 

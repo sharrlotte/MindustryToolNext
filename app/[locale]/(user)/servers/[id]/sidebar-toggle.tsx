@@ -1,7 +1,6 @@
 'use client';
 
 import { ChevronRight } from 'lucide-react';
-import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import React from 'react';
 
@@ -18,6 +17,7 @@ import { useExpandServerNav } from '@/zustand/expand-nav';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { useQuery } from '@tanstack/react-query';
 import { getMeServers } from '@/query/user';
+import InternalLink from '@/components/common/internal-link';
 
 export default function SidebarToggle() {
   const { id } = useParams();
@@ -70,13 +70,13 @@ export default function SidebarToggle() {
         </PopoverTrigger>
         <PopoverContent className="grid w-[200px] gap-1 p-2">
           {servers.map(({ id, name }) => (
-            <Link
+            <InternalLink
               key={id}
               href={pathname.replace(serverId, id)}
               onClick={() => setValue(id)}
             >
               <ColorText text={name} className="text-sm" />
-            </Link>
+            </InternalLink>
           ))}
         </PopoverContent>
       </Popover>

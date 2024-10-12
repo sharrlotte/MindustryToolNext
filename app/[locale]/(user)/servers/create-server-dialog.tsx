@@ -72,7 +72,7 @@ export default function CreateServerDialog() {
       }),
     onSettled: () => {
       invalidateByKey(['servers']);
-      revalidate('/servers');
+      revalidate({ path: '/servers' });
     },
   });
 

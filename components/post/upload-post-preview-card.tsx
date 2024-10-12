@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import React, { HTMLAttributes } from 'react';
 
 import IdUserCard from '@/components/user/id-user-card';
 import { cn, getImageById } from '@/lib/utils';
 import { Post } from '@/types/response/Post';
+import InternalLink from '@/components/common/internal-link';
 
 type UploadPostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
@@ -27,9 +27,9 @@ function _UploadPostPreviewCard({
       {...rest}
     >
       <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-brightness-50">
-        <Link href={`/admin/posts/${id}`}>
+        <InternalLink href={`/admin/posts/${id}`}>
           <span className="flex text-2xl">{title}</span>
-        </Link>
+        </InternalLink>
         <div className="flex flex-col gap-2">
           <div>
             <IdUserCard id={userId} />

@@ -147,3 +147,18 @@ export async function updateThumbnail(
 
   return result.data;
 }
+
+export async function changeAuthorities(
+  axios: AxiosInstance,
+  data: { userId: string; authorityIds: string[] },
+): Promise<void> {
+  const { userId, authorityIds } = data;
+
+  const result = await axios.put(
+    `/users/${userId}/authorities`,
+    { authorityIds },
+    { data: { authorityIds } },
+  );
+
+  return result.data;
+}

@@ -44,7 +44,7 @@ export default function ReloadServerButton({ id }: Props) {
         variant: 'destructive',
       }),
     onSettled: () => {
-      revalidate('/servers');
+      revalidate({ path: '/servers' });
     },
   });
 
