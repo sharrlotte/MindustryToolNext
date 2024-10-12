@@ -8,7 +8,14 @@ import { useForm } from 'react-hook-form';
 import DeleteButton from '@/components/button/delete-button';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -76,7 +83,7 @@ function _UploadPluginCard({ plugin }: Props) {
   const githubUrl = `https://github.com/${user}/${repo}`;
 
   return (
-    <div className="relative grid gap-2 rounded-md border p-2">
+    <div className="minh-28 relative flex flex-col gap-2 rounded-md bg-card p-2">
       <Link className="absolute right-1 top-1 m-1 border-none" href={githubUrl}>
         <ExternalLink className="size-5" />
       </Link>
@@ -151,7 +158,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="flex h-9 w-full p-0"
+          className="flex h-9 w-full items-center justify-center rounded-md border p-0 hover:bg-success"
           variant="outline"
           title="verify"
         >
@@ -159,6 +166,10 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
         </Button>
       </DialogTrigger>
       <DialogContent>
+        <Hidden>
+          <DialogTitle />
+          <DialogDescription />
+        </Hidden>
         <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md p-6">
           <Form {...form}>
             <form
@@ -186,7 +197,12 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                   )}
                 />
               </div>
-              <div className="flex flex-col items-end justify-center rounded-md p-2">
+              <div className="flex items-end justify-end gap-2 p-2">
+                <DialogClose asChild>
+                  <Button>
+                    <Tran text="cancel" />
+                  </Button>
+                </DialogClose>
                 <Button
                   className="w-fit"
                   variant="primary"

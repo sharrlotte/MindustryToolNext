@@ -14,12 +14,6 @@ import './globals.css';
 
 const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
-export const metadata: Metadata = {
-  metadataBase: new URL(env.url.base),
-  title: 'MindustryTool',
-  description: 'A website about mindustry',
-};
-
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['vietnamese'],
@@ -41,16 +35,40 @@ const icon = localFont({
   display: 'fallback',
 });
 
-type RootParam = {
-  locale: string;
+export const metadata: Metadata = {
+  metadataBase: new URL(env.url.base),
+  title: 'MindustryTool',
+  description: 'A website about mindustry',
+  generator: 'Next.js',
+  applicationName: 'MindustryTool',
+  keywords: ['Mindustry', 'Schematic', 'Map', 'Mod', 'Post'],
+  openGraph: {
+    images: 'https://mindustrygame.github.io/1.d25af17a.webp',
+    title: 'Mindustry',
+    description: 'MindustryTool',
+  },
+  alternates: {
+    languages: Object.fromEntries(
+      env.locales.map((lang) => [lang, `${env.url.base}/${lang}`]),
+    ),
+  },
+  robots: {
+    index: false,
+    follow: true,
+    nocache: true,
+  },
 };
 
 type Props = {
   children: React.ReactNode;
-  params: RootParam;
+  params: Promise<{
+    locale: string;
+  }>;
 };
 
 export default async function Root({ children, params }: Props) {
+  const { locale } = await params;
+
   return (
     <html
       className={cn(
@@ -59,7 +77,7 @@ export default async function Root({ children, params }: Props) {
         inter.variable,
         icon.variable,
       )}
-      lang={params.locale ?? 'en'}
+      lang={locale ?? 'en'}
       suppressHydrationWarning
       data-color-mode="dark"
     >

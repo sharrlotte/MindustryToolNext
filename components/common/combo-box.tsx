@@ -62,7 +62,7 @@ export default function ComboBox<T>({
           <ChevronUpDownIcon className="ml-auto size-5 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="z-50 w-[200px] bg-card p-0">
+      <PopoverContent className="z-50 w-full min-w-20 bg-card p-0">
         <div className="mt-0.5 divide-y">
           {searchBar && (
             <div className="flex gap-1 p-1">

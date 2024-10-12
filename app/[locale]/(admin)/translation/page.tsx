@@ -301,7 +301,7 @@ function DiffCard({
       <TableCell className="align-top">{key}</TableCell>
       <TableCell className="align-top">
         <CopyButton
-          className="hover:bg-transparent"
+          className="h-full w-full overflow-hidden text-wrap hover:bg-transparent"
           variant="ghost"
           data={value}
           content={value}
@@ -357,7 +357,7 @@ function CompareCard({
       <TableCell className="align-top">{key}</TableCell>
       <TableCell className="align-top">
         <CopyButton
-          className="hover:bg-transparent"
+          className="h-full w-full overflow-hidden text-wrap hover:bg-transparent"
           variant="ghost"
           data={value[language]}
           content={value[language]}
@@ -367,7 +367,7 @@ function CompareCard({
       </TableCell>
       <TableCell>
         <Textarea
-          className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
+          className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
           defaultValue={value[target]}
           onChange={handleChange}
         />

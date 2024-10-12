@@ -49,7 +49,7 @@ export default function VerifyMapButton({
 
   return (
     <VerifyButton
-      description={`${t('verify')} ${name}`}
+      description={t('verify-alert', { name })}
       isLoading={isPending}
       onClick={() =>
         mutate({
