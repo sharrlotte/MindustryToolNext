@@ -5,7 +5,7 @@ import UserAvatar from '@/components/user/user-avatar';
 import { User } from '@/types/response/User';
 
 type UserCardProps = {
-  user: User | null;
+  user: Omit<User, 'authorities'> | null;
 };
 function UserCard({ user }: UserCardProps) {
   if (!user) {
