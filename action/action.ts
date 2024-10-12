@@ -24,15 +24,8 @@ import axiosInstance from '@/query/config/config';
 import { formatTranslation } from '@/i18n/client';
 import { AxiosInstance } from 'axios';
 
-export async function revalidate({
-  path,
-  tag,
-}: {
-  path?: string;
-  tag?: string;
-}) {
+export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
   'use server';
-
   if (path) {
     revalidatePath(path);
   }

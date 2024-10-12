@@ -102,15 +102,15 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
       <DialogContent className="h-full overflow-y-auto p-6">
         <DialogTitle>Change authority for {name}</DialogTitle>
         <DialogDescription />
-        {groups.map(({ key, value }) => (
-          <Fragment key={key}>
-            <span className="font-bold">{key}</span>
-            <ToggleGroup
-              className="flex flex-col items-start justify-start gap-4"
-              type={'multiple'}
-              onValueChange={handleAuthorityChange}
-              defaultValue={authorities.map((r) => r.name)}
-            >
+        <ToggleGroup
+          className="flex flex-col items-start justify-start gap-4"
+          type={'multiple'}
+          onValueChange={handleAuthorityChange}
+          defaultValue={authorities.map((r) => r.name)}
+        >
+          {groups.map(({ key, value }) => (
+            <Fragment key={key}>
+              <span className="font-bold">{key}</span>
               {value.map(({ id, name, description }) => (
                 <ToggleGroupItem
                   key={id}
@@ -130,9 +130,9 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
                   </div>
                 </ToggleGroupItem>
               ))}
-            </ToggleGroup>
-          </Fragment>
-        ))}
+            </Fragment>
+          ))}
+        </ToggleGroup>
       </DialogContent>
     </Dialog>
   );

@@ -20,7 +20,12 @@ export default async function Page({ searchParams }: Props) {
   const { tab } = await searchParams;
 
   return (
-    <ServerTabs value={tab || 'user'} values={['user', 'role']} name="tab">
+    <ServerTabs
+      className="p-2"
+      value={tab || 'user'}
+      values={['user', 'role']}
+      name="tab"
+    >
       <div className="flex w-full flex-wrap justify-start gap-2">
         <ServerTabsList>
           <ServerTabsTrigger value="user">
