@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
@@ -19,6 +18,7 @@ import { InternalServerMap } from '@/types/response/InternalServerMap';
 
 import { useMutation } from '@tanstack/react-query';
 import { deleteInternalServerMap } from '@/query/server';
+import InternalLink from '@/components/common/internal-link';
 
 type InternalServerMapCardProps = {
   map: InternalServerMap;
@@ -54,13 +54,13 @@ export default function InternalServerMapCard({
 
   return (
     <Preview className="group relative flex flex-col justify-between">
-      <Link href={`/maps/${mapId}`}>
+      <InternalLink href={`/maps/${mapId}`}>
         <PreviewImage
           src={`${env.url.image}/map-previews/${mapId}.png`}
           errorSrc={`${env.url.api}/maps/${mapId}/image`}
           alt={name ?? 'internal server map'}
         />
-      </Link>
+      </InternalLink>
       <PreviewDescription>
         <PreviewHeader className="h-12">{name}</PreviewHeader>
         <DeleteButton

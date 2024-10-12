@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { defaultLocale, Locale, locales } from '@/i18n/config';
 import { NextRequest, NextResponse, userAgent } from 'next/server';
 

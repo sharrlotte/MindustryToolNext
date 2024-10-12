@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 import { useExpandServerNav } from '@/zustand/expand-nav';
+import InternalLink from '@/components/common/internal-link';
 
 type Props = {
   id: string;
@@ -22,7 +22,7 @@ export default function NavLink({ id, href, label, icon }: Props) {
   pathname = pathname.slice(firstSlash);
 
   return (
-    <Link
+    <InternalLink
       className={cn(
         'flex h-9 items-center gap-2 text-nowrap px-2 py-2 text-sm font-semibold opacity-70 transition-[gap] hover:rounded-sm hover:bg-brand hover:text-white hover:opacity-100',
         {
@@ -46,6 +46,6 @@ export default function NavLink({ id, href, label, icon }: Props) {
       >
         {label}
       </span>
-    </Link>
+    </InternalLink>
   );
 }

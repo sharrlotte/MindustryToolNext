@@ -1,7 +1,6 @@
 'use client';
 
 import { GlobeIcon } from 'lucide-react';
-import Link from 'next/link';
 import React, { ReactNode, useMemo } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
@@ -18,6 +17,7 @@ import { Cog6ToothIcon } from '@heroicons/react/24/outline';
 import { useLocaleStore } from '@/zustand/locale-store';
 import { Locale, locales } from '@/i18n/config';
 import Tran from '@/components/common/tran';
+import InternalLink from '@/components/common/internal-link';
 
 type Tab = {
   icon: ReactNode;
@@ -41,9 +41,9 @@ export function UserActions() {
         {
           icon: <Cog6ToothIcon className="h-6 w-6" />,
           action: (
-            <Link className="w-full" href="/users/@me/setting">
+            <InternalLink className="w-full" href="/users/@me/setting">
               {t('setting')}
-            </Link>
+            </InternalLink>
           ),
         },
       ],

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
@@ -44,6 +43,7 @@ import {
   PostIcon,
   SettingIcon,
 } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
 
 type PathGroup = {
   key: string;
@@ -285,7 +285,7 @@ const _PathGroup = ({
     if (typeof path === 'string')
       return (
         <ProtectedElement key={path} session={session} all={roles} passOnEmpty>
-          <Link
+          <InternalLink
             className={cn(
               'flex items-end gap-3 rounded-md px-3 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
               {
@@ -298,7 +298,7 @@ const _PathGroup = ({
           >
             <span> {icon}</span>
             <span>{name}</span>
-          </Link>
+          </InternalLink>
         </ProtectedElement>
       );
 
@@ -337,7 +337,7 @@ const _PathGroup = ({
                   all={item.roles}
                   passOnEmpty
                 >
-                  <Link
+                  <InternalLink
                     key={item.path}
                     className={cn(
                       'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
@@ -351,7 +351,7 @@ const _PathGroup = ({
                   >
                     <span>{item.icon}</span>
                     <span>{item.name}</span>
-                  </Link>
+                  </InternalLink>
                 </ProtectedElement>
               ))}
             </AccordionContent>

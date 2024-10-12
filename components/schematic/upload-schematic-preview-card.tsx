@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -19,6 +18,7 @@ import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';
 import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
+import InternalLink from '@/components/common/internal-link';
 
 type UploadSchematicPreviewCardProps = {
   schematic: Schematic;
@@ -55,9 +55,9 @@ function _UploadSchematicPreviewCard({
         <LinkIcon />
       </CopyButton>
       <BulkActionSelector value={id} />
-      <Link href={detailLink}>
+      <InternalLink href={detailLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
-      </Link>
+      </InternalLink>
       <PreviewDescription>
         <PreviewHeader>
           <ColorText text={name} />
