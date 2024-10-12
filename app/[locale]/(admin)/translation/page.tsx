@@ -1,5 +1,6 @@
 'use client';
 
+import CopyButton from '@/components/button/copy-button';
 import DeleteButton from '@/components/button/delete-button';
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -298,7 +299,16 @@ function DiffCard({
     <TableRow>
       <TableCell className="align-top">{keyGroup}</TableCell>
       <TableCell className="align-top">{key}</TableCell>
-      <TableCell className="align-top">{value}</TableCell>
+      <TableCell className="align-top">
+        <CopyButton
+          className="hover:bg-transparent"
+          variant="ghost"
+          data={value}
+          content={value}
+        >
+          {value}
+        </CopyButton>
+      </TableCell>
       <TableCell>
         <Textarea
           className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
@@ -345,7 +355,16 @@ function CompareCard({
     <TableRow>
       <TableCell className="align-top">{keyGroup}</TableCell>
       <TableCell className="align-top">{key}</TableCell>
-      <TableCell className="align-top">{value[language]}</TableCell>
+      <TableCell className="align-top">
+        <CopyButton
+          className="hover:bg-transparent"
+          variant="ghost"
+          data={value[language]}
+          content={value[language]}
+        >
+          {value[language]}
+        </CopyButton>
+      </TableCell>
       <TableCell>
         <Textarea
           className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
