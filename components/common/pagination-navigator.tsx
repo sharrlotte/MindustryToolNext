@@ -21,16 +21,31 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
 import Tran from '@/components/common/tran';
+import ComboBox from '@/components/common/combo-box';
 
 type Props = {
   numberOfItems?: number;
+  sizes?: number[];
 };
-export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
-  const params = useSearchQuery(PaginationQuery);
+
+export default function PaginationNavigator({
+  numberOfItems = 0,
+  sizes = [10, 20, 30, 50, 100],
+}: Props) {
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(0);
+
+  const params = useSearchQuery(PaginationQuery);
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const size = params.size || sizes[0];
+
+  function handleSizeChange(size: number | undefined) {
+    const path = new URLSearchParams(searchParams);
+    path.set('size', (size || sizes[0]).toString());
+    router.replace(`?${path.toString()}`);
+  }
 
   function handlePageChange(page: number) {
     const containers = document.getElementsByClassName('pagination-container');
@@ -202,6 +217,15 @@ export default function PaginationNavigator({ numberOfItems = 0 }: Props) {
             <ChevronRightIcon className="size-5" />
           </Button>
         </PaginationItem>
+        <ComboBox
+          className="w-20"
+          value={{ label: size.toString(), value: size }}
+          values={sizes.map((size) => ({
+            label: size.toString(),
+            value: size,
+          }))}
+          onChange={handleSizeChange}
+        />
       </PaginationContent>
     </Pagination>
   );
