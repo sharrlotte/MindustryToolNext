@@ -64,7 +64,7 @@ export default function PluginCard({
       <span>{description}</span>
       <span>{description}</span>
       <div className="flex gap-2">
-        <ProtectedElement session={session} ownerId={userId}>
+        <ProtectedElement session={session} filter={{ authorId: userId }}>
           <DeleteButton
             className="right-1 top-1 backdrop-brightness-100"
             variant="ghost"

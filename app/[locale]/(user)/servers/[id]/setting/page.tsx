@@ -35,7 +35,10 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className="flex h-full flex-col gap-2 p-2">
-      <ProtectedElement session={session} all={['SHAR']}>
+      <ProtectedElement
+        session={session}
+        filter={{ authority: 'EDIT_ADMIN_SERVER' }}
+      >
         <Dialog>
           <div className="flex bg-card p-2">
             <DialogTrigger asChild>

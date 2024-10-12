@@ -40,7 +40,11 @@ export default async function Page() {
               </TabsTrigger>
             </TabsList>
           </div>
-          <ProtectedElement session={session} alt={<RequireLogin />}>
+          <ProtectedElement
+            session={session}
+            filter={true}
+            alt={<RequireLogin />}
+          >
             <CreateServerDialog />
           </ProtectedElement>
         </div>
@@ -64,7 +68,11 @@ export default async function Page() {
           className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
           value="my-server"
         >
-          <ProtectedElement session={session} alt={<RequireLogin />}>
+          <ProtectedElement
+            session={session}
+            filter={true}
+            alt={<RequireLogin />}
+          >
             <Suspense fallback={skeleton}>
               <MeServer />
             </Suspense>

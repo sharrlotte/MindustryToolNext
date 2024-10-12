@@ -106,10 +106,11 @@ export default function SchematicDetailCard({
         <EllipsisButton>
           <ProtectedElement
             session={session}
-            ownerId={userId}
-            show={isVerified}
+            filter={{ all: [{ authorId: userId }, isVerified] }}
           >
             <TakeDownSchematicButton id={id} name={name} />
+          </ProtectedElement>
+          <ProtectedElement session={session} filter={{ authorId: userId }}>
             <DeleteSchematicButton variant="command" id={id} name={name} />
           </ProtectedElement>
         </EllipsisButton>

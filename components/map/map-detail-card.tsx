@@ -88,10 +88,11 @@ export default function MapDetailCard({
         <EllipsisButton>
           <ProtectedElement
             session={session}
-            ownerId={userId}
-            show={isVerified}
+            filter={{ all: [{ authorId: userId }, isVerified] }}
           >
             <TakeDownMapButton id={id} name={name} />
+          </ProtectedElement>
+          <ProtectedElement session={session} filter={{ authorId: userId }}>
             <DeleteMapButton variant="command" id={id} name={name} />
           </ProtectedElement>
         </EllipsisButton>

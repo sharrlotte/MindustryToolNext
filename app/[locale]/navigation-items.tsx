@@ -8,11 +8,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { UserRole } from '@/constant/enum';
 import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import ProtectedElement from '@/layout/protected-element';
-import { cn, max } from '@/lib/utils';
+import { cn, Filter, max } from '@/lib/utils';
 import { useVerifyCount } from '@/zustand/verify-count';
 
 import { useQueries } from '@tanstack/react-query';
@@ -49,7 +48,7 @@ type PathGroup = {
   key: string;
   name: ReactNode;
   paths: Path[];
-  roles?: UserRole[];
+  filter?: Filter;
 };
 
 type SubPath =
@@ -59,7 +58,7 @@ type SubPath =
       name: ReactNode;
       icon: ReactNode;
       enabled?: boolean;
-      roles?: UserRole[];
+      filter?: Filter;
     }[];
 
 type Path = {
@@ -67,7 +66,7 @@ type Path = {
   name: ReactNode;
   icon: ReactNode;
   enabled?: boolean;
-  roles?: UserRole[];
+  filter?: Filter;
 };
 
 type NavItemsProps = {
@@ -80,7 +79,7 @@ export function NavItems({ onClick }: NavItemsProps) {
   const pathName = usePathname();
 
   const pathGroups = useMemo(() => {
-    return [
+    const groups: PathGroup[] = [
       {
         key: 'user',
         name: '',
@@ -145,22 +144,24 @@ export function NavItems({ onClick }: NavItemsProps) {
       {
         key: 'admin',
         name: <Tran text="admin" />,
-        roles: ['ADMIN'],
         paths: [
           {
             name: <Tran text="dashboard" />,
             path: '/admin',
             icon: <ChartIcon />,
+            filter: { authority: 'VIEW_DASH_BOARD' },
           },
           {
             name: <Tran text="user" />,
             path: '/admin/users',
             icon: <UserIcon />,
+            filter: { authority: 'EDIT_USER' },
           },
           {
             name: <Tran text="log" />,
             path: '/logs',
             icon: <LogIcon />,
+            filter: { authority: 'VIEW_LOG' },
           },
           {
             name: <VerifyPath />,
@@ -169,22 +170,25 @@ export function NavItems({ onClick }: NavItemsProps) {
                 name: <SchematicPath />,
                 path: '/admin/schematics',
                 icon: <SchematicIcon />,
+                filter: { authority: 'VERIFY_SCHEMATIC' },
               },
               {
                 name: <MapPath />,
                 path: '/admin/maps',
                 icon: <MapIcon />,
+                filter: { authority: 'VERIFY_MAP' },
               },
               {
                 name: <PostPath />,
                 path: '/admin/posts',
                 icon: <PostIcon />,
+                filter: { authority: 'VERIFY_POST' },
               },
               {
                 name: <PluginPath />,
                 path: '/admin/plugins',
                 icon: <PluginIcon />,
-                roles: ['SHAR'],
+                filter: { authority: 'VERIFY_PLUGIN' },
               },
             ],
             icon: <VerifyIcon />,
@@ -193,31 +197,31 @@ export function NavItems({ onClick }: NavItemsProps) {
             name: <Tran text="server" />,
             path: '/admin/servers',
             icon: <ServerIcon />,
-            roles: ['SHAR'],
+            filter: { authority: 'VIEW_ADMIN_SERVER' },
           },
           {
             name: <Tran text="translation" />,
             path: '/translation',
             icon: <GlobIcon />,
-            roles: ['ADMIN'],
+            filter: { authority: 'VIEW_TRANSLATION' },
           },
           {
             name: <Tran text="setting" />,
             path: '/admin/settings',
             icon: <SettingIcon />,
-            roles: ['SHAR'],
+            filter: { authority: 'VIEW_SETTING' },
           },
           {
             name: <Tran text="file" />,
             path: '/files',
             icon: <FileIcon />,
-            roles: ['SHAR'],
+            filter: { authority: 'VIEW_FILE' },
           },
 
           {
             name: 'MindustryGPT',
             icon: <MindustryGptIcon />,
-            roles: ['SHAR'],
+            filter: { authority: 'VIEW_DOCUMENT' },
             path: [
               {
                 name: 'Document',
@@ -228,7 +232,9 @@ export function NavItems({ onClick }: NavItemsProps) {
           },
         ],
       },
-    ] satisfies PathGroup[];
+    ];
+
+    return groups;
   }, []);
 
   const bestMatch = useMemo(() => {
@@ -246,8 +252,8 @@ export function NavItems({ onClick }: NavItemsProps) {
 
   return (
     <div className="no-scrollbar space-y-4 overflow-y-auto">
-      {pathGroups.map(({ key, name, roles, paths }) => (
-        <ProtectedElement key={key} all={roles} session={session} passOnEmpty>
+      {pathGroups.map(({ key, name, filter, paths }) => (
+        <ProtectedElement key={key} filter={filter} session={session}>
           <div className="space-y-1">
             <div className="pt-2 font-extrabold">{name}</div>
             <PathGroup
@@ -281,10 +287,10 @@ const _PathGroup = ({
 }: PathGroupProps): ReactNode => {
   const { session } = useSession();
 
-  return paths.map(({ path, icon, name, roles }, index) => {
+  return paths.map(({ path, icon, name, filter }, index) => {
     if (typeof path === 'string')
       return (
-        <ProtectedElement key={path} session={session} all={roles} passOnEmpty>
+        <ProtectedElement key={path} session={session} filter={filter}>
           <InternalLink
             className={cn(
               'flex items-end gap-3 rounded-md px-3 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
@@ -303,7 +309,7 @@ const _PathGroup = ({
       );
 
     return (
-      <ProtectedElement key={index} session={session} all={roles} passOnEmpty>
+      <ProtectedElement key={index} session={session} filter={filter}>
         <Accordion
           type="single"
           collapsible
@@ -334,8 +340,7 @@ const _PathGroup = ({
                 <ProtectedElement
                   key={item.path}
                   session={session}
-                  all={item.roles}
-                  passOnEmpty
+                  filter={item.filter}
                 >
                   <InternalLink
                     key={item.path}

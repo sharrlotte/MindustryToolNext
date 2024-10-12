@@ -67,7 +67,7 @@ export default async function Page({ params }: Props) {
     session?.roles.map((role) => role.name).includes('SHAR')
   ) {
     return (
-      <ProtectedRoute session={session} ownerId={userId}>
+      <ProtectedRoute session={session} filter={{ authorId: userId }}>
         <div className="flex flex-col gap-2 overflow-y-auto p-2 md:pl-2">
           <div className="h-full">
             <div className="server-layout flex min-h-full w-full flex-col gap-2">

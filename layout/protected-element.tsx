@@ -1,28 +1,26 @@
 import { ReactNode } from 'react';
 
-import { UserRole } from '@/constant/enum';
-import { hasAccess } from '@/lib/utils';
+import { Filter, hasAccess } from '@/lib/utils';
 import { Session } from '@/types/response/Session';
 import { ApiError } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 
 type Props = {
-  children: ReactNode;
-  any?: UserRole[];
-  all?: UserRole[];
-  show?: boolean;
-  ownerId?: string;
+  filter?: Filter;
   session: Session | null | ApiError;
   alt?: ReactNode;
-  passOnEmpty?: boolean;
+  children: ReactNode;
 };
 
-export default function ProtectedElement({ children, alt, ...props }: Props) {
-  const { session } = props;
-
+export default function ProtectedElement({
+  children,
+  alt,
+  filter,
+  session,
+}: Props) {
   if (session && 'error' in session) {
     return <ErrorScreen error={session} />;
   }
 
-  return hasAccess({ ...props, session }) ? children : alt;
+  return hasAccess(session, filter) ? children : alt;
 }

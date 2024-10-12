@@ -83,6 +83,7 @@ export default function Page() {
       </div>
       <ProtectedElement
         session={session}
+        filter={true}
         alt={
           <div className="h-full w-full whitespace-nowrap text-center">
             <LoginButton className="justify-center bg-brand">

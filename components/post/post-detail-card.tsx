@@ -125,8 +125,7 @@ export default function PostDetailCard({
           <EllipsisButton>
             <ProtectedElement
               session={session}
-              ownerId={userId}
-              show={isVerified}
+              filter={{ all: [{ authorId: userId }, isVerified] }}
             >
               <TakeDownButton
                 isLoading={isLoading}
@@ -134,7 +133,7 @@ export default function PostDetailCard({
                 onClick={() => removePost(id)}
               />
             </ProtectedElement>
-            <ProtectedElement session={session} ownerId={userId}>
+            <ProtectedElement session={session} filter={{ authorId: userId }}>
               <DeleteButton
                 variant="command"
                 description={t('delete-alert', { name: title })}

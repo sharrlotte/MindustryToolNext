@@ -6,5 +6,9 @@ import React, { ReactNode } from 'react';
 export default async function Layout({ children }: { children: ReactNode }) {
   const session = await getSession();
 
-  return <ProtectedRoute session={session}>{children}</ProtectedRoute>;
+  return (
+    <ProtectedRoute session={session} filter={true}>
+      {children}
+    </ProtectedRoute>
+  );
 }
