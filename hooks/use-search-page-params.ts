@@ -18,6 +18,6 @@ export default function useSearchPageParams(
     tags: query.getAll(QueryParams.tags),
     authorId: query.get(QueryParams.authorId),
     status: query.get(QueryParams.status),
-    size: size ?? 20,
+    size: Number.parseInt(query.get(QueryParams.size)) || size || 20,
   });
 }

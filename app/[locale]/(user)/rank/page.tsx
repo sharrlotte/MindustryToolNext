@@ -5,7 +5,7 @@ import {
 
 export default function Page() {
   return (
-    <div className="flex h-full flex-col gap-2">
+    <div className="flex h-full flex-col gap-2 p-2">
       <PageClient />
       <RankPaginationNavigator />
     </div>
