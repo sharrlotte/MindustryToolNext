@@ -1,6 +1,11 @@
 'use client';
 
-import React, { ReactNode, useLayoutEffect, useState } from 'react';
+import React, {
+  ReactNode,
+  useCallback,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { useInterval } from 'usehooks-ts';
 
 import useClientApi from '@/hooks/use-client';
@@ -63,32 +68,23 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     session: null,
   });
 
+  const handleSession = useCallback(
+    ({ data }: { data: Session | null }) =>
+      data
+        ? setSession({
+            session: data,
+            state: 'authenticated',
+          })
+        : setSession({ state: 'unauthenticated', session: null }),
+    [],
+  );
+
   useLayoutEffect(() => {
-    axios
-      .get<any, { data: Session }>('/auth/session')
-      .then(({ data }) => data)
-      .then((session) =>
-        session
-          ? setSession({
-              session,
-              state: 'authenticated',
-            })
-          : setSession({ state: 'unauthenticated', session: null }),
-      );
-  }, [axios, setSession]);
+    axios.get<any, { data: Session }>('/auth/session').then(handleSession);
+  }, [axios, setSession, handleSession]);
 
   useInterval(() => {
-    axios
-      .get<any, { data: Session }>('/auth/session')
-      .then(({ data }) => data)
-      .then((session) =>
-        session
-          ? setSession({
-              session,
-              state: 'authenticated',
-            })
-          : setSession({ state: 'unauthenticated', session: null }),
-      );
+    axios.get<any, { data: Session }>('/auth/session').then(handleSession);
   }, 300000);
 
   return (
