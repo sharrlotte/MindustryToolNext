@@ -1,9 +1,10 @@
+import { locales } from '@/i18n/config';
 import SortTag from '@/types/response/SortTag';
 
 const env = {
   webVersion: 'v1.1.1',
   webName: 'Mindustry Tool',
-  locales: ['vi', 'en'],
+  locales: locales,
   defaultLocale: 'en',
   url: {
     socket: process.env.NEXT_PUBLIC_BACKEND_SOCKET_URL as string,
@@ -16,4 +17,3 @@ const env = {
 export default env;
 
 export const defaultSortTag: SortTag = 'time_1';
-    

@@ -165,6 +165,22 @@ export function NavItems({ onClick }: NavItemsProps) {
           },
           {
             name: <VerifyPath />,
+            filter: {
+              any: [
+                {
+                  authority: 'VERIFY_SCHEMATIC',
+                },
+                {
+                  authority: 'VERIFY_MAP',
+                },
+                {
+                  authority: 'VERIFY_POST',
+                },
+                {
+                  authority: 'VERIFY_PLUGIN',
+                },
+              ],
+            },
             path: [
               {
                 name: <SchematicPath />,
