@@ -52,7 +52,7 @@ export function UserTable() {
         ref={(ref) => setContainer(ref)}
       >
         <InfinitePage
-          className="grid h-full w-full grid-cols-1 justify-center gap-2 pr-2"
+          className="flex h-full w-full flex-col justify-start gap-2 pr-2"
           params={{ ...params, role: role?.name as UserRole, size: 40 }}
           queryKey={['users', 'management']}
           getFunc={getUsers}
