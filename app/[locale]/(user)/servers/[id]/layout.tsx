@@ -68,7 +68,7 @@ export default async function Layout({ params, children }: PageProps) {
 
   return (
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] overflow-hidden md:grid-cols-[auto,1fr] md:grid-rows-1">
-      <div className="relative flex flex-col flex-wrap bg-card">
+      <div className="relative flex flex-col flex-wrap bg-card h-full">
         <div className="flex flex-1 flex-wrap gap-2 overflow-x-auto p-2 font-extrabold antialiased md:flex-col md:overflow-x-hidden">
           <div className="flex items-center justify-between gap-1">
             <SidebarToggle />
