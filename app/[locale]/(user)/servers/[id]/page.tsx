@@ -43,6 +43,10 @@ export default async function Page({ params }: Props) {
     return <ErrorScreen error={server} />;
   }
 
+  if ('error' in session) {
+    return <ErrorScreen error={session} />;
+  }
+
   const {
     started,
     name,

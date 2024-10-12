@@ -87,31 +87,29 @@ export default async function prefetch<
 }
 
 const getCachedSession = unstable_cache(
-  (cookie) => {
-    axiosInstance.defaults.headers['Cookie'] = cookie;
+  (cookie: string) => {
+    axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
 
-    return axiosInstance.get('/auth/session').then((r) => r.data);
+    return axiosInstance
+      .get('/auth/session')
+      .then((r) => r.data) as Promise<Session>;
   },
   ['session'],
   { revalidate: 60 },
 );
 
-export async function getSession(): Promise<Session | null> {
+export async function getSession() {
   const cookie = await cookies();
 
-  const result = serverApi(() => getCachedSession(cookie.toString()));
-
-  if ('error' in result) {
-    return null;
-  }
-
-  return result;
+  return serverApi(() => getCachedSession(cookie.toString()));
 }
 
 export const getServerApi = async (): Promise<AxiosInstance> => {
   const cookie = await cookies();
 
-  axiosInstance.defaults.headers['Cookie'] = cookie.toString();
+  axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(
+    cookie.toString(),
+  );
 
   return axiosInstance;
 };

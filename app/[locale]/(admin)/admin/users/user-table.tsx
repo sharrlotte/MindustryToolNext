@@ -33,8 +33,8 @@ export function UserTable() {
   });
 
   return (
-    <div className="flex h-full w-full flex-col space-y-6 overflow-hidden">
-      <div className="flex space-x-2">
+    <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
+      <div className="flex gap-2">
         <Input
           value={name}
           onChange={(event) => setQueryState({ name: event.target.value })}
@@ -48,11 +48,11 @@ export function UserTable() {
         />
       </div>
       <div
-        className="relative flex h-full flex-col gap-2 overflow-y-auto"
+        className="flex h-full flex-col gap-2 overflow-y-auto"
         ref={(ref) => setContainer(ref)}
       >
         <InfinitePage
-          className="grid w-full grid-cols-1 justify-center gap-2 pr-2"
+          className="flex h-full w-full flex-col justify-start gap-2 pr-2"
           params={{ ...params, role: role?.name as UserRole, size: 40 }}
           queryKey={['users', 'management']}
           getFunc={getUsers}

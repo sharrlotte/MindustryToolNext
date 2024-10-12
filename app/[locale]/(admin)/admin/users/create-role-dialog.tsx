@@ -1,3 +1,5 @@
+'use client';
+
 import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';

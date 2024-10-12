@@ -18,6 +18,7 @@ import { Schematic } from '@/types/response/Schematic';
 import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';
 import { BulkActionSelector } from '@/components/common/bulk-action';
+import ColorText from '@/components/common/color-text';
 
 type UploadSchematicPreviewCardProps = {
   schematic: Schematic;
@@ -58,7 +59,9 @@ function _UploadSchematicPreviewCard({
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </Link>
       <PreviewDescription>
-        <PreviewHeader>{name}</PreviewHeader>
+        <PreviewHeader>
+          <ColorText text={name} />
+        </PreviewHeader>
         <PreviewActions>
           <CopyButton content={copyContent} data={getData} />
           <DownloadButton href={downloadLink} fileName={downloadName} />

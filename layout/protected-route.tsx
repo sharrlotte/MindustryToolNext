@@ -4,12 +4,14 @@ import RequireLogin from '@/components/common/require-login';
 import { UserRole } from '@/constant/enum';
 import { Session } from '@/types/response/Session';
 import Tran from '@/components/common/tran';
+import { ApiError } from '@/action/action';
+import ErrorScreen from '@/components/common/error-screen';
 
 type Props = {
   children: ReactNode;
   any?: UserRole[];
   all?: UserRole[];
-  session: Session | null;
+  session: Session | null | ApiError;
   ownerId?: string;
 };
 
@@ -24,7 +26,9 @@ export default function ProtectedRoute({
   session,
   ownerId,
 }: Props) {
-  
+  if (session && 'error' in session) {
+    return <ErrorScreen error={session} />;
+  }
 
   if (!session || session.roles === undefined) return <RequireLogin />;
 

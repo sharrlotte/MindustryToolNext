@@ -252,7 +252,7 @@ function DiffTable({ language, target }: DiffTableProps) {
             asChild
           >
             {(data) => (
-              <DiffCard key={data.id} translation={data} language={language} />
+              <DiffCard key={data.id} translation={data} language={target} />
             )}
           </GridPaginationList>
         </TableBody>

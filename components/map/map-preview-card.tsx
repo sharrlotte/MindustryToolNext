@@ -19,6 +19,7 @@ import env from '@/constant/env';
 import { MapPreview } from '@/types/response/MapPreview';
 import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import ColorText from '@/components/common/color-text';
 
 type MapPreviewCardProps = {
   map: MapPreview;
@@ -48,7 +49,9 @@ function _MapPreviewCard({
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </InternalLink>
       <PreviewDescription>
-        <PreviewHeader>{name}</PreviewHeader>
+        <PreviewHeader>
+          <ColorText text={name} />
+        </PreviewHeader>
         <PreviewActions>
           <DownloadButton href={downloadLink} fileName={downloadName} />
           {isVerified && (
