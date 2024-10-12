@@ -3,8 +3,7 @@
 import { Button } from '@/components/ui/button';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 
 type ContextType = {
   value: string;
@@ -30,11 +29,13 @@ export function useTab() {
 
 type ServerTabsProps<T> = {
   className?: string;
-  value: T | undefined;
+  value: T;
   name: string;
   values: T[];
   children: ReactNode;
 };
+
+const defaultValue = {};
 
 export function ServerTabs<T extends string>({
   className,
@@ -43,23 +44,25 @@ export function ServerTabs<T extends string>({
   values,
   children,
 }: ServerTabsProps<T>) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [query, setQuery] = useQueryState({ [name]: value as string });
+  const [query, setQuery] = useQueryState(defaultValue);
 
   const current = query[name];
   const setValue = (value: string) => setQuery({ [name]: value });
 
   useEffect(() => {
     if (!current || !values.includes(current as T)) {
-      setValue(values[0]);
+      setValue(value);
     }
-  }, [value, values, setQuery]);
+  }, [current, values, setQuery]);
 
   return (
-    <div className={cn('p-1', className)}>
-      <Context.Provider value={{ value: current || values[0], setValue }}>
+    <div
+      className={cn(
+        'flex h-full flex-col gap-2 overflow-hidden p-1',
+        className,
+      )}
+    >
+      <Context.Provider value={{ value: current || value, setValue }}>
         {children}
       </Context.Provider>
     </div>
@@ -67,18 +70,37 @@ export function ServerTabs<T extends string>({
 }
 
 type ServerTabsTriggerProps = {
+  className?: string;
   value: string;
   children: ReactNode;
 };
 
-export function ServerTabsTrigger({ value, children }: ServerTabsTriggerProps) {
-  const { setValue } = useTab();
+export function ServerTabsTrigger({
+  className,
+  value,
+  children,
+}: ServerTabsTriggerProps) {
+  const { value: current, setValue } = useTab();
 
   function handleClick() {
     setValue(value);
   }
 
-  return <Button onClick={handleClick}>{children}</Button>;
+  return (
+    <Button
+      className={cn(
+        'min-w-20',
+        {
+          'bg-background': value === current,
+        },
+        className,
+      )}
+      variant="ghost"
+      onClick={handleClick}
+    >
+      {children}
+    </Button>
+  );
 }
 
 type ServerTabsContentProps = {
@@ -96,8 +118,8 @@ export function ServerTabsContent({
 
   return (
     <div
-      className={cn('hidden', className, {
-        block: value === current,
+      className={cn('hidden h-full overflow-hidden', className, {
+        flex: value === current,
       })}
     >
       {children}
@@ -111,5 +133,14 @@ type ServerTabsListProps = {
 };
 
 export function ServerTabsList({ className, children }: ServerTabsListProps) {
-  return <div className={cn('flex gap-1 p-1', className)}>{children}</div>;
+  return (
+    <div
+      className={cn(
+        'inline-flex items-center justify-center rounded-lg bg-card p-1 text-muted-foreground',
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
 }

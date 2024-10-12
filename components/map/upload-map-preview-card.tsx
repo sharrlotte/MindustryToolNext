@@ -14,6 +14,7 @@ import env from '@/constant/env';
 import { MapPreview } from '@/types/response/MapPreview';
 import { LinkIcon } from '@/components/common/icons';
 import { BulkActionSelector } from '@/components/common/bulk-action';
+import ColorText from '@/components/common/color-text';
 
 type UploadMapPreviewCardProps = {
   map: MapPreview;
@@ -44,7 +45,9 @@ function _UploadMapPreviewCard({
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </Link>
       <PreviewDescription>
-        <PreviewHeader>{name}</PreviewHeader>
+        <PreviewHeader>
+          <ColorText text={name} />
+        </PreviewHeader>
         <PreviewActions>
           <DownloadButton href={downloadLink} fileName={downloadName} />
         </PreviewActions>

@@ -23,6 +23,7 @@ import { Schematic } from '@/types/response/Schematic';
 import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';
 import InternalLink from '@/components/common/internal-link';
+import ColorText from '@/components/common/color-text';
 
 type SchematicPreviewCardProps = {
   schematic: Schematic;
@@ -62,7 +63,9 @@ function _SchematicPreviewCard({
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </InternalLink>
       <PreviewDescription>
-        <PreviewHeader>{name}</PreviewHeader>
+        <PreviewHeader>
+          <ColorText text={name} />
+        </PreviewHeader>
         <PreviewActions>
           <CopyButton content={copyContent} data={getData} />
           <DownloadButton href={downloadLink} fileName={downloadName} />

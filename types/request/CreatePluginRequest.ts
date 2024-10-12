@@ -23,7 +23,7 @@ export const CreatePluginSchema = z.object({
   url: z
     .string()
     .regex(
-      /https:\/\/github.com\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)/,
+      /https:\/\/github.com\/([a-zA-Z0-9-_]+)\/([a-zA-Z0-9-_]+)/,
       'Invalid GitHub URL',
     ),
 });
