@@ -26,7 +26,7 @@ export default async function Page() {
         className="flex w-full flex-col overflow-hidden"
         defaultValue="official-server"
       >
-        <div className="flex w-full flex-wrap justify-between gap-2">
+        <div className="flex w-full flex-wrap justify-between gap-2 items-center">
           <div>
             <TabsList>
               <TabsTrigger value="official-server">
