@@ -57,7 +57,18 @@ export function useI18n(): TranslateFunction {
           });
       }
 
-      return value ? (formatTranslation(value[key], args) ?? key) : key;
+      if (!value || Object.keys(value).length === 0) {
+        return key;
+      }
+
+      const translated = value[key];
+
+      if (!translated) {
+        console.error(`Missing key: ${text}`);
+        return key;
+      }
+
+      return formatTranslation(translated, args) || key;
     },
     [keys, isCurrentLocaleSet, axios, currentLocale, setTranslation],
   );

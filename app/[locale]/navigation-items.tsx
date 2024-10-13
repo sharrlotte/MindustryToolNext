@@ -43,6 +43,11 @@ import {
   SettingIcon,
 } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import useClientQuery from '@/hooks/use-client-query';
+import useSearchQuery from '@/hooks/use-search-query';
+import { TranslationPaginationQuery } from '@/query/search-query';
+import { getTranslationDiffCount } from '@/query/translation';
+import { useLocaleStore } from '@/zustand/locale-store';
 
 type PathGroup = {
   key: string;
@@ -216,7 +221,7 @@ export function NavItems({ onClick }: NavItemsProps) {
             filter: { authority: 'VIEW_ADMIN_SERVER' },
           },
           {
-            name: <Tran text="translation" />,
+            name: <TranslationPath />,
             path: '/translation',
             icon: <GlobIcon />,
             filter: { authority: 'VIEW_TRANSLATION' },
@@ -267,7 +272,7 @@ export function NavItems({ onClick }: NavItemsProps) {
   }, [pathGroups, pathName]);
 
   return (
-    <div className="no-scrollbar space-y-4 overflow-y-auto">
+    <nav className="no-scrollbar space-y-4 overflow-y-auto">
       {pathGroups.map(({ key, name, filter, paths }) => (
         <ProtectedElement key={key} filter={filter} session={session}>
           <div className="space-y-1">
@@ -282,7 +287,7 @@ export function NavItems({ onClick }: NavItemsProps) {
           </div>
         </ProtectedElement>
       ))}
-    </div>
+    </nav>
   );
 }
 
@@ -481,4 +486,26 @@ function getPath(path: SubPath): string[] {
   }
 
   return path.reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
+}
+
+function TranslationPath() {
+  const params = useSearchQuery(TranslationPaginationQuery);
+  const { currentLocale } = useLocaleStore();
+
+  if (params.language === params.target) {
+    params.target = currentLocale;
+  }
+
+  const { data } = useClientQuery({
+    queryKey: ['translations', 'diff', 'total', params.language, params.target],
+    queryFn: (axios) => getTranslationDiffCount(axios, params),
+    placeholderData: 0,
+  });
+
+  return (
+    <>
+      <Tran text="translation" />
+      {data > 0 && <span> ({data})</span>}
+    </>
+  );
 }

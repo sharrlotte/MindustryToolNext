@@ -36,7 +36,6 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
-import { omit } from '@/lib/utils';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import {
   createTranslation,
@@ -144,6 +143,7 @@ function RefreshButton() {
   return (
     <Button
       className="ml-auto"
+      variant="secondary"
       onClick={() => invalidateByKey(['translations'])}
     >
       <Tran text="translation.refresh" />
@@ -158,7 +158,8 @@ function CompareTable({ language, target }: CompareTableProps) {
       'translations',
       'compare',
       'total',
-      omit(params, 'page', 'size'),
+      params.language,
+      params.target,
     ],
     queryFn: (axios) => getTranslationCompareCount(axios, params),
     placeholderData: 0,
@@ -219,7 +220,7 @@ type DiffTableProps = {
 function DiffTable({ language, target }: DiffTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
   const { data } = useClientQuery({
-    queryKey: ['translations', 'diff', 'total', omit(params, 'page', 'size')],
+    queryKey: ['translations', 'diff', 'total', params.language, params.target],
     queryFn: (axios) => getTranslationDiffCount(axios, params),
     placeholderData: 0,
   });
@@ -418,6 +419,26 @@ function AddNewKeyDialog() {
     },
   });
 
+  function handleKeyGroupChange(event: ChangeEvent<HTMLInputElement>) {
+    const value = event.currentTarget.value;
+
+    if (!value.includes('.')) {
+      return form.setValue('keyGroup', value);
+    }
+
+    const parts = value.split('.');
+
+    if (parts.length !== 2) {
+      return form.setValue('keyGroup', value);
+    }
+
+    const keyGroup = parts[0];
+    const key = parts[1];
+
+    form.setValue('keyGroup', keyGroup);
+    form.setValue('key', key);
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -440,7 +461,11 @@ function AddNewKeyDialog() {
                     <Tran text="translation.key-group" />
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Translation" {...field} />
+                    <Input
+                      placeholder="Translation"
+                      {...field}
+                      onChange={handleKeyGroupChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

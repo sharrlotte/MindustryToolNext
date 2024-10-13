@@ -13,7 +13,7 @@ type LogCardProps = {
 };
 
 export default function LogCard({
-  log: { requestUrl, ip, userId, content, createdAt },
+  log: { requestUrl, ip, userId, content, createdAt, environment },
   onClick,
 }: LogCardProps) {
   return (
@@ -27,6 +27,7 @@ export default function LogCard({
       {userId && (
         <span onClick={() => onClick({ userId })}>UserID: {userId}</span>
       )}
+      Env: {environment === 1 ? 'Prod' : 'Dev'}
       <span onClick={() => onClick({ content })}>Content: {content}</span>
       <span>Created at: {new Date(createdAt).toLocaleString()}</span>
     </div>

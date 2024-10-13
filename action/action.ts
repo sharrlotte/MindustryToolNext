@@ -24,7 +24,13 @@ import axiosInstance from '@/query/config/config';
 import { formatTranslation } from '@/i18n/client';
 import { AxiosInstance } from 'axios';
 
-export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
+export async function revalidate({
+  path,
+  tag,
+}: {
+  path?: string;
+  tag?: string;
+}) {
   'use server';
   if (path) {
     revalidatePath(path);
@@ -97,7 +103,7 @@ export default async function prefetch<
   return dehydrate(queryClient);
 }
 
-const getCachedSession = unstable_cache(
+const getCachedSession: (cookie: string) => Promise<Session> = unstable_cache(
   (cookie: string) => {
     axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
 

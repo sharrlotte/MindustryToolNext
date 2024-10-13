@@ -10,6 +10,18 @@ import { cn } from '@/lib/utils';
 
 import { MenuIcon, NotificationIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
+import { motion } from 'framer-motion';
+
+const sidebarVariants = {
+  open: {
+    width: 'auto',
+    transition: { type: 'spring', stiffness: 300, damping: 30 },
+  },
+  closed: {
+    width: 0,
+    transition: { type: 'spring', stiffness: 300, damping: 30 },
+  },
+};
 
 export default function NavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
@@ -24,7 +36,7 @@ export default function NavigationBar() {
   );
 
   return (
-    <nav className="flex h-nav w-full items-center justify-between bg-brand px-2 py-1 text-white shadow-lg">
+    <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-1 text-white shadow-lg">
       <Button
         title="Navbar"
         type="button"
@@ -44,40 +56,45 @@ export default function NavigationBar() {
           },
         )}
       >
-        <div
-          className={cn(
-            'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background duration-300',
-            {
-              'translate-x-0': isSidebarVisible,
-            },
-          )}
+        <motion.div
+          variants={sidebarVariants}
+          animate={isSidebarVisible ? 'open' : 'closed'}
         >
           <div
-            className="h-full w-full overflow-hidden"
-            onMouseLeave={hideSidebar} //
-            onMouseEnter={showSidebar}
+            className={cn(
+              'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background duration-300',
+              {
+                'translate-x-0': isSidebarVisible,
+              },
+            )}
           >
-            <OutsideWrapper
+            <div
               className="h-full w-full overflow-hidden"
-              onClickOutside={hideSidebar}
+              onMouseLeave={hideSidebar} //
+              onMouseEnter={showSidebar}
             >
-              <div className="flex h-full flex-col justify-between overflow-hidden p-2">
-                <div className="flex h-full flex-col overflow-hidden">
-                  <span className="flex flex-col gap-2">
-                    <span className="space-x-2 rounded-sm p-2">
-                      <h1 className="text-xl font-medium">MindustryTool</h1>
-                      <span className="text-xs">{env.webVersion}</span>
+              <OutsideWrapper
+                className="h-full w-full overflow-hidden"
+                onClickOutside={hideSidebar}
+              >
+                <div className="flex h-full flex-col justify-between overflow-hidden p-2">
+                  <div className="flex h-full flex-col overflow-hidden">
+                    <span className="flex flex-col gap-2">
+                      <span className="space-x-2 rounded-sm p-2">
+                        <h1 className="text-xl font-medium">MindustryTool</h1>
+                        <span className="text-xs">{env.webVersion}</span>
+                      </span>
                     </span>
-                  </span>
-                  <NavItems onClick={hideSidebar} />
+                    <NavItems onClick={hideSidebar} />
+                  </div>
+                  <UserDisplay />
                 </div>
-                <UserDisplay />
-              </div>
-            </OutsideWrapper>
+              </OutsideWrapper>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
       <NotificationIcon />
-    </nav>
+    </div>
   );
 }

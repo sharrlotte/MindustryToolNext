@@ -20,14 +20,12 @@ export const experimental_ppr = true;
 
 export default async function Home() {
   return (
-    <div className="no-scrollbar flex h-full flex-col overflow-y-auto bg-[url('https://mindustrygame.github.io/1.d25af17a.webp')] bg-cover bg-center text-white">
+    <main className="no-scrollbar flex h-full flex-col overflow-y-auto bg-[url('https://mindustrygame.github.io/1.d25af17a.webp')] bg-cover bg-center text-white">
       <div className="mx-auto flex w-full flex-col gap-10 p-4 pt-10 backdrop-blur-sm backdrop-brightness-50 md:gap-20 md:px-32">
-        <div>
-          <h1 className="w-full text-center text-xl font-extrabold">
-            <Tran text="home.hero-title" />
-          </h1>
-        </div>
-        <div className="flex flex-col gap-4 md:flex-row">
+        <h1 className="w-full text-center text-xl font-extrabold">
+          <Tran text="home.hero-title" />
+        </h1>
+        <article className="flex flex-col gap-4 md:flex-row">
           <div className="flex flex-col space-y-8 md:w-1/2">
             <div>
               <h3 className="font-bold">
@@ -57,21 +55,21 @@ export default async function Home() {
           <div className="flex h-fit w-full justify-center md:w-1/2">
             <YoutubeEmbed url="https://www.youtube.com/embed/gUu3AhqpyHo?autoplay=1&loop=1&controls=1" />
           </div>
-        </div>
-        <div className="flex flex-col gap-2">
+        </article>
+        <article className="flex flex-col gap-2">
           <h3 className="font-bold">
             <Tran text="home.schematic-preview" />
           </h3>
           <HomeSchematicPreview
             queryParam={{ page: 0, size: 10, sort: 'time_1' }}
           />
-        </div>
-        <div className="flex flex-col gap-2">
+        </article>
+        <article className="flex flex-col gap-2">
           <h3 className="font-bold">
             <Tran text="home.map-preview" />
           </h3>
           <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
-        </div>
+        </article>
         <div className="flex w-full flex-col gap-4 md:flex-row">
           <div className="flex w-full flex-col gap-8 md:w-1/2">
             <div className="space-y-2">
@@ -99,7 +97,7 @@ export default async function Home() {
                 </li>
               </ul>
             </div>
-            <div className="space-y-2">
+            <section className="space-y-2">
               <h1 className="flex text-xl font-extrabold">
                 <Tran text="home.community" />
               </h1>
@@ -134,9 +132,29 @@ export default async function Home() {
                     <Tran text="home.reddit" />
                   </a>
                 </li>
+                <li className="p-0">
+                  <a
+                    className="text-lg text-brand hover:text-brand"
+                    href="https://mindustrygame.github.io/wiki/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Tran text="home.mindustry-wiki" />
+                  </a>
+                </li>
+                <li className="p-0">
+                  <a
+                    className="text-lg text-brand hover:text-brand"
+                    href="https://github.com/Anuken/Mindustry"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Tran text="home.mindustry-github" />
+                  </a>
+                </li>
               </ul>
-            </div>
-            <div className="space-y-2">
+            </section>
+            <section className="space-y-2">
               <h1 className="flex text-xl font-extrabold">
                 <Tran text="home.youtube" />
               </h1>
@@ -162,7 +180,7 @@ export default async function Home() {
                   </a>
                 </li>
               </ul>
-            </div>
+            </section>
           </div>
           <div className="flex w-full flex-col md:w-1/2">
             <h1 className="mb-5 flex text-xl font-extrabold">
@@ -203,6 +221,6 @@ export default async function Home() {
         </div>
         <Ads />
       </footer>
-    </div>
+    </main>
   );
 }

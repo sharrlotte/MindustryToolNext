@@ -1,9 +1,9 @@
 'use client';
 
 import { CheckIcon, ExternalLink } from 'lucide-react';
-import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import Link from 'next/link';
 
 import DeleteButton from '@/components/button/delete-button';
 import TagSelector from '@/components/search/tag-selector';

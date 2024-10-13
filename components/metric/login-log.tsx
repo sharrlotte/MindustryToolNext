@@ -2,7 +2,7 @@ import Tran from '@/components/common/tran';
 import { Log } from '@/types/response/Log';
 import MetricWrapper from '@/components/metric/metric-wrapper';
 import { serverApi } from '@/action/action';
-import getLogs from '@/query/log';
+import { getLogs } from '@/query/log';
 import ErrorScreen from '@/components/common/error-screen';
 
 export default async function LoginLog() {

@@ -133,6 +133,10 @@ export default class SocketClient {
           handler(message.data, event);
         }
 
+        if (message.method === 'Error') {
+          throw new Error(message.message);
+        }
+
         if (message.id) {
           const { resolve } = this.requests[message.id];
           return resolve(message.data);
