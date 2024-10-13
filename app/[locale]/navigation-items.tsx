@@ -43,6 +43,11 @@ import {
   SettingIcon,
 } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import useClientQuery from '@/hooks/use-client-query';
+import useSearchQuery from '@/hooks/use-search-query';
+import { TranslationPaginationQuery } from '@/query/search-query';
+import { getTranslationDiffCount } from '@/query/translation';
+import { useLocaleStore } from '@/zustand/locale-store';
 
 type PathGroup = {
   key: string;
@@ -216,7 +221,7 @@ export function NavItems({ onClick }: NavItemsProps) {
             filter: { authority: 'VIEW_ADMIN_SERVER' },
           },
           {
-            name: <Tran text="translation" />,
+            name: <TranslationPath />,
             path: '/translation',
             icon: <GlobIcon />,
             filter: { authority: 'VIEW_TRANSLATION' },
@@ -481,4 +486,28 @@ function getPath(path: SubPath): string[] {
   }
 
   return path.reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
+}
+
+function TranslationPath() {
+  const params = useSearchQuery(TranslationPaginationQuery);
+  const { currentLocale } = useLocaleStore();
+
+  if (params.language === params.target) {
+    params.target = currentLocale;
+  }
+
+  console.log(params);
+
+  const { data } = useClientQuery({
+    queryKey: ['translations', 'diff', 'total', params.language, params.target],
+    queryFn: (axios) => getTranslationDiffCount(axios, params),
+    placeholderData: 0,
+  });
+
+  return (
+    <>
+      <Tran text="translation" />
+      {data > 0 && <span> ({data})</span>}
+    </>
+  );
 }

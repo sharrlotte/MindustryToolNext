@@ -36,9 +36,17 @@ import { Log } from '@/types/response/Log';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useQuery } from '@tanstack/react-query';
-import getLogs, { getLogCollections } from '@/query/log';
+import { getLogs, getLogCollections, getLogCount } from '@/query/log';
 import { Hidden } from '@/components/common/hidden';
 import useSearchPageParams from '@/hooks/use-search-page-params';
+import {
+  GridLayout,
+  ListLayout,
+  PaginationLayoutSwitcher,
+} from '@/components/common/pagination-layout';
+import GridPaginationList from '@/components/common/grid-pagination-list';
+import PaginationNavigator from '@/components/common/pagination-navigator';
+import useClientQuery from '@/hooks/use-client-query';
 
 const defaultState = {
   collection: 'LIVE',
@@ -187,6 +195,13 @@ function StaticLog({ collection }: StaticLogProps) {
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
+  const { data } = useClientQuery({
+    queryKey: ['log', 'total', collection, filter],
+    queryFn: (axios) =>
+      getLogCount(axios, { ...filter, collection: collection as LogType }),
+    placeholderData: 0,
+  });
+
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
       <div className="flex justify-between gap-2 rounded-md bg-card p-2">
@@ -201,12 +216,37 @@ function StaticLog({ collection }: StaticLogProps) {
           />
           <FilterDialog filter={filter} setFilter={setFilter} />
         </div>
+        <PaginationLayoutSwitcher />
       </div>
-      <div
-        className="relative flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden"
-        ref={(ref) => setContainer(ref)}
-      >
-        <InfinitePage<Log, LogPaginationQuery>
+      <ListLayout>
+        <div
+          className="relative flex h-full flex-col gap-2 overflow-x-hidden"
+          ref={(ref) => setContainer(ref)}
+        >
+          <InfinitePage<Log, LogPaginationQuery>
+            className="flex w-full flex-col items-center justify-center gap-2"
+            params={{
+              page,
+              size,
+              collection: collection as LogType,
+              env: env as LogEnvironment,
+              content,
+              userId,
+              ip,
+              url,
+              before,
+              after,
+            }}
+            container={() => container}
+            queryKey={['logs']}
+            getFunc={getLogs}
+          >
+            {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
+          </InfinitePage>
+        </div>
+      </ListLayout>
+      <GridLayout>
+        <GridPaginationList
           className="flex w-full flex-col items-center justify-center gap-2"
           params={{
             page,
@@ -220,12 +260,16 @@ function StaticLog({ collection }: StaticLogProps) {
             before,
             after,
           }}
-          container={() => container}
           queryKey={['logs']}
           getFunc={getLogs}
         >
           {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
-        </InfinitePage>
+        </GridPaginationList>
+      </GridLayout>
+      <div className="flex justify-end">
+        <GridLayout>
+          <PaginationNavigator numberOfItems={data} />
+        </GridLayout>
       </div>
     </div>
   );

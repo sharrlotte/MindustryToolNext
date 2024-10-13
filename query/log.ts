@@ -17,7 +17,7 @@ type GetLogParams = Pageable & {
   env?: 'Prod' | 'Dev';
 };
 
-export default async function getLogs(
+export async function getLogs(
   axios: AxiosInstance,
   { collection, page, ...rest }: GetLogParams,
 ): Promise<Log[]> {
@@ -29,6 +29,35 @@ export default async function getLogs(
     params: {
       size: 20,
       page,
+      ...params,
+    },
+  });
+
+  return result.data;
+}
+
+export async function getLogCount(
+  axios: AxiosInstance,
+  {
+    collection,
+    ...rest
+  }: {
+    env?: string;
+    ip?: string;
+    userId?: string;
+    url?: string;
+    content?: string;
+    before?: string;
+    after?: string;
+    collection: LogType;
+  },
+): Promise<number> {
+  const params = Object.fromEntries(
+    Object.entries(rest).filter(([_, value]) => value),
+  );
+
+  const result = await axios.get(`logs/${collection}/count`, {
+    params: {
       ...params,
     },
   });
