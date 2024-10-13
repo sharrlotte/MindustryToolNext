@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     return;
   }
 
-  let locale = request.cookies.get('Locale')?.value as string;
+  let locale = request.cookies.get('Locale')?.value?.toLowerCase() as string;
 
   if (!locale) {
     const headers = request.headers;
@@ -17,7 +17,8 @@ export function middleware(request: NextRequest) {
       .get('Accept-Language')
       ?.split(/[;\-,]/)
       .filter((lang) => lang) //
-      .filter((lang) => locales.includes(lang.trim().toLowerCase() as Locale));
+      .map((lang) => lang.toLocaleLowerCase().trim()) //
+      .filter((lang) => locales.includes(lang as Locale));
 
     locale = acceptedLanguages //
       ? acceptedLanguages[0]
@@ -26,17 +27,13 @@ export function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
+  const pathnameHasLocale = locales.some((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
 
   const currentLocale = pathname.slice(1, 3);
 
   if (pathnameHasLocale && currentLocale === locale) return;
 
-  request.nextUrl.pathname = pathnameHasLocale
-    ? `/${locale}/${pathname.slice(4)}`
-    : `/${locale}${pathname}`;
+  request.nextUrl.pathname = pathnameHasLocale ? `/${locale}/${pathname.slice(4)}` : `/${locale}${pathname}`;
 
   const response = NextResponse.redirect(request.nextUrl);
 
@@ -46,7 +43,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/((?!api|_next/static|assets|_next/image|favicon.ico|robots.txt|.*sitemap|ads).*)',
-  ],
+  matcher: ['/((?!api|_next/static|assets|_next/image|favicon.ico|robots.txt|.*sitemap|ads).*)'],
 };

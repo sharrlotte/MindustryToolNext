@@ -4,10 +4,9 @@ import RouterSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
 import useClientApi from '@/hooks/use-client';
 import useSafeSearchParams from '@/hooks/use-safe-search-params';
-import { useToast } from '@/hooks/use-toast';
 import { verifyPlayer } from '@/query/auth';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
 export default function Page() {
@@ -27,18 +26,18 @@ function Verify({ token }: { token: string }) {
   const axios = useClientApi();
   const router = useRouter();
 
-  const { toast } = useToast();
+  const path = usePathname();
 
-  const { mutate, status, error } = useMutation({
+  const { mutate, status } = useMutation({
     mutationKey: ['verify-player'],
     mutationFn: (token: string) => verifyPlayer(axios, token),
-    onError: (error) => {
-      toast({
-        title: <Tran text="token.verification-failed" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+    onSuccess: () => {
+      router.push(path.replace('verify-player', 'verify-player/success'));
     },
+    onError: (error) => {
+      router.push(path.replace('verify-player', `verify-player/error?message=${error.message}`));
+    },
+    retry: 3,
   });
 
   useEffect(() => mutate(token), [mutate, token]);
@@ -56,10 +55,6 @@ function Verify({ token }: { token: string }) {
         <RouterSpinner />
       </div>
     );
-  } else if (status === 'error') {
-    router.push(`verify-player/error?message=${error.message}`);
-  } else {
-    router.push('verify-player/success');
   }
 
   return undefined;
