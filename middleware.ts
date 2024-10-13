@@ -17,8 +17,8 @@ export function middleware(request: NextRequest) {
       .get('Accept-Language')
       ?.split(/[;\-,]/)
       .filter((lang) => lang) //
-      .map((lang) => lang.toLocaleLowerCase()) //
-      .filter((lang) => locales.includes(lang.trim().toLowerCase() as Locale));
+      .map((lang) => lang.toLocaleLowerCase().trim()) //
+      .filter((lang) => locales.includes(lang as Locale));
 
     locale = acceptedLanguages //
       ? acceptedLanguages[0]
