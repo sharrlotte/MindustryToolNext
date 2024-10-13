@@ -72,9 +72,6 @@ export default function MessageList({
   if (clientHeight != lastHeight && currentContainer && list && !isEndReached) {
     const diff = clientHeight - lastHeight + scrollTop;
 
-    console.log(scrollTop);
-    console.log({ diff });
-
     currentContainer.scrollTo({
       top: diff,
     });
