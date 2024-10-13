@@ -113,7 +113,6 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
                   {
                     any: [{ authorId: userId }, { authority: 'DELETE_POST' }],
                   },
-                  ,
                   isVerified,
                 ],
               }}
