@@ -4,7 +4,6 @@ import RouterSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
 import useClientApi from '@/hooks/use-client';
 import useSafeSearchParams from '@/hooks/use-safe-search-params';
-import { useToast } from '@/hooks/use-toast';
 import { verifyPlayer } from '@/query/auth';
 import { useMutation } from '@tanstack/react-query';
 import { usePathname, useRouter } from 'next/navigation';
@@ -28,7 +27,6 @@ function Verify({ token }: { token: string }) {
   const router = useRouter();
 
   const path = usePathname();
-  const { toast } = useToast();
 
   const { mutate, status } = useMutation({
     mutationKey: ['verify-player'],
