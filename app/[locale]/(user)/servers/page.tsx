@@ -13,7 +13,7 @@ import { OfficialServer } from '@/app/[locale]/(user)/servers/official-server';
 
 export const experimental_ppr = true;
 
-const skeleton = Array(8)
+const skeleton = Array(20)
   .fill(1)
   .map((_, index) => <InternalServerCardSkeleton key={index} />);
 
@@ -23,10 +23,10 @@ export default async function Page() {
   return (
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
       <Tabs
-        className="flex flex-col overflow-hidden"
+        className="flex w-full flex-col overflow-hidden"
         defaultValue="official-server"
       >
-        <div className="flex flex-wrap justify-between gap-2">
+        <div className="flex w-full flex-wrap justify-between gap-2">
           <div>
             <TabsList>
               <TabsTrigger value="official-server">

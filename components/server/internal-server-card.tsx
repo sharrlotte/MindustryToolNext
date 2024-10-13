@@ -16,7 +16,7 @@ export default async function InternalServerCard({
 }: MyServerInstancesCardProps) {
   return (
     <InternalLink
-      className="flex h-full flex-1 cursor-pointer flex-col gap-4 rounded-md bg-card p-2"
+      className="flex h-60 flex-1 cursor-pointer flex-col gap-4 rounded-md bg-card p-2"
       href={`/servers/${id}`}
     >
       <div className="flex items-center gap-2">

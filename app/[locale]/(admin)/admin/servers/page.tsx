@@ -1,36 +1,88 @@
 import React, { Suspense } from 'react';
 
-import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import ReloadServerDialog from '@/app/[locale]/(user)/servers/reload-server-dialog';
+import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Tran from '@/components/common/tran';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
-import { ErrorBoundary } from 'react-error-boundary';
-import ErrorScreen from '@/components/common/error-screen';
-import { Servers } from '@/app/[locale]/(admin)/admin/servers/server-list';
+import { getSession } from '@/action/action';
+import ProtectedElement from '@/layout/protected-element';
+import { RequireLogin } from '@/app/[locale]/(user)/servers/require-login';
+import { CommunityServer } from '@/app/[locale]/(user)/servers/comunity-server';
+import { MeServer } from '@/app/[locale]/(user)/servers/my-server';
+import { OfficialServer } from '@/app/[locale]/(user)/servers/official-server';
+
+const skeleton = Array(20)
+  .fill(1)
+  .map((_, index) => <InternalServerCardSkeleton key={index} />);
 
 export const experimental_ppr = true;
 
-const skeleton = (
-  <div className="grid gap-2 overflow-y-auto pr-1 md:grid-cols-2 lg:grid-cols-3">
-    {Array(8)
-      .fill(1)
-      .map((_, index) => (
-        <InternalServerCardSkeleton key={index} />
-      ))}
-  </div>
-);
-
 export default async function Page() {
+  const session = await getSession();
+
   return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden p-4">
-      <div className="flex justify-end gap-2 rounded-md bg-card p-2">
-        <ReloadServerDialog />
-        <CreateServerDialog />
-      </div>
-      <ErrorBoundary FallbackComponent={ErrorScreen}>
-        <Suspense fallback={skeleton}>
-          <Servers />
-        </Suspense>
-      </ErrorBoundary>
+    <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
+      <Tabs
+        className="flex w-full flex-col overflow-hidden"
+        defaultValue="official-server"
+      >
+        <div className="flex w-full flex-wrap justify-between gap-2">
+          <div>
+            <TabsList>
+              <TabsTrigger value="official-server">
+                <Tran text="server.official-server" />
+              </TabsTrigger>
+              <TabsTrigger value="community-server">
+                <Tran text="server.community-server" />
+              </TabsTrigger>
+              <TabsTrigger value="my-server">
+                <Tran text="server.my-server" />
+              </TabsTrigger>
+            </TabsList>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <ProtectedElement
+              session={session}
+              filter={true}
+              alt={<RequireLogin />}
+            >
+              <ReloadServerDialog />
+              <CreateServerDialog />
+            </ProtectedElement>
+          </div>
+        </div>
+        <TabsContent
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          value="official-server"
+        >
+          <Suspense fallback={skeleton}>
+            <OfficialServer />
+          </Suspense>
+        </TabsContent>
+        <TabsContent
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          value="community-server"
+        >
+          <Suspense fallback={skeleton}>
+            <CommunityServer />
+          </Suspense>
+        </TabsContent>
+        <TabsContent
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
+          value="my-server"
+        >
+          <ProtectedElement
+            session={session}
+            filter={true}
+            alt={<RequireLogin />}
+          >
+            <Suspense fallback={skeleton}>
+              <MeServer />
+            </Suspense>
+          </ProtectedElement>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

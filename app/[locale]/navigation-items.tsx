@@ -496,8 +496,6 @@ function TranslationPath() {
     params.target = currentLocale;
   }
 
-  console.log(params);
-
   const { data } = useClientQuery({
     queryKey: ['translations', 'diff', 'total', params.language, params.target],
     queryFn: (axios) => getTranslationDiffCount(axios, params),
