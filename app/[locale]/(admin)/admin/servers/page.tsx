@@ -23,11 +23,8 @@ export default async function Page() {
 
   return (
     <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
-      <Tabs
-        className="flex w-full flex-col overflow-hidden"
-        defaultValue="official-server"
-      >
-        <div className="flex w-full flex-wrap justify-between gap-2">
+      <Tabs className="flex w-full flex-col overflow-hidden" defaultValue="official-server">
+        <div className="flex w-full flex-wrap items-center justify-between gap-2">
           <div>
             <TabsList>
               <TabsTrigger value="official-server">
@@ -42,41 +39,24 @@ export default async function Page() {
             </TabsList>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <ProtectedElement
-              session={session}
-              filter={true}
-              alt={<RequireLogin />}
-            >
+            <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
               <ReloadServerDialog />
               <CreateServerDialog />
             </ProtectedElement>
           </div>
         </div>
-        <TabsContent
-          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
-          value="official-server"
-        >
+        <TabsContent className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1" value="official-server">
           <Suspense fallback={skeleton}>
             <OfficialServer />
           </Suspense>
         </TabsContent>
-        <TabsContent
-          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
-          value="community-server"
-        >
+        <TabsContent className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1" value="community-server">
           <Suspense fallback={skeleton}>
             <CommunityServer />
           </Suspense>
         </TabsContent>
-        <TabsContent
-          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1"
-          value="my-server"
-        >
-          <ProtectedElement
-            session={session}
-            filter={true}
-            alt={<RequireLogin />}
-          >
+        <TabsContent className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1" value="my-server">
+          <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
             <Suspense fallback={skeleton}>
               <MeServer />
             </Suspense>
