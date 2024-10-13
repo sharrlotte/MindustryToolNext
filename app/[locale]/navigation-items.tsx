@@ -1,12 +1,7 @@
 import { usePathname } from 'next/navigation';
 import React, { ReactNode, useMemo, useState } from 'react';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, max } from '@/lib/utils';
@@ -26,25 +21,15 @@ export function NavItems({ onClick }: NavItemsProps) {
   const bestMatch = useMemo(() => {
     const route = '/' + PATH_PATTERN.exec(pathName)?.at(1);
 
-    const allPaths: string[] = groups
-      .reduce<Path[]>((prev, curr) => prev.concat(curr.paths), [])
-      .reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
+    const allPaths: string[] = groups.reduce<Path[]>((prev, curr) => prev.concat(curr.paths), []).reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
 
-    return max(
-      allPaths,
-      (value) => value.length * (route.startsWith(value) ? 1 : 0),
-    );
-  }, [groups, pathName]);
+    return max(allPaths, (value) => value.length * (route.startsWith(value) ? 1 : 0));
+  }, [pathName]);
 
   return (
     <section className="no-scrollbar space-y-4 overflow-y-auto">
       {groups.map((group) => (
-        <PathGroupElement
-          key={group.key}
-          group={group}
-          bestMatch={bestMatch}
-          onClick={onClick}
-        />
+        <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} onClick={onClick} />
       ))}
     </section>
   );
@@ -56,11 +41,7 @@ type PathGroupElementProps = {
   onClick: () => void;
 };
 
-const _PathGroupElement = ({
-  group,
-  bestMatch,
-  onClick,
-}: PathGroupElementProps): ReactNode => {
+const _PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps): ReactNode => {
   const { session } = useSession();
   const { key, name, filter } = group;
 
@@ -69,12 +50,7 @@ const _PathGroupElement = ({
       <nav className="space-y-1">
         <div className="pt-2 font-extrabold">{name}</div>
         {group.paths.map((path, index) => (
-          <PathElement
-            key={index}
-            segment={path}
-            bestMatch={bestMatch}
-            onClick={onClick}
-          />
+          <PathElement key={index} segment={path} bestMatch={bestMatch} onClick={onClick} />
         ))}
       </nav>
     </ProtectedElement>
@@ -98,13 +74,9 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
-          className={cn(
-            'flex items-end gap-3 rounded-md px-3 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
-            {
-              'bg-brand text-background opacity-100 dark:text-foreground':
-                path === bestMatch,
-            },
-          )}
+          className={cn('flex items-end gap-3 rounded-md px-3 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
+            'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
+          })}
           href={path}
           onClick={onClick}
         >
@@ -117,25 +89,12 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
 
   return (
     <ProtectedElement session={session} filter={filter}>
-      <Accordion
-        type="single"
-        collapsible
-        className="w-full"
-        value={value}
-        onValueChange={setValue}
-      >
-        <AccordionItem
-          className="w-full"
-          value={path.reduce((prev, curr) => prev + curr.name, '')}
-        >
+      <Accordion type="single" collapsible className="w-full" value={value} onValueChange={setValue}>
+        <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn(
-              'flex gap-3 rounded-md px-3 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground',
-              {
-                'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
-                  path.some((path) => path.path === bestMatch) && !value,
-              },
-            )}
+            className={cn('flex gap-3 rounded-md px-3 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground', {
+              'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground': path.some((path) => path.path === bestMatch) && !value,
+            })}
           >
             <div className="flex items-end gap-3">
               <span>{icon}</span>
@@ -144,20 +103,12 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
           </AccordionTrigger>
           <AccordionContent className="space-y-1 pl-6">
             {path.map((item) => (
-              <ProtectedElement
-                key={item.path}
-                session={session}
-                filter={item.filter}
-              >
+              <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
                   key={item.path}
-                  className={cn(
-                    'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
-                    {
-                      'bg-brand text-background opacity-100 dark:text-foreground':
-                        item.path === bestMatch,
-                    },
-                  )}
+                  className={cn('flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
+                    'bg-brand text-background opacity-100 dark:text-foreground': item.path === bestMatch,
+                  })}
                   href={item.path}
                   onClick={onClick}
                 >
