@@ -2,17 +2,7 @@
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import {
-  Detail,
-  DetailActions,
-  DetailDescription,
-  DetailHeader,
-  DetailImage,
-  DetailInfo,
-  DetailTagsCard,
-  DetailTitle,
-  Verifier,
-} from '@/components/common/detail';
+import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
@@ -37,21 +27,7 @@ type SchematicDetailCardProps = {
   schematic: SchematicDetail;
 };
 
-export default function SchematicDetailCard({
-  schematic: {
-    id,
-    name,
-    description,
-    tags,
-    requirements,
-    verifierId,
-    itemId,
-    likes,
-    userLike,
-    userId,
-    isVerified,
-  },
-}: SchematicDetailCardProps) {
+export default function SchematicDetailCard({ schematic: { id, name, description, tags, requirements, verifierId, itemId, likes, userLike, userId, isVerified } }: SchematicDetailCardProps) {
   const axios = useClientApi();
   const { session } = useSession();
 
@@ -74,12 +50,7 @@ export default function SchematicDetailCard({
     <Detail>
       <DetailInfo>
         <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-        <CopyButton
-          position="absolute"
-          variant="ghost"
-          data={link}
-          content={link}
-        >
+        <CopyButton position="absolute" variant="ghost" data={link} content={link}>
           <LinkIcon />
         </CopyButton>
         <DetailHeader>
@@ -94,11 +65,7 @@ export default function SchematicDetailCard({
       <DetailActions>
         <CopyButton content={copyContent} data={getData} />
         <DownloadButton href={downloadUrl} fileName={downloadName} />
-        <LikeComponent
-          itemId={itemId}
-          initialLikeCount={likes}
-          initialLikeData={userLike}
-        >
+        <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
           <LikeButton />
           <LikeCount />
           <DislikeButton />
@@ -106,11 +73,23 @@ export default function SchematicDetailCard({
         <EllipsisButton>
           <ProtectedElement
             session={session}
-            filter={{ all: [{ authorId: userId }, isVerified] }}
+            filter={{
+              all: [
+                {
+                  any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
+                },
+                isVerified,
+              ],
+            }}
           >
             <TakeDownSchematicButton id={id} name={name} />
           </ProtectedElement>
-          <ProtectedElement session={session} filter={{ authorId: userId }}>
+          <ProtectedElement
+            session={session}
+            filter={{
+              any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
+            }}
+          >
             <DeleteSchematicButton variant="command" id={id} name={name} />
           </ProtectedElement>
         </EllipsisButton>

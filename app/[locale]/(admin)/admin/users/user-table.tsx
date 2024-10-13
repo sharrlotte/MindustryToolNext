@@ -34,13 +34,15 @@ export function UserTable() {
 
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
-      <div className="flex gap-2">
+      <div className="flex h-10 gap-2">
         <Input
+          className="h-full"
           value={name}
           onChange={(event) => setQueryState({ name: event.target.value })}
           placeholder="Search using username"
         />
         <ComboBox
+          className="h-full"
           placeholder="Select role"
           value={{ value: role, label: role?.name ?? '' }}
           values={data?.map((d) => ({ value: d, label: d.name })) ?? []}

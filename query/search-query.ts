@@ -12,7 +12,7 @@ export const sortSchema = z
 export type QuerySchema = typeof ItemPaginationQuery | typeof PaginationQuery;
 
 const PaginationParam = {
-  size: z.coerce.number().gte(1).default(20),
+  size: z.coerce.number().gte(1).default(30),
   page: z.coerce.number().gte(0).default(0),
 };
 

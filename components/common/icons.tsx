@@ -77,12 +77,12 @@ export const SchematicIcon = () => (
 export const SettingIcon = () => <Cog6ToothIcon className="size-5" />;
 export const CmdIcon = () => <CommandLineIcon className="size-5" />;
 export const PluginIcon = () => <PuzzlePieceIcon className="size-5" />;
-export const NotificationIcon = () => <BellIcon className="size-5" />;
+export const NotificationIcon = () => <BellIcon className="mx-1 size-5" />;
 export const GithubIcon = () => <_GithubIcon className="size-5" />;
 export const FacebookIcon = () => <_FacebookIcon className="size-5" />;
 export const DiscordIcon = () => <DiscordLogoIcon className="size-5" />;
 export const ArrowDownIcon = () => <_ArrowDownIcon className="size-7" />;
-export const MenuIcon = () => <Menu className="h-8 w-8 text-white" />;
+export const MenuIcon = () => <Menu className="size-10 text-white" />;
 export const UploadIcon = () => <_UploadIcon className="size-5" />;
 export const ExpandIcon = () => <_ExpandIcon className="size-5" />;
 export const ShrinkIcon = () => <_ShrinkIcon className="size-5" />;

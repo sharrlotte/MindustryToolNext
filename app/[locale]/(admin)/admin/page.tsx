@@ -45,10 +45,7 @@ export default async function Page() {
 
 function ChartSkeleton() {
   return (
-    <div className="flex  h-full w-full flex-col gap-2 bg-card p-2">
-      <span className="font-bold">
-        <Skeleton className="h-8 w-32" />
-      </span>
+    <div className="flex h-full aspect-video w-full flex-col gap-2 bg-card p-2">
       <Skeleton className="h-full w-full" />
     </div>
   );

@@ -4,10 +4,17 @@ import CopyButton from '@/components/button/copy-button';
 import DeleteButton from '@/components/button/delete-button';
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
+import { Hidden } from '@/components/common/hidden';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import {
   Form,
@@ -448,6 +455,10 @@ function AddNewKeyDialog() {
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
+          <Hidden>
+            <DialogTitle />
+            <DialogDescription />
+          </Hidden>
           <form
             className="flex flex-1 flex-col justify-between space-y-4 rounded-md bg-card p-4"
             onSubmit={form.handleSubmit((value) => mutate(value))}

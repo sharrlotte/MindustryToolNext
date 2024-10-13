@@ -2,17 +2,7 @@
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import {
-  Detail,
-  DetailActions,
-  DetailDescription,
-  DetailHeader,
-  DetailImage,
-  DetailInfo,
-  DetailTagsCard,
-  DetailTitle,
-  Verifier,
-} from '@/components/common/detail';
+import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
@@ -32,20 +22,7 @@ type MapDetailCardProps = {
   map: MapDetail;
 };
 
-export default function MapDetailCard({
-  map: {
-    id,
-    name,
-    description,
-    tags,
-    verifierId,
-    itemId,
-    likes,
-    userLike,
-    userId,
-    isVerified,
-  },
-}: MapDetailCardProps) {
+export default function MapDetailCard({ map: { id, name, description, tags, verifierId, itemId, likes, userLike, userId, isVerified } }: MapDetailCardProps) {
   const { session } = useSession();
 
   const link = `${env.url.base}/maps/${id}`;
@@ -58,12 +35,7 @@ export default function MapDetailCard({
     <Detail>
       <DetailInfo>
         <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-        <CopyButton
-          position="absolute"
-          variant="ghost"
-          data={link}
-          content={link}
-        >
+        <CopyButton position="absolute" variant="ghost" data={link} content={link}>
           <LinkIcon />
         </CopyButton>
         <DetailHeader>
@@ -76,11 +48,7 @@ export default function MapDetailCard({
       </DetailInfo>
       <DetailActions>
         <DownloadButton href={downloadUrl} fileName={downloadName} />
-        <LikeComponent
-          itemId={itemId}
-          initialLikeCount={likes}
-          initialLikeData={userLike}
-        >
+        <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
           <LikeButton />
           <LikeCount />
           <DislikeButton />
@@ -88,11 +56,23 @@ export default function MapDetailCard({
         <EllipsisButton>
           <ProtectedElement
             session={session}
-            filter={{ all: [{ authorId: userId }, isVerified] }}
+            filter={{
+              all: [
+                {
+                  any: [{ authorId: userId }, { authority: 'DELETE_MAP' }],
+                },
+                isVerified,
+              ],
+            }}
           >
             <TakeDownMapButton id={id} name={name} />
           </ProtectedElement>
-          <ProtectedElement session={session} filter={{ authorId: userId }}>
+          <ProtectedElement
+            session={session}
+            filter={{
+              any: [{ authorId: userId }, { authority: 'DELETE_MAP' }],
+            }}
+          >
             <DeleteMapButton variant="command" id={id} name={name} />
           </ProtectedElement>
         </EllipsisButton>

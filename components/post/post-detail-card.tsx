@@ -31,20 +31,7 @@ type PostDetailCardProps = {
   post: PostDetail;
 };
 
-export default function PostDetailCard({
-  post: {
-    title,
-    content,
-    tags,
-    id,
-    userId,
-    userLike,
-    likes,
-    isVerified,
-    itemId,
-    createdAt,
-  },
-}: PostDetailCardProps) {
+export default function PostDetailCard({ post: { title, content, tags, id, userId, userLike, likes, isVerified, itemId, createdAt } }: PostDetailCardProps) {
   const displayTags = Tags.parseStringArray(tags);
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
@@ -113,11 +100,7 @@ export default function PostDetailCard({
       </header>
       <footer className="flex justify-between rounded-md bg-card p-2">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <LikeComponent
-            itemId={itemId}
-            initialLikeCount={likes}
-            initialLikeData={userLike}
-          >
+          <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
             <LikeButton />
             <LikeCount />
             <DislikeButton />
@@ -125,21 +108,19 @@ export default function PostDetailCard({
           <EllipsisButton>
             <ProtectedElement
               session={session}
-              filter={{ all: [{ authorId: userId }, isVerified] }}
+              filter={{
+                all: [
+                  {
+                    any: [{ authorId: userId }, { authority: 'DELETE_POST' }],
+                  },
+                  isVerified,
+                ],
+              }}
             >
-              <TakeDownButton
-                isLoading={isLoading}
-                description={t('take-down-alert', { name: title })}
-                onClick={() => removePost(id)}
-              />
+              <TakeDownButton isLoading={isLoading} description={t('take-down-alert', { name: title })} onClick={() => removePost(id)} />
             </ProtectedElement>
             <ProtectedElement session={session} filter={{ authorId: userId }}>
-              <DeleteButton
-                variant="command"
-                description={t('delete-alert', { name: title })}
-                isLoading={isLoading}
-                onClick={() => deletePostById(id)}
-              />
+              <DeleteButton variant="command" description={t('delete-alert', { name: title })} isLoading={isLoading} onClick={() => deletePostById(id)} />
             </ProtectedElement>
           </EllipsisButton>
         </div>

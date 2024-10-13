@@ -8,9 +8,14 @@ import { Button } from '@/components/ui/button';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 
-import { MenuIcon, NotificationIcon } from '@/components/common/icons';
+import {
+  MenuIcon,
+  NotificationIcon,
+  UserIcon,
+} from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import { motion } from 'framer-motion';
+import { useMediaQuery } from 'usehooks-ts';
 
 const sidebarVariants = {
   open: {
@@ -24,6 +29,12 @@ const sidebarVariants = {
 };
 
 export default function NavigationBar() {
+  const isSmall = useMediaQuery('(min-width: 640px)');
+
+  return isSmall ? <SmallScreenNavigationBar /> : <SmallScreenNavigationBar />;
+}
+
+function SmallScreenNavigationBar() {
   const [isSidebarVisible, setSidebarVisibility] = useState(false);
 
   const showSidebar = useCallback(
@@ -36,7 +47,7 @@ export default function NavigationBar() {
   );
 
   return (
-    <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-1 text-white shadow-lg">
+    <div className="flex h-nav w-full items-center justify-between px-3 py-2 text-white bg-brand shadow-lg">
       <Button
         title="Navbar"
         type="button"
@@ -94,7 +105,10 @@ export default function NavigationBar() {
           </div>
         </motion.div>
       </div>
-      <NotificationIcon />
+      <div className="flex gap-2">
+        <UserIcon />
+        <NotificationIcon />
+      </div>
     </div>
   );
 }

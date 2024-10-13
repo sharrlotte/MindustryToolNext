@@ -21,6 +21,7 @@ export default function SortTagSearch() {
 
   return (
     <ComboBox<SortTag>
+      searchBar={false}
       value={{ label: t(selectedSortTag), value: selectedSortTag as SortTag }}
       values={sortTags}
       onChange={(sort) => setSelectedSortTag({ sort })}

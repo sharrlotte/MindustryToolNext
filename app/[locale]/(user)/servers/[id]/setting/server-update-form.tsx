@@ -151,6 +151,7 @@ export default function ServerUpdateForm({ server }: Props) {
                   </FormLabel>
                   <FormControl>
                     <ComboBox
+                      searchBar={false}
                       placeholder={InternalServerModes[0]}
                       value={{ label: field.value, value: field.value }}
                       values={InternalServerModes.map((value) => ({
