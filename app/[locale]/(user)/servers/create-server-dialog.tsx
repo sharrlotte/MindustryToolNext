@@ -7,7 +7,13 @@ import { revalidate } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -79,14 +85,20 @@ export default function CreateServerDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="primary" title={t('server.add')}>
+        <Button className="min-w-20" variant="primary" title={t('server.add')}>
           {t('server.add')}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="bg-card p-6">
         <Form {...form}>
+          <DialogTitle>
+            <Tran text="server.add" />
+          </DialogTitle>
+          <DialogDescription>
+            <Tran text="server.servers-limit" />
+          </DialogDescription>
           <form
-            className="flex flex-1 flex-col justify-between space-y-4 rounded-md bg-card p-4"
+            className="flex flex-1 flex-col justify-between space-y-4"
             onSubmit={form.handleSubmit((value) => mutate(value))}
           >
             <FormField
@@ -143,6 +155,7 @@ export default function CreateServerDialog() {
                   </FormLabel>
                   <FormControl>
                     <ComboBox
+                      searchBar={false}
                       placeholder={InternalServerModes[0]}
                       value={{ label: field.value, value: field.value }}
                       values={InternalServerModes.map((value) => ({
@@ -177,7 +190,7 @@ export default function CreateServerDialog() {
                 </FormItem>
               )}
             />
-            <div className="flex justify-end gap-1">
+            <div className="ml-auto grid w-fit grid-cols-2 justify-end gap-2">
               <Button
                 variant="secondary"
                 title={t('reset')}
