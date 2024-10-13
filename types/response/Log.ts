@@ -1,7 +1,7 @@
 export type Log = {
   id: string;
   content: string;
-  environment: string;
+  environment: number;
   createdAt: number;
   requestUrl: string;
   ip: string;
