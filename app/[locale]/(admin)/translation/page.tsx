@@ -341,7 +341,7 @@ function CompareCard({
     mutate({
       key,
       keyGroup,
-      language,
+      language: target,
       value: event.target.value,
     });
   };
