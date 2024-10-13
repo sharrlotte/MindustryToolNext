@@ -60,12 +60,15 @@ export function ChangeRoleDialog({
         session?.roles.map((r) => r.name).includes('SHAR'),
     ) || [];
 
-  const filteredAuthority =
-    allAuthorities?.filter((a) =>
-      a.authorityGroup === 'Shar'
-        ? session?.roles.map((r) => r.name).includes('SHAR')
-        : true,
-    ) || [];
+  const filteredAuthority = useMemo(
+    () =>
+      allAuthorities?.filter((a) =>
+        a.authorityGroup === 'Shar'
+          ? session?.roles.map((r) => r.name).includes('SHAR')
+          : true,
+      ) || [],
+    [allAuthorities, session?.roles],
+  );
 
   const groups = useMemo(
     () =>

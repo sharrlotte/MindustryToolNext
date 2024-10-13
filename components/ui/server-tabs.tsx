@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useCallback, useEffect } from 'react';
 
 type ContextType = {
   value: string;
@@ -47,13 +47,16 @@ export function ServerTabs<T extends string>({
   const [query, setQuery] = useQueryState(defaultValue);
 
   const current = query[name];
-  const setValue = (value: string) => setQuery({ [name]: value });
+  const setValue = useCallback(
+    (value: string) => setQuery({ [name]: value }),
+    [name, setQuery],
+  );
 
   useEffect(() => {
     if (!current || !values.includes(current as T)) {
       setValue(value);
     }
-  }, [current, values, setQuery]);
+  }, [current, values, setQuery, setValue, value]);
 
   return (
     <div
