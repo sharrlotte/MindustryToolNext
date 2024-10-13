@@ -1,8 +1,8 @@
 'use client';
 
 import { VariantProps, cva } from 'class-variance-authority';
-import Link from 'next/link';
 import React from 'react';
+import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';

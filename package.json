@@ -69,6 +69,7 @@
         "tailwind-merge": "^2.5.2",
         "tailwindcss-animate": "^1.0.7",
         "universal-cookie": "^7.2.0",
+        "update": "^0.7.4",
         "usehooks-ts": "^2.16.0",
         "zod": "^3.23.8",
         "zod-form-data": "^2.0.2",

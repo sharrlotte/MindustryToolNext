@@ -17,6 +17,7 @@ const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['vietnamese'],
+  weight: '500',
 });
 
 const noto = Noto_Sans_KR({

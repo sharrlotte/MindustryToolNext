@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import * as React from 'react';
+import Link from 'next/link';
 
 import { ButtonProps, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,7 @@ const PaginationContent = React.forwardRef<
   <ul
     ref={ref}
     className={cn(
-      'flex flex-row items-center w-full flex-wrap gap-1',
+      'flex w-full flex-row flex-wrap items-center gap-1',
       className,
     )}
     {...props}
@@ -41,7 +41,7 @@ const PaginationItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <li
     ref={ref}
-    className={cn('list-none flex-1 p-0 m-0', className)}
+    className={cn('m-0 flex-1 list-none p-0', className)}
     {...props}
   />
 ));
