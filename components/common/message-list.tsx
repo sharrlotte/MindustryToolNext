@@ -54,9 +54,8 @@ export default function MessageList({
   const currentContainer = container();
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
-  const scrollTop = useRef(100);
-  const lastHeight = useRef(100);
-  const [isFirstLoad, setFirstLoad] = useState(true);
+  const scrollTopRef = useRef(0);
+  const lastHeightRef = useRef(0);
 
   const queryClient = useQueryClient();
   const isEndReached = isReachedEnd(currentContainer, threshold);
@@ -67,16 +66,21 @@ export default function MessageList({
   const [shouldCheck, setShouldCheck] = useState(true);
 
   const clientHeight = list?.clientHeight || 0;
+  const lastHeight = lastHeightRef.current || 0;
+  const scrollTop = scrollTopRef.current || 0;
 
-  if (clientHeight != lastHeight.current && currentContainer && list) {
-    const diff = list.clientHeight - lastHeight.current;
+  if (clientHeight != lastHeight && currentContainer && list && !isEndReached) {
+    const diff = clientHeight - lastHeight + scrollTop;
 
-    lastHeight.current = list.clientHeight;
+    console.log(scrollTop);
+    console.log({ diff });
 
     currentContainer.scrollTo({
       top: diff,
     });
   }
+
+  lastHeightRef.current = clientHeight;
 
   const { data, isFetching, error, isError, hasNextPage, fetchNextPage } =
     useMessageQuery(room, params, queryKey);
@@ -128,14 +132,13 @@ export default function MessageList({
   ]);
 
   useEffect(() => {
-    if (pages.length && currentContainer && (isEndReached || isFirstLoad)) {
+    if (currentContainer && isEndReached) {
       currentContainer.scrollTo({
         top: currentContainer.scrollHeight,
         behavior: 'smooth',
       });
-      setFirstLoad(false);
     }
-  }, [currentContainer, pages, isFirstLoad, isEndReached]);
+  }, [currentContainer, pages, isEndReached]);
 
   useEffect(() => {
     socket
@@ -187,7 +190,7 @@ export default function MessageList({
       checkIfNeedFetchMore();
 
       if (currentContainer) {
-        scrollTop.current = currentContainer.scrollTop;
+        scrollTopRef.current = currentContainer.scrollTop;
       }
     }
 
@@ -202,7 +205,7 @@ export default function MessageList({
 
       list?.removeEventListener('scroll', checkIfNeedFetchMore);
     };
-  }, [checkIfNeedFetchMore, currentContainer, list, scrollTop]);
+  }, [checkIfNeedFetchMore, currentContainer, list, scrollTopRef]);
 
   if (!loader) {
     loader = (
