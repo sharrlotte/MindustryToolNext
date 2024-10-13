@@ -36,7 +36,7 @@ export default function useQueryState(initialState: Record<string, string>) {
     (value: Record<string, string | undefined>) => {
       setState((prev) => ({ ...prev, ...(value as Record<string, string>) }));
     },
-    [initialState],
+    [],
   );
 
   useEffect(() => {
@@ -62,6 +62,7 @@ export default function useQueryState(initialState: Record<string, string>) {
     }, 200);
 
     return () => timeout && clearTimeout(timeout);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   return [state, setter] as const;
