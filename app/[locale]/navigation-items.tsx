@@ -4,7 +4,7 @@ import React, { ReactNode, useMemo, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
-import { cn, max } from '@/lib/utils';
+import { cn, hasAccess, max } from '@/lib/utils';
 
 import InternalLink from '@/components/common/internal-link';
 import { groups, Path, PathGroup, SubPath } from '@/app/routes';
@@ -16,6 +16,7 @@ type NavItemsProps = {
 const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
 
 export function NavItems({ onClick }: NavItemsProps) {
+  const { session } = useSession();
   const pathName = usePathname();
 
   const bestMatch = useMemo(() => {
@@ -28,9 +29,11 @@ export function NavItems({ onClick }: NavItemsProps) {
 
   return (
     <section className="no-scrollbar space-y-4 overflow-y-auto">
-      {groups.map((group) => (
-        <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} onClick={onClick} />
-      ))}
+      {groups
+        .filter((group) => hasAccess(session, group.filter) && group.paths.every(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.every((sub) => hasAccess(session, sub.filter)))))
+        .map((group) => (
+          <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} onClick={onClick} />
+        ))}
     </section>
   );
 }
