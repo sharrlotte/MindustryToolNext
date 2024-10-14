@@ -4,15 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import {
-  Detail,
-  DetailActions,
-  DetailDescription,
-  DetailHeader,
-  DetailImage,
-  DetailInfo,
-  DetailTitle,
-} from '@/components/common/detail';
+import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
 import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
@@ -27,9 +19,7 @@ type UploadMapDetailCardProps = {
   map: MapDetail;
 };
 
-export default function UploadMapDetailCard({
-  map: { id, name, tags, description, userId },
-}: UploadMapDetailCardProps) {
+export default function UploadMapDetailCard({ map: { id, name, tags, description, userId } }: UploadMapDetailCardProps) {
   const { map } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
 
@@ -38,7 +28,7 @@ export default function UploadMapDetailCard({
   }, [tags, map]);
 
   const link = `${env.url.base}/maps/${id}`;
-  const imageUrl = `${env.url.image}/maps/${id}.png`;
+  const imageUrl = `${env.url.image}/maps/${id}${env.imageFormat}`;
   const errorImageUrl = `${env.url.api}/maps/${id}/image`;
   const downloadUrl = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msch`;
@@ -46,12 +36,7 @@ export default function UploadMapDetailCard({
   return (
     <Detail>
       <DetailInfo>
-        <CopyButton
-          position="absolute"
-          variant="ghost"
-          data={link}
-          content={link}
-        >
+        <CopyButton position="absolute" variant="ghost" data={link} content={link}>
           <LinkIcon />
         </CopyButton>
         <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
@@ -59,11 +44,7 @@ export default function UploadMapDetailCard({
           <DetailTitle>{name}</DetailTitle>
           <IdUserCard id={userId} />
           <DetailDescription>{description}</DetailDescription>
-          <TagSelector
-            tags={map}
-            value={selectedTags}
-            onChange={setSelectedTags}
-          />
+          <TagSelector tags={map} value={selectedTags} onChange={setSelectedTags} />
         </DetailHeader>
       </DetailInfo>
       <DetailActions>

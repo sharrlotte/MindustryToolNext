@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: `${map.name}`,
     openGraph: {
       title: map.name,
-      images: `${env.url.image}map-previews/${map.id}.png`,
+      images: `${env.url.image}map-previews/${map.id}${env.imageFormat}`,
     },
   };
 }

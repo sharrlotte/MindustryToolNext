@@ -4,13 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  EditClose,
-  EditComponent,
-  EditOn,
-  EditTrigger,
-  EditOff,
-} from '@/components/common/edit-component';
+import { EditClose, EditComponent, EditOn, EditTrigger, EditOff } from '@/components/common/edit-component';
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
@@ -18,18 +12,11 @@ import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
-import { PNG_IMAGE_PREFIX } from '@/constant/constant';
+import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
@@ -38,10 +25,7 @@ import { useI18n } from '@/i18n/client';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import TagGroup from '@/types/response/TagGroup';
-import {
-  CreateSchematicRequest,
-  CreateSchematicSchema,
-} from '@/types/schema/zod-schema';
+import { CreateSchematicRequest, CreateSchematicSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -58,8 +42,7 @@ function Preview() {
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: SchematicPreviewRequest) =>
-      getSchematicPreview(axios, data),
+    mutationFn: (data: SchematicPreviewRequest) => getSchematicPreview(axios, data),
     onSuccess: (data) => {
       setPreview(data);
     },
@@ -156,11 +139,7 @@ function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
         <div className="grid w-full items-center gap-2">
           <UploadField onFileDrop={handleFileChange} />
           <span className="text-center">or</span>
-          <Button
-            variant="primary"
-            title={'copy-from-clipboard'}
-            onClick={handleCopyCode}
-          >
+          <Button variant="primary" title={'copy-from-clipboard'} onClick={handleCopyCode}>
             <Tran text="copy-from-clipboard" />
           </Button>
         </div>
@@ -232,18 +211,9 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
 
   return (
     <Form {...form}>
-      <form
-        className="flex h-full flex-col overflow-y-auto p-2"
-        onSubmit={form.handleSubmit(handleSubmit)}
-      >
+      <form className="flex h-full flex-col overflow-y-auto p-2" onSubmit={form.handleSubmit(handleSubmit)}>
         <div className="flex flex-col gap-2">
-          <Image
-            loader={({ src }) => src}
-            src={PNG_IMAGE_PREFIX + preview.image.trim()}
-            alt="Schematic"
-            width={512}
-            height={512}
-          />
+          <Image loader={({ src }) => src} src={IMAGE_PREFIX + preview.image.trim()} alt="Schematic" width={512} height={512} />
           <UserCard user={session} />
           <FormField
             control={form.control}
@@ -311,11 +281,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <TagSelector
-                    tags={schematic}
-                    value={field.value}
-                    onChange={(fn) => field.onChange(fn(field.value))}
-                  />
+                  <TagSelector tags={schematic} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

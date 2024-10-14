@@ -41,7 +41,7 @@ export default function SchematicDetailCard({ schematic: { id, name, description
 
   const link = `${env.url.base}/schematics/${id}`;
   const copyContent = t('copied-name', { name: name });
-  const imageUrl = `${env.url.image}/schematics/${id}.png`;
+  const imageUrl = `${env.url.image}/schematics/${id}${env.imageFormat}`;
   const errorImageUrl = `${env.url.api}/schematics/${id}/image`;
   const downloadUrl = `${env.url.api}/schematics/${id}/download`;
   const downloadName = `{${name}}.msch`;

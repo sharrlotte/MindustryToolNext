@@ -159,10 +159,7 @@ export type GroupBy<T> = {
   value: T[];
 };
 
-export function groupBy<T>(
-  array: T[],
-  predicate: (value: T, index: number, array: T[]) => string,
-) {
+export function groupBy<T>(array: T[], predicate: (value: T, index: number, array: T[]) => string) {
   const defaultValue = {} as Record<string, T[]>;
 
   const map = array.reduce((acc, value, index, array) => {
@@ -186,19 +183,10 @@ export async function fixProgressBar() {
 }
 
 export function isSameDay(d1: Date, d2: Date) {
-  return (
-    d1.getFullYear() === d2.getFullYear() &&
-    d1.getMonth() === d2.getMonth() &&
-    d1.getDate() === d2.getDate()
-  );
+  return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
 }
 
-export function fillMetric(
-  start: Date,
-  numberOfDay: number,
-  array: Metric[] | undefined,
-  defaultValue: number,
-): ChartData[] {
+export function fillMetric(start: Date, numberOfDay: number, array: Metric[] | undefined, defaultValue: number): ChartData[] {
   if (!array) {
     return [];
   }
@@ -217,11 +205,7 @@ export function fillMetric(
     const value = array.find((v) => {
       const createdAt = v.createdAt;
 
-      return (
-        createdAt.getFullYear() === targetDay.getFullYear() &&
-        createdAt.getMonth() === targetDay.getMonth() &&
-        createdAt.getDate() === targetDay.getDate()
-      );
+      return createdAt.getFullYear() === targetDay.getFullYear() && createdAt.getMonth() === targetDay.getMonth() && createdAt.getDate() === targetDay.getDate();
     });
 
     if (value === undefined)
@@ -250,23 +234,13 @@ export function toForm(data: Record<string, string | number | File>) {
   return form;
 }
 
-export function isReachedEnd(
-  element?: HTMLElement | null,
-  offset: number = 100,
-) {
+export function isReachedEnd(element?: HTMLElement | null, offset: number = 100) {
   if (!element) return false;
 
-  return (
-    Math.abs(
-      element.scrollHeight - (element.scrollTop + element.clientHeight),
-    ) <= offset
-  );
+  return Math.abs(element.scrollHeight - (element.scrollTop + element.clientHeight)) <= offset;
 }
 
-export function mapReversed<T, R>(
-  array: T[],
-  mapper: (data: T, index: number, array: T[]) => R,
-) {
+export function mapReversed<T, R>(array: T[], mapper: (data: T, index: number, array: T[]) => R) {
   const result = [];
   for (let i = array.length - 1; i >= 0; i--) {
     result.push(mapper(array[i], i, array));
@@ -316,16 +290,11 @@ export function byteToSize(bytes: number) {
 type ImageFolder = 'schematics' | 'maps' | 'posts';
 
 export function getImageById(folder: ImageFolder, id: string) {
-  return `${env.url.image}${folder}/${id}.png`;
+  return `${env.url.image}${folder}/${id}${env.imageFormat}`;
 }
 
-export function omit<T extends Record<string, any>>(
-  obj: T,
-  ...keys: Array<keyof T>
-) {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([key]) => !keys.includes(key)),
-  );
+export function omit<T extends Record<string, any>>(obj: T, ...keys: Array<keyof T>) {
+  return Object.fromEntries(Object.entries(obj).filter(([key]) => !keys.includes(key)));
 }
 
 export type Filter =
@@ -341,10 +310,7 @@ export type Filter =
   | { authorId: string }
   | undefined;
 
-export function hasAccess(
-  session: Session | undefined | null,
-  filter: Filter,
-): boolean {
+export function hasAccess(session: Session | undefined | null, filter: Filter): boolean {
   if (filter === undefined) {
     return true;
   }

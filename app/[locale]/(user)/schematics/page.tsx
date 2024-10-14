@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: schematic.name,
     openGraph: {
       title: schematic.name,
-      images: `${env.url.image}schematic-previews/${schematic.id}.png`,
+      images: `${env.url.image}schematic-previews/${schematic.id}${env.imageFormat}`,
     },
   };
 }

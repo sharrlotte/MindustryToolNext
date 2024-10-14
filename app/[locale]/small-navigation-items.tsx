@@ -1,20 +1,19 @@
-import { usePathname } from 'next/navigation';
-import React, { ReactNode, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useState } from 'react';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
-import { cn, hasAccess, max } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 import InternalLink from '@/components/common/internal-link';
-import { groups, Path, PathGroup, SubPath } from '@/app/routes';
+import { Path, PathGroup } from '@/app/routes';
+import { Button } from '@/components/ui/button';
 import { useNavBar } from '@/zustand/nav-bar-store';
-import { useMediaQuery } from 'usehooks-ts';
+import { MenuIcon, NotificationIcon, UserIcon } from '@/components/common/icons';
 import { motion } from 'framer-motion';
-
-type NavItemsProps = {
-  onClick: () => void;
-};
+import OutsideWrapper from '@/components/common/outside-wrapper';
+import env from '@/constant/env';
+import { UserDisplay } from '@/app/[locale]/user-display';
 
 const sidebarVariants = {
   open: {
@@ -22,32 +21,83 @@ const sidebarVariants = {
     transition: { type: 'spring', stiffness: 300, damping: 30 },
   },
   closed: {
-    width: 0,
+    width: 'var(--nav)',
     transition: { type: 'spring', stiffness: 300, damping: 30 },
   },
 };
 
-const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
+type NavigationBarProps = {
+  children: ReactNode;
+  pathGroups: PathGroup[];
+  bestMatch: string | null;
+};
 
-export function NavItems({ onClick }: NavItemsProps) {
-  const { session } = useSession();
-  const pathName = usePathname();
+export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: NavigationBarProps) {
+  const { isVisible, setVisible } = useNavBar();
 
-  const bestMatch = useMemo(() => {
-    const route = '/' + PATH_PATTERN.exec(pathName)?.at(1);
-
-    const allPaths: string[] = groups
-      .reduce<Path[]>((prev, curr) => prev.concat(curr.paths), []) //
-      .reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
-
-    return max(allPaths, (value) => value.length * (route.startsWith(value) ? 1 : 0));
-  }, [pathName]);
-
-  const routeGroups = useMemo(() => groups.filter((group) => hasAccess(session, group.filter) && group.paths.some(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.some((sub) => hasAccess(session, sub.filter))))), [session]);
+  const showSidebar = useCallback(() => setVisible(true), [setVisible]);
+  const hideSidebar = useCallback(() => setVisible(false), [setVisible]);
 
   return (
+    <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
+      <div className="flex h-nav w-full items-center justify-between bg-brand px-3 py-2 text-white shadow-lg">
+        <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
+          <MenuIcon />
+        </Button>
+        <div
+          className={cn('pointer-events-none fixed inset-0 z-50 h-screen bg-transparent text-foreground', {
+            'visible backdrop-blur-sm backdrop-brightness-50': isVisible,
+          })}
+        >
+          <motion.div variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
+            <div
+              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background duration-300', {
+                'translate-x-0': isVisible,
+              })}
+            >
+              <div
+                className="h-full w-full overflow-hidden"
+                onMouseLeave={hideSidebar} //
+                onMouseEnter={showSidebar}
+              >
+                <OutsideWrapper className="h-full w-full overflow-hidden" onClickOutside={hideSidebar}>
+                  <div className="flex h-full flex-col justify-between overflow-hidden p-2">
+                    <div className="flex h-full flex-col overflow-hidden">
+                      <span className="flex flex-col gap-2">
+                        <span className="space-x-2 rounded-sm p-2">
+                          <h1 className="text-xl font-medium">MindustryTool</h1>
+                          <span className="text-xs">{env.webVersion}</span>
+                        </span>
+                      </span>
+                      <NavItems pathGroups={pathGroups} bestMatch={bestMatch} onClick={hideSidebar} />
+                    </div>
+                    <UserDisplay />
+                  </div>
+                </OutsideWrapper>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+        <div className="flex gap-2">
+          <UserIcon />
+          <NotificationIcon />
+        </div>
+      </div>
+      <div className="relative h-full w-full overflow-hidden">{children}</div>
+    </div>
+  );
+}
+
+type NavItemsProps = {
+  onClick: () => void;
+  pathGroups: PathGroup[];
+  bestMatch: string | null;
+};
+
+function NavItems({ pathGroups, bestMatch, onClick }: NavItemsProps) {
+  return (
     <section className="no-scrollbar space-y-4 overflow-y-auto">
-      {routeGroups.map((group) => (
+      {pathGroups.map((group) => (
         <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} onClick={onClick} />
       ))}
     </section>
@@ -63,17 +113,11 @@ type PathGroupElementProps = {
 const _PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps): ReactNode => {
   const { session } = useSession();
   const { key, name, filter } = group;
-  const isSmall = useMediaQuery('(max-width: 640px)');
-  const { isVisible } = useNavBar();
-
-  const expand = isSmall ? true : isVisible;
 
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
-        <motion.div className="overflow-hidden" variants={sidebarVariants} animate={expand ? 'open' : 'closed'}>
-          {name}
-        </motion.div>
+        <span>{name}</span>
         {group.paths.map((path, index) => (
           <PathElement key={index} segment={path} bestMatch={bestMatch} onClick={onClick} />
         ))}
@@ -92,12 +136,6 @@ type PathElementProps = {
 function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
   const { session } = useSession();
   const [value, setValue] = useState('');
-
-  const isSmall = useMediaQuery('(max-width: 640px)');
-  const { isVisible } = useNavBar();
-
-  const expand = isSmall ? true : isVisible;
-
   const { filter, name, icon, path } = segment;
 
   if (typeof path === 'string') {
@@ -111,9 +149,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
           onClick={onClick}
         >
           <span> {icon}</span>
-          <motion.div className="overflow-hidden" variants={sidebarVariants} animate={expand ? 'open' : 'closed'}>
-            {name}
-          </motion.div>
+          <span>{name}</span>
         </InternalLink>
       </ProtectedElement>
     );
@@ -130,9 +166,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
           >
             <div className="flex items-end gap-3">
               <span>{icon}</span>
-              <motion.div className="overflow-hidden" variants={sidebarVariants} animate={expand ? 'open' : 'closed'}>
-                {name}
-              </motion.div>
+              <span>{name}</span>
             </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-1 pl-6">
@@ -156,12 +190,4 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
       </Accordion>
     </ProtectedElement>
   );
-}
-
-function getPath(path: SubPath): string[] {
-  if (typeof path === 'string') {
-    return [path];
-  }
-
-  return path.reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
 }

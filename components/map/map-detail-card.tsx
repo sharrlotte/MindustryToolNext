@@ -26,7 +26,7 @@ export default function MapDetailCard({ map: { id, name, description, tags, veri
   const { session } = useSession();
 
   const link = `${env.url.base}/maps/${id}`;
-  const imageUrl = `${env.url.image}/maps/${id}.png`;
+  const imageUrl = `${env.url.image}/maps/${id}${env.imageFormat}`;
   const errorImageUrl = `${env.url.api}/maps/${id}/image`;
   const downloadUrl = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msch`;

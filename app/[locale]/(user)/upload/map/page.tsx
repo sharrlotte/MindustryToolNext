@@ -4,31 +4,18 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import {
-  EditClose,
-  EditComponent,
-  EditOn,
-  EditTrigger,
-  EditOff,
-} from '@/components/common/edit-component';
+import { EditClose, EditComponent, EditOn, EditTrigger, EditOff } from '@/components/common/edit-component';
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
-import { PNG_IMAGE_PREFIX } from '@/constant/constant';
+import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
@@ -177,18 +164,9 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 
   return (
     <Form {...form}>
-      <form
-        className="flex h-full flex-col overflow-y-auto p-2"
-        onSubmit={form.handleSubmit(handleSubmit)}
-      >
+      <form className="flex h-full flex-col overflow-y-auto p-2" onSubmit={form.handleSubmit(handleSubmit)}>
         <div className="flex flex-col gap-2">
-          <Image
-            loader={({ src }) => src}
-            src={PNG_IMAGE_PREFIX + preview.image.trim()}
-            alt="Map"
-            width={512}
-            height={512}
-          />
+          <Image loader={({ src }) => src} src={IMAGE_PREFIX + preview.image.trim()} alt="Map" width={512} height={512} />
           <UserCard user={session} />
           <FormField
             control={form.control}
@@ -255,11 +233,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <TagSelector
-                    tags={map}
-                    value={field.value}
-                    onChange={(fn) => field.onChange(fn(field.value))}
-                  />
+                  <TagSelector tags={map} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
