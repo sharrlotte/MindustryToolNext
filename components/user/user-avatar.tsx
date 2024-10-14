@@ -70,24 +70,17 @@ type UserAvatarProps = {
   clickable?: boolean;
 };
 
-export default function UserAvatar({
-  className,
-  url,
-  user: { id, imageUrl, name },
-  clickable = true,
-}: UserAvatarProps) {
-  if (clickable) {
-    return (
-      <InternalLink href={url ?? `/users/${id}`}>
-        <AvatarImage
-          className={className}
-          user={{
-            name,
-            imageUrl,
-          }}
-        />
-      </InternalLink>
-    );
+export default function UserAvatar({ className, url, user: { id, imageUrl, name } }: UserAvatarProps) {
+  if (url) {
+    <InternalLink href={url ?? `/users/${id}`}>
+      <AvatarImage
+        className={className}
+        user={{
+          name,
+          imageUrl,
+        }}
+      />
+    </InternalLink>;
   }
 
   return (
@@ -109,10 +102,7 @@ type AvatarImageProps = {
   };
 };
 
-function AvatarImage({
-  className,
-  user: { imageUrl, name },
-}: AvatarImageProps) {
+function AvatarImage({ className, user: { imageUrl, name } }: AvatarImageProps) {
   const [isError, setError] = useState(false);
 
   useEffect(() => setError(false), [imageUrl]);
@@ -127,34 +117,15 @@ function AvatarImage({
     const color = colorArray[total % colorArray.length];
 
     return (
-      <div
-        className={cn(
-          'flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize',
-          className,
-        )}
-        style={{ backgroundColor: color }}
-      >
+      <div className={cn('flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize', className)} style={{ backgroundColor: color }}>
         {username.at(0)}
       </div>
     );
   }
 
   return (
-    <div
-      className={cn(
-        'flex size-8 min-h-8 min-w-8 items-center justify-center overflow-hidden rounded-full border border-border capitalize',
-        className,
-      )}
-    >
-      <Image
-        className={cn('h-full w-full object-cover', className)}
-        height={32}
-        width={32}
-        src={imageUrl}
-        alt={username}
-        priority
-        onError={() => setError(true)}
-      />
+    <div className={cn('flex size-8 min-h-8 min-w-8 items-center justify-center overflow-hidden rounded-full border border-border capitalize', className)}>
+      <Image className={cn('h-full w-full object-cover', className)} height={32} width={32} src={imageUrl} alt={username} priority onError={() => setError(true)} />
     </div>
   );
 }

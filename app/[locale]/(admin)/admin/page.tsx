@@ -6,6 +6,7 @@ import LoginChart from '@/components/metric/login-chart';
 import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import { Skeleton } from '@/components/ui/skeleton';
+import ScrollContainer from '@/components/common/scroll-container';
 
 export const experimental_ppr = true;
 
@@ -19,17 +20,17 @@ export default async function Page() {
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);
 
   return (
-    <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-4">
+    <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-2">
       <div className="flex w-full flex-wrap gap-2">
         <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
+          <Suspense fallback={<ChartSkeleton />}>
+            <ClientChart start={start} end={end} dates={NUMBER_OF_DAY} />
+          </Suspense>
           <Suspense fallback={<ChartSkeleton />}>
             <LikeChart start={start} end={end} dates={NUMBER_OF_DAY} />
           </Suspense>
           <Suspense fallback={<ChartSkeleton />}>
             <LoginChart start={start} end={end} dates={NUMBER_OF_DAY} />
-          </Suspense>
-          <Suspense fallback={<ChartSkeleton />}>
-            <ClientChart start={start} end={end} dates={NUMBER_OF_DAY} />
           </Suspense>
         </div>
         <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
@@ -41,7 +42,7 @@ export default async function Page() {
           </Suspense>
         </div>
       </div>
-    </div>
+    </ScrollContainer>
   );
 }
 
