@@ -16,54 +16,66 @@ export default function useQueryState(initialState: Record<string, string>) {
   });
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(params.raw());
+    const newState = { ...initialState, ...Object.fromEntries(params.raw()) };
 
-    Object.entries({ ...initialState }).forEach(([key, value]) => {
-      if (!params.get(key)) queryParams.set(key, value);
-    });
-
-    Object.entries(queryParams).forEach(([key]) => {
-      if (!queryParams.get(key)) {
-        queryParams.delete(key);
-      }
-    });
-
-    router.replace(`${pathname}?${queryParams.toString()}`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialState, pathname, router]);
-
-  const setter = useCallback(
-    (value: Record<string, string | undefined>) => {
-      setState((prev) => ({ ...prev, ...(value as Record<string, string>) }));
-    },
-    [],
-  );
+    if (JSON.stringify(newState) !== JSON.stringify(state)) {
+      setState(newState);
+    }
+  }, [params, setState]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(params.raw());
 
-    if (timeout) {
-      clearTimeout(timeout);
-    }
+    Object.entries(initialState).forEach(([key, value]) => {
+      if (!params.get(key)) queryParams.set(key, value);
+    });
 
-    timeout = setTimeout(() => {
-      Object.entries(state).forEach(([key, value]) => {
-        if (value) queryParams.set(key, value);
-        else queryParams.delete(key);
-      });
+    try {
+      queryParams.entries().forEach(([key]) => {
+        const value = queryParams.get(key);
 
-      Object.entries(queryParams).forEach(([key]) => {
-        if (queryParams.get(key) == null) {
+        if (value === null || value === undefined || value === '') {
           queryParams.delete(key);
         }
       });
+    } catch (e) {}
 
-      router.replace(`${pathname}?${queryParams.toString()}`);
-    }, 200);
+    router.replace(`${pathname}?${queryParams.toString()}`);
+  }, [initialState, pathname, router]);
 
-    return () => timeout && clearTimeout(timeout);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
+  const setter = useCallback(
+    (value: Record<string, string | undefined>) => {
+      setState((prev) => ({ ...initialState, ...prev, ...(value as Record<string, string>) }));
+
+      const queryParams = new URLSearchParams(params.raw());
+
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+
+      timeout = setTimeout(() => {
+        Object.entries(value).forEach(([key, value]) => {
+          if (value) queryParams.set(key, value);
+          else queryParams.delete(key);
+        });
+
+        try {
+          queryParams.entries().forEach(([key]) => {
+            const value = queryParams.get(key);
+
+            if (value === null || value === undefined || value === '') {
+              queryParams.delete(key);
+            }
+          });
+        } catch (e) {}
+
+        router.replace(`${pathname}?${queryParams.toString()}`);
+      }, 200);
+
+      return () => timeout && clearTimeout(timeout);
+    },
+    [setState, params, router, pathname],
+  );
 
   return [state, setter] as const;
 }

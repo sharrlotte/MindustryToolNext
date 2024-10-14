@@ -77,7 +77,7 @@ function NavFooter() {
 
   return (
     <div className="space-y-1">
-      <Divider/>
+      <Divider />
       <InternalLink
         className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
           'justify-start gap-2 py-2': expand,
@@ -86,7 +86,7 @@ function NavFooter() {
       >
         <SettingIcon />
       </InternalLink>
-      {session && <UserAvatar className="size-10" user={session} />}
+      {session && <UserAvatar className="size-10" url="/users/@me" user={session} />}
     </div>
   );
 }
@@ -120,8 +120,6 @@ const _PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNo
 
   const expand = isSmall ? true : isVisible;
 
-  console.log({ expand });
-
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
@@ -146,7 +144,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
   const [value, setValue] = useState('');
 
   const isSmall = useMediaQuery('(max-width: 640px)');
-  const { isVisible } = useNavBar();
+  const { isVisible, setVisible } = useNavBar();
 
   const expand = isSmall ? true : isVisible;
 
@@ -179,6 +177,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
               'justify-start gap-2 py-2': expand,
             })}
             showChevron={expand}
+            onClick={() => setVisible(true)}
           >
             <span>{icon}</span>
             <span className={cn('hidden', { block: expand })}>{name}</span>

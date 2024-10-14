@@ -70,28 +70,16 @@ type UserAvatarProps = {
   clickable?: boolean;
 };
 
-export default function UserAvatar({ className, url, user: { id, imageUrl, name } }: UserAvatarProps) {
+export default function UserAvatar({ className, url, user }: UserAvatarProps) {
   if (url) {
-    <InternalLink href={url ?? `/users/${id}`}>
-      <AvatarImage
-        className={className}
-        user={{
-          name,
-          imageUrl,
-        }}
-      />
-    </InternalLink>;
+    return (
+      <InternalLink className="cursor-pointer" href={url}>
+        <AvatarImage className={className} user={user} />
+      </InternalLink>
+    );
   }
 
-  return (
-    <AvatarImage
-      className={className}
-      user={{
-        name,
-        imageUrl,
-      }}
-    />
-  );
+  return <AvatarImage className={className} user={user} />;
 }
 
 type AvatarImageProps = {

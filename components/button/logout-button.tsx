@@ -13,10 +13,11 @@ export default function LogoutButton({ className }: { className?: string }) {
   const [_, setCookie] = useCookies();
   const pathname = usePathname();
 
-  useLayoutEffect(
-    () => setCookie('redirect_uri', window.location.href),
-    [setCookie, pathname],
-  );
+  useLayoutEffect(() => {
+    if (!window.location.href.includes('login')) {
+      setCookie('redirect_uri', window.location.href, { path: '/' });
+    }
+  }, [setCookie, pathname]);
 
   return (
     <a className={cn(className)} href={`${env.url.api}/auth/logout`}>

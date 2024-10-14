@@ -5,11 +5,7 @@ import React, { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InternalLink from '@/components/common/internal-link';
-import {
-  GridLayout,
-  ListLayout,
-  PaginationLayoutSwitcher,
-} from '@/components/common/pagination-layout';
+import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
@@ -37,17 +33,14 @@ export default function MapList() {
   });
 
   return (
-    <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
+    <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch tags={map} />
       <div className="flex justify-between">
         <Tran text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
       <ListLayout>
-        <div
-          className="relative flex h-full flex-col overflow-auto"
-          ref={(ref) => setContainer(ref)}
-        >
+        <div className="relative flex h-full flex-col overflow-auto" ref={(ref) => setContainer(ref)}>
           <InfinitePage
             params={params}
             queryKey={['maps']}
@@ -75,24 +68,16 @@ export default function MapList() {
           {(data) => <MapPreviewCard key={data.id} map={data} />}
         </GridPaginationList>
       </GridLayout>
-      <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
+      <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
           <PaginationNavigator numberOfItems={data} />
         </GridLayout>
         <div className="flex gap-2">
-          <InternalLink
-            variant="button-secondary"
-            href={`${env.url.base}/users/@me`}
-            title="My map"
-          >
+          <InternalLink variant="button-secondary" href={`${env.url.base}/users/@me`} title="My map">
             <UserIcon className="size-5" />
             <Tran text="map.my-map" />
           </InternalLink>
-          <InternalLink
-            variant="button-secondary"
-            href={`${env.url.base}/upload/map`}
-            title="My map"
-          >
+          <InternalLink variant="button-secondary" href={`${env.url.base}/upload/map`} title="My map">
             <UploadIcon className="size-5" />
             <Tran text="map.upload" />
           </InternalLink>

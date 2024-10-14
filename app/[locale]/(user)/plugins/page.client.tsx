@@ -18,7 +18,7 @@ export default function PageClient() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
-    <div className="flex h-full flex-col justify-between gap-4 p-4">
+    <div className="flex h-full flex-col justify-between gap-2 p-2">
       <NameTagSearch tags={plugin} useSort={false} />
       <div
         className="relative flex h-full flex-col overflow-y-auto"

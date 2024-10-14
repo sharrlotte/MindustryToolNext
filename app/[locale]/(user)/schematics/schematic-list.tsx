@@ -1,14 +1,10 @@
 'use client';
 
-import {  useState } from 'react';
+import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InternalLink from '@/components/common/internal-link';
-import {
-  GridLayout,
-  ListLayout,
-  PaginationLayoutSwitcher,
-} from '@/components/common/pagination-layout';
+import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
@@ -40,17 +36,14 @@ export default function SchematicList() {
   });
 
   return (
-    <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
+    <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch tags={schematic} />
       <div className="flex justify-between">
         <Tran text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
       <ListLayout>
-        <div
-          className="relative flex h-full flex-col overflow-auto"
-          ref={(ref) => setContainer(ref)}
-        >
+        <div className="relative flex h-full flex-col overflow-auto" ref={(ref) => setContainer(ref)}>
           <InfinitePage
             params={params}
             queryKey={['schematics']}
@@ -78,24 +71,16 @@ export default function SchematicList() {
           {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
         </GridPaginationList>
       </GridLayout>
-      <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
+      <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
           <PaginationNavigator numberOfItems={data} />
         </GridLayout>
         <div className="flex gap-2">
-          <InternalLink
-            variant="button-secondary"
-            title="my-schematic"
-            href={mySchematicLink}
-          >
+          <InternalLink variant="button-secondary" title="my-schematic" href={mySchematicLink}>
             <UserIcon />
             <Tran text="my-schematic" />
           </InternalLink>
-          <InternalLink
-            variant="button-secondary"
-            title="upload-schematic"
-            href={uploadLink}
-          >
+          <InternalLink variant="button-secondary" title="upload-schematic" href={uploadLink}>
             <UploadIcon />
             <Tran text="upload-schematic" />
           </InternalLink>

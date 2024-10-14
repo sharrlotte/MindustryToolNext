@@ -15,10 +15,10 @@ export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
-    <div className="relative flex h-full flex-col gap-4 p-4">
+    <div className="relative flex h-full flex-col gap-2 p-2">
       <NameTagSearch tags={plugin} />
       <div
-        className="relative flex h-full flex-col gap-4 overflow-y-auto"
+        className="relative flex h-full flex-col gap-2 overflow-y-auto"
         ref={(ref) => setContainer(ref)}
       >
         <InfinitePage

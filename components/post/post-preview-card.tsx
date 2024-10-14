@@ -22,15 +22,8 @@ function _PostPreviewCard({ className, post, ...rest }: PostPreviewCardProps) {
   const firstImage = post.imageUrls ? post.imageUrls[0] : '';
 
   return (
-    <div
-      style={{ backgroundImage: `url(${firstImage})` }}
-      className={cn(
-        'relative flex flex-col overflow-hidden rounded-lg border border-border bg-cover bg-center',
-        className,
-      )}
-      {...rest}
-    >
-      <div className="flex h-full flex-col justify-between gap-2 overflow-hidden p-4 backdrop-blur-sm backdrop-brightness-50">
+    <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative flex flex-col overflow-hidden rounded-lg border border-border bg-cover bg-center', className)} {...rest}>
+      <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-blur-sm backdrop-brightness-50">
         <InternalLink href={`/posts/${post.id}`}>
           <span className="flex text-2xl">{post.title}</span>
         </InternalLink>
@@ -44,11 +37,7 @@ function _PostPreviewCard({ className, post, ...rest }: PostPreviewCardProps) {
               <LinkIcon className="size-5" />
             </CopyButton>
             {post.isVerified && (
-              <LikeComponent
-                itemId={post.itemId}
-                initialLikeCount={post.likes}
-                initialLikeData={post.userLike}
-              >
+              <LikeComponent itemId={post.itemId} initialLikeCount={post.likes} initialLikeData={post.userLike}>
                 <LikeButton />
                 <LikeCount />
                 <DislikeButton />

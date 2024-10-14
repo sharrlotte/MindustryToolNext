@@ -1,9 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import {
-  PaginationSearchQuery,
-  StatusPaginationSearchQuery,
-} from '@/types/data/pageable-search-schema';
+import { PaginationSearchQuery, StatusPaginationSearchQuery } from '@/types/data/pageable-search-schema';
 
 import { UserRole } from '@/constant/enum';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
@@ -14,18 +11,13 @@ import { Post } from '@/types/response/Post';
 import { Schematic } from '@/types/response/Schematic';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
-export async function getMeServers(
-  axios: AxiosInstance,
-): Promise<InternalServerDetail[]> {
+export async function getMeServers(axios: AxiosInstance): Promise<InternalServerDetail[]> {
   const result = await axios.get(`/users/@me/servers`);
 
   return result.data;
 }
 
-export async function getRank(
-  axios: AxiosInstance,
-  params: PaginationQuery,
-): Promise<User[]> {
+export async function getRank(axios: AxiosInstance, params: PaginationQuery): Promise<User[]> {
   const result = await axios.get(`/users/rank`, {
     params,
   });
@@ -44,10 +36,7 @@ export async function getMyRank(axios: AxiosInstance): Promise<number> {
   return result.data;
 }
 
-export async function getMeMaps(
-  axios: AxiosInstance,
-  params: StatusPaginationSearchQuery,
-): Promise<MapPreview[]> {
+export async function getMeMaps(axios: AxiosInstance, params: StatusPaginationSearchQuery): Promise<MapPreview[]> {
   const result = await axios.get(`/users/@me/maps`, {
     params,
   });
@@ -55,10 +44,7 @@ export async function getMeMaps(
   return result.data;
 }
 
-export async function getMePosts(
-  axios: AxiosInstance,
-  params: StatusPaginationSearchQuery,
-): Promise<Post[]> {
+export async function getMePosts(axios: AxiosInstance, params: StatusPaginationSearchQuery): Promise<Post[]> {
   const result = await axios.get(`/users/@me/posts`, {
     params,
   });
@@ -66,10 +52,7 @@ export async function getMePosts(
   return result.data;
 }
 
-export async function getMeSchematics(
-  axios: AxiosInstance,
-  params: StatusPaginationSearchQuery,
-): Promise<Schematic[]> {
+export async function getMeSchematics(axios: AxiosInstance, params: StatusPaginationSearchQuery): Promise<Schematic[]> {
   const result = await axios.get(`/users/@me/schematics`, {
     params,
   });
@@ -82,11 +65,7 @@ export async function getMe(axios: AxiosInstance): Promise<User> {
   return result.data;
 }
 
-export async function getUserMaps(
-  axios: AxiosInstance,
-  userId: string,
-  params: PaginationSearchQuery,
-): Promise<MapPreview[]> {
+export async function getUserMaps(axios: AxiosInstance, userId: string, params: PaginationSearchQuery): Promise<MapPreview[]> {
   const result = await axios.get(`/users/${userId}/maps`, {
     params,
   });
@@ -94,11 +73,7 @@ export async function getUserMaps(
   return result.data;
 }
 
-export async function getUserPosts(
-  axios: AxiosInstance,
-  userId: string,
-  params: PaginationSearchQuery,
-): Promise<Post[]> {
+export async function getUserPosts(axios: AxiosInstance, userId: string, params: PaginationSearchQuery): Promise<Post[]> {
   const result = await axios.get(`/users/${userId}/posts`, {
     params,
   });
@@ -106,11 +81,7 @@ export async function getUserPosts(
   return result.data;
 }
 
-export async function getUserSchematics(
-  axios: AxiosInstance,
-  userId: string,
-  params: PaginationSearchQuery,
-): Promise<Schematic[]> {
+export async function getUserSchematics(axios: AxiosInstance, userId: string, params: PaginationSearchQuery): Promise<Schematic[]> {
   const result = await axios.get(`/users/${userId}/schematics`, {
     params,
   });
@@ -118,28 +89,25 @@ export async function getUserSchematics(
   return result.data;
 }
 
-export async function getUser(
-  axios: AxiosInstance,
-  { id }: IdSearchParams,
-): Promise<User> {
+export async function getUser(axios: AxiosInstance, { id }: IdSearchParams): Promise<User> {
   const result = await axios.get(`/users/${id}`);
 
   return result.data;
 }
 
-export async function getUsers(
-  axios: AxiosInstance,
-  params: PaginationQuery & { role?: UserRole },
-): Promise<User[]> {
+export async function getUsers(axios: AxiosInstance, params: PaginationQuery & { role?: UserRole }): Promise<User[]> {
   const result = await axios.get(`/users`, { params });
 
   return result.data;
 }
 
-export async function updateThumbnail(
-  axios: AxiosInstance,
-  file: File,
-): Promise<User[]> {
+export async function getUserCount(axios: AxiosInstance, params: { role?: UserRole }): Promise<number> {
+  const result = await axios.get(`/users/count`, { params });
+
+  return result.data;
+}
+
+export async function updateThumbnail(axios: AxiosInstance, file: File): Promise<User[]> {
   const formData = new FormData();
   formData.append('file', file);
 
@@ -148,17 +116,10 @@ export async function updateThumbnail(
   return result.data;
 }
 
-export async function changeAuthorities(
-  axios: AxiosInstance,
-  data: { userId: string; authorityIds: string[] },
-): Promise<void> {
+export async function changeAuthorities(axios: AxiosInstance, data: { userId: string; authorityIds: string[] }): Promise<void> {
   const { userId, authorityIds } = data;
 
-  const result = await axios.put(
-    `/users/${userId}/authorities`,
-    { authorityIds },
-    { data: { authorityIds } },
-  );
+  const result = await axios.put(`/users/${userId}/authorities`, { authorityIds }, { data: { authorityIds } });
 
   return result.data;
 }

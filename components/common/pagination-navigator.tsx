@@ -218,7 +218,7 @@ export default function PaginationNavigator({
           </Button>
         </PaginationItem>
         <ComboBox
-          className="w-20"
+          className="w-20 rounded-sm"
           searchBar={false}
           value={{ label: size.toString(), value: size }}
           values={sizes.map((size) => ({
