@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     return;
   }
 
-  let locale = request.cookies.get('Locale')?.value?.toLowerCase() as string;
+  let locale = request.cookies.get('Locale')?.value?.toLowerCase() as string | undefined;
 
   if (!locale) {
     const headers = request.headers;
@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
       .get('Accept-Language')
       ?.split(/[;\-,]/)
       .filter((lang) => lang) //
-      .map((lang) => lang.toLocaleLowerCase().trim()) //
+      .map((lang) => lang.toLowerCase().trim()) //
       .filter((lang) => locales.includes(lang as Locale));
 
     locale = acceptedLanguages //
@@ -25,11 +25,15 @@ export function middleware(request: NextRequest) {
       : defaultLocale;
   }
 
+  if (!locales.includes(locale as Locale)) {
+    locale = defaultLocale;
+  }
+
   const { pathname } = request.nextUrl;
 
   const pathnameHasLocale = locales.some((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
 
-  const currentLocale = pathname.slice(1, 3);
+  const currentLocale = pathname.slice(1, 3).toLowerCase();
 
   if (pathnameHasLocale && currentLocale === locale) return;
 
