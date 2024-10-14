@@ -2,7 +2,7 @@ import { LayoutGridIcon, ListIcon } from 'lucide-react';
 import { ReactNode } from 'react';
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { usePaginationType } from '@/zustand/pagination-type';
+import { usePaginationType } from '@/zustand/pagination-type-store';
 
 type Props = {
   children: ReactNode;

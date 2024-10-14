@@ -35,7 +35,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import { getTranslationDiffCount } from '@/query/translation';
 import { useLocaleStore } from '@/zustand/locale-store';
-import { useVerifyCount } from '@/zustand/verify-count';
+import { useVerifyCount } from '@/zustand/verify-count-store';
 import useClientApi from '@/hooks/use-client';
 
 import { useQueries } from '@tanstack/react-query';
