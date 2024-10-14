@@ -43,7 +43,7 @@ export function NavItems({ onClick }: NavItemsProps) {
     return max(allPaths, (value) => value.length * (route.startsWith(value) ? 1 : 0));
   }, [pathName]);
 
-  const routeGroups = useMemo(() => groups.filter((group) => hasAccess(session, group.filter) && group.paths.every(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.every((sub) => hasAccess(session, sub.filter))))), [session]);
+  const routeGroups = useMemo(() => groups.filter((group) => hasAccess(session, group.filter) && group.paths.some(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.some((sub) => hasAccess(session, sub.filter))))), [session]);
 
   return (
     <section className="no-scrollbar space-y-4 overflow-y-auto">
