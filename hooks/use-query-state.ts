@@ -30,15 +30,13 @@ export default function useQueryState(initialState: Record<string, string>) {
       if (!params.get(key)) queryParams.set(key, value);
     });
 
-    try {
-      queryParams.entries().forEach(([key]) => {
-        const value = queryParams.get(key);
+    queryParams.keys().forEach(([key]) => {
+      const value = queryParams.get(key);
 
-        if (value === null || value === undefined || value === '') {
-          queryParams.delete(key);
-        }
-      });
-    } catch (e) {}
+      if (value === null || value === undefined || value === '') {
+        queryParams.delete(key);
+      }
+    });
 
     router.replace(`${pathname}?${queryParams.toString()}`);
   }, [initialState, pathname, router]);
@@ -59,15 +57,13 @@ export default function useQueryState(initialState: Record<string, string>) {
           else queryParams.delete(key);
         });
 
-        try {
-          queryParams.entries().forEach(([key]) => {
-            const value = queryParams.get(key);
+        queryParams.keys().forEach(([key]) => {
+          const value = queryParams.get(key);
 
-            if (value === null || value === undefined || value === '') {
-              queryParams.delete(key);
-            }
-          });
-        } catch (e) {}
+          if (value === null || value === undefined || value === '') {
+            queryParams.delete(key);
+          }
+        });
 
         router.replace(`${pathname}?${queryParams.toString()}`);
       }, 200);
