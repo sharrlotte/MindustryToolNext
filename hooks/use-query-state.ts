@@ -30,13 +30,13 @@ export default function useQueryState(initialState: Record<string, string>) {
       if (!params.get(key)) queryParams.set(key, value);
     });
 
-    queryParams.keys().forEach(([key]) => {
+    for (const key of queryParams.keys()) {
       const value = queryParams.get(key);
 
       if (value === null || value === undefined || value === '') {
         queryParams.delete(key);
       }
-    });
+    }
 
     router.replace(`${pathname}?${queryParams.toString()}`);
   }, [initialState, pathname, router]);
@@ -57,13 +57,13 @@ export default function useQueryState(initialState: Record<string, string>) {
           else queryParams.delete(key);
         });
 
-        queryParams.keys().forEach(([key]) => {
+        for (const key of queryParams.keys()) {
           const value = queryParams.get(key);
 
           if (value === null || value === undefined || value === '') {
             queryParams.delete(key);
           }
-        });
+        }
 
         router.replace(`${pathname}?${queryParams.toString()}`);
       }, 200);
