@@ -8,9 +8,23 @@ import { cn, hasAccess, max } from '@/lib/utils';
 
 import InternalLink from '@/components/common/internal-link';
 import { groups, Path, PathGroup, SubPath } from '@/app/routes';
+import { useNavBar } from '@/zustand/nav-bar-store';
+import { useMediaQuery } from 'usehooks-ts';
+import { motion } from 'framer-motion';
 
 type NavItemsProps = {
   onClick: () => void;
+};
+
+const sidebarVariants = {
+  open: {
+    width: 'auto',
+    transition: { type: 'spring', stiffness: 300, damping: 30 },
+  },
+  closed: {
+    width: 0,
+    transition: { type: 'spring', stiffness: 300, damping: 30 },
+  },
 };
 
 const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
@@ -22,18 +36,20 @@ export function NavItems({ onClick }: NavItemsProps) {
   const bestMatch = useMemo(() => {
     const route = '/' + PATH_PATTERN.exec(pathName)?.at(1);
 
-    const allPaths: string[] = groups.reduce<Path[]>((prev, curr) => prev.concat(curr.paths), []).reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
+    const allPaths: string[] = groups
+      .reduce<Path[]>((prev, curr) => prev.concat(curr.paths), []) //
+      .reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
 
     return max(allPaths, (value) => value.length * (route.startsWith(value) ? 1 : 0));
   }, [pathName]);
 
+  const routeGroups = useMemo(() => groups.filter((group) => hasAccess(session, group.filter) && group.paths.every(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.every((sub) => hasAccess(session, sub.filter))))), [session]);
+
   return (
     <section className="no-scrollbar space-y-4 overflow-y-auto">
-      {groups
-        .filter((group) => hasAccess(session, group.filter) && group.paths.every(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.every((sub) => hasAccess(session, sub.filter)))))
-        .map((group) => (
-          <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} onClick={onClick} />
-        ))}
+      {routeGroups.map((group) => (
+        <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} onClick={onClick} />
+      ))}
     </section>
   );
 }
@@ -47,11 +63,17 @@ type PathGroupElementProps = {
 const _PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps): ReactNode => {
   const { session } = useSession();
   const { key, name, filter } = group;
+  const isSmall = useMediaQuery('(max-width: 640px)');
+  const { isVisible } = useNavBar();
+
+  const expand = isSmall ? true : isVisible;
 
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
-        <div className="pt-2 font-extrabold">{name}</div>
+        <motion.div className="overflow-hidden" variants={sidebarVariants} animate={expand ? 'open' : 'closed'}>
+          {name}
+        </motion.div>
         {group.paths.map((path, index) => (
           <PathElement key={index} segment={path} bestMatch={bestMatch} onClick={onClick} />
         ))}
@@ -71,6 +93,11 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
   const { session } = useSession();
   const [value, setValue] = useState('');
 
+  const isSmall = useMediaQuery('(max-width: 640px)');
+  const { isVisible } = useNavBar();
+
+  const expand = isSmall ? true : isVisible;
+
   const { filter, name, icon, path } = segment;
 
   if (typeof path === 'string') {
@@ -84,7 +111,9 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
           onClick={onClick}
         >
           <span> {icon}</span>
-          <span>{name}</span>
+          <motion.div className="overflow-hidden" variants={sidebarVariants} animate={expand ? 'open' : 'closed'}>
+            {name}
+          </motion.div>
         </InternalLink>
       </ProtectedElement>
     );
@@ -101,7 +130,9 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
           >
             <div className="flex items-end gap-3">
               <span>{icon}</span>
-              <span>{name}</span>
+              <motion.div className="overflow-hidden" variants={sidebarVariants} animate={expand ? 'open' : 'closed'}>
+                {name}
+              </motion.div>
             </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-1 pl-6">

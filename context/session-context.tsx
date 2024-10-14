@@ -1,11 +1,6 @@
 'use client';
 
-import React, {
-  ReactNode,
-  useCallback,
-  useLayoutEffect,
-  useState,
-} from 'react';
+import React, { ReactNode, useCallback, useLayoutEffect, useState } from 'react';
 import { useInterval } from 'usehooks-ts';
 
 import useClientApi from '@/hooks/use-client';
@@ -28,8 +23,7 @@ const defaultContextValue: SessionContextType = {
   state: 'loading',
 };
 
-export const SessionContext =
-  React.createContext<SessionContextType>(defaultContextValue);
+export const SessionContext = React.createContext<SessionContextType>(defaultContextValue);
 
 export function useSession(): SessionContextType {
   const context = React.useContext(SessionContext);
@@ -54,9 +48,7 @@ export function useMe() {
     return { highestRole: 0 };
   }
 
-  const highestRole = session?.roles.sort(
-    (r1, r2) => r2.position - r1.position,
-  )[0].position;
+  const highestRole = session?.roles.sort((r1, r2) => r2?.position - r1?.position)[0]?.position || 0;
 
   return { highestRole };
 }
@@ -87,7 +79,5 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     axios.get<any, { data: Session }>('/auth/session').then(handleSession);
   }, 300000);
 
-  return (
-    <SessionContext.Provider value={auth}>{children}</SessionContext.Provider>
-  );
+  return <SessionContext.Provider value={auth}>{children}</SessionContext.Provider>;
 }
