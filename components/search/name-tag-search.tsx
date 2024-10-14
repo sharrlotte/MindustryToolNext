@@ -183,7 +183,7 @@ export default function NameTagSearch({
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex justify-center gap-2">
-        <Search>
+        <Search className='h-10'>
           <Search.Icon className="p-1" />
           <Search.Input
             placeholder={t('search-by-name')}
@@ -203,7 +203,7 @@ export default function NameTagSearch({
         </Search>
         {useTag && (
           <Button
-            className="border-none bg-secondary shadow-md"
+            className="border-none bg-secondary shadow-md h-full"
             title={t('filter')}
             variant="outline"
             onClick={handleShowFilterDialog}

@@ -15,18 +15,9 @@ export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   return (
     <div>
-      <div
-        className="relative flex h-full flex-col gap-4 overflow-y-auto p-4"
-        ref={(ref) => setContainer(ref)}
-      >
+      <div className="relative flex h-full flex-col gap-2 overflow-y-auto p-2" ref={(ref) => setContainer(ref)}>
         <NameTagSearch tags={post} />
-        <InfinitePage
-          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
-          params={params}
-          queryKey={['posts', 'upload']}
-          getFunc={getPostUploads}
-          container={() => container}
-        >
+        <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['posts', 'upload']} getFunc={getPostUploads} container={() => container}>
           {(data) => <UploadPostPreviewCard key={data.id} post={data} />}
         </InfinitePage>
       </div>

@@ -1,15 +1,6 @@
 'use client';
 
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-} from 'chart.js';
+import { CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
@@ -19,15 +10,7 @@ import { useI18n } from '@/i18n/client';
 import { Metric } from '@/types/response/Metric';
 import MetricWrapper from '@/components/metric/metric-wrapper';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 type Props = {
   data: Metric[];
@@ -40,7 +23,7 @@ export default function WebsiteVisitRate({ start, dates, data }: Props) {
   const filledData = fillMetric(start, dates, data, 0);
 
   const chart = {
-    labels: filledData.map(({ createdAt }) => createdAt),
+    labels: filledData.map(({ createdAt }) => createdAt.toLocaleDateString()),
     datasets: [
       {
         label: t('metric.visit-rate'),

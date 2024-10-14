@@ -40,7 +40,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
 
   return (
     <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
-      <div className="flex h-nav w-full items-center justify-between bg-brand px-3 py-2 text-white shadow-lg">
+      <div className="flex h-nav w-full items-center justify-between bg-brand px-1 py-2 text-white shadow-lg">
         <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
           <MenuIcon />
         </Button>
@@ -64,7 +64,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
                   <div className="flex h-full flex-col justify-between overflow-hidden p-2">
                     <div className="flex h-full flex-col overflow-hidden">
                       <span className="flex flex-col gap-2">
-                        <span className="space-x-2 rounded-sm p-2">
+                        <span className="space-x-2 rounded-sm p-2 flex items-center">
                           <h1 className="text-xl font-medium">MindustryTool</h1>
                           <span className="text-xs">{env.webVersion}</span>
                         </span>
@@ -117,7 +117,7 @@ const _PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps)
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
-        <span>{name}</span>
+        <span className='font-bold'>{name}</span>
         {group.paths.map((path, index) => (
           <PathElement key={index} segment={path} bestMatch={bestMatch} onClick={onClick} />
         ))}
@@ -142,7 +142,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
-          className={cn('flex items-end gap-3 rounded-md px-3 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
+          className={cn('flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
             'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
           })}
           href={path}
@@ -160,21 +160,21 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
       <Accordion type="single" collapsible className="w-full" value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn('flex gap-3 rounded-md px-3 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground', {
+            className={cn('flex gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground', {
               'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground': path.some((path) => path.path === bestMatch) && !value,
             })}
           >
-            <div className="flex items-end gap-3">
+            <div className="flex items-end gap-2">
               <span>{icon}</span>
               <span>{name}</span>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="space-y-1 pl-6">
+          <AccordionContent className="space-y-1 pl-3">
             {path.map((item) => (
               <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
                   key={item.path}
-                  className={cn('flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
+                  className={cn('flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
                     'bg-brand text-background opacity-100 dark:text-foreground': item.path === bestMatch,
                   })}
                   href={item.path}

@@ -19,11 +19,8 @@ type Props = {
   plugin: Plugin;
 };
 
-const GITHUB_PATTERN =
-  /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
-export default function PluginCard({
-  plugin: { id, name, description, url, userId },
-}: Props) {
+const GITHUB_PATTERN = /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
+export default function PluginCard({ plugin: { id, name, description, url, userId } }: Props) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const t = useI18n();
@@ -57,20 +54,14 @@ export default function PluginCard({
   const githubUrl = `https://github.com/${user}/${repo}`;
 
   return (
-    <div className="relative flex h-28 flex-col gap-2 rounded-md bg-card p-2">
+    <div className="relative flex h-32 flex-col gap-2 rounded-md bg-card p-4">
       <Link href={githubUrl}>
-        <h2>{name}</h2>
+        <h2 className="line-clamp-1 w-full overflow-hidden text-ellipsis whitespace-normal text-nowrap">{name}</h2>
       </Link>
-      <span>{description}</span>
+      <span className="line-clamp-2 h-full w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>
       <div className="flex gap-2">
         <ProtectedElement session={session} filter={{ authorId: userId }}>
-          <DeleteButton
-            className="right-1 top-1 backdrop-brightness-100"
-            variant="ghost"
-            description={`${t('delete')} ${name}`}
-            isLoading={isDeleting}
-            onClick={() => deletePluginById(id)}
-          />
+          <DeleteButton className="right-1 top-1 backdrop-brightness-100" variant="ghost" description={`${t('delete')} ${name}`} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
         </ProtectedElement>
       </div>
     </div>

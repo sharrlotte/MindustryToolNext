@@ -211,13 +211,13 @@ export function fillMetric(start: Date, numberOfDay: number, array: Metric[] | u
     if (value === undefined)
       result.push({
         value: defaultValue,
-        createdAt: targetDay.toLocaleDateString(),
+        createdAt: targetDay,
         metricKey: '',
       });
     else
       result.push({
         value: value.value,
-        createdAt: new Date(value.createdAt).toLocaleDateString(),
+        createdAt: new Date(value.createdAt),
         metricKey: value.metricKey,
       });
   }

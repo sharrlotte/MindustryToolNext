@@ -16,7 +16,7 @@ export function ThemeSwitcher() {
 
   return (
     <div className="col-span-full flex w-full justify-between rounded-sm capitalize">
-      <span className="flex gap-4">
+      <span className="flex gap-2">
         {theme === 'light' ? (
           <SunIcon className="w-5" />
         ) : (

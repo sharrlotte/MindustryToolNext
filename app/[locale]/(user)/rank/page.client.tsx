@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { CrownIcon } from '@/components/common/icons';
 import { GridLayout } from '@/components/common/pagination-layout';
@@ -28,12 +21,12 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 export function PageClient() {
-  const params = useSearchPageParams(20);
+  const params = useSearchPageParams(30);
   const { session } = useSession();
   const { page, size } = params;
 
   return (
-    <Table>
+    <Table className="border">
       <TableHeader>
         <TableRow>
           <TableHead className="w-6">
@@ -54,19 +47,11 @@ export function PageClient() {
           getFunc={getRank}
           skeleton={{
             amount: 20,
-            item: (index) => (
-              <RankCardSkeleton rank={page * size + index + 1} />
-            ),
+            item: (index) => <RankCardSkeleton rank={page * size + index + 1} />,
           }}
           asChild
         >
-          {(data, index) => (
-            <UserRankCard
-              key={data.id}
-              user={data}
-              rank={page * size + index + 1}
-            />
-          )}
+          {(data, index) => <UserRankCard key={data.id} user={data} rank={page * size + index + 1} />}
         </GridPaginationList>
         <ProtectedElement session={session} filter={true}>
           <MyRankCard />
@@ -88,7 +73,7 @@ export default function UserRankCard({ user, rank }: UserCardRankProps) {
 
   return (
     <TableRow className={cn({ 'bg-secondary': session?.id === user.id })}>
-      <TableCell>
+      <TableCell className="text-center align-middle">
         <RankNumber rank={rank} />
       </TableCell>
       <TableCell className="align-top">
@@ -106,7 +91,7 @@ type RankCardSkeletonProps = {
 function RankCardSkeleton({ rank }: RankCardSkeletonProps) {
   return (
     <TableRow>
-      <TableCell>
+      <TableCell className="text-center align-middle">
         <RankNumber rank={rank} />
       </TableCell>
       <TableCell className="align-top">
@@ -150,7 +135,7 @@ function MyRankCard() {
 
   return (
     <TableRow className="bg-secondary">
-      <TableCell className="align-top">
+      <TableCell className="text-center align-middle">
         <RankNumber rank={data} />
       </TableCell>
       <TableCell className="align-top">
@@ -183,16 +168,16 @@ type RankNumberProps = {
 
 function RankNumber({ rank }: RankNumberProps) {
   if (rank > 3) {
-    return <span className="font-semibold">{rank}</span>;
+    return rank;
   }
 
   if (rank === 1) {
-    return <CrownIcon className="text-[#d4af37]" />;
+    return <CrownIcon className="h-full w-full p-1.5 text-[#d4af37]" />;
   }
 
   if (rank === 2) {
-    return <CrownIcon className="text-[#c0c0c0]" />;
+    return <CrownIcon className="h-full w-full p-1.5 text-[#c0c0c0]" />;
   }
 
-  return <CrownIcon className="text-[#cd7f32]" />;
+  return <CrownIcon className="h-full w-full p-1.5 text-[#cd7f32]" />;
 }

@@ -21,14 +21,14 @@ export default function PostsPage() {
   const uploadLink = `${env.url.base}/upload/post`;
   const myPostLink = `${env.url.base}/users/@me`;
   return (
-    <div className="flex h-full w-full flex-col gap-4 p-4">
+    <div className="flex h-full w-full flex-col gap-2 p-2">
       <NameTagSearch tags={post} />
       <div
         className="flex h-full w-full flex-col overflow-y-auto"
         ref={(ref) => setContainer(ref)}
       >
         <InfinitePage
-          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
+          className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2"
           params={params}
           queryKey={['posts']}
           getFunc={getPosts}

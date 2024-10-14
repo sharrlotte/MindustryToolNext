@@ -9,11 +9,7 @@ import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { deleteMap, getMapUploadCount, getMapUploads } from '@/query/map';
 import GridPaginationList from '@/components/common/grid-pagination-list';
-import {
-  PaginationLayoutSwitcher,
-  ListLayout,
-  GridLayout,
-} from '@/components/common/pagination-layout';
+import { PaginationLayoutSwitcher, ListLayout, GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
 import { omit } from 'lodash';
@@ -23,10 +19,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import useClientApi from '@/hooks/use-client';
 import { toast } from '@/hooks/use-toast';
 import { useMutation } from '@tanstack/react-query';
-import {
-  BulkActionContainer,
-  BulkDeleteToggle,
-} from '@/components/common/bulk-action';
+import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
 
 export default function Page() {
   const { map } = useSearchTags();
@@ -42,8 +35,7 @@ export default function Page() {
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
   const { mutate } = useMutation({
-    mutationFn: (ids: string[]) =>
-      Promise.all(ids.map((id) => deleteMap(axios, id))),
+    mutationFn: (ids: string[]) => Promise.all(ids.map((id) => deleteMap(axios, id))),
     onSuccess: () => {
       toast({
         title: <Tran text="delete-success" />,
@@ -68,7 +60,7 @@ export default function Page() {
 
   return (
     <BulkActionContainer onActionPerform={handleBulkDelete}>
-      <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
+      <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
         <NameTagSearch tags={map} />
         <div className="flex items-center justify-between">
           <Tran text="found" args={{ number: data }} />
@@ -78,10 +70,7 @@ export default function Page() {
           </div>
         </div>
         <ListLayout>
-          <div
-            className="relative flex h-full flex-col overflow-auto"
-            ref={(ref) => setContainer(ref)}
-          >
+          <div className="relative flex h-full flex-col overflow-auto" ref={(ref) => setContainer(ref)}>
             <InfinitePage
               params={params}
               queryKey={['maps', 'upload']}
@@ -109,7 +98,7 @@ export default function Page() {
             {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
           </GridPaginationList>
         </GridLayout>
-        <div className="flex flex-wrap items-center justify-end gap-4 sm:flex-row-reverse sm:justify-between">
+        <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
           <GridLayout>
             <PaginationNavigator numberOfItems={data} />
           </GridLayout>

@@ -13,17 +13,8 @@ import useMessage from '@/hooks/use-message';
 import ProtectedElement from '@/layout/protected-element';
 import { useI18n } from '@/i18n/client';
 
-import {
-  MemberPanel,
-  MemberPanelProvider,
-  MemberPanelTrigger,
-} from '@/app/[locale]/(user)/chat/member-pannel';
-import {
-  PaperclipIcon,
-  SearchIcon,
-  SendIcon,
-  SmileIcon,
-} from '@/components/common/icons';
+import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/app/[locale]/(user)/chat/member-pannel';
+import { PaperclipIcon, SearchIcon, SendIcon, SmileIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
 export default function Page() {
@@ -34,7 +25,7 @@ export default function Page() {
 
   return (
     <MemberPanelProvider>
-      <div className="flex h-full flex-col overflow-hidden bg-background">
+      <div className="flex h-full flex-col overflow-hidden">
         <div className="flex items-center justify-between border-b px-4 py-1">
           <div className="flex gap-4">
             <SearchIcon />
@@ -49,23 +40,8 @@ export default function Page() {
                 <LoadingSpinner className="m-auto" />
               ) : (
                 <div className="relative flex h-full overflow-hidden">
-                  <div
-                    className="h-full w-full overflow-y-auto"
-                    ref={(ref) => setContainer(ref)}
-                  >
-                    <MessageList
-                      showNotification
-                      className="flex h-full flex-col gap-1"
-                      queryKey={['global']}
-                      room="GLOBAL"
-                      container={() => container}
-                      params={{ size: 50 }}
-                      noResult={
-                        <div className="flex h-full w-full items-center justify-center font-semibold">
-                          {"Let's start a conversation"}
-                        </div>
-                      }
-                    >
+                  <div className="h-full w-full overflow-y-auto" ref={(ref) => setContainer(ref)}>
+                    <MessageList showNotification className="flex h-full flex-col gap-1" queryKey={['global']} room="GLOBAL" container={() => container} params={{ size: 50 }} noResult={<div className="flex h-full w-full items-center justify-center font-semibold">{"Let's start a conversation"}</div>}>
                       {(data) => <MessageCard key={data.id} message={data} />}
                     </MessageList>
                   </div>
@@ -108,27 +84,13 @@ function ChatInput() {
     event.preventDefault();
   };
   return (
-    <form
-      className="flex h-14 flex-1 gap-1 border-t px-2 py-2"
-      name="text"
-      onSubmit={handleFormSubmit}
-    >
-      <div className="flex w-full items-center gap-2 rounded-md border border-border bg-background px-2">
-        <input
-          className="h-full w-full bg-transparent outline-none"
-          value={message}
-          onChange={(event) => setMessage(event.currentTarget.value)}
-        />
+    <form className="flex h-14 flex-1 gap-2 border-t px-2 py-2" name="text" onSubmit={handleFormSubmit}>
+      <div className="flex w-full items-center gap-2 rounded-md border bg-background px-2">
+        <input className="h-full w-full bg-transparent outline-none" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
         <PaperclipIcon />
         <SmileIcon />
       </div>
-      <Button
-        className="h-full"
-        variant="primary"
-        type="submit"
-        title={t('send')}
-        disabled={state !== 'connected' || !message}
-      >
+      <Button className="h-full" variant='outline' type="submit" title={t('send')} disabled={state !== 'connected' || !message}>
         <SendIcon />
       </Button>
     </form>

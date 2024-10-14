@@ -9,12 +9,13 @@ import InternalLink from '@/components/common/internal-link';
 import { Path, PathGroup } from '@/app/routes';
 import { useNavBar } from '@/zustand/nav-bar-store';
 import { useMediaQuery } from 'usehooks-ts';
-import { motion } from 'framer-motion';
-import { MenuIcon } from '@/components/common/icons';
+import { motion, Variants } from 'framer-motion';
+import { MenuIcon, SettingIcon } from '@/components/common/icons';
 import { Button } from '@/components/ui/button';
-import OutsideWrapper from '@/components/common/outside-wrapper';
 import env from '@/constant/env';
 import { UserDisplay } from '@/app/[locale]/user-display';
+import Divider from '@/components/ui/divider';
+import UserAvatar from '@/components/user/user-avatar';
 
 type NavigationBarProps = {
   children: ReactNode;
@@ -22,24 +23,13 @@ type NavigationBarProps = {
   bestMatch: string | null;
 };
 
-const sidebarVariants = {
+const sidebarVariants: Variants = {
   open: {
     width: 'auto',
     transition: { type: 'spring', stiffness: 300, damping: 30 },
   },
   closed: {
     width: 'var(--nav)',
-    transition: { type: 'spring', stiffness: 300, damping: 30 },
-  },
-};
-
-const pathVariants = {
-  open: {
-    width: 'auto',
-    transition: { type: 'spring', stiffness: 300, damping: 30 },
-  },
-  closed: {
-    width: 0,
     transition: { type: 'spring', stiffness: 300, damping: 30 },
   },
 };
@@ -51,36 +41,25 @@ export function MediumScreenNavigationBar({ children, pathGroups, bestMatch }: N
 
   const expand = isSmall ? true : isVisible;
 
-  const showSidebar = useCallback(() => setVisible(true), [setVisible]);
-  const hideSidebar = useCallback(() => setVisible(false), [setVisible]);
+  const toggleSidebar = useCallback(() => setVisible(!isVisible), [isVisible, setVisible]);
 
   return (
     <div className="grid h-full w-full grid-cols-[auto_1fr] justify-center overflow-hidden">
-      <motion.div className="flex flex-col bg-card" variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
-        <div
-          className="h-full w-full overflow-hidden p-3"
-          onMouseLeave={hideSidebar} //
-          onMouseEnter={showSidebar}
-        >
-          <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
-            <MenuIcon className="size-6" />
-          </Button>
-          <OutsideWrapper className="h-full w-full overflow-hidden" onClickOutside={hideSidebar}>
-            <div className="flex h-full flex-col justify-between overflow-hidden">
-              <div className="flex h-full flex-col items-center overflow-hidden">
-                <span className="flex flex-col gap-2">
-                  <span className="space-x-2 rounded-sm">
-                    <div className={cn('hidden', { visible: expand })}>
-                      <h1 className="text-xl font-medium">MindustryTool</h1>
-                      <span className="text-xs">{env.webVersion}</span>
-                    </div>
-                  </span>
-                </span>
-                <MediumNavItems pathGroups={pathGroups} bestMatch={bestMatch} onClick={hideSidebar} />
-              </div>
-              <UserDisplay />
+      <motion.div className="flex h-full overflow-hidden bg-card" variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
+        <div className={cn('flex h-full w-full flex-col overflow-hidden p-1', { 'p-2': expand })}>
+          <div className="flex items-center justify-center gap-1 p-2">
+            <div className={cn('hidden', { block: expand })}>
+              <h1 className="text-xl font-medium">MindustryTool</h1>
             </div>
-          </OutsideWrapper>
+            <span className={cn('hidden text-xs', { block: expand })}>{env.webVersion}</span>
+            <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
+              <MenuIcon className="size-6" />
+            </Button>
+          </div>
+          <div className="flex h-full flex-col justify-between overflow-hidden">
+            <MediumNavItems pathGroups={pathGroups} bestMatch={bestMatch} />
+            {expand ? <UserDisplay /> : <NavFooter />}
+          </div>
         </div>
       </motion.div>
       <div className="relative h-full w-full overflow-hidden">{children}</div>
@@ -88,17 +67,40 @@ export function MediumScreenNavigationBar({ children, pathGroups, bestMatch }: N
   );
 }
 
+function NavFooter() {
+  const { session } = useSession();
+  const { isVisible } = useNavBar();
+
+  const isSmall = useMediaQuery('(max-width: 640px)');
+
+  const expand = isSmall ? true : isVisible;
+
+  return (
+    <div className="space-y-1">
+      <Divider />
+      <InternalLink
+        className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
+          'justify-start gap-2 py-2': expand,
+        })}
+        href="/users/@me/setting"
+      >
+        <SettingIcon />
+      </InternalLink>
+      {session && <UserAvatar className="size-10" url="/users/@me" user={session} />}
+    </div>
+  );
+}
+
 type NavItemsProps = {
-  onClick: () => void;
   pathGroups: PathGroup[];
   bestMatch: string | null;
 };
 
-function MediumNavItems({ pathGroups, bestMatch, onClick }: NavItemsProps) {
+function MediumNavItems({ pathGroups, bestMatch }: NavItemsProps) {
   return (
-    <section className="no-scrollbar space-y-4 overflow-y-auto">
+    <section className="no-scrollbar space-y-2 overflow-y-auto">
       {pathGroups.map((group) => (
-        <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} onClick={onClick} />
+        <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} />
       ))}
     </section>
   );
@@ -107,12 +109,12 @@ function MediumNavItems({ pathGroups, bestMatch, onClick }: NavItemsProps) {
 type PathGroupElementProps = {
   group: PathGroup;
   bestMatch: string | null;
-  onClick: () => void;
 };
 
-const _PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps): ReactNode => {
+const _PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNode => {
   const { session } = useSession();
   const { key, name, filter } = group;
+
   const isSmall = useMediaQuery('(max-width: 640px)');
   const { isVisible } = useNavBar();
 
@@ -121,11 +123,10 @@ const _PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps)
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
-        <motion.div className="overflow-hidden" variants={pathVariants} animate={expand ? 'open' : 'closed'}>
-          {name}
-        </motion.div>
+        <span className={cn('hidden font-bold', { block: expand })}>{name}</span>
+        {name && <Divider className={cn('block', { hidden: expand })} />}
         {group.paths.map((path, index) => (
-          <PathElement key={index} segment={path} bestMatch={bestMatch} onClick={onClick} />
+          <PathElement key={index} segment={path} bestMatch={bestMatch} />
         ))}
       </nav>
     </ProtectedElement>
@@ -136,15 +137,14 @@ const PathGroupElement = React.memo(_PathGroupElement);
 type PathElementProps = {
   segment: Path;
   bestMatch: string | null;
-  onClick: () => void;
 };
 
-function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
+function PathElement({ segment, bestMatch }: PathElementProps) {
   const { session } = useSession();
   const [value, setValue] = useState('');
 
   const isSmall = useMediaQuery('(max-width: 640px)');
-  const { isVisible } = useNavBar();
+  const { isVisible, setVisible } = useNavBar();
 
   const expand = isSmall ? true : isVisible;
 
@@ -154,16 +154,14 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
-          className={cn('flex items-end gap-3 rounded-md px-3 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
+          className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
             'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
+            'justify-start gap-2 py-2': expand,
           })}
           href={path}
-          onClick={onClick}
         >
           <span> {icon}</span>
-          <motion.div className="overflow-hidden" variants={pathVariants} animate={expand ? 'open' : 'closed'}>
-            {name}
-          </motion.div>
+          <span className={cn('hidden', { block: expand })}>{name}</span>
         </InternalLink>
       </ProtectedElement>
     );
@@ -174,18 +172,17 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
       <Accordion type="single" collapsible className="w-full" value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn('flex gap-3 rounded-md px-3 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground', {
+            className={cn('flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground', {
               'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground': path.some((path) => path.path === bestMatch) && !value,
+              'justify-start gap-2 py-2': expand,
             })}
+            showChevron={expand}
+            onClick={() => setVisible(true)}
           >
-            <div className="flex items-end gap-3">
-              <span>{icon}</span>
-              <motion.div className="overflow-hidden" variants={pathVariants} animate={expand ? 'open' : 'closed'}>
-                {name}
-              </motion.div>
-            </div>
+            <span>{icon}</span>
+            <span className={cn('hidden', { block: expand })}>{name}</span>
           </AccordionTrigger>
-          <AccordionContent className="space-y-1 pl-6">
+          <AccordionContent className={cn('hidden space-y-1 pl-3', { block: expand })}>
             {path.map((item) => (
               <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
@@ -194,7 +191,6 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
                     'bg-brand text-background opacity-100 dark:text-foreground': item.path === bestMatch,
                   })}
                   href={item.path}
-                  onClick={onClick}
                 >
                   <span>{item.icon}</span>
                   <span>{item.name}</span>
