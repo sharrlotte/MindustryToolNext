@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { PNG_IMAGE_PREFIX } from '@/constant/constant';
+import { IMAGE_PREFIX } from '@/constant/constant';
 
 type Props = {
   className?: string;
@@ -10,14 +10,5 @@ type Props = {
 };
 
 export default function RawImage({ className, data }: Props) {
-  return (
-    <Image
-      className={className}
-      loader={({ src }) => src}
-      src={PNG_IMAGE_PREFIX + data}
-      alt="Map"
-      width={512}
-      height={512}
-    />
-  );
+  return <Image className={className} loader={({ src }) => src} src={IMAGE_PREFIX + data} alt="Map" width={512} height={512} />;
 }

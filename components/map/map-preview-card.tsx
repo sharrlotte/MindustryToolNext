@@ -8,13 +8,7 @@ import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
-import {
-  Preview,
-  PreviewActions,
-  PreviewDescription,
-  PreviewHeader,
-  PreviewImage,
-} from '@/components/common/preview';
+import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import env from '@/constant/env';
 import { MapPreview } from '@/types/response/MapPreview';
 import { LinkIcon } from '@/components/common/icons';
@@ -25,24 +19,17 @@ type MapPreviewCardProps = {
   map: MapPreview;
 };
 
-function _MapPreviewCard({
-  map: { id, itemId, name, isVerified, likes, userLike },
-}: MapPreviewCardProps) {
+function _MapPreviewCard({ map: { id, itemId, name, isVerified, likes, userLike } }: MapPreviewCardProps) {
   const link = `${env.url.base}/admin/maps/${id}`;
   const detailLink = `/maps/${id}`;
-  const imageLink = `${env.url.image}/map-previews/${id}.png`;
+  const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/maps/${id}/image`;
   const downloadLink = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msch`;
 
   return (
     <Preview>
-      <CopyButton
-        position="absolute"
-        variant="ghost"
-        data={link}
-        content={link}
-      >
+      <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <LinkIcon />
       </CopyButton>
       <InternalLink href={detailLink}>
@@ -55,11 +42,7 @@ function _MapPreviewCard({
         <PreviewActions>
           <DownloadButton href={downloadLink} fileName={downloadName} />
           {isVerified && (
-            <LikeComponent
-              itemId={itemId}
-              initialLikeCount={likes}
-              initialLikeData={userLike}
-            >
+            <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
               <LikeButton />
               <LikeCount />
               <DislikeButton />

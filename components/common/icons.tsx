@@ -30,15 +30,7 @@ import {
   CheckSquare2 as _SquareCheckIcon,
 } from 'lucide-react';
 
-import {
-  ChartBarSquareIcon,
-  ChatBubbleLeftIcon,
-  CircleStackIcon,
-  ClipboardDocumentListIcon,
-  Cog6ToothIcon,
-  CommandLineIcon,
-  PuzzlePieceIcon,
-} from '@heroicons/react/24/outline';
+import { ChartBarSquareIcon, ChatBubbleLeftIcon, CircleStackIcon, ClipboardDocumentListIcon, Cog6ToothIcon, CommandLineIcon, PuzzlePieceIcon } from '@heroicons/react/24/outline';
 
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
@@ -49,12 +41,8 @@ type Props = {
   className?: string;
 };
 
-export const SquareIcon = ({ className }: Props) => (
-  <_SquareIcon className={cn('size-5', className)} />
-);
-export const SquareCheckedIcon = ({ className }: Props) => (
-  <_SquareCheckIcon className={cn('size-5', className)} />
-);
+export const SquareIcon = ({ className }: Props) => <_SquareIcon className={cn('size-5', className)} />;
+export const SquareCheckedIcon = ({ className }: Props) => <_SquareCheckIcon className={cn('size-5', className)} />;
 export const GlobIcon = () => <_Glob className="size-5" />;
 export const LinkIcon = () => <_LinkIcon className="size-5" />;
 export const PostIcon = () => <BookOpenIcon className="size-5" />;
@@ -63,17 +51,13 @@ export const FileIcon = () => <_FileIcon className="size-5" />;
 export const DocumentIcon = () => <FolderIcon className="size-5" />;
 export const HomeIcon = () => <_HomeIcon className="size-5" />;
 export const MapIcon = () => <_MapIcon className="size-5" />;
-export const ServerIcon = ({ className }: Props) => (
-  <_ServerIcon className={cn('size-5', className)} />
-);
+export const ServerIcon = ({ className }: Props) => <_ServerIcon className={cn('size-5', className)} />;
 export const VerifyIcon = () => <ShieldCheckIcon className="size-5" />;
 export const UserIcon = () => <_UserIcon className="size-5" />;
 export const ChartIcon = () => <ChartBarSquareIcon className="size-5" />;
 export const ChatIcon = () => <ChatBubbleLeftIcon className="size-5" />;
 export const LogIcon = () => <CircleStackIcon className="size-5" />;
-export const SchematicIcon = () => (
-  <ClipboardDocumentListIcon className="size-5" />
-);
+export const SchematicIcon = () => <ClipboardDocumentListIcon className="size-5" />;
 export const SettingIcon = () => <Cog6ToothIcon className="size-5" />;
 export const CmdIcon = () => <CommandLineIcon className="size-5" />;
 export const PluginIcon = () => <PuzzlePieceIcon className="size-5" />;
@@ -82,13 +66,11 @@ export const GithubIcon = () => <_GithubIcon className="size-5" />;
 export const FacebookIcon = () => <_FacebookIcon className="size-5" />;
 export const DiscordIcon = () => <DiscordLogoIcon className="size-5" />;
 export const ArrowDownIcon = () => <_ArrowDownIcon className="size-7" />;
-export const MenuIcon = () => <Menu className="size-10 text-white" />;
+export const MenuIcon = ({ className }: { className?: string }) => <Menu className={cn('size-10 text-white', className)} />;
 export const UploadIcon = () => <_UploadIcon className="size-5" />;
 export const ExpandIcon = () => <_ExpandIcon className="size-5" />;
 export const ShrinkIcon = () => <_ShrinkIcon className="size-5" />;
-export const GoogleIcon = () => (
-  <Image className="size-5" src={googleIcon} alt="google"></Image>
-);
+export const GoogleIcon = () => <Image className="size-5" src={googleIcon} alt="google"></Image>;
 
 export const UsersIcon = () => <_UsersIcon className="size-5" />;
 export const PaperclipIcon = () => <_PaperclipIcon className="size-6" />;
@@ -97,9 +79,7 @@ export const SearchIcon = () => <_SearchIcon className="size-5" />;
 export const SendIcon = () => <_SendIcon className="size-5" />;
 export const EditIcon = () => <_EditIcon className="size-5" />;
 export const RatioIcon = () => <_SigmaIcon className="size-5" />;
-export const CrownIcon = ({ className }: Props) => (
-  <_CrownIcon className={cn('size-5', className)} />
-);
+export const CrownIcon = ({ className }: Props) => <_CrownIcon className={cn('size-5', className)} />;
 
 export function HRIcon({ className }: Props) {
   return (
@@ -127,10 +107,7 @@ export function BoldIcon({ className }: Props) {
 export function ItalicIcon({ className }: Props) {
   return (
     <svg className={cn(className)} role="img" viewBox="0 0 320 512">
-      <path
-        fill="currentColor"
-        d="M204.758 416h-33.849l62.092-320h40.725a16 16 0 0 0 15.704-12.937l6.242-32C297.599 41.184 290.034 32 279.968 32H120.235a16 16 0 0 0-15.704 12.937l-6.242 32C96.362 86.816 103.927 96 113.993 96h33.846l-62.09 320H46.278a16 16 0 0 0-15.704 12.935l-6.245 32C22.402 470.815 29.967 480 40.034 480h158.479a16 16 0 0 0 15.704-12.935l6.245-32c1.927-9.88-5.638-19.065-15.704-19.065z"
-      ></path>
+      <path fill="currentColor" d="M204.758 416h-33.849l62.092-320h40.725a16 16 0 0 0 15.704-12.937l6.242-32C297.599 41.184 290.034 32 279.968 32H120.235a16 16 0 0 0-15.704 12.937l-6.242 32C96.362 86.816 103.927 96 113.993 96h33.846l-62.09 320H46.278a16 16 0 0 0-15.704 12.935l-6.245 32C22.402 470.815 29.967 480 40.034 480h158.479a16 16 0 0 0 15.704-12.935l6.245-32c1.927-9.88-5.638-19.065-15.704-19.065z"></path>
     </svg>
   );
 }
@@ -190,10 +167,7 @@ export function CodeBlockIcon({ className }: Props) {
 export function ImageIcon({ className }: Props) {
   return (
     <svg className={cn(className)} role="img" viewBox="0 0 20 20">
-      <path
-        fill="currentColor"
-        d="M15 9c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4-7H1c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 13l-6-5-2 2-4-5-4 8V4h16v11z"
-      ></path>
+      <path fill="currentColor" d="M15 9c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4-7H1c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 13l-6-5-2 2-4-5-4 8V4h16v11z"></path>
     </svg>
   );
 }
@@ -243,14 +217,8 @@ export function FullScreenIcon({ className }: Props) {
 export function EditPanelIcon({ className }: Props) {
   return (
     <svg className={cn(className)} role="img" viewBox="0 0 520 520">
-      <polygon
-        fill="currentColor"
-        points="0 71.293 0 122 319 122 319 397 0 397 0 449.707 372 449.413 372 71.293"
-      ></polygon>
-      <polygon
-        fill="currentColor"
-        points="429 71.293 520 71.293 520 122 481 123 481 396 520 396 520 449.707 429 449.413"
-      ></polygon>
+      <polygon fill="currentColor" points="0 71.293 0 122 319 122 319 397 0 397 0 449.707 372 449.413 372 71.293"></polygon>
+      <polygon fill="currentColor" points="429 71.293 520 71.293 520 122 481 123 481 396 520 396 520 449.707 429 449.413"></polygon>
     </svg>
   );
 }
@@ -258,14 +226,8 @@ export function EditPanelIcon({ className }: Props) {
 export function LivePanelIcon({ className }: Props) {
   return (
     <svg className={cn(className)} role="img" viewBox="0 0 520 520">
-      <polygon
-        fill="currentColor"
-        points="0 71.293 0 122 179 122 179 397 0 397 0 449.707 232 449.413 232 71.293"
-      ></polygon>
-      <polygon
-        fill="currentColor"
-        points="289 71.293 520 71.293 520 122 341 123 341 396 520 396 520 449.707 289 449.413"
-      ></polygon>
+      <polygon fill="currentColor" points="0 71.293 0 122 179 122 179 397 0 397 0 449.707 232 449.413 232 71.293"></polygon>
+      <polygon fill="currentColor" points="289 71.293 520 71.293 520 122 341 123 341 396 520 396 520 449.707 289 449.413"></polygon>
     </svg>
   );
 }
@@ -273,14 +235,8 @@ export function LivePanelIcon({ className }: Props) {
 export function PreviewPanelIcon({ className }: Props) {
   return (
     <svg className={cn(className)} role="img" viewBox="0 0 520 520">
-      <polygon
-        fill="currentColor"
-        points="0 71.293 0 122 38.023 123 38.023 398 0 397 0 449.707 91.023 450.413 91.023 72.293"
-      ></polygon>
-      <polygon
-        fill="currentColor"
-        points="148.023 72.293 520 71.293 520 122 200.023 124 200.023 397 520 396 520 449.707 148.023 450.413"
-      ></polygon>
+      <polygon fill="currentColor" points="0 71.293 0 122 38.023 123 38.023 398 0 397 0 449.707 91.023 450.413 91.023 72.293"></polygon>
+      <polygon fill="currentColor" points="148.023 72.293 520 71.293 520 122 200.023 124 200.023 397 520 396 520 449.707 148.023 450.413"></polygon>
     </svg>
   );
 }

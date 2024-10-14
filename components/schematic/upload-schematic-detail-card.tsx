@@ -4,15 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import {
-  Detail,
-  DetailActions,
-  DetailDescription,
-  DetailHeader,
-  DetailImage,
-  DetailInfo,
-  DetailTitle,
-} from '@/components/common/detail';
+import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
@@ -32,9 +24,7 @@ type UploadSchematicDetailCardProps = {
   schematic: SchematicDetail;
 };
 
-export default function UploadSchematicDetailCard({
-  schematic: { id, name, tags, requirements, description, userId },
-}: UploadSchematicDetailCardProps) {
+export default function UploadSchematicDetailCard({ schematic: { id, name, tags, requirements, description, userId } }: UploadSchematicDetailCardProps) {
   const axios = useClientApi();
   const { schematic } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
@@ -46,7 +36,7 @@ export default function UploadSchematicDetailCard({
   }, [tags, schematic]);
 
   const link = `${env.url.base}/schematics/${id}`;
-  const imageUrl = `${env.url.image}/schematics/${id}.png`;
+  const imageUrl = `${env.url.image}/schematics/${id}${env.imageFormat}`;
   const errorImageUrl = `${env.url.api}/schematics/${id}/image`;
   const copyMessage = `Copied schematic ${name}`;
   const downloadUrl = `${env.url.api}/schematics/${id}/download`;
@@ -61,12 +51,7 @@ export default function UploadSchematicDetailCard({
   return (
     <Detail>
       <DetailInfo>
-        <CopyButton
-          position="absolute"
-          variant="ghost"
-          data={link}
-          content={link}
-        >
+        <CopyButton position="absolute" variant="ghost" data={link} content={link}>
           <LinkIcon />
         </CopyButton>
         <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
@@ -75,22 +60,14 @@ export default function UploadSchematicDetailCard({
           <IdUserCard id={userId} />
           <DetailDescription>{description}</DetailDescription>
           <ItemRequirementCard requirements={requirements} />
-          <TagSelector
-            tags={schematic}
-            value={selectedTags}
-            onChange={setSelectedTags}
-          />
+          <TagSelector tags={schematic} value={selectedTags} onChange={setSelectedTags} />
         </DetailHeader>
       </DetailInfo>
       <DetailActions>
         <CopyButton content={copyMessage} data={getData} />
         <DownloadButton href={downloadUrl} fileName={downloadName} />
         <DeleteSchematicButton id={id} name={name} />
-        <VerifySchematicButton
-          id={id}
-          name={name}
-          selectedTags={selectedTags}
-        />
+        <VerifySchematicButton id={id} name={name} selectedTags={selectedTags} />
       </DetailActions>
     </Detail>
   );

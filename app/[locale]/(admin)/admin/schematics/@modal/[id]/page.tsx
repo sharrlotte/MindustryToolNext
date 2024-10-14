@@ -15,9 +15,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const schematic = await serverApi((axios) =>
-    getSchematicUpload(axios, { id }),
-  );
+  const schematic = await serverApi((axios) => getSchematicUpload(axios, { id }));
 
   if ('error' in schematic) {
     throw schematic;
@@ -29,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: schematic.name,
       description: schematic.description,
-      images: `${env.url.image}schematic-previews/${schematic.id}.png`,
+      images: `${env.url.image}schematic-previews/${schematic.id}${env.imageFormat}`,
     },
   };
 }
@@ -37,9 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  const schematic = await serverApi((axios) =>
-    getSchematicUpload(axios, { id }),
-  );
+  const schematic = await serverApi((axios) => getSchematicUpload(axios, { id }));
 
   if ('error' in schematic) {
     return <ErrorScreen error={schematic} />;
