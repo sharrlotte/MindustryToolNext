@@ -20,17 +20,19 @@ export default async function Page() {
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-4">
-      <div className="grid grid-cols-1 items-start gap-2 md:grid-cols-2">
-        <Suspense fallback={<ChartSkeleton />}>
-          <LikeChart start={start} end={end} dates={NUMBER_OF_DAY} />
-        </Suspense>
-        <Suspense fallback={<ChartSkeleton />}>
-          <LoginChart start={start} end={end} dates={NUMBER_OF_DAY} />
-        </Suspense>
-        <Suspense fallback={<ChartSkeleton />}>
-          <ClientChart start={start} end={end} dates={NUMBER_OF_DAY} />
-        </Suspense>
-        <div className="space-y-2">
+      <div className="flex w-full flex-wrap gap-2">
+        <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
+          <Suspense fallback={<ChartSkeleton />}>
+            <LikeChart start={start} end={end} dates={NUMBER_OF_DAY} />
+          </Suspense>
+          <Suspense fallback={<ChartSkeleton />}>
+            <LoginChart start={start} end={end} dates={NUMBER_OF_DAY} />
+          </Suspense>
+          <Suspense fallback={<ChartSkeleton />}>
+            <ClientChart start={start} end={end} dates={NUMBER_OF_DAY} />
+          </Suspense>
+        </div>
+        <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
           <Suspense fallback={<ChartSkeleton />}>
             <LoginLog />
           </Suspense>
@@ -45,7 +47,7 @@ export default async function Page() {
 
 function ChartSkeleton() {
   return (
-    <div className="flex h-full aspect-video w-full flex-col gap-2 bg-card p-2">
+    <div className="flex aspect-video h-full w-full flex-col gap-2 bg-card p-2">
       <Skeleton className="h-full w-full" />
     </div>
   );

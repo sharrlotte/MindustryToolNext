@@ -6,32 +6,25 @@ import { cn } from '@/lib/utils';
 import React, { ReactNode, useState } from 'react';
 
 type Props = {
+  className?: string;
   children: ReactNode;
 };
 
-export default function MetricWrapper({ children }: Props) {
+export default function MetricWrapper({ className, children }: Props) {
   const [expand, setExpand] = useState(false);
 
   return (
     <div
-      className={cn('relative flex bg-card h-full', {
+      className={cn('relative flex w-full bg-card', className, {
         'absolute inset-0 z-10 max-h-[calc(100dvh-var(--nav))]': expand,
       })}
     >
       {expand ? (
-        <Button
-          className="absolute right-1 top-1"
-          variant="ghost"
-          onClick={() => setExpand(false)}
-        >
+        <Button className="absolute right-1 top-1" variant="ghost" onClick={() => setExpand(false)}>
           <ShrinkIcon />
         </Button>
       ) : (
-        <Button
-          className="absolute right-1 top-1"
-          variant="ghost"
-          onClick={() => setExpand(true)}
-        >
+        <Button className="absolute right-1 top-1" variant="ghost" onClick={() => setExpand(true)}>
           <ExpandIcon />
         </Button>
       )}

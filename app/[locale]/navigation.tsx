@@ -6,6 +6,7 @@ import { SmallScreenNavigationBar } from '@/app/[locale]/small-navigation-items'
 import { hasAccess, max } from '@/lib/utils';
 
 import { useMediaQuery } from 'usehooks-ts';
+import { MediumScreenNavigationBar } from '@/app/[locale]/medium-navigation-items';
 import { useSession } from '@/context/session-context';
 import { usePathname } from 'next/navigation';
 import { groups, Path, SubPath } from '@/app/routes';
@@ -38,9 +39,9 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
   }
 
   return (
-    <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch}>
+    <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch}>
       {children}
-    </SmallScreenNavigationBar>
+    </MediumScreenNavigationBar>
   );
 }
 

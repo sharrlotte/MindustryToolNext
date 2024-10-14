@@ -5,28 +5,11 @@ import MetricWrapper from '@/components/metric/metric-wrapper';
 import { useI18n } from '@/i18n/client';
 import { ChartData } from '@/types/response/Metric';
 import React from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-} from 'chart.js';
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
 type Props = {
   data: ChartData[];
@@ -36,7 +19,7 @@ export default function LikeChartClient({ data }: Props) {
   const t = useI18n();
 
   const chart = {
-    labels: data.map(({ createdAt }) => createdAt),
+    labels: data.map(({ createdAt }) => createdAt.toLocaleDateString()),
     datasets: [
       {
         label: t('metric.like'),
@@ -54,27 +37,25 @@ export default function LikeChartClient({ data }: Props) {
         <span className="font-bold">
           <Tran text="metric.user-interaction" />
         </span>
-        <div className="h-full bg-card">
-          <Line
-            options={{
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: 'top' as const,
+        <Bar
+          options={{
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top' as const,
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
                 },
               },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: {
-                    stepSize: 1,
-                  },
-                },
-              },
-            }}
-            data={chart}
-          />
-        </div>
+            },
+          }}
+          data={chart}
+        />
       </div>
     </MetricWrapper>
   );

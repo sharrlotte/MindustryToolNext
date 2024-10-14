@@ -7,26 +7,9 @@ import { ChartData } from '@/types/response/Metric';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-} from 'chart.js';
+import { CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 type Props = {
   mod: ChartData[];
@@ -39,7 +22,7 @@ export default function ClientChartClient({ web, mod, server, total }: Props) {
   const t = useI18n();
 
   const chart = {
-    labels: web.map(({ createdAt }) => createdAt),
+    labels: web.map(({ createdAt }) => createdAt.toLocaleDateString()),
     datasets: [
       {
         label: t('metric.mod-user'),
@@ -73,26 +56,24 @@ export default function ClientChartClient({ web, mod, server, total }: Props) {
   };
 
   return (
-    <MetricWrapper>
-      <div className="flex  h-full w-full flex-col gap-2 bg-card p-2">
+    <MetricWrapper className="col-span-full">
+      <div className="flex h-full w-full flex-col gap-2 bg-card p-2">
         <span className="font-bold">
           <Tran text="client" />
         </span>
-        <div className="h-full">
-          <Line
-            options={{
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: {
-                    stepSize: 1,
-                  },
+        <Line
+          options={{
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
                 },
               },
-            }}
-            data={chart}
-          />
-        </div>
+            },
+          }}
+          data={chart}
+        />
       </div>
     </MetricWrapper>
   );
