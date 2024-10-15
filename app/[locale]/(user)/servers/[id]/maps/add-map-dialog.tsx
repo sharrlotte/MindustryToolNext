@@ -17,7 +17,7 @@ import { useI18n } from '@/i18n/client';
 import { getMaps } from '@/query/map';
 import { createInternalServerMap } from '@/query/server';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 type AddMapDialogProps = {
   serverId: string;
@@ -34,7 +34,7 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
 
   //TODO: Fix search
   const params = useSearchPageParams();
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) => createInternalServerMap(axios, serverId, { mapId }),
     onError: (error) => {
@@ -61,15 +61,17 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
         </Button>
       </DialogTrigger>
       <DialogContent className="flex w-full flex-col overflow-hidden p-4">
-        <DialogTitle>{t('internal-server.select-map')}</DialogTitle>
+        <DialogTitle>
+          <Tran text="internal-server.select-map" />
+        </DialogTitle>
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />
-          <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto p-2" ref={(ref) => setContainer(ref)}>
+          <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>
             <InfinitePage
               params={params}
               queryKey={['maps']}
               getFunc={(axios, params) => getMaps(axios, params)}
-              container={() => container}
+              container={() => ref.current}
               skeleton={{
                 amount: 20,
                 item: <Skeleton className="h-preview-height" />,
