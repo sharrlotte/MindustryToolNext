@@ -6,6 +6,7 @@ import { Metadata } from 'next/dist/types';
 import env from '@/constant/env';
 import Tran from '@/components/common/tran';
 import BackButton from '@/components/ui/back-button';
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const schematic = await serverApi((axios) => getSchematicUpload(axios, { id }));
 
-  if ('error' in schematic) {
+  if (isError(schematic)) {
     throw schematic;
   }
 
@@ -37,7 +38,7 @@ export default async function Page({ params }: Props) {
 
   const schematic = await serverApi((axios) => getSchematicUpload(axios, { id }));
 
-  if ('error' in schematic) {
+  if (isError(schematic)) {
     return <ErrorScreen error={schematic} />;
   }
 

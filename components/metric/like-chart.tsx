@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { fillMetric } from '@/lib/utils';
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import { getMetric } from '@/query/metric';
 import ErrorScreen from '@/components/common/error-screen';
@@ -15,7 +16,7 @@ type Props = {
 export default async function LikeChart({ start, dates, end }: Props) {
   const data = await serverApi((axios) => getMetric(axios, start, end, 'DAILY_LIKE'));
 
-  if ('error' in data) {
+  if (isError(data)) {
     return <ErrorScreen error={data} />;
   }
 

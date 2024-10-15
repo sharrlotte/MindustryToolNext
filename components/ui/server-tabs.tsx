@@ -35,8 +35,6 @@ type ServerTabsProps<T> = {
   children: ReactNode;
 };
 
-const defaultValue = {};
-
 export function ServerTabs<T extends string>({ className, value, name, values, children }: ServerTabsProps<T>) {
   const [query, setQuery] = useQueryState({ [name]: value });
 

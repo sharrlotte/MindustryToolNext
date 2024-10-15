@@ -5,7 +5,7 @@ import { Session } from '@/types/response/Session';
 import Tran from '@/components/common/tran';
 import { ApiError } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
-import { Filter, hasAccess } from '@/lib/utils';
+import { Filter, hasAccess, isError } from '@/lib/utils';
 
 type Props = {
   filter: Filter;
@@ -18,12 +18,11 @@ function NoPermission() {
 }
 
 export default function ProtectedRoute({ filter, children, session }: Props) {
-  if (session && 'error' in session) {
+  if (isError(session)) {
     return <ErrorScreen error={session} />;
   }
 
-  if (!session || session.roles === undefined || session.roles === null)
-    return <RequireLogin />;
+  if (!session || session.roles === undefined || session.roles === null) return <RequireLogin />;
 
   const canAccess = hasAccess(session, filter);
 

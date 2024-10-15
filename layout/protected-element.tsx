@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { Filter, hasAccess } from '@/lib/utils';
+import { Filter, hasAccess, isError } from '@/lib/utils';
 import { Session } from '@/types/response/Session';
 import { ApiError } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
@@ -12,13 +12,8 @@ type Props = {
   children: ReactNode;
 };
 
-export default function ProtectedElement({
-  children,
-  alt,
-  filter,
-  session,
-}: Props) {
-  if (session && 'error' in session) {
+export default function ProtectedElement({ children, alt, filter, session }: Props) {
+  if (isError(session)) {
     return <ErrorScreen error={session} />;
   }
 

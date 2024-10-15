@@ -1,36 +1,20 @@
 'use server';
 
-import {
-  revalidatePath,
-  revalidateTag,
-  unstable_cache,
-  unstable_noStore,
-} from 'next/cache';
+import { revalidatePath, revalidateTag, unstable_cache, unstable_noStore } from 'next/cache';
 import { z } from 'zod';
 
 import { QuerySchema } from '@/query/search-query';
 import 'server-only';
 
-import {
-  DefaultError,
-  FetchQueryOptions,
-  QueryClient,
-  QueryKey,
-  dehydrate,
-} from '@tanstack/react-query';
+import { DefaultError, FetchQueryOptions, QueryClient, QueryKey, dehydrate } from '@tanstack/react-query';
 import { Session } from '@/types/response/Session';
 import { cookies } from 'next/headers';
 import axiosInstance from '@/query/config/config';
 import { formatTranslation } from '@/i18n/client';
 import { AxiosInstance } from 'axios';
+import { isError } from '@/lib/utils';
 
-export async function revalidate({
-  path,
-  tag,
-}: {
-  path?: string;
-  tag?: string;
-}) {
+export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
   'use server';
   if (path) {
     revalidatePath(path);
@@ -41,10 +25,7 @@ export async function revalidate({
   }
 }
 
-export async function getQuery<T extends QuerySchema>(
-  params: any,
-  schema: T,
-): Promise<z.infer<typeof schema>> {
+export async function getQuery<T extends QuerySchema>(params: any, schema: T): Promise<z.infer<typeof schema>> {
   const result = schema.parse(params);
 
   return result;
@@ -60,17 +41,12 @@ type ServerApi<T> =
 
 export type ApiError = { error: any };
 
-export async function serverApi<T>(
-  queryFn: ServerApi<T>,
-): Promise<T | ApiError> {
+export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError> {
   unstable_noStore(); // To opt out of static renderer
   try {
     const axios = await getServerApi();
 
-    const data =
-      'queryFn' in queryFn
-        ? await queryFn.queryFn(axios)
-        : await queryFn(axios);
+    const data = 'queryFn' in queryFn ? await queryFn.queryFn(axios) : await queryFn(axios);
 
     return data;
   } catch (error) {
@@ -78,16 +54,8 @@ export async function serverApi<T>(
   }
 }
 
-export default async function prefetch<
-  TQueryFnData = unknown,
-  TError = DefaultError,
-  TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey,
->(
-  options: Omit<
-    FetchQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
-    'queryFn'
-  > & {
+export default async function prefetch<TQueryFnData = unknown, TError = DefaultError, TData = TQueryFnData, TQueryKey extends QueryKey = QueryKey>(
+  options: Omit<FetchQueryOptions<TQueryFnData, TError, TData, TQueryKey>, 'queryFn'> & {
     queryFn: (axios: AxiosInstance) => Promise<TQueryFnData>;
   },
 ) {
@@ -107,9 +75,7 @@ const getCachedSession: (cookie: string) => Promise<Session> = unstable_cache(
   (cookie: string) => {
     axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
 
-    return axiosInstance
-      .get('/auth/session')
-      .then((r) => r.data) as Promise<Session>;
+    return axiosInstance.get('/auth/session').then((r) => r.data) as Promise<Session>;
   },
   ['session'],
   { revalidate: 60 },
@@ -124,9 +90,7 @@ export async function getSession() {
 export const getServerApi = async (): Promise<AxiosInstance> => {
   const cookie = await cookies();
 
-  axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(
-    cookie.toString(),
-  );
+  axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie.toString());
 
   return axiosInstance;
 };
@@ -148,11 +112,7 @@ const getCachedTranslation = unstable_cache(
   { revalidate: 600 },
 );
 
-export async function translate(
-  locale: string,
-  text: string,
-  args?: Record<string, any>,
-) {
+export async function translate(locale: string, text: string, args?: Record<string, any>) {
   const parts = text.split('.');
 
   if (parts.length === 0) {
@@ -166,7 +126,7 @@ export async function translate(
 
   const keys = await getCachedTranslation(locale, group);
 
-  if ('error' in keys) {
+  if (isError(keys)) {
     return text;
   }
 

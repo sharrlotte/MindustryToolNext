@@ -4,6 +4,7 @@ import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
 import { getPostUpload } from '@/query/post';
 import Tran from '@/components/common/tran';
 import BackButton from '@/components/ui/back-button';
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 
@@ -15,7 +16,7 @@ export default async function Page({ params }: Props) {
   const { id } = await params;
   const post = await serverApi((axios) => getPostUpload(axios, { id }));
 
-  if ('error' in post) {
+  if (isError(post)) {
     return <ErrorScreen error={post} />;
   }
 

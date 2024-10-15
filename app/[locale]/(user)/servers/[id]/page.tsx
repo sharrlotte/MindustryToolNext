@@ -20,6 +20,7 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import './style.css';
 import ErrorScreen from '@/components/common/error-screen';
 import ProtectedElement from '@/layout/protected-element';
+import { isError } from '@/lib/utils';
 
 export const experimental_ppr = true;
 
@@ -32,11 +33,11 @@ export default async function Page({ params }: Props) {
 
   const [server, session] = await Promise.all([serverApi((axios) => getInternalServer(axios, { id })), getSession()]);
 
-  if ('error' in server) {
+  if (isError(server)) {
     return <ErrorScreen error={server} />;
   }
 
-  if ('error' in session) {
+  if (isError(session)) {
     return <ErrorScreen error={session} />;
   }
 
@@ -144,7 +145,7 @@ type PlayersCardProps = {
 async function PlayersCard({ id }: PlayersCardProps) {
   const players = await serverApi((axios) => getServerPlayers(axios, id));
 
-  if ('error' in players) {
+  if (isError(players)) {
     return <ErrorScreen error={players} />;
   }
 
