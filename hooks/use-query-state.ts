@@ -22,7 +22,6 @@ export default function useQueryState(initialState: Record<string, string>) {
 
     setState((prev) => {
       if (JSON.stringify(newState) !== JSON.stringify(prev)) {
-        console.log({ newState, prev, usedParams, params });
         return newState;
       }
 
