@@ -3,6 +3,7 @@ import React from 'react';
 
 import PostDetailCard from '@/components/post/post-detail-card';
 import { getPost } from '@/query/post';
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import env from '@/constant/env';
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const post = await serverApi((axios) => getPost(axios, { id }));
 
-  if ('error' in post) {
+  if (isError(post)) {
     throw post;
   }
 
@@ -30,7 +31,7 @@ export default async function Page({ params }: Props) {
   const { id } = await params;
   const post = await serverApi((axios) => getPost(axios, { id }));
 
-  if ('error' in post) {
+  if (isError(post)) {
     return <ErrorScreen error={post} />;
   }
 

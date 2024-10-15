@@ -1,4 +1,5 @@
 import { fillMetric } from '@/lib/utils';
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import { getMetric } from '@/query/metric';
 import ErrorScreen from '@/components/common/error-screen';
@@ -11,21 +12,17 @@ type Props = {
 };
 
 export default async function ClientChart({ start, end, dates }: Props) {
-  const [mod, web, server] = await Promise.all([
-    serverApi((axios) => getMetric(axios, start, end, 'DAILY_MOD_USER')),
-    serverApi((axios) => getMetric(axios, start, end, 'DAILY_WEB_USER')),
-    serverApi((axios) => getMetric(axios, start, end, 'DAILY_SERVER_USER')),
-  ]);
+  const [mod, web, server] = await Promise.all([serverApi((axios) => getMetric(axios, start, end, 'DAILY_MOD_USER')), serverApi((axios) => getMetric(axios, start, end, 'DAILY_WEB_USER')), serverApi((axios) => getMetric(axios, start, end, 'DAILY_SERVER_USER'))]);
 
-  if ('error' in mod) {
+  if (isError(mod)) {
     return <ErrorScreen error={mod} />;
   }
 
-  if ('error' in web) {
+  if (isError(web)) {
     return <ErrorScreen error={web} />;
   }
 
-  if ('error' in server) {
+  if (isError(server)) {
     return <ErrorScreen error={server} />;
   }
 
@@ -37,12 +34,5 @@ export default async function ClientChart({ start, end, dates }: Props) {
     value: m.value + fixedWeb[index].value + fixedServer[index].value,
   }));
 
-  return (
-    <ClientChartClient
-      mod={fixedMod}
-      web={fixedWeb}
-      server={fixedServer}
-      total={total}
-    />
-  );
+  return <ClientChartClient mod={fixedMod} web={fixedWeb} server={fixedServer} total={total} />;
 }

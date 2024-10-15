@@ -1,3 +1,4 @@
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import RoleCard from '@/app/[locale]/(admin)/admin/users/role-card';
 import ErrorScreen from '@/components/common/error-screen';
@@ -6,7 +7,7 @@ import { getRoles } from '@/query/role';
 export async function RoleList() {
   const result = await serverApi((axios) => getRoles(axios));
 
-  if ('error' in result) {
+  if (isError(result)) {
     return <ErrorScreen error={result} />;
   }
 

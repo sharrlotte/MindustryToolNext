@@ -1,6 +1,7 @@
 import { fillMetric } from '@/lib/utils';
 import LoginChartClient from '@/components/metric/login-chart.client';
 import { getMetric } from '@/query/metric';
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 
@@ -11,16 +12,13 @@ type Props = {
 };
 
 export default async function LoginChart({ start, dates, end }: Props) {
-  const [logged, daily] = await Promise.all([
-    serverApi((axios) => getMetric(axios, start, end, 'DAILY_LIKE')),
-    serverApi((axios) => getMetric(axios, start, end, 'LOGGED_DAILY_USER')),
-  ]);
+  const [logged, daily] = await Promise.all([serverApi((axios) => getMetric(axios, start, end, 'DAILY_LIKE')), serverApi((axios) => getMetric(axios, start, end, 'LOGGED_DAILY_USER'))]);
 
-  if ('error' in logged) {
+  if (isError(logged)) {
     return <ErrorScreen error={logged} />;
   }
 
-  if ('error' in daily) {
+  if (isError(daily)) {
     return <ErrorScreen error={daily} />;
   }
 
@@ -31,11 +29,5 @@ export default async function LoginChart({ start, dates, end }: Props) {
     value: m.value + fixedDaily[index].value,
   }));
 
-  return (
-    <LoginChartClient
-      loggedDaily={fixedLoggedDaily}
-      daily={fixedDaily}
-      total={total}
-    />
-  );
+  return <LoginChartClient loggedDaily={fixedLoggedDaily} daily={fixedDaily} total={total} />;
 }

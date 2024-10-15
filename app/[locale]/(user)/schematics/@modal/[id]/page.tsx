@@ -4,6 +4,7 @@ import React from 'react';
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import env from '@/constant/env';
 import { getSchematic } from '@/query/schematic';
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const schematic = await serverApi((axios) => getSchematic(axios, { id }));
 
-  if ('error' in schematic) {
+  if (isError(schematic)) {
     throw schematic;
   }
 
@@ -34,7 +35,7 @@ export default async function Page({ params }: Props) {
   const { id } = await params;
   const schematic = await serverApi((axios) => getSchematic(axios, { id }));
 
-  if ('error' in schematic) {
+  if (isError(schematic)) {
     return <ErrorScreen error={schematic} />;
   }
 

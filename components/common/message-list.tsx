@@ -1,11 +1,4 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
@@ -31,26 +24,10 @@ type MessageListProps = {
   room: string;
   showNotification?: boolean;
   container: () => HTMLElement | null;
-  children: (
-    data: MessageGroup,
-    index?: number,
-    endIndex?: number,
-  ) => ReactNode;
+  children: (data: MessageGroup, index?: number, endIndex?: number) => ReactNode;
 };
 
-export default function MessageList({
-  className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center',
-  queryKey,
-  params,
-  loader,
-  noResult = <NoResult className="flex w-full items-center justify-center" />,
-  end,
-  threshold = 500,
-  room,
-  showNotification = true,
-  container,
-  children,
-}: MessageListProps) {
+export default function MessageList({ className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center', queryKey, params, loader, noResult = <NoResult className="flex w-full items-center justify-center" />, end, threshold = 500, room, showNotification = true, container, children }: MessageListProps) {
   const currentContainer = container();
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
@@ -79,8 +56,7 @@ export default function MessageList({
 
   lastHeightRef.current = clientHeight;
 
-  const { data, isFetching, error, isError, hasNextPage, fetchNextPage } =
-    useMessageQuery(room, params, queryKey);
+  const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, queryKey);
 
   useEffect(() => {
     setShouldCheck(isFocused);
@@ -88,11 +64,7 @@ export default function MessageList({
 
   const { postNotification } = useNotification();
 
-  const pageMapper = useCallback(
-    (item: MessageGroup, index: number, array: MessageGroup[]) =>
-      children(item, index, array.length - params.size),
-    [children, params.size],
-  );
+  const pageMapper = useCallback((item: MessageGroup, index: number, array: MessageGroup[]) => children(item, index, array.length - params.size), [children, params.size]);
 
   const pages = useMemo(() => {
     if (!data) {
@@ -119,14 +91,7 @@ export default function MessageList({
         handleEndReach();
       }
     }
-  }, [
-    currentContainer,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    shouldCheck,
-    threshold,
-  ]);
+  }, [currentContainer, fetchNextPage, hasNextPage, isFetching, shouldCheck, threshold]);
 
   useEffect(() => {
     if (currentContainer && isEndReached) {
@@ -141,9 +106,7 @@ export default function MessageList({
     socket
       .onRoom(room) //
       .onMessage('MESSAGE', (message) => {
-        queryClient.setQueriesData<
-          InfiniteData<Message[], unknown> | undefined
-        >({ queryKey, exact: false }, (query) => {
+        queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
           if (showNotification) {
             postNotification(message);
           }
@@ -169,17 +132,7 @@ export default function MessageList({
           });
         }
       });
-  }, [
-    room,
-    queryKey,
-    list,
-    socket,
-    queryClient,
-    isEndReached,
-    currentContainer,
-    showNotification,
-    postNotification,
-  ]);
+  }, [room, queryKey, list, socket, queryClient, isEndReached, currentContainer, showNotification, postNotification]);
 
   useEffect(() => {
     function onScroll() {
@@ -205,20 +158,10 @@ export default function MessageList({
   }, [checkIfNeedFetchMore, currentContainer, list, scrollTopRef]);
 
   if (!loader) {
-    loader = (
-      <LoadingSpinner
-        key="loading"
-        className="col-span-full flex h-full w-full items-center justify-center"
-      />
-    );
+    loader = <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" />;
   }
 
-  end = end ?? (
-    <Tran
-      className="col-span-full flex w-full items-center justify-center"
-      text="end-of-page"
-    />
-  );
+  end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
 
   if (isError || error) {
     return (
@@ -229,16 +172,7 @@ export default function MessageList({
   }
 
   if (!data || !currentContainer) {
-    return (
-      <div
-        className={cn(
-          'col-span-full flex h-full w-full items-center justify-center',
-          className,
-        )}
-      >
-        {loader}
-      </div>
-    );
+    return <div className={cn('col-span-full flex h-full w-full items-center justify-center', className)}>{loader}</div>;
   }
 
   if (pages.length === 0) {
@@ -246,7 +180,7 @@ export default function MessageList({
   }
 
   return (
-    <div className="h-full" ref={(ref) => setList(ref)}>
+    <div className="h-fit" ref={(ref) => setList(ref)}>
       {!hasNextPage && end}
       {isFetching && loader}
       {pages}

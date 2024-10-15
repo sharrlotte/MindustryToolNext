@@ -1,3 +1,4 @@
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import InternalLink from '@/components/common/internal-link';
@@ -17,20 +18,13 @@ const skeleton = Array(20)
   .fill(1)
   .map((_, index) => <PreviewSkeleton key={index} />);
 
-export async function HomeSchematicPreview({
-  queryParam,
-}: {
-  queryParam: PaginationSearchQuery;
-}) {
+export async function HomeSchematicPreview({ queryParam }: { queryParam: PaginationSearchQuery }) {
   return (
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
         <_SchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
-          <InternalLink
-            href="/schematics"
-            className="cursor-pointer px-2 font-light"
-          >
+          <InternalLink href="/schematics" className="cursor-pointer px-2 font-light">
             <Preview className="flex items-center justify-center">
               <Tran text="home.preview-more" />
             </Preview>
@@ -40,20 +34,13 @@ export async function HomeSchematicPreview({
     </ul>
   );
 }
-export async function HomeMapPreview({
-  queryParam,
-}: {
-  queryParam: PaginationSearchQuery;
-}) {
+export async function HomeMapPreview({ queryParam }: { queryParam: PaginationSearchQuery }) {
   return (
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
         <_HomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
-          <InternalLink
-            href="/maps"
-            className="cursor-pointer px-2 text-center font-light"
-          >
+          <InternalLink href="/maps" className="cursor-pointer px-2 text-center font-light">
             <Preview className="flex items-center justify-center">
               <Tran text="home.preview-more" />
             </Preview>
@@ -64,14 +51,10 @@ export async function HomeMapPreview({
   );
 }
 
-async function _SchematicRowView({
-  queryParam,
-}: {
-  queryParam: PaginationSearchQuery;
-}) {
+async function _SchematicRowView({ queryParam }: { queryParam: PaginationSearchQuery }) {
   const result = await serverApi((axios) => getSchematics(axios, queryParam));
 
-  if ('error' in result) {
+  if (isError(result)) {
     return <ErrorScreen error={result} />;
   }
 
@@ -82,14 +65,10 @@ async function _SchematicRowView({
   ));
 }
 
-async function _HomeMapPreview({
-  queryParam,
-}: {
-  queryParam: PaginationSearchQuery;
-}) {
+async function _HomeMapPreview({ queryParam }: { queryParam: PaginationSearchQuery }) {
   const result = await serverApi((axios) => getMaps(axios, queryParam));
 
-  if ('error' in result) {
+  if (isError(result)) {
     return <ErrorScreen error={result} />;
   }
 
@@ -133,33 +112,23 @@ async function _InformationGroup() {
     }),
   );
 
-  const [shar, admins, contributors] = await Promise.all([
-    getShar,
-    getAdmins,
-    getContributor,
-  ]);
+  const [shar, admins, contributors] = await Promise.all([getShar, getAdmins, getContributor]);
 
-  if ('error' in shar) {
+  if (isError(shar)) {
     return <ErrorScreen error={shar} />;
   }
 
-  if ('error' in admins) {
+  if (isError(admins)) {
     return <ErrorScreen error={admins} />;
   }
 
-  if ('error' in contributors) {
+  if (isError(contributors)) {
     return <ErrorScreen error={contributors} />;
   }
 
-  const onlyAdmins = admins.filter(
-    (user) => !shar.map((u) => u.id).includes(user.id),
-  );
+  const onlyAdmins = admins.filter((user) => !shar.map((u) => u.id).includes(user.id));
 
-  const onlyContributors = contributors.filter(
-    (user) =>
-      !shar.map((u) => u.id).includes(user.id) &&
-      !admins.map((u) => u.id).includes(user.id),
-  );
+  const onlyContributors = contributors.filter((user) => !shar.map((u) => u.id).includes(user.id) && !admins.map((u) => u.id).includes(user.id));
 
   return (
     <ul className="grid grid-cols-1 items-start justify-start gap-y-8 md:grid-cols-2">

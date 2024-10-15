@@ -1,6 +1,7 @@
 import Tran from '@/components/common/tran';
 import { Log } from '@/types/response/Log';
 import MetricWrapper from '@/components/metric/metric-wrapper';
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import { getLogs } from '@/query/log';
 import ErrorScreen from '@/components/common/error-screen';
@@ -20,7 +21,7 @@ type LoginLogCardProps = {
 async function LoginTable() {
   const data = await serverApi((axios) => getLogs(axios, { page: 0, collection: 'USER_LOGIN' }));
 
-  if ('error' in data) {
+  if (isError(data)) {
     return <ErrorScreen error={data} />;
   }
 

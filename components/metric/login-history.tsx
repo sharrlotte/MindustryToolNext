@@ -1,3 +1,4 @@
+import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
@@ -16,7 +17,7 @@ export default function LoginHistory() {
 async function LoginTable() {
   const data = await serverApi((axios) => getLoginHistories(axios, { page: 0, size: 20 }));
 
-  if ('error' in data) {
+  if (isError(data)) {
     return <ErrorScreen error={data} />;
   }
 

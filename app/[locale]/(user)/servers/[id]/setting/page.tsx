@@ -4,18 +4,14 @@ import { getInternalServer } from '@/query/server';
 import ServerUpdateForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-form';
 import ServerUpdatePortForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-port-form';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import Tran from '@/components/common/tran';
 import { getSession, serverApi } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import { Hidden } from '@/components/common/hidden';
 import ErrorScreen from '@/components/common/error-screen';
+import { isError } from '@/lib/utils';
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -24,21 +20,15 @@ type PageProps = {
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
 
-  const [server, session] = await Promise.all([
-    serverApi((axios) => getInternalServer(axios, { id })),
-    getSession(),
-  ]);
+  const [server, session] = await Promise.all([serverApi((axios) => getInternalServer(axios, { id })), getSession()]);
 
-  if ('error' in server) {
+  if (isError(server)) {
     return <ErrorScreen error={server} />;
   }
 
   return (
     <div className="flex h-full flex-col gap-2 p-2">
-      <ProtectedElement
-        session={session}
-        filter={{ authority: 'EDIT_ADMIN_SERVER' }}
-      >
+      <ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
         <Dialog>
           <div className="flex bg-card p-2">
             <DialogTrigger asChild>
