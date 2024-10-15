@@ -59,7 +59,7 @@ function SecureDownloadButton({ className, fileName, href, children }: SecureDow
           </svg>
         </div>
       ) : (
-        <div onClick={() => mutate()}>{children || <ArrowDownTrayIcon className="size-5" />}</div>
+        <div onClick={() => mutate()}>{children || <ArrowDownToLine className="size-5" />}</div>
       )}
     </div>
   );

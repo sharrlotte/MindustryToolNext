@@ -30,6 +30,7 @@ import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/c
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
+import { XIcon } from '@/components/common/icons';
 
 const defaultState = {
   collection: 'LIVE',
@@ -257,7 +258,7 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
           <div className="flex gap-2">
             <Input placeholder="Content" value={content} onChange={(event) => setFilter({ content: event.currentTarget.value })} />
             <Button title="Remove" variant="outline" disabled={!content} onClick={() => setFilter({ content: '' })}>
-              <XMarkIcon className="size-5" />
+              <XIcon />
             </Button>
           </div>
         </div>
@@ -266,7 +267,7 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
           <div className="flex gap-2">
             <Input placeholder="IP" value={ip} onChange={(event) => setFilter({ ip: event.currentTarget.value })} />
             <Button title="Remove" variant="outline" disabled={!ip} onClick={() => setFilter({ ip: '' })}>
-              <XMarkIcon className="size-5" />
+              <XIcon />
             </Button>
           </div>
         </div>
@@ -275,7 +276,7 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
           <div className="flex gap-2">
             <Input placeholder="User Id" value={userId} onChange={(event) => setFilter({ userId: event.currentTarget.value })} />
             <Button title="Remove" variant="outline" disabled={!userId} onClick={() => setFilter({ userId: '' })}>
-              <XMarkIcon className="size-5" />
+              <XIcon />
             </Button>
           </div>
         </div>
@@ -284,7 +285,7 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
           <div className="flex gap-2">
             <Input placeholder="Request url" value={url} onChange={(event) => setFilter({ url: event.currentTarget.value })} />
             <Button title="Remove" variant="outline" disabled={!url} onClick={() => setFilter({ url: '' })}>
-              <XMarkIcon className="size-5" />
+              <XIcon />
             </Button>
           </div>
         </div>
