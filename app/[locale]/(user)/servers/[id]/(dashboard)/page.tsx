@@ -15,7 +15,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import ErrorScreen from '@/components/common/error-screen';
 import ProtectedElement from '@/layout/protected-element';
-import { isError } from '@/lib/utils';
+import { cn, hasAccess, isError } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 
 const RamUsageChart = dynamic(() => import('@/components/metric/ram-usage-chart'));
@@ -41,10 +41,25 @@ export default async function Page({ params }: Props) {
 
   const { started, name, description, port, mode, ramUsage, totalRam, players, mapName, mapImage, alive, userId } = server;
 
+  const showPlayer = hasAccess(session, {
+    all: [
+      {
+        any: [
+          {
+            authorId: userId,
+          },
+          { authority: 'VIEW_ADMIN_SERVER' },
+        ],
+      },
+      started,
+      false,
+    ],
+  });
+
   return (
     <div className="flex flex-col gap-2 overflow-y-auto">
       <div className="h-full">
-        <div className="grid min-h-full w-full grid-cols-1 grid-rows-[auto_auto_auto_60px] flex-col gap-2 md:grid-cols-[auto_300px] md:grid-rows-[auto_auto_60px]">
+        <div className={cn('grid min-h-full w-full grid-cols-1 grid-rows-[auto_auto_auto_60px] flex-col gap-2 md:grid-cols-[auto_300px] md:grid-rows-[auto_auto_60px]', { 'grid-rows-[auto_auto_60px] md:grid-cols-1': !showPlayer })}>
           <div className="col-span-1 flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card p-4">
             <div className="flex items-center gap-2">
               <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
@@ -98,27 +113,11 @@ export default async function Page({ params }: Props) {
               {mapImage && <RawImage className="flex w-full rounded-sm" data={mapImage} />}
             </div>
           </div>
-          <div className="col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3">
+          <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
             <ReloadServerButton id={id} />
             {started ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
           </div>
-          <ProtectedElement
-            session={session}
-            filter={{
-              all: [
-                {
-                  any: [
-                    {
-                      authorId: userId,
-                    },
-                    { authority: 'VIEW_ADMIN_SERVER' },
-                  ],
-                },
-                started,
-                false,
-              ],
-            }}
-          >
+          <ProtectedElement session={session} filter={showPlayer}>
             <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">
               <div className="flex flex-col gap-2">
                 <h3 className="p-4 text-xl">
