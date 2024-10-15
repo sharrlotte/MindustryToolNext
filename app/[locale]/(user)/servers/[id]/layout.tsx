@@ -1,10 +1,6 @@
-import { LayoutDashboardIcon, Undo2 } from 'lucide-react';
+import { LayoutDashboardIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
-
 import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
-import SidebarToggle from '@/app/[locale]/(user)/servers/[id]/sidebar-toggle';
-import Divider from '@/components/ui/divider';
-
 import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import Tran from '@/components/common/tran';

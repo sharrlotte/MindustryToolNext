@@ -3,21 +3,14 @@ import React from 'react';
 
 import MapDetailCard from '@/components/map/map-detail-card';
 import env from '@/constant/env';
-import { getMap, getMaps } from '@/query/map';
+import { getMap } from '@/query/map';
 import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
-import axiosInstance from '@/query/config/config';
 
 type Props = {
   params: Promise<{ id: string }>;
 };
-
-export async function generateStaticParams() {
-  const maps = await getMaps(axiosInstance, { page: 0, size: 100 });
-
-  return maps.map(({ id }) => id);
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;

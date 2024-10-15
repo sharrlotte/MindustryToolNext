@@ -4,7 +4,6 @@ import ReloadServerButton from '@/app/[locale]/(user)/servers/[id]/reload-server
 import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-server-button';
 import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-button';
 import ColorText from '@/components/common/color-text';
-import RamUsageChart from '@/components/metric/ram-usage-chart';
 import RawImage from '@/components/common/raw-image';
 import { getInternalServer, getServerPlayers } from '@/query/server';
 import Tran from '@/components/common/tran';
@@ -20,6 +19,9 @@ import './style.css';
 import ErrorScreen from '@/components/common/error-screen';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/utils';
+import dynamic from 'next/dynamic';
+
+const RamUsageChart = dynamic(() => import('@/components/metric/ram-usage-chart'));
 
 export const experimental_ppr = true;
 

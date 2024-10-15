@@ -5,7 +5,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
 import { useSession } from '@/context/session-context.client';
-import { useI18n } from '@/i18n/client';
 
 export function UserDisplay() {
   return (
@@ -17,7 +16,6 @@ export function UserDisplay() {
 }
 export function Internal() {
   const { session, state } = useSession();
-  const t = useI18n();
 
   if (state === 'authenticated' && session) {
     return (
