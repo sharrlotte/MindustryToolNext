@@ -13,11 +13,11 @@ export default function useQueryState(initialState: Record<string, string>) {
 
   useEffect(() => {
     const usedParams: Record<string, string> = {};
-    params.keys().forEach((key) => {
+    for (const key of params.keys()) {
       if (Object.keys(initialState).includes(key)) {
         usedParams[key] = params.get(key) as string;
       }
-    });
+    }
 
     const newState = { ...initialState, ...usedParams };
 
@@ -28,6 +28,7 @@ export default function useQueryState(initialState: Record<string, string>) {
 
       return prev;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params, setState]);
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export default function useQueryState(initialState: Record<string, string>) {
     }
 
     router.replace(`${pathname}?${queryParams.toString()}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, router]);
 
   const setter = useCallback(
@@ -69,6 +71,7 @@ export default function useQueryState(initialState: Record<string, string>) {
 
       router.replace(`${pathname}?${queryParams.toString()}`);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setState, state, params, initialState, router],
   );
 

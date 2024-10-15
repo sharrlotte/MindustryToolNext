@@ -11,7 +11,7 @@ export default async function Page() {
   }
 
   return (
-    <div className="h-full overflow-y-auto p-4">
+    <div className="h-full overflow-y-auto p-2">
       <UpdateThumbnail id={session.id} />
     </div>
   );

@@ -7,24 +7,14 @@ import InfinitePage from '@/components/common/infinite-page';
 import DocumentCard from '@/components/document/document-card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
-import {
-  CreateDocumentRequest,
-  CreateDocumentSchema,
-} from '@/types/request/CreateDocumentRequest';
+import { CreateDocumentRequest, CreateDocumentSchema } from '@/types/request/CreateDocumentRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -36,18 +26,9 @@ export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
-    <div className="flex h-full flex-col justify-between gap-4 p-4">
-      <div
-        className="relative flex h-full flex-col overflow-y-auto"
-        ref={(ref) => setContainer(ref)}
-      >
-        <InfinitePage
-          className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3"
-          queryKey={['documents']}
-          getFunc={getDocuments}
-          params={params}
-          container={() => container}
-        >
+    <div className="flex h-full flex-col justify-between gap-2 p-2">
+      <div className="relative flex h-full flex-col overflow-y-auto" ref={(ref) => setContainer(ref)}>
+        <InfinitePage className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3" queryKey={['documents']} getFunc={getDocuments} params={params} container={() => container}>
           {(data) => <DocumentCard key={data.id} document={data} />}
         </InfinitePage>
       </div>
@@ -107,10 +88,7 @@ function AddDocumentButton() {
       <DialogContent>
         <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
           <Form {...form}>
-            <form
-              className="flex flex-1 flex-col justify-between space-y-2"
-              onSubmit={form.handleSubmit(handleSubmit)}
-            >
+            <form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
               <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
                 <FormField
                   control={form.control}
@@ -121,11 +99,7 @@ function AddDocumentButton() {
                         <Tran text="document.description" />
                       </FormLabel>
                       <FormControl>
-                        <Textarea
-                          className="min-h-60"
-                          placeholder="Some cool stuff"
-                          {...field}
-                        />
+                        <Textarea className="min-h-60" placeholder="Some cool stuff" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -133,13 +107,7 @@ function AddDocumentButton() {
                 />
               </div>
               <div className="flex flex-col items-end justify-center rounded-md p-2">
-                <Button
-                  className="w-fit"
-                  variant="primary"
-                  type="submit"
-                  title={t('upload')}
-                  disabled={isPending}
-                >
+                <Button className="w-fit" variant="primary" type="submit" title={t('upload')} disabled={isPending}>
                   {t('upload')}
                 </Button>
               </div>

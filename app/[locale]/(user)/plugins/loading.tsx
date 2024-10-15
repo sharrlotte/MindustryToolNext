@@ -5,7 +5,7 @@ import React from 'react';
 
 export default function Loading() {
   return (
-    <div className="flex h-full w-full flex-col gap-4 p-4">
+    <div className="flex h-full w-full flex-col gap-2 p-2">
       <NameTagSearchSkeleton />
       <PreviewContainerSkeleton>
         {new Array(20).fill(1).map((_, index) => (

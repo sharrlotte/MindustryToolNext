@@ -16,7 +16,7 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 export function Detail({ className, children }: DetailProps) {
   return (
-    <div className="absolute inset-0 w-full overflow-y-auto bg-background p-4">
+    <div className="absolute inset-0 w-full overflow-y-auto bg-background p-2">
       <div
         className={cn(
           'relative flex min-h-full w-full flex-col justify-between gap-2 overflow-y-auto lg:items-stretch',
