@@ -3,14 +3,12 @@
 import { usePathname } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
-import { useI18n } from '@/i18n/client';
 import Tran from '@/components/common/tran';
 import { useEffect } from 'react';
 import { reportError } from '@/query/api';
 import useClientApi from '@/hooks/use-client';
 
 export default function ErrorScreen({ error }: { error: (Error & { digest?: string }) | { error: { message: string } } }) {
-  const t = useI18n();
   const path = usePathname();
   const axios = useClientApi();
 
@@ -27,7 +25,7 @@ export default function ErrorScreen({ error }: { error: (Error & { digest?: stri
         <a className="h-9 flex-1 text-nowrap rounded-md bg-secondary px-2 py-1.5" href="https://discord.gg/DCX5yrRUyp" target="_blank" rel="noopener noreferrer">
           <Tran text="report-error-at" />
         </a>
-        <Button className="flex-1" variant="primary" title={t('refresh')} onClick={() => window.location.reload()}>
+        <Button className="flex-1" variant="primary" onClick={() => window.location.reload()}>
           <Tran text="refresh" />
         </Button>
       </div>

@@ -7,7 +7,7 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import ProtectedElement from '@/layout/protected-element';
@@ -90,7 +90,7 @@ function ChatInput() {
         <PaperclipIcon />
         <SmileIcon />
       </div>
-      <Button className="h-full" variant='outline' type="submit" title={t('send')} disabled={state !== 'connected' || !message}>
+      <Button className="h-full" variant="outline" type="submit" title={t('send')} disabled={state !== 'connected' || !message}>
         <SendIcon />
       </Button>
     </form>

@@ -1,6 +1,7 @@
 import { getSession } from '@/action/action';
 import UpdateThumbnail from '@/app/[locale]/(user)/users/@modal/[id]/setting/update-thumbnail';
 import ErrorScreen from '@/components/common/error-screen';
+import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/utils';
 import React from 'react';
 
@@ -12,8 +13,10 @@ export default async function Page() {
   }
 
   return (
-    <div className="h-full overflow-y-auto p-2">
-      <UpdateThumbnail id={session.id} />
-    </div>
+    <ProtectedElement session={session} filter={true}>
+      <div className="h-full overflow-y-auto p-2">
+        <UpdateThumbnail id={session.id} />
+      </div>
+    </ProtectedElement>
   );
 }

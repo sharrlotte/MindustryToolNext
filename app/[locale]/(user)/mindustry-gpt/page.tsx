@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import env from '@/constant/env';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import useMindustryGpt from '@/hooks/use-mindustry-gpt';
 import ProtectedElement from '@/layout/protected-element';
 import { isReachedEnd } from '@/lib/utils';
@@ -57,16 +57,12 @@ export default function Page() {
     <div className="grid h-full grid-rows-[1fr,auto,auto] gap-2 overflow-hidden p-2">
       <div className="flex h-full flex-col space-y-4 overflow-y-auto p-2">
         {data.length === 0 && !isLoading ? (
-          <div className="flex h-full items-center justify-center text-center font-bold">
-            {t('chat.message')}
-          </div>
+          <div className="flex h-full items-center justify-center text-center font-bold">{t('chat.message')}</div>
         ) : (
           data.map(({ text, prompt }, index) => (
             <Fragment key={index}>
               <div className="flex justify-end">
-                <span className="rounded-lg bg-card px-4 py-2 shadow-lg">
-                  {prompt}
-                </span>
+                <span className="rounded-lg bg-card px-4 py-2 shadow-lg">{prompt}</span>
               </div>
               <div className="space-y-2 rounded-lg border p-4 shadow-lg">
                 {user && <UserAvatar user={user} />}
@@ -76,9 +72,7 @@ export default function Page() {
           ))
         )}
 
-        {isLoading && (
-          <Skeleton className="h-60 min-h-60 w-full rounded-lg"></Skeleton>
-        )}
+        {isLoading && <Skeleton className="h-60 min-h-60 w-full rounded-lg"></Skeleton>}
         <div id="bottom"></div>
       </div>
       <ProtectedElement
@@ -104,12 +98,7 @@ export default function Page() {
               onInput={(event) => setPrompt(event.target.textContent ?? '')}
               onKeyDown={handleKeyPress}
             />
-            <Button
-              title={t('submit')}
-              variant="primary"
-              disabled={isPending}
-              onClick={handleSubmit}
-            >
+            <Button title={t('submit')} variant="primary" disabled={isPending} onClick={handleSubmit}>
               <SendIcon className="h-5 w-5" />
             </Button>
           </div>

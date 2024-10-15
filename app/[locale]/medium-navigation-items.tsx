@@ -1,10 +1,9 @@
 import React, { ReactNode, useCallback, useState } from 'react';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-
 import InternalLink from '@/components/common/internal-link';
 import { Path, PathGroup } from '@/app/routes';
 import { useNavBar } from '@/zustand/nav-bar-store';

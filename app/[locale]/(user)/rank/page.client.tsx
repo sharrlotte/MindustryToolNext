@@ -9,7 +9,7 @@ import Tran from '@/components/common/tran';
 import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserCard from '@/components/user/user-card';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchPageParams from '@/hooks/use-search-page-params';

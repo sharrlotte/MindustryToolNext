@@ -3,4 +3,5 @@ export type InternalServerPlugin = {
   pluginId: string;
   name: string;
   isVerified: boolean;
+  description: string;
 };

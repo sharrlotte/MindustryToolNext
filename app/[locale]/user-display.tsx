@@ -4,7 +4,7 @@ import LogoutButton from '@/components/button/logout-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import { useI18n } from '@/i18n/client';
 
 export function UserDisplay() {
@@ -35,9 +35,7 @@ export function Internal() {
   }
 
   if (state === 'loading') {
-    return (
-      <Skeleton className="flex h-16 max-h-16 flex-1 items-center justify-between rounded-sm bg-card p-1" />
-    );
+    return <Skeleton className="flex h-16 max-h-16 flex-1 items-center justify-between rounded-sm bg-card p-1" />;
   }
 
   return <LoginButton className="w-full gap-1">{t('login')}</LoginButton>;

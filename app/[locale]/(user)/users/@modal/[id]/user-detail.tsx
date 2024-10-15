@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { User } from '@/types/response/User';
 import Image from 'next/image';
@@ -32,20 +32,11 @@ export default function UserDetail({ user }: Props) {
   const style = thumbnail ? { backgroundImage: thumbnail } : undefined;
 
   return (
-    <div
-      className="relative flex flex-col gap-2 rounded-md bg-card bg-cover bg-center p-2"
-      style={style}
-    >
+    <div className="relative flex flex-col gap-2 rounded-md bg-card bg-cover bg-center p-2" style={style}>
       {thumbnail && (
         <Dialog>
           <DialogTrigger>
-            <Image
-              className="max-h-[80vh] w-full object-cover"
-              src={`${thumbnail}`}
-              width={1920}
-              height={1080}
-              alt={name}
-            />
+            <Image className="max-h-[80vh] w-full object-cover" src={`${thumbnail}`} width={1920} height={1080} alt={name} />
           </DialogTrigger>
           <DialogContent className="max-h-full max-w-full overflow-y-auto">
             <Image src={`${thumbnail}`} width={1920} height={1080} alt={name} />
@@ -68,10 +59,7 @@ export default function UserDetail({ user }: Props) {
           <span className="font-bold">LV.{level}</span>
           <div className="flex w-full items-center gap-1 text-xs">
             <div className="h-3 max-h-3 w-full overflow-hidden rounded-full border">
-              <div
-                className="h-full w-full rounded-full bg-success"
-                style={{ width: `${progress}%` }}
-              />
+              <div className="h-full w-full rounded-full bg-success" style={{ width: `${progress}%` }} />
             </div>
             {currentExp}/{levelUpExp}
           </div>

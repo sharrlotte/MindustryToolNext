@@ -1,15 +1,9 @@
 'use client';
 
 import { revalidate } from '@/action/action';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
@@ -30,8 +24,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
   const { session } = useSession();
   const axios = useClientApi();
   const [open, setOpen] = useState(false);
-  const [selectedAuthorities, setSelectedAuthorities] =
-    useState<Authority[]>(authorities);
+  const [selectedAuthorities, setSelectedAuthorities] = useState<Authority[]>(authorities);
 
   const [isChanged, setIsChanged] = useState(false);
   const { invalidateByKey } = useQueriesData();
@@ -43,18 +36,9 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
     placeholderData: [],
   });
 
-  const filteredAuthority = useMemo(
-    () =>
-      data?.filter((a) =>
-        a.authorityGroup === 'Shar'
-          ? session?.roles.map((r) => r.name).includes('SHAR')
-          : true,
-      ) || [],
-    [data, session?.roles],
-  );
+  const filteredAuthority = useMemo(() => data?.filter((a) => (a.authorityGroup === 'Shar' ? session?.roles.map((r) => r.name).includes('SHAR') : true)) || [], [data, session?.roles]);
   const { mutate } = useMutation({
-    mutationFn: async (authorityIds: string[]) =>
-      changeAuthorities(axios, { roleId, authorityIds }),
+    mutationFn: async (authorityIds: string[]) => changeAuthorities(axios, { roleId, authorityIds }),
     onSuccess: () => {
       invalidateByKey(['roles']);
       revalidate({ path: '/users' });
@@ -71,9 +55,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
   });
 
   function handleAuthorityChange(value: string[]) {
-    const authority = value
-      .map((v) => filteredAuthority?.find((r) => r.name === v))
-      .filter((r) => r) as any as Authority[];
+    const authority = value.map((v) => filteredAuthority?.find((r) => r.name === v)).filter((r) => r) as any as Authority[];
 
     setSelectedAuthorities(authority);
     setIsChanged(true);
@@ -86,16 +68,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
     setOpen(value);
   }
 
-  const groups = useMemo(
-    () =>
-      groupBy(
-        filteredAuthority?.sort((a, b) =>
-          a.authorityGroup.localeCompare(b.authorityGroup),
-        ) || [],
-        (v) => v.authorityGroup,
-      ),
-    [filteredAuthority],
-  );
+  const groups = useMemo(() => groupBy(filteredAuthority?.sort((a, b) => a.authorityGroup.localeCompare(b.authorityGroup)) || [], (v) => v.authorityGroup), [filteredAuthority]);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -115,33 +88,18 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
       <DialogContent className="h-full overflow-y-auto p-6">
         <DialogTitle>Change authority for {name}</DialogTitle>
         <DialogDescription />
-        <ToggleGroup
-          className="flex flex-col items-start justify-start gap-4"
-          type={'multiple'}
-          onValueChange={handleAuthorityChange}
-          defaultValue={authorities.map((r) => r.name)}
-        >
+        <ToggleGroup className="flex flex-col items-start justify-start gap-4" type={'multiple'} onValueChange={handleAuthorityChange} defaultValue={authorities.map((r) => r.name)}>
           {groups.map(({ key, value }) => (
             <Fragment key={key}>
               <span className="font-bold">{key}</span>
               {value.map(({ id, name, description }) => (
-                <ToggleGroupItem
-                  key={id}
-                  className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent"
-                  value={name}
-                >
+                <ToggleGroupItem key={id} className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent" value={name}>
                   <div className="w-full space-y-1">
                     <div className="flex w-full justify-between gap-1">
                       <span className="text-sm lowercase">{name}</span>
-                      {selectedAuthorities.map((r) => r.id).includes(id) ? (
-                        <CheckSquare className="size-5" />
-                      ) : (
-                        <Square className="size-5" />
-                      )}
+                      {selectedAuthorities.map((r) => r.id).includes(id) ? <CheckSquare className="size-5" /> : <Square className="size-5" />}
                     </div>
-                    <p className="text-start text-xs lowercase">
-                      {description}
-                    </p>
+                    <p className="text-start text-xs lowercase">{description}</p>
                   </div>
                 </ToggleGroupItem>
               ))}

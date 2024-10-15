@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useEffect, useLayoutEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 import env from '@/constant/env';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
@@ -37,7 +37,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const [socket, setSocket] = useState<SocketClient>();
   const [state, setState] = useState<SocketState>('disconnected');
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const instance = new SocketClient(`${env.url.socket}/socket`);
 
     instance.onDisconnect(() => setState('disconnected'));

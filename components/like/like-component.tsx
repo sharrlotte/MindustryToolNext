@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 
 import { LikeAction } from '@/constant/enum';
 import { FakeLike, LikeContext } from '@/context/like-context';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { Like } from '@/types/response/Like';
@@ -22,8 +22,7 @@ type State = {
 
 const useCache = create<State>((set) => ({
   cache: {},
-  setCache: (id: string, data: Like & { count: number }) =>
-    set((prev) => ({ cache: { ...prev.cache, [id]: data } })),
+  setCache: (id: string, data: Like & { count: number }) => set((prev) => ({ cache: { ...prev.cache, [id]: data } })),
 }));
 
 type LikeComponentProps = {
@@ -33,12 +32,7 @@ type LikeComponentProps = {
   itemId: string;
 };
 
-function LikeComponent({
-  initialLikeCount = 0,
-  initialLikeData,
-  children,
-  itemId,
-}: LikeComponentProps) {
+function LikeComponent({ initialLikeCount = 0, initialLikeData, children, itemId }: LikeComponentProps) {
   const { session } = useSession();
   const axios = useClientApi();
   const { cache, setCache } = useCache();

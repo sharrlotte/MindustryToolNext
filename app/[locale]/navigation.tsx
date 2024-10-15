@@ -7,7 +7,7 @@ import { hasAccess, max } from '@/lib/utils';
 
 import { useMediaQuery } from 'usehooks-ts';
 import { MediumScreenNavigationBar } from '@/app/[locale]/medium-navigation-items';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import { usePathname } from 'next/navigation';
 import { groups, Path, SubPath } from '@/app/routes';
 

@@ -14,7 +14,7 @@ import LikeCount from '@/components/like/like-count';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
