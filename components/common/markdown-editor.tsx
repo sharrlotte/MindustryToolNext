@@ -1,43 +1,12 @@
 import Markdown from '@/components/common/markdown';
-import {
-  BoldIcon,
-  CheckListIcon,
-  CodeBlockIcon,
-  EditPanelIcon,
-  FullScreenIcon,
-  HRIcon,
-  ImageIcon,
-  ItalicIcon,
-  LinkChainIcon,
-  ListIcon,
-  LivePanelIcon,
-  OrderedListIcon,
-  PreviewPanelIcon,
-  QuoteIcon,
-  StrikethroughIcon,
-  TitleIcon,
-} from '@/components/common/icons';
+import { BoldIcon, CheckListIcon, CodeBlockIcon, EditPanelIcon, FullScreenIcon, HRIcon, ImageIcon, ItalicIcon, LinkChainIcon, ListIcon, LivePanelIcon, OrderedListIcon, PreviewPanelIcon, QuoteIcon, StrikethroughIcon, TitleIcon, XIcon } from '@/components/common/icons';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
 
-import { XMarkIcon } from '@heroicons/react/24/outline';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -58,10 +27,7 @@ type MarkdownEditorProps = {
 
 type EditorMode = 'edit' | 'preview' | 'live';
 
-export default function MarkdownEditor({
-  value,
-  onChange,
-}: MarkdownEditorProps) {
+export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
   const t = useI18n();
 
   const [content, setContent] = useState(value);
@@ -101,29 +67,18 @@ export default function MarkdownEditor({
 
     if (start !== end) {
       setContent(({ text, images }) => ({
-        text:
-          text.substring(0, start) +
-          before +
-          text.substring(start, end) +
-          after +
-          text.substring(end),
+        text: text.substring(0, start) + before + text.substring(start, end) + after + text.substring(end),
         images,
       }));
 
       input.focus();
 
-      setTimeout(() =>
-        input.setSelectionRange(start + before.length, end + after.length),
-      );
+      setTimeout(() => input.setSelectionRange(start + before.length, end + after.length));
     } else {
       const position = start;
 
       setContent(({ text, images }) => ({
-        text:
-          text.substring(0, position) +
-          before +
-          after +
-          text.substring(position),
+        text: text.substring(0, position) + before + after + text.substring(position),
         images,
       }));
 
@@ -139,13 +94,9 @@ export default function MarkdownEditor({
     const input = inputRef.current;
 
     if (preview && input) {
-      const percent =
-        (input.scrollTop + document.body.scrollTop) /
-        (input.scrollHeight - input.clientHeight);
+      const percent = (input.scrollTop + document.body.scrollTop) / (input.scrollHeight - input.clientHeight);
 
-      preview.scrollTop =
-        percent * (preview.scrollHeight - preview.clientHeight) -
-        document.body.scrollTop;
+      preview.scrollTop = percent * (preview.scrollHeight - preview.clientHeight) - document.body.scrollTop;
     }
   }
 
@@ -154,71 +105,33 @@ export default function MarkdownEditor({
     const input = inputRef.current;
 
     if (preview && input) {
-      const percent =
-        (preview.scrollTop + document.body.scrollTop) /
-        (preview.scrollHeight - preview.clientHeight);
+      const percent = (preview.scrollTop + document.body.scrollTop) / (preview.scrollHeight - preview.clientHeight);
 
-      input.scrollTop =
-        percent * (input.scrollHeight - input.clientHeight) -
-        document.body.scrollTop;
+      input.scrollTop = percent * (input.scrollHeight - input.clientHeight) - document.body.scrollTop;
     }
   }
 
   return (
     <div
-      className={cn(
-        'flex h-full w-full flex-col divide-y overflow-hidden rounded-md border bg-background',
-        {
-          'fixed inset-0 z-50 rounded-none': isFullscreen,
-        },
-      )}
+      className={cn('flex h-full w-full flex-col divide-y overflow-hidden rounded-md border bg-background', {
+        'fixed inset-0 z-50 rounded-none': isFullscreen,
+      })}
     >
       <section className="flex divide-x">
         <div>
-          <Button
-            className="w-5 p-1"
-            size="icon"
-            title={t('bold')}
-            variant="icon"
-            type="button"
-            onClick={() => wrapAtCaret('**', '**')}
-          >
+          <Button className="w-5 p-1" size="icon" title={t('bold')} variant="icon" type="button" onClick={() => wrapAtCaret('**', '**')}>
             <BoldIcon className="h-3 w-3" />
           </Button>
-          <Button
-            className="w-5 p-1"
-            size="icon"
-            title={t('italic')}
-            variant="icon"
-            onClick={() => wrapAtCaret('*', '*')}
-          >
+          <Button className="w-5 p-1" size="icon" title={t('italic')} variant="icon" onClick={() => wrapAtCaret('*', '*')}>
             <ItalicIcon className="h-3 w-3" />
           </Button>
-          <Button
-            className="w-5 p-1"
-            size="icon"
-            title={t('strikethrough')}
-            variant="icon"
-            onClick={() => wrapAtCaret('~~', '~~')}
-          >
+          <Button className="w-5 p-1" size="icon" title={t('strikethrough')} variant="icon" onClick={() => wrapAtCaret('~~', '~~')}>
             <StrikethroughIcon className="h-3 w-3" />
           </Button>
-          <Button
-            className="w-5 p-1"
-            size="icon"
-            title={t('strikethrough')}
-            variant="icon"
-            onClick={() => insertAtCaret('\n----------\n')}
-          >
+          <Button className="w-5 p-1" size="icon" title={t('strikethrough')} variant="icon" onClick={() => insertAtCaret('\n----------\n')}>
             <HRIcon className="h-3 w-3" />
           </Button>
-          <Button
-            className="p-1"
-            size="icon"
-            title={t('header')}
-            variant="icon"
-            onClick={() => wrapAtCaret('# ', ' \n')}
-          >
+          <Button className="p-1" size="icon" title={t('header')} variant="icon" onClick={() => wrapAtCaret('# ', ' \n')}>
             <TitleIcon className="h-3 w-3" />
           </Button>
         </div>
@@ -226,22 +139,10 @@ export default function MarkdownEditor({
           <LinkDialog onAccept={insertAtCaret}>
             <LinkChainIcon className="h-3 w-3" />
           </LinkDialog>
-          <Button
-            className="p-1"
-            size="icon"
-            title={t('quote')}
-            variant="icon"
-            onClick={() => insertAtCaret('> ')}
-          >
+          <Button className="p-1" size="icon" title={t('quote')} variant="icon" onClick={() => insertAtCaret('> ')}>
             <QuoteIcon className="h-3 w-3" />
           </Button>
-          <Button
-            className="w-5 p-1"
-            size="icon"
-            title={t('code-block')}
-            variant="icon"
-            onClick={() => wrapAtCaret('`', '`')}
-          >
+          <Button className="w-5 p-1" size="icon" title={t('code-block')} variant="icon" onClick={() => wrapAtCaret('`', '`')}>
             <CodeBlockIcon className="h-3 w-3" />
           </Button>
           <ImageDialog
@@ -259,87 +160,39 @@ export default function MarkdownEditor({
           </ImageDialog>
         </div>
         <div>
-          <Button
-            className="p-1"
-            size="icon"
-            title={t('list')}
-            variant="icon"
-            onClick={() => insertAtCaret('- ')}
-          >
+          <Button className="p-1" size="icon" title={t('list')} variant="icon" onClick={() => insertAtCaret('- ')}>
             <ListIcon className="h-3 w-3" />
           </Button>
-          <Button
-            className="p-1"
-            size="icon"
-            title={t('ordered-list')}
-            variant="icon"
-            onClick={() => insertAtCaret('1. ')}
-          >
+          <Button className="p-1" size="icon" title={t('ordered-list')} variant="icon" onClick={() => insertAtCaret('1. ')}>
             <OrderedListIcon className="h-3 w-3" />
           </Button>
-          <Button
-            className="p-1"
-            size="icon"
-            title={t('check-list')}
-            variant="icon"
-            onClick={() => insertAtCaret('- [] ')}
-          >
+          <Button className="p-1" size="icon" title={t('check-list')} variant="icon" onClick={() => insertAtCaret('- [] ')}>
             <CheckListIcon className="h-3 w-3" />
           </Button>
         </div>
         <div className="ml-auto flex divide-x">
           <div>
-            <Button
-              className="p-1"
-              size="icon"
-              disabled={mode === 'edit'}
-              title={t('edit-mode')}
-              variant="icon"
-              onClick={() => setMode('edit')}
-            >
+            <Button className="p-1" size="icon" disabled={mode === 'edit'} title={t('edit-mode')} variant="icon" onClick={() => setMode('edit')}>
               <EditPanelIcon className="h-3 w-3" />
             </Button>
-            <Button
-              className="p-1"
-              disabled={mode === 'live'}
-              size="icon"
-              title={t('live-mode')}
-              variant="icon"
-              onClick={() => setMode('live')}
-            >
+            <Button className="p-1" disabled={mode === 'live'} size="icon" title={t('live-mode')} variant="icon" onClick={() => setMode('live')}>
               <LivePanelIcon className="h-3 w-3" />
             </Button>
-            <Button
-              className="p-1"
-              disabled={mode === 'preview'}
-              size="icon"
-              title={t('preview-mode')}
-              variant="icon"
-              onClick={() => setMode('preview')}
-            >
+            <Button className="p-1" disabled={mode === 'preview'} size="icon" title={t('preview-mode')} variant="icon" onClick={() => setMode('preview')}>
               <PreviewPanelIcon className="h-3 w-3" />
             </Button>
           </div>
           <div className="px-1">
-            <Button
-              className="p-1"
-              size="icon"
-              title={t('fullscreen')}
-              variant="icon"
-              onClick={toggleFullscreen}
-            >
+            <Button className="p-1" size="icon" title={t('fullscreen')} variant="icon" onClick={toggleFullscreen}>
               <FullScreenIcon className="h-3 w-3" />
             </Button>
           </div>
         </div>
       </section>
       <div
-        className={cn(
-          'grid h-full w-full grid-cols-1 divide-y overflow-hidden bg-background md:divide-x md:divide-y-0',
-          {
-            'grid-rows-2 md:grid-cols-2 md:grid-rows-1': mode === 'live',
-          },
-        )}
+        className={cn('grid h-full w-full grid-cols-1 divide-y overflow-hidden bg-background md:divide-x md:divide-y-0', {
+          'grid-rows-2 md:grid-cols-2 md:grid-rows-1': mode === 'live',
+        })}
       >
         {(mode === 'edit' || mode === 'live') && (
           <textarea
@@ -358,11 +211,7 @@ export default function MarkdownEditor({
           />
         )}
         {(mode === 'preview' || mode === 'live') && (
-          <div
-            className="h-full w-full overflow-y-auto p-2"
-            ref={previewRef}
-            onScroll={handlePreviewScroll}
-          >
+          <div className="h-full w-full overflow-y-auto p-2" ref={previewRef} onScroll={handlePreviewScroll}>
             <Markdown>{content.text}</Markdown>
           </div>
         )}
@@ -402,22 +251,14 @@ function LinkDialog({ children, onAccept }: LinkDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="w-5 p-1"
-          size="icon"
-          title={t('add-link')}
-          variant="icon"
-        >
+        <Button className="w-5 p-1" size="icon" title={t('add-link')} variant="icon">
           {children}
         </Button>
       </DialogTrigger>
       <DialogContent className="overflow-auto p-6">
         <DialogTitle>{t('add-link')}</DialogTitle>
         <Form {...form}>
-          <form
-            className="space-y-2"
-            onSubmit={form.handleSubmit(handleAccept)}
-          >
+          <form className="space-y-2" onSubmit={form.handleSubmit(handleAccept)}>
             <FormField
               control={form.control}
               name="header"
@@ -445,12 +286,7 @@ function LinkDialog({ children, onAccept }: LinkDialogProps) {
               )}
             />
             <div className="flex justify-end">
-              <Button
-                className="ml-auto"
-                title={t('submit')}
-                type="submit"
-                variant="primary"
-              >
+              <Button className="ml-auto" title={t('submit')} type="submit" variant="primary">
                 {t('submit')}
               </Button>
             </div>
@@ -518,22 +354,14 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="w-5 p-1"
-          size="icon"
-          title={t('add-image')}
-          variant="icon"
-        >
+        <Button className="w-5 p-1" size="icon" title={t('add-image')} variant="icon">
           {children}
         </Button>
       </DialogTrigger>
       <DialogContent className="overflow-auto p-6">
         <DialogTitle>{t('add-image')}</DialogTitle>
         <Form {...form}>
-          <form
-            className="space-y-2"
-            onSubmit={form.handleSubmit(handleAccept)}
-          >
+          <form className="space-y-2" onSubmit={form.handleSubmit(handleAccept)}>
             <FormField
               control={form.control}
               name="header"
@@ -556,21 +384,10 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
                   <FormControl>
                     <div className="flex gap-2">
                       <Input {...field} placeholder={t('url')} />
-                      <label
-                        className="flex h-9 items-center justify-center rounded-md border p-2"
-                        htmlFor="image"
-                        hidden
-                      >
+                      <label className="flex h-9 items-center justify-center rounded-md border p-2" htmlFor="image" hidden>
                         <ImageIcon className="size-5" />
                       </label>
-                      <input
-                        id="image"
-                        className="w-16"
-                        hidden
-                        accept=".png, .jpg, .jpeg"
-                        type="file"
-                        onChange={handleFilePick}
-                      />
+                      <input id="image" className="w-16" hidden accept=".png, .jpg, .jpeg" type="file" onChange={handleFilePick} />
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -579,26 +396,15 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
             />
             {hasImage && (
               <div className="relative">
-                <Button
-                  className="absolute right-0 top-0"
-                  title={t('delete')}
-                  size="icon"
-                  variant="icon"
-                  onClick={() => form.reset({ image: undefined })}
-                >
-                  <XMarkIcon className="h-4 w-4" />
+                <Button className="absolute right-0 top-0" title={t('delete')} size="icon" variant="icon" onClick={() => form.reset({ image: undefined })}>
+                  <XIcon />
                 </Button>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={imageUrl} alt="preview" />
               </div>
             )}
             <div className="flex justify-end">
-              <Button
-                className="ml-auto"
-                title={t('submit')}
-                type="submit"
-                variant="primary"
-              >
+              <Button className="ml-auto" title={t('submit')} type="submit" variant="primary">
                 {t('submit')}
               </Button>
             </div>

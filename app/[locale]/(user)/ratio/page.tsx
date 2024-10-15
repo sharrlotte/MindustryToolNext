@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
+import { ChevronsUpDownIcon } from 'lucide-react';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import {
   Popover,
@@ -53,7 +53,7 @@ export default function Page() {
             ) : (
               <Tran text="ratio.select-block" />
             )}
-            <ChevronUpDownIcon className="ml-auto size-5 shrink-0" />
+            <ChevronsUpDownIcon className="ml-auto size-5 shrink-0" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="z-50 min-w-[200px] bg-card p-0">

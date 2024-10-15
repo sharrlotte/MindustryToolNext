@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
 
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, XCircleIcon } from 'lucide-react';
 
 export default function Toaster() {
   const { toasts } = useToast();

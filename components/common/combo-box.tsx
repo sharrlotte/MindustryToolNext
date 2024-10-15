@@ -9,9 +9,9 @@ import {
 import { cn } from '@/lib/utils';
 
 import {
-  ChevronUpDownIcon,
-  MagnifyingGlassIcon,
-} from '@heroicons/react/24/outline';
+  ChevronsUpDownIcon,
+  SearchIcon,
+} from 'lucide-react';
 
 type Value<T> = { label: string; value: T };
 
@@ -59,7 +59,7 @@ export default function ComboBox<T>({
           variant="outline"
         >
           {value?.label?.toLowerCase() || placeholder}
-          <ChevronUpDownIcon className="ml-auto size-5 shrink-0" />
+          <ChevronsUpDownIcon className="ml-auto size-5 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="z-50 w-full min-w-20 bg-card p-0">
@@ -67,7 +67,7 @@ export default function ComboBox<T>({
           {searchBar && (
             <div className="flex gap-1 p-1">
               <div>
-                <MagnifyingGlassIcon className="size-5" />
+                <SearchIcon className="size-5" />
               </div>
               <input
                 className="border-none bg-transparent font-thin outline-none"

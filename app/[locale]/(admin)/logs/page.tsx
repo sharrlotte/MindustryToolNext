@@ -23,7 +23,6 @@ import { useI18n } from '@/i18n/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
 
-import { XMarkIcon } from '@heroicons/react/24/outline';
 import { getLogs, getLogCollections, getLogCount } from '@/query/log';
 import { Hidden } from '@/components/common/hidden';
 import useSearchPageParams from '@/hooks/use-search-page-params';
