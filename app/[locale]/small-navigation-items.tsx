@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useState } from 'react';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
 
@@ -40,7 +40,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
 
   return (
     <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
-      <div className="flex h-nav w-full items-center justify-between bg-brand px-1 py-2 text-white shadow-lg">
+      <div className="flex h-nav w-full items-center justify-between bg-brand px-1 py-2 shadow-lg">
         <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
           <MenuIcon />
         </Button>
@@ -64,7 +64,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
                   <div className="flex h-full flex-col justify-between overflow-hidden p-2">
                     <div className="flex h-full flex-col overflow-hidden">
                       <span className="flex flex-col gap-2">
-                        <span className="space-x-2 rounded-sm p-2 flex items-center">
+                        <span className="flex items-center space-x-2 rounded-sm p-2">
                           <h1 className="text-xl font-medium">MindustryTool</h1>
                           <span className="text-xs">{env.webVersion}</span>
                         </span>
@@ -117,7 +117,7 @@ const _PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps)
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
-        <span className='font-bold'>{name}</span>
+        <span className="font-bold">{name}</span>
         {group.paths.map((path, index) => (
           <PathElement key={index} segment={path} bestMatch={bestMatch} onClick={onClick} />
         ))}

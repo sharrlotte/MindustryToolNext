@@ -3,21 +3,14 @@ import React from 'react';
 
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import env from '@/constant/env';
-import { getSchematic, getSchematics } from '@/query/schematic';
+import { getSchematic } from '@/query/schematic';
 import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
-import axiosInstance from '@/query/config/config';
 
 type Props = {
   params: Promise<{ id: string }>;
 };
-
-export async function generateStaticParams() {
-  const schematics = await getSchematics(axiosInstance, { page: 0, size: 100 });
-
-  return schematics.map(({ id }) => id);
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;

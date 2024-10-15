@@ -12,7 +12,7 @@ import { Plugin } from '@/types/response/Plugin';
 
 import { useMutation } from '@tanstack/react-query';
 import { deletePlugin } from '@/query/plugin';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 
 type Props = {
@@ -54,7 +54,7 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
   const githubUrl = `https://github.com/${user}/${repo}`;
 
   return (
-    <div className="relative flex h-32 flex-col overflow-hidden gap-2 rounded-md bg-card p-4">
+    <div className="relative flex h-32 flex-col gap-2 overflow-hidden rounded-md bg-card p-4">
       <Link href={githubUrl}>
         <h2 className="line-clamp-1 w-full overflow-hidden text-ellipsis whitespace-normal text-nowrap">{name}</h2>
       </Link>

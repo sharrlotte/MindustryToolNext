@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
 import { IMAGE_PREFIX } from '@/constant/constant';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import { useUploadTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';

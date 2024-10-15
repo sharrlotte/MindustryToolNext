@@ -9,34 +9,29 @@ import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { getPlugins } from '@/query/plugin';
 import { createInternalServerPlugin } from '@/query/server';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import ScrollContainer from '@/components/common/scroll-container';
 
 type AddPluginDialogProps = {
   serverId: string;
 };
 
 export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
   const { toast } = useToast();
   const { plugin } = useSearchTags();
   const [show, setShow] = useState(false);
   const axios = useClientApi();
   const t = useI18n();
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const params = useSearchPageParams();
   const { invalidateByKey } = useQueriesData();
 
   const { mutate } = useMutation({
-    mutationFn: (pluginId: string) =>
-      createInternalServerPlugin(axios, serverId, { pluginId }),
+    mutationFn: (pluginId: string) => createInternalServerPlugin(axios, serverId, { pluginId }),
     onError: (error) => {
       toast({
         title: t('server.upload-fail'),
@@ -55,46 +50,33 @@ export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   return (
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild>
-        <Button
-          className="ml-auto"
-          title={t('internal-server.add-plugin')}
-          variant="secondary"
-        >
+        <Button className="ml-auto" title={t('internal-server.add-plugin')} variant="secondary">
           {t('internal-server.add-plugin')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full p-6">
+      <DialogContent className="flex w-full flex-col overflow-hidden p-4">
         <DialogTitle>{t('internal-server.select-plugin')}</DialogTitle>
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={plugin} />
-          <div
-            className="flex h-full w-full flex-col gap-2 overflow-y-auto p-2"
-            ref={(ref) => setContainer(ref)}
-          >
+          <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>
             <InfinitePage
               params={params}
               queryKey={['plugin']}
               getFunc={(axios, params) => getPlugins(axios, params)}
-              container={() => container}
+              container={() => ref.current}
               skeleton={{
                 amount: 20,
                 item: <Skeleton className="h-20" />,
               }}
             >
               {({ id, name, description }) => (
-                <Button
-                  className="flex h-fit w-full flex-col items-start justify-start rounded-md border border-border p-2 text-start hover:bg-brand"
-                  variant="outline"
-                  key={id}
-                  title={name}
-                  onClick={() => mutate(id)}
-                >
-                  <h3>{name}</h3>
-                  <span>{description}</span>
+                <Button className="relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand" variant="outline" key={id} onClick={() => mutate(id)}>
+                  <h2 className="line-clamp-1 w-full text-ellipsis whitespace-normal text-nowrap">{name}</h2>
+                  <span className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>{' '}
                 </Button>
               )}
             </InfinitePage>
-          </div>
+          </ScrollContainer>
         </div>
       </DialogContent>
     </Dialog>

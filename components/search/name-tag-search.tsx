@@ -26,12 +26,7 @@ type NameTagSearchProps = {
   useTag?: boolean;
 };
 
-export default function NameTagSearch({
-  className,
-  tags = [],
-  useSort = true,
-  useTag = true,
-}: NameTagSearchProps) {
+export default function NameTagSearch({ className, tags = [], useSort = true, useTag = true }: NameTagSearchProps) {
   const [filter, setFilter] = useState('');
   const router = useRouter();
   const pathname = usePathname();
@@ -45,27 +40,14 @@ export default function NameTagSearch({
   const [isChanged, setChanged] = useState(false);
   const [showFilterDialog, setShowFilterDialog] = useState(false);
 
-  const handleShowFilterDialog = useCallback(
-    () => setShowFilterDialog(true),
-    [setShowFilterDialog],
-  );
-  const handleHideFilterDialog = useCallback(
-    () => setShowFilterDialog(false),
-    [setShowFilterDialog],
-  );
+  const handleShowFilterDialog = useCallback(() => setShowFilterDialog(true), [setShowFilterDialog]);
+  const handleHideFilterDialog = useCallback(() => setShowFilterDialog(false), [setShowFilterDialog]);
 
   useEffect(() => {
     if (tags.length > 0) {
-      const {
-        sort: sortString,
-        name: nameString,
-        tags: tagsString,
-        page,
-      } = searchParams;
+      const { sort: sortString, name: nameString, tags: tagsString, page } = searchParams;
 
-      const tagGroup = tagsString
-        ? TagGroups.parseString(tagsString, tags)
-        : [];
+      const tagGroup = tagsString ? TagGroups.parseString(tagsString, tags) : [];
 
       setPage(page);
       setSortBy(sortString ?? defaultSortTag);
@@ -80,9 +62,7 @@ export default function NameTagSearch({
       const params = new URLSearchParams();
 
       if (useTag) {
-        TagGroups.toStringArray(filterBy).forEach((value) =>
-          params.append(QueryParams.tags, value),
-        );
+        TagGroups.toStringArray(filterBy).forEach((value) => params.append(QueryParams.tags, value));
       }
 
       params.set(QueryParams.page, page.toString());
@@ -112,9 +92,7 @@ export default function NameTagSearch({
         const group = prev.find((tag) => tag.name === name);
 
         if (group) {
-          return prev.map((item) =>
-            item.name === name ? { ...item, values } : item,
-          );
+          return prev.map((item) => (item.name === name ? { ...item, values } : item));
         } else {
           const result = tags.find((tag) => tag.name === name);
 
@@ -183,31 +161,17 @@ export default function NameTagSearch({
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex justify-center gap-2">
-        <Search className='h-10'>
+        <Search className="h-10">
           <Search.Icon className="p-1" />
-          <Search.Input
-            placeholder={t('search-by-name')}
-            value={name}
-            onChange={handleEditName}
-          />
+          <Search.Input placeholder={t('search-by-name')} value={name} onChange={handleEditName} />
           {name && (
-            <Button
-              className="p-0"
-              title="reset"
-              onClick={handleResetName}
-              variant="icon"
-            >
+            <Button className="p-0" title="reset" onClick={handleResetName} variant="icon">
               <XIcon />
             </Button>
           )}
         </Search>
         {useTag && (
-          <Button
-            className="border-none bg-secondary shadow-md h-full"
-            title={t('filter')}
-            variant="outline"
-            onClick={handleShowFilterDialog}
-          >
+          <Button className="h-10 border-none bg-secondary shadow-md" title={t('filter')} variant="outline" onClick={handleShowFilterDialog}>
             <FilterIcon className="size-5" strokeWidth={1.5} />
           </Button>
         )}
@@ -215,29 +179,20 @@ export default function NameTagSearch({
       <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
       {useTag && (
         <div
-          className={cn(
-            'fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm',
-            {
-              flex: showFilterDialog,
-            },
-          )}
+          className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {
+            flex: showFilterDialog,
+          })}
         >
-          <OutsideWrapper
-            className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6"
-            onClickOutside={handleHideFilterDialog}
-          >
+          <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6" onClickOutside={handleHideFilterDialog}>
             <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
               <div className="flex gap-1">
                 <Search className="w-full p-1">
                   <Search.Icon className="p-1" />
-                  <Search.Input
-                    placeholder={t('filter')}
-                    value={filter}
-                    onChange={handleFilterChange}
-                  />
+                  <Search.Input placeholder={t('filter')} value={filter} onChange={handleFilterChange} />
                 </Search>
                 {useSort && (
                   <ComboBox
+                    className="h-full"
                     value={{
                       label: t(sortBy.toLowerCase()),
                       value: sortBy,
@@ -252,12 +207,7 @@ export default function NameTagSearch({
                 )}
               </div>
               <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
-                <FilterTags
-                  filter={filter}
-                  filterBy={filterBy}
-                  tags={tags}
-                  handleTagGroupChange={handleTagGroupChange}
-                />
+                <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
               </CardContent>
               <CardFooter className="flex justify-end gap-1 p-0">
                 <Button onClick={handleHideFilterDialog} variant="primary">

@@ -70,7 +70,7 @@ export default function AddFileDialog({ path }: Props) {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="h-9 w-fit whitespace-nowrap"
+          className="h-10 w-fit whitespace-nowrap"
           title="Add file"
           variant="outline"
         >

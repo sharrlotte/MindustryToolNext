@@ -6,11 +6,11 @@ import Tran from '@/components/common/tran';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
-import { RequireLogin } from '@/app/[locale]/(user)/servers/require-login';
 import { CommunityServer } from '@/app/[locale]/(user)/servers/community-server';
 import { MeServer } from '@/app/[locale]/(user)/servers/my-server';
 import { OfficialServer } from '@/app/[locale]/(user)/servers/official-server';
 import ScrollContainer from '@/components/common/scroll-container';
+import RequireLogin from '@/components/common/require-login';
 
 export const experimental_ppr = true;
 

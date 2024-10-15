@@ -139,7 +139,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     <InfiniteScroll
       className={
         className ??
-        'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 pr-1'
+        'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 '
       }
       loadMore={loadMore}
       hasMore={hasNextPage}

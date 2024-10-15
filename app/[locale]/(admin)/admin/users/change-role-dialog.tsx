@@ -2,7 +2,7 @@ import { Hidden } from '@/components/common/hidden';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { useMe, useSession } from '@/context/session-context';
+import { useSession, useMe } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
@@ -25,7 +25,7 @@ export function ChangeRoleDialog({ user: { id, roles, name, authorities } }: Dia
   const { highestRole } = useMe();
   const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
-  
+
   const [open, setOpen] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const [selectedRole, setSelectedRoles] = useState<Role[]>(roles);

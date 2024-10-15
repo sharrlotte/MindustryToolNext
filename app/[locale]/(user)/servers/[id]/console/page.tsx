@@ -10,6 +10,7 @@ import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import useSearchId from '@/hooks/use-search-id-params';
 import { useI18n } from '@/i18n/client';
+import { Input } from '@/components/ui/input';
 
 export default function Page() {
   const { id } = useSearchId();
@@ -18,24 +19,14 @@ export default function Page() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
-    <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden px-2 pt-2">
+    <div className="grid h-full w-full grid-rows-[1fr_2.5rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden">
-        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-black/80 text-white">
+        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-background">
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto" />
           ) : (
-            <div
-              className="h-full overflow-y-auto"
-              ref={(ref) => setContainer(ref)}
-            >
-              <MessageList
-                className="flex h-full flex-col gap-1"
-                queryKey={['servers', id, 'messages']}
-                room={`SERVER-${id}`}
-                container={() => container}
-                params={{ size: 50 }}
-                showNotification={false}
-              >
+            <div className="h-full overflow-y-auto" ref={(ref) => setContainer(ref)}>
+              <MessageList className="flex h-full flex-col gap-1" queryKey={['servers', id, 'messages']} room={`SERVER-${id}`} container={() => container} params={{ size: 50 }} showNotification={false}>
                 {(data) => <MessageCard key={data.id} message={data} />}
               </MessageList>
             </div>
@@ -110,25 +101,9 @@ function ChatInput({ id }: ChatInputProps) {
     }
   }
   return (
-    <form
-      className="flex h-10 flex-1 gap-1"
-      name="text"
-      onSubmit={handleFormSubmit}
-    >
-      <input
-        className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none"
-        value={message}
-        onKeyDown={handleKeyPress}
-        onChange={(event) => setMessage(event.currentTarget.value)}
-        placeholder="/help"
-      />
-      <Button
-        className="h-full"
-        variant="primary"
-        type="submit"
-        title={t('send')}
-        disabled={state !== 'connected' || !message}
-      >
+    <form className="flex h-full flex-1 gap-1" name="text" onSubmit={handleFormSubmit}>
+      <Input className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none" value={message} placeholder="/help" onKeyDown={handleKeyPress} onChange={(event) => setMessage(event.currentTarget.value)} />
+      <Button className="h-full" variant="primary" type="submit" title={t('send')} disabled={state !== 'connected' || !message}>
         {t('send')}
       </Button>
     </form>

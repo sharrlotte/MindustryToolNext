@@ -1,6 +1,8 @@
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingScreen from '@/components/common/loading-screen';
 import { PreviewImage } from '@/components/common/preview';
+import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
 import NameTagSearch from '@/components/search/name-tag-search';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -15,7 +17,7 @@ import { useI18n } from '@/i18n/client';
 import { getMaps } from '@/query/map';
 import { createInternalServerMap } from '@/query/server';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 type AddMapDialogProps = {
   serverId: string;
@@ -32,7 +34,7 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
 
   //TODO: Fix search
   const params = useSearchPageParams();
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) => createInternalServerMap(axios, serverId, { mapId }),
     onError: (error) => {
@@ -55,19 +57,21 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild>
         <Button className="ml-auto" title={t('internal-server.add-map')} variant="secondary">
-          {t('internal-server.add-map')}
+          <Tran text="internal-server.add-map" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex w-full flex-col overflow-hidden p-6">
-        <DialogTitle>{t('internal-server.select-map')}</DialogTitle>
+      <DialogContent className="flex w-full flex-col overflow-hidden p-4">
+        <DialogTitle>
+          <Tran text="internal-server.select-map" />
+        </DialogTitle>
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />
-          <div className="flex h-full w-full flex-col gap-2 overflow-y-auto p-2" ref={(ref) => setContainer(ref)}>
+          <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>
             <InfinitePage
               params={params}
               queryKey={['maps']}
               getFunc={(axios, params) => getMaps(axios, params)}
-              container={() => container}
+              container={() => ref.current}
               skeleton={{
                 amount: 20,
                 item: <Skeleton className="h-preview-height" />,
@@ -80,7 +84,7 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
                 </Button>
               )}
             </InfinitePage>
-          </div>
+          </ScrollContainer>
         </div>
       </DialogContent>
     </Dialog>

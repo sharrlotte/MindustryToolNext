@@ -4,8 +4,7 @@ import LogoutButton from '@/components/button/logout-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
-import { useSession } from '@/context/session-context';
-import { useI18n } from '@/i18n/client';
+import { useSession } from '@/context/session-context.client';
 
 export function UserDisplay() {
   return (
@@ -17,7 +16,6 @@ export function UserDisplay() {
 }
 export function Internal() {
   const { session, state } = useSession();
-  const t = useI18n();
 
   if (state === 'authenticated' && session) {
     return (
@@ -29,16 +27,14 @@ export function Internal() {
             <UserRoleCard roles={session.roles} />
           </div>
         </div>
-        <LogoutButton className="pr-1" />
+        <LogoutButton className="justify-start pr-1" />
       </div>
     );
   }
 
   if (state === 'loading') {
-    return (
-      <Skeleton className="flex h-16 max-h-16 flex-1 items-center justify-between rounded-sm bg-card p-1" />
-    );
+    return <Skeleton className="flex h-16 max-h-16 flex-1 items-center justify-between rounded-sm bg-card p-1" />;
   }
 
-  return <LoginButton className="w-full gap-1">{t('login')}</LoginButton>;
+  return <LoginButton className="w-full justify-start gap-1" />;
 }
