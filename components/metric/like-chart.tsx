@@ -13,9 +13,7 @@ type Props = {
 };
 
 export default async function LikeChart({ start, dates, end }: Props) {
-  const data = await serverApi((axios) =>
-    getMetric(axios, start, end, 'DAILY_LIKE'),
-  );
+  const data = await serverApi((axios) => getMetric(axios, start, end, 'DAILY_LIKE'));
 
   if ('error' in data) {
     return <ErrorScreen error={data} />;

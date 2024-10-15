@@ -46,21 +46,21 @@ export default async function Page() {
             </ProtectedElement>
           </div>
         </div>
-        <TabsContent value="official-server">
+        <TabsContent className="h-full" value="official-server">
           <Suspense fallback={skeleton}>
             <ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">
               <OfficialServer />
             </ScrollContainer>
           </Suspense>
         </TabsContent>
-        <TabsContent value="community-server">
+        <TabsContent className="h-full" value="community-server">
           <Suspense fallback={skeleton}>
             <ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">
               <CommunityServer />
             </ScrollContainer>
           </Suspense>
         </TabsContent>
-        <TabsContent value="my-server">
+        <TabsContent className="h-full" value="my-server">
           <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
             <Suspense fallback={skeleton}>
               <ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">

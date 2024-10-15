@@ -1,29 +1,35 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 type Props = {
   className?: string;
   children: ReactNode;
 };
 
-export default function ScrollContainer({ className, children }: Props) {
-  const [container, setContainer] = React.useState<HTMLDivElement | null>();
+const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, children }, ref) => {
+  const [hasGapForScrollbar, setHasGapForScrollbar] = useState(false);
 
-  const scrollHeight = container?.scrollHeight || 0;
-  const clientHeigh = container?.clientHeight || 0;
-
-  const hasGapForScrollbar = scrollHeight > clientHeigh;
+  useEffect(() => {
+    if (ref && 'current' in ref && ref.current) {
+      const { scrollHeight, clientHeight } = ref.current;
+      setHasGapForScrollbar(scrollHeight > clientHeight);
+    }
+  }, [ref]);
 
   return (
     <div
-      className={cn('overflow-y-auto overflow-x-hidden', className, {
+      className={cn('h-full overflow-y-auto overflow-x-hidden', className, {
         'pr-2': hasGapForScrollbar,
       })}
-      ref={setContainer}
+      ref={ref}
     >
       {children}
     </div>
   );
-}
+});
+
+ScrollContainer.displayName = 'ScrollContainer';
+
+export default ScrollContainer;

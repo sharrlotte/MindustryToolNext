@@ -1,30 +1,37 @@
-import useSafeSearchParams from '@/hooks/use-safe-search-params';
-
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-let timeout: any = undefined;
-
 export default function useQueryState(initialState: Record<string, string>) {
-  const params = useSafeSearchParams();
+  const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
   const [state, setState] = useState({
     ...initialState,
-    ...Object.fromEntries(params.raw()),
+    ...Object.fromEntries(params),
   });
 
   useEffect(() => {
-    const newState = { ...initialState, ...Object.fromEntries(params.raw()) };
+    const usedParams = Object.fromEntries(
+      params
+        .keys()
+        .filter((key) => Object.keys(initialState).includes(key))
+        .map((key) => [key, params.get(key) as string]),
+    );
+    const newState = { ...initialState, ...usedParams };
 
-    if (JSON.stringify(newState) !== JSON.stringify(state)) {
-      setState(newState);
-    }
+    setState((prev) => {
+      if (JSON.stringify(newState) !== JSON.stringify(prev)) {
+        console.log({ newState, prev, usedParams, params });
+        return newState;
+      }
+
+      return prev;
+    });
   }, [params, setState]);
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(params.raw());
+    const queryParams = new URLSearchParams(params);
 
     Object.entries(initialState).forEach(([key, value]) => {
       if (!params.get(key)) queryParams.set(key, value);
@@ -39,38 +46,30 @@ export default function useQueryState(initialState: Record<string, string>) {
     }
 
     router.replace(`${pathname}?${queryParams.toString()}`);
-  }, [initialState, pathname, router]);
+  }, [pathname, router]);
 
   const setter = useCallback(
     (value: Record<string, string | undefined>) => {
       setState((prev) => ({ ...initialState, ...prev, ...(value as Record<string, string>) }));
 
-      const queryParams = new URLSearchParams(params.raw());
+      const queryParams = new URLSearchParams(params);
 
-      if (timeout) {
-        clearTimeout(timeout);
+      Object.entries(value).forEach(([key, value]) => {
+        if (value) queryParams.set(key, value);
+        else queryParams.delete(key);
+      });
+
+      for (const key of queryParams.keys()) {
+        const value = queryParams.get(key);
+
+        if (value === null || value === undefined || value === '') {
+          queryParams.delete(key);
+        }
       }
 
-      timeout = setTimeout(() => {
-        Object.entries(value).forEach(([key, value]) => {
-          if (value) queryParams.set(key, value);
-          else queryParams.delete(key);
-        });
-
-        for (const key of queryParams.keys()) {
-          const value = queryParams.get(key);
-
-          if (value === null || value === undefined || value === '') {
-            queryParams.delete(key);
-          }
-        }
-
-        router.replace(`${pathname}?${queryParams.toString()}`);
-      }, 200);
-
-      return () => timeout && clearTimeout(timeout);
+      router.replace(`${pathname}?${queryParams.toString()}`);
     },
-    [setState, params, router, pathname],
+    [setState, state, params, initialState, router],
   );
 
   return [state, setter] as const;

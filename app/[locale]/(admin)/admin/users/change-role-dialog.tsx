@@ -22,15 +22,16 @@ type DialogProps = {
 
 export function ChangeRoleDialog({ user: { id, roles, name, authorities } }: DialogProps) {
   const { session } = useSession();
-  const axios = useClientApi();
-  const [open, setOpen] = useState(false);
   const { highestRole } = useMe();
-  const [isChanged, setIsChanged] = useState(false);
   const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
-
-  const [selectedAuthorities, setSelectedAuthorities] = useState<Authority[]>(authorities);
+  
+  const [open, setOpen] = useState(false);
+  const [isChanged, setIsChanged] = useState(false);
   const [selectedRole, setSelectedRoles] = useState<Role[]>(roles);
+  const [selectedAuthorities, setSelectedAuthorities] = useState<Authority[]>(authorities);
+
+  const axios = useClientApi();
 
   const { data: allRoles } = useQuery({
     queryFn: () => getRoles(axios),
@@ -44,6 +45,7 @@ export function ChangeRoleDialog({ user: { id, roles, name, authorities } }: Dia
     placeholderData: [],
   });
 
+  const bestRole = selectedRole?.sort((o1, o2) => o2.position - o1.position).at(0);
   const filteredRole = allRoles?.filter((r) => r.position < highestRole || session?.roles.map((r) => r.name).includes('SHAR')) || [];
 
   const filteredAuthority = useMemo(() => allAuthorities?.filter((a) => (a.authorityGroup === 'Shar' ? session?.roles.map((r) => r.name).includes('SHAR') : true)) || [], [allAuthorities, session?.roles]);
@@ -108,12 +110,10 @@ export function ChangeRoleDialog({ user: { id, roles, name, authorities } }: Dia
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger>
         <section className="space-x-1">
-          {selectedRole.length ? (
-            selectedRole.map((role) => (
-              <span key={role.id} className={cn(role.color)}>
-                {role.name}
-              </span>
-            ))
+          {bestRole ? (
+            <span key={bestRole.id} className={cn(bestRole.color)}>
+              {bestRole.name}
+            </span>
           ) : (
             <span>Add role</span>
           )}

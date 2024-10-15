@@ -93,7 +93,7 @@ export default function Page() {
         }
       >
         <div className="flex flex-col gap-2">
-          <div className="mx-auto flex w-dvw items-end gap-2 rounded-md border p-2 md:w-2/3">
+          <div className="mx-auto flex w-full items-end gap-2 rounded-md border p-2 md:w-2/3">
             <div
               key={reset}
               className="max-h-56 min-h-full w-full max-w-[100vw] overflow-y-auto overflow-x-hidden p-1 focus-visible:outline-none"

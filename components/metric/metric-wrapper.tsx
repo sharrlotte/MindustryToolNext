@@ -15,8 +15,8 @@ export default function MetricWrapper({ className, children }: Props) {
 
   return (
     <div
-      className={cn('relative flex w-full bg-card', className, {
-        'absolute inset-0 z-10 max-h-[calc(100dvh-var(--nav))]': expand,
+      className={cn('relative flex h-full w-full bg-card', className, {
+        'absolute inset-0 z-10': expand,
       })}
     >
       {expand ? (
