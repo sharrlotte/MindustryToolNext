@@ -29,7 +29,6 @@ export default function NavLink({ id, href, label, icon }: Props) {
           'rounded-sm bg-brand text-white opacity-100': (pathname.endsWith(href) && href !== '') || (id !== '' && href === '' && pathname === `/servers/${id}`),
         },
         {
-          'gap-0 delay-200': !visible,
           'w-full': visible,
         },
       )}
@@ -37,13 +36,7 @@ export default function NavLink({ id, href, label, icon }: Props) {
       href={`/servers/${id}/${href}`}
     >
       {icon}
-      <span
-        className={cn('w-40 overflow-hidden transition-[width] duration-200', {
-          'w-0': !visible,
-        })}
-      >
-        {label}
-      </span>
+      <span className={cn('overflow-hidden transition-[width] duration-200')}>{label}</span>
     </InternalLink>
   );
 }

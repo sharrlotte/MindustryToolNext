@@ -29,7 +29,7 @@ const sidebarVariants: Variants = {
   },
   closed: {
     width: 'var(--nav)',
-    transition: { type: 'spring', stiffness: 300, damping: 30 },
+    transition: { type: '', stiffness: 300, damping: 30 },
   },
 };
 
@@ -44,7 +44,7 @@ export function MediumScreenNavigationBar({ children, pathGroups, bestMatch }: N
 
   return (
     <div className="grid h-full w-full grid-cols-[auto_1fr] justify-center overflow-hidden">
-      <motion.div className="flex h-full overflow-hidden bg-card" variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
+      <motion.div className="relative flex h-full overflow-hidden bg-card" variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
         <div className={cn('flex h-full w-full flex-col overflow-hidden p-1', { 'p-2': expand })}>
           <div className="flex items-center justify-center gap-1 p-2">
             <div className={cn('hidden', { block: expand })}>
@@ -52,7 +52,7 @@ export function MediumScreenNavigationBar({ children, pathGroups, bestMatch }: N
             </div>
             <span className={cn('hidden text-xs', { block: expand })}>{env.webVersion}</span>
             <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
-              <MenuIcon className="size-6" />
+              <MenuIcon className="size-6 text-foreground" />
             </Button>
           </div>
           <div className="flex h-full flex-col justify-between overflow-hidden">

@@ -16,7 +16,7 @@ export default function ServerMaps() {
   const { id } = useSearchId();
 
   return (
-    <div className="flex flex-col gap-2 overflow-hidden p-2">
+    <div className="flex flex-col gap-2 overflow-hidden">
       <div className=" flex justify-end bg-card p-2">
         <AddMapDialog serverId={id} />
       </div>

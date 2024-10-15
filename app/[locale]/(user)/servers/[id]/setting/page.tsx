@@ -34,7 +34,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   return (
-    <ScrollContainer className="flex h-full flex-col gap-2 p-2">
+    <ScrollContainer className="flex h-full flex-col gap-2">
       <ServerUpdateForm server={server} />
       <ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
         <ServerUpdatePortForm server={server} />

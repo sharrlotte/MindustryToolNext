@@ -1,4 +1,4 @@
-import { ArrowLeftCircleIcon, LayoutDashboardIcon } from 'lucide-react';
+import { LayoutDashboardIcon, Undo2 } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
 import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
@@ -61,23 +61,13 @@ export default async function Layout({ params, children }: PageProps) {
   ];
 
   return (
-    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] overflow-hidden md:grid-cols-[auto,1fr] md:grid-rows-1">
-      <div className="relative flex h-full flex-col flex-wrap bg-card">
-        <div className="flex flex-1 flex-wrap gap-2 overflow-x-auto p-2 font-extrabold antialiased md:flex-col md:overflow-x-hidden">
-          <div className="flex items-center justify-between gap-1">
-            <SidebarToggle />
-          </div>
-          <Divider className="hidden md:block" />
-          {links.map((item) => (
-            <ProtectedElement key={item.href} session={session} filter={item.show}>
-              <NavLink {...item} id={id} />
-            </ProtectedElement>
-          ))}
-          <div className="mt-auto flex flex-col gap-2">
-            <Divider className="hidden md:block" />
-            <NavLink id="" href="" label={'Back to server list'} icon={<ArrowLeftCircleIcon className="size-5" />} />
-          </div>
-        </div>
+    <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden p-2">
+      <div className="no-scrollbar relative flex h-full gap-3 overflow-x-auto overflow-y-hidden bg-card p-2">
+        {links.map((item) => (
+          <ProtectedElement key={item.href} session={session} filter={item.show}>
+            <NavLink {...item} id={id} />
+          </ProtectedElement>
+        ))}
       </div>
       {children}
     </div>

@@ -43,7 +43,7 @@ export default async function Page({ params }: Props) {
   const { started, name, description, port, mode, ramUsage, totalRam, players, mapName, mapImage, alive, userId } = server;
 
   return (
-    <div className="flex flex-col gap-2 overflow-y-auto p-2 md:pl-2">
+    <div className="flex flex-col gap-2 overflow-y-auto">
       <div className="h-full">
         <div className="server-layout flex min-h-full w-full flex-col gap-2">
           <div className="flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card p-4 [grid-area:info]">

@@ -40,7 +40,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
 
   return (
     <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
-      <div className="flex h-nav w-full items-center justify-between bg-brand px-1 py-2 text-white shadow-lg">
+      <div className="flex h-nav w-full items-center justify-between bg-brand px-1 py-2 shadow-lg">
         <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
           <MenuIcon />
         </Button>
