@@ -28,7 +28,7 @@ export default function LoginButton({ className, children }: { className?: strin
   }, [setCookie, pathname]);
 
   return (
-    <InternalLink className={cn('flex w-full gap-2 rounded-md border bg-brand p-2', className)} href="/auth/login">
+    <InternalLink className={cn('flex w-full items-center gap-1 justify-center rounded-md border bg-brand p-2', className)} href="/auth/login">
       {children || (
         <>
           <LogIn className="size-5" />

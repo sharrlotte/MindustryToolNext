@@ -53,12 +53,16 @@ export function useMe() {
   return { highestRole };
 }
 
-export function ClientSessionProvider({ session, children }: { session: Session; children: ReactNode }) {
+export function ClientSessionProvider({ session, children }: { session: Session | null; children: ReactNode }) {
   const axios = useClientApi();
-  const [auth, setSession] = useState<SessionContextType>({
-    state: 'authenticated',
-    session,
-  });
+  const [auth, setSession] = useState<SessionContextType>(
+    session
+      ? {
+          session,
+          state: 'authenticated',
+        }
+      : { state: 'unauthenticated', session: null },
+  );
 
   const handleSession = useCallback(
     ({ data }: { data: Session | null }) =>

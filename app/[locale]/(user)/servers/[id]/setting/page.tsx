@@ -12,6 +12,7 @@ import ProtectedElement from '@/layout/protected-element';
 import { Hidden } from '@/components/common/hidden';
 import ErrorScreen from '@/components/common/error-screen';
 import { isError } from '@/lib/utils';
+import RequireLogin from '@/components/common/require-login';
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -26,9 +27,17 @@ export default async function Page({ params }: PageProps) {
     return <ErrorScreen error={server} />;
   }
 
+  if (isError(session)) {
+    return <ErrorScreen error={session} />;
+  }
+
+  if (!session) {
+    return <RequireLogin />;
+  }
+
   return (
     <div className="flex h-full flex-col gap-2 p-2">
-      <ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
+      <ProtectedElement session={session} filter={{ any: [{ authority: 'EDIT_ADMIN_SERVER' }, { authorId: session.id }] }}>
         <Dialog>
           <div className="flex bg-card p-2">
             <DialogTrigger asChild>

@@ -71,11 +71,14 @@ export default async function prefetch<TQueryFnData = unknown, TError = DefaultE
   return dehydrate(queryClient);
 }
 
-const getCachedSession: (cookie: string) => Promise<Session> = unstable_cache(
+const getCachedSession: (cookie: string) => Promise<Session | null> = unstable_cache(
   (cookie: string) => {
     axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
 
-    return axiosInstance.get('/auth/session').then((r) => r.data) as Promise<Session>;
+    return axiosInstance
+      .get('/auth/session')
+      .then((r) => r.data)
+      .then((data) => data || null) as Promise<Session | null>;
   },
   ['session'],
   { revalidate: 60 },

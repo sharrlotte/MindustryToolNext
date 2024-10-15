@@ -1,6 +1,7 @@
 import { getSession } from '@/action/action';
 import UpdateThumbnail from '@/app/[locale]/(user)/users/@modal/[id]/setting/update-thumbnail';
 import ErrorScreen from '@/components/common/error-screen';
+import RequireLogin from '@/components/common/require-login';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/utils';
 import React from 'react';
@@ -10,6 +11,10 @@ export default async function Page() {
 
   if (isError(session)) {
     return <ErrorScreen error={session} />;
+  }
+
+  if (!session) {
+    return <RequireLogin />;
   }
 
   return (
