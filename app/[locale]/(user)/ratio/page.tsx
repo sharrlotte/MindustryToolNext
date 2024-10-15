@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
+import { ChevronsUpDownIcon } from 'lucide-react';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import {
   Popover,
@@ -30,7 +30,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 overflow-auto p-4">
+    <div className="flex flex-col items-center justify-center gap-6 overflow-auto p-2">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -53,7 +53,7 @@ export default function Page() {
             ) : (
               <Tran text="ratio.select-block" />
             )}
-            <ChevronUpDownIcon className="ml-auto size-5 shrink-0" />
+            <ChevronsUpDownIcon className="ml-auto size-5 shrink-0" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="z-50 min-w-[200px] bg-card p-0">
@@ -136,7 +136,7 @@ function RequirementCard({ input }: RequirementCardProps) {
   );
 
   return (
-    <div className="flex flex-col items-center justify-start gap-6 bg-card p-4 border">
+    <div className="flex flex-col items-center justify-start gap-6 bg-card p-2 border">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button className="h-12 p-0" title="" variant="icon">

@@ -9,8 +9,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 import { Post } from '@/types/response/Post';
-
-import { LinkIcon } from '@heroicons/react/24/outline';
+import { LinkIcon } from 'lucide-react';
 import InternalLink from '@/components/common/internal-link';
 
 type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {

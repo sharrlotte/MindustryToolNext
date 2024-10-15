@@ -18,21 +18,19 @@ type LoginLogCardProps = {
 };
 
 async function LoginTable() {
-  const data = await serverApi((axios) =>
-    getLogs(axios, { page: 0, collection: 'USER_LOGIN' }),
-  );
+  const data = await serverApi((axios) => getLogs(axios, { page: 0, collection: 'USER_LOGIN' }));
 
   if ('error' in data) {
     return <ErrorScreen error={data} />;
   }
 
   return (
-    <div className="flex h-[500px] w-full flex-col gap-2 bg-card p-2">
+    <div className="flex min-h-[500px] w-full flex-col gap-2 bg-card p-2">
       <span className="font-bold">
         <Tran text="metric.user-login-history" />
       </span>
-      <div className="h-[400px]">
-        <section className="no-scrollbar grid h-[450px] gap-2 overflow-y-auto">
+      <div>
+        <section className="grid h-[450px] gap-2 overflow-y-auto">
           {data.map((log) => (
             <LoginLogCard key={log.id} log={log} />
           ))}
@@ -42,16 +40,11 @@ async function LoginTable() {
   );
 }
 
-function LoginLogCard({
-  log: { id, content, ip, createdAt },
-}: LoginLogCardProps) {
+function LoginLogCard({ log: { id, content, ip, createdAt } }: LoginLogCardProps) {
   const from = new Date(createdAt).toLocaleString();
 
   return (
-    <span
-      className="flex justify-between gap-8 rounded-sm bg-background p-4"
-      key={id}
-    >
+    <span className="flex justify-between gap-8 rounded-sm bg-background p-4" key={id}>
       <span>{`${content} ${from}`}</span>
       <span>{ip}</span>
     </span>

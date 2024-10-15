@@ -28,9 +28,10 @@ import {
   SigmaIcon as _SigmaIcon,
   SquareIcon as _SquareIcon,
   CheckSquare2 as _SquareCheckIcon,
+  X,
 } from 'lucide-react';
 
-import { ChartBarSquareIcon, ChatBubbleLeftIcon, CircleStackIcon, ClipboardDocumentListIcon, Cog6ToothIcon, CommandLineIcon, PuzzlePieceIcon } from '@heroicons/react/24/outline';
+import { SquareKanbanIcon, MessageCircleIcon, HistoryIcon, ClipboardList, SettingsIcon, TerminalIcon, BlocksIcon } from 'lucide-react';
 
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
@@ -54,13 +55,13 @@ export const MapIcon = () => <_MapIcon className="size-5 min-h-5 min-w-5" />;
 export const ServerIcon = ({ className }: Props) => <_ServerIcon className={cn('size-5 min-h-5 min-w-5', className)} />;
 export const VerifyIcon = () => <ShieldCheckIcon className="size-5 min-h-5 min-w-5" />;
 export const UserIcon = () => <_UserIcon className="size-5 min-h-5 min-w-5" />;
-export const ChartIcon = () => <ChartBarSquareIcon className="size-5 min-h-5 min-w-5" />;
-export const ChatIcon = () => <ChatBubbleLeftIcon className="size-5 min-h-5 min-w-5" />;
-export const LogIcon = () => <CircleStackIcon className="size-5 min-h-5 min-w-5" />;
-export const SchematicIcon = () => <ClipboardDocumentListIcon className="size-5 min-h-5 min-w-5" />;
-export const SettingIcon = () => <Cog6ToothIcon className="size-5 min-h-5 min-w-5" />;
-export const CmdIcon = () => <CommandLineIcon className="size-5 min-h-5 min-w-5" />;
-export const PluginIcon = () => <PuzzlePieceIcon className="size-5 min-h-5 min-w-5" />;
+export const ChartIcon = () => <SquareKanbanIcon className="size-5 min-h-5 min-w-5" />;
+export const ChatIcon = () => <MessageCircleIcon className="size-5 min-h-5 min-w-5" />;
+export const LogIcon = () => <HistoryIcon className="size-5 min-h-5 min-w-5" />;
+export const SchematicIcon = () => <ClipboardList className="size-5 min-h-5 min-w-5" />;
+export const SettingIcon = () => <SettingsIcon className="size-5 min-h-5 min-w-5" />;
+export const CmdIcon = () => <TerminalIcon className="size-5 min-h-5 min-w-5" />;
+export const PluginIcon = () => <BlocksIcon className="size-5 min-h-5 min-w-5" />;
 export const NotificationIcon = () => <BellIcon className="mx-1 size-5 min-h-5 min-w-5" />;
 export const GithubIcon = () => <_GithubIcon className="size-5 min-h-5 min-w-5" />;
 export const FacebookIcon = () => <_FacebookIcon className="size-5 min-h-5 min-w-5" />;
@@ -79,6 +80,7 @@ export const SearchIcon = () => <_SearchIcon className="size-5 min-h-5 min-w-5" 
 export const SendIcon = () => <_SendIcon className="size-5 min-h-5 min-w-5" />;
 export const EditIcon = () => <_EditIcon className="size-5 min-h-5 min-w-5" />;
 export const RatioIcon = () => <_SigmaIcon className="size-5 min-h-5 min-w-5" />;
+export const XIcon = () => <X className="size-5 min-h-5 min-w-5" />;
 export const CrownIcon = ({ className }: Props) => <_CrownIcon className={cn('size-5 min-h-5 min-w-5', className)} />;
 
 export function HRIcon({ className }: Props) {

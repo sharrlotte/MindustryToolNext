@@ -7,18 +7,12 @@ import { useCookies } from 'react-cookie';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
 
-import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
+import { LogIn } from 'lucide-react';
 import InternalLink from '@/components/common/internal-link';
 
 const ignored = ['login'];
 
-export default function LoginButton({
-  className,
-  children,
-}: {
-  className?: string;
-  children?: ReactNode;
-}) {
+export default function LoginButton({ className, children }: { className?: string; children?: ReactNode }) {
   const t = useI18n();
   const [_ignore, setCookie] = useCookies();
   const pathname = usePathname();
@@ -34,16 +28,10 @@ export default function LoginButton({
   }, [setCookie, pathname]);
 
   return (
-    <InternalLink
-      className={cn(
-        'flex w-full gap-2 rounded-md border bg-brand p-2',
-        className,
-      )}
-      href="/auth/login"
-    >
+    <InternalLink className={cn('flex w-full gap-2 rounded-md border bg-brand p-2', className)} href="/auth/login">
       {children || (
         <>
-          <ArrowRightEndOnRectangleIcon className="size-5" />
+          <LogIn className="size-5" />
           {t('login')}
         </>
       )}

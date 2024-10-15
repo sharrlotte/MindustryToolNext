@@ -37,20 +37,11 @@ type ServerTabsProps<T> = {
 
 const defaultValue = {};
 
-export function ServerTabs<T extends string>({
-  className,
-  value,
-  name,
-  values,
-  children,
-}: ServerTabsProps<T>) {
-  const [query, setQuery] = useQueryState(defaultValue);
+export function ServerTabs<T extends string>({ className, value, name, values, children }: ServerTabsProps<T>) {
+  const [query, setQuery] = useQueryState({ [name]: value });
 
   const current = query[name];
-  const setValue = useCallback(
-    (value: string) => setQuery({ [name]: value }),
-    [name, setQuery],
-  );
+  const setValue = useCallback((value: string) => setQuery({ [name]: value }), [name, setQuery]);
 
   useEffect(() => {
     if (!current || !values.includes(current as T)) {
@@ -59,15 +50,8 @@ export function ServerTabs<T extends string>({
   }, [current, values, setQuery, setValue, value]);
 
   return (
-    <div
-      className={cn(
-        'flex h-full flex-col gap-2 overflow-hidden p-1',
-        className,
-      )}
-    >
-      <Context.Provider value={{ value: current || value, setValue }}>
-        {children}
-      </Context.Provider>
+    <div className={cn('flex h-full flex-col gap-2 overflow-hidden p-1', className)}>
+      <Context.Provider value={{ value: current || value, setValue }}>{children}</Context.Provider>
     </div>
   );
 }
@@ -78,11 +62,7 @@ type ServerTabsTriggerProps = {
   children: ReactNode;
 };
 
-export function ServerTabsTrigger({
-  className,
-  value,
-  children,
-}: ServerTabsTriggerProps) {
+export function ServerTabsTrigger({ className, value, children }: ServerTabsTriggerProps) {
   const { value: current, setValue } = useTab();
 
   function handleClick() {
@@ -112,11 +92,7 @@ type ServerTabsContentProps = {
   children: ReactNode;
 };
 
-export function ServerTabsContent({
-  className,
-  value,
-  children,
-}: ServerTabsContentProps) {
+export function ServerTabsContent({ className, value, children }: ServerTabsContentProps) {
   const { value: current } = useTab();
 
   return (
@@ -136,14 +112,5 @@ type ServerTabsListProps = {
 };
 
 export function ServerTabsList({ className, children }: ServerTabsListProps) {
-  return (
-    <div
-      className={cn(
-        'inline-flex items-center justify-center rounded-lg bg-card p-1 text-muted-foreground',
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cn('inline-flex items-center justify-center rounded-lg bg-card p-1 text-muted-foreground', className)}>{children}</div>;
 }

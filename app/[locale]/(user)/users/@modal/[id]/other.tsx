@@ -31,7 +31,7 @@ export default function Other({ user }: TabProps) {
 
   return (
     <div
-      className="absolute inset-0 space-y-2 overflow-y-auto bg-background p-4"
+      className="absolute inset-0 space-y-2 overflow-y-auto bg-background p-2"
       ref={(ref) => setContainer(ref)}
     >
       <UserDetail user={user} />
@@ -42,7 +42,7 @@ export default function Other({ user }: TabProps) {
           <TabsTrigger value="post">{t('post')}</TabsTrigger>
         </TabsList>
         <TabsContent value="schematic">
-          <div className="relative flex h-full flex-col gap-4">
+          <div className="relative flex h-full flex-col gap-2">
             <NameTagSearch tags={schematic} />
           <InfinitePage
               params={params}
@@ -65,7 +65,7 @@ export default function Other({ user }: TabProps) {
           </div>
         </TabsContent>
         <TabsContent value="map">
-          <div className="flex h-full w-full flex-col gap-4">
+          <div className="flex h-full w-full flex-col gap-2">
             <NameTagSearch tags={map} />
             <InfinitePage
               params={params}
@@ -88,10 +88,10 @@ export default function Other({ user }: TabProps) {
           </div>
         </TabsContent>
         <TabsContent value="post">
-          <div className="flex h-full w-full flex-col gap-4">
+          <div className="flex h-full w-full flex-col gap-2">
             <NameTagSearch tags={post} />
             <InfinitePage
-              className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-4"
+              className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2"
               params={params}
               queryKey={['users', id, 'posts']}
               getFunc={(axios, params) => getUserPosts(axios, id, params)}

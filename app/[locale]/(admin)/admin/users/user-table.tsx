@@ -11,7 +11,6 @@ import useQueryState from '@/hooks/use-query-state';
 import useSearchPageParams from '@/hooks/use-search-page-params';
 import { Role } from '@/types/response/Role';
 
-import { useQuery } from '@tanstack/react-query';
 import { getRoles } from '@/query/role';
 import { getUserCount, getUsers } from '@/query/user';
 import { GridLayout, ListLayout } from '@/components/common/pagination-layout';

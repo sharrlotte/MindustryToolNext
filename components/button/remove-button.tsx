@@ -14,7 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/i18n/client';
 
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { TrashIcon } from 'lucide-react';
 import React from 'react';
 
 type RemoveButtonProps = {

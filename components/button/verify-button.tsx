@@ -14,7 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/i18n/client';
 
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { CheckIcon } from 'lucide-react';
 import React from 'react';
 
 type VerifyButtonProps = {
