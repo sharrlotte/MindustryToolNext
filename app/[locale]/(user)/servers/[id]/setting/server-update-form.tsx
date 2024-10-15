@@ -1,46 +1,24 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { revalidate } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
-import {
-  InternalServerModes,
-  PutInternalServerRequest,
-  PutInternalServerSchema,
-} from '@/types/request/UpdateInternalServerRequest';
+import { InternalServerModes, PutInternalServerRequest, PutInternalServerSchema } from '@/types/request/UpdateInternalServerRequest';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { deleteInternalServer, updateInternalServer } from '@/query/server';
+import { updateInternalServer } from '@/query/server';
 import Tran from '@/components/common/tran';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -66,8 +44,7 @@ export default function ServerUpdateForm({ server }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: (data: PutInternalServerRequest) =>
-      updateInternalServer(axios, id, data),
+    mutationFn: (data: PutInternalServerRequest) => updateInternalServer(axios, id, data),
     onSuccess: (_, data) => {
       server = { ...currentServer, ...form.getValues() };
       toast({
@@ -88,16 +65,12 @@ export default function ServerUpdateForm({ server }: Props) {
     },
   });
 
-  const isChanged =
-    JSON.stringify(form.getValues()) !== JSON.stringify(currentServer);
+  const isChanged = JSON.stringify(form.getValues()) !== JSON.stringify(currentServer);
 
   return (
     <div className="relative flex h-full flex-col justify-between gap-2">
       <Form {...form}>
-        <form
-          className="flex flex-1 flex-col justify-between bg-card p-4"
-          onSubmit={form.handleSubmit((value) => mutate(value))}
-        >
+        <form className="flex flex-1 flex-col justify-between bg-card p-4" onSubmit={form.handleSubmit((value) => mutate(value))}>
           <div className="space-y-6 overflow-y-auto p-0.5">
             <FormField
               control={form.control}
@@ -110,13 +83,7 @@ export default function ServerUpdateForm({ server }: Props) {
                   <FormControl>
                     <Input placeholder="Test" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    {field.value ? (
-                      <ColorText text={field.value} />
-                    ) : (
-                      <Tran text="server.name-description" />
-                    )}
-                  </FormDescription>
+                  <FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.name-description" />}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -130,13 +97,7 @@ export default function ServerUpdateForm({ server }: Props) {
                   <FormControl>
                     <Input placeholder="Some cool stuff" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    {field.value ? (
-                      <ColorText text={field.value} />
-                    ) : (
-                      <Tran text="server.description-description" />
-                    )}
-                  </FormDescription>
+                  <FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.description-description" />}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -187,102 +148,16 @@ export default function ServerUpdateForm({ server }: Props) {
               )}
             />
           </div>
-          <div className="flex justify-end gap-2 p-2">
-            <Button
-              className={cn(
-                'flex translate-y-[100vh] justify-end transition-transform duration-500',
-                {
-                  'translate-y-0': isChanged,
-                },
-              )}
-              variant="secondary"
-              title={t('reset')}
-              onClick={() => form.reset()}
-              disabled={isPending}
-            >
+          <div className="flex justify-end gap-2">
+            <Button className="flex justify-end" variant="secondary" title={t('reset')} onClick={() => form.reset()} disabled={!isChanged || isPending}>
               {t('reset')}
             </Button>
-            <Button
-              className={cn(
-                'flex translate-y-[100vh] justify-end transition-transform duration-500',
-                {
-                  'translate-y-0': isChanged,
-                },
-              )}
-              variant="primary"
-              type="submit"
-              title={t('update')}
-              disabled={isPending}
-            >
+            <Button className="flex justify-end" variant="primary" type="submit" title={t('update')} disabled={!isChanged || isPending}>
               {t('update')}
             </Button>
-            <DeleteServerButton id={id} />
           </div>
         </form>
       </Form>
     </div>
-  );
-}
-
-type DeleteServerButtonProps = {
-  id: string;
-};
-
-function DeleteServerButton({ id }: DeleteServerButtonProps) {
-  const axios = useClientApi();
-  const router = useRouter();
-  const { invalidateByKey } = useQueriesData();
-  const t = useI18n();
-  const { toast } = useToast();
-  const { mutate, isPending } = useMutation({
-    mutationKey: ['servers'],
-    mutationFn: () => deleteInternalServer(axios, id),
-    onSuccess: () => {
-      toast({
-        title: t('delete-success'),
-        variant: 'success',
-      });
-      router.push('/servers');
-    },
-    onError: (error) =>
-      toast({
-        title: t('delete-fail'),
-        description: error.message,
-        variant: 'destructive',
-      }),
-    onSettled: () => {
-      revalidate({ path: '/servers' });
-      invalidateByKey(['servers']);
-    },
-  });
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          className="min-w-20"
-          title="Delete"
-          variant="destructive"
-          disabled={isPending}
-        >
-          <Tran text="delete" />
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <Tran text="delete-confirm" />
-        <AlertDialogFooter>
-          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button
-              className="bg-destructive hover:bg-destructive"
-              title={t('delete')}
-              onClick={() => mutate()}
-              disabled={isPending}
-            >
-              {t('delete')}
-            </Button>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
   );
 }

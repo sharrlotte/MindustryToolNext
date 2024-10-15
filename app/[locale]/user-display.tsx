@@ -29,7 +29,7 @@ export function Internal() {
             <UserRoleCard roles={session.roles} />
           </div>
         </div>
-        <LogoutButton className="pr-1" />
+        <LogoutButton className="justify-start pr-1" />
       </div>
     );
   }
@@ -38,5 +38,5 @@ export function Internal() {
     return <Skeleton className="flex h-16 max-h-16 flex-1 items-center justify-between rounded-sm bg-card p-1" />;
   }
 
-  return <LoginButton className="w-full gap-1">{t('login')}</LoginButton>;
+  return <LoginButton className="w-full justify-start gap-1" />;
 }

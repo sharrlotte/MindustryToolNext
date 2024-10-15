@@ -4,24 +4,13 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { revalidate } from '@/action/action';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
-import {
-  PutInternalServerPortRequest,
-  PutInternalServerPortSchema,
-} from '@/types/request/UpdateInternalServerRequest';
+import { PutInternalServerPortRequest, PutInternalServerPortSchema } from '@/types/request/UpdateInternalServerRequest';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -35,10 +24,9 @@ type Props = {
   server: InternalServerDetail;
 };
 
-export default function ServerUpdatePortForm({
-  server: { id, port, official },
-}: Props) {
+export default function ServerUpdatePortForm({ server: { id, port, official } }: Props) {
   const t = useI18n();
+
   const form = useForm<PutInternalServerPortRequest>({
     resolver: zodResolver(PutInternalServerPortSchema),
     defaultValues: {
@@ -52,8 +40,7 @@ export default function ServerUpdatePortForm({
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: (data: PutInternalServerPortRequest) =>
-      updateInternalServerPort(axios, id, data),
+    mutationFn: (data: PutInternalServerPortRequest) => updateInternalServerPort(axios, id, data),
     onSuccess: () => {
       toast({
         title: t('update.success'),
@@ -72,12 +59,11 @@ export default function ServerUpdatePortForm({
     },
   });
 
+  const isChanged = form.getValues('port') !== port || form.getValues('official') !== official;
+
   return (
     <Form {...form}>
-      <form
-        className="relative flex flex-1 flex-col justify-between gap-4 bg-card p-4"
-        onSubmit={form.handleSubmit((value) => mutate(value))}
-      >
+      <form className="relative flex flex-1 flex-col justify-between gap-4 bg-card p-4" onSubmit={form.handleSubmit((value) => mutate(value))}>
         <div className="space-y-6">
           <FormField
             control={form.control}
@@ -104,10 +90,7 @@ export default function ServerUpdatePortForm({
               <FormItem>
                 <div className="flex gap-1">
                   <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={(value) => field.onChange(value)}
-                    />
+                    <Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
                   </FormControl>
                   <FormLabel>
                     <Tran text="server.is-official" />
@@ -118,13 +101,11 @@ export default function ServerUpdatePortForm({
             )}
           />
         </div>
-        <div className="flex justify-end">
-          <Button
-            variant="primary"
-            type="submit"
-            title={t('update')}
-            disabled={isPending}
-          >
+        <div className="flex justify-end gap-2">
+          <Button className="flex justify-end" variant="secondary" title={t('reset')} onClick={() => form.reset()} disabled={!isChanged || isPending}>
+            {t('reset')}
+          </Button>
+          <Button variant="primary" type="submit" title={t('update')} disabled={!isChanged || isPending}>
             {t('update')}
           </Button>
         </div>
