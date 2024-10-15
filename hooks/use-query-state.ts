@@ -12,12 +12,13 @@ export default function useQueryState(initialState: Record<string, string>) {
   });
 
   useEffect(() => {
-    const usedParams = Object.fromEntries(
-      params
-        .keys()
-        .filter((key) => Object.keys(initialState).includes(key))
-        .map((key) => [key, params.get(key) as string]),
-    );
+    const usedParams: Record<string, string> = {};
+    params.keys().forEach((key) => {
+      if (Object.keys(initialState).includes(key)) {
+        usedParams[key] = params.get(key) as string;
+      }
+    });
+
     const newState = { ...initialState, ...usedParams };
 
     setState((prev) => {
