@@ -39,7 +39,7 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
     mutationFn: (mapId: string) => createInternalServerMap(axios, serverId, { mapId }),
     onError: (error) => {
       toast({
-        title: t('server.upload-fail'),
+        title: t('upload.fail'),
         description: error.message,
         variant: 'destructive',
       });

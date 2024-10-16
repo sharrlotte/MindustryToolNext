@@ -26,7 +26,14 @@ export default function Page() {
             <LoadingSpinner className="m-auto" />
           ) : (
             <div className="flex h-full w-full overflow-y-auto overflow-x-hidden" ref={(ref) => setContainer(ref)}>
-              <MessageList className="flex h-full flex-col gap-1" queryKey={['servers', id, 'messages']} room={`SERVER-${id}`} container={() => container} params={{ size: 50 }} showNotification={false}>
+              <MessageList
+                className="flex h-full flex-col gap-1"
+                queryKey={['servers', id, 'messages']}
+                room={`SERVER-${id}`}
+                container={() => container}
+                params={{ size: 50 }}
+                showNotification={false}
+              >
                 {(data) => <MessageCard key={data.id} message={data} />}
               </MessageList>
             </div>
@@ -102,7 +109,13 @@ function ChatInput({ id }: ChatInputProps) {
   }
   return (
     <form className="flex h-full flex-1 gap-1" name="text" onSubmit={handleFormSubmit}>
-      <Input className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none" value={message} placeholder="/help" onKeyDown={handleKeyPress} onChange={(event) => setMessage(event.currentTarget.value)} />
+      <Input
+        className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none"
+        value={message}
+        placeholder="/help"
+        onKeyDown={handleKeyPress}
+        onChange={(event) => setMessage(event.currentTarget.value)}
+      />
       <Button className="h-full" variant="primary" type="submit" title={t('send')} disabled={state !== 'connected' || !message}>
         {t('send')}
       </Button>

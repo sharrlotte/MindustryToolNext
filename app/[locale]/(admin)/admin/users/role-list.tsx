@@ -11,5 +11,5 @@ export async function RoleList() {
     return <ErrorScreen error={result} />;
   }
 
-  return result.map((role) => <RoleCard key={role.id} role={role} />);
+  return result.sort((o1, o2) => o2.position - o1.position).map((role) => <RoleCard key={role.id} role={role} />);
 }

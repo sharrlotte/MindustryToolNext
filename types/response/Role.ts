@@ -2,6 +2,7 @@ export type Role = {
   id: number;
   name: string;
   position: number;
+  description: string;
   color: string;
 };
 
@@ -10,6 +11,7 @@ export type RoleWithAuthorities = {
   name: string;
   position: number;
   color: string;
+  description: string;
   authorities: Authority[];
 };
 

@@ -24,7 +24,16 @@ import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
 import { TranslationPaginationQuery } from '@/query/search-query';
-import { createTranslation, CreateTranslationRequest, CreateTranslationSchema, deleteTranslation, getTranslationCompare, getTranslationCompareCount, getTranslationDiff, getTranslationDiffCount } from '@/query/translation';
+import {
+  createTranslation,
+  CreateTranslationRequest,
+  CreateTranslationSchema,
+  deleteTranslation,
+  getTranslationCompare,
+  getTranslationCompareCount,
+  getTranslationDiff,
+  getTranslationDiffCount,
+} from '@/query/translation';
 import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';

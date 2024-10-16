@@ -10,6 +10,9 @@ export function RoleListSkeleton() {
       <TableCell>
         <Skeleton className="h-8 w-full" />
       </TableCell>
+      <TableCell>
+        <Skeleton className="h-8 w-full" />
+      </TableCell>
     </TableRow>
   ));
 }
