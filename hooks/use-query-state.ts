@@ -52,12 +52,17 @@ export default function useQueryState(initialState: Record<string, string>) {
     [params, router],
   );
 
-  function navigate(params: URLSearchParams) {
+  function navigate(queryParams: URLSearchParams) {
     if (timeout) {
       clearTimeout(timeout);
     }
 
-    timeout = setTimeout(() => router.replace(`${pathname}?${params.toString()}`), 10);
+    for (const key of queryParams.keys()) {
+      if (params.get(key) !== queryParams.get(key)) {
+        timeout = setTimeout(() => router.replace(`${pathname}?${queryParams.toString()}`), 10);
+        break;
+      }
+    }
   }
 
   return [Object.fromEntries(params.entries()), setter] as const;
