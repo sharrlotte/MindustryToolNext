@@ -1,5 +1,4 @@
 import { type ClassValue, clsx } from 'clsx';
-import Nprogress from 'nprogress';
 import { twMerge } from 'tailwind-merge';
 
 import env from '@/constant/env';
@@ -180,11 +179,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export async function delay(timeMilis: number) {
   return await new Promise((resolve) => setTimeout(resolve, timeMilis));
-}
-
-export async function fixProgressBar() {
-  await delay(500);
-  Nprogress.done();
 }
 
 export function isSameDay(d1: Date, d2: Date) {
