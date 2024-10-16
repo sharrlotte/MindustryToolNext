@@ -14,20 +14,22 @@ type Props = {
 };
 
 export default function NavLink({ id, href, label, icon }: Props) {
-  let pathname = usePathname();
+  const pathname = usePathname();
   const firstSlash = pathname.indexOf('/', 1);
-  pathname = pathname.slice(firstSlash);
+  const route = pathname.slice(firstSlash);
 
   return (
     <InternalLink
-      className={cn('flex h-9 snap-center items-center gap-2 text-nowrap px-2 py-2 text-sm font-semibold opacity-70 transition-[gap] hover:rounded-sm hover:bg-background hover:text-white hover:opacity-100', {
-        'rounded-sm bg-background text-white opacity-100': (pathname.endsWith(href) && href !== '') || (id !== '' && href === '' && pathname === `/servers/${id}`),
+      className={cn('flex h-12 snap-center items-center gap-2 text-nowrap text-sm font-semibold opacity-70 transition-[gap] hover:text-white hover:opacity-100', {
+        'border-b-[3px] border-b-foreground text-white opacity-100': (route.endsWith(href) && href !== '') || (id !== '' && href === '' && route === `/servers/${id}`),
       })}
       key={href}
       href={`/servers/${id}/${href}`}
     >
-      {icon}
-      <span className={cn('overflow-hidden transition-[width] duration-200')}>{label}</span>
+      <div className="flex px-2 gap-1 py-2 hover:bg-muted justify-center rounded-md">
+        {icon}
+        <span className={cn('overflow-hidden transition-[width] duration-200')}>{label}</span>
+      </div>
     </InternalLink>
   );
 }
