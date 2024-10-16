@@ -13,10 +13,17 @@ import ScrollContainer from '@/components/common/scroll-container';
 import RequireLogin from '@/components/common/require-login';
 
 export const experimental_ppr = true;
+export const maxDuration = 10;
 
-const skeleton = Array(20)
-  .fill(1)
-  .map((_, index) => <InternalServerCardSkeleton key={index} />);
+const skeleton = (
+  <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1">
+    {Array(20)
+      .fill(1)
+      .map((_, index) => (
+        <InternalServerCardSkeleton key={index} />
+      ))}
+  </div>
+);
 
 export default async function Page() {
   const session = await getSession();

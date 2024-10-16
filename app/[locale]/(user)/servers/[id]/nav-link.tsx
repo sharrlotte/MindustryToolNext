@@ -20,8 +20,8 @@ export default function NavLink({ id, href, label, icon }: Props) {
 
   return (
     <InternalLink
-      className={cn('flex h-9 snap-center items-center gap-2 text-nowrap px-2 py-2 text-sm font-semibold opacity-70 transition-[gap] hover:rounded-sm hover:bg-brand hover:text-white hover:opacity-100', {
-        'rounded-sm bg-brand text-white opacity-100': (pathname.endsWith(href) && href !== '') || (id !== '' && href === '' && pathname === `/servers/${id}`),
+      className={cn('flex h-9 snap-center items-center gap-2 text-nowrap px-2 py-2 text-sm font-semibold opacity-70 transition-[gap] hover:rounded-sm hover:bg-background hover:text-white hover:opacity-100', {
+        'rounded-sm bg-background text-white opacity-100': (pathname.endsWith(href) && href !== '') || (id !== '' && href === '' && pathname === `/servers/${id}`),
       })}
       key={href}
       href={`/servers/${id}/${href}`}
