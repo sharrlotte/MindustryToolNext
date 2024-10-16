@@ -64,7 +64,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
   return (
     <FallbackImage
-      className="aspect-square w-full min-w-[30dvw] overflow-hidden rounded-lg object-cover md:max-w-[min(min(80dvh,80dvw),1920px)]"
+      className="w-full min-w-[30dvw] overflow-hidden rounded-lg object-cover md:max-w-[min(min(80dvh,80dvw),1920px)]"
       src={src}
       alt={alt}
       errorSrc={errorSrc}
