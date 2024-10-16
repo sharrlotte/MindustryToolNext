@@ -1,23 +1,11 @@
-import {
-  InfiniteData,
-  QueryKey,
-  useInfiniteQuery,
-} from '@tanstack/react-query';
+import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import { Message } from '@/types/response/Message';
 import { useSocket } from '@/context/socket-context';
 import { MessageQuery } from '@/types/data/pageable-search-schema';
-export default function useMessageQuery<P extends MessageQuery>(
-  room: string,
-  params: P,
-  queryKey: QueryKey,
-) {
+export default function useMessageQuery<P extends MessageQuery>(room: string, params: P, queryKey: QueryKey) {
   const { socket } = useSocket();
 
-  const getNextPageParam = (
-    lastPage: Message[],
-    allPages: Message[][],
-    lastPageParams: P,
-  ) => {
+  const getNextPageParam = (lastPage: Message[], allPages: Message[][], lastPageParams: P) => {
     if (lastPage.length === 0 || lastPage.length < params.size) {
       return undefined;
     }
@@ -27,16 +15,8 @@ export default function useMessageQuery<P extends MessageQuery>(
     return { ...lastPageParams, cursor: last ?? null };
   };
 
-  const getPreviousPageParam = (
-    lastPage: Message[],
-    allPages: Message[][],
-    lastPageParams: P,
-  ) => {
-    if (
-      lastPage.length === 0 ||
-      lastPage.length < params.size ||
-      allPages.length === 0
-    ) {
+  const getPreviousPageParam = (lastPage: Message[], allPages: Message[][], lastPageParams: P) => {
+    if (lastPage.length === 0 || lastPage.length < params.size || allPages.length === 0) {
       return undefined;
     }
 
@@ -47,22 +27,23 @@ export default function useMessageQuery<P extends MessageQuery>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { size, ..._rest } = params;
 
-  const data = useInfiniteQuery<
-    Message[],
-    Error,
-    InfiniteData<Message[], P>,
-    QueryKey,
-    P
-  >({
+  const data = useInfiniteQuery<Message[], Error, InfiniteData<Message[], P>, QueryKey, P>({
     queryKey,
     initialPageParam: params,
-    queryFn: (context) =>
-      socket.onRoom(room).await({
+    queryFn: async (context) => {
+      const result = await socket.onRoom(room).await({
         method: 'GET_MESSAGE',
         // @ts-expect-error idk
         cursor: context.pageParam.cursor,
         size,
-      }),
+      });
+
+      if (result && 'error' in result) {
+        throw result;
+      }
+
+      return result;
+    },
     getNextPageParam,
     getPreviousPageParam,
   });
