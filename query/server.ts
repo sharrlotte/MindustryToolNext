@@ -5,10 +5,7 @@ import CreateInternalServerPluginRequest from '@/types/request/CreaeteInternalSe
 import CreateInternalServerMapRequest from '@/types/request/CreateInternalServerMapRequest';
 import { CreateInternalServerRequest } from '@/types/request/CreateInternalServerRequest';
 import CreateServerRequest from '@/types/request/CreateServerRequest';
-import {
-  PutInternalServerPortRequest,
-  PutInternalServerRequest,
-} from '@/types/request/UpdateInternalServerRequest';
+import { PutInternalServerPortRequest, PutInternalServerRequest } from '@/types/request/UpdateInternalServerRequest';
 import { ExternalServer } from '@/types/response/ExternalServer';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 import { InternalServerMap } from '@/types/response/InternalServerMap';
@@ -18,11 +15,7 @@ import { PostServerResponse } from '@/types/response/PostServerResponse';
 import { ServerFile } from '@/types/response/ServerFile';
 import { AxiosInstance } from 'axios';
 
-export async function deleteServerFile(
-  axios: AxiosInstance,
-  id: string,
-  path: string,
-): Promise<void> {
+export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
   const result = await axios.delete(`/internal-servers/${id}/files`, {
     params: { path },
   });
@@ -30,51 +23,31 @@ export async function deleteServerFile(
   return result.data;
 }
 
-export async function getServerPlayers(
-  axios: AxiosInstance,
-  id: string,
-): Promise<Player[]> {
+export async function getServerPlayers(axios: AxiosInstance, id: string): Promise<Player[]> {
   const result = await axios.get(`/internal-servers/${id}/players`);
 
   return result.data;
 }
 
-export async function deleteInternalServerMap(
-  axios: AxiosInstance,
-  id: string,
-  mapId: string,
-): Promise<void> {
+export async function deleteInternalServerMap(axios: AxiosInstance, id: string, mapId: string): Promise<void> {
   const result = await axios.delete(`/internal-servers/${id}/maps/${mapId}`);
 
   return result.data;
 }
 
-export async function deleteInternalServerPlugin(
-  axios: AxiosInstance,
-  id: string,
-  pluginId: string,
-): Promise<void> {
-  const result = await axios.delete(
-    `/internal-servers/${id}/plugins/${pluginId}`,
-  );
+export async function deleteInternalServerPlugin(axios: AxiosInstance, id: string, pluginId: string): Promise<void> {
+  const result = await axios.delete(`/internal-servers/${id}/plugins/${pluginId}`);
 
   return result.data;
 }
 
-export async function deleteInternalServer(
-  axios: AxiosInstance,
-  id: string,
-): Promise<void> {
+export async function deleteInternalServer(axios: AxiosInstance, id: string): Promise<void> {
   const result = await axios.delete(`/internal-servers/${id}`);
 
   return result.data;
 }
 
-export async function getServerFiles(
-  axios: AxiosInstance,
-  id: string,
-  path: string,
-): Promise<ServerFile[]> {
+export async function getServerFiles(axios: AxiosInstance, id: string, path: string): Promise<ServerFile[]> {
   const result = await axios.get(`/internal-servers/${id}/files`, {
     params: { path },
   });
@@ -82,11 +55,7 @@ export async function getServerFiles(
   return result.data;
 }
 
-export async function getInternalServerMaps(
-  axios: AxiosInstance,
-  id: string,
-  params: PaginationQuery,
-): Promise<InternalServerMap[]> {
+export async function getInternalServerMaps(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<InternalServerMap[]> {
   const result = await axios.get(`/internal-servers/${id}/maps`, {
     params: params,
   });
@@ -94,11 +63,7 @@ export async function getInternalServerMaps(
   return result.data;
 }
 
-export async function getInternalServerPlugins(
-  axios: AxiosInstance,
-  id: string,
-  params: PaginationQuery,
-): Promise<InternalServerPlugin[]> {
+export async function getInternalServerPlugins(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<InternalServerPlugin[]> {
   const result = await axios.get(`/internal-servers/${id}/plugins`, {
     params: params,
   });
@@ -106,28 +71,19 @@ export async function getInternalServerPlugins(
   return result.data;
 }
 
-export async function getInternalServer(
-  axios: AxiosInstance,
-  { id }: IdSearchParams,
-): Promise<InternalServerDetail> {
+export async function getInternalServer(axios: AxiosInstance, { id }: IdSearchParams): Promise<InternalServerDetail> {
   const result = await axios.get(`/internal-servers/${id}`);
 
   return result.data;
 }
 
-export async function getInternalServers(
-  axios: AxiosInstance,
-  params?: { official: boolean },
-): Promise<InternalServerDetail[]> {
+export async function getInternalServers(axios: AxiosInstance, params?: { official: boolean }): Promise<InternalServerDetail[]> {
   const result = await axios.get(`/internal-servers`, { params });
 
   return result.data;
 }
 
-export async function getServers(
-  axios: AxiosInstance,
-  params: PaginationQuery,
-): Promise<ExternalServer[]> {
+export async function getServers(axios: AxiosInstance, params: PaginationQuery): Promise<ExternalServer[]> {
   const result = await axios.get(`/external-servers`, {
     params: {
       ...params,
@@ -138,12 +94,7 @@ export async function getServers(
   return result.data;
 }
 
-export async function createServerFile(
-  axios: AxiosInstance,
-  serverId: string,
-  path: string,
-  file: File,
-): Promise<void> {
+export async function createServerFile(axios: AxiosInstance, serverId: string, path: string, file: File): Promise<void> {
   const form = toForm({ file });
 
   return axios.post(`/internal-servers/${serverId}/files`, form, {
@@ -152,30 +103,19 @@ export async function createServerFile(
   });
 }
 
-export async function createInternalServerMap(
-  axios: AxiosInstance,
-  serverId: string,
-  data: CreateInternalServerMapRequest,
-): Promise<void> {
+export async function createInternalServerMap(axios: AxiosInstance, serverId: string, data: CreateInternalServerMapRequest): Promise<void> {
   return axios.post(`/internal-servers/${serverId}/maps`, data, {
     data,
   });
 }
 
-export async function createInternalServerPlugin(
-  axios: AxiosInstance,
-  serverId: string,
-  data: CreateInternalServerPluginRequest,
-): Promise<void> {
+export async function createInternalServerPlugin(axios: AxiosInstance, serverId: string, data: CreateInternalServerPluginRequest): Promise<void> {
   return axios.post(`/internal-servers/${serverId}/plugins`, data, {
     data,
   });
 }
 
-export async function createInternalServer(
-  axios: AxiosInstance,
-  data: CreateInternalServerRequest,
-): Promise<PostServerResponse> {
+export async function createInternalServer(axios: AxiosInstance, data: CreateInternalServerRequest): Promise<PostServerResponse> {
   const result = await axios.post('/internal-servers', data, {
     data,
   });
@@ -183,19 +123,13 @@ export async function createInternalServer(
   return result.data;
 }
 
-export async function createReloadInternalServer(
-  axios: AxiosInstance,
-  id: string,
-): Promise<PostServerResponse> {
+export async function createReloadInternalServer(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
   const result = await axios.post(`/internal-servers/${id}/reload`);
 
   return result.data;
 }
 
-export async function createServer(
-  axios: AxiosInstance,
-  data: CreateServerRequest,
-): Promise<PostServerResponse> {
+export async function createServer(axios: AxiosInstance, data: CreateServerRequest): Promise<PostServerResponse> {
   const result = await axios.post('/mindustry-servers', data, {
     data,
   });
@@ -203,56 +137,37 @@ export async function createServer(
   return result.data;
 }
 
-export async function shutdownInternalServer(
-  axios: AxiosInstance,
-  id: string,
-): Promise<PostServerResponse> {
+export async function shutdownInternalServer(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
   const result = await axios.post(`/internal-servers/${id}/shutdown`);
 
   return result.data;
 }
 
-export async function startInternalServer(
-  axios: AxiosInstance,
-  id: string,
-): Promise<PostServerResponse> {
+export async function startInternalServer(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
   const result = await axios.post(`/internal-servers/${id}/start`);
 
   return result.data;
 }
 
-export async function reloadInternalServer(
-  axios: AxiosInstance,
-  id: string,
-): Promise<PostServerResponse> {
+export async function reloadInternalServer(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
   const result = await axios.post(`/internal-servers/${id}/reload`);
 
   return result.data;
 }
 
-export async function reloadInternalServers(
-  axios: AxiosInstance,
-): Promise<PostServerResponse> {
+export async function reloadInternalServers(axios: AxiosInstance): Promise<PostServerResponse> {
   const result = await axios.post('/internal-servers/reload');
 
   return result.data;
 }
 
-export async function updateInternalServer(
-  axios: AxiosInstance,
-  serverId: string,
-  data: PutInternalServerRequest,
-): Promise<void> {
+export async function updateInternalServer(axios: AxiosInstance, serverId: string, data: PutInternalServerRequest): Promise<void> {
   return axios.put(`/internal-servers/${serverId}`, data, {
     data,
   });
 }
 
-export async function updateInternalServerPort(
-  axios: AxiosInstance,
-  serverId: string,
-  data: PutInternalServerPortRequest,
-): Promise<void> {
+export async function updateInternalServerPort(axios: AxiosInstance, serverId: string, data: PutInternalServerPortRequest): Promise<void> {
   return axios.put(`/internal-servers/${serverId}/port`, data, {
     data,
   });

@@ -16,7 +16,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-2 overflow-hidden">
-      <div className=" flex justify-end bg-card p-2">
+      <div className=" flex h-14 items-center justify-end bg-card p-2">
         <AddPluginDialog serverId={id} />
       </div>
       <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>

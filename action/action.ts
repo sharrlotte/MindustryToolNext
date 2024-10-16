@@ -42,8 +42,9 @@ type ServerApi<T> =
 export type ApiError = { error: any };
 
 export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError> {
-  unstable_noStore(); // To opt out of static renderer
   try {
+    unstable_noStore(); // To opt out of static renderer
+
     const axios = await getServerApi();
 
     const data = 'queryFn' in queryFn ? await queryFn.queryFn(axios) : await queryFn(axios);
@@ -72,13 +73,13 @@ export default async function prefetch<TQueryFnData = unknown, TError = DefaultE
 }
 
 const getCachedSession: (cookie: string) => Promise<Session | null> = unstable_cache(
-  (cookie: string) => {
+  async (cookie: string) => {
     axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
 
-    return axiosInstance
+    return await axiosInstance
       .get('/auth/session')
       .then((r) => r.data)
-      .then((data) => data || null) as Promise<Session | null>;
+      .then((data) => data || null);
   },
   ['session'],
   { revalidate: 60 },
