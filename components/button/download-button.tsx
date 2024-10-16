@@ -4,7 +4,7 @@ import { saveAs } from 'file-saver';
 import React, { HTMLAttributes } from 'react';
 
 import useClientApi from '@/hooks/use-client';
-import { cn, fixProgressBar } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 import { ArrowDownToLine } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
@@ -25,7 +25,12 @@ export default function DownloadButton({ className, href, fileName, secure, chil
   }
 
   return (
-    <a className={cn('flex min-h-8 items-center justify-center rounded-md border border-border hover:bg-brand hover:text-background hover:dark:text-foreground', className)} {...props} href={href} download={fileName ?? true} onClick={fixProgressBar}>
+    <a
+      className={cn('flex min-h-8 items-center justify-center rounded-md border border-border hover:bg-brand hover:text-background hover:dark:text-foreground', className)}
+      {...props}
+      href={href}
+      download={fileName ?? true}
+    >
       <ArrowDownToLine className="size-5" />
     </a>
   );

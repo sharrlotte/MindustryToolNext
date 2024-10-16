@@ -8,7 +8,6 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
-import NextTopLoader from 'nextjs-toploader';
 import React from 'react';
 import './globals.css';
 
@@ -49,9 +48,7 @@ export const metadata: Metadata = {
     description: 'MindustryTool',
   },
   alternates: {
-    languages: Object.fromEntries(
-      env.locales.map((lang) => [lang, `${env.url.base}/${lang}`]),
-    ),
+    languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}`])),
   },
   robots: {
     index: true,
@@ -72,24 +69,13 @@ export default async function Root({ children, params }: Props) {
 
   return (
     <html
-      className={cn(
-        'dark h-full w-full overflow-hidden bg-background text-foreground antialiased',
-        noto.variable,
-        inter.variable,
-        icon.variable,
-      )}
+      className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable)}
       lang={locale ?? 'en'}
       suppressHydrationWarning
       data-color-mode="dark"
     >
       <body className="h-full w-full overflow-hidden">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextTopLoader height={2} showSpinner={false} color="white" />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SessionProvider>
             <SocketProvider>
               <QueryProvider>
