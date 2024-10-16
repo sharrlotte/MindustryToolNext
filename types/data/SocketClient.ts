@@ -1,17 +1,9 @@
-import ReconnectingWebSocket, {
-  CloseEvent,
-  ErrorEvent,
-  Event,
-} from 'reconnecting-websocket';
+import ReconnectingWebSocket, { CloseEvent, ErrorEvent, Event } from 'reconnecting-websocket';
 
 import { Message } from '@/types/response/Message';
 import { User } from '@/types/response/User';
 
-export type SocketState =
-  | 'connecting'
-  | 'connected'
-  | 'disconnecting'
-  | 'disconnected';
+export type SocketState = 'connecting' | 'connected' | 'disconnecting' | 'disconnected';
 
 export type SocketRoom = 'SERVER' | 'LOG' | string;
 
@@ -100,10 +92,7 @@ export default class SocketClient {
 
   private requests: Record<string, PromiseReceiver> = {};
 
-  public async onMessage<T extends SocketEvent['method']>(
-    method: T,
-    handler: (data: Extract<SocketEvent, { method: T }>['data']) => void,
-  ) {
+  public async onMessage<T extends SocketEvent['method']>(method: T, handler: (data: Extract<SocketEvent, { method: T }>['data']) => void) {
     this.handlers[method + this.room] = handler;
 
     if (this.room !== '' && !this.rooms.includes(this.room)) {
@@ -134,7 +123,7 @@ export default class SocketClient {
         }
 
         if (message.method === 'Error') {
-          throw new Error(message.message);
+          throw { error: { message: message.message } };
         }
 
         if (message.id) {
@@ -195,9 +184,7 @@ export default class SocketClient {
     return await promise;
   }
 
-  public async await<T extends MessagePayload>(
-    payload: T,
-  ): Promise<Extract<SocketEvent, { method: T['method'] }>['data']> {
+  public async await<T extends MessagePayload>(payload: T): Promise<Extract<SocketEvent, { method: T['method'] }>['data']> {
     const room = this.room;
 
     if (room !== '' && !this.rooms.includes(room)) {

@@ -3,7 +3,6 @@ import { ReactNode } from 'react';
 import { Filter, hasAccess, isError } from '@/lib/utils';
 import { Session } from '@/types/response/Session';
 import { ApiError } from '@/action/action';
-import ErrorScreen from '@/components/common/error-screen';
 
 type Props = {
   filter?: Filter;
@@ -14,7 +13,7 @@ type Props = {
 
 export default function ProtectedElement({ children, alt, filter, session }: Props) {
   if (isError(session)) {
-    return <ErrorScreen error={session} />;
+    return alt;
   }
 
   return hasAccess(session, filter) ? children : alt;

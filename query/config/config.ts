@@ -36,6 +36,13 @@ axiosInstance.interceptors.response.use(
             status: 503,
           };
       }
+
+      if (code === 'ECONNABORTED') {
+        throw {
+          message: 'Connection aborted',
+          status: 500,
+        };
+      }
     }
 
     if (error?.response?.data) {

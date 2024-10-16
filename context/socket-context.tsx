@@ -55,8 +55,15 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   }, [socket]);
 
   useEffect(() => {
-    return () => {
+    function closeSocket() {
       socket?.close();
+    }
+
+    window.addEventListener('beforeunload', closeSocket);
+
+    return () => {
+      closeSocket();
+      window.removeEventListener('beforeunload', closeSocket);
     };
   }, [socket]);
 

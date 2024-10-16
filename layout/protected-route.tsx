@@ -4,7 +4,6 @@ import RequireLogin from '@/components/common/require-login';
 import { Session } from '@/types/response/Session';
 import Tran from '@/components/common/tran';
 import { ApiError } from '@/action/action';
-import ErrorScreen from '@/components/common/error-screen';
 import { Filter, hasAccess, isError } from '@/lib/utils';
 
 type Props = {
@@ -19,7 +18,7 @@ function NoPermission() {
 
 export default function ProtectedRoute({ filter, children, session }: Props) {
   if (isError(session)) {
-    return <ErrorScreen error={session} />;
+    return <NoPermission />;
   }
 
   if (!session || session.roles === undefined || session.roles === null) return <RequireLogin />;

@@ -25,7 +25,7 @@ export default function Page() {
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto" />
           ) : (
-            <div className="h-full overflow-y-auto" ref={(ref) => setContainer(ref)}>
+            <div className="flex h-full w-full overflow-y-auto overflow-x-hidden" ref={(ref) => setContainer(ref)}>
               <MessageList className="flex h-full flex-col gap-1" queryKey={['servers', id, 'messages']} room={`SERVER-${id}`} container={() => container} params={{ size: 50 }} showNotification={false}>
                 {(data) => <MessageCard key={data.id} message={data} />}
               </MessageList>

@@ -7,10 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
 import React, { useState } from 'react';
 
-async function toggleDebug(
-  axios: AxiosInstance,
-  value: boolean,
-): Promise<{ data: boolean }> {
+async function toggleDebug(axios: AxiosInstance, value: boolean): Promise<{ data: boolean }> {
   return await axios.post(`/debug`, null, {
     params: {
       value,
@@ -26,7 +23,6 @@ export default function Page() {
     mutationKey: ['debug'],
     mutationFn: async (value: boolean) => toggleDebug(axios, value),
     onSuccess: (data) => setValue(data.data),
-    onError: (error) => console.error('Failed to update user:', error),
   });
 
   function handleChange(data: boolean) {
@@ -36,13 +32,7 @@ export default function Page() {
 
   return (
     <div className="flex h-full items-center gap-1 bg-card p-2">
-      <Input
-        className="aspect-square w-4"
-        type="checkbox"
-        checked={value}
-        disabled={isPending}
-        onChange={(e) => handleChange(e.target.checked)}
-      />
+      <Input className="aspect-square w-4" type="checkbox" checked={value} disabled={isPending} onChange={(e) => handleChange(e.target.checked)} />
       <Tran text="setting.debug" />
     </div>
   );

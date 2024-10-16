@@ -12,6 +12,7 @@ import { MessageQuery } from '@/types/data/pageable-search-schema';
 import useNotification from '@/hooks/use-notification';
 import Tran from '@/components/common/tran';
 import useWindow from '@/hooks/use-window';
+import { useInterval } from 'usehooks-ts';
 
 type MessageListProps = {
   className?: string;
@@ -156,6 +157,8 @@ export default function MessageList({ className = 'grid w-full grid-cols-[repeat
       list?.removeEventListener('scroll', checkIfNeedFetchMore);
     };
   }, [checkIfNeedFetchMore, currentContainer, list, scrollTopRef]);
+
+  useInterval(checkIfNeedFetchMore, 100);
 
   if (!loader) {
     loader = <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" />;
