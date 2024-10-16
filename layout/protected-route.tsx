@@ -13,7 +13,11 @@ type Props = {
 };
 
 function NoPermission() {
-  return <Tran text="no-access" />;
+  return (
+    <div className="flex h-full w-full items-center justify-center">
+      <Tran text="no-access" />
+    </div>
+  );
 }
 
 export default function ProtectedRoute({ filter, children, session }: Props) {

@@ -76,11 +76,11 @@ export default function SchematicList() {
           <PaginationNavigator numberOfItems={data} />
         </GridLayout>
         <div className="flex gap-2">
-          <InternalLink variant="button-secondary" title="my-schematic" href={mySchematicLink}>
+          <InternalLink variant="button-secondary" href={mySchematicLink}>
             <UserIcon />
             <Tran text="my-schematic" />
           </InternalLink>
-          <InternalLink variant="button-secondary" title="upload-schematic" href={uploadLink}>
+          <InternalLink variant="button-secondary" href={uploadLink}>
             <UploadIcon />
             <Tran text="upload-schematic" />
           </InternalLink>

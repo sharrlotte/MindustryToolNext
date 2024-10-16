@@ -2,6 +2,7 @@
 
 import { revalidate } from '@/action/action';
 import { Hidden } from '@/components/common/hidden';
+import { EditIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -10,21 +11,21 @@ import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { createRole, CreateRoleRequest, CreateRoleSchema } from '@/query/role';
+import { updateRole, UpdateRoleRequest, UpdateRoleSchema } from '@/query/role';
+import { Role } from '@/types/response/Role';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-export default function CreateRoleDialog() {
+type Props = {
+  role: Role;
+};
+
+export default function UpdateRoleDialog({ role }: Props) {
   const form = useForm({
-    resolver: zodResolver(CreateRoleSchema),
-    defaultValues: {
-      name: '',
-      description: '',
-      position: 0,
-      color: '',
-    },
+    resolver: zodResolver(UpdateRoleSchema),
+    defaultValues: role,
   });
   const [open, setOpen] = useState(false);
 
@@ -34,7 +35,7 @@ export default function CreateRoleDialog() {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['roles'],
-    mutationFn: (data: CreateRoleRequest) => createRole(axios, data),
+    mutationFn: (data: UpdateRoleRequest) => updateRole(axios, role.id, data),
     onSuccess: () => {
       toast({
         title: <Tran text="upload.success" />,
@@ -58,13 +59,14 @@ export default function CreateRoleDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Tran text="role.add-role" />
+        <Button size="command" variant="command">
+          <EditIcon />
+          <Tran text="update" />
         </Button>
       </DialogTrigger>
       <DialogContent className="overflow-y-auto p-4">
         <DialogTitle>
-          <Tran text="role.add-role" />
+          <Tran text="update" />
         </DialogTitle>
         <Hidden>
           <DialogDescription />

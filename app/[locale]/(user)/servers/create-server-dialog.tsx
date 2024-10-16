@@ -7,22 +7,8 @@ import { revalidate } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -32,10 +18,7 @@ import { InternalServerModes } from '@/types/request/UpdateInternalServerRequest
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import {
-  CreateInternalServerRequest,
-  CreateInternalServerSchema,
-} from '@/types/request/CreateInternalServerRequest';
+import { CreateInternalServerRequest, CreateInternalServerSchema } from '@/types/request/CreateInternalServerRequest';
 import { createInternalServer } from '@/query/server';
 import Tran from '@/components/common/tran';
 import { Textarea } from '@/components/ui/textarea';
@@ -60,8 +43,7 @@ export default function CreateServerDialog() {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: (data: CreateInternalServerRequest) =>
-      createInternalServer(axios, data),
+    mutationFn: (data: CreateInternalServerRequest) => createInternalServer(axios, data),
     onSuccess: () => {
       toast({
         title: t('upload.success'),
@@ -97,10 +79,7 @@ export default function CreateServerDialog() {
           <DialogDescription>
             <Tran text="server.servers-limit" />
           </DialogDescription>
-          <form
-            className="flex flex-1 flex-col justify-between space-y-4"
-            onSubmit={form.handleSubmit((value) => mutate(value))}
-          >
+          <form className="flex flex-1 flex-col justify-between space-y-4" onSubmit={form.handleSubmit((value) => mutate(value))}>
             <FormField
               control={form.control}
               name="name"
@@ -112,13 +91,7 @@ export default function CreateServerDialog() {
                   <FormControl>
                     <Input placeholder="Test" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    {field.value ? (
-                      <ColorText text={field.value} />
-                    ) : (
-                      <Tran text="server.name-description" />
-                    )}
-                  </FormDescription>
+                  <FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.name-description" />}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -134,13 +107,7 @@ export default function CreateServerDialog() {
                   <FormControl>
                     <Input placeholder="Some cool stuff" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    {field.value ? (
-                      <ColorText text={field.value} />
-                    ) : (
-                      <Tran text="server.description-description" />
-                    )}
-                  </FormDescription>
+                  <FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.description-description" />}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -191,19 +158,10 @@ export default function CreateServerDialog() {
               )}
             />
             <div className="ml-auto grid w-fit grid-cols-2 justify-end gap-2">
-              <Button
-                variant="secondary"
-                title={t('reset')}
-                onClick={() => form.reset()}
-              >
+              <Button variant="secondary" title={t('reset')} onClick={() => form.reset()}>
                 {t('reset')}
               </Button>
-              <Button
-                variant="primary"
-                type="submit"
-                title={t('upload')}
-                disabled={isPending}
-              >
+              <Button variant="primary" type="submit" title={t('upload')} disabled={isPending}>
                 {t('upload')}
               </Button>
             </div>

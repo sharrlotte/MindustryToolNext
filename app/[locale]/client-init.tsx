@@ -18,9 +18,13 @@ export default function ClientInit() {
   });
 
   useEffect(() => {
-    socket
-      .onRoom('GLOBAL')
-      .onMessage('MESSAGE', (message) => postNotification(message));
+    socket.onRoom('GLOBAL').onMessage('MESSAGE', (message) => {
+      if ('error' in message) {
+        return;
+      }
+
+      postNotification(message);
+    });
   }, [socket, postNotification]);
 
   return undefined;

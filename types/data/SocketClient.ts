@@ -7,7 +7,12 @@ export type SocketState = 'connecting' | 'connected' | 'disconnecting' | 'discon
 
 export type SocketRoom = 'SERVER' | 'LOG' | string;
 
-export type EventHandler = (data: any, event: MessageEvent) => void;
+export type SocketError = {
+  error: { message: string };
+};
+
+export type EventHandler = (data: any | SocketError, event: MessageEvent) => void;
+
 type BaseSocketEvent = {
   id: string;
 };
@@ -78,6 +83,8 @@ function genId() {
   return count.toString();
 }
 
+type SocketHandlerResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
+
 export default class SocketClient {
   private socket: ReconnectingWebSocket;
 
@@ -92,7 +99,7 @@ export default class SocketClient {
 
   private requests: Record<string, PromiseReceiver> = {};
 
-  public async onMessage<T extends SocketEvent['method']>(method: T, handler: (data: Extract<SocketEvent, { method: T }>['data']) => void) {
+  public async onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketHandlerResult<T>) => void) {
     this.handlers[method + this.room] = handler;
 
     if (this.room !== '' && !this.rooms.includes(this.room)) {
@@ -119,11 +126,11 @@ export default class SocketClient {
         const handler = this.handlers[message.method + message.room];
 
         if (handler) {
-          handler(message.data, event);
-        }
-
-        if (message.method === 'Error') {
-          throw { error: { message: message.message } };
+          if (message.method === 'Error') {
+            handler({ error: { message: message.message } }, event);
+          } else {
+            handler(message.data, event);
+          }
         }
 
         if (message.id) {
@@ -184,7 +191,7 @@ export default class SocketClient {
     return await promise;
   }
 
-  public async await<T extends MessagePayload>(payload: T): Promise<Extract<SocketEvent, { method: T['method'] }>['data']> {
+  public async await<T extends MessagePayload>(payload: T): Promise<SocketHandlerResult<T['method']>> {
     const room = this.room;
 
     if (room !== '' && !this.rooms.includes(room)) {

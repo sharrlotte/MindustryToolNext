@@ -12,12 +12,7 @@ import NoResult from '@/components/common/no-result';
 import TagSelector from '@/components/search/tag-selector';
 import Search from '@/components/search/search-input';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useLanguages from '@/hooks/use-languages';
@@ -34,9 +29,7 @@ import TranslatePostRequest from '@/types/request/TranslatePostRequest';
 import CreatePostRequest from '@/types/request/CreatePostRequest';
 import { getMePosts } from '@/query/user';
 
-const MarkdownEditor = dynamic(
-  () => import('@/components/common/markdown-editor'),
-);
+const MarkdownEditor = dynamic(() => import('@/components/common/markdown-editor'));
 
 type Shared = {
   title: string;
@@ -88,11 +81,7 @@ export default function Page() {
     return (
       <Fragment>
         <div className="space-x-2 rounded-sm bg-card p-2">
-          <Button
-            title={t('upload.go-to-upload-page')}
-            variant="secondary"
-            onClick={() => setPost(undefined)}
-          >
+          <Button title={t('upload.go-to-upload-page')} variant="secondary" onClick={() => setPost(undefined)}>
             {t('upload.go-to-upload-page')}
           </Button>
           <AddTranslationDialog onPostSelect={handlePostSelect} />
@@ -112,9 +101,7 @@ export default function Page() {
     );
   }
 
-  return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden">{render()}</div>
-  );
+  return <div className="flex h-full flex-col gap-2 overflow-hidden">{render()}</div>;
 }
 
 function TranslatePage({
@@ -141,7 +128,7 @@ function TranslatePage({
     },
     onError(error) {
       toast({
-        title: t('server.upload-fail'),
+        title: t('upload.fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -164,12 +151,7 @@ function TranslatePage({
   const uploadCheck = checkUploadRequirement();
 
   const validLanguages = languages
-    .filter(
-      (language) =>
-        language !== post.lang &&
-        post.translations &&
-        !Object.keys(post.translations).includes(language),
-    )
+    .filter((language) => language !== post.lang && post.translations && !Object.keys(post.translations).includes(language))
     .map((value) => ({
       value,
       label: value,
@@ -179,23 +161,11 @@ function TranslatePage({
     <div className="flex h-full overflow-hidden rounded-md">
       <div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
         <div className="flex h-full flex-col gap-1 overflow-hidden rounded-md bg-card p-2">
-          <Input
-            className="w-full rounded-sm bg-background outline-none hover:outline-none"
-            placeholder={t('upload.title')}
-            value={title}
-            onChange={(event) => setTitle(event.currentTarget.value)}
-          />
-          <MarkdownEditor
-            value={content}
-            onChange={(value) => setContent(value)}
-          />
+          <Input className="w-full rounded-sm bg-background outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
+          <MarkdownEditor value={content} onChange={(value) => setContent(value)} />
         </div>
         <div className="flex items-center justify-start gap-2 rounded-md bg-card p-2">
-          <ComboBox
-            placeholder={t('upload.select-language')}
-            values={validLanguages}
-            onChange={(value) => setLanguage(value ?? '')}
-          />
+          <ComboBox placeholder={t('upload.select-language')} values={validLanguages} onChange={(value) => setLanguage(value ?? '')} />
           <Button
             className="ml-auto"
             title={t('submit')}
@@ -214,18 +184,12 @@ function TranslatePage({
           </Button>
         </div>
       </div>
-      <span className="md:hidden">
-        Mobile screen is not supported yet, please use a bigger screen
-      </span>
+      <span className="md:hidden">Mobile screen is not supported yet, please use a bigger screen</span>
     </div>
   );
 }
 
-function UploadPage({
-  shared: { title, setTitle, content, setContent, language, setLanguage },
-}: {
-  shared: Shared;
-}) {
+function UploadPage({ shared: { title, setTitle, content, setContent, language, setLanguage } }: { shared: Shared }) {
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const axios = useClientApi();
   const { toast } = useToast();
@@ -275,16 +239,8 @@ function UploadPage({
     <div className="flex h-full flex-col overflow-hidden rounded-md">
       <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
         <div className="flex h-full flex-col gap-1 overflow-hidden rounded-md bg-card p-2">
-          <Input
-            className="w-full rounded-sm bg-background outline-none hover:outline-none"
-            placeholder={t('upload.title')}
-            value={title}
-            onChange={(event) => setTitle(event.currentTarget.value)}
-          />
-          <MarkdownEditor
-            value={content}
-            onChange={(value) => setContent(value)}
-          />
+          <Input className="w-full rounded-sm bg-background outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
+          <MarkdownEditor value={content} onChange={(value) => setContent(value)} />
         </div>
         <div className="flex items-center justify-start gap-2 overflow-hidden rounded-md bg-card p-2">
           <ComboBox
@@ -295,12 +251,7 @@ function UploadPage({
             }))}
             onChange={(value) => setLanguage(value ?? '')}
           />
-          <TagSelector
-            tags={postTags}
-            value={selectedTags}
-            onChange={setSelectedTags}
-            hideSelectedTag
-          />
+          <TagSelector tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
           <Button
             className="ml-auto"
             title={t('submit')}
@@ -363,13 +314,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
     }
 
     return data?.map(({ id, title }) => (
-      <Button
-        className="h-full w-full items-center justify-start rounded-md border border-border p-2 text-start hover:bg-brand"
-        variant="outline"
-        key={id}
-        title={title}
-        onClick={() => mutate(id)}
-      >
+      <Button className="h-full w-full items-center justify-start rounded-md border border-border p-2 text-start hover:bg-brand" variant="outline" key={id} title={title} onClick={() => mutate(id)}>
         {title.trim()}
       </Button>
     ));
@@ -390,11 +335,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         <DialogTitle>{t('upload.select-post')}</DialogTitle>
         <div className="flex flex-col gap-2">
           <Search>
-            <Search.Input
-              placeholder={t('upload.post-name')}
-              value={name}
-              onChange={(event) => setName(event.currentTarget.value)}
-            />
+            <Search.Input placeholder={t('upload.post-name')} value={name} onChange={(event) => setName(event.currentTarget.value)} />
             <Search.Icon />
           </Search>
           <div className="flex w-full flex-col gap-1">{render()}</div>

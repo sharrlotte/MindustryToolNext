@@ -28,7 +28,19 @@ type MessageListProps = {
   children: (data: MessageGroup, index?: number, endIndex?: number) => ReactNode;
 };
 
-export default function MessageList({ className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center', queryKey, params, loader, noResult = <NoResult className="flex w-full items-center justify-center" />, end, threshold = 500, room, showNotification = true, container, children }: MessageListProps) {
+export default function MessageList({
+  className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center break-words',
+  queryKey,
+  params,
+  loader,
+  noResult = <NoResult className="flex w-full items-center justify-center" />,
+  end,
+  threshold = 500,
+  room,
+  showNotification = true,
+  container,
+  children,
+}: MessageListProps) {
   const currentContainer = container();
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
@@ -108,6 +120,10 @@ export default function MessageList({ className = 'grid w-full grid-cols-[repeat
       .onRoom(room) //
       .onMessage('MESSAGE', (message) => {
         queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
+          if (message && 'error' in message) {
+            return;
+          }
+
           if (showNotification) {
             postNotification(message);
           }
@@ -161,7 +177,7 @@ export default function MessageList({ className = 'grid w-full grid-cols-[repeat
   useInterval(checkIfNeedFetchMore, 100);
 
   if (!loader) {
-    loader = <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" />;
+    loader = <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center m-auto justify-center" />;
   }
 
   end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;

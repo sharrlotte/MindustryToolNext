@@ -22,7 +22,7 @@ const buttonVariants = cva(
         ghost: 'text-background dark:text-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         icon: 'p-0',
-        command: 'hover:bg-accent justify-start gap-1 rounded-sm',
+        command: 'hover:bg-accent justify-start gap-1 rounded-sm p-0',
       },
       size: {
         default: 'h-9 px-4 py-2',

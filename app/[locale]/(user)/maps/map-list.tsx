@@ -73,11 +73,11 @@ export default function MapList() {
           <PaginationNavigator numberOfItems={data} />
         </GridLayout>
         <div className="flex gap-2">
-          <InternalLink variant="button-secondary" href={`${env.url.base}/users/@me`} title="My map">
+          <InternalLink variant="button-secondary" href={`${env.url.base}/users/@me`} >
             <UserIcon className="size-5" />
             <Tran text="map.my-map" />
           </InternalLink>
-          <InternalLink variant="button-secondary" href={`${env.url.base}/upload/map`} title="My map">
+          <InternalLink variant="button-secondary" href={`${env.url.base}/upload/map`}>
             <UploadIcon className="size-5" />
             <Tran text="map.upload" />
           </InternalLink>

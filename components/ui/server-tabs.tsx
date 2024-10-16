@@ -3,16 +3,33 @@
 import { Button } from '@/components/ui/button';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
-import React, { ReactNode, useCallback, useEffect } from 'react';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+
+const tabContentVariants: Variants = {
+  initial: {
+    opacity: 0,
+  },
+  enter: {
+    opacity: 1,
+  },
+  exit: {
+    opacity: 0,
+  },
+};
 
 type ContextType = {
   value: string;
   setValue: (value: string) => void;
+  hovered: string;
+  setHovered: (value: string) => void;
 };
 
 const defaultContextValue: ContextType = {
   value: '',
   setValue: () => {},
+  hovered: '',
+  setHovered: () => {},
 };
 
 const Context = React.createContext(defaultContextValue);
@@ -36,9 +53,12 @@ type ServerTabsProps<T> = {
 };
 
 export function ServerTabs<T extends string>({ className, value, name, values, children }: ServerTabsProps<T>) {
-  const [query, setQuery] = useQueryState({ [name]: value });
+  const [defaultState] = useState({ [name]: value }); 
+  const [query, setQuery] = useQueryState(defaultState);
+  const [hovered, setHovered] = useState('');
 
   const current = query[name];
+
   const setValue = useCallback((value: string) => setQuery({ [name]: value }), [name, setQuery]);
 
   useEffect(() => {
@@ -48,8 +68,8 @@ export function ServerTabs<T extends string>({ className, value, name, values, c
   }, [current, values, setQuery, setValue, value]);
 
   return (
-    <div className={cn('flex h-full flex-col gap-2 overflow-hidden p-1', className)}>
-      <Context.Provider value={{ value: current || value, setValue }}>{children}</Context.Provider>
+    <div className={cn('flex h-full flex-col gap-2 overflow-hidden', className)}>
+      <Context.Provider value={{ value: current || value, setValue, hovered, setHovered }}>{children}</Context.Provider>
     </div>
   );
 }
@@ -61,25 +81,24 @@ type ServerTabsTriggerProps = {
 };
 
 export function ServerTabsTrigger({ className, value, children }: ServerTabsTriggerProps) {
-  const { value: current, setValue } = useTab();
+  const { value: current, setValue, hovered, setHovered } = useTab();
 
-  function handleClick() {
-    setValue(value);
-  }
+  const isSelected = value === current;
+  const isHovered = value === hovered;
 
   return (
-    <Button
-      className={cn(
-        'min-w-20',
-        {
-          'bg-background': value === current,
-        },
-        className,
-      )}
-      variant="ghost"
-      onClick={handleClick}
-    >
-      {children}
+    <Button className={cn('relative h-12 min-w-20 space-y-2 px-0 py-2', className)} variant="ghost" onClick={() => setValue(value)} onMouseEnter={() => setHovered(value)}>
+      <div className="relative w-full">
+        {isHovered && <motion.div layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
+        <div
+          className={cn('relative z-10 bg-transparent p-2 text-foreground/70 hover:text-foreground', {
+            'text-foreground': isSelected,
+          })}
+        >
+          {children}
+        </div>
+      </div>
+      {isSelected && <motion.div layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
     </Button>
   );
 }
@@ -94,13 +113,23 @@ export function ServerTabsContent({ className, value, children }: ServerTabsCont
   const { value: current } = useTab();
 
   return (
-    <div
-      className={cn('hidden h-full overflow-hidden', className, {
-        flex: value === current,
-      })}
-    >
-      {children}
-    </div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={current}
+        className={cn('hidden overflow-hidden', className, {
+          block: value === current,
+        })}
+        variants={tabContentVariants}
+        initial="initial"
+        animate="enter"
+        exit="exit"
+        transition={{
+          duration: 0.3,
+        }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
@@ -110,5 +139,11 @@ type ServerTabsListProps = {
 };
 
 export function ServerTabsList({ className, children }: ServerTabsListProps) {
-  return <div className={cn('inline-flex items-center justify-center rounded-lg bg-card p-1 text-muted-foreground', className)}>{children}</div>;
+  const { setHovered } = useTab();
+
+  return (
+    <div className={cn('inline-flex items-center justify-center gap-2 rounded-md bg-card px-2 text-muted-foreground', className)} onMouseLeave={() => setHovered('')}>
+      {children}
+    </div>
+  );
 }

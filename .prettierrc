@@ -10,5 +10,5 @@
     ],
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true,
-    "printWidth": 500
+    "printWidth": 200
 }

@@ -1,5 +1,23 @@
 import Markdown from '@/components/common/markdown';
-import { BoldIcon, CheckListIcon, CodeBlockIcon, EditPanelIcon, FullScreenIcon, HRIcon, ImageIcon, ItalicIcon, LinkChainIcon, ListIcon, LivePanelIcon, OrderedListIcon, PreviewPanelIcon, QuoteIcon, StrikethroughIcon, TitleIcon, XIcon } from '@/components/common/icons';
+import {
+  BoldIcon,
+  CheckListIcon,
+  CodeBlockIcon,
+  EditPanelIcon,
+  FullScreenIcon,
+  HRIcon,
+  ImageIcon,
+  ItalicIcon,
+  LinkChainIcon,
+  ListIcon,
+  LivePanelIcon,
+  OrderedListIcon,
+  PreviewPanelIcon,
+  QuoteIcon,
+  StrikethroughIcon,
+  TitleIcon,
+  XIcon,
+} from '@/components/common/icons';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -30,6 +48,7 @@ type EditorMode = 'edit' | 'preview' | 'live';
 export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
   const t = useI18n();
 
+  const [focused, setFocused] = useState<HTMLElement | null>(null);
   const [content, setContent] = useState(value);
   const [mode, setMode] = useState<EditorMode>('live');
   const [isFullscreen, setFullscreen] = useState(false);
@@ -93,6 +112,10 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
     const preview = previewRef.current;
     const input = inputRef.current;
 
+    if (focused !== input) {
+      return;
+    }
+
     if (preview && input) {
       const percent = (input.scrollTop + document.body.scrollTop) / (input.scrollHeight - input.clientHeight);
 
@@ -103,6 +126,10 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
   function handlePreviewScroll() {
     const preview = previewRef.current;
     const input = inputRef.current;
+
+    if (focused !== preview) {
+      return;
+    }
 
     if (preview && input) {
       const percent = (preview.scrollTop + document.body.scrollTop) / (preview.scrollHeight - preview.clientHeight);
@@ -202,6 +229,9 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
             value={content.text}
             spellCheck="false"
             onScroll={handleInputScroll}
+            onMouseEnter={(event) => setFocused(event.currentTarget)}
+            onTouchStart={(event) => setFocused(event.currentTarget)}
+            onTouchMove={(event) => setFocused(event.currentTarget)}
             onChange={(event) =>
               setContent(({ images }) => ({
                 text: event.target.value,
@@ -211,7 +241,14 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
           />
         )}
         {(mode === 'preview' || mode === 'live') && (
-          <div className="h-full w-full overflow-y-auto p-2" ref={previewRef} onScroll={handlePreviewScroll}>
+          <div
+            className="h-full w-full overflow-y-auto p-2"
+            ref={previewRef}
+            onScroll={handlePreviewScroll}
+            onMouseEnter={(event) => setFocused(event.currentTarget)}
+            onTouchStart={(event) => setFocused(event.currentTarget)}
+            onTouchMove={(event) => setFocused(event.currentTarget)}
+          >
             <Markdown>{content.text}</Markdown>
           </div>
         )}
@@ -225,23 +262,23 @@ type LinkDialogProps = {
   onAccept: (value: string) => void;
 };
 
+const LinkFormSchema = z.object({
+  header: z.string(),
+  url: z.string().url(),
+});
+
 function LinkDialog({ children, onAccept }: LinkDialogProps) {
   const t = useI18n();
   const [open, setOpen] = useState(false);
 
-  function handleAccept({ header, url }: z.infer<typeof FormSchema>) {
+  function handleAccept({ header, url }: z.infer<typeof LinkFormSchema>) {
     setOpen(false);
     onAccept(`[${header}](${url})`);
     form.reset();
   }
 
-  const FormSchema = z.object({
-    header: z.string(),
-    url: z.string().url(),
-  });
-
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof LinkFormSchema>>({
+    resolver: zodResolver(LinkFormSchema),
     defaultValues: {
       header: '',
       url: '',
@@ -298,6 +335,11 @@ function LinkDialog({ children, onAccept }: LinkDialogProps) {
   );
 }
 
+const ImageFormSchema = z.object({
+  header: z.string(),
+  image: z.string().url(),
+});
+
 type ImageDialogProps = {
   children: ReactNode;
   onAccept: (value: string, image?: { file: File; url: string }) => void;
@@ -308,7 +350,7 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
   const [file, setFile] = useState<File>();
   const [open, setOpen] = useState(false);
 
-  function handleAccept({ header, image }: z.infer<typeof FormSchema>) {
+  function handleAccept({ header, image }: z.infer<typeof ImageFormSchema>) {
     setOpen(false);
 
     if (file) {
@@ -320,13 +362,8 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
     form.reset();
   }
 
-  const FormSchema = z.object({
-    header: z.string(),
-    image: z.string().url(),
-  });
-
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof ImageFormSchema>>({
+    resolver: zodResolver(ImageFormSchema),
     defaultValues: {
       header: '',
       image: '',

@@ -34,7 +34,7 @@ export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     mutationFn: (pluginId: string) => createInternalServerPlugin(axios, serverId, { pluginId }),
     onError: (error) => {
       toast({
-        title: t('server.upload-fail'),
+        title: t('upload.fail'),
         description: error.message,
         variant: 'destructive',
       });
@@ -70,7 +70,12 @@ export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
               }}
             >
               {({ id, name, description }) => (
-                <Button className="relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand" variant="outline" key={id} onClick={() => mutate(id)}>
+                <Button
+                  className="relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand"
+                  variant="outline"
+                  key={id}
+                  onClick={() => mutate(id)}
+                >
                   <h2 className="line-clamp-1 w-full text-ellipsis whitespace-normal text-nowrap">{name}</h2>
                   <span className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>{' '}
                 </Button>

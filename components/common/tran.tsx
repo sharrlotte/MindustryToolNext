@@ -11,12 +11,7 @@ type Props = {
   args?: Record<string, any>;
 };
 
-export default function Tran({
-  className,
-  text,
-  args,
-  style,
-}: Props): React.ReactNode {
+function _Tran({ className, text, args, style }: Props): React.ReactNode {
   const t = useI18n();
   return (
     <span className={className} style={style}>
@@ -24,3 +19,7 @@ export default function Tran({
     </span>
   );
 }
+
+const Tran = React.memo(_Tran);
+
+export default Tran;

@@ -1,10 +1,12 @@
+'use client';
+
 import { LayoutDashboardIcon } from 'lucide-react';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
-import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import Tran from '@/components/common/tran';
 import { CmdIcon, MapIcon, PluginIcon, SettingIcon } from '@/components/common/icons';
+import { useSession } from '@/context/session-context.client';
 
 const links: {
   href: string;
@@ -47,21 +49,21 @@ const links: {
 type LayoutProps = {
   params: Promise<{
     id: string;
-    locale: string;
   }>;
   children: ReactNode;
 };
 
-export default async function Layout({ params, children }: LayoutProps) {
-  const { id } = await params;
-  const session = await getSession();
+export default function Layout({ params, children }: LayoutProps) {
+  const { id } = React.use(params);
+  const { session } = useSession();
+  const [hovered, setHovered] = useState<string>('');
 
   return (
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden p-2">
-      <div className="no-scrollbar flex h-full snap-mandatory snap-x gap-3 overflow-x-auto overflow-y-hidden bg-card p-2">
+      <div className="no-scrollbar flex h-full snap-x snap-mandatory gap-3 overflow-x-auto bg-card px-2" onMouseLeave={() => setHovered('Yes this is empty')}>
         {links.map((item) => (
           <ProtectedElement key={item.href} session={session} filter={item.show}>
-            <NavLink {...item} id={id} />
+            <NavLink {...item} id={id} hovered={hovered} setHovered={setHovered} />
           </ProtectedElement>
         ))}
       </div>

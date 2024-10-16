@@ -59,7 +59,7 @@ export default function ComboBox<T>({
           variant="outline"
         >
           {value?.label?.toLowerCase() || placeholder}
-          <ChevronsUpDownIcon className="ml-auto size-5 shrink-0" />
+          <ChevronsUpDownIcon className="ml-auto size-4 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="z-50 w-full min-w-20 bg-card p-0">

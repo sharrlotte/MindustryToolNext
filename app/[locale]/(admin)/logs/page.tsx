@@ -1,7 +1,7 @@
 'use client';
 
 import { FilterIcon } from 'lucide-react';
-import React, { FormEvent, Fragment, useState } from 'react';
+import React, { FormEvent, Fragment, useRef, useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
@@ -31,6 +31,7 @@ import GridPaginationList from '@/components/common/grid-pagination-list';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
 import { XIcon } from '@/components/common/icons';
+import ScrollContainer from '@/components/common/scroll-container';
 
 const defaultState = {
   collection: 'LIVE',
@@ -44,7 +45,7 @@ export default function LogPage() {
 
 function LiveLog() {
   const { state } = useSocket();
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [{ collection }, setQueryState] = useQueryState(defaultState);
 
   const { data } = useClientQuery({
@@ -68,11 +69,11 @@ function LiveLog() {
             {state !== 'connected' ? (
               <LoadingSpinner className="flex h-full w-full items-center justify-center" />
             ) : (
-              <div className="flex h-full w-full overflow-y-auto overflow-x-hidden" ref={setContainer}>
-                <MessageList className="flex h-full flex-col gap-2" queryKey={['live-log']} room="LOG" container={() => container} params={{ size: 50 }} showNotification={false}>
+              <ScrollContainer ref={ref}>
+                <MessageList className="flex h-full flex-col gap-2" queryKey={['live-log']} room="LOG" container={() => ref.current} params={{ size: 50 }} showNotification={false}>
                   {(data) => <MessageCard key={data.id} message={data} />}
                 </MessageList>
-              </div>
+              </ScrollContainer>
             )}
           </div>
         </div>
@@ -299,7 +300,13 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
-                <Calendar mode="single" selected={before ? new Date(before) : undefined} onSelect={(value) => setFilter({ before: value?.toISOString() ?? '' })} disabled={(date) => date > new Date() || date < new Date('1900-01-01')} initialFocus />
+                <Calendar
+                  mode="single"
+                  selected={before ? new Date(before) : undefined}
+                  onSelect={(value) => setFilter({ before: value?.toISOString() ?? '' })}
+                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                  initialFocus
+                />
               </PopoverContent>
             </Popover>
           </div>
@@ -312,7 +319,13 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
-                <Calendar mode="single" selected={after ? new Date(after) : undefined} onSelect={(value) => setFilter({ after: value?.toISOString() ?? '' })} disabled={(date) => date > new Date() || date < new Date('1900-01-01')} initialFocus />
+                <Calendar
+                  mode="single"
+                  selected={after ? new Date(after) : undefined}
+                  onSelect={(value) => setFilter({ after: value?.toISOString() ?? '' })}
+                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                  initialFocus
+                />
               </PopoverContent>
             </Popover>
           </div>

@@ -25,15 +25,15 @@ import {
   PencilIcon as _EditIcon,
   Globe as _Glob,
   CrownIcon as _CrownIcon,
-  SigmaIcon as _SigmaIcon,
+  SigmaSquareIcon as _SigmaIcon,
   SquareIcon as _SquareIcon,
   CheckSquare2 as _SquareCheckIcon,
   X,
 } from 'lucide-react';
 
-import { SquareKanbanIcon, MessageCircleIcon, HistoryIcon, ClipboardList, SettingsIcon, TerminalIcon, BlocksIcon } from 'lucide-react';
+import { SquareKanbanIcon, MessageCircleIcon, HistoryIcon, ClipboardList, SettingsIcon, TerminalIcon } from 'lucide-react';
 
-import { DiscordLogoIcon } from '@radix-ui/react-icons';
+import { DiscordLogoIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import googleIcon from '@/public/icons/google.svg';
 import { cn } from '@/lib/utils';
@@ -47,21 +47,31 @@ export const SquareCheckedIcon = ({ className }: Props) => <_SquareCheckIcon cla
 export const GlobIcon = () => <_Glob className="size-5 min-h-5 min-w-5" />;
 export const LinkIcon = () => <_LinkIcon className="size-5 min-h-5 min-w-5" />;
 export const PostIcon = () => <BookOpenIcon className="size-5 min-h-5 min-w-5" />;
-export const MindustryGptIcon = () => <BotIcon className="size-5 min-h-5 min-w-5" />;
+export const MindustryGptIcon = () => <BotIcon className="size-[22px] min-h-5 min-w-5" />;
 export const FileIcon = () => <_FileIcon className="size-5 min-h-5 min-w-5" />;
 export const DocumentIcon = () => <FolderIcon className="size-5 min-h-5 min-w-5" />;
 export const HomeIcon = () => <_HomeIcon className="size-5 min-h-5 min-w-5" />;
 export const MapIcon = () => <_MapIcon className="size-5 min-h-5 min-w-5" />;
 export const ServerIcon = ({ className }: Props) => <_ServerIcon className={cn('size-5 min-h-5 min-w-5', className)} />;
-export const VerifyIcon = () => <ShieldCheckIcon className="size-5 min-h-5 min-w-5" />;
-export const UserIcon = () => <_UserIcon className="size-5 min-h-5 min-w-5" />;
-export const ChartIcon = () => <SquareKanbanIcon className="size-5 min-h-5 min-w-5" />;
+export const VerifyIcon = () => <ShieldCheckIcon className="size-[22px] min-h-5 min-w-5" />;
+export const UserIcon = () => <_UserIcon className="size-[22px] min-h-5 min-w-5" />;
+export const ChartIcon = () => <SquareKanbanIcon className="size-[22px] min-h-5 min-w-5" />;
 export const ChatIcon = () => <MessageCircleIcon className="size-5 min-h-5 min-w-5" />;
-export const LogIcon = () => <HistoryIcon className="size-5 min-h-5 min-w-5" />;
+export const LogIcon = () => <HistoryIcon className="size-[22px] min-h-5 min-w-5" />;
 export const SchematicIcon = () => <ClipboardList className="size-5 min-h-5 min-w-5" />;
 export const SettingIcon = () => <SettingsIcon className="size-5 min-h-5 min-w-5" />;
-export const CmdIcon = () => <TerminalIcon className="size-5 min-h-5 min-w-5" />;
-export const PluginIcon = () => <BlocksIcon className="size-5 min-h-5 min-w-5" />;
+export const CmdIcon = () => <TerminalIcon className="size-[22px] min-h-5 min-w-5" />;
+export const PluginIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 0 1-.657.643 48.39 48.39 0 0 1-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 0 1-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 0 0-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 0 1-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 0 0 .657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 0 1-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 0 0 5.427-.63 48.05 48.05 0 0 0 .582-4.717.532.532 0 0 0-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 0 0 .658-.663 48.422 48.422 0 0 0-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 0 1-.61-.58v0Z"
+    />
+  </svg>
+);
+
+export const EllipsisIcon = () => <DotsHorizontalIcon className="size-5" />;
 export const NotificationIcon = () => <BellIcon className="mx-1 size-5 min-h-5 min-w-5" />;
 export const GithubIcon = () => <_GithubIcon className="size-5 min-h-5 min-w-5" />;
 export const FacebookIcon = () => <_FacebookIcon className="size-5 min-h-5 min-w-5" />;
@@ -79,9 +89,9 @@ export const SmileIcon = () => <_SmileIcon className="size-6" />;
 export const SearchIcon = () => <_SearchIcon className="size-5 min-h-5 min-w-5" />;
 export const SendIcon = () => <_SendIcon className="size-5 min-h-5 min-w-5" />;
 export const EditIcon = () => <_EditIcon className="size-5 min-h-5 min-w-5" />;
-export const RatioIcon = () => <_SigmaIcon className="size-5 min-h-5 min-w-5" />;
+export const RatioIcon = () => <_SigmaIcon className="size-6 min-h-5 min-w-5" />;
 export const XIcon = () => <X className="size-5 min-h-5 min-w-5" />;
-export const CrownIcon = ({ className }: Props) => <_CrownIcon className={cn('size-5 min-h-5 min-w-5', className)} />;
+export const CrownIcon = ({ className }: Props) => <_CrownIcon className={cn('size-[22px] min-h-5 min-w-5', className)} />;
 
 export function HRIcon({ className }: Props) {
   return (
@@ -109,7 +119,10 @@ export function BoldIcon({ className }: Props) {
 export function ItalicIcon({ className }: Props) {
   return (
     <svg className={cn(className)} role="img" viewBox="0 0 320 512">
-      <path fill="currentColor" d="M204.758 416h-33.849l62.092-320h40.725a16 16 0 0 0 15.704-12.937l6.242-32C297.599 41.184 290.034 32 279.968 32H120.235a16 16 0 0 0-15.704 12.937l-6.242 32C96.362 86.816 103.927 96 113.993 96h33.846l-62.09 320H46.278a16 16 0 0 0-15.704 12.935l-6.245 32C22.402 470.815 29.967 480 40.034 480h158.479a16 16 0 0 0 15.704-12.935l6.245-32c1.927-9.88-5.638-19.065-15.704-19.065z"></path>
+      <path
+        fill="currentColor"
+        d="M204.758 416h-33.849l62.092-320h40.725a16 16 0 0 0 15.704-12.937l6.242-32C297.599 41.184 290.034 32 279.968 32H120.235a16 16 0 0 0-15.704 12.937l-6.242 32C96.362 86.816 103.927 96 113.993 96h33.846l-62.09 320H46.278a16 16 0 0 0-15.704 12.935l-6.245 32C22.402 470.815 29.967 480 40.034 480h158.479a16 16 0 0 0 15.704-12.935l6.245-32c1.927-9.88-5.638-19.065-15.704-19.065z"
+      ></path>
     </svg>
   );
 }
@@ -169,7 +182,10 @@ export function CodeBlockIcon({ className }: Props) {
 export function ImageIcon({ className }: Props) {
   return (
     <svg className={cn(className)} role="img" viewBox="0 0 20 20">
-      <path fill="currentColor" d="M15 9c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4-7H1c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 13l-6-5-2 2-4-5-4 8V4h16v11z"></path>
+      <path
+        fill="currentColor"
+        d="M15 9c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4-7H1c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 13l-6-5-2 2-4-5-4 8V4h16v11z"
+      ></path>
     </svg>
   );
 }
