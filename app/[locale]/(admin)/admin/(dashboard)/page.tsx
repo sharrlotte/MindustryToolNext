@@ -7,6 +7,7 @@ import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import { Skeleton } from '@/components/ui/skeleton';
 import ScrollContainer from '@/components/common/scroll-container';
+import { cn } from '@/lib/utils';
 
 export const experimental_ppr = true;
 
@@ -23,7 +24,7 @@ export default async function Page() {
     <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-2">
       <div className="flex w-full flex-wrap gap-2">
         <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
-          <Suspense fallback={<ChartSkeleton />}>
+          <Suspense fallback={<ChartSkeleton className="col-span-2" />}>
             <ClientChart start={start} end={end} dates={NUMBER_OF_DAY} />
           </Suspense>
           <Suspense fallback={<ChartSkeleton />}>
@@ -46,9 +47,9 @@ export default async function Page() {
   );
 }
 
-function ChartSkeleton() {
+function ChartSkeleton({ className }: { className?: string }) {
   return (
-    <div className="flex aspect-video h-full w-full flex-col gap-2 bg-card p-2">
+    <div className={cn('flex aspect-video h-full w-full flex-col gap-2 bg-card', className)}>
       <Skeleton className="h-full w-full" />
     </div>
   );
