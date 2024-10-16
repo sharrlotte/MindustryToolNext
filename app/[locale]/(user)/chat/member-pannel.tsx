@@ -28,20 +28,11 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
         .await({ method: 'GET_MEMBER', page: 0, size: 10 }),
   });
 
-  const members = useMemo(
-    () =>
-      data?.filter(
-        (item, index) => data.findIndex((v) => v.id === item.id) === index,
-      ) || [],
-    [data],
-  );
+  const members = useMemo(() => (data && 'error' in data ? [] : data?.filter((item, index) => data.findIndex((v) => v.id === item.id) === index) || []), [data]);
 
   return (
     <motion.div
-      className={cn(
-        'absolute right-0 flex h-full flex-shrink-0 flex-col items-start overflow-y-auto overflow-x-hidden border-l bg-background/20 sm:relative',
-        className,
-      )}
+      className={cn('absolute right-0 flex h-full flex-shrink-0 flex-col items-start overflow-y-auto overflow-x-hidden border-l bg-background/20 sm:relative', className)}
       animate={state}
       variants={{
         open: {
@@ -76,29 +67,18 @@ export const useMemberPanel = () => React.useContext(MemberPanelContext);
 export function MemberPanelProvider({ children }: { children: ReactNode }) {
   const isSmall = useMediaQuery('(min-width: 640px)');
 
-  const [state, setState] = useState<MemberPanelState>(
-    isSmall ? 'open' : 'closed',
-  );
+  const [state, setState] = useState<MemberPanelState>(isSmall ? 'open' : 'closed');
 
   useEffect(() => setState(isSmall ? 'open' : 'closed'), [isSmall]);
 
-  return (
-    <MemberPanelContext.Provider value={{ state, isSmall, setState }}>
-      {children}
-    </MemberPanelContext.Provider>
-  );
+  return <MemberPanelContext.Provider value={{ state, isSmall, setState }}>{children}</MemberPanelContext.Provider>;
 }
 
 export function MemberPanelTrigger() {
   const { setState } = useMemberPanel();
 
   return (
-    <Button
-      className="p-0"
-      title="Close"
-      variant="icon"
-      onClick={() => setState((prev) => (prev === 'open' ? 'closed' : 'open'))}
-    >
+    <Button className="p-0" title="Close" variant="icon" onClick={() => setState((prev) => (prev === 'open' ? 'closed' : 'open'))}>
       <UsersIcon />
     </Button>
   );

@@ -31,7 +31,7 @@ import {
   X,
 } from 'lucide-react';
 
-import { SquareKanbanIcon, MessageCircleIcon, HistoryIcon, ClipboardList, SettingsIcon, TerminalIcon, BlocksIcon } from 'lucide-react';
+import { SquareKanbanIcon, MessageCircleIcon, HistoryIcon, ClipboardList, SettingsIcon, TerminalIcon } from 'lucide-react';
 
 import { DiscordLogoIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
