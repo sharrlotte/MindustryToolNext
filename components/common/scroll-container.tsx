@@ -10,15 +10,29 @@ type Props = {
 
 const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, children }, ref) => {
   const [hasGapForScrollbar, setHasGapForScrollbar] = useState(false);
-  const alterRef = useRef(null);
+  const alterRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (ref && 'current' in ref && ref.current) {
-      const { scrollHeight, clientHeight } = ref.current;
-      setHasGapForScrollbar(scrollHeight > clientHeight);
+      const element = ref.current;
+      const { addEventListener, removeEventListener } = element;
+
+      const onResize = () => setHasGapForScrollbar(element.scrollHeight > element.clientHeight);
+
+      onResize();
+      addEventListener('resize', onResize);
+
+      return () => removeEventListener('resize', onResize);
     } else if (alterRef.current) {
-      const { scrollHeight, clientHeight } = alterRef.current;
-      setHasGapForScrollbar(scrollHeight > clientHeight);
+      const element = alterRef.current;
+      const { addEventListener, removeEventListener } = element;
+
+      const onResize = () => setHasGapForScrollbar(element.scrollHeight > element.clientHeight);
+
+      onResize();
+      addEventListener('resize', onResize);
+
+      return () => removeEventListener('resize', onResize);
     }
   }, [ref]);
 
