@@ -45,3 +45,9 @@ export async function updateRole(axios: AxiosInstance, id: number, payload: Upda
 
   return result.data;
 }
+
+export async function deleteRole(axios: AxiosInstance, id: number) {
+  const result = await axios.delete(`/roles/${id}`);
+
+  return result.data;
+}

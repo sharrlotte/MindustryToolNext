@@ -451,7 +451,9 @@ function DeleteTranslationDialog({ value: { id, key } }: DeleteTranslationDialog
     },
   });
 
-  return <DeleteButton variant="command" isLoading={isPending} description={`Delete ${key}`} onClick={() => mutate(id)} />;
+  const t = useI18n();
+
+  return <DeleteButton variant="command" isLoading={isPending} description={t('translation.delete', { key })} onClick={() => mutate(id)} />;
 }
 
 function TranslationCardSkeleton() {

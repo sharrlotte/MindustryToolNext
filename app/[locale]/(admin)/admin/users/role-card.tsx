@@ -1,4 +1,5 @@
 import ChangeRoleAuthorityDialog from '@/app/[locale]/(admin)/admin/users/change-role-authority-dialog';
+import DeleteRoleButton from '@/app/[locale]/(admin)/admin/users/delete-role-button';
 import UpdateRoleDialog from '@/app/[locale]/(admin)/admin/users/update-role-dialog';
 import Tran from '@/components/common/tran';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
@@ -21,9 +22,10 @@ export default function RoleCard({ role }: Props) {
       <TableCell className="w-full overflow-hidden text-ellipsis">
         <ChangeRoleAuthorityDialog role={role} />
       </TableCell>
-      <TableCell className='justify-center items-center flex'>
+      <TableCell className="flex items-center justify-center">
         <EllipsisButton variant="ghost">
           <UpdateRoleDialog role={role} />
+          <DeleteRoleButton role={role} />
         </EllipsisButton>
       </TableCell>
     </TableRow>

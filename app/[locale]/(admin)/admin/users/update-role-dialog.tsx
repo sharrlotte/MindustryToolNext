@@ -2,6 +2,7 @@
 
 import { revalidate } from '@/action/action';
 import { Hidden } from '@/components/common/hidden';
+import { EditIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -58,13 +59,14 @@ export default function UpdateRoleDialog({ role }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full" variant="command">
-          <Tran text="role.update-role" />
+        <Button size="command" variant="command">
+          <EditIcon />
+          <Tran text="update" />
         </Button>
       </DialogTrigger>
       <DialogContent className="overflow-y-auto p-4">
         <DialogTitle>
-          <Tran text="role.update-role" />
+          <Tran text="update" />
         </DialogTitle>
         <Hidden>
           <DialogDescription />
