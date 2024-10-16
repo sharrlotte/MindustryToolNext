@@ -51,6 +51,10 @@ export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError>
 
     return data;
   } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+
     return { error: JSON.parse(JSON.stringify(error)) };
   }
 }
@@ -72,14 +76,22 @@ export default async function prefetch<TQueryFnData = unknown, TError = DefaultE
   return dehydrate(queryClient);
 }
 
-const getCachedSession: (cookie: string) => Promise<Session | null> = unstable_cache(
+const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> = unstable_cache(
   async (cookie: string) => {
-    axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
+    try {
+      axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
 
-    return await axiosInstance
-      .get('/auth/session')
-      .then((r) => r.data)
-      .then((data) => data || null);
+      return await axiosInstance
+        .get('/auth/session')
+        .then((r) => r.data)
+        .then((data) => data || null);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+
+      return { error: JSON.parse(JSON.stringify(error)) };
+    }
   },
   ['session'],
   { revalidate: 60 },
@@ -88,7 +100,7 @@ const getCachedSession: (cookie: string) => Promise<Session | null> = unstable_c
 export async function getSession() {
   const cookie = await cookies();
 
-  return serverApi(() => getCachedSession(cookie.toString()));
+  return getCachedSession(cookie.toString());
 }
 
 export const getServerApi = async (): Promise<AxiosInstance> => {

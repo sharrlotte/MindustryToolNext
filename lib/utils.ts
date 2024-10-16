@@ -302,6 +302,28 @@ export function omit<T extends Record<string, any>>(obj: T, ...keys: Array<keyof
   return Object.fromEntries(Object.entries(obj).filter(([key]) => !keys.includes(key)));
 }
 
+export type TError = (Error & { digest?: string }) | { error: { message: string } } | string;
+
+export function getErrorMessage(error: TError) {
+  if (!error) {
+    return 'Something is wrong';
+  }
+
+  if (typeof error === 'string') {
+    return error;
+  }
+
+  if ('error' in error) {
+    return error.error.message;
+  }
+
+  if ('message' in error) {
+    return error.message;
+  }
+
+  return 'Something is wrong';
+}
+
 export type Filter =
   | {
       all: Filter[];

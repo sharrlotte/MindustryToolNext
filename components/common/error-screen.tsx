@@ -7,8 +7,8 @@ import Tran from '@/components/common/tran';
 import { useEffect } from 'react';
 import { reportError } from '@/query/api';
 import useClientApi from '@/hooks/use-client';
+import { getErrorMessage, TError } from '@/lib/utils';
 
-type TError = (Error & { digest?: string }) | { error: { message: string } } | string;
 
 export default function ErrorScreen({ error }: { error: TError }) {
   const path = usePathname();
@@ -17,7 +17,7 @@ export default function ErrorScreen({ error }: { error: TError }) {
   const message = getErrorMessage(error);
 
   useEffect(() => {
-    reportError(axios, { message: JSON.stringify(error), path });
+    reportError(axios, { error, path });
   }, [axios, path, error]);
 
   return (
@@ -35,22 +35,3 @@ export default function ErrorScreen({ error }: { error: TError }) {
   );
 }
 
-function getErrorMessage(error: TError) {
-  if (!error) {
-    return 'Something is wrong';
-  }
-
-  if (typeof error === 'string') {
-    return error;
-  }
-
-  if ('error' in error) {
-    return error.error.message;
-  }
-
-  if ('message' in error) {
-    return error.message;
-  }
-
-  return 'Something is wrong';
-}
