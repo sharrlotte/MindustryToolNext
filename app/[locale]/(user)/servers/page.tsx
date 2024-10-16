@@ -16,7 +16,7 @@ export const experimental_ppr = true;
 export const maxDuration = 10;
 
 const skeleton = (
-  <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1">
+  <div className="grid w-full h-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1">
     {Array(20)
       .fill(1)
       .map((_, index) => (
@@ -49,24 +49,24 @@ export default async function Page() {
             <CreateServerDialog />
           </ProtectedElement>
         </div>
-        <TabsContent className="h-full" value="official-server">
+        <TabsContent className="h-full overflow-hidden" value="official-server">
           <Suspense fallback={skeleton}>
-            <ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">
+            <ScrollContainer className="grid w-full h-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">
               <OfficialServer />
             </ScrollContainer>
           </Suspense>
         </TabsContent>
-        <TabsContent className="h-full" value="community-server">
+        <TabsContent className="h-full overflow-hidden" value="community-server">
           <Suspense fallback={skeleton}>
-            <ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">
+            <ScrollContainer className="grid w-full h-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">
               <CommunityServer />
             </ScrollContainer>
           </Suspense>
         </TabsContent>
-        <TabsContent className="h-full" value="my-server">
+        <TabsContent className="h-full overflow-hidden" value="my-server">
           <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
             <Suspense fallback={skeleton}>
-              <ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">
+              <ScrollContainer className="grid w-full h-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">
                 <MeServer />
               </ScrollContainer>
             </Suspense>

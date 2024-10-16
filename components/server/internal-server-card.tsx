@@ -11,14 +11,9 @@ type MyServerInstancesCardProps = {
   server: InternalServerDetail;
 };
 
-export default async function InternalServerCard({
-  server: { id, name, players, port, alive, started, mapName, mode },
-}: MyServerInstancesCardProps) {
+export default async function InternalServerCard({ server: { id, name, players, port, alive, started, mapName, mode } }: MyServerInstancesCardProps) {
   return (
-    <InternalLink
-      className="flex h-60 flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-2"
-      href={`/servers/${id}`}
-    >
+    <InternalLink className="flex h-full flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-2" href={`/servers/${id}`}>
       <div className="flex items-center gap-2">
         <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
         <ColorText className="text-2xl font-bold" text={name} />
