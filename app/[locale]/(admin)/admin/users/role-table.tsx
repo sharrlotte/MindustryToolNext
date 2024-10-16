@@ -21,9 +21,7 @@ export async function RoleTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <Suspense fallback={<RoleListSkeleton />}>
-            <RoleList />
-          </Suspense>
+          <RoleList />
         </TableBody>
       </Table>
       <div className="flex w-full justify-end">
