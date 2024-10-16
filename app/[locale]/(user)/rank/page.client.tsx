@@ -35,7 +35,7 @@ export function PageClient() {
           <TableHead className="w-full">
             <Tran text="rank.user" />
           </TableHead>
-          <TableHead className="w-10">
+          <TableHead className="w-40">
             <Tran text="rank.level" />
           </TableHead>
         </TableRow>

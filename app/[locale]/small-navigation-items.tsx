@@ -51,7 +51,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
         >
           <motion.div variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
             <div
-              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background duration-300', {
+              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background/70 duration-300', {
                 'translate-x-0': isVisible,
               })}
             >
@@ -142,9 +142,12 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
-          className={cn('flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
-            'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
-          })}
+          className={cn(
+            'flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+            {
+              'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
+            },
+          )}
           href={path}
           onClick={onClick}
         >
@@ -160,9 +163,13 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
       <Accordion type="single" collapsible className="w-full" value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn('flex gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground', {
-              'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground': path.some((path) => path.path === bestMatch) && !value,
-            })}
+            className={cn(
+              'flex gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground',
+              {
+                'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
+                  path.some((path) => path.path === bestMatch) && !value,
+              },
+            )}
           >
             <div className="flex items-end gap-2">
               <span>{icon}</span>
@@ -174,9 +181,12 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
               <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
                   key={item.path}
-                  className={cn('flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
-                    'bg-brand text-background opacity-100 dark:text-foreground': item.path === bestMatch,
-                  })}
+                  className={cn(
+                    'flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                    {
+                      'bg-brand text-background opacity-100 dark:text-foreground': item.path === bestMatch,
+                    },
+                  )}
                   href={item.path}
                   onClick={onClick}
                 >

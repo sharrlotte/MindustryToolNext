@@ -17,7 +17,7 @@ export default function LogCard({
   onClick,
 }: LogCardProps) {
   return (
-    <div className="no-scrollbar flex h-full w-full flex-col rounded-md bg-card p-2">
+    <div className="flex text-xs h-full w-full flex-col rounded-md bg-card p-2 break-words overflow-hidden">
       {requestUrl && (
         <span onClick={() => onClick({ url: requestUrl })}>
           URL: {requestUrl}

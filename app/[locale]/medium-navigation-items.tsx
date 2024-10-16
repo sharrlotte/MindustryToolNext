@@ -44,7 +44,7 @@ export function MediumScreenNavigationBar({ children, pathGroups, bestMatch }: N
 
   return (
     <div className="grid h-full w-full grid-cols-[auto_1fr] justify-center overflow-hidden">
-      <motion.div className="relative flex h-full overflow-hidden bg-card" variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
+      <motion.div className="relative flex h-full overflow-hidden border-r" variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
         <div className={cn('flex h-full w-full flex-col overflow-hidden p-1', { 'p-2': expand })}>
           <div className="flex items-center justify-center gap-1 p-2">
             <div className={cn('hidden', { block: expand })}>

@@ -27,30 +27,15 @@ export function MessageCard({ className, message }: Props) {
   });
 
   const diff = Date.now() - Date.parse(createdAt);
-  const time =
-    diff > ONE_DAY
-      ? new Date(createdAt).toLocaleString()
-      : new Date(createdAt).toLocaleTimeString();
+  const time = diff > ONE_DAY ? new Date(createdAt).toLocaleString() : new Date(createdAt).toLocaleTimeString();
 
   return (
-    <div
-      className={cn(
-        'flex w-full gap-2 text-wrap rounded-lg p-2 text-xs',
-        className,
-      )}
-    >
-      {data ? (
-        <UserAvatar user={data} />
-      ) : (
-        <Skeleton className="h-8 w-8 rounded-full border border-border" />
-      )}
+    <div className={cn('flex w-full gap-2 text-wrap rounded-lg p-2 text-xs', className)}>
+      {data ? <UserAvatar user={data} /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
       <div className="overflow-hidden">
         <div className="space-x-2">
           {data ? (
-            <ColorAsRole
-              className="font-semibold capitalize"
-              roles={data.roles}
-            >
+            <ColorAsRole className="font-semibold capitalize" roles={data.roles}>
               {data.name}
             </ColorAsRole>
           ) : (
@@ -58,9 +43,9 @@ export function MessageCard({ className, message }: Props) {
           )}
           <span>{time}</span>
         </div>
-        <div className="no-scrollbar grid w-full gap-1 overflow-x-auto">
+        <div className="no-scrollbar grid w-full gap-1 overflow-hidden">
           {contents.map(({ text }, index) => (
-            <ColorText key={index} text={text} />
+            <ColorText className="overflow-hidden break-words" key={index} text={text} />
           ))}
         </div>
       </div>

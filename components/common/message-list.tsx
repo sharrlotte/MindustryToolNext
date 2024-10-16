@@ -29,7 +29,7 @@ type MessageListProps = {
 };
 
 export default function MessageList({
-  className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center',
+  className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center break-words',
   queryKey,
   params,
   loader,
@@ -177,7 +177,7 @@ export default function MessageList({
   useInterval(checkIfNeedFetchMore, 100);
 
   if (!loader) {
-    loader = <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" />;
+    loader = <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center m-auto justify-center" />;
   }
 
   end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
