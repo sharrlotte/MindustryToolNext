@@ -3,9 +3,9 @@ import React from 'react';
 
 export default function Loading() {
   return (
-    <div className="flex flex-col gap-2 p-2">
+    <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
       <Skeleton className="h-14 w-full" />
-      <div className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid h-full w-full gap-2 overflow-y-auto md:grid-cols-2 lg:grid-cols-3">
         {Array(20)
           .fill(1)
           .map((_, index) => (

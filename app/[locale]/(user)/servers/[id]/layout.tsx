@@ -56,11 +56,15 @@ type LayoutProps = {
 export default function Layout({ params, children }: LayoutProps) {
   const { id } = React.use(params);
   const { session } = useSession();
-  const [hovered, setHovered] = useState<string>('');
+  const [hovered, setHovered] = useState<string>('Yes this is empty');
 
   return (
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden p-2">
-      <div className="no-scrollbar flex h-full snap-x snap-mandatory gap-3 overflow-x-auto bg-card px-2" onMouseLeave={() => setHovered('Yes this is empty')}>
+      <div
+        className="no-scrollbar flex h-full snap-x snap-mandatory gap-3 overflow-x-auto bg-card px-2"
+        onMouseLeave={() => setHovered('Yes this is empty')}
+        onTouchCancel={() => setHovered('Yes this is empty')}
+      >
         {links.map((item) => (
           <ProtectedElement key={item.href} session={session} filter={item.show}>
             <NavLink {...item} id={id} hovered={hovered} setHovered={setHovered} />
