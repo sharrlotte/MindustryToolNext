@@ -37,26 +37,19 @@ export default async function Page() {
   const session = await getSession();
 
   return (
-    <div className="flex h-full flex-col overflow-hidden p-2">
+    <div className="flex h-full flex-col overflow-hidden space-y-2 p-2">
       <ServerTabs className="flex h-full w-full flex-col overflow-hidden" name="tab" value="official-server" values={['official-server', 'community-server', 'my-server']}>
-        <div className="flex w-full flex-wrap items-center justify-between gap-2">
-          <div>
-            <ServerTabsList>
-              <ServerTabsTrigger value="official-server">
-                <Tran text="server.official-server" />
-              </ServerTabsTrigger>
-              <ServerTabsTrigger value="community-server">
-                <Tran text="server.community-server" />
-              </ServerTabsTrigger>
-              <ServerTabsTrigger value="my-server">
-                <Tran text="server.my-server" />
-              </ServerTabsTrigger>
-            </ServerTabsList>
-          </div>
-          <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
-            <CreateServerDialog />
-          </ProtectedElement>
-        </div>
+        <ServerTabsList className="w-full justify-start">
+          <ServerTabsTrigger value="official-server">
+            <Tran text="server.official-server" />
+          </ServerTabsTrigger>
+          <ServerTabsTrigger value="community-server">
+            <Tran text="server.community-server" />
+          </ServerTabsTrigger>
+          <ServerTabsTrigger value="my-server">
+            <Tran text="server.my-server" />
+          </ServerTabsTrigger>
+        </ServerTabsList>
         <ServerTabsContent className="overflow-hidden" value="official-server">
           <Suspense fallback={skeleton}>
             <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto">
@@ -81,6 +74,11 @@ export default async function Page() {
           </ProtectedElement>
         </ServerTabsContent>
       </ServerTabs>
+      <footer className="flex w-full justify-end">
+        <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
+          <CreateServerDialog />
+        </ProtectedElement>
+      </footer>
     </div>
   );
 }

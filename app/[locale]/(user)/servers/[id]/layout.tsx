@@ -61,7 +61,7 @@ export default function Layout({ params, children }: LayoutProps) {
   return (
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden p-2">
       <div
-        className="no-scrollbar flex h-full snap-x snap-mandatory gap-3 overflow-x-auto bg-card px-2"
+        className="no-scrollbar flex h-full gap-3 overflow-x-auto bg-card px-2"
         onMouseLeave={() => setHovered('Yes this is empty')}
         onTouchCancel={() => setHovered('Yes this is empty')}
       >

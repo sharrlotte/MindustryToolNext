@@ -87,8 +87,8 @@ export function ServerTabsTrigger({ className, value, children }: ServerTabsTrig
   const isHovered = value === hovered;
 
   return (
-    <Button className={cn('relative h-12 min-w-20 space-y-2 px-0 py-2', className)} variant="ghost" onClick={() => setValue(value)} onMouseEnter={() => setHovered(value)}>
-      <div className="relative w-full">
+    <Button className={cn('relative h-12 min-w-fit space-y-2 px-0 py-2', className)} variant="ghost" onClick={() => setValue(value)} onMouseEnter={() => setHovered(value)}>
+      <div className="relative">
         {isHovered && <motion.div layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
         <div
           className={cn('relative z-10 bg-transparent p-2 text-foreground/70 hover:text-foreground', {
@@ -142,7 +142,10 @@ export function ServerTabsList({ className, children }: ServerTabsListProps) {
   const { setHovered } = useTab();
 
   return (
-    <div className={cn('inline-flex items-center justify-center gap-2 overflow-x-auto overflow-y-hidden rounded-md bg-card px-2 text-muted-foreground', className)} onMouseLeave={() => setHovered('')}>
+    <div
+      className={cn('no-scrollbar flex min-h-12 items-center justify-center gap-2 overflow-x-auto overflow-y-hidden rounded-md bg-card px-2 text-muted-foreground', className)}
+      onMouseLeave={() => setHovered('')}
+    >
       {children}
     </div>
   );
