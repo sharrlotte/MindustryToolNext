@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import env from '@/constant/env';
 import { UserDisplay } from '@/app/[locale]/user-display';
+import Divider from '@/components/ui/divider';
 
 const sidebarVariants = {
   open: {
@@ -51,7 +52,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
         >
           <motion.div variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
             <div
-              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background/70 duration-300', {
+              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background/90 duration-300', {
                 'translate-x-0': isVisible,
               })}
             >
@@ -71,6 +72,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
                       </span>
                       <NavItems pathGroups={pathGroups} bestMatch={bestMatch} onClick={hideSidebar} />
                     </div>
+                    <Divider />
                     <UserDisplay />
                   </div>
                 </OutsideWrapper>

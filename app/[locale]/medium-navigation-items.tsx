@@ -78,9 +78,12 @@ function NavFooter() {
     <div className="space-y-1">
       <Divider />
       <InternalLink
-        className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
-          'justify-start gap-2 py-2': expand,
-        })}
+        className={cn(
+          'flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+          {
+            'justify-start gap-2 py-2': expand,
+          },
+        )}
         href="/users/@me/setting"
       >
         <SettingIcon />
@@ -153,10 +156,13 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
-          className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
-            'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
-            'justify-start gap-2 py-2': expand,
-          })}
+          className={cn(
+            'flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+            {
+              'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
+              'justify-start gap-2 py-2': expand,
+            },
+          )}
           href={path}
         >
           <span> {icon}</span>
@@ -171,10 +177,14 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
       <Accordion type="single" collapsible className="w-full" value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn('flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground', {
-              'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground': path.some((path) => path.path === bestMatch) && !value,
-              'justify-start gap-2 py-2': expand,
-            })}
+            className={cn(
+              'flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground',
+              {
+                'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
+                  path.some((path) => path.path === bestMatch) && !value,
+                'justify-start gap-2 py-2': expand,
+              },
+            )}
             showChevron={expand}
             onClick={() => setVisible(true)}
           >
@@ -186,9 +196,12 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
               <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
                   key={item.path}
-                  className={cn('flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
-                    'bg-brand text-background opacity-100 dark:text-foreground': item.path === bestMatch,
-                  })}
+                  className={cn(
+                    'flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                    {
+                      'bg-brand text-background opacity-100 dark:text-foreground': item.path === bestMatch,
+                    },
+                  )}
                   href={item.path}
                 >
                   <span>{item.icon}</span>

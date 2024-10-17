@@ -65,5 +65,5 @@ export default function useQueryState(initialState: Record<string, string>) {
     }
   }
 
-  return [Object.fromEntries(params.entries()), setter] as const;
+  return [Object.fromEntries(params.entries()) || initialState, setter] as const;
 }

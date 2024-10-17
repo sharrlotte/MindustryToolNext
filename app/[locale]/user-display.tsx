@@ -1,6 +1,7 @@
 import { UserActions } from '@/app/[locale]/user-sheet';
 import LoginButton from '@/components/button/login-button';
 import LogoutButton from '@/components/button/logout-button';
+import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
@@ -9,6 +10,7 @@ import { useSession } from '@/context/session-context.client';
 export function UserDisplay() {
   return (
     <div className="space-y-2">
+      <Divider />
       <UserActions />
       <Internal />
     </div>
