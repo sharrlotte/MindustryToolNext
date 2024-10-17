@@ -48,8 +48,8 @@ function SecureDownloadButton({ className, fileName, href, children }: SecureDow
     mutationFn: () =>
       axios
         .get(href, { responseType: 'blob' })
-        .then((result) => new Blob([result.data], { type: 'application/octet-stream' }))
-        .then((blob) => saveAs(blob, fileName ?? 'plugin.zip')),
+        .then((result) => new Blob([result.data], { type: 'text/plain;charset=utf-8;' }))
+        .then((blob) => saveAs(blob, fileName ?? 'file.zip')),
   });
 
   return (
