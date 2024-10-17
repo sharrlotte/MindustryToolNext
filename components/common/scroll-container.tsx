@@ -39,7 +39,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ch
   return (
     <div
       className={cn('h-full overflow-y-auto overflow-x-hidden', className, {
-        'pr-3': hasGapForScrollbar,
+        'pr-2': hasGapForScrollbar,
       })}
       ref={ref || alterRef}
     >

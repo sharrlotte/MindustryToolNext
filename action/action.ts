@@ -86,10 +86,6 @@ const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> =
         .then((r) => r.data)
         .then((data) => data || null);
     } catch (error) {
-      if (error instanceof Error) {
-        throw error;
-      }
-
       return { error: JSON.parse(JSON.stringify(error)) };
     }
   },

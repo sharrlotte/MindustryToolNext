@@ -53,7 +53,7 @@ type ServerTabsProps<T> = {
 };
 
 export function ServerTabs<T extends string>({ className, value, name, values, children }: ServerTabsProps<T>) {
-  const [defaultState] = useState({ [name]: value }); 
+  const [defaultState] = useState({ [name]: value });
   const [query, setQuery] = useQueryState(defaultState);
   const [hovered, setHovered] = useState('');
 
@@ -142,7 +142,7 @@ export function ServerTabsList({ className, children }: ServerTabsListProps) {
   const { setHovered } = useTab();
 
   return (
-    <div className={cn('inline-flex items-center justify-center gap-2 rounded-md bg-card px-2 text-muted-foreground', className)} onMouseLeave={() => setHovered('')}>
+    <div className={cn('inline-flex items-center justify-center gap-2 overflow-x-auto overflow-y-hidden rounded-md bg-card px-2 text-muted-foreground', className)} onMouseLeave={() => setHovered('')}>
       {children}
     </div>
   );
