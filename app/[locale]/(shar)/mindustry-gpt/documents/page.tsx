@@ -11,7 +11,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Textarea } from '@/components/ui/textarea';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { CreateDocumentRequest, CreateDocumentSchema } from '@/types/request/CreateDocumentRequest';
@@ -20,9 +19,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import createDocument, { getDocuments } from '@/query/document';
 import Tran from '@/components/common/tran';
+import useSearchQuery from '@/hooks/use-search-query';
+import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function Page() {
-  const params = useSearchPageParams();
+  const params = useSearchQuery(ItemPaginationQuery);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (

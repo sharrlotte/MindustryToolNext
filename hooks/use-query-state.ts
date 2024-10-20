@@ -47,7 +47,6 @@ export default function useQueryState(initialState: Record<string, string>) {
     }
 
     if (!isTheSame) {
-      console.log('Go to ' + queryParams);
       timeout = setTimeout(() => router.replace(`${pathname}?${queryParams.toString()}`), 1000);
     }
   }
@@ -65,7 +64,6 @@ export default function useQueryState(initialState: Record<string, string>) {
   });
 
   result = { ...initialState, ...result };
-  console.log(result, initialState);
 
   return [result, setter] as const;
 }

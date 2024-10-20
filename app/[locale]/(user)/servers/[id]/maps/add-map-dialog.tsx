@@ -9,12 +9,13 @@ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/
 import { Skeleton } from '@/components/ui/skeleton';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
-import useSearchPageParams from '@/hooks/use-plugin-search-params';
 import useQueriesData from '@/hooks/use-queries-data';
+import useSearchQuery from '@/hooks/use-search-query';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { getMaps } from '@/query/map';
+import { ItemPaginationQuery } from '@/query/search-query';
 import { createInternalServerMap } from '@/query/server';
 import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
@@ -32,8 +33,7 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
 
   const { invalidateByKey } = useQueriesData();
 
-  //TODO: Fix search
-  const params = useSearchPageParams();
+  const params = useSearchQuery(ItemPaginationQuery);
   const ref = useRef<HTMLDivElement | null>(null);
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) => createInternalServerMap(axios, serverId, { mapId }),
@@ -78,7 +78,13 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
               }}
             >
               {({ id, name }) => (
-                <Button className="hover:border-button relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start" variant="outline" key={id} title={name} onClick={() => mutate(id)}>
+                <Button
+                  className="hover:border-button relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start"
+                  variant="outline"
+                  key={id}
+                  title={name}
+                  onClick={() => mutate(id)}
+                >
                   <h3 className="absolute top-0 w-full overflow-hidden p-2 text-center backdrop-brightness-50">{name}</h3>
                   <PreviewImage src={`${env.url.image}/map-previews/${id}${env.imageFormat}`} errorSrc={`${env.url.api}/maps/${id}/image`} alt={name} />
                 </Button>

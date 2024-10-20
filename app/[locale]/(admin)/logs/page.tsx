@@ -20,18 +20,19 @@ import useMessage from '@/hooks/use-message';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Log } from '@/types/response/Log';
 
 import { getLogs, getLogCollections, getLogCount } from '@/query/log';
 import { Hidden } from '@/components/common/hidden';
-import useSearchPageParams from '@/hooks/use-search-page-params';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
 import { XIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
+import { PaginationQuery } from '@/query/search-query';
+import useSearchQuery from '@/hooks/use-search-query';
+import { z } from 'zod';
 
 const defaultState = {
   collection: 'LIVE',
@@ -132,14 +133,14 @@ const defaultFilter: Filter = {
   after: '',
 };
 
-type LogPaginationQuery = PaginationQuery & {
+type LogPaginationQuery = z.infer<typeof PaginationQuery> & {
   collection: LogType;
   env: LogEnvironment;
 } & Filter;
 
 function StaticLog() {
   const [filter, setFilter] = useQueryState(defaultFilter);
-  const { size, page } = useSearchPageParams();
+  const { page, size } = useSearchQuery(PaginationQuery);
 
   const { env, ip, userId, url, content, before, after, collection } = filter;
 

@@ -12,16 +12,17 @@ import UserCard from '@/components/user/user-card';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
-import useSearchPageParams from '@/hooks/use-search-page-params';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
 import { getMyRank, getRank, getUsersCount } from '@/query/user';
 import { User } from '@/types/response/User';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { ItemPaginationQuery } from '@/query/search-query';
+import useSearchQuery from '@/hooks/use-search-query';
 
 export function PageClient() {
-  const params = useSearchPageParams(30);
+  const params = useSearchQuery(ItemPaginationQuery);
   const { session } = useSession();
   const { page, size } = params;
 
@@ -107,7 +108,7 @@ function RankCardSkeleton({ rank }: RankCardSkeletonProps) {
 function MyRankCard() {
   const axios = useClientApi();
   const { session, state } = useSession();
-  const params = useSearchPageParams(20);
+  const params = useSearchQuery(ItemPaginationQuery);
   const { page, size } = params;
 
   const { data, isFetching } = useQuery({

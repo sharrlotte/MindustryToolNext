@@ -11,13 +11,14 @@ import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { defaultSortTag } from '@/constant/env';
-import useSearchPageParams from '@/hooks/use-search-page-params';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
 import { QueryParams } from '@/query/config/search-query-params';
 import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import useSearchQuery from '@/hooks/use-search-query';
+import { ItemPaginationQuery } from '@/query/search-query';
 
 type NameTagSearchProps = {
   className?: string;
@@ -30,7 +31,8 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
   const [filter, setFilter] = useState('');
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchPageParams();
+
+  const params = useSearchQuery(ItemPaginationQuery);
   const t = useI18n();
 
   const [page, setPage] = useState(0);
@@ -45,7 +47,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
 
   useEffect(() => {
     if (tags.length > 0) {
-      const { sort: sortString, name: nameString, tags: tagsString, page } = searchParams;
+      const { sort: sortString, name: nameString, tags: tagsString, page } = params;
 
       const tagGroup = tagsString ? TagGroups.parseString(tagsString, tags) : [];
 

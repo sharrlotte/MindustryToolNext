@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { UserManagementCard } from '@/app/[locale]/(admin)/admin/users/user-management-card';
 import { UserRole } from '@/constant/enum';
 import useQueryState from '@/hooks/use-query-state';
-import useSearchPageParams from '@/hooks/use-search-page-params';
 import { Role } from '@/types/response/Role';
 
 import { getRoles } from '@/query/role';
@@ -18,6 +17,8 @@ import GridPaginationList from '@/components/common/grid-pagination-list';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import { omit } from 'lodash';
 import useClientQuery from '@/hooks/use-client-query';
+import useSearchQuery from '@/hooks/use-search-query';
+import { ItemPaginationQuery } from '@/query/search-query';
 
 const defaultState = {
   name: '',
@@ -25,7 +26,7 @@ const defaultState = {
 
 export function UserTable() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const params = useSearchPageParams();
+  const params = useSearchQuery(ItemPaginationQuery);
 
   const [{ name }, setQueryState] = useQueryState(defaultState);
   const [role, setRole] = useState<Role>();
