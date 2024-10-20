@@ -140,7 +140,7 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
 
   return (
     <div
-      className={cn('flex h-full w-full flex-col divide-y overflow-hidden rounded-md border bg-background', {
+      className={cn('flex h-full w-full flex-col divide-y overflow-hidden rounded-md border ', {
         'fixed inset-0 z-50 rounded-none': isFullscreen,
       })}
     >
@@ -217,7 +217,7 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
         </div>
       </section>
       <div
-        className={cn('grid h-full w-full grid-cols-1 divide-y overflow-hidden bg-background md:divide-x md:divide-y-0', {
+        className={cn('grid h-full w-full grid-cols-1 divide-y overflow-hidden  md:divide-x md:divide-y-0', {
           'grid-rows-2 md:grid-cols-2 md:grid-rows-1': mode === 'live',
         })}
       >

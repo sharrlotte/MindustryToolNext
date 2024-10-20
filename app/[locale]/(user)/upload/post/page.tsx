@@ -49,6 +49,9 @@ export default function Page() {
     images: [],
   });
   const [language, setLanguage] = useState('');
+
+  console.log(language);
+
   const t = useI18n();
 
   function handlePostSelect(post: PostDetail) {
@@ -61,7 +64,7 @@ export default function Page() {
     if (post === undefined) {
       return (
         <Fragment>
-          <div className="rounded-md bg-card p-2">
+          <div className="rounded-md">
             <AddTranslationDialog onPostSelect={handlePostSelect} />
           </div>
           <UploadPage
@@ -80,7 +83,7 @@ export default function Page() {
 
     return (
       <Fragment>
-        <div className="space-x-2 rounded-sm bg-card p-2">
+        <div className="space-x-2 rounded-sm">
           <Button title={t('upload.go-to-upload-page')} variant="secondary" onClick={() => setPost(undefined)}>
             {t('upload.go-to-upload-page')}
           </Button>
@@ -101,7 +104,7 @@ export default function Page() {
     );
   }
 
-  return <div className="flex h-full flex-col gap-2 overflow-hidden">{render()}</div>;
+  return <div className="flex h-full flex-col gap-2 overflow-hidden p-2">{render()}</div>;
 }
 
 function TranslatePage({
@@ -160,12 +163,12 @@ function TranslatePage({
   return (
     <div className="flex h-full overflow-hidden rounded-md">
       <div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
-        <div className="flex h-full flex-col gap-1 overflow-hidden rounded-md bg-card p-2">
-          <Input className="w-full rounded-sm bg-background outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
+        <div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
+          <Input className="w-full rounded-sm outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
           <MarkdownEditor value={content} onChange={(value) => setContent(value)} />
         </div>
-        <div className="flex items-center justify-start gap-2 rounded-md bg-card p-2">
-          <ComboBox placeholder={t('upload.select-language')} values={validLanguages} onChange={(value) => setLanguage(value ?? '')} />
+        <div className="flex items-center justify-start gap-2 rounded-md ">
+          <ComboBox placeholder={t('upload.select-language')} value={{ label: t(language || 'en'), value: language }} values={validLanguages} onChange={(value) => setLanguage(value ?? '')} />
           <Button
             className="ml-auto"
             title={t('submit')}
@@ -238,13 +241,14 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-md">
       <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
-        <div className="flex h-full flex-col gap-1 overflow-hidden rounded-md bg-card p-2">
-          <Input className="w-full rounded-sm bg-background outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
+        <div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
+          <Input className="w-full rounded-sm  outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
           <MarkdownEditor value={content} onChange={(value) => setContent(value)} />
         </div>
-        <div className="flex items-center justify-start gap-2 overflow-hidden rounded-md bg-card p-2">
+        <div className="flex items-center justify-start gap-2 overflow-hidden rounded-md ">
           <ComboBox
             placeholder={t('upload.select-language')}
+            value={{ label: t(language || 'en'), value: language }}
             values={languages.map((value) => ({
               value,
               label: value,
@@ -314,7 +318,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
     }
 
     return data?.map(({ id, title }) => (
-      <Button className="h-full w-full items-center justify-start rounded-md border border-border p-2 text-start hover:bg-brand" variant="outline" key={id} title={title} onClick={() => mutate(id)}>
+      <Button className="h-full w-full items-center justify-start rounded-md border border-border text-start hover:bg-brand" variant="outline" key={id} title={title} onClick={() => mutate(id)}>
         {title.trim()}
       </Button>
     ));

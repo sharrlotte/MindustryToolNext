@@ -9,8 +9,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 
 export function useI18n(): TranslateFunction {
-  const { isCurrentLocaleSet, currentLocale, translation, setTranslation } =
-    useLocaleStore();
+  const { isCurrentLocaleSet, currentLocale, translation, setTranslation } = useLocaleStore();
   const axios = useClientApi();
 
   if (translation[currentLocale] === undefined) {
@@ -64,7 +63,7 @@ export function useI18n(): TranslateFunction {
       const translated = value[key];
 
       if (!translated) {
-        console.error(`Missing key: ${text}`);
+        console.warn(`Missing key: ${text}`);
         return key;
       }
 
@@ -94,14 +93,9 @@ export function useChangeLocale() {
   const params = useSearchParams();
 
   return (locale: Locale) => {
-    const pathnameHasLocale = locales.some(
-      (locale) =>
-        pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-    );
+    const pathnameHasLocale = locales.some((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
 
-    const url = pathnameHasLocale
-      ? `/${locale}/${pathname.slice(4)}`
-      : `/${locale}${pathname}`;
+    const url = pathnameHasLocale ? `/${locale}/${pathname.slice(4)}` : `/${locale}${pathname}`;
 
     setCurrentLocale(locale);
     setCookie('Locale', locale, { path: '/' });

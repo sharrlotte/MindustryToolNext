@@ -75,7 +75,7 @@ function ChangeLanguageDialog() {
         <ComboBox<Locale>
           value={{ label: t(currentLocale), value: currentLocale }}
           values={locales.map((value: Locale) => ({
-            label: t(value),
+            label: t(value || 'en'),
             value,
           }))}
           searchBar={false}

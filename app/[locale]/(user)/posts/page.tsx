@@ -4,7 +4,6 @@ import { useRef } from 'react';
 
 import PostPreviewCard from '@/components/post/post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import useSearchPageParams from '@/hooks/use-search-page-params';
 import { useSearchTags } from '@/hooks/use-tags';
 import { getPosts } from '@/query/post';
 import InternalLink from '@/components/common/internal-link';
@@ -13,10 +12,12 @@ import { UserIcon, UploadIcon } from 'lucide-react';
 import env from '@/constant/env';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
+import useSearchQuery from '@/hooks/use-search-query';
+import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function PostsPage() {
   const { post } = useSearchTags();
-  const params = useSearchPageParams();
+  const params = useSearchQuery(ItemPaginationQuery);
   const ref = useRef<HTMLDivElement | null>(null);
 
   const uploadLink = `${env.url.base}/upload/post`;

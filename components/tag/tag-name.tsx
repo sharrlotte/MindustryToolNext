@@ -15,7 +15,7 @@ function _TagName({
   const t = useI18n();
 
   return (
-    <span className={cn('capitalize', className)}>{t(`tags.${children}`)}</span>
+    <span className={cn('capitalize text-sx', className)}>{t(`tags.${children}`)}</span>
   );
 }
 

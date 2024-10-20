@@ -20,7 +20,13 @@ export default function Page() {
         <AddPluginDialog serverId={id} />
       </div>
       <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>
-        <InfinitePage className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3" params={{ page: 0, size: 20 }} queryKey={['servers', id, 'plugins']} getFunc={(axios, params) => getInternalServerPlugins(axios, id, params)} container={() => ref.current}>
+        <InfinitePage
+          className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
+          params={{ page: 0, size: 20 }}
+          queryKey={['servers', id, 'plugins']}
+          getFunc={(axios, params) => getInternalServerPlugins(axios, id, params)}
+          container={() => ref.current}
+        >
           {(data) => <InternalServerPluginCard key={data.pluginId} plugin={data} />}
         </InfinitePage>
       </ScrollContainer>

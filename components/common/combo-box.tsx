@@ -1,17 +1,10 @@
 import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 
-import {
-  ChevronsUpDownIcon,
-  SearchIcon,
-} from 'lucide-react';
+import { ChevronsUpDownIcon, SearchIcon } from 'lucide-react';
 
 type Value<T> = { label: string; value: T };
 
@@ -24,14 +17,7 @@ type ComboBoxProps<T> = {
   onChange: (value: T | undefined) => void;
 };
 
-export default function ComboBox<T>({
-  className,
-  placeholder = 'Select',
-  values,
-  value,
-  searchBar = true,
-  onChange,
-}: ComboBoxProps<T>) {
+export default function ComboBox<T>({ className, placeholder = 'Select', values, value, searchBar = true, onChange }: ComboBoxProps<T>) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
 
@@ -49,15 +35,7 @@ export default function ComboBox<T>({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          className={cn(
-            'w-[200px] justify-between border-none bg-secondary capitalize shadow-md',
-            className,
-          )}
-          title=""
-          role="combobox"
-          variant="outline"
-        >
+        <Button className={cn('w-[200px] justify-between border-none bg-secondary capitalize shadow-md', className)} title="" role="combobox" variant="outline">
           {value?.label?.toLowerCase() || placeholder}
           <ChevronsUpDownIcon className="ml-auto size-4 shrink-0" />
         </Button>
@@ -69,12 +47,7 @@ export default function ComboBox<T>({
               <div>
                 <SearchIcon className="size-5" />
               </div>
-              <input
-                className="border-none bg-transparent font-thin outline-none"
-                value={input}
-                placeholder="Search"
-                onChange={(event) => setInput(event.currentTarget.value)}
-              />
+              <input className="border-none bg-transparent font-thin outline-none" value={input} placeholder="Search" onChange={(event) => setInput(event.currentTarget.value)} />
             </div>
           )}
           <div className="grid gap-1 p-1">

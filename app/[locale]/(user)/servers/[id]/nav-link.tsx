@@ -8,7 +8,7 @@ import InternalLink from '@/components/common/internal-link';
 import { motion } from 'framer-motion';
 
 type Props = {
-  id: string;
+  serverId: string;
   href: string;
   label: ReactNode;
   icon: ReactNode;
@@ -16,12 +16,12 @@ type Props = {
   setHovered: (value: string) => void;
 };
 
-export default function NavLink({ id, href, label, icon, hovered, setHovered }: Props) {
+export default function NavLink({ serverId, href, label, icon, hovered, setHovered }: Props) {
   const pathname = usePathname();
   const firstSlash = pathname.indexOf('/', 1);
   const route = pathname.slice(firstSlash);
 
-  const isSelected = (route.endsWith(href) && href !== '') || (id !== '' && href === '' && route === `/servers/${id}`);
+  const isSelected = (route.endsWith(href) && href !== '') || (serverId !== '' && href === '' && route === `/servers/${serverId}`);
   const isHovered = href === hovered;
 
   return (
@@ -29,25 +29,24 @@ export default function NavLink({ id, href, label, icon, hovered, setHovered }: 
       className={cn('relative inline-flex h-12 min-w-fit items-center justify-center gap-2 text-nowrap px-0 py-2 text-sm text-foreground/70 hover:text-foreground', {
         'text-foreground': isSelected,
       })}
-      key={href}
-      href={`/servers/${id}/${href}`}
+      href={`/servers/${serverId}/${href}`}
       onMouseEnter={() => setHovered(href)}
       onTouchStart={() => setHovered(href)}
     >
       <div className="relative w-full">
         {isHovered && <motion.div layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
+        {isSelected && <motion.div layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
         <div
           className={cn('relative z-10 bg-transparent p-2 text-foreground/70 hover:text-foreground', {
             'text-foreground': isSelected,
           })}
         >
-          <div className="relative flex w-fit justify-center gap-1 rounded-sm">
+          <div className="relative flex w-fit items-center justify-center gap-1 rounded-sm">
             <span>{icon}</span>
             <span>{label}</span>
           </div>
         </div>
       </div>
-      {isSelected && <motion.div layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
     </InternalLink>
   );
 }

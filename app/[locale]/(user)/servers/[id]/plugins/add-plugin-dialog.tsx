@@ -2,7 +2,6 @@ import InfinitePage from '@/components/common/infinite-page';
 import NameTagSearch from '@/components/search/name-tag-search';
 import { Skeleton } from '@/components/ui/skeleton';
 import useClientApi from '@/hooks/use-client';
-import useSearchPageParams from '@/hooks/use-plugin-search-params';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useSearchTags } from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
@@ -14,6 +13,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ScrollContainer from '@/components/common/scroll-container';
+import { ItemPaginationQuery } from '@/query/search-query';
+import useSearchQuery from '@/hooks/use-search-query';
 
 type AddPluginDialogProps = {
   serverId: string;
@@ -27,7 +28,7 @@ export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const axios = useClientApi();
   const t = useI18n();
 
-  const params = useSearchPageParams();
+  const params = useSearchQuery(ItemPaginationQuery);
   const { invalidateByKey } = useQueriesData();
 
   const { mutate } = useMutation({
@@ -71,7 +72,7 @@ export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
             >
               {({ id, name, description }) => (
                 <Button
-                  className="relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand"
+                  className="relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand/70"
                   variant="outline"
                   key={id}
                   onClick={() => mutate(id)}

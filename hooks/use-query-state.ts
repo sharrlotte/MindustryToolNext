@@ -1,5 +1,5 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 let timeout: any;
 
@@ -8,43 +8,33 @@ export default function useQueryState(initialState: Record<string, string>) {
   const router = useRouter();
   const pathname = usePathname();
 
+  const [currentValue, setCurrentValue] = useState(initialState);
+
   useEffect(() => {
-    const queryParams = new URLSearchParams(params);
+    const result: Record<string, string> = {};
 
-    Object.entries(initialState).forEach(([key, value]) => {
-      if (!params.get(key)) {
-        queryParams.set(key, value);
-      }
-    });
-
-    for (const key of queryParams.keys()) {
-      const value = queryParams.get(key);
-
-      if (value === null || value === undefined || value === '') {
-        queryParams.delete(key);
+    for (const key of params.keys()) {
+      const value = params.get(key);
+      if (value !== undefined && value !== null) {
+        result[key] = value;
       }
     }
 
-    navigate(queryParams);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialState]);
+    setCurrentValue(result);
+  }, [params]);
 
   const setter = useCallback(
     (value: Record<string, string | undefined>) => {
       const queryParams = new URLSearchParams(params);
 
+      const filteredValue = Object.fromEntries(Object.entries(value).filter(([_, value]) => value !== undefined)) as Record<string, string>;
+
+      setCurrentValue(filteredValue);
+
       Object.entries(value).forEach(([key, value]) => {
-        if (value) queryParams.set(key, value);
+        if (value !== undefined) queryParams.set(key, value);
         else queryParams.delete(key);
       });
-
-      for (const key of queryParams.keys()) {
-        const value = queryParams.get(key);
-
-        if (value === null || value === undefined || value === '') {
-          queryParams.delete(key);
-        }
-      }
 
       navigate(queryParams);
     },
@@ -57,13 +47,32 @@ export default function useQueryState(initialState: Record<string, string>) {
       clearTimeout(timeout);
     }
 
+    let isTheSame = true;
+
     for (const key of queryParams.keys()) {
       if (params.get(key) !== queryParams.get(key)) {
-        timeout = setTimeout(() => router.replace(`${pathname}?${queryParams.toString()}`), 10);
-        break;
+        isTheSame = false;
       }
+    }
+
+    if (!isTheSame) {
+      timeout = setTimeout(() => router.replace(`${pathname}?${queryParams.toString()}`), 1000);
     }
   }
 
-  return [Object.fromEntries(params.entries()) || initialState, setter] as const;
+  let result = Object.fromEntries(params.entries());
+
+  Object.entries(currentValue).forEach(([key, value]) => {
+    result[key] = value;
+  });
+
+  Object.entries(result).forEach(([key, value]) => {
+    if (!value) {
+      delete result[key];
+    }
+  });
+
+  result = { ...initialState, ...result };
+
+  return [result, setter] as const;
 }
