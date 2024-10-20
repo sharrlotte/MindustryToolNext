@@ -65,7 +65,7 @@ export default function CopyButton({
       {...props}
       onClick={handleClick}
     >
-      {children ?? <Copy className="size-5" strokeWidth="1.3px" />}
+      {children ?? <Copy className="size-5 text-foreground" strokeWidth="1.3px" />}
     </Button>
   );
 }

@@ -69,17 +69,19 @@ export default function useQueryState(initialState: Record<string, string>) {
 
   const result = Object.fromEntries(params.entries());
 
-  params.entries().forEach(([key, value]) => {
-    if (value === undefined) {
-      result[key] = initialState[key];
-    }
-  });
-
   Object.entries(currentValue).forEach(([key, value]) => {
     if (value !== undefined) {
-      result[key] = currentValue[key];
+      result[key] = value;
+      console.log('set', { key, value });
     }
   });
 
-  return [result || initialState, setter] as const;
+  Object.entries({ ...initialState, ...result }).forEach(([key, value]) => {
+    if (!value) {
+      result[key] = initialState[key];
+      console.log('set', { key, value: initialState[key] });
+    }
+  });
+
+  return [result, setter] as const;
 }

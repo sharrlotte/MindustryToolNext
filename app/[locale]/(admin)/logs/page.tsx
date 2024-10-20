@@ -141,6 +141,8 @@ function StaticLog() {
   const [filter, setFilter] = useQueryState(defaultFilter);
   const { size, page } = useSearchPageParams();
 
+  console.log({ filter });
+
   const { env, ip, userId, url, content, before, after, collection } = filter;
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);

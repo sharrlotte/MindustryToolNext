@@ -112,7 +112,7 @@ export default function PaginationNavigator({
         <PaginationItem>
           <Button
             className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-              'bg-secondary text-background dark:text-foreground':
+              'bg-secondary dark:text-foreground':
                 firstNumber === currentPage,
             })}
             title="prev"
