@@ -72,7 +72,7 @@ export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
             >
               {({ id, name, description }) => (
                 <Button
-                  className="relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand"
+                  className="relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand/70"
                   variant="outline"
                   key={id}
                   onClick={() => mutate(id)}
