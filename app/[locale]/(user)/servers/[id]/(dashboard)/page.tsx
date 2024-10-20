@@ -59,7 +59,11 @@ export default async function Page({ params }: Props) {
   return (
     <div className="flex flex-col gap-2 overflow-y-auto">
       <div className="h-full">
-        <div className={cn('grid min-h-full w-full grid-cols-1 grid-rows-[auto_auto_auto_60px] flex-col gap-2 md:grid-cols-[auto_300px] md:grid-rows-[auto_auto_60px]', { 'grid-rows-[auto_auto_60px] md:grid-cols-1': !showPlayer })}>
+        <div
+          className={cn('grid min-h-full w-full grid-cols-1 grid-rows-[auto_auto_auto_60px] flex-col gap-2 md:grid-cols-[auto_300px] md:grid-rows-[auto_auto_60px]', {
+            'grid-rows-[auto_auto_60px] md:grid-cols-1': !showPlayer,
+          })}
+        >
           <div className="col-span-1 flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card p-4">
             <div className="flex items-center gap-2">
               <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
@@ -110,7 +114,7 @@ export default async function Page({ params }: Props) {
                 <Tran text="server.system-status" />
               </h3>
               <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
-              {mapImage && <RawImage className="flex w-full rounded-sm" data={mapImage} />}
+              {mapImage && <RawImage className="flex w-full max-w-[50dvw] rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" data={mapImage} />}
             </div>
           </div>
           <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
