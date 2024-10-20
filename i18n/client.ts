@@ -42,7 +42,11 @@ export function useI18n(): TranslateFunction {
           return key;
         }
 
-        keys[group] = {};
+        try {
+          keys[group] = JSON.parse(localStorage.getItem(`translation.${group}`) || '{}');
+        } catch (e) {
+          keys[group] = {};
+        }
 
         axios
           .get('/translations', {
@@ -52,7 +56,10 @@ export function useI18n(): TranslateFunction {
             },
           })
           .then((result) => {
-            if (result.data) setTranslation({ [group]: result.data });
+            if (result.data) {
+              setTranslation({ [group]: result.data });
+              localStorage.setItem(`translation.${group}`, JSON.stringify(result.data));
+            }
           });
       }
 
