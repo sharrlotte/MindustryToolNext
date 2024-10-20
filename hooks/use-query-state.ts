@@ -11,27 +11,6 @@ export default function useQueryState(initialState: Record<string, string>) {
   const [currentValue, setCurrentValue] = useState(initialState);
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(params);
-
-    Object.entries(initialState).forEach(([key, value]) => {
-      if (!params.get(key)) {
-        queryParams.set(key, value);
-      }
-    });
-
-    for (const key of queryParams.keys()) {
-      const value = queryParams.get(key);
-
-      if (value === null || value === undefined || value === '') {
-        queryParams.delete(key);
-      }
-    }
-
-    navigate(queryParams);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialState]);
-
-  useEffect(() => {
     setCurrentValue(Object.fromEntries(params.entries().filter(([_, value]) => value !== undefined)));
   }, [params]);
 
@@ -45,7 +24,7 @@ export default function useQueryState(initialState: Record<string, string>) {
 
       Object.entries(value).forEach(([key, value]) => {
         if (value !== undefined) queryParams.set(key, value);
-        else queryParams.set(key, '');
+        else queryParams.delete(key);
       });
 
       navigate(queryParams);
@@ -59,29 +38,34 @@ export default function useQueryState(initialState: Record<string, string>) {
       clearTimeout(timeout);
     }
 
+    let isTheSame = true;
+
     for (const key of queryParams.keys()) {
       if (params.get(key) !== queryParams.get(key)) {
-        timeout = setTimeout(() => router.replace(`${pathname}?${queryParams.toString()}`), 1000);
-        break;
+        isTheSame = false;
       }
+    }
+
+    if (!isTheSame) {
+      console.log('Go to ' + queryParams);
+      timeout = setTimeout(() => router.replace(`${pathname}?${queryParams.toString()}`), 1000);
     }
   }
 
-  const result = Object.fromEntries(params.entries());
+  let result = Object.fromEntries(params.entries());
 
   Object.entries(currentValue).forEach(([key, value]) => {
-    if (value !== undefined) {
-      result[key] = value;
-      console.log('set', { key, value });
+    result[key] = value;
+  });
+
+  Object.entries(result).forEach(([key, value]) => {
+    if (!value) {
+      delete result[key];
     }
   });
 
-  Object.entries({ ...initialState, ...result }).forEach(([key, value]) => {
-    if (!value) {
-      result[key] = initialState[key];
-      console.log('set', { key, value: initialState[key] });
-    }
-  });
+  result = { ...initialState, ...result };
+  console.log(result, initialState);
 
   return [result, setter] as const;
 }

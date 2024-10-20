@@ -199,7 +199,7 @@ export default function MessageList({
   }
 
   return (
-    <div className="h-fit" ref={(ref) => setList(ref)}>
+    <div className="h-fit w-full" ref={(ref) => setList(ref)}>
       {!hasNextPage && end}
       {isFetching && loader}
       {pages}

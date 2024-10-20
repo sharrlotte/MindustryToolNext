@@ -70,7 +70,7 @@ function LiveLog() {
               <LoadingSpinner className="flex h-full w-full items-center justify-center" />
             ) : (
               <ScrollContainer ref={ref}>
-                <MessageList className="flex h-full flex-col gap-2" queryKey={['live-log']} room="LOG" container={() => ref.current} params={{ size: 50 }} showNotification={false}>
+                <MessageList className="flex h-full w-full flex-col gap-2" queryKey={['live-log']} room="LOG" container={() => ref.current} params={{ size: 50 }} showNotification={false}>
                   {(data) => <MessageCard key={data.id} message={data} />}
                 </MessageList>
               </ScrollContainer>
@@ -140,8 +140,6 @@ type LogPaginationQuery = PaginationQuery & {
 function StaticLog() {
   const [filter, setFilter] = useQueryState(defaultFilter);
   const { size, page } = useSearchPageParams();
-
-  console.log({ filter });
 
   const { env, ip, userId, url, content, before, after, collection } = filter;
 
