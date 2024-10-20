@@ -98,7 +98,7 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
           <Markdown>{content}</Markdown>
         </div>
       </header>
-      <footer className="flex justify-between rounded-md bg-card p-2">
+      <footer className="flex justify-between rounded-md p-2">
         <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
           <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
             <LikeButton />
