@@ -11,7 +11,16 @@ export default function useQueryState(initialState: Record<string, string>) {
   const [currentValue, setCurrentValue] = useState(initialState);
 
   useEffect(() => {
-    setCurrentValue(Object.fromEntries(params.entries().filter(([_, value]) => value !== undefined)));
+    const result: Record<string, string> = {};
+
+    for (const key of params.keys()) {
+      const value = params.get(key);
+      if (value !== undefined && value !== null) {
+        result[key] = value;
+      }
+    }
+
+    setCurrentValue(result);
   }, [params]);
 
   const setter = useCallback(

@@ -1,9 +1,8 @@
 import CreateRoleDialog from '@/app/[locale]/(admin)/admin/users/create-role-dialog';
 import { RoleList } from '@/app/[locale]/(admin)/admin/users/role-list';
-import { RoleListSkeleton } from '@/app/[locale]/(admin)/admin/users/role-list-skeleton';
 import Tran from '@/components/common/tran';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import React, { Suspense } from 'react';
+import React from 'react';
 
 export async function RoleTable() {
   return (
