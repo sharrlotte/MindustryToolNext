@@ -19,6 +19,7 @@ import { updateInternalServerPort } from '@/query/server';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { cn } from '@/lib/utils';
 
 type Props = {
   server: InternalServerDetail;
@@ -101,7 +102,11 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
             )}
           />
         </div>
-        <div className="flex justify-end gap-2">
+        <div
+          className={cn('flex justify-end gap-2 opacity-0', {
+            'opacity-100': isChanged,
+          })}
+        >
           <Button className="flex justify-end" variant="secondary" title={t('reset')} onClick={() => form.reset()} disabled={!isChanged || isPending}>
             {t('reset')}
           </Button>
