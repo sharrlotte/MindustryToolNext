@@ -20,11 +20,7 @@ import { getSchematicUploadCount } from '@/query/schematic';
 import { getMapUploadCount } from '@/query/map';
 import { getPostUploadCount } from '@/query/post';
 import { getPluginUploadCount } from '@/query/plugin';
-import {
-  SchematicIcon,
-  PostIcon,
-  SettingIcon,
-} from '@/components/common/icons';
+import { SchematicIcon, PostIcon, SettingIcon } from '@/components/common/icons';
 
 import { Filter } from '@/lib/utils';
 import { ReactNode, useEffect } from 'react';
@@ -141,7 +137,7 @@ export const groups: readonly PathGroup[] = [
         name: <Tran text="user" />,
         path: '/admin/users',
         icon: <UserIcon />,
-        filter: { authority: 'EDIT_USER' },
+        filter: { any: [{ authority: 'EDIT_USER_ROLE' }, { authority: 'EDIT_USER_AUTHORITY' }] },
       },
       {
         name: <Tran text="log" />,
@@ -239,12 +235,7 @@ export const groups: readonly PathGroup[] = [
 function VerifyPath() {
   const axios = useClientApi();
   const set = useVerifyCount((data) => data.set);
-  const [
-    { data: schematicCount },
-    { data: mapCount },
-    { data: postCount },
-    { data: pluginCount },
-  ] = useQueries({
+  const [{ data: schematicCount }, { data: mapCount }, { data: postCount }, { data: pluginCount }] = useQueries({
     queries: [
       {
         queryFn: () => getSchematicUploadCount(axios, {}),
@@ -269,16 +260,9 @@ function VerifyPath() {
     ],
   });
 
-  useEffect(
-    () => set({ schematicCount, mapCount, postCount, pluginCount }),
-    [mapCount, postCount, schematicCount, pluginCount, set],
-  );
+  useEffect(() => set({ schematicCount, mapCount, postCount, pluginCount }), [mapCount, postCount, schematicCount, pluginCount, set]);
 
-  const amount =
-    (schematicCount || 0) +
-    (mapCount || 0) +
-    (postCount || 0) +
-    (pluginCount || 0);
+  const amount = (schematicCount || 0) + (mapCount || 0) + (postCount || 0) + (pluginCount || 0);
 
   return (
     <>

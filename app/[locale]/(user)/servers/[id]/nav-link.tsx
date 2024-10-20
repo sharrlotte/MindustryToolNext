@@ -41,7 +41,7 @@ export default function NavLink({ id, href, label, icon, hovered, setHovered }: 
             'text-foreground': isSelected,
           })}
         >
-          <div className="relative flex w-fit justify-center gap-1 rounded-sm">
+          <div className="relative flex w-fit justify-center items-center gap-1 rounded-sm">
             <span>{icon}</span>
             <span>{label}</span>
           </div>

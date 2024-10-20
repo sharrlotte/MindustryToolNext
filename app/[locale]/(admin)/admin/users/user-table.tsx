@@ -35,7 +35,7 @@ export function UserTable() {
   });
 
   const { data: userCount } = useClientQuery({
-    queryKey: ['maps', 'total', omit(params, 'page', 'size')],
+    queryKey: ['users', 'total', omit(params, 'page', 'size')],
     queryFn: (axios) => getUserCount(axios, { ...params, role: role?.name as UserRole }),
     placeholderData: 0,
   });

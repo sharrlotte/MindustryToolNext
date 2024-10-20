@@ -1,5 +1,5 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 let timeout: any;
 
@@ -7,6 +7,8 @@ export default function useQueryState(initialState: Record<string, string>) {
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+
+  const [currentValue, setCurrentValue] = useState(initialState);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(params);
@@ -29,22 +31,22 @@ export default function useQueryState(initialState: Record<string, string>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialState]);
 
+  useEffect(() => {
+    setCurrentValue(Object.fromEntries(params.entries().filter(([_, value]) => value !== undefined)));
+  }, [params]);
+
   const setter = useCallback(
     (value: Record<string, string | undefined>) => {
       const queryParams = new URLSearchParams(params);
 
+      const filteredValue = Object.fromEntries(Object.entries(value).filter(([_, value]) => value !== undefined)) as Record<string, string>;
+
+      setCurrentValue(filteredValue);
+
       Object.entries(value).forEach(([key, value]) => {
-        if (value) queryParams.set(key, value);
-        else queryParams.delete(key);
+        if (value !== undefined) queryParams.set(key, value);
+        else queryParams.set(key, '');
       });
-
-      for (const key of queryParams.keys()) {
-        const value = queryParams.get(key);
-
-        if (value === null || value === undefined || value === '') {
-          queryParams.delete(key);
-        }
-      }
 
       navigate(queryParams);
     },
@@ -59,11 +61,25 @@ export default function useQueryState(initialState: Record<string, string>) {
 
     for (const key of queryParams.keys()) {
       if (params.get(key) !== queryParams.get(key)) {
-        timeout = setTimeout(() => router.replace(`${pathname}?${queryParams.toString()}`), 10);
+        timeout = setTimeout(() => router.replace(`${pathname}?${queryParams.toString()}`), 1000);
         break;
       }
     }
   }
 
-  return [Object.fromEntries(params.entries()) || initialState, setter] as const;
+  const result = Object.fromEntries(params.entries());
+
+  params.entries().forEach(([key, value]) => {
+    if (value === undefined) {
+      result[key] = initialState[key];
+    }
+  });
+
+  Object.entries(currentValue).forEach(([key, value]) => {
+    if (value !== undefined) {
+      result[key] = currentValue[key];
+    }
+  });
+
+  return [result || initialState, setter] as const;
 }

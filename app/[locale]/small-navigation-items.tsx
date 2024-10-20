@@ -72,7 +72,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
                       </span>
                       <NavItems pathGroups={pathGroups} bestMatch={bestMatch} onClick={hideSidebar} />
                     </div>
-                    <Divider />
+                  <Divider />
                     <UserDisplay />
                   </div>
                 </OutsideWrapper>
