@@ -43,7 +43,7 @@ export function useI18n(): TranslateFunction {
         }
 
         try {
-          keys[group] = JSON.parse(localStorage.getItem(`translation.${group}`) || '{}');
+          keys[group] = JSON.parse(localStorage.getItem(`${currentLocale}.translation.${group}`) || '{}');
         } catch (e) {
           keys[group] = {};
         }
@@ -58,7 +58,7 @@ export function useI18n(): TranslateFunction {
           .then((result) => {
             if (result.data) {
               setTranslation({ [group]: result.data });
-              localStorage.setItem(`translation.${group}`, JSON.stringify(result.data));
+              localStorage.setItem(`${currentLocale}.translation.${group}`, JSON.stringify(result.data));
             }
           });
       }
@@ -71,7 +71,7 @@ export function useI18n(): TranslateFunction {
 
       if (!translated) {
         console.warn(`Missing key: ${text}`);
-        return key;
+        return text;
       }
 
       return formatTranslation(translated, args) || key;
