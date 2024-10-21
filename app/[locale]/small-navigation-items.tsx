@@ -52,7 +52,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
         >
           <motion.div variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
             <div
-              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background/90 duration-300', {
+              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background dark:bg-background/90 duration-300', {
                 'translate-x-0': isVisible,
               })}
             >
@@ -72,7 +72,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
                       </span>
                       <NavItems pathGroups={pathGroups} bestMatch={bestMatch} onClick={hideSidebar} />
                     </div>
-                  <Divider />
+                    <Divider />
                     <UserDisplay />
                   </div>
                 </OutsideWrapper>
