@@ -11,11 +11,11 @@ type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   onDelete?: (tag: Tag) => void;
 };
 
-const TagCard = React.memo(_TagCard);
+const TagCard = React.memo(InternalTagCard);
 
 export default TagCard;
 
-function _TagCard({ tag, className, onDelete, ...props }: TagCardProps) {
+function InternalTagCard({ tag, className, onDelete, ...props }: TagCardProps) {
   const { name, value, color } = tag;
 
   const hasDelete = !!onDelete;

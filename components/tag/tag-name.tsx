@@ -5,7 +5,7 @@ import React from 'react';
 import { useI18n } from '@/i18n/client';
 import { cn } from '@/lib/utils';
 
-function _TagName({
+function InternalTagName({
   className,
   children,
 }: {
@@ -19,4 +19,4 @@ function _TagName({
   );
 }
 
-export const TagName = React.memo(_TagName);
+export const TagName = React.memo(InternalTagName);

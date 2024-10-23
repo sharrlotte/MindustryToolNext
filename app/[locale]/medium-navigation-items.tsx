@@ -113,7 +113,7 @@ type PathGroupElementProps = {
   bestMatch: string | null;
 };
 
-const _PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNode => {
+const InternalPathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNode => {
   const { session } = useSession();
   const { key, name, filter } = group;
 
@@ -134,7 +134,7 @@ const _PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNo
     </ProtectedElement>
   );
 };
-const PathGroupElement = React.memo(_PathGroupElement);
+const PathGroupElement = React.memo(InternalPathGroupElement);
 
 type PathElementProps = {
   segment: Path;

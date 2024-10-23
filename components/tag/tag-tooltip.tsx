@@ -7,7 +7,7 @@ type Props = {
   children: ReactNode;
 };
 
-function _TagTooltip({ value, children }: Props) {
+function InternalTagTooltip({ value, children }: Props) {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -22,5 +22,5 @@ function _TagTooltip({ value, children }: Props) {
   );
 }
 
-const TagTooltip = React.memo(_TagTooltip);
+const TagTooltip = React.memo(InternalTagTooltip);
 export default TagTooltip;

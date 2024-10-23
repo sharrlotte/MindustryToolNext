@@ -18,7 +18,7 @@ type UploadSchematicPreviewCardProps = {
   schematic: Schematic;
 };
 
-function _UploadSchematicPreviewCard({ schematic: { id, name } }: UploadSchematicPreviewCardProps) {
+function InternalUploadSchematicPreviewCard({ schematic: { id, name } }: UploadSchematicPreviewCardProps) {
   const axios = useClientApi();
   const t = useI18n();
 
@@ -58,6 +58,6 @@ function _UploadSchematicPreviewCard({ schematic: { id, name } }: UploadSchemati
   );
 }
 
-const UploadSchematicPreviewCard = React.memo(_UploadSchematicPreviewCard);
+const UploadSchematicPreviewCard = React.memo(InternalUploadSchematicPreviewCard);
 
 export default UploadSchematicPreviewCard;

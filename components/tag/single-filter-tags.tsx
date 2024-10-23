@@ -11,7 +11,7 @@ type SingeFilerTagsProps = {
   handleTagGroupChange: (value: string) => void;
 };
 
-function _SingeFilerTags({
+function InternalSingeFilerTags({
   group,
   selectedValue,
   handleTagGroupChange,
@@ -40,6 +40,6 @@ function _SingeFilerTags({
     </ToggleGroup>
   );
 }
-const SingeFilerTags = React.memo(_SingeFilerTags);
+const SingeFilerTags = React.memo(InternalSingeFilerTags);
 
 export default SingeFilerTags;

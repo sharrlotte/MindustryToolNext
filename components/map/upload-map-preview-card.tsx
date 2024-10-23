@@ -14,7 +14,7 @@ type UploadMapPreviewCardProps = {
   map: MapPreview;
 };
 
-function _UploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCardProps) {
+function InternalUploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCardProps) {
   const link = `${env.url.base}/admin/maps/${id}`;
   const detailLink = `/admin/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
@@ -43,6 +43,6 @@ function _UploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCardProps)
   );
 }
 
-const UploadMapPreviewCard = React.memo(_UploadMapPreviewCard);
+const UploadMapPreviewCard = React.memo(InternalUploadMapPreviewCard);
 
 export default UploadMapPreviewCard;

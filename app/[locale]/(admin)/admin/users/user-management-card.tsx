@@ -10,7 +10,7 @@ type Props = {
   user: User;
 };
 
-function _UserManagementCard({ user }: Props) {
+function InternalUserManagementCard({ user }: Props) {
   return (
     <div className="grid w-full grid-cols-[1fr_10rem] gap-2 bg-card px-4 py-2">
       <div className="flex justify-between space-x-2 overflow-hidden">
@@ -24,4 +24,4 @@ function _UserManagementCard({ user }: Props) {
   );
 }
 
-export const UserManagementCard = React.memo(_UserManagementCard);
+export const UserManagementCard = React.memo(InternalUserManagementCard);
