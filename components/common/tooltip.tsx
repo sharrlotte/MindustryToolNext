@@ -1,4 +1,4 @@
-import cn from "classnames";
+import clsx from "clsx"
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 
@@ -50,7 +50,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   return (
     <div
-      className={cn("relative z-50 inline-block", classname)}
+      className={clsx("relative z-50 inline-block", classname)}
       onMouseEnter={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
       aria-describedby="tooltip"
