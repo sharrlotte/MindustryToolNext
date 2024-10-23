@@ -52,7 +52,7 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
         >
           <motion.div variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
             <div
-              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background dark:bg-background/90 duration-300', {
+              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background duration-300 dark:bg-background/90', {
                 'translate-x-0': isVisible,
               })}
             >
@@ -112,7 +112,7 @@ type PathGroupElementProps = {
   onClick: () => void;
 };
 
-const _PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps): ReactNode => {
+const InternalPathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps): ReactNode => {
   const { session } = useSession();
   const { key, name, filter } = group;
 
@@ -127,7 +127,7 @@ const _PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps)
     </ProtectedElement>
   );
 };
-const PathGroupElement = React.memo(_PathGroupElement);
+const PathGroupElement = React.memo(InternalPathGroupElement);
 
 type PathElementProps = {
   segment: Path;
