@@ -18,10 +18,8 @@ export default function LoginButton({ className, children }: { className?: strin
   const pathname = usePathname();
 
   useLayoutEffect(() => {
-    const path = window.location.href;
-
     if (!ignored.some((ig) => pathname.includes(ig))) {
-      setCookie('redirect_uri', path, {
+      setCookie('redirect_uri', window.location.href, {
         path: '/',
       });
     }

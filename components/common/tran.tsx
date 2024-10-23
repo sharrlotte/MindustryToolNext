@@ -11,7 +11,7 @@ type Props = {
   args?: Record<string, any>;
 };
 
-function _Tran({ className, text, args, style }: Props): React.ReactNode {
+function InternalTran({ className, text, args, style }: Props): React.ReactNode {
   const t = useI18n();
   return (
     <span className={className} style={style}>
@@ -20,6 +20,6 @@ function _Tran({ className, text, args, style }: Props): React.ReactNode {
   );
 }
 
-const Tran = React.memo(_Tran);
+const Tran = React.memo(InternalTran);
 
 export default Tran;

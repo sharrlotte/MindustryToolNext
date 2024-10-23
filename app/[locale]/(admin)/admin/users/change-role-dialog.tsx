@@ -109,7 +109,7 @@ export function ChangeRoleDialog({ user: { id, roles, name, authorities } }: Dia
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger>
-        <section className="space-x-1">
+        <section className="gap-1 flex justify-end">
           {bestRole ? (
             <span key={bestRole.id} className={cn(bestRole.color)}>
               {bestRole.name}

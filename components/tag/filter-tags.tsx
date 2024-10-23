@@ -51,7 +51,7 @@ type FilterTagGroupProps = {
   handleTagGroupChange: (group: string, value: string[]) => void;
 };
 
-const _FilterTagGroup = ({
+const InternalFilterTagGroup = ({
   group,
   selectedGroup,
   handleTagGroupChange,
@@ -83,4 +83,4 @@ const _FilterTagGroup = ({
   );
 };
 
-const FilterTagGroup = React.memo(_FilterTagGroup);
+const FilterTagGroup = React.memo(InternalFilterTagGroup);

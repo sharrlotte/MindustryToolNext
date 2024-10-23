@@ -23,6 +23,18 @@ export default function useQueryState(initialState: Record<string, string>) {
     setCurrentValue(result);
   }, [params]);
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams();
+
+    Object.entries(initialState)
+      .filter(([_, value]) => value)
+      .forEach(([key, value]) => queryParams.set(key, value));
+
+    navigate(queryParams);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const setter = useCallback(
     (value: Record<string, string | undefined>) => {
       const queryParams = new URLSearchParams(params);

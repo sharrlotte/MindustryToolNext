@@ -4,10 +4,7 @@ import { defaultSortTag } from '@/constant/env';
 import { sortTag } from '@/types/response/SortTag';
 import { locales } from '@/i18n/config';
 
-export const sortSchema = z
-  .enum(sortTag)
-  .default(defaultSortTag)
-  .catch(defaultSortTag);
+export const sortSchema = z.enum(sortTag).default(defaultSortTag).catch(defaultSortTag);
 
 export type QuerySchema = typeof ItemPaginationQuery | typeof PaginationQuery;
 
@@ -27,8 +24,6 @@ const ItemSearchParam = {
   sort: sortSchema,
 };
 
-const Language = z.enum(locales).default('en');
-
 export const PaginationQuery = z.object({
   ...PaginationParam,
 });
@@ -40,7 +35,7 @@ export const ItemPaginationQuery = z.object({
 
 export const TranslationPaginationQuery = z.object({
   ...PaginationParam,
-  language: Language,
-  target: Language,
+  language: z.enum(locales).default('en'),
+  target: z.enum(locales).default('vi'),
   key: z.string().optional(),
 });

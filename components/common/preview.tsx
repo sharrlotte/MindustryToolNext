@@ -34,7 +34,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 };
 
 export function PreviewImage({ className, src, errorSrc, alt }: ImageProps) {
-  return <FallbackImage className={cn('w-full bg-black object-cover', className)} src={src} errorSrc={errorSrc} alt={alt} width={224} height={224} />;
+  return <FallbackImage className={cn('w-full bg-black object-cover aspect-square', className)} src={src} errorSrc={errorSrc} alt={alt} width={224} height={224} />;
 }
 
 type ActionsProps = React.HTMLAttributes<HTMLDivElement>;

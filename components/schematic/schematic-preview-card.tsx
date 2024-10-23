@@ -23,7 +23,7 @@ type SchematicPreviewCardProps = {
   schematic: Schematic;
 };
 
-function _SchematicPreviewCard({ schematic: { id, itemId, name, isVerified, likes, userLike } }: SchematicPreviewCardProps) {
+function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerified, likes, userLike } }: SchematicPreviewCardProps) {
   const t = useI18n();
   const axios = useClientApi();
 
@@ -69,6 +69,6 @@ function _SchematicPreviewCard({ schematic: { id, itemId, name, isVerified, like
   );
 }
 
-const SchematicPreviewCard = React.memo(_SchematicPreviewCard);
+const SchematicPreviewCard = React.memo(InternalSchematicPreviewCard);
 
 export default SchematicPreviewCard;

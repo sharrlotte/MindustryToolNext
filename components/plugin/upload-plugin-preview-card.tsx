@@ -47,10 +47,10 @@ type Props = {
   plugin: Plugin;
 };
 
-const GITHUB_PATTERN =
+const GITHUBInternalPATTERN =
   /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
 
-function _UploadPluginCard({ plugin }: Props) {
+function InternalUploadPluginCard({ plugin }: Props) {
   const { id, name, description, url, userId } = plugin;
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
@@ -77,7 +77,7 @@ function _UploadPluginCard({ plugin }: Props) {
     },
   });
 
-  const matches = GITHUB_PATTERN.exec(url);
+  const matches = GITHUBInternalPATTERN.exec(url);
   const user = matches?.at(1);
   const repo = matches?.at(2);
 
@@ -103,7 +103,7 @@ function _UploadPluginCard({ plugin }: Props) {
   );
 }
 
-const UploadPluginCard = React.memo(_UploadPluginCard);
+const UploadPluginCard = React.memo(InternalUploadPluginCard);
 
 export default UploadPluginCard;
 

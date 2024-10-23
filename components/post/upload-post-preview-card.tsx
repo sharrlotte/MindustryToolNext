@@ -2,6 +2,7 @@ import React, { HTMLAttributes } from 'react';
 
 import IdUserCard from '@/components/user/id-user-card';
 import { cn, getImageById } from '@/lib/utils';
+
 import { Post } from '@/types/response/Post';
 import InternalLink from '@/components/common/internal-link';
 
@@ -9,7 +10,7 @@ type UploadPostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
-function _UploadPostPreviewCard({
+function InternalUploadPostPreviewCard({
   className,
   post,
   ...rest
@@ -41,6 +42,6 @@ function _UploadPostPreviewCard({
   );
 }
 
-const UploadPostPreviewCard = React.memo(_UploadPostPreviewCard);
+const UploadPostPreviewCard = React.memo(InternalUploadPostPreviewCard);
 
 export default UploadPostPreviewCard;

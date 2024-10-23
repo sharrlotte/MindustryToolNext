@@ -19,7 +19,7 @@ type MapPreviewCardProps = {
   map: MapPreview;
 };
 
-function _MapPreviewCard({ map: { id, itemId, name, isVerified, likes, userLike } }: MapPreviewCardProps) {
+function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, userLike } }: MapPreviewCardProps) {
   const link = `${env.url.base}/admin/maps/${id}`;
   const detailLink = `/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
@@ -54,6 +54,6 @@ function _MapPreviewCard({ map: { id, itemId, name, isVerified, likes, userLike 
   );
 }
 
-const MapPreviewCard = React.memo(_MapPreviewCard);
+const MapPreviewCard = React.memo(InternalMapPreviewCard);
 
 export default MapPreviewCard;

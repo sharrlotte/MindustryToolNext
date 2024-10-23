@@ -22,7 +22,7 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: Paginat
   return (
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
-        <_SchematicRowView queryParam={queryParam} />
+        <InternalSchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
           <InternalLink href="/schematics" className="cursor-pointer px-2 font-light">
             <Preview className="flex items-center justify-center">
@@ -38,7 +38,7 @@ export async function HomeMapPreview({ queryParam }: { queryParam: PaginationSea
   return (
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
-        <_HomeMapPreview queryParam={queryParam} />
+        <InternalHomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
           <InternalLink href="/maps" className="cursor-pointer px-2 text-center font-light">
             <Preview className="flex items-center justify-center">
@@ -51,7 +51,7 @@ export async function HomeMapPreview({ queryParam }: { queryParam: PaginationSea
   );
 }
 
-async function _SchematicRowView({ queryParam }: { queryParam: PaginationSearchQuery }) {
+async function InternalSchematicRowView({ queryParam }: { queryParam: PaginationSearchQuery }) {
   const result = await serverApi((axios) => getSchematics(axios, queryParam));
 
   if (isError(result)) {
@@ -65,7 +65,7 @@ async function _SchematicRowView({ queryParam }: { queryParam: PaginationSearchQ
   ));
 }
 
-async function _HomeMapPreview({ queryParam }: { queryParam: PaginationSearchQuery }) {
+async function InternalHomeMapPreview({ queryParam }: { queryParam: PaginationSearchQuery }) {
   const result = await serverApi((axios) => getMaps(axios, queryParam));
 
   if (isError(result)) {
@@ -82,12 +82,12 @@ async function _HomeMapPreview({ queryParam }: { queryParam: PaginationSearchQue
 export async function InformationGroup() {
   return (
     <Suspense>
-      <_InformationGroup />
+      <InternalInformationGroup />
     </Suspense>
   );
 }
 
-async function _InformationGroup() {
+async function InternalInformationGroup() {
   const getAdmins = serverApi((axios) =>
     getUsers(axios, {
       page: 0,
