@@ -20,7 +20,7 @@ export default async function Page() {
               <Tran text="user" />
             </ServerTabsTrigger>
           </ProtectedElement>
-          <ProtectedElement session={session} filter={{ authority: 'EDIT_USER_ROLE' }}>
+          <ProtectedElement session={session} filter={{ authority: 'EDIT_ROLE_AUTHORITY' }}>
             <ServerTabsTrigger value="role">
               <Tran text="role" />
             </ServerTabsTrigger>
