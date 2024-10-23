@@ -15,7 +15,7 @@ export default function useQueryState(initialState: Record<string, string>) {
 
     for (const key of params.keys()) {
       const value = params.get(key);
-      if (value !== undefined && value !== null) {
+      if (value !== undefined && value !== null && value !== '') {
         result[key] = value;
       }
     }
@@ -27,12 +27,12 @@ export default function useQueryState(initialState: Record<string, string>) {
     (value: Record<string, string | undefined>) => {
       const queryParams = new URLSearchParams(params);
 
-      const filteredValue = Object.fromEntries(Object.entries(value).filter(([_, value]) => value !== undefined)) as Record<string, string>;
+      const filteredValue = Object.fromEntries(Object.entries(value).filter(([_, value]) => value !== undefined && value !== '')) as Record<string, string>;
 
       setCurrentValue(filteredValue);
 
       Object.entries(value).forEach(([key, value]) => {
-        if (value !== undefined) queryParams.set(key, value);
+        if (value !== undefined && value !== '') queryParams.set(key, value);
         else queryParams.delete(key);
       });
 
