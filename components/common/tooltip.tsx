@@ -1,47 +1,77 @@
-import { motion } from 'framer-motion';
-import React from 'react';
+import cn from "classnames";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useState } from "react";
 
 interface TooltipProps {
-  direction: 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  direction:
+    | "top"
+    | "left"
+    | "right"
+    | "bottom"
+    | "top-left"
+    | "top-right"
+    | "bottom-left"
+    | "bottom-right";
   content: React.ReactNode;
   children: React.ReactNode;
+  classname?: string;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ direction, content, children }) => {
+const Tooltip: React.FC<TooltipProps> = ({
+  direction,
+  content,
+  children,
+  classname,
+}) => {
+  const [isVisible, setIsVisible] = useState(false);
+
   const getDirectionStyles = () => {
     switch (direction) {
-      case 'top':
-        return { x: '-50%', y: '-100%' };
-      case 'bottom':
-        return { x: '-50%', y: '0%' };
-      case 'left':
-        return { x: '-100%', y: '-50%' };
-      case 'right':
-        return { x: '0%', y: '-50%' };
-      case 'top-left':
-        return { x: '-100%', y: '-100%' };
-      case 'top-right':
-        return { x: '0%', y: '-100%' };
-      case 'bottom-left':
-        return { x: '-100%', y: '0%' };
-      case 'bottom-right':
-        return { x: '0%', y: '0%' };
+      case "top":
+        return { bottom: "100%", left: "50%", transform: "translateX(-50%)" };
+      case "bottom":
+        return { top: "100%", left: "50%", transform: "translateX(-50%)" };
+      case "left":
+        return { right: "100%", top: "50%", transform: "translateY(-50%)" };
+      case "right":
+        return { left: "100%", top: "50%", transform: "translateY(-50%)" };
+      case "top-left":
+        return { bottom: "100%", right: "0%" };
+      case "top-right":
+        return { bottom: "100%", left: "0%" };
+      case "bottom-left":
+        return { top: "100%", right: "0%" };
+      case "bottom-right":
+        return { top: "100%", left: "0%" };
       default:
-        return { x: '-50%', y: '-100%' };
+        return { bottom: "100%", left: "50%", transform: "translateX(-50%)" };
     }
   };
 
   return (
-    <div className="relative inline-block">
+    <div
+      className={cn("relative z-50 inline-block", classname)}
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+      aria-describedby="tooltip"
+    >
       {children}
-      <motion.div
-        className="p2 pointer-events-none absolute whitespace-nowrap rounded-sm bg-black/75 text-white"
-        initial={{ opacity: 0, ...getDirectionStyles() }}
-        animate={{ opacity: 1, x: '-50%', y: '-50%' }}
-        transition={{ duration: 0.3 }}
-      >
-        {content}
-      </motion.div>
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            id="tooltip"
+            role="tooltip"
+            className="pointer-events-none absolute z-10 mt-1 whitespace-nowrap rounded-sm bg-black/75 p-1 text-sm text-white dark:bg-white/75 dark:text-gray-900"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={getDirectionStyles()}
+          >
+            {content}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
