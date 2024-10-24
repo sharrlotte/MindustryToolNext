@@ -1,20 +1,20 @@
 import React, { ReactNode, useCallback, useState } from 'react';
 
+import { UserDisplay } from '@/app/[locale]/user-display';
+import { Path, PathGroup } from '@/app/routes';
+import { MenuIcon, SettingIcon } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import Divider from '@/components/ui/divider';
+import UserAvatar from '@/components/user/user-avatar';
+import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import InternalLink from '@/components/common/internal-link';
-import { Path, PathGroup } from '@/app/routes';
 import { useNavBar } from '@/zustand/nav-bar-store';
-import { useMediaQuery } from 'usehooks-ts';
 import { motion, Variants } from 'framer-motion';
-import { MenuIcon, SettingIcon } from '@/components/common/icons';
-import { Button } from '@/components/ui/button';
-import env from '@/constant/env';
-import { UserDisplay } from '@/app/[locale]/user-display';
-import Divider from '@/components/ui/divider';
-import UserAvatar from '@/components/user/user-avatar';
+import { useMediaQuery } from 'usehooks-ts';
 
 type NavigationBarProps = {
   children: ReactNode;
@@ -25,11 +25,11 @@ type NavigationBarProps = {
 const sidebarVariants: Variants = {
   open: {
     width: 'auto',
-    transition: { type: 'spring', stiffness: 300, damping: 30 },
+    transition: { type: 'spring', stiffness: 300, damping: 30, duration: 0.5 },
   },
   closed: {
     width: 'var(--nav)',
-    transition: { type: '', stiffness: 300, damping: 30 },
+    transition: { type: '', stiffness: 300, damping: 30, duration: 0.5 },
   },
 };
 

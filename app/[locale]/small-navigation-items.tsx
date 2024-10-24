@@ -5,25 +5,25 @@ import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
 
-import InternalLink from '@/components/common/internal-link';
-import { Path, PathGroup } from '@/app/routes';
-import { Button } from '@/components/ui/button';
-import { useNavBar } from '@/zustand/nav-bar-store';
-import { MenuIcon, NotificationIcon, UserIcon } from '@/components/common/icons';
-import { motion } from 'framer-motion';
-import OutsideWrapper from '@/components/common/outside-wrapper';
-import env from '@/constant/env';
 import { UserDisplay } from '@/app/[locale]/user-display';
+import { Path, PathGroup } from '@/app/routes';
+import { MenuIcon, NotificationIcon, UserIcon } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
+import OutsideWrapper from '@/components/common/outside-wrapper';
+import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
+import env from '@/constant/env';
+import { useNavBar } from '@/zustand/nav-bar-store';
+import { motion } from 'framer-motion';
 
 const sidebarVariants = {
   open: {
     width: 'auto',
-    transition: { type: 'spring', stiffness: 300, damping: 30 },
+    transition: { type: 'spring', stiffness: 300, damping: 30, duration: 0.5 },
   },
   closed: {
     width: 'var(--nav)',
-    transition: { type: 'spring', stiffness: 300, damping: 30 },
+    transition: { type: 'spring', stiffness: 300, damping: 30, duration: 0.5 },
   },
 };
 
