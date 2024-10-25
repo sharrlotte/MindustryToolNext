@@ -6,7 +6,7 @@ import { useI18n } from '@/i18n/client';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-import('@/public/assets/sprite/block-sand-wall-full.png');
+import('@/public/assets/sprite/kiln-icon-editor.png');
 
 const icons: Record<string, string> = {
   copper: 'item-copper-ui.png',
@@ -17,7 +17,7 @@ const icons: Record<string, string> = {
   graphite: 'item-graphite-ui.png',
   metaglass: 'item-metaglass-ui.png',
   silicon: 'item-silicon-ui.png',
-  spore: 'item-spore-ui.png',
+  spore: 'item-spore-pod-ui.png',
   titanium: 'item-titanium-ui.png',
   plastanium: 'item-plastanium-ui.png',
   pyratite: 'item-pyratite-ui.png',
@@ -34,7 +34,7 @@ const icons: Record<string, string> = {
   'multi-press': 'multi-press-icon-editor.png',
   'silicon-smelter': 'silicon-smelter-icon-editor.png',
   'silicon-crucible': 'silicon-crucible-icon-editor.png',
-  klin: 'klin-icon-editor.png',
+  klin: 'kiln-icon-editor.png',
   'plastanium-compressor': 'plastanium-compressor-icon-editor.png',
   'phase-weaver': 'phase-weaver-icon-editor.png',
   'surge-smelter': 'surge-smelter-icon-editor.png',
