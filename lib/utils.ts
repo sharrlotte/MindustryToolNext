@@ -213,7 +213,7 @@ export function fillMetric(start: Date, numberOfDays: number, array: Metric[] | 
 }
 
 // Helper function to compare dates without considering time
-function isSameDay(date1: Date, date2: Date): boolean {
+export function isSameDay(date1: Date, date2: Date): boolean {
   return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
 }
 
