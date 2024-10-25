@@ -20,7 +20,9 @@ type DialogProps = {
   user: User;
 };
 
-export function ChangeRoleDialog({ user: { id, roles, name, authorities } }: DialogProps) {
+export function ChangeRoleDialog({ user }: DialogProps) {
+  const { id, roles, name, authorities } = user;
+
   const { session } = useSession();
   const { highestRole } = useMe();
   const { invalidateByKey } = useQueriesData();
@@ -48,14 +50,17 @@ export function ChangeRoleDialog({ user: { id, roles, name, authorities } }: Dia
   const bestRole = selectedRole?.sort((o1, o2) => o2.position - o1.position).at(0);
   const filteredRole = allRoles?.filter((r) => r.position < highestRole || session?.roles.map((r) => r.name).includes('SHAR')) || [];
 
-  const filteredAuthority = useMemo(() => allAuthorities?.filter((a) => (a.authorityGroup === 'Shar' ? session?.roles.map((r) => r.name).includes('SHAR') : true)) || [], [allAuthorities, session?.roles]);
+  const filteredAuthority = useMemo(
+    () => allAuthorities?.filter((a) => (a.authorityGroup === 'Shar' ? session?.roles.map((r) => r.name).includes('SHAR') : true)) || [],
+    [allAuthorities, session?.roles],
+  );
 
   const groups = useMemo(() => groupBy(filteredAuthority?.sort((a, b) => a.authorityGroup.localeCompare(b.authorityGroup)) || [], (v) => v.authorityGroup), [filteredAuthority]);
 
   const { mutate: updateRole } = useMutation({
     mutationFn: async (roleIds: number[]) => changeRoles(axios, { userId: id, roleIds }),
     onSuccess: () => {
-      invalidateByKey(['user-management']);
+      invalidateByKey(['management']);
     },
     onError: (error) => {
       toast({
@@ -71,7 +76,7 @@ export function ChangeRoleDialog({ user: { id, roles, name, authorities } }: Dia
   const { mutate: updateAuthority } = useMutation({
     mutationFn: async (authorityIds: string[]) => changeAuthorities(axios, { userId: id, authorityIds }),
     onSuccess: () => {
-      invalidateByKey(['user-management']);
+      invalidateByKey(['management']);
     },
     onError: (error) => {
       toast({
@@ -109,7 +114,7 @@ export function ChangeRoleDialog({ user: { id, roles, name, authorities } }: Dia
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger>
-        <section className="gap-1 flex justify-end">
+        <section className="flex justify-end gap-1">
           {bestRole ? (
             <span key={bestRole.id} className={cn(bestRole.color)}>
               {bestRole.name}

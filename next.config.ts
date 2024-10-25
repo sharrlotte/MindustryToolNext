@@ -1,11 +1,15 @@
-/* @type {import('next').NextConfig} */
-const nextConfig = {
+import { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   experimental: {
     ppr: 'incremental',
+    staleTimes: {
+      dynamic: 10,
+    },
   },
   crossOrigin: 'anonymous',
   reactStrictMode: true,
-  webpack: (config) => {
+  webpack: (config: any) => {
     config.externals = [...config.externals, { canvas: 'canvas' }]; // required to make Konva & react-konva work
     return config;
   },
@@ -42,6 +46,7 @@ const nextConfig = {
 
 const analyze = process.env.ANALYZE === 'true';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: analyze,
 });

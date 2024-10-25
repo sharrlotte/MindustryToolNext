@@ -50,8 +50,6 @@ export default function Page() {
   });
   const [language, setLanguage] = useState('');
 
-  console.log(language);
-
   const t = useI18n();
 
   function handlePostSelect(post: PostDetail) {

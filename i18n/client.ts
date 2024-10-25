@@ -38,10 +38,6 @@ export function useI18n(): TranslateFunction {
       const value = keys[group];
 
       if (value === undefined) {
-        if (!isCurrentLocaleSet) {
-          return key;
-        }
-
         try {
           keys[group] = JSON.parse(localStorage.getItem(`${currentLocale}.translation.${group}`) || '{}');
         } catch (e) {
