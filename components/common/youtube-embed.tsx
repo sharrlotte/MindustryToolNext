@@ -15,10 +15,6 @@ export default function YoutubeEmbed({ url }: Props) {
 
   const [show, setShow] = useState(false);
 
-  if (!id) {
-    return <Tran text="invalid-youtube-url" />;
-  }
-
   useEffect(() => {
     function onLoad() {
       setShow(true);
@@ -32,6 +28,10 @@ export default function YoutubeEmbed({ url }: Props) {
       window.removeEventListener('touchmove', onLoad);
     };
   });
+
+  if (!id) {
+    return <Tran text="invalid-youtube-url" />;
+  }
 
   return (
     <div className="relative h-fit w-full pb-[56.25%]">
