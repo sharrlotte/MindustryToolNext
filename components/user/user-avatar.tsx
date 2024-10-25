@@ -113,7 +113,7 @@ function AvatarImage({ className, user: { imageUrl, name } }: AvatarImageProps) 
 
   return (
     <div className={cn('flex size-8 min-h-8 min-w-8 items-center justify-center overflow-hidden rounded-full border border-border capitalize', className)}>
-      <Image className={cn('h-full w-full object-cover', className)} height={32} width={32} src={imageUrl} alt={username} priority onError={() => setError(true)} />
+      <Image className={cn('h-full w-full object-cover', className)} height={32} width={32} src={imageUrl + '?size=32'} alt={username} priority onError={() => setError(true)} />
     </div>
   );
 }
