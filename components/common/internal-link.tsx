@@ -60,6 +60,7 @@ export default function InternalLink({
       className={cn(linkVariants({ variant, className }))}
       {...props}
       href={href}
+      hrefLang={currentLocale}
       title={title ? t(title) : ''}
     >
       {children}
