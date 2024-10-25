@@ -27,7 +27,7 @@ export default function useQueryState(initialState: Record<string, string>) {
     (value: Record<string, string | undefined>) => {
       const queryParams = new URLSearchParams(params);
 
-      const filteredValue = Object.fromEntries(Object.entries(value).filter(([_, value]) => value !== undefined && value !== '')) as Record<string, string>;
+      const filteredValue = Object.fromEntries(Object.entries(value).filter(([_, value]) => value !== undefined)) as Record<string, string>;
 
       setCurrentValue(filteredValue);
 
@@ -49,9 +49,15 @@ export default function useQueryState(initialState: Record<string, string>) {
 
     let isTheSame = true;
 
-    for (const key of queryParams.keys()) {
-      if (params.get(key) !== queryParams.get(key)) {
-        isTheSame = false;
+    if (params.keys().toArray().length !== queryParams.keys().toArray().length) {
+      isTheSame = false;
+    }
+
+    if (isTheSame) {
+      for (const key of params.keys()) {
+        if (params.get(key) !== queryParams.get(key)) {
+          isTheSame = false;
+        }
       }
     }
 
