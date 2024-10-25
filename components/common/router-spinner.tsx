@@ -1,7 +1,5 @@
-import Image from 'next/image';
 import React from 'react';
 
-import router from '@/public/assets/blocks/router.png';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -22,6 +20,7 @@ export default function RouterSpinner({ className, message }: Props) {
           fill="currentFill"
         />
       </svg>
+      {message}
       <span className="sr-only">Loading...</span>
     </div>
   );

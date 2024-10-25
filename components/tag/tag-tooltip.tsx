@@ -12,7 +12,7 @@ function InternalTagTooltip({ value, children }: Props) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span>{children}</span>
+          <span className='flex'>{children}</span>
         </TooltipTrigger>
         <TooltipContent className="bg-foreground normal-case text-background">
           <Tran text={`tags.${value}.description`} />
