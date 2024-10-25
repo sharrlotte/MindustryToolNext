@@ -118,8 +118,6 @@ function InternalTagName({ className, children }: { className?: string; children
 
   const icon = icons[children];
 
-  if (!icon) console.log(children);
-
   return (
     <span className={cn('text-sx flex flex-row flex-nowrap items-center gap-1 capitalize', className)}>
       {icon && <Image className="h-4 min-h-4 w-4 min-w-4" src={`/assets/sprite/${icon}`} width={16} height={16} alt={children} />}
