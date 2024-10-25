@@ -181,47 +181,40 @@ export async function delay(timeMilis: number) {
   return await new Promise((resolve) => setTimeout(resolve, timeMilis));
 }
 
-export function isSameDay(d1: Date, d2: Date) {
-  return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
-}
-
-export function fillMetric(start: Date, numberOfDay: number, array: Metric[] | undefined, defaultValue: number): ChartData[] {
-  if (!array) {
-    return [];
-  }
+export function fillMetric(start: Date, numberOfDays: number, array: Metric[] | undefined, defaultValue: number): ChartData[] {
+  if (!array) return [];
 
   const result: ChartData[] = [];
 
-  for (let i = numberOfDay - 1; i >= 0; i--) {
+  // Iterate over the number of days
+  for (let i = 0; i < numberOfDays; i++) {
     const targetDay = new Date(start);
+    targetDay.setDate(start.getDate() + i + 1); // Increment day-by-day from the start date
 
-    targetDay.setDate(targetDay.getDate() + numberOfDay - i);
+    // Ensure we compare dates without time components
+    const value = array.find((v) => isSameDay(v.createdAt, targetDay));
 
-    if (Math.abs(targetDay.getMonth() - start.getMonth()) >= 2) {
-      targetDay.setMonth(start.getMonth() + 1);
-    }
-
-    const value = array.find((v) => {
-      const createdAt = v.createdAt;
-
-      return createdAt.getFullYear() === targetDay.getFullYear() && createdAt.getMonth() === targetDay.getMonth() && createdAt.getDate() === targetDay.getDate();
-    });
-
-    if (value === undefined)
-      result.push({
-        value: defaultValue,
-        createdAt: targetDay,
-        metricKey: '',
-      });
-    else
-      result.push({
-        value: value.value,
-        createdAt: new Date(value.createdAt),
-        metricKey: value.metricKey,
-      });
+    result.push(
+      value
+        ? {
+            value: value.value,
+            createdAt: new Date(value.createdAt),
+            metricKey: value.metricKey,
+          }
+        : {
+            value: defaultValue,
+            createdAt: targetDay,
+            metricKey: '',
+          },
+    );
   }
 
   return result;
+}
+
+// Helper function to compare dates without considering time
+export function isSameDay(date1: Date, date2: Date): boolean {
+  return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
 }
 
 export function toForm(data: Record<string, string | number | File>) {

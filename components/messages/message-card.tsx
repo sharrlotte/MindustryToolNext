@@ -33,13 +33,13 @@ export function MessageCard({ className, message }: Props) {
     <div className={cn('flex w-full gap-2 text-wrap rounded-lg p-2 text-xs', className)}>
       {data ? <UserAvatar user={data} /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
       <div className="overflow-hidden">
-        <div className="space-x-2">
+        <div className="flex gap-2">
           {data ? (
             <ColorAsRole className="font-semibold capitalize" roles={data.roles}>
               {data.name}
             </ColorAsRole>
           ) : (
-            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-4 max-h-1 w-24" />
           )}
           <span>{time}</span>
         </div>
