@@ -1,9 +1,9 @@
-import { Stage, Layer, Rect, Line } from 'react-konva';
-import Command from '../command';
-import { SelectInputProps } from './editor';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { CommandListDisplay } from './display';
 import { KonvaEventObject } from 'konva/lib/Node';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Layer, Line, Rect, Stage } from 'react-konva';
+import Command from '../command';
+import { CommandListDisplay } from './display';
+import { SelectInputProps } from './editor';
 
 type LogicProp = {
   commands: Command[];
@@ -26,15 +26,7 @@ export type Position = {
   drag: boolean;
 };
 
-export default function LogicDisplay({
-  commands,
-  setCommands,
-  deleteCommand,
-  replaceCommand,
-  copyCommand,
-  selectInput,
-  findCommandByIndex,
-}: LogicProp) {
+export default function LogicDisplay({ commands, setCommands, deleteCommand, replaceCommand, copyCommand, selectInput, findCommandByIndex }: LogicProp) {
   const [position, setPosition] = useState({
     windowWidth: window.innerWidth,
     windowHeight: window.innerHeight - 40,
@@ -69,22 +61,13 @@ export default function LogicDisplay({
       const oldScale = position.scale;
       setPosition((prev) => ({
         ...prev,
-        scale: Math.max(
-          0.25,
-          Math.min(
-            4,
-            e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy,
-          ),
-        ),
+        scale: Math.max(0.25, Math.min(4, e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy)),
       }));
     },
     [position],
   );
 
-  const handleOutside = useCallback(
-    () => setPosition((prev) => ({ ...prev, posx: 0, posy: 0 })),
-    [],
-  );
+  const handleOutside = useCallback(() => setPosition((prev) => ({ ...prev, posx: 0, posy: 0 })), []);
 
   const handleDragStart = useCallback((dx: number, dy: number) => {
     setPosition((prev) => ({
@@ -117,12 +100,8 @@ export default function LogicDisplay({
           command.x === 0 && command.y === 0
             ? {
                 ...command,
-                x:
-                  -position.posx / position.scale +
-                  (position.windowWidth / position.scale / 2 - 150),
-                y:
-                  -position.posy / position.scale +
-                  position.windowHeight / position.scale / 2,
+                x: -position.posx / position.scale + (position.windowWidth / position.scale / 2 - 150),
+                y: -position.posy / position.scale + position.windowHeight / position.scale / 2,
               }
             : command,
         );
@@ -141,7 +120,7 @@ export default function LogicDisplay({
   return useMemo(
     () => (
       <div className="h-full w-full">
-        <h3 className="fixed left-10 top-1.5">{`Pos: ${-position.posx}, ${-position.posy}. Zoom: x${(1 / position.scale).toFixed(2)}. Total element: ${commands.length}`}</h3>
+        <h3 className="left-10 top-1.5 p-4">{`Pos: ${-position.posx}, ${-position.posy}. Zoom: x${(1 / position.scale).toFixed(2)}. Total element: ${commands.length}`}</h3>
         <Stage
           width={position.windowWidth}
           height={position.windowHeight}
@@ -150,9 +129,7 @@ export default function LogicDisplay({
           x={position.posx}
           y={position.posy}
           onWheel={handleWheel}
-          onMouseMove={(e) =>
-            position.drag && handleDragMove(e.evt.clientX, e.evt.clientY)
-          }
+          onMouseMove={(e) => position.drag && handleDragMove(-e.evt.clientX, -e.evt.clientY)}
           onMouseUp={() => {
             handleDragEnd();
             handleRerender((last) => !last);
@@ -160,27 +137,10 @@ export default function LogicDisplay({
           onMouseLeave={handleDragEnd}
         >
           <Layer>
-            <Rect
-              x={-8000}
-              y={-8000}
-              width={16000}
-              height={16000}
-              onClick={handleOutside}
-            />
-            <Rect
-              x={-4000}
-              y={-4000}
-              width={8000}
-              height={8000}
-              onMouseDown={(e) => handleDragStart(e.evt.clientX, e.evt.clientY)}
-              fill={'#200'}
-            />
+            <Rect x={-8000} y={-8000} width={16000} height={16000} onClick={handleOutside} />
+            <Rect x={-4000} y={-4000} width={8000} height={8000} onMouseDown={(e) => handleDragStart(-e.evt.clientX, -e.evt.clientY)} fill={'#200'} />
             <Line points={[-4000, 0, 4000, 0]} stroke="white" strokeWidth={4} />
-            <Line
-              points={[0, -4000, 0, 0, 4000]}
-              stroke="white"
-              strokeWidth={4}
-            />
+            <Line points={[0, -4000, 0, 0, 4000]} stroke="white" strokeWidth={4} />
           </Layer>
           <CommandListDisplay
             commands={commands}
