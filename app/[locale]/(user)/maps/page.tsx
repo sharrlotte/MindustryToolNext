@@ -3,12 +3,19 @@ import { Metadata } from 'next/dist/types';
 import MapList from '@/app/[locale]/(user)/maps/map-list';
 import env from '@/constant/env';
 import { getMaps } from '@/query/map';
-import axiosInstance from '@/query/config/config';
+import { serverApi } from '@/action/action';
+import { isError } from '@/lib/utils';
 
 export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const maps = await getMaps(axiosInstance, { page: 0, size: 1 });
+  const maps = await serverApi((axios) => getMaps(axios, { page: 0, size: 1 }));
+
+  if (isError(maps)) {
+    return {
+      title: `Error`,
+    };
+  }
 
   const map = maps[0];
 

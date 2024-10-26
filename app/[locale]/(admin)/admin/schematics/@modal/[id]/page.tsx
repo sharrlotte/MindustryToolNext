@@ -19,9 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const schematic = await serverApi((axios) => getSchematicUpload(axios, { id }));
 
   if (isError(schematic)) {
-    throw schematic;
+    return { title: 'Error' };
   }
-
   return {
     title: `${env.webName} > Schematic`,
     description: `${schematic.name} | ${schematic.description}`,

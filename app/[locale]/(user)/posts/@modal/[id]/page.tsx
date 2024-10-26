@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await serverApi((axios) => getPost(axios, { id }));
 
   if (isError(post)) {
-    throw post;
+    return { title: 'Error' };
   }
 
   return {
