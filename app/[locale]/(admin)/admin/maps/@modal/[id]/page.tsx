@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const map = await serverApi((axios) => getMapUpload(axios, { id }));
 
   if (isError(map)) {
-    throw map;
+    return { title: 'Error' };
   }
 
   return {
