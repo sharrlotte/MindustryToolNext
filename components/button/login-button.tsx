@@ -1,14 +1,14 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import React, { ReactNode, useLayoutEffect } from 'react';
+import { ReactNode, useLayoutEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
-import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
+import { cn } from '@/lib/utils';
 
-import { LogIn } from 'lucide-react';
 import InternalLink from '@/components/common/internal-link';
+import { LogIn } from 'lucide-react';
 
 const ignored = ['login'];
 
