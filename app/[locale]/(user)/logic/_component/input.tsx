@@ -17,11 +17,7 @@ type ValueEditorDefaultProp = {
   onSubmit: submitFunction;
 };
 
-function TextEditorView({
-  position,
-  defaultValue,
-  onSubmit,
-}: ValueEditorDefaultProp) {
+function TextEditorView({ position, defaultValue, onSubmit }: ValueEditorDefaultProp) {
   const [inputValue, setInputValue] = useState<string>(defaultValue);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,22 +67,6 @@ export type InputControlProp = {
   onSubmit: submitFunction;
 };
 
-export function InputControl({
-  input,
-}: {
-  input: InputControlProp | null;
-  setCommands: Dispatch<SetStateAction<Command[]>>;
-  cIndex: number | null;
-}) {
-  return (
-    <div>
-      {input?.inputType == InputType.TextInput && (
-        <TextEditorView
-          position={input.position}
-          defaultValue={input.defaultValue}
-          onSubmit={input.onSubmit}
-        />
-      )}
-    </div>
-  );
+export function InputControl({ input }: { input: InputControlProp | null; setCommands: Dispatch<SetStateAction<Command[]>>; cIndex: number | null }) {
+  return <div>{input?.inputType == InputType.TextInput && <TextEditorView position={input.position} defaultValue={input.defaultValue} onSubmit={input.onSubmit} />}</div>;
 }

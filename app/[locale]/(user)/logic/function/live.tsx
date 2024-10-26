@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Command, { CommandValue } from '../command';
 
 type LiveData = {
@@ -47,23 +47,14 @@ export default function LiveCode({ commands }: { commands: Command[] }) {
                 decodeContain.set(nextIndex, decodeStep.length - 1);
 
                 for (const field of command.value.fields) {
-                  if (
-                    field.linkedOutput &&
-                    command.value.outputs.length > field.linkedOutput &&
-                    field.linkedOutput > 0 &&
-                    !decodeContain.has(
-                      command.value.outputs[field.linkedOutput],
-                    )
-                  ) {
+                  if (field.linkedOutput && command.value.outputs.length > field.linkedOutput && field.linkedOutput > 0 && !decodeContain.has(command.value.outputs[field.linkedOutput])) {
                     laterProces.add(command.value.outputs[field.linkedOutput]);
                   }
                 }
               }
 
               if (decodeContain.has(findZeroOutputIndex(command.value))) {
-                decodeStep.push(
-                  `jump ${decodeContain.get(findZeroOutputIndex(command.value))} always`,
-                );
+                decodeStep.push(`jump ${decodeContain.get(findZeroOutputIndex(command.value))} always`);
                 break;
               }
 
@@ -85,9 +76,7 @@ export default function LiveCode({ commands }: { commands: Command[] }) {
 
                 for (const field of nowCommand.fields) {
                   if (field.linkedOutput) {
-                    const position = decodeContain.get(
-                      nowCommand.outputs[field.linkedOutput],
-                    );
+                    const position = decodeContain.get(nowCommand.outputs[field.linkedOutput]);
                     cParse += ` ${position}`;
                   } else {
                     cParse += ` ${field.parseValue}`;
@@ -114,19 +103,12 @@ export default function LiveCode({ commands }: { commands: Command[] }) {
 
   return (
     <div className="flex w-full flex-col gap-4 rounded-md bg-[#5555] p-2">
-      <p>
-        {display.length === 0
-          ? 'No start command defined'
-          : 'Commands - Multiple start support'}
-      </p>
+      <p>{display.length === 0 ? 'No start command defined' : 'Commands - Multiple start support'}</p>
 
       {display.length > 0 && (
         <div>
           {display.map((liveData, index) => (
-            <div
-              key={index}
-              className="command-block mb-4 rounded bg-[#3333] p-2"
-            >
+            <div key={index} className="command-block mb-4 rounded bg-[#3333] p-2">
               <p className="font-bold">Start At: {liveData.startAt}</p>
               <ul>
                 {liveData.value.map((commandString, idx) => (
