@@ -39,7 +39,12 @@ export function AddingElement({ addCommand }: { addCommand: (command: Command) =
 }
 
 export const LogicNavBar = forwardRef(function LogicNavBar(
-  { toggleText, children, side = 'left', dragConstraints }: { toggleText: string; side?: 'left' | 'right'; children: React.ReactNode; dragConstraints?: React.RefObject<HTMLDivElement> },
+  {
+    toggleText,
+    children,
+    side = 'left',
+    dragConstraints,
+  }: { toggleText: string; side?: 'left' | 'right'; children: React.ReactNode; dragConstraints?: { top: number; bottom: number; left: number; right: number } },
   ref,
 ) {
   const [toggle, setToggle] = useState(true);
@@ -56,7 +61,7 @@ export const LogicNavBar = forwardRef(function LogicNavBar(
   return (
     <motion.nav
       drag
-      dragConstraints={dragConstraints?.current ? { top: 0, bottom: dragConstraints.current.clientHeight, left: 0, right: dragConstraints.current.clientWidth } : {}}
+      dragConstraints={dragConstraints}
       className={cn(
         'absolute top-nav flex w-[300px] cursor-move flex-col gap-2 overflow-y-auto rounded-md bg-[#aaaa] p-2 backdrop-blur-sm',
         toggle ? 'h-full' : '',

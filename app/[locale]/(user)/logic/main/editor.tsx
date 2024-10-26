@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AddingElement, LogicNavBar } from '../_component/common';
 import { InputControl, InputControlProp } from '../_component/input';
 import Command, { InputType } from '../command';
@@ -24,6 +24,14 @@ export default function Editor() {
   const [inputKeys, setInputKeys] = useState<{ commandIndex: number | null; fieldIndex: number | null }>({ commandIndex: null, fieldIndex: null });
   const [input, setInput] = useState<InputControlProp | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [constraints, setConstraints] = useState({ top: 0, bottom: 0, left: 0, right: 0 });
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const { clientHeight, clientWidth } = containerRef.current;
+      setConstraints({ top: 0, bottom: clientHeight, left: 0, right: clientWidth });
+    }
+  }, []);
 
   const updateCommands = (updateFn: (prev: Command[]) => Command[]) => {
     setCommands((prev) => updateFn(prev));
@@ -114,11 +122,11 @@ export default function Editor() {
         findCommandByIndex={findCommandByIndex}
       />
       <InputControl input={input} setCommands={setCommands} cIndex={inputKeys.commandIndex} />
-      <LogicNavBar ref={containerRef} toggleText={'Click here to toggle'} dragConstraints={containerRef}>
+      <LogicNavBar toggleText={'Click here to toggle'} dragConstraints={constraints}>
         <AddingElement addCommand={addCommand} />
         <CommandStorage commands={commands} setCommands={setCommands} />
       </LogicNavBar>
-      <LogicNavBar ref={containerRef} toggleText={'Click here to toggle'} side="right" dragConstraints={containerRef}>
+      <LogicNavBar toggleText={'Click here to toggle'} side="right" dragConstraints={constraints}>
         <LiveCode commands={commands} />
       </LogicNavBar>
     </div>
