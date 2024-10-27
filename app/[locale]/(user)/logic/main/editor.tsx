@@ -29,7 +29,7 @@ export default function Editor() {
   useEffect(() => {
     if (containerRef.current) {
       const { clientHeight, clientWidth } = containerRef.current;
-      setConstraints({ top: 0, bottom: clientHeight, left: 0, right: clientWidth });
+      setConstraints({ top: 0, bottom: clientHeight, left: 0, right: clientWidth / 2 });
     }
   }, []);
 
