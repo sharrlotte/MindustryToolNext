@@ -61,7 +61,9 @@ export const LogicNavBar = forwardRef(function LogicNavBar(
   return (
     <motion.nav
       drag
-      dragConstraints={dragConstraints}
+      dragConstraints={
+        side === 'left' ? { left: 0, right: dragConstraints?.right, top: 0, bottom: dragConstraints?.bottom } : { top: 0, bottom: dragConstraints?.bottom, left: dragConstraints?.right, right: 0 }
+      }
       className={cn(
         'absolute top-nav flex w-[300px] cursor-move flex-col gap-2 overflow-y-auto rounded-md bg-[#aaaa] p-2 backdrop-blur-sm',
         toggle ? 'h-full' : '',
