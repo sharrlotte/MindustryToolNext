@@ -140,7 +140,7 @@ export default function LogicDisplay({ commands, setCommands, deleteCommand, rep
             <Rect x={-8000} y={-8000} width={16000} height={16000} onClick={handleOutside} />
             <Rect x={-4000} y={-4000} width={8000} height={8000} onMouseDown={(e) => handleDragStart(-e.evt.clientX, -e.evt.clientY)} fill={'#200'} />
             <Line points={[-4000, 0, 4000, 0]} stroke="white" strokeWidth={4} />
-            <Line points={[0, -4000, 0, 0, 4000]} stroke="white" strokeWidth={4} />
+            <Line points={[0, -4000, 0, 4000]} stroke="white" strokeWidth={4} />
           </Layer>
           <CommandListDisplay
             commands={commands}

@@ -1,7 +1,7 @@
 'use client';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import React, { useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import Command, { CommandList } from '../command';
 
 export const useForceUpdate = () => {
@@ -38,15 +38,30 @@ export function AddingElement({ addCommand }: { addCommand: (command: Command) =
   );
 }
 
-export function LogicNavBar({ toggleText, children, side = 'left' }: { toggleText: string; side?: 'left' | 'right'; children: React.ReactNode }) {
+export const LogicNavBar = forwardRef(function LogicNavBar(
+  {
+    toggleText,
+    children,
+    side = 'left',
+    dragConstraints,
+  }: { toggleText: string; side?: 'left' | 'right'; children: React.ReactNode; dragConstraints?: { top: number; bottom: number; left: number; right: number } },
+  ref,
+) {
   const [toggle, setToggle] = useState(true);
   const handleClick = () => {
     setToggle((prevToggle) => !prevToggle);
   };
+
+  useImperativeHandle(ref, () => ({
+    toggleNavBar: () => {
+      setToggle((prevToggle) => !prevToggle);
+    },
+  }));
+
   return (
     <motion.nav
       drag
-      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+      dragConstraints={dragConstraints}
       className={cn(
         'absolute top-nav flex w-[300px] cursor-move flex-col gap-2 overflow-y-auto rounded-md bg-[#aaaa] p-2 backdrop-blur-sm',
         toggle ? 'h-full' : '',
@@ -60,4 +75,4 @@ export function LogicNavBar({ toggleText, children, side = 'left' }: { toggleTex
       <div className={cn('w-full gap-2', toggle ? 'flex flex-col' : 'hidden')}>{children}</div>
     </motion.nav>
   );
-}
+});

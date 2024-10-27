@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AddingElement, LogicNavBar } from '../_component/common';
 import { InputControl, InputControlProp } from '../_component/input';
 import Command, { InputType } from '../command';
@@ -23,6 +23,15 @@ export default function Editor() {
   const [commands, setCommands] = useState<Command[]>([]);
   const [inputKeys, setInputKeys] = useState<{ commandIndex: number | null; fieldIndex: number | null }>({ commandIndex: null, fieldIndex: null });
   const [input, setInput] = useState<InputControlProp | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [constraints, setConstraints] = useState({ top: 0, bottom: 0, left: 0, right: 0 });
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const { clientHeight, clientWidth } = containerRef.current;
+      setConstraints({ top: 0, bottom: clientHeight, left: 0, right: clientWidth });
+    }
+  }, []);
 
   const updateCommands = (updateFn: (prev: Command[]) => Command[]) => {
     setCommands((prev) => updateFn(prev));
@@ -102,7 +111,7 @@ export default function Editor() {
   );
 
   return (
-    <div className="relative h-full w-full text-white">
+    <div className="relative h-full w-full text-white" ref={containerRef}>
       <LogicDisplay
         commands={commands}
         setCommands={setCommands}
@@ -113,11 +122,11 @@ export default function Editor() {
         findCommandByIndex={findCommandByIndex}
       />
       <InputControl input={input} setCommands={setCommands} cIndex={inputKeys.commandIndex} />
-      <LogicNavBar toggleText={'Click here to toggle'}>
+      <LogicNavBar toggleText={'Click here to toggle'} dragConstraints={constraints}>
         <AddingElement addCommand={addCommand} />
         <CommandStorage commands={commands} setCommands={setCommands} />
       </LogicNavBar>
-      <LogicNavBar toggleText={'Click here to toggle'} side="right">
+      <LogicNavBar toggleText={'Click here to toggle'} side="right" dragConstraints={constraints}>
         <LiveCode commands={commands} />
       </LogicNavBar>
     </div>
