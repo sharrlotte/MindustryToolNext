@@ -20,7 +20,7 @@ type MapPreviewCardProps = {
 };
 
 function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, userLike } }: MapPreviewCardProps) {
-  const link = `${env.url.base}/admin/maps/${id}`;
+  const link = `${env.url.base}/maps/${id}`;
   const detailLink = `/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/maps/${id}/image`;

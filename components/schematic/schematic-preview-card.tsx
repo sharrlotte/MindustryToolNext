@@ -27,7 +27,7 @@ function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerifie
   const t = useI18n();
   const axios = useClientApi();
 
-  const link = `${env.url.base}/admin/schematics/${id}`;
+  const link = `${env.url.base}/schematics/${id}`;
   const detailLink = `/schematics/${id}`;
   const imageLink = `${env.url.image}/schematic-previews/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/schematics/${id}/image`;
