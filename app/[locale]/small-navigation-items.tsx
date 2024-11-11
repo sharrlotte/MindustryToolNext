@@ -65,9 +65,15 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
                   <div className="flex h-full flex-col justify-between overflow-hidden p-2">
                     <div className="flex h-full flex-col overflow-hidden">
                       <span className="flex flex-col gap-2">
-                        <span className="flex items-center space-x-2 rounded-sm p-2">
-                          <h1 className="text-xl font-medium">MindustryTool</h1>
-                          <span className="text-xs">{env.webVersion}</span>
+                        <span className="flex items-center justify-between rounded-sm p-2">
+                          <div className="flex items-center gap-2">
+                            <h1 className="text-xl font-medium">MindustryTool</h1>
+                            <span className="text-xs">{env.webVersion}</span>
+                          </div>
+
+                          <button className="text-2xl" onClick={hideSidebar}>
+                            &times;
+                          </button>
                         </span>
                       </span>
                       <NavItems pathGroups={pathGroups} bestMatch={bestMatch} onClick={hideSidebar} />
