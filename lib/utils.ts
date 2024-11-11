@@ -291,6 +291,9 @@ export function omit<T extends Record<string, any>>(obj: T, ...keys: Array<keyof
 
 export type TError = (Error & { digest?: string }) | { error: { message: string } } | string;
 
+const DEFAULT_NEXTJS_ERROR_MESSAGE =
+  'An error occurred in the Server Components render. The specific message is omitted in production builds to avoid leaking sensitive details. A digest property is included on this error instance which may provide additional details about the nature of the error.';
+
 export function getErrorMessage(error: TError) {
   if (!error) {
     return 'Something is wrong';
@@ -305,6 +308,8 @@ export function getErrorMessage(error: TError) {
   }
 
   if ('message' in error) {
+    if (error.message === DEFAULT_NEXTJS_ERROR_MESSAGE) return 'Something is wrong';
+
     return error.message;
   }
 
