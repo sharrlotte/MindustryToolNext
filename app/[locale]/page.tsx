@@ -47,7 +47,7 @@ const YoutubeLinks = () => (
       ].map(({ href, text }) => (
         <li key={href} className="p-0">
           <a className="text-lg text-brand hover:text-brand" href={href} target="_blank" rel="noopener noreferrer">
-            <Tran text={text} />
+            {text}
           </a>
         </li>
       ))}
