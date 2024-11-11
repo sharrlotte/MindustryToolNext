@@ -4,11 +4,6 @@ import { NextRequest, NextResponse, userAgent } from 'next/server';
 export function middleware(request: NextRequest) {
   const { isBot } = userAgent(request);
 
-  // For google bot to index all languages
-  if (isBot) {
-    return;
-  }
-
   let locale = request.cookies.get('Locale')?.value?.toLowerCase() as string | undefined;
 
   if (!locale) {
@@ -35,8 +30,15 @@ export function middleware(request: NextRequest) {
 
   const currentLocale = pathname.slice(1, 3).toLowerCase();
 
-  if (pathnameHasLocale && currentLocale === locale) return;
+  if (pathnameHasLocale && isBot) {
+    return;
+  } else {
+    locale = 'en';
+  }
 
+  if (pathnameHasLocale && currentLocale === locale) {
+    return;
+  }
   request.nextUrl.pathname = pathnameHasLocale ? `/${locale}/${pathname.slice(4)}` : `/${locale}${pathname}`;
 
   const response = NextResponse.redirect(request.nextUrl);
