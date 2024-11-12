@@ -120,7 +120,7 @@ export default function LogicDisplay({ commands, setCommands, deleteCommand, rep
   return useMemo(
     () => (
       <div className="h-full w-full">
-        <h3 className="left-10 top-1.5 p-4">{`Pos: ${-position.posx}, ${-position.posy}. Zoom: x${(1 / position.scale).toFixed(2)}. Total element: ${commands.length}`}</h3>
+        <h3 className="left-10 top-1.5 p-4 md:text-base text-sm">{`Pos: ${-position.posx}, ${-position.posy}. Zoom: x${(1 / position.scale).toFixed(2)}. Total element: ${commands.length}`}</h3>
         <Stage
           width={position.windowWidth}
           height={position.windowHeight}

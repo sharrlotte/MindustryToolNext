@@ -53,11 +53,10 @@ export const LogicNavBar = forwardRef(function LogicNavBar({ toggleText, childre
   return (
     <motion.nav
       className={cn(
-        'absolute top-nav flex w-[300px] cursor-move flex-col gap-2 overflow-y-auto rounded-md bg-[#aaaa] p-2 backdrop-blur-sm',
+        'absolute top-nav hidden w-[300px]  flex-col gap-2 overflow-y-auto rounded-md bg-[#aaaa] p-2 backdrop-blur-sm md:flex',
         toggle ? 'h-full' : '',
         side === 'left' ? 'left-0' : 'right-0',
       )}
-      style={{ width: '300px', height: toggle ? '100%' : 'auto' }}
     >
       <header className="flex w-full cursor-pointer rounded-md bg-[#555] p-2" onClick={handleClick}>
         <p>{toggleText}</p>
