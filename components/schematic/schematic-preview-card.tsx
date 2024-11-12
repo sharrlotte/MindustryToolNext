@@ -30,6 +30,7 @@ function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerifie
   const link = `${env.url.base}/schematics/${id}`;
   const detailLink = `/schematics/${id}`;
   const imageLink = `${env.url.image}/schematic-previews/${id}${env.imageFormat}`;
+  const detailImageLink = `${env.url.image}/schematics/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/schematics/${id}/image`;
   const copyContent = `Copied schematic ${name}`;
   const downloadLink = `${env.url.api}/schematics/${id}/download`;
@@ -46,7 +47,7 @@ function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerifie
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <LinkIcon />
       </CopyButton>
-      <InternalLink href={detailLink}>
+      <InternalLink href={detailLink} preloadImage={detailImageLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </InternalLink>
       <PreviewDescription>

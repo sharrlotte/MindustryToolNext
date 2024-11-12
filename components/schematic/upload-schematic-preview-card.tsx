@@ -25,6 +25,7 @@ function InternalUploadSchematicPreviewCard({ schematic: { id, name } }: UploadS
   const link = `${env.url.base}/admin/schematics/${id}`;
   const detailLink = `/admin/schematics/${id}`;
   const imageLink = `${env.url.image}/schematic-previews/${id}${env.imageFormat}`;
+  const detailImageLink = `${env.url.image}/schematics/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/schematics/${id}/image`;
   const copyContent = `Copied schematic ${name}`;
   const downloadLink = `${env.url.api}/schematics/${id}/download`;
@@ -42,7 +43,7 @@ function InternalUploadSchematicPreviewCard({ schematic: { id, name } }: UploadS
         <LinkIcon />
       </CopyButton>
       <BulkActionSelector value={id} />
-      <InternalLink href={detailLink}>
+      <InternalLink href={detailLink} preloadImage={detailImageLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </InternalLink>
       <PreviewDescription>

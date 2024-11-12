@@ -23,6 +23,7 @@ function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, us
   const link = `${env.url.base}/maps/${id}`;
   const detailLink = `/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
+  const detailImageLink = `${env.url.image}/maps/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/maps/${id}/image`;
   const downloadLink = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msav`;
@@ -32,7 +33,7 @@ function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, us
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <LinkIcon />
       </CopyButton>
-      <InternalLink href={detailLink}>
+      <InternalLink href={detailLink} preloadImage={detailImageLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </InternalLink>
       <PreviewDescription>
