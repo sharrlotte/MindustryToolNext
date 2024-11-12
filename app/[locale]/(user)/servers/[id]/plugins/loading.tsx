@@ -9,7 +9,7 @@ export default function Loading() {
         {Array(20)
           .fill(1)
           .map((_, index) => (
-            <Skeleton key={index} className="h-32 w-full" />
+            <Skeleton key={index} className="h-full w-full" />
           ))}
       </div>
     </div>

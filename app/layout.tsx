@@ -1,3 +1,4 @@
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import env from '@/constant/env';
 import { SessionProvider } from '@/context/session-context';
@@ -75,6 +76,7 @@ export default async function Root({ children, params }: Props) {
       data-color-mode="dark"
     >
       <body className="h-full w-full overflow-hidden">
+        <SpeedInsights />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SessionProvider>
             <SocketProvider>

@@ -282,7 +282,7 @@ export function byteToSize(bytes: number) {
 type ImageFolder = 'schematics' | 'maps' | 'posts';
 
 export function getImageById(folder: ImageFolder, id: string) {
-  return `${env.url.image}${folder}/${id}${env.imageFormat}`;
+  return `${env.url.image}/${folder}/${id}${env.imageFormat}`;
 }
 
 export function omit<T extends Record<string, any>>(obj: T, ...keys: Array<keyof T>) {
