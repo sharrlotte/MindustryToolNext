@@ -5,6 +5,7 @@ import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { getInternalServerMaps } from '@/query/server';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 type Props = {
   id: string;
@@ -19,16 +20,18 @@ export default function CheckServerMaps({ id }: Props) {
     queryKey: [],
   });
 
-  if (isLoading) {
-    return undefined;
-  }
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
 
-  if (data?.length === 0) {
-    toast({
-      description: <Tran text="server.no-map-warning" />,
-      variant: 'warning',
-    });
-  }
+    if (data?.length === 0) {
+      toast({
+        description: <Tran text="server.no-map-warning" />,
+        variant: 'warning',
+      });
+    }
+  }, [data, isLoading, toast]);
 
   return undefined;
 }
