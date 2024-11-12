@@ -22,7 +22,7 @@ type MapDetailCardProps = {
   map: MapDetail;
 };
 
-export default function MapDetailCard({ map: { id, name, description, tags, verifierId, itemId, likes, userLike, userId, isVerified } }: MapDetailCardProps) {
+export default function MapDetailCard({ map: { id, name, description, tags, verifierId, itemId, likes, userLike, userId, isVerified, width, height } }: MapDetailCardProps) {
   const { session } = useSession();
 
   const link = `${env.url.base}/maps/${id}`;
@@ -42,6 +42,9 @@ export default function MapDetailCard({ map: { id, name, description, tags, veri
           <DetailTitle>{name}</DetailTitle>
           <IdUserCard id={userId} />
           <Verifier verifierId={verifierId} />
+          <span>
+            {width}x{height}
+          </span>
           <DetailDescription>{description}</DetailDescription>
           <DetailTagsCard tags={tags} />
         </DetailHeader>

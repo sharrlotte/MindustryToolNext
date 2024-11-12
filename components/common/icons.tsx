@@ -29,6 +29,7 @@ import {
   SquareIcon as _SquareIcon,
   CheckSquare2 as _SquareCheckIcon,
   X,
+  AlertCircle,
 } from 'lucide-react';
 
 import { SquareKanbanIcon, MessageCircleIcon, HistoryIcon, ClipboardList, SettingsIcon, TerminalIcon } from 'lucide-react';
@@ -71,6 +72,7 @@ export const PluginIcon = () => (
   </svg>
 );
 
+export const WarningIcon = () => <AlertCircle className="size-5"/>
 export const EllipsisIcon = () => <DotsHorizontalIcon className="size-5" />;
 export const NotificationIcon = () => <BellIcon className="mx-1 size-5 min-h-5 min-w-5" />;
 export const GithubIcon = () => <_GithubIcon className="size-5 min-h-5 min-w-5" />;

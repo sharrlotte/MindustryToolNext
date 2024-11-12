@@ -24,7 +24,7 @@ type UploadSchematicDetailCardProps = {
   schematic: SchematicDetail;
 };
 
-export default function UploadSchematicDetailCard({ schematic: { id, name, tags, requirements, description, userId } }: UploadSchematicDetailCardProps) {
+export default function UploadSchematicDetailCard({ schematic: { id, name, tags, requirements, description, userId, width, height } }: UploadSchematicDetailCardProps) {
   const axios = useClientApi();
   const { schematic } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
@@ -58,6 +58,9 @@ export default function UploadSchematicDetailCard({ schematic: { id, name, tags,
         <DetailHeader>
           <DetailTitle>{name}</DetailTitle>
           <IdUserCard id={userId} />
+          <span>
+            {width}x{height}
+          </span>
           <DetailDescription>{description}</DetailDescription>
           <ItemRequirementCard requirements={requirements} />
           <TagSelector tags={schematic} value={selectedTags} onChange={setSelectedTags} />
