@@ -11,15 +11,5 @@ type Props = {
 export default function FallbackImage({ src, errorSrc, alt, ...props }: Props) {
   const [isError, setError] = useState(false);
 
-  return (
-    <Image
-      src={isError ? errorSrc : src}
-      width={224}
-      height={224}
-      alt={alt}
-      onError={() => setError(true)}
-      priority
-      {...props}
-    />
-  );
+  return <Image src={isError ? errorSrc : src} width={224} height={224} alt={alt} onError={() => setError(true)} {...props} />;
 }

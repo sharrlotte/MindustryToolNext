@@ -13,6 +13,7 @@ type Props = {
 
 function InternalTran({ className, text, args, style }: Props): React.ReactNode {
   const t = useI18n();
+
   return (
     <span className={className} style={style}>
       {t(text, args)}

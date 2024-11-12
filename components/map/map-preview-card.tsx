@@ -25,7 +25,7 @@ function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, us
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/maps/${id}/image`;
   const downloadLink = `${env.url.api}/maps/${id}/download`;
-  const downloadName = `{${name}}.msch`;
+  const downloadName = `{${name}}.msav`;
 
   return (
     <Preview>
