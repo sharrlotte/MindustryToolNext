@@ -18,6 +18,7 @@ function InternalUploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCar
   const link = `${env.url.base}/admin/maps/${id}`;
   const detailLink = `/admin/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
+  const detailImageLink = `${env.url.image}/maps/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/maps/${id}/image`;
   const downloadLink = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msch`;
@@ -28,7 +29,7 @@ function InternalUploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCar
         <LinkIcon />
       </CopyButton>
       <BulkActionSelector value={id} />
-      <InternalLink href={detailLink}>
+      <InternalLink href={detailLink} preloadImage={detailImageLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </InternalLink>
       <PreviewDescription>

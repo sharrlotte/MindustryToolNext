@@ -15,12 +15,9 @@ const linkVariants = cva('flex gap-2', {
     variant: {
       default: '',
       primary: 'text-brand hover:text-brand',
-      'button-primary':
-        'rounded-md border bg-brand p-2 text-sm text-background dark:text-foreground',
-      'button-secondary':
-        'items-center flex gap-2 rounded-md bg-secondary px-2 py-1.5',
-      command:
-        'hover:bg-accent justify-start gap-1 flex items-center p-2 w-full rounded-sm',
+      'button-primary': 'rounded-md border bg-brand p-2 text-sm text-background dark:text-foreground',
+      'button-secondary': 'items-center flex gap-2 rounded-md bg-secondary px-2 py-1.5',
+      command: 'hover:bg-accent justify-start gap-1 flex items-center p-2 w-full rounded-sm',
     },
   },
   defaultVariants: {
@@ -35,16 +32,10 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
     asChild?: boolean;
   } & {
     href: string;
+    preloadImage?: string;
   };
 
-export default function InternalLink({
-  className,
-  variant,
-  title,
-  href,
-  children,
-  ...props
-}: InternalLinkProps) {
+export default function InternalLink({ className, variant, title, href, children, preloadImage, ...props }: InternalLinkProps) {
   const t = useI18n();
   const { currentLocale } = useLocaleStore();
 
@@ -55,14 +46,15 @@ export default function InternalLink({
     href = env.url.base + '/' + currentLocale + '/' + stripBase;
   }
 
+  function handlePreload() {
+    if (preloadImage) {
+      const image = new Image();
+      image.src = preloadImage;
+    }
+  }
+
   return (
-    <Link
-      className={cn(linkVariants({ variant, className }))}
-      {...props}
-      href={href}
-      hrefLang={currentLocale}
-      title={title ? t(title) : ''}
-    >
+    <Link className={cn(linkVariants({ variant, className }))} {...props} href={href} hrefLang={currentLocale} title={title ? t(title) : ''} onMouseEnter={handlePreload} onTouchStart={handlePreload}>
       {children}
     </Link>
   );
