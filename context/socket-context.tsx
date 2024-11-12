@@ -54,19 +54,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, [socket]);
 
-  useEffect(() => {
-    function closeSocket() {
-      socket?.close();
-    }
-
-    window.addEventListener('beforeunload', closeSocket);
-
-    return () => {
-      closeSocket();
-      window.removeEventListener('beforeunload', closeSocket);
-    };
-  }, [socket]);
-
   if (!socket) {
     return <></>;
   }
