@@ -5,6 +5,7 @@ import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
+import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import useToggle from '@/hooks/use-state-toggle';
 import Modal from '@/layout/modal';
@@ -49,10 +50,12 @@ export function Internal() {
               <button className="rounded border border-gray-500 px-2 py-1 transition-colors hover:bg-gray-500 hover:text-white dark:text-black" onClick={modal.toggle}>
                 Cancel
               </button>
-              <button className="flex items-center rounded bg-sky-500 px-2 py-1 text-white transition-colors hover:bg-sky-600">
-                <LogoutButton className="justify-start pr-1" />
-                <span>Log out</span>
-              </button>
+              <a href={`${env.url.api}/auth/logout`}>
+                <button className="flex items-center rounded bg-sky-500 px-2 py-1 text-white transition-colors hover:bg-sky-600">
+                  <LogoutButton className="justify-start pr-1" />
+                  <span>Log out</span>
+                </button>
+              </a>
             </div>
           </div>
         </Modal>
