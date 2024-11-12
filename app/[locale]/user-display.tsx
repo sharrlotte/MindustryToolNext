@@ -34,7 +34,7 @@ export function Internal() {
               <UserRoleCard roles={session.roles} />
             </div>
           </div>
-          <div className="justify-start pr-1" onClick={modal.toggle}>
+          <div className="cursor-pointer justify-start pr-1" onClick={modal.toggle}>
             <LogOut className="size-5" />
           </div>
         </div>
@@ -42,14 +42,14 @@ export function Internal() {
           //#region modal
         }
         <Modal isOpen={modal.isOpen} onClose={modal.close}>
-          <div className="flex w-full flex-col gap-4">
+          <div className="flex w-full flex-col gap-2">
             <h1 className="text-2xl font-bold text-red-500">Log out</h1>
-            <p>Are you sure you want to log out?</p>
+            <p className="dark:text-black">Are you sure you want to log out?</p>
             <div className="flex justify-end gap-2">
-              <button className="rounded border border-gray-500 px-2 py-1 transition-colors hover:bg-gray-500 hover:text-white" onClick={modal.toggle}>
+              <button className="rounded border border-gray-500 px-2 py-1 transition-colors hover:bg-gray-500 hover:text-white dark:text-black" onClick={modal.toggle}>
                 Cancel
               </button>
-              <button className="flex items-center rounded bg-sky-500 px-2 py-1 text-white transition-colors hover:bg-red-600">
+              <button className="flex items-center rounded bg-sky-500 px-2 py-1 text-white transition-colors hover:bg-sky-600">
                 <LogoutButton className="justify-start pr-1" />
                 <span>Log out</span>
               </button>
