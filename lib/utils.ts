@@ -310,7 +310,7 @@ export function getErrorMessage(error: TError) {
   if ('message' in error) {
     if (error.message === DEFAULT_NEXTJS_ERROR_MESSAGE) return 'Something is wrong';
 
-    return error.message;
+    return JSON.stringify(error);
   }
 
   return 'Something is wrong';

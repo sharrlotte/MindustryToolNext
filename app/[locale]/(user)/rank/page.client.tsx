@@ -1,6 +1,5 @@
 'use client';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { CrownIcon } from '@/components/common/icons';
 import { GridLayout } from '@/components/common/pagination-layout';
@@ -8,18 +7,18 @@ import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
 import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import UserCard from '@/components/user/user-card';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
+import useSearchQuery from '@/hooks/use-search-query';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
+import { ItemPaginationQuery } from '@/query/search-query';
 import { getMyRank, getRank, getUsersCount } from '@/query/user';
 import { User } from '@/types/response/User';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
-import { ItemPaginationQuery } from '@/query/search-query';
-import useSearchQuery from '@/hooks/use-search-query';
 
 export function PageClient() {
   const params = useSearchQuery(ItemPaginationQuery);
@@ -172,13 +171,12 @@ function RankNumber({ rank }: RankNumberProps) {
     return rank;
   }
 
-  if (rank === 1) {
-    return <CrownIcon className="h-full w-full p-1.5 text-[#d4af37]" />;
+  switch (rank) {
+    case 1:
+      return <CrownIcon className="h-full w-full p-1.5 text-[#d4af37]" />;
+    case 2:
+      return <CrownIcon className="h-full w-full p-1.5 text-[#c0c0c0]" />;
+    default:
+      return <CrownIcon className="h-full w-full p-1.5 text-[#cd7f32]" />;
   }
-
-  if (rank === 2) {
-    return <CrownIcon className="h-full w-full p-1.5 text-[#c0c0c0]" />;
-  }
-
-  return <CrownIcon className="h-full w-full p-1.5 text-[#cd7f32]" />;
 }
