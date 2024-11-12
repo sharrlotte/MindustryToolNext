@@ -1,8 +1,6 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-let timeout: any;
-
 export default function useQueryState(initialState: Record<string, string>) {
   const params = useSearchParams();
   const router = useRouter();
@@ -43,10 +41,6 @@ export default function useQueryState(initialState: Record<string, string>) {
   );
 
   function navigate(queryParams: URLSearchParams) {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-
     let isTheSame = true;
 
     if (params.keys().toArray().length !== queryParams.keys().toArray().length) {
@@ -62,7 +56,7 @@ export default function useQueryState(initialState: Record<string, string>) {
     }
 
     if (!isTheSame) {
-      timeout = setTimeout(() => router.replace(`${pathname}?${queryParams.toString()}`), 1000);
+      router.replace(`${pathname}?${queryParams.toString()}`);
     }
   }
 
