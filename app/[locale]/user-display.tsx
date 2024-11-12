@@ -5,6 +5,7 @@ import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
+import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import useToggle from '@/hooks/use-state-toggle';
 import Modal from '@/layout/modal';
@@ -34,7 +35,7 @@ export function Internal() {
               <UserRoleCard roles={session.roles} />
             </div>
           </div>
-          <div className="justify-start pr-1" onClick={modal.toggle}>
+          <div className="cursor-pointer justify-start pr-1" onClick={modal.toggle}>
             <LogOut className="size-5" />
           </div>
         </div>
@@ -42,17 +43,19 @@ export function Internal() {
           //#region modal
         }
         <Modal isOpen={modal.isOpen} onClose={modal.close}>
-          <div className="flex w-full flex-col gap-4">
+          <div className="flex w-full flex-col gap-2">
             <h1 className="text-2xl font-bold text-red-500">Log out</h1>
-            <p>Are you sure you want to log out?</p>
+            <p className="dark:text-black">Are you sure you want to log out?</p>
             <div className="flex justify-end gap-2">
-              <button className="rounded border border-gray-500 px-2 py-1 transition-colors hover:bg-gray-500 hover:text-white" onClick={modal.toggle}>
+              <button className="rounded border border-gray-500 px-2 py-1 transition-colors hover:bg-gray-500 hover:text-white dark:text-black" onClick={modal.toggle}>
                 Cancel
               </button>
-              <button className="flex items-center rounded bg-sky-500 px-2 py-1 text-white transition-colors hover:bg-red-600">
-                <LogoutButton className="justify-start pr-1" />
-                <span>Log out</span>
-              </button>
+              <a href={`${env.url.api}/auth/logout`}>
+                <button className="flex items-center rounded bg-sky-500 px-2 py-1 text-white transition-colors hover:bg-sky-600">
+                  <LogoutButton className="justify-start pr-1" />
+                  <span>Log out</span>
+                </button>
+              </a>
             </div>
           </div>
         </Modal>
