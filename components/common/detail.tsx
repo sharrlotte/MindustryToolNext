@@ -121,7 +121,7 @@ export function DetailDescription({ className, children }: DescriptionProps) {
   const result = parseIconString(children);
 
   return (
-    <section className={cn('flex flex-wrap gap-0.5', className)}>
+    <section className={cn('flex flex-wrap gap-0.5 max-w-[75ch]', className)}>
       {result.map((item, index) =>
         typeof item === 'string' ? (
           <ColorText key={index} text={item} />
