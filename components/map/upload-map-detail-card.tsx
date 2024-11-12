@@ -19,7 +19,7 @@ type UploadMapDetailCardProps = {
   map: MapDetail;
 };
 
-export default function UploadMapDetailCard({ map: { id, name, tags, description, userId } }: UploadMapDetailCardProps) {
+export default function UploadMapDetailCard({ map: { id, name, tags, description, userId, width, height } }: UploadMapDetailCardProps) {
   const { map } = useUploadTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
 
@@ -43,6 +43,9 @@ export default function UploadMapDetailCard({ map: { id, name, tags, description
         <DetailHeader>
           <DetailTitle>{name}</DetailTitle>
           <IdUserCard id={userId} />
+          <span>
+            {width}x{height}
+          </span>
           <DetailDescription>{description}</DetailDescription>
           <TagSelector tags={map} value={selectedTags} onChange={setSelectedTags} />
         </DetailHeader>
