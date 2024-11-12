@@ -51,8 +51,8 @@ export default function ServerLayout({ params, children }: LayoutProps) {
   return (
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden p-2">
       <div className="no-scrollbar flex h-full gap-3 overflow-x-auto bg-card px-2" onMouseLeave={() => setHovered('Yes this is empty')} onTouchCancel={() => setHovered('Yes this is empty')}>
-        {links.map((item, index) => (
-          <ProtectedElement key={index} session={session} filter={true}>
+        {links.map((item) => (
+          <ProtectedElement key={item.href} session={session} filter={true}>
             <NavLink {...item} serverId={id} hovered={hovered} setHovered={setHovered} />
           </ProtectedElement>
         ))}
