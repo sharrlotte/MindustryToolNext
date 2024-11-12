@@ -9,7 +9,6 @@ import { reportError } from '@/query/api';
 import useClientApi from '@/hooks/use-client';
 import { getErrorMessage, TError } from '@/lib/utils';
 
-
 export default function ErrorScreen({ error }: { error: TError }) {
   const path = usePathname();
   const axios = useClientApi();
@@ -34,4 +33,3 @@ export default function ErrorScreen({ error }: { error: TError }) {
     </div>
   );
 }
-
