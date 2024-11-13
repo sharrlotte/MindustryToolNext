@@ -4,8 +4,11 @@ import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
 
 import { getTags } from '@/query/tag';
 import axiosInstance from '@/query/config/config';
+import { unstable_cache } from 'next/cache';
 
-const tags = await getTags(axiosInstance);
+const getCachedTags = unstable_cache(async () => getTags(axiosInstance), ['tags'], { revalidate: 600 });
+
+const tags = await getCachedTags();
 
 const searchTags: AllTagGroup = {
   schematic: tags.schematic.sort().map((item) => ({ ...item, values: item.values.sort() })),
