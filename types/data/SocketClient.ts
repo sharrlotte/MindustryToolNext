@@ -39,6 +39,11 @@ type SocketEvent = BaseSocketEvent &
         room: string;
         data: User[];
       }
+    | {
+        method: 'LAST_MESSAGE';
+        room: string;
+        data: Message;
+      }
   );
 
 type MessagePayload =
@@ -67,6 +72,9 @@ type MessagePayload =
       method: 'GET_MEMBER';
       page: number;
       size: number;
+    }
+  | {
+      method: 'LAST_MESSAGE';
     };
 
 export type MessageMethod = MessagePayload['method'];
@@ -83,7 +91,7 @@ function genId() {
   return count.toString();
 }
 
-type SocketHandlerResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
+type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
 
 export default class SocketClient {
   private socket: ReconnectingWebSocket;
@@ -99,7 +107,7 @@ export default class SocketClient {
 
   private requests: Record<string, PromiseReceiver> = {};
 
-  public async onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketHandlerResult<T>) => void) {
+  public async onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
     this.handlers[method + this.room] = handler;
 
     if (this.room !== '' && !this.rooms.includes(this.room)) {
@@ -191,7 +199,7 @@ export default class SocketClient {
     return await promise;
   }
 
-  public async await<T extends MessagePayload>(payload: T): Promise<SocketHandlerResult<T['method']>> {
+  public async await<T extends MessagePayload>(payload: T): Promise<SocketResult<T['method']>> {
     const room = this.room;
 
     if (room !== '' && !this.rooms.includes(room)) {

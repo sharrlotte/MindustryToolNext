@@ -52,9 +52,12 @@ export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: Na
         >
           <motion.div variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
             <div
-              className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background duration-300 dark:bg-background/90', {
-                'translate-x-0': isVisible,
-              })}
+              className={cn(
+                'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background transition-colors duration-300 dark:bg-background/90',
+                {
+                  'translate-x-0': isVisible,
+                },
+              )}
             >
               <div
                 className="h-full w-full overflow-hidden"
@@ -151,7 +154,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
           className={cn(
-            'flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+            'flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold text-opacity-50 opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
             {
               'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
             },
@@ -172,7 +175,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
             className={cn(
-              'flex gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground',
+              'flex gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground',
               {
                 'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
                   path.some((path) => path.path === bestMatch) && !value,

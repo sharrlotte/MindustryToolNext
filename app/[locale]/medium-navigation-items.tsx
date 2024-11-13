@@ -47,18 +47,12 @@ export function MediumScreenNavigationBar({ children, pathGroups, bestMatch }: N
       <motion.div className="relative flex h-full overflow-hidden border-r" variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
         <div className={cn('flex h-full w-full flex-col overflow-hidden p-1', { 'p-2': expand })}>
           <div className="flex items-center justify-center gap-1 p-2">
-            {/* <div className={cn('overflow-hidden whitespace-nowrap', { block: expand })}>
-              <h1 className="text-xl font-medium">MindustryTool</h1>
-            </div>
-            <span className={cn('overflow-hidden whitespace-nowrap text-xs', { block: expand })}>{env.webVersion}</span> */}
-
             <motion.div className="overflow-hidden whitespace-nowrap" animate={{ display: expand ? 'block' : 'none' }}>
               <h1 className="text-xl font-medium">MindustryTool</h1>
             </motion.div>
             <motion.span className="overflow-hidden whitespace-nowrap text-xs" animate={{ display: expand ? 'block' : 'none' }}>
               {env.webVersion}
             </motion.span>
-
             <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
               <MenuIcon className="size-6 text-foreground" />
             </Button>
@@ -86,7 +80,7 @@ function NavFooter() {
     <div className="space-y-1">
       <Divider />
       <InternalLink
-        className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
+        className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold transition-colors duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
           'justify-start gap-2 py-2': expand,
         })}
         href="/users/@me/setting"
@@ -161,7 +155,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
-          className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
+          className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold transition-colors duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
             'bg-brand text-background dark:text-foreground': path === bestMatch,
             'justify-start gap-2 py-2': expand,
           })}
@@ -180,7 +174,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
             className={cn(
-              'flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-bold duration-300 hover:bg-brand hover:text-background dark:text-foreground dark:hover:text-foreground',
+              'flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-bold transition-colors duration-300 hover:bg-brand hover:text-background dark:text-foreground dark:hover:text-foreground',
               {
                 'bg-brand text-background dark:text-foreground': path.some((path) => path.path === bestMatch) && !value,
                 'justify-start gap-2 py-2': expand,
@@ -197,7 +191,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
               <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
                   key={item.path}
-                  className={cn('flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
+                  className={cn('flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold transition-colors duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
                     'bg-brand text-background dark:text-foreground': item.path === bestMatch,
                   })}
                   href={item.path}

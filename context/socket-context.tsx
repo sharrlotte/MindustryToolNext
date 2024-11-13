@@ -44,6 +44,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     instance.onConnect(() => setState('connected'));
 
     setSocket(instance);
+
+    return () => instance.close();
   }, [setSocket]);
 
   useEffect(() => {

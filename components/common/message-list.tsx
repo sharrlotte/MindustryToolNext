@@ -12,7 +12,7 @@ import { MessageQuery } from '@/types/data/pageable-search-schema';
 import useNotification from '@/hooks/use-notification';
 import Tran from '@/components/common/tran';
 import useWindow from '@/hooks/use-window';
-import { useInterval } from 'usehooks-ts';
+import { useInterval, useLocalStorage } from 'usehooks-ts';
 
 type MessageListProps = {
   className?: string;
@@ -42,6 +42,7 @@ export default function MessageList({
   children,
 }: MessageListProps) {
   const currentContainer = container();
+  const [_, setLastMessage] = useLocalStorage(`LAST_MESSAGE_${room}`, '');
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
   const scrollTopRef = useRef(0);
@@ -89,6 +90,14 @@ export default function MessageList({
 
     return group.map(pageMapper);
   }, [data, pageMapper]);
+
+  useEffect(() => {
+    const lastMessage = data?.pages?.at(0)?.at(0);
+
+    if (lastMessage) {
+      setLastMessage(lastMessage?.id ?? '');
+    }
+  }, [data, setLastMessage]);
 
   const checkIfNeedFetchMore = useCallback(() => {
     if (!shouldCheck) return;
@@ -177,7 +186,7 @@ export default function MessageList({
   useInterval(checkIfNeedFetchMore, 100);
 
   if (!loader) {
-    loader = <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center m-auto justify-center" />;
+    loader = <LoadingSpinner key="loading" className="col-span-full m-auto flex h-full w-full items-center justify-center" />;
   }
 
   end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
