@@ -14,7 +14,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       {isOpen && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 z-50">
           <div
-            className="flex h-full w-full items-center justify-center bg-black/80"
+            className="flex h-full w-full items-center justify-center bg-black/80 backdrop-blur-md"
             onClick={(e) => {
               if (e.target === e.currentTarget) onClose();
             }}
@@ -24,9 +24,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
               transition={{ duration: 0.3, type: 'spring' }}
-              className="relative mx-4 flex items-center justify-center rounded border border-gray-500 bg-white p-6 shadow-lg"
+              className="relative mx-4 flex items-center justify-center rounded border border-gray-500 bg-white p-6 shadow-lg dark:bg-black"
             >
-              <button onClick={onClose} className="absolute right-1 top-0 text-4xl dark:text-black">
+              <button onClick={onClose} className="absolute right-1 top-0 text-4xl dark:text-white">
                 &times;
               </button>
               {children}
