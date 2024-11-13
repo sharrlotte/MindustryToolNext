@@ -18,12 +18,14 @@ import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';
 import InternalLink from '@/components/common/internal-link';
 import ColorText from '@/components/common/color-text';
+import useImageLoading from '@/hooks/use-image-loading';
 
 type SchematicPreviewCardProps = {
   schematic: Schematic;
+  imageCount: number;
 };
 
-function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerified, likes, userLike } }: SchematicPreviewCardProps) {
+function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerified, likes, userLike }, imageCount }: SchematicPreviewCardProps) {
   const t = useI18n();
   const axios = useClientApi();
 
@@ -42,13 +44,15 @@ function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerifie
     action: async () => await getSchematicData(axios, id),
   });
 
+  const loading = useImageLoading(imageCount);
+
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <LinkIcon />
       </CopyButton>
       <InternalLink href={detailLink} preloadImage={detailImageLink}>
-        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
+        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>

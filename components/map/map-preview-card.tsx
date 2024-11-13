@@ -14,12 +14,14 @@ import { MapPreview } from '@/types/response/MapPreview';
 import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ColorText from '@/components/common/color-text';
+import useImageLoading from '@/hooks/use-image-loading';
 
 type MapPreviewCardProps = {
   map: MapPreview;
+  imageCount: number;
 };
 
-function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, userLike } }: MapPreviewCardProps) {
+function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, userLike }, imageCount }: MapPreviewCardProps) {
   const link = `${env.url.base}/maps/${id}`;
   const detailLink = `/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
@@ -28,13 +30,15 @@ function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, us
   const downloadLink = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msav`;
 
+  const loading = useImageLoading(imageCount);
+
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <LinkIcon />
       </CopyButton>
       <InternalLink href={detailLink} preloadImage={detailImageLink}>
-        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
+        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>
