@@ -33,7 +33,7 @@ const sidebarVariants: Variants = {
   },
 };
 
-export function MediumScreenNavigationBar({ children, pathGroups, bestMatch }: NavigationBarProps) {
+export default function MediumScreenNavigationBar({ children, pathGroups, bestMatch }: NavigationBarProps) {
   const { isVisible, setVisible } = useNavBar();
 
   const isSmall = useMediaQuery('(max-width: 640px)');

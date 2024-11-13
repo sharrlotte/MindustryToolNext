@@ -33,7 +33,7 @@ type NavigationBarProps = {
   bestMatch: string | null;
 };
 
-export function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: NavigationBarProps) {
+export default function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: NavigationBarProps) {
   const { isVisible, setVisible } = useNavBar();
 
   const showSidebar = useCallback(() => setVisible(true), [setVisible]);

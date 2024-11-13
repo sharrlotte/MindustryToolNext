@@ -6,8 +6,6 @@ import { useI18n } from '@/i18n/client';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-import('@/public/assets/sprite/kiln-icon-editor.png');
-
 const icons: Record<string, string> = {
   copper: 'item-copper-ui.png',
   lead: 'item-lead-ui.png',

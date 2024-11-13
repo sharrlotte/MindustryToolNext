@@ -27,6 +27,7 @@ function FletchUserCard({ id }: IdUserCardProps) {
   const { data, isLoading, isError, error } = useQuery<User>({
     queryKey: ['users', id],
     queryFn: () => getUser(axios, { id }),
+    retry: false,
   });
 
   if (isError || error) {
