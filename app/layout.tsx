@@ -9,8 +9,10 @@ import dynamic from 'next/dynamic';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
-import './globals.css';
 import { SocketProvider } from '@/context/socket-context';
+
+import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
 
 const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
@@ -76,7 +78,12 @@ export default async function Root({ children, params }: Props) {
       data-color-mode="dark"
     >
       <body className="h-full w-full overflow-hidden">
-        {process.env.NODE_ENV === 'production' && <SpeedInsights />}
+        {process.env.NODE_ENV === 'production' && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SessionProvider>
             <SocketProvider>
