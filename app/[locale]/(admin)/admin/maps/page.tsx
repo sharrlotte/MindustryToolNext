@@ -60,6 +60,8 @@ export default function Page() {
     mutate(value);
   }
 
+  let imageCount = 0;
+
   return (
     <BulkActionContainer onActionPerform={handleBulkDelete}>
       <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
@@ -83,7 +85,7 @@ export default function Page() {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
+              {(data) => <UploadMapPreviewCard key={data.id} map={data} imageCount={imageCount++} />}
             </InfinitePage>
           </div>
         </ListLayout>
@@ -97,7 +99,7 @@ export default function Page() {
               item: <PreviewSkeleton />,
             }}
           >
-            {(data) => <UploadMapPreviewCard key={data.id} map={data} />}
+            {(data) => <UploadMapPreviewCard key={data.id} map={data} imageCount={imageCount++} />}
           </GridPaginationList>
         </GridLayout>
         <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">

@@ -54,13 +54,15 @@ export async function HomeMapPreview({ queryParam }: { queryParam: PaginationSea
 async function InternalSchematicRowView({ queryParam }: { queryParam: PaginationSearchQuery }) {
   const result = await serverApi((axios) => getSchematics(axios, queryParam));
 
+  let imageCount = 0;
+
   if (isError(result)) {
     return <ErrorScreen error={result} />;
   }
 
   return result.map((schematic) => (
     <li key={schematic.id} className="m-0 snap-center p-0">
-      <SchematicPreviewCard schematic={schematic} />
+      <SchematicPreviewCard schematic={schematic} imageCount={imageCount++} />
     </li>
   ));
 }
@@ -68,13 +70,15 @@ async function InternalSchematicRowView({ queryParam }: { queryParam: Pagination
 async function InternalHomeMapPreview({ queryParam }: { queryParam: PaginationSearchQuery }) {
   const result = await serverApi((axios) => getMaps(axios, queryParam));
 
+  let imageCount = 0;
+
   if (isError(result)) {
     return <ErrorScreen error={result} />;
   }
 
   return result.map((map) => (
     <li key={map.id} className="m-0 snap-center p-0">
-      <MapPreviewCard map={map} />
+      <MapPreviewCard map={map} imageCount={imageCount++} />
     </li>
   ));
 }

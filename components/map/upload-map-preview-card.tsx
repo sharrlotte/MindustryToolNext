@@ -9,12 +9,14 @@ import { LinkIcon } from '@/components/common/icons';
 import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
+import useImageLoading from '@/hooks/use-image-loading';
 
 type UploadMapPreviewCardProps = {
   map: MapPreview;
+  imageCount: number;
 };
 
-function InternalUploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCardProps) {
+function InternalUploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPreviewCardProps) {
   const link = `${env.url.base}/admin/maps/${id}`;
   const detailLink = `/admin/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
@@ -23,6 +25,8 @@ function InternalUploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCar
   const downloadLink = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msch`;
 
+  const loading = useImageLoading(imageCount);
+
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
@@ -30,7 +34,7 @@ function InternalUploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCar
       </CopyButton>
       <BulkActionSelector value={id} />
       <InternalLink href={detailLink} preloadImage={detailImageLink}>
-        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
+        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>

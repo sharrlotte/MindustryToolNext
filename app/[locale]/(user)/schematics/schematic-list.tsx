@@ -35,6 +35,8 @@ export default function SchematicList() {
     placeholderData: 0,
   });
 
+  let imageCount = 0;
+
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch tags={schematic} />
@@ -54,7 +56,7 @@ export default function SchematicList() {
               item: <PreviewSkeleton />,
             }}
           >
-            {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+            {(data) => <SchematicPreviewCard key={data.id} schematic={data} imageCount={imageCount++} />}
           </InfinitePage>
         </div>
       </ListLayout>
@@ -68,7 +70,7 @@ export default function SchematicList() {
             item: <PreviewSkeleton />,
           }}
         >
-          {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+          {(data) => <SchematicPreviewCard key={data.id} schematic={data} imageCount={imageCount++} />}
         </GridPaginationList>
       </GridLayout>
       <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">

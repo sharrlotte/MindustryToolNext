@@ -30,6 +30,8 @@ export default function Other({ user }: TabProps) {
   const params = useSearchQuery(ItemPaginationQuery);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
+  let imageCount = 0;
+
   return (
     <div className="absolute inset-0 space-y-2 overflow-y-auto bg-background p-2" ref={(ref) => setContainer(ref)}>
       <UserDetail user={user} />
@@ -52,7 +54,13 @@ export default function Other({ user }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data) => (data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} />)}
+              {(data) =>
+                data.isVerified ? (
+                  <SchematicPreviewCard key={data.id} schematic={data} imageCount={imageCount++} />
+                ) : (
+                  <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={imageCount++} />
+                )
+              }
             </InfinitePage>
           </div>
         </TabsContent>
@@ -69,7 +77,7 @@ export default function Other({ user }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} /> : <UploadMapPreview key={data.id} map={data} />)}
+              {(data) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} imageCount={imageCount++} /> : <UploadMapPreview key={data.id} map={data} imageCount={imageCount++}  />)}
             </InfinitePage>
           </div>
         </TabsContent>

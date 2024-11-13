@@ -13,12 +13,14 @@ import { getSchematicData } from '@/query/schematic';
 import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
+import useImageLoading from '@/hooks/use-image-loading';
 
 type UploadSchematicPreviewCardProps = {
   schematic: Schematic;
+  imageCount: number;
 };
 
-function InternalUploadSchematicPreviewCard({ schematic: { id, name } }: UploadSchematicPreviewCardProps) {
+function InternalUploadSchematicPreviewCard({ schematic: { id, name }, imageCount }: UploadSchematicPreviewCardProps) {
   const axios = useClientApi();
   const t = useI18n();
 
@@ -37,6 +39,8 @@ function InternalUploadSchematicPreviewCard({ schematic: { id, name } }: UploadS
     action: async () => await getSchematicData(axios, id),
   });
 
+  const loading = useImageLoading(imageCount);
+
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
@@ -44,7 +48,7 @@ function InternalUploadSchematicPreviewCard({ schematic: { id, name } }: UploadS
       </CopyButton>
       <BulkActionSelector value={id} />
       <InternalLink href={detailLink} preloadImage={detailImageLink}>
-        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
+        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>
