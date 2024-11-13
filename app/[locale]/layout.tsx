@@ -1,10 +1,8 @@
 import I18nProvider from '@/app/[locale]/i18n-provider';
 import NavigationBar from '@/app/[locale]/navigation';
+import Toaster from '@/components/ui/toaster';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
-import dynamic from 'next/dynamic';
-
-const Toaster = dynamic(() => import('@/components/ui/toaster'));
 
 type RootProps = {
   children: React.ReactNode;
