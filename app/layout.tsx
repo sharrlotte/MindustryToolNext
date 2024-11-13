@@ -10,7 +10,7 @@ import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
 import './globals.css';
-import SocketProvider from '@/context/socket-provider';
+import { SocketProvider } from '@/context/socket-context';
 
 const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
