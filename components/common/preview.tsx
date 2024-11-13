@@ -2,6 +2,7 @@ import React from 'react';
 
 import FallbackImage from '@/components/common/fallback-image';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -31,10 +32,10 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
   src: string;
   alt: string;
   errorSrc: string;
-};
+} & Parameters<typeof Image>[0];
 
-export function PreviewImage({ className, src, errorSrc, alt }: ImageProps) {
-  return <FallbackImage className={cn('w-full bg-black object-cover aspect-square', className)} src={src} errorSrc={errorSrc} alt={alt} width={224} height={224} />;
+export function PreviewImage({ className, src, errorSrc, alt, ...props }: ImageProps) {
+  return <FallbackImage className={cn('aspect-square w-full bg-black object-cover', className)} src={src} errorSrc={errorSrc} alt={alt} width={224} height={224} {...props} />;
 }
 
 type ActionsProps = React.HTMLAttributes<HTMLDivElement>;

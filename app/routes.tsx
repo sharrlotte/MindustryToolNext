@@ -25,8 +25,8 @@ import { getPostUploadCount } from '@/query/post';
 import { getSchematicUploadCount } from '@/query/schematic';
 
 import Tran from '@/components/common/tran';
-import { Filter } from '@/lib/utils';
-import { ReactNode, useEffect } from 'react';
+import { cn, Filter } from '@/lib/utils';
+import { ReactNode, useEffect, useState } from 'react';
 
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
@@ -37,6 +37,10 @@ import { useLocaleStore } from '@/zustand/locale-store';
 import { useVerifyCount } from '@/zustand/verify-count-store';
 
 import { useQueries } from '@tanstack/react-query';
+import { useSocket } from '@/context/socket-context';
+import useNotification from '@/hooks/use-notification';
+import { isError } from '@/lib/utils';
+import { useLocalStorage } from 'usehooks-ts';
 
 export type PathGroup = {
   key: string;
@@ -106,7 +110,7 @@ export const groups: readonly PathGroup[] = [
       {
         path: '/chat', //
         name: <Tran text="chat" />,
-        icon: <ChatIcon />,
+        icon: <ChatIconPath />,
       },
       {
         path: '/mindustry-gpt', //
@@ -334,5 +338,41 @@ function TranslationPath() {
       <Tran text="translation" />
       {data > 0 && <span> ({data})</span>}
     </>
+  );
+}
+
+function ChatIconPath() {
+  const { socket } = useSocket();
+  const { postNotification } = useNotification();
+  const [hasNewMessage, setHasNewMessage] = useState(false);
+  const [lastMessage] = useLocalStorage('LAST_MESSAGE_GLOBAL', '');
+
+  useEffect(() => {
+    socket.onRoom('GLOBAL').onMessage('MESSAGE', (message) => {
+      if ('error' in message) {
+        return;
+      }
+
+      postNotification(message);
+    });
+
+    socket
+      .onRoom('GLOBAL')
+      .await({ method: 'LAST_MESSAGE' })
+      .then((newestMessage) => {
+        if (isError(newestMessage)) {
+          return;
+        }
+
+        setHasNewMessage(newestMessage.id !== lastMessage);
+      });
+  }, [socket, postNotification, lastMessage]);
+
+  return (
+    <div className="relative">
+      <ChatIcon />
+      <span className={cn('absolute -right-2 -top-2 hidden h-3 w-3 animate-ping rounded-full bg-red-500 opacity-75', { 'inline-flex': hasNewMessage })} />
+      <span className={cn('absolute -right-2 -top-2 hidden h-3 w-3 rounded-full bg-red-500 opacity-75', { 'inline-flex ': hasNewMessage })} />
+    </div>
   );
 }
