@@ -2,14 +2,16 @@
 
 import { ReactNode, useMemo } from 'react';
 
-import { SmallScreenNavigationBar } from '@/app/[locale]/small-navigation-items';
+const SmallScreenNavigationBar = dynamic(() => import('@/app/[locale]/small-navigation-items'));
+const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/medium-navigation-items'));
+
 import { hasAccess, max } from '@/lib/utils';
 
 import { useMediaQuery } from 'usehooks-ts';
-import { MediumScreenNavigationBar } from '@/app/[locale]/medium-navigation-items';
 import { useSession } from '@/context/session-context.client';
 import { usePathname } from 'next/navigation';
 import { groups, Path, SubPath } from '@/app/routes';
+import dynamic from 'next/dynamic';
 
 const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
 
@@ -28,7 +30,15 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
     return max(allPaths, (value) => value.length * (route.startsWith(value) ? 1 : 0));
   }, [pathName]);
 
-  const routeGroups = useMemo(() => groups.filter((group) => hasAccess(session, group.filter) && group.paths.some(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.some((sub) => hasAccess(session, sub.filter))))), [session]);
+  const routeGroups = useMemo(
+    () =>
+      groups.filter(
+        (group) =>
+          hasAccess(session, group.filter) &&
+          group.paths.some(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.some((sub) => hasAccess(session, sub.filter)))),
+      ),
+    [session],
+  );
 
   if (isSmall) {
     return (

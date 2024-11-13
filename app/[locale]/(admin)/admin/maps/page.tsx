@@ -35,6 +35,7 @@ export default function Page() {
 
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
+  
   const { mutate } = useMutation({
     mutationFn: (ids: string[]) => Promise.all(ids.map((id) => deleteMap(axios, id))),
     onSuccess: () => {
