@@ -2,8 +2,8 @@
 
 import { ReactNode, useMemo } from 'react';
 
-const SmallScreenNavigationBar = dynamic(() => import('@/app/[locale]/small-navigation-items'));
-const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/medium-navigation-items'));
+const SmallScreenNavigationBar = dynamic(() => import('@/app/[locale]/small-navigation-items'), { ssr: false });
+const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/medium-navigation-items'), { ssr: false });
 
 import { hasAccess, max } from '@/lib/utils';
 
