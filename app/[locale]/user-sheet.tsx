@@ -1,18 +1,11 @@
-'use client';
-
 import { GlobeIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
-import ComboBox from '@/components/common/combo-box';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
-import { Dialog, DialogContent, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
-import { useChangeLocale, useI18n } from '@/i18n/client';
-
-import { useLocaleStore } from '@/zustand/locale-store';
-import { Locale, locales } from '@/i18n/config';
 import Tran from '@/components/common/tran';
 import InternalLink from '@/components/common/internal-link';
 import { SettingIcon } from '@/components/common/icons';
+import { ChangeLanguageDialog } from '@/app/[locale]/change-language-dialog';
 
 type Tab = {
   icon: ReactNode;
@@ -54,40 +47,5 @@ export function UserActions() {
         </div>
       ))}
     </div>
-  );
-}
-
-function ChangeLanguageDialog() {
-  const { currentLocale } = useLocaleStore();
-  const setCurrentLocale = useChangeLocale();
-  const t = useI18n();
-
-  function onLanguageChange(value: any) {
-    setCurrentLocale(value ?? 'en');
-  }
-
-  return (
-    <Dialog>
-      <DialogTrigger className="w-full text-start">
-        <Tran text="switch-language" />
-      </DialogTrigger>
-      <DialogContent className="p-6">
-        <ComboBox<Locale>
-          value={{ label: t(currentLocale), value: currentLocale }}
-          values={locales.map((value: Locale) => ({
-            label: t(value || 'en'),
-            value,
-          }))}
-          searchBar={false}
-          onChange={onLanguageChange}
-        />
-        <DialogDescription>
-          <a href="https://github.com/sharrlotte/MindustryToolNext/issues">
-            You can contribute to website language at
-            <span className="text-brand"> Github</span>
-          </a>
-        </DialogDescription>
-      </DialogContent>
-    </Dialog>
   );
 }
