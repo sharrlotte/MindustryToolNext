@@ -56,10 +56,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, [socket]);
 
-  if (!socket) {
-    return <></>;
-  }
-
   return (
     <SocketContext.Provider
       value={{

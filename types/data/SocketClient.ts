@@ -111,8 +111,7 @@ export default class SocketClient {
     this.handlers[method + this.room] = handler;
 
     if (this.room !== '' && !this.rooms.includes(this.room)) {
-      await this.joinRoom(this.room);
-      this.rooms.push(this.room);
+      this.joinRoom(this.room).then(() => this.rooms.push(this.room));
     }
     this.room = '';
   }
@@ -164,8 +163,13 @@ export default class SocketClient {
 
   public async send(payload: MessagePayload) {
     if (this.room !== '' && !this.rooms.includes(this.room)) {
-      await this.joinRoom(this.room);
-      this.rooms.push(this.room);
+      try {
+        await this.joinRoom(this.room);
+        this.rooms.push(this.room);
+      } catch (err) {
+        this.rooms = this.rooms.filter((r) => r !== this.room);
+        console.error(err);
+      }
     }
 
     const json = JSON.stringify({ ...payload, room: this.room });
@@ -208,6 +212,7 @@ export default class SocketClient {
         this.rooms.push(room);
       } catch (err) {
         this.rooms = this.rooms.filter((r) => r !== room);
+        console.error(err);
       }
     }
 

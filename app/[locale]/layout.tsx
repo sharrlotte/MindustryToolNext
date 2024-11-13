@@ -1,9 +1,9 @@
 import I18nProvider from '@/app/[locale]/i18n-provider';
+import NavigationBar from '@/app/[locale]/navigation';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 
-const NavigationBar = dynamic(() => import('./navigation'));
 const Toaster = dynamic(() => import('@/components/ui/toaster'));
 
 type RootProps = {
