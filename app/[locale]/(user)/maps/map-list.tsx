@@ -13,7 +13,7 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
-import { useSearchTags } from '@/hooks/use-tags';
+import { searchTags } from '@/query/tags';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { omit } from '@/lib/utils';
@@ -21,7 +21,7 @@ import Tran from '@/components/common/tran';
 import InfinitePage from '@/components/common/infinite-page';
 
 export default function MapList() {
-  const { map } = useSearchTags();
+  const { map } = searchTags;
   const params = useSearchQuery(ItemPaginationQuery);
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -73,7 +73,7 @@ export default function MapList() {
           <PaginationNavigator numberOfItems={data} />
         </GridLayout>
         <div className="flex gap-2">
-          <InternalLink variant="button-secondary" href={`${env.url.base}/users/@me`} >
+          <InternalLink variant="button-secondary" href={`${env.url.base}/users/@me`}>
             <UserIcon className="size-5" />
             <Tran text="map.my-map" />
           </InternalLink>

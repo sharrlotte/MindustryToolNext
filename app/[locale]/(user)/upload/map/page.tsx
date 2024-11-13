@@ -18,7 +18,7 @@ import UserCard from '@/components/user/user-card';
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
-import { useUploadTags } from '@/hooks/use-tags';
+import { uploadTags } from '@/query/tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
@@ -117,7 +117,7 @@ type FormData = {
 
 function Upload({ file, preview, setFile, setPreview }: UploadProps) {
   const { session } = useSession();
-  const { map } = useUploadTags();
+  const { map } = uploadTags;
   const { toast } = useToast();
 
   const t = useI18n();

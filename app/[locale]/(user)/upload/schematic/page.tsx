@@ -19,7 +19,7 @@ import UserCard from '@/components/user/user-card';
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
-import { useUploadTags } from '@/hooks/use-tags';
+import { uploadTags } from '@/query/tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
@@ -164,7 +164,7 @@ type UploadFormData = {
 
 function Upload({ data, preview, setData, setPreview }: UploadProps) {
   const { session } = useSession();
-  const { schematic } = useUploadTags();
+  const { schematic } = uploadTags;
   const { toast } = useToast();
 
   const t = useI18n();

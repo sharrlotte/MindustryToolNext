@@ -8,7 +8,7 @@ import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, De
 import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
-import { useUploadTags } from '@/hooks/use-tags';
+import { uploadTags } from '@/query/tags';
 import { MapDetail } from '@/types/response/MapDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { DeleteMapButton } from '@/components/map/delete-map-button';
@@ -20,7 +20,7 @@ type UploadMapDetailCardProps = {
 };
 
 export default function UploadMapDetailCard({ map: { id, name, tags, description, userId, width, height } }: UploadMapDetailCardProps) {
-  const { map } = useUploadTags();
+  const { map } = uploadTags;
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
 
   useEffect(() => {

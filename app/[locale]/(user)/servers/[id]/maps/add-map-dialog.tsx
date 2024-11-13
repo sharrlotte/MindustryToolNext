@@ -11,7 +11,7 @@ import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
-import { useSearchTags } from '@/hooks/use-tags';
+import { searchTags } from '@/query/tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { getMaps } from '@/query/map';
@@ -26,7 +26,7 @@ type AddMapDialogProps = {
 
 export function AddMapDialog({ serverId }: AddMapDialogProps) {
   const { toast } = useToast();
-  const { map } = useSearchTags();
+  const { map } = searchTags;
   const [show, setShow] = useState(false);
   const axios = useClientApi();
   const t = useI18n();

@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 import PostPreviewCard from '@/components/post/post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import { useSearchTags } from '@/hooks/use-tags';
+import { searchTags } from '@/query/tags';
 import { getPosts } from '@/query/post';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
@@ -16,7 +16,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function PostsPage() {
-  const { post } = useSearchTags();
+  const { post } = searchTags;
   const params = useSearchQuery(ItemPaginationQuery);
   const ref = useRef<HTMLDivElement | null>(null);
 

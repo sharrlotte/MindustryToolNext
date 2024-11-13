@@ -6,26 +6,14 @@ import { useForm } from 'react-hook-form';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useUploadTags } from '@/hooks/use-tags';
+import { uploadTags } from '@/query/tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
-import {
-  CreatePluginRequest,
-  CreatePluginRequestData,
-  CreatePluginSchema,
-} from '@/types/request/CreatePluginRequest';
+import { CreatePluginRequest, CreatePluginRequestData, CreatePluginSchema } from '@/types/request/CreatePluginRequest';
 import { TagGroups } from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -35,7 +23,7 @@ import Tran from '@/components/common/tran';
 
 export default function AddPluginForm() {
   const axios = useClientApi();
-  const { plugin } = useUploadTags();
+  const { plugin } = uploadTags;
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 
@@ -88,10 +76,7 @@ export default function AddPluginForm() {
       <DialogContent>
         <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md p-6">
           <Form {...form}>
-            <form
-              className="flex flex-1 flex-col justify-between space-y-2"
-              onSubmit={form.handleSubmit(handleSubmit)}
-            >
+            <form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
               <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
                 <FormField
                   control={form.control}
@@ -132,10 +117,7 @@ export default function AddPluginForm() {
                         <Tran text="plugin.url" />
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="https://github.com/sharrlotte/MindustryToolPlugin"
-                          {...field}
-                        />
+                        <Input placeholder="https://github.com/sharrlotte/MindustryToolPlugin" {...field} />
                       </FormControl>
                       <FormDescription>
                         <Tran text="plugin.url-description" />
@@ -153,11 +135,7 @@ export default function AddPluginForm() {
                         <Tran text="plugin.tags" />
                       </FormLabel>
                       <FormControl>
-                        <TagSelector
-                          tags={plugin}
-                          value={field.value}
-                          onChange={(fn) => field.onChange(fn(field.value))}
-                        />
+                        <TagSelector tags={plugin} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -165,13 +143,7 @@ export default function AddPluginForm() {
                 />
               </div>
               <div className="flex flex-col items-end justify-center rounded-md p-2">
-                <Button
-                  className="w-fit"
-                  variant="primary"
-                  type="submit"
-                  title={t('upload')}
-                  disabled={isPending}
-                >
+                <Button className="w-fit" variant="primary" type="submit" title={t('upload')} disabled={isPending}>
                   {t('upload')}
                 </Button>
               </div>
