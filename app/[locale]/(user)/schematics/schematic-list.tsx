@@ -12,7 +12,7 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
-import { useSearchTags } from '@/hooks/use-tags';
+import { searchTags } from '@/query/tags';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { getSchematicCount, getSchematics } from '@/query/schematic';
 import { omit } from '@/lib/utils';
@@ -21,7 +21,7 @@ import { UploadIcon, UserIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 
 export default function SchematicList() {
-  const { schematic } = useSearchTags();
+  const { schematic } = searchTags;
   const params = useSearchQuery(ItemPaginationQuery);
 
   const uploadLink = `${env.url.base}/upload/schematic`;

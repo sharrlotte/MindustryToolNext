@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import { useSearchTags } from '@/hooks/use-tags';
+import { searchTags } from '@/query/tags';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { PaginationLayoutSwitcher, ListLayout, GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
@@ -23,7 +23,7 @@ import { toast } from '@/hooks/use-toast';
 import useQueriesData from '@/hooks/use-queries-data';
 
 export default function Page() {
-  const { schematic } = useSearchTags();
+  const { schematic } = searchTags;
   const params = useSearchQuery(ItemPaginationQuery);
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);

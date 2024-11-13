@@ -8,31 +8,14 @@ import Link from 'next/link';
 import DeleteButton from '@/components/button/delete-button';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useUploadTags } from '@/hooks/use-tags';
+import { uploadTags } from '@/query/tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
-import VerifyPluginRequest, {
-  VerifyPluginRequestData,
-  VerifyPluginSchema,
-} from '@/types/request/VerifyPluginRequest';
+import VerifyPluginRequest, { VerifyPluginRequestData, VerifyPluginSchema } from '@/types/request/VerifyPluginRequest';
 import { Plugin } from '@/types/response/Plugin';
 import { TagGroups } from '@/types/response/TagGroup';
 
@@ -47,8 +30,7 @@ type Props = {
   plugin: Plugin;
 };
 
-const GITHUBInternalPATTERN =
-  /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
+const GITHUBInternalPATTERN = /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
 
 function InternalUploadPluginCard({ plugin }: Props) {
   const { id, name, description, url, userId } = plugin;
@@ -92,11 +74,7 @@ function InternalUploadPluginCard({ plugin }: Props) {
       <span>{description}</span>
       <IdUserCard id={userId} />
       <div className="flex gap-2">
-        <DeleteButton
-          description={`${t('delete')} ${name}`}
-          isLoading={isDeleting}
-          onClick={() => deletePluginById(id)}
-        />
+        <DeleteButton description={`${t('delete')} ${name}`} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
         <VerifyPluginDialog plugin={plugin} />
       </div>
     </div>
@@ -113,7 +91,7 @@ type DialogProps = {
 
 function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const axios = useClientApi();
-  const { plugin } = useUploadTags();
+  const { plugin } = uploadTags;
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 
@@ -158,11 +136,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className="flex h-9 w-full items-center justify-center rounded-md border p-0 hover:bg-success"
-          variant="outline"
-          title="verify"
-        >
+        <Button className="flex h-9 w-full items-center justify-center rounded-md border p-0 hover:bg-success" variant="outline" title="verify">
           <CheckIcon className="size-5" />
         </Button>
       </DialogTrigger>
@@ -173,10 +147,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
         </Hidden>
         <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md p-6">
           <Form {...form}>
-            <form
-              className="flex flex-1 flex-col justify-between space-y-2"
-              onSubmit={form.handleSubmit(handleSubmit)}
-            >
+            <form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
               <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
                 <FormField
                   control={form.control}
@@ -187,11 +158,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                         <Tran text="plugin.tags" />
                       </FormLabel>
                       <FormControl>
-                        <TagSelector
-                          tags={plugin}
-                          value={field.value}
-                          onChange={(fn) => field.onChange(fn(field.value))}
-                        />
+                        <TagSelector tags={plugin} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -204,13 +171,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                     <Tran text="cancel" />
                   </Button>
                 </DialogClose>
-                <Button
-                  className="w-fit"
-                  variant="primary"
-                  type="submit"
-                  title={t('upload')}
-                  disabled={isPending}
-                >
+                <Button className="w-fit" variant="primary" type="submit" title={t('upload')} disabled={isPending}>
                   {t('verify')}
                 </Button>
               </div>

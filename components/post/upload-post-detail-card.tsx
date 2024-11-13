@@ -13,7 +13,7 @@ import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useUploadTags } from '@/hooks/use-tags';
+import { uploadTags } from '@/query/tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';
@@ -28,13 +28,11 @@ type UploadPostDetailCardProps = {
   post: PostDetail;
 };
 
-export default function UploadPostDetailCard({
-  post,
-}: UploadPostDetailCardProps) {
+export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps) {
   const { toast } = useToast();
   const { back } = useRouter();
   const axios = useClientApi();
-  const { post: postTags } = useUploadTags();
+  const { post: postTags } = uploadTags;
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { invalidateByKey } = useQueriesData();
 
@@ -103,19 +101,8 @@ export default function UploadPostDetailCard({
         </div>
       </header>
       <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
-        <TagSelector
-          tags={postTags}
-          value={selectedTags}
-          onChange={setSelectedTags}
-          hideSelectedTag
-        />
-        <DeleteButton
-          variant="default"
-          className="w-fit"
-          description={`${t('delete')} ${title}`}
-          isLoading={isLoading}
-          onClick={() => deletePostById(id)}
-        />
+        <TagSelector tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
+        <DeleteButton variant="default" className="w-fit" description={`${t('delete')} ${title}`} isLoading={isLoading} onClick={() => deletePostById(id)} />
         <VerifyButton
           description={t('verify-alert', { name: title })}
           isLoading={isLoading}

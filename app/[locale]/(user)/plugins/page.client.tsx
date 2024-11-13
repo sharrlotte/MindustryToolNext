@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import InfinitePage from '@/components/common/infinite-page';
 import PluginCard from '@/components/plugin/plugin-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import { useSearchTags } from '@/hooks/use-tags';
+import { searchTags } from '@/query/tags';
 
 import { getPlugins } from '@/query/plugin';
 import AddPluginForm from '@/app/[locale]/(user)/plugins/add-plugin-form';
@@ -15,7 +15,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function PageClient() {
-  const { plugin } = useSearchTags();
+  const { plugin } = searchTags;
   const params = useSearchQuery(ItemPaginationQuery);
   const ref = useRef<HTMLDivElement | null>(null);
 

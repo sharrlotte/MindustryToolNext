@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import { useSearchTags } from '@/hooks/use-tags';
+import { searchTags } from '@/query/tags';
 import { deleteMap, getMapUploadCount, getMapUploads } from '@/query/map';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { PaginationLayoutSwitcher, ListLayout, GridLayout } from '@/components/common/pagination-layout';
@@ -23,7 +23,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function Page() {
-  const { map } = useSearchTags();
+  const { map } = searchTags;
   const params = useSearchQuery(ItemPaginationQuery);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
@@ -35,7 +35,7 @@ export default function Page() {
 
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
-  
+
   const { mutate } = useMutation({
     mutationFn: (ids: string[]) => Promise.all(ids.map((id) => deleteMap(axios, id))),
     onSuccess: () => {

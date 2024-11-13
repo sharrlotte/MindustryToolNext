@@ -13,7 +13,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useStatusSearchParams from '@/hooks/use-status-search-params';
-import { useSearchTags } from '@/hooks/use-tags';
+import { searchTags } from '@/query/tags';
 import { useI18n } from '@/i18n/client';
 import { User } from '@/types/response/User';
 import { getMeSchematics, getMeMaps, getMePosts } from '@/query/user';
@@ -24,15 +24,12 @@ type TabProps = {
 };
 export default function Me({ me }: TabProps) {
   const t = useI18n();
-  const { schematic, map, post } = useSearchTags();
+  const { schematic, map, post } = searchTags;
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useStatusSearchParams();
 
   return (
-    <div
-      className="absolute inset-0 space-y-2 overflow-auto bg-background p-2"
-      ref={(ref) => setContainer(ref)}
-    >
+    <div className="absolute inset-0 space-y-2 overflow-auto bg-background p-2" ref={(ref) => setContainer(ref)}>
       <UserDetail user={me} />
       <Tabs className="w-full" defaultValue="schematic">
         <TabsList className="w-full justify-start bg-card">
@@ -53,13 +50,7 @@ export default function Me({ me }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data) =>
-                data.isVerified ? (
-                  <SchematicPreviewCard key={data.id} schematic={data} />
-                ) : (
-                  <UploadSchematicPreviewCard key={data.id} schematic={data} />
-                )
-              }
+              {(data) => (data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} />)}
             </InfinitePage>
           </div>
         </TabsContent>
@@ -76,13 +67,7 @@ export default function Me({ me }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data) =>
-                data.isVerified ? (
-                  <MapPreviewCard key={data.id} map={data} />
-                ) : (
-                  <UploadMapPreview key={data.id} map={data} />
-                )
-              }
+              {(data) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} /> : <UploadMapPreview key={data.id} map={data} />)}
             </InfinitePage>
           </div>
         </TabsContent>
@@ -96,13 +81,7 @@ export default function Me({ me }: TabProps) {
               getFunc={getMePosts}
               container={() => container}
             >
-              {(data) =>
-                data.isVerified ? (
-                  <PostPreviewCard key={data.id} post={data} />
-                ) : (
-                  <UploadPostPreviewCard key={data.id} post={data} />
-                )
-              }
+              {(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}
             </InfinitePage>
           </div>
         </TabsContent>

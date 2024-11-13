@@ -3,7 +3,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import { Skeleton } from '@/components/ui/skeleton';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useSearchTags } from '@/hooks/use-tags';
+import { searchTags } from '@/query/tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { getPlugins } from '@/query/plugin';
@@ -23,7 +23,7 @@ type AddPluginDialogProps = {
 export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const { toast } = useToast();
-  const { plugin } = useSearchTags();
+  const { plugin } = searchTags;
   const [show, setShow] = useState(false);
   const axios = useClientApi();
   const t = useI18n();
