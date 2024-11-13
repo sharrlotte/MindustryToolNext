@@ -2,7 +2,6 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import env from '@/constant/env';
 import { SessionProvider } from '@/context/session-context';
-import { SocketProvider } from '@/context/socket-context';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 import type { Metadata } from 'next';
@@ -11,6 +10,7 @@ import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
 import './globals.css';
+import SocketProvider from '@/context/socket-provider';
 
 const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 

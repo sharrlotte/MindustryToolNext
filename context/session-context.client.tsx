@@ -8,7 +8,7 @@ import { Session } from '@/types/response/Session';
 
 export type SessionState = 'loading' | 'authenticated' | 'unauthenticated';
 
-type SessionContextType =
+type SessionContextType = (
   | {
       session: null;
       state: 'loading' | 'unauthenticated';
@@ -16,11 +16,15 @@ type SessionContextType =
   | {
       session: Session;
       state: 'authenticated';
-    };
+    }
+) & {
+  createdAt: number;
+};
 
 const defaultContextValue: SessionContextType = {
   session: null,
   state: 'loading',
+  createdAt: 0,
 };
 
 export const SessionContext = React.createContext<SessionContextType>(defaultContextValue);
@@ -60,28 +64,29 @@ export function ClientSessionProvider({ session, children }: { session: Session 
       ? {
           session,
           state: 'authenticated',
+          createdAt: Date.now(),
         }
-      : { state: 'unauthenticated', session: null },
+      : { state: 'unauthenticated', session: null, createdAt: Date.now() },
   );
 
-  const handleSession = useCallback(
-    ({ data }: { data: Session | null }) =>
-      data
-        ? setSession({
-            session: data,
-            state: 'authenticated',
-          })
-        : setSession({ state: 'unauthenticated', session: null }),
-    [],
-  );
+  const fetchSession = useCallback(() => {
+    axios.get<any, { data: Session }>('/auth/session').then(({ data }) => {
+      if (Date.now() - auth.createdAt < 1000 * 60 * 5) return;
 
-  useEffect(() => {
-    axios.get<any, { data: Session }>('/auth/session').then(handleSession);
-  }, [axios, setSession, handleSession]);
+      if (data) {
+        setSession({
+          session: data,
+          state: 'authenticated',
+          createdAt: Date.now(),
+        });
+      } else {
+        setSession({ state: 'unauthenticated', session: null, createdAt: Date.now() });
+      }
+    });
+  }, []);
 
-  useInterval(() => {
-    axios.get<any, { data: Session }>('/auth/session').then(handleSession);
-  }, 300000);
+  useEffect(() => fetchSession(), [axios, setSession, fetchSession]);
+  useInterval(() => fetchSession(), 300000);
 
   return <SessionContext.Provider value={auth}>{children}</SessionContext.Provider>;
 }

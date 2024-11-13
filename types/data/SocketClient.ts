@@ -141,8 +141,12 @@ export default class SocketClient {
         }
 
         if (message.id) {
-          const { resolve } = this.requests[message.id];
-          return resolve(message.data);
+          const { resolve, reject } = this.requests[message.id];
+          if (message.method === 'Error') {
+            return reject(message.message);
+          } else {
+            return resolve(message.data);
+          }
         }
       } catch (error) {
         console.error(error);
@@ -194,7 +198,7 @@ export default class SocketClient {
       );
 
       const timeout = setTimeout(() => {
-        reject('Request timeout');
+        reject('Request timeout: join room ' + room);
 
         return () => clearTimeout(timeout);
       }, 10000);
@@ -224,7 +228,7 @@ export default class SocketClient {
       this.room = '';
 
       const timeout = setTimeout(() => {
-        reject('Request timeout');
+        reject('Request timeout: ' + json);
 
         return () => clearTimeout(timeout);
       }, 10000);

@@ -8,7 +8,7 @@ import SocketClient, { SocketState } from '@/types/data/SocketClient';
 export type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
 
 type SocketContextType = {
-  socket?: SocketClient;
+  socket: SocketClient;
   state: SocketState;
 };
 
@@ -17,7 +17,7 @@ type UseSocket = Omit<SocketContextType, 'socket'> & {
 };
 
 const defaultContextValue: SocketContextType = {
-  socket: undefined,
+  socket: new SocketClient(`${env.url.socket}/socket`),
   state: 'disconnected',
 };
 
@@ -33,20 +33,17 @@ export function useSocket(): UseSocket {
 
   return { ...context, socket };
 }
-export function SocketProvider({ children }: { children: ReactNode }) {
-  const [socket, setSocket] = useState<SocketClient>();
+
+export default function SocketProvider({ children }: { children: ReactNode }) {
+  const [socket] = useState<SocketClient>(defaultContextValue.socket);
   const [state, setState] = useState<SocketState>('disconnected');
 
   useEffect(() => {
-    const instance = new SocketClient(`${env.url.socket}/socket`);
+    socket.onDisconnect(() => setState('disconnected'));
+    socket.onConnect(() => setState('connected'));
 
-    instance.onDisconnect(() => setState('disconnected'));
-    instance.onConnect(() => setState('connected'));
-
-    setSocket(instance);
-
-    return () => instance.close();
-  }, [setSocket]);
+    return () => socket.close();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
