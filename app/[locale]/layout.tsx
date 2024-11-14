@@ -1,3 +1,4 @@
+import ClientInit from '@/app/[locale]/client-init';
 import I18nProvider from '@/app/[locale]/i18n-provider';
 import NavigationBar from '@/app/[locale]/navigation';
 import { ThemeProvider } from '@/components/theme/theme-provider';
@@ -9,9 +10,6 @@ import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import dynamic from 'next/dynamic';
-
-const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
 type RootProps = {
   children: React.ReactNode;
