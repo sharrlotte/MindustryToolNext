@@ -42,8 +42,6 @@ export default function Client({ schematics }: Props) {
     placeholderData: 0,
   });
 
-  let imageCount = 0;
-
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch tags={schematic} />
@@ -64,7 +62,7 @@ export default function Client({ schematics }: Props) {
               item: <PreviewSkeleton />,
             }}
           >
-            {(data) => <SchematicPreviewCard key={data.id} schematic={data} imageCount={imageCount++} />}
+            {(data, index) => <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} />}
           </InfinitePage>
         </div>
       </ListLayout>
@@ -79,7 +77,7 @@ export default function Client({ schematics }: Props) {
             item: <PreviewSkeleton />,
           }}
         >
-          {(data) => <SchematicPreviewCard key={data.id} schematic={data} imageCount={imageCount++} />}
+          {(data, index) => <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} />}
         </GridPaginationList>
       </GridLayout>
       <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">

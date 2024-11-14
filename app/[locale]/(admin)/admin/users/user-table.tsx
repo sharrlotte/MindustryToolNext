@@ -15,10 +15,10 @@ import { getUserCount, getUsers } from '@/query/user';
 import { GridLayout, ListLayout } from '@/components/common/pagination-layout';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import PaginationNavigator from '@/components/common/pagination-navigator';
-import { omit } from 'lodash';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
+import { omit } from '@/lib/utils';
 
 const defaultState = {
   name: '',

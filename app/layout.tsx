@@ -1,20 +1,11 @@
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import { ThemeProvider } from '@/components/theme/theme-provider';
 import env from '@/constant/env';
-import { SessionProvider } from '@/context/session-context';
 import { cn } from '@/lib/utils';
-import QueryProvider from '@/query/config/query-provider';
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
-import { SocketProvider } from '@/context/socket-context';
 
 import './globals.css';
-import { Analytics } from '@vercel/analytics/react';
-
-const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
 const inter = Inter({
   variable: '--font-inter',
@@ -79,24 +70,7 @@ export default async function Root({ children, params }: Props) {
       suppressHydrationWarning
       data-color-mode="dark"
     >
-      <body className="h-full w-full overflow-hidden">
-        {process.env.NODE_ENV === 'production' && (
-          <>
-            <Analytics />
-            <SpeedInsights />
-          </>
-        )}
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <SessionProvider>
-            <SocketProvider>
-              <QueryProvider>
-                <ClientInit />
-                {children}
-              </QueryProvider>
-            </SocketProvider>
-          </SessionProvider>
-        </ThemeProvider>
-      </body>
+      {children}
     </html>
   );
 }

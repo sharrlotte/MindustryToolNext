@@ -10,7 +10,6 @@ import GridPaginationList from '@/components/common/grid-pagination-list';
 import { PaginationLayoutSwitcher, ListLayout, GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import useClientQuery from '@/hooks/use-client-query';
-import { omit } from 'lodash';
 import Tran from '@/components/common/tran';
 import InfinitePage from '@/components/common/infinite-page';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -22,6 +21,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 import useTags from '@/hooks/use-tags';
 import { Map } from '@/types/response/Map';
+import { omit } from '@/lib/utils';
 
 type Props = {
   maps: Map[];
@@ -67,8 +67,6 @@ export default function Client({ maps }: Props) {
     mutate(value);
   }
 
-  let imageCount = 0;
-
   return (
     <BulkActionContainer onActionPerform={handleBulkDelete}>
       <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
@@ -93,7 +91,7 @@ export default function Client({ maps }: Props) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data) => <UploadMapPreviewCard key={data.id} map={data} imageCount={imageCount++} />}
+              {(data, index) => <UploadMapPreviewCard key={data.id} map={data} imageCount={index} />}
             </InfinitePage>
           </div>
         </ListLayout>
@@ -108,7 +106,7 @@ export default function Client({ maps }: Props) {
               item: <PreviewSkeleton />,
             }}
           >
-            {(data) => <UploadMapPreviewCard key={data.id} map={data} imageCount={imageCount++} />}
+            {(data, index) => <UploadMapPreviewCard key={data.id} map={data} imageCount={index} />}
           </GridPaginationList>
         </GridLayout>
         <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
