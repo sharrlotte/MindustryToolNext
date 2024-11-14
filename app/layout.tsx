@@ -6,6 +6,7 @@ import localFont from 'next/font/local';
 import React from 'react';
 
 import './globals.css';
+import Head from 'next/head';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -70,6 +71,10 @@ export default async function Root({ children, params }: Props) {
       suppressHydrationWarning
       data-color-mode="dark"
     >
+      <Head>
+        <link rel="preconnect" href="https://image.mindustry-tool.app" />
+        <link rel="preconnect" href="https://api.mindustry-tool.app" />
+      </Head>
       {children}
     </html>
   );
