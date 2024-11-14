@@ -30,6 +30,7 @@ export default function DownloadButton({ className, href, fileName, secure, chil
       {...props}
       href={href}
       download={fileName ?? true}
+      title='download'
     >
       <ArrowDownToLine className="size-5" />
     </a>

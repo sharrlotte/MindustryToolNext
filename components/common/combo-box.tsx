@@ -35,7 +35,12 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className={cn('w-[200px] justify-between border-none bg-secondary capitalize shadow-md', className)} title="" role="combobox" variant="outline">
+        <Button
+          className={cn('w-[200px] justify-between border-none bg-secondary capitalize shadow-md', className)}
+          title={value?.label?.toLowerCase() || placeholder}
+          role="combobox"
+          variant="outline"
+        >
           {value?.label?.toLowerCase() || placeholder}
           <ChevronsUpDownIcon className="ml-auto size-4 shrink-0" />
         </Button>

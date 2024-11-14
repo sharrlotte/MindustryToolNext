@@ -11,6 +11,8 @@ import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
 import Tran from '@/components/common/tran';
 import ComboBox from '@/components/common/combo-box';
+import InternalLink from '@/components/common/internal-link';
+import Link from 'next/link';
 
 type Props = {
   numberOfItems?: number;
@@ -20,7 +22,6 @@ type Props = {
 export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20, 30, 50, 100] }: Props) {
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(0);
-
   const params = useSearchQuery(PaginationQuery);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -81,6 +82,13 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
     handlePageChange(selectedPage);
     setOpen(false);
   }
+
+  const nextPath = new URLSearchParams(searchParams);
+  nextPath.set('page', nextPage.toString());
+
+  const prevPath = new URLSearchParams(searchParams);
+  prevPath.set('page', previousPage.toString());
+
   return (
     <Pagination>
       <PaginationContent>
@@ -119,7 +127,7 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
           <Dialog open={open} onOpenChange={setOpen}>
             {lastPage > 1 && (
               <DialogTrigger asChild>
-                <Button className="p-0" variant="icon">
+                <Button className="p-0" variant="icon" title="choose">
                   <PaginationEllipsis />
                 </Button>
               </DialogTrigger>
@@ -187,6 +195,8 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
           onChange={handleSizeChange}
         />
       </PaginationContent>
+      <Link href={`?${prevPath.toString()}`} prefetch />
+      <Link href={`?${nextPath.toString()}`} prefetch />
     </Pagination>
   );
 }

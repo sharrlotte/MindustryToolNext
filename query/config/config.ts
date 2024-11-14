@@ -12,7 +12,9 @@ const axiosInstance = Axios.create({
 });
 
 axiosInstance.interceptors.response.use(
-  (res) => res,
+  (res) => {
+    return res;
+  },
   (error) => {
     if (error.errno === -4078) {
       throw {
