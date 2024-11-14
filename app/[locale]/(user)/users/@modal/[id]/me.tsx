@@ -30,8 +30,6 @@ export default function Me({ me }: TabProps) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useStatusSearchParams();
 
-  let imageCount = 0;
-
   return (
     <div className="absolute inset-0 space-y-2 overflow-auto bg-background p-2" ref={(ref) => setContainer(ref)}>
       <UserDetail user={me} />
@@ -54,12 +52,8 @@ export default function Me({ me }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data) =>
-                data.isVerified ? (
-                  <SchematicPreviewCard key={data.id} schematic={data} imageCount={imageCount++} />
-                ) : (
-                  <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={imageCount++} />
-                )
+              {(data, index) =>
+                data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={index} />
               }
             </InfinitePage>
           </div>
@@ -77,7 +71,7 @@ export default function Me({ me }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} imageCount={imageCount++} /> : <UploadMapPreview key={data.id} map={data} imageCount={imageCount++} />)}
+              {(data, index) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} imageCount={index} /> : <UploadMapPreview key={data.id} map={data} imageCount={index} />)}
             </InfinitePage>
           </div>
         </TabsContent>

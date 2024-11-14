@@ -4,7 +4,6 @@ import env from '@/constant/env';
 import ErrorScreen from '@/components/common/error-screen';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 import { serverApi } from '@/action/action';
-import { getSchematicUploads } from '@/query/schematic';
 import { isError } from '@/lib/utils';
 import Client from '@/app/[locale]/(admin)/admin/maps/page.client';
 import { getMapUploads } from '@/query/map';

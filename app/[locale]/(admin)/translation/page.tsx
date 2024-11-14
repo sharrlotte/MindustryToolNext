@@ -37,9 +37,9 @@ import {
 import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { debounce } from 'lodash';
 import { ChangeEvent, Fragment, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { debounce } from 'throttle-debounce';
 
 const translateModes = ['diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];
@@ -237,7 +237,7 @@ function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardP
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChange = useCallback(
-    debounce((event: ChangeEvent<HTMLTextAreaElement>) => create(event), 1000),
+    debounce(1000, (event: ChangeEvent<HTMLTextAreaElement>) => create(event)),
     [],
   );
 
@@ -279,7 +279,7 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChange = useCallback(
-    debounce((event: ChangeEvent<HTMLTextAreaElement>) => create(event), 1000),
+    debounce(1000, (event: ChangeEvent<HTMLTextAreaElement>) => create(event)),
     [],
   );
 

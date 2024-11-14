@@ -39,8 +39,6 @@ export default function Client({ maps }: Props) {
     placeholderData: 0,
   });
 
-  let imageCount = 0;
-
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch tags={map} />
@@ -61,7 +59,7 @@ export default function Client({ maps }: Props) {
               item: <PreviewSkeleton />,
             }}
           >
-            {(data) => <MapPreviewCard key={data.id} map={data} imageCount={imageCount++} />}
+            {(data, index) => <MapPreviewCard key={data.id} map={data} imageCount={index} />}
           </InfinitePage>
         </div>
       </ListLayout>
@@ -76,7 +74,7 @@ export default function Client({ maps }: Props) {
             item: <PreviewSkeleton />,
           }}
         >
-          {(data) => <MapPreviewCard key={data.id} map={data} imageCount={imageCount++} />}
+          {(data, index) => <MapPreviewCard key={data.id} map={data} imageCount={index} />}
         </GridPaginationList>
       </GridLayout>
       <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">

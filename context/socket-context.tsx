@@ -4,6 +4,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 import env from '@/constant/env';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
+import { useInterval } from 'usehooks-ts';
 
 export type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
 
@@ -48,13 +49,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     return () => instance.close();
   }, [setSocket]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setState(socket?.getState() ?? 'disconnected');
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [socket]);
+  useInterval(() => setState(socket?.getState() ?? 'disconnected'), 10000);
 
   return (
     <SocketContext.Provider

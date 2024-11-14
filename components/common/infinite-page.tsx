@@ -33,7 +33,7 @@ type InfinitePageProps<T, P> = {
   initialData?: T[];
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
   container: () => HTMLElement | null;
-  children: (data: T, index?: number) => ReactNode;
+  children: (data: T, index: number) => ReactNode;
 };
 
 export default function InfinitePage<T, P extends PaginationQuery>({
