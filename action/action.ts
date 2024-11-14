@@ -79,6 +79,10 @@ const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> =
 export async function getSession() {
   const cookie = await cookies();
 
+  if (cookie.get('SESSION_ID') === undefined) {
+    return null;
+  }
+
   return getCachedSession(cookie.toString());
 }
 
