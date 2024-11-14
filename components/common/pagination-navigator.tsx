@@ -93,7 +93,6 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <Link href={`?${prevPath.toString()}`} prefetch />
           <Button className="w-full min-w-9 rounded-sm p-0 px-2 py-1" title="0" onClick={() => handlePageChange(previousPage)} variant="icon" disabled={!hasPrevPage}>
             <ChevronLeftIcon className="size-5" />
           </Button>
@@ -128,7 +127,7 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
           <Dialog open={open} onOpenChange={setOpen}>
             {lastPage > 1 && (
               <DialogTrigger asChild>
-                <Button className="p-0" variant="icon">
+                <Button className="p-0" variant="icon" title="choose">
                   <PaginationEllipsis />
                 </Button>
               </DialogTrigger>
@@ -185,7 +184,6 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
             <ChevronRightIcon className="size-5" />
           </Button>
         </PaginationItem>
-        <Link href={`?${nextPath.toString()}`} prefetch />
         <ComboBox
           className="w-20 rounded-sm"
           searchBar={false}
@@ -197,6 +195,8 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
           onChange={handleSizeChange}
         />
       </PaginationContent>
+      <Link href={`?${prevPath.toString()}`} prefetch />
+      <Link href={`?${nextPath.toString()}`} prefetch />
     </Pagination>
   );
 }
