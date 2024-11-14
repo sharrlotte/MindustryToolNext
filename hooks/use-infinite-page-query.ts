@@ -3,24 +3,12 @@ import { AxiosInstance } from 'axios';
 import useClientApi from '@/hooks/use-client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
-import {
-  InfiniteData,
-  QueryKey,
-  useInfiniteQuery,
-} from '@tanstack/react-query';
+import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
-export default function useInfinitePageQuery<T, P extends PaginationQuery>(
-  getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>,
-  params: P,
-  queryKey: QueryKey,
-) {
+export default function useInfinitePageQuery<T, P extends PaginationQuery>(getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>, params: P, queryKey: QueryKey, initialData?: T[]) {
   const axios = useClientApi();
 
-  const getNextPageParam = (
-    lastPage: T[],
-    allPages: T[][],
-    lastPageParams: P,
-  ) => {
+  const getNextPageParam = (lastPage: T[], allPages: T[][], lastPageParams: P) => {
     if (lastPage.length === 0 || lastPage.length < params.size) {
       return undefined;
     }
@@ -28,16 +16,8 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     return { ...lastPageParams, page: allPages.length };
   };
 
-  const getPreviousPageParam = (
-    lastPage: T[],
-    allPages: T[][],
-    lastPageParams: P,
-  ) => {
-    if (
-      lastPageParams.page <= 0 ||
-      lastPage.length === 0 ||
-      lastPage.length < params.size
-    ) {
+  const getPreviousPageParam = (lastPage: T[], allPages: T[][], lastPageParams: P) => {
+    if (lastPageParams.page <= 0 || lastPage.length === 0 || lastPage.length < params.size) {
       return undefined;
     }
 
@@ -56,9 +36,12 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(
     filteredQueryKey = [...queryKey];
   }
 
+  const data: InfiniteData<T[], P> | undefined = initialData ? { pages: [initialData], pageParams: [params] } : undefined;
+
   return useInfiniteQuery<T[], Error, InfiniteData<T[], P>, QueryKey, P>({
     queryKey: filteredQueryKey,
     initialPageParam: params,
+    initialData: data,
     // @ts-expect-error idk
     queryFn: (context) => getFunc(axios, context.pageParam),
     getNextPageParam,

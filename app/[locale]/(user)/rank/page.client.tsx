@@ -20,7 +20,11 @@ import { getMyRank, getRank, getUsersCount } from '@/query/user';
 import { User } from '@/types/response/User';
 import { useQuery } from '@tanstack/react-query';
 
-export function PageClient() {
+type Props = {
+  users: User[];
+};
+
+export function PageClient({ users }: Props) {
   const params = useSearchQuery(ItemPaginationQuery);
   const { session } = useSession();
   const { page, size } = params;
@@ -45,6 +49,7 @@ export function PageClient() {
           params={params}
           queryKey={['rank']}
           getFunc={getRank}
+          initialData={users}
           skeleton={{
             amount: 20,
             item: (index) => <RankCardSkeleton rank={page * size + index + 1} />,

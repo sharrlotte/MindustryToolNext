@@ -22,7 +22,6 @@ type InfinitePageProps<T, P> = {
   className?: string;
   queryKey: QueryKey;
   params: P;
-  container: () => HTMLElement | null;
   loader?: ReactElement<any, string | JSXElementConstructor<any>>;
   noResult?: ReactNode;
   end?: ReactNode;
@@ -31,7 +30,9 @@ type InfinitePageProps<T, P> = {
     item: ReactNode;
   };
   reversed?: boolean;
+  initialData?: T[];
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
+  container: () => HTMLElement | null;
   children: (data: T, index?: number) => ReactNode;
 };
 
@@ -39,14 +40,15 @@ export default function InfinitePage<T, P extends PaginationQuery>({
   className,
   queryKey,
   params,
-  container,
   loader,
   noResult,
   end,
   skeleton,
+  reversed,
+  initialData,
   getFunc,
   children,
-  reversed,
+  container,
 }: InfinitePageProps<T, P>) {
   const t = useI18n();
   const {
@@ -57,7 +59,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     hasNextPage,
     isFetching,
     fetchNextPage,
-  } = useInfinitePageQuery(getFunc, params, queryKey);
+  } = useInfinitePageQuery(getFunc, params, queryKey, initialData);
 
   const loadMore = useCallback(
     (_: number) => {

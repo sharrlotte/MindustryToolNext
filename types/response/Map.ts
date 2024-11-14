@@ -2,7 +2,7 @@ import { Status } from '@/types/response/Status';
 
 import { Like } from './Like';
 
-export type MapPreview = {
+export type Map = {
   id: string;
   name: string;
   likes: number;

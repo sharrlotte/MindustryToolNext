@@ -4,7 +4,7 @@ import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import env from '@/constant/env';
-import { MapPreview } from '@/types/response/MapPreview';
+import { Map } from '@/types/response/Map';
 import { LinkIcon } from '@/components/common/icons';
 import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
@@ -12,7 +12,7 @@ import InternalLink from '@/components/common/internal-link';
 import useImageLoading from '@/hooks/use-image-loading';
 
 type UploadMapPreviewCardProps = {
-  map: MapPreview;
+  map: Map;
   imageCount: number;
 };
 

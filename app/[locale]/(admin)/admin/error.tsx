@@ -2,4 +2,6 @@
 
 import ErrorScreen from '@/components/common/error-screen';
 
-export default ErrorScreen;
+const Error = ErrorScreen;
+
+export default Error;

@@ -10,14 +10,14 @@ import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import env from '@/constant/env';
-import { MapPreview } from '@/types/response/MapPreview';
+import { Map } from '@/types/response/Map';
 import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ColorText from '@/components/common/color-text';
 import useImageLoading from '@/hooks/use-image-loading';
 
 type MapPreviewCardProps = {
-  map: MapPreview;
+  map: Map;
   imageCount: number;
 };
 

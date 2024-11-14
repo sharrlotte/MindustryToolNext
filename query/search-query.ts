@@ -33,6 +33,8 @@ export const ItemPaginationQuery = z.object({
   ...ItemSearchParam,
 });
 
+export type ItemPaginationQueryType = z.infer<typeof ItemPaginationQuery>;
+
 export const TranslationPaginationQuery = z.object({
   ...PaginationParam,
   language: z.enum(locales).default('en'),
