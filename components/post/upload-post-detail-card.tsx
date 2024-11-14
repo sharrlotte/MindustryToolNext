@@ -13,7 +13,7 @@ import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { uploadTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';
@@ -32,7 +32,9 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
   const { toast } = useToast();
   const { back } = useRouter();
   const axios = useClientApi();
-  const { post: postTags } = uploadTags;
+  const {
+    uploadTags: { post: postTags },
+  } = useTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { invalidateByKey } = useQueriesData();
 

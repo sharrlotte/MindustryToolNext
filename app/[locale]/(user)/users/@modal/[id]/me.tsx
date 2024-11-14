@@ -13,7 +13,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useStatusSearchParams from '@/hooks/use-status-search-params';
-import { searchTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import { useI18n } from '@/i18n/client';
 import { User } from '@/types/response/User';
 import { getMeSchematics, getMeMaps, getMePosts } from '@/query/user';
@@ -24,7 +24,9 @@ type TabProps = {
 };
 export default function Me({ me }: TabProps) {
   const t = useI18n();
-  const { schematic, map, post } = searchTags;
+  const {
+    searchTags: { schematic, map, post },
+  } = useTags();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useStatusSearchParams();
 

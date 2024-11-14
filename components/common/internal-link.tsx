@@ -43,7 +43,7 @@ export default function InternalLink({ className, variant, title, href, children
   const parts = stripBase.split('/');
 
   if (parts.length > 0 && !locales.includes(parts[0] as any)) {
-    href = env.url.base + '/' + currentLocale + '/' + stripBase;
+    href = new URL(env.url.base + '/' + currentLocale + '/' + stripBase).toString();
   }
 
   function handlePreload() {

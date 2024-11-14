@@ -4,15 +4,14 @@ import React, { useState } from 'react';
 
 import UploadPluginCard from '@/components/plugin/upload-plugin-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import { searchTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import { getPluginUploads } from '@/query/plugin';
 import InfinitePage from '@/components/common/infinite-page';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function Page() {
-  const { plugin } = searchTags;
-  const params = useSearchQuery(ItemPaginationQuery);
+  const { searchTags: { plugin } } = useTags();  const params = useSearchQuery(ItemPaginationQuery);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (

@@ -10,7 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { uploadTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { CreatePluginRequest, CreatePluginRequestData, CreatePluginSchema } from '@/types/request/CreatePluginRequest';
@@ -23,7 +23,9 @@ import Tran from '@/components/common/tran';
 
 export default function AddPluginForm() {
   const axios = useClientApi();
-  const { plugin } = uploadTags;
+  const {
+    uploadTags: { plugin },
+  } = useTags();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 
