@@ -3,20 +3,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-} from '@/components/ui/pagination';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/components/ui/pagination';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
@@ -28,10 +17,7 @@ type Props = {
   sizes?: number[];
 };
 
-export default function PaginationNavigator({
-  numberOfItems = 0,
-  sizes = [10, 20, 30, 50, 100],
-}: Props) {
+export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20, 30, 50, 100] }: Props) {
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(0);
 
@@ -99,21 +85,14 @@ export default function PaginationNavigator({
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <Button
-            className="w-full min-w-9 rounded-sm p-0 px-2 py-1"
-            title="0"
-            onClick={() => handlePageChange(previousPage)}
-            variant="icon"
-            disabled={!hasPrevPage}
-          >
+          <Button className="w-full min-w-9 rounded-sm p-0 px-2 py-1" title="0" onClick={() => handlePageChange(previousPage)} variant="icon" disabled={!hasPrevPage}>
             <ChevronLeftIcon className="size-5" />
           </Button>
         </PaginationItem>
         <PaginationItem>
           <Button
             className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-              'bg-secondary dark:text-foreground':
-                firstNumber === currentPage,
+              'bg-secondary dark:text-foreground': firstNumber === currentPage,
             })}
             title="prev"
             onClick={() => handlePageChange(firstNumber)}
@@ -126,8 +105,7 @@ export default function PaginationNavigator({
           <PaginationItem>
             <Button
               className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-secondary text-background dark:text-foreground':
-                  secondNumber === currentPage,
+                'bg-secondary text-background dark:text-foreground': secondNumber === currentPage,
               })}
               title="prev"
               onClick={() => handlePageChange(secondNumber)}
@@ -151,25 +129,14 @@ export default function PaginationNavigator({
                 <Tran text="select-page" />
               </DialogTitle>
               <DialogDescription />
-              <Input
-                type="number"
-                value={selectedPage}
-                onChange={(event) =>
-                  setSelectedPage(event.currentTarget.valueAsNumber)
-                }
-              />
+              <Input type="number" value={selectedPage} onChange={(event) => setSelectedPage(event.currentTarget.valueAsNumber)} />
               {(selectedPage < 0 || selectedPage > lastPage) && (
                 <span className="text-sm text-destructive">
                   <Tran text="page-constrain" args={{ max: lastPage }} />
                 </span>
               )}
               <div className="flex justify-end">
-                <Button
-                  className="flex"
-                  onClick={handleSelectPage}
-                  title="Go to page"
-                  variant="primary"
-                >
+                <Button className="flex" onClick={handleSelectPage} title="Go to page" variant="primary">
                   Go
                 </Button>
               </div>
@@ -180,8 +147,7 @@ export default function PaginationNavigator({
           <PaginationItem>
             <Button
               className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-secondary text-background dark:text-foreground':
-                  secondLastNumber === currentPage,
+                'bg-secondary text-background dark:text-foreground': secondLastNumber === currentPage,
               })}
               title="prev"
               onClick={() => handlePageChange(secondLastNumber)}
@@ -195,8 +161,7 @@ export default function PaginationNavigator({
           <PaginationItem>
             <Button
               className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-secondary text-background dark:text-foreground':
-                  lastNumber === currentPage,
+                'bg-secondary text-background dark:text-foreground': lastNumber === currentPage,
               })}
               title="prev"
               onClick={() => handlePageChange(lastNumber)}
@@ -207,13 +172,7 @@ export default function PaginationNavigator({
           </PaginationItem>
         )}
         <PaginationItem>
-          <Button
-            className="w-full min-w-9 rounded-sm p-0 px-2 py-1"
-            title="0"
-            onClick={() => handlePageChange(nextPage)}
-            variant="icon"
-            disabled={!hasNextPage}
-          >
+          <Button className="w-full min-w-9 rounded-sm p-0 px-2 py-1" title="0" onClick={() => handlePageChange(nextPage)} variant="icon" disabled={!hasNextPage}>
             <ChevronRightIcon className="size-5" />
           </Button>
         </PaginationItem>

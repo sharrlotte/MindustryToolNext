@@ -124,8 +124,8 @@ const InternalPathGroupElement = ({ group, bestMatch }: PathGroupElementProps): 
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
-        <span className={cn('hidden font-bold', { block: expand })}>{name}</span>
-        {name && <Divider className={cn('block', { hidden: expand })} />}
+        {expand && name}
+        {name && expand && <Divider />}
         {group.paths.map((path, index) => (
           <PathElement key={index} segment={path} bestMatch={bestMatch} />
         ))}
@@ -161,8 +161,8 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
           })}
           href={path}
         >
-          <span> {icon}</span>
-          <span className={cn('hidden', { block: expand })}>{name}</span>
+          {icon}
+          {expand && name}
         </InternalLink>
       </ProtectedElement>
     );
@@ -183,8 +183,8 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
             showChevron={expand}
             onClick={() => setVisible(true)}
           >
-            <span>{icon}</span>
-            <span className={cn('hidden', { block: expand })}>{name}</span>
+            {icon}
+            {expand && name}
           </AccordionTrigger>
           <AccordionContent className={cn('hidden space-y-1 pl-3', { block: expand })}>
             {path.map((item) => (
@@ -196,8 +196,8 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
                   })}
                   href={item.path}
                 >
-                  <span>{item.icon}</span>
-                  <span>{item.name}</span>
+                  {item.icon}
+                  {item.name}
                 </InternalLink>
               </ProtectedElement>
             ))}
