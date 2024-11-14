@@ -11,7 +11,7 @@ import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { searchTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import { useI18n } from '@/i18n/client';
 import { User } from '@/types/response/User';
 import { getUserSchematics, getUserMaps, getUserPosts } from '@/query/user';
@@ -26,7 +26,9 @@ type TabProps = {
 export default function Other({ user }: TabProps) {
   const t = useI18n();
   const id = user.id;
-  const { schematic, map, post } = searchTags;
+  const {
+    searchTags: { schematic, map, post },
+  } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
@@ -77,7 +79,7 @@ export default function Other({ user }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} imageCount={imageCount++} /> : <UploadMapPreview key={data.id} map={data} imageCount={imageCount++}  />)}
+              {(data) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} imageCount={imageCount++} /> : <UploadMapPreview key={data.id} map={data} imageCount={imageCount++} />)}
             </InfinitePage>
           </div>
         </TabsContent>

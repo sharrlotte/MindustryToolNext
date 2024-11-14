@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 import PostPreviewCard from '@/components/post/post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import { searchTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import { getPosts } from '@/query/post';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
@@ -16,12 +16,15 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function PostsPage() {
-  const { post } = searchTags;
+  const {
+    searchTags: { post },
+  } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
   const ref = useRef<HTMLDivElement | null>(null);
 
   const uploadLink = `${env.url.base}/upload/post`;
   const myPostLink = `${env.url.base}/users/@me`;
+
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch tags={post} />

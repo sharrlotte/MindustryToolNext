@@ -83,7 +83,7 @@ export function ClientSessionProvider({ session, children }: { session: Session 
         setSession({ state: 'unauthenticated', session: null, createdAt: Date.now() });
       }
     });
-  }, []);
+  }, [auth.createdAt, axios]);
 
   useEffect(() => fetchSession(), [axios, setSession, fetchSession]);
   useInterval(() => fetchSession(), 300000);

@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
-import { uploadTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';
@@ -195,7 +195,9 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
   const axios = useClientApi();
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
-  const { post: postTags } = uploadTags;
+  const {
+    uploadTags: { post: postTags },
+  } = useTags();
   const languages = useLanguages();
   const t = useI18n();
 

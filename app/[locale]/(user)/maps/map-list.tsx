@@ -13,7 +13,7 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
-import { searchTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { omit } from '@/lib/utils';
@@ -21,7 +21,9 @@ import Tran from '@/components/common/tran';
 import InfinitePage from '@/components/common/infinite-page';
 
 export default function MapList() {
-  const { map } = searchTags;
+  const {
+    searchTags: { map },
+  } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
@@ -32,8 +34,7 @@ export default function MapList() {
     placeholderData: 0,
   });
 
-    let imageCount = 0;
-
+  let imageCount = 0;
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">

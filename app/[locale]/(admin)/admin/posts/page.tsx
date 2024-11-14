@@ -5,13 +5,15 @@ import React, { useState } from 'react';
 import InfinitePage from '@/components/common/infinite-page';
 import UploadPostPreviewCard from '@/components/post/upload-post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import { searchTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import { getPostUploads } from '@/query/post';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function Page() {
-  const { post } = searchTags;
+  const {
+    searchTags: { post },
+  } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   return (

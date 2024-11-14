@@ -10,7 +10,7 @@ import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
-import { uploadTags } from '@/query/tags';
+import useTags from '@/hooks/use-tags';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/i18n/client';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
@@ -26,7 +26,9 @@ type UploadSchematicDetailCardProps = {
 
 export default function UploadSchematicDetailCard({ schematic: { id, name, tags, requirements, description, userId, width, height } }: UploadSchematicDetailCardProps) {
   const axios = useClientApi();
-  const { schematic } = uploadTags;
+  const {
+    uploadTags: { schematic },
+  } = useTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
 
   const t = useI18n();

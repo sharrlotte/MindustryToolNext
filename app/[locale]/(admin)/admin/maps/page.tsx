@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import { searchTags } from '@/query/tags';
 import { deleteMap, getMapUploadCount, getMapUploads } from '@/query/map';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { PaginationLayoutSwitcher, ListLayout, GridLayout } from '@/components/common/pagination-layout';
@@ -21,9 +20,12 @@ import { useMutation } from '@tanstack/react-query';
 import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
+import useTags from '@/hooks/use-tags';
 
 export default function Page() {
-  const { map } = searchTags;
+  const {
+    searchTags: { map },
+  } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 

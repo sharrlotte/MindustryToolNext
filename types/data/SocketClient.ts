@@ -111,7 +111,11 @@ export default class SocketClient {
     this.handlers[method + this.room] = handler;
 
     if (this.room !== '' && !this.rooms.includes(this.room)) {
-      this.joinRoom(this.room).then(() => this.rooms.push(this.room));
+      try {
+        this.joinRoom(this.room).then(() => this.rooms.push(this.room));
+      } catch (err) {
+        console.error(err);
+      }
     }
     this.room = '';
   }
