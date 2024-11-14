@@ -12,6 +12,7 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
     )}
     {...props}
     ref={ref}
+    title='switch'
   >
     <SwitchPrimitives.Thumb
       className={cn(
