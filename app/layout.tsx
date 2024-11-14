@@ -20,12 +20,14 @@ const inter = Inter({
   variable: '--font-inter',
   subsets: ['vietnamese'],
   weight: '500',
+  display: 'swap',
 });
 
 const noto = Noto_Sans_KR({
   variable: '--font-noto',
   subsets: ['cyrillic'],
   weight: '700',
+  display: 'swap',
 });
 
 const icon = localFont({
@@ -35,7 +37,7 @@ const icon = localFont({
     },
   ],
   variable: '--font-icon',
-  display: 'fallback',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
