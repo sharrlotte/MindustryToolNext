@@ -46,7 +46,6 @@ function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerifie
 
   const loading = useImageLoading(imageCount);
 
-  
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
