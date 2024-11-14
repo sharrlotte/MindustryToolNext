@@ -11,6 +11,8 @@ import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
 import Tran from '@/components/common/tran';
 import ComboBox from '@/components/common/combo-box';
+import InternalLink from '@/components/common/internal-link';
+import Link from 'next/link';
 
 type Props = {
   numberOfItems?: number;
@@ -20,7 +22,6 @@ type Props = {
 export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20, 30, 50, 100] }: Props) {
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(0);
-
   const params = useSearchQuery(PaginationQuery);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -81,10 +82,18 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
     handlePageChange(selectedPage);
     setOpen(false);
   }
+
+  const nextPath = new URLSearchParams(searchParams);
+  nextPath.set('page', nextPage.toString());
+
+  const prevPath = new URLSearchParams(searchParams);
+  prevPath.set('page', previousPage.toString());
+
   return (
     <Pagination>
       <PaginationContent>
         <PaginationItem>
+          <Link href={`?${prevPath.toString()}`} prefetch />
           <Button className="w-full min-w-9 rounded-sm p-0 px-2 py-1" title="0" onClick={() => handlePageChange(previousPage)} variant="icon" disabled={!hasPrevPage}>
             <ChevronLeftIcon className="size-5" />
           </Button>
@@ -176,6 +185,7 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
             <ChevronRightIcon className="size-5" />
           </Button>
         </PaginationItem>
+        <Link href={`?${nextPath.toString()}`} prefetch />
         <ComboBox
           className="w-20 rounded-sm"
           searchBar={false}
