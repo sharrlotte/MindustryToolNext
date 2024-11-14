@@ -1,20 +1,19 @@
 'use client';
 
-import { SendIcon } from 'lucide-react';
-import React, { Fragment, KeyboardEvent, useEffect, useState } from 'react';
-
 import LoginButton from '@/components/button/login-button';
 import Markdown from '@/components/common/markdown';
+import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import useMindustryGpt from '@/hooks/use-mindustry-gpt';
+import { useI18n } from '@/i18n/client';
 import ProtectedElement from '@/layout/protected-element';
 import { isReachedEnd } from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
-import Tran from '@/components/common/tran';
+import { SendIcon } from 'lucide-react';
+import { Fragment, KeyboardEvent, useEffect, useState } from 'react';
 
 const url = `${env.url.api}/mindustry-gpt/chat`;
 
@@ -94,8 +93,7 @@ export default function Page() {
               contentEditable
               role="textbox"
               data-placeholder={t('chat.input-place-holder')}
-              //@ts-expect-error react error
-              onInput={(event) => setPrompt(event.target.textContent ?? '')}
+              onInput={(event) => setPrompt((event.target as HTMLElement).textContent ?? '')}
               onKeyDown={handleKeyPress}
             />
             <Button title={t('submit')} variant="primary" disabled={isPending} onClick={handleSubmit}>
