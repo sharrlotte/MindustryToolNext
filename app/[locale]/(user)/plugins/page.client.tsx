@@ -13,11 +13,17 @@ import PluginCardSkeleton from '@/components/plugin/plugin-card-skeleton';
 import ScrollContainer from '@/components/common/scroll-container';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
+import { Plugin } from '@/types/response/Plugin';
 
-export default function PageClient() {
+type Props = {
+  plugins: Plugin[];
+};
+
+export default function Client({ plugins }: Props) {
   const {
     searchTags: { plugin },
   } = useTags();
+
   const params = useSearchQuery(ItemPaginationQuery);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -31,6 +37,7 @@ export default function PageClient() {
           getFunc={getPlugins}
           params={params}
           container={() => ref.current}
+          initialData={plugins}
           skeleton={{
             amount: 20,
             item: <PluginCardSkeleton />,

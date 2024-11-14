@@ -6,6 +6,7 @@ const queryClientConfig: QueryClientConfig = {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       retry: 3,
+      staleTime: 1000 * 60 * 5,
     },
   },
 };

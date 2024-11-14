@@ -6,7 +6,7 @@ import { UserRole } from '@/constant/enum';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { User } from '@/types/response/User';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { MapPreview } from '@/types/response/MapPreview';
+import { Map } from '@/types/response/Map';
 import { Post } from '@/types/response/Post';
 import { Schematic } from '@/types/response/Schematic';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
@@ -36,7 +36,7 @@ export async function getMyRank(axios: AxiosInstance): Promise<number> {
   return result.data;
 }
 
-export async function getMeMaps(axios: AxiosInstance, params: StatusPaginationSearchQuery): Promise<MapPreview[]> {
+export async function getMeMaps(axios: AxiosInstance, params: StatusPaginationSearchQuery): Promise<Map[]> {
   const result = await axios.get(`/users/@me/maps`, {
     params,
   });
@@ -65,7 +65,7 @@ export async function getMe(axios: AxiosInstance): Promise<User> {
   return result.data;
 }
 
-export async function getUserMaps(axios: AxiosInstance, userId: string, params: PaginationSearchQuery): Promise<MapPreview[]> {
+export async function getUserMaps(axios: AxiosInstance, userId: string, params: PaginationSearchQuery): Promise<Map[]> {
   const result = await axios.get(`/users/${userId}/maps`, {
     params,
   });

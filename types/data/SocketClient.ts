@@ -107,25 +107,6 @@ export default class SocketClient {
 
   private requests: Record<string, PromiseReceiver> = {};
 
-  public async onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
-    this.handlers[method + this.room] = handler;
-
-    if (this.room !== '' && !this.rooms.includes(this.room)) {
-      try {
-        this.joinRoom(this.room).then(() => this.rooms.push(this.room));
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    this.room = '';
-  }
-
-  public onRoom(room: SocketRoom) {
-    this.room = room;
-
-    return this;
-  }
-
   constructor(url: string) {
     this.socket = new ReconnectingWebSocket(url);
 
@@ -167,6 +148,27 @@ export default class SocketClient {
       this.rooms = [];
       this.disconnects.forEach((disconnect) => disconnect(event));
     };
+  }
+
+  
+
+  public async onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
+    this.handlers[method + this.room] = handler;
+
+    if (this.room !== '' && !this.rooms.includes(this.room)) {
+      try {
+        this.joinRoom(this.room).then(() => this.rooms.push(this.room));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    this.room = '';
+  }
+
+  public onRoom(room: SocketRoom) {
+    this.room = room;
+
+    return this;
   }
 
   public async send(payload: MessagePayload) {

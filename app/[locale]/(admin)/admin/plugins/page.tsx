@@ -1,27 +1,37 @@
-'use client';
+import { Metadata } from 'next/dist/types';
 
-import React, { useState } from 'react';
-
-import UploadPluginCard from '@/components/plugin/upload-plugin-preview-card';
-import NameTagSearch from '@/components/search/name-tag-search';
-import useTags from '@/hooks/use-tags';
+import Client from '@/app/[locale]/(user)/plugins/page.client';
+import env from '@/constant/env';
+import ErrorScreen from '@/components/common/error-screen';
+import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
+import { serverApi } from '@/action/action';
+import { isError } from '@/lib/utils';
 import { getPluginUploads } from '@/query/plugin';
-import InfinitePage from '@/components/common/infinite-page';
-import useSearchQuery from '@/hooks/use-search-query';
-import { ItemPaginationQuery } from '@/query/search-query';
 
-export default function Page() {
-  const { searchTags: { plugin } } = useTags();  const params = useSearchQuery(ItemPaginationQuery);
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+export const revalidate = 3600;
 
-  return (
-    <div className="relative flex h-full flex-col gap-2 p-2">
-      <NameTagSearch tags={plugin} />
-      <div className="relative flex h-full flex-col gap-2 overflow-y-auto" ref={(ref) => setContainer(ref)}>
-        <InfinitePage queryKey={['plugins', 'upload']} getFunc={getPluginUploads} params={params} container={() => container}>
-          {(data) => <UploadPluginCard key={data.id} plugin={data} />}
-        </InfinitePage>
-      </div>
-    </div>
-  );
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: `${env.webName} > Schematic`,
+  };
+}
+
+type Props = {
+  searchParams: Promise<ItemPaginationQueryType>;
+};
+
+export default async function Page({ searchParams }: Props) {
+  const { data, success, error } = ItemPaginationQuery.safeParse(await searchParams);
+
+  if (!success || !data) {
+    return <ErrorScreen error={error} />;
+  }
+
+  const plugins = await serverApi((axios) => getPluginUploads(axios, data));
+
+  if (isError(plugins)) {
+    return <ErrorScreen error={plugins} />;
+  }
+
+  return <Client plugins={plugins} />;
 }

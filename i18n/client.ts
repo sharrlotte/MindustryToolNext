@@ -44,6 +44,10 @@ export function useI18n(): TranslateFunction {
           keys[group] = {};
         }
 
+        if (!isCurrentLocaleSet) {
+          return key;
+        }
+
         axios
           .get('/translations', {
             params: {
@@ -56,7 +60,8 @@ export function useI18n(): TranslateFunction {
               setTranslation({ [group]: result.data });
               localStorage.setItem(`${currentLocale}.translation.${group}`, JSON.stringify(result.data));
             }
-          });
+          })
+          .catch((err) => console.error(err));
       }
 
       if (!value || Object.keys(value).length === 0) {

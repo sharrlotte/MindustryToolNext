@@ -47,13 +47,13 @@ export default function SmallScreenNavigationBar({ children, bestMatch, pathGrou
         </Button>
         <div
           className={cn('pointer-events-none fixed inset-0 z-50 h-screen bg-transparent text-foreground', {
-            'visible backdrop-blur-sm backdrop-brightness-50': isVisible,
+            'backdrop-blur-sm backdrop-brightness-50': isVisible,
           })}
         >
-          <motion.div variants={sidebarVariants} animate={isVisible ? 'open' : 'closed'}>
+          <motion.div variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
             <div
               className={cn(
-                'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background transition-colors duration-300 dark:bg-background/90',
+                'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background transition-colors transition-transform duration-300 dark:bg-background/90',
                 {
                   'translate-x-0': isVisible,
                 },
@@ -162,8 +162,8 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
           href={path}
           onClick={onClick}
         >
-          <span> {icon}</span>
-          <span>{name}</span>
+          {icon}
+          {name}
         </InternalLink>
       </ProtectedElement>
     );
@@ -183,8 +183,8 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
             )}
           >
             <div className="flex items-end gap-2">
-              <span>{icon}</span>
-              <span>{name}</span>
+              {icon}
+              {name}
             </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-1 pl-3">
@@ -201,8 +201,8 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
                   href={item.path}
                   onClick={onClick}
                 >
-                  <span>{item.icon}</span>
-                  <span>{item.name}</span>
+                  {item.icon}
+                  {item.name}
                 </InternalLink>
               </ProtectedElement>
             ))}

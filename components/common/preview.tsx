@@ -22,11 +22,7 @@ export function Preview({ className, children, ...props }: CardProps) {
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function PreviewHeader({ className, children }: HeaderProps) {
-  return (
-    <div className={cn('h-12 overflow-hidden px-2 capitalize', className)}>
-      <h4 className="m-auto text-center">{children}</h4>
-    </div>
-  );
+  return <h4 className={cn('h-12 overflow-hidden px-2 text-center capitalize', className)}>{children}</h4>;
 }
 type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
   src: string;

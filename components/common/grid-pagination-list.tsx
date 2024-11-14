@@ -21,50 +21,29 @@ type Props<T, P> = {
     item: ReactNode | ((index: number) => ReactNode);
   };
   asChild?: boolean;
+  initialData?: T[];
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
   children: (data: T, index: number) => ReactNode;
 };
 
-export default function GridPaginationList<T, P extends PaginationQuery>({
-  className,
-  queryKey,
-  params,
-  loader,
-  noResult,
-  skeleton,
-  asChild,
-  getFunc,
-  children,
-}: Props<T, P>) {
+export default function GridPaginationList<T, P extends PaginationQuery>({ className, queryKey, params, loader, noResult, skeleton, asChild, initialData, getFunc, children }: Props<T, P>) {
   const { data, isFetching, error } = useClientQuery({
     queryFn: (axios) => getFunc(axios, params),
     queryKey: [...queryKey, params],
+    initialData,
   });
 
   const skeletonElements = useMemo(() => {
     if (skeleton)
       return Array(skeleton.amount)
         .fill(1)
-        .map((_, index) => (
-          <React.Fragment key={index}>
-            {typeof skeleton.item === 'function'
-              ? skeleton.item(index)
-              : skeleton.item}
-          </React.Fragment>
-        ));
+        .map((_, index) => <React.Fragment key={index}>{typeof skeleton.item === 'function' ? skeleton.item(index) : skeleton.item}</React.Fragment>);
   }, [skeleton]);
 
-  noResult = noResult ?? (
-    <NoResult className="flex w-full items-center justify-center" />
-  );
+  noResult = noResult ?? <NoResult className="flex w-full items-center justify-center" />;
 
   if (!loader && !skeleton) {
-    loader = (
-      <LoadingSpinner
-        key="loading"
-        className="absolute inset-0 col-span-full flex h-full w-full items-center justify-center"
-      />
-    );
+    loader = <LoadingSpinner key="loading" className="absolute inset-0 col-span-full flex h-full w-full items-center justify-center" />;
   }
 
   function render() {
@@ -93,14 +72,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({
 
   return (
     <div className="pagination-container h-full overflow-auto">
-      <div
-        className={cn(
-          'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 pr-2',
-          className,
-        )}
-      >
-        {render()}
-      </div>
+      <div className={cn('grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 pr-2', className)}>{render()}</div>
     </div>
   );
 }
