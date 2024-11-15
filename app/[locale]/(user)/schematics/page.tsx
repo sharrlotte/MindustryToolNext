@@ -33,5 +33,5 @@ export default async function Page({ searchParams }: Props) {
     return <ErrorScreen error={schematics} />;
   }
 
-  return <Client schematics={schematics} params={data} />;
+  return <Client schematics={schematics} />;
 }
