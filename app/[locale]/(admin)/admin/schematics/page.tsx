@@ -1,6 +1,6 @@
 import { Metadata } from 'next/dist/types';
 
-import Client from '@/app/[locale]/(user)/schematics/page.client';
+import Client from '@/app/[locale]/(admin)/admin/schematics/page.client';
 import env from '@/constant/env';
 import ErrorScreen from '@/components/common/error-screen';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
