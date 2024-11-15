@@ -4,7 +4,7 @@ import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-const EMPTY: AllTagGroup = {
+export const EMPTY: AllTagGroup = {
   schematic: [],
   map: [],
   post: [],

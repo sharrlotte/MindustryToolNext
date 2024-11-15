@@ -1,13 +1,7 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, {
-  JSXElementConstructor,
-  ReactElement,
-  ReactNode,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { JSXElementConstructor, ReactElement, ReactNode, useCallback, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -32,7 +26,7 @@ type InfinitePageProps<T, P> = {
   reversed?: boolean;
   initialData?: T[];
   getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
-  container: () => HTMLElement | null;
+  container?: () => HTMLElement | null;
   children: (data: T, index: number) => ReactNode;
 };
 
@@ -51,15 +45,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
   container,
 }: InfinitePageProps<T, P>) {
   const t = useI18n();
-  const {
-    data,
-    isLoading,
-    error,
-    isError,
-    hasNextPage,
-    isFetching,
-    fetchNextPage,
-  } = useInfinitePageQuery(getFunc, params, queryKey, initialData);
+  const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(getFunc, params, queryKey, initialData);
 
   const loadMore = useCallback(
     (_: number) => {
@@ -68,33 +54,16 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     [fetchNextPage],
   );
 
-  noResult = useMemo(
-    () =>
-      noResult ?? (
-        <NoResult className="flex w-full items-center justify-center" />
-      ),
-    [noResult],
-  );
+  noResult = useMemo(() => noResult ?? <NoResult className="flex w-full items-center justify-center" />, [noResult]);
 
-  loader = useMemo(
-    () =>
-      !loader && !skeleton ? (
-        <LoadingSpinner
-          key="loading"
-          className="col-span-full flex h-full w-full items-center justify-center"
-        />
-      ) : undefined,
-    [loader, skeleton],
-  );
+  loader = useMemo(() => (!loader && !skeleton ? <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" /> : undefined), [loader, skeleton]);
 
   const loadingSkeleton = useMemo(
     () =>
       skeleton
         ? Array(skeleton.amount)
             .fill(1)
-            .map((_, index) => (
-              <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-            ))
+            .map((_, index) => <React.Fragment key={index}>{skeleton.item}</React.Fragment>)
         : undefined,
     [skeleton],
   );
@@ -102,10 +71,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
   end = useMemo(
     () =>
       end ?? (
-        <span
-          className="col-span-full flex w-full items-center justify-center"
-          key="End"
-        >
+        <span className="col-span-full flex w-full items-center justify-center" key="End">
           {t('end-of-page')}
         </span>
       ),
@@ -121,16 +87,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
   }
 
   if (isLoading || !data) {
-    return (
-      <div
-        className={
-          className ??
-          'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
-        }
-      >
-        {loader ? loader : loadingSkeleton}
-      </div>
-    );
+    return <div className={className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'}>{loader ? loader : loadingSkeleton}</div>;
   }
 
   if (!data.pages || data.pages[0].length === 0) {
@@ -139,10 +96,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
 
   return (
     <InfiniteScroll
-      className={
-        className ??
-        'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 '
-      }
+      className={className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 '}
       loadMore={loadMore}
       hasMore={hasNextPage}
       loader={loader}
@@ -151,9 +105,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({
       getScrollParent={container}
       isReverse={reversed}
     >
-      {data.pages.map((page) =>
-        page.map((data, index) => children(data, index)),
-      )}
+      {data.pages.map((page) => page.map((data, index) => children(data, index)))}
       {isFetching && skeleton && loadingSkeleton}
       {!hasNextPage && end}
     </InfiniteScroll>

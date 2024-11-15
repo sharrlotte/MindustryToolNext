@@ -8,6 +8,8 @@ import { Locale, locales, TranslateFunction } from '@/i18n/config';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 
+const EMPTY = {};
+
 export function useI18n(): TranslateFunction {
   const { isCurrentLocaleSet, currentLocale, translation, setTranslation } = useLocaleStore();
   const axios = useClientApi();
@@ -41,7 +43,7 @@ export function useI18n(): TranslateFunction {
         try {
           keys[group] = JSON.parse(localStorage.getItem(`${currentLocale}.translation.${group}`) || '{}');
         } catch (e) {
-          keys[group] = {};
+          keys[group] = EMPTY;
         }
 
         if (!isCurrentLocaleSet) {
@@ -57,7 +59,8 @@ export function useI18n(): TranslateFunction {
           })
           .then((result) => {
             if (result.data) {
-              setTranslation({ [group]: result.data });
+              if (keys[group] === EMPTY) setTranslation({ [group]: result.data });
+              
               localStorage.setItem(`${currentLocale}.translation.${group}`, JSON.stringify(result.data));
             }
           })
