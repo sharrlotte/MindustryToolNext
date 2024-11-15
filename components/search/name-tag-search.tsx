@@ -1,3 +1,5 @@
+'use client';
+
 import { FilterIcon, XIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';

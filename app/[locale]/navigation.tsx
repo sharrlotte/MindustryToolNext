@@ -2,9 +2,6 @@
 
 import { ReactNode, useMemo } from 'react';
 
-const SmallScreenNavigationBar = dynamic(() => import('@/app/[locale]/small-navigation-items'), { ssr: false });
-const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/medium-navigation-items'), { ssr: false });
-
 import { hasAccess, max } from '@/lib/utils';
 
 import { useMediaQuery } from 'usehooks-ts';
@@ -12,6 +9,8 @@ import { useSession } from '@/context/session-context.client';
 import { usePathname } from 'next/navigation';
 import { groups, Path, SubPath } from '@/app/routes';
 import dynamic from 'next/dynamic';
+import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
+import SmallScreenNavigationBar from '@/app/[locale]/small-navigation-items';
 
 const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
 

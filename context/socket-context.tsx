@@ -9,7 +9,7 @@ import { useInterval } from 'usehooks-ts';
 export type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
 
 type SocketContextType = {
-  socket?: SocketClient;
+  socket: SocketClient;
   state: SocketState;
 };
 
@@ -18,7 +18,7 @@ type UseSocket = Omit<SocketContextType, 'socket'> & {
 };
 
 const defaultContextValue: SocketContextType = {
-  socket: undefined,
+  socket: new SocketClient(`${env.url.socket}/socket`),
   state: 'disconnected',
 };
 
@@ -28,26 +28,19 @@ export function useSocket(): UseSocket {
   const context = React.useContext(SocketContext);
   const socket = context.socket;
 
-  if (!socket) {
-    throw new Error('Can not use out side of context');
-  }
-
   return { ...context, socket };
 }
 export function SocketProvider({ children }: { children: ReactNode }) {
-  const [socket, setSocket] = useState<SocketClient>();
+  const [socket] = useState<SocketClient>(defaultContextValue.socket);
   const [state, setState] = useState<SocketState>('disconnected');
 
   useEffect(() => {
-    const instance = new SocketClient(`${env.url.socket}/socket`);
+    socket.connect();
+    socket.onDisconnect(() => setState('disconnected'));
+    socket.onConnect(() => setState('connected'));
 
-    instance.onDisconnect(() => setState('disconnected'));
-    instance.onConnect(() => setState('connected'));
-
-    setSocket(instance);
-
-    return () => instance.close();
-  }, [setSocket]);
+    return () => socket.close();
+  }, [socket]);
 
   useInterval(() => setState(socket?.getState() ?? 'disconnected'), 10000);
 

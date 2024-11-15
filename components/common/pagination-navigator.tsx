@@ -1,3 +1,5 @@
+'use client';
+
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
@@ -11,7 +13,6 @@ import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
 import Tran from '@/components/common/tran';
 import ComboBox from '@/components/common/combo-box';
-import InternalLink from '@/components/common/internal-link';
 import Link from 'next/link';
 
 type Props = {
