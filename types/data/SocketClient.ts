@@ -107,12 +107,6 @@ export default class SocketClient {
     return instant;
   }
 
-  private connectGuard() {
-    if (this.socket === null) {
-      throw new Error('Socket is not connected');
-    }
-  }
-
   public async onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
     this.handlers[method + this.room] = handler;
 
@@ -139,7 +133,6 @@ export default class SocketClient {
 
         const json = JSON.stringify({ ...payload, room: this.room });
 
-        this.connectGuard();
         this.socket?.send(json);
         this.room = '';
         return json;
@@ -147,7 +140,6 @@ export default class SocketClient {
     } else {
       const json = JSON.stringify({ ...payload, room: this.room });
 
-      this.connectGuard();
       this.socket?.send(json);
       this.room = '';
 
@@ -159,7 +151,6 @@ export default class SocketClient {
     const id = genId();
     const promise = new Promise<any>((resolve, reject) => {
       this.requests[id] = { resolve, reject };
-      this.connectGuard();
       this.socket?.send(
         JSON.stringify({
           id,
@@ -196,7 +187,6 @@ export default class SocketClient {
     const promise = new Promise<any>((resolve, reject) => {
       this.requests[id] = { resolve, reject };
       const json = JSON.stringify({ id, ...payload, room, acknowledge: true });
-      this.connectGuard();
       this.socket?.send(json);
       this.room = '';
 
