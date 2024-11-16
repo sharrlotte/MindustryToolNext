@@ -22,6 +22,7 @@ import { LinkIcon } from '@/components/common/icons';
 import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
 import { TakeDownSchematicButton } from '@/components/schematic/take-down-schematic-button';
 import { getSchematicData } from '@/query/schematic';
+import Tran from '@/components/common/tran';
 
 type SchematicDetailCardProps = {
   schematic: SchematicDetail;
@@ -60,6 +61,7 @@ export default function SchematicDetailCard({
           <IdUserCard id={userId} />
           <Verifier verifierId={verifierId} />
           <span>
+            <Tran text="size" />
             {width}x{height}
           </span>
           <DetailDescription>{description}</DetailDescription>

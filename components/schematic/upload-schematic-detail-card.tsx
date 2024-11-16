@@ -19,6 +19,7 @@ import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-b
 import VerifySchematicButton from '@/components/schematic/verify-schematic-button';
 import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';
+import Tran from '@/components/common/tran';
 
 type UploadSchematicDetailCardProps = {
   schematic: SchematicDetail;
@@ -61,6 +62,7 @@ export default function UploadSchematicDetailCard({ schematic: { id, name, tags,
           <DetailTitle>{name}</DetailTitle>
           <IdUserCard id={userId} />
           <span>
+            <Tran text="size" />
             {width}x{height}
           </span>
           <DetailDescription>{description}</DetailDescription>
