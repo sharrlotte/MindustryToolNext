@@ -42,16 +42,18 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
 
   if (isSmall) {
     return (
-      <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch}>
-        {children}
-      </SmallScreenNavigationBar>
+      <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
+        <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
+        <div className="relative h-full w-full overflow-hidden">{children}</div>
+      </div>
     );
   }
 
   return (
-    <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch}>
-      {children}
-    </MediumScreenNavigationBar>
+    <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center overflow-hidden sm:grid">
+      <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
+      <div className="relative h-full w-full overflow-hidden">{children}</div>
+    </div>
   );
 }
 
