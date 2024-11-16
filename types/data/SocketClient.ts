@@ -52,7 +52,7 @@ type Task =
 export default class SocketClient {
   private tasks: Task[] = [];
   private socket: ReconnectingWebSocket | null = null;
-  private handlers: Record<string, EventHandler> = {};
+  private handlers: Record<string, EventHandler[]> = {};
   private errors: ((event: ErrorEvent) => void)[] = [];
   private connects: ((event: Event) => void)[] = [];
   private disconnects: ((event: CloseEvent) => void)[] = [];
@@ -79,6 +79,10 @@ export default class SocketClient {
 
       try {
         if ('room' in task) {
+          if (this.rooms.includes(task.room)) {
+            continue;
+          }
+
           const id = genId();
 
           const promise = new Promise<any>((resolve, reject) => {
@@ -134,25 +138,28 @@ export default class SocketClient {
         const data = event.data;
         const message = JSON.parse(data);
 
-        if (!message.method || !message.id) return;
+        if (!message.method) throw new Error('Invalid message method: ' + message);
 
-        const handler = this.handlers[message.method + message.room];
-        if (handler) {
-          if (message.method === 'Error') {
-            handler({ error: { message: message.message } }, event);
-          } else {
-            handler(message.data, event);
-          }
-        }
+        const handlers = this.handlers[message.method + message.room];
 
-        const request = this.requests[message.id];
-        if (request) {
+        if (handlers) {
           if (message.method === 'Error') {
-            request.reject(message.message);
+            handlers.forEach((handler) => handler({ error: { message: message.message } }, event));
           } else {
-            request.resolve(message.data);
+            handlers.forEach((handler) => handler(message.data, event));
           }
-          delete this.requests[message.id];
+        } else {
+          if (message.id === undefined) throw new Error('Invalid message id: ' + message);
+
+          const request = this.requests[message.id];
+          if (request) {
+            if (message.method === 'Error') {
+              request.reject(message.message);
+            } else {
+              request.resolve(message.data);
+            }
+            delete this.requests[message.id];
+          }
         }
       } catch (error) {
         console.error('Error processing message:', error);
@@ -172,17 +179,33 @@ export default class SocketClient {
     return instant;
   }
 
-  public async onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
-    this.handlers[method + this.room] = handler;
-
-    if (this.room && !this.rooms.includes(this.room)) {
-      try {
-        this.joinRoom(this.room);
-      } catch (err) {
-        console.error('Error joining room:', err);
-      }
+  public onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
+    const room = this.room;
+    if (room && !this.rooms.includes(room)) {
+      this.joinRoom(room);
     }
+
+    console.log(method + room);
+
+    const handlers = this.handlers[method + room];
+
+    if (handlers) {
+      handlers.push(handler);
+    } else {
+      this.handlers[method + room] = [handler];
+    }
+
     this.room = '';
+
+    return () => this.onRoom(room).remove(method, handler);
+  }
+
+  public remove<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
+    const handlers = this.handlers[method + this.room];
+
+    if (handlers) {
+      this.handlers[method + this.room] = handlers.filter((h) => h !== handler);
+    }
   }
 
   public onRoom(room: SocketRoom) {

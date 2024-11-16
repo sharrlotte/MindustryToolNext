@@ -348,14 +348,6 @@ function ChatIconPath() {
   const [lastMessage] = useLocalStorage('LAST_MESSAGE_GLOBAL', '');
 
   useEffect(() => {
-    socket.onRoom('GLOBAL').onMessage('MESSAGE', (message) => {
-      if ('error' in message) {
-        return;
-      }
-
-      postNotification(message);
-    });
-
     socket
       .onRoom('GLOBAL')
       .await({ method: 'LAST_MESSAGE' })
@@ -366,6 +358,14 @@ function ChatIconPath() {
 
         setHasNewMessage(newestMessage.id !== lastMessage);
       });
+
+    return socket.onRoom('GLOBAL').onMessage('MESSAGE', (message) => {
+      if ('error' in message) {
+        return;
+      }
+
+      postNotification(message);
+    });
   }, [socket, postNotification, lastMessage]);
 
   return (

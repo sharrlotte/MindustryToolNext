@@ -124,41 +124,43 @@ export default function MessageList({
     }
   }, [currentContainer, pages, isEndReached]);
 
-  useEffect(() => {
-    socket
-      .onRoom(room) //
-      .onMessage('MESSAGE', (message) => {
-        queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
-          if (message && 'error' in message) {
-            return;
-          }
+  useEffect(
+    () =>
+      socket
+        .onRoom(room) //
+        .onMessage('MESSAGE', (message) => {
+          queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
+            if (message && 'error' in message) {
+              return;
+            }
 
-          if (showNotification) {
-            postNotification(message);
-          }
+            if (showNotification) {
+              postNotification(message);
+            }
 
-          if (!query || !query.pages) {
-            return undefined;
-          }
+            if (!query || !query.pages) {
+              return undefined;
+            }
 
-          const [first, ...rest] = query.pages;
+            const [first, ...rest] = query.pages;
 
-          const newFirst = [message, ...first];
+            const newFirst = [message, ...first];
 
-          return {
-            ...query,
-            pages: [newFirst, ...rest],
-          } satisfies InfiniteData<Message[], unknown>;
-        });
-
-        if (currentContainer && isEndReached) {
-          currentContainer.scrollTo({
-            top: currentContainer.scrollHeight,
-            behavior: 'smooth',
+            return {
+              ...query,
+              pages: [newFirst, ...rest],
+            } satisfies InfiniteData<Message[], unknown>;
           });
-        }
-      });
-  }, [room, queryKey, list, socket, queryClient, isEndReached, currentContainer, showNotification, postNotification]);
+
+          if (currentContainer && isEndReached) {
+            currentContainer.scrollTo({
+              top: currentContainer.scrollHeight,
+              behavior: 'smooth',
+            });
+          }
+        }),
+    [room, queryKey, socket, queryClient, isEndReached, currentContainer, showNotification, postNotification],
+  );
 
   useEffect(() => {
     function onScroll() {
