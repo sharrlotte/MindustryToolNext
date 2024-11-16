@@ -8,7 +8,6 @@ import { useMediaQuery } from 'usehooks-ts';
 import { useSession } from '@/context/session-context.client';
 import { usePathname } from 'next/navigation';
 import { groups, Path, SubPath } from '@/app/routes';
-import dynamic from 'next/dynamic';
 import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
 import SmallScreenNavigationBar from '@/app/[locale]/small-navigation-items';
 

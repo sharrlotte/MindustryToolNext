@@ -116,11 +116,16 @@ export function useI18n(): TranslateFunction {
       text = `${group}.${key}`;
 
       try {
-        const data = getCachedTranslation(group, currentLocale);
+        const data = getCachedTranslation(group, currentLocale).catch((error) => ({ error }));
         const translated = use(data)[key];
         return formatTranslation(translated, args) || key;
       } catch (err) {
-        return key;
+        if (err && typeof err === 'object' && 'error' in err) {
+          return text;
+        }
+
+        // Rethrow for react suspend error
+        throw err;
       }
     };
   }
