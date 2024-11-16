@@ -57,7 +57,7 @@ export default class SocketClient {
   }
 
   public connect() {
-    if (this.socket && (this.socket.readyState === this.socket.OPEN || this.socket.readyState === this.socket.CONNECTING)) {
+    if (this.socket) {
       return this.socket;
     }
 
@@ -69,6 +69,9 @@ export default class SocketClient {
       try {
         const data = event.data;
         const message = JSON.parse(data);
+
+        console.log(message);
+
         if (!message.method || !message.id) return;
 
         const handler = this.handlers[message.method + message.room];

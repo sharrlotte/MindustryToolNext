@@ -125,7 +125,7 @@ const InternalPathGroupElement = ({ group, bestMatch }: PathGroupElementProps): 
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
         {expand && name}
-        {name && expand && <Divider />}
+        {name && <Divider />}
         {group.paths.map((path, index) => (
           <PathElement key={index} segment={path} bestMatch={bestMatch} />
         ))}

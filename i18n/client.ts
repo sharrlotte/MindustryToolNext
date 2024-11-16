@@ -59,8 +59,7 @@ export function useI18n(): TranslateFunction {
           })
           .then((result) => {
             if (result.data) {
-              if (keys[group] === EMPTY) setTranslation({ [group]: result.data });
-
+              setTranslation({ [group]: result.data });
               localStorage.setItem(`${currentLocale}.translation.${group}`, JSON.stringify(result.data));
             }
           })
