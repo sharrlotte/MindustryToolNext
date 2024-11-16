@@ -26,7 +26,7 @@ export default async function Root({ children, params }: RootProps) {
   const { locale } = await params;
 
   return (
-    <body className={cn('h-full w-full overflow-hidden', locale === 'kr' ? 'font-noto' : 'font-inter')}>
+    <div className={cn('h-full w-full overflow-hidden', locale === 'kr' ? 'font-noto' : 'font-inter')}>
       {process.env.NODE_ENV === 'production' && (
         <>
           <Analytics />
@@ -45,6 +45,6 @@ export default async function Root({ children, params }: RootProps) {
           </SocketProvider>
         </SessionProvider>
       </ThemeProvider>
-    </body>
+    </div>
   );
 }

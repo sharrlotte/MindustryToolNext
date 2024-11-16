@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { use, useCallback } from 'react';
 
 import { useLocaleStore } from '@/zustand/locale-store';
 import useClientApi from '@/hooks/use-client';
@@ -20,7 +20,7 @@ export function useI18n(): TranslateFunction {
 
   const keys = translation[currentLocale];
 
-  return useCallback(
+  const t = useCallback(
     (text: string, args?: Record<string, string>) => {
       if (!text) {
         throw new Error('Bad key');
@@ -60,7 +60,7 @@ export function useI18n(): TranslateFunction {
           .then((result) => {
             if (result.data) {
               if (keys[group] === EMPTY) setTranslation({ [group]: result.data });
-              
+
               localStorage.setItem(`${currentLocale}.translation.${group}`, JSON.stringify(result.data));
             }
           })
@@ -75,13 +75,47 @@ export function useI18n(): TranslateFunction {
 
       if (!translated) {
         console.warn(`Missing key: ${text}`);
-        return text;
+        return key;
       }
 
       return formatTranslation(translated, args) || key;
     },
     [keys, isCurrentLocaleSet, axios, currentLocale, setTranslation],
   );
+
+  if (typeof window === 'undefined') {
+    return (text: string, args?: Record<string, string>) => {
+      if (!text) {
+        throw new Error('Bad key');
+      }
+
+      const parts = text.split('.');
+
+      if (parts.length === 0) {
+        throw new Error('Bad key');
+      }
+
+      const group = parts.length === 1 ? 'common' : parts[0];
+      const key = parts.length === 1 ? parts[0] : parts[1];
+
+      text = `${group}.${key}`;
+
+      const data = axios
+        .get('/translations', {
+          params: {
+            group,
+            language: currentLocale,
+          },
+        })
+        .then(({ data }) => data);
+
+      const translated = use(data)[key];
+
+      return formatTranslation(translated, args) || key;
+    };
+  }
+
+  return t;
 }
 
 export function formatTranslation(text: string, args?: Record<string, string>) {
