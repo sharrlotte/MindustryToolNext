@@ -11,11 +11,11 @@ type Props = {
   args?: Record<string, any>;
 };
 
-function InternalTran({ className, text, args, style }: Props): React.ReactNode {
+function InternalTran({ className, text, args, ...rest }: Props): React.ReactNode {
   const t = useI18n();
 
   return (
-    <span className={className} style={style} suppressHydrationWarning>
+    <span className={className} {...rest}>
       {t(text, args)}
     </span>
   );
