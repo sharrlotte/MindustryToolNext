@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import InfinitePage from '@/components/common/infinite-page';
 import UploadPostPreviewCard from '@/components/post/upload-post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { getPostUploads } from '@/query/post';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';

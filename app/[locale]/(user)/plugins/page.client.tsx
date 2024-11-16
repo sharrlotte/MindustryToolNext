@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import InfinitePage from '@/components/common/infinite-page';
 import PluginCard from '@/components/plugin/plugin-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 
 import { getPlugins } from '@/query/plugin';
 import AddPluginForm from '@/app/[locale]/(user)/plugins/add-plugin-form';

@@ -11,7 +11,7 @@ import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { getMaps } from '@/query/map';

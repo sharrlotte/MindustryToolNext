@@ -13,7 +13,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useStatusSearchParams from '@/hooks/use-status-search-params';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { useI18n } from '@/i18n/client';
 import { User } from '@/types/response/User';
 import { getMeSchematics, getMeMaps, getMePosts } from '@/query/user';

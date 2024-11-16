@@ -12,7 +12,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, Dia
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import VerifyPluginRequest, { VerifyPluginRequestData, VerifyPluginSchema } from '@/types/request/VerifyPluginRequest';

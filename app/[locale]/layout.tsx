@@ -1,10 +1,10 @@
 import ClientInit from '@/app/[locale]/client-init';
-import I18nProvider from '@/app/[locale]/i18n-provider';
 import NavigationBar from '@/app/[locale]/navigation';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import Toaster from '@/components/ui/toaster';
 import { SessionProvider } from '@/context/session-context';
 import { SocketProvider } from '@/context/socket-context';
+import { TagsProvider } from '@/context/tags-context';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
@@ -34,16 +34,17 @@ export default async function Root({ children, params }: RootProps) {
         </>
       )}
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-        <SessionProvider>
-          <SocketProvider>
-            <QueryProvider>
-              <ClientInit />
-              <I18nProvider locale={locale} />
-              <Toaster />
-              <NavigationBar>{children}</NavigationBar>
-            </QueryProvider>
-          </SocketProvider>
-        </SessionProvider>
+        <TagsProvider>
+          <SessionProvider>
+            <SocketProvider>
+              <QueryProvider>
+                <ClientInit />
+                <Toaster />
+                <NavigationBar>{children}</NavigationBar>
+              </QueryProvider>
+            </SocketProvider>
+          </SessionProvider>
+        </TagsProvider>
       </ThemeProvider>
     </div>
   );

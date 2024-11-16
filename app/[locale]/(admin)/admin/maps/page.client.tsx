@@ -19,9 +19,9 @@ import { useMutation } from '@tanstack/react-query';
 import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
-import useTags from '@/hooks/use-tags';
 import { Map } from '@/types/response/Map';
 import { omit } from '@/lib/utils';
+import { useTags } from '@/context/tags-context.client';
 
 type Props = {
   maps: Map[];

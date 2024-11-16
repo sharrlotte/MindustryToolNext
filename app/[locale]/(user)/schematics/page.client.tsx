@@ -12,7 +12,7 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import env from '@/constant/env';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { getSchematicCount, getSchematics } from '@/query/schematic';
 import { omit } from '@/lib/utils';

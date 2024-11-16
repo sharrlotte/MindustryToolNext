@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { PaginationLayoutSwitcher, ListLayout, GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';

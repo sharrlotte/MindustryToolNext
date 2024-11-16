@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import UploadPluginCard from '@/components/plugin/upload-plugin-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { getPluginUploads } from '@/query/plugin';
 import InfinitePage from '@/components/common/infinite-page';
 import useSearchQuery from '@/hooks/use-search-query';

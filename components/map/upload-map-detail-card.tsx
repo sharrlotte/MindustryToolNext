@@ -8,7 +8,7 @@ import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, De
 import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { MapDetail } from '@/types/response/MapDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { DeleteMapButton } from '@/components/map/delete-map-button';
