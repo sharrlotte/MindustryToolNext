@@ -8,8 +8,10 @@ import { useMediaQuery } from 'usehooks-ts';
 import { useSession } from '@/context/session-context.client';
 import { usePathname } from 'next/navigation';
 import { groups, Path, SubPath } from '@/app/routes';
-import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
-import SmallScreenNavigationBar from '@/app/[locale]/small-navigation-items';
+import dynamic from 'next/dynamic';
+
+const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/medium-navigation-items'));
+const SmallScreenNavigationBar = dynamic(() => import('@/app/[locale]/small-navigation-items'));
 
 const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
 
