@@ -6,11 +6,14 @@ import axiosInstance from '@/query/config/config';
 import { isError } from '@/lib/utils';
 import ErrorScreen from '@/components/common/error-screen';
 import { TagsProviderClient } from '@/context/tags-context.client';
+import { unstable_cache } from 'next/cache';
 
 const predicate = (tag: TagGroup) => tag.name !== 'size';
 
+const getCachedTags = unstable_cache(() => getTags(axiosInstance), ['tags'], { revalidate: 60000 });
+
 export async function TagsProvider({ children }: { children: ReactNode }) {
-  const data = await getTags(axiosInstance);
+  const data = await getCachedTags();
 
   if (isError(data)) {
     return <ErrorScreen error={data} />;
