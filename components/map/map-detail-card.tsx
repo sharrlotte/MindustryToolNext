@@ -17,6 +17,7 @@ import { MapDetail } from '@/types/response/MapDetail';
 import { LinkIcon } from '@/components/common/icons';
 import { DeleteMapButton } from '@/components/map/delete-map-button';
 import { TakeDownMapButton } from '@/components/map/take-down-map-button';
+import Tran from '@/components/common/tran';
 
 type MapDetailCardProps = {
   map: MapDetail;
@@ -43,6 +44,7 @@ export default function MapDetailCard({ map: { id, name, description, tags, veri
           <IdUserCard id={userId} />
           <Verifier verifierId={verifierId} />
           <span>
+            <Tran text="size" />
             {width}x{height}
           </span>
           <DetailDescription>{description}</DetailDescription>

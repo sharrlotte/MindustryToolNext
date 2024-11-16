@@ -15,7 +15,7 @@ function InternalTran({ className, text, args, style }: Props): React.ReactNode 
   const t = useI18n();
 
   return (
-    <span className={className} style={style}>
+    <span className={className} style={style} suppressHydrationWarning>
       {t(text, args)}
     </span>
   );

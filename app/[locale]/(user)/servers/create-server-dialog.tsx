@@ -67,8 +67,8 @@ export default function CreateServerDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="min-w-20 ml-auto" variant="primary" title={t('server.add')}>
-          {t('server.add')}
+        <Button className="ml-auto min-w-20" variant="primary" title={t('server.add')}>
+          <Tran text="server.add" />
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-card p-6">

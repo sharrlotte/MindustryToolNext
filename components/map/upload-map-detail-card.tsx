@@ -14,6 +14,7 @@ import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { DeleteMapButton } from '@/components/map/delete-map-button';
 import VerifyMapButton from '@/components/map/verify-map-button';
 import { LinkIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;
@@ -46,6 +47,7 @@ export default function UploadMapDetailCard({ map: { id, name, tags, description
           <DetailTitle>{name}</DetailTitle>
           <IdUserCard id={userId} />
           <span>
+            <Tran text="size" />
             {width}x{height}
           </span>
           <DetailDescription>{description}</DetailDescription>

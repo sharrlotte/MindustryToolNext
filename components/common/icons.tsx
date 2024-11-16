@@ -29,6 +29,7 @@ import {
   SquareIcon as _SquareIcon,
   CheckSquare2 as _SquareCheckIcon,
   X,
+  Users as _Users,
   AlertCircle,
 } from 'lucide-react';
 
@@ -61,6 +62,7 @@ export const ChatIcon = () => <MessageCircleIcon className="size-5 min-h-5 min-w
 export const LogIcon = () => <HistoryIcon className="size-[22px] min-h-5 min-w-5" />;
 export const SchematicIcon = () => <ClipboardList className="size-5 min-h-5 min-w-5" />;
 export const SettingIcon = () => <SettingsIcon className="size-5 min-h-5 min-w-5" />;
+export const RoleIcon = () => <_UsersIcon className="size-5 min-h-5 min-w-5" />;
 export const CmdIcon = () => <TerminalIcon className="size-[22px] min-h-5 min-w-5" />;
 export const PluginIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">

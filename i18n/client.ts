@@ -115,11 +115,13 @@ export function useI18n(): TranslateFunction {
 
       text = `${group}.${key}`;
 
-      const data = getCachedTranslation(group, currentLocale);
-
-      const translated = use(data)[key];
-
-      return formatTranslation(translated, args) || key;
+      try {
+        const data = getCachedTranslation(group, currentLocale);
+        const translated = use(data)[key];
+        return formatTranslation(translated, args) || key;
+      } catch (err) {
+        return key;
+      }
     };
   }
 
