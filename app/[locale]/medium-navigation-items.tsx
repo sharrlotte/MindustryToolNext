@@ -43,7 +43,7 @@ export default function MediumScreenNavigationBar({ children, pathGroups, bestMa
   const toggleSidebar = useCallback(() => setVisible(!isVisible), [isVisible, setVisible]);
 
   return (
-    <div className="grid h-full w-full grid-cols-[auto_1fr] justify-center overflow-hidden">
+    <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center overflow-hidden sm:grid">
       <motion.div className="relative flex h-full overflow-hidden border-r" variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
         <div className={cn('flex h-full w-full flex-col overflow-hidden p-1', { 'p-2': expand })}>
           <div className="flex items-center justify-center gap-1 p-2">
