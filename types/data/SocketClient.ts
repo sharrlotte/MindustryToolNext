@@ -41,9 +41,18 @@ function genId() {
 
 type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
 
+type Task =
+  | {
+      room: string;
+    }
+  | {
+      request: any;
+    };
+
 export default class SocketClient {
+  private tasks: Task[] = [];
   private socket: ReconnectingWebSocket | null = null;
-  handlers: Record<string, EventHandler> = {};
+  private handlers: Record<string, EventHandler> = {};
   private errors: ((event: ErrorEvent) => void)[] = [];
   private connects: ((event: Event) => void)[] = [];
   private disconnects: ((event: CloseEvent) => void)[] = [];
@@ -51,13 +60,63 @@ export default class SocketClient {
   private rooms: string[] = [];
   private requests: Record<string, PromiseReceiver> = {};
   private url: string;
+  private isProcessing = false;
 
   constructor(url: string) {
     this.url = url;
+
+    setInterval(async () => await this.processTask(), 10);
+  }
+
+  private async processTask() {
+    if (this.isProcessing) return;
+    this.isProcessing = true;
+
+    while (this.tasks.length !== 0) {
+      const task = this.tasks.shift();
+
+      if (task) {
+        if ('room' in task) {
+          const id = genId();
+          const promise = new Promise<any>((resolve, reject) => {
+            this.requests[id] = { resolve, reject };
+
+            if (!this.socket) {
+              throw new Error('Socket is not connected');
+            }
+
+            this.socket.send(
+              JSON.stringify({
+                id,
+                method: 'JOIN_ROOM',
+                data: task.room,
+                room: task.room,
+                acknowledge: true,
+              }),
+            );
+
+            setTimeout(() => {
+              delete this.requests[id];
+              reject(`Request timeout: join room ${task.room}`);
+            }, 10000);
+          });
+
+          await promise;
+          this.rooms.push(task.room);
+        } else {
+          if (!this.socket) {
+            throw new Error('Socket is not connected');
+          }
+          this.socket.send(task.request);
+        }
+      }
+    }
+
+    this.isProcessing = false;
   }
 
   public connect() {
-    if (this.socket && (this.socket.readyState === this.socket.OPEN || this.socket.readyState === this.socket.CONNECTING)) {
+    if (this.socket) {
       return this.socket;
     }
 
@@ -69,6 +128,7 @@ export default class SocketClient {
       try {
         const data = event.data;
         const message = JSON.parse(data);
+
         if (!message.method || !message.id) return;
 
         const handler = this.handlers[message.method + message.room];
@@ -113,7 +173,6 @@ export default class SocketClient {
     if (this.room && !this.rooms.includes(this.room)) {
       try {
         this.joinRoom(this.room);
-        this.rooms.push(this.room);
       } catch (err) {
         console.error('Error joining room:', err);
       }
@@ -128,76 +187,44 @@ export default class SocketClient {
 
   public async send(payload: MessagePayload) {
     if (this.room && !this.rooms.includes(this.room)) {
-      return this.joinRoom(this.room).then(() => {
-        this.rooms.push(this.room);
-
-        const json = JSON.stringify({ ...payload, room: this.room });
-
-        this.socket?.send(json);
-        this.room = '';
-        return json;
-      });
-    } else {
-      const json = JSON.stringify({ ...payload, room: this.room });
-
-      this.socket?.send(json);
-      this.room = '';
-
-      return json;
+      this.tasks.push({ room: this.room });
     }
-  }
 
-  public async joinRoom(room: string) {
-    const id = genId();
-    const promise = new Promise<any>((resolve, reject) => {
-      this.requests[id] = { resolve, reject };
-      this.socket?.send(
-        JSON.stringify({
-          id,
-          method: 'JOIN_ROOM',
-          data: room,
-          room: room,
-          acknowledge: true,
-        }),
-      );
+    const json = JSON.stringify({ ...payload, room: this.room });
+    this.tasks.push({ request: json });
 
-      const timeout = setTimeout(() => {
-        reject(`Request timeout: join room ${room}`);
-        delete this.requests[id];
-        return () => clearTimeout(timeout);
-      }, 10000);
-    });
+    this.room = '';
 
-    return await promise;
+    return json;
   }
 
   public async await<T extends MessagePayload>(payload: T): Promise<SocketResult<T['method']>> {
-    const room = this.room;
-    if (room && !this.rooms.includes(room)) {
-      try {
-        await this.joinRoom(room);
-        this.rooms.push(room);
-      } catch (err) {
-        this.rooms = this.rooms.filter((r) => r !== room);
-        console.error('Error joining room for await:', err);
-      }
+    if (this.room && !this.rooms.includes(this.room)) {
+      this.tasks.push({ room: this.room });
     }
 
     const id = genId();
     const promise = new Promise<any>((resolve, reject) => {
       this.requests[id] = { resolve, reject };
-      const json = JSON.stringify({ id, ...payload, room, acknowledge: true });
-      this.socket?.send(json);
+
+      const json = JSON.stringify({ id, ...payload, room: this.room, acknowledge: true });
+
+      this.tasks.push({ request: json });
+
       this.room = '';
 
-      const timeout = setTimeout(() => {
-        reject(`Request timeout: ${json}`);
+      setTimeout(() => {
         delete this.requests[id];
-        return () => clearTimeout(timeout);
+
+        reject(`Request timeout: ${json}`);
       }, 10000);
     });
 
     return await promise;
+  }
+
+  public async joinRoom(room: string) {
+    this.tasks.push({ room: room });
   }
 
   public onConnect(handler: (event: Event) => void) {

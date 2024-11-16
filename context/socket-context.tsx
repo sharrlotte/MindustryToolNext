@@ -38,8 +38,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     socket.connect();
     socket.onDisconnect(() => setState('disconnected'));
     socket.onConnect(() => setState('connected'));
-
-    return () => socket.close();
   }, [socket]);
 
   useInterval(() => setState(socket?.getState() ?? 'disconnected'), 10000);

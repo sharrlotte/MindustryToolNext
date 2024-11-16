@@ -30,8 +30,10 @@ export function middleware(request: NextRequest) {
 
   const currentLocale = pathname.slice(1, 3).toLowerCase();
 
-  if (pathnameHasLocale && isBot) {
-    return;
+  if (pathnameHasLocale) {
+    if (isBot) {
+      return;
+    }
   } else {
     locale = 'en';
   }

@@ -20,8 +20,6 @@ export default function ErrorScreen({ error }: { error: TError }) {
     reportError(axios, { error, path });
   }, [axios, path, error]);
 
-  console.log(error);
-
   if (typeof error === 'object' && 'error' in error && 'status' in error.error && error.error.status === 404) return <NotFound />;
 
   return (

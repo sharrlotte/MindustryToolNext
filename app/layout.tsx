@@ -4,9 +4,9 @@ import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import './globals.css';
-import Head from 'next/head';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -64,6 +64,9 @@ type Props = {
 export default async function Root({ children, params }: Props) {
   const { locale } = await params;
 
+  ReactDOM.preconnect('https://image.mindustry-tool.app');
+  ReactDOM.preconnect('https://api.mindustry-tool.app');
+
   return (
     <html
       className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable)}
@@ -71,10 +74,6 @@ export default async function Root({ children, params }: Props) {
       data-color-mode="dark"
       suppressHydrationWarning
     >
-      <Head>
-        <link rel="preconnect" href="https://image.mindustry-tool.app" />
-        <link rel="preconnect" href="https://api.mindustry-tool.app" />
-      </Head>
       <body className="h-full w-full overflow-hidden">{children}</body>
     </html>
   );
