@@ -17,7 +17,6 @@ import { motion, Variants } from 'framer-motion';
 import { useMediaQuery } from 'usehooks-ts';
 
 type NavigationBarProps = {
-  children: ReactNode;
   pathGroups: PathGroup[];
   bestMatch: string | null;
 };
@@ -33,7 +32,7 @@ const sidebarVariants: Variants = {
   },
 };
 
-export default function MediumScreenNavigationBar({ children, pathGroups, bestMatch }: NavigationBarProps) {
+export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: NavigationBarProps) {
   const { isVisible, setVisible } = useNavBar();
 
   const isSmall = useMediaQuery('(max-width: 640px)');
@@ -43,28 +42,25 @@ export default function MediumScreenNavigationBar({ children, pathGroups, bestMa
   const toggleSidebar = useCallback(() => setVisible(!isVisible), [isVisible, setVisible]);
 
   return (
-    <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center overflow-hidden sm:grid">
-      <motion.div className="relative flex h-full overflow-hidden border-r" variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
-        <div className={cn('flex h-full w-full flex-col overflow-hidden p-1', { 'p-2': expand })}>
-          <div className="flex items-center justify-center gap-1 p-2">
-            <motion.div className="overflow-hidden whitespace-nowrap" animate={{ display: expand ? 'block' : 'none' }}>
-              <h1 className="text-xl font-medium">MindustryTool</h1>
-            </motion.div>
-            <motion.span className="overflow-hidden whitespace-nowrap text-xs" animate={{ display: expand ? 'block' : 'none' }}>
-              {env.webVersion}
-            </motion.span>
-            <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
-              <MenuIcon className="size-6 text-foreground" />
-            </Button>
-          </div>
-          <div className="flex h-full flex-col justify-between overflow-hidden">
-            <MediumNavItems pathGroups={pathGroups} bestMatch={bestMatch} />
-            {expand ? <UserDisplay /> : <NavFooter />}
-          </div>
+    <motion.div className="relative flex h-full overflow-hidden border-r" variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
+      <div className={cn('flex h-full w-full flex-col overflow-hidden p-1', { 'p-2': expand })}>
+        <div className="flex items-center justify-center gap-1 p-2">
+          <motion.div className="overflow-hidden whitespace-nowrap" animate={{ display: expand ? 'block' : 'none' }}>
+            <h1 className="text-xl font-medium">MindustryTool</h1>
+          </motion.div>
+          <motion.span className="overflow-hidden whitespace-nowrap text-xs" animate={{ display: expand ? 'block' : 'none' }}>
+            {env.webVersion}
+          </motion.span>
+          <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
+            <MenuIcon className="size-6 text-foreground" />
+          </Button>
         </div>
-      </motion.div>
-      <div className="relative h-full w-full overflow-hidden">{children}</div>
-    </div>
+        <div className="flex h-full flex-col justify-between overflow-hidden">
+          <MediumNavItems pathGroups={pathGroups} bestMatch={bestMatch} />
+          {expand ? <UserDisplay /> : <NavFooter />}
+        </div>
+      </div>
+    </motion.div>
   );
 }
 

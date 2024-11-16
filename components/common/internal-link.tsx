@@ -1,7 +1,7 @@
 'use client';
 
 import { VariantProps, cva } from 'class-variance-authority';
-import React from 'react';
+import React, { useCallback } from 'react';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
@@ -46,12 +46,12 @@ export default function InternalLink({ className, variant, title, href, children
     href = new URL(env.url.base + '/' + currentLocale + '/' + stripBase).toString();
   }
 
-  function handlePreload() {
+  const handlePreload = useCallback(() => {
     if (preloadImage) {
       const image = new Image();
       image.src = preloadImage;
     }
-  }
+  }, [preloadImage]);
 
   return (
     <Link className={cn(linkVariants({ variant, className }))} {...props} href={href} hrefLang={currentLocale} title={title ? t(title) : ''} onMouseEnter={handlePreload} onTouchStart={handlePreload}>

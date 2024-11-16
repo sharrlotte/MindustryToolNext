@@ -28,73 +28,69 @@ const sidebarVariants = {
 };
 
 type NavigationBarProps = {
-  children: ReactNode;
   pathGroups: PathGroup[];
   bestMatch: string | null;
 };
 
-export default function SmallScreenNavigationBar({ children, bestMatch, pathGroups }: NavigationBarProps) {
+export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: NavigationBarProps) {
   const { isVisible, setVisible } = useNavBar();
 
   const showSidebar = useCallback(() => setVisible(true), [setVisible]);
   const hideSidebar = useCallback(() => setVisible(false), [setVisible]);
 
   return (
-    <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
-      <div className="flex h-nav w-full items-center justify-between bg-brand px-1 py-2 shadow-lg">
-        <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
-          <MenuIcon />
-        </Button>
-        <div
-          className={cn('pointer-events-none fixed inset-0 z-50 h-screen bg-transparent text-foreground', {
-            'backdrop-blur-sm backdrop-brightness-50': isVisible,
-          })}
-        >
-          <motion.div variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
+    <div className="flex h-nav w-full items-center justify-between bg-brand px-1 py-2 shadow-lg">
+      <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
+        <MenuIcon />
+      </Button>
+      <div
+        className={cn('pointer-events-none fixed inset-0 z-50 h-screen bg-transparent text-foreground', {
+          'backdrop-blur-sm backdrop-brightness-50': isVisible,
+        })}
+      >
+        <motion.div variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
+          <div
+            className={cn(
+              'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background transition-colors transition-transform duration-300 dark:bg-background/90',
+              {
+                'translate-x-0': isVisible,
+              },
+            )}
+          >
             <div
-              className={cn(
-                'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background transition-colors transition-transform duration-300 dark:bg-background/90',
-                {
-                  'translate-x-0': isVisible,
-                },
-              )}
+              className="h-full w-full overflow-hidden"
+              onMouseLeave={hideSidebar} //
+              onMouseEnter={showSidebar}
             >
-              <div
-                className="h-full w-full overflow-hidden"
-                onMouseLeave={hideSidebar} //
-                onMouseEnter={showSidebar}
-              >
-                <OutsideWrapper className="h-full w-full overflow-hidden" onClickOutside={hideSidebar}>
-                  <div className="flex h-full flex-col justify-between overflow-hidden p-2">
-                    <div className="flex h-full flex-col overflow-hidden">
-                      <span className="flex flex-col gap-2">
-                        <span className="flex items-center justify-between rounded-sm p-2">
-                          <div className="flex items-center gap-2">
-                            <h1 className="text-xl font-medium">MindustryTool</h1>
-                            <span className="text-xs">{env.webVersion}</span>
-                          </div>
+              <OutsideWrapper className="h-full w-full overflow-hidden" onClickOutside={hideSidebar}>
+                <div className="flex h-full flex-col justify-between overflow-hidden p-2">
+                  <div className="flex h-full flex-col overflow-hidden">
+                    <span className="flex flex-col gap-2">
+                      <span className="flex items-center justify-between rounded-sm p-2">
+                        <div className="flex items-center gap-2">
+                          <h1 className="text-xl font-medium">MindustryTool</h1>
+                          <span className="text-xs">{env.webVersion}</span>
+                        </div>
 
-                          <button className="text-2xl" onClick={hideSidebar}>
-                            &times;
-                          </button>
-                        </span>
+                        <button className="text-2xl" onClick={hideSidebar}>
+                          &times;
+                        </button>
                       </span>
-                      <NavItems pathGroups={pathGroups} bestMatch={bestMatch} onClick={hideSidebar} />
-                    </div>
-                    <Divider />
-                    <UserDisplay />
+                    </span>
+                    <NavItems pathGroups={pathGroups} bestMatch={bestMatch} onClick={hideSidebar} />
                   </div>
-                </OutsideWrapper>
-              </div>
+                  <Divider />
+                  <UserDisplay />
+                </div>
+              </OutsideWrapper>
             </div>
-          </motion.div>
-        </div>
-        <div className="flex gap-2">
-          <UserIcon />
-          <NotificationIcon />
-        </div>
+          </div>
+        </motion.div>
       </div>
-      <div className="relative h-full w-full overflow-hidden">{children}</div>
+      <div className="flex gap-2">
+        <UserIcon />
+        <NotificationIcon />
+      </div>
     </div>
   );
 }
