@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 import PostPreviewCard from '@/components/post/post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { getPosts } from '@/query/post';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';

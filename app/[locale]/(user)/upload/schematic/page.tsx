@@ -19,7 +19,7 @@ import UserCard from '@/components/user/user-card';
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';

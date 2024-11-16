@@ -33,7 +33,7 @@ import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import { getTranslationDiffCount } from '@/query/translation';
-import { useLocaleStore } from '@/zustand/locale-store';
+import { useLocaleStore } from '@/context/locale-context';
 import { useVerifyCount } from '@/zustand/verify-count-store';
 
 import { useQueries } from '@tanstack/react-query';

@@ -7,6 +7,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import './globals.css';
+import I18nProvider from '@/context/locale-context';
+import { Locale } from '@/i18n/config';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -57,7 +59,7 @@ export const metadata: Metadata = {
 type Props = {
   children: React.ReactNode;
   params: Promise<{
-    locale: string;
+    locale: Locale;
   }>;
 };
 
@@ -74,7 +76,9 @@ export default async function Root({ children, params }: Props) {
       data-color-mode="dark"
       suppressHydrationWarning
     >
-      <body className="h-full w-full overflow-hidden">{children}</body>
+      <body className="h-full w-full overflow-hidden">
+        <I18nProvider locale={locale ?? 'en'}>{children}</I18nProvider>
+      </body>
     </html>
   );
 }

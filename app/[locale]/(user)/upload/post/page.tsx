@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';

@@ -10,7 +10,7 @@ import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import useToastAction from '@/hooks/use-toast-action';
 import { useI18n } from '@/i18n/client';
 import { SchematicDetail } from '@/types/response/SchematicDetail';

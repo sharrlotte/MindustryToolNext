@@ -4,7 +4,7 @@ import ComboBox from '@/components/common/combo-box';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useChangeLocale, useI18n } from '@/i18n/client';
 
-import { useLocaleStore } from '@/zustand/locale-store';
+import { useLocaleStore } from '@/context/locale-context';
 import { Locale, locales } from '@/i18n/config';
 import Tran from '@/components/common/tran';
 import { Hidden } from '@/components/common/hidden';

@@ -75,9 +75,12 @@ export default class SocketClient {
     while (this.tasks.length !== 0) {
       const task = this.tasks.shift();
 
-      if (task) {
+      if (!task) break;
+
+      try {
         if ('room' in task) {
           const id = genId();
+
           const promise = new Promise<any>((resolve, reject) => {
             this.requests[id] = { resolve, reject };
 
@@ -98,7 +101,7 @@ export default class SocketClient {
             setTimeout(() => {
               delete this.requests[id];
               reject(`Request timeout: join room ${task.room}`);
-            }, 10000);
+            }, 20000);
           });
 
           await promise;
@@ -109,6 +112,8 @@ export default class SocketClient {
           }
           this.socket.send(task.request);
         }
+      } catch (err) {
+        console.error(err);
       }
     }
 
@@ -217,14 +222,18 @@ export default class SocketClient {
         delete this.requests[id];
 
         reject(`Request timeout: ${json}`);
-      }, 10000);
+      }, 20000);
     });
 
     return await promise;
   }
 
   public async joinRoom(room: string) {
-    this.tasks.push({ room: room });
+    const has = this.tasks.find((task) => 'room' in task && task.room === room);
+
+    if (!has) {
+      this.tasks.push({ room: room });
+    }
   }
 
   public onConnect(handler: (event: Event) => void) {

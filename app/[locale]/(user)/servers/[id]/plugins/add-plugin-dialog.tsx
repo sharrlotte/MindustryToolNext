@@ -3,7 +3,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import { Skeleton } from '@/components/ui/skeleton';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { getPlugins } from '@/query/plugin';

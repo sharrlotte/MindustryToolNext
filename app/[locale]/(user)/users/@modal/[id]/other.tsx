@@ -11,7 +11,7 @@ import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import useTags from '@/hooks/use-tags';
+import { useTags } from '@/context/tags-context.client';
 import { useI18n } from '@/i18n/client';
 import { User } from '@/types/response/User';
 import { getUserSchematics, getUserMaps, getUserPosts } from '@/query/user';

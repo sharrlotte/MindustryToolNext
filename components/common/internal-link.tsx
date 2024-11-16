@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
 import env from '@/constant/env';
-import { useLocaleStore } from '@/zustand/locale-store';
+import { useLocaleStore } from '@/context/locale-context';
 import { locales } from '@/i18n/config';
 
 const linkVariants = cva('flex gap-2', {

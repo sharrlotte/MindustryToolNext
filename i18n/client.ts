@@ -2,7 +2,7 @@
 
 import { use, useCallback } from 'react';
 
-import { useLocaleStore } from '@/zustand/locale-store';
+import { useLocaleStore } from '@/context/locale-context';
 import useClientApi from '@/hooks/use-client';
 import { Locale, locales, TranslateFunction } from '@/i18n/config';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -27,7 +27,7 @@ const getCachedTranslation = unstable_cache(
 );
 
 export function useI18n(): TranslateFunction {
-  const { isCurrentLocaleSet, currentLocale, translation, setTranslation } = useLocaleStore();
+  const { currentLocale, translation, setTranslation } = useLocaleStore();
   const axios = useClientApi();
 
   if (translation[currentLocale] === undefined) {
@@ -62,10 +62,6 @@ export function useI18n(): TranslateFunction {
           keys[group] = EMPTY;
         }
 
-        if (!isCurrentLocaleSet) {
-          return key;
-        }
-
         axios
           .get('/translations', {
             params: {
@@ -95,7 +91,7 @@ export function useI18n(): TranslateFunction {
 
       return formatTranslation(translated, args) || key;
     },
-    [keys, isCurrentLocaleSet, axios, currentLocale, setTranslation],
+    [keys, axios, currentLocale, setTranslation],
   );
 
   if (typeof window === 'undefined') {
@@ -117,7 +113,11 @@ export function useI18n(): TranslateFunction {
 
       try {
         const data = getCachedTranslation(group, currentLocale).catch((error) => ({ error }));
-        const translated = use(data)[key];
+        const value = use(data);
+        const translated = value[key];
+
+        setTranslation({ [group]: value });
+
         return formatTranslation(translated, args) || key;
       } catch (err) {
         if (err && typeof err === 'object' && 'error' in err) {
