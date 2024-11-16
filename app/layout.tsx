@@ -68,14 +68,14 @@ export default async function Root({ children, params }: Props) {
     <html
       className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable)}
       lang={locale ?? 'en'}
-      suppressHydrationWarning
       data-color-mode="dark"
+      suppressHydrationWarning
     >
       <Head>
         <link rel="preconnect" href="https://image.mindustry-tool.app" />
         <link rel="preconnect" href="https://api.mindustry-tool.app" />
       </Head>
-      {children}
+      <body className="h-full w-full overflow-hidden">{children}</body>
     </html>
   );
 }

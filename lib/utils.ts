@@ -7,8 +7,11 @@ import { Session } from '@/types/response/Session';
 import TagGroup from '@/types/response/TagGroup';
 import { AuthorityEnum, UserRole } from '@/constant/enum';
 import { ApiError } from '@/action/action';
+import { notFound } from 'next/navigation';
 
 export function isError<T extends Record<string, any>>(req: T | ApiError | null): req is ApiError {
+  if (req && typeof req === 'object' && 'error' in req && 'status' in req.error && req.error.status === 404) notFound();
+
   return !!req && 'error' in req;
 }
 

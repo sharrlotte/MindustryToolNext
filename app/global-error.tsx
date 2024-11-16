@@ -18,8 +18,8 @@ export default function Error({ error }: { error: TError }) {
   }, [axios, path, error]);
 
   return (
-    <html>
-      <body>
+    <html suppressHydrationWarning>
+      <body className='h-full w-full'>
         <div className="flex h-full w-full flex-col items-center justify-center gap-4">
           <h2 className="text-base font-bold">{message}</h2>
           <div className="grid grid-cols-2 items-center justify-center gap-2">
