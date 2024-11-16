@@ -96,7 +96,6 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
 
 export const getCachedTranslation = unstable_cache(
   async (locale: string, group: string) => {
-    console.log(locale, group);
     return await serverApi((axios) =>
       axios
         .get('/translations', {
