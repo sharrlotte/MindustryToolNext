@@ -67,9 +67,9 @@ export const useMemberPanel = () => React.useContext(MemberPanelContext);
 export function MemberPanelProvider({ children }: { children: ReactNode }) {
   const isSmall = useMediaQuery('(max-width: 640px)');
 
-  const [state, setState] = useState<MemberPanelState>(isSmall ? 'open' : 'closed');
+  const [state, setState] = useState<MemberPanelState>(isSmall ? 'closed' : 'open');
 
-  useEffect(() => setState(isSmall ? 'open' : 'closed'), [isSmall]);
+  useEffect(() => setState(isSmall ? 'closed' : 'open'), [isSmall]);
 
   return <MemberPanelContext.Provider value={{ state, isSmall, setState }}>{children}</MemberPanelContext.Provider>;
 }
