@@ -7,8 +7,24 @@ import useClientApi from '@/hooks/use-client';
 import { Locale, locales, TranslateFunction } from '@/i18n/config';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
+import { unstable_cache } from 'next/cache';
+import axiosInstance from '@/query/config/config';
 
 const EMPTY = {};
+
+const getCachedTranslation = unstable_cache(
+  (group: string, language: string) =>
+    axiosInstance
+      .get('/translations', {
+        params: {
+          group,
+          language,
+        },
+      })
+      .then(({ data }) => data),
+  ['translations'],
+  { revalidate: 600 },
+);
 
 export function useI18n(): TranslateFunction {
   const { isCurrentLocaleSet, currentLocale, translation, setTranslation } = useLocaleStore();
@@ -99,14 +115,7 @@ export function useI18n(): TranslateFunction {
 
       text = `${group}.${key}`;
 
-      const data = axios
-        .get('/translations', {
-          params: {
-            group,
-            language: currentLocale,
-          },
-        })
-        .then(({ data }) => data);
+      const data = getCachedTranslation(group, currentLocale);
 
       const translated = use(data)[key];
 

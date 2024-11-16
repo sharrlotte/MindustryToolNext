@@ -39,7 +39,7 @@ export default function YoutubeEmbed({ url }: Props) {
         <iframe
           title="YouTube video player"
           className="absolute left-0 top-0 h-full w-full rounded-md"
-          src={`https://www.youtube.com/embed/${id}?autoplay=1&loop=1&controls=1`}
+          src={`https://www.youtube.com/embed/${id}`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; controls; loop;"
           allowFullScreen
         />
