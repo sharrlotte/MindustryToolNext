@@ -3,13 +3,13 @@
 import React from 'react';
 
 import { revalidate } from '@/action/action';
+import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
+import { startInternalServer } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
-import { startInternalServer } from '@/query/server';
-import Tran from '@/components/common/tran';
 
 type Props = {
   id: string;
@@ -40,13 +40,7 @@ export default function StartServerButton({ id }: Props) {
   });
 
   return (
-    <Button
-      className="w-20"
-      title="Start"
-      variant="primary"
-      disabled={isPending}
-      onClick={() => mutate()}
-    >
+    <Button className="w-20" title="Start" variant="primary" disabled={isPending} onClick={() => mutate()}>
       <Tran text="server.start" />
     </Button>
   );

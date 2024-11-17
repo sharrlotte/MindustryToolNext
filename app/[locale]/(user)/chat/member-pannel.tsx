@@ -1,13 +1,15 @@
+import { motion } from 'framer-motion';
+import React, { ReactNode, useMemo } from 'react';
+import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'usehooks-ts';
+
 import { UsersIcon } from '@/components/common/icons';
 import { MemberCard } from '@/components/messages/member-card';
 import { Button } from '@/components/ui/button';
 import { useSocket } from '@/context/socket-context';
 import { cn } from '@/lib/utils';
+
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
-import React, { ReactNode, useMemo } from 'react';
-import { useEffect, useState } from 'react';
-import { useMediaQuery } from 'usehooks-ts';
 
 type MemberPanelState = 'open' | 'closed';
 

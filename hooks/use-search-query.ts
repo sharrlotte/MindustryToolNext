@@ -19,9 +19,7 @@ const groupParamsByKey = (params: URLSearchParams) =>
     return acc;
   }, {});
 
-export default function useSearchQuery<T extends QuerySchema>(
-  schema: T,
-): z.infer<typeof schema> {
+export default function useSearchQuery<T extends QuerySchema>(schema: T): z.infer<typeof schema> {
   const query = useSearchParams();
   const data = groupParamsByKey(query);
 

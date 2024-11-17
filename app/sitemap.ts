@@ -1,21 +1,13 @@
-import env from '@/constant/env';
-
-const routes = [
-  'schematics',
-  'maps',
-  'posts',
-  'servers',
-  'upload/schematic',
-  'upload/map',
-  'upload/post',
-];
-
-import { getMaps } from '@/query/map';
-import { getSchematics } from '@/query/schematic';
-import { getServerApi } from '@/action/action';
 import { MetadataRoute } from 'next/dist/types';
-import { getPosts } from '@/query/post';
+
+import { getServerApi } from '@/action/action';
+import env from '@/constant/env';
 import { getImageById } from '@/lib/utils';
+import { getMaps } from '@/query/map';
+import { getPosts } from '@/query/post';
+import { getSchematics } from '@/query/schematic';
+
+const routes = ['schematics', 'maps', 'posts', 'servers', 'upload/schematic', 'upload/map', 'upload/post'];
 
 async function schematicSitemap(): Promise<MetadataRoute.Sitemap> {
   const axios = await getServerApi();
@@ -28,12 +20,7 @@ async function schematicSitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 1,
     images: [getImageById('schematics', id)],
     alternates: {
-      languages: Object.fromEntries(
-        env.locales.map((lang) => [
-          lang,
-          `${env.url.base}/${lang}/schematics/${id}`,
-        ]),
-      ),
+      languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}/schematics/${id}`])),
     },
   }));
 }
@@ -48,9 +35,7 @@ async function mapSitemap(): Promise<MetadataRoute.Sitemap> {
     images: [getImageById('maps', id)],
     priority: 1,
     alternates: {
-      languages: Object.fromEntries(
-        env.locales.map((lang) => [lang, `${env.url.base}/${lang}/maps/${id}`]),
-      ),
+      languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}/maps/${id}`])),
     },
   }));
 }
@@ -66,29 +51,18 @@ async function postSitemap(): Promise<MetadataRoute.Sitemap> {
     images: [getImageById('posts', id)],
     alternates: {
       priority: 1,
-      languages: Object.fromEntries(
-        env.locales.map((lang) => [
-          lang,
-          `${env.url.base}/${lang}/posts/${id}`,
-        ]),
-      ),
+      languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}/posts/${id}`])),
     },
   }));
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [maps, schematics, posts] = await Promise.all([
-    mapSitemap(),
-    schematicSitemap(),
-    postSitemap(),
-  ]);
+  const [maps, schematics, posts] = await Promise.all([mapSitemap(), schematicSitemap(), postSitemap()]);
 
   const defaultSitemap: MetadataRoute.Sitemap = routes.map((route) => ({
     url: `${env.url.base}/${route}`,
     alternates: {
-      languages: Object.fromEntries(
-        env.locales.map((lang) => [lang, `${env.url.base}/${lang}/${route}`]),
-      ),
+      languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}/${route}`])),
     },
   }));
 

@@ -1,12 +1,12 @@
 import { Metadata } from 'next/dist/types';
 import React from 'react';
 
-import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
-import env from '@/constant/env';
-import { getSchematic } from '@/query/schematic';
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
+import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
+import env from '@/constant/env';
+import { isError } from '@/lib/utils';
+import { getSchematic } from '@/query/schematic';
 
 type Props = {
   params: Promise<{ id: string }>;

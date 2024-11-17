@@ -9,15 +9,7 @@ type Props = {
 };
 
 export default function MindustryIcon({ name }: Props) {
-  return (
-    <Image
-      className="size-5"
-      width={20}
-      height={20}
-      src={`${env.url.base}/assets/sprite/${name}.png`}
-      alt={name}
-    />
-  );
+  return <Image className="size-5" width={20} height={20} src={`${env.url.base}/assets/sprite/${name}.png`} alt={name} />;
 }
 
 type TextOrIcon = string | { name: string };

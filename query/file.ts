@@ -1,11 +1,9 @@
 import { AxiosInstance } from 'axios';
+
 import { toForm } from '@/lib/utils';
 import { ServerFile } from '@/types/response/ServerFile';
 
-export async function deleteServerFile(
-  axios: AxiosInstance,
-  path: string,
-): Promise<void> {
+export async function deleteServerFile(axios: AxiosInstance, path: string): Promise<void> {
   const result = await axios.delete(`/files`, {
     params: { path },
   });
@@ -13,10 +11,7 @@ export async function deleteServerFile(
   return result.data;
 }
 
-export async function getServerFiles(
-  axios: AxiosInstance,
-  path: string,
-): Promise<ServerFile[]> {
+export async function getServerFiles(axios: AxiosInstance, path: string): Promise<ServerFile[]> {
   const result = await axios.get(`/files`, {
     params: { path },
   });
@@ -24,11 +19,7 @@ export async function getServerFiles(
   return result.data;
 }
 
-export async function createServerFile(
-  axios: AxiosInstance,
-  path: string,
-  file: File,
-): Promise<void> {
+export async function createServerFile(axios: AxiosInstance, path: string, file: File): Promise<void> {
   const form = toForm({ file });
 
   return axios.post(`/files`, form, {

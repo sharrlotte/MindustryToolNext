@@ -1,14 +1,23 @@
 'use client';
 
+import { VariantProps, cva } from 'class-variance-authority';
 import React, { ReactNode } from 'react';
 
-import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-
-import { cva, VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
 import { XIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 const buttonVariants = cva('hover:bg-destructive/80', {
   variants: {

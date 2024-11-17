@@ -1,6 +1,7 @@
+import { KeyboardEventHandler } from 'react';
+
 import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { useI18n } from '@/i18n/client';
-import { KeyboardEventHandler } from 'react';
 
 type ChatInputFieldProps = {
   reset: number;

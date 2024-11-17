@@ -1,10 +1,10 @@
+import { serverApi } from '@/action/action';
+import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
-import { Log } from '@/types/response/Log';
 import MetricWrapper from '@/components/metric/metric-wrapper';
 import { isError } from '@/lib/utils';
-import { serverApi } from '@/action/action';
 import { getLogs } from '@/query/log';
-import ErrorScreen from '@/components/common/error-screen';
+import { Log } from '@/types/response/Log';
 
 export default async function LoginLog() {
   return (

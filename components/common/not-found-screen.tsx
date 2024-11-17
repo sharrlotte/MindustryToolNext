@@ -1,6 +1,7 @@
+import Link from 'next/link';
+
 import Tran from '@/components/common/tran';
 import BackButton from '@/components/ui/back-button';
-import Link from 'next/link';
 
 export default function NotFoundScreen() {
   return (

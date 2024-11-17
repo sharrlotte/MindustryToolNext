@@ -1,14 +1,13 @@
 'use client';
 
-import { ReactNode, useMemo } from 'react';
-
-import { hasAccess, max } from '@/lib/utils';
-
-import { useMediaQuery } from 'usehooks-ts';
-import { useSession } from '@/context/session-context.client';
-import { usePathname } from 'next/navigation';
-import { groups, Path, SubPath } from '@/app/routes';
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
+import { ReactNode, useMemo } from 'react';
+import { useMediaQuery } from 'usehooks-ts';
+
+import { Path, SubPath, groups } from '@/app/routes';
+import { useSession } from '@/context/session-context.client';
+import { hasAccess, max } from '@/lib/utils';
 
 const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/medium-navigation-items'));
 const SmallScreenNavigationBar = dynamic(() => import('@/app/[locale]/small-navigation-items'));

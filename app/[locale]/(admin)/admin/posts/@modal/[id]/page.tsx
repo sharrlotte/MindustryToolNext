@@ -1,12 +1,12 @@
 import React from 'react';
 
-import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
-import { getPostUpload } from '@/query/post';
-import Tran from '@/components/common/tran';
-import BackButton from '@/components/ui/back-button';
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
+import Tran from '@/components/common/tran';
+import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
+import BackButton from '@/components/ui/back-button';
+import { isError } from '@/lib/utils';
+import { getPostUpload } from '@/query/post';
 
 type Props = {
   params: Promise<{ id: string }>;

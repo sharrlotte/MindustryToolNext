@@ -20,12 +20,7 @@ export const CreatePluginSchema = z.object({
       }),
     )
     .min(1),
-  url: z
-    .string()
-    .regex(
-      /https:\/\/github.com\/([a-zA-Z0-9-_]+)\/([a-zA-Z0-9-_]+)/,
-      'Invalid GitHub URL',
-    ),
+  url: z.string().regex(/https:\/\/github.com\/([a-zA-Z0-9-_]+)\/([a-zA-Z0-9-_]+)/, 'Invalid GitHub URL'),
 });
 
 export type CreatePluginRequestData = z.infer<typeof CreatePluginSchema>;

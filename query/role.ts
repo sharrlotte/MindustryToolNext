@@ -1,5 +1,6 @@
-import { object, z } from 'zod';
 import { AxiosInstance } from 'axios';
+import { object, z } from 'zod';
+
 import { RoleWithAuthorities } from '@/types/response/Role';
 
 export async function changeRoles(axios: AxiosInstance, data: { userId: string; roleIds: number[] }): Promise<void> {

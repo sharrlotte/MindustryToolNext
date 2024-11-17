@@ -1,12 +1,12 @@
 import { Metadata } from 'next/dist/types';
 
-import Client from '@/app/[locale]/(user)/schematics/page.client';
-import env from '@/constant/env';
-import ErrorScreen from '@/components/common/error-screen';
-import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 import { serverApi } from '@/action/action';
-import { getSchematics } from '@/query/schematic';
+import Client from '@/app/[locale]/(user)/schematics/page.client';
+import ErrorScreen from '@/components/common/error-screen';
+import env from '@/constant/env';
 import { isError } from '@/lib/utils';
+import { getSchematics } from '@/query/schematic';
+import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 export const revalidate = 3600;
 

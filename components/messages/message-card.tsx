@@ -4,10 +4,10 @@ import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 import useClientApi from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
+import { getUser } from '@/query/user';
 import { MessageGroup } from '@/types/response/Message';
 
 import { useQuery } from '@tanstack/react-query';
-import { getUser } from '@/query/user';
 
 type Props = {
   className?: string;

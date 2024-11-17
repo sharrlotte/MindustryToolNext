@@ -1,13 +1,15 @@
 'use client';
 
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+
 import RouterSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
 import useClientApi from '@/hooks/use-client';
 import useSafeSearchParams from '@/hooks/use-safe-search-params';
 import { verifyPlayer } from '@/query/auth';
+
 import { useMutation } from '@tanstack/react-query';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
 
 export default function Page() {
   const params = useSafeSearchParams();

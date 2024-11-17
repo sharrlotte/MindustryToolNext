@@ -1,5 +1,8 @@
 'use client';
 
+import { CheckSquare, Square } from 'lucide-react';
+import React, { Fragment, useMemo, useState } from 'react';
+
 import { revalidate } from '@/action/action';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -10,9 +13,8 @@ import { useToast } from '@/hooks/use-toast';
 import { groupBy } from '@/lib/utils';
 import { changeAuthorities, getAuthorities } from '@/query/authorities';
 import { Authority, RoleWithAuthorities } from '@/types/response/Role';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { CheckSquare, Square } from 'lucide-react';
-import React, { Fragment, useMemo, useState } from 'react';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 type Props = {
   role: RoleWithAuthorities;

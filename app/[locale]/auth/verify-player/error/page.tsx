@@ -1,5 +1,6 @@
-import Tran from '@/components/common/tran';
 import React from 'react';
+
+import Tran from '@/components/common/tran';
 
 export default function Page({ searchParams: { message } }: any) {
   return (

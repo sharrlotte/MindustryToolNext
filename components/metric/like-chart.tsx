@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { fillMetric } from '@/lib/utils';
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
-import { getMetric } from '@/query/metric';
 import ErrorScreen from '@/components/common/error-screen';
 import LikeChartClient from '@/components/metric/like-chart.client';
+import { fillMetric } from '@/lib/utils';
+import { isError } from '@/lib/utils';
+import { getMetric } from '@/query/metric';
 
 type Props = {
   start: Date;

@@ -3,22 +3,22 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
+import { createPlugin } from '@/query/plugin';
 import { CreatePluginRequest, CreatePluginRequestData, CreatePluginSchema } from '@/types/request/CreatePluginRequest';
 import { TagGroups } from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { createPlugin } from '@/query/plugin';
-import Tran from '@/components/common/tran';
 
 export default function AddPluginForm() {
   const axios = useClientApi();

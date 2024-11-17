@@ -1,12 +1,12 @@
 'use client';
 
 import { saveAs } from 'file-saver';
+import { ArrowDownToLine } from 'lucide-react';
 import React, { HTMLAttributes } from 'react';
 
 import useClientApi from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
 
-import { ArrowDownToLine } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 
 type DownloadButtonProps = HTMLAttributes<HTMLAnchorElement> & {
@@ -30,7 +30,7 @@ export default function DownloadButton({ className, href, fileName, secure, chil
       {...props}
       href={href}
       download={fileName ?? true}
-      title='download'
+      title="download"
     >
       <ArrowDownToLine className="size-5" />
     </a>

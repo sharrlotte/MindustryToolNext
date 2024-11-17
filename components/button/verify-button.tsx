@@ -1,5 +1,8 @@
 'use client';
 
+import { CheckIcon } from 'lucide-react';
+import React, { ReactNode } from 'react';
+
 import Tran from '@/components/common/tran';
 import {
   AlertDialog,
@@ -13,9 +16,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-
-import { CheckIcon } from 'lucide-react';
-import React, { ReactNode } from 'react';
 
 type VerifyButtonProps = {
   isLoading: boolean;

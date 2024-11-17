@@ -1,8 +1,8 @@
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
 import MetricWrapper from '@/components/metric/metric-wrapper';
+import { isError } from '@/lib/utils';
 import { getLoginHistories } from '@/query/login-history';
 import { UserLoginHistory } from '@/types/response/UserLoginHistory';
 

@@ -1,35 +1,23 @@
 'use client';
 
-import { Hidden } from '@/components/common/hidden';
-import Tran from '@/components/common/tran';
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { addTagPreset } from '@/lib/utils';
-import TagGroup from '@/types/response/TagGroup';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from '@/components/ui/dialog';
 import { useMemo, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useToast } from '@/hooks/use-toast';
+
+import { Hidden } from '@/components/common/hidden';
+import Tran from '@/components/common/tran';
 import TagContainer from '@/components/tag/tag-container';
-import { Tags } from '@/types/response/Tag';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import useQueriesData from '@/hooks/use-queries-data';
+import { useToast } from '@/hooks/use-toast';
+import { addTagPreset } from '@/lib/utils';
+import { Tags } from '@/types/response/Tag';
+import TagGroup from '@/types/response/TagGroup';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type CreatePresetButtonProps = {
   tags: TagGroup[];
@@ -73,10 +61,7 @@ export default function CreatePresetButton({ tags }: CreatePresetButtonProps) {
           <DialogDescription />
         </Hidden>
         <Form {...form}>
-          <form
-            className="relative flex flex-1 flex-col justify-between gap-4 bg-card p-4"
-            onSubmit={form.handleSubmit((value) => createPreset(value))}
-          >
+          <form className="relative flex flex-1 flex-col justify-between gap-4 bg-card p-4" onSubmit={form.handleSubmit((value) => createPreset(value))}>
             <FormField
               control={form.control}
               name="name"

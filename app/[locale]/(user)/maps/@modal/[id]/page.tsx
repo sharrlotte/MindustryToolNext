@@ -1,12 +1,12 @@
 import { Metadata } from 'next/dist/types';
 import React from 'react';
 
-import MapDetailCard from '@/components/map/map-detail-card';
-import env from '@/constant/env';
-import { getMap } from '@/query/map';
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
+import MapDetailCard from '@/components/map/map-detail-card';
+import env from '@/constant/env';
+import { isError } from '@/lib/utils';
+import { getMap } from '@/query/map';
 
 type Props = {
   params: Promise<{ id: string }>;

@@ -1,12 +1,11 @@
 'use client';
 
+import { MoonIcon, SunIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import * as React from 'react';
 
-import { Switch } from '@/components/ui/switch';
-
-import { MoonIcon, SunIcon } from 'lucide-react';
 import Tran from '@/components/common/tran';
+import { Switch } from '@/components/ui/switch';
 
 export const themes = ['light', 'dark', 'system'] as const;
 

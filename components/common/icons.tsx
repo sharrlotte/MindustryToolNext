@@ -1,44 +1,44 @@
 import {
+  AlertCircle,
+  BellIcon,
   BookOpenIcon,
   BotIcon,
-  FileIcon as _FileIcon,
   FolderIcon,
+  Menu,
+  ShieldCheckIcon,
+  X,
+  ArrowDownIcon as _ArrowDownIcon,
+  CrownIcon as _CrownIcon,
+  PencilIcon as _EditIcon,
+  ExpandIcon as _ExpandIcon,
+  FacebookIcon as _FacebookIcon,
+  FileIcon as _FileIcon,
+  GithubIcon as _GithubIcon,
+  Globe as _Glob,
   HomeIcon as _HomeIcon,
   LinkIcon as _LinkIcon,
   MapIcon as _MapIcon,
-  ServerIcon as _ServerIcon,
-  ShieldCheckIcon,
-  UserIcon as _UserIcon,
-  BellIcon,
-  GithubIcon as _GithubIcon,
-  FacebookIcon as _FacebookIcon,
-  ArrowDownIcon as _ArrowDownIcon,
-  Menu,
-  UploadIcon as _UploadIcon,
-  ExpandIcon as _ExpandIcon,
-  ShrinkIcon as _ShrinkIcon,
-  UsersIcon as _UsersIcon,
   PaperclipIcon as _PaperclipIcon,
   SearchIcon as _SearchIcon,
   SendIcon as _SendIcon,
-  SmileIcon as _SmileIcon,
-  PencilIcon as _EditIcon,
-  Globe as _Glob,
-  CrownIcon as _CrownIcon,
+  ServerIcon as _ServerIcon,
+  ShrinkIcon as _ShrinkIcon,
   SigmaSquareIcon as _SigmaIcon,
-  SquareIcon as _SquareIcon,
+  SmileIcon as _SmileIcon,
   CheckSquare2 as _SquareCheckIcon,
-  X,
+  SquareIcon as _SquareIcon,
+  UploadIcon as _UploadIcon,
+  UserIcon as _UserIcon,
   Users as _Users,
-  AlertCircle,
+  UsersIcon as _UsersIcon,
 } from 'lucide-react';
+import { ClipboardList, HistoryIcon, MessageCircleIcon, SettingsIcon, SquareKanbanIcon, TerminalIcon } from 'lucide-react';
+import Image from 'next/image';
 
-import { SquareKanbanIcon, MessageCircleIcon, HistoryIcon, ClipboardList, SettingsIcon, TerminalIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import googleIcon from '@/public/icons/google.svg';
 
 import { DiscordLogoIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
-import Image from 'next/image';
-import googleIcon from '@/public/icons/google.svg';
-import { cn } from '@/lib/utils';
 
 type Props = {
   className?: string;
@@ -74,7 +74,7 @@ export const PluginIcon = () => (
   </svg>
 );
 
-export const WarningIcon = () => <AlertCircle className="size-5"/>
+export const WarningIcon = () => <AlertCircle className="size-5" />;
 export const EllipsisIcon = () => <DotsHorizontalIcon className="size-5" />;
 export const NotificationIcon = () => <BellIcon className="mx-1 size-5 min-h-5 min-w-5" />;
 export const GithubIcon = () => <_GithubIcon className="size-5 min-h-5 min-w-5" />;

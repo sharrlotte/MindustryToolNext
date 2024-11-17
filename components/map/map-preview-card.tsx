@@ -4,17 +4,17 @@ import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
+import ColorText from '@/components/common/color-text';
+import { LinkIcon } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
+import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
-import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import env from '@/constant/env';
-import { Map } from '@/types/response/Map';
-import { LinkIcon } from '@/components/common/icons';
-import InternalLink from '@/components/common/internal-link';
-import ColorText from '@/components/common/color-text';
 import useImageLoading from '@/hooks/use-image-loading';
+import { Map } from '@/types/response/Map';
 
 type MapPreviewCardProps = {
   map: Map;

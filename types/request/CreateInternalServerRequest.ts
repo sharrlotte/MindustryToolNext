@@ -9,6 +9,4 @@ export const CreateInternalServerSchema = z.object({
   startCommand: z.string().max(1000).optional(),
 });
 
-export type CreateInternalServerRequest = z.infer<
-  typeof CreateInternalServerSchema
->;
+export type CreateInternalServerRequest = z.infer<typeof CreateInternalServerSchema>;

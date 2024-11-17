@@ -1,13 +1,12 @@
 'use client';
 
+import { LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import React, { useLayoutEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
-
-import { LogOut } from 'lucide-react';
 
 export default function LogoutButton({ className }: { className?: string }) {
   const [_, setCookie] = useCookies();

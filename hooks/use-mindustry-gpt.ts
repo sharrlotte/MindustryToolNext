@@ -55,12 +55,9 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
   const requestId = useRef(0);
 
   const { toast } = useToast();
-  const [data, setData] = useState<
-    Map<number, { text: string; prompt: string }>
-  >(new Map());
+  const [data, setData] = useState<Map<number, { text: string; prompt: string }>>(new Map());
 
-  const [abortController, setAbortController] =
-    useState<AbortController | null>();
+  const [abortController, setAbortController] = useState<AbortController | null>();
 
   const { mutate, error, isPending } = useMutation({
     mutationKey: ['completion', id],

@@ -1,14 +1,20 @@
-import env from '@/constant/env';
-import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './globals.css';
+
+
+import env from '@/constant/env';
 import I18nProvider from '@/context/locale-context';
 import { Locale } from '@/i18n/config';
+import { cn } from '@/lib/utils';
+
+
+
+import './globals.css';
+
 
 const inter = Inter({
   variable: '--font-inter',
@@ -68,6 +74,8 @@ export default async function Root({ children, params }: Props) {
 
   ReactDOM.preconnect('https://image.mindustry-tool.app');
   ReactDOM.preconnect('https://api.mindustry-tool.app');
+  ReactDOM.preconnect('https://fonts.googleapis.com');
+  ReactDOM.preconnect('https://fonts.gstatic.com', { crossOrigin: 'anonymous' });
 
   return (
     <html

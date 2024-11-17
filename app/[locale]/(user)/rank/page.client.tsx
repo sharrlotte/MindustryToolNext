@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { getMyRank, getRank, getUsersCount } from '@/query/user';
 import { User } from '@/types/response/User';
+
 import { useQuery } from '@tanstack/react-query';
 
 type Props = {

@@ -2,11 +2,12 @@
 
 import { LayoutDashboardIcon } from 'lucide-react';
 import React, { ReactNode, useState } from 'react';
+
 import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
-import ProtectedElement from '@/layout/protected-element';
-import Tran from '@/components/common/tran';
 import { CmdIcon, MapIcon, PluginIcon, SettingIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
 import { useSession } from '@/context/session-context.client';
+import ProtectedElement from '@/layout/protected-element';
 
 const links: {
   id: string;

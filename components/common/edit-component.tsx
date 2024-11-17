@@ -32,11 +32,7 @@ type Props = {
 export function EditComponent({ children }: Props) {
   const [open, setOpen] = useState(false);
 
-  return (
-    <EditorContext.Provider value={{ open, setOpen }}>
-      {children}
-    </EditorContext.Provider>
-  );
+  return <EditorContext.Provider value={{ open, setOpen }}>{children}</EditorContext.Provider>;
 }
 
 export function EditTrigger({ children, ...props }: ButtonProps) {

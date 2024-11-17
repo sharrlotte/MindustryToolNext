@@ -2,34 +2,20 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
+import { createServerFile } from '@/query/file';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { createServerFile } from '@/query/file';
-import Tran from '@/components/common/tran';
 
 const addFileSchema = z.object({
-  file: z
-    .any()
-    .refine((files) => files.size <= 500000, `Max file size is 5MB.`),
+  file: z.any().refine((files) => files.size <= 500000, `Max file size is 5MB.`),
 });
 
 type Props = {
@@ -69,20 +55,13 @@ export default function AddFileDialog({ path }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className="h-10 w-fit whitespace-nowrap"
-          title="Add file"
-          variant="outline"
-        >
+        <Button className="h-10 w-fit whitespace-nowrap" title="Add file" variant="outline">
           <Tran text="upload.add-file" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
-          <form
-            className="space-y-4"
-            onSubmit={form.handleSubmit(handleSubmit)}
-          >
+          <form className="space-y-4" onSubmit={form.handleSubmit(handleSubmit)}>
             <FormField
               control={form.control}
               name="file"
@@ -113,12 +92,7 @@ export default function AddFileDialog({ path }: Props) {
             />
             <div className="flex justify-end">
               <DialogClose asChild>
-                <Button
-                  title="submit"
-                  variant="primary"
-                  type="submit"
-                  disabled={isPending}
-                >
+                <Button title="submit" variant="primary" type="submit" disabled={isPending}>
                   <Tran text="save" />
                 </Button>
               </DialogClose>

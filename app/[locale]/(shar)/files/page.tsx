@@ -1,11 +1,13 @@
 'use client';
 
+import { ArrowLeftCircleIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 import AddFileDialog from '@/app/[locale]/(shar)/files/add-file-dialog';
 import DownloadButton from '@/components/button/download-button';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
+import Tran from '@/components/common/tran';
 import FileCard from '@/components/file/file-card';
 import FileHierarchy from '@/components/file/file-hierarchy';
 import { Button } from '@/components/ui/button';
@@ -16,11 +18,9 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useQueryState from '@/hooks/use-query-state';
 import { useToast } from '@/hooks/use-toast';
-
-import { ArrowLeftCircleIcon } from 'lucide-react';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { deleteServerFile, getServerFiles } from '@/query/file';
-import Tran from '@/components/common/tran';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const defaultState = {
   path: '/',
@@ -94,7 +94,12 @@ export default function Page() {
                   <ContextMenuItem variant="destructive" onClick={() => deleteFile(`${path}/${file.name}`)}>
                     <Tran text="delete" />
                   </ContextMenuItem>
-                  <DownloadButton className="justify-start rounded-sm border-none px-2 py-1.5 text-sm hover:bg-brand" href={`${env.url.api}/files/download?path=${path}/${file.name}`} fileName={`file.zip`} secure>
+                  <DownloadButton
+                    className="justify-start rounded-sm border-none px-2 py-1.5 text-sm hover:bg-brand"
+                    href={`${env.url.api}/files/download?path=${path}/${file.name}`}
+                    fileName={`file.zip`}
+                    secure
+                  >
                     <Tran text="download" />
                   </DownloadButton>
                 </FileCard>

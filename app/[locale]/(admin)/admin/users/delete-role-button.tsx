@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import { revalidate } from '@/action/action';
 import DeleteButton from '@/components/button/delete-button';
 import Tran from '@/components/common/tran';
@@ -9,8 +11,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { deleteRole } from '@/query/role';
 import { Role } from '@/types/response/Role';
+
 import { useMutation } from '@tanstack/react-query';
-import React from 'react';
 
 type Props = {
   role: Role;
@@ -45,5 +47,5 @@ export default function DeleteRoleButton({ role }: Props) {
 
   const t = useI18n();
 
-  return <DeleteButton variant='command' isLoading={isPending} description={t('role.delete', { name: t(name) })} onClick={mutate} />;
+  return <DeleteButton variant="command" isLoading={isPending} description={t('role.delete', { name: t(name) })} onClick={mutate} />;
 }

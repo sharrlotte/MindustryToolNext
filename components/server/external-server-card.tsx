@@ -12,21 +12,11 @@ type MindustryServerCardProps = {
   server: ExternalServer;
 };
 
-export default function ExternalServerCard({
-  server,
-}: MindustryServerCardProps) {
+export default function ExternalServerCard({ server }: MindustryServerCardProps) {
   return (
     <div className="flex flex-col gap-2 overflow-hidden rounded-md bg-card p-2 font-medium shadow-md">
-      <CopyButton
-        className="justify-start px-0 text-xl"
-        content={server.address}
-        data={server.address}
-        variant="ghost"
-      >
-        <ColorText
-          className="overflow-hidden whitespace-nowrap text-foreground"
-          text={server.name ? server.name : server.address}
-        />
+      <CopyButton className="justify-start px-0 text-xl" content={server.address} data={server.address} variant="ghost">
+        <ColorText className="overflow-hidden whitespace-nowrap text-foreground" text={server.name ? server.name : server.address} />
       </CopyButton>
       <section className="flex h-full flex-col overflow-hidden rounded-sm bg-background p-2">
         <div className="flex h-full flex-col justify-between">
@@ -57,9 +47,7 @@ export default function ExternalServerCard({
             </span>
             <span className="overflow-hidden whitespace-nowrap capitalize">
               Game mode:
-              <ColorText
-                text={server.modeName ? server.modeName : server.mode}
-              />
+              <ColorText text={server.modeName ? server.modeName : server.mode} />
             </span>
           </div>
           <span className="col-span-full">
@@ -73,11 +61,7 @@ export default function ExternalServerCard({
           )}
           <span>Ping: {server.ping}ms</span>
           <div className="flex justify-end gap-2">
-            <LikeComponent
-              initialLikeCount={server.likes}
-              initialLikeData={server.userLike}
-              itemId={''}
-            >
+            <LikeComponent initialLikeCount={server.likes} initialLikeData={server.userLike} itemId={''}>
               <LikeButton className="w-9" />
               <LikeCount className="w-9" />
               <DislikeButton className="w-9" />

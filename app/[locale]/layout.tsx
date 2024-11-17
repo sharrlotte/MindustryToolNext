@@ -8,6 +8,7 @@ import { TagsProvider } from '@/context/tags-context';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
+
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import React from 'react';
+import removeMd from 'remove-markdown';
 
-import PostDetailCard from '@/components/post/post-detail-card';
-import { getPost } from '@/query/post';
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
+import PostDetailCard from '@/components/post/post-detail-card';
 import env from '@/constant/env';
-import removeMd from 'remove-markdown';
+import { isError } from '@/lib/utils';
+import { getPost } from '@/query/post';
 
 type Props = {
   params: Promise<{ id: string }>;

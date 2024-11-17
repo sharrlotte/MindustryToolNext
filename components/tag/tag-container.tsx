@@ -1,8 +1,8 @@
+import React from 'react';
+
 import TagCard from '@/components/tag/tag-card';
 import { cn } from '@/lib/utils';
 import Tag from '@/types/response/Tag';
-
-import React from 'react';
 
 type TagContainerProps = {
   className?: string;
@@ -10,11 +10,7 @@ type TagContainerProps = {
   handleDeleteTag?: (item: Tag) => void;
 };
 
-export default function TagContainer({
-  className,
-  tags,
-  handleDeleteTag,
-}: TagContainerProps) {
+export default function TagContainer({ className, tags, handleDeleteTag }: TagContainerProps) {
   if (tags === undefined || tags.length === 0) {
     return <></>;
   }
@@ -22,11 +18,7 @@ export default function TagContainer({
   return (
     <section className={cn('flex w-full flex-wrap gap-1', className)}>
       {tags.map((item) => (
-        <TagCard
-          key={item.name + item.value}
-          tag={item}
-          onDelete={handleDeleteTag && (() => handleDeleteTag(item))}
-        />
+        <TagCard key={item.name + item.value} tag={item} onDelete={handleDeleteTag && (() => handleDeleteTag(item))} />
       ))}
     </section>
   );

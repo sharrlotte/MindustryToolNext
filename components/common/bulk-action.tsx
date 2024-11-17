@@ -1,3 +1,5 @@
+import React, { ReactNode, useCallback, useState } from 'react';
+
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
@@ -13,7 +15,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import React, { ReactNode, useCallback, useState } from 'react';
 
 type ContextType = {
   show: boolean;
@@ -48,10 +49,7 @@ type BulkActionProps = {
   children: ReactNode;
 };
 
-export function BulkActionContainer({
-  onActionPerform,
-  children,
-}: BulkActionProps) {
+export function BulkActionContainer({ onActionPerform, children }: BulkActionProps) {
   const [selected, setSelected] = useState<string[]>([]);
   const [show, setShow] = useState(false);
 
@@ -112,10 +110,7 @@ export function BulkDeleteToggle() {
             <AlertDialogCancel>
               <Tran text="cancel" />
             </AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive hover:bg-destructive"
-              asChild
-            >
+            <AlertDialogAction className="bg-destructive hover:bg-destructive" asChild>
               <Button onClick={() => onActionPerform(value)}>
                 <Tran text="delete" />
               </Button>
@@ -139,11 +134,7 @@ type BulkActionSelectorProps = {
   children?: ReactNode;
 };
 
-export function BulkActionSelector({
-  className,
-  value,
-  children,
-}: BulkActionSelectorProps) {
+export function BulkActionSelector({ className, value, children }: BulkActionSelectorProps) {
   const { show, value: selected, onSelect } = useBulkAction();
   const isSelected = selected.includes(value);
 
@@ -152,12 +143,7 @@ export function BulkActionSelector({
   }
 
   return (
-    <Button
-      className={cn('absolute right-1 top-1', className)}
-      variant="icon"
-      size="icon"
-      onClick={() => onSelect(value)}
-    >
+    <Button className={cn('absolute right-1 top-1', className)} variant="icon" size="icon" onClick={() => onSelect(value)}>
       {children || (isSelected ? <SquareCheckedIcon /> : <SquareIcon />)}
     </Button>
   );

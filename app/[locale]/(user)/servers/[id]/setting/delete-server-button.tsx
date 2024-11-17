@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { revalidate } from '@/action/action';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -8,8 +10,8 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { deleteInternalServer } from '@/query/server';
+
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 
 type DeleteServerButtonProps = {
   id: string;

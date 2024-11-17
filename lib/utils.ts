@@ -1,13 +1,13 @@
 import { type ClassValue, clsx } from 'clsx';
+import { notFound } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
+import { ApiError } from '@/action/action';
+import { AuthorityEnum, UserRole } from '@/constant/enum';
 import env from '@/constant/env';
 import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
 import TagGroup from '@/types/response/TagGroup';
-import { AuthorityEnum, UserRole } from '@/constant/enum';
-import { ApiError } from '@/action/action';
-import { notFound } from 'next/navigation';
 
 export function isError<T extends Record<string, any>>(req: T | ApiError | null): req is ApiError {
   if (req && typeof req === 'object' && 'error' in req && 'status' in req.error && req.error.status === 404) notFound();

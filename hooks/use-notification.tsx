@@ -1,7 +1,8 @@
+import { useCallback } from 'react';
+
 import { useSession } from '@/context/session-context.client';
 import { useToast } from '@/hooks/use-toast';
 import { Message } from '@/types/response/Message';
-import { useCallback } from 'react';
 
 export default function useNotification() {
   const { session } = useSession();

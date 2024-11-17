@@ -2,26 +2,27 @@
 
 import React, { useState } from 'react';
 
+import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
+import GridPaginationList from '@/components/common/grid-pagination-list';
+import InfinitePage from '@/components/common/infinite-page';
+import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
+import PaginationNavigator from '@/components/common/pagination-navigator';
+import Tran from '@/components/common/tran';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import { deleteMap, getMapUploadCount, getMapUploads } from '@/query/map';
-import GridPaginationList from '@/components/common/grid-pagination-list';
-import { PaginationLayoutSwitcher, ListLayout, GridLayout } from '@/components/common/pagination-layout';
-import PaginationNavigator from '@/components/common/pagination-navigator';
-import useClientQuery from '@/hooks/use-client-query';
-import Tran from '@/components/common/tran';
-import InfinitePage from '@/components/common/infinite-page';
-import useQueriesData from '@/hooks/use-queries-data';
+import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
-import { toast } from '@/hooks/use-toast';
-import { useMutation } from '@tanstack/react-query';
-import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
+import useClientQuery from '@/hooks/use-client-query';
+import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
+import { toast } from '@/hooks/use-toast';
+import { omit } from '@/lib/utils';
+import { deleteMap, getMapUploadCount, getMapUploads } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Map } from '@/types/response/Map';
-import { omit } from '@/lib/utils';
-import { useTags } from '@/context/tags-context.client';
+
+import { useMutation } from '@tanstack/react-query';
 
 type Props = {
   maps: Map[];

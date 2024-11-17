@@ -1,13 +1,13 @@
-import { Player } from '@/types/response/Player';
-import { Skeleton } from '@/components/ui/skeleton';
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
-import { getServerPlayers } from '@/query/server';
 import { serverApi } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
+import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 import { isError } from '@/lib/utils';
+import { getServerPlayers } from '@/query/server';
+import { Player } from '@/types/response/Player';
 
 type PlayersCardProps = {
   id: string;

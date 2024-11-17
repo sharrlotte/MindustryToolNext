@@ -1,9 +1,10 @@
+import React from 'react';
+
 import { TagName } from '@/components/tag/tag-name';
 import TagTooltip from '@/components/tag/tag-tooltip';
 import { Separator } from '@/components/ui/separator';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import TagGroup from '@/types/response/TagGroup';
-import React from 'react';
 
 type SingeFilerTagsProps = {
   group: TagGroup;
@@ -11,21 +12,10 @@ type SingeFilerTagsProps = {
   handleTagGroupChange: (value: string) => void;
 };
 
-function InternalSingeFilerTags({
-  group,
-  selectedValue,
-  handleTagGroupChange,
-}: SingeFilerTagsProps) {
+function InternalSingeFilerTags({ group, selectedValue, handleTagGroupChange }: SingeFilerTagsProps) {
   return (
-    <ToggleGroup
-      className="flex w-full flex-wrap justify-start"
-      type={'single'}
-      value={selectedValue}
-      onValueChange={handleTagGroupChange}
-    >
-      <TagName className="whitespace-nowrap text-lg capitalize">
-        {group.name}
-      </TagName>
+    <ToggleGroup className="flex w-full flex-wrap justify-start" type={'single'} value={selectedValue} onValueChange={handleTagGroupChange}>
+      <TagName className="whitespace-nowrap text-lg capitalize">{group.name}</TagName>
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map((value) => (
         <TagTooltip value={value} key={value}>

@@ -1,7 +1,9 @@
-import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
-import { Message } from '@/types/response/Message';
 import { useSocket } from '@/context/socket-context';
 import { MessageQuery } from '@/types/data/pageable-search-schema';
+import { Message } from '@/types/response/Message';
+
+import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+
 export default function useMessageQuery<P extends MessageQuery>(room: string, params: P, queryKey: QueryKey) {
   const { socket } = useSocket();
 

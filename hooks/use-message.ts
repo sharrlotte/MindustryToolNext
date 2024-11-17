@@ -13,9 +13,7 @@ export default function useMessage({ room, method }: Props) {
   const sendMessage = useCallback(
     (message: string) => {
       if (state === 'connected') {
-        return socket
-          .onRoom(room)
-          .send({ data: message, method: method || 'MESSAGE' });
+        return socket.onRoom(room).send({ data: message, method: method || 'MESSAGE' });
       } else throw new Error('Socket is not connected');
     },
     [method, room, socket, state],

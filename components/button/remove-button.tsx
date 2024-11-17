@@ -1,5 +1,8 @@
 'use client';
 
+import { TrashIcon } from 'lucide-react';
+import React from 'react';
+
 import Tran from '@/components/common/tran';
 import {
   AlertDialog,
@@ -13,9 +16,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-
-import { TrashIcon } from 'lucide-react';
-import React from 'react';
 
 type RemoveButtonProps = {
   isLoading: boolean;

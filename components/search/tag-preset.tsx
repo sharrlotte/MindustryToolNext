@@ -1,19 +1,20 @@
 'use client';
 
+import React, { useCallback, useMemo, useState } from 'react';
+
 import { Hidden } from '@/components/common/hidden';
 import { XIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import Search from '@/components/search/search-input';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
-
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import useQueriesData from '@/hooks/use-queries-data';
-import { deleteTagPreset, getTagPreset, TagPreset } from '@/lib/utils';
+import { TagPreset, deleteTagPreset, getTagPreset } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
+
 import { useQuery } from '@tanstack/react-query';
-import React, { useCallback, useMemo, useState } from 'react';
 
 type TagPresetListProps = {
   onPresetChoose: (tags: TagGroup[]) => void;
@@ -54,7 +55,7 @@ export default function TagPresetList({ onPresetChoose }: TagPresetListProps) {
         </Hidden>
         <Search className="w-full p-1">
           <Search.Icon className="p-1" />
-          <Search.Input value={filter} placeholder='filter' onChange={(event) => setFilter(event.currentTarget.value)} />
+          <Search.Input value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
         </Search>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1">
           {preset.map((item) => (

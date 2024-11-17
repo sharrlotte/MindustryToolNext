@@ -4,13 +4,13 @@ import React, { FormEvent, KeyboardEvent, useState } from 'react';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
+import Tran from '@/components/common/tran';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import useSearchId from '@/hooks/use-search-id-params';
-import { Input } from '@/components/ui/input';
-import Tran from '@/components/common/tran';
 
 export default function Page() {
   const { id } = useSearchId();

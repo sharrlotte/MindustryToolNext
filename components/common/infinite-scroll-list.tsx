@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
+import EndOfPage from '@/components/common/end-of-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
@@ -8,7 +9,6 @@ import { isReachedEnd, makeArray, mapReversed, mergeNestArray } from '@/lib/util
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
-import EndOfPage from '@/components/common/end-of-page';
 
 type InfiniteScrollListProps<T, P> = {
   className?: string;

@@ -1,7 +1,7 @@
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import InternalServerCard from '@/components/server/internal-server-card';
+import { isError } from '@/lib/utils';
 import { getMeServers } from '@/query/user';
 
 export async function MeServer() {

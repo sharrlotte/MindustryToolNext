@@ -1,8 +1,8 @@
+import Image from 'next/image';
 import React from 'react';
 
 import FallbackImage from '@/components/common/fallback-image';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 type CardProps = React.HTMLAttributes<HTMLDivElement>;
 

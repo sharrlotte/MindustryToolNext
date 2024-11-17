@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 
 import ColorText from '@/components/common/color-text';
-import { InternalServerDetail } from '@/types/response/InternalServerDetail';
-import Tran from '@/components/common/tran';
-import ServerStatus from '@/components/server/server-status';
 import { ServerIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import Tran from '@/components/common/tran';
+import ServerStatus from '@/components/server/server-status';
+import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
 type MyServerInstancesCardProps = {
   server: InternalServerDetail;

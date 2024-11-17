@@ -4,16 +4,16 @@ import Link from 'next/link';
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
+import Tran from '@/components/common/tran';
+import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
+import ProtectedElement from '@/layout/protected-element';
+import { deletePlugin } from '@/query/plugin';
 import { Plugin } from '@/types/response/Plugin';
 
 import { useMutation } from '@tanstack/react-query';
-import { deletePlugin } from '@/query/plugin';
-import { useSession } from '@/context/session-context.client';
-import ProtectedElement from '@/layout/protected-element';
-import Tran from '@/components/common/tran';
 
 type Props = {
   plugin: Plugin;

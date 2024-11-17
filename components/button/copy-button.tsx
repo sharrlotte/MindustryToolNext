@@ -1,12 +1,13 @@
 'use client';
 
+import { VariantProps, cva } from 'class-variance-authority';
 import { Copy } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
 import { Button, ButtonProps } from '@/components/ui/button';
 import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
-import { cva, VariantProps } from 'class-variance-authority';
+
 import { useMutation } from '@tanstack/react-query';
 
 const copyButtonVariants = cva('p-2 hover:bg-brand bg-transparent', {

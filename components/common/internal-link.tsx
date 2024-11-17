@@ -1,13 +1,13 @@
 'use client';
 
 import { VariantProps, cva } from 'class-variance-authority';
-import React, { useCallback } from 'react';
 import Link from 'next/link';
+import React, { useCallback } from 'react';
 
-import { cn } from '@/lib/utils';
 import env from '@/constant/env';
 import { useLocaleStore } from '@/context/locale-context';
 import { locales } from '@/i18n/config';
+import { cn } from '@/lib/utils';
 
 const linkVariants = cva('flex gap-2', {
   variants: {

@@ -1,6 +1,7 @@
+import React, { ReactNode } from 'react';
+
 import Tran from '@/components/common/tran';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import React, { ReactNode } from 'react';
 
 type Props = {
   value: string;
@@ -12,7 +13,7 @@ function InternalTagTooltip({ value, children }: Props) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className='flex'>{children}</span>
+          <span className="flex">{children}</span>
         </TooltipTrigger>
         <TooltipContent className="bg-foreground normal-case text-background">
           <Tran text={`tags.${value}.description`} />

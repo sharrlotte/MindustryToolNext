@@ -1,5 +1,6 @@
-import Ads from '@/components/common/ads';
 import React, { ReactNode } from 'react';
+
+import Ads from '@/components/common/ads';
 
 type Props = {
   children: ReactNode;

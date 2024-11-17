@@ -1,8 +1,8 @@
 import { UploadIcon } from 'lucide-react';
 import React from 'react';
 
-import { cn } from '@/lib/utils';
 import Tran from '@/components/common/tran';
+import { cn } from '@/lib/utils';
 
 type Props = {
   className?: string;
@@ -57,20 +57,11 @@ export default function UploadField({ className, accept, onFileDrop }: Props) {
 
     const extensions = accept?.split(',');
 
-    return files.every((file) =>
-      extensions?.some((extension) => file.name.endsWith(extension)),
-    );
+    return files.every((file) => extensions?.some((extension) => file.name.endsWith(extension)));
   }
 
   return (
-    <div
-      className={cn(
-        'flex h-full w-full flex-col items-center justify-center rounded-md border border-border p-10',
-        className,
-      )}
-      onDrop={handleDrop}
-      onDragOver={handleDrop}
-    >
+    <div className={cn('flex h-full w-full flex-col items-center justify-center rounded-md border border-border p-10', className)} onDrop={handleDrop} onDragOver={handleDrop}>
       <UploadIcon className="size-10" />
       <span>
         <Tran text="upload.drag-drop-file" />
@@ -79,13 +70,7 @@ export default function UploadField({ className, accept, onFileDrop }: Props) {
         <label className="underline hover:cursor-pointer" htmlFor="file">
           <Tran text="upload.browse-file" />
         </label>
-        <input
-          id="file"
-          type="file"
-          hidden
-          accept={accept}
-          onChange={handleFileSelect}
-        />
+        <input id="file" type="file" hidden accept={accept} onChange={handleFileSelect} />
       </span>
     </div>
   );

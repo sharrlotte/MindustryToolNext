@@ -14,13 +14,7 @@ export default function ItemRequirementCard({ requirements }: Props) {
     <section className=" flex flex-row flex-wrap gap-2">
       {requirements.map((r, index) => (
         <span key={index} className="flex flex-row items-center justify-center">
-          <Image
-            className="size-5"
-            width={24}
-            height={24}
-            src={`/assets/items/item-${r.name}.png`}
-            alt={r.name}
-          />
+          <Image className="size-5" width={24} height={24} src={`/assets/items/item-${r.name}.png`} alt={r.name} />
           <span> {r.amount} </span>
         </span>
       ))}

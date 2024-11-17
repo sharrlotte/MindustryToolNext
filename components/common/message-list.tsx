@@ -1,18 +1,18 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useInterval, useLocalStorage } from 'usehooks-ts';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
+import Tran from '@/components/common/tran';
 import { useSocket } from '@/context/socket-context';
+import useMessageQuery from '@/hooks/use-message-query';
+import useNotification from '@/hooks/use-notification';
+import useWindow from '@/hooks/use-window';
 import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
+import { MessageQuery } from '@/types/data/pageable-search-schema';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
-import useMessageQuery from '@/hooks/use-message-query';
-import { MessageQuery } from '@/types/data/pageable-search-schema';
-import useNotification from '@/hooks/use-notification';
-import Tran from '@/components/common/tran';
-import useWindow from '@/hooks/use-window';
-import { useInterval, useLocalStorage } from 'usehooks-ts';
 
 type MessageListProps = {
   className?: string;

@@ -8,11 +8,7 @@ type OutsideWrapperProps = HTMLAttributes<HTMLDivElement> & {
   onClickOutside: () => void;
 };
 
-export default function OutsideWrapper({
-  className,
-  children,
-  onClickOutside,
-}: OutsideWrapperProps) {
+export default function OutsideWrapper({ className, children, onClickOutside }: OutsideWrapperProps) {
   const wrapperRef = useRef(null);
 
   useEffect(() => {

@@ -1,6 +1,7 @@
+import React from 'react';
+
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
-import React from 'react';
 
 export default function Loading() {
   return (

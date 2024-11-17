@@ -12,11 +12,7 @@ export default function Collapse({ message, children }: Props) {
 
   return (
     <div>
-      <button
-        className="w-full"
-        title=""
-        onClick={() => setOpen((prev) => !prev)}
-      >
+      <button className="w-full" title="" onClick={() => setOpen((prev) => !prev)}>
         {message}
       </button>
       <div

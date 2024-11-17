@@ -1,9 +1,9 @@
-import { fillMetric } from '@/lib/utils';
-import LoginChartClient from '@/components/metric/login-chart.client';
-import { getMetric } from '@/query/metric';
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
+import LoginChartClient from '@/components/metric/login-chart.client';
+import { fillMetric } from '@/lib/utils';
+import { isError } from '@/lib/utils';
+import { getMetric } from '@/query/metric';
 
 type Props = {
   start: Date;

@@ -1,12 +1,12 @@
+import { unstable_cache } from 'next/cache';
 import React, { ReactNode } from 'react';
 
-import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
-import { getTags } from '@/query/tag';
-import axiosInstance from '@/query/config/config';
-import { isError } from '@/lib/utils';
 import ErrorScreen from '@/components/common/error-screen';
 import { TagsProviderClient } from '@/context/tags-context.client';
-import { unstable_cache } from 'next/cache';
+import { isError } from '@/lib/utils';
+import axiosInstance from '@/query/config/config';
+import { getTags } from '@/query/tag';
+import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
 
 const predicate = (tag: TagGroup) => tag.name !== 'size';
 

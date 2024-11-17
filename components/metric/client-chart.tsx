@@ -1,9 +1,9 @@
-import { fillMetric } from '@/lib/utils';
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
-import { getMetric } from '@/query/metric';
 import ErrorScreen from '@/components/common/error-screen';
 import ClientChartClient from '@/components/metric/client-chart.client';
+import { fillMetric } from '@/lib/utils';
+import { isError } from '@/lib/utils';
+import { getMetric } from '@/query/metric';
 
 type Props = {
   start: Date;
@@ -12,7 +12,11 @@ type Props = {
 };
 
 export default async function ClientChart({ start, end, dates }: Props) {
-  const [mod, web, server] = await Promise.all([serverApi((axios) => getMetric(axios, start, end, 'DAILY_MOD_USER')), serverApi((axios) => getMetric(axios, start, end, 'DAILY_WEB_USER')), serverApi((axios) => getMetric(axios, start, end, 'DAILY_SERVER_USER'))]);
+  const [mod, web, server] = await Promise.all([
+    serverApi((axios) => getMetric(axios, start, end, 'DAILY_MOD_USER')),
+    serverApi((axios) => getMetric(axios, start, end, 'DAILY_WEB_USER')),
+    serverApi((axios) => getMetric(axios, start, end, 'DAILY_SERVER_USER')),
+  ]);
 
   if (isError(mod)) {
     return <ErrorScreen error={mod} />;

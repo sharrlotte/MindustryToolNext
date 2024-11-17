@@ -1,3 +1,5 @@
+import { LogOut } from 'lucide-react';
+
 import { UserActions } from '@/app/[locale]/user-sheet';
 import LoginButton from '@/components/button/login-button';
 import LogoutButton from '@/components/button/logout-button';
@@ -9,7 +11,6 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import useToggle from '@/hooks/use-state-toggle';
 import Modal from '@/layout/modal';
-import { LogOut } from 'lucide-react';
 
 export function UserDisplay() {
   return (

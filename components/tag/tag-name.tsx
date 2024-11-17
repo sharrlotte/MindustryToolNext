@@ -1,10 +1,10 @@
 'use client';
 
+import Image from 'next/image';
 import React from 'react';
 
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
 import Tran from '@/components/common/tran';
+import { cn } from '@/lib/utils';
 
 const icons: Record<string, string> = {
   copper: 'item-copper-ui.png',

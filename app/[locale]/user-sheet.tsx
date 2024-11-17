@@ -1,11 +1,11 @@
 import { GlobeIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
-import { ThemeSwitcher } from '@/components/theme/theme-switcher';
-import Tran from '@/components/common/tran';
-import InternalLink from '@/components/common/internal-link';
-import { SettingIcon } from '@/components/common/icons';
 import { ChangeLanguageDialog } from '@/app/[locale]/change-language-dialog';
+import { SettingIcon } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
+import Tran from '@/components/common/tran';
+import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 
 type Tab = {
   icon: ReactNode;

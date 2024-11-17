@@ -1,7 +1,8 @@
+import React from 'react';
+
 import PreviewContainerSkeleton from '@/components/common/preview-container-skeleton';
 import NameTagSearchSkeleton from '@/components/search/name-tag-search-skeleton';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import React from 'react';
 
 export default function Loading() {
   return (

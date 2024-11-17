@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
     staleTimes: {
       dynamic: 10,
     },
+    forceSwcTransforms: true,
+  },
+  compiler: {
+    removeConsole: {
+      exclude: ['error'],
+    },
   },
   crossOrigin: 'anonymous',
   reactStrictMode: true,

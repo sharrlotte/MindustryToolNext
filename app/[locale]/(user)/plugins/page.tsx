@@ -1,10 +1,11 @@
+import React from 'react';
+
 import { serverApi } from '@/action/action';
 import Client from '@/app/[locale]/(user)/plugins/page.client';
 import ErrorScreen from '@/components/common/error-screen';
 import { isError } from '@/lib/utils';
 import { getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
-import React from 'react';
 
 type Props = {
   searchParams: Promise<ItemPaginationQueryType>;

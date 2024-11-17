@@ -1,6 +1,8 @@
+import { Variants, motion } from 'framer-motion';
 import React, { ReactNode, useCallback, useState } from 'react';
+import { useMediaQuery } from 'usehooks-ts';
 
-  import { UserDisplay } from '@/app/[locale]/user-display';
+import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
 import { MenuIcon, SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
@@ -13,8 +15,6 @@ import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
 import { useNavBar } from '@/zustand/nav-bar-store';
-import { motion, Variants } from 'framer-motion';
-import { useMediaQuery } from 'usehooks-ts';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
@@ -154,6 +154,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
           className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold transition-colors duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
             'bg-brand text-background dark:text-foreground': path === bestMatch,
             'justify-start gap-2 py-2': expand,
+            'w-10': !expand,
           })}
           href={path}
         >
@@ -174,6 +175,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
               {
                 'bg-brand text-background dark:text-foreground': path.some((path) => path.path === bestMatch) && !value,
                 'justify-start gap-2 py-2': expand,
+                'w-10': !expand,
               },
             )}
             showChevron={expand}

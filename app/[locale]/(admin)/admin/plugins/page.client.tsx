@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 
+import InfinitePage from '@/components/common/infinite-page';
 import UploadPluginCard from '@/components/plugin/upload-plugin-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import { useTags } from '@/context/tags-context.client';
-import { getPluginUploads } from '@/query/plugin';
-import InfinitePage from '@/components/common/infinite-page';
 import useSearchQuery from '@/hooks/use-search-query';
+import { getPluginUploads } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
 
 export default function Client() {

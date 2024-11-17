@@ -1,17 +1,17 @@
 import React, { Suspense } from 'react';
 
-import ReloadServerDialog from '@/app/[locale]/(user)/servers/reload-server-dialog';
-import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
-import Tran from '@/components/common/tran';
-import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { getSession } from '@/action/action';
-import ProtectedElement from '@/layout/protected-element';
 import { CommunityServer } from '@/app/[locale]/(user)/servers/community-server';
+import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import { MeServer } from '@/app/[locale]/(user)/servers/my-server';
 import { OfficialServer } from '@/app/[locale]/(user)/servers/official-server';
-import ScrollContainer from '@/components/common/scroll-container';
+import ReloadServerDialog from '@/app/[locale]/(user)/servers/reload-server-dialog';
 import RequireLogin from '@/components/common/require-login';
-import { ServerTabs, ServerTabsList, ServerTabsTrigger, ServerTabsContent } from '@/components/ui/server-tabs';
+import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
+import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
+import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
+import ProtectedElement from '@/layout/protected-element';
 
 const skeleton = (
   <div className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1">
@@ -44,7 +44,7 @@ export default async function Page() {
               </ServerTabsTrigger>
             </ServerTabsList>
           </div>
-          <div className='space-x-2'>
+          <div className="space-x-2">
             <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
               <ReloadServerDialog />
               <CreateServerDialog />

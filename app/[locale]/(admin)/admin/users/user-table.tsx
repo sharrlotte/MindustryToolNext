@@ -2,23 +2,22 @@
 
 import React, { useState } from 'react';
 
-import ComboBox from '@/components/common/combo-box';
-import InfinitePage from '@/components/common/infinite-page';
-import { Input } from '@/components/ui/input';
 import { UserManagementCard } from '@/app/[locale]/(admin)/admin/users/user-management-card';
-import { UserRole } from '@/constant/enum';
-import useQueryState from '@/hooks/use-query-state';
-import { Role } from '@/types/response/Role';
-
-import { getRoles } from '@/query/role';
-import { getUserCount, getUsers } from '@/query/user';
-import { GridLayout, ListLayout } from '@/components/common/pagination-layout';
+import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
+import InfinitePage from '@/components/common/infinite-page';
+import { GridLayout, ListLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
+import { Input } from '@/components/ui/input';
+import { UserRole } from '@/constant/enum';
 import useClientQuery from '@/hooks/use-client-query';
+import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';
-import { ItemPaginationQuery } from '@/query/search-query';
 import { omit } from '@/lib/utils';
+import { getRoles } from '@/query/role';
+import { ItemPaginationQuery } from '@/query/search-query';
+import { getUserCount, getUsers } from '@/query/user';
+import { Role } from '@/types/response/Role';
 
 const defaultState = {
   name: '',

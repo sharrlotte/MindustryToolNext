@@ -1,12 +1,12 @@
 import { Metadata } from 'next/dist/types';
 
-import env from '@/constant/env';
-import ErrorScreen from '@/components/common/error-screen';
-import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 import { serverApi } from '@/action/action';
+import Client from '@/app/[locale]/(admin)/admin/posts/post.client';
+import ErrorScreen from '@/components/common/error-screen';
+import env from '@/constant/env';
 import { isError } from '@/lib/utils';
 import { getPostUploads } from '@/query/post';
-import Client from '@/app/[locale]/(admin)/admin/posts/post.client';
+import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 export const revalidate = 3600;
 
