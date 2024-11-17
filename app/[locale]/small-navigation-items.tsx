@@ -51,7 +51,7 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
         <motion.div variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
           <div
             className={cn(
-              'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background transition-colors transition-transform duration-300 dark:bg-background/90',
+              'pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background transition-all duration-300 dark:bg-background/90',
               {
                 'translate-x-0': isVisible,
               },
