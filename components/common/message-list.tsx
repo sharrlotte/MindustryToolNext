@@ -35,7 +35,7 @@ export default function MessageList({
   loader,
   noResult = <NoResult className="flex w-full items-center justify-center" />,
   end,
-  threshold = 500,
+  threshold = 1000,
   room,
   showNotification = true,
   container,
