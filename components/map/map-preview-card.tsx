@@ -42,7 +42,7 @@ function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, us
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>
-          <ColorText text={name} />
+        <ColorText text={name} />
         </PreviewHeader>
         <PreviewActions>
           <DownloadButton href={downloadLink} fileName={downloadName} />

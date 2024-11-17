@@ -19,13 +19,9 @@ type TriggerProps = {
 const AccordionTrigger = React.forwardRef<React.ElementRef<typeof AccordionPrimitive.Trigger>, React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> & TriggerProps>(
   ({ className, children, showChevron = true, ...props }, ref) => (
     <AccordionPrimitive.Header className="flex">
-      <AccordionPrimitive.Trigger
-        ref={ref}
-        className={cn('flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all [&[data-state=open]>svg:last-of-type]:rotate-180', className)}
-        {...props}
-      >
+      <AccordionPrimitive.Trigger ref={ref} className={cn('flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all group', className)} {...props}>
         {children}
-        {showChevron && <ChevronDownIcon className="h-4 w-4 shrink-0 transition-transform duration-200 dark:text-foreground dark:hover:text-foreground" />}
+        {showChevron && <ChevronDownIcon className="h-4 w-4 ml-auto shrink-0 transition-transform duration-200 group-aria-expanded:rotate-180 dark:text-foreground dark:hover:text-foreground" />}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   ),
