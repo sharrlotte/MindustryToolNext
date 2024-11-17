@@ -12,19 +12,18 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTags } from '@/context/tags-context.client';
-import { useI18n } from '@/i18n/client';
 import { User } from '@/types/response/User';
 import { getUserSchematics, getUserMaps, getUserPosts } from '@/query/user';
 import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
 import InfinitePage from '@/components/common/infinite-page';
 import { ItemPaginationQuery } from '@/query/search-query';
 import useSearchQuery from '@/hooks/use-search-query';
+import Tran from '@/components/common/tran';
 
 type TabProps = {
   user: User;
 };
 export default function Other({ user }: TabProps) {
-  const t = useI18n();
   const id = user.id;
   const {
     searchTags: { schematic, map, post },
@@ -37,9 +36,15 @@ export default function Other({ user }: TabProps) {
       <UserDetail user={user} />
       <Tabs className="w-full" defaultValue="schematic">
         <TabsList className="w-full justify-start bg-card">
-          <TabsTrigger value="schematic">{t('schematic')}</TabsTrigger>
-          <TabsTrigger value="map">{t('map')}</TabsTrigger>
-          <TabsTrigger value="post">{t('post')}</TabsTrigger>
+          <TabsTrigger value="schematic">
+            <Tran text="schematic" />
+          </TabsTrigger>
+          <TabsTrigger value="map">
+            <Tran text="map" />
+          </TabsTrigger>
+          <TabsTrigger value="post">
+            <Tran text="post" />
+          </TabsTrigger>{' '}
         </TabsList>
         <TabsContent value="schematic">
           <div className="relative flex h-full flex-col gap-2">

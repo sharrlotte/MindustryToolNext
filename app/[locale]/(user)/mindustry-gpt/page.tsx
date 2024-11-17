@@ -1,5 +1,6 @@
 'use client';
 
+import ChatInputField from '@/app/[locale]/(user)/mindustry-gpt/chat-input-field';
 import LoginButton from '@/components/button/login-button';
 import Markdown from '@/components/common/markdown';
 import Tran from '@/components/common/tran';
@@ -9,7 +10,6 @@ import UserAvatar from '@/components/user/user-avatar';
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import useMindustryGpt from '@/hooks/use-mindustry-gpt';
-import { useI18n } from '@/i18n/client';
 import ProtectedElement from '@/layout/protected-element';
 import { isReachedEnd } from '@/lib/utils';
 import { SendIcon } from 'lucide-react';
@@ -18,7 +18,6 @@ import { Fragment, KeyboardEvent, useEffect, useState } from 'react';
 const url = `${env.url.api}/mindustry-gpt/chat`;
 
 export default function Page() {
-  const t = useI18n();
   const { session } = useSession();
 
   const [submit, { data, isPending, isLoading }] = useMindustryGpt({
@@ -46,7 +45,7 @@ export default function Page() {
     }, 1000);
   }
 
-  function handleKeyPress(event: KeyboardEvent<HTMLDivElement>) {
+  function handleKeyPress(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === 'Enter') {
       handleSubmit();
     }
@@ -56,7 +55,9 @@ export default function Page() {
     <div className="grid h-full grid-rows-[1fr,auto,auto] gap-2 overflow-hidden p-2">
       <div className="flex h-full flex-col space-y-4 overflow-y-auto p-2">
         {data.length === 0 && !isLoading ? (
-          <div className="flex h-full items-center justify-center text-center font-bold">{t('chat.message')}</div>
+          <div className="flex h-full items-center justify-center text-center font-bold">
+            <Tran text="chat.message" />
+          </div>
         ) : (
           data.map(({ text, prompt }, index) => (
             <Fragment key={index}>
@@ -87,20 +88,14 @@ export default function Page() {
       >
         <div className="flex flex-col gap-2">
           <div className="mx-auto flex w-full items-end gap-2 rounded-md border p-2 md:w-2/3">
-            <div
-              key={reset}
-              className="max-h-56 min-h-full w-full max-w-[100vw] overflow-y-auto overflow-x-hidden p-1 focus-visible:outline-none"
-              contentEditable
-              role="textbox"
-              data-placeholder={t('chat.input-place-holder')}
-              onInput={(event) => setPrompt((event.target as HTMLElement).textContent ?? '')}
-              onKeyDown={handleKeyPress}
-            />
-            <Button title={t('submit')} variant="primary" disabled={isPending} onClick={handleSubmit}>
+            <ChatInputField reset={reset} handleKeyPress={handleKeyPress} setPrompt={setPrompt} />
+            <Button title="submit" variant="primary" disabled={isPending} onClick={handleSubmit}>
               <SendIcon className="h-5 w-5" />
             </Button>
           </div>
-          <div className="text-center text-xs">{t('chat.notice')}</div>
+          <div className="flex w-full items-center justify-center text-center text-xs">
+            <Tran text="chat.notice" />
+          </div>
         </div>
       </ProtectedElement>
     </div>

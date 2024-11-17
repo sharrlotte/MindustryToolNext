@@ -6,7 +6,6 @@ import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImag
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
-import { useI18n } from '@/i18n/client';
 import { Schematic } from '@/types/response/Schematic';
 import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';
@@ -14,6 +13,7 @@ import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
 import useImageLoading from '@/hooks/use-image-loading';
+import Tran from '@/components/common/tran';
 
 type UploadSchematicPreviewCardProps = {
   schematic: Schematic;
@@ -22,7 +22,6 @@ type UploadSchematicPreviewCardProps = {
 
 function InternalUploadSchematicPreviewCard({ schematic: { id, name }, imageCount }: UploadSchematicPreviewCardProps) {
   const axios = useClientApi();
-  const t = useI18n();
 
   const link = `${env.url.base}/admin/schematics/${id}`;
   const detailLink = `/admin/schematics/${id}`;
@@ -34,8 +33,8 @@ function InternalUploadSchematicPreviewCard({ schematic: { id, name }, imageCoun
   const downloadName = `{${name}}.msch`;
 
   const getData = useToastAction({
-    title: t('copying'),
-    content: t('downloading-data'),
+    title: <Tran text="copying" />,
+    content: <Tran text="downloading-data" />,
     action: async () => await getSchematicData(axios, id),
   });
 

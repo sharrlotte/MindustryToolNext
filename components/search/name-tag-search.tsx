@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { defaultSortTag } from '@/constant/env';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
 import { QueryParams } from '@/query/config/search-query-params';
 import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
@@ -21,6 +20,7 @@ import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 import dynamic from 'next/dynamic';
+import { SortDropdown } from '@/components/search/sort-dropdown';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
 
@@ -37,7 +37,6 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
   const pathname = usePathname();
 
   const params = useSearchQuery(ItemPaginationQuery);
-  const t = useI18n();
 
   const [page, setPage] = useState(0);
   const [name, setName] = useState('');
@@ -169,7 +168,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
       <div className="flex justify-center gap-2">
         <Search className="h-10">
           <Search.Icon className="p-1" />
-          <Search.Input placeholder={t('search-by-name')} value={name} onChange={handleEditName} />
+          <Search.Input placeholder="search-by-name" value={name} onChange={handleEditName} />
           {name && (
             <Button className="p-0" title="reset" onClick={handleResetName} variant="icon">
               <XIcon />
@@ -177,7 +176,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
           )}
         </Search>
         {useTag && (
-          <Button className="h-10 border-none bg-secondary shadow-md" title={t('filter')} variant="outline" onClick={handleShowFilterDialog}>
+          <Button className="h-10 border-none bg-secondary shadow-md" title="filter" variant="outline" onClick={handleShowFilterDialog}>
             <FilterIcon className="size-5" strokeWidth={1.5} />
           </Button>
         )}
@@ -194,23 +193,9 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
               <div className="flex gap-1">
                 <Search className="w-full p-1">
                   <Search.Icon className="p-1" />
-                  <Search.Input placeholder={t('filter')} value={filter} onChange={handleFilterChange} />
+                  <Search.Input placeholder="filter" value={filter} onChange={handleFilterChange} />
                 </Search>
-                {useSort && (
-                  <ComboBox
-                    className="h-full"
-                    value={{
-                      label: t(sortBy.toLowerCase()),
-                      value: sortBy,
-                    }}
-                    values={sortTagGroup.values.map((value) => ({
-                      label: t(value.toLowerCase()),
-                      value: value as SortTag,
-                    }))}
-                    onChange={handleSortChange}
-                    searchBar={false}
-                  />
-                )}
+                {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
               </div>
               <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
                 <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />

@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { deleteInternalServer } from '@/query/server';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -20,21 +19,20 @@ export function DeleteServerButton({ id }: DeleteServerButtonProps) {
   const axios = useClientApi();
   const router = useRouter();
   const { invalidateByKey } = useQueriesData();
-  const t = useI18n();
   const { toast } = useToast();
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
     mutationFn: () => deleteInternalServer(axios, id),
     onSuccess: () => {
       toast({
-        title: t('delete-success'),
+        title: <Tran text="delete-success" />,
         variant: 'success',
       });
       router.push('/servers');
     },
     onError: (error) =>
       toast({
-        title: t('delete-fail'),
+        title: <Tran text="delete-fail" />,
         description: error.message,
         variant: 'destructive',
       }),
@@ -58,7 +56,7 @@ export function DeleteServerButton({ id }: DeleteServerButtonProps) {
               <Tran text="cancel" />
             </AlertDialogCancel>
             <AlertDialogAction asChild>
-              <Button className="bg-destructive hover:bg-destructive" title={t('delete')} onClick={() => mutate()} disabled={isPending}>
+              <Button className="bg-destructive hover:bg-destructive" title="delete" onClick={() => mutate()} disabled={isPending}>
                 <Tran text="delete" />
               </Button>
             </AlertDialogAction>

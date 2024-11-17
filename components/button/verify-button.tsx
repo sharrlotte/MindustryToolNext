@@ -1,5 +1,6 @@
 'use client';
 
+import Tran from '@/components/common/tran';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,46 +13,36 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { useI18n } from '@/i18n/client';
 
 import { CheckIcon } from 'lucide-react';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 type VerifyButtonProps = {
   isLoading: boolean;
   onClick: () => void;
-  description: string;
+  description: ReactNode;
 };
 
-export default function VerifyButton({
-  isLoading,
-  description,
-  onClick,
-}: VerifyButtonProps) {
-  const t = useI18n();
-
+export default function VerifyButton({ isLoading, description, onClick }: VerifyButtonProps) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger
-        className="flex items-center justify-center rounded-md border p-2 hover:bg-success"
-        disabled={isLoading}
-      >
+      <AlertDialogTrigger className="flex items-center justify-center rounded-md border p-2 hover:bg-success" disabled={isLoading}>
         <CheckIcon className="size-5" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('verify.confirm')}</AlertDialogTitle>
+          <AlertDialogTitle>
+            <Tran text="verify.confirm" />
+          </AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+          <AlertDialogCancel>
+            <Tran text="cancel" />
+          </AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button
-              className="bg-success hover:bg-success"
-              title={t('verify')}
-              onClick={onClick}
-            >
-              {t('verify')}
+            <Button className="bg-success hover:bg-success" title="verify" onClick={onClick}>
+              <Tran text="verify" />
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -3,19 +3,10 @@
 import React from 'react';
 
 import { revalidate } from '@/action/action';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
-
 import { useMutation } from '@tanstack/react-query';
 import { shutdownInternalServer } from '@/query/server';
 import Tran from '@/components/common/tran';
@@ -26,7 +17,6 @@ type Props = {
 
 export default function ShutdownServerButton({ id }: Props) {
   const axios = useClientApi();
-  const t = useI18n();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
@@ -34,13 +24,13 @@ export default function ShutdownServerButton({ id }: Props) {
     mutationFn: () => shutdownInternalServer(axios, id),
     onSuccess: () => {
       toast({
-        title: 'Shutdown server successfully',
+        title: <Tran text="server.shutdown-success" />,
         variant: 'success',
       });
     },
     onError: (error) =>
       toast({
-        title: 'Shutdown server failed',
+        title: <Tran text="server.shutdown-fail" />,
         description: error.message,
         variant: 'destructive',
       }),
@@ -52,25 +42,18 @@ export default function ShutdownServerButton({ id }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          className="min-w-20"
-          title="Delete"
-          variant="destructive"
-          disabled={isPending}
-        >
+        <Button className="min-w-20" title="Delete" variant="destructive" disabled={isPending}>
           <Tran text="server.shutdown" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <Tran text="server.shutdown-confirm" />
         <AlertDialogFooter>
-          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+          <AlertDialogCancel>
+            <Tran text="cancel" />
+          </AlertDialogCancel>
           <AlertDialogAction variant="destructive" asChild>
-            <Button
-              title="Shutdown"
-              disabled={isPending}
-              onClick={() => mutate()}
-            >
+            <Button title="Shutdown" disabled={isPending} onClick={() => mutate()}>
               <Tran text="server.shutdown" />
             </Button>
           </AlertDialogAction>

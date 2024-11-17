@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { PutInternalServerPortRequest, PutInternalServerPortSchema } from '@/types/request/UpdateInternalServerRequest';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
@@ -26,8 +25,6 @@ type Props = {
 };
 
 export default function ServerUpdatePortForm({ server: { id, port, official } }: Props) {
-  const t = useI18n();
-
   const form = useForm<PutInternalServerPortRequest>({
     resolver: zodResolver(PutInternalServerPortSchema),
     defaultValues: {
@@ -44,13 +41,13 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
     mutationFn: (data: PutInternalServerPortRequest) => updateInternalServerPort(axios, id, data),
     onSuccess: () => {
       toast({
-        title: t('update.success'),
+        title: <Tran text="update.success" />,
         variant: 'success',
       });
     },
     onError: (error) =>
       toast({
-        title: t('update.fail'),
+        title: <Tran text="update.fail" />,
         description: error.message,
         variant: 'destructive',
       }),
@@ -107,11 +104,11 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
             'opacity-100': isChanged,
           })}
         >
-          <Button className="flex justify-end" variant="secondary" title={t('reset')} onClick={() => form.reset()} disabled={!isChanged || isPending}>
-            {t('reset')}
+          <Button className="flex justify-end" variant="secondary" title="reset" onClick={() => form.reset()} disabled={!isChanged || isPending}>
+            <Tran text="reset" />
           </Button>
-          <Button variant="primary" type="submit" title={t('update')} disabled={!isChanged || isPending}>
-            {t('update')}
+          <Button variant="primary" type="submit" title="update" disabled={!isChanged || isPending}>
+            <Tran text="update" />
           </Button>
         </div>
       </form>

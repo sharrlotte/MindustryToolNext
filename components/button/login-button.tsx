@@ -4,16 +4,15 @@ import { usePathname } from 'next/navigation';
 import { ReactNode, useLayoutEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
-import { useI18n } from '@/i18n/client';
 import { cn } from '@/lib/utils';
 
 import InternalLink from '@/components/common/internal-link';
 import { LogIn } from 'lucide-react';
+import Tran from '@/components/common/tran';
 
 const ignored = ['login'];
 
 export default function LoginButton({ className, children }: { className?: string; children?: ReactNode }) {
-  const t = useI18n();
   const [_ignore, setCookie] = useCookies();
   const pathname = usePathname();
 
@@ -30,7 +29,7 @@ export default function LoginButton({ className, children }: { className?: strin
       {children || (
         <>
           <LogIn className="size-5" />
-          {t('login')}
+          <Tran text="login" />
         </>
       )}
     </InternalLink>

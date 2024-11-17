@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import useSearchId from '@/hooks/use-search-id-params';
-import { useI18n } from '@/i18n/client';
 import { Input } from '@/components/ui/input';
+import Tran from '@/components/common/tran';
 
 export default function Page() {
   const { id } = useSearchId();
@@ -53,7 +53,6 @@ function ChatInput({ id }: ChatInputProps) {
   const { state } = useSocket();
 
   const [message, setMessage] = useState<string>('');
-  const t = useI18n();
 
   const [messageHistory, setMessageHistory] = useState<string[]>([]);
   const [messagesCursor, setMessageCursor] = useState(0);
@@ -116,8 +115,8 @@ function ChatInput({ id }: ChatInputProps) {
         onKeyDown={handleKeyPress}
         onChange={(event) => setMessage(event.currentTarget.value)}
       />
-      <Button className="h-full" variant="primary" type="submit" title={t('send')} disabled={state !== 'connected' || !message}>
-        {t('send')}
+      <Button className="h-full" variant="primary" type="submit" title="send" disabled={state !== 'connected' || !message}>
+        <Tran text="send" />
       </Button>
     </form>
   );

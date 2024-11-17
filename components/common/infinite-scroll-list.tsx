@@ -1,25 +1,14 @@
 import { AxiosInstance } from 'axios';
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
-import {
-  isReachedEnd,
-  makeArray,
-  mapReversed,
-  mergeNestArray,
-} from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
+import { isReachedEnd, makeArray, mapReversed, mergeNestArray } from '@/lib/utils';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
+import EndOfPage from '@/components/common/end-of-page';
 
 type InfiniteScrollListProps<T, P> = {
   className?: string;
@@ -39,10 +28,7 @@ type InfiniteScrollListProps<T, P> = {
   children: (data: T, index?: number, endIndex?: number) => ReactNode;
 };
 
-export default function InfiniteScrollList<
-  T,
-  P extends PaginationQuery = PaginationQuery,
->({
+export default function InfiniteScrollList<T, P extends PaginationQuery = PaginationQuery>({
   className = 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center',
   queryKey,
   params,
@@ -63,8 +49,6 @@ export default function InfiniteScrollList<
   const [scrollTop, setScrollTop] = useState(0);
   const [lastHeight, setLastHeight] = useState(0);
 
-  const t = useI18n();
-
   const getFuncWrapper = useCallback(
     (axios: AxiosInstance, params: P) => {
       setLastHeight(list?.clientHeight ?? 0);
@@ -74,22 +58,9 @@ export default function InfiniteScrollList<
     [getFunc, list],
   );
 
-  const {
-    data,
-    isLoading,
-    error,
-    isError,
-    hasNextPage,
-    hasPreviousPage,
-    isFetching,
-    fetchNextPage,
-  } = useInfinitePageQuery(getFuncWrapper, params, queryKey);
+  const { data, isLoading, error, isError, hasNextPage, hasPreviousPage, isFetching, fetchNextPage } = useInfinitePageQuery(getFuncWrapper, params, queryKey);
 
-  const pageMapper = useCallback(
-    (item: T, index: number, array: T[]) =>
-      children(item, index, array.length - params.size),
-    [children, params.size],
-  );
+  const pageMapper = useCallback((item: T, index: number, array: T[]) => children(item, index, array.length - params.size), [children, params.size]);
 
   const remainScrollPosition = useCallback(() => {
     if (!currentContainer || !list) {
@@ -124,16 +95,11 @@ export default function InfiniteScrollList<
       return [];
     }
 
-    return reversed
-      ? mapReversed(mergeNestArray(data.pages), pageMapper)
-      : mergeNestArray(data.pages).map(pageMapper);
+    return reversed ? mapReversed(mergeNestArray(data.pages), pageMapper) : mergeNestArray(data.pages).map(pageMapper);
   }, [data, reversed, pageMapper]);
 
   const skeletonElements = useMemo(() => {
-    if (skeleton)
-      return makeArray(skeleton.amount).map((_, index) => (
-        <React.Fragment key={index}>{skeleton.item}</React.Fragment>
-      ));
+    if (skeleton) return makeArray(skeleton.amount).map((_, index) => <React.Fragment key={index}>{skeleton.item}</React.Fragment>);
   }, [skeleton]);
 
   const checkIfNeedFetchMore = useCallback(() => {
@@ -166,15 +132,7 @@ export default function InfiniteScrollList<
         }
       }
     }
-  }, [
-    currentContainer,
-    fetchNextPage,
-    hasNextPage,
-    hasPreviousPage,
-    isFetching,
-    reversed,
-    threshold,
-  ]);
+  }, [currentContainer, fetchNextPage, hasNextPage, hasPreviousPage, isFetching, reversed, threshold]);
 
   useEffect(() => {
     function onScroll() {
@@ -205,35 +163,17 @@ export default function InfiniteScrollList<
   }, [checkIfNeedFetchMore]);
 
   if (!loader && !skeleton) {
-    loader = (
-      <LoadingSpinner
-        key="loading"
-        className="col-span-full flex h-full w-full items-center justify-center"
-      />
-    );
+    loader = <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" />;
   }
 
-  end = end ?? (
-    <span
-      className="col-span-full flex w-full items-center justify-center"
-      key="End"
-    >
-      {t('end-of-page')}
-    </span>
-  );
+  end = end ?? <EndOfPage />;
 
   if (isError || error) {
-    return (
-      <div className="flex w-full justify-center">
-        {t('error')} : {error?.message}
-      </div>
-    );
+    return <div className="flex w-full justify-center">{error?.message}</div>;
   }
 
   if (isLoading || !data || !currentContainer) {
-    return (
-      <div className={className}>{loader ? loader : skeletonElements}</div>
-    );
+    return <div className={className}>{loader ? loader : skeletonElements}</div>;
   }
 
   if (pages.length === 0) {

@@ -15,7 +15,6 @@ import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import ProtectedElement from '@/layout/protected-element';
-import { useI18n } from '@/i18n/client';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 
 import { LinkIcon } from '@/components/common/icons';
@@ -34,16 +33,14 @@ export default function SchematicDetailCard({
   const axios = useClientApi();
   const { session } = useSession();
 
-  const t = useI18n();
-
   const getData = useToastAction({
-    title: t('copying'),
-    content: t('downloading-data'),
+    title: <Tran text="copying" />,
+    content: <Tran text="downloading-data" />,
     action: async () => await getSchematicData(axios, id),
   });
 
   const link = `${env.url.base}/schematics/${id}`;
-  const copyContent = t('copied-name', { name: name });
+  const copyContent = <Tran text="copied-name" args={{ name }} />;
   const imageUrl = `${env.url.image}/schematics/${id}${env.imageFormat}`;
   const errorImageUrl = `${env.url.api}/schematics/${id}/image`;
   const downloadUrl = `${env.url.api}/schematics/${id}/download`;
@@ -70,7 +67,7 @@ export default function SchematicDetailCard({
         </DetailHeader>
       </DetailInfo>
       <DetailActions>
-        <CopyButton content={copyContent} data={getData} />
+        <CopyButton title={copyContent} data={getData} />
         <DownloadButton href={downloadUrl} fileName={downloadName} />
         <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
           <LikeButton />

@@ -7,10 +7,10 @@ import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
-import { useI18n } from '@/i18n/client';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
+import EndOfPage from '@/components/common/end-of-page';
 
 type InfinitePageProps<T, P> = {
   className?: string;
@@ -44,7 +44,6 @@ export default function InfinitePage<T, P extends PaginationQuery>({
   children,
   container,
 }: InfinitePageProps<T, P>) {
-  const t = useI18n();
   const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(getFunc, params, queryKey, initialData);
 
   const loadMore = useCallback(
@@ -68,22 +67,10 @@ export default function InfinitePage<T, P extends PaginationQuery>({
     [skeleton],
   );
 
-  end = useMemo(
-    () =>
-      end ?? (
-        <span className="col-span-full flex w-full items-center justify-center" key="End">
-          {t('end-of-page')}
-        </span>
-      ),
-    [end, t],
-  );
+  end = useMemo(() => end ?? <EndOfPage />, [end]);
 
   if (isError || error) {
-    return (
-      <div className="flex w-full justify-center">
-        {t('error')} : {error?.message}
-      </div>
-    );
+    return <div className="flex w-full justify-center">{error?.message}</div>;
   }
 
   if (isLoading || !data) {

@@ -1,22 +1,22 @@
+import Tran from '@/components/common/tran';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 
-import { useCallback } from 'react';
+import { ReactNode, useCallback } from 'react';
+import { text } from 'stream/consumers';
 
 type CopyProps = {
   data: string;
-  title?: string;
-  content?: string;
+  title?: ReactNode;
+  content?: ReactNode;
 };
 
 let dismissLast: (() => void) | null = null;
 
 export default function useClipboard() {
   const { toast } = useToast();
-  const t = useI18n();
 
   return useCallback(
-    async ({ data, title = t('copied'), content = '' }: CopyProps) => {
+    async ({ data, title = <Tran text="copied" />, content = '' }: CopyProps) => {
       await navigator.clipboard.writeText(data);
 
       if (dismissLast) {
@@ -32,6 +32,6 @@ export default function useClipboard() {
 
       return dismiss;
     },
-    [t, toast],
+    [toast],
   );
 }

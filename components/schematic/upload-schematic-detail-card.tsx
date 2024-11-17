@@ -12,7 +12,6 @@ import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import { useTags } from '@/context/tags-context.client';
 import useToastAction from '@/hooks/use-toast-action';
-import { useI18n } from '@/i18n/client';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
@@ -30,9 +29,8 @@ export default function UploadSchematicDetailCard({ schematic: { id, name, tags,
   const {
     uploadTags: { schematic },
   } = useTags();
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
 
-  const t = useI18n();
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
 
   useEffect(() => {
     setSelectedTags(TagGroups.parseString(tags, schematic));
@@ -46,8 +44,8 @@ export default function UploadSchematicDetailCard({ schematic: { id, name, tags,
   const downloadName = `{${name}}.msch`;
 
   const getData = useToastAction({
-    title: t('copying'),
-    content: t('downloading-data'),
+    title: <Tran text="copying" />,
+    content: <Tran text='downloading-data'/>,
     action: async () => await getSchematicData(axios, id),
   });
 

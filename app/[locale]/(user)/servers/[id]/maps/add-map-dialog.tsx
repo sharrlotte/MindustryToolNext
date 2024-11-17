@@ -13,7 +13,6 @@ import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { createInternalServerMap } from '@/query/server';
@@ -31,7 +30,6 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
   } = useTags();
   const [show, setShow] = useState(false);
   const axios = useClientApi();
-  const t = useI18n();
 
   const { invalidateByKey } = useQueriesData();
 
@@ -41,7 +39,7 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
     mutationFn: (mapId: string) => createInternalServerMap(axios, serverId, { mapId }),
     onError: (error) => {
       toast({
-        title: t('upload.fail'),
+        title: <Tran text="upload.fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -58,7 +56,7 @@ export function AddMapDialog({ serverId }: AddMapDialogProps) {
   return (
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild>
-        <Button className="ml-auto" title={t('internal-server.add-map')} variant="secondary">
+        <Button className="ml-auto" title="Add map" variant="secondary">
           <Tran text="internal-server.add-map" />
         </Button>
       </DialogTrigger>

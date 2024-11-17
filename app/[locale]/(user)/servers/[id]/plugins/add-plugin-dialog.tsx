@@ -5,7 +5,6 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { getPlugins } from '@/query/plugin';
 import { createInternalServerPlugin } from '@/query/server';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -15,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import ScrollContainer from '@/components/common/scroll-container';
 import { ItemPaginationQuery } from '@/query/search-query';
 import useSearchQuery from '@/hooks/use-search-query';
+import Tran from '@/components/common/tran';
 
 type AddPluginDialogProps = {
   serverId: string;
@@ -28,7 +28,6 @@ export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   } = useTags();
   const [show, setShow] = useState(false);
   const axios = useClientApi();
-  const t = useI18n();
 
   const params = useSearchQuery(ItemPaginationQuery);
   const { invalidateByKey } = useQueriesData();
@@ -37,7 +36,7 @@ export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     mutationFn: (pluginId: string) => createInternalServerPlugin(axios, serverId, { pluginId }),
     onError: (error) => {
       toast({
-        title: t('upload.fail'),
+        title: <Tran text="upload.fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -53,12 +52,14 @@ export function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   return (
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild>
-        <Button className="ml-auto" title={t('internal-server.add-plugin')} variant="secondary">
-          {t('internal-server.add-plugin')}
+        <Button className="ml-auto" title="Add plugin" variant="secondary">
+          <Tran text="internal-server.add-plugin" />
         </Button>
       </DialogTrigger>
       <DialogContent className="flex w-full flex-col overflow-hidden p-4">
-        <DialogTitle>{t('internal-server.select-plugin')}</DialogTitle>
+        <DialogTitle>
+          <Tran text="internal-server.select-plugin" />
+        </DialogTitle>
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={plugin} />
           <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>

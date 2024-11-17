@@ -14,16 +14,15 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useStatusSearchParams from '@/hooks/use-status-search-params';
 import { useTags } from '@/context/tags-context.client';
-import { useI18n } from '@/i18n/client';
 import { User } from '@/types/response/User';
 import { getMeSchematics, getMeMaps, getMePosts } from '@/query/user';
 import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
+import Tran from '@/components/common/tran';
 
 type TabProps = {
   me: User;
 };
 export default function Me({ me }: TabProps) {
-  const t = useI18n();
   const {
     searchTags: { schematic, map, post },
   } = useTags();
@@ -35,9 +34,15 @@ export default function Me({ me }: TabProps) {
       <UserDetail user={me} />
       <Tabs className="w-full" defaultValue="schematic">
         <TabsList className="w-full justify-start bg-card">
-          <TabsTrigger value="schematic">{t('schematic')}</TabsTrigger>
-          <TabsTrigger value="map">{t('map')}</TabsTrigger>
-          <TabsTrigger value="post">{t('post')}</TabsTrigger>
+          <TabsTrigger value="schematic">
+            <Tran text="schematic" />
+          </TabsTrigger>
+          <TabsTrigger value="map">
+            <Tran text="map" />
+          </TabsTrigger>
+          <TabsTrigger value="post">
+            <Tran text="post" />
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="schematic">
           <div className="relative flex h-full flex-col gap-2">
