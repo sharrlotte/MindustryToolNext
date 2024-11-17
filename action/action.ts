@@ -4,6 +4,7 @@ import { AxiosInstance } from 'axios';
 import { expireTag, unstable_cache, unstable_noStore } from 'next/cache';
 import { expirePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { cache } from 'react';
 import 'server-only';
 import { z } from 'zod';
 
@@ -92,18 +93,20 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
   return axiosInstance;
 };
 
-const getCachedTranslation = unstable_cache(
-  async (language: string, group: string) =>
-    axiosInstance
-      .get('/translations', {
-        params: {
-          group,
-          language,
-        },
-      })
-      .then((r) => r.data),
-  ['translation'],
-  { revalidate: 600 },
+const getCachedTranslation = cache(
+  unstable_cache(
+    async (language: string, group: string) =>
+      axiosInstance
+        .get('/translations', {
+          params: {
+            group,
+            language,
+          },
+        })
+        .then((r) => r.data),
+    ['translations'],
+    { revalidate: 600, tags: ['translations'] },
+  ),
 );
 
 export async function getLocaleFromCookie() {
@@ -112,13 +115,13 @@ export async function getLocaleFromCookie() {
 }
 
 export async function translate(locale: string, text: string, args?: Record<string, any>) {
+  const parts = text.split('.');
+
+  if (parts.length === 0) {
+    throw new Error('Bad key');
+  }
+
   try {
-    const parts = text.split('.');
-
-    if (parts.length === 0) {
-      throw new Error('Bad key');
-    }
-
     const group = parts.length === 1 ? 'common' : parts[0];
     const key = parts.length === 1 ? parts[0] : parts[1];
 
@@ -130,6 +133,8 @@ export async function translate(locale: string, text: string, args?: Record<stri
     return value ? (formatTranslation(value, args) ?? text) : text;
   } catch (error) {
     console.error(error);
+
+    expireTag('translations');
 
     return text;
   }
