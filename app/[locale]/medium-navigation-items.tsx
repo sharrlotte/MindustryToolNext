@@ -28,7 +28,7 @@ const sidebarVariants: Variants = {
   },
   closed: {
     width: 'var(--nav)',
-    transition: { type: 'spring', stiffness: 200, damping: 20, duration: 0.5 },
+    transition: { type: 'spring', stiffness: 200, damping: 25, duration: 0.5 },
   },
 };
 
@@ -42,8 +42,8 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
   const toggleSidebar = useCallback(() => setVisible(!isVisible), [isVisible, setVisible]);
 
   return (
-    <motion.div className="relative flex h-full overflow-hidden border-r" variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
-      <div className={cn('flex h-full w-full flex-col overflow-hidden p-1', { 'p-2': expand })}>
+    <motion.div className="relative flex h-full overflow-hidden border-r min-w-nav" variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
+      <div className={cn('flex h-full w-full flex-col p-1', { 'p-2': expand })}>
         <div className="flex items-center justify-center gap-1 p-2">
           <motion.div className="overflow-hidden whitespace-nowrap" animate={{ display: expand ? 'block' : 'none' }}>
             <h1 className="text-xl font-medium">MindustryTool</h1>

@@ -9,6 +9,7 @@ import { useLocaleStore } from '@/context/locale-context';
 import useClientApi from '@/hooks/use-client';
 import { Locale, TranslateFunction, locales } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
+import { formatTranslation } from '@/lib/utils';
 
 const EMPTY = {};
 
@@ -131,18 +132,6 @@ export function useI18n(): TranslateFunction {
   }
 
   return t;
-}
-
-export function formatTranslation(text: string, args?: Record<string, string>) {
-  if (!args || !text) {
-    return text;
-  }
-
-  Object.entries(args).forEach(([key, value]) => {
-    text = text.replace(`{${key}}`, value);
-  });
-
-  return text;
 }
 
 export function useChangeLocale() {

@@ -1,13 +1,23 @@
-import { serverApi } from '@/action/action';
+import { Metadata } from 'next';
+
+import { serverApi, translate } from '@/action/action';
 import { PageClient, RankPaginationNavigator } from '@/app/[locale]/(user)/rank/page.client';
 import ErrorScreen from '@/components/common/error-screen';
-import { isError } from '@/lib/utils';
+import { formatTitle, isError } from '@/lib/utils';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 import { getRank } from '@/query/user';
 
 type Props = {
   searchParams: Promise<ItemPaginationQueryType>;
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const title = await translate('rank');
+
+  return {
+    title: formatTitle(title),
+  };
+}
 
 export default async function Page({ searchParams }: Props) {
   const { data, success, error } = ItemPaginationQuery.safeParse(await searchParams);

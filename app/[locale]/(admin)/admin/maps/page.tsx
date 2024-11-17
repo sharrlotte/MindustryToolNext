@@ -1,18 +1,20 @@
 import { Metadata } from 'next/dist/types';
 
-import { serverApi } from '@/action/action';
+import { serverApi, translate } from '@/action/action';
 import Client from '@/app/[locale]/(admin)/admin/maps/page.client';
 import ErrorScreen from '@/components/common/error-screen';
 import env from '@/constant/env';
-import { isError } from '@/lib/utils';
+import { formatTitle, isError } from '@/lib/utils';
 import { getMapUploads } from '@/query/map';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
+  const title = await translate('map');
+
   return {
-    title: `${env.webName} > Maps`,
+    title: formatTitle(title),
   };
 }
 

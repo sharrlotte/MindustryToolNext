@@ -417,3 +417,19 @@ export function addTagPreset(newPreset: TagPreset) {
 
   localStorage.setItem(PRESET_LOCAL_STORAGE_NAME, JSON.stringify(preset));
 }
+
+export function formatTranslation(text: string, args?: Record<string, string>) {
+  if (!args || !text) {
+    return text;
+  }
+
+  Object.entries(args).forEach(([key, value]) => {
+    text = text.replace(`{${key}}`, value);
+  });
+
+  return text;
+}
+
+export function formatTitle(title: string) {
+  return `${title} | ${env.webName}`;
+}

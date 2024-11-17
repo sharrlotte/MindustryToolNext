@@ -1,18 +1,20 @@
 import { Metadata } from 'next/dist/types';
 
-import { serverApi } from '@/action/action';
+import { serverApi, translate } from '@/action/action';
 import Client from '@/app/[locale]/(admin)/admin/posts/post.client';
 import ErrorScreen from '@/components/common/error-screen';
 import env from '@/constant/env';
-import { isError } from '@/lib/utils';
+import { formatTitle, isError } from '@/lib/utils';
 import { getPostUploads } from '@/query/post';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
+  const title = await translate('post');
+
   return {
-    title: `${env.webName} > Post`,
+    title: formatTitle(title),
   };
 }
 

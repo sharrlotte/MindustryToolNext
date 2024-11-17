@@ -49,7 +49,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center overflow-hidden sm:grid">
+    <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center sm:grid">
       <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
       <div className="relative h-full w-full overflow-hidden">{children}</div>
     </div>

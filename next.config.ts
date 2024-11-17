@@ -8,11 +8,6 @@ const nextConfig: NextConfig = {
     },
     forceSwcTransforms: true,
   },
-  compiler: {
-    removeConsole: {
-      exclude: ['error'],
-    },
-  },
   crossOrigin: 'anonymous',
   reactStrictMode: true,
   images: {

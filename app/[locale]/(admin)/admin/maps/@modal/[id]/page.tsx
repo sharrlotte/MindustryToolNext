@@ -1,13 +1,13 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { serverApi } from '@/action/action';
+import { serverApi, translate } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
 import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
 import BackButton from '@/components/ui/back-button';
 import env from '@/constant/env';
-import { isError } from '@/lib/utils';
+import { formatTitle, isError } from '@/lib/utils';
 import { getMapUpload } from '@/query/map';
 
 type Props = {
@@ -16,19 +16,23 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
+
   const map = await serverApi((axios) => getMapUpload(axios, { id }));
+  const title = await translate('map');
 
   if (isError(map)) {
     return { title: 'Error' };
   }
 
+  const { name, description } = map;
+
   return {
-    title: `${env.webName} > Map`,
-    description: `${map.name} | ${map.description}`,
+    title: formatTitle(title),
+    description: [name, description].join('|'),
     openGraph: {
-      title: map.name,
-      description: map.description,
-      images: `${env.url.image}map-previews/${map.id}${env.imageFormat}`,
+      title: name,
+      description: description,
+      images: `${env.url.image}map-previews/${id}${env.imageFormat}`,
     },
   };
 }

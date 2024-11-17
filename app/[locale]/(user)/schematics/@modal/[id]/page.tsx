@@ -1,11 +1,11 @@
 import { Metadata } from 'next/dist/types';
 import React from 'react';
 
-import { serverApi } from '@/action/action';
+import { serverApi, translate } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import env from '@/constant/env';
-import { isError } from '@/lib/utils';
+import { formatTitle, isError } from '@/lib/utils';
 import { getSchematic } from '@/query/schematic';
 
 type Props = {
@@ -15,18 +15,21 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const schematic = await serverApi((axios) => getSchematic(axios, { id }));
+  const title = await translate('schematic');
 
   if (isError(schematic)) {
     return { title: 'Error' };
   }
 
+  const { name, description } = schematic;
+
   return {
-    title: `${env.webName} > Schematic`,
-    description: `${schematic.name} | ${schematic.description}`,
+    title: formatTitle(title),
+    description: [name, description].join('|'),
     openGraph: {
-      title: schematic.name,
-      description: schematic.description,
-      images: `${env.url.image}/schematic-previews/${schematic.id}${env.imageFormat}`,
+      title: name,
+      description: description,
+      images: `${env.url.image}/schematic-previews/${id}${env.imageFormat}`,
     },
   };
 }
