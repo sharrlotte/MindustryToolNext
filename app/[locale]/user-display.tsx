@@ -47,7 +47,7 @@ export function Internal() {
           <div className="flex w-full flex-col gap-2 py-2">
             <p className="font-semibold dark:text-black">Are you sure you want to log out?</p>
             <div className="flex justify-end gap-2">
-              <button className="rounded border border-gray-500 px-2 py-1  transition-colors hover:bg-gray-500  dark:text-white " onClick={modal.toggle}>
+              <button className="rounded border border-gray-500 px-2 py-1 text-black  transition-colors hover:bg-gray-500  dark:text-white " onClick={modal.toggle}>
                 Cancel
               </button>
               <a href={`${env.url.api}/auth/logout`}>

@@ -2,7 +2,7 @@
 
 import { saveAs } from 'file-saver';
 import { ArrowDownToLine } from 'lucide-react';
-import React, { HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 import useClientApi from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
@@ -26,7 +26,7 @@ export default function DownloadButton({ className, href, fileName, secure, chil
 
   return (
     <a
-      className={cn('flex min-h-8 items-center justify-center rounded-md border border-border hover:bg-brand hover:text-background hover:dark:text-foreground', className)}
+      className={cn('flex min-h-8 items-center transition-colors justify-center rounded-md border border-border hover:bg-brand hover:text-background hover:dark:text-foreground', className)}
       {...props}
       href={href}
       download={fileName ?? true}
