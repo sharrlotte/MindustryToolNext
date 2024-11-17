@@ -4,6 +4,7 @@ import { AxiosInstance } from 'axios';
 import { expireTag, unstable_cache, unstable_noStore } from 'next/cache';
 import { expirePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { cache } from 'react';
 import 'server-only';
 import { z } from 'zod';
 
@@ -92,18 +93,20 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
   return axiosInstance;
 };
 
-const getCachedTranslation = unstable_cache(
-  async (language: string, group: string) =>
-    axiosInstance
-      .get('/translations', {
-        params: {
-          group,
-          language,
-        },
-      })
-      .then((r) => r.data),
-  ['translation'],
-  { revalidate: 600 },
+const getCachedTranslation = cache(
+  unstable_cache(
+    async (language: string, group: string) =>
+      await axiosInstance
+        .get('/translations', {
+          params: {
+            group,
+            language,
+          },
+        })
+        .then((r) => r.data),
+    ['translation'],
+    { revalidate: 600 },
+  ),
 );
 
 export async function getLocaleFromCookie() {
