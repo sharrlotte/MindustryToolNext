@@ -104,8 +104,8 @@ const getCachedTranslation = cache(
           },
         })
         .then((r) => r.data),
-    ['translation'],
-    { revalidate: 600 },
+    ['translations'],
+    { revalidate: 600, tags: ['translations'] },
   ),
 );
 
@@ -115,13 +115,13 @@ export async function getLocaleFromCookie() {
 }
 
 export async function translate(locale: string, text: string, args?: Record<string, any>) {
+  const parts = text.split('.');
+
+  if (parts.length === 0) {
+    throw new Error('Bad key');
+  }
+
   try {
-    const parts = text.split('.');
-
-    if (parts.length === 0) {
-      throw new Error('Bad key');
-    }
-
     const group = parts.length === 1 ? 'common' : parts[0];
     const key = parts.length === 1 ? parts[0] : parts[1];
 
@@ -133,6 +133,8 @@ export async function translate(locale: string, text: string, args?: Record<stri
     return value ? (formatTranslation(value, args) ?? text) : text;
   } catch (error) {
     console.error(error);
+
+    expireTag('translations');
 
     return text;
   }
