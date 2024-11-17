@@ -5,27 +5,27 @@ import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
 import TakeDownButton from '@/components/button/take-down-button';
-import Markdown from '@/components/common/markdown';
 import { Detail } from '@/components/common/detail';
+import Markdown from '@/components/common/markdown';
+import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
+import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
+import { deletePost, unverifyPost } from '@/query/post';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 
 import { useMutation } from '@tanstack/react-query';
-import { deletePost, unverifyPost } from '@/query/post';
-import { EllipsisButton } from '@/components/ui/ellipsis-button';
-import Tran from '@/components/common/tran';
 
 type PostDetailCardProps = {
   post: PostDetail;

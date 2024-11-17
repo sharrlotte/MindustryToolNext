@@ -1,9 +1,9 @@
-import { serverApi } from "@/action/action";
-import Client from "@/app/[locale]/(user)/posts/page.client";
-import ErrorScreen from "@/components/common/error-screen";
-import { isError } from "@/lib/utils";
-import { getPosts } from "@/query/post";
-import { ItemPaginationQuery, ItemPaginationQueryType } from "@/query/search-query";
+import { serverApi } from '@/action/action';
+import Client from '@/app/[locale]/(user)/posts/page.client';
+import ErrorScreen from '@/components/common/error-screen';
+import { isError } from '@/lib/utils';
+import { getPosts } from '@/query/post';
+import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 type Props = {
   searchParams: Promise<ItemPaginationQueryType>;

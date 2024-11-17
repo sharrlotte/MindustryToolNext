@@ -1,14 +1,14 @@
+import { Metadata } from 'next';
 import React from 'react';
 
-import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
-import { getMapUpload } from '@/query/map';
-import { Metadata } from 'next';
-import env from '@/constant/env';
-import Tran from '@/components/common/tran';
-import BackButton from '@/components/ui/back-button';
-import { isError } from '@/lib/utils';
 import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
+import Tran from '@/components/common/tran';
+import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
+import BackButton from '@/components/ui/back-button';
+import env from '@/constant/env';
+import { isError } from '@/lib/utils';
+import { getMapUpload } from '@/query/map';
 
 type Props = {
   params: Promise<{ id: string }>;

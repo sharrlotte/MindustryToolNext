@@ -3,17 +3,17 @@
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
+import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
+import Tran from '@/components/common/tran';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
+import { deleteInternalServerMap } from '@/query/server';
 import { InternalServerMap } from '@/types/response/InternalServerMap';
 
 import { useMutation } from '@tanstack/react-query';
-import { deleteInternalServerMap } from '@/query/server';
-import InternalLink from '@/components/common/internal-link';
-import Tran from '@/components/common/tran';
 
 type InternalServerMapCardProps = {
   map: InternalServerMap;

@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { EditClose, EditComponent, EditOn, EditTrigger, EditOff } from '@/components/common/edit-component';
+import { DetailDescription, DetailTitle } from '@/components/common/detail';
+import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
-import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -17,10 +17,11 @@ import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context.client';
-import useClientApi from '@/hooks/use-client';
 import { useTags } from '@/context/tags-context.client';
+import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
+import { createMap, getMapPreview } from '@/query/map';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 import TagGroup from '@/types/response/TagGroup';
@@ -28,7 +29,6 @@ import { CreateMapRequest, CreateMapSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { createMap, getMapPreview } from '@/query/map';
 
 export default function Page() {
   const axios = useClientApi();

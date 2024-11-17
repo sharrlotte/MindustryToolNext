@@ -5,16 +5,16 @@ import React, { useEffect, useState } from 'react';
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
+import { LinkIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
+import { DeleteMapButton } from '@/components/map/delete-map-button';
+import VerifyMapButton from '@/components/map/verify-map-button';
 import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { useTags } from '@/context/tags-context.client';
 import { MapDetail } from '@/types/response/MapDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import { DeleteMapButton } from '@/components/map/delete-map-button';
-import VerifyMapButton from '@/components/map/verify-map-button';
-import { LinkIcon } from '@/components/common/icons';
-import Tran from '@/components/common/tran';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;

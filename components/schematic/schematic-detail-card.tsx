@@ -3,11 +3,15 @@
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
+import { LinkIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
+import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
+import { TakeDownSchematicButton } from '@/components/schematic/take-down-schematic-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
@@ -15,13 +19,8 @@ import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import ProtectedElement from '@/layout/protected-element';
-import { SchematicDetail } from '@/types/response/SchematicDetail';
-
-import { LinkIcon } from '@/components/common/icons';
-import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
-import { TakeDownSchematicButton } from '@/components/schematic/take-down-schematic-button';
 import { getSchematicData } from '@/query/schematic';
-import Tran from '@/components/common/tran';
+import { SchematicDetail } from '@/types/response/SchematicDetail';
 
 type SchematicDetailCardProps = {
   schematic: SchematicDetail;

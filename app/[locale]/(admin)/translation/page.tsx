@@ -1,5 +1,9 @@
 'use client';
 
+import { ChangeEvent, Fragment, useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { debounce } from 'throttle-debounce';
+
 import CopyButton from '@/components/button/copy-button';
 import DeleteButton from '@/components/button/delete-button';
 import ComboBox from '@/components/common/combo-box';
@@ -25,9 +29,9 @@ import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import {
-  createTranslation,
   CreateTranslationRequest,
   CreateTranslationSchema,
+  createTranslation,
   deleteTranslation,
   getTranslationCompare,
   getTranslationCompareCount,
@@ -35,11 +39,9 @@ import {
   getTranslationDiffCount,
 } from '@/query/translation';
 import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { ChangeEvent, Fragment, useCallback, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { debounce } from 'throttle-debounce';
 
 const translateModes = ['diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];

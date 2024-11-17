@@ -1,8 +1,9 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
+
 import { Locale } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
-import React, { useEffect, useState } from 'react';
 
 type TranslationGroup = Record<string, Record<string, string>>;
 type LocaleData = Record<string, TranslationGroup>;

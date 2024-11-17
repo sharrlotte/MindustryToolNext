@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { ChangeRoleDialog } from '@/app/[locale]/(admin)/admin/users/change-role-dialog';
 import CopyButton from '@/components/button/copy-button';
 import UserAvatar from '@/components/user/user-avatar';
 import { User } from '@/types/response/User';
-
-import { ChangeRoleDialog } from '@/app/[locale]/(admin)/admin/users/change-role-dialog';
 
 type Props = {
   user: User;

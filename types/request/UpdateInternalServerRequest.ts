@@ -1,11 +1,6 @@
 import { z } from 'zod';
 
-export const InternalServerModes = [
-  'SURVIVAL',
-  'ATTACK',
-  'PVP',
-  'SANDBOX',
-] as const;
+export const InternalServerModes = ['SURVIVAL', 'ATTACK', 'PVP', 'SANDBOX'] as const;
 
 export type InternalServerMode = (typeof InternalServerModes)[number];
 
@@ -26,6 +21,4 @@ export const PutInternalServerPortSchema = z.object({
   official: z.boolean(),
 });
 
-export type PutInternalServerPortRequest = z.infer<
-  typeof PutInternalServerPortSchema
->;
+export type PutInternalServerPortRequest = z.infer<typeof PutInternalServerPortSchema>;

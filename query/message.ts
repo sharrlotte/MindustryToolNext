@@ -1,5 +1,6 @@
-import { Message } from '@/types/response/Message';
 import { AxiosInstance } from 'axios';
+
+import { Message } from '@/types/response/Message';
 
 export async function getMessages(
   axios: AxiosInstance,

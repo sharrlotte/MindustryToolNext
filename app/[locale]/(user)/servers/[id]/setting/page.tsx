@@ -1,16 +1,15 @@
 import React from 'react';
 
-import { getInternalServer } from '@/query/server';
+import { getSession, serverApi } from '@/action/action';
+import { DeleteServerButton } from '@/app/[locale]/(user)/servers/[id]/setting/delete-server-button';
 import ServerUpdateForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-form';
 import ServerUpdatePortForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-port-form';
-
-import { getSession, serverApi } from '@/action/action';
-import ProtectedElement from '@/layout/protected-element';
 import ErrorScreen from '@/components/common/error-screen';
-import { isError } from '@/lib/utils';
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
-import { DeleteServerButton } from '@/app/[locale]/(user)/servers/[id]/setting/delete-server-button';
+import ProtectedElement from '@/layout/protected-element';
+import { isError } from '@/lib/utils';
+import { getInternalServer } from '@/query/server';
 
 type PageProps = {
   params: Promise<{ id: string }>;

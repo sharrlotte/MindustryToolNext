@@ -1,20 +1,22 @@
+import { useRef, useState } from 'react';
+
 import InfinitePage from '@/components/common/infinite-page';
+import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
 import NameTagSearch from '@/components/search/name-tag-search';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useTags } from '@/context/tags-context.client';
+import useSearchQuery from '@/hooks/use-search-query';
 import { useToast } from '@/hooks/use-toast';
 import { getPlugins } from '@/query/plugin';
-import { createInternalServerPlugin } from '@/query/server';
-import { Dialog, DialogTrigger, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { useMutation } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import ScrollContainer from '@/components/common/scroll-container';
 import { ItemPaginationQuery } from '@/query/search-query';
-import useSearchQuery from '@/hooks/use-search-query';
-import Tran from '@/components/common/tran';
+import { createInternalServerPlugin } from '@/query/server';
+
+import { useMutation } from '@tanstack/react-query';
 
 type AddPluginDialogProps = {
   serverId: string;

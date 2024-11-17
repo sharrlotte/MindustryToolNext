@@ -29,10 +29,7 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
   const ramLeft = ramUsage === 0 && totalRam === 0 ? 100 : totalRam - ramUsage;
 
   const data = {
-    labels: [
-      t('metric.ram-used', { percent: percentUsage }),
-      t('metric.ram-free', { percent: percentFree }),
-    ],
+    labels: [t('metric.ram-used', { percent: percentUsage }), t('metric.ram-free', { percent: percentFree })],
     datasets: [
       {
         data: [ramUsage, ramLeft],

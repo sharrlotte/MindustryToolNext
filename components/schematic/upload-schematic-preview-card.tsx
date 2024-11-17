@@ -2,18 +2,18 @@ import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
-import env from '@/constant/env';
-import useClientApi from '@/hooks/use-client';
-import useToastAction from '@/hooks/use-toast-action';
-import { Schematic } from '@/types/response/Schematic';
-import { LinkIcon } from '@/components/common/icons';
-import { getSchematicData } from '@/query/schematic';
 import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
+import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
-import useImageLoading from '@/hooks/use-image-loading';
+import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
+import env from '@/constant/env';
+import useClientApi from '@/hooks/use-client';
+import useImageLoading from '@/hooks/use-image-loading';
+import useToastAction from '@/hooks/use-toast-action';
+import { getSchematicData } from '@/query/schematic';
+import { Schematic } from '@/types/response/Schematic';
 
 type UploadSchematicPreviewCardProps = {
   schematic: Schematic;

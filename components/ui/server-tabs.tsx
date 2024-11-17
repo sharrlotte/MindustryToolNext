@@ -1,10 +1,11 @@
 'use client';
 
+import { AnimatePresence, Variants, motion } from 'framer-motion';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
-import { AnimatePresence, motion, Variants } from 'framer-motion';
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 const tabContentVariants: Variants = {
   initial: {

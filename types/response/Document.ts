@@ -3,4 +3,4 @@ export type Document = {
   userId: string;
   content: string;
   lang: string;
-}
+};

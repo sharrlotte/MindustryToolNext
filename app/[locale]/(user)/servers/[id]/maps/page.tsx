@@ -2,14 +2,13 @@
 
 import React, { useRef } from 'react';
 
-import InternalServerMapCard from '@/components/server/internal-server-map-card';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-
-import { getInternalServerMaps } from '@/query/server';
 import { AddMapDialog } from '@/app/[locale]/(user)/servers/[id]/maps/add-map-dialog';
 import InfinitePage from '@/components/common/infinite-page';
-import useSearchId from '@/hooks/use-search-id-params';
 import ScrollContainer from '@/components/common/scroll-container';
+import InternalServerMapCard from '@/components/server/internal-server-map-card';
+import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import useSearchId from '@/hooks/use-search-id-params';
+import { getInternalServerMaps } from '@/query/server';
 
 export default function ServerMaps() {
   const ref = useRef<HTMLDivElement | null>(null);

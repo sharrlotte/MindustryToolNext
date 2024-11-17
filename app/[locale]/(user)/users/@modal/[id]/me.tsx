@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 
+import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
 import InfinitePage from '@/components/common/infinite-page';
+import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import UploadMapPreview from '@/components/map/upload-map-preview-card';
 import PostPreviewCard from '@/components/post/post-preview-card';
@@ -12,12 +14,10 @@ import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import useStatusSearchParams from '@/hooks/use-status-search-params';
 import { useTags } from '@/context/tags-context.client';
+import useStatusSearchParams from '@/hooks/use-status-search-params';
+import { getMeMaps, getMePosts, getMeSchematics } from '@/query/user';
 import { User } from '@/types/response/User';
-import { getMeSchematics, getMeMaps, getMePosts } from '@/query/user';
-import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
-import Tran from '@/components/common/tran';
 
 type TabProps = {
   me: User;

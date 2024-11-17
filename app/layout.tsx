@@ -1,14 +1,15 @@
-import env from '@/constant/env';
-import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './globals.css';
+import env from '@/constant/env';
 import I18nProvider from '@/context/locale-context';
 import { Locale } from '@/i18n/config';
+import { cn } from '@/lib/utils';
+
+import './globals.css';
 
 const inter = Inter({
   variable: '--font-inter',

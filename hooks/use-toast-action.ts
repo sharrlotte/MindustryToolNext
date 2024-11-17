@@ -1,5 +1,6 @@
-import { useToast } from '@/hooks/use-toast';
 import { ReactNode, useCallback } from 'react';
+
+import { useToast } from '@/hooks/use-toast';
 
 type UseToastActionParam<T> = {
   title: ReactNode;

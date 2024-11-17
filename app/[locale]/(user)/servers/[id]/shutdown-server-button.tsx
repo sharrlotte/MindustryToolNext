@@ -3,13 +3,14 @@
 import React from 'react';
 
 import { revalidate } from '@/action/action';
+import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
-import { useMutation } from '@tanstack/react-query';
 import { shutdownInternalServer } from '@/query/server';
-import Tran from '@/components/common/tran';
+
+import { useMutation } from '@tanstack/react-query';
 
 type Props = {
   id: string;

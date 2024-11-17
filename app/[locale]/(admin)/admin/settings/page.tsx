@@ -1,11 +1,13 @@
 'use client';
 
+import { AxiosInstance } from 'axios';
+import React, { useState } from 'react';
+
 import Tran from '@/components/common/tran';
 import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
+
 import { useMutation } from '@tanstack/react-query';
-import { AxiosInstance } from 'axios';
-import React, { useState } from 'react';
 
 async function toggleDebug(axios: AxiosInstance, value: boolean): Promise<{ data: boolean }> {
   return await axios.post(`/debug`, null, {

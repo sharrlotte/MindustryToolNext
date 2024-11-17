@@ -3,8 +3,8 @@
 import { SearchIcon } from 'lucide-react';
 import React, { HTMLAttributes } from 'react';
 
-import { cn } from '@/lib/utils';
 import { useI18n } from '@/i18n/client';
+import { cn } from '@/lib/utils';
 
 type SearchProps = HTMLAttributes<HTMLDivElement>;
 

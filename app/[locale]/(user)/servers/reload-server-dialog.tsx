@@ -2,15 +2,15 @@
 
 import React from 'react';
 
+import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { toast } from '@/hooks/use-toast';
+import { reloadInternalServers } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
-import { reloadInternalServers } from '@/query/server';
-import Tran from '@/components/common/tran';
 
 export default function ReloadServerDialog() {
   const axios = useClientApi();

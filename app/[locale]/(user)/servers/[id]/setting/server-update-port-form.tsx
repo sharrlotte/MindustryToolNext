@@ -4,21 +4,21 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { revalidate } from '@/action/action';
+import Tran from '@/components/common/tran';
+import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+import { updateInternalServerPort } from '@/query/server';
 import { PutInternalServerPortRequest, PutInternalServerPortSchema } from '@/types/request/UpdateInternalServerRequest';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { updateInternalServerPort } from '@/query/server';
-import Tran from '@/components/common/tran';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { cn } from '@/lib/utils';
 
 type Props = {
   server: InternalServerDetail;

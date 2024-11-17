@@ -1,20 +1,22 @@
+import { CheckSquare, Square } from 'lucide-react';
+import { Fragment, useMemo, useState } from 'react';
+
 import { Hidden } from '@/components/common/hidden';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { useSession, useMe } from '@/context/session-context.client';
+import { useMe, useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import { cn, groupBy } from '@/lib/utils';
 import { getAuthorities } from '@/query/authorities';
-import { getRoles, changeRoles } from '@/query/role';
+import { changeRoles, getRoles } from '@/query/role';
 import { changeAuthorities } from '@/query/user';
 import { Authority, Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { CheckSquare, Square } from 'lucide-react';
-import { Fragment, useMemo, useState } from 'react';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 type DialogProps = {
   user: User;

@@ -1,10 +1,11 @@
+import Link from 'next/link';
+
 import { HomeMapPreview, HomeSchematicPreview, InformationGroup } from '@/app/[locale]/home';
 import Ads from '@/components/common/ads';
 import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import YoutubeEmbed from '@/components/common/youtube-embed';
-import Link from 'next/link';
 
 // export const dynamicParams = false;
 export const experimental_ppr = true;

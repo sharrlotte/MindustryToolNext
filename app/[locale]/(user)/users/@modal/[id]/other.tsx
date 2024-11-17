@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 
+import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
+import InfinitePage from '@/components/common/infinite-page';
+import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import UploadMapPreview from '@/components/map/upload-map-preview-card';
 import PostPreviewCard from '@/components/post/post-preview-card';
@@ -12,13 +15,10 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTags } from '@/context/tags-context.client';
-import { User } from '@/types/response/User';
-import { getUserSchematics, getUserMaps, getUserPosts } from '@/query/user';
-import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
-import InfinitePage from '@/components/common/infinite-page';
-import { ItemPaginationQuery } from '@/query/search-query';
 import useSearchQuery from '@/hooks/use-search-query';
-import Tran from '@/components/common/tran';
+import { ItemPaginationQuery } from '@/query/search-query';
+import { getUserMaps, getUserPosts, getUserSchematics } from '@/query/user';
+import { User } from '@/types/response/User';
 
 type TabProps = {
   user: User;

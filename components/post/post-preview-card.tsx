@@ -1,6 +1,8 @@
+import { LinkIcon } from 'lucide-react';
 import React, { HTMLAttributes } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
+import InternalLink from '@/components/common/internal-link';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
@@ -9,8 +11,6 @@ import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 import { Post } from '@/types/response/Post';
-import { LinkIcon } from 'lucide-react';
-import InternalLink from '@/components/common/internal-link';
 
 type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;

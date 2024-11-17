@@ -1,4 +1,7 @@
-import Markdown from '@/components/common/markdown';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
 import {
   BoldIcon,
   CheckListIcon,
@@ -18,6 +21,8 @@ import {
   TitleIcon,
   XIcon,
 } from '@/components/common/icons';
+import Markdown from '@/components/common/markdown';
+import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -25,10 +30,6 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import Tran from '@/components/common/tran';
 
 export type MarkdownData = {
   text: string;

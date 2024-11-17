@@ -6,21 +6,21 @@ import { useForm } from 'react-hook-form';
 import { revalidate } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
+import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+import { updateInternalServer } from '@/query/server';
 import { InternalServerModes, PutInternalServerRequest, PutInternalServerSchema } from '@/types/request/UpdateInternalServerRequest';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { updateInternalServer } from '@/query/server';
-import Tran from '@/components/common/tran';
-import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
 
 type Props = {
   server: InternalServerDetail;

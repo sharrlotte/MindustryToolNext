@@ -4,13 +4,13 @@ import { AxiosInstance } from 'axios';
 import React, { JSXElementConstructor, ReactElement, ReactNode, useCallback, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
+import EndOfPage from '@/components/common/end-of-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
-import EndOfPage from '@/components/common/end-of-page';
 
 type InfinitePageProps<T, P> = {
   className?: string;

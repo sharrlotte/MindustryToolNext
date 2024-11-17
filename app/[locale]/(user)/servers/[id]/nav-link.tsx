@@ -1,11 +1,11 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
-import { cn } from '@/lib/utils';
 import InternalLink from '@/components/common/internal-link';
-import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 type Props = {
   serverId: string;

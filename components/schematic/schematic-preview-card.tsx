@@ -4,21 +4,21 @@ import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
+import ColorText from '@/components/common/color-text';
+import { LinkIcon } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
+import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
+import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import LikeCount from '@/components/like/like-count';
-import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
-import useToastAction from '@/hooks/use-toast-action';
-import { Schematic } from '@/types/response/Schematic';
-import { LinkIcon } from '@/components/common/icons';
-import { getSchematicData } from '@/query/schematic';
-import InternalLink from '@/components/common/internal-link';
-import ColorText from '@/components/common/color-text';
 import useImageLoading from '@/hooks/use-image-loading';
-import Tran from '@/components/common/tran';
+import useToastAction from '@/hooks/use-toast-action';
+import { getSchematicData } from '@/query/schematic';
+import { Schematic } from '@/types/response/Schematic';
 
 type SchematicPreviewCardProps = {
   schematic: Schematic;

@@ -1,9 +1,9 @@
 import { AxiosInstance } from 'axios';
 import React, { ReactNode, useMemo } from 'react';
 
-import RouterSpinner from '@/components/common/router-spinner';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
+import RouterSpinner from '@/components/common/router-spinner';
 import useClientQuery from '@/hooks/use-client-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';

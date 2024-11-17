@@ -1,21 +1,22 @@
+import dynamic from 'next/dynamic';
 import React, { Fragment, Suspense } from 'react';
+
+import { getSession, serverApi } from '@/action/action';
+import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/check-server-maps';
+import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(user)/servers/[id]/(dashboard)/player-card';
 import ReloadServerButton from '@/app/[locale]/(user)/servers/[id]/reload-server-button';
 import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-server-button';
 import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-button';
 import ColorText from '@/components/common/color-text';
+import ErrorScreen from '@/components/common/error-screen';
+import { ServerIcon } from '@/components/common/icons';
 import RawImage from '@/components/common/raw-image';
-import { getInternalServer } from '@/query/server';
 import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
-import { ServerIcon } from '@/components/common/icons';
 import IdUserCard from '@/components/user/id-user-card';
-import { getSession, serverApi } from '@/action/action';
-import ErrorScreen from '@/components/common/error-screen';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, hasAccess, isError } from '@/lib/utils';
-import dynamic from 'next/dynamic';
-import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(user)/servers/[id]/(dashboard)/player-card';
-import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/check-server-maps';
+import { getInternalServer } from '@/query/server';
 
 const RamUsageChart = dynamic(() => import('@/components/metric/ram-usage-chart'));
 

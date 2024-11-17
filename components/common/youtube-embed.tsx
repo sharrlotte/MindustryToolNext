@@ -1,7 +1,8 @@
 'use client';
 
-import Tran from '@/components/common/tran';
 import React, { useEffect, useState } from 'react';
+
+import Tran from '@/components/common/tran';
 
 type Props = {
   url: string;

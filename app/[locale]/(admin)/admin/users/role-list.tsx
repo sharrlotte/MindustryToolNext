@@ -2,8 +2,8 @@
 
 import RoleCard from '@/app/[locale]/(admin)/admin/users/role-card';
 import ErrorScreen from '@/components/common/error-screen';
-import { getRoles } from '@/query/role';
 import useClientQuery from '@/hooks/use-client-query';
+import { getRoles } from '@/query/role';
 
 export function RoleList() {
   const { data, error } = useClientQuery({ queryFn: (axios) => getRoles(axios), queryKey: ['roles'] });

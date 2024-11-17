@@ -13,12 +13,7 @@ type FilterTagProps = {
 
 const empty: string[] = [];
 
-export default function FilterTags({
-  filter,
-  tags,
-  filterBy,
-  handleTagGroupChange,
-}: FilterTagProps) {
+export default function FilterTags({ filter, tags, filterBy, handleTagGroupChange }: FilterTagProps) {
   const filteredTags = useMemo(
     () =>
       filter.length === 0
@@ -35,14 +30,7 @@ export default function FilterTags({
     [filter, tags],
   );
 
-  return filteredTags.map((group) => (
-    <FilterTagGroup
-      key={group.name}
-      selectedGroup={filterBy.find((value) => value.name === group.name)}
-      group={group}
-      handleTagGroupChange={handleTagGroupChange}
-    />
-  ));
+  return filteredTags.map((group) => <FilterTagGroup key={group.name} selectedGroup={filterBy.find((value) => value.name === group.name)} group={group} handleTagGroupChange={handleTagGroupChange} />);
 }
 
 type FilterTagGroupProps = {
@@ -51,35 +39,15 @@ type FilterTagGroupProps = {
   handleTagGroupChange: (group: string, value: string[]) => void;
 };
 
-const InternalFilterTagGroup = ({
-  group,
-  selectedGroup,
-  handleTagGroupChange,
-}: FilterTagGroupProps) => {
-  const handleMultipleValueChange = useCallback(
-    (value: string[]) => handleTagGroupChange(group.name, value),
-    [group, handleTagGroupChange],
-  );
+const InternalFilterTagGroup = ({ group, selectedGroup, handleTagGroupChange }: FilterTagGroupProps) => {
+  const handleMultipleValueChange = useCallback((value: string[]) => handleTagGroupChange(group.name, value), [group, handleTagGroupChange]);
 
-  const handleSingleValueChange = useCallback(
-    (value: string) => handleTagGroupChange(group.name, [value]),
-    [group, handleTagGroupChange],
-  );
+  const handleSingleValueChange = useCallback((value: string) => handleTagGroupChange(group.name, [value]), [group, handleTagGroupChange]);
 
   return group.duplicate ? (
-    <MultipleFilerTags
-      key={group.name}
-      group={group}
-      selectedValue={selectedGroup?.values ?? empty}
-      handleTagGroupChange={handleMultipleValueChange}
-    />
+    <MultipleFilerTags key={group.name} group={group} selectedValue={selectedGroup?.values ?? empty} handleTagGroupChange={handleMultipleValueChange} />
   ) : (
-    <SingeFilerTags
-      key={group.name}
-      group={group}
-      selectedValue={selectedGroup?.values[0] ?? ''}
-      handleTagGroupChange={handleSingleValueChange}
-    />
+    <SingeFilerTags key={group.name} group={group} selectedValue={selectedGroup?.values[0] ?? ''} handleTagGroupChange={handleSingleValueChange} />
   );
 };
 

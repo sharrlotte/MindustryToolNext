@@ -1,12 +1,12 @@
 import React, { Suspense } from 'react';
 
+import ScrollContainer from '@/components/common/scroll-container';
 import ClientChart from '@/components/metric/client-chart';
 import LikeChart from '@/components/metric/like-chart';
 import LoginChart from '@/components/metric/login-chart';
 import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import { Skeleton } from '@/components/ui/skeleton';
-import ScrollContainer from '@/components/common/scroll-container';
 import { cn } from '@/lib/utils';
 
 export const experimental_ppr = true;
@@ -16,7 +16,7 @@ const NUMBER_OF_DAY = 15;
 export default async function Page() {
   const start = new Date();
   const end = new Date();
-  
+
   end.setUTCHours(23, 59, 59, 999);
 
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);

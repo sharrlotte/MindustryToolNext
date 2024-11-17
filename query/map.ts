@@ -1,14 +1,14 @@
 import { AxiosInstance } from 'axios';
 
-import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
+import { toForm } from '@/lib/utils';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { MapDetail } from '@/types/response/MapDetail';
-import { Map } from '@/types/response/Map';
+import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
+import VerifyMapRequest from '@/types/request/VerifyMapRequest';
+import { Map } from '@/types/response/Map';
+import { MapDetail } from '@/types/response/MapDetail';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 import { CreateMapRequest } from '@/types/schema/zod-schema';
-import { toForm } from '@/lib/utils';
-import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 
 export async function getMapCount(axios: AxiosInstance, params: PaginationSearchQuery): Promise<number> {
   const result = await axios.get('/maps/total', { params });

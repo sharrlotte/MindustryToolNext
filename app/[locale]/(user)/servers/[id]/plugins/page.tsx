@@ -2,13 +2,12 @@
 
 import React, { useRef } from 'react';
 
-import InfinitePage from '@/components/common/infinite-page';
-import InternalServerPluginCard from '@/components/server/internal-server-plugin-card';
-
-import { getInternalServerPlugins } from '@/query/server';
 import { AddPluginDialog } from '@/app/[locale]/(user)/servers/[id]/plugins/add-plugin-dialog';
-import useSearchId from '@/hooks/use-search-id-params';
+import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
+import InternalServerPluginCard from '@/components/server/internal-server-plugin-card';
+import useSearchId from '@/hooks/use-search-id-params';
+import { getInternalServerPlugins } from '@/query/server';
 
 export default function Page() {
   const ref = useRef<HTMLDivElement | null>(null);

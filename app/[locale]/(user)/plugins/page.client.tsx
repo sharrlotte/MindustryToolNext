@@ -2,16 +2,15 @@
 
 import React, { useRef } from 'react';
 
+import AddPluginForm from '@/app/[locale]/(user)/plugins/add-plugin-form';
 import InfinitePage from '@/components/common/infinite-page';
+import ScrollContainer from '@/components/common/scroll-container';
 import PluginCard from '@/components/plugin/plugin-card';
+import PluginCardSkeleton from '@/components/plugin/plugin-card-skeleton';
 import NameTagSearch from '@/components/search/name-tag-search';
 import { useTags } from '@/context/tags-context.client';
-
-import { getPlugins } from '@/query/plugin';
-import AddPluginForm from '@/app/[locale]/(user)/plugins/add-plugin-form';
-import PluginCardSkeleton from '@/components/plugin/plugin-card-skeleton';
-import ScrollContainer from '@/components/common/scroll-container';
 import useSearchQuery from '@/hooks/use-search-query';
+import { getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Plugin } from '@/types/response/Plugin';
 

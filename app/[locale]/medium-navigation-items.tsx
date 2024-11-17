@@ -1,4 +1,6 @@
+import { Variants, motion } from 'framer-motion';
 import React, { ReactNode, useCallback, useState } from 'react';
+import { useMediaQuery } from 'usehooks-ts';
 
 import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
@@ -13,8 +15,6 @@ import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
 import { useNavBar } from '@/zustand/nav-bar-store';
-import { motion, Variants } from 'framer-motion';
-import { useMediaQuery } from 'usehooks-ts';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];

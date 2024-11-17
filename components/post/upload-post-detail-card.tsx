@@ -5,24 +5,24 @@ import React, { useEffect, useState } from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
 import VerifyButton from '@/components/button/verify-button';
-import Markdown from '@/components/common/markdown';
 import { Detail } from '@/components/common/detail';
+import Markdown from '@/components/common/markdown';
+import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
+import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
+import { deletePost, verifyPost } from '@/query/post';
+import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation } from '@tanstack/react-query';
-import VerifyPostRequest from '@/types/request/VerifyPostRequest';
-import { deletePost, verifyPost } from '@/query/post';
-import Tran from '@/components/common/tran';
 
 type UploadPostDetailCardProps = {
   post: PostDetail;

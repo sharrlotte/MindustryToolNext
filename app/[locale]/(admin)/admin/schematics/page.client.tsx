@@ -2,26 +2,27 @@
 
 import React, { useState } from 'react';
 
+import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
+import GridPaginationList from '@/components/common/grid-pagination-list';
+import InfinitePage from '@/components/common/infinite-page';
+import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
+import PaginationNavigator from '@/components/common/pagination-navigator';
+import Tran from '@/components/common/tran';
+import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { useTags } from '@/context/tags-context.client';
-import GridPaginationList from '@/components/common/grid-pagination-list';
-import { PaginationLayoutSwitcher, ListLayout, GridLayout } from '@/components/common/pagination-layout';
-import PaginationNavigator from '@/components/common/pagination-navigator';
-import useClientQuery from '@/hooks/use-client-query';
-import useSearchQuery from '@/hooks/use-search-query';
-import { ItemPaginationQuery } from '@/query/search-query';
-import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
-import { deleteSchematic, getSchematicUploadCount, getSchematicUploads } from '@/query/schematic';
-import { omit } from '@/lib/utils';
-import Tran from '@/components/common/tran';
-import InfinitePage from '@/components/common/infinite-page';
-import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
-import { useMutation } from '@tanstack/react-query';
 import useClientApi from '@/hooks/use-client';
-import { toast } from '@/hooks/use-toast';
+import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
+import useSearchQuery from '@/hooks/use-search-query';
+import { toast } from '@/hooks/use-toast';
+import { omit } from '@/lib/utils';
+import { deleteSchematic, getSchematicUploadCount, getSchematicUploads } from '@/query/schematic';
+import { ItemPaginationQuery } from '@/query/search-query';
 import { Schematic } from '@/types/response/Schematic';
+
+import { useMutation } from '@tanstack/react-query';
 
 type Props = {
   schematics: Schematic[];

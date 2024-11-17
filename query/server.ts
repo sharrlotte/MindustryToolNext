@@ -1,3 +1,5 @@
+import { AxiosInstance } from 'axios';
+
 import { toForm } from '@/lib/utils';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
@@ -13,7 +15,6 @@ import { InternalServerPlugin } from '@/types/response/InternalServerPlugin';
 import { Player } from '@/types/response/Player';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
 import { ServerFile } from '@/types/response/ServerFile';
-import { AxiosInstance } from 'axios';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
   const result = await axios.delete(`/internal-servers/${id}/files`, {

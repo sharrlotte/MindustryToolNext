@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { TagGroups } from '@/types/response/TagGroup';
 import { TranslateFunction } from '@/i18n/config';
+import { TagGroups } from '@/types/response/TagGroup';
 
 export const TAG_GROUP_SCHEMA = z.object({
   name: z.string(),
@@ -22,9 +22,7 @@ export const CreateSchematicSchema = (t: TranslateFunction) =>
       .transform<string>((value) => TagGroups.toString(value)),
   });
 
-export type CreateSchematicRequest = z.infer<
-  ReturnType<typeof CreateSchematicSchema>
->;
+export type CreateSchematicRequest = z.infer<ReturnType<typeof CreateSchematicSchema>>;
 
 export const CreateMapSchema = (t: TranslateFunction) =>
   z.object({

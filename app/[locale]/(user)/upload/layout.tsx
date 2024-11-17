@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import ProtectedRoute from '@/layout/protected-route';
 import { getSession } from '@/action/action';
+import ProtectedRoute from '@/layout/protected-route';
 
 type LayoutProps = {
   children: ReactNode;

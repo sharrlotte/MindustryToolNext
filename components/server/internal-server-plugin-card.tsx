@@ -3,15 +3,15 @@
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
+import Tran from '@/components/common/tran';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
+import { deleteInternalServerPlugin } from '@/query/server';
 import { InternalServerPlugin } from '@/types/response/InternalServerPlugin';
 
 import { useMutation } from '@tanstack/react-query';
-import { deleteInternalServerPlugin } from '@/query/server';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import Tran from '@/components/common/tran';
 
 type Props = {
   plugin: InternalServerPlugin;

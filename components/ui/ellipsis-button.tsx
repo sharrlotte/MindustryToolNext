@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { EllipsisIcon } from '@/components/common/icons';
 import { Button, ButtonProps } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { EllipsisIcon } from '@/components/common/icons';
 
 type Props = Pick<ButtonProps, 'variant' | 'children' | 'className'>;
 

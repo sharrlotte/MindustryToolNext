@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 import { defaultSortTag } from '@/constant/env';
-import { sortTag } from '@/types/response/SortTag';
 import { locales } from '@/i18n/config';
+import { sortTag } from '@/types/response/SortTag';
 
 export const sortSchema = z.enum(sortTag).default(defaultSortTag).catch(defaultSortTag);
 

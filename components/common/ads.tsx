@@ -8,11 +8,6 @@ export default function Ads() {
   const isProduction = env === 'production';
 
   if (isProduction && showAds) {
-    return (
-      <Script
-        strategy="afterInteractive"
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1288517130363555"
-      />
-    );
+    return <Script strategy="afterInteractive" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1288517130363555" />;
   }
 }

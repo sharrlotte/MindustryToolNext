@@ -9,11 +9,7 @@ type ColorAsRoleProps = {
   roles: Role[] | undefined;
 };
 
-export default function ColorAsRole({
-  className,
-  children,
-  roles,
-}: ColorAsRoleProps) {
+export default function ColorAsRole({ className, children, roles }: ColorAsRoleProps) {
   const roleNames = roles?.map((r) => r.name) ?? [];
 
   if (!roles) {
@@ -25,9 +21,7 @@ export default function ColorAsRole({
   }
 
   if (roleNames.includes('ADMIN')) {
-    return (
-      <span className={cn('text-emerald-400', className)}>{children}</span>
-    );
+    return <span className={cn('text-emerald-400', className)}>{children}</span>;
   }
 
   if (roleNames.includes('SERVER')) {

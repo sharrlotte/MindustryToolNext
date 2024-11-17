@@ -1,34 +1,23 @@
-import { Locale } from '@/i18n/config';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
-import {
-  TranslationDiff,
-  TranslationCompare,
-} from '@/types/response/Translation';
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
-export async function getTranslation(
-  axios: AxiosInstance,
-  params: PaginationQuery & { language: Locale },
-): Promise<Record<string, string>[]> {
+import { Locale } from '@/i18n/config';
+import { PaginationQuery } from '@/types/data/pageable-search-schema';
+import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
+
+export async function getTranslation(axios: AxiosInstance, params: PaginationQuery & { language: Locale }): Promise<Record<string, string>[]> {
   const result = await axios.get('/translations', { params });
 
   return result.data;
 }
 
-export async function getTranslationDiff(
-  axios: AxiosInstance,
-  params: PaginationQuery & { language: Locale; target: Locale },
-): Promise<TranslationDiff[]> {
+export async function getTranslationDiff(axios: AxiosInstance, params: PaginationQuery & { language: Locale; target: Locale }): Promise<TranslationDiff[]> {
   const result = await axios.get('/translations/diff', { params });
 
   return result.data;
 }
 
-export async function getTranslationDiffCount(
-  axios: AxiosInstance,
-  params: { language: Locale; target: Locale; key?: string },
-) {
+export async function getTranslationDiffCount(axios: AxiosInstance, params: { language: Locale; target: Locale; key?: string }) {
   const result = await axios.get('/translations/diff/count', {
     params,
   });
@@ -36,19 +25,13 @@ export async function getTranslationDiffCount(
   return result.data;
 }
 
-export async function getTranslationCompare(
-  axios: AxiosInstance,
-  params: PaginationQuery & { language: Locale; target: Locale },
-): Promise<TranslationCompare[]> {
+export async function getTranslationCompare(axios: AxiosInstance, params: PaginationQuery & { language: Locale; target: Locale }): Promise<TranslationCompare[]> {
   const result = await axios.get('/translations/compare', { params });
 
   return result.data;
 }
 
-export async function getTranslationCompareCount(
-  axios: AxiosInstance,
-  params: { language: Locale; target: Locale; key?: string },
-) {
+export async function getTranslationCompareCount(axios: AxiosInstance, params: { language: Locale; target: Locale; key?: string }) {
   const result = await axios.get('/translations/compare/count', {
     params,
   });
@@ -65,10 +48,7 @@ export const CreateTranslationSchema = z.object({
 
 export type CreateTranslationRequest = z.infer<typeof CreateTranslationSchema>;
 
-export async function createTranslation(
-  axios: AxiosInstance,
-  payload: CreateTranslationRequest,
-) {
+export async function createTranslation(axios: AxiosInstance, payload: CreateTranslationRequest) {
   const result = await axios.post('/translations', payload);
 
   return result.data;

@@ -1,13 +1,13 @@
 'use client';
 
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
+
 import Tran from '@/components/common/tran';
 import MetricWrapper from '@/components/metric/metric-wrapper';
 import { useI18n } from '@/i18n/client';
 import { ChartData } from '@/types/response/Metric';
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
-
-import { BarElement, CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 

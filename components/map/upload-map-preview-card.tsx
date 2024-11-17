@@ -2,14 +2,14 @@ import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
-import env from '@/constant/env';
-import { Map } from '@/types/response/Map';
-import { LinkIcon } from '@/components/common/icons';
 import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
+import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
+import env from '@/constant/env';
 import useImageLoading from '@/hooks/use-image-loading';
+import { Map } from '@/types/response/Map';
 
 type UploadMapPreviewCardProps = {
   map: Map;

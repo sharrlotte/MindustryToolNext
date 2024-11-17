@@ -12,7 +12,6 @@ const nextConfig: NextConfig = {
       exclude: ['error'],
     },
   },
-  swcMinify: true,
   crossOrigin: 'anonymous',
   reactStrictMode: true,
   images: {

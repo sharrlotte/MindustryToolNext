@@ -1,16 +1,16 @@
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
+import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import IdUserCard from '@/components/user/id-user-card';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
+import { deleteDocument } from '@/query/document';
 import { Document } from '@/types/response/Document';
 
 import { useMutation } from '@tanstack/react-query';
-import { deleteDocument } from '@/query/document';
-import Tran from '@/components/common/tran';
 
 type Props = {
   document: Document;

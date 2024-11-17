@@ -1,11 +1,12 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import useClientApi from '@/hooks/use-client';
-import { getErrorMessage, TError } from '@/lib/utils';
-import { reportError } from '@/query/api';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+
+import { Button } from '@/components/ui/button';
+import useClientApi from '@/hooks/use-client';
+import { TError, getErrorMessage } from '@/lib/utils';
+import { reportError } from '@/query/api';
 
 export default function Error({ error }: { error: TError }) {
   const message = getErrorMessage(error);

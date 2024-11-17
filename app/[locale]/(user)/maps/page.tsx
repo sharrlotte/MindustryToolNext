@@ -1,12 +1,12 @@
 import { Metadata } from 'next/dist/types';
 
-import Client from '@/app/[locale]/(user)/maps/page.client';
-import env from '@/constant/env';
 import { serverApi } from '@/action/action';
+import Client from '@/app/[locale]/(user)/maps/page.client';
+import ErrorScreen from '@/components/common/error-screen';
+import env from '@/constant/env';
+import { isError } from '@/lib/utils';
 import { getMaps } from '@/query/map';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
-import { isError } from '@/lib/utils';
-import ErrorScreen from '@/components/common/error-screen';
 
 export const revalidate = 3600;
 

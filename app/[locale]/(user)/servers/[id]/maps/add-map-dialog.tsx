@@ -1,3 +1,5 @@
+import { useRef, useState } from 'react';
+
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingScreen from '@/components/common/loading-screen';
 import { PreviewImage } from '@/components/common/preview';
@@ -8,16 +10,16 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import env from '@/constant/env';
+import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
-import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
 import { getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { createInternalServerMap } from '@/query/server';
+
 import { useMutation } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
 
 type AddMapDialogProps = {
   serverId: string;

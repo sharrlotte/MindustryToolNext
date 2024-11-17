@@ -23,9 +23,7 @@ export class TagGroups {
     return Tags.toString(Tags.fromTagGroup(tags));
   }
   static toStringArray(tags: TagGroup[]) {
-    return Tags.fromTagGroup(tags).map(
-      (tag) => tag.name + TAG_SEPARATOR + tag.value,
-    );
+    return Tags.fromTagGroup(tags).map((tag) => tag.name + TAG_SEPARATOR + tag.value);
   }
 
   static parseString(str: string[], tags: TagGroup[]) {
@@ -45,11 +43,7 @@ export class TagGroups {
           return { ...tag, color: TAG_DEFAULT_COLOR, duplicate: true };
         }
 
-        const result = tags.find(
-          (t) =>
-            t.name === tag.name &&
-            tag.values.every((b) => tag.values.includes(b)),
-        );
+        const result = tags.find((t) => t.name === tag.name && tag.values.every((b) => tag.values.includes(b)));
         // Ignore tag that not match with server
         if (result) {
           const r = { ...result, values: tag.values };

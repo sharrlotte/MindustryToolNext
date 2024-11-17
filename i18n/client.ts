@@ -1,13 +1,13 @@
 'use client';
 
+import { unstable_cache } from 'next/cache';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { use, useCallback } from 'react';
+import { useCookies } from 'react-cookie';
 
 import { useLocaleStore } from '@/context/locale-context';
 import useClientApi from '@/hooks/use-client';
-import { Locale, locales, TranslateFunction } from '@/i18n/config';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCookies } from 'react-cookie';
-import { unstable_cache } from 'next/cache';
+import { Locale, TranslateFunction, locales } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
 
 const EMPTY = {};

@@ -1,14 +1,14 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-
-import { Button } from '@/components/ui/button';
-import Tran from '@/components/common/tran';
 import { useEffect } from 'react';
-import { reportError } from '@/query/api';
-import useClientApi from '@/hooks/use-client';
-import { getErrorMessage, TError } from '@/lib/utils';
+
+import Tran from '@/components/common/tran';
 import BackButton from '@/components/ui/back-button';
+import { Button } from '@/components/ui/button';
+import useClientApi from '@/hooks/use-client';
+import { TError, getErrorMessage } from '@/lib/utils';
+import { reportError } from '@/query/api';
 
 export default function ErrorScreen({ error }: { error: TError }) {
   const path = usePathname();

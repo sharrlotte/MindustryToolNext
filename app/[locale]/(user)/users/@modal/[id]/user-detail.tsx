@@ -1,3 +1,6 @@
+import Image from 'next/image';
+import React from 'react';
+
 import { EditIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
@@ -8,8 +11,6 @@ import UserRoleCard from '@/components/user/user-role';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { User } from '@/types/response/User';
-import Image from 'next/image';
-import React from 'react';
 
 type Props = {
   user: User;

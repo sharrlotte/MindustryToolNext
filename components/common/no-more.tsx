@@ -1,5 +1,6 @@
-import Tran from '@/components/common/tran';
 import React, { HTMLAttributes } from 'react';
+
+import Tran from '@/components/common/tran';
 
 type NoMoreProps = HTMLAttributes<HTMLDivElement>;
 

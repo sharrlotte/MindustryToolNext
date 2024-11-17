@@ -1,21 +1,20 @@
 'use client';
 
 import React, { FormEvent, useState } from 'react';
+import { useMediaQuery } from 'usehooks-ts';
 
+import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/app/[locale]/(user)/chat/member-pannel';
 import LoginButton from '@/components/button/login-button';
+import { PaperclipIcon, SearchIcon, SendIcon, SmileIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
+import Tran from '@/components/common/tran';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
 import { useSession } from '@/context/session-context.client';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import ProtectedElement from '@/layout/protected-element';
-
-import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/app/[locale]/(user)/chat/member-pannel';
-import { PaperclipIcon, SearchIcon, SendIcon, SmileIcon } from '@/components/common/icons';
-import Tran from '@/components/common/tran';
-import { useMediaQuery } from 'usehooks-ts';
 
 export default function Page() {
   const { state } = useSocket();

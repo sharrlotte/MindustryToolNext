@@ -1,4 +1,5 @@
 import React, { HTMLAttributes } from 'react';
+
 import Tran from '@/components/common/tran';
 
 type NoResultProps = HTMLAttributes<HTMLDivElement>;

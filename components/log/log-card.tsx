@@ -1,7 +1,7 @@
+import React from 'react';
+
 import IdUserCard from '@/components/user/id-user-card';
 import { Log } from '@/types/response/Log';
-
-import React from 'react';
 
 type LogCardProps = {
   log: Log;
