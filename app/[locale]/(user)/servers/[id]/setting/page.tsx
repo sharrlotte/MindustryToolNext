@@ -8,23 +8,25 @@ import ServerUpdatePortForm from '@/app/[locale]/(user)/servers/[id]/setting/ser
 import ErrorScreen from '@/components/common/error-screen';
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
+import { Locale } from '@/i18n/config';
 import ProtectedElement from '@/layout/protected-element';
 import { formatTitle, isError } from '@/lib/utils';
 import { getInternalServer } from '@/query/server';
 
-type PageProps = {
-  params: Promise<{ id: string }>;
+type Props = {
+  params: Promise<{ id: string; locale: Locale }>;
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = await translate('setting');
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const title = await translate(locale, 'setting');
 
   return {
     title: formatTitle(title),
   };
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: Props) {
   const { id } = await params;
 
   const [server, session] = await Promise.all([serverApi((axios) => getInternalServer(axios, { id })), getSession()]);

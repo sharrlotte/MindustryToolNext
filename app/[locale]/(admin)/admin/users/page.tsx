@@ -1,28 +1,31 @@
+import { Metadata } from 'next';
 import React from 'react';
-
-
 
 import { getSession, translate } from '@/action/action';
 import { RoleTable } from '@/app/[locale]/(admin)/admin/users/role-table';
 import { UserTable } from '@/app/[locale]/(admin)/admin/users/user-table';
 import Tran from '@/components/common/tran';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
+import { Locale } from '@/i18n/config';
 import ProtectedElement from '@/layout/protected-element';
 import ProtectedRoute from '@/layout/protected-route';
 import { formatTitle } from '@/lib/utils';
-import { Metadata } from 'next';
-
 
 export const experimental_ppr = true;
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = await translate('user');
+type Props = {
+  params: Promise<{
+    locale: Locale;
+  }>;
+};
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const title = await translate(locale, 'user');
 
   return {
     title: formatTitle(title),
   };
 }
-
 
 export default async function Page() {
   const session = await getSession();

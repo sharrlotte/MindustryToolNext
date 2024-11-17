@@ -8,13 +8,21 @@ import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import YoutubeEmbed from '@/components/common/youtube-embed';
+import { Locale } from '@/i18n/config';
 import { formatTitle } from '@/lib/utils';
 
 // export const dynamicParams = false;
 export const experimental_ppr = true;
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = await translate('home');
+type Props = {
+  params: Promise<{
+    locale: Locale;
+  }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const title = await translate(locale, 'home');
 
   return {
     title: formatTitle(title),

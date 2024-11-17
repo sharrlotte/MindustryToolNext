@@ -7,17 +7,18 @@ import Tran from '@/components/common/tran';
 import UploadSchematicDetailCard from '@/components/schematic/upload-schematic-detail-card';
 import BackButton from '@/components/ui/back-button';
 import env from '@/constant/env';
+import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
 import { getSchematicUpload } from '@/query/schematic';
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: Locale }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { id, locale } = await params;
   const schematic = await serverApi((axios) => getSchematicUpload(axios, { id }));
-  const title = await translate('schematic');
+  const title = await translate(locale, 'schematic');
 
   if (isError(schematic)) {
     return { title: 'Error' };

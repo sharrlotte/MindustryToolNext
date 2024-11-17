@@ -1,13 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
-import { cookies } from 'next/headers';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import env from '@/constant/env';
-import I18nProvider from '@/context/locale-context';
-import { Locale } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
 import './globals.css';
@@ -60,32 +57,22 @@ export const metadata: Metadata = {
 
 type Props = {
   children: React.ReactNode;
-  params: Promise<{
-    locale: Locale;
-  }>;
 };
 
-export default async function Root({ children, params }: Props) {
-  const { locale } = await params;
-
+export default async function Root({ children }: Props) {
   ReactDOM.preconnect('https://image.mindustry-tool.app');
   ReactDOM.preconnect('https://api.mindustry-tool.app');
   ReactDOM.preconnect('https://fonts.googleapis.com');
   ReactDOM.preconnect('https://fonts.gstatic.com', { crossOrigin: 'anonymous' });
 
-  const cookie = await cookies();
-  const cookieLocale = cookie.get('Locale')?.value ?? 'en';
-
   return (
     <html
       className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable)}
-      lang={locale ?? cookieLocale}
+      lang={'en'}
       data-color-mode="dark"
       suppressHydrationWarning
     >
-      <body className="h-full w-full overflow-hidden">
-        <I18nProvider locale={locale ?? cookieLocale}>{children}</I18nProvider>
-      </body>
+      <body className="h-full w-full overflow-hidden">{children}</body>
     </html>
   );
 }

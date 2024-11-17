@@ -4,16 +4,19 @@ import React from 'react';
 import { serverApi, translate } from '@/action/action';
 import Client from '@/app/[locale]/(user)/plugins/page.client';
 import ErrorScreen from '@/components/common/error-screen';
+import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
 import { getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 type Props = {
   searchParams: Promise<ItemPaginationQueryType>;
+  params: Promise<{ locale: Locale }>;
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = await translate('plugin');
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const title = await translate(locale, 'plugin');
 
   return {
     title: formatTitle(title),

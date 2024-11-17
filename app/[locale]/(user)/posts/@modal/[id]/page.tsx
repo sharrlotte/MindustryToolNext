@@ -5,17 +5,18 @@ import removeMd from 'remove-markdown';
 import { serverApi, translate } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import PostDetailCard from '@/components/post/post-detail-card';
+import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
 import { getPost } from '@/query/post';
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: Locale }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { id, locale } = await params;
   const post = await serverApi((axios) => getPost(axios, { id }));
-  const title = await translate('post');
+  const title = await translate(locale, 'post');
 
   if (isError(post)) {
     return { title: 'Error' };
