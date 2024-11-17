@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     staleTimes: {
       dynamic: 10,
     },
+    forceSwcTransforms: true,
   },
   compiler: {
     removeConsole: {
