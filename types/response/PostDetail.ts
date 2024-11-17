@@ -9,6 +9,7 @@ export type PostDetail = {
   likes: number;
   tags: string[];
   lang: string;
+  imageUrls: string[];
   status: Status;
   translations: Record<
     string,

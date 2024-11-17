@@ -13,9 +13,9 @@ type MarkdownProps = {
   children: string;
 };
 
-const YOUTUBE_VIDEO_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+export const YOUTUBE_VIDEO_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
-const OTHER_WEBSITE_URL_REGEX = /^(https?:)?\/\//;
+export const OTHER_WEBSITE_URL_REGEX = /^(https?:)?\/\//;
 
 function RouterLink({ href, children }: any) {
   if (href.match(YOUTUBE_VIDEO_REGEX)) {
