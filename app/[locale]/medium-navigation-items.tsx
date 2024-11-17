@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useState } from 'react';
 
-import { UserDisplay } from '@/app/[locale]/user-display';
+  import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
 import { MenuIcon, SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
