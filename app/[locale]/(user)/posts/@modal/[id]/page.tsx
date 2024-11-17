@@ -4,6 +4,7 @@ import removeMd from 'remove-markdown';
 
 import { serverApi, translate } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
+import { YOUTUBE_VIDEO_REGEX } from '@/components/common/markdown';
 import PostDetailCard from '@/components/post/post-detail-card';
 import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
@@ -22,9 +23,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Error' };
   }
 
+  const urls = YOUTUBE_VIDEO_REGEX.exec(post.content) ?? [];
+
   return {
     title: formatTitle(title),
     description: [post.title, removeMd(post.content)].join('|'),
+    openGraph: {
+      title: formatTitle(title),
+      description: [post.title, removeMd(post.content)].join('|'),
+      images: post.imageUrls.concat([...urls]),
+    },
   };
 }
 
