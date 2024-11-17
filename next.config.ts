@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
       dynamic: 10,
     },
   },
+  compiler: {
+    removeConsole: {
+      exclude: ['error'],
+    },
+  },
+  swcMinify: true,
   crossOrigin: 'anonymous',
   reactStrictMode: true,
   images: {
