@@ -7,18 +7,19 @@ import Tran from '@/components/common/tran';
 import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
 import BackButton from '@/components/ui/back-button';
 import env from '@/constant/env';
+import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
 import { getMapUpload } from '@/query/map';
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: Locale }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { id, locale } = await params;
 
   const map = await serverApi((axios) => getMapUpload(axios, { id }));
-  const title = await translate('map');
+  const title = await translate(locale, 'map');
 
   if (isError(map)) {
     return { title: 'Error' };

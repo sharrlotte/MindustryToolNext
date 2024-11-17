@@ -12,11 +12,18 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
+import { Locale } from '@/i18n/config';
 import ProtectedElement from '@/layout/protected-element';
 import { formatTitle } from '@/lib/utils';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = await translate('server');
+type Props = {
+  params: Promise<{
+    locale: Locale;
+  }>;
+};
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const title = await translate(locale, 'server');
 
   return {
     title: formatTitle(title),

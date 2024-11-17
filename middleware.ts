@@ -35,9 +35,7 @@ export function middleware(request: NextRequest) {
     if (isBot) {
       return;
     }
-  } else {
-    locale = 'en';
-  }
+  } 
 
   if (pathnameHasLocale && currentLocale === locale) {
     return;

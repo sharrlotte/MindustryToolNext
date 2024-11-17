@@ -106,11 +106,13 @@ const getCachedTranslation = unstable_cache(
   { revalidate: 600 },
 );
 
-export async function translate(text: string, args?: Record<string, any>) {
-  try {
-    const cookie = await cookies();
-    const locale = cookie.get('Locale')?.value || 'en';
+export async function getLocaleFromCookie() {
+  const cookie = await cookies();
+  return cookie.get('Locale')?.value || 'en';
+}
 
+export async function translate(locale: string, text: string, args?: Record<string, any>) {
+  try {
     const parts = text.split('.');
 
     if (parts.length === 0) {

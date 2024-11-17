@@ -3,6 +3,7 @@
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
+import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
@@ -50,7 +51,9 @@ export default function InternalServerMapCard({ map: { name, mapId, serverId } }
         <PreviewImage src={`${env.url.image}/map-previews/${mapId}${env.imageFormat}`} errorSrc={`${env.url.api}/maps/${mapId}/image`} alt={name ?? 'internal server map'} />
       </InternalLink>
       <PreviewDescription>
-        <PreviewHeader className="h-12">{name}</PreviewHeader>
+        <PreviewHeader className="h-12">
+          <ColorText text={name} />
+        </PreviewHeader>
         <DeleteButton className="right-1 top-1" variant="ghost" isLoading={isPending} onClick={() => mutate()} description="delete" />
       </PreviewDescription>
     </Preview>

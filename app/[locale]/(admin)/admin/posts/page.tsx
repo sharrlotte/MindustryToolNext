@@ -3,15 +3,16 @@ import { Metadata } from 'next/dist/types';
 import { serverApi, translate } from '@/action/action';
 import Client from '@/app/[locale]/(admin)/admin/posts/post.client';
 import ErrorScreen from '@/components/common/error-screen';
-import env from '@/constant/env';
+import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
 import { getPostUploads } from '@/query/post';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 export const revalidate = 3600;
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = await translate('post');
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const title = await translate(locale, 'post');
 
   return {
     title: formatTitle(title),
@@ -20,6 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 type Props = {
   searchParams: Promise<ItemPaginationQueryType>;
+  params: Promise<{ locale: Locale }>;
 };
 
 export default async function Page({ searchParams }: Props) {
