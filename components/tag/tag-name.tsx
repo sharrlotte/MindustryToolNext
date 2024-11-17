@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import { useI18n } from '@/i18n/client';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import Tran from '@/components/common/tran';
 
 const icons: Record<string, string> = {
   copper: 'item-copper-ui.png',
@@ -112,14 +112,12 @@ const icons: Record<string, string> = {
 };
 
 function InternalTagName({ className, children }: { className?: string; children: string }) {
-  const t = useI18n();
-
   const icon = icons[children];
 
   return (
     <span className={cn('text-sx flex flex-row flex-nowrap items-center gap-1 capitalize', className)}>
       {icon && <Image className="h-4 min-h-4 w-4 min-w-4" src={`/assets/sprite/${icon}`} width={16} height={16} alt={children} />}
-      {t(`tags.${children}`)}
+      <Tran text={`tags.${children}`} />
     </span>
   );
 }

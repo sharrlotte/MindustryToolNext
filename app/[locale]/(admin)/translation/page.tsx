@@ -323,7 +323,7 @@ function AddNewKeyDialog() {
     mutationFn: (data: CreateTranslationRequest) => createTranslation(axios, data),
     onSuccess: () => {
       toast({
-        title: t('upload.success'),
+        title: <Tran text="upload.success" />,
         variant: 'success',
       });
       form.reset();
@@ -331,7 +331,7 @@ function AddNewKeyDialog() {
     },
     onError: (error) =>
       toast({
-        title: t('upload.fail'),
+        title: <Tran text="upload.fail" />,
         description: error.message,
         variant: 'destructive',
       }),

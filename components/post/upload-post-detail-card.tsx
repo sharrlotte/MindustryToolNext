@@ -15,7 +15,6 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
@@ -23,6 +22,7 @@ import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { useMutation } from '@tanstack/react-query';
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 import { deletePost, verifyPost } from '@/query/post';
+import Tran from '@/components/common/tran';
 
 type UploadPostDetailCardProps = {
   post: PostDetail;
@@ -38,8 +38,6 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { invalidateByKey } = useQueriesData();
 
-  const t = useI18n();
-
   const { id, title, userId, content, createdAt, tags } = post;
 
   const { mutate: verifyPostById, isPending: isVerifying } = useMutation({
@@ -48,13 +46,13 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
       invalidateByKey(['posts']);
       back();
       toast({
-        title: t('verify-success'),
+        title: <Tran text="verify-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('verify-fail'),
+        title: <Tran text="verify-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -66,13 +64,13 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
     onSuccess: () => {
       back();
       toast({
-        title: t('delete-success'),
+        title: <Tran text="delete-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('delete-fail'),
+        title: <Tran text="delete-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -104,9 +102,9 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
       </header>
       <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
         <TagSelector tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
-        <DeleteButton variant="default" className="w-fit" description={`${t('delete')} ${title}`} isLoading={isLoading} onClick={() => deletePostById(id)} />
+        <DeleteButton variant="default" className="w-fit" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
         <VerifyButton
-          description={t('verify-alert', { name: title })}
+          description={<Tran text="verify-alert" args={{ name: title }} />}
           isLoading={isLoading}
           onClick={() =>
             verifyPostById({

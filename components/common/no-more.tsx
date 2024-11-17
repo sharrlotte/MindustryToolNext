@@ -1,14 +1,8 @@
-'use client';
-
-import { cn } from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
-
+import Tran from '@/components/common/tran';
 import React, { HTMLAttributes } from 'react';
 
 type NoMoreProps = HTMLAttributes<HTMLDivElement>;
 
 export default function NoMore({ className }: NoMoreProps) {
-  const t = useI18n();
-
-  return <div className={cn(className)}>{t('no-more')}</div>;
+  return <Tran className={className} text="no-more" />;
 }

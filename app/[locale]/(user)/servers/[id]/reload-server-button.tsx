@@ -3,21 +3,14 @@
 import React from 'react';
 
 import { revalidate } from '@/action/action';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import useClientApi from '@/hooks/use-client';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 
 import { useMutation } from '@tanstack/react-query';
 import { createReloadInternalServer } from '@/query/server';
+import Tran from '@/components/common/tran';
 
 type Props = {
   id: string;
@@ -25,7 +18,6 @@ type Props = {
 
 export default function ReloadServerButton({ id }: Props) {
   const axios = useClientApi();
-  const t = useI18n();
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
@@ -33,13 +25,13 @@ export default function ReloadServerButton({ id }: Props) {
     mutationFn: () => createReloadInternalServer(axios, id),
     onSuccess: () => {
       toast({
-        title: 'Reload server successfully',
+        title: <Tran text="server.reload-success" />,
         variant: 'success',
       });
     },
     onError: (error) =>
       toast({
-        title: 'Reload server failed',
+        title: <Tran text="server.reload-fail" />,
         description: error.message,
         variant: 'destructive',
       }),
@@ -51,25 +43,18 @@ export default function ReloadServerButton({ id }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          className="min-w-20"
-          title="Delete"
-          variant="destructive"
-          disabled={isPending}
-        >
-          {t('reload')}
+        <Button className="min-w-20" title="Delete" variant="destructive" disabled={isPending}>
+          <Tran text="server.reload" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+          <AlertDialogCancel>
+            <Tran text="cancel" />
+          </AlertDialogCancel>
           <AlertDialogAction variant="destructive" asChild>
-            <Button
-              title="reload"
-              disabled={isPending}
-              onClick={() => mutate()}
-            >
-              {t('reload')}
+            <Button title="reload" disabled={isPending} onClick={() => mutate()}>
+              <Tran text="server.reload" />
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

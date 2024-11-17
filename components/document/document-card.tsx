@@ -6,35 +6,32 @@ import IdUserCard from '@/components/user/id-user-card';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { Document } from '@/types/response/Document';
 
 import { useMutation } from '@tanstack/react-query';
 import { deleteDocument } from '@/query/document';
+import Tran from '@/components/common/tran';
 
 type Props = {
   document: Document;
 };
 
-export default function DocumentCard({
-  document: { id, content, userId },
-}: Props) {
+export default function DocumentCard({ document: { id, content, userId } }: Props) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
-  const t = useI18n();
 
   const axios = useClientApi();
   const { mutate, isPending } = useMutation({
     mutationFn: () => deleteDocument(axios, id),
     onSuccess: () => {
       toast({
-        title: t('delete-success'),
+        title: <Tran text="delete-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('delete-fail'),
+        title: <Tran text="delete-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -57,11 +54,7 @@ export default function DocumentCard({
           <IdUserCard id={userId} />
           <p>{content}</p>
         </div>
-        <DeleteButton
-          description={id}
-          isLoading={isPending}
-          onClick={() => mutate()}
-        ></DeleteButton>
+        <DeleteButton description={id} isLoading={isPending} onClick={() => mutate()}></DeleteButton>
       </DialogContent>
     </Dialog>
   );

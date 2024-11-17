@@ -126,6 +126,9 @@ export default class SocketClient {
 
   public connect() {
     if (this.socket) {
+      if (this.socket.readyState !== this.socket.OPEN) {
+        this.socket.reconnect();
+      }
       return this.socket;
     }
 

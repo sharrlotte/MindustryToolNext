@@ -23,12 +23,12 @@ import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import Tran from '@/components/common/tran';
 
 export type MarkdownData = {
   text: string;
@@ -46,8 +46,6 @@ type MarkdownEditorProps = {
 type EditorMode = 'edit' | 'preview' | 'live';
 
 export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
-  const t = useI18n();
-
   const [focused, setFocused] = useState<HTMLElement | null>(null);
   const [content, setContent] = useState(value);
   const [mode, setMode] = useState<EditorMode>('live');
@@ -146,19 +144,19 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
     >
       <section className="flex divide-x">
         <div>
-          <Button className="w-5 p-1" size="icon" title={t('bold')} variant="icon" type="button" onClick={() => wrapAtCaret('**', '**')}>
+          <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => wrapAtCaret('**', '**')}>
             <BoldIcon className="h-3 w-3" />
           </Button>
-          <Button className="w-5 p-1" size="icon" title={t('italic')} variant="icon" onClick={() => wrapAtCaret('*', '*')}>
+          <Button className="w-5 p-1" size="icon" title="italic" variant="icon" onClick={() => wrapAtCaret('*', '*')}>
             <ItalicIcon className="h-3 w-3" />
           </Button>
-          <Button className="w-5 p-1" size="icon" title={t('strikethrough')} variant="icon" onClick={() => wrapAtCaret('~~', '~~')}>
+          <Button className="w-5 p-1" size="icon" title="strikethrough" variant="icon" onClick={() => wrapAtCaret('~~', '~~')}>
             <StrikethroughIcon className="h-3 w-3" />
           </Button>
-          <Button className="w-5 p-1" size="icon" title={t('strikethrough')} variant="icon" onClick={() => insertAtCaret('\n----------\n')}>
+          <Button className="w-5 p-1" size="icon" title="strikethrough" variant="icon" onClick={() => insertAtCaret('\n----------\n')}>
             <HRIcon className="h-3 w-3" />
           </Button>
-          <Button className="p-1" size="icon" title={t('header')} variant="icon" onClick={() => wrapAtCaret('# ', ' \n')}>
+          <Button className="p-1" size="icon" title="header" variant="icon" onClick={() => wrapAtCaret('# ', ' \n')}>
             <TitleIcon className="h-3 w-3" />
           </Button>
         </div>
@@ -166,10 +164,10 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
           <LinkDialog onAccept={insertAtCaret}>
             <LinkChainIcon className="h-3 w-3" />
           </LinkDialog>
-          <Button className="p-1" size="icon" title={t('quote')} variant="icon" onClick={() => insertAtCaret('> ')}>
+          <Button className="p-1" size="icon" title="quote" variant="icon" onClick={() => insertAtCaret('> ')}>
             <QuoteIcon className="h-3 w-3" />
           </Button>
-          <Button className="w-5 p-1" size="icon" title={t('code-block')} variant="icon" onClick={() => wrapAtCaret('`', '`')}>
+          <Button className="w-5 p-1" size="icon" title="code-block" variant="icon" onClick={() => wrapAtCaret('`', '`')}>
             <CodeBlockIcon className="h-3 w-3" />
           </Button>
           <ImageDialog
@@ -187,30 +185,30 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
           </ImageDialog>
         </div>
         <div>
-          <Button className="p-1" size="icon" title={t('list')} variant="icon" onClick={() => insertAtCaret('- ')}>
+          <Button className="p-1" size="icon" title="list" variant="icon" onClick={() => insertAtCaret('- ')}>
             <ListIcon className="h-3 w-3" />
           </Button>
-          <Button className="p-1" size="icon" title={t('ordered-list')} variant="icon" onClick={() => insertAtCaret('1. ')}>
+          <Button className="p-1" size="icon" title="ordered-list" variant="icon" onClick={() => insertAtCaret('1. ')}>
             <OrderedListIcon className="h-3 w-3" />
           </Button>
-          <Button className="p-1" size="icon" title={t('check-list')} variant="icon" onClick={() => insertAtCaret('- [] ')}>
+          <Button className="p-1" size="icon" title="check-list" variant="icon" onClick={() => insertAtCaret('- [] ')}>
             <CheckListIcon className="h-3 w-3" />
           </Button>
         </div>
         <div className="ml-auto flex divide-x">
           <div>
-            <Button className="p-1" size="icon" disabled={mode === 'edit'} title={t('edit-mode')} variant="icon" onClick={() => setMode('edit')}>
+            <Button className="p-1" size="icon" disabled={mode === 'edit'} title="edit-mode" variant="icon" onClick={() => setMode('edit')}>
               <EditPanelIcon className="h-3 w-3" />
             </Button>
-            <Button className="p-1" disabled={mode === 'live'} size="icon" title={t('live-mode')} variant="icon" onClick={() => setMode('live')}>
+            <Button className="p-1" disabled={mode === 'live'} size="icon" title="live-mode" variant="icon" onClick={() => setMode('live')}>
               <LivePanelIcon className="h-3 w-3" />
             </Button>
-            <Button className="p-1" disabled={mode === 'preview'} size="icon" title={t('preview-mode')} variant="icon" onClick={() => setMode('preview')}>
+            <Button className="p-1" disabled={mode === 'preview'} size="icon" title="preview-mode" variant="icon" onClick={() => setMode('preview')}>
               <PreviewPanelIcon className="h-3 w-3" />
             </Button>
           </div>
           <div className="px-1">
-            <Button className="p-1" size="icon" title={t('fullscreen')} variant="icon" onClick={toggleFullscreen}>
+            <Button className="p-1" size="icon" title="fullscreen" variant="icon" onClick={toggleFullscreen}>
               <FullScreenIcon className="h-3 w-3" />
             </Button>
           </div>
@@ -268,7 +266,6 @@ const LinkFormSchema = z.object({
 });
 
 function LinkDialog({ children, onAccept }: LinkDialogProps) {
-  const t = useI18n();
   const [open, setOpen] = useState(false);
 
   function handleAccept({ header, url }: z.infer<typeof LinkFormSchema>) {
@@ -288,12 +285,14 @@ function LinkDialog({ children, onAccept }: LinkDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-5 p-1" size="icon" title={t('add-link')} variant="icon">
+        <Button className="w-5 p-1" size="icon" title="add-link" variant="icon">
           {children}
         </Button>
       </DialogTrigger>
       <DialogContent className="overflow-auto p-6">
-        <DialogTitle>{t('add-link')}</DialogTitle>
+        <DialogTitle>
+          <Tran text="add-link" />
+        </DialogTitle>
         <Form {...form}>
           <form className="space-y-2" onSubmit={form.handleSubmit(handleAccept)}>
             <FormField
@@ -301,9 +300,11 @@ function LinkDialog({ children, onAccept }: LinkDialogProps) {
               name="header"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('url-header')}</FormLabel>
+                  <FormLabel>
+                    <Tran text="url-header" />
+                  </FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder={t('url-header')} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -314,17 +315,19 @@ function LinkDialog({ children, onAccept }: LinkDialogProps) {
               name="url"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('url')}</FormLabel>
+                  <FormLabel>
+                    <Tran text="url" />
+                  </FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder={t('url')} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex justify-end">
-              <Button className="ml-auto" title={t('submit')} type="submit" variant="primary">
-                {t('submit')}
+              <Button className="ml-auto" title="submit" type="submit" variant="primary">
+                <Tran text="submit" />
               </Button>
             </div>
           </form>
@@ -346,7 +349,6 @@ type ImageDialogProps = {
 };
 
 function ImageDialog({ children, onAccept }: ImageDialogProps) {
-  const t = useI18n();
   const [file, setFile] = useState<File>();
   const [open, setOpen] = useState(false);
 
@@ -391,12 +393,14 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-5 p-1" size="icon" title={t('add-image')} variant="icon">
+        <Button className="w-5 p-1" size="icon" title="add-image" variant="icon">
           {children}
         </Button>
       </DialogTrigger>
       <DialogContent className="overflow-auto p-6">
-        <DialogTitle>{t('add-image')}</DialogTitle>
+        <DialogTitle>
+          <Tran text="add-image" />
+        </DialogTitle>
         <Form {...form}>
           <form className="space-y-2" onSubmit={form.handleSubmit(handleAccept)}>
             <FormField
@@ -404,9 +408,11 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
               name="header"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('url-header')}</FormLabel>
+                  <FormLabel>
+                    <Tran text="url-header" />
+                  </FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder={t('url-header')} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -417,10 +423,12 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('image')}</FormLabel>
+                  <FormLabel>
+                    <Tran text="image" />
+                  </FormLabel>
                   <FormControl>
                     <div className="flex gap-2">
-                      <Input {...field} placeholder={t('url')} />
+                      <Input {...field} />
                       <label className="flex h-9 items-center justify-center rounded-md border p-2" htmlFor="image" hidden>
                         <ImageIcon className="size-5" />
                       </label>
@@ -433,7 +441,7 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
             />
             {hasImage && (
               <div className="relative">
-                <Button className="absolute right-0 top-0" title={t('delete')} size="icon" variant="icon" onClick={() => form.reset({ image: undefined })}>
+                <Button className="absolute right-0 top-0" title="delete" size="icon" variant="icon" onClick={() => form.reset({ image: undefined })}>
                   <XIcon />
                 </Button>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -441,8 +449,8 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
               </div>
             )}
             <div className="flex justify-end">
-              <Button className="ml-auto" title={t('submit')} type="submit" variant="primary">
-                {t('submit')}
+              <Button className="ml-auto" title="submit" type="submit" variant="primary">
+                <Tran text="submit" />
               </Button>
             </div>
           </form>

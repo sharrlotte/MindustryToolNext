@@ -19,13 +19,13 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
-import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';
 import { Tags } from '@/types/response/Tag';
 
 import { useMutation } from '@tanstack/react-query';
 import { deletePost, unverifyPost } from '@/query/post';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
+import Tran from '@/components/common/tran';
 
 type PostDetailCardProps = {
   post: PostDetail;
@@ -39,20 +39,18 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
   const { toast } = useToast();
   const { session } = useSession();
 
-  const t = useI18n();
-
   const { mutate: removePost, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => unverifyPost(axios, id),
     onSuccess: () => {
       back();
       toast({
-        title: t('take-down-success'),
+        title: <Tran text="take-down-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('take-down-fail'),
+        title: <Tran text="take-down-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -67,13 +65,13 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
     onSuccess: () => {
       back();
       toast({
-        title: t('delete-success'),
+        title: <Tran text="delete-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('delete-fail'),
+        title: <Tran text="delete-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -117,10 +115,10 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
                 ],
               }}
             >
-              <TakeDownButton isLoading={isLoading} description={t('take-down-alert', { name: title })} onClick={() => removePost(id)} />
+              <TakeDownButton isLoading={isLoading} description={<Tran text="take-down-alert" args={{ name: title }} />} onClick={() => removePost(id)} />
             </ProtectedElement>
             <ProtectedElement session={session} filter={{ authorId: userId }}>
-              <DeleteButton variant="command" description={t('delete-alert', { name: title })} isLoading={isLoading} onClick={() => deletePostById(id)} />
+              <DeleteButton variant="command" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
             </ProtectedElement>
           </EllipsisButton>
         </div>

@@ -13,7 +13,6 @@ import { Input } from '@/components/ui/input';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { InternalServerModes } from '@/types/request/UpdateInternalServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,7 +23,6 @@ import Tran from '@/components/common/tran';
 import { Textarea } from '@/components/ui/textarea';
 
 export default function CreateServerDialog() {
-  const t = useI18n();
   const form = useForm<CreateInternalServerRequest>({
     resolver: zodResolver(CreateInternalServerSchema),
     defaultValues: {
@@ -46,7 +44,7 @@ export default function CreateServerDialog() {
     mutationFn: (data: CreateInternalServerRequest) => createInternalServer(axios, data),
     onSuccess: () => {
       toast({
-        title: t('upload.success'),
+        title: <Tran text="upload.success" />,
         variant: 'success',
       });
       form.reset();
@@ -54,7 +52,7 @@ export default function CreateServerDialog() {
     },
     onError: (error) =>
       toast({
-        title: t('upload.fail'),
+        title: <Tran text="upload.fail" />,
         description: error.message,
         variant: 'destructive',
       }),
@@ -67,7 +65,7 @@ export default function CreateServerDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="ml-auto min-w-20" variant="primary" title={t('server.add')}>
+        <Button className="ml-auto min-w-20" variant="primary" title="server.add">
           <Tran text="server.add" />
         </Button>
       </DialogTrigger>
@@ -158,11 +156,11 @@ export default function CreateServerDialog() {
               )}
             />
             <div className="ml-auto grid w-fit grid-cols-2 justify-end gap-2">
-              <Button variant="secondary" title={t('reset')} onClick={() => form.reset()}>
-                {t('reset')}
+              <Button variant="secondary" title="reset" onClick={() => form.reset()}>
+                <Tran text="reset" />
               </Button>
-              <Button variant="primary" type="submit" title={t('upload')} disabled={isPending}>
-                {t('upload')}
+              <Button variant="primary" type="submit" title="upload" disabled={isPending}>
+                <Tran text="upload" />
               </Button>
             </div>
           </form>

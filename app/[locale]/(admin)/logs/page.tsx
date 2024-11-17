@@ -19,7 +19,6 @@ import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
 import { Log } from '@/types/response/Log';
 
 import { getLogs, getLogCollections, getLogCount } from '@/query/log';
@@ -33,6 +32,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import { PaginationQuery } from '@/query/search-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { z } from 'zod';
+import Tran from '@/components/common/tran';
 
 const defaultState = {
   collection: 'LIVE',
@@ -87,8 +87,6 @@ function SendMessageButton() {
   const [message, setMessage] = useState<string>('');
   const { state } = useSocket();
 
-  const t = useI18n();
-
   const { sendMessage } = useMessage({
     room: 'LOG',
   });
@@ -102,8 +100,8 @@ function SendMessageButton() {
   return (
     <form className="flex h-10 flex-1 gap-2" name="text" onSubmit={handleFormSubmit}>
       <Input className="h-full w-full border border-border bg-background px-2 outline-none" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
-      <Button className="h-full" variant="primary" type="submit" title={t('send')} disabled={state !== 'connected' || !message}>
-        {t('send')}
+      <Button className="h-full" variant="primary" type="submit" title="send" disabled={state !== 'connected' || !message}>
+        <Tran text="send" />
       </Button>
     </form>
   );

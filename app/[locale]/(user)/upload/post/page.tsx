@@ -19,7 +19,6 @@ import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { PostDetail } from '@/types/response/PostDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
@@ -28,6 +27,8 @@ import { createPost, getPost, translatePost } from '@/query/post';
 import TranslatePostRequest from '@/types/request/TranslatePostRequest';
 import CreatePostRequest from '@/types/request/CreatePostRequest';
 import { getMePosts } from '@/query/user';
+import Tran from '@/components/common/tran';
+import { useI18n } from '@/i18n/client';
 
 const MarkdownEditor = dynamic(() => import('@/components/common/markdown-editor'));
 
@@ -49,8 +50,6 @@ export default function Page() {
     images: [],
   });
   const [language, setLanguage] = useState('');
-
-  const t = useI18n();
 
   function handlePostSelect(post: PostDetail) {
     setPost(post);
@@ -82,8 +81,8 @@ export default function Page() {
     return (
       <Fragment>
         <div className="space-x-2 rounded-sm">
-          <Button title={t('upload.go-to-upload-page')} variant="secondary" onClick={() => setPost(undefined)}>
-            {t('upload.go-to-upload-page')}
+          <Button title="Upload" variant="secondary" onClick={() => setPost(undefined)}>
+            <Tran text="upload.go-to-upload-page" />
           </Button>
           <AddTranslationDialog onPostSelect={handlePostSelect} />
         </div>
@@ -121,7 +120,7 @@ function TranslatePage({
     mutationFn: (data: TranslatePostRequest) => translatePost(axios, data),
     onSuccess: () => {
       toast({
-        title: t('upload.success'),
+        title: <Tran text="upload.success" />,
         variant: 'success',
       });
       setTitle('');
@@ -129,7 +128,7 @@ function TranslatePage({
     },
     onError(error) {
       toast({
-        title: t('upload.fail'),
+        title: <Tran text="upload.fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -140,11 +139,11 @@ function TranslatePage({
   });
 
   function checkUploadRequirement() {
-    if (!title) return t('upload.no-title');
+    if (!title) return <Tran text="upload.no-title" />;
 
-    if (!content) return t('upload.no-content');
+    if (!content) return <Tran text="upload.no-content" />;
 
-    if (!language) return t('upload.no-language');
+    if (!language) return <Tran text="upload.no-language" />;
 
     return true;
   }
@@ -162,14 +161,14 @@ function TranslatePage({
     <div className="flex h-full overflow-hidden rounded-md">
       <div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
         <div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
-          <Input className="w-full rounded-sm outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
+          <Input className="w-full rounded-sm outline-none hover:outline-none" placeholder="Title" value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
           <MarkdownEditor value={content} onChange={(value) => setContent(value)} />
         </div>
         <div className="flex items-center justify-start gap-2 rounded-md ">
           <ComboBox placeholder={t('upload.select-language')} value={{ label: t(language || 'en'), value: language }} values={validLanguages} onChange={(value) => setLanguage(value ?? '')} />
           <Button
             className="ml-auto"
-            title={t('submit')}
+            title="submit"
             variant="primary"
             disabled={isPending || uploadCheck !== true}
             onClick={() =>
@@ -181,7 +180,7 @@ function TranslatePage({
               })
             }
           >
-            {uploadCheck === true ? t('upload') : uploadCheck}
+            {uploadCheck === true ? <Tran text="upload" /> : uploadCheck}
           </Button>
         </div>
       </div>
@@ -205,7 +204,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
     mutationFn: (data: CreatePostRequest) => createPost(axios, data),
     onSuccess: () => {
       toast({
-        title: t('upload.success'),
+        title: <Tran text="upload.success" />,
         variant: 'success',
       });
       setTitle('');
@@ -214,7 +213,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
     },
     onError(error) {
       toast({
-        title: t('upload.fail'),
+        title: <Tran text="upload.fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -225,13 +224,13 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
   });
 
   function checkUploadRequirement() {
-    if (!title) return t('upload.no-title');
+    if (!title) return <Tran text="upload.no-title" />;
 
-    if (!content) return t('upload.no-content');
+    if (!content) return <Tran text="upload.no-content" />;
 
-    if (!language) return t('upload.no-language');
+    if (!language) return <Tran text="upload.no-language" />;
 
-    if (selectedTags.length === 0) return t('upload.no-tags');
+    if (selectedTags.length === 0) return <Tran text="upload.no-tags" />;
 
     return true;
   }
@@ -258,7 +257,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
           <TagSelector tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
           <Button
             className="ml-auto"
-            title={t('submit')}
+            title="submit"
             variant="primary"
             disabled={isPending || uploadCheck !== true}
             onClick={() =>
@@ -270,7 +269,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
               })
             }
           >
-            {uploadCheck === true ? t('upload') : uploadCheck}
+            {uploadCheck === true ? <Tran text="upload" /> : uploadCheck}
           </Button>
         </div>
       </div>
@@ -339,7 +338,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         <DialogTitle>{t('upload.select-post')}</DialogTitle>
         <div className="flex flex-col gap-2">
           <Search>
-            <Search.Input placeholder={t('upload.post-name')} value={name} onChange={(event) => setName(event.currentTarget.value)} />
+            <Search.Input placeholder="upload.post-name" value={name} onChange={(event) => setName(event.currentTarget.value)} />
             <Search.Icon />
           </Search>
           <div className="flex w-full flex-col gap-1">{render()}</div>

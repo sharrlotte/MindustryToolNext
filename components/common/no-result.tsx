@@ -1,13 +1,8 @@
-'use client';
-
-import { cn } from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
-
 import React, { HTMLAttributes } from 'react';
+import Tran from '@/components/common/tran';
 
 type NoResultProps = HTMLAttributes<HTMLDivElement>;
 
 export default function NoResult({ className }: NoResultProps) {
-  const t = useI18n();
-  return <div className={cn(className)}>{t('no-result')}</div>;
+  return <Tran className={className} text="no-result" />;
 }

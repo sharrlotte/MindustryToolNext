@@ -4,18 +4,13 @@ import { SearchIcon } from 'lucide-react';
 import React, { HTMLAttributes } from 'react';
 
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/i18n/client';
 
 type SearchProps = HTMLAttributes<HTMLDivElement>;
 
 function Search({ className, children, ...props }: SearchProps) {
   return (
-    <div
-      className={cn(
-        'flex h-10 w-full items-center justify-center gap-2 rounded-sm bg-secondary px-2 shadow-md',
-        className,
-      )}
-      {...props}
-    >
+    <div className={cn('flex h-10 w-full items-center justify-center gap-2 rounded-sm bg-secondary px-2 shadow-md', className)} {...props}>
       {children}
     </div>
   );
@@ -26,16 +21,10 @@ type InputProps = HTMLAttributes<HTMLInputElement> & {
   placeholder: string;
 };
 
-function Input({ className, ...props }: InputProps) {
-  return (
-    <input
-      className={cn(
-        'h-full w-full bg-transparent hover:outline-none focus:outline-none',
-        className,
-      )}
-      {...props}
-    />
-  );
+function Input({ className, placeholder, ...props }: InputProps) {
+  const t = useI18n();
+
+  return <input className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)} placeholder={t(placeholder)} {...props} />;
 }
 
 Search.Input = Input;

@@ -1,12 +1,10 @@
 'use client';
 
-import DeleteButton, {
-  DeleteButtonProps,
-} from '@/components/button/delete-button';
+import DeleteButton, { DeleteButtonProps } from '@/components/button/delete-button';
+import Tran from '@/components/common/tran';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { deleteSchematic } from '@/query/schematic';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -17,13 +15,8 @@ type DeleteSchematicButtonProps = {
   variant?: DeleteButtonProps['variant'];
 };
 
-export function DeleteSchematicButton({
-  id,
-  name,
-  variant,
-}: DeleteSchematicButtonProps) {
+export function DeleteSchematicButton({ id, name, variant }: DeleteSchematicButtonProps) {
   const axios = useClientApi();
-  const t = useI18n();
   const { back } = useRouter();
   const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
@@ -36,13 +29,13 @@ export function DeleteSchematicButton({
     onSuccess: () => {
       back();
       toast({
-        title: t('delete-success'),
+        title: <Tran text="delete-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('delete-fail'),
+        title: <Tran text="delete-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -52,12 +45,5 @@ export function DeleteSchematicButton({
     },
   });
 
-  return (
-    <DeleteButton
-      variant={variant}
-      description={t('delete-alert', { name })}
-      isLoading={isPending}
-      onClick={() => mutate(id)}
-    />
-  );
+  return <DeleteButton variant={variant} description={<Tran text="delete-alert" args={{ name }} />} isLoading={isPending} onClick={() => mutate(id)} />;
 }

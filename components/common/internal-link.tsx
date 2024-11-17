@@ -5,7 +5,6 @@ import React, { useCallback } from 'react';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/i18n/client';
 import env from '@/constant/env';
 import { useLocaleStore } from '@/context/locale-context';
 import { locales } from '@/i18n/config';
@@ -36,14 +35,13 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
   };
 
 export default function InternalLink({ className, variant, title, href, children, preloadImage, ...props }: InternalLinkProps) {
-  const t = useI18n();
   const { currentLocale } = useLocaleStore();
 
   const stripBase = href.replace(env.url.base, '');
   const parts = stripBase.split('/');
 
   if (parts.length > 0 && !locales.includes(parts[0] as any)) {
-    href = new URL(env.url.base + '/' + currentLocale + '/' + stripBase).toString();
+    href = env.url.base + '/' + currentLocale + '/' + stripBase;
   }
 
   const handlePreload = useCallback(() => {
@@ -54,7 +52,7 @@ export default function InternalLink({ className, variant, title, href, children
   }, [preloadImage]);
 
   return (
-    <Link className={cn(linkVariants({ variant, className }))} {...props} href={href} hrefLang={currentLocale} title={title ? t(title) : ''} onMouseEnter={handlePreload} onTouchStart={handlePreload}>
+    <Link className={cn(linkVariants({ variant, className }))} {...props} href={href} hrefLang={currentLocale} title={title} onMouseEnter={handlePreload} onTouchStart={handlePreload}>
       {children}
     </Link>
   );

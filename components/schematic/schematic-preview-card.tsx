@@ -12,13 +12,13 @@ import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImag
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
-import { useI18n } from '@/i18n/client';
 import { Schematic } from '@/types/response/Schematic';
 import { LinkIcon } from '@/components/common/icons';
 import { getSchematicData } from '@/query/schematic';
 import InternalLink from '@/components/common/internal-link';
 import ColorText from '@/components/common/color-text';
 import useImageLoading from '@/hooks/use-image-loading';
+import Tran from '@/components/common/tran';
 
 type SchematicPreviewCardProps = {
   schematic: Schematic;
@@ -26,7 +26,6 @@ type SchematicPreviewCardProps = {
 };
 
 function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerified, likes, userLike }, imageCount }: SchematicPreviewCardProps) {
-  const t = useI18n();
   const axios = useClientApi();
 
   const link = `${env.url.base}/schematics/${id}`;
@@ -39,8 +38,8 @@ function InternalSchematicPreviewCard({ schematic: { id, itemId, name, isVerifie
   const downloadName = `{${name}}.msch`;
 
   const getData = useToastAction({
-    title: t('copying'),
-    content: t('downloading-data'),
+    title: <Tran text="copying" />,
+    content: <Tran text="downloading-data" />,
     action: async () => await getSchematicData(axios, id),
   });
 

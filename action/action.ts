@@ -4,7 +4,6 @@ import { expireTag, unstable_cache, unstable_noStore } from 'next/cache';
 import { z } from 'zod';
 
 import { QuerySchema } from '@/query/search-query';
-import 'server-only';
 
 import { Session } from '@/types/response/Session';
 import { cookies } from 'next/headers';
@@ -13,6 +12,8 @@ import { formatTranslation } from '@/i18n/client';
 import { AxiosInstance } from 'axios';
 import { isError } from '@/lib/utils';
 import { expirePath } from 'next/cache';
+
+import 'server-only';
 
 export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
   'use server';

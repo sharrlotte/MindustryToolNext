@@ -7,13 +7,13 @@ import DeleteButton from '@/components/button/delete-button';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { Plugin } from '@/types/response/Plugin';
 
 import { useMutation } from '@tanstack/react-query';
 import { deletePlugin } from '@/query/plugin';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
+import Tran from '@/components/common/tran';
 
 type Props = {
   plugin: Plugin;
@@ -23,7 +23,7 @@ const GITHUB_PATTERN = /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-
 export default function PluginCard({ plugin: { id, name, description, url, userId } }: Props) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
-  const t = useI18n();
+
   const { session } = useSession();
 
   const axios = useClientApi();
@@ -31,13 +31,13 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
     mutationFn: (id: string) => deletePlugin(axios, id),
     onSuccess: () => {
       toast({
-        title: t('delete-success'),
+        title: <Tran text="delete-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('delete-fail'),
+        title: <Tran text="delete-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -61,7 +61,13 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
       <span className="line-clamp-2 h-full w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>
       <div className="flex gap-2">
         <ProtectedElement session={session} filter={{ authorId: userId }}>
-          <DeleteButton className="right-1 top-1 backdrop-brightness-100" variant="ghost" description={`${t('delete')} ${name}`} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
+          <DeleteButton
+            className="right-1 top-1 backdrop-brightness-100"
+            variant="ghost"
+            description={<Tran text="delete-alert" args={{ name }} />}
+            isLoading={isDeleting}
+            onClick={() => deletePluginById(id)}
+          />
         </ProtectedElement>
       </div>
     </div>

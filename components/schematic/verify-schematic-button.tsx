@@ -1,8 +1,8 @@
 import VerifyButton from '@/components/button/verify-button';
+import Tran from '@/components/common/tran';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { verifySchematic } from '@/query/schematic';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
@@ -15,15 +15,10 @@ type VerifySchematicButtonProps = {
   name: string;
   selectedTags: TagGroup[];
 };
-export default function VerifySchematicButton({
-  id,
-  name,
-  selectedTags,
-}: VerifySchematicButtonProps) {
+export default function VerifySchematicButton({ id, name, selectedTags }: VerifySchematicButtonProps) {
   const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
   const { back } = useRouter();
-  const t = useI18n();
   const axios = useClientApi();
 
   const { mutate, isPending } = useMutation({
@@ -31,13 +26,13 @@ export default function VerifySchematicButton({
     onSuccess: () => {
       back();
       toast({
-        title: t('verify-success'),
+        title: <Tran text="verify-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('verify-fail'),
+        title: <Tran text="verify-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -49,7 +44,7 @@ export default function VerifySchematicButton({
 
   return (
     <VerifyButton
-      description={t('verify-alert', { name })}
+      description={<Tran text="verify-alert" args={{ name }} />}
       isLoading={isPending}
       onClick={() =>
         mutate({

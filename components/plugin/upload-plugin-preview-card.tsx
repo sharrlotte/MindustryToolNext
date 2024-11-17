@@ -14,7 +14,6 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import VerifyPluginRequest, { VerifyPluginRequestData, VerifyPluginSchema } from '@/types/request/VerifyPluginRequest';
 import { Plugin } from '@/types/response/Plugin';
 import { TagGroups } from '@/types/response/TagGroup';
@@ -36,20 +35,19 @@ function InternalUploadPluginCard({ plugin }: Props) {
   const { id, name, description, url, userId } = plugin;
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
-  const t = useI18n();
 
   const axios = useClientApi();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePlugin(axios, id),
     onSuccess: () => {
       toast({
-        title: t('delete-success'),
+        title: <Tran text="delete-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('delete-fail'),
+        title: <Tran text="delete-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -74,7 +72,7 @@ function InternalUploadPluginCard({ plugin }: Props) {
       <span>{description}</span>
       <IdUserCard id={userId} />
       <div className="flex gap-2">
-        <DeleteButton description={`${t('delete')} ${name}`} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
+        <DeleteButton description={<Tran text="delete-alert" args={{ name }} />} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
         <VerifyPluginDialog plugin={plugin} />
       </div>
     </div>
@@ -97,8 +95,6 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 
-  const t = useI18n();
-
   const form = useForm<VerifyPluginRequestData>({
     resolver: zodResolver(VerifyPluginSchema),
     defaultValues: {
@@ -114,13 +110,13 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
     mutationFn: (data: VerifyPluginRequest) => verifyPlugin(axios, data),
     onSuccess: () => {
       toast({
-        title: t('verify-success'),
+        title: <Tran text="verify-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('verify-fail'),
+        title: <Tran text="verify-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -173,8 +169,8 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                     <Tran text="cancel" />
                   </Button>
                 </DialogClose>
-                <Button className="w-fit" variant="primary" type="submit" title={t('upload')} disabled={isPending}>
-                  {t('verify')}
+                <Button className="w-fit" variant="primary" type="submit" title="upload" disabled={isPending}>
+                  <Tran text="verify" />,
                 </Button>
               </div>
             </form>

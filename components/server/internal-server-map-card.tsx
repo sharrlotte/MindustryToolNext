@@ -8,12 +8,12 @@ import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { InternalServerMap } from '@/types/response/InternalServerMap';
 
 import { useMutation } from '@tanstack/react-query';
 import { deleteInternalServerMap } from '@/query/server';
 import InternalLink from '@/components/common/internal-link';
+import Tran from '@/components/common/tran';
 
 type InternalServerMapCardProps = {
   map: InternalServerMap;
@@ -21,7 +21,6 @@ type InternalServerMapCardProps = {
 
 export default function InternalServerMapCard({ map: { name, mapId, serverId } }: InternalServerMapCardProps) {
   const axios = useClientApi();
-  const t = useI18n();
   const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
 
@@ -29,13 +28,13 @@ export default function InternalServerMapCard({ map: { name, mapId, serverId } }
     mutationFn: () => deleteInternalServerMap(axios, serverId, mapId),
     onSuccess: () => {
       toast({
-        title: t('delete-success'),
+        title: <Tran text="delete-fail" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('delete-fail'),
+        title: <Tran text="delete-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -52,7 +51,7 @@ export default function InternalServerMapCard({ map: { name, mapId, serverId } }
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader className="h-12">{name}</PreviewHeader>
-        <DeleteButton className="right-1 top-1" variant="ghost" isLoading={isPending} onClick={() => mutate()} description={t('delete')} />
+        <DeleteButton className="right-1 top-1" variant="ghost" isLoading={isPending} onClick={() => mutate()} description="delete" />
       </PreviewDescription>
     </Preview>
   );

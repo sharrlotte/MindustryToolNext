@@ -11,7 +11,6 @@ import { useSession } from '@/context/session-context.client';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import ProtectedElement from '@/layout/protected-element';
-import { useI18n } from '@/i18n/client';
 
 import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/app/[locale]/(user)/chat/member-pannel';
 import { PaperclipIcon, SearchIcon, SendIcon, SmileIcon } from '@/components/common/icons';
@@ -82,7 +81,6 @@ function ChatInput() {
   const [message, setMessage] = useState<string>('');
   const { state } = useSocket();
 
-  const t = useI18n();
   const { sendMessage } = useMessage({
     room: 'GLOBAL',
   });
@@ -99,7 +97,7 @@ function ChatInput() {
         <PaperclipIcon />
         <SmileIcon />
       </div>
-      <Button className="h-full" variant="outline" type="submit" title={t('send')} disabled={state !== 'connected' || !message}>
+      <Button className="h-full" variant="outline" type="submit" title="send" disabled={state !== 'connected' || !message}>
         <SendIcon />
       </Button>
     </form>

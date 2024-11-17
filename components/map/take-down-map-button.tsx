@@ -1,10 +1,10 @@
 'use client';
 
 import TakeDownButton from '@/components/button/take-down-button';
+import Tran from '@/components/common/tran';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { unverifyMap } from '@/query/map';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -16,7 +16,6 @@ type TakeDownMapButtonProps = {
 
 export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
   const axios = useClientApi();
-  const t = useI18n();
   const { back } = useRouter();
   const { invalidateByKey } = useQueriesData();
   const { toast } = useToast();
@@ -29,13 +28,13 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
     onSuccess: () => {
       back();
       toast({
-        title: t('take-down-success'),
+        title: <Tran text="take-down-success" />,
         variant: 'success',
       });
     },
     onError: (error) => {
       toast({
-        title: t('take-down-fail'),
+        title: <Tran text="take-down-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -45,11 +44,5 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
     },
   });
 
-  return (
-    <TakeDownButton
-      isLoading={isPending}
-      description={t('take-down-alert', { name: name })}
-      onClick={() => mutate(id)}
-    />
-  );
+  return <TakeDownButton isLoading={isPending} description={<Tran text="take-down-alert" args={{ name: name }} />} onClick={() => mutate(id)} />;
 }

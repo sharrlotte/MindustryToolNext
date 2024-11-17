@@ -12,7 +12,6 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useTags } from '@/context/tags-context.client';
 import { useToast } from '@/hooks/use-toast';
-import { useI18n } from '@/i18n/client';
 import { CreatePluginRequest, CreatePluginRequestData, CreatePluginSchema } from '@/types/request/CreatePluginRequest';
 import { TagGroups } from '@/types/response/TagGroup';
 
@@ -29,8 +28,6 @@ export default function AddPluginForm() {
   const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 
-  const t = useI18n();
-
   const form = useForm<CreatePluginRequestData>({
     resolver: zodResolver(CreatePluginSchema),
     defaultValues: {
@@ -45,14 +42,14 @@ export default function AddPluginForm() {
     mutationFn: (data: CreatePluginRequest) => createPlugin(axios, data),
     onSuccess: () => {
       toast({
-        title: t('upload.success'),
+        title: <Tran text="upload.success" />,
         variant: 'success',
       });
       form.reset();
     },
     onError(error) {
       toast({
-        title: t('upload.fail'),
+        title: <Tran text="upload.fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -145,8 +142,8 @@ export default function AddPluginForm() {
                 />
               </div>
               <div className="flex flex-col items-end justify-center rounded-md p-2">
-                <Button className="w-fit" variant="primary" type="submit" title={t('upload')} disabled={isPending}>
-                  {t('upload')}
+                <Button className="w-fit" variant="primary" type="submit" title="upload" disabled={isPending}>
+                  <Tran text="upload" />
                 </Button>
               </div>
             </form>
