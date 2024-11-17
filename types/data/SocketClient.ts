@@ -30,7 +30,7 @@ type MessagePayload =
 
 export type MessageMethod = MessagePayload['method'];
 
-type PromiseReceiver = { resolve: (value: unknown) => void; reject: (reason: any) => void };
+type PromiseReceiver = { timeout: any; resolve: (value: unknown) => void; reject: (reason: any) => void };
 
 let count = 0;
 
@@ -44,6 +44,7 @@ type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError
 type Task =
   | {
       room: string;
+      id: string;
     }
   | {
       request: any;
@@ -61,11 +62,10 @@ export default class SocketClient {
   private requests: Record<string, PromiseReceiver> = {};
   private url: string;
   private isProcessing = false;
+  private interval: any;
 
   constructor(url: string) {
     this.url = url;
-
-    setInterval(async () => await this.processTask(), 10);
   }
 
   private async processTask() {
@@ -83,32 +83,36 @@ export default class SocketClient {
             continue;
           }
 
-          const id = genId();
+          const id = task.id;
 
           const promise = new Promise<any>((resolve, reject) => {
-            this.requests[id] = { resolve, reject };
+            const timeout = setTimeout(() => {
+              console.error(`Join room timeout: ${task.room}, request: ${json}`);
+
+              delete this.requests[id];
+
+              resolve(undefined);
+            }, 10000);
+
+            this.requests[id] = { timeout, resolve, reject };
 
             if (!this.socket) {
               throw new Error('Socket is not connected');
             }
 
-            this.socket.send(
-              JSON.stringify({
-                id,
-                method: 'JOIN_ROOM',
-                data: task.room,
-                room: task.room,
-                acknowledge: true,
-              }),
-            );
+            const json = JSON.stringify({
+              id,
+              method: 'JOIN_ROOM',
+              data: task.room,
+              room: task.room,
+              acknowledge: true,
+            });
 
-            setTimeout(() => {
-              delete this.requests[id];
-              reject(`Request timeout: join room ${task.room}`);
-            }, 20000);
+            this.socket.send(json);
           });
 
           await promise;
+
           this.rooms.push(task.room);
         } else {
           if (!this.socket) {
@@ -155,12 +159,15 @@ export default class SocketClient {
           if (message.id === undefined) throw new Error('Invalid message id: ' + message);
 
           const request = this.requests[message.id];
+
           if (request) {
             if (message.method === 'Error') {
               request.reject(message.message);
             } else {
               request.resolve(message.data);
             }
+            clearTimeout(request.timeout);
+
             delete this.requests[message.id];
           }
         }
@@ -173,10 +180,15 @@ export default class SocketClient {
     this.socket.onopen = (event) => {
       this.rooms = [];
       this.connects.forEach((connect) => connect(event));
+      this.interval = setInterval(async () => await this.processTask(), 10);
     };
     this.socket.onclose = (event) => {
       this.rooms = [];
       this.disconnects.forEach((disconnect) => disconnect(event));
+
+      if (this.interval) {
+        clearInterval(this.interval);
+      }
     };
 
     return instant;
@@ -187,8 +199,6 @@ export default class SocketClient {
     if (room && !this.rooms.includes(room)) {
       this.joinRoom(room);
     }
-
-    console.log(method + room);
 
     const handlers = this.handlers[method + room];
 
@@ -217,10 +227,7 @@ export default class SocketClient {
   }
 
   public async send(payload: MessagePayload) {
-    if (this.room && !this.rooms.includes(this.room)) {
-      this.tasks.push({ room: this.room });
-    }
-
+    this.joinRoom(this.room);
     const json = JSON.stringify({ ...payload, room: this.room });
     this.tasks.push({ request: json });
 
@@ -230,25 +237,23 @@ export default class SocketClient {
   }
 
   public async await<T extends MessagePayload>(payload: T): Promise<SocketResult<T['method']>> {
-    if (this.room && !this.rooms.includes(this.room)) {
-      this.tasks.push({ room: this.room });
-    }
+    this.joinRoom(this.room);
 
     const id = genId();
     const promise = new Promise<any>((resolve, reject) => {
-      this.requests[id] = { resolve, reject };
+      const timeout = setTimeout(() => {
+        delete this.requests[id];
+
+        reject(`Await request timeout: ${json}`);
+      }, 20000);
+
+      this.requests[id] = { timeout, resolve, reject };
 
       const json = JSON.stringify({ id, ...payload, room: this.room, acknowledge: true });
 
       this.tasks.push({ request: json });
 
       this.room = '';
-
-      setTimeout(() => {
-        delete this.requests[id];
-
-        reject(`Request timeout: ${json}`);
-      }, 20000);
     });
 
     return await promise;
@@ -258,7 +263,7 @@ export default class SocketClient {
     const has = this.tasks.find((task) => 'room' in task && task.room === room);
 
     if (!has) {
-      this.tasks.push({ room: room });
+      this.tasks.push({ room: room, id: genId() });
     }
   }
 
@@ -275,6 +280,9 @@ export default class SocketClient {
   }
 
   public close() {
+    this.tasks = [];
+    this.rooms = [];
+
     if (this.socket && this.socket.readyState === this.socket.OPEN) {
       this.socket.close();
     }

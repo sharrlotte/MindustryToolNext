@@ -1,14 +1,25 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 
+import { translate } from '@/action/action';
 import { HomeMapPreview, HomeSchematicPreview, InformationGroup } from '@/app/[locale]/home';
 import Ads from '@/components/common/ads';
 import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import YoutubeEmbed from '@/components/common/youtube-embed';
+import { formatTitle } from '@/lib/utils';
 
 // export const dynamicParams = false;
 export const experimental_ppr = true;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const title = await translate('home');
+
+  return {
+    title: formatTitle(title),
+  };
+}
 
 const SectionTitle = ({ text }: { text: string }) => (
   <h1 className="flex text-xl font-extrabold">

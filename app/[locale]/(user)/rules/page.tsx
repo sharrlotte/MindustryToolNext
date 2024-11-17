@@ -1,16 +1,17 @@
-'use client';
+import { Metadata } from 'next';
 
-import React from 'react';
+import { translate } from '@/action/action';
+import RulePage from '@/app/[locale]/(user)/rules/page.client';
+import { formatTitle } from '@/lib/utils';
 
-import Markdown from '@/components/common/markdown';
-import { useI18n } from '@/i18n/client';
+export async function generateMetadata(): Promise<Metadata> {
+  const title = await translate('schematic');
+
+  return {
+    title: formatTitle(title),
+  };
+}
 
 export default function Page() {
-  const t = useI18n();
-
-  return (
-    <main className="flex h-full w-full items-center justify-center">
-      <Markdown>{t('rule.content')}</Markdown>
-    </main>
-  );
+  return <RulePage />;
 }

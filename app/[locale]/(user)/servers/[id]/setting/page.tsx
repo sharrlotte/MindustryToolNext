@@ -1,6 +1,7 @@
+import { Metadata } from 'next';
 import React from 'react';
 
-import { getSession, serverApi } from '@/action/action';
+import { getSession, serverApi, translate } from '@/action/action';
 import { DeleteServerButton } from '@/app/[locale]/(user)/servers/[id]/setting/delete-server-button';
 import ServerUpdateForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-form';
 import ServerUpdatePortForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-port-form';
@@ -8,12 +9,20 @@ import ErrorScreen from '@/components/common/error-screen';
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
 import ProtectedElement from '@/layout/protected-element';
-import { isError } from '@/lib/utils';
+import { formatTitle, isError } from '@/lib/utils';
 import { getInternalServer } from '@/query/server';
 
 type PageProps = {
   params: Promise<{ id: string }>;
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const title = await translate('setting');
+
+  return {
+    title: formatTitle(title),
+  };
+}
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;

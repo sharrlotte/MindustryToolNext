@@ -1,6 +1,7 @@
+import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
-import { getSession } from '@/action/action';
+import { getSession, translate } from '@/action/action';
 import { CommunityServer } from '@/app/[locale]/(user)/servers/community-server';
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import { MeServer } from '@/app/[locale]/(user)/servers/my-server';
@@ -12,6 +13,15 @@ import Tran from '@/components/common/tran';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 import ProtectedElement from '@/layout/protected-element';
+import { formatTitle } from '@/lib/utils';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const title = await translate('server');
+
+  return {
+    title: formatTitle(title),
+  };
+}
 
 const skeleton = (
   <div className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 overflow-y-auto pr-1">

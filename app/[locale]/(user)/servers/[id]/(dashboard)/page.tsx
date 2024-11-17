@@ -1,7 +1,8 @@
+import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import React, { Fragment, Suspense } from 'react';
 
-import { getSession, serverApi } from '@/action/action';
+import { getSession, serverApi, translate } from '@/action/action';
 import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/check-server-maps';
 import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(user)/servers/[id]/(dashboard)/player-card';
 import ReloadServerButton from '@/app/[locale]/(user)/servers/[id]/reload-server-button';
@@ -15,7 +16,7 @@ import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import IdUserCard from '@/components/user/id-user-card';
 import ProtectedElement from '@/layout/protected-element';
-import { cn, hasAccess, isError } from '@/lib/utils';
+import { cn, formatTitle, hasAccess, isError } from '@/lib/utils';
 import { getInternalServer } from '@/query/server';
 
 const RamUsageChart = dynamic(() => import('@/components/metric/ram-usage-chart'));
@@ -25,6 +26,14 @@ export const experimental_ppr = true;
 type Props = {
   params: Promise<{ id: string; locale: string }>;
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const title = await translate('dashboard');
+
+  return {
+    title: formatTitle(title),
+  };
+}
 
 export default async function Page({ params }: Props) {
   const { id } = await params;

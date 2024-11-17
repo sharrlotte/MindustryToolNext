@@ -1,20 +1,16 @@
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
+import { cookies } from 'next/headers';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-
 
 import env from '@/constant/env';
 import I18nProvider from '@/context/locale-context';
 import { Locale } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
-
-
 import './globals.css';
-
 
 const inter = Inter({
   variable: '--font-inter',
@@ -77,15 +73,18 @@ export default async function Root({ children, params }: Props) {
   ReactDOM.preconnect('https://fonts.googleapis.com');
   ReactDOM.preconnect('https://fonts.gstatic.com', { crossOrigin: 'anonymous' });
 
+  const cookie = await cookies();
+  const cookieLocale = cookie.get('Locale')?.value ?? 'en';
+
   return (
     <html
       className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable)}
-      lang={locale ?? 'en'}
+      lang={locale ?? cookieLocale}
       data-color-mode="dark"
       suppressHydrationWarning
     >
       <body className="h-full w-full overflow-hidden">
-        <I18nProvider locale={locale ?? 'en'}>{children}</I18nProvider>
+        <I18nProvider locale={locale ?? cookieLocale}>{children}</I18nProvider>
       </body>
     </html>
   );

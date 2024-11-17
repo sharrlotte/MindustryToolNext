@@ -7,8 +7,7 @@ import { cookies } from 'next/headers';
 import 'server-only';
 import { z } from 'zod';
 
-import { formatTranslation } from '@/i18n/client';
-import { isError } from '@/lib/utils';
+import { formatTranslation } from '@/lib/utils';
 import axiosInstance from '@/query/config/config';
 import { QuerySchema } from '@/query/search-query';
 import { Session } from '@/types/response/Session';
@@ -93,42 +92,43 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
   return axiosInstance;
 };
 
-export const getCachedTranslation = unstable_cache(
-  async (locale: string, group: string) => {
-    return await serverApi((axios) =>
-      axios
-        .get('/translations', {
-          params: {
-            group,
-            language: locale,
-          },
-        })
-        .then((r) => r.data),
-    );
-  },
+const getCachedTranslation = unstable_cache(
+  async (language: string, group: string) =>
+    axiosInstance
+      .get('/translations', {
+        params: {
+          group,
+          language,
+        },
+      })
+      .then((r) => r.data),
   ['translation'],
   { revalidate: 600 },
 );
 
-export async function translate(locale: string, text: string, args?: Record<string, any>) {
-  const parts = text.split('.');
+export async function translate(text: string, args?: Record<string, any>) {
+  try {
+    const cookie = await cookies();
+    const locale = cookie.get('Locale')?.value || 'en';
 
-  if (parts.length === 0) {
-    throw new Error('Bad key');
-  }
+    const parts = text.split('.');
 
-  const group = parts.length === 1 ? 'common' : parts[0];
-  const key = parts.length === 1 ? parts[0] : parts[1];
+    if (parts.length === 0) {
+      throw new Error('Bad key');
+    }
 
-  text = `${group}.${key}`;
+    const group = parts.length === 1 ? 'common' : parts[0];
+    const key = parts.length === 1 ? parts[0] : parts[1];
 
-  const keys = await getCachedTranslation(locale, group);
+    text = `${group}.${key}`;
 
-  if (isError(keys)) {
+    const keys = await getCachedTranslation(locale, group);
+    const value = keys[key];
+
+    return value ? (formatTranslation(value, args) ?? text) : text;
+  } catch (error) {
+    console.error(error);
+
     return text;
   }
-
-  const value = keys[group];
-
-  return value ? (formatTranslation(value[key], args) ?? text) : text;
 }
