@@ -1,17 +1,30 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import React, { useRef } from 'react';
 
-import { AddPluginDialog } from '@/app/[locale]/(user)/servers/[id]/plugins/add-plugin-dialog';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
 import InternalServerPluginCard from '@/components/server/internal-server-plugin-card';
-import useSearchId from '@/hooks/use-search-id-params';
+import { Button } from '@/components/ui/button';
+
 import { getInternalServerPlugins } from '@/query/server';
 
-export default function ServerPluginPage() {
+const AddPluginDialog = dynamic(() => import('@/app/[locale]/(user)/servers/[id]/plugins/add-plugin-dialog'), {
+  loading: () => (
+    <Button className="ml-auto" title="Add plugin" variant="secondary">
+      <Tran text="internal-server.add-plugin" />
+    </Button>
+  ),
+});
+
+type Props = {
+  id: string;
+};
+
+export default function ServerPluginPage({ id }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const { id } = useSearchId();
 
   return (
     <div className="flex flex-col gap-2 overflow-hidden">

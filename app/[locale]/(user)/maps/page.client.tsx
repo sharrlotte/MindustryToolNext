@@ -8,6 +8,7 @@ import InfinitePage from '@/components/common/infinite-page';
 import InternalLink from '@/components/common/internal-link';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
@@ -50,7 +51,7 @@ export default function Client({ maps }: Props) {
         <PaginationLayoutSwitcher />
       </div>
       <ListLayout>
-        <div className="relative flex h-full flex-col overflow-auto" ref={(ref) => setContainer(ref)}>
+        <ScrollContainer ref={(ref) => setContainer(ref)}>
           <InfinitePage
             params={params}
             queryKey={['maps']}
@@ -64,7 +65,7 @@ export default function Client({ maps }: Props) {
           >
             {(data, index) => <MapPreviewCard key={data.id} map={data} imageCount={index} />}
           </InfinitePage>
-        </div>
+        </ScrollContainer>
       </ListLayout>
       <GridLayout>
         <GridPaginationList

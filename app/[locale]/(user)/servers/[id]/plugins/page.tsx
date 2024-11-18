@@ -1,13 +1,15 @@
 import { Metadata } from 'next';
 
-import { translate } from '@/action/action';
 import ServerPluginPage from '@/app/[locale]/(user)/servers/[id]/plugins/page.client';
+
+import { translate } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { formatTitle } from '@/lib/utils';
 
 type Props = {
   params: Promise<{
     locale: Locale;
+    id: string;
   }>;
 };
 
@@ -20,6 +22,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function Page() {
-  return <ServerPluginPage />;
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+
+  return <ServerPluginPage id={id} />;
 }

@@ -14,6 +14,14 @@ export async function getPluginUploadCount(axios: AxiosInstance, params: Omit<Pa
   return result.data;
 }
 
+export async function getPluginCount(axios: AxiosInstance, params: Omit<PaginationSearchQuery, 'page' | 'size'>): Promise<number> {
+  const result = await axios.get('/plugins/total', {
+    params,
+  });
+
+  return result.data;
+}
+
 export async function deletePlugin(axios: AxiosInstance, id: string): Promise<void> {
   const result = await axios.delete(`/plugins/${id}`);
 
