@@ -1,5 +1,7 @@
+import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
+import { translate } from '@/action/action';
 import ScrollContainer from '@/components/common/scroll-container';
 import ClientChart from '@/components/metric/client-chart';
 import LikeChart from '@/components/metric/like-chart';
@@ -7,11 +9,25 @@ import LoginChart from '@/components/metric/login-chart';
 import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
+import { Locale } from '@/i18n/config';
+import { cn, formatTitle } from '@/lib/utils';
 
 export const experimental_ppr = true;
 
 const NUMBER_OF_DAY = 15;
+
+type Props = {
+  params: Promise<{ locale: Locale }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const title = await translate(locale, 'dashboard');
+
+  return {
+    title: formatTitle(title),
+  };
+}
 
 export default async function Page() {
   const start = new Date();
