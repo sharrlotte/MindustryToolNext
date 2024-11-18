@@ -25,7 +25,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
     queryFn: () => getUser(axios, { id }),
   });
 
-  const imageUrl = useMemo(() => (file ? URL.createObjectURL(file) : data?.thumbnail ? `${data.thumbnail}.png` : undefined), [file, data?.thumbnail]);
+  const imageUrl = useMemo(() => (file ? URL.createObjectURL(file) : data?.thumbnail ? `${data.thumbnail}` : undefined), [file, data?.thumbnail]);
 
   function handleFilePick(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.currentTarget.files;
@@ -50,10 +50,17 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
         variant: 'success',
       });
     },
+    onError: (error) => {
+      toast({
+        title: <Tran text="upload.fail" />,
+        description: error?.message,
+        variant: 'destructive',
+      });
+    },
   });
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 flex-col">
       <input id="image" className="w-16" hidden accept=".png, .jpg, .jpeg" type="file" onChange={handleFilePick} />
       <label className="flex cursor-pointer items-center justify-center overflow-hidden" htmlFor="image" hidden>
         {imageUrl && (
@@ -66,7 +73,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
           <Tran text="user.update-thumbnail" />
         </Button>
       ) : (
-        <label className="flex h-fit w-fit cursor-pointer gap-1 rounded-sm border px-2 py-1" htmlFor="image">
+        <label className="flex h-fit w-fit cursor-pointer gap-1 justify-center items-center rounded-sm border px-2 py-1" htmlFor="image">
           <ImageIcon className="size-5" />
           <Tran text="user.upload-thumbnail" />
         </label>

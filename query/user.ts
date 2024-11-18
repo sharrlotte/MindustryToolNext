@@ -108,6 +108,7 @@ export async function getUserCount(axios: AxiosInstance, params: { role?: UserRo
 
 export async function updateThumbnail(axios: AxiosInstance, file: File): Promise<User[]> {
   const formData = new FormData();
+  
   formData.append('file', file);
 
   const result = await axios.post(`/users/@me/thumbnail`, formData);

@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 
-import { serverApi } from '@/action/action';
+import { serverApi, translate } from '@/action/action';
 import Me from '@/app/[locale]/(user)/users/@modal/[id]/me';
 import Other from '@/app/[locale]/(user)/users/@modal/[id]/other';
 import ErrorScreen from '@/components/common/error-screen';
-import { isError } from '@/lib/utils';
+import { formatTitle, isError } from '@/lib/utils';
 import { getMe, getUser } from '@/query/user';
 
 type Props = {
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { name, imageUrl, roles } = me;
 
     return {
-      title: name,
+      title: formatTitle(name),
       description: roles.map((role) => role.name).join(', '),
       openGraph: {
         title: name,
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { name, imageUrl, roles } = user;
 
   return {
-    title: name,
+    title: formatTitle(name),
     description: roles.map((role) => role.name).join(', '),
     openGraph: {
       title: name,
