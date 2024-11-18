@@ -293,7 +293,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         name,
         size: 20,
         tags: [],
-        sort: 'time_1',
+        sort: 'time_desc',
         status: 'VERIFIED',
       }),
   });
