@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse, userAgent } from 'next/server';
+import { MiddlewareConfig, NextRequest, NextResponse, userAgent } from 'next/server';
 
 import { Locale, defaultLocale, locales } from '@/i18n/config';
 
@@ -35,7 +35,7 @@ export function middleware(request: NextRequest) {
     if (isBot) {
       return;
     }
-  } 
+  }
 
   if (pathnameHasLocale && currentLocale === locale) {
     return;
@@ -49,6 +49,16 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-export const config = {
-  matcher: ['/((?!api|_next|assets|_next/image|favicon.ico|robots.txt|.*sitemap|ads).*)'],
+export const config: MiddlewareConfig = {
+  matcher: [
+    {
+      source: '/((?!api|_next|assets|_next/image|favicon.ico|robots.txt|.*sitemap|ads).*)',
+      missing: [
+        {
+          type: 'cookie',
+          key: 'Locale',
+        },
+      ],
+    },
+  ],
 };

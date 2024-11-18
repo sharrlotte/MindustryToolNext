@@ -24,7 +24,7 @@ const getCachedTranslation = unstable_cache(
       })
       .then(({ data }) => data),
   ['translations'],
-  { revalidate: 600 },
+  { revalidate: 3600 },
 );
 
 export function useI18n(): TranslateFunction {
