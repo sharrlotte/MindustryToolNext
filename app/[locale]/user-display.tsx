@@ -40,21 +40,16 @@ export function Internal() {
             <LogOut className="size-5" />
           </div>
         </div>
-        {
-          //#region modal
-        }
         <Modal isOpen={modal.isOpen} onClose={modal.close}>
           <div className="flex w-full flex-col gap-2 py-2">
-            <p className="font-semibold dark:text-black">Are you sure you want to log out?</p>
-            <div className="flex justify-end gap-2">
-              <button className="rounded border border-gray-500 px-2 py-1 text-black  transition-colors hover:bg-gray-500  dark:text-white " onClick={modal.toggle}>
+            <p className="font-semibold">Are you sure you want to log out?</p>
+            <div className="grid grid-cols-2 gap-2">
+              <button className="rounded border px-2 py-1 transition-colors" onClick={modal.toggle}>
                 Cancel
               </button>
-              <a href={`${env.url.api}/auth/logout`}>
-                <button className="flex items-center rounded bg-sky-500 px-2 py-1 text-white transition-colors hover:bg-sky-600">
-                  <LogoutButton className="justify-start pr-1" />
-                  <span>Log out</span>
-                </button>
+              <a className='flex border justify-center items-center px-2 py-1 rounded-md' href={`${env.url.api}/auth/logout`}>
+                <LogoutButton className="justify-start pr-1" />
+                <span>Log out</span>
               </a>
             </div>
           </div>

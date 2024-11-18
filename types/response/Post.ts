@@ -1,4 +1,3 @@
-import { Like } from '@/types/response/Like';
 import { Status } from '@/types/response/Status';
 
 export type Post = {
@@ -6,7 +5,6 @@ export type Post = {
   userId: string;
   title: string;
   likes: number;
-  userLike: Like;
   tags: string[];
   imageUrls: string[];
   createdAt: number;

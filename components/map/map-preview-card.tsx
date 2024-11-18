@@ -8,10 +8,8 @@ import ColorText from '@/components/common/color-text';
 import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
-import DislikeButton from '@/components/like/dislike-button';
-import LikeButton from '@/components/like/like-button';
+import AloneLikeCount from '@/components/like/alone-like-count';
 import LikeComponent from '@/components/like/like-component';
-import LikeCount from '@/components/like/like-count';
 import env from '@/constant/env';
 import useImageLoading from '@/hooks/use-image-loading';
 import { Map } from '@/types/response/Map';
@@ -21,7 +19,7 @@ type MapPreviewCardProps = {
   imageCount: number;
 };
 
-function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, userLike }, imageCount }: MapPreviewCardProps) {
+function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, downloadCount }, imageCount }: MapPreviewCardProps) {
   const link = `${env.url.base}/maps/${id}`;
   const detailLink = `/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
@@ -42,15 +40,13 @@ function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, us
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>
-        <ColorText text={name} />
+          <ColorText text={name} />
         </PreviewHeader>
         <PreviewActions>
-          <DownloadButton href={downloadLink} fileName={downloadName} />
+          <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
           {isVerified && (
-            <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
-              <LikeButton />
-              <LikeCount />
-              <DislikeButton />
+            <LikeComponent itemId={itemId} initialLikeCount={likes}>
+              <AloneLikeCount />
             </LikeComponent>
           )}
         </PreviewActions>

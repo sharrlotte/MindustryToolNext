@@ -3,10 +3,6 @@ import React, { HTMLAttributes } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import InternalLink from '@/components/common/internal-link';
-import DislikeButton from '@/components/like/dislike-button';
-import LikeButton from '@/components/like/like-button';
-import LikeComponent from '@/components/like/like-component';
-import LikeCount from '@/components/like/like-count';
 import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
@@ -35,13 +31,6 @@ function InternalPostPreviewCard({ className, post, ...rest }: PostPreviewCardPr
             <CopyButton data={link} content={link}>
               <LinkIcon className="size-5" />
             </CopyButton>
-            {post.isVerified && (
-              <LikeComponent itemId={post.itemId} initialLikeCount={post.likes} initialLikeData={post.userLike}>
-                <LikeButton />
-                <LikeCount />
-                <DislikeButton />
-              </LikeComponent>
-            )}
           </div>
         </div>
       </div>

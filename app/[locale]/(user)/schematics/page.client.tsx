@@ -13,9 +13,11 @@ import SchematicPreviewCard from '@/components/schematic/schematic-preview-card'
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import env from '@/constant/env';
+import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
+import ProtectedElement from '@/layout/protected-element';
 import { omit } from '@/lib/utils';
 import { getSchematicCount, getSchematics } from '@/query/schematic';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -30,6 +32,7 @@ export default function Client({ schematics }: Props) {
     searchTags: { schematic },
   } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
+  const { session } = useSession();
 
   const uploadLink = `${env.url.base}/upload/schematic`;
   const mySchematicLink = `${env.url.base}/users/@me`;
@@ -85,10 +88,12 @@ export default function Client({ schematics }: Props) {
           <PaginationNavigator numberOfItems={data} />
         </GridLayout>
         <div className="flex gap-2">
-          <InternalLink variant="button-secondary" href={mySchematicLink}>
-            <UserIcon />
-            <Tran text="my-schematic" />
-          </InternalLink>
+          <ProtectedElement session={session} filter>
+            <InternalLink variant="button-secondary" href={mySchematicLink}>
+              <UserIcon />
+              <Tran text="my-schematic" />
+            </InternalLink>
+          </ProtectedElement>
           <InternalLink variant="button-secondary" href={uploadLink}>
             <UploadIcon />
             <Tran text="upload-schematic" />

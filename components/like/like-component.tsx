@@ -101,6 +101,7 @@ function LikeComponent({ initialLikeCount = 0, initialLikeData, children, itemId
   return (
     <LikeContext.Provider
       value={{
+        count: cache[itemId]?.count ?? initialLikeCount,
         likeData,
         isLoading: isPending,
         handleAction,

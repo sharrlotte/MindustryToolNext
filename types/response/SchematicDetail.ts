@@ -18,4 +18,5 @@ export type SchematicDetail = {
   userLike?: Like;
   itemId: string;
   isVerified: boolean;
+  downloadCount: number;
 };

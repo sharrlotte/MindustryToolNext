@@ -75,15 +75,17 @@ function NavFooter() {
   return (
     <div className="space-y-1">
       <Divider />
-      <InternalLink
-        className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold transition-colors duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
-          'justify-start gap-2 py-2': expand,
-        })}
-        href="/users/@me/setting"
-      >
-        <SettingIcon />
-      </InternalLink>
-      {session && <UserAvatar className="size-10" url="/users/@me" user={session} />}
+      <ProtectedElement session={session} filter>
+        <InternalLink
+          className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold transition-colors duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
+            'justify-start gap-2 py-2': expand,
+          })}
+          href="/users/@me/setting"
+        >
+          <SettingIcon />
+        </InternalLink>
+        {session && <UserAvatar className="size-10" url="/users/@me" user={session} />}
+      </ProtectedElement>
     </div>
   );
 }

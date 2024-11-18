@@ -2,7 +2,7 @@
 
 import { saveAs } from 'file-saver';
 import { ArrowDownToLine } from 'lucide-react';
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, useState } from 'react';
 
 import useClientApi from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
@@ -13,9 +13,13 @@ type DownloadButtonProps = HTMLAttributes<HTMLAnchorElement> & {
   href: string;
   fileName?: string;
   secure?: boolean;
+  count?: number;
 };
 
-export default function DownloadButton({ className, href, fileName, secure, children, ...props }: DownloadButtonProps) {
+export default function DownloadButton({ className, href, fileName, secure, children, count: initialCount, ...props }: DownloadButtonProps) {
+  const [count, setCount] = useState(initialCount);
+  const [downloaded, setDownloaded] = useState(false);
+
   if (secure) {
     return (
       <SecureDownloadButton className={className} href={href} fileName={fileName} {...props}>
@@ -26,13 +30,21 @@ export default function DownloadButton({ className, href, fileName, secure, chil
 
   return (
     <a
-      className={cn('flex min-h-8 items-center transition-colors justify-center rounded-md border border-border hover:bg-brand hover:text-background hover:dark:text-foreground', className)}
+      className={cn(
+        'flex text-base gap-2 min-h-8 items-center transition-colors justify-center rounded-md border border-border hover:bg-brand hover:text-background hover:dark:text-foreground',
+        className,
+      )}
       {...props}
       href={href}
       download={fileName ?? true}
       title="download"
+      onClick={() => {
+        setCount((prev) => (prev !== undefined ? (downloaded ? prev : prev + 1) : undefined));
+        setDownloaded(true);
+      }}
     >
       <ArrowDownToLine className="size-5" />
+      {count}
     </a>
   );
 }

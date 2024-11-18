@@ -5,6 +5,8 @@ import { Locale, defaultLocale, locales } from '@/i18n/config';
 export function middleware(request: NextRequest) {
   const { isBot } = userAgent(request);
 
+  console.log('middleware hmm');
+
   let locale = request.cookies.get('Locale')?.value?.toLowerCase() as string | undefined;
 
   if (!locale) {
@@ -52,13 +54,7 @@ export function middleware(request: NextRequest) {
 export const config: MiddlewareConfig = {
   matcher: [
     {
-      source: '/((?!api|_next|assets|_next/image|favicon.ico|robots.txt|.*sitemap|ads).*)',
-      missing: [
-        {
-          type: 'cookie',
-          key: 'Locale',
-        },
-      ],
+      source: '/((?!api|_next|en|vi|ru|kr|cn|uk|jp|assets|_next/image|favicon.ico|robots.txt|.*sitemap|ads).*)',
     },
   ],
 };

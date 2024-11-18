@@ -1,6 +1,9 @@
 import { Status } from '@/types/response/Status';
 
+
+
 import { Like } from './Like';
+
 
 export type MapDetail = {
   id: string;
@@ -16,4 +19,5 @@ export type MapDetail = {
   userLike: Like;
   itemId: string;
   isVerified: boolean;
+  downloadCount: number;
 };
