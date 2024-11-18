@@ -105,7 +105,7 @@ const getCachedTranslation = cache(
         })
         .then((r) => r.data),
     ['translations'],
-    { revalidate: 600, tags: ['translations'] },
+    { revalidate: 3600, tags: ['translations'] },
   ),
 );
 

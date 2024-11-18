@@ -196,7 +196,7 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
           onChange={handleSizeChange}
         />
       </PaginationContent>
-      <Link href={`?${prevPath.toString()}`} prefetch />
+      <Link href={`?${prevPath.toString()}`} />
       <Link href={`?${nextPath.toString()}`} prefetch />
     </Pagination>
   );
