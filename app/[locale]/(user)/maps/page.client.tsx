@@ -13,9 +13,11 @@ import MapPreviewCard from '@/components/map/map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import env from '@/constant/env';
+import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
+import ProtectedElement from '@/layout/protected-element';
 import { omit } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -30,6 +32,7 @@ export default function Client({ maps }: Props) {
     searchTags: { map },
   } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
+  const { session } = useSession();
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
@@ -82,10 +85,12 @@ export default function Client({ maps }: Props) {
           <PaginationNavigator numberOfItems={data} />
         </GridLayout>
         <div className="flex gap-2">
-          <InternalLink variant="button-secondary" href={`${env.url.base}/users/@me`}>
-            <UserIcon className="size-5" />
-            <Tran text="map.my-map" />
-          </InternalLink>
+          <ProtectedElement session={session} filter>
+            <InternalLink variant="button-secondary" href={`${env.url.base}/users/@me`}>
+              <UserIcon className="size-5" />
+              <Tran text="map.my-map" />
+            </InternalLink>
+          </ProtectedElement>
           <InternalLink variant="button-secondary" href={`${env.url.base}/upload/map`}>
             <UploadIcon className="size-5" />
             <Tran text="map.upload" />

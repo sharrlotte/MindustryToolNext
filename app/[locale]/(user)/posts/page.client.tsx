@@ -10,8 +10,10 @@ import Tran from '@/components/common/tran';
 import PostPreviewCard from '@/components/post/post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import env from '@/constant/env';
+import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
 import useSearchQuery from '@/hooks/use-search-query';
+import ProtectedElement from '@/layout/protected-element';
 import { getPosts } from '@/query/post';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Post } from '@/types/response/Post';
@@ -26,6 +28,7 @@ export default function Client({ posts }: Props) {
   } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
   const ref = useRef<HTMLDivElement | null>(null);
+  const { session } = useSession();
 
   const uploadLink = `${env.url.base}/upload/post`;
   const myPostLink = `${env.url.base}/users/@me`;
@@ -46,10 +49,12 @@ export default function Client({ posts }: Props) {
         </InfinitePage>
       </ScrollContainer>
       <div className="flex gap-2">
-        <InternalLink variant="button-secondary" title="my-post" href={myPostLink}>
-          <UserIcon />
-          <Tran text="my-post" />
-        </InternalLink>
+        <ProtectedElement session={session} filter>
+          <InternalLink variant="button-secondary" title="my-post" href={myPostLink}>
+            <UserIcon />
+            <Tran text="my-post" />
+          </InternalLink>
+        </ProtectedElement>
         <InternalLink variant="button-secondary" title="upload-post" href={uploadLink}>
           <UploadIcon />
           <Tran text="upload-post" />

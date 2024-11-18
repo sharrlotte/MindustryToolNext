@@ -150,13 +150,13 @@ export default async function Home() {
           <h3 className="font-bold">
             <Tran text="home.schematic-preview" />
           </h3>
-          <HomeSchematicPreview queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
+          <HomeSchematicPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
         </article>
         <article className="flex flex-col gap-2">
           <h3 className="font-bold">
             <Tran text="home.map-preview" />
           </h3>
-          <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_1' }} />
+          <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
         </article>
         <div className="flex w-full flex-col gap-4 md:flex-row">
           <div className="flex w-full flex-col gap-8 md:w-1/2">

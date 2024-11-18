@@ -17,8 +17,6 @@ export default function LikeButton({ className, ...props }: LikeButtonProps) {
         'bg-success text-background dark:text-foreground': likeData?.state === 1,
       })}
       title="like"
-      size="icon"
-      variant="outline"
       {...props}
       disabled={isLoading}
       onClick={() => handleAction('LIKE')}

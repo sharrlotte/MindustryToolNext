@@ -27,7 +27,7 @@ type SchematicDetailCardProps = {
 };
 
 export default function SchematicDetailCard({
-  schematic: { id, name, description, tags, requirements, verifierId, itemId, likes, userLike, userId, isVerified, width, height },
+  schematic: { id, name, description, tags, requirements, verifierId, itemId, likes, userLike, userId, isVerified, width, height, downloadCount },
 }: SchematicDetailCardProps) {
   const axios = useClientApi();
   const { session } = useSession();
@@ -67,7 +67,7 @@ export default function SchematicDetailCard({
       </DetailInfo>
       <DetailActions>
         <CopyButton title={copyContent} data={getData} />
-        <DownloadButton href={downloadUrl} fileName={downloadName} />
+        <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
         <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
           <LikeButton />
           <LikeCount />

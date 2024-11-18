@@ -16,8 +16,6 @@ export default function LikeCount({ className, ...props }: LikeButtonProps) {
         'text-destructive hover:text-destructive': count < 0,
         'text-success hover:text-success': count > 0,
       })}
-      size="icon"
-      variant="outline"
       title="like-count"
       {...props}
     >

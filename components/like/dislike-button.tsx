@@ -20,8 +20,6 @@ export default function DislikeButton({ className, ...props }: LikeButtonProps) 
           'bg-destructive text-background dark:text-foreground': likeData?.state === -1,
         },
       )}
-      size="icon"
-      variant="outline"
       {...props}
       title={'dislike'}
       disabled={isLoading}

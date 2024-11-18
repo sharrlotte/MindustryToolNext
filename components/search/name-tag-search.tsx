@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import ComboBox from '@/components/common/combo-box';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import Tran from '@/components/common/tran';
 import Search from '@/components/search/search-input';
@@ -18,7 +17,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { QueryParams } from '@/query/config/search-query-params';
 import { ItemPaginationQuery } from '@/query/search-query';
-import SortTag, { sortTag, sortTagGroup } from '@/types/response/SortTag';
+import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
