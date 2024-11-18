@@ -1,18 +1,31 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import React, { useRef } from 'react';
 
-import { AddMapDialog } from '@/app/[locale]/(user)/servers/[id]/maps/add-map-dialog';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
 import InternalServerMapCard from '@/components/server/internal-server-map-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
-import useSearchId from '@/hooks/use-search-id-params';
+import { Button } from '@/components/ui/button';
+
 import { getInternalServerMaps } from '@/query/server';
 
-export default function ServerMaps() {
+const AddMapDialog = dynamic(() => import('@/app/[locale]/(user)/servers/[id]/maps/add-map-dialog'), {
+  loading: () => (
+    <Button className="ml-auto" title="Add map" variant="secondary">
+      <Tran text="internal-server.add-map" />
+    </Button>
+  ),
+});
+
+type Props = {
+  id: string;
+};
+
+export default function ServerMaps({ id }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const { id } = useSearchId();
 
   return (
     <div className="flex flex-col gap-2 overflow-hidden">
