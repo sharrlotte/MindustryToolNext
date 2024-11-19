@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+
 import { cn } from '@/lib/utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -139,7 +140,7 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
 
   return (
     <div
-      className={cn('flex h-full w-full flex-col divide-y overflow-hidden rounded-md border ', {
+      className={cn('flex h-full w-full flex-col divide-y overflow-hidden rounded-md border bg-background ', {
         'fixed inset-0 z-50 rounded-none': isFullscreen,
       })}
     >
