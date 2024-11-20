@@ -67,7 +67,7 @@ export default async function Page({ params }: Props) {
   });
 
   return (
-    <div className="flex flex-col gap-2 overflow-y-auto">
+    <div className="flex flex-col gap-2 overflow-y-auto h-full">
       <CheckServerMaps id={id} />
       <div className="h-full">
         <div
