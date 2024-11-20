@@ -1,10 +1,11 @@
-import { serverApi } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
+
+import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
@@ -30,8 +31,15 @@ export async function PlayersCard({ id }: PlayersCardProps) {
   );
 }
 
-export function PlayersCardSkeleton() {
-  return Array(10)
+type PlayersCardSkeletonProps = {
+  players: number;
+};
+export function PlayersCardSkeleton({ players }: PlayersCardSkeletonProps) {
+  if (players === 0) {
+    return undefined;
+  }
+
+  return Array(players)
     .fill(1)
     .map((_, index) => <Skeleton className="h-10 w-24" key={index} />);
 }
