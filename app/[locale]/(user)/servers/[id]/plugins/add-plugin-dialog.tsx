@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
+import LoadingScreen from '@/components/common/loading-screen';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -17,7 +18,7 @@ import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useToast } from '@/hooks/use-toast';
-import { omit } from '@/lib/utils';
+import { cn, omit } from '@/lib/utils';
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { createInternalServerPlugin } from '@/query/server';
@@ -30,6 +31,7 @@ type AddPluginDialogProps = {
 
 export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const [added, setAdded] = useState<string[]>([]);
   const { toast } = useToast();
   const {
     searchTags: { plugin },
@@ -41,22 +43,26 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const { invalidateByKey } = useQueriesData();
 
   const { data } = useClientQuery({
-    queryKey: ['maps', 'total', omit(params, 'page', 'size', 'sort')],
+    queryKey: ['plugins', 'total', omit(params, 'page', 'size', 'sort')],
     queryFn: (axios) => getPluginCount(axios, params),
     placeholderData: 0,
   });
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (pluginId: string) => createInternalServerPlugin(axios, serverId, { pluginId }),
+    onSuccess: (_, pluginId) => {
+      toast({
+        title: <Tran text="interval-server.add-plugin-success" />,
+        variant: 'success',
+      });
+      setAdded((prev) => [...prev, pluginId]);
+    },
     onError: (error) => {
       toast({
-        title: <Tran text="upload.fail" />,
+        title: <Tran text="interval-server.add-plugin-fail" />,
         description: error.message,
         variant: 'destructive',
       });
-    },
-    onSuccess: () => {
-      setShow(false);
     },
     onSettled: () => {
       invalidateByKey(['servers', serverId, 'plugins']);
@@ -74,6 +80,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
         <DialogTitle>
           <Tran text="internal-server.select-plugin" />
         </DialogTitle>
+        {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={plugin} />
           <div className="flex justify-between">
@@ -92,7 +99,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
                   item: <Skeleton className="h-20" />,
                 }}
               >
-                {({ id, name, description }) => <ServerPluginCard key={id} id={id} name={name} description={description} mutate={mutate} />}
+                {({ id, name, description }) => <ServerPluginCard key={id} id={id} name={name} description={description} isAdded={added.includes(id)} mutate={mutate} />}
               </InfinitePage>
             </ScrollContainer>
           </ListLayout>
@@ -106,7 +113,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
                 item: <Skeleton className="h-20" />,
               }}
             >
-              {({ id, name, description }) => <ServerPluginCard key={id} id={id} name={name} description={description} mutate={mutate} />}
+              {({ id, name, description }) => <ServerPluginCard key={id} id={id} name={name} description={description} isAdded={added.includes(id)} mutate={mutate} />}
             </GridPaginationList>
           </GridLayout>
           <div className="flex justify-end">
@@ -122,13 +129,16 @@ type ServerPluginCardProps = {
   id: string;
   name: string;
   description: string;
+  isAdded: boolean;
   mutate: (id: string) => void;
 };
 
-function ServerPluginCard({ id, name, description, mutate }: ServerPluginCardProps) {
+function ServerPluginCard({ id, name, description, isAdded, mutate }: ServerPluginCardProps) {
   return (
     <Button
-      className="relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand/70"
+      className={cn('relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand/70', {
+        'border border-success': isAdded,
+      })}
       variant="outline"
       key={id}
       onClick={() => mutate(id)}

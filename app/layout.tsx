@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   applicationName: 'MindustryTool',
   keywords: ['Mindustry', 'Schematic', 'Map', 'Mod', 'Post'],
+  twitter: {
+    'site': '@MindustryTool'
+  },
   openGraph: {
     images: 'https://mindustrygame.github.io/1.d25af17a.webp',
     title: 'Mindustry',

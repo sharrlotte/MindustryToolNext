@@ -20,7 +20,7 @@ import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useToast } from '@/hooks/use-toast';
-import { omit } from '@/lib/utils';
+import { cn, omit } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { createInternalServerMap } from '@/query/server';
@@ -33,6 +33,7 @@ type AddMapDialogProps = {
 
 export default function AddMapDialog({ serverId }: AddMapDialogProps) {
   const { toast } = useToast();
+  const [added, setAdded] = useState<string[]>([]);
   const {
     searchTags: { map },
   } = useTags();
@@ -52,9 +53,16 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) => createInternalServerMap(axios, serverId, { mapId }),
+    onSuccess: (_, mapId) => {
+      toast({
+        title: <Tran text="interval-server.add-map-success" />,
+        variant: 'success',
+      });
+      setAdded((prev) => [...prev, mapId]);
+    },
     onError: (error) => {
       toast({
-        title: <Tran text="upload.fail" />,
+        title: <Tran text="interval-server.add-map-fail" />,
         description: error.message,
         variant: 'destructive',
       });
@@ -63,10 +71,6 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
       invalidateByKey(['servers', serverId, 'maps']);
     },
   });
-
-  if (isPending) {
-    return <LoadingScreen />;
-  }
 
   return (
     <Dialog open={show} onOpenChange={setShow}>
@@ -79,6 +83,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
         <DialogTitle>
           <Tran text="internal-server.select-map" />
         </DialogTitle>
+        {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />
           <div className="flex justify-between">
@@ -97,7 +102,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
                   item: <Skeleton className="h-preview-height" />,
                 }}
               >
-                {({ id, name }) => <ServerMapCard key={id} id={id} name={name} mutate={mutate} />}
+                {({ id, name }) => <ServerMapCard key={id} id={id} name={name} isAdded={added.includes(id)} mutate={mutate} />}
               </InfinitePage>
             </ScrollContainer>
           </ListLayout>
@@ -111,10 +116,10 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
                 item: <Skeleton className="h-preview-height" />,
               }}
             >
-              {({ id, name }) => <ServerMapCard key={id} id={id} name={name} mutate={mutate} />}
+              {({ id, name }) => <ServerMapCard key={id} id={id} name={name} isAdded={added.includes(id)} mutate={mutate} />}
             </GridPaginationList>
           </GridLayout>
-          <div className='flex justify-end'>
+          <div className="flex justify-end">
             <PaginationNavigator numberOfItems={data} />
           </div>
         </div>
@@ -126,13 +131,16 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
 type ServerMapCardProps = {
   name: string;
   id: string;
+  isAdded: boolean;
   mutate: (id: string) => void;
 };
 
-function ServerMapCard({ id, name, mutate }: ServerMapCardProps) {
+function ServerMapCard({ id, name, isAdded, mutate }: ServerMapCardProps) {
   return (
     <Button
-      className="hover:zoom-in-110 relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start"
+      className={cn('hover:zoom-in-110 relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start', {
+        'border border-success': isAdded,
+      })}
       variant="icon"
       title={name}
       onClick={() => mutate(id)}

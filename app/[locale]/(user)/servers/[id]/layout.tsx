@@ -60,7 +60,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
           </ProtectedElement>
         ))}
       </div>
-      <div className="h-full w-full overflow-hidden" key="child">
+      <div className="h-full w-full overflow-hidden flex flex-col" key="child">
         {children}
       </div>
     </div>
