@@ -8,8 +8,8 @@ import { useCookies } from 'react-cookie';
 import { useLocaleStore } from '@/context/locale-context';
 import useClientApi from '@/hooks/use-client';
 import { Locale, TranslateFunction, locales } from '@/i18n/config';
-import axiosInstance from '@/query/config/config';
 import { formatTranslation } from '@/lib/utils';
+import axiosInstance from '@/query/config/config';
 
 const EMPTY = {};
 

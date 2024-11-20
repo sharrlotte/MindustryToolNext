@@ -4,12 +4,14 @@ import { useMediaQuery } from 'usehooks-ts';
 
 import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
+
 import { MenuIcon, SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 import UserAvatar from '@/components/user/user-avatar';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
@@ -44,7 +46,7 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
   return (
     <motion.div className="relative flex h-full overflow-hidden border-r min-w-nav" variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
       <div className={cn('flex h-full w-full flex-col p-1', { 'p-2': expand })}>
-        <div className="flex items-center justify-center gap-1 p-2">
+        <div className={cn('flex items-center justify-center p-2', { 'gap-1': expand })}>
           <motion.div className="overflow-hidden whitespace-nowrap" animate={{ display: expand ? 'block' : 'none' }}>
             <h1 className="text-xl font-medium">MindustryTool</h1>
           </motion.div>

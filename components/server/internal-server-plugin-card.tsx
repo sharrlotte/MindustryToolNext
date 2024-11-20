@@ -5,6 +5,7 @@ import React from 'react';
 import DeleteButton from '@/components/button/delete-button';
 import Tran from '@/components/common/tran';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
@@ -45,10 +46,10 @@ export default function InternalServerPluginCard({ plugin: { serverId, name, plu
   return (
     <Popover>
       <div className="relative grid h-24 gap-2 overflow-hidden rounded-sm bg-card p-4">
-        <PopoverTrigger className="flex w-full items-start justify-start">
+        <PopoverTrigger className="flex w-full items-start justify-start overflow-hidden text-ellipsis">
           <h2 className="line-clamp-1 overflow-hidden text-ellipsis whitespace-normal text-nowrap">{name}</h2>
         </PopoverTrigger>
-        <span className="text-muted-foreground">{isVerified ? 'Verified' : 'Unverified'}</span>
+        <Tran className="text-muted-foreground" text={isVerified ? 'Verified' : 'Unverified'} />
         <DeleteButton
           className="right-1 top-1 backdrop-brightness-100"
           variant="ghost"
