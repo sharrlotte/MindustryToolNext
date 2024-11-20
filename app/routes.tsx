@@ -1,28 +1,13 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
 
-import {
-  ChartIcon,
-  ChatIcon,
-  CmdIcon,
-  CrownIcon,
-  DocumentIcon,
-  FileIcon,
-  GlobIcon,
-  HomeIcon,
-  LogIcon,
-  MapIcon,
-  MindustryGptIcon,
-  PluginIcon,
-  PostIcon,
-  RatioIcon,
-  SchematicIcon,
-  ServerIcon,
-  SettingIcon,
-  UserIcon,
-  VerifyIcon,
-} from '@/components/common/icons';
+
+
+import { ChartIcon, ChatIcon, CmdIcon, CrownIcon, DocumentIcon, FileIcon, GlobIcon, HomeIcon, LogIcon, MapIcon, MindustryGptIcon, PluginIcon, PostIcon, RatioIcon, SchematicIcon, ServerIcon, SettingIcon, UserIcon, VerifyIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
+
+
+
 import { useLocaleStore } from '@/context/locale-context';
 import { useSocket } from '@/context/socket-context';
 import useClientApi from '@/hooks/use-client';
@@ -39,7 +24,10 @@ import { TranslationPaginationQuery } from '@/query/search-query';
 import { getTranslationDiffCount } from '@/query/translation';
 import { useVerifyCount } from '@/zustand/verify-count-store';
 
+
+
 import { useQueries } from '@tanstack/react-query';
+
 
 export type PathGroup = {
   key: string;
@@ -194,7 +182,7 @@ export const groups: readonly PathGroup[] = [
             filter: { authority: 'VERIFY_PLUGIN' },
           },
         ],
-        icon: <VerifyIcon />,
+        icon: <VerifyPathIcon />,
       },
       {
         name: <Tran text="server" />,
@@ -205,7 +193,7 @@ export const groups: readonly PathGroup[] = [
       {
         name: <TranslationPath />,
         path: '/translation',
-        icon: <GlobIcon />,
+        icon: <TranslationPathIcon />,
         filter: { authority: 'VIEW_TRANSLATION' },
       },
       {
@@ -237,9 +225,11 @@ export const groups: readonly PathGroup[] = [
   },
 ];
 
-function VerifyPath() {
+function VerifyPathIcon() {
   const axios = useClientApi();
+
   const set = useVerifyCount((data) => data.set);
+
   const [{ data: schematicCount }, { data: mapCount }, { data: postCount }, { data: pluginCount }] = useQueries({
     queries: [
       {
@@ -267,14 +257,24 @@ function VerifyPath() {
 
   useEffect(() => set({ schematicCount, mapCount, postCount, pluginCount }), [mapCount, postCount, schematicCount, pluginCount, set]);
 
-  const amount = (schematicCount || 0) + (mapCount || 0) + (postCount || 0) + (pluginCount || 0);
+  const total = (schematicCount || 0) + (mapCount || 0) + (postCount || 0) + (pluginCount || 0);
+
+  if (total === 0) {
+    return <VerifyIcon />;
+  }
 
   return (
-    <>
-      <Tran text="verify" />
-      {amount > 0 && <span> ({amount})</span>}
-    </>
+    <div className="relative">
+      <VerifyIcon />
+      <span className="absolute -right-2 -top-2 inline-flex h-4 min-w-4 text-xs rounded-full bg-red-500 p-0.5 justify-between items-center">
+        <span className="w-full">{total}</span>
+      </span>
+    </div>
   );
+}
+
+function VerifyPath() {
+  return <Tran text="verify" />;
 }
 
 function SchematicPath() {
@@ -319,6 +319,10 @@ function PluginPath() {
 }
 
 function TranslationPath() {
+  return <Tran text="translation" />;
+}
+
+function TranslationPathIcon() {
   const params = useSearchQuery(TranslationPaginationQuery);
   const { currentLocale } = useLocaleStore();
 
@@ -332,11 +336,17 @@ function TranslationPath() {
     placeholderData: 0,
   });
 
+  if (data === 0) {
+    return <GlobIcon />;
+  }
+
   return (
-    <>
-      <Tran text="translation" />
-      {data > 0 && <span> ({data})</span>}
-    </>
+    <div className="relative">
+      <GlobIcon />
+      <span className="absolute -right-2 -top-2 inline-flex h-4 min-w-4 text-center text-xs rounded-full bg-red-500 p-0.5 justify-between items-center">
+        <span className='w-full'>{data}</span>
+      </span>
+    </div>
   );
 }
 
