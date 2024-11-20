@@ -1,6 +1,7 @@
 import ReconnectingWebSocket, { CloseEvent, ErrorEvent, Event } from 'reconnecting-websocket';
 
 import { Message } from '@/types/response/Message';
+import { Notification } from '@/types/response/Notification';
 import { User } from '@/types/response/User';
 
 export type SocketState = 'connecting' | 'connected' | 'disconnecting' | 'disconnected';
@@ -12,7 +13,7 @@ type BaseSocketEvent = { id: string };
 
 type SocketEvent = BaseSocketEvent &
   (
-    | { method: 'NOTIFICATION'; room: string; data: void }
+    | { method: 'NOTIFICATION'; room: string; data: Notification }
     | { method: 'GET_MESSAGE'; room: string; data: Message[] }
     | { method: 'MESSAGE'; room: string; data: Message }
     | { method: 'ROOM_MESSAGE'; room: string; data: Message }
@@ -157,7 +158,7 @@ export default class SocketClient {
             handlers.forEach((handler) => handler(message.data, event));
           }
         } else {
-          if (message.id === undefined) throw new Error('Invalid message id: ' + message);
+          if (message.id === undefined) throw new Error('Invalid message id: ' + JSON.stringify(message));
 
           const request = this.requests[message.id];
 

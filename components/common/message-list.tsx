@@ -135,7 +135,7 @@ export default function MessageList({
             }
 
             if (showNotification) {
-              postNotification(message);
+              postNotification(message.content, message.userId);
             }
 
             if (!query || !query.pages) {

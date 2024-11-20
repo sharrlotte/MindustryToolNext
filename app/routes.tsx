@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
 
+import { IconNotification } from '@/components/common/icon-notification';
 import {
   ChartIcon,
   ChatIcon,
@@ -41,7 +42,6 @@ import { getTranslationDiffCount } from '@/query/translation';
 import { useVerifyCount } from '@/zustand/verify-count-store';
 
 import { useQueries } from '@tanstack/react-query';
-import { IconNotification } from '@/components/common/icon-notification';
 
 export type PathGroup = {
   key: string;
@@ -273,7 +273,6 @@ function VerifyPathIcon() {
 
   const total = (schematicCount || 0) + (mapCount || 0) + (postCount || 0) + (pluginCount || 0);
 
-
   return (
     <IconNotification number={total}>
       <VerifyIcon />
@@ -374,7 +373,7 @@ function ChatIconPath() {
         return;
       }
 
-      postNotification(message);
+      postNotification(message.content, message.userId);
     });
   }, [socket, postNotification, lastMessage]);
 

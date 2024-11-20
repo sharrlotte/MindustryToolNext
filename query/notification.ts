@@ -13,3 +13,27 @@ export async function getMyUnreadNotificationCount(axios: AxiosInstance): Promis
 
   return result.data;
 }
+
+export async function markAsRead(axios: AxiosInstance): Promise<void> {
+  const result = await axios.put(`/notifications`);
+
+  return result.data;
+}
+
+export async function markAsReadById(axios: AxiosInstance, id: string): Promise<void> {
+  const result = await axios.put(`/notifications/${id}`);
+
+  return result.data;
+}
+
+export async function deleteNotification(axios: AxiosInstance, id: string): Promise<void> {
+  const result = await axios.delete(`/notifications/${id}`);
+
+  return result.data;
+}
+
+export async function deleteAllNotifications(axios: AxiosInstance): Promise<void> {
+  const result = await axios.delete(`/notifications`);
+
+  return result.data;
+}

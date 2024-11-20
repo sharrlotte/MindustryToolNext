@@ -15,6 +15,7 @@ import { UserRole } from '@/constant/enum';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';
+import { useI18n } from '@/i18n/client';
 import { omit } from '@/lib/utils';
 import { getRoles } from '@/query/role';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -26,6 +27,7 @@ const defaultState = {
 };
 
 export function UserTable() {
+  const t = useI18n();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useSearchQuery(ItemPaginationQuery);
 
@@ -50,8 +52,8 @@ export function UserTable() {
           <ComboBox
             className="h-full"
             placeholder="Select role"
-            value={{ value: role, label: role?.name ?? '' }}
-            values={roles?.map((d) => ({ value: d, label: d.name })) ?? []}
+            value={{ value: role, label: role?.name ? t(role.name) : '' }}
+            values={roles?.map((d) => ({ value: d, label: t(d.name) })) ?? []}
             onChange={(value) => setRole(value)}
           />
         </div>

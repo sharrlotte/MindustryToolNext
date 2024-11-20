@@ -1,6 +1,5 @@
 import { BellIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { Hidden } from '@/components/common/hidden';
@@ -12,8 +11,9 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 
 import { useSocket } from '@/context/socket-context';
 import useClientQuery from '@/hooks/use-client-query';
+import useNotification from '@/hooks/use-notification';
 import useQueriesData from '@/hooks/use-queries-data';
-import { cn } from '@/lib/utils';
+import { cn, isError } from '@/lib/utils';
 import { getMyNotifications, getMyUnreadNotificationCount } from '@/query/notification';
 import { Notification } from '@/types/response/Notification';
 import { useNavBar } from '@/zustand/nav-bar-store';
@@ -26,7 +26,7 @@ export default function NotificationDialog() {
 
   return (
     <Dialog>
-    <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
+      <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
         <NotificationDialogButton expand={expand} />
       </DialogTrigger>
       <DialogContent className="p-6">
@@ -48,6 +48,7 @@ type NotificationDialogButtonProps = {
 function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
   const { socket } = useSocket();
   const { invalidateByKey } = useQueriesData();
+  const { postNotification } = useNotification();
 
   let { data } = useClientQuery({
     queryKey: ['notifications', 'count'],
@@ -56,7 +57,17 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
 
   data = data ?? 0;
 
-  useEffect(() => socket.onMessage('NOTIFICATION', () => invalidateByKey(['notifications'])), [socket]);
+  useEffect(
+    () =>
+      socket.onMessage('NOTIFICATION', (data) => {
+        invalidateByKey(['notifications']);
+
+        if (!isError(data)) {
+          postNotification(data.title, 'SERVER');
+        }
+      }),
+    [socket],
+  );
 
   return (
     <>
@@ -83,6 +94,10 @@ type NotificationCardProps = {
   notification: Notification;
 };
 
-function NotificationCard({ notification }: NotificationCardProps) {
-  return <div></div>;
+function NotificationCard({ notification: { title, content } }: NotificationCardProps) {
+  return (
+    <div>
+      {title} {content}
+    </div>
+  );
 }

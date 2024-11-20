@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { object, z } from 'zod';
 
 import { UserRole } from '@/constant/enum';
 import { IdSearchParams } from '@/types/data/id-search-schema';
@@ -108,7 +109,7 @@ export async function getUserCount(axios: AxiosInstance, params: { role?: UserRo
 
 export async function updateThumbnail(axios: AxiosInstance, file: File): Promise<User[]> {
   const formData = new FormData();
-  
+
   formData.append('file', file);
 
   const result = await axios.post(`/users/@me/thumbnail`, formData);
@@ -120,6 +121,20 @@ export async function changeAuthorities(axios: AxiosInstance, data: { userId: st
   const { userId, authorityIds } = data;
 
   const result = await axios.put(`/users/${userId}/authorities`, { authorityIds }, { data: { authorityIds } });
+
+  return result.data;
+}
+
+export const SendNotificationSchema = z.object({
+  userId: z.string(),
+  title: z.string().min(1).max(1024),
+  content: z.string().min(1).max(4096),
+});
+
+export type SendNotificationSchemaType = z.infer<typeof SendNotificationSchema>;
+
+export async function sendNotification(axios: AxiosInstance, data: SendNotificationSchemaType): Promise<void> {
+  const result = await axios.post(`/notifications`, data, { data });
 
   return result.data;
 }
