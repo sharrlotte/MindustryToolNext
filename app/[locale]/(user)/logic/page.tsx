@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import ReactFlow, { Background, Controls, EdgeChange, MiniMap, NodeChange, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 
+import TextUpdaterNode from './TextUpdaterNode';
 import initialEdges from './edge';
 import initialNodes from './nodes';
 
@@ -21,6 +22,10 @@ import initialNodes from './nodes';
 //   };
 // }
 
+const nodeTypes = {
+  textUpdater: TextUpdaterNode,
+};
+
 export default function Page() {
   return <Flow />;
 }
@@ -36,7 +41,7 @@ function Flow() {
   const onEdgeConnect = useCallback((x: any) => setEdges((eds) => addEdge({ ...x, animated: true }, eds) as any), [setEdges]);
 
   return (
-    <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodeChange} onEdgesChange={onEdgeChange} onConnect={onEdgeConnect}>
+    <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodeChange} nodeTypes={nodeTypes} onEdgesChange={onEdgeChange} onConnect={onEdgeConnect}>
       <MiniMap />
       <Controls />
       <Background />
