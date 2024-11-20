@@ -1,12 +1,14 @@
 import { LogOut } from 'lucide-react';
 
 import { UserActions } from '@/app/[locale]/user-sheet';
+
 import LoginButton from '@/components/button/login-button';
 import LogoutButton from '@/components/button/logout-button';
 import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import useToggle from '@/hooks/use-state-toggle';
@@ -47,16 +49,13 @@ export function Internal() {
               <button className="rounded border px-2 py-1 transition-colors" onClick={modal.toggle}>
                 Cancel
               </button>
-              <a className='flex border justify-center items-center px-2 py-1 rounded-md' href={`${env.url.api}/auth/logout`}>
+              <a className="flex border justify-center items-center px-2 py-1 rounded-md" href={`${env.url.api}/auth/logout`}>
                 <LogoutButton className="justify-start pr-1" />
                 <span>Log out</span>
               </a>
             </div>
           </div>
         </Modal>
-        {
-          //#endregion
-        }
       </>
     );
   }
