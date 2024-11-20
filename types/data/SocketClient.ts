@@ -12,6 +12,7 @@ type BaseSocketEvent = { id: string };
 
 type SocketEvent = BaseSocketEvent &
   (
+    | { method: 'NOTIFICATION'; room: string; data: void }
     | { method: 'GET_MESSAGE'; room: string; data: Message[] }
     | { method: 'MESSAGE'; room: string; data: Message }
     | { method: 'ROOM_MESSAGE'; room: string; data: Message }

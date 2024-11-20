@@ -9,6 +9,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import PostPreviewCard from '@/components/post/post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
@@ -41,7 +42,7 @@ export default function Client({ posts }: Props) {
           className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2"
           params={params}
           queryKey={['posts']}
-          getFunc={getPosts}
+          queryFn={getPosts}
           container={() => ref.current}
           initialData={posts}
         >

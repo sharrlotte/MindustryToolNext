@@ -7,6 +7,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import EndOfPage from '@/components/common/end-of-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
+
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
@@ -25,7 +26,7 @@ type InfinitePageProps<T, P> = {
   };
   reversed?: boolean;
   initialData?: T[];
-  getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
+  queryFn: (axios: AxiosInstance, params: P) => Promise<T[]>;
   container?: () => HTMLElement | null;
   children: (data: T, index: number) => ReactNode;
 };
@@ -40,11 +41,11 @@ export default function InfinitePage<T, P extends PaginationQuery>({
   skeleton,
   reversed,
   initialData,
-  getFunc,
+  queryFn,
   children,
   container,
 }: InfinitePageProps<T, P>) {
-  const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(getFunc, params, queryKey, initialData);
+  const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(queryFn, params, queryKey, initialData);
 
   const loadMore = useCallback(
     (_: number) => {

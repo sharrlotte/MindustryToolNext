@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 
 import { UserManagementCard } from '@/app/[locale]/(admin)/admin/users/user-management-card';
+
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
 import { GridLayout, ListLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import { Input } from '@/components/ui/input';
+
 import { UserRole } from '@/constant/enum';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueryState from '@/hooks/use-query-state';
@@ -60,7 +62,7 @@ export function UserTable() {
             className="flex h-full w-full flex-col justify-start gap-2"
             params={{ ...params, role: role?.name as UserRole }}
             queryKey={['users', 'management']}
-            getFunc={getUsers}
+            queryFn={getUsers}
             container={() => container}
           >
             {(data) => <UserManagementCard key={data.id} user={data} />}
@@ -68,7 +70,7 @@ export function UserTable() {
         </div>
       </ListLayout>
       <GridLayout>
-        <GridPaginationList className="flex flex-col gap-2" params={{ ...params, role: role?.name as UserRole }} queryKey={['users', 'management']} getFunc={getUsers}>
+        <GridPaginationList className="flex flex-col gap-2" params={{ ...params, role: role?.name as UserRole }} queryKey={['users', 'management']} queryFn={getUsers}>
           {(data) => <UserManagementCard key={data.id} user={data} />}
         </GridPaginationList>
       </GridLayout>

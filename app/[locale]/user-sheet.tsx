@@ -2,10 +2,13 @@ import { GlobeIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
 import { ChangeLanguageDialog } from '@/app/[locale]/change-language-dialog';
+import NotificationDialog from '@/app/[locale]/notification-dialog';
+
 import { SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
+
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
@@ -25,6 +28,10 @@ const tabs: Tab = [
     {
       icon: undefined,
       action: <ThemeSwitcher />,
+    },
+    {
+      icon: undefined,
+      action: <NotificationDialog />,
     },
     {
       icon: <SettingIcon />,

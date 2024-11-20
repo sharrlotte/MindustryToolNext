@@ -4,6 +4,7 @@ import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'rea
 import EndOfPage from '@/components/common/end-of-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
+
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { isReachedEnd, makeArray, mapReversed, mergeNestArray } from '@/lib/utils';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
@@ -24,7 +25,7 @@ type InfiniteScrollListProps<T, P> = {
   threshold?: number;
   reversed?: boolean;
   container: () => HTMLElement | null;
-  getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
+  queryFn: (axios: AxiosInstance, params: P) => Promise<T[]>;
   children: (data: T, index?: number, endIndex?: number) => ReactNode;
 };
 
@@ -39,7 +40,7 @@ export default function InfiniteScrollList<T, P extends PaginationQuery = Pagina
   threshold = 500,
   reversed,
   container,
-  getFunc,
+  queryFn,
   children,
 }: InfiniteScrollListProps<T, P>) {
   const currentContainer = container();
@@ -49,16 +50,16 @@ export default function InfiniteScrollList<T, P extends PaginationQuery = Pagina
   const [scrollTop, setScrollTop] = useState(0);
   const [lastHeight, setLastHeight] = useState(0);
 
-  const getFuncWrapper = useCallback(
+  const queryFnWrapper = useCallback(
     (axios: AxiosInstance, params: P) => {
       setLastHeight(list?.clientHeight ?? 0);
 
-      return getFunc(axios, params);
+      return queryFn(axios, params);
     },
-    [getFunc, list],
+    [queryFn, list],
   );
 
-  const { data, isLoading, error, isError, hasNextPage, hasPreviousPage, isFetching, fetchNextPage } = useInfinitePageQuery(getFuncWrapper, params, queryKey);
+  const { data, isLoading, error, isError, hasNextPage, hasPreviousPage, isFetching, fetchNextPage } = useInfinitePageQuery(queryFnWrapper, params, queryKey);
 
   const pageMapper = useCallback((item: T, index: number, array: T[]) => children(item, index, array.length - params.size), [children, params.size]);
 

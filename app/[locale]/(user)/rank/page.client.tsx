@@ -9,6 +9,7 @@ import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import UserCard from '@/components/user/user-card';
+
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
@@ -49,7 +50,7 @@ export function PageClient({ users }: Props) {
         <GridPaginationList
           params={params}
           queryKey={['rank']}
-          getFunc={getRank}
+          queryFn={getRank}
           initialData={users}
           skeleton={{
             amount: 20,

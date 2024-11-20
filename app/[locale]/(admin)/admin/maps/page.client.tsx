@@ -11,6 +11,7 @@ import Tran from '@/components/common/tran';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
@@ -84,7 +85,7 @@ export default function Client({ maps }: Props) {
             <InfinitePage
               params={params}
               queryKey={['maps', 'upload']}
-              getFunc={getMapUploads}
+              queryFn={getMapUploads}
               container={() => container}
               initialData={maps}
               skeleton={{
@@ -100,7 +101,7 @@ export default function Client({ maps }: Props) {
           <GridPaginationList
             params={params}
             queryKey={['maps', 'upload']}
-            getFunc={getMapUploads}
+            queryFn={getMapUploads}
             initialData={maps}
             skeleton={{
               amount: 20,

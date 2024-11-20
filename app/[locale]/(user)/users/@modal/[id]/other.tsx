@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
+
 import InfinitePage from '@/components/common/infinite-page';
 import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
@@ -14,6 +15,7 @@ import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { useTags } from '@/context/tags-context.client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -52,7 +54,7 @@ export default function Other({ user }: TabProps) {
             <InfinitePage
               params={params}
               queryKey={['users', id, 'schematics']}
-              getFunc={(axios, params) => getUserSchematics(axios, id, params)}
+              queryFn={(axios, params) => getUserSchematics(axios, id, params)}
               container={() => container}
               skeleton={{
                 amount: 20,
@@ -71,7 +73,7 @@ export default function Other({ user }: TabProps) {
             <InfinitePage
               params={params}
               queryKey={['users', id, 'maps']}
-              getFunc={(axios, params) => getUserMaps(axios, id, params)}
+              queryFn={(axios, params) => getUserMaps(axios, id, params)}
               container={() => container}
               skeleton={{
                 amount: 20,
@@ -89,7 +91,7 @@ export default function Other({ user }: TabProps) {
               className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2"
               params={params}
               queryKey={['users', id, 'posts']}
-              getFunc={(axios, params) => getUserPosts(axios, id, params)}
+              queryFn={(axios, params) => getUserPosts(axios, id, params)}
               container={() => container}
             >
               {(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}

@@ -36,7 +36,7 @@ export default function ServerPluginPage({ id }: Props) {
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
           params={{ page: 0, size: 20 }}
           queryKey={['servers', id, 'plugins']}
-          getFunc={(axios, params) => getInternalServerPlugins(axios, id, params)}
+          queryFn={(axios, params) => getInternalServerPlugins(axios, id, params)}
           container={() => ref.current}
         >
           {(data) => <InternalServerPluginCard key={data.pluginId} plugin={data} />}

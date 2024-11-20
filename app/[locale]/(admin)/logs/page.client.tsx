@@ -22,6 +22,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+
 import { LogType } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
 import useClientQuery from '@/hooks/use-client-query';
@@ -196,7 +197,7 @@ function StaticLog() {
             }}
             container={() => container}
             queryKey={['logs']}
-            getFunc={getLogs}
+            queryFn={getLogs}
           >
             {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
           </InfinitePage>
@@ -218,7 +219,7 @@ function StaticLog() {
             after,
           }}
           queryKey={['logs']}
-          getFunc={getLogs}
+          queryFn={getLogs}
         >
           {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
         </GridPaginationList>

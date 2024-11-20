@@ -92,7 +92,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
               <InfinitePage
                 params={params}
                 queryKey={['plugin']}
-                getFunc={(axios, params) => getPlugins(axios, params)}
+                queryFn={(axios, params) => getPlugins(axios, params)}
                 container={() => ref.current}
                 skeleton={{
                   amount: 20,
@@ -107,7 +107,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
             <GridPaginationList
               params={params}
               queryKey={['plugin']}
-              getFunc={getPlugins}
+              queryFn={getPlugins}
               skeleton={{
                 amount: 20,
                 item: <Skeleton className="h-20" />,

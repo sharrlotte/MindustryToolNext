@@ -13,6 +13,7 @@ import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
@@ -55,7 +56,7 @@ export default function Client({ maps }: Props) {
           <InfinitePage
             params={params}
             queryKey={['maps']}
-            getFunc={getMaps}
+            queryFn={getMaps}
             container={() => container}
             initialData={maps}
             skeleton={{
@@ -71,7 +72,7 @@ export default function Client({ maps }: Props) {
         <GridPaginationList
           params={params}
           queryKey={['maps']}
-          getFunc={getMaps}
+          queryFn={getMaps}
           initialData={maps}
           skeleton={{
             amount: 20,
