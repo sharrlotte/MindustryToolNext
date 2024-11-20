@@ -4,7 +4,8 @@ import { useMediaQuery } from 'usehooks-ts';
 
 import { Hidden } from '@/components/common/hidden';
 import { IconNotification } from '@/components/common/icon-notification';
-import InfiniteScrollList from '@/components/common/infinite-scroll-list';
+import InfinitePage from '@/components/common/infinite-page';
+import Markdown from '@/components/common/markdown';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -83,9 +84,16 @@ function NotificationContent() {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   return (
     <ScrollContainer ref={setContainer}>
-      <InfiniteScrollList queryKey={['notifications']} params={{ page: 0, size: 30 }} queryFn={getMyNotifications} container={() => container} noResult={<Tran text="notification.no-notification" />}>
+      <InfinitePage
+        className="gap-2 flex flex-col"
+        queryKey={['notifications']}
+        params={{ page: 0, size: 30 }}
+        queryFn={getMyNotifications}
+        container={() => container}
+        noResult={<Tran text="notification.no-notification" />}
+      >
         {(notification) => <NotificationCard key={notification.id} notification={notification} />}
-      </InfiniteScrollList>
+      </InfinitePage>
     </ScrollContainer>
   );
 }
@@ -96,8 +104,9 @@ type NotificationCardProps = {
 
 function NotificationCard({ notification: { title, content } }: NotificationCardProps) {
   return (
-    <div>
-      {title} {content}
+    <div className="p-2 bg-card rounded-md">
+      <h1 className="text-xl font-bold">{title}</h1>
+      <Markdown>{content}</Markdown>
     </div>
   );
 }
