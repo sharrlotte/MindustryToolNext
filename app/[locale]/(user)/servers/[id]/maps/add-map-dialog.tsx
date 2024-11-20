@@ -95,7 +95,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
               <InfinitePage
                 params={params}
                 queryKey={['maps']}
-                getFunc={(axios, params) => getMaps(axios, params)}
+                queryFn={(axios, params) => getMaps(axios, params)}
                 container={() => ref.current}
                 skeleton={{
                   amount: 20,
@@ -110,7 +110,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
             <GridPaginationList
               params={params}
               queryKey={['maps']}
-              getFunc={getMaps}
+              queryFn={getMaps}
               skeleton={{
                 amount: 20,
                 item: <Skeleton className="h-preview-height" />,

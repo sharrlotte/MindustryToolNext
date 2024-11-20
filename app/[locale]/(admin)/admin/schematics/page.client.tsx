@@ -11,6 +11,7 @@ import Tran from '@/components/common/tran';
 import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
@@ -84,7 +85,7 @@ export default function Client({ schematics }: Props) {
             <InfinitePage
               params={params}
               queryKey={['schematics', 'upload']}
-              getFunc={getSchematicUploads}
+              queryFn={getSchematicUploads}
               container={() => container}
               initialData={schematics}
               skeleton={{
@@ -100,7 +101,7 @@ export default function Client({ schematics }: Props) {
           <GridPaginationList
             params={params}
             queryKey={['schematics', 'upload']}
-            getFunc={getSchematicUploads}
+            queryFn={getSchematicUploads}
             initialData={schematics}
             skeleton={{
               amount: 20,

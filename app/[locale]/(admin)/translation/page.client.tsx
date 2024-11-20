@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
+
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -145,7 +146,7 @@ function CompareTable({ language, target }: CompareTableProps) {
           <GridPaginationList
             params={{ ...params, language }}
             queryKey={['translations', 'compare', language]}
-            getFunc={getTranslationCompare}
+            queryFn={getTranslationCompare}
             loader={<Fragment></Fragment>}
             noResult={<Fragment></Fragment>}
             skeleton={{
@@ -197,7 +198,7 @@ function DiffTable({ language, target }: DiffTableProps) {
           <GridPaginationList
             params={{ ...params, language }}
             queryKey={['translations', 'diff', language]}
-            getFunc={getTranslationDiff}
+            queryFn={getTranslationDiff}
             loader={<Fragment></Fragment>}
             noResult={<Fragment></Fragment>}
             skeleton={{

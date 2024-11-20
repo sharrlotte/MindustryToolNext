@@ -15,6 +15,7 @@ import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useLanguages from '@/hooks/use-languages';
@@ -162,7 +163,7 @@ function TranslatePage({
       <div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
         <div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
           <Input className="w-full rounded-sm outline-none hover:outline-none" placeholder="Title" value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
-          <MarkdownEditor value={content} onChange={(value) => setContent(value)} />
+          <MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
         </div>
         <div className="flex items-center justify-start gap-2 rounded-md ">
           <ComboBox placeholder={t('upload.select-language')} value={{ label: t(language || 'en'), value: language }} values={validLanguages} onChange={(value) => setLanguage(value ?? '')} />
@@ -242,7 +243,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
       <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
         <div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
           <Input className="w-full rounded-sm  outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
-          <MarkdownEditor value={content} onChange={(value) => setContent(value)} />
+          <MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
         </div>
         <div className="flex items-center justify-start gap-2 overflow-hidden rounded-md ">
           <ComboBox

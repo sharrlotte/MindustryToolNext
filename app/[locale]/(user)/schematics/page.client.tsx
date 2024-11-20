@@ -12,6 +12,7 @@ import Tran from '@/components/common/tran';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
@@ -57,7 +58,7 @@ export default function Client({ schematics }: Props) {
           <InfinitePage
             params={params}
             queryKey={['schematics']}
-            getFunc={getSchematics}
+            queryFn={getSchematics}
             container={() => container}
             initialData={schematics}
             skeleton={{
@@ -73,7 +74,7 @@ export default function Client({ schematics }: Props) {
         <GridPaginationList
           params={params}
           queryKey={['schematics']}
-          getFunc={getSchematics}
+          queryFn={getSchematics}
           initialData={schematics}
           skeleton={{
             amount: 20,

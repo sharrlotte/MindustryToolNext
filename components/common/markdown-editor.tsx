@@ -42,14 +42,13 @@ export type MarkdownData = {
 
 type MarkdownEditorProps = {
   value: MarkdownData;
-  onChange: (value: MarkdownData) => void;
+  onChange: (func: (_value: MarkdownData) => MarkdownData) => void;
 };
 
 type EditorMode = 'edit' | 'preview' | 'live';
 
-export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
+export default function MarkdownEditor({ value: content, onChange: setContent }: MarkdownEditorProps) {
   const [focused, setFocused] = useState<HTMLElement | null>(null);
-  const [content, setContent] = useState(value);
   const [mode, setMode] = useState<EditorMode>('live');
   const [isFullscreen, setFullscreen] = useState(false);
 
@@ -57,8 +56,6 @@ export default function MarkdownEditor({ value, onChange }: MarkdownEditorProps)
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => onChange(content), [content, onChange]);
 
   function insertAtCaret(content: string) {
     const input = inputRef.current;

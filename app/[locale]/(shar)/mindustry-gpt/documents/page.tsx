@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
@@ -28,7 +29,7 @@ export default function Page() {
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
       <div className="relative flex h-full flex-col overflow-y-auto" ref={(ref) => setContainer(ref)}>
-        <InfinitePage className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3" queryKey={['documents']} getFunc={getDocuments} params={params} container={() => container}>
+        <InfinitePage className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3" queryKey={['documents']} queryFn={getDocuments} params={params} container={() => container}>
           {(data) => <DocumentCard key={data.id} document={data} />}
         </InfinitePage>
       </div>

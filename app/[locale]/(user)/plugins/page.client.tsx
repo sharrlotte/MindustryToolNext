@@ -3,11 +3,13 @@
 import React, { useRef } from 'react';
 
 import AddPluginForm from '@/app/[locale]/(user)/plugins/add-plugin-form';
+
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 import PluginCard from '@/components/plugin/plugin-card';
 import PluginCardSkeleton from '@/components/plugin/plugin-card-skeleton';
 import NameTagSearch from '@/components/search/name-tag-search';
+
 import { useTags } from '@/context/tags-context.client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { getPlugins } from '@/query/plugin';
@@ -33,7 +35,7 @@ export default function Client({ plugins }: Props) {
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
           queryKey={['plugins']}
-          getFunc={getPlugins}
+          queryFn={getPlugins}
           params={params}
           container={() => ref.current}
           initialData={plugins}

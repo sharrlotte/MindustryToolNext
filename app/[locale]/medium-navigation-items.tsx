@@ -2,6 +2,7 @@ import { Variants, motion } from 'framer-motion';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
+import NotificationDialog from '@/app/[locale]/notification-dialog';
 import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
 
@@ -77,6 +78,7 @@ function NavFooter() {
   return (
     <div className="space-y-1">
       <Divider />
+      <NotificationDialog />
       <ProtectedElement session={session} filter>
         <InternalLink
           className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold transition-colors duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
@@ -171,7 +173,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
 
   return (
     <ProtectedElement session={session} filter={filter}>
-      <Accordion type="single" collapsible className="w-full" value={value} onValueChange={setValue}>
+      <Accordion type="single" collapsible className={cn('w-full', { 'w-10': !expand })} value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
             className={cn(
@@ -179,7 +181,6 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
               {
                 'bg-brand text-background dark:text-foreground': path.some((path) => path.path === bestMatch) && !value,
                 'justify-start gap-2 py-2': expand,
-                'w-10': !expand,
               },
             )}
             showChevron={expand}

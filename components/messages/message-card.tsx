@@ -2,8 +2,9 @@ import ColorText from '@/components/common/color-text';
 import { Skeleton } from '@/components/ui/skeleton';
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
+
 import useClientApi from '@/hooks/use-client';
-import { cn } from '@/lib/utils';
+import { cn, getRelativeTime } from '@/lib/utils';
 import { getUser } from '@/query/user';
 import { MessageGroup } from '@/types/response/Message';
 
@@ -14,9 +15,6 @@ type Props = {
   message: MessageGroup;
 };
 
-const ONE_HOUR = 1000 * 60 * 60;
-const ONE_DAY = ONE_HOUR * 24;
-
 export function MessageCard({ className, message }: Props) {
   const { userId, contents, createdAt } = message;
   const axios = useClientApi();
@@ -26,8 +24,7 @@ export function MessageCard({ className, message }: Props) {
     queryFn: () => getUser(axios, { id: userId }),
   });
 
-  const diff = Date.now() - Date.parse(createdAt);
-  const time = diff > ONE_DAY ? new Date(createdAt).toLocaleString() : new Date(createdAt).toLocaleTimeString();
+  const time = getRelativeTime(new Date(createdAt));
 
   return (
     <div className={cn('flex w-full gap-2 text-wrap rounded-lg p-2 text-xs', className)}>

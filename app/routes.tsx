@@ -1,12 +1,29 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
 
-
-
-import { ChartIcon, ChatIcon, CmdIcon, CrownIcon, DocumentIcon, FileIcon, GlobIcon, HomeIcon, LogIcon, MapIcon, MindustryGptIcon, PluginIcon, PostIcon, RatioIcon, SchematicIcon, ServerIcon, SettingIcon, UserIcon, VerifyIcon } from '@/components/common/icons';
+import { IconNotification } from '@/components/common/icon-notification';
+import {
+  ChartIcon,
+  ChatIcon,
+  CmdIcon,
+  CrownIcon,
+  DocumentIcon,
+  FileIcon,
+  GlobIcon,
+  HomeIcon,
+  LogIcon,
+  MapIcon,
+  MindustryGptIcon,
+  PluginIcon,
+  PostIcon,
+  RatioIcon,
+  SchematicIcon,
+  ServerIcon,
+  SettingIcon,
+  UserIcon,
+  VerifyIcon,
+} from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-
-
 
 import { useLocaleStore } from '@/context/locale-context';
 import { useSocket } from '@/context/socket-context';
@@ -24,10 +41,7 @@ import { TranslationPaginationQuery } from '@/query/search-query';
 import { getTranslationDiffCount } from '@/query/translation';
 import { useVerifyCount } from '@/zustand/verify-count-store';
 
-
-
 import { useQueries } from '@tanstack/react-query';
-
 
 export type PathGroup = {
   key: string;
@@ -259,17 +273,10 @@ function VerifyPathIcon() {
 
   const total = (schematicCount || 0) + (mapCount || 0) + (postCount || 0) + (pluginCount || 0);
 
-  if (total === 0) {
-    return <VerifyIcon />;
-  }
-
   return (
-    <div className="relative">
+    <IconNotification number={total}>
       <VerifyIcon />
-      <span className="absolute -right-2 -top-2 inline-flex h-4 min-w-4 text-xs rounded-full bg-red-500 p-0.5 justify-between items-center">
-        <span className="w-full">{total}</span>
-      </span>
-    </div>
+    </IconNotification>
   );
 }
 
@@ -336,17 +343,10 @@ function TranslationPathIcon() {
     placeholderData: 0,
   });
 
-  if (data === 0) {
-    return <GlobIcon />;
-  }
-
   return (
-    <div className="relative">
+    <IconNotification number={data}>
       <GlobIcon />
-      <span className="absolute -right-2 -top-2 inline-flex h-4 min-w-4 text-center text-xs rounded-full bg-red-500 p-0.5 justify-between items-center">
-        <span className='w-full'>{data}</span>
-      </span>
-    </div>
+    </IconNotification>
   );
 }
 
@@ -373,7 +373,7 @@ function ChatIconPath() {
         return;
       }
 
-      postNotification(message);
+      postNotification(message.content, message.userId);
     });
   }, [socket, postNotification, lastMessage]);
 

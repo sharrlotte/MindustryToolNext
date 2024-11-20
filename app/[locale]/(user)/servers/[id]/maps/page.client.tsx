@@ -36,7 +36,7 @@ export default function ServerMaps({ id }: Props) {
         <InfinitePage
           params={{ page: 0, size: 20 }}
           queryKey={['servers', id, 'maps']}
-          getFunc={(axios, params) => getInternalServerMaps(axios, id, params)}
+          queryFn={(axios, params) => getInternalServerMaps(axios, id, params)}
           container={() => ref.current}
           skeleton={{
             amount: 20,

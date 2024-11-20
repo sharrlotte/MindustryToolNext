@@ -5,7 +5,7 @@ import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
-export default function useInfinitePageQuery<T, P extends PaginationQuery>(getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>, params: P, queryKey: QueryKey, initialData?: T[]) {
+export default function useInfinitePageQuery<T, P extends PaginationQuery>(queryFn: (axios: AxiosInstance, params: P) => Promise<T[]>, params: P, queryKey: QueryKey, initialData?: T[]) {
   const axios = useClientApi();
 
   const getNextPageParam = (lastPage: T[], allPages: T[][], lastPageParams: P) => {
@@ -43,7 +43,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(getFu
     initialPageParam: params,
     initialData: data,
     // @ts-expect-error idk
-    queryFn: (context) => getFunc(axios, context.pageParam),
+    queryFn: (context) => queryFn(axios, context.pageParam),
     getNextPageParam,
     getPreviousPageParam,
   });

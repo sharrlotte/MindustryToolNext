@@ -4,6 +4,7 @@ import React, { ReactNode, useMemo } from 'react';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import RouterSpinner from '@/components/common/router-spinner';
+
 import useClientQuery from '@/hooks/use-client-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
@@ -22,13 +23,13 @@ type Props<T, P> = {
   };
   asChild?: boolean;
   initialData?: T[];
-  getFunc: (axios: AxiosInstance, params: P) => Promise<T[]>;
+  queryFn: (axios: AxiosInstance, params: P) => Promise<T[]>;
   children: (data: T, index: number) => ReactNode;
 };
 
-export default function GridPaginationList<T, P extends PaginationQuery>({ className, queryKey, params, loader, noResult, skeleton, asChild, initialData, getFunc, children }: Props<T, P>) {
+export default function GridPaginationList<T, P extends PaginationQuery>({ className, queryKey, params, loader, noResult, skeleton, asChild, initialData, queryFn, children }: Props<T, P>) {
   const { data, isFetching, error } = useClientQuery({
-    queryFn: (axios) => getFunc(axios, params),
+    queryFn: (axios) => queryFn(axios, params),
     queryKey: [...queryKey, params],
     initialData,
   });
