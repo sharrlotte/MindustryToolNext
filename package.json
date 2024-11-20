@@ -38,7 +38,6 @@
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@vercel/analytics": "^1.4.0",
     "@vercel/speed-insights": "^1.1.0",
-    "@xyflow/react": "^12.3.5",
     "axios": "^1.7.7",
     "babel-plugin-react-compiler": "0.0.0-experimental-334f00b-20240725",
     "chart.js": "^4.4.6",

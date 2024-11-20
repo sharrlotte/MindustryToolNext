@@ -18,6 +18,12 @@ const nodes: Node[] = [
     type: 'default',
     position: { x: 500, y: 200 },
   },
+  // {
+  //   id: '3',
+  //   data: { label: 'input' },
+  //   type: 'textUpdater',
+  //   position: { x: 500, y: 300 },
+  // },
 ];
 
 export default nodes;
