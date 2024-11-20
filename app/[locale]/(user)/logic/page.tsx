@@ -1,23 +1,45 @@
-import { Metadata } from 'next';
+'use client';
 
-import { translate } from '@/action/action';
-import { Locale } from '@/i18n/config';
-import { formatTitle } from '@/lib/utils';
+import { useCallback, useState } from 'react';
+import ReactFlow, { Background, Controls, EdgeChange, MiniMap, NodeChange, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
+import 'reactflow/dist/style.css';
 
-type Props = {
-  params: Promise<{
-    locale: Locale;
-  }>;
-};
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const title = await translate(locale, 'logic');
+import initialEdges from './edge';
+import initialNodes from './nodes';
 
-  return {
-    title: formatTitle(title),
-  };
-}
+// type Props = {
+//   params: Promise<{
+//     locale: Locale;
+//   }>;
+// };
+// export async function generateMetadata({ params }: Props): Promise<Metadata> {
+//   const { locale } = await params;
+//   const title = await translate(locale, 'logic');
+
+//   return {
+//     title: formatTitle(title),
+//   };
+// }
 
 export default function Page() {
-  return undefined;
+  return <Flow />;
+}
+
+function Flow() {
+  const [nodes, setNodes] = useState(initialNodes);
+  const [edges, setEdges] = useState(initialEdges);
+
+  const onNodeChange = useCallback((changes: NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)), [setNodes]);
+
+  const onEdgeChange = useCallback((changes: EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds) as any), [setEdges]);
+
+  const onEdgeConnect = useCallback((x: any) => setEdges((eds) => addEdge({ ...x, animated: true }, eds) as any), [setEdges]);
+
+  return (
+    <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodeChange} onEdgesChange={onEdgeChange} onConnect={onEdgeConnect}>
+      <MiniMap />
+      <Controls />
+      <Background />
+    </ReactFlow>
+  );
 }
