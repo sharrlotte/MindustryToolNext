@@ -2,12 +2,12 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import React, { Fragment, Suspense } from 'react';
 
-import { getSession, serverApi, translate } from '@/action/action';
 import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/check-server-maps';
 import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(user)/servers/[id]/(dashboard)/player-card';
 import ReloadServerButton from '@/app/[locale]/(user)/servers/[id]/reload-server-button';
 import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-server-button';
 import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-button';
+
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import { ServerIcon } from '@/components/common/icons';
@@ -15,6 +15,8 @@ import RawImage from '@/components/common/raw-image';
 import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import IdUserCard from '@/components/user/id-user-card';
+
+import { getSession, serverApi, translate } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, formatTitle, hasAccess, isError } from '@/lib/utils';
 import { getInternalServer } from '@/query/server';
@@ -138,7 +140,7 @@ export default async function Page({ params }: Props) {
                 <h3 className="p-4 text-xl">
                   <Tran text="server.players" /> {players}
                 </h3>
-                <Suspense fallback={<PlayersCardSkeleton />}>
+                <Suspense fallback={<PlayersCardSkeleton players={players} />}>
                   <PlayersCard id={id} />
                 </Suspense>
               </div>
