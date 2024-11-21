@@ -15,6 +15,8 @@ export default function Error({ error }: { error: TError }) {
   const path = usePathname();
   const axios = useClientApi();
 
+  console.error(error);
+
   useEffect(() => {
     reportError(axios, { error, path });
   }, [axios, path, error]);
