@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { Locale } from '@/i18n/config';
+import { Locale, locales } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
 
 type TranslationGroup = Record<string, Record<string, string>>;
@@ -39,9 +39,11 @@ export default function I18nProvider({ locale, children }: Props) {
   const [currentLocale, setCurrentLocale] = useState<Locale>(locale);
   const [translation, _setTranslation] = useState<LocaleData>({});
 
+  const selectedLocale = locales.includes(locale) ? locale : 'en';
+
   useEffect(() => {
-    setCurrentLocale(locale);
-  }, [locale, setCurrentLocale]);
+    setCurrentLocale(selectedLocale);
+  }, [selectedLocale, setCurrentLocale]);
 
   useEffect(() => {
     axiosInstance.defaults.headers['Accept-Language'] = locale as string;

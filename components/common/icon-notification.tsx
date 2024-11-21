@@ -1,5 +1,6 @@
-import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
+
+import { cn } from '@/lib/utils';
 
 type IconNotificationProps = {
   className?: string;
@@ -11,11 +12,13 @@ export function IconNotification({ className, number, children }: IconNotificati
   if (number === 0) {
     return children;
   }
-  
+
   return (
     <div className="relative">
       {children}
-      <span className={cn('absolute -right-2 -top-2 inline-flex h-4 min-w-4 text-center text-xs rounded-full bg-red-500 p-1 justify-between items-center', className)}>
+      <span
+        className={cn('absolute -right-2 -top-2 inline-flex dark:text-foreground text-background h-4 min-w-4 text-center text-xs rounded-full bg-red-500 p-1 justify-between items-center', className)}
+      >
         <span className="w-full">{number}</span>
       </span>
     </div>

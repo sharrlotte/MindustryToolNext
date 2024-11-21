@@ -4,9 +4,9 @@ import { useCallback, useState } from 'react';
 import ReactFlow, { Background, Controls, EdgeChange, MiniMap, NodeChange, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-import TextUpdaterNode from './TextUpdaterNode';
-import initialEdges from './edge';
-import initialNodes from './nodes';
+import initialEdges from './edge/edge';
+import TextUpdaterNode from './nodes/TextUpdaterNode';
+import initialNodes from './nodes/nodes';
 
 // type Props = {
 //   params: Promise<{
