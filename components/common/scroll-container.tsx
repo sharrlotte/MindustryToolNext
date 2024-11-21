@@ -9,32 +9,23 @@ type Props = {
   children: ReactNode;
 };
 
-const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, children }, ref) => {
+const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, children }, forwardedRef) => {
+  const localRef = useRef<HTMLDivElement>(null);
+  const ref = (forwardedRef as React.RefObject<HTMLDivElement>) || localRef;
+
   const [hasGapForScrollbar, setHasGapForScrollbar] = useState(false);
-  const alterRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (ref && 'current' in ref && ref.current) {
-      const element = ref.current;
-      const { addEventListener, removeEventListener } = element;
+    const element = ref.current;
+    if (!element) return;
 
-      const onResize = () => setHasGapForScrollbar(element.scrollHeight > element.clientHeight);
+    const resizeObserver = new ResizeObserver(() => {
+      setHasGapForScrollbar(element.scrollHeight > element.clientHeight);
+    });
 
-      onResize();
-      addEventListener('resize', onResize);
+    resizeObserver.observe(element);
 
-      return () => removeEventListener('resize', onResize);
-    } else if (alterRef.current) {
-      const element = alterRef.current;
-      const { addEventListener, removeEventListener } = element;
-
-      const onResize = () => setHasGapForScrollbar(element.scrollHeight > element.clientHeight);
-
-      onResize();
-      addEventListener('resize', onResize);
-
-      return () => removeEventListener('resize', onResize);
-    }
+    return () => resizeObserver.disconnect();
   }, [ref]);
 
   return (
@@ -42,7 +33,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ch
       className={cn('h-full overflow-y-auto w-full overflow-x-hidden', className, {
         'pr-2': hasGapForScrollbar,
       })}
-      ref={ref || alterRef}
+      ref={ref}
     >
       {children}
     </div>
