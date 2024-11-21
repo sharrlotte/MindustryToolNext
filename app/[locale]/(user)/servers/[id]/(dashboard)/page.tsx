@@ -127,7 +127,7 @@ export default async function Page({ params }: Props) {
                 <Tran text="server.system-status" />
               </h3>
               <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
-              {<img className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/internal-servers/${id}/image`} />}
+              {<img key={started + ''} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/internal-servers/${id}/image`} />}
             </div>
           </div>
           <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
