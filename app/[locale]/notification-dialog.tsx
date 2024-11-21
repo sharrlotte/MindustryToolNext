@@ -115,7 +115,7 @@ type NotificationCardProps = {
 };
 
 function NotificationCard({ notification }: NotificationCardProps) {
-  const { id, title, content, read, createdAt } = notification;
+  const { title, content, read, createdAt } = notification;
 
   return (
     <div className="p-2 gap-2 cursor-pointer flex">
@@ -140,30 +140,35 @@ function NotificationCard({ notification }: NotificationCardProps) {
         </DialogContent>
       </Dialog>
       <EllipsisButton variant="icon">
-        <MarkAsReadButton id={id} />
-        <DeleteButton id={id} />
+        {!read && <MarkAsReadButton notification={notification} />}
+        <DeleteButton notification={notification} />
       </EllipsisButton>
     </div>
   );
 }
 
 type MarkAsReadButtonProps = {
-  id: string;
+  notification: Notification;
 };
 
-function MarkAsReadButton({ id }: MarkAsReadButtonProps) {
+function MarkAsReadButton({ notification }: MarkAsReadButtonProps) {
+  const { id } = notification;
+
   const axios = useClientApi();
 
   const { toast } = useToast();
-  const { invalidateByKey } = useQueriesData();
+  const { updateById, invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['notifications', 'mark-as-read'],
     mutationFn: () => markAsReadById(axios, id),
+    onMutate: () => {
+      updateById<Notification>(['notifications'], id, (prev) => ({ ...prev, read: true }));
+    },
     onError: (error) => {
       toast({
         title: <Tran text="notification.mark-as-read-failed" />,
-        content: error?.message,
+        content: error.message,
         variant: 'destructive',
       });
     },
@@ -179,19 +184,24 @@ function MarkAsReadButton({ id }: MarkAsReadButtonProps) {
   );
 }
 
-function DeleteButton({ id }: MarkAsReadButtonProps) {
+function DeleteButton({ notification }: MarkAsReadButtonProps) {
+  const { id } = notification;
+
   const axios = useClientApi();
 
   const { toast } = useToast();
-  const { invalidateByKey } = useQueriesData();
+  const { filterByKey, invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['notifications', 'mark-as-read'],
+    mutationKey: ['notifications', 'delete-notification'],
     mutationFn: () => deleteNotification(axios, id),
+    onMutate: () => {
+      filterByKey<Notification>(['notifications'], (prev) => prev.id !== id);
+    },
     onError: (error) => {
       toast({
-        title: <Tran text="notification.mark-as-read-failed" />,
-        content: error?.message,
+        title: <Tran text="notification.delete-failed" />,
+        content: error.message,
         variant: 'destructive',
       });
     },
