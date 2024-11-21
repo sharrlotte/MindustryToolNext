@@ -293,7 +293,13 @@ function LinkDialog({ children, onAccept }: LinkDialogProps) {
           <Tran text="add-link" />
         </DialogTitle>
         <Form {...form}>
-          <form className="space-y-2" onSubmit={form.handleSubmit(handleAccept)}>
+          <form
+            className="space-y-2"
+            onSubmit={(event) => {
+              event.stopPropagation();
+              return form.handleSubmit(handleAccept);
+            }}
+          >
             <FormField
               control={form.control}
               name="header"
@@ -401,7 +407,13 @@ function ImageDialog({ children, onAccept }: ImageDialogProps) {
           <Tran text="add-image" />
         </DialogTitle>
         <Form {...form}>
-          <form className="space-y-2" onSubmit={form.handleSubmit(handleAccept)}>
+          <form
+            className="space-y-2"
+            onSubmit={(event) => {
+              event.stopPropagation();
+              return form.handleSubmit(handleAccept);
+            }}
+          >
             <FormField
               control={form.control}
               name="header"

@@ -50,7 +50,7 @@ type TranslateMode = (typeof translateModes)[number];
 const defaultState = {
   target: 'vi',
   language: 'en',
-  mode: 'compare',
+  mode: 'diff',
   key: '',
 };
 

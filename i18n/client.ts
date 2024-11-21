@@ -80,17 +80,17 @@ export function useI18n(): TranslateFunction {
       }
 
       if (!value || Object.keys(value).length === 0) {
-        return key;
+        return text;
       }
 
       const translated = value[key];
 
       if (!translated) {
         console.warn(`Missing key: ${text}`);
-        return key;
+        return text;
       }
 
-      return formatTranslation(translated, args) || key;
+      return formatTranslation(translated, args) || text;
     },
     [keys, axios, currentLocale, setTranslation],
   );
@@ -119,7 +119,7 @@ export function useI18n(): TranslateFunction {
 
         setTranslation({ [group]: value });
 
-        return formatTranslation(translated, args) || key;
+        return formatTranslation(translated, args) || text;
       } catch (err) {
         if (err && typeof err === 'object' && 'error' in err) {
           return text;

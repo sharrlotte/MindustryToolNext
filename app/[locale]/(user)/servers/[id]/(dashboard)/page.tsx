@@ -11,12 +11,12 @@ import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-b
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import { ServerIcon } from '@/components/common/icons';
-import RawImage from '@/components/common/raw-image';
 import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import IdUserCard from '@/components/user/id-user-card';
 
 import { getSession, serverApi, translate } from '@/action/action';
+import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, formatTitle, hasAccess, isError } from '@/lib/utils';
 import { getInternalServer } from '@/query/server';
@@ -51,7 +51,7 @@ export default async function Page({ params }: Props) {
     return <ErrorScreen error={session} />;
   }
 
-  const { started, name, description, port, mode, ramUsage, totalRam, players, mapName, mapImage, alive, userId } = server;
+  const { started, name, description, port, mode, ramUsage, totalRam, players, mapName, alive, userId } = server;
 
   const showPlayer = hasAccess(session, {
     all: [
@@ -122,12 +122,12 @@ export default async function Page({ params }: Props) {
             </div>
           </div>
           <div className="col-span-1 flex flex-col gap-2 bg-card md:col-start-1 md:row-start-2">
-            <div className="flex h-full flex-col items-start gap-1 p-4 shadow-lg">
+            <div className="flex h-full flex-col items-start justify-start gap-1 p-4 shadow-lg">
               <h3 className="text-xl">
                 <Tran text="server.system-status" />
               </h3>
               <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
-              {mapImage && <RawImage className="flex w-full max-w-[50dvw] rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" data={mapImage} />}
+              {<img key={started + ''} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/internal-servers/${id}/image`} />}
             </div>
           </div>
           <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>

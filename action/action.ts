@@ -54,7 +54,7 @@ export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError>
       throw error;
     }
 
-    return { error: JSON.parse(JSON.stringify(error)) };
+    return { error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))) };
   }
 }
 
