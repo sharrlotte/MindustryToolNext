@@ -7,7 +7,7 @@ import 'reactflow/dist/style.css';
 import { SmartBezierEdge } from '@tisoap/react-flow-smart-edge';
 
 import initialEdges from './edge/edge';
-import TextUpdaterNode from './nodes/TextUpdaterNode';
+import { SetNode, TextUpdaterNode } from './nodes/TextUpdaterNode';
 import initialNodes from './nodes/nodes';
 
 // type Props = {
@@ -26,6 +26,7 @@ import initialNodes from './nodes/nodes';
 
 const nodeTypes = {
   textUpdater: TextUpdaterNode,
+  setNode: SetNode,
 };
 
 const edgeTypes = {
