@@ -12,6 +12,7 @@ import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import VerifySchematicButton from '@/components/schematic/verify-schematic-button';
 import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
+
 import env from '@/constant/env';
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
@@ -60,8 +61,7 @@ export default function UploadSchematicDetailCard({ schematic: { id, name, tags,
           <DetailTitle>{name}</DetailTitle>
           <IdUserCard id={userId} />
           <span>
-            <Tran text="size" />
-            {width}x{height}
+            <Tran text="size" /> {width}x{height}
           </span>
           <DetailDescription>{description}</DetailDescription>
           <ItemRequirementCard requirements={requirements} />

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+
 import { cn } from '@/lib/utils';
 
 type Value<T> = { label: string; value: T };
@@ -35,13 +36,13 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className={cn('w-[200px] justify-between border-none bg-secondary capitalize shadow-md', className)}
+          className={cn('w-[200px] gap-2 items-center justify-between border-none bg-secondary capitalize shadow-md', className)}
           title={value?.label?.toLowerCase() || placeholder}
           role="combobox"
           variant="outline"
         >
           {value?.label?.toLowerCase() || placeholder}
-          <ChevronsUpDownIcon className="ml-auto size-4 shrink-0" />
+          <ChevronsUpDownIcon className="size-4 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="z-50 w-full min-w-20 bg-card p-0">

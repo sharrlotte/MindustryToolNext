@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -41,15 +41,16 @@ export type MarkdownData = {
 };
 
 type MarkdownEditorProps = {
+  defaultMode?: EditorMode;
   value: MarkdownData;
   onChange: (func: (_value: MarkdownData) => MarkdownData) => void;
 };
 
 type EditorMode = 'edit' | 'preview' | 'live';
 
-export default function MarkdownEditor({ value: content, onChange: setContent }: MarkdownEditorProps) {
+export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }: MarkdownEditorProps) {
   const [focused, setFocused] = useState<HTMLElement | null>(null);
-  const [mode, setMode] = useState<EditorMode>('live');
+  const [mode, setMode] = useState<EditorMode>(defaultMode);
   const [isFullscreen, setFullscreen] = useState(false);
 
   const toggleFullscreen = () => setFullscreen((prev) => !prev);
@@ -57,18 +58,18 @@ export default function MarkdownEditor({ value: content, onChange: setContent }:
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  function insertAtCaret(content: string) {
+  function insertAtCaret(value: string) {
     const input = inputRef.current;
 
     if (!input) return;
 
     const position = input.selectionStart ?? input.value.length;
 
-    setContent(({ text, images }) => ({
-      text: text.substring(0, position) + content + text.substring(position),
+    onChange(({ text, images }) => ({
+      text: text.substring(0, position) + value + text.substring(position),
       images,
     }));
-    const newPosition = position + content.length;
+    const newPosition = position + value.length;
     input.focus();
     setTimeout(() => input.setSelectionRange(newPosition, newPosition));
   }
@@ -82,7 +83,7 @@ export default function MarkdownEditor({ value: content, onChange: setContent }:
     const end = input.selectionEnd;
 
     if (start !== end) {
-      setContent(({ text, images }) => ({
+      onChange(({ text, images }) => ({
         text: text.substring(0, start) + before + text.substring(start, end) + after + text.substring(end),
         images,
       }));
@@ -93,7 +94,7 @@ export default function MarkdownEditor({ value: content, onChange: setContent }:
     } else {
       const position = start;
 
-      setContent(({ text, images }) => ({
+      onChange(({ text, images }) => ({
         text: text.substring(0, position) + before + after + text.substring(position),
         images,
       }));
@@ -173,7 +174,7 @@ export default function MarkdownEditor({ value: content, onChange: setContent }:
             onAccept={(value, image) => {
               insertAtCaret(value);
               if (image) {
-                setContent((prev) => ({
+                onChange((prev) => ({
                   ...prev,
                   images: [...prev.images, image],
                 }));
@@ -223,14 +224,14 @@ export default function MarkdownEditor({ value: content, onChange: setContent }:
             className="h-full w-full resize-none overflow-y-auto border-none bg-transparent p-2 outline-none"
             ref={inputRef}
             title={'content'}
-            value={content.text}
+            value={value.text}
             spellCheck="false"
             onScroll={handleInputScroll}
             onMouseEnter={(event) => setFocused(event.currentTarget)}
             onTouchStart={(event) => setFocused(event.currentTarget)}
             onTouchMove={(event) => setFocused(event.currentTarget)}
             onChange={(event) =>
-              setContent(({ images }) => ({
+              onChange(({ images }) => ({
                 text: event.target.value,
                 images,
               }))
@@ -246,7 +247,7 @@ export default function MarkdownEditor({ value: content, onChange: setContent }:
             onTouchStart={(event) => setFocused(event.currentTarget)}
             onTouchMove={(event) => setFocused(event.currentTarget)}
           >
-            <Markdown>{content.text}</Markdown>
+            <Markdown>{value.text}</Markdown>
           </div>
         )}
       </div>

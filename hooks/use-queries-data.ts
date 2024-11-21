@@ -39,7 +39,35 @@ export default function useQueriesData() {
     [queryClient],
   );
 
+  const pushByKey = useCallback(
+    <T>(queryKey: QueryKey, data: T) =>
+      queryClient.setQueriesData({ queryKey }, (prev: InfiniteData<T[]> | undefined) => {
+        if (!prev) return { pageParams: [], pages: [[data]] };
+
+        if (typeof prev !== 'object' || !('pages' in prev)) {
+          return prev;
+        }
+
+        if (!Array.isArray(prev.pages)) {
+          return prev;
+        }
+
+        if (prev.pages.length === 0) {
+          return prev;
+        }
+
+        prev.pages[0].push(data);
+
+        return {
+          pageParams: prev.pageParams,
+          pages: [...prev.pages],
+        };
+      }),
+    [queryClient],
+  );
+
   return {
+    pushByKey,
     updateById,
     filterByKey,
     invalidateByKey,

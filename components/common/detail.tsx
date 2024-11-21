@@ -3,10 +3,12 @@ import React, { HTMLAttributes } from 'react';
 import ColorText from '@/components/common/color-text';
 import FallbackImage from '@/components/common/fallback-image';
 import MindustryIcon, { parseIconString } from '@/components/common/mindustry-icon';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
+
 import { cn } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
 
@@ -14,15 +16,15 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 export function Detail({ className, children }: DetailProps) {
   return (
-    <div className="absolute inset-0 w-full overflow-y-auto bg-background p-2">
-      <div className={cn('relative flex min-h-full w-full flex-col justify-between gap-2 overflow-y-auto lg:items-stretch', className)}>{children}</div>
-    </div>
+    <ScrollContainer className="absolute inset-0 w-full overflow-y-auto bg-background p-2" additionalPadding="pr-4">
+      <div className={cn('relative flex min-h-full w-full flex-col justify-between gap-6 overflow-y-auto lg:items-stretch', className)}>{children}</div>
+    </ScrollContainer>
   );
 }
 type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailInfo({ className, children }: InfoProps) {
-  return <div className={cn('relative flex flex-col items-start gap-2 md:flex-row', className)}>{children}</div>;
+  return <div className={cn('relative flex flex-col items-start gap-2 lg:flex-row', className)}>{children}</div>;
 }
 
 type TitleProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {

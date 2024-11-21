@@ -2,6 +2,7 @@
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
+import CommentSection from '@/components/common/comment-section';
 import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
 import { LinkIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
@@ -14,6 +15,7 @@ import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import { TakeDownSchematicButton } from '@/components/schematic/take-down-schematic-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
@@ -57,8 +59,7 @@ export default function SchematicDetailCard({
           <IdUserCard id={userId} />
           <Verifier verifierId={verifierId} />
           <span>
-            <Tran text="size" />
-            {width}x{height}
+            <Tran text="size" /> {width}x{height}
           </span>
           <DetailDescription>{description}</DetailDescription>
           <ItemRequirementCard requirements={requirements} />
@@ -97,6 +98,7 @@ export default function SchematicDetailCard({
           </ProtectedElement>
         </EllipsisButton>
       </DetailActions>
+      <CommentSection itemId={itemId} />
     </Detail>
   );
 }
