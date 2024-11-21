@@ -13,6 +13,7 @@ import { DeleteMapButton } from '@/components/map/delete-map-button';
 import { TakeDownMapButton } from '@/components/map/take-down-map-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
@@ -43,8 +44,7 @@ export default function MapDetailCard({ map: { id, name, description, tags, veri
           <IdUserCard id={userId} />
           <Verifier verifierId={verifierId} />
           <span>
-            <Tran text="size" />
-            {width}x{height}
+            <Tran text="size" /> {width}x{height}
           </span>
           <DetailDescription>{description}</DetailDescription>
           <DetailTagsCard tags={tags} />

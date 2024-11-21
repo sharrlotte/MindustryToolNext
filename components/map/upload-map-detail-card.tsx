@@ -11,6 +11,7 @@ import { DeleteMapButton } from '@/components/map/delete-map-button';
 import VerifyMapButton from '@/components/map/verify-map-button';
 import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
+
 import env from '@/constant/env';
 import { useTags } from '@/context/tags-context.client';
 import { MapDetail } from '@/types/response/MapDetail';
@@ -47,8 +48,7 @@ export default function UploadMapDetailCard({ map: { id, name, tags, description
           <DetailTitle>{name}</DetailTitle>
           <IdUserCard id={userId} />
           <span>
-            <Tran text="size" />
-            {width}x{height}
+            <Tran text="size" /> {width}x{height}
           </span>
           <DetailDescription>{description}</DetailDescription>
           <TagSelector tags={map} value={selectedTags} onChange={setSelectedTags} />

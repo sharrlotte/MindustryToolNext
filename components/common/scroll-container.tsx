@@ -4,12 +4,14 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
+type AdditionalPadding = `pr-${number}`;
 type Props = {
   className?: string;
+  additionalPadding?: AdditionalPadding;
   children: ReactNode;
 };
 
-const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, children }, forwardedRef) => {
+const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, additionalPadding = 'pr-2', children }, forwardedRef) => {
   const localRef = useRef<HTMLDivElement>(null);
   const ref = (forwardedRef as React.RefObject<HTMLDivElement>) || localRef;
 
@@ -31,7 +33,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ch
   return (
     <div
       className={cn('h-full overflow-y-auto w-full overflow-x-hidden', className, {
-        'pr-2': hasGapForScrollbar,
+        [additionalPadding]: hasGapForScrollbar,
       })}
       ref={ref}
     >
