@@ -1,3 +1,5 @@
+'use client';
+
 import { BellIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
@@ -10,36 +12,41 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
+import { useSession } from '@/context/session-context.client';
 import { useSocket } from '@/context/socket-context';
 import useClientQuery from '@/hooks/use-client-query';
 import useNotification from '@/hooks/use-notification';
 import useQueriesData from '@/hooks/use-queries-data';
+import ProtectedElement from '@/layout/protected-element';
 import { cn, isError } from '@/lib/utils';
 import { getMyNotifications, getMyUnreadNotificationCount } from '@/query/notification';
 import { Notification } from '@/types/response/Notification';
 import { useNavBar } from '@/zustand/nav-bar-store';
 
 export default function NotificationDialog() {
+  const { session } = useSession();
   const { isVisible } = useNavBar();
 
   const isSmall = useMediaQuery('(max-width: 640px)');
   const expand = isSmall ? true : isVisible;
 
   return (
-    <Dialog>
-      <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
-        <NotificationDialogButton expand={expand} />
-      </DialogTrigger>
-      <DialogContent className="p-6">
-        <DialogTitle>
-          <Tran text="notification" />
-        </DialogTitle>
-        <Hidden>
-          <DialogDescription>This is a notification dialog.</DialogDescription>
-        </Hidden>
-        <NotificationContent />
-      </DialogContent>
-    </Dialog>
+    <ProtectedElement session={session} filter>
+      <Dialog>
+        <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
+          <NotificationDialogButton expand={expand} />
+        </DialogTrigger>
+        <DialogContent className="p-6">
+          <DialogTitle>
+            <Tran text="notification" />
+          </DialogTitle>
+          <Hidden>
+            <DialogDescription>This is a notification dialog.</DialogDescription>
+          </Hidden>
+          <NotificationContent />
+        </DialogContent>
+      </Dialog>
+    </ProtectedElement>
   );
 }
 
@@ -86,7 +93,7 @@ function NotificationContent() {
     <ScrollContainer ref={setContainer}>
       <InfinitePage
         className="gap-2 flex flex-col"
-        queryKey={['notifications']}
+        queryKey={['notifications', 'me']}
         params={{ page: 0, size: 30 }}
         queryFn={getMyNotifications}
         container={() => container}
