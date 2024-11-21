@@ -44,7 +44,7 @@ function Flow() {
 
   const onEdgeChange = useCallback((changes: EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds) as any), [setEdges]);
 
-  const onEdgeConnect = useCallback((x: any) => setEdges((eds) => addEdge({ ...x, animated: true }, eds) as any), [setEdges]);
+  const onEdgeConnect = useCallback((params: any) => setEdges((eds) => addEdge({ ...params, animated: true, type: 'smart' }, eds) as any), [setEdges]);
 
   return (
     <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodeChange} nodeTypes={nodeTypes} edgeTypes={edgeTypes} onEdgesChange={onEdgeChange} onConnect={onEdgeConnect}>
