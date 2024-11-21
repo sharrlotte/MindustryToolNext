@@ -8,14 +8,12 @@ import Markdown from '@/components/common/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Skeleton } from '@/components/ui/skeleton';
 import ColorAsRole from '@/components/user/color-as-role';
-import IdUserCard from '@/components/user/id-user-card';
 import UserAvatar from '@/components/user/user-avatar';
 
 import { useSession } from '@/context/session-context.client';
@@ -41,6 +39,7 @@ function genId() {
 }
 
 const commentSorts = ['newest', 'oldest'];
+
 type CommentSort = (typeof commentSorts)[number];
 
 export default function CommentSection({ itemId }: CommentSectionProps) {
