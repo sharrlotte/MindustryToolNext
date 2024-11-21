@@ -4,6 +4,8 @@ import { useCallback, useState } from 'react';
 import ReactFlow, { Background, Controls, EdgeChange, MiniMap, NodeChange, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 
+import { SmartBezierEdge } from '@tisoap/react-flow-smart-edge';
+
 import initialEdges from './edge/edge';
 import TextUpdaterNode from './nodes/TextUpdaterNode';
 import initialNodes from './nodes/nodes';
@@ -26,6 +28,10 @@ const nodeTypes = {
   textUpdater: TextUpdaterNode,
 };
 
+const edgeTypes = {
+  smart: SmartBezierEdge,
+};
+
 export default function Page() {
   return <Flow />;
 }
@@ -41,7 +47,7 @@ function Flow() {
   const onEdgeConnect = useCallback((x: any) => setEdges((eds) => addEdge({ ...x, animated: true }, eds) as any), [setEdges]);
 
   return (
-    <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodeChange} nodeTypes={nodeTypes} onEdgesChange={onEdgeChange} onConnect={onEdgeConnect}>
+    <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodeChange} nodeTypes={nodeTypes} edgeTypes={edgeTypes} onEdgesChange={onEdgeChange} onConnect={onEdgeConnect}>
       <MiniMap />
       <Controls />
       <Background />
