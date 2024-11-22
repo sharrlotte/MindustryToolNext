@@ -7,26 +7,57 @@ import 'reactflow/dist/style.css';
 import { SmartBezierEdge } from '@tisoap/react-flow-smart-edge';
 
 import initialEdges from './edge/edge';
-import { SetNode, TextUpdaterNode } from './nodes/TextUpdaterNode';
+import {
+  ControlNode,
+  DrawFlushNode,
+  DrawNode,
+  EndNode,
+  GetLinkNode,
+  JumpNode,
+  LookUpNode,
+  OperationNode,
+  PackColorNode,
+  PrintFlushNode,
+  PrintNode,
+  RadarNode,
+  ReadNode,
+  SensorNode,
+  SetNode,
+  StopNode,
+  TextUpdaterNode,
+  UnitBindNode,
+  UnitControlNode,
+  UnitLocateNode,
+  UnitRadarNode,
+  WaitNode,
+  WriteNode,
+} from './nodes/TextUpdaterNode';
 import initialNodes from './nodes/nodes';
-
-// type Props = {
-//   params: Promise<{
-//     locale: Locale;
-//   }>;
-// };
-// export async function generateMetadata({ params }: Props): Promise<Metadata> {
-//   const { locale } = await params;
-//   const title = await translate(locale, 'logic');
-
-//   return {
-//     title: formatTitle(title),
-//   };
-// }
 
 const nodeTypes = {
   textUpdater: TextUpdaterNode,
+  waitNode: WaitNode,
+  stopNode: StopNode,
+  endNode: EndNode,
+  jumpNode: JumpNode,
   setNode: SetNode,
+  operationNode: OperationNode,
+  lookUpNode: LookUpNode,
+  packColorNode: PackColorNode,
+  sensorNode: SensorNode,
+  controlNode: ControlNode,
+  radarNode: RadarNode,
+  printFlushNode: PrintFlushNode,
+  drawFlushNode: DrawFlushNode,
+  getLinkNode: GetLinkNode,
+  unitBindNode: UnitBindNode,
+  unitControlNode: UnitControlNode,
+  unitRadarNode: UnitRadarNode,
+  unitLocateNode: UnitLocateNode,
+  readNode: ReadNode,
+  writeNode: WriteNode,
+  drawNode: DrawNode,
+  printNode: PrintNode,
 };
 
 const edgeTypes = {
