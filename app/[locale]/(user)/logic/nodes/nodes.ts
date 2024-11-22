@@ -1,6 +1,6 @@
 import { type Node } from 'reactflow';
 
-const nodes: Node[] = [
+const initialNodes: Node[] = [
   {
     id: '1',
     type: 'default',
@@ -21,13 +21,13 @@ const nodes: Node[] = [
   },
   {
     id: '4',
-    data: { label: 'Jump -> 3', value: 'if result == 0 { goto 3 }' },
+    data: { label: 'Jump -> 6', value: 'if result == 0 { goto 6 }' },
     type: 'textUpdater',
     position: { x: 300, y: 250 },
   },
   {
     id: '5',
-    data: { label: 'Set', value: 'set resuit = 5' },
+    data: { label: 'Set', value: 'set result = 5' },
     type: 'textUpdater',
     position: { x: 150, y: 400 },
   },
@@ -44,5 +44,13 @@ const nodes: Node[] = [
     position: { x: 100, y: 500 },
   },
 ];
+
+const nodes = initialNodes.map((node) => ({
+  ...node,
+  data: {
+    ...node.data,
+    id: node.id,
+  },
+}));
 
 export default nodes;
