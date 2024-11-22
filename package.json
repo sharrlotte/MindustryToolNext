@@ -51,6 +51,7 @@
     "konva": "^9.3.16",
     "lucide-react": "^0.292.0",
     "next": "15.0.4-canary.13",
+    "next-logger": "^5.0.1",
     "next-themes": "^0.2.1",
     "nextjs-toploader": "^1.6.12",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
@@ -75,6 +76,8 @@
     "throttle-debounce": "^5.0.2",
     "universal-cookie": "^7.2.2",
     "usehooks-ts": "^2.16.0",
+    "winston": "^3.17.0",
+    "winston-transport": "^4.9.0",
     "zod": "^3.23.8",
     "zod-form-data": "^2.0.2",
     "zustand": "^4.5.5"
