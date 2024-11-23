@@ -366,7 +366,7 @@ function AddNewKeyDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="primary" title={t('translation.add')}>
+        <Button variant="primary" title="translation add">
           <Tran text="translation.add" />
         </Button>
       </DialogTrigger>
@@ -423,11 +423,11 @@ function AddNewKeyDialog() {
               )}
             />
             <div className="flex justify-end gap-1">
-              <Button variant="secondary" title={t('reset')} onClick={() => form.reset()}>
-                {t('reset')}
+              <Button variant="secondary" title="reset" onClick={() => form.reset()}>
+                <Tran text="reset" />
               </Button>
-              <Button variant="primary" type="submit" title={t('save')} disabled={isPending}>
-                {t('save')}
+              <Button variant="primary" type="submit" title="save" disabled={isPending}>
+                <Tran text="save" />
               </Button>
             </div>
           </form>
@@ -454,9 +454,7 @@ function DeleteTranslationDialog({ value: { id, key } }: DeleteTranslationDialog
     },
   });
 
-  const t = useI18n();
-
-  return <DeleteButton variant="command" isLoading={isPending} description={t('translation.delete', { key })} onClick={() => mutate(id)} />;
+  return <DeleteButton variant="command" isLoading={isPending} description={<Tran text="translation.delete" args={{ key }} />} onClick={() => mutate(id)} />;
 }
 
 function TranslationCardSkeleton() {

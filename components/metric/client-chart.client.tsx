@@ -73,6 +73,7 @@ export default function ClientChartClient({ web, mod, server, total }: Props) {
             },
           }}
           data={chart}
+          suppressHydrationWarning
         />
       </div>
     </MetricWrapper>
