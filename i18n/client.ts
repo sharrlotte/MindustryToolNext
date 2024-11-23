@@ -8,7 +8,7 @@ import { useCookies } from 'react-cookie';
 import { useLocaleStore } from '@/context/locale-context';
 import useClientApi from '@/hooks/use-client';
 import { Locale, TranslateFunction, locales } from '@/i18n/config';
-import { formatTranslation } from '@/lib/utils';
+import { extractTranslationKey, formatTranslation } from '@/lib/utils';
 import axiosInstance from '@/query/config/config';
 
 const EMPTY = {};
@@ -38,21 +38,8 @@ export function useI18n(): TranslateFunction {
   const keys = translation[currentLocale];
 
   const t = useCallback(
-    (text: string, args?: Record<string, string>) => {
-      if (!text) {
-        throw new Error('Bad key');
-      }
-
-      const parts = text.split('.');
-
-      if (parts.length === 0) {
-        throw new Error('Bad key');
-      }
-
-      const group = parts.length === 1 ? 'common' : parts[0];
-      const key = parts.length === 1 ? parts[0] : parts[1];
-
-      text = `${group}.${key}`;
+    (translationKey: string, args?: Record<string, string>) => {
+      const { text, group, key } = extractTranslationKey(translationKey);
 
       const value = keys[group];
 
@@ -96,21 +83,8 @@ export function useI18n(): TranslateFunction {
   );
 
   if (typeof window === 'undefined') {
-    return (text: string, args?: Record<string, string>) => {
-      if (!text) {
-        throw new Error('Bad key');
-      }
-
-      const parts = text.split('.');
-
-      if (parts.length === 0) {
-        throw new Error('Bad key');
-      }
-
-      const group = parts.length === 1 ? 'common' : parts[0];
-      const key = parts.length === 1 ? parts[0] : parts[1];
-
-      text = `${group}.${key}`;
+    return (translationKey: string, args?: Record<string, string>) => {
+      const { text, group, key } = extractTranslationKey(translationKey);
 
       try {
         const data = getCachedTranslation(group, currentLocale).catch((error) => ({ error }));

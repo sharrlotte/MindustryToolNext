@@ -71,6 +71,7 @@ export default function Page() {
 function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [deleteOnClick, setDeleteOnClick] = useState(false);
 
   const onNodeChange = useCallback((changes: NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)), [setNodes]);
 
@@ -87,35 +88,70 @@ function Flow() {
     setEdges((eds) => eds.filter((edge) => !deleted.some((d) => d.id === edge.id)));
   }, []);
 
+  const onNodeClick = useCallback(
+    (event: React.MouseEvent, node: Node) => {
+      if (deleteOnClick) {
+        setNodes((nds) => nds.filter((n) => n.id !== node.id));
+        setEdges((eds) => eds.filter((e) => e.source !== node.id && e.target !== node.id));
+      }
+    },
+    [deleteOnClick],
+  );
+
+  const onEdgeClick = useCallback(
+    (event: React.MouseEvent, edge: Edge) => {
+      if (deleteOnClick) {
+        setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+      }
+    },
+    [deleteOnClick],
+  );
+
   const onNodeContextMenu = useCallback(
     (event: React.MouseEvent, node: Node) => {
       event.preventDefault();
+      if (!deleteOnClick) {
+        setNodes((nds) => nds.filter((n) => n.id !== node.id));
+        setEdges((eds) => eds.filter((e) => e.source !== node.id && e.target !== node.id));
+      }
     },
-    [setNodes, setEdges],
+    [deleteOnClick],
   );
 
-  const onEdgeContextMenu = useCallback((event: React.MouseEvent, edge: Edge) => {
-    event.preventDefault();
-    setEdges((eds) => eds.filter((e) => e.id !== edge.id));
-  }, []);
+  const onEdgeContextMenu = useCallback(
+    (event: React.MouseEvent, edge: Edge) => {
+      event.preventDefault();
+      if (!deleteOnClick) {
+        setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+      }
+    },
+    [deleteOnClick],
+  );
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodeChange}
-      onEdgesChange={onEdgeChange}
-      onConnect={onEdgeConnect}
-      onNodesDelete={onNodesDelete}
-      onEdgesDelete={onEdgesDelete}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      onNodeContextMenu={onNodeContextMenu}
-      onEdgeContextMenu={onEdgeContextMenu}
-    >
-      <MiniMap />
-      <Controls />
-      <Background />
-    </ReactFlow>
+    <>
+      <button className="absolute" onClick={() => setDeleteOnClick((prev) => !prev)}>
+        {deleteOnClick ? 'Disable Delete on touch' : 'Enable Delete on touch'}
+      </button>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodeChange}
+        onEdgesChange={onEdgeChange}
+        onConnect={onEdgeConnect}
+        onNodesDelete={onNodesDelete}
+        onEdgesDelete={onEdgesDelete}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onNodeClick={onNodeClick}
+        onEdgeClick={onEdgeClick}
+        onNodeContextMenu={onNodeContextMenu}
+        onEdgeContextMenu={onEdgeContextMenu}
+      >
+        <MiniMap />
+        <Controls />
+        <Background />
+      </ReactFlow>
+    </>
   );
 }

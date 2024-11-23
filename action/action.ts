@@ -8,7 +8,7 @@ import { cache } from 'react';
 import 'server-only';
 import { z } from 'zod';
 
-import { formatTranslation } from '@/lib/utils';
+import { extractTranslationKey, formatTranslation } from '@/lib/utils';
 import axiosInstance from '@/query/config/config';
 import { QuerySchema } from '@/query/search-query';
 import { Session } from '@/types/response/Session';
@@ -114,19 +114,10 @@ export async function getLocaleFromCookie() {
   return cookie.get('Locale')?.value || 'en';
 }
 
-export async function translate(locale: string, text: string, args?: Record<string, any>) {
-  const parts = text.split('.');
-
-  if (parts.length === 0) {
-    throw new Error('Bad key');
-  }
+export async function translate(locale: string, translationKey: string, args?: Record<string, any>) {
+  const { text, group, key } = extractTranslationKey(translationKey);
 
   try {
-    const group = parts.length === 1 ? 'common' : parts[0];
-    const key = parts.length === 1 ? parts[0] : parts[1];
-
-    text = `${group}.${key}`;
-
     const keys = await getCachedTranslation(locale, group);
     const value = keys[key];
 
