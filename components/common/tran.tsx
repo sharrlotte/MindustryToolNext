@@ -15,7 +15,7 @@ function InternalTran({ className, text, args, ...rest }: Props): React.ReactNod
   const t = useI18n();
 
   return (
-    <span className={className} {...rest} suppressHydrationWarning={process.env.NODE_ENV !== 'development'}>
+    <span className={className} {...rest} suppressHydrationWarning>
       {t(text, args)}
     </span>
   );
