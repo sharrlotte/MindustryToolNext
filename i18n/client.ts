@@ -87,8 +87,6 @@ export function useI18n(): TranslateFunction {
         const value = use(data);
         const translated = value[key];
 
-        console.log(translated);
-
         setTranslation({ [group]: value });
 
         return formatTranslation(translated, args) || text;

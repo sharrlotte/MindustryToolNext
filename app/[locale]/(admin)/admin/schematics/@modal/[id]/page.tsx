@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: name,
       description: description,
-      images: `${env.url.image}schematic-previews/${id}${env.imageFormat}`,
+      images: `${env.url.image}/schematic-previews/${id}${env.imageFormat}`,
     },
   };
 }
