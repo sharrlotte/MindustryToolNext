@@ -8,6 +8,16 @@ import { cn } from '@/lib/utils';
 
 type Value<T> = { label: string; value: T };
 
+type RequiredComboBox<T> = {
+  value: Value<T>;
+  onChange: (value: T) => void;
+};
+
+type NoneComboBox<T> = {
+  value?: Value<T>;
+  onChange: (value: T | undefined) => void;
+};
+
 type ComboBoxProps<T> = {
   className?: string;
   placeholder?: string;
@@ -15,7 +25,7 @@ type ComboBoxProps<T> = {
   values: Array<Value<T>>;
   searchBar?: boolean;
   onChange: (value: T | undefined) => void;
-};
+} & (RequiredComboBox<T> | NoneComboBox<T>);
 
 export default function ComboBox<T>({ className, placeholder = 'Select', values, value, searchBar = true, onChange }: ComboBoxProps<T>) {
   const [open, setOpen] = useState(false);
@@ -25,7 +35,11 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
 
   function handleSelect(item: Value<T>) {
     if (currentLabel === item.label) {
-      onChange(undefined);
+      if (value) {
+        onChange(value.value);
+      } else {
+        onChange(undefined);
+      }
     } else {
       onChange(item.value);
     }

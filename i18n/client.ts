@@ -1,6 +1,6 @@
 import { unstable_cache } from 'next/cache';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { use, useCallback } from 'react';
+import { cache, use, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
 
 import { useLocaleStore } from '@/context/locale-context';
@@ -10,19 +10,19 @@ import axiosInstance from '@/query/config/config';
 
 const EMPTY = {};
 
-const getCachedTranslation = unstable_cache(
-  (group: string, language: string) =>
-    axiosInstance
-      .get('/translations', {
-        params: {
-          group,
-          language,
-        },
-      })
-      .then(({ data }) => data),
-  ['translations'],
-  { revalidate: 3600 },
+const getTranslation = cache((group: string, language: string) =>
+  axiosInstance
+    .get('/translations', {
+      params: {
+        group,
+        language,
+      },
+    })
+    .then(({ data }) => data)
+    .catch((err) => console.error(err)),
 );
+
+const getCachedTranslation = unstable_cache(getTranslation, ['translations'], { revalidate: 3600 });
 
 export function useI18n(): TranslateFunction {
   const { currentLocale, translation, setTranslation } = useLocaleStore();
@@ -37,29 +37,30 @@ export function useI18n(): TranslateFunction {
     (translationKey: string, args?: Record<string, string>) => {
       const { text, group, key } = extractTranslationKey(translationKey);
 
-      const value = keys[group];
+      let value = keys[group];
 
-      if (!value || Object.keys(value).length === 0) {
+      const localStorageKey = `${currentLocale}.translation.${group}`;
+
+      if (value === undefined) {
         try {
-          keys[group] = JSON.parse(localStorage.getItem(`${currentLocale}.translation.${group}`) || '{}');
+          value = JSON.parse(localStorage.getItem(localStorageKey) ?? 'null');
+          keys[group] = value;
         } catch (e) {
           keys[group] = EMPTY;
         }
 
-        axiosInstance
-          .get('/translations', {
-            params: {
-              group,
-              language: currentLocale,
-            },
-          })
-          .then((result) => {
-            if (result.data) {
-              setTranslation({ [group]: result.data });
-              localStorage.setItem(`${currentLocale}.translation.${group}`, JSON.stringify(result.data));
-            }
-          })
-          .catch((err) => console.error(err));
+        value = keys[group];
+
+        if (value === null) {
+          getTranslation(group, currentLocale) //
+            .then((result) => {
+              if (result) {
+                keys[group] = result;
+                setTranslation({ [group]: result });
+                localStorage.setItem(localStorageKey, JSON.stringify(result));
+              }
+            });
+        }
       }
 
       if (!value || Object.keys(value).length === 0) {
@@ -83,11 +84,9 @@ export function useI18n(): TranslateFunction {
       const { text, group, key } = extractTranslationKey(translationKey);
 
       try {
-        const data = getCachedTranslation(group, currentLocale).catch((error) => ({ error }));
+        const data = getCachedTranslation(group, currentLocale);
         const value = use(data);
         const translated = value[key];
-
-        setTranslation({ [group]: value });
 
         return formatTranslation(translated, args) || text;
       } catch (err) {
