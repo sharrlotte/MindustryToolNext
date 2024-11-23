@@ -5,8 +5,6 @@ import { Locale, defaultLocale, locales } from '@/i18n/config';
 export function middleware(request: NextRequest) {
   const { isBot } = userAgent(request);
 
-  console.log('middleware hmm');
-
   let locale = request.cookies.get('Locale')?.value?.toLowerCase() as string | undefined;
 
   if (!locale) {

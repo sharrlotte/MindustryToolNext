@@ -11,7 +11,6 @@ const DEFAULT_PAGINATION_TYPE = 'grid';
 export function usePaginationType() {
   const [type, setType] = useLocalStorage(PAGINATION_TYPE_PERSISTENT_KEY, DEFAULT_PAGINATION_TYPE);
   function handleSetType(type: PaginationType) {
-    console.log(type);
     setType(type || DEFAULT_PAGINATION_TYPE);
   }
 
