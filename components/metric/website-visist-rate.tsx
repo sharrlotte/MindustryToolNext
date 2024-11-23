@@ -6,6 +6,7 @@ import { Line } from 'react-chartjs-2';
 
 import Tran from '@/components/common/tran';
 import MetricWrapper from '@/components/metric/metric-wrapper';
+
 import { useI18n } from '@/i18n/client';
 import { fillMetric } from '@/lib/utils';
 import { Metric } from '@/types/response/Metric';
@@ -60,6 +61,7 @@ export default function WebsiteVisitRate({ start, dates, data }: Props) {
               },
             }}
             data={chart}
+            suppressHydrationWarning
           />
         </div>
       </div>

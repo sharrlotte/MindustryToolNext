@@ -54,6 +54,7 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
           title={value?.label?.toLowerCase() || placeholder}
           role="combobox"
           variant="outline"
+          suppressHydrationWarning
         >
           {value?.label?.toLowerCase() || placeholder}
           <ChevronsUpDownIcon className="size-4 shrink-0" />
@@ -78,6 +79,7 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
                 key={item.label}
                 variant="ghost"
                 onClick={() => handleSelect(item)}
+                suppressHydrationWarning
               >
                 {item.label?.toLowerCase()}
               </Button>

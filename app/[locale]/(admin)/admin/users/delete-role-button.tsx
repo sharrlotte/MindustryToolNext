@@ -2,9 +2,10 @@
 
 import React from 'react';
 
-import { revalidate } from '@/action/action';
 import DeleteButton from '@/components/button/delete-button';
 import Tran from '@/components/common/tran';
+
+import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
@@ -47,5 +48,5 @@ export default function DeleteRoleButton({ role }: Props) {
 
   const t = useI18n();
 
-  return <DeleteButton variant="command" isLoading={isPending} description={t('role.delete', { name: t(name) })} onClick={mutate} />;
+  return <DeleteButton variant="command" isLoading={isPending} description={<Tran text="role.delete" args={{ name: t(name) }} />} onClick={mutate} />;
 }

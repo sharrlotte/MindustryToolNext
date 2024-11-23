@@ -86,6 +86,7 @@ export const AutosizeTextarea = React.forwardRef<AutosizeTextAreaRef, AutosizeTe
           setTriggerAutoSize(e.target.value);
           onChange?.(e);
         }}
+        suppressHydrationWarning
       />
     );
   },

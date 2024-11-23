@@ -285,7 +285,6 @@ type AddTranslationDialogProps = {
 function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
   const [name, setName] = useDebounceValue('', 500);
   const axios = useClientApi();
-  const t = useI18n();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['me-posts', name],
     queryFn: () =>
@@ -331,12 +330,14 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button title={t('upload.translate-post')} variant="secondary">
-          {t('upload.translate-post')}
+        <Button title="upload.translate-post" variant="secondary">
+          <Tran text="upload.translate-post" />
         </Button>
       </DialogTrigger>
       <DialogContent className="p-6">
-        <DialogTitle>{t('upload.select-post')}</DialogTitle>
+        <DialogTitle>
+          <Tran text="upload.select-post" />
+        </DialogTitle>
         <div className="flex flex-col gap-2">
           <Search>
             <Search.Input placeholder="upload.post-name" value={name} onChange={(event) => setName(event.currentTarget.value)} />

@@ -5,6 +5,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import Tran from '@/components/common/tran';
+
 import { useI18n } from '@/i18n/client';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -51,7 +52,7 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
       <span className="font-bold">
         <Tran text="metric.ram-usage" />
       </span>
-      <Doughnut className="max-h-[200px] max-w-[200px]" data={data} />
+      <Doughnut className="max-h-[200px] max-w-[200px]" data={data} suppressHydrationWarning />
     </div>
   );
 }
