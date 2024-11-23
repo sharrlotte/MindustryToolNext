@@ -1,5 +1,4 @@
 const Transport = require('winston-transport');
-
 const { createLogger, format, transports } = require('winston');
 
 //
@@ -22,20 +21,20 @@ class ApiTransport extends Transport {
       this.emit('logged', info);
     });
 
-    fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/error', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ error: JSON.stringify(info), path: '' }),
-    });
+    // fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/error', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ error: JSON.stringify(info), path: '' }),
+    // });
 
     // Perform the writing to the remote service
     callback();
   }
 }
 
-const logger = (defaultConfig) =>
+const logger = () =>
   createLogger({
     transports: [new ApiTransport()],
   });

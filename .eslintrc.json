@@ -13,5 +13,5 @@
     "@typescript-eslint/unified-signatures": "warn",
     "@typescript-eslint/no-explicit-any": "off"
   },
-  "ignorePatterns": ["nextjs-logger.config.js"]
+  "ignorePatterns": ["*.js"]
 }

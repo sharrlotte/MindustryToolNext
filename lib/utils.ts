@@ -433,3 +433,24 @@ export function formatTranslation(text: string, args?: Record<string, string>) {
 export function formatTitle(title: string) {
   return `${title} | ${env.webName}`;
 }
+
+export function extractTranslationKey(text: string) {
+  if (!text) {
+    throw new Error('Bad key');
+  }
+
+  text = text.toLowerCase();
+
+  const parts = text.split('.');
+
+  if (parts.length === 0) {
+    throw new Error('Bad key');
+  }
+
+  const group = parts.length === 1 ? 'common' : parts[0];
+  const key = parts.length === 1 ? parts[0] : parts[1];
+
+  text = `${group}.${key}`;
+
+  return { text, key, group };
+}
