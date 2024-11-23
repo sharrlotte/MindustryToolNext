@@ -1,7 +1,9 @@
 import ClientInit from '@/app/[locale]/client-init';
 import NavigationBar from '@/app/[locale]/navigation';
+
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import Toaster from '@/components/ui/toaster';
+
 import I18nProvider from '@/context/locale-context';
 import { SessionProvider } from '@/context/session-context';
 import { SocketProvider } from '@/context/socket-context';
@@ -35,7 +37,7 @@ export default async function Root({ children, params }: RootProps) {
           <SpeedInsights />
         </>
       )}
-      <I18nProvider locale={locale ?? 'en'}>
+      <I18nProvider locale={locale}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TagsProvider>
             <SessionProvider>

@@ -1,6 +1,6 @@
 'use client';
 
-import { GanttChart, Users } from 'lucide-react';
+import { BellIcon, GanttChart, Users } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import React from 'react';
 
@@ -37,7 +37,7 @@ const links: {
     id: 'notification',
     href: 'notifications',
     label: <Tran text="notification" />,
-    icon: <Users className="size-5" />,
+    icon: <BellIcon className="size-5" />,
     filter: { authority: 'CREATE_NOTIFICATION' },
   },
 ];

@@ -72,6 +72,18 @@ function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [deleteOnClick, setDeleteOnClick] = useState(false);
+  const [nodeIdCounter, setNodeIdCounter] = useState(initialNodes.length + 1);
+
+  const addNewNode = () => {
+    const newNode: Node = {
+      id: `node_${nodeIdCounter}`,
+      type: 'textUpdater',
+      data: { label: 'New Node', value: '' },
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+    };
+    setNodes((nds) => [...nds, newNode]);
+    setNodeIdCounter((prev) => prev + 1);
+  };
 
   const onNodeChange = useCallback((changes: NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)), [setNodes]);
 
@@ -130,8 +142,11 @@ function Flow() {
 
   return (
     <>
-      <button className="absolute" onClick={() => setDeleteOnClick((prev) => !prev)}>
+      <button className="absolute z-50" onClick={() => setDeleteOnClick((prev) => !prev)}>
         {deleteOnClick ? 'Disable Delete on touch' : 'Enable Delete on touch'}
+      </button>
+      <button className="absolute z-50 top-10" onClick={addNewNode}>
+        Add New Node
       </button>
       <ReactFlow
         nodes={nodes}

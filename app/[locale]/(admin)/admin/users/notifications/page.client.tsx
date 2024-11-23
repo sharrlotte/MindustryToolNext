@@ -92,6 +92,7 @@ export default function PageClient() {
                 </FormLabel>
                 <FormControl>
                   <MarkdownEditor
+                    defaultMode="edit"
                     value={{ text: field.value, images: [] }}
                     onChange={(provider) => {
                       field.onChange(provider({ text: field.value, images: [] }).text);
