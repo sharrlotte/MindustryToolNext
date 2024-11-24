@@ -1,0 +1,14 @@
+/* .react-flow__minimap {
+  top: 0;
+  bottom: unset !important;
+} */
+
+@media (max-width: 768px) {
+  .react-flow__panel {
+    margin: 12px;
+  }
+  .react-flow__panel svg {
+    width: 150px;
+    height: 100px;
+  }
+}
