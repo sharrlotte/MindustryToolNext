@@ -56,6 +56,25 @@ export default function ColorText({ text, className }: ColorTextProps) {
   return <span className={cn(className)}>{result}</span>;
 }
 
+function addFormat(keys: string[]) {
+  let format = {};
+
+  for (const key of keys) {
+    const v = ANSI[key];
+
+    if (v && Object.keys(v).length !== 0) {
+      format = {
+        ...format,
+        ...v,
+      };
+    } else {
+      format = {};
+    }
+  }
+
+  return format;
+}
+
 function render(text?: string) {
   if (!text) return <></>;
 
@@ -90,33 +109,9 @@ function render(text?: string) {
     } else {
       color = color.substring('\\u001b['.length);
 
-      const mode = color.substring(0, color.indexOf('m')).split(';').filter(Boolean);
+      const keys = color.substring(0, color.indexOf('m')).split(';').filter(Boolean);
 
-      if (mode.length === 1) {
-        const v = ANSI[mode[0]];
-
-        if (v && Object.keys(v).length === 0) {
-          format = {};
-        } else {
-          format = { ...format, ...v };
-        }
-      } else {
-        const v = ANSI[mode[0]];
-
-        if (v && Object.keys(v).length === 0) {
-          format = {};
-        } else {
-          format = { ...format, ...v };
-        }
-
-        const v2 = ANSI[mode[1]];
-
-        if (v2 && Object.keys(v2).length === 0) {
-          format = {};
-        } else {
-          format = { ...format, ...v2 };
-        }
-      }
+      format = addFormat(keys);
     }
 
     if (arr.length === 1) {
