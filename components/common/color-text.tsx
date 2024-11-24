@@ -1,15 +1,53 @@
 import React, { ReactNode, useMemo } from 'react';
 
-
-
 import { cn, getColor } from '@/lib/utils';
 
+const COLOR_REGEX = /\[([#a-zA-Z0-9]*)\]|\\u001b\[([0-9;]*)[0-9]+m([0-9]*)/gim;
 
-const COLOR_REGEX = /\[([#a-zA-Z0-9]*)\]|\\u001b\[([0-9]+)m/g;
+const ANSI: Record<string, Format> = {
+  //ANSI color codes
+  '0': {},
+  '1': { bold: true },
+  '2': { dim: true },
+  '3': { italic: true },
+  '4': { underline: true },
+  '9': { strike: true },
+  '22': { bold: true },
+  '23': { dim: true },
+  '24': { italic: true },
+  '25': { underline: true },
+  '29': { strike: true },
+  '30': { foreground: 'black' },
+  '31': { foreground: 'red' },
+  '32': { foreground: 'green' },
+  '33': { foreground: 'yellow' },
+  '34': { foreground: 'blue' },
+  '35': { foreground: 'magenta' },
+  '36': { foreground: 'cyan' },
+  '37': { foreground: 'white' },
+  '40': { background: 'black' },
+  '41': { background: 'red' },
+  '42': { background: 'green' },
+  '43': { background: 'yellow' },
+  '44': { background: 'blue' },
+  '45': { background: 'magenta' },
+  '46': { background: 'cyan' },
+  '47': { background: 'white' },
+};
 
 type ColorTextProps = {
   text?: string;
   className?: string;
+};
+
+type Format = {
+  background?: string;
+  foreground?: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strike?: boolean;
+  dim?: boolean; // light color
 };
 
 export default function ColorText({ text, className }: ColorTextProps) {
@@ -29,7 +67,7 @@ function render(text?: string) {
   const result: ReactNode[] = [];
 
   if (index !== 0) {
-    key = add(result, text.substring(0, index), '', key);
+    key = add(result, text.substring(0, index), {}, key);
     text = text.substring(index);
   }
 
@@ -39,19 +77,53 @@ function render(text?: string) {
 
   while (arr.length > 0) {
     let color = arr[0].toLocaleLowerCase();
-    color = color.substring(1, color.length - 1);
 
-    if (color.startsWith('#')) {
-      color = color.padEnd(7, '0');
+    let format: Format = {};
+
+    if (color.startsWith('[')) {
+      color = color.substring(1, color.length - 1);
+      color.startsWith('#') ? color.padEnd(7, '0') : getColor(color);
+
+      format = {
+        foreground: color,
+      };
     } else {
-      color = getColor(color);
+      color = color.substring('\\u001b['.length);
+
+      const mode = color.substring(0, color.indexOf('m')).split(';').filter(Boolean);
+
+      if (mode.length === 1) {
+        const v = ANSI[mode[0]];
+
+        if (v && Object.keys(v).length === 0) {
+          format = {};
+        } else {
+          format = { ...format, ...v };
+        }
+      } else {
+        const v = ANSI[mode[0]];
+
+        if (v && Object.keys(v).length === 0) {
+          format = {};
+        } else {
+          format = { ...format, ...v };
+        }
+
+        const v2 = ANSI[mode[1]];
+
+        if (v2 && Object.keys(v2).length === 0) {
+          format = {};
+        } else {
+          format = { ...format, ...v2 };
+        }
+      }
     }
 
     if (arr.length === 1) {
       if (color) {
-        key = add(result, text.substring(arr[0].length), color, key);
+        key = add(result, text.substring(arr[0].length), format, key);
       } else {
-        key = add(result, text, '', key);
+        key = add(result, text, format, key);
       }
       break;
     }
@@ -59,9 +131,9 @@ function render(text?: string) {
     const nextIndex = text.indexOf(arr[1], arr[0].length);
 
     if (color) {
-      key = add(result, text.substring(arr[0].length, nextIndex), color, key);
+      key = add(result, text.substring(arr[0].length, nextIndex), format, key);
     } else {
-      key = add(result, text.substring(0, nextIndex), '', key);
+      key = add(result, text.substring(0, nextIndex), format, key);
     }
     text = text.substring(nextIndex);
     arr.shift();
@@ -69,17 +141,27 @@ function render(text?: string) {
 
   return result;
 }
-function add(result: ReactNode[], text: string, color: string, key: number) {
-  const r = breakdown(text, color, key);
+function add(result: ReactNode[], text: string, format: Format, key: number) {
+  const r = breakdown(text, format, key);
   result.push(...r.result);
   key = r.key;
   return key;
 }
 
-function breakdown(text: string, color: string, key: number) {
+function breakdown(text: string, format: Format, key: number) {
   if (text === '[]') {
     return { result: [], key };
   }
+
+  const style = {
+    color: format.foreground,
+    backgroundColor: format.background,
+    fontStyle: format.italic ? 'italic' : 'normal',
+    fontWeight: format.bold ? 'bold' : 'normal',
+    textDecoration: format.underline ? 'underline' : 'none',
+    textDecorationLine: format.strike ? 'line-through' : 'none',
+    opacity: format.dim ? 0.5 : 1,
+  };
 
   const s = text.split('\n');
   const r = [];
@@ -88,7 +170,7 @@ function breakdown(text: string, color: string, key: number) {
   if (s.length === 1) {
     return {
       result: [
-        <span key={key} style={{ color: color }}>
+        <span key={key} style={style}>
           {text}
         </span>,
       ],
@@ -97,7 +179,7 @@ function breakdown(text: string, color: string, key: number) {
   }
 
   r.push(
-    <span key={key} style={{ color: color }}>
+    <span key={key} style={style}>
       {s[0]}
     </span>,
   );
@@ -108,7 +190,7 @@ function breakdown(text: string, color: string, key: number) {
 
     key += 1;
     r.push(
-      <span key={key} style={{ color: color }}>
+      <span key={key} style={style}>
         {s[i]}
       </span>,
     );
