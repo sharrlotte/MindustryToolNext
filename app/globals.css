@@ -36,10 +36,12 @@
 
     --preview-size: 20rem;
     --preview-card-height: 27rem;
+    --nav: 3.1rem;
+
     --success: 150 73% 55%;
     --warning: 60 100% 55%;
-    --brand: 217 91.2% 59.8%;
-    --nav: 3.1rem;
+    
+    --brand: 160 84.1% 39.4%;
   }
 
   .dark {

@@ -61,7 +61,6 @@ export default function WebsiteVisitRate({ start, dates, data }: Props) {
               },
             }}
             data={chart}
-            suppressHydrationWarning
           />
         </div>
       </div>

@@ -52,7 +52,7 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
       <span className="font-bold">
         <Tran text="metric.ram-usage" />
       </span>
-      <Doughnut className="max-h-[200px] max-w-[200px]" data={data} suppressHydrationWarning />
+      <Doughnut className="max-h-[200px] max-w-[200px]" data={data} />
     </div>
   );
 }

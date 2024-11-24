@@ -17,11 +17,9 @@ export default function ErrorScreen({ error }: { error: TError }) {
 
   const message = getErrorMessage(error);
 
-  console.error(error);
-
   useEffect(() => {
-    reportError(axios, { error, path });
-  }, [axios, path, error]);
+    reportError(axios, `${path} > ${message}`);
+  }, [axios, message, path]);
 
   if (typeof error === 'object' && 'error' in error && 'status' in error.error && error.error.status === 404) return <NotFound />;
 

@@ -24,7 +24,7 @@ type InputProps = HTMLAttributes<HTMLInputElement> & {
 function Input({ className, placeholder, ...props }: InputProps) {
   const t = useI18n();
 
-  return <input className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)} placeholder={t(placeholder)} {...props} suppressHydrationWarning />;
+  return <input className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)} placeholder={t(placeholder)} {...props} />;
 }
 
 Search.Input = Input;

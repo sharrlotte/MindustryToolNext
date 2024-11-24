@@ -10,7 +10,7 @@ export function Preview({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'group relative flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] max-w-[calc(var(--preview-size)*2)] flex-col overflow-hidden rounded-md bg-card/90 shadow-md',
+        'group relative flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] border  max-w-[calc(var(--preview-size)*2)] flex-col overflow-hidden rounded-md bg-card/90 shadow-md',
         className,
       )}
       {...props}

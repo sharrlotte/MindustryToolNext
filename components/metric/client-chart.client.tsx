@@ -6,6 +6,7 @@ import { Line } from 'react-chartjs-2';
 
 import Tran from '@/components/common/tran';
 import MetricWrapper from '@/components/metric/metric-wrapper';
+
 import { useI18n } from '@/i18n/client';
 import { ChartData } from '@/types/response/Metric';
 
@@ -73,7 +74,6 @@ export default function ClientChartClient({ web, mod, server, total }: Props) {
             },
           }}
           data={chart}
-          suppressHydrationWarning
         />
       </div>
     </MetricWrapper>

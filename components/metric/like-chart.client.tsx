@@ -56,7 +56,6 @@ export default function LikeChartClient({ data }: Props) {
             },
           }}
           data={chart}
-          suppressHydrationWarning
         />
       </div>
     </MetricWrapper>

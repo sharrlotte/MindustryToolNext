@@ -70,19 +70,22 @@ export function ClientSessionProvider({ session, children }: { session: Session 
   );
 
   const fetchSession = useCallback(() => {
-    axios.get<any, { data: Session }>('/auth/session').then(({ data }) => {
-      if (Date.now() - auth.createdAt < 1000 * 60 * 5) return;
+    axios
+      .get<any, { data: Session }>('/auth/session')
+      .then(({ data }) => {
+        if (Date.now() - auth.createdAt < 1000 * 60 * 5) return;
 
-      if (data) {
-        setSession({
-          session: data,
-          state: 'authenticated',
-          createdAt: Date.now(),
-        });
-      } else {
-        setSession({ state: 'unauthenticated', session: null, createdAt: Date.now() });
-      }
-    });
+        if (data) {
+          setSession({
+            session: data,
+            state: 'authenticated',
+            createdAt: Date.now(),
+          });
+        } else {
+          setSession({ state: 'unauthenticated', session: null, createdAt: Date.now() });
+        }
+      })
+      .catch((error) => console.error(error));
   }, [auth.createdAt, axios]);
 
   useEffect(() => fetchSession(), [axios, setSession, fetchSession]);

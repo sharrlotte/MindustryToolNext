@@ -10,7 +10,7 @@ import axiosInstance from '@/query/config/config';
 
 const EMPTY = {};
 
-const getTranslation = cache((group: string, language: string) =>
+const getClientTranslation = cache((group: string, language: string) =>
   axiosInstance
     .get('/translations', {
       params: {
@@ -22,7 +22,20 @@ const getTranslation = cache((group: string, language: string) =>
     .catch((err) => console.error(err)),
 );
 
-const getCachedTranslation = unstable_cache(getTranslation, ['translations'], { revalidate: 3600 });
+const getServerTranslation = unstable_cache(
+  (group: string, language: string) =>
+    axiosInstance
+      .get('/translations', {
+        params: {
+          group,
+          language,
+        },
+      })
+      .then(({ data }) => data)
+      .catch((err) => console.error(err)),
+  ['translations'],
+  { revalidate: 3600 },
+);
 
 export function useI18n(): TranslateFunction {
   const { currentLocale, translation, setTranslation } = useLocaleStore();
@@ -43,21 +56,24 @@ export function useI18n(): TranslateFunction {
 
       if (value === undefined) {
         try {
-          value = JSON.parse(localStorage.getItem(localStorageKey) ?? 'null');
+          value = JSON.parse(localStorage.getItem(localStorageKey) || 'null');
           keys[group] = value;
         } catch (e) {
           keys[group] = EMPTY;
+          localStorage.removeItem(localStorageKey);
         }
 
         value = keys[group];
 
         if (value === null) {
-          getTranslation(group, currentLocale) //
+          getClientTranslation(group, currentLocale) //
             .then((result) => {
               if (result) {
-                keys[group] = result;
-                setTranslation({ [group]: result });
                 localStorage.setItem(localStorageKey, JSON.stringify(result));
+
+                keys[group] = result;
+
+                setTranslation({ [group]: result });
               }
             });
         }
@@ -84,9 +100,11 @@ export function useI18n(): TranslateFunction {
       const { text, group, key } = extractTranslationKey(translationKey);
 
       try {
-        const data = getCachedTranslation(group, currentLocale);
+        const data = getServerTranslation(group, currentLocale);
         const value = use(data);
         const translated = value[key];
+
+        setTranslation({ [group]: value });
 
         return formatTranslation(translated, args) || text;
       } catch (err) {

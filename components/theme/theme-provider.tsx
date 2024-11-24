@@ -6,7 +6,7 @@ import * as React from 'react';
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
-    <NextThemesProvider defaultTheme="dark" {...props}>
+    <NextThemesProvider enableSystem={false} defaultTheme="dark" {...props}>
       {children}
     </NextThemesProvider>
   );

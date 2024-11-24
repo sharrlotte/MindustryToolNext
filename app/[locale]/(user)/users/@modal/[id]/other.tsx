@@ -46,7 +46,7 @@ export default function Other({ user }: TabProps) {
           </TabsTrigger>
           <TabsTrigger value="post">
             <Tran text="post" />
-          </TabsTrigger>{' '}
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="schematic">
           <div className="relative flex h-full flex-col gap-2">
