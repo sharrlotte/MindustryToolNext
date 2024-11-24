@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 import useToggle from '@/hooks/use-state-toggle';
+import { useToast } from '@/hooks/use-toast';
 import Modal from '@/layout/modal';
 import { cn } from '@/lib/utils';
 
@@ -86,34 +87,43 @@ function Flow() {
 
   const deleteOnClick = useToggle();
   const modal = useToggle();
+  const { toast } = useToast();
 
-  const addNewNode = (type: any) => {
-    const newNode: Node = {
-      id: `${nodeIdCounter}`,
-      type: type,
-      data: { label: 'Node', id: nodeIdCounter },
-      position: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
-    };
-    setNodes((nds) => [...nds, newNode]);
-    setNodeIdCounter((prev) => prev + 1);
-  };
+  const showToast = useCallback(
+    (description: string) => {
+      toast({
+        title: 'Erase mode',
+        description: description,
+        variant: 'success',
+      });
+    },
+    [toast],
+  );
+
+  const addNewNode = useCallback(
+    (type: any) => {
+      const newNode: Node = {
+        id: `${nodeIdCounter}`,
+        type: type,
+        data: { label: 'Node', id: nodeIdCounter },
+        position: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+      };
+      setNodes((nds) => [...nds, newNode]);
+      setNodeIdCounter((prev) => prev + 1);
+    },
+    [nodeIdCounter],
+  );
 
   const customApplyNodeChanges = useCallback((changes: NodeChange[], nodes: Node[]): Node[] => {
-    // reset the helper lines (clear existing lines, if any)
     setHelperLineHorizontal(undefined);
     setHelperLineVertical(undefined);
 
-    // this will be true if it's a single node being dragged
-    // inside we calculate the helper lines and snap position for the position where the node is being moved to
     if (changes.length === 1 && changes[0].type === 'position' && changes[0].dragging && changes[0].position) {
       const helperLines = getHelperLines(changes[0], nodes);
 
-      // if we have a helper line, we snap the node to the helper line position
-      // this is being done by manipulating the node position inside the change object
       changes[0].position.x = helperLines.snapPosition.x ?? changes[0].position.x;
       changes[0].position.y = helperLines.snapPosition.y ?? changes[0].position.y;
 
-      // if helper lines are returned, we set them so that they can be displayed
       setHelperLineHorizontal(helperLines.horizontal);
       setHelperLineVertical(helperLines.vertical);
     }
@@ -125,12 +135,12 @@ function Flow() {
     (changes: NodeChange[]) => {
       setNodes((nodes) => customApplyNodeChanges(changes, nodes));
     },
-    [setNodes, customApplyNodeChanges],
+    [customApplyNodeChanges],
   );
 
-  const onEdgeChange = useCallback((changes: EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds)), [setEdges]);
+  const onEdgeChange = useCallback((changes: EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds)), []);
 
-  const onEdgeConnect = useCallback((params: any) => setEdges((eds) => addEdge({ ...params, animated: true, type: 'smart' }, eds)), [setEdges]);
+  const onEdgeConnect = useCallback((params: any) => setEdges((eds) => addEdge({ ...params, animated: true, type: 'smart' }, eds)), []);
 
   const onNodesDelete = useCallback((deleted: Node[]) => {
     setNodes((nds) => nds.filter((node) => !deleted.some((d) => d.id === node.id)));
@@ -182,10 +192,19 @@ function Flow() {
     [deleteOnClick],
   );
 
+  const memoizedNodeTypes = useMemo(() => nodeTypes, []);
+  const memoizedEdgeTypes = useMemo(() => edgeTypes, []);
+
   return (
     <>
       <div className="m-3 md:m-4 top-0 left-0 absolute flex-col flex z-20">
-        <button className={cn('p-[5px] border border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')} onClick={deleteOnClick.toggle}>
+        <button
+          className={cn('p-[5px] border border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')}
+          onClick={() => {
+            deleteOnClick.toggle();
+            showToast(deleteOnClick.isOpen ? 'Erase mode off' : 'Erase mode on');
+          }}
+        >
           <svg id="icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" className="h-[16px] w-[16px]">
             <defs>
               <style dangerouslySetInnerHTML={{ __html: '.cls-1{fill:none;}' }} />
@@ -219,8 +238,8 @@ function Flow() {
         onConnect={onEdgeConnect}
         onNodesDelete={onNodesDelete}
         onEdgesDelete={onEdgesDelete}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
+        nodeTypes={memoizedNodeTypes}
+        edgeTypes={memoizedEdgeTypes}
         onNodeClick={(event, node) => onNodeClick(event, node)}
         onEdgeClick={onEdgeClick}
         onNodeContextMenu={onNodeContextMenu}
@@ -235,7 +254,7 @@ function Flow() {
       <Modal isOpen={modal.isOpen} onClose={modal.toggle}>
         <div className="p-2 grid grid-cols-2 gap-4 text-center text-white transition-colors">
           <div
-            className="cursor-pointer hover:text-slate-500 "
+            className="cursor-pointer hover:text-slate-500"
             onClick={() => {
               modal.close();
               addNewNode('textUpdater');
