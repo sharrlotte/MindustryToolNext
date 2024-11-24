@@ -2,6 +2,7 @@
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
+import CommentSection from '@/components/common/comment-section';
 import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
 import { LinkIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
@@ -81,6 +82,7 @@ export default function MapDetailCard({ map: { id, name, description, tags, veri
           </ProtectedElement>
         </EllipsisButton>
       </DetailActions>
+      <CommentSection itemId={itemId} />
     </Detail>
   );
 }
