@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
+import { useLocalStorage } from 'usehooks-ts';
 
 import { IconNotification } from '@/components/common/icon-notification';
 import {

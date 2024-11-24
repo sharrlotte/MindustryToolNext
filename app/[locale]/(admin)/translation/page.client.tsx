@@ -308,7 +308,6 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
 }
 
 function AddNewKeyDialog() {
-  const t = useI18n();
   const form = useForm<CreateTranslationRequest>({
     resolver: zodResolver(CreateTranslationSchema),
     defaultValues: {

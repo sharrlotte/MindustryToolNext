@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { serverApi, translate } from '@/action/action';
+import { serverApi } from '@/action/action';
 import Me from '@/app/[locale]/(user)/users/@modal/[id]/me';
 import Other from '@/app/[locale]/(user)/users/@modal/[id]/other';
 import ErrorScreen from '@/components/common/error-screen';

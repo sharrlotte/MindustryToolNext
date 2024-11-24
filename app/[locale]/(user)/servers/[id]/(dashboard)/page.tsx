@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import React, { Fragment, Suspense } from 'react';
 
 import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/check-server-maps';
@@ -127,7 +128,7 @@ export default async function Page({ params }: Props) {
                 <Tran text="server.system-status" />
               </h3>
               <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
-              {<img key={started + ''} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/internal-servers/${id}/image`} />}
+              {<Image key={started + ''} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/internal-servers/${id}/image`} alt={name} width={500} height={500} />}
             </div>
           </div>
           <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
