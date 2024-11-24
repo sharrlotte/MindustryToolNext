@@ -2,6 +2,19 @@ import { MiddlewareConfig, NextRequest, NextResponse, userAgent } from 'next/ser
 
 import { Locale, defaultLocale, locales } from '@/i18n/config';
 
+function getLanguage(acceptLanguage: string | null) {
+  if (!acceptLanguage) return null;
+
+  const languages = acceptLanguage.split(',');
+
+  if (languages.length > 0) {
+    const [language] = languages[0].split('-');
+    return language.toLowerCase();
+  }
+
+  return null;
+}
+
 export function middleware(request: NextRequest) {
   const { isBot } = userAgent(request);
 
@@ -9,16 +22,7 @@ export function middleware(request: NextRequest) {
 
   if (!locale) {
     const headers = request.headers;
-    const acceptedLanguages = headers
-      .get('Accept-Language')
-      ?.split(/[;\-,]/)
-      .filter((lang) => lang) //
-      .map((lang) => lang.toLowerCase().trim()) //
-      .filter((lang) => locales.includes(lang as Locale));
-
-    locale = acceptedLanguages //
-      ? acceptedLanguages[0]
-      : defaultLocale;
+    locale = getLanguage(headers.get('accept-language')) ?? defaultLocale;
   }
 
   if (!locales.includes(locale as Locale)) {
