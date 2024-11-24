@@ -118,6 +118,7 @@ function Flow() {
 
   const onEdgeClick = useCallback(
     (event: React.MouseEvent, edge: Edge) => {
+      event.preventDefault();
       if (deleteOnClick.isOpen) {
         setEdges((eds) => eds.filter((e) => e.id !== edge.id));
       }
@@ -149,7 +150,7 @@ function Flow() {
   return (
     <>
       <div className="m-4 top-0 left-0 absolute flex-col flex z-50">
-        <button className={cn(' p-1.5', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')} onClick={deleteOnClick.toggle}>
+        <button className={cn(' p-[5px] border border-[#eee] border-b-0', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')} onClick={deleteOnClick.toggle}>
           <svg id="icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" className="h-[16px] w-[16px]">
             <defs>
               <style dangerouslySetInnerHTML={{ __html: '.cls-1{fill:none;}' }} />
@@ -163,7 +164,7 @@ function Flow() {
             <rect className="cls-1" data-name="<Transparent Rectangle>" height={32} id="_Transparent_Rectangle_" width={32} />
           </svg>
         </button>
-        <button className="bg-white p-1.5 py-2 flex items-center justify-center" onClick={addNewNode}>
+        <button className="bg-white p-[5px] py-[7px] border-[#eee] border flex items-center justify-center" onClick={addNewNode}>
           <svg version="1.1" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" className="h-[12px] w-[12px]">
             <title />
             <desc />
@@ -195,7 +196,7 @@ function Flow() {
         onEdgesDelete={onEdgesDelete}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        onNodeClick={onNodeClick}
+        onNodeClick={(event, node) => onNodeClick(event, node)}
         onEdgeClick={onEdgeClick}
         onNodeContextMenu={onNodeContextMenu}
         onEdgeContextMenu={onEdgeContextMenu}
