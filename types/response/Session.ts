@@ -1,4 +1,5 @@
 import { Role } from '@/types/response/Role';
+import { UserStats } from '@/types/response/User';
 
 export type Session = {
   id: string;
@@ -9,7 +10,5 @@ export type Session = {
   authorities: string[];
   lastLogin: number;
   createdAt: number;
-  stats: {
-    EXP: number;
-  };
+  stats: UserStats;
 };

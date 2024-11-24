@@ -1,6 +1,14 @@
 import { Authority, Role } from '@/types/response/Role';
 
 export type UserId = '@me' | string;
+
+export type UserStats =
+  | {
+      EXP: number;
+      DOWNLOAD_COUNT: number;
+    }
+  | undefined;
+
 export type User = {
   id: string;
   name: string;
@@ -8,8 +16,5 @@ export type User = {
   thumbnail?: string | null;
   roles: Role[];
   authorities: Authority[];
-  stats?: {
-    EXP: number;
-    DOWNLOAD_COUNT: number;
-  };
+  stats: UserStats;
 };
