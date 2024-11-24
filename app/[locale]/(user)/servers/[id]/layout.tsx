@@ -1,11 +1,10 @@
 'use client';
 
-import { LayoutDashboardIcon } from 'lucide-react';
 import React, { ReactNode, useState } from 'react';
 
 import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
 
-import { CmdIcon, MapIcon, PluginIcon, SettingIcon } from '@/components/common/icons';
+import { CmdIcon, LayoutDashboardIcon, MapIcon, PluginIcon, SettingIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
 import { useSession } from '@/context/session-context.client';

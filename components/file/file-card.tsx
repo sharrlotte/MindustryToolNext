@@ -1,7 +1,8 @@
-import { FileIcon, FolderIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
+import { FileIcon, FolderIcon } from '@/components/common/icons';
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
+
 import { byteToSize } from '@/lib/utils';
 import { ServerFile } from '@/types/response/ServerFile';
 
@@ -24,7 +25,7 @@ export default function FileCard({ file, children, onClick }: Props) {
           if (size <= 5000000) onClick(file);
         }}
       >
-        {directory ? <FolderIcon className="size-5" /> : <FileIcon className="size-5" />}
+        {directory ? <FolderIcon /> : <FileIcon />}
         <span>{name}</span>
         <span className="ml-auto">{byteToSize(size)}</span>
       </ContextMenuTrigger>

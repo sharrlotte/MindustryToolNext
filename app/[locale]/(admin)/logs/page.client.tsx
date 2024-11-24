@@ -1,13 +1,12 @@
 'use client';
 
-import { FilterIcon } from 'lucide-react';
 import React, { FormEvent, Fragment, useRef, useState } from 'react';
 import { z } from 'zod';
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
-import { XIcon } from '@/components/common/icons';
+import { FilterIcon, XIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';

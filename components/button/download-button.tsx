@@ -1,8 +1,9 @@
 'use client';
 
 import { saveAs } from 'file-saver';
-import { ArrowDownToLine } from 'lucide-react';
 import { HTMLAttributes, useState } from 'react';
+
+import { DownloadIcon } from '@/components/common/icons';
 
 import useClientApi from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
@@ -30,10 +31,7 @@ export default function DownloadButton({ className, href, fileName, secure, chil
 
   return (
     <a
-      className={cn(
-        'flex text-base gap-2 min-h-8 items-center transition-colors justify-center rounded-md border border-border hover:bg-brand hover:text-background hover:dark:text-foreground',
-        className,
-      )}
+      className={cn('flex text-base gap-2 min-h-8 items-center transition-colors justify-center rounded-md border border-border hover:bg-brand hover:text-background hover:dark:text-foreground', className)}
       {...props}
       href={href}
       download={fileName ?? true}
@@ -43,7 +41,7 @@ export default function DownloadButton({ className, href, fileName, secure, chil
         setDownloaded(true);
       }}
     >
-      <ArrowDownToLine className="size-5" />
+      <DownloadIcon />
       {count}
     </a>
   );
@@ -77,7 +75,7 @@ function SecureDownloadButton({ className, fileName, href, children }: SecureDow
           </svg>
         </div>
       ) : (
-        <div onClick={() => mutate()}>{children || <ArrowDownToLine className="size-5" />}</div>
+        <div onClick={() => mutate()}>{children || <DownloadIcon />}</div>
       )}
     </div>
   );

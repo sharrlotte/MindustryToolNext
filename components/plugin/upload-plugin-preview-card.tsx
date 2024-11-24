@@ -1,18 +1,19 @@
 'use client';
 
-import { CheckIcon, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import DeleteButton from '@/components/button/delete-button';
 import { Hidden } from '@/components/common/hidden';
+import { CheckIcon, ExternalLinkIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import IdUserCard from '@/components/user/id-user-card';
+
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -66,7 +67,7 @@ function InternalUploadPluginCard({ plugin }: Props) {
   return (
     <div className="minh-28 relative flex flex-col gap-2 rounded-md bg-card p-2">
       <Link className="absolute right-1 top-1 m-1 border-none" href={githubUrl}>
-        <ExternalLink className="size-5" />
+        <ExternalLinkIcon />
       </Link>
       <h2>{name}</h2>
       <span>{description}</span>
@@ -135,7 +136,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="flex h-9 w-full items-center justify-center rounded-md border p-0 hover:bg-success" variant="outline" title="verify">
-          <CheckIcon className="size-5" />
+          <CheckIcon />
         </Button>
       </DialogTrigger>
       <DialogContent>

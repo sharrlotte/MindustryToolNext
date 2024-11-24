@@ -1,6 +1,5 @@
 'use client';
 
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
@@ -14,6 +13,7 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } fro
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
+import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 
 type Props = {
   numberOfItems?: number;

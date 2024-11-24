@@ -1,9 +1,10 @@
-import { LinkIcon } from 'lucide-react';
 import React, { HTMLAttributes } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
+import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import IdUserCard from '@/components/user/id-user-card';
+
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 import { Post } from '@/types/response/Post';
@@ -29,7 +30,7 @@ function InternalPostPreviewCard({ className, post, ...rest }: PostPreviewCardPr
           </div>
           <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
             <CopyButton data={link} content={link}>
-              <LinkIcon className="size-5" />
+              <LinkIcon />
             </CopyButton>
           </div>
         </div>

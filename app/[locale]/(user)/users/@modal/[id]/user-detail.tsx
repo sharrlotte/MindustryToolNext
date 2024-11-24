@@ -66,9 +66,11 @@ export default function UserDetail({ user }: Props) {
             </div>
             {currentExp}/{levelUpExp}
           </div>
+          <span className="flex gap-1">
+            <Tran text="user.download-count" />
+            {downloadCount}
+          </span>
         </div>
-        <Tran text="user.download-count" />
-        {downloadCount}
       </div>
     </div>
   );

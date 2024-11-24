@@ -1,6 +1,5 @@
 'use client';
 
-import { UploadIcon, UserIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -24,6 +23,7 @@ import { omit } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Map } from '@/types/response/Map';
+import { UploadIcon, UserIcon } from '@/components/common/icons';
 
 type Props = {
   maps: Map[];

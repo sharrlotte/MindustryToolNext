@@ -1,8 +1,8 @@
-import { UploadIcon } from 'lucide-react';
 import React from 'react';
 
 import Tran from '@/components/common/tran';
 import { cn } from '@/lib/utils';
+import { UploadIcon } from '@/components/common/icons';
 
 type Props = {
   className?: string;

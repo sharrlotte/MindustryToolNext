@@ -1,9 +1,9 @@
 'use client';
 
 import { VariantProps, cva } from 'class-variance-authority';
-import { Copy } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
+import { CopyIcon } from '@/components/common/icons';
 import { Button, ButtonProps } from '@/components/ui/button';
 
 import useClipboard from '@/hooks/use-clipboard';
@@ -50,7 +50,7 @@ export default function CopyButton({ className, title, content, data, children, 
 
   return (
     <Button className={cn(copyButtonVariants({ className, variant, position }))} title="copy" variant="ghost" {...props} onClick={handleClick}>
-      {children ?? <Copy className="size-5 text-foreground group group-hover/copy-button:text-background dark:group-hover/copy-button:text-foreground" strokeWidth="1.5px" />}
+      {children ?? <CopyIcon className="size-5 text-foreground group group-hover/copy-button:text-background dark:group-hover/copy-button:text-foreground" />}
     </Button>
   );
 }

@@ -1,12 +1,13 @@
 'use client';
 
-import { LogIn } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { ReactNode, useLayoutEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
+import { LoginIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
+
 import { cn } from '@/lib/utils';
 
 const ignored = ['login'];
@@ -27,7 +28,7 @@ export default function LoginButton({ className, children }: { className?: strin
     <InternalLink className={cn('flex w-full items-center justify-center gap-1 rounded-md bg-brand p-2 text-sm', className)} href="/auth/login">
       {children || (
         <>
-          <LogIn className="size-5" />
+          <LoginIcon className="size-5" />
           <Tran text="login" />
         </>
       )}

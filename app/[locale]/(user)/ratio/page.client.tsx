@@ -1,6 +1,5 @@
 'use client';
 
-import { ChevronsUpDownIcon } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
@@ -10,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { ChevronsUpDownIcon } from '@/components/common/icons';
 
 type Tree = {
   factory: Factory;

@@ -1,10 +1,10 @@
 'use client';
 
-import { SearchIcon } from 'lucide-react';
 import React, { HTMLAttributes } from 'react';
 
 import { useI18n } from '@/i18n/client';
 import { cn } from '@/lib/utils';
+import { SearchIcon } from '@/components/common/icons';
 
 type SearchProps = HTMLAttributes<HTMLDivElement>;
 

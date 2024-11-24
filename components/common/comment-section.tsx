@@ -1,8 +1,8 @@
-import { ArrowUpDownIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import ComboBox from '@/components/common/combo-box';
+import { ArrowUpDownIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import Markdown from '@/components/common/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
@@ -51,12 +51,7 @@ export default function CommentSection({ itemId }: CommentSectionProps) {
         <Tran text="comments" />
         <div className="flex gap-2 justify-center items-center">
           <ArrowUpDownIcon className="size-4" />
-          <ComboBox
-            className="bg-transparent min-w-0 w-fit p-0 hover:bg-transparent"
-            searchBar={false}
-            values={commentSorts.map((value) => ({ label: value, value: value as CommentSort }))}
-            onChange={(value) => setSort(value ?? 'newest')}
-          />
+          <ComboBox className="bg-transparent min-w-0 w-fit p-0 hover:bg-transparent" searchBar={false} values={commentSorts.map((value) => ({ label: value, value: value as CommentSort }))} onChange={(value) => setSort(value ?? 'newest')} />
         </div>
       </div>
       <CommentInput itemId={itemId} />
@@ -107,7 +102,7 @@ function CommandCard({ comment }: CommandCardProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex w-full gap-2 text-wrap items-center text-xs">
-        {data ? <UserAvatar user={data} /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
+        {data ? <UserAvatar user={data} url /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
         <div className="overflow-hidden">
           <div className="flex gap-2">
             {data ? (

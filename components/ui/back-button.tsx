@@ -1,8 +1,8 @@
 'use client';
 
-import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+import { BackIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button, ButtonProps } from '@/components/ui/button';
 
@@ -11,7 +11,7 @@ export default function BackButton({ children, ...props }: Omit<ButtonProps, 'ti
 
   children = children ?? (
     <>
-      <ArrowLeft className="h-5 w-5" />
+      <BackIcon className="size-5" />
       <Tran text="back" />
     </>
   );

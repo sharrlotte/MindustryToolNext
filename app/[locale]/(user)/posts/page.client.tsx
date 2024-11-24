@@ -1,6 +1,5 @@
 'use client';
 
-import { UploadIcon, UserIcon } from 'lucide-react';
 import { useRef } from 'react';
 
 import InfinitePage from '@/components/common/infinite-page';
@@ -18,6 +17,7 @@ import ProtectedElement from '@/layout/protected-element';
 import { getPosts } from '@/query/post';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Post } from '@/types/response/Post';
+import { UploadIcon, UserIcon } from '@/components/common/icons';
 
 type Props = {
   posts: Post[];

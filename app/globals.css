@@ -40,7 +40,7 @@
 
     --success: 150 73% 55%;
     --warning: 60 100% 55%;
-    
+
     --brand: 160 84.1% 39.4%;
   }
 
@@ -175,5 +175,9 @@
   [contenteditable='true']:empty:not(:focus):before {
     content: attr(data-placeholder);
     @apply text-muted-foreground;
+  }
+
+  .lucide {
+    @apply size-5 stroke-2;
   }
 }

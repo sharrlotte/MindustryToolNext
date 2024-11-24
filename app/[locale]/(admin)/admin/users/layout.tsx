@@ -1,11 +1,11 @@
 'use client';
 
-import { BellIcon, GanttChart, Users } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 import React from 'react';
 
 import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
 
+import { GanttChartIcon, NotificationIcon, UsersIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
 import { useSession } from '@/context/session-context.client';
@@ -23,21 +23,21 @@ const links: {
     id: 'dashboard',
     href: '',
     label: <Tran text="manage" />,
-    icon: <GanttChart className="size-5" />,
+    icon: <GanttChartIcon />,
     filter: { authority: 'EDIT_USER_AUTHORITY' },
   },
   {
     id: 'role',
     href: 'roles',
     label: <Tran text="role" />,
-    icon: <Users className="size-5" />,
+    icon: <UsersIcon />,
     filter: { authority: 'EDIT_ROLE_AUTHORITY' },
   },
   {
     id: 'notification',
     href: 'notifications',
     label: <Tran text="notification" />,
-    icon: <BellIcon className="size-5" />,
+    icon: <NotificationIcon />,
     filter: { authority: 'CREATE_NOTIFICATION' },
   },
 ];
