@@ -12,7 +12,6 @@ import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import { Input } from '@/components/ui/input';
 
-import { UserRole } from '@/constant/enum';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';

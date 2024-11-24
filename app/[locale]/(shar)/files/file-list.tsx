@@ -54,7 +54,11 @@ export default function FileList({ path, filter, setFilePath }: FileListProps) {
   }
 
   if (isFetching) {
-    return <Skeletons number={10} children={<Skeleton className="h-10 w-full rounded-md" />} />;
+    return (
+      <Skeletons number={10}>
+        <Skeleton className="h-10 w-full rounded-md" />
+      </Skeletons>
+    );
   }
 
   if (!data) {

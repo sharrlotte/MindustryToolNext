@@ -4,10 +4,12 @@ import React, { FormEvent, KeyboardEvent, useState } from 'react';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import useSearchId from '@/hooks/use-search-id-params';
@@ -21,22 +23,15 @@ export default function ServerConsolePage() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_2.5rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden">
-        <div className="flex h-full flex-col gap-1 overflow-y-auto overflow-x-hidden bg-background">
+        <div className="flex h-full flex-col gap-1 overflow-x-hidden bg-background">
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto" />
           ) : (
-            <div className="flex h-full w-full overflow-y-auto overflow-x-hidden" ref={(ref) => setContainer(ref)}>
-              <MessageList
-                className="flex h-full flex-col gap-1"
-                queryKey={['servers', id, 'messages']}
-                room={`SERVER-${id}`}
-                container={() => container}
-                params={{ size: 50 }}
-                showNotification={false}
-              >
+            <ScrollContainer className="flex h-full w-full overflow-x-hidden" ref={(ref) => setContainer(ref)}>
+              <MessageList className="flex h-full flex-col gap-1" queryKey={['servers', id, 'messages']} room={`SERVER-${id}`} container={() => container} params={{ size: 50 }} showNotification={false}>
                 {(data) => <MessageCard key={data.id} message={data} />}
               </MessageList>
-            </div>
+            </ScrollContainer>
           )}
         </div>
       </div>
@@ -108,13 +103,7 @@ function ChatInput({ id }: ChatInputProps) {
   }
   return (
     <form className="flex h-full flex-1 gap-1" name="text" onSubmit={handleFormSubmit}>
-      <Input
-        className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none"
-        value={message}
-        placeholder="/help"
-        onKeyDown={handleKeyPress}
-        onChange={(event) => setMessage(event.currentTarget.value)}
-      />
+      <Input className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none" value={message} placeholder="/help" onKeyDown={handleKeyPress} onChange={(event) => setMessage(event.currentTarget.value)} />
       <Button className="h-full" variant="primary" type="submit" title="send" disabled={state !== 'connected' || !message}>
         <Tran text="send" />
       </Button>

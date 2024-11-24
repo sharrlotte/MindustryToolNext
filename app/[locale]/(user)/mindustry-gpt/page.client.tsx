@@ -24,7 +24,7 @@ const url = `${env.url.api}/mindustry-gpt/chat`;
 export default function GptPage() {
   const { session } = useSession();
 
-  const [submit, { data, isPending, isLoading }] = useMindustryGpt({
+  const [submit, { data, isPending }] = useMindustryGpt({
     url,
   });
 

@@ -5,7 +5,7 @@ import React, { ReactNode, useMemo } from 'react';
 import { cn, getColor } from '@/lib/utils';
 
 
-const COLOR_REGEX = /\[([#a-zA-Z0-9]*)\]|\u001b\[([0-9]+)m/g;
+const COLOR_REGEX = /\[([#a-zA-Z0-9]*)\]|\\u001b\[([0-9]+)m/g;
 
 type ColorTextProps = {
   text?: string;
