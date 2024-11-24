@@ -159,6 +159,13 @@ const colours: Record<string, string> = {
   yellowgreen: '#9acd32',
   accent: 'yellow',
   '': 'white',
+  //ANSI color codes
+  '31': 'red',
+  '32': 'green',
+  '33': 'yellow',
+  '34': 'blue',
+  '35': 'magenta',
+  '36': 'cyan',
 };
 
 export type GroupBy<T> = {
