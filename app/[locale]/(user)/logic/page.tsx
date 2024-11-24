@@ -36,7 +36,7 @@ import {
   UnitRadarNode,
   WaitNode,
   WriteNode,
-} from './nodes/TextUpdaterNode';
+} from './nodes/NodeTypes';
 import initialNodes from './nodes/nodes';
 import './style.css';
 import { getHelperLines } from './utils';

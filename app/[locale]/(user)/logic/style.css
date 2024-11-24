@@ -1,8 +1,10 @@
-/* .react-flow__minimap {
-  top: 0;
-  bottom: unset !important;
-} */
-
+.react-flow__handle {
+  height: 8px;
+  width: 8px;
+}
+.react-flow__minimap {
+  border: 1px solid #eee;
+}
 @media (max-width: 768px) {
   .react-flow__panel {
     margin: 12px;
@@ -10,5 +12,15 @@
   .react-flow__panel svg {
     width: 150px;
     height: 100px;
+  }
+  .react-flow__minimap {
+    top: 0;
+    bottom: unset !important;
+  }
+}
+@media (max-width: 425px) {
+  .react-flow__panel svg {
+    width: 125px;
+    height: 75px;
   }
 }

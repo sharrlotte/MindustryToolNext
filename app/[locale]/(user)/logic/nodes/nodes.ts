@@ -37,12 +37,6 @@ const initialNodes: Node[] = [
     type: 'textUpdater',
     position: { x: 450, y: 400 },
   },
-  {
-    id: '7',
-    data: {},
-    type: 'setNode',
-    position: { x: 100, y: 500 },
-  },
 ];
 
 const nodes = initialNodes.map((node) => ({
