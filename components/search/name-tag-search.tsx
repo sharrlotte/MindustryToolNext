@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { XIcon } from '@/components/common/icons';
+import { FilterIcon, XIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import Tran from '@/components/common/tran';
 import Search from '@/components/search/search-input';
