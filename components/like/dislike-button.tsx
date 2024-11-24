@@ -1,8 +1,8 @@
 'use client';
 
-import { ThumbsDownIcon } from 'lucide-react';
-
+import { DislikeIcon } from '@/components/common/icons';
 import { ButtonProps } from '@/components/ui/button';
+
 import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
 
@@ -13,19 +13,15 @@ export default function DislikeButton({ className, ...props }: LikeButtonProps) 
 
   return (
     <button
-      className={cn(
-        'flex h-9 min-w-9 transition-colors items-center justify-center rounded-md border border-border p-2 hover:bg-destructive hover:text-background dark:hover:text-foreground',
-        className,
-        {
-          'bg-destructive text-background dark:text-foreground': likeData?.state === -1,
-        },
-      )}
+      className={cn('flex h-9 min-w-9 transition-colors items-center justify-center rounded-md border border-border p-2 hover:bg-destructive hover:text-background dark:hover:text-foreground', className, {
+        'bg-destructive text-background dark:text-foreground': likeData?.state === -1,
+      })}
       {...props}
       title={'dislike'}
       disabled={isLoading}
       onClick={() => handleAction('DISLIKE')}
     >
-      <ThumbsDownIcon className="size-5" />
+      <DislikeIcon className="size-5" />
     </button>
   );
 }

@@ -1,12 +1,10 @@
 'use client';
 
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
-import { GridLayout } from '@/components/common/pagination-layout';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -15,6 +13,7 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } fro
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
+import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 
 type Props = {
   numberOfItems?: number;
@@ -92,7 +91,6 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
   prevPath.set('page', previousPage.toString());
 
   return (
-    <GridLayout>
       <Pagination>
         <PaginationContent>
           <PaginationItem>
@@ -201,6 +199,5 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
         <Link href={`?${prevPath.toString()}`} />
         <Link href={`?${nextPath.toString()}`} prefetch />
       </Pagination>
-    </GridLayout>
   );
 }

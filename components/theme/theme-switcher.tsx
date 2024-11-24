@@ -1,9 +1,9 @@
 'use client';
 
-import { MoonIcon, SunIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import * as React from 'react';
 
+import { MoonIcon, SunIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Switch } from '@/components/ui/switch';
 

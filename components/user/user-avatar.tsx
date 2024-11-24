@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 import InternalLink from '@/components/common/internal-link';
+
 import { cn } from '@/lib/utils';
 
 const colorArray = [
@@ -61,7 +62,7 @@ const colorArray = [
 
 type UserAvatarProps = {
   className?: string;
-  url?: string;
+  url?: string | boolean;
   user: {
     name?: string | null;
     id: string;
@@ -71,9 +72,17 @@ type UserAvatarProps = {
 };
 
 export default function UserAvatar({ className, url, user }: UserAvatarProps) {
-  if (url) {
+  if (typeof url === 'string') {
     return (
       <InternalLink className="cursor-pointer" href={url}>
+        <AvatarImage className={className} user={user} />
+      </InternalLink>
+    );
+  }
+
+  if (url === true) {
+    return (
+      <InternalLink className="cursor-pointer" href={`/users/${user.id}`}>
         <AvatarImage className={className} user={user} />
       </InternalLink>
     );

@@ -1,6 +1,5 @@
 'use client';
 
-import { TrashIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
 import Tran from '@/components/common/tran';
@@ -16,6 +15,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { TrashIcon } from '@/components/common/icons';
 
 type TakeDownButtonProps = {
   isLoading: boolean;

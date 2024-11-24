@@ -174,7 +174,7 @@ export default class SocketClient {
           }
         }
       } catch (error) {
-        console.error('Error processing message:', error);
+        //
       }
     };
 

@@ -1,29 +1,19 @@
 'use client';
 
-import { BellIcon } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { Hidden } from '@/components/common/hidden';
 import { IconNotification } from '@/components/common/icon-notification';
+import { NotificationIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import Markdown from '@/components/common/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
 import { useSession } from '@/context/session-context.client';
@@ -54,18 +44,23 @@ export default function NotificationDialog() {
         <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
           <NotificationDialogButton expand={expand} />
         </DialogTrigger>
-        <DialogContent className="p-6 max-h-full flex flex-col">
-          <DialogTitle>
+        <DialogContent className="p-6 max-h-full flex flex-col" closeButton={false}>
+          <DialogTitle className="flex items-center justify-between w-full">
             <Tran className="text-2xl" text="notification" />
+            <EllipsisButton variant="ghost">
+              <MarkAsReadAllButton />
+              <DeleteAllButton />
+            </EllipsisButton>
           </DialogTitle>
           <Hidden>
             <DialogDescription>This is a notification dialog.</DialogDescription>
           </Hidden>
           <NotificationContent />
-          <DialogFooter className="flex gap-2 flex-wrap justify-end">
-            <DeleteAllButton />
-            <MarkAsReadAllButton />
-          </DialogFooter>
+          <DialogClose asChild>
+            <Button className='ml-auto' variant="secondary">
+              <Tran text="close" />
+            </Button>
+          </DialogClose>
         </DialogContent>
       </Dialog>
     </ProtectedElement>
@@ -102,7 +97,7 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
   return (
     <>
       <IconNotification number={data}>
-        <BellIcon className="size-5" />
+        <NotificationIcon />
       </IconNotification>
       {expand && <Tran text="notification" />}
     </>
@@ -112,13 +107,7 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
 function NotificationContent() {
   return (
     <ScrollContainer className="border-t">
-      <InfinitePage
-        className="gap-2 flex flex-col divide-y"
-        queryKey={['notifications']}
-        params={{ page: 0, size: 30 }}
-        queryFn={getMyNotifications}
-        noResult={<Tran text="notification.no-notification" />}
-      >
+      <InfinitePage className="gap-2 flex flex-col divide-y" queryKey={['notifications']} params={{ page: 0, size: 30 }} queryFn={getMyNotifications} noResult={<Tran text="notification.no-notification" />}>
         {(notification) => <NotificationCard key={notification.id} notification={notification} />}
       </InfinitePage>
     </ScrollContainer>
@@ -261,7 +250,7 @@ function DeleteAllButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="min-w-20" title="Delete" variant="destructive">
+        <Button className="min-w-20" title="Delete" variant="command-destructive">
           <Tran text="notification.delete-all" />
         </Button>
       </AlertDialogTrigger>
@@ -278,7 +267,7 @@ function DeleteAllButton() {
           <AlertDialogCancel>
             <Tran text="cancel" />
           </AlertDialogCancel>
-          <AlertDialogAction disabled={isPending} onClick={() => mutate()}>
+          <AlertDialogAction variant="destructive" disabled={isPending} onClick={() => mutate()}>
             <Tran text="delete" />
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -316,7 +305,7 @@ function MarkAsReadAllButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="min-w-20" title="Delete">
+        <Button className="min-w-20" variant='command' title="Delete">
           <Tran text="notification.mark-as-read-all" />
         </Button>
       </AlertDialogTrigger>
@@ -333,8 +322,8 @@ function MarkAsReadAllButton() {
           <AlertDialogCancel>
             <Tran text="cancel" />
           </AlertDialogCancel>
-          <AlertDialogAction disabled={isPending} onClick={() => mutate()}>
-            <Tran text="delete" />
+          <AlertDialogAction variant="secondary" disabled={isPending} onClick={() => mutate()}>
+            <Tran text="notification.mark-as-read-all" />
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

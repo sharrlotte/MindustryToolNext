@@ -30,6 +30,7 @@ const getServerTranslation = unstable_cache(
           group,
           language,
         },
+        timeout: 1000,
       })
       .then(({ data }) => data)
       .catch((err) => console.error(err)),

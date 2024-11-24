@@ -4,7 +4,6 @@ import { ChangeRoleDialog } from '@/app/[locale]/(admin)/admin/users/change-role
 import UserManagementActionButton from '@/app/[locale]/(admin)/admin/users/user-management-action-button';
 
 import CopyButton from '@/components/button/copy-button';
-import Divider from '@/components/ui/divider';
 import UserAvatar from '@/components/user/user-avatar';
 
 import { User } from '@/types/response/User';

@@ -4,6 +4,10 @@ import { useCallback, useState } from 'react';
 import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 
+import useToggle from '@/hooks/use-state-toggle';
+import Modal from '@/layout/modal';
+import { cn } from '@/lib/utils';
+
 import { SmartBezierEdge } from '@tisoap/react-flow-smart-edge';
 
 import initialEdges from './edge/edge';
@@ -71,14 +75,16 @@ export default function Page() {
 function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
-  const [deleteOnClick, setDeleteOnClick] = useState(false);
   const [nodeIdCounter, setNodeIdCounter] = useState(initialNodes.length + 1);
 
-  const addNewNode = () => {
+  const deleteOnClick = useToggle();
+  const modal = useToggle();
+
+  const addNewNode = (type: any) => {
     const newNode: Node = {
-      id: `node_${nodeIdCounter}`,
-      type: 'textUpdater',
-      data: { label: 'New Node', value: '' },
+      id: `${nodeIdCounter}`,
+      type: type,
+      data: { label: 'Node', id: nodeIdCounter },
       position: { x: Math.random() * 400, y: Math.random() * 400 },
     };
     setNodes((nds) => [...nds, newNode]);
@@ -102,7 +108,7 @@ function Flow() {
 
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: Node) => {
-      if (deleteOnClick) {
+      if (deleteOnClick.isOpen) {
         setNodes((nds) => nds.filter((n) => n.id !== node.id));
         setEdges((eds) => eds.filter((e) => e.source !== node.id && e.target !== node.id));
       }
@@ -112,7 +118,8 @@ function Flow() {
 
   const onEdgeClick = useCallback(
     (event: React.MouseEvent, edge: Edge) => {
-      if (deleteOnClick) {
+      event.preventDefault();
+      if (deleteOnClick.isOpen) {
         setEdges((eds) => eds.filter((e) => e.id !== edge.id));
       }
     },
@@ -122,7 +129,7 @@ function Flow() {
   const onNodeContextMenu = useCallback(
     (event: React.MouseEvent, node: Node) => {
       event.preventDefault();
-      if (!deleteOnClick) {
+      if (!deleteOnClick.isOpen) {
         setNodes((nds) => nds.filter((n) => n.id !== node.id));
         setEdges((eds) => eds.filter((e) => e.source !== node.id && e.target !== node.id));
       }
@@ -133,7 +140,7 @@ function Flow() {
   const onEdgeContextMenu = useCallback(
     (event: React.MouseEvent, edge: Edge) => {
       event.preventDefault();
-      if (!deleteOnClick) {
+      if (!deleteOnClick.isOpen) {
         setEdges((eds) => eds.filter((e) => e.id !== edge.id));
       }
     },
@@ -142,12 +149,39 @@ function Flow() {
 
   return (
     <>
-      <button className="absolute z-50" onClick={() => setDeleteOnClick((prev) => !prev)}>
-        {deleteOnClick ? 'Disable Delete on touch' : 'Enable Delete on touch'}
-      </button>
-      <button className="absolute z-50 top-10" onClick={addNewNode}>
-        Add New Node
-      </button>
+      <div className="m-4 top-0 left-0 absolute flex-col flex z-50">
+        <button className={cn(' p-[5px] border border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')} onClick={deleteOnClick.toggle}>
+          <svg id="icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" className="h-[16px] w-[16px]">
+            <defs>
+              <style dangerouslySetInnerHTML={{ __html: '.cls-1{fill:none;}' }} />
+            </defs>
+            <title />
+            <rect height={2} width={23} x={7} y={27} />
+            <path
+              d="M27.38,10.51,19.45,2.59a2,2,0,0,0-2.83,0l-14,14a2,2,0,0,0,0,2.83L7.13,24h9.59L27.38,13.34A2,2,0,0,0,27.38,10.51ZM15.89,22H8L4,18l6.31-6.31,7.93,7.92Zm3.76-3.76-7.92-7.93L18,4,26,11.93Z"
+              transform="translate(0 0)"
+            />
+            <rect className="cls-1" data-name="<Transparent Rectangle>" height={32} id="_Transparent_Rectangle_" width={32} />
+          </svg>
+        </button>
+        <button className="bg-white p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center" onClick={modal.open}>
+          <svg version="1.1" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" className="h-[12px] w-[12px]">
+            <title />
+            <desc />
+            <defs />
+            <g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="{1}">
+              <g fill="#000000" id="Core" transform="translate(-213.000000, -129.000000)">
+                <g id="create" transform="translate(213.000000, 129.000000)">
+                  <path
+                    d="M0,14.2 L0,18 L3.8,18 L14.8,6.9 L11,3.1 L0,14.2 L0,14.2 Z M17.7,4 C18.1,3.6 18.1,3 17.7,2.6 L15.4,0.3 C15,-0.1 14.4,-0.1 14,0.3 L12.2,2.1 L16,5.9 L17.7,4 L17.7,4 Z"
+                    id="Shape"
+                  />
+                </g>
+              </g>
+            </g>
+          </svg>
+        </button>
+      </div>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -158,7 +192,7 @@ function Flow() {
         onEdgesDelete={onEdgesDelete}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        onNodeClick={onNodeClick}
+        onNodeClick={(event, node) => onNodeClick(event, node)}
         onEdgeClick={onEdgeClick}
         onNodeContextMenu={onNodeContextMenu}
         onEdgeContextMenu={onEdgeContextMenu}
@@ -167,6 +201,28 @@ function Flow() {
         <Controls />
         <Background />
       </ReactFlow>
+      <Modal isOpen={modal.isOpen} onClose={modal.toggle}>
+        <div className="p-2 grid grid-cols-2 gap-4 text-center text-white transition-colors">
+          <div
+            className="cursor-pointer hover:text-slate-500 "
+            onClick={() => {
+              modal.close();
+              addNewNode('textUpdater');
+            }}
+          >
+            Custom
+          </div>
+          <div
+            className="cursor-pointer hover:text-slate-500"
+            onClick={() => {
+              modal.close();
+              addNewNode('setNode');
+            }}
+          >
+            Set
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }

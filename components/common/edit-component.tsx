@@ -1,7 +1,7 @@
-import { CheckIcon, PencilIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { Button, ButtonProps } from '@/components/ui/button';
+import { CheckIcon, EditIcon } from '@/components/common/icons';
 
 type ContextType = {
   open: boolean;
@@ -44,7 +44,7 @@ export function EditTrigger({ children, ...props }: ButtonProps) {
 
   return (
     <Button variant="icon" {...props} onClick={handleOpen}>
-      {children || <PencilIcon className="size-4" />}
+      {children || <EditIcon className="size-4" />}
     </Button>
   );
 }

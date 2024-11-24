@@ -1,8 +1,8 @@
-import { LayoutGridIcon, ListIcon } from 'lucide-react';
 import { ReactNode } from 'react';
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { usePaginationType } from '@/zustand/pagination-type-store';
+import { LayoutGridIcon, LayoutListIcon } from '@/components/common/icons';
 
 type Props = {
   children: ReactNode;
@@ -17,7 +17,7 @@ export function PaginationLayoutSwitcher() {
         <LayoutGridIcon className="size-5" />
       </ToggleGroupItem>
       <ToggleGroupItem value="infinite-scroll" title="infinite scroll">
-        <ListIcon className="size-5" />
+        <LayoutListIcon className="size-5" />
       </ToggleGroupItem>
     </ToggleGroup>
   );
