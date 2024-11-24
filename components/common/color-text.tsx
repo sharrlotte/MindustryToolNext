@@ -101,7 +101,7 @@ function render(text?: string) {
 
     if (color.startsWith('[')) {
       color = color.substring(1, color.length - 1);
-      color.startsWith('#') ? color.padEnd(7, '0') : getColor(color);
+      color = color.startsWith('#') ? color.padEnd(7, '0') : getColor(color);
 
       format = {
         foreground: color,
