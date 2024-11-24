@@ -8,7 +8,7 @@ class ApiTransport extends Transport {
 
   log(info, callback) {
     setImmediate(() => {
-      this.emit('logged', info);
+      this.emit('logged', info + '\n');
     });
 
     fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/error', {
