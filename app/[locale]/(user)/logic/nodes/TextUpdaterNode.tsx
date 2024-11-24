@@ -27,7 +27,14 @@ export const TextUpdaterNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnec
           <p>{data.label}:</p>
           <p>{data.id}</p>
         </div>
-        <input value={data.value} className="nodrag bg-black text-white block w-full rounded border-0 px-3 py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" />
+        <div className="bg-black rounded px-3 min-w-[150px]" onClick={() => document.getElementById(`input-${data.id}`)?.focus()}>
+          <input
+            id={`input-${data.id}`}
+            value={data.value}
+            className="nodrag bg-black text-white block w-full rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none"
+            onChange={adjustInputWidth}
+          />
+        </div>
       </div>
       <Handle type="source" position={Position.Bottom} id="b" isConnectable={isConnectable} />
     </div>
@@ -64,16 +71,18 @@ export const SetNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable })
           <p>{data.id}</p>
         </div>
         <div className="bg-black flex items-center rounded">
-          <div className="px-3">
+          <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
             <input
+              id={`input-left-${data.id}`}
               type="text"
               className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none"
               onChange={adjustInputWidth}
             />
           </div>
           <p className="text-white">=</p>
-          <div className="px-3">
+          <div className="px-3" onClick={() => document.getElementById(`input-right-${data.id}`)?.focus()}>
             <input
+              id={`input-right-${data.id}`}
               type="text"
               className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none"
               onChange={adjustInputWidth}
