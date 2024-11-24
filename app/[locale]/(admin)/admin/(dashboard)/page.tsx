@@ -38,7 +38,7 @@ export default async function Page() {
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);
 
   return (
-    <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto overflow-x-hidden bg-background p-2">
+    <ScrollContainer className="flex h-full w-full flex-col gap-2 bg-background p-2">
       <div className="flex w-full flex-wrap gap-2">
         <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
           <Suspense fallback={<ChartSkeleton className="col-span-2" />}>

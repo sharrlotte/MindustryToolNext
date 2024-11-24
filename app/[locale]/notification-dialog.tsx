@@ -57,7 +57,7 @@ export default function NotificationDialog() {
           </Hidden>
           <NotificationContent />
           <DialogClose asChild>
-            <Button className='ml-auto' variant="secondary">
+            <Button className="ml-auto" variant="secondary">
               <Tran text="close" />
             </Button>
           </DialogClose>
@@ -134,13 +134,15 @@ function NotificationCard({ notification }: NotificationCardProps) {
             </div>
           </div>
         </DialogTrigger>
-        <DialogContent className="p-4 overflow-y-auto max-h-full max-w-full w-fit min-w-[min(30rem,100%)] overflow-x-hidden">
-          <DialogTitle className="font-bold text-2xl">{title}</DialogTitle>
-          <DialogDescription />
-          <Markdown className="text-muted-foreground">{content}</Markdown>
-          <DialogFooter>
-            <RelativeTime className="text-nowrap text-muted-foreground" date={new Date(createdAt)} />
-          </DialogFooter>
+        <DialogContent asChild>
+          <ScrollContainer className="p-4 max-h-full max-w-full w-fit min-w-[min(30rem,100%)]">
+            <DialogTitle className="font-bold text-2xl">{title}</DialogTitle>
+            <DialogDescription />
+            <Markdown className="text-muted-foreground">{content}</Markdown>
+            <DialogFooter>
+              <RelativeTime className="text-nowrap text-muted-foreground" date={new Date(createdAt)} />
+            </DialogFooter>
+          </ScrollContainer>
         </DialogContent>
       </Dialog>
       <EllipsisButton variant="icon">
@@ -305,7 +307,7 @@ function MarkAsReadAllButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="min-w-20" variant='command' title="Delete">
+        <Button className="min-w-20" variant="command" title="Delete">
           <Tran text="notification.mark-as-read-all" />
         </Button>
       </AlertDialogTrigger>

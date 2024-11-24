@@ -1,6 +1,9 @@
+import { UserRole } from "@/constant/enum";
+
+
 export type Role = {
   id: number;
-  name: string;
+  name: UserRole;
   position: number;
   description: string;
   color: string;
@@ -8,7 +11,7 @@ export type Role = {
 
 export type RoleWithAuthorities = {
   id: number;
-  name: string;
+  name: UserRole;
   position: number;
   color: string;
   description: string;

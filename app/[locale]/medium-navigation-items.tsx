@@ -101,7 +101,7 @@ type NavItemsProps = {
 
 function MediumNavItems({ pathGroups, bestMatch }: NavItemsProps) {
   return (
-    <section className="no-scrollbar space-y-2 overflow-y-auto">
+    <section className="no-scrollbar space-y-2">
       {pathGroups.map((group) => (
         <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} />
       ))}

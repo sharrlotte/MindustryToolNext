@@ -6,6 +6,7 @@ import { useMediaQuery } from 'usehooks-ts';
 import { UsersIcon } from '@/components/common/icons';
 import { MemberCard } from '@/components/messages/member-card';
 import { Button } from '@/components/ui/button';
+
 import { useSocket } from '@/context/socket-context';
 import { cn } from '@/lib/utils';
 
@@ -34,7 +35,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 
   return (
     <motion.div
-      className={cn('absolute right-0 top-0 flex h-full flex-shrink-0 flex-col items-start overflow-y-auto overflow-x-hidden border-l bg-background md:relative', className)}
+      className={cn('absolute right-0 top-0 flex h-full flex-shrink-0 flex-col items-start no-scrollbar overflow-x-hidden border-l bg-background md:relative', className)}
       animate={state}
       variants={{
         open: {

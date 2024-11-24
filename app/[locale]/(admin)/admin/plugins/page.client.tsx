@@ -10,6 +10,7 @@ import { useTags } from '@/context/tags-context.client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { getPluginUploads } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
+import ScrollContainer from '@/components/common/scroll-container';
 
 export default function Client() {
   const {
@@ -21,11 +22,11 @@ export default function Client() {
   return (
     <div className="relative flex h-full flex-col gap-2 p-2">
       <NameTagSearch tags={plugin} />
-      <div className="relative flex h-full flex-col gap-2 overflow-y-auto" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="relative flex h-full flex-col gap-2" ref={(ref) => setContainer(ref)}>
         <InfinitePage queryKey={['plugins', 'upload']} queryFn={getPluginUploads} params={params} container={() => container}>
           {(data) => <UploadPluginCard key={data.id} plugin={data} />}
         </InfinitePage>
-      </div>
+      </ScrollContainer>
     </div>
   );
 }

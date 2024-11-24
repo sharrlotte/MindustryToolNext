@@ -11,7 +11,6 @@ import YoutubeEmbed from '@/components/common/youtube-embed';
 import { Locale } from '@/i18n/config';
 import { formatTitle } from '@/lib/utils';
 
-// export const dynamicParams = false;
 export const experimental_ppr = true;
 
 type Props = {
@@ -135,7 +134,7 @@ const Footer = () => (
 
 export default async function Home() {
   return (
-    <main className="no-scrollbar flex h-full flex-col overflow-y-auto bg-[url('/assets/home.jpg')] bg-cover bg-center text-white">
+    <main className="no-scrollbar flex h-full flex-col bg-[url('/assets/home.jpg')] bg-cover bg-center text-white">
       <div className="mx-auto flex w-full flex-col gap-10 p-4 pt-10 backdrop-blur-sm backdrop-brightness-50 md:gap-20 md:px-32">
         <h1 className="w-full text-center text-xl font-extrabold">
           <Tran text="home.hero-title" />

@@ -20,14 +20,14 @@ export default function FileCard({ file, children, onClick }: Props) {
   return (
     <ContextMenu>
       <ContextMenuTrigger
-        className="flex h-9 cursor-pointer items-center justify-start gap-1 rounded-md border px-1 py-2 text-sm"
+        className="flex h-10 cursor-pointer items-center justify-start gap-1 rounded-md border p-2 text-sm"
         onClick={() => {
           if (size <= 5000000) onClick(file);
         }}
       >
         {directory ? <FolderIcon /> : <FileIcon />}
         <span>{name}</span>
-        <span className="ml-auto">{byteToSize(size)}</span>
+        {!directory && <span className="ml-auto"> {byteToSize(size)}</span>}
       </ContextMenuTrigger>
       <ContextMenuContent>{children}</ContextMenuContent>
     </ContextMenu>

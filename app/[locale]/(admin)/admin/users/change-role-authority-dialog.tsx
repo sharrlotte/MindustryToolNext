@@ -3,6 +3,7 @@
 import React, { Fragment, useMemo, useState } from 'react';
 
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
+import ScrollContainer from '@/components/common/scroll-container';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
@@ -88,27 +89,29 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
           )}
         </section>
       </DialogTrigger>
-      <DialogContent className="h-full overflow-y-auto p-6">
-        <DialogTitle>Change authority for {name}</DialogTitle>
-        <DialogDescription />
-        <ToggleGroup className="flex flex-col items-start justify-start gap-4" type={'multiple'} onValueChange={handleAuthorityChange} defaultValue={authorities.map((r) => r.name)}>
-          {groups.map(({ key, value }) => (
-            <Fragment key={key}>
-              <span className="font-bold">{key}</span>
-              {value.map(({ id, name, description }) => (
-                <ToggleGroupItem key={id} className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent" value={name}>
-                  <div className="w-full space-y-1">
-                    <div className="flex w-full justify-between gap-1">
-                      <span className="text-sm lowercase">{name}</span>
-                      {selectedAuthorities.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
+      <DialogContent asChild>
+        <ScrollContainer className="h-full p-6">
+          <DialogTitle>Change authority for {name}</DialogTitle>
+          <DialogDescription />
+          <ToggleGroup className="flex flex-col items-start justify-start gap-4" type={'multiple'} onValueChange={handleAuthorityChange} defaultValue={authorities.map((r) => r.name)}>
+            {groups.map(({ key, value }) => (
+              <Fragment key={key}>
+                <span className="font-bold">{key}</span>
+                {value.map(({ id, name, description }) => (
+                  <ToggleGroupItem key={id} className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent" value={name}>
+                    <div className="w-full space-y-1">
+                      <div className="flex w-full justify-between gap-1">
+                        <span className="text-sm lowercase">{name}</span>
+                        {selectedAuthorities.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
+                      </div>
+                      <p className="text-start text-xs lowercase">{description}</p>
                     </div>
-                    <p className="text-start text-xs lowercase">{description}</p>
-                  </div>
-                </ToggleGroupItem>
-              ))}
-            </Fragment>
-          ))}
-        </ToggleGroup>
+                  </ToggleGroupItem>
+                ))}
+              </Fragment>
+            ))}
+          </ToggleGroup>
+        </ScrollContainer>
       </DialogContent>
     </Dialog>
   );

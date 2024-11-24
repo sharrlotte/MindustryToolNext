@@ -115,7 +115,7 @@ export const groups: readonly PathGroup[] = [
       },
       {
         path: '/mindustry-gpt', //
-        name: 'MindustryGpt',
+        name: <Tran text="mindustry-gpt" />,
         icon: <MindustryGptIcon />,
       },
       {

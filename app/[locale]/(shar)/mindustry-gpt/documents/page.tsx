@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import InfinitePage from '@/components/common/infinite-page';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import DocumentCard from '@/components/document/document-card';
 import { Button } from '@/components/ui/button';
@@ -28,11 +29,11 @@ export default function Page() {
 
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
-      <div className="relative flex h-full flex-col overflow-y-auto" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
         <InfinitePage className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3" queryKey={['documents']} queryFn={getDocuments} params={params} container={() => container}>
           {(data) => <DocumentCard key={data.id} document={data} />}
         </InfinitePage>
-      </div>
+      </ScrollContainer>
       <div className="flex justify-end">
         <AddDocumentButton />
       </div>
@@ -84,8 +85,8 @@ function AddDocumentButton() {
           <Tran text="document.add" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
-        <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md">
+      <DialogContent asChild>
+        <ScrollContainer className="flex h-full w-full flex-col justify-between gap-2 rounded-md">
           <Form {...form}>
             <form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
               <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
@@ -112,7 +113,7 @@ function AddDocumentButton() {
               </div>
             </form>
           </Form>
-        </div>
+        </ScrollContainer>
       </DialogContent>
     </Dialog>
   );

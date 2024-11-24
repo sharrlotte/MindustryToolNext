@@ -1,4 +1,4 @@
-import { expireTag, unstable_cache } from 'next/cache';
+import { unstable_cache } from 'next/cache';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { cache, use, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
@@ -109,9 +109,8 @@ export function useI18n(): TranslateFunction {
 
         return formatTranslation(translated, args) || text;
       } catch (err) {
-        expireTag('translations');
-
         if (err && typeof err === 'object' && 'error' in err) {
+          console.info(err);
           return text;
         }
 
