@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
+import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 import useToggle from '@/hooks/use-state-toggle';
@@ -10,7 +10,8 @@ import { cn } from '@/lib/utils';
 
 import { SmartBezierEdge } from '@tisoap/react-flow-smart-edge';
 
-import initialEdges from './edge/edge';
+import HelperLines from './HelperLines';
+import initialEdges from './edge';
 import {
   ControlNode,
   DrawFlushNode,
@@ -38,6 +39,9 @@ import {
 } from './nodes/TextUpdaterNode';
 import initialNodes from './nodes/nodes';
 import './style.css';
+import { getHelperLines } from './utils';
+
+const proOptions: ProOptions = { account: 'paid-pro', hideAttribution: true };
 
 const edgeTypes = {
   smart: SmartBezierEdge,
@@ -77,6 +81,8 @@ function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [nodeIdCounter, setNodeIdCounter] = useState(initialNodes.length + 1);
+  const [helperLineHorizontal, setHelperLineHorizontal] = useState<number | undefined>(undefined);
+  const [helperLineVertical, setHelperLineVertical] = useState<number | undefined>(undefined);
 
   const deleteOnClick = useToggle();
   const modal = useToggle();
@@ -92,7 +98,35 @@ function Flow() {
     setNodeIdCounter((prev) => prev + 1);
   };
 
-  const onNodeChange = useCallback((changes: NodeChange[]) => setNodes((nds) => applyNodeChanges(changes, nds)), [setNodes]);
+  const customApplyNodeChanges = useCallback((changes: NodeChange[], nodes: Node[]): Node[] => {
+    // reset the helper lines (clear existing lines, if any)
+    setHelperLineHorizontal(undefined);
+    setHelperLineVertical(undefined);
+
+    // this will be true if it's a single node being dragged
+    // inside we calculate the helper lines and snap position for the position where the node is being moved to
+    if (changes.length === 1 && changes[0].type === 'position' && changes[0].dragging && changes[0].position) {
+      const helperLines = getHelperLines(changes[0], nodes);
+
+      // if we have a helper line, we snap the node to the helper line position
+      // this is being done by manipulating the node position inside the change object
+      changes[0].position.x = helperLines.snapPosition.x ?? changes[0].position.x;
+      changes[0].position.y = helperLines.snapPosition.y ?? changes[0].position.y;
+
+      // if helper lines are returned, we set them so that they can be displayed
+      setHelperLineHorizontal(helperLines.horizontal);
+      setHelperLineVertical(helperLines.vertical);
+    }
+
+    return applyNodeChanges(changes, nodes);
+  }, []);
+
+  const onNodeChange = useCallback(
+    (changes: NodeChange[]) => {
+      setNodes((nodes) => customApplyNodeChanges(changes, nodes));
+    },
+    [setNodes, customApplyNodeChanges],
+  );
 
   const onEdgeChange = useCallback((changes: EdgeChange[]) => setEdges((eds) => applyEdgeChanges(changes, eds)), [setEdges]);
 
@@ -191,10 +225,12 @@ function Flow() {
         onEdgeClick={onEdgeClick}
         onNodeContextMenu={onNodeContextMenu}
         onEdgeContextMenu={onEdgeContextMenu}
+        proOptions={proOptions}
       >
         <MiniMap />
         <Controls />
         <Background />
+        <HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
       </ReactFlow>
       <Modal isOpen={modal.isOpen} onClose={modal.toggle}>
         <div className="p-2 grid grid-cols-2 gap-4 text-center text-white transition-colors">
