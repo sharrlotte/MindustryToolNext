@@ -1,9 +1,8 @@
 'use client';
 
-import { CheckCircleIcon, XCircleIcon } from 'lucide-react';
-
-import { WarningIcon } from '@/components/common/icons';
+import { CheckCircleIcon, WarningIcon, XCircleIcon } from '@/components/common/icons';
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '@/components/ui/toast';
+
 import { useToast } from '@/hooks/use-toast';
 
 export default function Toaster() {

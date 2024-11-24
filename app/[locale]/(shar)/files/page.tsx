@@ -1,10 +1,11 @@
 'use client';
 
-import { ArrowLeftCircleIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 import AddFileDialog from '@/app/[locale]/(shar)/files/add-file-dialog';
+
 import DownloadButton from '@/components/button/download-button';
+import { ArrowLeftCircleIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
@@ -13,6 +14,7 @@ import FileHierarchy from '@/components/file/file-hierarchy';
 import { Button } from '@/components/ui/button';
 import { ContextMenuItem } from '@/components/ui/context-menu';
 import { Input } from '@/components/ui/input';
+
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';

@@ -1,10 +1,10 @@
-import { ChevronsUpDownIcon, SearchIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { cn } from '@/lib/utils';
+import { ChevronsUpDownIcon, SearchIcon } from '@/components/common/icons';
 
 type Value<T> = { label: string; value: T };
 

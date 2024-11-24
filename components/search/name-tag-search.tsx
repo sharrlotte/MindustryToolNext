@@ -1,10 +1,10 @@
 'use client';
 
-import { FilterIcon, XIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { FilterIcon, XIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import Tran from '@/components/common/tran';
 import Search from '@/components/search/search-input';
@@ -12,6 +12,7 @@ import { SortDropdown } from '@/components/search/sort-dropdown';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
+
 import { defaultSortTag } from '@/constant/env';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';

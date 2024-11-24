@@ -1,8 +1,8 @@
 'use client';
 
-import { TrashIcon } from 'lucide-react';
 import React from 'react';
 
+import { TrashIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
   AlertDialog,
@@ -27,7 +27,7 @@ export default function RemoveButton({ isLoading, description, onClick }: Remove
   return (
     <AlertDialog>
       <AlertDialogTrigger className="flex items-center justify-center rounded-md border p-2" disabled={isLoading}>
-        <TrashIcon className="size-5" />
+        <TrashIcon />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

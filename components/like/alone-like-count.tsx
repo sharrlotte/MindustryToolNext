@@ -1,4 +1,4 @@
-import { ThumbsUpIcon } from 'lucide-react';
+import { LikeIcon } from '@/components/common/icons';
 
 import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
@@ -14,7 +14,7 @@ export default function AloneLikeCount() {
       })}
       title="like-count"
     >
-      <ThumbsUpIcon className="size-[1.25rem]" />
+      <LikeIcon className="size-[1.25rem]" />
       <span>{count}</span>
     </div>
   );

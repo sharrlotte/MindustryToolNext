@@ -1,10 +1,11 @@
-import { CheckSquare, Square } from 'lucide-react';
 import { Fragment, useMemo, useState } from 'react';
 
 import { Hidden } from '@/components/common/hidden';
+import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+
 import { useMe, useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -140,7 +141,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
               <span key={id} className={cn(color)}>
                 {name}
               </span>
-              {selectedRole.map((r) => r.id).includes(id) ? <CheckSquare className="size-5" /> : <Square className="size-5" />}
+              {selectedRole.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
@@ -157,7 +158,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
                   <div className="w-full space-y-1">
                     <div className="flex w-full justify-between gap-1">
                       <span className="text-sm lowercase">{name}</span>
-                      {selectedAuthorities.map((r) => r.id).includes(id) ? <CheckSquare className="size-5" /> : <Square className="size-5" />}
+                      {selectedAuthorities.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
                     </div>
                     <p className="text-start text-xs lowercase">{description}</p>
                   </div>

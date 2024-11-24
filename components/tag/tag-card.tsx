@@ -1,10 +1,10 @@
-import { XIcon } from 'lucide-react';
 import React, { HTMLAttributes } from 'react';
 
 import { TagName } from '@/components/tag/tag-name';
 import TagTooltip from '@/components/tag/tag-tooltip';
 import { cn } from '@/lib/utils';
 import Tag from '@/types/response/Tag';
+import { XIcon } from '@/components/common/icons';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;

@@ -1,11 +1,11 @@
 'use client';
 
-import { BellIcon } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { Hidden } from '@/components/common/hidden';
 import { IconNotification } from '@/components/common/icon-notification';
+import { NotificationIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import Markdown from '@/components/common/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
@@ -102,7 +102,7 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
   return (
     <>
       <IconNotification number={data}>
-        <BellIcon className="size-5" />
+        <NotificationIcon />
       </IconNotification>
       {expand && <Tran text="notification" />}
     </>

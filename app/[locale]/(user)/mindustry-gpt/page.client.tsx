@@ -1,15 +1,17 @@
 'use client';
 
-import { SendIcon } from 'lucide-react';
 import { Fragment, KeyboardEvent, useEffect, useState } from 'react';
 
 import ChatInputField from '@/app/[locale]/(user)/mindustry-gpt/chat-input-field';
+
 import LoginButton from '@/components/button/login-button';
+import { SendIcon } from '@/components/common/icons';
 import Markdown from '@/components/common/markdown';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import useMindustryGpt from '@/hooks/use-mindustry-gpt';
@@ -91,7 +93,7 @@ export default function GptPage() {
           <div className="mx-auto flex w-full items-end gap-2 rounded-md border p-2 md:w-2/3">
             <ChatInputField reset={reset} handleKeyPress={handleKeyPress} setPrompt={setPrompt} />
             <Button title="submit" variant="primary" disabled={isPending} onClick={handleSubmit}>
-              <SendIcon className="h-5 w-5" />
+              <SendIcon />
             </Button>
           </div>
           <div className="flex w-full items-center justify-center text-center text-xs">

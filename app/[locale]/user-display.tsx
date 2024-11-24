@@ -1,9 +1,8 @@
-import { LogOut } from 'lucide-react';
-
 import { UserActions } from '@/app/[locale]/user-sheet';
 
 import LoginButton from '@/components/button/login-button';
 import LogoutButton from '@/components/button/logout-button';
+import { LogoutIcon } from '@/components/common/icons';
 import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
@@ -39,7 +38,7 @@ export function Internal() {
             </div>
           </div>
           <div className="cursor-pointer justify-start pr-1" onClick={modal.toggle}>
-            <LogOut className="size-5" />
+            <LogoutIcon />
           </div>
         </div>
         <Modal isOpen={modal.isOpen} onClose={modal.close}>
