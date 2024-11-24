@@ -123,7 +123,6 @@ export async function translate(locale: string, translationKey: string, args?: R
 
     return value ? (formatTranslation(value, args) ?? text) : text;
   } catch (error) {
-    console.error(error);
 
     expireTag('translations');
 

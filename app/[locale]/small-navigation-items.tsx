@@ -3,12 +3,14 @@ import React, { ReactNode, useCallback, useState } from 'react';
 
 import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
-import { MenuIcon, NotificationIcon, UserIcon } from '@/components/common/icons';
+
+import { MenuIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
@@ -85,10 +87,6 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
             </div>
           </div>
         </motion.div>
-      </div>
-      <div className="flex gap-2">
-        <UserIcon />
-        <NotificationIcon />
       </div>
     </div>
   );

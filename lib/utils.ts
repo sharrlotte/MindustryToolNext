@@ -298,6 +298,8 @@ const DEFAULT_NEXTJS_ERROR_MESSAGE =
   'An error occurred in the Server Components render. The specific message is omitted in production builds to avoid leaking sensitive details. A digest property is included on this error instance which may provide additional details about the nature of the error.';
 
 export function getErrorMessage(error: TError) {
+  console.log('ERROR' + error);
+
   if (!error) {
     return 'Something is wrong';
   }
@@ -313,7 +315,7 @@ export function getErrorMessage(error: TError) {
   if ('message' in error) {
     if (error.message === DEFAULT_NEXTJS_ERROR_MESSAGE) return 'Something is wrong';
 
-    return error.message;
+    return JSON.stringify(error, Object.getOwnPropertyNames(error));
   }
 
   return 'Something is wrong';

@@ -65,7 +65,6 @@ export default function LoginChartClient({ loggedDaily, daily, total }: Props) {
             },
           }}
           data={data}
-          suppressHydrationWarning
         />
       </div>
     </MetricWrapper>

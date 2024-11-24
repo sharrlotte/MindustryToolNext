@@ -11,6 +11,17 @@ import Markdown from '@/components/common/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
@@ -24,7 +35,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, isError } from '@/lib/utils';
-import { deleteNotification, getMyNotifications, getMyUnreadNotificationCount, markAsReadById } from '@/query/notification';
+import { deleteAllNotifications, deleteNotification, getMyNotifications, getMyUnreadNotificationCount, markAsRead, markAsReadById } from '@/query/notification';
 import { Notification } from '@/types/response/Notification';
 import { useNavBar } from '@/zustand/nav-bar-store';
 
@@ -51,6 +62,10 @@ export default function NotificationDialog() {
             <DialogDescription>This is a notification dialog.</DialogDescription>
           </Hidden>
           <NotificationContent />
+          <DialogFooter className="flex gap-2 flex-wrap justify-end">
+            <DeleteAllButton />
+            <MarkAsReadAllButton />
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </ProtectedElement>
@@ -214,5 +229,115 @@ function DeleteButton({ notification }: MarkAsReadButtonProps) {
     <Button variant="command" disabled={isPending} onClick={() => mutate()}>
       <Tran text="notification.delete" />
     </Button>
+  );
+}
+
+function DeleteAllButton() {
+  const axios = useClientApi();
+  const { toast } = useToast();
+  const { invalidateByKey } = useQueriesData();
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['notifications', 'delete-all'],
+    mutationFn: () => deleteAllNotifications(axios),
+    onSuccess: () => {
+      toast({
+        title: <Tran text="notification.delete-all-success" />,
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: <Tran text="notification.delete-all-failed" />,
+        content: error.message,
+        variant: 'destructive',
+      });
+    },
+    onSettled: () => {
+      invalidateByKey(['notifications']);
+    },
+  });
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button className="min-w-20" title="Delete" variant="destructive">
+          <Tran text="notification.delete-all" />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            <Tran text="notification.delete-all-title" />
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            <Tran text="notification.delete-all-description" />
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>
+            <Tran text="cancel" />
+          </AlertDialogCancel>
+          <AlertDialogAction disabled={isPending} onClick={() => mutate()}>
+            <Tran text="delete" />
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+function MarkAsReadAllButton() {
+  const axios = useClientApi();
+  const { toast } = useToast();
+  const { invalidateByKey } = useQueriesData();
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['notifications', 'mark-as-read-all'],
+    mutationFn: () => markAsRead(axios),
+    onSuccess: () => {
+      toast({
+        title: <Tran text="notification.mark-as-read-all-success" />,
+        variant: 'success',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: <Tran text="notification.mark-as-read-all-failed" />,
+        content: error.message,
+        variant: 'destructive',
+      });
+    },
+    onSettled: () => {
+      invalidateByKey(['notifications']);
+    },
+  });
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button className="min-w-20" title="Delete">
+          <Tran text="notification.mark-as-read-all" />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            <Tran text="notification.mark-as-read-all-title" />
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            <Tran text="notification.mark-as-read-all-description" />
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>
+            <Tran text="cancel" />
+          </AlertDialogCancel>
+          <AlertDialogAction disabled={isPending} onClick={() => mutate()}>
+            <Tran text="delete" />
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
