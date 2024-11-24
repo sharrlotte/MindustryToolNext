@@ -5,12 +5,13 @@ import { Copy } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
 import { Button, ButtonProps } from '@/components/ui/button';
+
 import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 
 import { useMutation } from '@tanstack/react-query';
 
-const copyButtonVariants = cva('p-2 hover:bg-brand bg-transparent', {
+const copyButtonVariants = cva('p-2 hover:bg-brand bg-transparent group/copy-button', {
   variants: {
     variant: {
       default: 'border border-border',
@@ -49,7 +50,7 @@ export default function CopyButton({ className, title, content, data, children, 
 
   return (
     <Button className={cn(copyButtonVariants({ className, variant, position }))} title="copy" variant="ghost" {...props} onClick={handleClick}>
-      {children ?? <Copy className="size-5 text-foreground" strokeWidth="1.3px" />}
+      {children ?? <Copy className="size-5 text-foreground group group-hover/copy-button:text-background dark:group-hover/copy-button:text-foreground" strokeWidth="1.5px" />}
     </Button>
   );
 }
