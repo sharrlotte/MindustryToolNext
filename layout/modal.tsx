@@ -24,7 +24,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
               transition={{ duration: 0.3, type: 'spring' }}
-              className="relative mx-4 flex items-center justify-center rounded border border-border p-8 shadow-lg bg-black"
+              className="relative mx-4 flex text-white items-center justify-center rounded border border-border p-8 shadow-lg bg-black"
             >
               <button onClick={onClose} className="absolute right-2 flex top-0 aspect-square text-4xl text-center">
                 &times;
