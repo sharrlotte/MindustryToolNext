@@ -10,5 +10,6 @@ export type User = {
   authorities: Authority[];
   stats?: {
     EXP: number;
+    DOWNLOAD_COUNT: number;
   };
 };

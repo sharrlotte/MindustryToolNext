@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
+
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { User } from '@/types/response/User';
@@ -20,6 +21,7 @@ export default function UserDetail({ user }: Props) {
   const { session } = useSession();
   const { name, roles, stats, thumbnail } = user;
   const exp = stats?.EXP ?? 0;
+  const downloadCount = stats?.DOWNLOAD_COUNT ?? 0;
   const level = Math.floor(Math.sqrt(exp));
 
   const nextLevel = level + 1;
@@ -65,6 +67,8 @@ export default function UserDetail({ user }: Props) {
             {currentExp}/{levelUpExp}
           </div>
         </div>
+        <Tran text="user.download-count" />
+        {downloadCount}
       </div>
     </div>
   );
