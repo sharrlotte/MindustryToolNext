@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { ChangeLanguageDialog } from '@/app/[locale]/change-language-dialog';
 import NotificationDialog from '@/app/[locale]/notification-dialog';
 
-import { GlobeIcon, SettingIcon } from '@/components/common/icons';
+import { GlobIcon, SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
@@ -21,7 +21,7 @@ type Tab = {
 const tabs: Tab = [
   [
     {
-      icon: <GlobeIcon />,
+      icon: <GlobIcon />,
       action: <ChangeLanguageDialog />,
     },
     {

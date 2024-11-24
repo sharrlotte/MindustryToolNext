@@ -3,14 +3,12 @@ import React, { ReactNode, useCallback, useState } from 'react';
 
 import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
-
-import { MenuIcon } from '@/components/common/icons';
+import { MenuIcon, NotificationIcon, UserIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
-
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
@@ -121,7 +119,7 @@ const InternalPathGroupElement = ({ group, bestMatch, onClick }: PathGroupElemen
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
-        <span className="font-bold">{name}</span>
+        <span className="font-semibold">{name}</span>
         {group.paths.map((path, index) => (
           <PathElement key={index} segment={path} bestMatch={bestMatch} onClick={onClick} />
         ))}
@@ -147,7 +145,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
           className={cn(
-            'flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold text-opacity-50 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+            'flex items-end gap-2 rounded-md px-1 py-2 text-sm font-semibold text-opacity-50 opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
             {
               'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
             },
@@ -168,7 +166,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
             className={cn(
-              'flex gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground',
+              'flex gap-2 rounded-md px-1 py-2 text-sm font-semibold opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground',
               {
                 'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground':
                   path.some((path) => path.path === bestMatch) && !value,
@@ -186,7 +184,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
                 <InternalLink
                   key={item.path}
                   className={cn(
-                    'flex items-end gap-2 rounded-md px-1 py-2 text-sm font-bold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
+                    'flex items-end gap-2 rounded-md px-1 py-2 text-sm font-semibold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground',
                     {
                       'bg-brand text-background opacity-100 dark:text-foreground': item.path === bestMatch,
                     },

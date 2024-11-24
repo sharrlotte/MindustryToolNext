@@ -81,7 +81,7 @@ function NavFooter() {
       <NotificationDialog />
       <ProtectedElement session={session} filter>
         <InternalLink
-          className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
+          className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-semibold duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
             'justify-start gap-2 py-2': expand,
           })}
           href="/users/@me/setting"
@@ -125,7 +125,7 @@ const InternalPathGroupElement = ({ group, bestMatch }: PathGroupElementProps): 
 
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
-      <nav className="space-y-1">
+      <nav className="space-y-1 font-extrabold">
         {expand && name}
         {name && <Divider />}
         {group.paths.map((path, index) => (
@@ -157,7 +157,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
-          className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-bold duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
+          className={cn('flex h-10 items-center justify-center rounded-md p-1 text-sm font-semibold duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
             'bg-brand text-background dark:text-foreground': path === bestMatch,
             'justify-start gap-2 py-2': expand,
             'w-10': !expand,
@@ -177,7 +177,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
             className={cn(
-              'flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-bold duration-300 hover:bg-brand hover:text-background dark:text-foreground dark:hover:text-foreground',
+              'flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-semibold duration-300 hover:bg-brand hover:text-background dark:text-foreground dark:hover:text-foreground',
               {
                 'bg-brand text-background dark:text-foreground': path.some((path) => path.path === bestMatch) && !value,
                 'justify-start gap-2 py-2': expand,
@@ -194,7 +194,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
               <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
                   key={item.path}
-                  className={cn('flex items-end gap-3 rounded-md px-1 py-2 text-sm font-bold duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
+                  className={cn('flex items-end gap-3 rounded-md px-1 py-2 text-sm font-semibold duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
                     'bg-brand text-background dark:text-foreground': item.path === bestMatch,
                   })}
                   href={item.path}

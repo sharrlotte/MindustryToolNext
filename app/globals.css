@@ -178,6 +178,6 @@
   }
 
   .lucide {
-    @apply size-5 stroke-2;
+    @apply size-5 min-h-5 min-w-5 stroke-[2.5px];
   }
 }
