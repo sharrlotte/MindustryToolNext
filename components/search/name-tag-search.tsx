@@ -10,7 +10,7 @@ import Tran from '@/components/common/tran';
 import Search from '@/components/search/search-input';
 import { SortDropdown } from '@/components/search/sort-dropdown';
 import TagContainer from '@/components/tag/tag-container';
-import { Button, Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
 import { defaultSortTag } from '@/constant/env';
