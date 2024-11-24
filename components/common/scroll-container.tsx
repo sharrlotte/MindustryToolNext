@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -12,30 +12,46 @@ type Props = {
 };
 
 const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, additionalPadding = 'pr-2', children }, forwardedRef) => {
-  const localRef = useRef<HTMLDivElement>(null);
-  const ref = (forwardedRef as React.RefObject<HTMLDivElement>) || localRef;
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   const [hasGapForScrollbar, setHasGapForScrollbar] = useState(false);
 
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
+    if (container === null) return;
 
-    const resizeObserver = new ResizeObserver(() => {
-      setHasGapForScrollbar(element.scrollHeight > element.clientHeight);
+    setHasGapForScrollbar(container.scrollHeight > container.clientHeight);
+
+    function handleScroll() {
+      if (container) setHasGapForScrollbar(container.scrollHeight > container.clientHeight);
+    }
+
+    container.addEventListener('scroll', handleScroll);
+
+    const observer = new ResizeObserver(() => {
+      handleScroll();
     });
 
-    resizeObserver.observe(element);
+    observer.observe(container);
 
-    return () => resizeObserver.disconnect();
-  }, [ref]);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
+  }, [container]);
 
   return (
     <div
       className={cn('h-full overflow-y-auto w-full overflow-x-hidden', className, {
         [additionalPadding]: hasGapForScrollbar,
       })}
-      ref={ref}
+      ref={(current) => {
+        if (typeof forwardedRef === 'function') {
+          forwardedRef(current);
+          setContainer(current);
+        } else if (forwardedRef !== null) {
+          forwardedRef.current = current;
+        }
+      }}
     >
       {children}
     </div>

@@ -97,7 +97,7 @@ type NavItemsProps = {
 
 function NavItems({ pathGroups, bestMatch, onClick }: NavItemsProps) {
   return (
-    <section className="no-scrollbar space-y-4 overflow-y-auto">
+    <section className="no-scrollbar space-y-4">
       {pathGroups.map((group) => (
         <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} onClick={onClick} />
       ))}

@@ -75,6 +75,10 @@
 }
 
 @layer base {
+  html,
+  body {
+    @apply h-full w-full;
+  }
   body {
     @apply dark:bg-gradient-background;
   }
@@ -169,6 +173,7 @@
     .no-scrollbar {
       -ms-overflow-style: none;
       scrollbar-width: none;
+      overflow-y: auto;
     }
   }
 

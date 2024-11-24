@@ -9,9 +9,9 @@ import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
 import { GridLayout, ListLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
+import ScrollContainer from '@/components/common/scroll-container';
 import { Input } from '@/components/ui/input';
 
-import { UserRole } from '@/constant/enum';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';
@@ -32,6 +32,7 @@ export function UserTable() {
   const params = useSearchQuery(ItemPaginationQuery);
 
   const [{ name }, setQueryState] = useQueryState(defaultState);
+
   const [role, setRole] = useState<Role>();
   const { data: roles } = useClientQuery({
     queryFn: (axios) => getRoles(axios),
@@ -40,7 +41,7 @@ export function UserTable() {
 
   const { data: userCount } = useClientQuery({
     queryKey: ['users', 'total', omit(params, 'page', 'size')],
-    queryFn: (axios) => getUserCount(axios, { ...params, role: role?.name as UserRole }),
+    queryFn: (axios) => getUserCount(axios, { ...params, role: role?.name }),
     placeholderData: 0,
   });
 
@@ -49,33 +50,21 @@ export function UserTable() {
       <div>
         <div className="flex h-10 gap-2">
           <Input className="h-full" value={name} onChange={(event) => setQueryState({ name: event.target.value })} placeholder="Search using username" />
-          <ComboBox
-            className="h-full"
-            placeholder="Select role"
-            value={{ value: role, label: role?.name ? t(role.name) : '' }}
-            values={roles?.map((d) => ({ value: d, label: t(d.name) })) ?? []}
-            onChange={(value) => setRole(value)}
-          />
+          <ComboBox className="h-full" placeholder="Select role" value={{ value: role, label: role?.name ? t(role.name) : '' }} values={roles?.map((d) => ({ value: d, label: t(d.name) })) ?? []} onChange={(value) => setRole(value)} />
         </div>
       </div>
-      <ListLayout>
-        <div className="flex h-full flex-col gap-2 overflow-y-auto pr-2" ref={(ref) => setContainer(ref)}>
-          <InfinitePage
-            className="flex h-full w-full flex-col justify-start gap-2"
-            params={{ ...params, role: role?.name as UserRole }}
-            queryKey={['users', 'management']}
-            queryFn={getUsers}
-            container={() => container}
-          >
+      <ScrollContainer className="flex h-full flex-col gap-2" ref={(ref) => setContainer(ref)}>
+        <ListLayout>
+          <InfinitePage className="flex h-full w-full flex-col justify-start gap-2" params={{ ...params, role: role?.name, name }} queryKey={['users', 'management']} queryFn={getUsers} container={() => container}>
             {(data) => <UserManagementCard key={data.id} user={data} />}
           </InfinitePage>
-        </div>
-      </ListLayout>
-      <GridLayout>
-        <GridPaginationList className="flex flex-col gap-2" params={{ ...params, role: role?.name as UserRole }} queryKey={['users', 'management']} queryFn={getUsers}>
-          {(data) => <UserManagementCard key={data.id} user={data} />}
-        </GridPaginationList>
-      </GridLayout>
+        </ListLayout>
+        <GridLayout>
+          <GridPaginationList className="flex flex-col gap-2" params={{ ...params, role: role?.name, name }} queryKey={['users', 'management']} queryFn={getUsers}>
+            {(data) => <UserManagementCard key={data.id} user={data} />}
+          </GridPaginationList>
+        </GridLayout>
+      </ScrollContainer>
       <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
           <PaginationNavigator numberOfItems={userCount} />

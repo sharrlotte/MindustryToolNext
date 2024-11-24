@@ -110,6 +110,7 @@ export function useI18n(): TranslateFunction {
         return formatTranslation(translated, args) || text;
       } catch (err) {
         if (err && typeof err === 'object' && 'error' in err) {
+          console.info(err);
           return text;
         }
 

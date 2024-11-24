@@ -101,7 +101,7 @@ type NavItemsProps = {
 
 function MediumNavItems({ pathGroups, bestMatch }: NavItemsProps) {
   return (
-    <section className="no-scrollbar space-y-2 overflow-y-auto">
+    <section className="no-scrollbar space-y-2">
       {pathGroups.map((group) => (
         <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} />
       ))}
@@ -176,13 +176,10 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
       <Accordion type="single" collapsible className={cn('w-full', { 'w-10': !expand })} value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn(
-              'flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-semibold duration-300 hover:bg-brand hover:text-background dark:text-foreground dark:hover:text-foreground',
-              {
-                'bg-brand text-background dark:text-foreground': path.some((path) => path.path === bestMatch) && !value,
-                'justify-start gap-2 py-2': expand,
-              },
-            )}
+            className={cn('flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-semibold duration-300 hover:bg-brand hover:text-background dark:text-foreground dark:hover:text-foreground', {
+              'bg-brand text-background dark:text-foreground': path.some((path) => path.path === bestMatch) && !value,
+              'justify-start gap-2 py-2': expand,
+            })}
             showChevron={expand}
             onClick={() => setVisible(true)}
           >

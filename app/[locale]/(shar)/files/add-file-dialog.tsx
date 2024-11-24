@@ -55,7 +55,7 @@ export default function AddFileDialog({ path }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="h-10 w-fit whitespace-nowrap" title="Add file" variant="outline">
+        <Button className="h-9 w-fit whitespace-nowrap" title="Add file" variant="outline">
           <Tran text="upload.add-file" />
         </Button>
       </DialogTrigger>

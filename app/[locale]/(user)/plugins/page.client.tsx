@@ -31,7 +31,7 @@ export default function Client({ plugins }: Props) {
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
       <NameTagSearch tags={plugin} useSort={false} />
-      <ScrollContainer className="relative flex h-full flex-col overflow-y-auto" ref={ref}>
+      <ScrollContainer className="relative flex h-full flex-col" ref={ref}>
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
           queryKey={['plugins']}

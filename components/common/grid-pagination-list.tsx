@@ -72,7 +72,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({ class
   }
 
   return (
-    <div className="pagination-container h-full overflow-auto">
+    <div className="pagination-container h-full">
       <div className={cn('grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2', className)}>{render()}</div>
     </div>
   );

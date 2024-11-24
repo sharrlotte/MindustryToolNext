@@ -29,17 +29,25 @@ async function* getChat(url: string, prompt: string, signal: AbortSignal) {
 
   if (!reader) throw new Error('No reader');
 
-  for (let i = 0; i < 10000; i++) {
+  while (true) {
     const { done, value } = await reader.read();
 
     if (done) return;
 
-    let token = decoder.decode(value).replaceAll('data:', '');
-    token = token.endsWith('\n\n') ? token.slice(0, token.length - 2) : token;
-    token = token.startsWith('\n\n') ? token.slice(2, token.length) : token;
+    let token = decoder.decode(value, { stream: true });
 
+    token = token.replaceAll('data:', '').replaceAll('\ndata:\ndata:', '\n').replaceAll('\r', '');
+
+    if (token.endsWith('\n\n')) {
+      token = token.slice(0, -2);
+    }
+
+    let counter = 0;
     for (const t of token) {
-      await sleep(2);
+      if (counter++ === 10) {
+        await sleep(1);
+        counter = 0;
+      }
       yield t;
     }
 
@@ -71,15 +79,25 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
       const signal = controller.signal;
       setAbortController(controller);
 
-      for await (const token of getChat(url, prompt, signal)) {
-        const current = data.get(requestId.current);
+      data.set(requestId.current, { text: '', prompt });
 
-        if (current) {
-          data.set(requestId.current, { text: current.text + token, prompt });
-        } else {
-          data.set(requestId.current, { text: token, prompt });
+      setData(new Map(data));
+
+      try {
+        for await (const token of getChat(url, prompt, signal)) {
+          const current = data.get(requestId.current);
+
+          if (current) {
+            data.set(requestId.current, { text: current.text + token, prompt });
+          } else {
+            data.set(requestId.current, { text: token, prompt });
+          }
+
+          setData(new Map(data));
         }
-
+      } catch (error: any) {
+        console.error(error);
+        data.set(requestId.current, { text: 'Error: ' + error.message, prompt });
         setData(new Map(data));
       }
       setAbortController(null);
