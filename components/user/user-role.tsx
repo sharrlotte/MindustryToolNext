@@ -13,7 +13,7 @@ export default function UserRoleCard({ className, roles }: UserRoleCardProps) {
     return null;
   }
 
-  const highestRole = roles.sort((r1, r2) => r1?.position - r2?.position)[0] || 0;
+  const highestRole = roles.sort((r1, r2) => r2?.position - r1?.position)[0] || 0;
 
   return <span className={cn('font-bold', className, highestRole.color)}>{highestRole.name}</span>;
 }
