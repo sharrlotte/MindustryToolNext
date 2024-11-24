@@ -80,11 +80,11 @@ function Flow() {
   const deleteOnClick = useToggle();
   const modal = useToggle();
 
-  const addNewNode = () => {
+  const addNewNode = (type: any) => {
     const newNode: Node = {
       id: `${nodeIdCounter}`,
-      type: 'textUpdater',
-      data: { label: 'Node', id: `${nodeIdCounter}` },
+      type: type,
+      data: { label: 'Node', id: nodeIdCounter },
       position: { x: Math.random() * 400, y: Math.random() * 400 },
     };
     setNodes((nds) => [...nds, newNode]);
@@ -207,12 +207,20 @@ function Flow() {
             className="cursor-pointer hover:text-slate-500 "
             onClick={() => {
               modal.close();
-              addNewNode();
+              addNewNode('textUpdater');
             }}
           >
             Custom
           </div>
-          <div className="cursor-pointer hover:text-slate-500 ">Set</div>
+          <div
+            className="cursor-pointer hover:text-slate-500"
+            onClick={() => {
+              modal.close();
+              addNewNode('setNode');
+            }}
+          >
+            Set
+          </div>
         </div>
       </Modal>
     </>
