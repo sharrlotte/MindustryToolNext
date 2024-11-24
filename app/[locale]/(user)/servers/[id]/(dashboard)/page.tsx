@@ -132,8 +132,10 @@ export default async function Page({ params }: Props) {
             </div>
           </div>
           <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
-            <ReloadServerButton id={id} />
-            {started ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
+            <ProtectedElement session={session} filter={{ any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: session?.id }] }}>
+              <ReloadServerButton id={id} />
+              {started ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
+            </ProtectedElement>
           </div>
           <ProtectedElement session={session} filter={showPlayer}>
             <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">

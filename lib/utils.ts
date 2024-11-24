@@ -345,7 +345,7 @@ export type Filter =
   | boolean
   | { role: UserRole }
   | { authority: AuthorityEnum }
-  | { authorId: string }
+  | { authorId: string | null | undefined }
   | undefined;
 
 export function hasAccess(session: Session | undefined | null, filter: Filter): boolean {
