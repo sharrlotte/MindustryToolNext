@@ -300,8 +300,6 @@ const DEFAULT_NEXTJS_ERROR_MESSAGE =
 const INTERNAL_ERROR_MESSAGE = 'Request failed with status code 500';
 
 export function getErrorMessage(error: TError) {
-  console.log('ERROR' + error);
-
   if (!error) {
     return 'Something is wrong';
   }
@@ -319,10 +317,22 @@ export function getErrorMessage(error: TError) {
 
     if (error.message === INTERNAL_ERROR_MESSAGE) return '500 Internal server error';
 
-    return JSON.stringify(error, Object.getOwnPropertyNames(error));
+    return error.message;
   }
 
   return 'Something is wrong';
+}
+
+export function getLoggedErrorMessage(error: TError) {
+  if (!error) {
+    return 'Something is wrong';
+  }
+
+  if (typeof error === 'string') {
+    return error;
+  }
+
+  return JSON.stringify(error, Object.getOwnPropertyNames(error));
 }
 
 export type Filter =

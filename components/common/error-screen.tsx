@@ -8,7 +8,7 @@ import BackButton from '@/components/ui/back-button';
 import { Button } from '@/components/ui/button';
 
 import useClientApi from '@/hooks/use-client';
-import { TError, getErrorMessage } from '@/lib/utils';
+import { TError, getErrorMessage, getLoggedErrorMessage } from '@/lib/utils';
 import { reportError } from '@/query/api';
 
 export default function ErrorScreen({ error }: { error: TError }) {
@@ -16,9 +16,10 @@ export default function ErrorScreen({ error }: { error: TError }) {
   const axios = useClientApi();
 
   const message = getErrorMessage(error);
+  const loggedMessage = getLoggedErrorMessage(error);
 
   useEffect(() => {
-    reportError(axios, `${path} > ${message}`);
+    reportError(axios, `${path} > ${getLoggedErrorMessage}`);
   }, [axios, message, path]);
 
   if (typeof error === 'object' && 'error' in error && 'status' in error.error && error.error.status === 404) return <NotFound />;

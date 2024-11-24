@@ -6,17 +6,18 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
 import useClientApi from '@/hooks/use-client';
-import { TError, getErrorMessage } from '@/lib/utils';
+import { TError, getErrorMessage, getLoggedErrorMessage } from '@/lib/utils';
 import { reportError } from '@/query/api';
 
 export default function Error({ error }: { error: TError }) {
   const message = getErrorMessage(error);
+  const loggedMessage = getLoggedErrorMessage(error);
 
   const path = usePathname();
   const axios = useClientApi();
 
   useEffect(() => {
-    reportError(axios, `${path} > ${message}`);
+    reportError(axios, `${path} > ${loggedMessage}`);
   }, [axios, message, path]);
 
   return (

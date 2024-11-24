@@ -117,7 +117,9 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
             </GridPaginationList>
           </GridLayout>
           <div className="flex justify-end">
-            <PaginationNavigator numberOfItems={data} />
+            <GridLayout>
+              <PaginationNavigator numberOfItems={data} />
+            </GridLayout>
           </div>
         </div>
       </DialogContent>
