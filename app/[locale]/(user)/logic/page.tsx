@@ -82,9 +82,9 @@ function Flow() {
 
   const addNewNode = () => {
     const newNode: Node = {
-      id: `node_${nodeIdCounter}`,
+      id: `${nodeIdCounter}`,
       type: 'textUpdater',
-      data: { label: 'Custom Node' },
+      data: { label: 'Node', id: `${nodeIdCounter}` },
       position: { x: Math.random() * 400, y: Math.random() * 400 },
     };
     setNodes((nds) => [...nds, newNode]);
@@ -150,7 +150,7 @@ function Flow() {
   return (
     <>
       <div className="m-4 top-0 left-0 absolute flex-col flex z-50">
-        <button className={cn(' p-[5px] border border-[#eee] border-b-0', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')} onClick={deleteOnClick.toggle}>
+        <button className={cn(' p-[5px] border border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')} onClick={deleteOnClick.toggle}>
           <svg id="icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" className="h-[16px] w-[16px]">
             <defs>
               <style dangerouslySetInnerHTML={{ __html: '.cls-1{fill:none;}' }} />
@@ -164,7 +164,7 @@ function Flow() {
             <rect className="cls-1" data-name="<Transparent Rectangle>" height={32} id="_Transparent_Rectangle_" width={32} />
           </svg>
         </button>
-        <button className="bg-white p-[5px] py-[7px] border-[#eee] border flex items-center justify-center" onClick={addNewNode}>
+        <button className="bg-white p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center" onClick={modal.open}>
           <svg version="1.1" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" className="h-[12px] w-[12px]">
             <title />
             <desc />
@@ -182,10 +182,6 @@ function Flow() {
           </svg>
         </button>
       </div>
-
-      {/* <button className="absolute z-50 top-20" onClick={modal.open}>
-        Open modal
-      </button> */}
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -206,7 +202,18 @@ function Flow() {
         <Background />
       </ReactFlow>
       <Modal isOpen={modal.isOpen} onClose={modal.toggle}>
-        <p>Modal Content</p>
+        <div className="p-2 grid grid-cols-2 gap-4 text-center text-white transition-colors">
+          <div
+            className="cursor-pointer hover:text-slate-500 "
+            onClick={() => {
+              modal.close();
+              addNewNode();
+            }}
+          >
+            Custom
+          </div>
+          <div className="cursor-pointer hover:text-slate-500 ">Set</div>
+        </div>
       </Modal>
     </>
   );
