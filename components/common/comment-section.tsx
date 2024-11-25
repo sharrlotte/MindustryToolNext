@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import ComboBox from '@/components/common/combo-box';
-import { ArrowUpDownIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import Markdown from '@/components/common/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
@@ -46,16 +45,21 @@ export default function CommentSection({ itemId }: CommentSectionProps) {
   const [sort, setSort] = useState<CommentSort>('newest');
 
   return (
-    <div className="space-y-6 mt-4">
+    <div className="space-y-6 pt-6">
       <div className="flex justify-between items-center">
         <Tran text="comments" />
         <div className="flex gap-2 justify-center items-center">
-          <ArrowUpDownIcon className="size-4" />
-          <ComboBox className="bg-transparent min-w-0 w-fit p-0 hover:bg-transparent" searchBar={false} values={commentSorts.map((value) => ({ label: value, value: value as CommentSort }))} onChange={(value) => setSort(value ?? 'newest')} />
+          <ComboBox
+            className="bg-transparent min-w-0 w-fit p-0 hover:bg-transparent"
+            searchBar={false}
+            value={{ label: sort, value: sort }}
+            values={commentSorts.map((value) => ({ label: value, value: value as CommentSort }))}
+            onChange={(value) => setSort(value ?? 'newest')}
+          />
         </div>
       </div>
       <CommentInput itemId={itemId} />
-      <Divider />
+      <Divider className="border-2" />
       <Comments itemId={itemId} sort={sort} />
     </div>
   );

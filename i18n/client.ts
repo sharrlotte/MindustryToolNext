@@ -2,6 +2,7 @@ import { unstable_cache } from 'next/cache';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { cache, use, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
+import { create } from 'zustand';
 
 import { useLocaleStore } from '@/context/locale-context';
 import { Locale, TranslateFunction, locales } from '@/i18n/config';
@@ -58,7 +59,15 @@ export function useI18n(): TranslateFunction {
       if (value === undefined) {
         try {
           value = JSON.parse(localStorage.getItem(localStorageKey) || 'null');
+
           keys[group] = value;
+
+          getClientTranslation(group, currentLocale) //
+            .then((result) => {
+              if (result) {
+                localStorage.setItem(localStorageKey, JSON.stringify(result));
+              }
+            });
         } catch (e) {
           keys[group] = EMPTY;
           localStorage.removeItem(localStorageKey);

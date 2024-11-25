@@ -3,23 +3,31 @@
 import { VariantProps, cva } from 'class-variance-authority';
 import React, { ReactNode } from 'react';
 
+
+
 import { CopyIcon } from '@/components/common/icons';
 import { Button, ButtonProps } from '@/components/ui/button';
+
+
 
 import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 
+
+
 import { useMutation } from '@tanstack/react-query';
 
-const copyButtonVariants = cva('p-2 hover:bg-brand bg-transparent group/copy-button', {
+
+const copyButtonVariants = cva('p-2 bg-transparent group/copy-button', {
   variants: {
     variant: {
-      default: 'border border-border',
+      default: 'border border-border hover:bg-brand',
       ghost: '',
     },
     position: {
       relative: '',
-      absolute: 'absolute left-1 top-1 aspect-square',
+      absolute: 'absolute left-1 top-1 aspect-square backdrop-blur-sm backdrop-brightness-50',
+      'absolute-right': 'absolute right-1 top-1 aspect-square backdrop-blur-sm backdrop-brightness-50',
     },
   },
   defaultVariants: {

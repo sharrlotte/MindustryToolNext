@@ -16,11 +16,21 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 export function Detail({ className, children }: DetailProps) {
   return (
-    <ScrollContainer className="absolute inset-0 w-full bg-background p-2" additionalPadding="pr-4">
-      <div className={cn('relative flex min-h-full w-full flex-col justify-between gap-6 lg:items-stretch', className)}>{children}</div>
+    <ScrollContainer className="absolute inset-0 w-full bg-background p-2 h-full" additionalPadding="pr-4">
+      <div className={cn('grid grid-rows-[100%_auto] h-full', className)}>{children}</div>
     </ScrollContainer>
   );
 }
+
+type ContentProps = {
+  className?: string;
+  children: React.ReactNode;
+};
+
+export function DetailContent({ className, children }: ContentProps) {
+  return <div className={cn('relative flex h-full w-full flex-col justify-between gap-6 lg:items-stretch', className)}>{children}</div>;
+}
+
 type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailInfo({ className, children }: InfoProps) {
@@ -59,7 +69,7 @@ type ActionsProps = React.HTMLAttributes<HTMLDivElement> & {
 export function DetailActions({ className, children, back = true }: ActionsProps) {
   return (
     <section className={cn('flex items-end justify-between gap-1', className)}>
-      <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">{children}</div>
+      <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">{children}</div>
       {back && <BackButton />}
     </section>
   );
