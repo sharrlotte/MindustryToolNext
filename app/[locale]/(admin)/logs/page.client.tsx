@@ -6,6 +6,7 @@ import { z } from 'zod';
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
+import { IconNotification } from '@/components/common/icon-notification';
 import { FilterIcon, XIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -155,8 +156,6 @@ function StaticLog() {
     queryFn: async (axios) => getLogCollections(axios),
   });
 
-  console.log(collection);
-
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
       <div className="flex justify-between gap-2 rounded-md">
@@ -243,11 +242,15 @@ type FilterDialogProps = {
 function FilterDialog({ filter, setFilter }: FilterDialogProps) {
   const { ip, userId, url, content, before, after } = filter;
 
+  const number = [ip, userId, url, content, before, after].filter(Boolean).length;
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button className="border-none bg-secondary shadow-md" variant="outline" title="Filter">
-          <FilterIcon />
+          <IconNotification number={number}>
+            <FilterIcon />
+          </IconNotification>
         </Button>
       </DialogTrigger>
       <DialogContent className="grid w-fit max-w-full gap-2 p-6">
