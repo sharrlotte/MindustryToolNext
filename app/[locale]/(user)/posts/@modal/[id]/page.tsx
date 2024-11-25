@@ -4,10 +4,9 @@ import removeMd from 'remove-markdown';
 
 import { serverApi, translate } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
-import { YOUTUBE_VIDEO_REGEX } from '@/components/common/markdown';
 import PostDetailCard from '@/components/post/post-detail-card';
 import { Locale } from '@/i18n/config';
-import { formatTitle, isError } from '@/lib/utils';
+import { formatTitle, isError, YOUTUBE_VIDEO_REGEX } from '@/lib/utils';
 import { getPost } from '@/query/post';
 
 type Props = {
