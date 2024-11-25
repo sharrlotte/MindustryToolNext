@@ -137,9 +137,8 @@ export default function Page() {
     (changes: NodeChange[]) => {
       const newNodes = customApplyNodeChanges(changes, nodes);
       setNodes(newNodes);
-      // updateHistory(newNodes, edges);
     },
-    [customApplyNodeChanges, nodes, edges],
+    [customApplyNodeChanges, nodes],
   );
 
   const onEdgeChange = useCallback(
@@ -268,11 +267,52 @@ export default function Page() {
   const memoizedNodeTypes = useMemo(() => nodeTypes, []);
   const memoizedEdgeTypes = useMemo(() => edgeTypes, []);
 
+  const nodeOptions = [
+    { type: '', label: 'Read' },
+    { type: '', label: 'Write' },
+    { type: '', label: 'Draw' },
+    { type: '', label: 'Print' },
+    { type: '', label: 'Draw flush' },
+    { type: '', label: 'Print flush' },
+    { type: '', label: 'Get link' },
+    { type: '', label: 'Control' },
+    { type: '', label: 'Radar' },
+    { type: '', label: 'Sensor' },
+    { type: '', label: 'Set' },
+    { type: '', label: 'Operation' },
+    { type: '', label: 'Look up' },
+    { type: '', label: 'Pack color' },
+    { type: '', label: 'Wait' },
+    { type: '', label: 'Stop' },
+    { type: '', label: 'End' },
+    { type: '', label: 'Jump' },
+    { type: '', label: 'Unit bind' },
+    { type: '', label: 'Unit control' },
+    { type: '', label: 'Unit radar' },
+    { type: '', label: 'Unit locate' },
+    { type: 'textUpdater', label: 'Custom node' },
+  ];
+
+  const modalItems = () => {
+    return nodeOptions.map((option) => (
+      <div
+        key={option.type}
+        className="cursor-pointer hover:text-slate-500"
+        onClick={() => {
+          modal.close();
+          addNewNode(option.type);
+        }}
+      >
+        {option.label}
+      </div>
+    ));
+  };
+
   return (
     <>
-      <div className="m-3 md:m-4 top-0 left-0 absolute flex-col flex z-20">
+      <div className="m-3 md:m-[15px] top-0 left-0 absolute flex-col flex z-20">
         <button
-          className={cn('p-[5px] border h-[30px] w-[30px] border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')}
+          className={cn('p-[5px] border h-[28px] w-[28px] border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')}
           onClick={() => {
             deleteOnClick.toggle();
             showToast(deleteOnClick.isOpen ? 'Erase mode off' : 'Erase mode on');
@@ -288,26 +328,26 @@ export default function Page() {
             <rect className="cls-1" data-name="<Transparent Rectangle>" height={32} id="_Transparent_Rectangle_" width={32} />
           </svg>
         </button>
-        <button className="bg-white p-[5px] py-[7px] h-[30px] w-[30px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center" onClick={modal.open}>
+        <button className="bg-white p-[5px] py-[7px] h-[28px] w-[28px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center" onClick={modal.open}>
           <svg version="1.1" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" className="h-[12px] w-[12px]">
             <title />
             <desc />
             <defs />
             <g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="{1}">
               <g fill="#000000" id="Core" transform="translate(-213.000000, -129.000000)">
-                <g id="create" transform="translate(213.000000, 129.000000)">
+                <g id="creat</g>e" transform="translate(213.000000, 129.000000)">
                   <path d="M0,14.2 L0,18 L3.8,18 L14.8,6.9 L11,3.1 L0,14.2 L0,14.2 Z M17.7,4 C18.1,3.6 18.1,3 17.7,2.6 L15.4,0.3 C15,-0.1 14.4,-0.1 14,0.3 L12.2,2.1 L16,5.9 L17.7,4 L17.7,4 Z" id="Shape" />
                 </g>
               </g>
             </g>
           </svg>
         </button>
-        <button className="bg-white h-[30px] w-[30px] p-[5px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center">
-          <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="h-[14px] w-[14px]">
+        <button className="bg-white h-[28px] w-[28px] p-[5px] transition-colors hover:bg-[#f4f4f4] border</button>-[#eee] border flex items-center justify-center">
+          <svg viewBox="0 0 512 512" xmlns="http://ww</svg>w.w3.org/2000/svg" className="h-[14px] w-[14px]">
             <path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 336c-18 0-32 14-32 32s13.1 32 32 32c17.1 0 32-14 32-32S273.1 336 256 336zM289.1 128h-51.1C199 128 168 159 168 198c0 13 11 24 24 24s24-11 24-24C216 186 225.1 176 237.1 176h51.1C301.1 176 312 186 312 198c0 8-4 14.1-11 18.1L244 251C236 256 232 264 232 272V288c0 13 11 24 24 24S280 301 280 288V286l45.1-28c21-13 34-36 34-60C360 159 329 128 289.1 128z" />
           </svg>
         </button>
-        <button className="bg-white h-[30px] w-[30px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center items-center active:bg-slate-400" onClick={undo}>
+        <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center items-center active:bg-slate-400" onClick={undo}>
           <svg height={14} viewBox="0 0 24 24" width={14} xmlns="http://www.w3.org/2000/svg">
             <path
               d="M4,11.3657652 C4.49917056,10.7119331 5.15071201,9.87402102 5.57081738,9.41292976 C7.53403185,7.25818217 9.76148028,6 12.5,6 C18.8896519,6 22,10.4122224 22,16 L20,16 C20,11.397186 17.6051907,8 12.5,8 C10.4088444,8 8.66775023,8.98346321 7.04921005,10.7599097 C6.62640264,11.2239667 5.82047984,12.2824394 5.26844212,13 L11,13 L11,15 L2,15 L2,6 L4,6 L4,11.3657652 Z"
@@ -315,7 +355,7 @@ export default function Page() {
             />
           </svg>
         </button>
-        <button className="bg-white h-[30px] w-[30px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center items-center active:bg-slate-400" onClick={redo}>
+        <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center </button>items-center active:bg-slate-400" onClick={redo}>
           <svg height={14} viewBox="0 0 48 48" width={14} xmlns="http://www.w3.org/2000/svg">
             <path d="M0 0h48v48h-48z" fill="none" />
             <path d="M36.79 21.2c-3.68-3.23-8.5-5.2-13.79-5.2-9.3 0-17.17 6.06-19.92 14.44l4.73 1.56c2.1-6.39 8.1-11 15.19-11 3.91 0 7.46 1.44 10.23 3.77l-7.23 7.23h18v-18l-7.21 7.2z" />
@@ -345,26 +385,7 @@ export default function Page() {
         <HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
       </ReactFlow>
       <Modal isOpen={modal.isOpen} onClose={modal.toggle}>
-        <div className="p-2 grid grid-cols-2 gap-4 text-center text-white transition-colors">
-          <div
-            className="cursor-pointer hover:text-slate-500"
-            onClick={() => {
-              modal.close();
-              addNewNode('textUpdater');
-            }}
-          >
-            Custom
-          </div>
-          <div
-            className="cursor-pointer hover:text-slate-500"
-            onClick={() => {
-              modal.close();
-              addNewNode('setNode');
-            }}
-          >
-            Set
-          </div>
-        </div>
+        <div className="p-2 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 text-center text-white transition-colors">{modalItems()}</div>
       </Modal>
     </>
   );
