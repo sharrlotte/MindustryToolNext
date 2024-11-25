@@ -6,7 +6,7 @@ import React from 'react';
 import DeleteButton from '@/components/button/delete-button';
 import TakeDownButton from '@/components/button/take-down-button';
 import CommentSection from '@/components/common/comment-section';
-import { Detail } from '@/components/common/detail';
+import { Detail, DetailContent } from '@/components/common/detail';
 import Markdown from '@/components/common/markdown';
 import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
@@ -87,45 +87,47 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
 
   return (
     <Detail>
-      <header className="grid gap-2 pb-4">
-        <p className="text-4xl">{title}</p>
-        <div className="grid gap-2">
-          <IdUserCard id={userId} />
-          <span>{new Date(createdAt).toLocaleString()}</span>
-          <TagContainer tags={displayTags} />
-        </div>
-        <div className="flex h-full flex-1">
-          <Markdown>{content}</Markdown>
-        </div>
-      </header>
-      <footer className="flex justify-between rounded-md p-2">
-        <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-          <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
-            <LikeButton />
-            <LikeCount />
-            <DislikeButton />
-          </LikeComponent>
-          <EllipsisButton>
-            <ProtectedElement
-              session={session}
-              filter={{
-                all: [
-                  {
-                    any: [{ authorId: userId }, { authority: 'DELETE_POST' }],
-                  },
-                  isVerified,
-                ],
-              }}
-            >
-              <TakeDownButton isLoading={isLoading} description={<Tran text="take-down-alert" args={{ name: title }} />} onClick={() => removePost(id)} />
-            </ProtectedElement>
-            <ProtectedElement session={session} filter={{ authorId: userId }}>
-              <DeleteButton variant="command" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
-            </ProtectedElement>
-          </EllipsisButton>
-        </div>
-        <BackButton className="ml-auto" />
-      </footer>
+      <DetailContent>
+        <header className="grid gap-2 pb-4">
+          <p className="text-4xl">{title}</p>
+          <div className="grid gap-2">
+            <IdUserCard id={userId} />
+            <span>{new Date(createdAt).toLocaleString()}</span>
+            <TagContainer tags={displayTags} />
+          </div>
+          <div className="flex h-full flex-1">
+            <Markdown>{content}</Markdown>
+          </div>
+        </header>
+        <footer className="flex justify-between rounded-md p-2">
+          <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
+            <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
+              <LikeButton />
+              <LikeCount />
+              <DislikeButton />
+            </LikeComponent>
+            <EllipsisButton>
+              <ProtectedElement
+                session={session}
+                filter={{
+                  all: [
+                    {
+                      any: [{ authorId: userId }, { authority: 'DELETE_POST' }],
+                    },
+                    isVerified,
+                  ],
+                }}
+              >
+                <TakeDownButton isLoading={isLoading} description={<Tran text="take-down-alert" args={{ name: title }} />} onClick={() => removePost(id)} />
+              </ProtectedElement>
+              <ProtectedElement session={session} filter={{ authorId: userId }}>
+                <DeleteButton variant="command" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
+              </ProtectedElement>
+            </EllipsisButton>
+          </div>
+          <BackButton className="ml-auto" />
+        </footer>
+      </DetailContent>
       <CommentSection itemId={itemId} />
     </Detail>
   );
