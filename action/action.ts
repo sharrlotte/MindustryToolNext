@@ -66,7 +66,7 @@ const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> =
       return await axiosInstance
         .get('/auth/session')
         .then((r) => r.data)
-        .then((data) => data || null);
+        .then((data) => data ?? null);
     } catch (error) {
       return { error: JSON.parse(JSON.stringify(error)) };
     }
@@ -123,7 +123,6 @@ export async function translate(locale: string, translationKey: string, args?: R
 
     return value ? (formatTranslation(value, args) ?? text) : text;
   } catch (error) {
-
     expireTag('translations');
 
     return text;
