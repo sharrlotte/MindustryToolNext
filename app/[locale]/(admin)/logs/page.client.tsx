@@ -147,12 +147,15 @@ function StaticLog() {
     queryKey: ['log', 'total', collection, filter],
     queryFn: (axios) => getLogCount(axios, { ...filter, collection: collection as LogType }),
     placeholderData: 0,
+    enabled: collection !== 'LIVE',
   });
 
   const { data } = useClientQuery({
     queryKey: ['log-collections'],
     queryFn: async (axios) => getLogCollections(axios),
   });
+
+  console.log(collection);
 
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
@@ -185,7 +188,7 @@ function StaticLog() {
             params={{
               page,
               size,
-              collection: collection as LogType,
+              collection: (collection === 'LIVE' ? 'SYSTEM' : collection) as LogType,
               env: env as LogEnvironment,
               content,
               userId,
@@ -208,7 +211,7 @@ function StaticLog() {
           params={{
             page,
             size,
-            collection: collection as LogType,
+            collection: (collection === 'LIVE' ? 'SYSTEM' : collection) as LogType,
             env: env as LogEnvironment,
             content,
             userId,
@@ -298,13 +301,7 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
-                <Calendar
-                  mode="single"
-                  selected={before ? new Date(before) : undefined}
-                  onSelect={(value) => setFilter({ before: value?.toISOString() ?? '' })}
-                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                  initialFocus
-                />
+                <Calendar mode="single" selected={before ? new Date(before) : undefined} onSelect={(value) => setFilter({ before: value?.toISOString() ?? '' })} disabled={(date) => date > new Date() || date < new Date('1900-01-01')} initialFocus />
               </PopoverContent>
             </Popover>
           </div>
@@ -317,13 +314,7 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
-                <Calendar
-                  mode="single"
-                  selected={after ? new Date(after) : undefined}
-                  onSelect={(value) => setFilter({ after: value?.toISOString() ?? '' })}
-                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                  initialFocus
-                />
+                <Calendar mode="single" selected={after ? new Date(after) : undefined} onSelect={(value) => setFilter({ after: value?.toISOString() ?? '' })} disabled={(date) => date > new Date() || date < new Date('1900-01-01')} initialFocus />
               </PopoverContent>
             </Popover>
           </div>
