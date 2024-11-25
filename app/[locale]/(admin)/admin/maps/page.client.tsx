@@ -7,6 +7,7 @@ import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
@@ -80,8 +81,8 @@ export default function Client({ maps }: Props) {
             <PaginationLayoutSwitcher />
           </div>
         </div>
-        <ListLayout>
-          <div className="relative flex h-full flex-col overflow-auto" ref={(ref) => setContainer(ref)}>
+        <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
+          <ListLayout>
             <InfinitePage
               params={params}
               queryKey={['maps', 'upload']}
@@ -95,22 +96,22 @@ export default function Client({ maps }: Props) {
             >
               {(data, index) => <UploadMapPreviewCard key={data.id} map={data} imageCount={index} />}
             </InfinitePage>
-          </div>
-        </ListLayout>
-        <GridLayout>
-          <GridPaginationList
-            params={params}
-            queryKey={['maps', 'upload']}
-            queryFn={getMapUploads}
-            initialData={maps}
-            skeleton={{
-              amount: 20,
-              item: <PreviewSkeleton />,
-            }}
-          >
-            {(data, index) => <UploadMapPreviewCard key={data.id} map={data} imageCount={index} />}
-          </GridPaginationList>
-        </GridLayout>
+          </ListLayout>
+          <GridLayout>
+            <GridPaginationList
+              params={params}
+              queryKey={['maps', 'upload']}
+              queryFn={getMapUploads}
+              initialData={maps}
+              skeleton={{
+                amount: 20,
+                item: <PreviewSkeleton />,
+              }}
+            >
+              {(data, index) => <UploadMapPreviewCard key={data.id} map={data} imageCount={index} />}
+            </GridPaginationList>
+          </GridLayout>
+        </ScrollContainer>
         <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
           <GridLayout>
             <PaginationNavigator numberOfItems={data} />

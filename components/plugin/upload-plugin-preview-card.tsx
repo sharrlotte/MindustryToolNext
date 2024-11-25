@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import DeleteButton from '@/components/button/delete-button';
 import { Hidden } from '@/components/common/hidden';
 import { CheckIcon, ExternalLinkIcon } from '@/components/common/icons';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
@@ -144,7 +145,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
           <DialogTitle />
           <DialogDescription />
         </Hidden>
-        <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md p-6">
+        <ScrollContainer className="flex h-full w-full flex-col justify-between gap-2 rounded-md p-6">
           <Form {...form}>
             <form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
               <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
@@ -176,7 +177,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
               </div>
             </form>
           </Form>
-        </div>
+        </ScrollContainer>
       </DialogContent>
     </Dialog>
   );

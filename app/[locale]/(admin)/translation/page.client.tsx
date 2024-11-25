@@ -10,6 +10,7 @@ import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
 import PaginationNavigator from '@/components/common/pagination-navigator';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -29,16 +30,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
 import { TranslationPaginationQuery } from '@/query/search-query';
-import {
-  CreateTranslationRequest,
-  CreateTranslationSchema,
-  createTranslation,
-  deleteTranslation,
-  getTranslationCompare,
-  getTranslationCompareCount,
-  getTranslationDiff,
-  getTranslationDiffCount,
-} from '@/query/translation';
+import { CreateTranslationRequest, CreateTranslationSchema, createTranslation, deleteTranslation, getTranslationCompare, getTranslationCompareCount, getTranslationDiff, getTranslationDiffCount } from '@/query/translation';
 import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -143,20 +135,21 @@ function CompareTable({ language, target }: CompareTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <GridPaginationList
-            params={{ ...params, language }}
-            queryKey={['translations', 'compare', language]}
-            queryFn={getTranslationCompare}
-            loader={<Fragment></Fragment>}
-            noResult={<Fragment></Fragment>}
-            skeleton={{
-              amount: 20,
-              item: (index) => <TranslationCardSkeleton key={index} />,
-            }}
-            asChild
-          >
-            {(data) => <CompareCard key={data.id} translation={data} language={language} target={target} />}
-          </GridPaginationList>
+          <ScrollContainer>
+            <GridPaginationList
+              params={{ ...params, language }}
+              queryKey={['translations', 'compare', language]}
+              queryFn={getTranslationCompare}
+              noResult={<Fragment></Fragment>}
+              skeleton={{
+                amount: 20,
+                item: (index) => <TranslationCardSkeleton key={index} />,
+              }}
+              asChild
+            >
+              {(data) => <CompareCard key={data.id} translation={data} language={language} target={target} />}
+            </GridPaginationList>
+          </ScrollContainer>
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">
@@ -195,20 +188,21 @@ function DiffTable({ language, target }: DiffTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <GridPaginationList
-            params={{ ...params, language }}
-            queryKey={['translations', 'diff', language]}
-            queryFn={getTranslationDiff}
-            loader={<Fragment></Fragment>}
-            noResult={<Fragment></Fragment>}
-            skeleton={{
-              amount: 20,
-              item: (index) => <TranslationCardSkeleton key={index} />,
-            }}
-            asChild
-          >
-            {(data) => <DiffCard key={data.id} translation={data} language={target} />}
-          </GridPaginationList>
+          <ScrollContainer>
+            <GridPaginationList
+              params={{ ...params, language }}
+              queryKey={['translations', 'diff', language]}
+              queryFn={getTranslationDiff}
+              noResult={<Fragment></Fragment>}
+              skeleton={{
+                amount: 20,
+                item: (index) => <TranslationCardSkeleton key={index} />,
+              }}
+              asChild
+            >
+              {(data) => <DiffCard key={data.id} translation={data} language={target} />}
+            </GridPaginationList>
+          </ScrollContainer>
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">

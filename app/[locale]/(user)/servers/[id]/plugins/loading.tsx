@@ -1,18 +1,18 @@
 import React from 'react';
 
+import ScrollContainer from '@/components/common/scroll-container';
 import { Skeleton } from '@/components/ui/skeleton';
+import Skeletons from '@/components/ui/skeletons';
 
 export default function Loading() {
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
       <Skeleton className="h-14 w-full" />
-      <div className="grid h-full w-full gap-2 overflow-y-auto md:grid-cols-2 lg:grid-cols-3">
-        {Array(20)
-          .fill(1)
-          .map((_, index) => (
-            <Skeleton key={index} className="h-full w-full" />
-          ))}
-      </div>
+      <ScrollContainer className="grid h-full w-full gap-2 md:grid-cols-2 lg:grid-cols-3">
+        <Skeletons number={20}>
+          <Skeleton className="h-full w-full" />
+        </Skeletons>
+      </ScrollContainer>
     </div>
   );
 }

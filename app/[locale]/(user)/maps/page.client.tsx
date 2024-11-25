@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
+import { UploadIcon, UserIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import InternalLink from '@/components/common/internal-link';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
@@ -23,7 +24,6 @@ import { omit } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Map } from '@/types/response/Map';
-import { UploadIcon, UserIcon } from '@/components/common/icons';
 
 type Props = {
   maps: Map[];
@@ -51,8 +51,8 @@ export default function Client({ maps }: Props) {
         <Tran text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
-      <ListLayout>
-        <ScrollContainer ref={(ref) => setContainer(ref)}>
+      <ScrollContainer ref={(ref) => setContainer(ref)}>
+        <ListLayout>
           <InfinitePage
             params={params}
             queryKey={['maps']}
@@ -66,22 +66,22 @@ export default function Client({ maps }: Props) {
           >
             {(data, index) => <MapPreviewCard key={data.id} map={data} imageCount={index} />}
           </InfinitePage>
-        </ScrollContainer>
-      </ListLayout>
-      <GridLayout>
-        <GridPaginationList
-          params={params}
-          queryKey={['maps']}
-          queryFn={getMaps}
-          initialData={maps}
-          skeleton={{
-            amount: 20,
-            item: <PreviewSkeleton />,
-          }}
-        >
-          {(data, index) => <MapPreviewCard key={data.id} map={data} imageCount={index} />}
-        </GridPaginationList>
-      </GridLayout>
+        </ListLayout>
+        <GridLayout>
+          <GridPaginationList
+            params={params}
+            queryKey={['maps']}
+            queryFn={getMaps}
+            initialData={maps}
+            skeleton={{
+              amount: 20,
+              item: <PreviewSkeleton />,
+            }}
+          >
+            {(data, index) => <MapPreviewCard key={data.id} map={data} imageCount={index} />}
+          </GridPaginationList>
+        </GridLayout>
+      </ScrollContainer>
       <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
           <PaginationNavigator numberOfItems={data} />

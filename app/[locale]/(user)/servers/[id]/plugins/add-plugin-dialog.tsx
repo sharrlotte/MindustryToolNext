@@ -87,8 +87,8 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
             <Tran text="found" args={{ number: data }} />
             <PaginationLayoutSwitcher />
           </div>
-          <ListLayout>
-            <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>
+          <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>
+            <ListLayout>
               <InfinitePage
                 params={params}
                 queryKey={['plugin']}
@@ -101,21 +101,21 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
               >
                 {({ id, name, description }) => <ServerPluginCard key={id} id={id} name={name} description={description} isAdded={added.includes(id)} mutate={mutate} />}
               </InfinitePage>
-            </ScrollContainer>
-          </ListLayout>
-          <GridLayout>
-            <GridPaginationList
-              params={params}
-              queryKey={['plugin']}
-              queryFn={getPlugins}
-              skeleton={{
-                amount: 20,
-                item: <Skeleton className="h-20" />,
-              }}
-            >
-              {({ id, name, description }) => <ServerPluginCard key={id} id={id} name={name} description={description} isAdded={added.includes(id)} mutate={mutate} />}
-            </GridPaginationList>
-          </GridLayout>
+            </ListLayout>
+            <GridLayout>
+              <GridPaginationList
+                params={params}
+                queryKey={['plugin']}
+                queryFn={getPlugins}
+                skeleton={{
+                  amount: 20,
+                  item: <Skeleton className="h-20" />,
+                }}
+              >
+                {({ id, name, description }) => <ServerPluginCard key={id} id={id} name={name} description={description} isAdded={added.includes(id)} mutate={mutate} />}
+              </GridPaginationList>
+            </GridLayout>
+          </ScrollContainer>
           <div className="flex justify-end">
             <GridLayout>
               <PaginationNavigator numberOfItems={data} />

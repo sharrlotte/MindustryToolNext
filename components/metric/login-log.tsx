@@ -1,7 +1,9 @@
-import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import MetricWrapper from '@/components/metric/metric-wrapper';
+
+import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getLogs } from '@/query/log';
 import { Log } from '@/types/response/Log';
@@ -31,11 +33,11 @@ async function LoginTable() {
         <Tran text="metric.user-login-history" />
       </span>
       <div>
-        <section className="grid h-[450px] gap-2 overflow-y-auto">
+        <ScrollContainer className="grid h-[450px] gap-2">
           {data.map((log) => (
             <LoginLogCard key={log.id} log={log} />
           ))}
-        </section>
+        </ScrollContainer>
       </div>
     </div>
   );
