@@ -3,10 +3,11 @@
 import dynamic from 'next/dynamic';
 import React, { useCallback, useMemo, useState } from 'react';
 
+import { SearchIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import CreatePresetButton from '@/components/search/create-preset-button';
-import Search from '@/components/search/search-input';
+import { SearchBar, SearchInput } from '@/components/search/search-input';
 import TagPreset from '@/components/search/tag-preset';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
@@ -98,10 +99,10 @@ export default function TagSelector({ tags = [], value, onChange, disabled = fal
         <div className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6">
           <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
             <div className="flex w-full gap-2">
-              <Search className="w-full p-1">
-                <Search.Icon className="p-1" />
-                <Search.Input value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
-              </Search>
+              <SearchBar className="w-full p-1">
+                <SearchIcon className="p-1" />
+                <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
+              </SearchBar>
             </div>
             <CardContent className="flex h-full w-full flex-col p-0 ">
               <ScrollContainer className="overscroll-none">

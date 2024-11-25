@@ -10,7 +10,6 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import { MarkdownData } from '@/components/common/markdown-editor';
 import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
-import Search from '@/components/search/search-input';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -30,6 +29,8 @@ import { PostDetail } from '@/types/response/PostDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { SearchBar, SearchInput } from '@/components/search/search-input';
+import { SearchIcon } from '@/components/common/icons';
 
 const MarkdownEditor = dynamic(() => import('@/components/common/markdown-editor'));
 
@@ -339,10 +340,10 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
           <Tran text="upload.select-post" />
         </DialogTitle>
         <div className="flex flex-col gap-2">
-          <Search>
-            <Search.Input placeholder="upload.post-name" value={name} onChange={(event) => setName(event.currentTarget.value)} />
-            <Search.Icon />
-          </Search>
+          <SearchBar>
+            <SearchInput placeholder="upload.post-name" value={name} onChange={(event) => setName(event.currentTarget.value)} />
+            <SearchIcon />
+          </SearchBar>
           <div className="flex w-full flex-col gap-1">{render()}</div>
         </div>
       </DialogContent>

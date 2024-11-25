@@ -67,16 +67,18 @@ export function useI18n(): TranslateFunction {
         value = keys[group];
 
         if (value === null) {
-          getClientTranslation(group, currentLocale) //
-            .then((result) => {
-              if (result) {
-                localStorage.setItem(localStorageKey, JSON.stringify(result));
+          use(
+            getClientTranslation(group, currentLocale) //
+              .then((result) => {
+                if (result) {
+                  localStorage.setItem(localStorageKey, JSON.stringify(result));
 
-                keys[group] = result;
+                  keys[group] = result;
 
-                setTranslation({ [group]: result });
-              }
-            });
+                  setTranslation({ [group]: result });
+                }
+              }),
+          );
         }
       }
 
