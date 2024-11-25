@@ -4,6 +4,7 @@ import React from 'react';
 
 import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import UserCard from '@/components/user/user-card';
+
 import useClientApi from '@/hooks/use-client';
 import { getUser } from '@/query/user';
 import { User } from '@/types/response/User';
@@ -35,7 +36,7 @@ function FletchUserCard({ id }: IdUserCardProps) {
       return undefined;
     }
 
-    return <span>{error?.message}</span>;
+    return <div>{error?.message}</div>;
   }
 
   if (isLoading || !data) {

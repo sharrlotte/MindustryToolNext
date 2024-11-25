@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { debounce } from 'throttle-debounce';
@@ -10,7 +11,6 @@ import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
 import PaginationNavigator from '@/components/common/pagination-navigator';
-import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -129,27 +129,29 @@ function CompareTable({ language, target }: CompareTableProps) {
             <TableHead className="w-40 overflow-x-auto">
               <Tran text="translation.key" />
             </TableHead>
-            <TableHead>{language}</TableHead>
-            <TableHead>{target}</TableHead>
+            <TableHead>
+              <Tran text={language} />
+            </TableHead>
+            <TableHead>
+              <Tran text={target} />
+            </TableHead>
             <TableHead className="w-20"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <ScrollContainer>
-            <GridPaginationList
-              params={{ ...params, language }}
-              queryKey={['translations', 'compare', language]}
-              queryFn={getTranslationCompare}
-              noResult={<Fragment></Fragment>}
-              skeleton={{
-                amount: 20,
-                item: (index) => <TranslationCardSkeleton key={index} />,
-              }}
-              asChild
-            >
-              {(data) => <CompareCard key={data.id} translation={data} language={language} target={target} />}
-            </GridPaginationList>
-          </ScrollContainer>
+          <GridPaginationList
+            params={{ ...params, language }}
+            queryKey={['translations', 'compare', language]}
+            queryFn={getTranslationCompare}
+            noResult={<Fragment></Fragment>}
+            skeleton={{
+              amount: 20,
+              item: (index) => <TranslationCardSkeleton key={index} />,
+            }}
+            asChild
+          >
+            {(data) => <CompareCard key={data.id} translation={data} language={language} target={target} />}
+          </GridPaginationList>
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">
@@ -183,26 +185,28 @@ function DiffTable({ language, target }: DiffTableProps) {
             <TableHead className="w-40 overflow-x-auto">
               <Tran text="translation.key" />
             </TableHead>
-            <TableHead>{language}</TableHead>
-            <TableHead>{target}</TableHead>
+            <TableHead>
+              <Tran text={language} />
+            </TableHead>
+            <TableHead>
+              <Tran text={target} />
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <ScrollContainer>
-            <GridPaginationList
-              params={{ ...params, language }}
-              queryKey={['translations', 'diff', language]}
-              queryFn={getTranslationDiff}
-              noResult={<Fragment></Fragment>}
-              skeleton={{
-                amount: 20,
-                item: (index) => <TranslationCardSkeleton key={index} />,
-              }}
-              asChild
-            >
-              {(data) => <DiffCard key={data.id} translation={data} language={target} />}
-            </GridPaginationList>
-          </ScrollContainer>
+          <GridPaginationList
+            params={{ ...params, language }}
+            queryKey={['translations', 'diff', language]}
+            queryFn={getTranslationDiff}
+            noResult={<Fragment></Fragment>}
+            skeleton={{
+              amount: 20,
+              item: (index) => <TranslationCardSkeleton key={index} />,
+            }}
+            asChild
+          >
+            {(data) => <DiffCard key={data.id} translation={data} language={target} />}
+          </GridPaginationList>
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">
@@ -283,7 +287,7 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
   return (
     <TableRow>
       <TableCell className="align-top">{keyGroup}</TableCell>
-      <TableCell className="align-top">{key}</TableCell>
+      <TableCell className="align-top"> {key}</TableCell>
       <TableCell className="align-top">
         <CopyButton className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent" variant="ghost" data={value[language]} content={value[language]}>
           {value[language]}
@@ -450,8 +454,8 @@ function DeleteTranslationDialog({ value: { id, key } }: DeleteTranslationDialog
   return <DeleteButton variant="command" isLoading={isPending} description={<Tran text="translation.delete" args={{ key }} />} onClick={() => mutate(id)} />;
 }
 
-function TranslationCardSkeleton() {
-  const width = 10 + Math.random() * 10;
+function ITranslationCardSkeleton() {
+  const width = 100 + Math.random() * 100;
 
   return (
     <TableRow>
@@ -461,3 +465,4 @@ function TranslationCardSkeleton() {
     </TableRow>
   );
 }
+const TranslationCardSkeleton = dynamic(() => Promise.resolve(ITranslationCardSkeleton), { ssr: false });
