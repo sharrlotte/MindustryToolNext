@@ -10,7 +10,7 @@ type LogCardProps = {
 
 export default function LogCard({ log: { requestUrl, ip, userId, content, createdAt, environment }, onClick }: LogCardProps) {
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden break-words rounded-md bg-card p-2 text-xs">
+    <div className="flex h-full w-full flex-col overflow-x-hidden break-words rounded-md bg-card p-2 text-xs">
       {userId && (
         <span onClick={() => onClick({ userId })}>
           <IdUserCard id={userId} />
