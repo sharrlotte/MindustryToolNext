@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
 import LoadingScreen from '@/components/common/loading-screen';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
@@ -16,6 +17,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
+
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
@@ -213,8 +215,8 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
 
   return (
     <Form {...form}>
-      <form className="flex h-full flex-col overflow-y-auto p-2" onSubmit={form.handleSubmit(handleSubmit)}>
-        <div className="flex flex-col gap-2">
+      <form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
+        <ScrollContainer className="flex flex-col gap-2">
           <Image loader={({ src }) => src} src={IMAGE_PREFIX + preview.image.trim()} alt="Schematic" width={512} height={512} />
           <UserCard user={session} />
           <FormField
@@ -289,7 +291,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
               </FormItem>
             )}
           />
-        </div>
+        </ScrollContainer>
         <div className="mt-auto flex justify-end gap-2 p-2">
           <Button variant="outline" onClick={() => setPreview(undefined)}>
             <Tran text="close" />

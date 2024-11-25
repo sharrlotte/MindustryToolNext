@@ -3,6 +3,7 @@ import React from 'react';
 
 import { EditIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
@@ -41,8 +42,10 @@ export default function UserDetail({ user }: Props) {
           <DialogTrigger>
             <Image className="max-h-[80vh] w-full object-cover" src={`${thumbnail}`} width={1920} height={1080} alt={name} />
           </DialogTrigger>
-          <DialogContent className="max-h-full max-w-full overflow-y-auto">
-            <Image src={`${thumbnail}`} width={1920} height={1080} alt={name} />
+          <DialogContent asChild>
+            <ScrollContainer>
+              <Image src={`${thumbnail}`} width={1920} height={1080} alt={name} />
+            </ScrollContainer>
           </DialogContent>
         </Dialog>
       )}

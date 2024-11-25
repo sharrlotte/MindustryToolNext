@@ -91,7 +91,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
             <PaginationLayoutSwitcher />
           </div>
           <ListLayout>
-            <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>
+            <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>
               <InfinitePage
                 params={params}
                 queryKey={['maps']}

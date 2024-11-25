@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { FilterIcon, XIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import Search from '@/components/search/search-input';
 import { SortDropdown } from '@/components/search/sort-dropdown';
@@ -197,8 +198,10 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
                 </Search>
                 {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
               </div>
-              <CardContent className="flex h-full w-full flex-col overflow-y-auto overscroll-none p-0 ">
-                <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
+              <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">
+                <ScrollContainer className="overscroll-none">
+                  <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
+                </ScrollContainer>
               </CardContent>
               <CardFooter className="flex justify-end gap-1 p-0">
                 <Button onClick={handleHideFilterDialog} variant="primary">

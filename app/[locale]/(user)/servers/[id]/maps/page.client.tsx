@@ -32,7 +32,7 @@ export default function ServerMaps({ id }: Props) {
       <div className="flex h-14 items-center justify-end bg-card p-2">
         <AddMapDialog serverId={id} />
       </div>
-      <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>
+      <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>
         <InfinitePage
           params={{ page: 0, size: 20 }}
           queryKey={['servers', id, 'maps']}

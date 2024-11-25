@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
 
 import InfinitePage from '@/components/common/infinite-page';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import UploadMapPreview from '@/components/map/upload-map-preview-card';
@@ -34,7 +35,7 @@ export default function Other({ user }: TabProps) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   return (
-    <div className="absolute inset-0 space-y-2 overflow-y-auto bg-background p-2" ref={(ref) => setContainer(ref)}>
+    <ScrollContainer className="absolute inset-0 space-y-2 bg-background p-2" ref={(ref) => setContainer(ref)}>
       <UserDetail user={user} />
       <Tabs className="w-full" defaultValue="schematic">
         <TabsList className="w-full justify-start bg-card">
@@ -61,9 +62,7 @@ export default function Other({ user }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data, index) =>
-                data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={index} />
-              }
+              {(data, index) => (data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={index} />)}
             </InfinitePage>
           </div>
         </TabsContent>
@@ -99,6 +98,6 @@ export default function Other({ user }: TabProps) {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </ScrollContainer>
   );
 }

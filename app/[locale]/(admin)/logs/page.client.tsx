@@ -181,8 +181,8 @@ function StaticLog() {
         </div>
         <PaginationLayoutSwitcher />
       </div>
-      <ListLayout>
-        <div className="relative flex h-full flex-col gap-2 overflow-x-hidden" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="relative flex h-full flex-col gap-2 overflow-x-hidden" ref={(ref) => setContainer(ref)}>
+        <ListLayout>
           <InfinitePage<Log, LogPaginationQuery>
             className="flex w-full flex-col items-center justify-center gap-2"
             params={{
@@ -203,29 +203,29 @@ function StaticLog() {
           >
             {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
           </InfinitePage>
-        </div>
-      </ListLayout>
-      <GridLayout>
-        <GridPaginationList
-          className="flex w-full flex-col items-center justify-center gap-2"
-          params={{
-            page,
-            size,
-            collection: (collection === 'LIVE' ? 'SYSTEM' : collection) as LogType,
-            env: env as LogEnvironment,
-            content,
-            userId,
-            ip,
-            url,
-            before,
-            after,
-          }}
-          queryKey={['logs']}
-          queryFn={getLogs}
-        >
-          {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
-        </GridPaginationList>
-      </GridLayout>
+        </ListLayout>
+        <GridLayout>
+          <GridPaginationList
+            className="flex w-full flex-col items-center justify-center gap-2"
+            params={{
+              page,
+              size,
+              collection: (collection === 'LIVE' ? 'SYSTEM' : collection) as LogType,
+              env: env as LogEnvironment,
+              content,
+              userId,
+              ip,
+              url,
+              before,
+              after,
+            }}
+            queryKey={['logs']}
+            queryFn={getLogs}
+          >
+            {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
+          </GridPaginationList>
+        </GridLayout>
+      </ScrollContainer>
       <div className="flex justify-end">
         <GridLayout>
           <PaginationNavigator numberOfItems={total} />

@@ -1,9 +1,11 @@
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import IdUserCard from '@/components/user/id-user-card';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useToast } from '@/hooks/use-toast';
@@ -50,10 +52,10 @@ export default function DocumentCard({ document: { id, content, userId } }: Prop
         </div>
       </DialogTrigger>
       <DialogContent>
-        <div className="h-full space-y-2 overflow-y-auto">
+        <ScrollContainer className="space-y-2">
           <IdUserCard id={userId} />
           <p>{content}</p>
-        </div>
+        </ScrollContainer>
         <DeleteButton description={id} isLoading={isPending} onClick={() => mutate()}></DeleteButton>
       </DialogContent>
     </Dialog>

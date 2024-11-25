@@ -16,8 +16,8 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 export function Detail({ className, children }: DetailProps) {
   return (
-    <ScrollContainer className="absolute inset-0 w-full overflow-y-auto bg-background p-2" additionalPadding="pr-4">
-      <div className={cn('relative flex min-h-full w-full flex-col justify-between gap-6 overflow-y-auto lg:items-stretch', className)}>{children}</div>
+    <ScrollContainer className="absolute inset-0 w-full bg-background p-2" additionalPadding="pr-4">
+      <div className={cn('relative flex min-h-full w-full flex-col justify-between gap-6 lg:items-stretch', className)}>{children}</div>
     </ScrollContainer>
   );
 }
@@ -46,9 +46,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 };
 
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
-  return (
-    <FallbackImage className="w-full min-w-[30dvw] overflow-hidden rounded-lg object-cover md:max-w-[min(min(80dvh,80dvw),1920px)]" src={src} alt={alt} errorSrc={errorSrc} width={576} height={576} />
-  );
+  return <FallbackImage className="w-full min-w-[30dvw] overflow-hidden rounded-lg object-cover md:max-w-[min(min(80dvh,80dvw),1920px)]" src={src} alt={alt} errorSrc={errorSrc} width={576} height={576} />;
 }
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 export function DetailHeader({ className, children }: HeaderProps) {
@@ -84,11 +82,7 @@ type DescriptionProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> &
 export function DetailDescription({ className, children }: DescriptionProps) {
   const result = parseIconString(children);
 
-  return (
-    <section className={cn('flex flex-wrap gap-0.5 max-w-[75ch]', className)}>
-      {result.map((item, index) => (typeof item === 'string' ? <ColorText key={index} text={item} /> : <MindustryIcon key={index} name={item.name} />))}
-    </section>
-  );
+  return <section className={cn('flex flex-wrap gap-0.5 max-w-[75ch]', className)}>{result.map((item, index) => (typeof item === 'string' ? <ColorText key={index} text={item} /> : <MindustryIcon key={index} name={item.name} />))}</section>;
 }
 
 type VerifierProps = {

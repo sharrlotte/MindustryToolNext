@@ -4,6 +4,7 @@ import GridPaginationList from '@/components/common/grid-pagination-list';
 import { CrownIcon } from '@/components/common/icons';
 import { GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -47,19 +48,21 @@ export function PageClient({ users }: Props) {
         </TableRow>
       </TableHeader>
       <TableBody className="h-full">
-        <GridPaginationList
-          params={params}
-          queryKey={['rank']}
-          queryFn={getRank}
-          initialData={users}
-          skeleton={{
-            amount: 20,
-            item: (index) => <RankCardSkeleton rank={page * size + index + 1} />,
-          }}
-          asChild
-        >
-          {(data, index) => <UserRankCard key={data.id} user={data} rank={page * size + index + 1} />}
-        </GridPaginationList>
+        <ScrollContainer>
+          <GridPaginationList
+            params={params}
+            queryKey={['rank']}
+            queryFn={getRank}
+            initialData={users}
+            skeleton={{
+              amount: 20,
+              item: (index) => <RankCardSkeleton rank={page * size + index + 1} />,
+            }}
+            asChild
+          >
+            {(data, index) => <UserRankCard key={data.id} user={data} rank={page * size + index + 1} />}
+          </GridPaginationList>
+        </ScrollContainer>
         <ProtectedElement session={session} filter={true}>
           <MyRankCard />
         </ProtectedElement>

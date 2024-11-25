@@ -1,7 +1,9 @@
 import React from 'react';
 
+import ScrollContainer from '@/components/common/scroll-container';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
+import Skeletons from '@/components/ui/skeletons';
 
 export default function Loading() {
   return (
@@ -9,13 +11,11 @@ export default function Loading() {
       <div className="flex gap-2">
         <Skeleton className="h-14 w-full" />
       </div>
-      <div className="grid h-full w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 overflow-y-auto pr-1">
-        {Array(20)
-          .fill(1)
-          .map((_, index) => (
-            <PreviewSkeleton key={index} />
-          ))}
-      </div>
+      <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2">
+        <Skeletons number={20}>
+          <PreviewSkeleton />
+        </Skeletons>
+      </ScrollContainer>
     </div>
   );
 }
