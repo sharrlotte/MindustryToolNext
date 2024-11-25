@@ -4,23 +4,25 @@ import ReactMarkdown from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
 
 import InternalLink from '@/components/common/internal-link';
-import YoutubeEmbed from '@/components/common/youtube-embed';
 
 import env from '@/constant/env';
-import { cn } from '@/lib/utils';
+import { YOUTUBE_VIDEO_REGEX, cn, extractYouTubeID } from '@/lib/utils';
+
+import { YouTubeEmbed } from '@next/third-parties/google';
 
 type MarkdownProps = {
   className?: string;
   children: string;
 };
 
-export const YOUTUBE_VIDEO_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-
 export const OTHER_WEBSITE_URL_REGEX = /^(https?:)?\/\//;
 
 function RouterLink({ href, children }: any) {
   if (href.match(YOUTUBE_VIDEO_REGEX)) {
-    return <YoutubeEmbed url={href} />;
+    const id = extractYouTubeID(href);
+    if (id) {
+      return <YouTubeEmbed videoid={id} />;
+    }
   }
 
   return href.match(OTHER_WEBSITE_URL_REGEX) ? (
