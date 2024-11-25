@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { usePaginationType } from '@/zustand/pagination-type-store';
 import { LayoutGridIcon, LayoutListIcon } from '@/components/common/icons';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+
+import { usePaginationType } from '@/zustand/pagination-type-store';
 
 type Props = {
   children: ReactNode;
@@ -13,10 +14,10 @@ export function PaginationLayoutSwitcher() {
 
   return (
     <ToggleGroup value={type} type="single" onValueChange={setType}>
-      <ToggleGroupItem value="grid" title="grid">
+      <ToggleGroupItem className="aspect-square" value="grid" title="grid">
         <LayoutGridIcon className="size-5" />
       </ToggleGroupItem>
-      <ToggleGroupItem value="infinite-scroll" title="infinite scroll">
+      <ToggleGroupItem className="aspect-square" value="infinite-scroll" title="infinite scroll">
         <LayoutListIcon className="size-5" />
       </ToggleGroupItem>
     </ToggleGroup>
