@@ -21,18 +21,19 @@ class ApiTransport extends Transport {
       this.emit('logged', info + '\n');
     });
 
-    try {
-      fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/error', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: JSON.stringify(info) }),
-      });
-    } catch (error) {
-      // Ignore these error
+    if (process.env.NODE_ENV === 'production') {
+      try {
+        fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/error', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: JSON.stringify(info) }),
+        });
+      } catch (error) {
+        // Ignore these error
+      }
     }
-
     callback();
   }
 }

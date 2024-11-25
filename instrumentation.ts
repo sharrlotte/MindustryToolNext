@@ -22,15 +22,17 @@ export function onRequestError(
     renderType: 'dynamic' | 'dynamic-resume';
   },
 ): void | Promise<void> {
-  try {
-    fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/error', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message: JSON.stringify({ error: JSON.stringify(error, Object.getOwnPropertyNames(error)), request, context }) }),
-    });
-  } catch (error) {
-    //
+  if (process.env.NODE_ENV === 'production') {
+    try {
+      fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/error', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: JSON.stringify({ error: JSON.stringify(error, Object.getOwnPropertyNames(error)), request, context }) }),
+      });
+    } catch (error) {
+      //
+    }
   }
 }
