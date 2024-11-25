@@ -1,15 +1,18 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-import { translate } from '@/action/action';
 import { HomeMapPreview, HomeSchematicPreview, InformationGroup } from '@/app/[locale]/home';
+
 import Ads from '@/components/common/ads';
 import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
-import YoutubeEmbed from '@/components/common/youtube-embed';
+
+import { translate } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { formatTitle } from '@/lib/utils';
+
+import { YouTubeEmbed } from '@next/third-parties/google';
 
 export const experimental_ppr = true;
 
@@ -142,7 +145,7 @@ export default async function Home() {
         <article className="flex flex-col gap-4 md:flex-row">
           <AboutSection />
           <div className="flex h-fit w-full justify-center md:w-1/2">
-            <YoutubeEmbed url="https://www.youtube.com/embed/gUu3AhqpyHo?autoplay=1&loop=1&controls=1" />
+            <YouTubeEmbed videoid="gUu3AhqpyHo" height={400} params="controls=0" />
           </div>
         </article>
         <article className="flex flex-col gap-2">

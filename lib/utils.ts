@@ -166,6 +166,12 @@ export type GroupBy<T> = {
   value: T[];
 };
 
+export const YOUTUBE_VIDEO_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+
+export function extractYouTubeID(url: string) {
+  const match = url.match(YOUTUBE_VIDEO_REGEX);
+  return match ? match[1] : null;
+}
 export function groupBy<T>(array: T[], predicate: (value: T, index: number, array: T[]) => string) {
   const defaultValue = {} as Record<string, T[]>;
 
