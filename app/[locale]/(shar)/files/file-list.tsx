@@ -26,7 +26,7 @@ export default function FileList({ path, filter, setFilePath }: FileListProps) {
   const axios = useClientApi();
   const { toast } = useToast();
 
-  const { data, isLoading, error, isFetching } = useQuery({
+  const { data, error, isFetching } = useQuery({
     queryKey: ['server-files', path],
     queryFn: async () => getServerFiles(axios, path),
     placeholderData: [],

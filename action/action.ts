@@ -128,7 +128,6 @@ export async function translate(locale: string, translationKey: string, args?: R
 
     return value ? (formatTranslation(value, args) ?? text) : text;
   } catch (error) {
-    expireTag('translations');
 
     return text;
   }
