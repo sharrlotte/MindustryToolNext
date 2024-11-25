@@ -142,10 +142,10 @@ export default class SocketClient {
 
     this.socket = instance;
 
-    window.onbeforeunload = function () {
+    window.addEventListener('beforeunload', () => {
       instance.onclose = function () {}; // disable onclose handler first
       instance.close();
-    };
+    });
 
     this.socket.onmessage = async (event) => {
       try {

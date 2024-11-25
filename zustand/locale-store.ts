@@ -14,7 +14,7 @@ type State = {
 
 export const createServerStore = (currentLocale: Locale = 'en') => {
   return createStore<State>()((set) => ({
-    currentLocale,
+    currentLocale: locales.includes(currentLocale) ? currentLocale : 'en',
     setCurrentLocale: (value: Locale) => set({ currentLocale: locales.includes(value) ? value : 'en' }),
     translation: { [currentLocale]: {} },
     setTranslation: (data: TranslationGroup) => {

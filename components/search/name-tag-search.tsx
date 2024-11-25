@@ -4,11 +4,11 @@ import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { FilterIcon, XIcon } from '@/components/common/icons';
+import { FilterIcon, SearchIcon, XIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import Search from '@/components/search/search-input';
+import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { SortDropdown } from '@/components/search/sort-dropdown';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
@@ -167,15 +167,15 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex justify-center gap-2">
-        <Search className="h-10">
-          <Search.Icon className="p-1" />
-          <Search.Input placeholder="search-by-name" value={name} onChange={handleEditName} />
+        <SearchBar className="h-10">
+          <SearchIcon className="p-1" />
+          <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} />
           {name && (
             <Button className="p-0" title="reset" onClick={handleResetName} variant="icon">
               <XIcon />
             </Button>
           )}
-        </Search>
+        </SearchBar>
         {useTag && (
           <Button className="h-10 border-none bg-secondary shadow-md" title="filter" variant="outline" onClick={handleShowFilterDialog}>
             <FilterIcon className="size-5" />
@@ -192,10 +192,10 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
           <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6" onClickOutside={handleHideFilterDialog}>
             <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
               <div className="flex gap-1">
-                <Search className="w-full p-1">
-                  <Search.Icon className="p-1" />
-                  <Search.Input placeholder="filter" value={filter} onChange={handleFilterChange} />
-                </Search>
+                <SearchBar className="w-full p-1">
+                  <SearchIcon className="p-1" />
+                  <SearchInput placeholder="filter" value={filter} onChange={handleFilterChange} />
+                </SearchBar>
                 {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
               </div>
               <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">

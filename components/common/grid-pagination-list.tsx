@@ -1,3 +1,5 @@
+'use client';
+
 import { AxiosInstance } from 'axios';
 import React, { ReactNode, useMemo } from 'react';
 

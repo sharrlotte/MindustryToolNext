@@ -1,8 +1,10 @@
 import { Metadata } from 'next/dist/types';
 
-import { serverApi, translate } from '@/action/action';
 import Client from '@/app/[locale]/(user)/schematics/page.client';
+
 import ErrorScreen from '@/components/common/error-screen';
+
+import { serverApi, translate } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
 import { getSchematics } from '@/query/schematic';
