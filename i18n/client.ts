@@ -103,9 +103,12 @@ export function useI18n(): TranslateFunction {
       try {
         const data = getServerTranslation(group, currentLocale);
         const value = use(data);
-        const translated = value[key];
 
-        setTranslation({ [group]: value });
+        if (!value) {
+          return text;
+        }
+
+        const translated = value[key];
 
         return formatTranslation(translated, args) || text;
       } catch (err) {

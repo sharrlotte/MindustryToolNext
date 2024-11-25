@@ -119,6 +119,11 @@ export async function translate(locale: string, translationKey: string, args?: R
 
   try {
     const keys = await getCachedTranslation(locale, group);
+
+    if (!keys) {
+      return text;
+    }
+
     const value = keys[key];
 
     return value ? (formatTranslation(value, args) ?? text) : text;
