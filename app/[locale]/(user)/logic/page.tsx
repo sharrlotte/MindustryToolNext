@@ -137,7 +137,7 @@ export default function Page() {
     (changes: NodeChange[]) => {
       const newNodes = customApplyNodeChanges(changes, nodes);
       setNodes(newNodes);
-      updateHistory(newNodes, edges);
+      // updateHistory(newNodes, edges);
     },
     [customApplyNodeChanges, nodes, edges],
   );
@@ -229,6 +229,15 @@ export default function Page() {
       }
     },
     [deleteOnClick, nodes, edges],
+  );
+
+  const onNodeDragStop = useCallback(
+    (event: React.MouseEvent, node: Node) => {
+      const newNodes = nodes.map((n) => (n.id === node.id ? node : n));
+      setNodes(newNodes);
+      updateHistory(newNodes, edges);
+    },
+    [nodes, edges],
   );
 
   const updateHistory = (newNodes: Node[], newEdges: Edge[]) => {
@@ -327,6 +336,7 @@ export default function Page() {
         onEdgeClick={onEdgeClick}
         onNodeContextMenu={onNodeContextMenu}
         onEdgeContextMenu={onEdgeContextMenu}
+        onNodeDragStop={onNodeDragStop}
         proOptions={proOptions}
       >
         <MiniMap />
