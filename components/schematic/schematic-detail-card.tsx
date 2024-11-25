@@ -3,7 +3,7 @@
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import CommentSection from '@/components/common/comment-section';
-import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
+import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
 import { LinkIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
@@ -28,9 +28,7 @@ type SchematicDetailCardProps = {
   schematic: SchematicDetail;
 };
 
-export default function SchematicDetailCard({
-  schematic: { id, name, description, tags, requirements, verifierId, itemId, likes, userLike, userId, isVerified, width, height, downloadCount },
-}: SchematicDetailCardProps) {
+export default function SchematicDetailCard({ schematic: { id, name, description, tags, requirements, verifierId, itemId, likes, userLike, userId, isVerified, width, height, downloadCount } }: SchematicDetailCardProps) {
   const axios = useClientApi();
   const { session } = useSession();
 
@@ -49,55 +47,57 @@ export default function SchematicDetailCard({
 
   return (
     <Detail>
-      <DetailInfo>
-        <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-        <CopyButton position="absolute" variant="ghost" data={link} content={link}>
-          <LinkIcon />
-        </CopyButton>
-        <DetailHeader>
-          <DetailTitle>{name}</DetailTitle>
-          <IdUserCard id={userId} />
-          <Verifier verifierId={verifierId} />
-          <span>
-            <Tran text="size" /> {width}x{height}
-          </span>
-          <DetailDescription>{description}</DetailDescription>
-          <ItemRequirementCard requirements={requirements} />
-          <DetailTagsCard tags={tags} />
-        </DetailHeader>
-      </DetailInfo>
-      <DetailActions>
-        <CopyButton title={copyContent} data={getData} />
-        <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
-        <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
-          <LikeButton />
-          <LikeCount />
-          <DislikeButton />
-        </LikeComponent>
-        <EllipsisButton>
-          <ProtectedElement
-            session={session}
-            filter={{
-              all: [
-                {
-                  any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
-                },
-                isVerified,
-              ],
-            }}
-          >
-            <TakeDownSchematicButton id={id} name={name} />
-          </ProtectedElement>
-          <ProtectedElement
-            session={session}
-            filter={{
-              any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
-            }}
-          >
-            <DeleteSchematicButton variant="command" id={id} name={name} />
-          </ProtectedElement>
-        </EllipsisButton>
-      </DetailActions>
+      <DetailContent>
+        <DetailInfo>
+          <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
+          <CopyButton position="absolute" variant="ghost" data={link} content={link}>
+            <LinkIcon />
+          </CopyButton>
+          <DetailHeader>
+            <DetailTitle>{name}</DetailTitle>
+            <IdUserCard id={userId} />
+            <Verifier verifierId={verifierId} />
+            <span>
+              <Tran text="size" /> {width}x{height}
+            </span>
+            <DetailDescription>{description}</DetailDescription>
+            <ItemRequirementCard requirements={requirements} />
+            <DetailTagsCard tags={tags} />
+          </DetailHeader>
+        </DetailInfo>
+        <DetailActions>
+          <CopyButton title={copyContent} data={getData} />
+          <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
+          <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
+            <LikeButton />
+            <LikeCount />
+            <DislikeButton />
+          </LikeComponent>
+          <EllipsisButton>
+            <ProtectedElement
+              session={session}
+              filter={{
+                all: [
+                  {
+                    any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
+                  },
+                  isVerified,
+                ],
+              }}
+            >
+              <TakeDownSchematicButton id={id} name={name} />
+            </ProtectedElement>
+            <ProtectedElement
+              session={session}
+              filter={{
+                any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
+              }}
+            >
+              <DeleteSchematicButton variant="command" id={id} name={name} />
+            </ProtectedElement>
+          </EllipsisButton>
+        </DetailActions>
+      </DetailContent>
       <CommentSection itemId={itemId} />
     </Detail>
   );
