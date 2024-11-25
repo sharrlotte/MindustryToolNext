@@ -181,7 +181,7 @@ function StaticLog() {
         </div>
         <PaginationLayoutSwitcher />
       </div>
-      <ScrollContainer className="relative flex h-full flex-col gap-2 overflow-x-hidden" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="relative flex h-full flex-col gap-2" ref={(ref) => setContainer(ref)}>
         <ListLayout>
           <InfinitePage<Log, LogPaginationQuery>
             className="flex w-full flex-col items-center justify-center gap-2"

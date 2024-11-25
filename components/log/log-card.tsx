@@ -1,6 +1,7 @@
 import React from 'react';
 
 import IdUserCard from '@/components/user/id-user-card';
+
 import { Log } from '@/types/response/Log';
 
 type LogCardProps = {
@@ -10,7 +11,7 @@ type LogCardProps = {
 
 export default function LogCard({ log: { requestUrl, ip, userId, content, createdAt, environment }, onClick }: LogCardProps) {
   return (
-    <div className="flex h-full w-full flex-col overflow-x-hidden break-words rounded-md bg-card p-2 text-xs">
+    <div className="flex w-full flex-col break-words rounded-md bg-card p-2 text-xs h-full">
       {userId && (
         <span onClick={() => onClick({ userId })}>
           <IdUserCard id={userId} />
