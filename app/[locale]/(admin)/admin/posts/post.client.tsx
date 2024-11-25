@@ -24,7 +24,7 @@ export default function Client({ posts }: Props) {
   const params = useSearchQuery(ItemPaginationQuery);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   return (
-    <div>
+    <div className="p-2">
       <NameTagSearch tags={post} />
       <ScrollContainer className="relative flex h-full flex-col gap-2 p-2" ref={(ref) => setContainer(ref)}>
         <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['posts', 'upload']} queryFn={getPostUploads} initialData={posts} container={() => container}>
