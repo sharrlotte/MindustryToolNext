@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: name,
       description: description,
-      images: `${env.url.image}/map-previews/${id}${env.imageFormat}`,
+      images: `${env.url.image}/maps/${id}${env.imageFormat}`,
     },
   };
 }
