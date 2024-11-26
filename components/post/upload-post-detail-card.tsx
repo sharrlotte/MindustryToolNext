@@ -5,13 +5,14 @@ import React, { useEffect, useState } from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
 import VerifyButton from '@/components/button/verify-button';
-import { Detail } from '@/components/common/detail';
+import { Detail, DetailContent } from '@/components/common/detail';
 import Markdown from '@/components/common/markdown';
 import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
+
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -89,32 +90,34 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
 
   return (
     <Detail>
-      <header className="grid gap-2 pb-10">
-        <p className="text-4xl">{title}</p>
-        <div className="grid gap-2">
-          <IdUserCard id={userId} />
-          <span>{new Date(createdAt).toLocaleString()}</span>
-          <TagContainer tags={displayTags} />
-        </div>
-        <div>
-          <Markdown>{content}</Markdown>
-        </div>
-      </header>
-      <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
-        <TagSelector tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
-        <DeleteButton variant="default" className="w-fit" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
-        <VerifyButton
-          description={<Tran text="verify-alert" args={{ name: title }} />}
-          isLoading={isLoading}
-          onClick={() =>
-            verifyPostById({
-              id,
-              tags: TagGroups.toStringArray(selectedTags),
-            })
-          }
-        />
-        <BackButton className="ml-auto" />
-      </footer>
+      <DetailContent>
+        <header className="grid gap-2 pb-10">
+          <p className="text-4xl">{title}</p>
+          <div className="grid gap-2">
+            <IdUserCard id={userId} />
+            <span>{new Date(createdAt).toLocaleString()}</span>
+            <TagContainer tags={displayTags} />
+          </div>
+          <div>
+            <Markdown>{content}</Markdown>
+          </div>
+        </header>
+        <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
+          <TagSelector tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
+          <DeleteButton variant="default" className="w-fit" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
+          <VerifyButton
+            description={<Tran text="verify-alert" args={{ name: title }} />}
+            isLoading={isLoading}
+            onClick={() =>
+              verifyPostById({
+                id,
+                tags: TagGroups.toStringArray(selectedTags),
+              })
+            }
+          />
+          <BackButton className="ml-auto" />
+        </footer>
+      </DetailContent>
     </Detail>
   );
 }
