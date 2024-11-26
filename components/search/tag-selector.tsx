@@ -97,18 +97,16 @@ export default function TagSelector({ tags = [], value, onChange, disabled = fal
       </div>
       <div className={cn('fixed inset-0 z-50 hidden items-center justify-center backdrop-blur-sm', { flex: showFilterDialog })}>
         <div className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6">
-          <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
-            <div className="flex w-full gap-2">
-              <SearchBar className="w-full p-1">
-                <SearchIcon className="p-1" />
-                <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
-              </SearchBar>
-            </div>
-            <CardContent className="flex h-full w-full flex-col p-0 ">
-              <ScrollContainer className="overscroll-none">
+          <Card className="grid grid-rows-[1fr_auto_1fr] h-full w-full gap-2 rounded-none p-4 md:rounded-lg ">
+            <SearchBar className="w-full p-1">
+              <SearchIcon className="p-1" />
+              <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
+            </SearchBar>
+            <ScrollContainer className="overscroll-none">
+              <CardContent className="flex h-full w-full flex-col p-0 ">
                 <FilterTags filter={filter} filterBy={value} tags={tags} handleTagGroupChange={handleTagGroupChange} />
-              </ScrollContainer>
-            </CardContent>
+              </CardContent>
+            </ScrollContainer>
             <CardFooter className="flex justify-end gap-1 p-0">
               <CreatePresetButton tags={value} />
               <Button title="close" variant="outline" onClick={handleHideFilterDialog}>

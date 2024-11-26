@@ -28,7 +28,7 @@ type ContentProps = {
 };
 
 export function DetailContent({ className, children }: ContentProps) {
-  return <div className={cn('flex w-full flex-col justify-between gap-6 lg:items-stretch', className)}>{children}</div>;
+  return <div className={cn('flex min-h-full w-full flex-col justify-between gap-6 lg:items-stretch', className)}>{children}</div>;
 }
 
 type InfoProps = React.HTMLAttributes<HTMLDivElement>;

@@ -5,18 +5,9 @@ import React, { ReactNode } from 'react';
 
 import { XIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva('hover:bg-destructive/80', {
@@ -42,7 +33,7 @@ export default function DeleteButton({ className, isLoading, variant, descriptio
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className={cn(buttonVariants({ className, variant }))} variant={variant} size="command" disabled={isLoading}>
+        <Button className={cn('hover:border-none', buttonVariants({ className, variant }))} variant={variant} size="command" disabled={isLoading}>
           <XIcon />
           {variant === 'command' && <Tran text="delete" />}
         </Button>
