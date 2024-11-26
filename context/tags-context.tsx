@@ -13,7 +13,30 @@ import TagGroup from '@/types/response/TagGroup';
 
 const predicate = (tag: ContextTagGroup) => tag.name !== 'size';
 
-const getCachedTags = unstable_cache(() => getTags(axiosInstance), ['tags'], { revalidate: 60000 });
+const getCachedTags = unstable_cache(
+  async (locale: Locale) => {
+    const data = await getTags(axiosInstance);
+    function map(items: TagGroup[]): Promise<ContextTagGroup[]> {
+      return Promise.all(
+        items.sort().map(async (item) => ({
+          ...item,
+          name: item.name,
+          displayName: await translate(locale, `tags.${item.name}`),
+          values: await Promise.all(item.values.sort().map(async (value) => ({ value, display: await translate(locale, `tags.${value}`) }))),
+        })),
+      );
+    }
+
+    return {
+      schematic: await map(data.schematic),
+      map: await map(data.map),
+      post: await map(data.post),
+      plugin: await map(data.plugin),
+    };
+  },
+  ['tags'],
+  { revalidate: 60000 },
+);
 
 export type ContextTagGroup = {
   name: string;
@@ -27,29 +50,11 @@ export type ContextTagGroup = {
 };
 
 export async function TagsProvider({ children, locale }: { children: ReactNode; locale: Locale }) {
-  const data = await getCachedTags();
+  const searchTags = await getCachedTags(locale);
 
-  if (isError(data)) {
-    return <ErrorScreen error={data} />;
+  if (isError(searchTags)) {
+    return <ErrorScreen error={searchTags} />;
   }
-
-  function map(items: TagGroup[]): Promise<ContextTagGroup[]> {
-    return Promise.all(
-      items.sort().map(async (item) => ({
-        ...item,
-        name: item.name,
-        displayName: await translate(locale, `tags.${item.name}`),
-        values: await Promise.all(item.values.sort().map(async (value) => ({ value, display: await translate(locale, `tags.${value}`) }))),
-      })),
-    );
-  }
-
-  const searchTags: ContextAllTagGroup = {
-    schematic: await map(data.schematic),
-    map: await map(data.map),
-    post: await map(data.post),
-    plugin: await map(data.plugin),
-  };
 
   const uploadTags: ContextAllTagGroup = {
     schematic: searchTags.schematic.filter(predicate),

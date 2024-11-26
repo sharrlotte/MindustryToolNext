@@ -55,7 +55,7 @@ export default function NotificationDialog() {
           <Hidden>
             <DialogDescription>This is a notification dialog.</DialogDescription>
           </Hidden>
-          <NotificationContent />
+          <NotificationList />
           <DialogClose asChild>
             <Button className="ml-auto" variant="secondary">
               <Tran text="close" />
@@ -104,7 +104,7 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
   );
 }
 
-function NotificationContent() {
+function NotificationList() {
   return (
     <ScrollContainer className="border-t">
       <InfinitePage className="gap-2 flex flex-col divide-y" queryKey={['notifications']} params={{ page: 0, size: 30 }} queryFn={getMyNotifications} noResult={<Tran text="notification.no-notification" />}>
@@ -134,14 +134,21 @@ function NotificationCard({ notification }: NotificationCardProps) {
             </div>
           </div>
         </DialogTrigger>
-        <DialogContent asChild>
-          <ScrollContainer className="p-4 max-h-full max-w-full w-fit min-w-[min(30rem,100%)]">
-            <DialogTitle className="font-bold text-2xl">{title}</DialogTitle>
+        <DialogContent className="h-full max-w-none flex w-full">
+          <Hidden>
             <DialogDescription />
+          </Hidden>
+          <ScrollContainer className="p-4 max-h-full max-w-full flex flex-col w-full min-h-full min-w-[min(30rem,100%)]">
+            <DialogTitle className="font-bold text-xl">{title}</DialogTitle>
             <Markdown className="text-muted-foreground">{content}</Markdown>
-            <DialogFooter>
+            <div className="mt-auto flex justify-between items-center">
               <RelativeTime className="text-nowrap text-muted-foreground" date={new Date(createdAt)} />
-            </DialogFooter>
+              <DialogClose asChild>
+                <Button>
+                  <Tran text="close" />
+                </Button>
+              </DialogClose>
+            </div>
           </ScrollContainer>
         </DialogContent>
       </Dialog>

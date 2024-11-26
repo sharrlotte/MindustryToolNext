@@ -2,20 +2,10 @@
 
 import React, { ReactNode } from 'react';
 
-import Tran from '@/components/common/tran';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
 import { CheckIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 type VerifyButtonProps = {
   isLoading: boolean;
