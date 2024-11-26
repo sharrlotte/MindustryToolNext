@@ -1,3 +1,5 @@
+'use client'
+
 import React, { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 
 import { cn } from '@/lib/utils';

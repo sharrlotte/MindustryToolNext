@@ -39,7 +39,7 @@ export default async function Root({ children, params }: RootProps) {
       )}
       <I18nProvider locale={locale}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <TagsProvider>
+          <TagsProvider locale={locale}>
             <SessionProvider>
               <SocketProvider>
                 <QueryProvider>

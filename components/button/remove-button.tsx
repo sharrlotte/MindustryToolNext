@@ -26,7 +26,7 @@ type RemoveButtonProps = {
 export default function RemoveButton({ isLoading, description, onClick }: RemoveButtonProps) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="flex items-center justify-center rounded-md border p-2" disabled={isLoading}>
+      <AlertDialogTrigger className="flex items-center justify-center rounded-md border p-2 hover:border-none" disabled={isLoading}>
         <TrashIcon />
       </AlertDialogTrigger>
       <AlertDialogContent>

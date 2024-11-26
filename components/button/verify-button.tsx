@@ -26,7 +26,7 @@ type VerifyButtonProps = {
 export default function VerifyButton({ isLoading, description, onClick }: VerifyButtonProps) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="flex items-center justify-center rounded-md border p-2 hover:bg-success" disabled={isLoading}>
+      <AlertDialogTrigger className="flex items-center justify-center rounded-md border p-2 hover:bg-success hover:border-none" disabled={isLoading}>
         <CheckIcon className="size-5" />
       </AlertDialogTrigger>
       <AlertDialogContent>

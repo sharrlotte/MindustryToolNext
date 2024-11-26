@@ -16,11 +16,12 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
+import { ContextTagGroup } from '@/context/tags-context';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 
 type TagSelectorProps = {
-  tags?: TagGroup[];
+  tags?: ContextTagGroup[];
   disabled?: boolean;
   hideSelectedTag?: boolean;
   value: TagGroup[];
@@ -97,18 +98,16 @@ export default function TagSelector({ tags = [], value, onChange, disabled = fal
       </div>
       <div className={cn('fixed inset-0 z-50 hidden items-center justify-center backdrop-blur-sm', { flex: showFilterDialog })}>
         <div className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6">
-          <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg ">
-            <div className="flex w-full gap-2">
-              <SearchBar className="w-full p-1">
-                <SearchIcon className="p-1" />
-                <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
-              </SearchBar>
-            </div>
-            <CardContent className="flex h-full w-full flex-col p-0 ">
-              <ScrollContainer className="overscroll-none">
+          <Card className="grid grid-rows-[auto_1fr_auto] h-full w-full gap-2 rounded-none p-4 md:rounded-lg ">
+            <SearchBar className="w-full p-1">
+              <SearchIcon className="p-1" />
+              <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
+            </SearchBar>
+            <ScrollContainer className="overscroll-none h-full">
+              <CardContent className="flex h-full w-full flex-col p-0 ">
                 <FilterTags filter={filter} filterBy={value} tags={tags} handleTagGroupChange={handleTagGroupChange} />
-              </ScrollContainer>
-            </CardContent>
+              </CardContent>
+            </ScrollContainer>
             <CardFooter className="flex justify-end gap-1 p-0">
               <CreatePresetButton tags={value} />
               <Button title="close" variant="outline" onClick={handleHideFilterDialog}>

@@ -17,7 +17,7 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 export function Detail({ className, children }: DetailProps) {
   return (
     <ScrollContainer className="absolute inset-0 w-full bg-background p-2 h-full" additionalPadding="pr-4">
-      <div className={cn('grid grid-rows-[100%_auto] h-full', className)}>{children}</div>
+      <div className={cn('relative flex flex-col h-full gap-6', className)}>{children}</div>
     </ScrollContainer>
   );
 }
@@ -28,7 +28,7 @@ type ContentProps = {
 };
 
 export function DetailContent({ className, children }: ContentProps) {
-  return <div className={cn('relative flex h-full w-full flex-col justify-between gap-6 lg:items-stretch', className)}>{children}</div>;
+  return <div className={cn('flex min-h-full w-full flex-col justify-between gap-6 lg:items-stretch', className)}>{children}</div>;
 }
 
 type InfoProps = React.HTMLAttributes<HTMLDivElement>;
