@@ -1,6 +1,8 @@
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
+import { ContextTagGroup } from '@/context/tags-context';
 import { groupBy } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
+
 
 type TagGroup = {
   name: string;
@@ -26,7 +28,7 @@ export class TagGroups {
     return Tags.fromTagGroup(tags).map((tag) => tag.name + TAG_SEPARATOR + tag.value);
   }
 
-  static parseString(str: string[], tags: TagGroup[]) {
+  static parseString(str: string[], tags: ContextTagGroup[]) {
     const tagsArray =
       str
         ?.map((value) => value.split(TAG_SEPARATOR))
@@ -43,7 +45,7 @@ export class TagGroups {
           return { ...tag, color: TAG_DEFAULT_COLOR, duplicate: true };
         }
 
-        const result = tags.find((t) => t.name === tag.name && tag.values.every((b) => tag.values.includes(b)));
+        const result = tags.find((t) => t.name === tag.name && t.values.every((b) => tag.values.includes(b.value)));
         // Ignore tag that not match with server
         if (result) {
           const r = { ...result, values: tag.values };

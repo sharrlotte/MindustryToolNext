@@ -2,11 +2,18 @@
 
 import React, { ReactNode } from 'react';
 
-import { AllTagGroup } from '@/types/response/TagGroup';
+import { ContextTagGroup } from '@/context/tags-context';
 
-type ContextType = { searchTags: AllTagGroup; uploadTags: AllTagGroup };
+type ContextType = { searchTags: ContextAllTagGroup; uploadTags: ContextAllTagGroup };
 
-export const EMPTY: AllTagGroup = {
+export type ContextAllTagGroup = {
+  schematic: ContextTagGroup[];
+  map: ContextTagGroup[];
+  post: ContextTagGroup[];
+  plugin: ContextTagGroup[];
+};
+
+export const EMPTY: ContextAllTagGroup = {
   schematic: [],
   map: [],
   post: [],

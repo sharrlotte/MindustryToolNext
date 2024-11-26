@@ -1,9 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import Tran from '@/components/common/tran';
+
 import { cn } from '@/lib/utils';
 
 const icons: Record<string, string> = {
@@ -111,13 +112,13 @@ const icons: Record<string, string> = {
   'sand-wall': 'block-sand-wall-full.png',
 };
 
-function InternalTagName({ className, children }: { className?: string; children: string }) {
-  const icon = icons[children];
+function InternalTagName({ className, value, children }: { className?: string; value: string; children: ReactNode }) {
+  const icon = icons[value];
 
   return (
     <span className={cn('text-sx flex flex-row flex-nowrap items-center gap-1 capitalize', className)}>
-      {icon && <Image className="h-4 min-h-4 w-4 min-w-4" src={`/assets/sprite/${icon}`} width={16} height={16} alt={children} />}
-      <Tran text={`tags.${children}`} />
+      {icon && <Image className="h-4 min-h-4 w-4 min-w-4" src={`/assets/sprite/${icon}`} width={16} height={16} alt={value} />}
+      {children}
     </span>
   );
 }

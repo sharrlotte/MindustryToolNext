@@ -22,12 +22,13 @@ import { ItemPaginationQuery } from '@/query/search-query';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { ContextTagGroup } from '@/context/tags-context';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
 
 type NameTagSearchProps = {
   className?: string;
-  tags?: TagGroup[];
+  tags?: ContextTagGroup[];
   useSort?: boolean;
   useTag?: boolean;
 };
