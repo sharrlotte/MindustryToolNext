@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
-import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
+import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
 import { LinkIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
@@ -52,28 +52,30 @@ export default function UploadSchematicDetailCard({ schematic: { id, name, tags,
 
   return (
     <Detail>
-      <DetailInfo>
-        <CopyButton position="absolute" variant="ghost" data={link} content={link}>
-          <LinkIcon />
-        </CopyButton>
-        <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-        <DetailHeader>
-          <DetailTitle>{name}</DetailTitle>
-          <IdUserCard id={userId} />
-          <span>
-            <Tran text="size" /> {width}x{height}
-          </span>
-          <DetailDescription>{description}</DetailDescription>
-          <ItemRequirementCard requirements={requirements} />
-          <TagSelector tags={schematic} value={selectedTags} onChange={setSelectedTags} />
-        </DetailHeader>
-      </DetailInfo>
-      <DetailActions>
-        <CopyButton content={copyMessage} data={getData} />
-        <DownloadButton href={downloadUrl} fileName={downloadName} />
-        <DeleteSchematicButton id={id} name={name} />
-        <VerifySchematicButton id={id} name={name} selectedTags={selectedTags} />
-      </DetailActions>
+      <DetailContent>
+        <DetailInfo>
+          <CopyButton position="absolute" variant="ghost" data={link} content={link}>
+            <LinkIcon />
+          </CopyButton>
+          <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
+          <DetailHeader>
+            <DetailTitle>{name}</DetailTitle>
+            <IdUserCard id={userId} />
+            <span>
+              <Tran text="size" /> {width}x{height}
+            </span>
+            <DetailDescription>{description}</DetailDescription>
+            <ItemRequirementCard requirements={requirements} />
+            <TagSelector tags={schematic} value={selectedTags} onChange={setSelectedTags} />
+          </DetailHeader>
+        </DetailInfo>
+        <DetailActions>
+          <CopyButton content={copyMessage} data={getData} />
+          <DownloadButton href={downloadUrl} fileName={downloadName} />
+          <DeleteSchematicButton id={id} name={name} />
+          <VerifySchematicButton id={id} name={name} selectedTags={selectedTags} />
+        </DetailActions>
+      </DetailContent>
     </Detail>
   );
 }
