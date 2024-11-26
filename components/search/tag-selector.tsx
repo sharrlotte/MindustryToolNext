@@ -13,10 +13,10 @@ import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
+import { ContextTagGroup } from '@/context/tags-context';
 import { cn } from '@/lib/utils';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
-import { ContextTagGroup } from '@/context/tags-context';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 

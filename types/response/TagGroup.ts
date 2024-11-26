@@ -3,7 +3,6 @@ import { ContextTagGroup } from '@/context/tags-context';
 import { groupBy } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
 
-
 type TagGroup = {
   name: string;
   values: string[];
@@ -45,7 +44,7 @@ export class TagGroups {
           return { ...tag, color: TAG_DEFAULT_COLOR, duplicate: true };
         }
 
-        const result = tags.find((t) => t.name === tag.name && t.values.every((b) => tag.values.includes(b.value)));
+        const result = tags.find((t) => t.name === tag.name && tag.values.every((b) => tag.values.includes(b)));
         // Ignore tag that not match with server
         if (result) {
           const r = { ...result, values: tag.values };
