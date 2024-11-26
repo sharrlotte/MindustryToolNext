@@ -306,6 +306,10 @@ const DEFAULT_NEXTJS_ERROR_MESSAGE =
 const INTERNAL_ERROR_MESSAGE = 'Request failed with status code 500';
 
 export function getErrorMessage(error: TError) {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(error);
+  }
+
   if (!error) {
     return 'Something is wrong';
   }
