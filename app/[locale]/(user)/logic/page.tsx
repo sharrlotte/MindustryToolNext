@@ -268,42 +268,78 @@ export default function Page() {
   const memoizedEdgeTypes = useMemo(() => edgeTypes, []);
 
   const nodeOptions = [
-    { type: '', label: 'Read' },
-    { type: '', label: 'Write' },
-    { type: '', label: 'Draw' },
-    { type: '', label: 'Print' },
-    { type: '', label: 'Draw flush' },
-    { type: '', label: 'Print flush' },
-    { type: '', label: 'Get link' },
-    { type: '', label: 'Control' },
-    { type: '', label: 'Radar' },
-    { type: '', label: 'Sensor' },
-    { type: '', label: 'Set' },
-    { type: '', label: 'Operation' },
-    { type: '', label: 'Look up' },
-    { type: '', label: 'Pack color' },
-    { type: '', label: 'Wait' },
-    { type: '', label: 'Stop' },
-    { type: '', label: 'End' },
-    { type: '', label: 'Jump' },
-    { type: '', label: 'Unit bind' },
-    { type: '', label: 'Unit control' },
-    { type: '', label: 'Unit radar' },
-    { type: '', label: 'Unit locate' },
-    { type: 'textUpdater', label: 'Custom node' },
+    {
+      label: 'Input/Output',
+      items: [
+        { type: '', label: 'Read' },
+        { type: '', label: 'Write' },
+        { type: '', label: 'Draw' },
+        { type: '', label: 'Print' },
+      ],
+    },
+    {
+      label: 'Block Control',
+      items: [
+        { type: '', label: 'Draw flush' },
+        { type: '', label: 'Print flush' },
+        { type: '', label: 'Get link' },
+        { type: '', label: 'Control' },
+        { type: '', label: 'Radar' },
+        { type: '', label: 'Sensor' },
+      ],
+    },
+    {
+      label: 'Operation',
+      items: [
+        { type: '', label: 'Set' },
+        { type: '', label: 'Operation' },
+        { type: '', label: 'Look up' },
+        { type: '', label: 'Pack color' },
+      ],
+    },
+    {
+      label: 'Flow Control',
+      items: [
+        { type: '', label: 'Wait' },
+        { type: '', label: 'Stop' },
+        { type: '', label: 'End' },
+        { type: '', label: 'Jump' },
+      ],
+    },
+    {
+      label: 'Unit Control',
+      items: [
+        { type: '', label: 'Unit bind' },
+        { type: '', label: 'Unit control' },
+        { type: '', label: 'Unit radar' },
+        { type: '', label: 'Unit locate' },
+      ],
+    },
+    {
+      label: 'Other',
+      items: [{ type: '', label: 'Custom Node' }],
+    },
   ];
 
   const modalItems = () => {
     return nodeOptions.map((option) => (
-      <div
-        key={option.type}
-        className="cursor-pointer hover:text-slate-500"
-        onClick={() => {
-          modal.close();
-          addNewNode(option.type);
-        }}
-      >
-        {option.label}
+      <div className="flex flex-col border-b py-2 gap-2">
+        <p className="text-lg">{option.label}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {Array.isArray(option.items) &&
+            option.items.map((item: { type: string; label: string }) => (
+              <div
+                key={item.type}
+                className="cursor-pointer hover:text-slate-500"
+                onClick={() => {
+                  modal.close();
+                  addNewNode(item.type);
+                }}
+              >
+                {item.label}
+              </div>
+            ))}
+        </div>
       </div>
     ));
   };
@@ -342,7 +378,7 @@ export default function Page() {
             </g>
           </svg>
         </button>
-        <button className="bg-white h-[28px] w-[28px] p-[5px] transition-colors hover:bg-[#f4f4f4] border</button>-[#eee] border flex items-center justify-center">
+        <button className="bg-white h-[28px] w-[28px] p-[5px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center">
           <svg viewBox="0 0 512 512" xmlns="http://ww</svg>w.w3.org/2000/svg" className="h-[14px] w-[14px]">
             <path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 336c-18 0-32 14-32 32s13.1 32 32 32c17.1 0 32-14 32-32S273.1 336 256 336zM289.1 128h-51.1C199 128 168 159 168 198c0 13 11 24 24 24s24-11 24-24C216 186 225.1 176 237.1 176h51.1C301.1 176 312 186 312 198c0 8-4 14.1-11 18.1L244 251C236 256 232 264 232 272V288c0 13 11 24 24 24S280 301 280 288V286l45.1-28c21-13 34-36 34-60C360 159 329 128 289.1 128z" />
           </svg>
@@ -385,7 +421,7 @@ export default function Page() {
         <HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
       </ReactFlow>
       <Modal isOpen={modal.isOpen} onClose={modal.toggle}>
-        <div className="p-2 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 text-center text-white transition-colors">{modalItems()}</div>
+        <div className="p-2 grid grid-cols-2 gap-4 max-h-[80vh] overflow-y-scroll no-scrollbar text-center text-white transition-colors">{modalItems()}</div>
       </Modal>
     </>
   );
