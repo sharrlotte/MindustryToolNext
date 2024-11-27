@@ -21,12 +21,12 @@ type Tab = {
 const tabs: Tab = [
   [
     {
-      icon: <GlobIcon />,
-      action: <ChangeLanguageDialog />,
-    },
-    {
       icon: undefined,
       action: <ThemeSwitcher />,
+    },
+    {
+      icon: <GlobIcon />,
+      action: <ChangeLanguageDialog />,
     },
     {
       icon: undefined,
