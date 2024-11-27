@@ -457,7 +457,7 @@ export function formatTranslation(text: string, args?: Record<string, string>) {
 }
 
 export function formatTitle(title: string) {
-  return `${title} | ${env.webName}`;
+  return `${title} - ${env.webName}`;
 }
 
 export function extractTranslationKey(text: string) {

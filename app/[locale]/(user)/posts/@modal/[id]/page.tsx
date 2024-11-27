@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import React from 'react';
 import removeMd from 'remove-markdown';
 
-import { serverApi, translate } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import PostDetailCard from '@/components/post/post-detail-card';
+
+import { serverApi, translate } from '@/action/action';
 import { Locale } from '@/i18n/config';
-import { formatTitle, isError, YOUTUBE_VIDEO_REGEX } from '@/lib/utils';
+import { YOUTUBE_VIDEO_REGEX, formatTitle, isError } from '@/lib/utils';
 import { getPost } from '@/query/post';
 
 type Props = {
@@ -14,9 +15,8 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id, locale } = await params;
+  const { id } = await params;
   const post = await serverApi((axios) => getPost(axios, { id }));
-  const title = await translate(locale, 'post');
 
   if (isError(post)) {
     return { title: 'Error' };
@@ -24,13 +24,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const urls = YOUTUBE_VIDEO_REGEX.exec(post.content) ?? [];
 
+  const { title, content, imageUrls } = post;
+
   return {
     title: formatTitle(title),
-    description: [post.title, removeMd(post.content)].join('|'),
+    description: [title, removeMd(content)].join('|'),
     openGraph: {
       title: formatTitle(title),
-      description: [post.title, removeMd(post.content)].join('|'),
-      images: post.imageUrls.concat([...urls]),
+      description: [title, removeMd(content)].join('|'),
+      images: imageUrls.concat([...urls]),
     },
   };
 }

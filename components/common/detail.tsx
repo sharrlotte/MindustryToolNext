@@ -17,7 +17,7 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 export function Detail({ className, children }: DetailProps) {
   return (
     <ScrollContainer className="absolute inset-0 w-full bg-background p-2 h-full" additionalPadding="pr-4">
-      <div className={cn('relative flex flex-col h-full gap-6', className)}>{children}</div>
+      <div className={cn('relative flex flex-col h-full min-h-full gap-6', className)}>{children}</div>
     </ScrollContainer>
   );
 }
@@ -56,7 +56,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 };
 
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
-  return <FallbackImage className="w-full min-w-[30dvw] overflow-hidden rounded-lg object-cover md:max-w-[min(min(80dvh,80dvw),1920px)]" src={src} alt={alt} errorSrc={errorSrc} width={576} height={576} />;
+  return <FallbackImage className="object-cover max-h-[80dvh] md:max-w-[min(min(80dvh,80dvw),1920px)]" src={src} alt={alt} errorSrc={errorSrc} />;
 }
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 export function DetailHeader({ className, children }: HeaderProps) {
