@@ -35,14 +35,14 @@ export default function UserDetail({ user }: Props) {
 
   const style = thumbnail ? { backgroundImage: thumbnail } : undefined;
 
+  const [hasThumbnail, setHasThumbnail] = React.useState(thumbnail !== undefined);
+
   return (
     <div className="relative flex flex-col gap-2 rounded-md bg-card bg-cover bg-center p-2" style={style}>
       {thumbnail && (
         <Dialog>
-          <DialogTrigger>
-            <Image className="max-h-[80vh] w-full object-cover" src={`${thumbnail}`} width={1920} height={1080} alt={name} />
-          </DialogTrigger>
-          <DialogContent asChild>
+          <DialogTrigger>{hasThumbnail && <Image className="max-h-[80vh] w-full object-cover" src={`${thumbnail}`} width={1920} height={1080} alt={name} onError={() => setHasThumbnail(false)} />}</DialogTrigger>
+          <DialogContent className="h-full w-full">
             <ScrollContainer>
               <Image src={`${thumbnail}`} width={1920} height={1080} alt={name} />
             </ScrollContainer>
