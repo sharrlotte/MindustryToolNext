@@ -74,7 +74,7 @@ export default function AddPluginForm() {
           <Tran text="plugin.add" />
         </Button>
       </DialogTrigger>
-      <DialogContent asChild>
+      <DialogContent>
         <ScrollContainer className="flex h-full w-full flex-col justify-between gap-2 rounded-md p-6">
           <Form {...form}>
             <form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
