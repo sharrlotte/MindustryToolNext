@@ -15,7 +15,6 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import { useNavBar } from '@/zustand/nav-bar-store';
 
 const sidebarVariants = {
   open: {
@@ -34,10 +33,13 @@ type NavigationBarProps = {
 };
 
 export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: NavigationBarProps) {
-  const { isVisible, setVisible } = useNavBar();
+  const {
+    config: { showNav: isVisible },
+    setConfig,
+  } = useSession();
 
-  const showSidebar = useCallback(() => setVisible(true), [setVisible]);
-  const hideSidebar = useCallback(() => setVisible(false), [setVisible]);
+  const showSidebar = useCallback(() => setConfig('showNav', true), [setConfig]);
+  const hideSidebar = useCallback(() => setConfig('showNav', false), [setConfig]);
 
   return (
     <div className="flex h-nav w-full items-center justify-between bg-brand px-1 py-2 shadow-lg">
@@ -49,7 +51,7 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
           'backdrop-blur-sm backdrop-brightness-50': isVisible,
         })}
       >
-        <motion.div variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
+        <motion.div variants={sidebarVariants} initial={isVisible ? { width: sidebarVariants.open.width } : { width: sidebarVariants.closed.width }} animate={isVisible ? 'open' : 'closed'}>
           <div
             className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background transition-all duration-300 dark:bg-background/90', {
               'translate-x-0': isVisible,

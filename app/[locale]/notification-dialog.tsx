@@ -13,7 +13,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
 import { useSession } from '@/context/session-context.client';
@@ -27,13 +27,14 @@ import ProtectedElement from '@/layout/protected-element';
 import { cn, isError } from '@/lib/utils';
 import { deleteAllNotifications, deleteNotification, getMyNotifications, getMyUnreadNotificationCount, markAsRead, markAsReadById } from '@/query/notification';
 import { Notification } from '@/types/response/Notification';
-import { useNavBar } from '@/zustand/nav-bar-store';
 
 import { useMutation } from '@tanstack/react-query';
 
 export default function NotificationDialog() {
-  const { session } = useSession();
-  const { isVisible } = useNavBar();
+  const {
+    session,
+    config: { showNav: isVisible },
+  } = useSession();
 
   const isSmall = useMediaQuery('(max-width: 640px)');
   const expand = isSmall ? true : isVisible;
