@@ -1,6 +1,7 @@
 'use client';
 
 import { useTheme } from 'next-themes';
+import dynamic from 'next/dynamic';
 import * as React from 'react';
 
 import { MoonIcon, SunIcon } from '@/components/common/icons';
@@ -9,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 
 export const themes = ['light', 'dark', 'system'] as const;
 
-export function ThemeSwitcher() {
+function IThemeSwitcher() {
   const { theme, setTheme } = useTheme();
 
   return (
@@ -22,3 +23,5 @@ export function ThemeSwitcher() {
     </div>
   );
 }
+
+export const ThemeSwitcher = dynamic(() => Promise.resolve(IThemeSwitcher), { ssr: false });

@@ -8,6 +8,7 @@ import I18nProvider from '@/context/locale-context';
 import { SessionProvider } from '@/context/session-context';
 import { SocketProvider } from '@/context/socket-context';
 import { TagsProvider } from '@/context/tags-context';
+import { CookiesProvider } from '@/hooks/use-cookies';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
@@ -37,21 +38,23 @@ export default async function Root({ children, params }: RootProps) {
           <SpeedInsights />
         </>
       )}
-      <I18nProvider locale={locale}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <TagsProvider locale={locale}>
-            <SessionProvider>
-              <SocketProvider>
-                <QueryProvider>
-                  <ClientInit />
-                  <Toaster />
-                  <NavigationBar>{children}</NavigationBar>
-                </QueryProvider>
-              </SocketProvider>
-            </SessionProvider>
-          </TagsProvider>
-        </ThemeProvider>
-      </I18nProvider>
+      <CookiesProvider>
+        <I18nProvider locale={locale}>
+          <QueryProvider>
+            <ThemeProvider>
+              <TagsProvider locale={locale}>
+                <SessionProvider>
+                  <SocketProvider>
+                    <ClientInit />
+                    <Toaster />
+                    <NavigationBar>{children}</NavigationBar>
+                  </SocketProvider>
+                </SessionProvider>
+              </TagsProvider>
+            </ThemeProvider>
+          </QueryProvider>
+        </I18nProvider>
+      </CookiesProvider>
     </div>
   );
 }
