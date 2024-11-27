@@ -41,6 +41,7 @@
 .text-stroke {
   -webkit-text-stroke: 0.5px black;
 }
+
 @media (max-width: 425px) {
   .react-flow__panel svg {
     width: 125px;

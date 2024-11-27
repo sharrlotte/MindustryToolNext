@@ -292,7 +292,7 @@ export default function Page() {
       label: 'Operation',
       items: [
         { type: 'setNode', label: 'Set' },
-        { type: '', label: 'Operation' },
+        { type: 'operationNode', label: 'Operation' },
         { type: '', label: 'Look up' },
         { type: '', label: 'Pack color' },
       ],
@@ -303,7 +303,7 @@ export default function Page() {
         { type: '', label: 'Wait' },
         { type: '', label: 'Stop' },
         { type: '', label: 'End' },
-        { type: '', label: 'Jump' },
+        { type: 'jumpNode', label: 'Jump' },
       ],
     },
     {
