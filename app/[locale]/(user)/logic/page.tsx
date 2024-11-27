@@ -291,7 +291,7 @@ export default function Page() {
     {
       label: 'Operation',
       items: [
-        { type: '', label: 'Set' },
+        { type: 'setNode', label: 'Set' },
         { type: '', label: 'Operation' },
         { type: '', label: 'Look up' },
         { type: '', label: 'Pack color' },
@@ -317,7 +317,7 @@ export default function Page() {
     },
     {
       label: 'Other',
-      items: [{ type: '', label: 'Custom Node' }],
+      items: [{ type: 'textUpdater', label: 'Custom Node' }],
     },
   ];
 
@@ -326,19 +326,18 @@ export default function Page() {
       <div className="flex flex-col border-b py-2 gap-2">
         <p className="text-lg">{option.label}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {Array.isArray(option.items) &&
-            option.items.map((item: { type: string; label: string }) => (
-              <div
-                key={item.type}
-                className="cursor-pointer hover:text-slate-500"
-                onClick={() => {
-                  modal.close();
-                  addNewNode(item.type);
-                }}
-              >
-                {item.label}
-              </div>
-            ))}
+          {option.items.map((item: { type: string; label: string }) => (
+            <div
+              key={item.type}
+              className="cursor-pointer hover:text-slate-500 transition-colors"
+              onClick={() => {
+                modal.close();
+                addNewNode(item.type);
+              }}
+            >
+              {item.label}
+            </div>
+          ))}
         </div>
       </div>
     ));
