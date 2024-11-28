@@ -39,6 +39,7 @@ export const TextUpdaterNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnec
   </NodeContainer>
 );
 
+//! add more 1 handle node
 export const JumpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
   <NodeContainer data={data} isConnectable={isConnectable}>
     <div className="bg-black flex items-center rounded">
@@ -90,10 +91,47 @@ export const OperationNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnecta
   </NodeContainer>
 );
 
-export const WaitNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const StopNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const EndNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const LookUpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+export const WaitNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded">
+      <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
+        <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">sec</p>
+    </div>
+  </NodeContainer>
+);
+
+export const StopNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded"></div>
+  </NodeContainer>
+);
+
+//! remove 1 handle node
+export const EndNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded"></div>
+  </NodeContainer>
+);
+
+export const LookUpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded">
+      <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
+        <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">= lookup</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-right-left-${data.id}`)?.focus()}>
+        <input id={`input-right-left-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">#</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-right-left-${data.id}`)?.focus()}>
+        <input id={`input-right-left-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+    </div>
+  </NodeContainer>
+);
 export const PackColorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
 export const SensorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
 export const ControlNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
