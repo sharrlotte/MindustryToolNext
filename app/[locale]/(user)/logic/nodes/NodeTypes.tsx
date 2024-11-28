@@ -1,5 +1,7 @@
 import { Handle, Position } from 'reactflow';
 
+import { cn } from '@/lib/utils';
+
 interface TextUpdaterNodeProps {
   data: any;
   isConnectable: boolean;
@@ -17,10 +19,10 @@ const adjustInputWidth = (e: React.ChangeEvent<HTMLInputElement>) => {
   document.body.removeChild(tempSpan);
 };
 
-const NodeContainer: React.FC<TextUpdaterNodeProps & { positions?: Position[] }> = ({ data, isConnectable, children, positions = [Position.Top, Position.Bottom] }) => (
-  <div className="p-1.5 border border-[#1a192b] rounded bg-white text-xs">
+const NodeContainer: React.FC<TextUpdaterNodeProps & { positions?: Position[]; className?: string }> = ({ data, isConnectable, children, positions = [Position.Top, Position.Bottom], className = '' }) => (
+  <div className={cn('p-1.5 border border-[#1a192b] rounded bg-white text-xs', className)}>
     {positions.includes(Position.Top) && <Handle type="target" position={Position.Top} isConnectable={isConnectable} />}
-    {positions.includes(Position.Left) && <Handle type="target" position={Position.Left} isConnectable={isConnectable} />}
+    {positions.includes(Position.Left) && <Handle type="source" position={Position.Left} isConnectable={isConnectable} />}
     <div className="flex flex-col gap-1 text-black">
       <div className="w-full flex justify-between items-center">
         <p>{data.label || 'Node'}:</p>
@@ -33,7 +35,7 @@ const NodeContainer: React.FC<TextUpdaterNodeProps & { positions?: Position[] }>
   </div>
 );
 
-export const TextUpdaterNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+const TextUpdaterNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
   <NodeContainer data={data} isConnectable={isConnectable}>
     <div className="bg-black rounded px-3 min-w-[150px]" onClick={() => document.getElementById(`input-${data.id}`)?.focus()}>
       <input id={`input-${data.id}`} value={data.value} className="nodrag bg-black text-white block w-full rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
@@ -41,8 +43,7 @@ export const TextUpdaterNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnec
   </NodeContainer>
 );
 
-//! add more 1 handle node
-export const JumpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+const JumpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
   <NodeContainer data={data} isConnectable={isConnectable} positions={[Position.Top, Position.Left, Position.Right]}>
     <div className="bg-black flex items-center rounded">
       <p className="text-white pl-3">if</p>
@@ -57,7 +58,7 @@ export const JumpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }
   </NodeContainer>
 );
 
-export const SetNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+const SetNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
   <NodeContainer data={data} isConnectable={isConnectable}>
     <div className="bg-black flex items-center rounded">
       <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
@@ -71,7 +72,7 @@ export const SetNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable })
   </NodeContainer>
 );
 
-export const OperationNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+const OperationNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
   <NodeContainer data={data} isConnectable={isConnectable}>
     <div className="bg-black flex items-center rounded">
       <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
@@ -93,31 +94,22 @@ export const OperationNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnecta
   </NodeContainer>
 );
 
-export const WaitNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+const WaitNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
   <NodeContainer data={data} isConnectable={isConnectable}>
     <div className="bg-black flex items-center rounded">
       <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
         <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
       </div>
-      <p className="text-white">sec</p>
+      <p className="text-white pr-3">sec</p>
     </div>
   </NodeContainer>
 );
 
-export const StopNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
-  <NodeContainer data={data} isConnectable={isConnectable}>
-    <div className="bg-black flex items-center rounded"></div>
-  </NodeContainer>
-);
+const StopNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <NodeContainer data={data} isConnectable={isConnectable} className="w-[120px]" />;
 
-//! remove 1 handle node
-export const EndNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
-  <NodeContainer data={data} isConnectable={isConnectable}>
-    <div className="bg-black flex items-center rounded"></div>
-  </NodeContainer>
-);
+const EndNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <NodeContainer data={data} isConnectable={isConnectable} positions={[Position.Top]} className="w-[120px]" />;
 
-export const LookUpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+const LookUpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
   <NodeContainer data={data} isConnectable={isConnectable}>
     <div className="bg-black flex items-center rounded">
       <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
@@ -134,18 +126,45 @@ export const LookUpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable
     </div>
   </NodeContainer>
 );
-export const PackColorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const SensorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const ControlNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const RadarNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const PrintFlushNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const DrawFlushNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const GetLinkNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const UnitBindNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const UnitControlNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const UnitRadarNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const UnitLocateNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const ReadNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const WriteNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const DrawNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-export const PrintNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+
+const PackColorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const SensorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const ControlNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const RadarNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const PrintFlushNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const DrawFlushNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const GetLinkNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const UnitBindNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const UnitControlNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const UnitRadarNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const UnitLocateNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const ReadNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const WriteNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const DrawNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const PrintNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+
+export {
+  ControlNode,
+  DrawFlushNode,
+  DrawNode,
+  EndNode,
+  GetLinkNode,
+  JumpNode,
+  LookUpNode,
+  OperationNode,
+  PackColorNode,
+  PrintFlushNode,
+  PrintNode,
+  RadarNode,
+  ReadNode,
+  SensorNode,
+  SetNode,
+  StopNode,
+  TextUpdaterNode,
+  UnitBindNode,
+  UnitControlNode,
+  UnitLocateNode,
+  UnitRadarNode,
+  WaitNode,
+  WriteNode,
+};

@@ -180,7 +180,7 @@ export default function Page() {
   );
 
   const onNodeClick = useCallback(
-    (event: React.MouseEvent, node: Node) => {
+    (_event: React.MouseEvent, node: Node) => {
       if (deleteOnClick.isOpen) {
         const newNodes = nodes.filter((n) => n.id !== node.id);
         const newEdges = edges.filter((e) => e.source !== node.id && e.target !== node.id);
@@ -231,7 +231,7 @@ export default function Page() {
   );
 
   const onNodeDragStop = useCallback(
-    (event: React.MouseEvent, node: Node) => {
+    (_event: React.MouseEvent, node: Node) => {
       const newNodes = nodes.map((n) => (n.id === node.id ? node : n));
       setNodes(newNodes);
       updateHistory(newNodes, edges);
