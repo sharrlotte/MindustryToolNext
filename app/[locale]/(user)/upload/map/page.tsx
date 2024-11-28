@@ -214,7 +214,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <TagSelector tags={map} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                  <TagSelector type='map' tags={map} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

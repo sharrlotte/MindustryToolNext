@@ -2,8 +2,6 @@
 
 import React, { useCallback, useMemo, useState } from 'react';
 
-
-
 import { Hidden } from '@/components/common/hidden';
 import { SearchIcon, XIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -13,29 +11,25 @@ import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-
-
 import useQueriesData from '@/hooks/use-queries-data';
-import { TagPreset, deleteTagPreset, getTagPreset } from '@/lib/utils';
+import { PresetType, TagPreset, deleteTagPreset, getTagPreset } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 
-
-
 import { useQuery } from '@tanstack/react-query';
 
-
 type TagPresetListProps = {
+  type: PresetType;
   onPresetChoose: (tags: TagGroup[]) => void;
 };
 
-export default function TagPresetList({ onPresetChoose }: TagPresetListProps) {
+export default function TagPresetList({ type, onPresetChoose }: TagPresetListProps) {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState('');
 
   const { data } = useQuery({
-    queryFn: () => getTagPreset(),
-    queryKey: ['preset'],
+    queryFn: () => getTagPreset(type),
+    queryKey: ['preset', type],
   });
 
   const preset = useMemo(() => data?.filter((item) => item.name.includes(filter)) || [], [filter, data]);
@@ -66,7 +60,7 @@ export default function TagPresetList({ onPresetChoose }: TagPresetListProps) {
           <SearchIcon className="p-1" />
           <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
         </SearchBar>
-        <ScrollContainer className="grid grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
+        <ScrollContainer className="grid h-fit items-start grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
           {preset.map((item) => (
             <TagPresetCard key={item.name} preset={item} onClick={handlePresetChoose} />
           ))}

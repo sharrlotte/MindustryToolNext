@@ -250,7 +250,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <TagSelector tags={schematic} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                  <TagSelector type='schematic' tags={schematic} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

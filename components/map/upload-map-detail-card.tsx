@@ -52,7 +52,7 @@ export default function UploadMapDetailCard({ map: { id, name, tags, description
               <Tran text="size" /> {width}x{height}
             </span>
             <DetailDescription>{description}</DetailDescription>
-            <TagSelector tags={map} value={selectedTags} onChange={setSelectedTags} />
+            <TagSelector type="map" tags={map} value={selectedTags} onChange={setSelectedTags} />
           </DetailHeader>
         </DetailInfo>
         <DetailActions>

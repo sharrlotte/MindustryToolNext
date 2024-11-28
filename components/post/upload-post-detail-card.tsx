@@ -88,7 +88,7 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
           </div>
         </header>
         <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
-          <TagSelector tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
+          <TagSelector type="post" tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
           <DeleteButton variant="default" className="w-fit" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
           <VerifyButton
             description={<Tran text="verify-alert" args={{ name: title }} />}

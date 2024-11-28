@@ -143,7 +143,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                         <Tran text="plugin.tags" />
                       </FormLabel>
                       <FormControl>
-                        <TagSelector tags={plugin} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                        <TagSelector type="plugin" tags={plugin} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

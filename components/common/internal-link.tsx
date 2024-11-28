@@ -52,7 +52,7 @@ export default function InternalLink({ className, variant, title, href, children
     }
   }, [preloadImage]);
 
-  if (href.startsWith('http')) {
+  if (href.startsWith('http') && !href.startsWith(env.url.base)) {
     return (
       <a className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title} target="_blank">
         {children}
