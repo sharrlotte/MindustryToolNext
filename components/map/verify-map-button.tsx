@@ -1,11 +1,12 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { toast } from 'sonner';
 
 import VerifyButton from '@/components/button/verify-button';
 import Tran from '@/components/common/tran';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { verifyMap } from '@/query/map';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
@@ -19,7 +20,7 @@ type VerifyMapButtonProps = {
 };
 export default function VerifyMapButton({ id, name, selectedTags }: VerifyMapButtonProps) {
   const { invalidateByKey } = useQueriesData();
-  const { toast } = useToast();
+
   const { back } = useRouter();
   const axios = useClientApi();
 
@@ -27,16 +28,11 @@ export default function VerifyMapButton({ id, name, selectedTags }: VerifyMapBut
     mutationFn: (data: VerifyMapRequest) => verifyMap(axios, data),
     onSuccess: () => {
       back();
-      toast({
-        title: <Tran text="verify-success" />,
-        variant: 'success',
-      });
+      toast(<Tran text="verify-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="verify-fail" />,
+      toast(<Tran text="verify-fail" />, {
         description: error.message,
-        variant: 'destructive',
       });
     },
     onSettled: () => {

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -18,7 +19,6 @@ import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
-import { toast } from '@/hooks/use-toast';
 import { omit } from '@/lib/utils';
 import { deleteSchematic, getSchematicUploadCount, getSchematicUploads } from '@/query/schematic';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -49,17 +49,10 @@ export default function Client({ schematics }: Props) {
   const { mutate } = useMutation({
     mutationFn: (ids: string[]) => Promise.all(ids.map((id) => deleteSchematic(axios, id))),
     onSuccess: () => {
-      toast({
-        title: <Tran text="delete-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="delete-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="delete-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="delete-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['schematics']);

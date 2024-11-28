@@ -2,16 +2,17 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
-import { revalidate } from '@/action/action';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
+
+import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { updateInternalServerPort } from '@/query/server';
 import { PutInternalServerPortRequest, PutInternalServerPortSchema } from '@/types/request/UpdateInternalServerRequest';
@@ -34,23 +35,14 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
   });
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
-  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
     mutationFn: (data: PutInternalServerPortRequest) => updateInternalServerPort(axios, id, data),
     onSuccess: () => {
-      toast({
-        title: <Tran text="update.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="update.success" />);
     },
-    onError: (error) =>
-      toast({
-        title: <Tran text="update.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      }),
+    onError: (error) => toast.error(<Tran text="update.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['servers']);
       revalidate({ path: '/servers' });

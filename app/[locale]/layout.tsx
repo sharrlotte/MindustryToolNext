@@ -2,7 +2,7 @@ import ClientInit from '@/app/[locale]/client-init';
 import NavigationBar from '@/app/[locale]/navigation';
 
 import { ThemeProvider } from '@/components/theme/theme-provider';
-import Toaster from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/sonner';
 
 import I18nProvider from '@/context/locale-context';
 import { SessionProvider } from '@/context/session-context';

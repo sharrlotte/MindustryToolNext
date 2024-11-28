@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import { Hidden } from '@/components/common/hidden';
@@ -18,7 +19,6 @@ import IdUserCard from '@/components/user/id-user-card';
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import verifyPlugin, { deletePlugin } from '@/query/plugin';
 import VerifyPluginRequest, { VerifyPluginRequestData, VerifyPluginSchema } from '@/types/request/VerifyPluginRequest';
 import { Plugin } from '@/types/response/Plugin';
@@ -35,24 +35,17 @@ const GITHUBInternalPATTERN = /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+
 
 function InternalUploadPluginCard({ plugin }: Props) {
   const { id, name, description, url, userId } = plugin;
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
 
   const axios = useClientApi();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => deletePlugin(axios, id),
     onSuccess: () => {
-      toast({
-        title: <Tran text="delete-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="delete-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="delete-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="delete-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['plugins']);
@@ -93,7 +86,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const {
     uploadTags: { plugin },
   } = useTags();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
 
   const form = useForm<VerifyPluginRequestData>({
@@ -110,17 +103,10 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: VerifyPluginRequest) => verifyPlugin(axios, data),
     onSuccess: () => {
-      toast({
-        title: <Tran text="verify-success" />,
-        variant: 'success',
-      });
+      toast(<Tran text="verify-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="verify-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast(<Tran text="verify-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['plugins']);

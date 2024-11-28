@@ -1,13 +1,14 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 import { ImageIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { getUser, updateThumbnail } from '@/query/user';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -37,25 +38,18 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
     setFile(files[0]);
   }
 
-  const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
   const { mutate, isPending } = useMutation({
     mutationKey: ['update-thumbnail'],
-    mutationFn: (file: File) => updateThumbnail(axios, file),
+    mutationFn: async (file: File) =>
+      toast.promise(updateThumbnail(axios, file), {
+        loading: <Tran text="upload.uploading" />,
+        error: <Tran text="upload.fail" />,
+        success: <Tran text="user.update-thumbnail-success" />,
+      }),
     onSuccess: () => {
       invalidateByKey(['users']);
       setFile(undefined);
-      toast({
-        title: <Tran text="user.update-thumbnail-success" />,
-        variant: 'success',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error?.message,
-        variant: 'destructive',
-      });
     },
   });
 

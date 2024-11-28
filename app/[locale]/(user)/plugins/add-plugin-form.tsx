@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -14,7 +15,6 @@ import { Input } from '@/components/ui/input';
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { createPlugin } from '@/query/plugin';
 import { CreatePluginRequest, CreatePluginRequestData, CreatePluginSchema } from '@/types/request/CreatePluginRequest';
 import { TagGroups } from '@/types/response/TagGroup';
@@ -27,7 +27,7 @@ export default function AddPluginForm() {
   const {
     uploadTags: { plugin },
   } = useTags();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
 
   const form = useForm<CreatePluginRequestData>({
@@ -43,18 +43,12 @@ export default function AddPluginForm() {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: CreatePluginRequest) => createPlugin(axios, data),
     onSuccess: () => {
-      toast({
-        title: <Tran text="upload.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="upload.success" />);
+
       form.reset();
     },
     onError(error) {
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="upload.fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['plugins']);

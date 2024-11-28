@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { Hidden } from '@/components/common/hidden';
 import { EditIcon } from '@/components/common/icons';
@@ -15,7 +16,6 @@ import { Input } from '@/components/ui/input';
 import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { UpdateRoleRequest, UpdateRoleSchema, updateRole } from '@/query/role';
 import { Role } from '@/types/response/Role';
 
@@ -35,25 +35,17 @@ export default function UpdateRoleDialog({ role }: Props) {
 
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
-  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['roles'],
     mutationFn: (data: UpdateRoleRequest) => updateRole(axios, role.id, data),
     onSuccess: () => {
-      toast({
-        title: <Tran text="upload.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="upload.success" />);
+
       form.reset();
       setOpen(false);
     },
-    onError: (error) =>
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      }),
+    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['roles']);
       revalidate({ path: '/users' });

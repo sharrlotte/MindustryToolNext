@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
@@ -15,7 +16,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { updateInternalServer } from '@/query/server';
 import { InternalServerModes, PutInternalServerRequest, PutInternalServerSchema } from '@/types/request/UpdateInternalServerRequest';
@@ -40,7 +40,6 @@ export default function ServerUpdateForm({ server }: Props) {
   });
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
-  const { toast } = useToast();
 
   const { id } = currentServer;
 
@@ -49,18 +48,11 @@ export default function ServerUpdateForm({ server }: Props) {
     mutationFn: (data: PutInternalServerRequest) => updateInternalServer(axios, id, data),
     onSuccess: (_, data) => {
       server = { ...currentServer, ...form.getValues() };
-      toast({
-        title: <Tran text="update.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="update.success" />);
+
       setCurrentServer((prev) => ({ ...prev, ...data }));
     },
-    onError: (error) =>
-      toast({
-        title: <Tran text="update.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      }),
+    onError: (error) => toast.error(<Tran text="update.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['servers']);
       revalidate({ path: '/servers' });

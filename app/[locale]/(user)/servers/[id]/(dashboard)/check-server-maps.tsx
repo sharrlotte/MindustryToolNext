@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 import Tran from '@/components/common/tran';
 
 import useClientApi from '@/hooks/use-client';
-import { useToast } from '@/hooks/use-toast';
 import { getInternalServerMaps } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';
@@ -16,7 +16,6 @@ type Props = {
 
 export default function CheckServerMaps({ id }: Props) {
   const axios = useClientApi();
-  const { toast } = useToast();
 
   const { isLoading, data, error } = useQuery({
     queryFn: () => getInternalServerMaps(axios, id, { size: 1, page: 0 }),
@@ -30,23 +29,16 @@ export default function CheckServerMaps({ id }: Props) {
       }
 
       if (error) {
-        return toast({
-          title: <Tran text="error" />,
-          description: error.message,
-          variant: 'destructive',
-        });
+        return toast(<Tran text="error" />, { description: error.message });
       }
 
       if (data?.length === 0) {
-        toast({
-          description: <Tran text="server.no-map-warning" />,
-          variant: 'warning',
-        });
+        toast.warning(<Tran text="server.no-map-warning" />);
       }
     }
 
     checkForMap();
-  }, [data, isLoading, error, toast]);
+  }, [data, isLoading, error]);
 
   return undefined;
 }

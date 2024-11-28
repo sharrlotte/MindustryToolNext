@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import TakeDownButton from '@/components/button/take-down-button';
@@ -21,7 +22,6 @@ import IdUserCard from '@/components/user/id-user-card';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
 import { deletePost, unverifyPost } from '@/query/post';
 import { PostDetail } from '@/types/response/PostDetail';
@@ -38,24 +38,17 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
   const { back } = useRouter();
-  const { toast } = useToast();
+
   const { session } = useSession();
 
   const { mutate: removePost, isPending: isRemoving } = useMutation({
     mutationFn: (id: string) => unverifyPost(axios, id),
     onSuccess: () => {
       back();
-      toast({
-        title: <Tran text="take-down-success" />,
-        variant: 'success',
-      });
+      toast(<Tran text="take-down-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="take-down-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast(<Tran text="take-down-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['posts']);
@@ -66,17 +59,10 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
     mutationFn: (id: string) => deletePost(axios, id),
     onSuccess: () => {
       back();
-      toast({
-        title: <Tran text="delete-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="delete-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="delete-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="delete-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['posts']);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -8,7 +9,6 @@ import IdUserCard from '@/components/user/id-user-card';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { deleteDocument } from '@/query/document';
 import { Document } from '@/types/response/Document';
 
@@ -19,24 +19,16 @@ type Props = {
 };
 
 export default function DocumentCard({ document: { id, content, userId } }: Props) {
-  const { toast } = useToast();
   const { invalidateByKey } = useQueriesData();
 
   const axios = useClientApi();
   const { mutate, isPending } = useMutation({
     mutationFn: () => deleteDocument(axios, id),
     onSuccess: () => {
-      toast({
-        title: <Tran text="delete-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="delete-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="delete-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="delete-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['documents']);

@@ -1,8 +1,10 @@
 import { Fragment, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Hidden } from '@/components/common/hidden';
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -10,7 +12,6 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useMe, useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { cn, groupBy } from '@/lib/utils';
 import { getAuthorities } from '@/query/authorities';
 import { changeRoles, getRoles } from '@/query/role';
@@ -30,7 +31,6 @@ export function ChangeRoleDialog({ user }: DialogProps) {
   const { session } = useSession();
   const { highestRole } = useMe();
   const { invalidateByKey } = useQueriesData();
-  const { toast } = useToast();
 
   const [open, setOpen] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
@@ -64,11 +64,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
       invalidateByKey(['management']);
     },
     onError: (error) => {
-      toast({
-        title: 'error',
-        variant: 'destructive',
-        description: error.message,
-      });
+      toast.error(<Tran text="error" />, { description: error.message });
       setSelectedRoles(roles);
     },
     mutationKey: ['update-user-role', id],
@@ -80,11 +76,8 @@ export function ChangeRoleDialog({ user }: DialogProps) {
       invalidateByKey(['management']);
     },
     onError: (error) => {
-      toast({
-        title: 'error',
-        variant: 'destructive',
-        description: error.message,
-      });
+      toast.error(<Tran text="error" />, { description: error.message });
+
       setSelectedAuthorities(authorities);
     },
     mutationKey: ['update-user-authority', id],

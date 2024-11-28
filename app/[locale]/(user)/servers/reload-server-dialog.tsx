@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { toast } from '@/hooks/use-toast';
 import { reloadInternalServers } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
@@ -21,17 +22,9 @@ export default function ReloadServerDialog() {
     mutationKey: ['servers'],
     mutationFn: () => reloadInternalServers(axios),
     onSuccess: () => {
-      toast({
-        title: <Tran text="update.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="update.success" />);
     },
-    onError: (error) =>
-      toast({
-        title: <Tran text="update.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      }),
+    onError: (error) => toast.error(<Tran text="update.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['servers']);
     },

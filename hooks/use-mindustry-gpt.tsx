@@ -1,6 +1,7 @@
 import { useId, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
-import { useToast } from '@/hooks/use-toast';
+import Tran from '@/components/common/tran';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -62,7 +63,6 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
   const id = useId();
   const requestId = useRef(0);
 
-  const { toast } = useToast();
   const [data, setData] = useState<Map<number, { text: string; prompt: string }>>(new Map());
 
   const [abortController, setAbortController] = useState<AbortController | null>();
@@ -103,11 +103,7 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
       setAbortController(null);
     },
     onError: (error) => {
-      toast({
-        title: 'Error',
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="error" />, { description: error.message });
     },
   });
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'sonner';
 
 import DownloadButton from '@/components/button/download-button';
 import NoResult from '@/components/common/no-result';
@@ -11,7 +12,6 @@ import Skeletons from '@/components/ui/skeletons';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { deleteServerFile, getServerFiles } from '@/query/file';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -24,7 +24,6 @@ type FileListProps = {
 
 export default function FileList({ path, filter, setFilePath }: FileListProps) {
   const axios = useClientApi();
-  const { toast } = useToast();
 
   const { data, error, isFetching } = useQuery({
     queryKey: ['server-files', path],
@@ -38,11 +37,7 @@ export default function FileList({ path, filter, setFilePath }: FileListProps) {
     mutationKey: ['delete-file'],
     mutationFn: async (path: string) => deleteServerFile(axios, path),
     onError: (error) => {
-      toast({
-        variant: 'destructive',
-        title: 'Failed to delete file',
-        description: error.message,
-      });
+      toast.error(<Tran text="delete-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['server-files', path]);

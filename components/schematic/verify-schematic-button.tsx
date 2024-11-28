@@ -1,11 +1,12 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { toast } from 'sonner';
 
 import VerifyButton from '@/components/button/verify-button';
 import Tran from '@/components/common/tran';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { verifySchematic } from '@/query/schematic';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
@@ -19,7 +20,7 @@ type VerifySchematicButtonProps = {
 };
 export default function VerifySchematicButton({ id, name, selectedTags }: VerifySchematicButtonProps) {
   const { invalidateByKey } = useQueriesData();
-  const { toast } = useToast();
+
   const { back } = useRouter();
   const axios = useClientApi();
 
@@ -27,17 +28,10 @@ export default function VerifySchematicButton({ id, name, selectedTags }: Verify
     mutationFn: (data: VerifySchematicRequest) => verifySchematic(axios, data),
     onSuccess: () => {
       back();
-      toast({
-        title: <Tran text="verify-success" />,
-        variant: 'success',
-      });
+      toast(<Tran text="verify-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="verify-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast(<Tran text="verify-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['schematics']);

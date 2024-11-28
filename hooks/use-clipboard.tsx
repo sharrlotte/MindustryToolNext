@@ -1,8 +1,7 @@
 import { ReactNode, useCallback } from 'react';
-import { text } from 'stream/consumers';
+import { toast } from 'sonner';
 
 import Tran from '@/components/common/tran';
-import { useToast } from '@/hooks/use-toast';
 
 type CopyProps = {
   data: string;
@@ -13,25 +12,19 @@ type CopyProps = {
 let dismissLast: (() => void) | null = null;
 
 export default function useClipboard() {
-  const { toast } = useToast();
+  return useCallback(async ({ data, title = <Tran text="copied" />, content = '' }: CopyProps) => {
+    await navigator.clipboard.writeText(data);
 
-  return useCallback(
-    async ({ data, title = <Tran text="copied" />, content = '' }: CopyProps) => {
-      await navigator.clipboard.writeText(data);
+    if (dismissLast) {
+      dismissLast();
+    }
 
-      if (dismissLast) {
-        dismissLast();
-      }
+    const id = toast(title, {
+      description: content,
+    });
 
-      const { dismiss } = toast({
-        title: title,
-        description: content,
-      });
+    dismissLast = () => toast.dismiss(id);
 
-      dismissLast = dismiss;
-
-      return dismiss;
-    },
-    [toast],
-  );
+    return () => toast.dismiss(id);
+  }, []);
 }
