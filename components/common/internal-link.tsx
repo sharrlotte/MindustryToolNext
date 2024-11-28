@@ -39,9 +39,10 @@ export default function InternalLink({ className, variant, title, href, children
 
   const stripBase = href.replace(env.url.base, '');
   const parts = stripBase.split('/');
+  let hrefWithLocale = href;
 
   if (parts.length > 0 && !locales.includes(parts[0] as any)) {
-    href = env.url.base + '/' + currentLocale + '/' + stripBase;
+    hrefWithLocale = env.url.base + '/' + currentLocale + '/' + stripBase;
   }
 
   const handlePreload = useCallback(() => {
@@ -51,8 +52,16 @@ export default function InternalLink({ className, variant, title, href, children
     }
   }, [preloadImage]);
 
+  if (href.startsWith('http')) {
+    return (
+      <a className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title} target="_blank">
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <Link className={cn(linkVariants({ variant, className }))} {...props} href={href} hrefLang={currentLocale} title={title} onMouseEnter={handlePreload} onTouchStart={handlePreload}>
+    <Link className={cn(linkVariants({ variant, className }))} {...props} href={hrefWithLocale} hrefLang={currentLocale} title={title} onMouseEnter={handlePreload} onTouchStart={handlePreload}>
       {children}
     </Link>
   );

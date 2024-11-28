@@ -1,78 +1,21 @@
-import {
-  AlertCircle,
-  ArrowDown,
-  ArrowDownToLine,
-  ArrowLeft,
-  ArrowLeftCircle,
-  ArrowUpDown,
-  BellIcon,
-  BlocksIcon,
-  BookOpenIcon,
-  BotIcon,
-  Check,
-  CheckCircle,
-  CheckSquare2,
-  ChevronLeft,
-  ChevronRight,
-  ChevronsUpDown,
-  ClipboardList,
-  Copy,
-  Crown,
-  Expand,
-  ExternalLink,
-  Facebook,
-  File,
-  Filter,
-  Folder,
-  GanttChart,
-  Github,
-  Globe,
-  HistoryIcon,
-  Home,
-  LayoutDashboard,
-  LayoutGrid,
-  Link,
-  List,
-  LogIn,
-  LogOut,
-  Map,
-  Menu,
-  MessageCircleIcon,
-  Moon,
-  Paperclip,
-  Pencil,
-  Search,
-  Send,
-  Server,
-  SettingsIcon,
-  ShieldCheckIcon,
-  Shrink,
-  Sigma,
-  Smile,
-  Square,
-  SquareKanbanIcon,
-  Sun,
-  TerminalIcon,
-  ThumbsDown,
-  ThumbsUp,
-  Trash,
-  Upload,
-  User,
-  Users,
-  X,
-  XCircle,
-} from 'lucide-react';
+import { AlertCircle, ArrowDown, ArrowDownToLine, ArrowLeft, ArrowLeftCircle, ArrowUpDown, BellIcon, BlocksIcon, BookOpenIcon, BotIcon, Check, CheckCircle, CheckSquare2, ChevronLeft, ChevronRight, ChevronsUpDown, ClipboardList, Copy, Crown, Expand, ExternalLink, Facebook, File, Filter, Folder, GanttChart, Github, Globe, HistoryIcon, Home, LayoutDashboard, LayoutGrid, LineChart, Link, List, LogIn, LogOut, Map, Menu, MessageCircleIcon, Moon, Paperclip, Pencil, Search, Send, Server, SettingsIcon, ShieldCheckIcon, Shrink, Sigma, Smile, Square, SquareKanbanIcon, Sun, TerminalIcon, ThumbsDown, ThumbsUp, Trash, Upload, User, Users, X, XCircle } from 'lucide-react';
 import Image from 'next/image';
+
+
 
 import { cn } from '@/lib/utils';
 import googleIcon from '@/public/icons/google.svg';
 
+
+
 import { DiscordLogoIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
+
 
 type Props = {
   className?: string;
 };
 
+export const AnalyticIcon = ({ className }: Props) => <LineChart className={cn('lucide', className)} />;
 export const XCircleIcon = ({ className }: Props) => <XCircle className={cn('lucide', className)} />;
 export const CheckCircleIcon = ({ className }: Props) => <CheckCircle className={cn('lucide', className)} />;
 export const BackIcon = ({ className }: Props) => <ArrowLeft className={cn('lucide', className)} />;
