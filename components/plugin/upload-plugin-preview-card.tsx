@@ -1,12 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import DeleteButton from '@/components/button/delete-button';
 import { Hidden } from '@/components/common/hidden';
-import { CheckIcon, ExternalLinkIcon } from '@/components/common/icons';
+import { CheckIcon } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';
@@ -66,15 +66,14 @@ function InternalUploadPluginCard({ plugin }: Props) {
   const githubUrl = `https://github.com/${user}/${repo}`;
 
   return (
-    <div className="minh-28 relative flex flex-col gap-2 rounded-md bg-card p-2">
-      <Link className="absolute right-1 top-1 m-1 border-none" href={githubUrl}>
-        <ExternalLinkIcon />
-      </Link>
-      <h2>{name}</h2>
-      <span>{description}</span>
-      <IdUserCard id={userId} />
+    <div className="min-h-28 relative flex flex-col gap-2 rounded-md bg-card p-2">
+      <DeleteButton className="right-1 backdrop-brightness-100" description={<Tran text="delete-alert" args={{ name }} />} variant="ghost" isLoading={isDeleting} onClick={() => deletePluginById(id)} />
+      <InternalLink className="flex flex-col gap-2" href={githubUrl}>
+        <h2>{name}</h2>
+        <span>{description}</span>
+        <IdUserCard id={userId} />
+      </InternalLink>
       <div className="flex gap-2">
-        <DeleteButton description={<Tran text="delete-alert" args={{ name }} />} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
         <VerifyPluginDialog plugin={plugin} />
       </div>
     </div>
