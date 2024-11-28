@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useMemo, useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 import { Hidden } from '@/components/common/hidden';
 import { SearchIcon, XIcon } from '@/components/common/icons';
@@ -25,7 +26,7 @@ type TagPresetListProps = {
 
 export default function TagPresetList({ type, onPresetChoose }: TagPresetListProps) {
   const [open, setOpen] = useState(false);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useLocalStorage('TAG_PRESET_FILTER', '');
 
   const { data } = useQuery({
     queryFn: () => getTagPreset(type),
@@ -49,7 +50,7 @@ export default function TagPresetList({ type, onPresetChoose }: TagPresetListPro
           <Tran text="tags.preset" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex h-full max-h-dvh w-full flex-col overflow-hidden p-6 sm:max-w-[calc(100%-24px)]">
+      <DialogContent className="flex h-full max-h-dvh w-full flex-col overflow-hidden p-6 sm:max-w-[calc(100%-24px)]" onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogTitle>
           <Tran text="tags.preset" />
         </DialogTitle>
