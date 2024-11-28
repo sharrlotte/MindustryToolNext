@@ -48,7 +48,7 @@ export function PreviewImage({ className, src, errorSrc, alt, ...props }: ImageP
 type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function PreviewActions({ className, children }: ActionsProps) {
-  return <section className={cn('grid w-full grid-flow-col justify-center gap-2 px-2 [grid-auto-columns:minmax(0,1fr)]', className)}>{children}</section>;
+  return <section className={cn('grid w-full grid-flow-col justify-center gap-2 p-2 [grid-auto-columns:minmax(0,1fr)]', className)}>{children}</section>;
 }
 
 type DescriptionProps = React.HTMLAttributes<HTMLDivElement>;

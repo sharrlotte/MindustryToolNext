@@ -13,7 +13,7 @@ export default function DislikeButton({ className, ...props }: LikeButtonProps) 
 
   return (
     <button
-      className={cn('flex h-9 min-w-9 transition-colors items-center justify-center rounded-md border border-border p-2 hover:bg-destructive hover:text-background dark:hover:text-foreground', className, {
+      className={cn('flex h-9 min-w-9 items-center hover:border-none justify-center rounded-md overflow-hidden border-border border p-2 hover:bg-destructive hover:text-background dark:hover:text-foreground', className, {
         'bg-destructive text-background dark:text-foreground': likeData?.state === -1,
       })}
       {...props}

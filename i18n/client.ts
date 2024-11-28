@@ -2,6 +2,7 @@ import { unstable_cache } from 'next/cache';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { cache, use, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
+import { create } from 'zustand';
 
 import { useLocaleStore } from '@/context/locale-context';
 import { Locale, TranslateFunction, locales } from '@/i18n/config';
@@ -58,7 +59,15 @@ export function useI18n(): TranslateFunction {
       if (value === undefined) {
         try {
           value = JSON.parse(localStorage.getItem(localStorageKey) || 'null');
+
           keys[group] = value;
+
+          getClientTranslation(group, currentLocale) //
+            .then((result) => {
+              if (result) {
+                localStorage.setItem(localStorageKey, JSON.stringify(result));
+              }
+            });
         } catch (e) {
           keys[group] = EMPTY;
           localStorage.removeItem(localStorageKey);
@@ -67,16 +76,18 @@ export function useI18n(): TranslateFunction {
         value = keys[group];
 
         if (value === null) {
-          getClientTranslation(group, currentLocale) //
-            .then((result) => {
-              if (result) {
-                localStorage.setItem(localStorageKey, JSON.stringify(result));
+          use(
+            getClientTranslation(group, currentLocale) //
+              .then((result) => {
+                if (result) {
+                  localStorage.setItem(localStorageKey, JSON.stringify(result));
 
-                keys[group] = result;
+                  keys[group] = result;
 
-                setTranslation({ [group]: result });
-              }
-            });
+                  setTranslation({ [group]: result });
+                }
+              }),
+          );
         }
       }
 
@@ -103,13 +114,17 @@ export function useI18n(): TranslateFunction {
       try {
         const data = getServerTranslation(group, currentLocale);
         const value = use(data);
-        const translated = value[key];
 
-        setTranslation({ [group]: value });
+        if (!value) {
+          return text;
+        }
+
+        const translated = value[key];
 
         return formatTranslation(translated, args) || text;
       } catch (err) {
         if (err && typeof err === 'object' && 'error' in err) {
+          console.info(err);
           return text;
         }
 

@@ -31,7 +31,7 @@ export default function ServerPluginPage({ id }: Props) {
       <div className=" flex h-14 items-center justify-end bg-card p-2">
         <AddPluginDialog serverId={id} />
       </div>
-      <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>
+      <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
           params={{ page: 0, size: 20 }}

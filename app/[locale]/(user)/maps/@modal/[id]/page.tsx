@@ -1,7 +1,7 @@
 import { Metadata } from 'next/dist/types';
 import React from 'react';
 
-import { serverApi, translate } from '@/action/action';
+import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import MapDetailCard from '@/components/map/map-detail-card';
 import env from '@/constant/env';
@@ -14,9 +14,8 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id, locale } = await params;
+  const { id } = await params;
   const map = await serverApi((axios) => getMap(axios, { id }));
-  const title = await translate(locale, 'map');
 
   if (isError(map)) {
     return { title: 'Error' };
@@ -25,12 +24,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { name, description } = map;
 
   return {
-    title: formatTitle(title),
+    title: formatTitle(name),
     description: [name, description].join('|'),
     openGraph: {
       title: name,
       description: description,
-      images: `${env.url.image}/map-previews/${id}${env.imageFormat}`,
+      images: `${env.url.image}/maps/${id}${env.imageFormat}`,
     },
   };
 }

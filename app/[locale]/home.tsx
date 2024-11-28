@@ -1,6 +1,5 @@
 import { Suspense } from 'react';
 
-import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import InternalLink from '@/components/common/internal-link';
 import { Preview } from '@/components/common/preview';
@@ -9,6 +8,8 @@ import MapPreviewCard from '@/components/map/map-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import UserCard from '@/components/user/user-card';
+
+import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';

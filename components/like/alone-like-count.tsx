@@ -7,15 +7,16 @@ export default function AloneLikeCount() {
   const { count } = useLike();
 
   return (
-    <div
-      className={cn('flex h-9 min-w-9 gap-2 transition-colors items-center justify-center rounded-md border border-border text-base', {
-        'text-destructive hover:text-destructive': count < 0,
-        'text-success hover:text-success': count > 0,
-      })}
-      title="like-count"
-    >
+    <div className={cn('flex h-9 min-w-9 gap-2 transition-colors items-center justify-center rounded-md border border-border text-base')} title="like-count">
       <LikeIcon className="size-[1.25rem]" />
-      <span>{count}</span>
+      <span
+        className={cn('font-semibold text-lg', {
+          'text-destructive hover:text-destructive': count < 0,
+          'text-success hover:text-success': count > 0,
+        })}
+      >
+        {count}
+      </span>
     </div>
   );
 }

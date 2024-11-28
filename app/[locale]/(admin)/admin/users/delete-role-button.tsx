@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import Tran from '@/components/common/tran';
@@ -8,7 +9,6 @@ import Tran from '@/components/common/tran';
 import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { deleteRole } from '@/query/role';
 import { Role } from '@/types/response/Role';
@@ -23,23 +23,14 @@ export default function DeleteRoleButton({ role }: Props) {
   const { name } = role;
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
-  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['roles'],
     mutationFn: () => deleteRole(axios, role.id),
     onSuccess: () => {
-      toast({
-        title: <Tran text="upload.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="upload.success" />);
     },
-    onError: (error) =>
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      }),
+    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['roles']);
       revalidate({ path: '/users' });

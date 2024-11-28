@@ -1,4 +1,7 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -39,4 +42,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   );
 };
 
-export default Modal;
+Modal.displayName = 'Modal';
+
+export default dynamic(() => Promise.resolve(Modal), { ssr: false });

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import React, { Fragment, Suspense } from 'react';
 
 import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/check-server-maps';
@@ -11,6 +12,7 @@ import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-b
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import { ServerIcon } from '@/components/common/icons';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import IdUserCard from '@/components/user/id-user-card';
@@ -69,7 +71,7 @@ export default async function Page({ params }: Props) {
   });
 
   return (
-    <div className="flex flex-col gap-2 overflow-y-auto h-full">
+    <ScrollContainer className="flex flex-col gap-2 h-full">
       <CheckServerMaps id={id} />
       <div className="h-full">
         <div
@@ -126,13 +128,21 @@ export default async function Page({ params }: Props) {
               <h3 className="text-xl">
                 <Tran text="server.system-status" />
               </h3>
-              <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
-              {<img key={started + ''} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/internal-servers/${id}/image`} />}
+              {started ? (
+                <>
+                  <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
+                  <Image key={started + ''} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/internal-servers/${id}/image`} alt={name} width={500} height={500} />
+                </>
+              ) : (
+                <Tran text="server.server-is-not-running" />
+              )}
             </div>
           </div>
           <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
-            <ReloadServerButton id={id} />
-            {started ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
+            <ProtectedElement session={session} filter={{ any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: session?.id }] }}>
+              <ReloadServerButton id={id} />
+              {started ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
+            </ProtectedElement>
           </div>
           <ProtectedElement session={session} filter={showPlayer}>
             <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">
@@ -148,6 +158,6 @@ export default async function Page({ params }: Props) {
           </ProtectedElement>
         </div>
       </div>
-    </div>
+    </ScrollContainer>
   );
 }

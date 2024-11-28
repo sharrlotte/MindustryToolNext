@@ -2,18 +2,20 @@
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
-import { revalidate } from '@/action/action';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+
+import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { updateInternalServer } from '@/query/server';
 import { InternalServerModes, PutInternalServerRequest, PutInternalServerSchema } from '@/types/request/UpdateInternalServerRequest';
@@ -38,7 +40,6 @@ export default function ServerUpdateForm({ server }: Props) {
   });
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
-  const { toast } = useToast();
 
   const { id } = currentServer;
 
@@ -47,18 +48,11 @@ export default function ServerUpdateForm({ server }: Props) {
     mutationFn: (data: PutInternalServerRequest) => updateInternalServer(axios, id, data),
     onSuccess: (_, data) => {
       server = { ...currentServer, ...form.getValues() };
-      toast({
-        title: <Tran text="update.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="update.success" />);
+
       setCurrentServer((prev) => ({ ...prev, ...data }));
     },
-    onError: (error) =>
-      toast({
-        title: <Tran text="update.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      }),
+    onError: (error) => toast.error(<Tran text="update.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['servers']);
       revalidate({ path: '/servers' });
@@ -70,8 +64,8 @@ export default function ServerUpdateForm({ server }: Props) {
   return (
     <div className="relative flex h-full flex-col justify-between gap-2">
       <Form {...form}>
-        <form className="flex flex-1 flex-col justify-between bg-card p-4" onSubmit={form.handleSubmit((value) => mutate(value))}>
-          <div className="space-y-6 overflow-y-auto p-0.5">
+        <form className="flex flex-1 flex-col justify-between bg-card p-6" onSubmit={form.handleSubmit((value) => mutate(value))}>
+          <ScrollContainer className="space-y-6">
             <FormField
               control={form.control}
               name="name"
@@ -147,7 +141,7 @@ export default function ServerUpdateForm({ server }: Props) {
                 </FormItem>
               )}
             />
-          </div>
+          </ScrollContainer>
           <div
             className={cn('flex justify-end gap-2 opacity-0', {
               'opacity-100': isChanged,

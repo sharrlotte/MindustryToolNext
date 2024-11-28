@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
@@ -19,7 +20,6 @@ import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
-import { useToast } from '@/hooks/use-toast';
 import { cn, omit } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -32,7 +32,6 @@ type AddMapDialogProps = {
 };
 
 export default function AddMapDialog({ serverId }: AddMapDialogProps) {
-  const { toast } = useToast();
   const [added, setAdded] = useState<string[]>([]);
   const {
     searchTags: { map },
@@ -54,18 +53,11 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) => createInternalServerMap(axios, serverId, { mapId }),
     onSuccess: (_, mapId) => {
-      toast({
-        title: <Tran text="interval-server.add-map-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="interval-server.add-map-success" />);
       setAdded((prev) => [...prev, mapId]);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="interval-server.add-map-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="interval-server.add-map-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['servers', serverId, 'maps']);
@@ -91,7 +83,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
             <PaginationLayoutSwitcher />
           </div>
           <ListLayout>
-            <ScrollContainer className="flex h-full w-full flex-col gap-2 overflow-y-auto" ref={ref}>
+            <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>
               <InfinitePage
                 params={params}
                 queryKey={['maps']}

@@ -41,7 +41,8 @@ export const metadata: Metadata = {
   applicationName: 'MindustryTool',
   keywords: ['Mindustry', 'Schematic', 'Map', 'Mod', 'Post'],
   twitter: {
-    'site': '@MindustryTool'
+    site: '@MindustryTool',
+    card: 'summary_large_image',
   },
   openGraph: {
     images: 'https://mindustrygame.github.io/1.d25af17a.webp',
@@ -69,12 +70,7 @@ export default async function Root({ children }: Props) {
   ReactDOM.preconnect('https://fonts.gstatic.com', { crossOrigin: 'anonymous' });
 
   return (
-    <html
-      className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable)}
-      lang={'en'}
-      data-color-mode="dark"
-      suppressHydrationWarning
-    >
+    <html className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable)} lang={'en'} data-color-mode="dark" suppressHydrationWarning>
       <body className="h-full w-full overflow-hidden">{children}</body>
     </html>
   );

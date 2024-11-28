@@ -1,16 +1,17 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
+
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { deleteInternalServerMap } from '@/query/server';
 import { InternalServerMap } from '@/types/response/InternalServerMap';
 
@@ -23,22 +24,14 @@ type InternalServerMapCardProps = {
 export default function InternalServerMapCard({ map: { name, mapId, serverId } }: InternalServerMapCardProps) {
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
-  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => deleteInternalServerMap(axios, serverId, mapId),
     onSuccess: () => {
-      toast({
-        title: <Tran text="delete-fail" />,
-        variant: 'success',
-      });
+      toast(<Tran text="delete-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="delete-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="delete-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['servers', serverId, 'maps']);

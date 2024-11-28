@@ -14,9 +14,8 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id, locale } = await params;
+  const { id } = await params;
   const schematic = await serverApi((axios) => getSchematic(axios, { id }));
-  const title = await translate(locale, 'schematic');
 
   if (isError(schematic)) {
     return { title: 'Error' };
@@ -25,12 +24,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { name, description } = schematic;
 
   return {
-    title: formatTitle(title),
+    title: formatTitle(name),
     description: [name, description].join('|'),
     openGraph: {
       title: name,
       description: description,
-      images: `${env.url.image}/schematic-previews/${id}${env.imageFormat}`,
+      images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
     },
   };
 }

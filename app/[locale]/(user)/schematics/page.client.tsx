@@ -8,6 +8,7 @@ import InfinitePage from '@/components/common/infinite-page';
 import InternalLink from '@/components/common/internal-link';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
@@ -53,8 +54,8 @@ export default function Client({ schematics }: Props) {
         <Tran text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
-      <ListLayout>
-        <div className="relative flex h-full flex-col overflow-auto" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
+        <ListLayout>
           <InfinitePage
             params={params}
             queryKey={['schematics']}
@@ -68,22 +69,22 @@ export default function Client({ schematics }: Props) {
           >
             {(data, index) => <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} />}
           </InfinitePage>
-        </div>
-      </ListLayout>
-      <GridLayout>
-        <GridPaginationList
-          params={params}
-          queryKey={['schematics']}
-          queryFn={getSchematics}
-          initialData={schematics}
-          skeleton={{
-            amount: 20,
-            item: <PreviewSkeleton />,
-          }}
-        >
-          {(data, index) => <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} />}
-        </GridPaginationList>
-      </GridLayout>
+        </ListLayout>
+        <GridLayout>
+          <GridPaginationList
+            params={params}
+            queryKey={['schematics']}
+            queryFn={getSchematics}
+            initialData={schematics}
+            skeleton={{
+              amount: 20,
+              item: <PreviewSkeleton />,
+            }}
+          >
+            {(data, index) => <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} />}
+          </GridPaginationList>
+        </GridLayout>
+      </ScrollContainer>
       <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
         <GridLayout>
           <PaginationNavigator numberOfItems={data} />

@@ -24,13 +24,5 @@ export default function ColorAsRole({ className, children, roles }: ColorAsRoleP
     return <span className={cn('text-emerald-400', className)}>{children}</span>;
   }
 
-  if (roleNames.includes('SERVER')) {
-    return <span className={cn('text-purple-600', className)}>{children}</span>;
-  }
-
-  if (roleNames.includes('BOT')) {
-    return <span className={cn('text-blue-600', className)}>{children}</span>;
-  }
-
   return <span className={cn(className)}>{children}</span>;
 }

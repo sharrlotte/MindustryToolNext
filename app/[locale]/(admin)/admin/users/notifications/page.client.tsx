@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,6 @@ import IdUserCard from '@/components/user/id-user-card';
 
 import useClientApi from '@/hooks/use-client';
 import useQueryState from '@/hooks/use-query-state';
-import { useToast } from '@/hooks/use-toast';
 import { SendNotificationSchema, SendNotificationSchemaType, sendNotification } from '@/query/user';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,22 +38,14 @@ export default function PageClient() {
 
   const axios = useClientApi();
 
-  const { toast } = useToast();
   const { mutate, isPending } = useMutation({
     mutationFn: (data: SendNotificationSchemaType) => sendNotification(axios, { ...data, userId }),
     onSuccess: () => {
       form.reset();
-      toast({
-        title: <Tran text="notification.send-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="notification.send-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="notification.send-fail" />,
-        variant: 'destructive',
-        description: error?.message,
-      });
+      toast.error(<Tran text="notification.send-fail" />, { description: error.message });
     },
   });
 

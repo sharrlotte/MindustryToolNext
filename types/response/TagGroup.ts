@@ -1,4 +1,5 @@
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
+import { ContextTagGroup } from '@/context/tags-context';
 import { groupBy } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
 
@@ -26,7 +27,7 @@ export class TagGroups {
     return Tags.fromTagGroup(tags).map((tag) => tag.name + TAG_SEPARATOR + tag.value);
   }
 
-  static parseString(str: string[], tags: TagGroup[]) {
+  static parseString(str: string[], tags: ContextTagGroup[]) {
     const tagsArray =
       str
         ?.map((value) => value.split(TAG_SEPARATOR))

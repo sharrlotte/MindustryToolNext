@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
+import { toast } from 'sonner';
 
-import { revalidate } from '@/action/action';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+
+import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
-import { useToast } from '@/hooks/use-toast';
 import { shutdownInternalServer } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
@@ -18,23 +19,14 @@ type Props = {
 
 export default function ShutdownServerButton({ id }: Props) {
   const axios = useClientApi();
-  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['internal-servers'],
     mutationFn: () => shutdownInternalServer(axios, id),
     onSuccess: () => {
-      toast({
-        title: <Tran text="server.shutdown-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="server.shutdown-success" />);
     },
-    onError: (error) =>
-      toast({
-        title: <Tran text="server.shutdown-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      }),
+    onError: (error) => toast.error(<Tran text="server.shutdown-fail" />, { description: error.message }),
     onSettled: () => {
       revalidate({ path: '/servers' });
     },

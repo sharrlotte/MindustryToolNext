@@ -3,7 +3,7 @@
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import CommentSection from '@/components/common/comment-section';
-import { Detail, DetailActions, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
+import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
 import { LinkIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
@@ -35,53 +35,55 @@ export default function MapDetailCard({ map: { id, name, description, tags, veri
 
   return (
     <Detail>
-      <DetailInfo>
-        <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-        <CopyButton position="absolute" variant="ghost" data={link} content={link}>
-          <LinkIcon />
-        </CopyButton>
-        <DetailHeader>
-          <DetailTitle>{name}</DetailTitle>
-          <IdUserCard id={userId} />
-          <Verifier verifierId={verifierId} />
-          <span>
-            <Tran text="size" /> {width}x{height}
-          </span>
-          <DetailDescription>{description}</DetailDescription>
-          <DetailTagsCard tags={tags} />
-        </DetailHeader>
-      </DetailInfo>
-      <DetailActions>
-        <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
-        <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
-          <LikeButton />
-          <LikeCount />
-          <DislikeButton />
-        </LikeComponent>
-        <EllipsisButton>
-          <ProtectedElement
-            session={session}
-            filter={{
-              all: [
-                {
-                  any: [{ authorId: userId }, { authority: 'DELETE_MAP' }],
-                },
-                isVerified,
-              ],
-            }}
-          >
-            <TakeDownMapButton id={id} name={name} />
-          </ProtectedElement>
-          <ProtectedElement
-            session={session}
-            filter={{
-              any: [{ authorId: userId }, { authority: 'DELETE_MAP' }],
-            }}
-          >
-            <DeleteMapButton variant="command" id={id} name={name} />
-          </ProtectedElement>
-        </EllipsisButton>
-      </DetailActions>
+      <DetailContent>
+        <DetailInfo>
+          <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
+          <CopyButton position="absolute" variant="ghost" data={link} content={link}>
+            <LinkIcon />
+          </CopyButton>
+          <DetailHeader>
+            <DetailTitle>{name}</DetailTitle>
+            <IdUserCard id={userId} />
+            <Verifier verifierId={verifierId} />
+            <span>
+              <Tran text="size" /> {width}x{height}
+            </span>
+            <DetailDescription>{description}</DetailDescription>
+            <DetailTagsCard tags={tags} />
+          </DetailHeader>
+        </DetailInfo>
+        <DetailActions>
+          <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
+          <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
+            <LikeButton />
+            <LikeCount />
+            <DislikeButton />
+          </LikeComponent>
+          <EllipsisButton>
+            <ProtectedElement
+              session={session}
+              filter={{
+                all: [
+                  {
+                    any: [{ authorId: userId }, { authority: 'DELETE_MAP' }],
+                  },
+                  isVerified,
+                ],
+              }}
+            >
+              <TakeDownMapButton id={id} name={name} />
+            </ProtectedElement>
+            <ProtectedElement
+              session={session}
+              filter={{
+                any: [{ authorId: userId }, { authority: 'DELETE_MAP' }],
+              }}
+            >
+              <DeleteMapButton variant="command" id={id} name={name} />
+            </ProtectedElement>
+          </EllipsisButton>
+        </DetailActions>
+      </DetailContent>
       <CommentSection itemId={itemId} />
     </Detail>
   );

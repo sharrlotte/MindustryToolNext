@@ -1,8 +1,9 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { useLocalStorage, useMediaQuery } from 'usehooks-ts';
+import { useLocalStorage } from 'usehooks-ts';
 
 import { IconNotification } from '@/components/common/icon-notification';
 import {
+  AnalyticIcon,
   ChartIcon,
   ChatIcon,
   CmdIcon,
@@ -115,7 +116,7 @@ export const groups: readonly PathGroup[] = [
       },
       {
         path: '/mindustry-gpt', //
-        name: 'MindustryGpt',
+        name: <Tran text="mindustry-gpt" />,
         icon: <MindustryGptIcon />,
       },
       {
@@ -222,7 +223,12 @@ export const groups: readonly PathGroup[] = [
         icon: <FileIcon />,
         filter: { authority: 'VIEW_FILE' },
       },
-
+      {
+        name: <Tran text="analytic" />,
+        path: 'https://analytic.mindustry-tool.app',
+        icon: <AnalyticIcon />,
+        filter: { authority: 'VIEW_DASH_BOARD' },
+      },
       {
         name: 'MindustryGPT',
         icon: <MindustryGptIcon />,

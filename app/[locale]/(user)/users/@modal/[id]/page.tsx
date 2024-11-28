@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
 
-import { serverApi, translate } from '@/action/action';
 import Me from '@/app/[locale]/(user)/users/@modal/[id]/me';
 import Other from '@/app/[locale]/(user)/users/@modal/[id]/other';
+
 import ErrorScreen from '@/components/common/error-screen';
+
+import { serverApi } from '@/action/action';
 import { formatTitle, isError } from '@/lib/utils';
 import { getMe, getUser } from '@/query/user';
 
@@ -21,11 +23,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       return { title: 'Error' };
     }
 
-    const { name, imageUrl, roles } = me;
+    const { name, imageUrl, roles, stats } = me;
+
+    const description = {
+      roles: roles.map((role) => role.name).join(', '),
+      stats,
+    };
 
     return {
       title: formatTitle(name),
-      description: roles.map((role) => role.name).join(', '),
+      description: Object.entries(description).join('\n'),
       openGraph: {
         title: name,
         description: roles.map((role) => role.name).join(', '),
@@ -40,11 +47,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Error' };
   }
 
-  const { name, imageUrl, roles } = user;
+  const { name, imageUrl, roles, stats } = user;
+
+  const description = {
+    roles: roles.map((role) => role.name).join(', '),
+    stats,
+  };
 
   return {
     title: formatTitle(name),
-    description: roles.map((role) => role.name).join(', '),
+    description: Object.entries(description).join('\n'),
     openGraph: {
       title: name,
       description: roles.map((role) => role.name).join(', '),

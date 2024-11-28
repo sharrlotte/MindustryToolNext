@@ -1,7 +1,9 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { debounce } from 'throttle-debounce';
 
 import CopyButton from '@/components/button/copy-button';
@@ -25,20 +27,10 @@ import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';
-import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
 import { TranslationPaginationQuery } from '@/query/search-query';
-import {
-  CreateTranslationRequest,
-  CreateTranslationSchema,
-  createTranslation,
-  deleteTranslation,
-  getTranslationCompare,
-  getTranslationCompareCount,
-  getTranslationDiff,
-  getTranslationDiffCount,
-} from '@/query/translation';
+import { CreateTranslationRequest, CreateTranslationSchema, createTranslation, deleteTranslation, getTranslationCompare, getTranslationCompareCount, getTranslationDiff, getTranslationDiffCount } from '@/query/translation';
 import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -137,8 +129,12 @@ function CompareTable({ language, target }: CompareTableProps) {
             <TableHead className="w-40 overflow-x-auto">
               <Tran text="translation.key" />
             </TableHead>
-            <TableHead>{language}</TableHead>
-            <TableHead>{target}</TableHead>
+            <TableHead>
+              <Tran text={language} />
+            </TableHead>
+            <TableHead>
+              <Tran text={target} />
+            </TableHead>
             <TableHead className="w-20"></TableHead>
           </TableRow>
         </TableHeader>
@@ -147,7 +143,6 @@ function CompareTable({ language, target }: CompareTableProps) {
             params={{ ...params, language }}
             queryKey={['translations', 'compare', language]}
             queryFn={getTranslationCompare}
-            loader={<Fragment></Fragment>}
             noResult={<Fragment></Fragment>}
             skeleton={{
               amount: 20,
@@ -190,8 +185,12 @@ function DiffTable({ language, target }: DiffTableProps) {
             <TableHead className="w-40 overflow-x-auto">
               <Tran text="translation.key" />
             </TableHead>
-            <TableHead>{language}</TableHead>
-            <TableHead>{target}</TableHead>
+            <TableHead>
+              <Tran text={language} />
+            </TableHead>
+            <TableHead>
+              <Tran text={target} />
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -199,7 +198,6 @@ function DiffTable({ language, target }: DiffTableProps) {
             params={{ ...params, language }}
             queryKey={['translations', 'diff', language]}
             queryFn={getTranslationDiff}
-            loader={<Fragment></Fragment>}
             noResult={<Fragment></Fragment>}
             skeleton={{
               amount: 20,
@@ -289,7 +287,7 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
   return (
     <TableRow>
       <TableCell className="align-top">{keyGroup}</TableCell>
-      <TableCell className="align-top">{key}</TableCell>
+      <TableCell className="align-top"> {key}</TableCell>
       <TableCell className="align-top">
         <CopyButton className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent" variant="ghost" data={value[language]} content={value[language]}>
           {value[language]}
@@ -308,7 +306,6 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
 }
 
 function AddNewKeyDialog() {
-  const t = useI18n();
   const form = useForm<CreateTranslationRequest>({
     resolver: zodResolver(CreateTranslationSchema),
     defaultValues: {
@@ -320,24 +317,16 @@ function AddNewKeyDialog() {
 
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
-  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: CreateTranslationRequest) => createTranslation(axios, data),
     onSuccess: () => {
-      toast({
-        title: <Tran text="upload.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="upload.success" />);
+
       form.reset();
       setOpen(false);
     },
-    onError: (error) =>
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      }),
+    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['translations']);
     },
@@ -457,8 +446,8 @@ function DeleteTranslationDialog({ value: { id, key } }: DeleteTranslationDialog
   return <DeleteButton variant="command" isLoading={isPending} description={<Tran text="translation.delete" args={{ key }} />} onClick={() => mutate(id)} />;
 }
 
-function TranslationCardSkeleton() {
-  const width = 10 + Math.random() * 10;
+function ITranslationCardSkeleton() {
+  const width = 100 + Math.random() * 100;
 
   return (
     <TableRow>
@@ -468,3 +457,4 @@ function TranslationCardSkeleton() {
     </TableRow>
   );
 }
+const TranslationCardSkeleton = dynamic(() => Promise.resolve(ITranslationCardSkeleton), { ssr: false });

@@ -3,10 +3,12 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
 import LoadingScreen from '@/components/common/loading-screen';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
@@ -16,11 +18,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
+
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
-import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { createSchematic, getSchematicPreview } from '@/query/schematic';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
@@ -39,7 +41,6 @@ function Preview() {
   const axios = useClientApi();
   const [data, setData] = useState<File | string | undefined>();
   const [preview, setPreview] = useState<SchematicPreviewResponse>();
-  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: SchematicPreviewRequest) => getSchematicPreview(axios, data),
@@ -48,11 +49,7 @@ function Preview() {
     },
     onError: (error) => {
       setData(undefined);
-      toast({
-        title: <Tran text="upload.get-preview-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="upload.get-preview-fail" />, { description: error.message });
     },
   });
 
@@ -87,14 +84,9 @@ type SchematicSelectorProps = {
 };
 
 function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
-  const { toast } = useToast();
-
   function handleFileChange(files: File[]) {
     if (!files.length || !files[0]) {
-      return toast({
-        title: <Tran text="upload.no-file" />,
-        variant: 'destructive',
-      });
+      return toast(<Tran text="upload.no-file" />);
     }
 
     const file = files[0];
@@ -102,10 +94,7 @@ function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
     const extension = filename.split('.').pop();
 
     if (extension !== 'msch') {
-      return toast({
-        title: <Tran text="upload.invalid-schematic-file" />,
-        variant: 'destructive',
-      });
+      return toast(<Tran text="upload.invalid-schematic-file" />);
     }
 
     onSchematicSelected(file);
@@ -116,17 +105,11 @@ function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
       .readText() //
       .then((text) => {
         if (!text || text.length === 0) {
-          return toast({
-            title: <Tran text="upload.clipboard-empty" />,
-            variant: 'destructive',
-          });
+          return toast(<Tran text="upload.clipboard-empty" />);
         }
 
         if (!text.startsWith('bXNja')) {
-          return toast({
-            title: <Tran text="upload.invalid-schematic-code" />,
-            variant: 'destructive',
-          });
+          return toast(<Tran text="upload.invalid-schematic-code" />);
         }
 
         onSchematicSelected(text);
@@ -167,7 +150,6 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   const {
     uploadTags: { schematic },
   } = useTags();
-  const { toast } = useToast();
 
   const t = useI18n();
   const axios = useClientApi();
@@ -183,27 +165,12 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: CreateSchematicRequest) => createSchematic(axios, data),
-    onMutate: () => {
-      toast({
-        title: <Tran text="upload.uploading" />,
-      });
-    },
+    mutationFn: async (data: CreateSchematicRequest) => toast.promise(createSchematic(axios, data), { loading: toast(<Tran text="upload.uploading" />), success: toast(<Tran text="upload.success" />), error: <Tran text="upload.fail" /> }),
+    onMutate: () => toast(<Tran text="upload.uploading" />),
     onSuccess: () => {
-      toast({
-        title: <Tran text="upload.success" />,
-        variant: 'success',
-      });
       setData(undefined);
       setPreview(undefined);
       form.reset();
-    },
-    onError: (error) => {
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
     },
   });
 
@@ -213,8 +180,8 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
 
   return (
     <Form {...form}>
-      <form className="flex h-full flex-col overflow-y-auto p-2" onSubmit={form.handleSubmit(handleSubmit)}>
-        <div className="flex flex-col gap-2">
+      <form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
+        <ScrollContainer className="flex flex-col gap-2">
           <Image loader={({ src }) => src} src={IMAGE_PREFIX + preview.image.trim()} alt="Schematic" width={512} height={512} />
           <UserCard user={session} />
           <FormField
@@ -289,7 +256,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
               </FormItem>
             )}
           />
-        </div>
+        </ScrollContainer>
         <div className="mt-auto flex justify-end gap-2 p-2">
           <Button variant="outline" onClick={() => setPreview(undefined)}>
             <Tran text="close" />

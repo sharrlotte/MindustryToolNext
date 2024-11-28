@@ -4,23 +4,24 @@ import React, { FormEvent, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/app/[locale]/(user)/chat/member-pannel';
+
 import LoginButton from '@/components/button/login-button';
 import { PaperclipIcon, SearchIcon, SendIcon, SmileIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
+
 import { useSession } from '@/context/session-context.client';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import ProtectedElement from '@/layout/protected-element';
 
 export default function ChatPage() {
-  const { state } = useSocket();
   const { session } = useSession();
 
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const isSmall = useMediaQuery('(max-width: 640px)');
 
   return (
@@ -36,23 +37,7 @@ export default function ChatPage() {
           </div>
           <div className="relative grid h-full w-full overflow-hidden">
             <div className="relative flex h-full flex-col gap-1 overflow-hidden">
-              {state !== 'connected' ? (
-                <LoadingSpinner className="m-auto" />
-              ) : (
-                <div className="h-full w-full overflow-y-auto" ref={(ref) => setContainer(ref)}>
-                  <MessageList
-                    showNotification
-                    className="flex h-full flex-col gap-1"
-                    queryKey={['global']}
-                    room="GLOBAL"
-                    container={() => container}
-                    params={{ size: 50 }}
-                    noResult={<div className="flex h-full w-full items-center justify-center font-semibold">{"Let's start a conversation"}</div>}
-                  >
-                    {(data) => <MessageCard key={data.id} message={data} />}
-                  </MessageList>
-                </div>
-              )}
+              <MessageContainer />
               {isSmall && <MemberPanel room="GLOBAL" />}
             </div>
           </div>
@@ -73,6 +58,31 @@ export default function ChatPage() {
         {!isSmall && <MemberPanel room="GLOBAL" />}
       </div>
     </MemberPanelProvider>
+  );
+}
+
+function MessageContainer() {
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const { state } = useSocket();
+
+  if (state !== 'connected') {
+    return <LoadingSpinner className="m-auto" />;
+  }
+
+  return (
+    <ScrollContainer className="h-full w-full" ref={(ref) => setContainer(ref)}>
+      <MessageList
+        showNotification
+        className="flex h-full flex-col gap-1"
+        queryKey={['global']}
+        room="GLOBAL"
+        container={() => container}
+        params={{ size: 50 }}
+        noResult={<div className="flex h-full w-full items-center justify-center font-semibold">{"Let's start a conversation"}</div>}
+      >
+        {(data) => <MessageCard key={data.id} message={data} />}
+      </MessageList>
+    </ScrollContainer>
   );
 }
 

@@ -2,17 +2,19 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { createPlugin } from '@/query/plugin';
 import { CreatePluginRequest, CreatePluginRequestData, CreatePluginSchema } from '@/types/request/CreatePluginRequest';
 import { TagGroups } from '@/types/response/TagGroup';
@@ -25,7 +27,7 @@ export default function AddPluginForm() {
   const {
     uploadTags: { plugin },
   } = useTags();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
 
   const form = useForm<CreatePluginRequestData>({
@@ -41,18 +43,12 @@ export default function AddPluginForm() {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: CreatePluginRequest) => createPlugin(axios, data),
     onSuccess: () => {
-      toast({
-        title: <Tran text="upload.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="upload.success" />);
+
       form.reset();
     },
     onError(error) {
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="upload.fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['plugins']);
@@ -73,7 +69,7 @@ export default function AddPluginForm() {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <div className="flex h-full w-full flex-col justify-between gap-2 overflow-y-auto rounded-md p-6">
+        <ScrollContainer className="flex h-full w-full flex-col justify-between gap-2 rounded-md p-6">
           <Form {...form}>
             <form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
               <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
@@ -148,7 +144,7 @@ export default function AddPluginForm() {
               </div>
             </form>
           </Form>
-        </div>
+        </ScrollContainer>
       </DialogContent>
     </Dialog>
   );

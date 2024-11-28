@@ -17,14 +17,13 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import { useNavBar } from '@/zustand/nav-bar-store';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
   bestMatch: string | null;
 };
 
-const sidebarVariants: Variants = {
+const sidebarVariants = {
   open: {
     width: '235px',
     transition: { type: 'spring', stiffness: 250, damping: 25, duration: 0.5 },
@@ -36,16 +35,24 @@ const sidebarVariants: Variants = {
 };
 
 export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: NavigationBarProps) {
-  const { isVisible, setVisible } = useNavBar();
+  const {
+    config: { showNav: isVisible },
+    setConfig,
+  } = useSession();
 
   const isSmall = useMediaQuery('(max-width: 640px)');
 
   const expand = isSmall ? true : isVisible;
 
-  const toggleSidebar = useCallback(() => setVisible(!isVisible), [isVisible, setVisible]);
+  const toggleSidebar = useCallback(() => setConfig('showNav', !isVisible), [isVisible, setConfig]);
 
   return (
-    <motion.div className="relative flex h-full overflow-hidden border-r min-w-nav" variants={sidebarVariants} initial={{ width: 'var(--nav)' }} animate={isVisible ? 'open' : 'closed'}>
+    <motion.div
+      className="relative flex h-full overflow-hidden border-r min-w-nav"
+      variants={sidebarVariants}
+      initial={isVisible ? { width: sidebarVariants.open.width } : { width: sidebarVariants.closed.width }}
+      animate={isVisible ? 'open' : 'closed'}
+    >
       <div className={cn('flex h-full w-full flex-col p-1', { 'p-2': expand })}>
         <div className={cn('flex items-center justify-center p-2', { 'gap-1': expand })}>
           <motion.div className="overflow-hidden whitespace-nowrap" animate={{ display: expand ? 'block' : 'none' }}>
@@ -68,8 +75,10 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
 }
 
 function NavFooter() {
-  const { session } = useSession();
-  const { isVisible } = useNavBar();
+  const {
+    session,
+    config: { showNav: isVisible },
+  } = useSession();
 
   const isSmall = useMediaQuery('(max-width: 640px)');
 
@@ -101,7 +110,7 @@ type NavItemsProps = {
 
 function MediumNavItems({ pathGroups, bestMatch }: NavItemsProps) {
   return (
-    <section className="no-scrollbar space-y-2 overflow-y-auto">
+    <section className="no-scrollbar space-y-2">
       {pathGroups.map((group) => (
         <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} />
       ))}
@@ -115,11 +124,14 @@ type PathGroupElementProps = {
 };
 
 const InternalPathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNode => {
-  const { session } = useSession();
+  const {
+    session,
+    config: { showNav: isVisible },
+  } = useSession();
+
   const { key, name, filter } = group;
 
   const isSmall = useMediaQuery('(max-width: 640px)');
-  const { isVisible } = useNavBar();
 
   const expand = isSmall ? true : isVisible;
 
@@ -143,11 +155,14 @@ type PathElementProps = {
 };
 
 function PathElement({ segment, bestMatch }: PathElementProps) {
-  const { session } = useSession();
   const [value, setValue] = useState('');
 
   const isSmall = useMediaQuery('(max-width: 640px)');
-  const { isVisible, setVisible } = useNavBar();
+  const {
+    session,
+    config: { showNav: isVisible },
+    setConfig,
+  } = useSession();
 
   const expand = isSmall ? true : isVisible;
 
@@ -176,15 +191,12 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
       <Accordion type="single" collapsible className={cn('w-full', { 'w-10': !expand })} value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn(
-              'flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-semibold duration-300 hover:bg-brand hover:text-background dark:text-foreground dark:hover:text-foreground',
-              {
-                'bg-brand text-background dark:text-foreground': path.some((path) => path.path === bestMatch) && !value,
-                'justify-start gap-2 py-2': expand,
-              },
-            )}
+            className={cn('flex h-10 items-center justify-center gap-0 rounded-md p-1 text-sm font-semibold duration-300 hover:bg-brand hover:text-background dark:text-foreground dark:hover:text-foreground', {
+              'bg-brand text-background dark:text-foreground': path.some((path) => path.path === bestMatch) && !value,
+              'justify-start gap-2 py-2': expand,
+            })}
             showChevron={expand}
-            onClick={() => setVisible(true)}
+            onClick={() => setConfig('showNav', true)}
           >
             {icon}
             {expand && name}

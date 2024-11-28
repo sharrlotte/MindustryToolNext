@@ -166,6 +166,12 @@ export type GroupBy<T> = {
   value: T[];
 };
 
+export const YOUTUBE_VIDEO_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+
+export function extractYouTubeID(url: string) {
+  const match = url.match(YOUTUBE_VIDEO_REGEX);
+  return match ? match[1] : null;
+}
 export function groupBy<T>(array: T[], predicate: (value: T, index: number, array: T[]) => string) {
   const defaultValue = {} as Record<string, T[]>;
 
@@ -300,6 +306,10 @@ const DEFAULT_NEXTJS_ERROR_MESSAGE =
 const INTERNAL_ERROR_MESSAGE = 'Request failed with status code 500';
 
 export function getErrorMessage(error: TError) {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(error);
+  }
+
   if (!error) {
     return 'Something is wrong';
   }
@@ -345,7 +355,7 @@ export type Filter =
   | boolean
   | { role: UserRole }
   | { authority: AuthorityEnum }
-  | { authorId: string }
+  | { authorId: string | null | undefined }
   | undefined;
 
 export function hasAccess(session: Session | undefined | null, filter: Filter): boolean {
@@ -447,7 +457,7 @@ export function formatTranslation(text: string, args?: Record<string, string>) {
 }
 
 export function formatTitle(title: string) {
-  return `${title} | ${env.webName}`;
+  return `${title} - ${env.webName}`;
 }
 
 export function extractTranslationKey(text: string) {

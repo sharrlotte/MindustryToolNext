@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
@@ -17,7 +19,6 @@ import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
-import { toast } from '@/hooks/use-toast';
 import { omit } from '@/lib/utils';
 import { deleteSchematic, getSchematicUploadCount, getSchematicUploads } from '@/query/schematic';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -48,17 +49,10 @@ export default function Client({ schematics }: Props) {
   const { mutate } = useMutation({
     mutationFn: (ids: string[]) => Promise.all(ids.map((id) => deleteSchematic(axios, id))),
     onSuccess: () => {
-      toast({
-        title: <Tran text="delete-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="delete-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="delete-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="delete-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['schematics']);
@@ -80,8 +74,8 @@ export default function Client({ schematics }: Props) {
             <PaginationLayoutSwitcher />
           </div>
         </div>
-        <ListLayout>
-          <div className="relative flex h-full flex-col overflow-auto" ref={(ref) => setContainer(ref)}>
+        <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
+          <ListLayout>
             <InfinitePage
               params={params}
               queryKey={['schematics', 'upload']}
@@ -95,22 +89,22 @@ export default function Client({ schematics }: Props) {
             >
               {(data, index) => <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={index} />}
             </InfinitePage>
-          </div>
-        </ListLayout>
-        <GridLayout>
-          <GridPaginationList
-            params={params}
-            queryKey={['schematics', 'upload']}
-            queryFn={getSchematicUploads}
-            initialData={schematics}
-            skeleton={{
-              amount: 20,
-              item: <PreviewSkeleton />,
-            }}
-          >
-            {(data, index) => <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={index} />}
-          </GridPaginationList>
-        </GridLayout>
+          </ListLayout>
+          <GridLayout>
+            <GridPaginationList
+              params={params}
+              queryKey={['schematics', 'upload']}
+              queryFn={getSchematicUploads}
+              initialData={schematics}
+              skeleton={{
+                amount: 20,
+                item: <PreviewSkeleton />,
+              }}
+            >
+              {(data, index) => <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={index} />}
+            </GridPaginationList>
+          </GridLayout>
+        </ScrollContainer>
         <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
           <GridLayout>
             <PaginationNavigator numberOfItems={data} />

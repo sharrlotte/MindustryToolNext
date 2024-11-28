@@ -1,7 +1,7 @@
 import { Metadata } from 'next/dist/types';
 
 import { serverApi, translate } from '@/action/action';
-import Client from '@/app/[locale]/(user)/plugins/page.client';
+import Client from '@/app/[locale]/(admin)/admin/plugins/page.client';
 import ErrorScreen from '@/components/common/error-screen';
 import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';

@@ -1,12 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 import TakeDownButton from '@/components/button/take-down-button';
 import Tran from '@/components/common/tran';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { unverifyMap } from '@/query/map';
 
 import { useMutation } from '@tanstack/react-query';
@@ -20,7 +21,6 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
   const axios = useClientApi();
   const { back } = useRouter();
   const { invalidateByKey } = useQueriesData();
-  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     scope: {
@@ -29,17 +29,10 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
     mutationFn: (id: string) => unverifyMap(axios, id),
     onSuccess: () => {
       back();
-      toast({
-        title: <Tran text="take-down-success" />,
-        variant: 'success',
-      });
+      toast(<Tran text="take-down-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="take-down-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast(<Tran text="take-down-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['maps']);

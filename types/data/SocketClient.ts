@@ -138,9 +138,14 @@ export default class SocketClient {
       return this.socket;
     }
 
-    const instant = new ReconnectingWebSocket(this.url);
+    const instance = new ReconnectingWebSocket(this.url);
 
-    this.socket = instant;
+    this.socket = instance;
+
+    window.addEventListener('beforeunload', () => {
+      instance.onclose = function () {}; // disable onclose handler first
+      instance.close();
+    });
 
     this.socket.onmessage = async (event) => {
       try {
@@ -193,7 +198,7 @@ export default class SocketClient {
       }
     };
 
-    return instant;
+    return instance;
   }
 
   public onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
@@ -285,8 +290,12 @@ export default class SocketClient {
     this.tasks = [];
     this.rooms = [];
 
-    if (this.socket && this.socket.readyState === this.socket.OPEN) {
+    if (this.socket && this.getState() === 'connected') {
       this.socket.close();
+    } else {
+      this.onConnect(() => {
+        this.socket?.close();
+      });
     }
   }
 

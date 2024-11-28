@@ -3,6 +3,8 @@ import React, { HTMLAttributes } from 'react';
 import CopyButton from '@/components/button/copy-button';
 import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import AloneLikeCount from '@/components/like/alone-like-count';
+import LikeComponent from '@/components/like/like-component';
 import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
@@ -28,10 +30,13 @@ function InternalPostPreviewCard({ className, post, ...rest }: PostPreviewCardPr
             <IdUserCard id={post.userId} />
             <span>{new Date(post.createdAt).toLocaleString()}</span>
           </div>
-          <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
+          <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
             <CopyButton data={link} content={link}>
               <LinkIcon />
             </CopyButton>
+            <LikeComponent initialLikeCount={post.likes} itemId={post.itemId}>
+              <AloneLikeCount />
+            </LikeComponent>
           </div>
         </div>
       </div>

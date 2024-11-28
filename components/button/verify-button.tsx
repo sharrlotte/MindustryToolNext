@@ -2,20 +2,10 @@
 
 import React, { ReactNode } from 'react';
 
-import Tran from '@/components/common/tran';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
 import { CheckIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 type VerifyButtonProps = {
   isLoading: boolean;
@@ -26,7 +16,7 @@ type VerifyButtonProps = {
 export default function VerifyButton({ isLoading, description, onClick }: VerifyButtonProps) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="flex items-center justify-center rounded-md border p-2 hover:bg-success" disabled={isLoading}>
+      <AlertDialogTrigger className="flex items-center justify-center rounded-md border p-2 hover:bg-success hover:border-none" disabled={isLoading}>
         <CheckIcon className="size-5" />
       </AlertDialogTrigger>
       <AlertDialogContent>

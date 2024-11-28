@@ -2,15 +2,17 @@
 
 import dynamic from 'next/dynamic';
 import { Fragment, useState } from 'react';
+import { toast } from 'sonner';
 import { useDebounceValue } from 'usehooks-ts';
 
 import ComboBox from '@/components/common/combo-box';
+import { SearchIcon } from '@/components/common/icons';
 import LoadingScreen from '@/components/common/loading-screen';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { MarkdownData } from '@/components/common/markdown-editor';
 import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
-import Search from '@/components/search/search-input';
+import { SearchBar, SearchInput } from '@/components/search/search-input';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -20,7 +22,6 @@ import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { useI18n } from '@/i18n/client';
 import { createPost, getPost, translatePost } from '@/query/post';
 import { getMePosts } from '@/query/user';
@@ -112,7 +113,7 @@ function TranslatePage({
   shared: Shared;
 } & { post: PostDetail }) {
   const axios = useClientApi();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
   const languages = useLanguages();
   const t = useI18n();
@@ -120,19 +121,13 @@ function TranslatePage({
   const { mutate, isPending } = useMutation({
     mutationFn: (data: TranslatePostRequest) => translatePost(axios, data),
     onSuccess: () => {
-      toast({
-        title: <Tran text="upload.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="upload.success" />);
+
       setTitle('');
       setContent({ text: '', images: [] });
     },
     onError(error) {
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="upload.fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['posts']);
@@ -193,7 +188,7 @@ function TranslatePage({
 function UploadPage({ shared: { title, setTitle, content, setContent, language, setLanguage } }: { shared: Shared }) {
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const axios = useClientApi();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
   const {
     uploadTags: { post: postTags },
@@ -204,20 +199,14 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: CreatePostRequest) => createPost(axios, data),
     onSuccess: () => {
-      toast({
-        title: <Tran text="upload.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="upload.success" />);
+
       setTitle('');
       setContent({ text: '', images: [] });
       setSelectedTags([]);
     },
     onError(error) {
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="upload.fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['posts']);
@@ -339,10 +328,10 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
           <Tran text="upload.select-post" />
         </DialogTitle>
         <div className="flex flex-col gap-2">
-          <Search>
-            <Search.Input placeholder="upload.post-name" value={name} onChange={(event) => setName(event.currentTarget.value)} />
-            <Search.Icon />
-          </Search>
+          <SearchBar>
+            <SearchInput placeholder="upload.post-name" value={name} onChange={(event) => setName(event.currentTarget.value)} />
+            <SearchIcon />
+          </SearchBar>
           <div className="flex w-full flex-col gap-1">{render()}</div>
         </div>
       </DialogContent>

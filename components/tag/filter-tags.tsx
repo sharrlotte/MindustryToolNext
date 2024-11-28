@@ -2,12 +2,14 @@ import React, { useCallback, useMemo } from 'react';
 
 import MultipleFilerTags from '@/components/tag/multiple-filter-tags';
 import SingeFilerTags from '@/components/tag/single-filter-tags';
+
+import { ContextTagGroup } from '@/context/tags-context';
 import TagGroup from '@/types/response/TagGroup';
 
 type FilterTagProps = {
   filter: string;
   filterBy: TagGroup[];
-  tags: TagGroup[];
+  tags: ContextTagGroup[];
   handleTagGroupChange: (group: string, value: string[]) => void;
 };
 
@@ -18,15 +20,14 @@ export default function FilterTags({ filter, tags, filterBy, handleTagGroupChang
     () =>
       filter.length === 0
         ? tags
-        : tags.filter((tag) => {
-            if (tag.name.includes(filter)) {
-              return true;
-            }
-            const v = { ...tag };
-            v.values = tag.values.filter((value) => value.includes(filter));
+        : tags
+            .map((tag) => {
+              const v = { ...tag };
+              v.values = tag.values.filter((value) => value.display.toLowerCase().includes(filter.toLowerCase()));
 
-            return v.values.length > 0;
-          }),
+              return v;
+            })
+            .filter((tag) => tag.values.length > 0),
     [filter, tags],
   );
 
@@ -34,7 +35,7 @@ export default function FilterTags({ filter, tags, filterBy, handleTagGroupChang
 }
 
 type FilterTagGroupProps = {
-  group: TagGroup;
+  group: ContextTagGroup;
   selectedGroup?: TagGroup;
   handleTagGroupChange: (group: string, value: string[]) => void;
 };

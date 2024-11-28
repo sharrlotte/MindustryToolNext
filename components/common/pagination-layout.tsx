@@ -1,22 +1,29 @@
+'use client';
+
 import { ReactNode } from 'react';
 
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { usePaginationType } from '@/zustand/pagination-type-store';
 import { LayoutGridIcon, LayoutListIcon } from '@/components/common/icons';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+
+import { useSession } from '@/context/session-context.client';
+import { PaginationType, paginationTypes } from '@/context/session-context.type';
 
 type Props = {
   children: ReactNode;
 };
 
 export function PaginationLayoutSwitcher() {
-  const { type, setType } = usePaginationType();
+  const {
+    config: { paginationType },
+    setConfig,
+  } = useSession();
 
   return (
-    <ToggleGroup value={type} type="single" onValueChange={setType}>
-      <ToggleGroupItem value="grid" title="grid">
+    <ToggleGroup value={paginationType} type="single" onValueChange={(type: PaginationType) => setConfig('paginationType', paginationTypes.includes(type) ? type : 'grid')}>
+      <ToggleGroupItem className="aspect-square" value="grid" title="grid">
         <LayoutGridIcon className="size-5" />
       </ToggleGroupItem>
-      <ToggleGroupItem value="infinite-scroll" title="infinite scroll">
+      <ToggleGroupItem className="aspect-square" value="infinite-scroll" title="infinite scroll">
         <LayoutListIcon className="size-5" />
       </ToggleGroupItem>
     </ToggleGroup>
@@ -24,13 +31,17 @@ export function PaginationLayoutSwitcher() {
 }
 
 export function ListLayout({ children }: Props) {
-  const { type } = usePaginationType();
+  const {
+    config: { paginationType },
+  } = useSession();
 
-  return type === 'infinite-scroll' ? children : undefined;
+  return paginationType === 'infinite-scroll' ? children : undefined;
 }
 
 export function GridLayout({ children }: Props) {
-  const { type } = usePaginationType();
+  const {
+    config: { paginationType },
+  } = useSession();
 
-  return type === 'grid' ? children : undefined;
+  return paginationType === 'grid' ? children : undefined;
 }

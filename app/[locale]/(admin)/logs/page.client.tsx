@@ -6,6 +6,7 @@ import { z } from 'zod';
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
+import { IconNotification } from '@/components/common/icon-notification';
 import { FilterIcon, XIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -147,6 +148,7 @@ function StaticLog() {
     queryKey: ['log', 'total', collection, filter],
     queryFn: (axios) => getLogCount(axios, { ...filter, collection: collection as LogType }),
     placeholderData: 0,
+    enabled: collection !== 'LIVE',
   });
 
   const { data } = useClientQuery({
@@ -178,14 +180,14 @@ function StaticLog() {
         </div>
         <PaginationLayoutSwitcher />
       </div>
-      <ListLayout>
-        <div className="relative flex h-full flex-col gap-2 overflow-x-hidden" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="relative flex h-full flex-col gap-2" ref={(ref) => setContainer(ref)}>
+        <ListLayout>
           <InfinitePage<Log, LogPaginationQuery>
             className="flex w-full flex-col items-center justify-center gap-2"
             params={{
               page,
               size,
-              collection: collection as LogType,
+              collection: (collection === 'LIVE' ? 'SYSTEM' : collection) as LogType,
               env: env as LogEnvironment,
               content,
               userId,
@@ -200,29 +202,29 @@ function StaticLog() {
           >
             {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
           </InfinitePage>
-        </div>
-      </ListLayout>
-      <GridLayout>
-        <GridPaginationList
-          className="flex w-full flex-col items-center justify-center gap-2"
-          params={{
-            page,
-            size,
-            collection: collection as LogType,
-            env: env as LogEnvironment,
-            content,
-            userId,
-            ip,
-            url,
-            before,
-            after,
-          }}
-          queryKey={['logs']}
-          queryFn={getLogs}
-        >
-          {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
-        </GridPaginationList>
-      </GridLayout>
+        </ListLayout>
+        <GridLayout>
+          <GridPaginationList
+            className="flex w-full flex-col items-center justify-center gap-2"
+            params={{
+              page,
+              size,
+              collection: (collection === 'LIVE' ? 'SYSTEM' : collection) as LogType,
+              env: env as LogEnvironment,
+              content,
+              userId,
+              ip,
+              url,
+              before,
+              after,
+            }}
+            queryKey={['logs']}
+            queryFn={getLogs}
+          >
+            {(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
+          </GridPaginationList>
+        </GridLayout>
+      </ScrollContainer>
       <div className="flex justify-end">
         <GridLayout>
           <PaginationNavigator numberOfItems={total} />
@@ -240,11 +242,15 @@ type FilterDialogProps = {
 function FilterDialog({ filter, setFilter }: FilterDialogProps) {
   const { ip, userId, url, content, before, after } = filter;
 
+  const number = [ip, userId, url, content, before, after].filter(Boolean).length;
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button className="border-none bg-secondary shadow-md" variant="outline" title="Filter">
-          <FilterIcon />
+          <IconNotification number={number}>
+            <FilterIcon />
+          </IconNotification>
         </Button>
       </DialogTrigger>
       <DialogContent className="grid w-fit max-w-full gap-2 p-6">
@@ -298,13 +304,7 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
-                <Calendar
-                  mode="single"
-                  selected={before ? new Date(before) : undefined}
-                  onSelect={(value) => setFilter({ before: value?.toISOString() ?? '' })}
-                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                  initialFocus
-                />
+                <Calendar mode="single" selected={before ? new Date(before) : undefined} onSelect={(value) => setFilter({ before: value?.toISOString() ?? '' })} disabled={(date) => date > new Date() || date < new Date('1900-01-01')} initialFocus />
               </PopoverContent>
             </Popover>
           </div>
@@ -317,13 +317,7 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
-                <Calendar
-                  mode="single"
-                  selected={after ? new Date(after) : undefined}
-                  onSelect={(value) => setFilter({ after: value?.toISOString() ?? '' })}
-                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                  initialFocus
-                />
+                <Calendar mode="single" selected={after ? new Date(after) : undefined} onSelect={(value) => setFilter({ after: value?.toISOString() ?? '' })} disabled={(date) => date > new Date() || date < new Date('1900-01-01')} initialFocus />
               </PopoverContent>
             </Popover>
           </div>

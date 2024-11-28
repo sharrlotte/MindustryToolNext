@@ -1,10 +1,12 @@
 import React, { HTMLAttributes } from 'react';
 
+import { XIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
 import { TagName } from '@/components/tag/tag-name';
 import TagTooltip from '@/components/tag/tag-tooltip';
+
 import { cn } from '@/lib/utils';
 import Tag from '@/types/response/Tag';
-import { XIcon } from '@/components/common/icons';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   tag: Tag;
@@ -32,7 +34,14 @@ function InternalTagCard({ tag, className, onDelete, ...props }: TagCardProps) {
       {...props}
     >
       <TagTooltip value={value}>
-        <TagName>{name}</TagName>(<TagName>{value}</TagName>)
+        <TagName value={name}>
+          <Tran text={`tags.${name}`} />
+        </TagName>
+        (
+        <TagName value={value}>
+          <Tran text={`tags.${value}`} />
+        </TagName>
+        )
       </TagTooltip>
       {hasDelete && <XIcon className="size-4" />}
     </span>

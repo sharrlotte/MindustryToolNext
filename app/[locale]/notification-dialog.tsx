@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { toast } from 'sonner';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { Hidden } from '@/components/common/hidden';
@@ -11,19 +12,9 @@ import Markdown from '@/components/common/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
 import { useSession } from '@/context/session-context.client';
@@ -32,18 +23,18 @@ import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useNotification from '@/hooks/use-notification';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, isError } from '@/lib/utils';
 import { deleteAllNotifications, deleteNotification, getMyNotifications, getMyUnreadNotificationCount, markAsRead, markAsReadById } from '@/query/notification';
 import { Notification } from '@/types/response/Notification';
-import { useNavBar } from '@/zustand/nav-bar-store';
 
 import { useMutation } from '@tanstack/react-query';
 
 export default function NotificationDialog() {
-  const { session } = useSession();
-  const { isVisible } = useNavBar();
+  const {
+    session,
+    config: { showNav: isVisible },
+  } = useSession();
 
   const isSmall = useMediaQuery('(max-width: 640px)');
   const expand = isSmall ? true : isVisible;
@@ -54,18 +45,23 @@ export default function NotificationDialog() {
         <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
           <NotificationDialogButton expand={expand} />
         </DialogTrigger>
-        <DialogContent className="p-6 max-h-full flex flex-col">
-          <DialogTitle>
+        <DialogContent className="p-6 max-h-full flex flex-col" closeButton={false}>
+          <DialogTitle className="flex items-center justify-between w-full">
             <Tran className="text-2xl" text="notification" />
+            <EllipsisButton variant="ghost">
+              <MarkAsReadAllButton />
+              <DeleteAllButton />
+            </EllipsisButton>
           </DialogTitle>
           <Hidden>
             <DialogDescription>This is a notification dialog.</DialogDescription>
           </Hidden>
-          <NotificationContent />
-          <DialogFooter className="flex gap-2 flex-wrap justify-end">
-            <DeleteAllButton />
-            <MarkAsReadAllButton />
-          </DialogFooter>
+          <NotificationList />
+          <DialogClose asChild>
+            <Button className="ml-auto" variant="secondary">
+              <Tran text="close" />
+            </Button>
+          </DialogClose>
         </DialogContent>
       </Dialog>
     </ProtectedElement>
@@ -109,16 +105,10 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
   );
 }
 
-function NotificationContent() {
+function NotificationList() {
   return (
     <ScrollContainer className="border-t">
-      <InfinitePage
-        className="gap-2 flex flex-col divide-y"
-        queryKey={['notifications']}
-        params={{ page: 0, size: 30 }}
-        queryFn={getMyNotifications}
-        noResult={<Tran text="notification.no-notification" />}
-      >
+      <InfinitePage className="gap-2 flex flex-col divide-y" queryKey={['notifications']} params={{ page: 0, size: 30 }} queryFn={getMyNotifications} noResult={<Tran text="notification.no-notification" />}>
         {(notification) => <NotificationCard key={notification.id} notification={notification} />}
       </InfinitePage>
     </ScrollContainer>
@@ -145,13 +135,22 @@ function NotificationCard({ notification }: NotificationCardProps) {
             </div>
           </div>
         </DialogTrigger>
-        <DialogContent className="p-4 overflow-y-auto max-h-full max-w-full w-fit min-w-[min(30rem,100%)] overflow-x-hidden">
-          <DialogTitle className="font-bold text-2xl">{title}</DialogTitle>
-          <DialogDescription />
-          <Markdown className="text-muted-foreground">{content}</Markdown>
-          <DialogFooter>
-            <RelativeTime className="text-nowrap text-muted-foreground" date={new Date(createdAt)} />
-          </DialogFooter>
+        <DialogContent className="h-full max-w-none flex w-full">
+          <Hidden>
+            <DialogDescription />
+          </Hidden>
+          <ScrollContainer className="p-4 max-h-full max-w-full flex flex-col w-full min-h-full min-w-[min(30rem,100%)]">
+            <DialogTitle className="font-bold text-xl">{title}</DialogTitle>
+            <Markdown className="text-muted-foreground">{content}</Markdown>
+            <div className="mt-auto flex justify-between items-center">
+              <RelativeTime className="text-nowrap text-muted-foreground" date={new Date(createdAt)} />
+              <DialogClose asChild>
+                <Button>
+                  <Tran text="close" />
+                </Button>
+              </DialogClose>
+            </div>
+          </ScrollContainer>
         </DialogContent>
       </Dialog>
       <EllipsisButton variant="icon">
@@ -171,7 +170,6 @@ function MarkAsReadButton({ notification }: MarkAsReadButtonProps) {
 
   const axios = useClientApi();
 
-  const { toast } = useToast();
   const { updateById, invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
@@ -181,11 +179,7 @@ function MarkAsReadButton({ notification }: MarkAsReadButtonProps) {
       updateById<Notification>(['notifications'], id, (prev) => ({ ...prev, read: true }));
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="notification.mark-as-read-failed" />,
-        content: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="notification.mark-as-read-failed" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['notifications']);
@@ -204,7 +198,6 @@ function DeleteButton({ notification }: MarkAsReadButtonProps) {
 
   const axios = useClientApi();
 
-  const { toast } = useToast();
   const { filterByKey, invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
@@ -213,12 +206,9 @@ function DeleteButton({ notification }: MarkAsReadButtonProps) {
     onMutate: () => {
       filterByKey<Notification>(['notifications'], (prev) => prev.id !== id);
     },
+
     onError: (error) => {
-      toast({
-        title: <Tran text="notification.delete-failed" />,
-        content: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="notification.delete-failed" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['notifications']);
@@ -234,24 +224,17 @@ function DeleteButton({ notification }: MarkAsReadButtonProps) {
 
 function DeleteAllButton() {
   const axios = useClientApi();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['notifications', 'delete-all'],
     mutationFn: () => deleteAllNotifications(axios),
     onSuccess: () => {
-      toast({
-        title: <Tran text="notification.delete-all-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="notification.delete-all-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="notification.delete-all-failed" />,
-        content: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="notification.delete-all-failed" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['notifications']);
@@ -261,7 +244,7 @@ function DeleteAllButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="min-w-20" title="Delete" variant="destructive">
+        <Button className="min-w-20" title="Delete" variant="command-destructive">
           <Tran text="notification.delete-all" />
         </Button>
       </AlertDialogTrigger>
@@ -278,7 +261,7 @@ function DeleteAllButton() {
           <AlertDialogCancel>
             <Tran text="cancel" />
           </AlertDialogCancel>
-          <AlertDialogAction disabled={isPending} onClick={() => mutate()}>
+          <AlertDialogAction variant="destructive" disabled={isPending} onClick={() => mutate()}>
             <Tran text="delete" />
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -289,24 +272,17 @@ function DeleteAllButton() {
 
 function MarkAsReadAllButton() {
   const axios = useClientApi();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['notifications', 'mark-as-read-all'],
     mutationFn: () => markAsRead(axios),
     onSuccess: () => {
-      toast({
-        title: <Tran text="notification.mark-as-read-all-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="notification.mark-as-read-all-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="notification.mark-as-read-all-failed" />,
-        content: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="notification.mark-as-read-all-failed" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['notifications']);
@@ -316,7 +292,7 @@ function MarkAsReadAllButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="min-w-20" title="Delete">
+        <Button className="min-w-20" variant="command" title="Delete">
           <Tran text="notification.mark-as-read-all" />
         </Button>
       </AlertDialogTrigger>
@@ -333,8 +309,8 @@ function MarkAsReadAllButton() {
           <AlertDialogCancel>
             <Tran text="cancel" />
           </AlertDialogCancel>
-          <AlertDialogAction disabled={isPending} onClick={() => mutate()}>
-            <Tran text="delete" />
+          <AlertDialogAction variant="secondary" disabled={isPending} onClick={() => mutate()}>
+            <Tran text="notification.mark-as-read-all" />
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
