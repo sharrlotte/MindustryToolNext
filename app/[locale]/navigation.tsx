@@ -6,6 +6,8 @@ import { ReactNode, useMemo } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { Path, SubPath, groups } from '@/app/routes';
+
+
 import { useSession } from '@/context/session-context.client';
 import { hasAccess, max } from '@/lib/utils';
 
@@ -30,12 +32,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
   }, [pathName]);
 
   const routeGroups = useMemo(
-    () =>
-      groups.filter(
-        (group) =>
-          hasAccess(session, group.filter) &&
-          group.paths.some(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.some((sub) => hasAccess(session, sub.filter)))),
-      ),
+    () => groups.filter((group) => hasAccess(session, group.filter) && group.paths.some(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.some((sub) => hasAccess(session, sub.filter))))),
     [session],
   );
 

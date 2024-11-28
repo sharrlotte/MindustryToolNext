@@ -1,14 +1,15 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
-import { revalidate } from '@/action/action';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+
+import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { deleteInternalServer } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
@@ -21,23 +22,16 @@ export function DeleteServerButton({ id }: DeleteServerButtonProps) {
   const axios = useClientApi();
   const router = useRouter();
   const { invalidateByKey } = useQueriesData();
-  const { toast } = useToast();
+
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
     mutationFn: () => deleteInternalServer(axios, id),
     onSuccess: () => {
-      toast({
-        title: <Tran text="delete-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="delete-success" />);
+
       router.push('/servers');
     },
-    onError: (error) =>
-      toast({
-        title: <Tran text="delete-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      }),
+    onError: (error) => toast.error(<Tran text="delete-fail" />, { description: error.message }),
     onSettled: () => {
       revalidate({ path: '/servers' });
       invalidateByKey(['servers']);

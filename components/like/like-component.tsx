@@ -2,14 +2,15 @@
 
 import React, { useCallback, useMemo } from 'react';
 import { ReactNode } from 'react';
+import { toast } from 'sonner';
 import { create } from 'zustand';
 
 import Tran from '@/components/common/tran';
+
 import { LikeAction } from '@/constant/enum';
 import { FakeLike, LikeContext } from '@/context/like-context';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
-import { useToast } from '@/hooks/use-toast';
 import { postLike } from '@/query/like';
 import { Like } from '@/types/response/Like';
 
@@ -46,8 +47,6 @@ function LikeComponent({ initialLikeCount = 0, initialLikeData, children, itemId
     [cache, initialLikeCount, initialLikeData, itemId],
   );
 
-  const { toast } = useToast();
-
   const { mutate, isPending } = useMutation({
     mutationFn: async (action: LikeAction) =>
       await postLike(axios, {
@@ -63,9 +62,7 @@ function LikeComponent({ initialLikeCount = 0, initialLikeData, children, itemId
       }
 
       if (!session) {
-        return toast({
-          title: <Tran text="like.require-login" />,
-        });
+        return toast(<Tran text="like.require-login" />);
       }
 
       let change: -2 | -1 | 0 | 1 | 2;

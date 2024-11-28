@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
+import { toast } from 'sonner';
+
+import InternalLink from '@/components/common/internal-link';
 
 import { useSession } from '@/context/session-context.client';
-import { useToast } from '@/hooks/use-toast';
 
 export default function useNotification() {
   const { session } = useSession();
   const userId = session?.id;
-  const { toast } = useToast();
 
   const processNotification = useCallback(
     (message: string, sender: string, isGranted: boolean) => {
@@ -15,12 +16,10 @@ export default function useNotification() {
       if (isGranted) {
         new Notification(message, { body: message, icon: '/favicon.ico' });
       } else {
-        toast({
-          title: <a href="/chat">{message}</a>,
-        });
+        toast(<InternalLink href="/chat">{message}</InternalLink>);
       }
     },
-    [userId, toast],
+    [userId],
   );
 
   const postNotification = useCallback(

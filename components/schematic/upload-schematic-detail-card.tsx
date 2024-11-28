@@ -66,7 +66,7 @@ export default function UploadSchematicDetailCard({ schematic: { id, name, tags,
             </span>
             <DetailDescription>{description}</DetailDescription>
             <ItemRequirementCard requirements={requirements} />
-            <TagSelector tags={schematic} value={selectedTags} onChange={setSelectedTags} />
+            <TagSelector type="schematic" tags={schematic} value={selectedTags} onChange={setSelectedTags} />
           </DetailHeader>
         </DetailInfo>
         <DetailActions>

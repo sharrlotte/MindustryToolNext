@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Hidden } from '@/components/common/hidden';
@@ -11,9 +12,9 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
-import { addTagPreset } from '@/lib/utils';
+import { PresetType, addTagPreset } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 
@@ -21,15 +22,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 type CreatePresetButtonProps = {
   tags: TagGroup[];
+  type: PresetType;
 };
 
-export default function CreatePresetButton({ tags }: CreatePresetButtonProps) {
+export default function CreatePresetButton({ tags, type }: CreatePresetButtonProps) {
   const [open, setOpen] = useState(false);
 
   const { invalidateByKey } = useQueriesData();
-  const { toast } = useToast();
 
-  const form = useForm({
+  const form = useForm<{ name: string }>({
     resolver: zodResolver(z.object({ name: z.string().min(1).max(100) })),
     defaultValues: {
       name: '',
@@ -39,13 +40,10 @@ export default function CreatePresetButton({ tags }: CreatePresetButtonProps) {
   const values = useMemo(() => Tags.fromTagGroup(tags), [tags]);
 
   function createPreset({ name }: { name: string }) {
-    addTagPreset({ name, tags: tags || [] });
+    addTagPreset({ name, tags: tags || [], type });
     setOpen(false);
     invalidateByKey(['preset']);
-    toast({
-      variant: 'success',
-      title: <Tran text="tags.preset-create-success" />,
-    });
+    toast(<Tran text="tags.preset-create-success" />);
   }
 
   return (

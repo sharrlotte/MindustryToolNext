@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -15,7 +16,6 @@ import { Textarea } from '@/components/ui/textarea';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
-import { useToast } from '@/hooks/use-toast';
 import createDocument, { getDocuments } from '@/query/document';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { CreateDocumentRequest, CreateDocumentSchema } from '@/types/request/CreateDocumentRequest';
@@ -43,7 +43,7 @@ export default function Page() {
 
 function AddDocumentButton() {
   const axios = useClientApi();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
 
   const form = useForm<CreateDocumentRequest>({
@@ -56,18 +56,12 @@ function AddDocumentButton() {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: CreateDocumentRequest) => createDocument(axios, data),
     onSuccess: () => {
-      toast({
-        title: <Tran text="upload.success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="upload.success" />);
+
       form.reset();
     },
     onError(error) {
-      toast({
-        title: <Tran text="upload.fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="upload.fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['documents']);

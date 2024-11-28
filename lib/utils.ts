@@ -399,13 +399,16 @@ export async function sleep(seconds: number) {
 }
 
 export const PRESET_LOCAL_STORAGE_NAME = 'TAG_PRESET';
+export const presetTypes = ['schematic', 'map', 'plugin', 'post'] as const;
+export type PresetType = (typeof presetTypes)[number];
 
 export type TagPreset = {
   name: string;
+  type: PresetType;
   tags: TagGroup[];
 };
 
-export function getTagPreset(): TagPreset[] {
+export function getTagPreset(type?: PresetType): TagPreset[] {
   const str = localStorage.getItem(PRESET_LOCAL_STORAGE_NAME);
 
   if (!str) {
@@ -413,13 +416,17 @@ export function getTagPreset(): TagPreset[] {
   }
 
   try {
-    const value = JSON.parse(str);
+    const value = JSON.parse(str) as TagPreset[];
 
     if (!Array.isArray(value)) {
       return [];
     }
 
-    return value;
+    if (type === undefined) {
+      return value;
+    }
+
+    return value.filter((value) => value.type === type);
   } catch (e) {
     return [];
   }

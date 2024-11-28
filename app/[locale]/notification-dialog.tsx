@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { toast } from 'sonner';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { Hidden } from '@/components/common/hidden';
@@ -22,7 +23,6 @@ import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useNotification from '@/hooks/use-notification';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, isError } from '@/lib/utils';
 import { deleteAllNotifications, deleteNotification, getMyNotifications, getMyUnreadNotificationCount, markAsRead, markAsReadById } from '@/query/notification';
@@ -170,7 +170,6 @@ function MarkAsReadButton({ notification }: MarkAsReadButtonProps) {
 
   const axios = useClientApi();
 
-  const { toast } = useToast();
   const { updateById, invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
@@ -180,11 +179,7 @@ function MarkAsReadButton({ notification }: MarkAsReadButtonProps) {
       updateById<Notification>(['notifications'], id, (prev) => ({ ...prev, read: true }));
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="notification.mark-as-read-failed" />,
-        content: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="notification.mark-as-read-failed" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['notifications']);
@@ -203,7 +198,6 @@ function DeleteButton({ notification }: MarkAsReadButtonProps) {
 
   const axios = useClientApi();
 
-  const { toast } = useToast();
   const { filterByKey, invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
@@ -212,12 +206,9 @@ function DeleteButton({ notification }: MarkAsReadButtonProps) {
     onMutate: () => {
       filterByKey<Notification>(['notifications'], (prev) => prev.id !== id);
     },
+
     onError: (error) => {
-      toast({
-        title: <Tran text="notification.delete-failed" />,
-        content: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="notification.delete-failed" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['notifications']);
@@ -233,24 +224,17 @@ function DeleteButton({ notification }: MarkAsReadButtonProps) {
 
 function DeleteAllButton() {
   const axios = useClientApi();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['notifications', 'delete-all'],
     mutationFn: () => deleteAllNotifications(axios),
     onSuccess: () => {
-      toast({
-        title: <Tran text="notification.delete-all-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="notification.delete-all-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="notification.delete-all-failed" />,
-        content: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="notification.delete-all-failed" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['notifications']);
@@ -288,24 +272,17 @@ function DeleteAllButton() {
 
 function MarkAsReadAllButton() {
   const axios = useClientApi();
-  const { toast } = useToast();
+
   const { invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['notifications', 'mark-as-read-all'],
     mutationFn: () => markAsRead(axios),
     onSuccess: () => {
-      toast({
-        title: <Tran text="notification.mark-as-read-all-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="notification.mark-as-read-all-success" />);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="notification.mark-as-read-all-failed" />,
-        content: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="notification.mark-as-read-all-failed" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['notifications']);

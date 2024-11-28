@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
@@ -17,7 +18,6 @@ import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
-import { useToast } from '@/hooks/use-toast';
 import { cn, omit } from '@/lib/utils';
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -32,7 +32,7 @@ type AddPluginDialogProps = {
 export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [added, setAdded] = useState<string[]>([]);
-  const { toast } = useToast();
+
   const {
     searchTags: { plugin },
   } = useTags();
@@ -51,18 +51,11 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const { mutate, isPending } = useMutation({
     mutationFn: (pluginId: string) => createInternalServerPlugin(axios, serverId, { pluginId }),
     onSuccess: (_, pluginId) => {
-      toast({
-        title: <Tran text="interval-server.add-plugin-success" />,
-        variant: 'success',
-      });
+      toast.success(<Tran text="interval-server.add-plugin-success" />);
       setAdded((prev) => [...prev, pluginId]);
     },
     onError: (error) => {
-      toast({
-        title: <Tran text="interval-server.add-plugin-fail" />,
-        description: error.message,
-        variant: 'destructive',
-      });
+      toast.error(<Tran text="interval-server.add-plugin-fail" />, { description: error.message });
     },
     onSettled: () => {
       invalidateByKey(['servers', serverId, 'plugins']);

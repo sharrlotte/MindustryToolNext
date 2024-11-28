@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
 import { ContextTagGroup } from '@/context/tags-context';
-import { cn } from '@/lib/utils';
+import { PresetType, cn } from '@/lib/utils';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 
@@ -25,10 +25,11 @@ type TagSelectorProps = {
   disabled?: boolean;
   hideSelectedTag?: boolean;
   value: TagGroup[];
+  type: PresetType;
   onChange: (fn: (value: TagGroup[]) => TagGroup[]) => void;
 };
 
-export default function TagSelector({ tags = [], value, onChange, disabled = false, hideSelectedTag }: TagSelectorProps) {
+export default function TagSelector({ tags = [], type, value, onChange, disabled = false, hideSelectedTag }: TagSelectorProps) {
   const [filter, setFilter] = useState('');
 
   const [showFilterDialog, setShowFilterDialog] = useState(false);
@@ -92,7 +93,7 @@ export default function TagSelector({ tags = [], value, onChange, disabled = fal
           <Button className="w-fit text-nowrap" variant="primary" title="add-tag" disabled={disabled} onClick={handleShowFilterDialog}>
             <Tran text="add-tag" />({displayTags.length})
           </Button>
-          <TagPreset onPresetChoose={(value) => onChange(() => value)} />
+          <TagPreset type={type} onPresetChoose={(value) => onChange(() => value)} />
         </div>
         {!hideSelectedTag && <TagContainer className="justify-start" tags={displayTags} handleDeleteTag={handleDeleteTag} />}
       </div>
@@ -109,7 +110,7 @@ export default function TagSelector({ tags = [], value, onChange, disabled = fal
               </CardContent>
             </ScrollContainer>
             <CardFooter className="flex justify-end gap-1 p-0">
-              <CreatePresetButton tags={value} />
+              <CreatePresetButton type={type} tags={value} />
               <Button title="close" variant="outline" onClick={handleHideFilterDialog}>
                 <Tran text="close" />
               </Button>

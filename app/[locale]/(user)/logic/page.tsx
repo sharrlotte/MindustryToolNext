@@ -3,9 +3,9 @@
 import { useCallback, useMemo, useState } from 'react';
 import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
+import { toast } from 'sonner';
 
 import useToggle from '@/hooks/use-state-toggle';
-import { useToast } from '@/hooks/use-toast';
 import Modal from '@/layout/modal';
 import { cn } from '@/lib/utils';
 
@@ -87,18 +87,10 @@ export default function Page() {
 
   const deleteOnClick = useToggle();
   const modal = useToggle();
-  const { toast } = useToast();
 
-  const showToast = useCallback(
-    (description: string) => {
-      toast({
-        title: 'Erase mode',
-        description: description,
-        variant: 'success',
-      });
-    },
-    [toast],
-  );
+  const showToast = useCallback((description: string) => {
+    toast('Erase mode', { description });
+  }, []);
 
   const addNewNode = useCallback(
     (type: any) => {

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Fragment, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -11,7 +12,6 @@ import { revalidate } from '@/action/action';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { useToast } from '@/hooks/use-toast';
 import { groupBy } from '@/lib/utils';
 import { changeAuthorities, getAuthorities } from '@/query/authorities';
 import { Authority, RoleWithAuthorities } from '@/types/response/Role';
@@ -32,7 +32,6 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 
   const [isChanged, setIsChanged] = useState(false);
   const { invalidateByKey } = useQueriesData();
-  const { toast } = useToast();
 
   const { data } = useQuery({
     queryFn: () => getAuthorities(axios),
@@ -48,11 +47,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
       revalidate({ path: '/users' });
     },
     onError: (error) => {
-      toast({
-        title: 'error',
-        variant: 'destructive',
-        description: error.message,
-      });
+      toast.error('Error', { description: error.message });
       setSelectedAuthorities(authorities);
     },
     mutationKey: ['update-role-authority', roleId],
