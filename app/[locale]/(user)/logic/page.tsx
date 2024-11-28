@@ -101,11 +101,11 @@ export default function Page() {
   );
 
   const addNewNode = useCallback(
-    (type: any) => {
+    (type: any, label: any) => {
       const newNode: Node = {
         id: `${nodeIdCounter}`,
         type: type,
-        data: { label: 'Node', id: nodeIdCounter },
+        data: { label: label, id: nodeIdCounter },
         position: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
       };
       const newNodes = [...nodes, newNode];
@@ -271,21 +271,21 @@ export default function Page() {
     {
       label: 'Input/Output',
       items: [
-        { type: '', label: 'Read' },
-        { type: '', label: 'Write' },
-        { type: '', label: 'Draw' },
-        { type: '', label: 'Print' },
+        { type: 'readNode', label: 'Read' },
+        { type: 'writeNode', label: 'Write' },
+        { type: 'drawNode', label: 'Draw' },
+        { type: 'printNode', label: 'Print' },
       ],
     },
     {
       label: 'Block Control',
       items: [
-        { type: '', label: 'Draw flush' },
-        { type: '', label: 'Print flush' },
-        { type: '', label: 'Get link' },
-        { type: '', label: 'Control' },
-        { type: '', label: 'Radar' },
-        { type: '', label: 'Sensor' },
+        { type: 'drawFlushNode', label: 'Draw flush' },
+        { type: 'printFlushNode', label: 'Print flush' },
+        { type: 'getLinkNode', label: 'Get link' },
+        { type: 'controlNode', label: 'Control' },
+        { type: 'radarNode', label: 'Radar' },
+        { type: 'sensorNode', label: 'Sensor' },
       ],
     },
     {
@@ -293,26 +293,26 @@ export default function Page() {
       items: [
         { type: 'setNode', label: 'Set' },
         { type: 'operationNode', label: 'Operation' },
-        { type: '', label: 'Look up' },
-        { type: '', label: 'Pack color' },
+        { type: 'lookUpNode', label: 'Look up' },
+        { type: 'packColorNode', label: 'Pack color' },
       ],
     },
     {
       label: 'Flow Control',
       items: [
-        { type: '', label: 'Wait' },
-        { type: '', label: 'Stop' },
-        { type: '', label: 'End' },
+        { type: 'waitNode', label: 'Wait' },
+        { type: 'stopNode', label: 'Stop' },
+        { type: 'endNode', label: 'End' },
         { type: 'jumpNode', label: 'Jump' },
       ],
     },
     {
       label: 'Unit Control',
       items: [
-        { type: '', label: 'Unit bind' },
-        { type: '', label: 'Unit control' },
-        { type: '', label: 'Unit radar' },
-        { type: '', label: 'Unit locate' },
+        { type: 'unitBindNode', label: 'Unit bind' },
+        { type: 'unitControlNode', label: 'Unit control' },
+        { type: 'unitRadarNode', label: 'Unit radar' },
+        { type: 'unitLocateNode', label: 'Unit locate' },
       ],
     },
     {
@@ -332,7 +332,7 @@ export default function Page() {
               className="cursor-pointer hover:text-slate-500 transition-colors"
               onClick={() => {
                 modal.close();
-                addNewNode(item.type);
+                addNewNode(item.type, item.label);
               }}
             >
               {item.label}

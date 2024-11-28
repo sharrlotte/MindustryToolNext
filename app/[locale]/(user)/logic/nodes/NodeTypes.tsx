@@ -17,9 +17,10 @@ const adjustInputWidth = (e: React.ChangeEvent<HTMLInputElement>) => {
   document.body.removeChild(tempSpan);
 };
 
-const NodeContainer: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable, children }) => (
+const NodeContainer: React.FC<TextUpdaterNodeProps & { positions?: Position[] }> = ({ data, isConnectable, children, positions = [Position.Top, Position.Bottom] }) => (
   <div className="p-1.5 border border-[#1a192b] rounded bg-white text-xs">
-    <Handle type="target" position={Position.Top} isConnectable={isConnectable} />
+    {positions.includes(Position.Top) && <Handle type="target" position={Position.Top} isConnectable={isConnectable} />}
+    {positions.includes(Position.Left) && <Handle type="target" position={Position.Left} isConnectable={isConnectable} />}
     <div className="flex flex-col gap-1 text-black">
       <div className="w-full flex justify-between items-center">
         <p>{data.label || 'Node'}:</p>
@@ -27,7 +28,8 @@ const NodeContainer: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable, ch
       </div>
       {children}
     </div>
-    <Handle type="source" position={Position.Bottom} isConnectable={isConnectable} />
+    {positions.includes(Position.Right) && <Handle type="source" position={Position.Right} isConnectable={isConnectable} />}
+    {positions.includes(Position.Bottom) && <Handle type="source" position={Position.Bottom} isConnectable={isConnectable} />}
   </div>
 );
 
@@ -41,7 +43,7 @@ export const TextUpdaterNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnec
 
 //! add more 1 handle node
 export const JumpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
-  <NodeContainer data={data} isConnectable={isConnectable}>
+  <NodeContainer data={data} isConnectable={isConnectable} positions={[Position.Top, Position.Left, Position.Right]}>
     <div className="bg-black flex items-center rounded">
       <p className="text-white pl-3">if</p>
       <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
