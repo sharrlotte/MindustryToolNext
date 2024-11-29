@@ -9,9 +9,9 @@ import ComboBox from '@/components/common/combo-box';
 import { SearchIcon } from '@/components/common/icons';
 import LoadingScreen from '@/components/common/loading-screen';
 import LoadingSpinner from '@/components/common/loading-spinner';
-import { MarkdownData } from '@/components/common/markdown-editor';
 import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
+import { MarkdownData } from '@/components/markdown/markdown-editor';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
@@ -32,7 +32,7 @@ import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-const MarkdownEditor = dynamic(() => import('@/components/common/markdown-editor'));
+const MarkdownEditor = dynamic(() => import('@/components/markdown/markdown-editor'));
 
 type Shared = {
   title: string;
@@ -49,14 +49,14 @@ export default function Page() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<MarkdownData>({
     text: '',
-    images: [],
+    files: [],
   });
   const [language, setLanguage] = useState('');
 
   function handlePostSelect(post: PostDetail) {
     setPost(post);
     setTitle(post.title);
-    setContent({ text: post.content, images: [] });
+    setContent({ text: post.content, files: [] });
   }
 
   function render() {
@@ -124,7 +124,7 @@ function TranslatePage({
       toast.success(<Tran text="upload.success" />);
 
       setTitle('');
-      setContent({ text: '', images: [] });
+      setContent({ text: '', files: [] });
     },
     onError(error) {
       toast.error(<Tran text="upload.fail" />, { description: error.message });
@@ -202,7 +202,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
       toast.success(<Tran text="upload.success" />);
 
       setTitle('');
-      setContent({ text: '', images: [] });
+      setContent({ text: '', files: [] });
       setSelectedTags([]);
     },
     onError(error) {

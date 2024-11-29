@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
-import Markdown from '@/components/common/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
+import Markdown from '@/components/markdown/markdown';
+import { BoldButton, CodeBlockButton, HRButton, ImageDialog, ItalicButton, LinkDialog, QuoteButton, StrikethroughButton, TitleButton } from '@/components/markdown/markdown-buttons';
+import { AutosizeTextAreaRef, AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
@@ -50,7 +51,7 @@ export default function CommentSection({ itemId }: CommentSectionProps) {
         <Tran text="comments" />
         <div className="flex gap-2 justify-center items-center">
           <ComboBox
-            className="bg-transparent min-w-0 w-fit p-0 hover:bg-transparent"
+            className="bg-transparent min-w-0 w-fit p-0 hover:bg-transparent shadow-none"
             searchBar={false}
             value={{ label: sort, value: sort }}
             values={commentSorts.map((value) => ({ label: value, value: value as CommentSort }))}
@@ -141,8 +142,11 @@ type CommentInputProps = {
   itemId: string;
 };
 
+type CommentInputType = HTMLTextAreaElement & AutosizeTextAreaRef;
+
 function CommentInput({ itemId }: CommentInputProps) {
   const axios = useClientApi();
+  const inputRef = useRef<CommentInputType>(null);
 
   const { session } = useSession();
 
@@ -151,7 +155,7 @@ function CommentInput({ itemId }: CommentInputProps) {
     mutationFn: (payload: CreateCommentSchemaType) => createComment(axios, itemId, payload),
     mutationKey: ['create-comment'],
     onMutate: (data) => {
-      pushByKey<Comment>([`comments-${itemId}`], { ...data, id: genId(), path: '', userId: session?.id || '', createdAt: new Date().toISOString() });
+      pushByKey<Comment>([`comments-${itemId}`], { ...data, attachments: [], id: genId(), path: '', userId: session?.id || '', createdAt: new Date().toISOString() });
     },
     onSuccess: () => {
       invalidateByKey([`comments-${itemId}`]);
@@ -161,7 +165,7 @@ function CommentInput({ itemId }: CommentInputProps) {
     },
   });
 
-  const form = useForm({
+  const form = useForm<CreateCommentSchemaType>({
     resolver: zodResolver(CreateCommentSchema),
     defaultValues: {
       content: '',
@@ -172,22 +176,53 @@ function CommentInput({ itemId }: CommentInputProps) {
   return (
     <div className="flex gap-2 w-full border rounded-md p-2">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit((data) => mutate(data))} className="w-full flex gap-2 items-end">
+        <form onSubmit={form.handleSubmit((data) => mutate(data))} className="w-full grid gap-2">
           <FormField
             name="content"
             control={form.control}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <AutosizeTextarea className="focus-visible:outline-none border-transparent focus-visible:ring-transparent border-none focus-visible:border-none resize-none" {...field} />
+                  <AutosizeTextarea
+                    className="focus-visible:outline-none border-transparent focus-visible:ring-transparent border-none focus-visible:border-none resize-none"
+                    ref={inputRef}
+                    onChange={(event) => {
+                      field.onChange(event.target.value);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button variant="primary" type="submit" disabled={isPending}>
-            <Tran text="send" />
-          </Button>
+          <div className="flex gap-1">
+            <BoldButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
+            <ItalicButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
+            <StrikethroughButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
+            <HRButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
+            <TitleButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
+            <Divider />
+            <LinkDialog callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
+            <QuoteButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
+            <CodeBlockButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
+            <ImageDialog
+              callback={(fn) => {
+                const result = fn(inputRef.current, form.getValues('content'));
+
+                if (result.file) {
+                  form.setValue('attachments', [...form.getValues('attachments'), { file: result.file.file, url: result.file.url }]);
+                  form.setValue('content', result.text);
+                  return;
+                }
+                form.setValue('content', result.text);
+                form.setValue('attachments', [...form.getValues('attachments'), { url: (result.file as any).url }]);
+              }}
+            />
+            <Divider />
+            <Button className="ml-auto" variant="primary" type="submit" disabled={isPending}>
+              <Tran text="send" />
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

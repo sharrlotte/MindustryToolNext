@@ -43,7 +43,7 @@ export type AutosizeTextAreaRef = {
   textArea: HTMLTextAreaElement;
   maxHeight: number;
   minHeight: number;
-};
+} ;
 
 type AutosizeTextAreaProps = {
   maxHeight?: number;

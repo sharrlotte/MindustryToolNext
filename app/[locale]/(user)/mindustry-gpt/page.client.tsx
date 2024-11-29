@@ -6,9 +6,9 @@ import ChatInputField from '@/app/[locale]/(user)/mindustry-gpt/chat-input-field
 
 import LoginButton from '@/components/button/login-button';
 import { SendIcon } from '@/components/common/icons';
-import Markdown from '@/components/common/markdown';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import Markdown from '@/components/markdown/markdown';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';

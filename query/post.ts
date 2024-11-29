@@ -1,5 +1,7 @@
 import { AxiosInstance } from 'axios';
 
+
+
 import { toForm } from '@/lib/utils';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
@@ -8,6 +10,7 @@ import TranslatePostRequest from '@/types/request/TranslatePostRequest';
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 import { Post } from '@/types/response/Post';
 import { PostDetail } from '@/types/response/PostDetail';
+
 
 export async function deletePost(axios: AxiosInstance, id: string): Promise<void> {
   const result = await axios.delete(`/posts/${id}`);
@@ -49,7 +52,7 @@ export async function translatePost(axios: AxiosInstance, { id, content, ...rest
 
   form.append('content', content.text);
 
-  content.images.forEach(({ file, url }) => form.append('images', file, url));
+  content.files.filter(({ file }) => !!file).forEach(({ file, url }) => form.append('files', file as File, url));
 
   return axios.post(`/posts/${id}`, form, {
     data: form,
@@ -74,7 +77,7 @@ export async function createPost(axios: AxiosInstance, { content, ...data }: Cre
 
   form.append('content', content.text);
 
-  content.images.forEach(({ file, url }) => form.append('images', file, url));
+  content.files.filter(({ file }) => !!file).forEach(({ file, url }) => form.append('files', file as File, url));
 
   return axios.post('/posts', form, {
     data: form,

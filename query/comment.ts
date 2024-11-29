@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
+import { toForm } from '@/lib/utils';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Comment } from '@/types/response/Comment';
 
@@ -14,13 +15,23 @@ export async function getComments(axios: AxiosInstance, id: string, params: Pagi
 
 export const CreateCommentSchema = z.object({
   content: z.string().min(1).max(1024),
-  attachments: z.array(z.string().min(5).max(100)).min(0).max(5).default([]),
+  attachments: z
+    .array(z.object({ url: z.string().min(5).max(100), file: z.any().nullable() }))
+    .min(0)
+    .max(5)
+    .default([]),
 });
 
 export type CreateCommentSchemaType = z.infer<typeof CreateCommentSchema>;
 
-export async function createComment(axios: AxiosInstance, itemId: string, data: CreateCommentSchemaType) {
-  const result = await axios.post(`/items/${itemId}/comments`, data, { data });
+export async function createComment(axios: AxiosInstance, itemId: string, { content, attachments, ...rest }: CreateCommentSchemaType) {
+  const form = toForm(rest);
 
-  return result.data;
+  form.append('content', content);
+
+  attachments.filter(({ file }) => !!file).forEach(({ file, url }) => form.append('files', file as File, url));
+
+  return await axios.post(`/items/${itemId}/comments`, form, {
+    data: form,
+  });
 }

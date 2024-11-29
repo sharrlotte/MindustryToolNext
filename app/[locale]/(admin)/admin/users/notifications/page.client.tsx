@@ -18,7 +18,7 @@ import { SendNotificationSchema, SendNotificationSchemaType, sendNotification } 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-const MarkdownEditor = dynamic(() => import('@/components/common/markdown-editor'));
+const MarkdownEditor = dynamic(() => import('@/components/markdown/markdown-editor'));
 
 const initialState = {
   userId: '',
@@ -85,9 +85,9 @@ export default function PageClient() {
                 <FormControl>
                   <MarkdownEditor
                     defaultMode="edit"
-                    value={{ text: field.value, images: [] }}
+                    value={{ text: field.value, files: [] }}
                     onChange={(provider) => {
-                      field.onChange(provider({ text: field.value, images: [] }).text);
+                      field.onChange(provider({ text: field.value, files: [] }).text);
                     }}
                   />
                 </FormControl>

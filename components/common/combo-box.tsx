@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
+import { ChevronsUpDownIcon, SearchIcon } from '@/components/common/icons';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { cn } from '@/lib/utils';
-import { ChevronsUpDownIcon, SearchIcon } from '@/components/common/icons';
 
 type Value<T> = { label: string; value: T };
 
@@ -49,12 +49,7 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          className={cn('w-[200px] gap-2 items-center justify-between border-none bg-secondary capitalize shadow-md', className)}
-          title={value?.label?.toLowerCase() || placeholder}
-          role="combobox"
-          variant="outline"
-        >
+        <Button className={cn('w-[200px] gap-2 items-center justify-between border-none bg-secondary capitalize shadow-md', className)} title={value?.label?.toLowerCase() || placeholder} role="combobox" variant="outline">
           {value?.label?.toLowerCase() || placeholder}
           <ChevronsUpDownIcon className="size-4 shrink-0" />
         </Button>
@@ -72,7 +67,7 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
           <div className="grid gap-1 p-1">
             {values.map((item) => (
               <Button
-                className={cn('justify-start capitalize hover:bg-brand', {
+                className={cn('justify-start capitalize hover:bg-brand text-foreground hover:text-background', {
                   'bg-brand text-background': item.label === currentLabel,
                 })}
                 key={item.label}
