@@ -65,7 +65,7 @@ export function UserTable() {
           </GridPaginationList>
         </GridLayout>
       </ScrollContainer>
-      <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
+      <div className="flex flex-wrap items-center gap-2 justify-between">
         <GridLayout>
           <PaginationNavigator numberOfItems={userCount} />
         </GridLayout>

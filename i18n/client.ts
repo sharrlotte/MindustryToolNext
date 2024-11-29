@@ -2,14 +2,15 @@ import { unstable_cache } from 'next/cache';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { cache, use, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
-import { create } from 'zustand';
 
 import { useLocaleStore } from '@/context/locale-context';
 import { Locale, TranslateFunction, locales } from '@/i18n/config';
 import { extractTranslationKey, formatTranslation } from '@/lib/utils';
 import axiosInstance from '@/query/config/config';
 
-const EMPTY = {};
+class Empty {
+  static missingKeys: Record<string, boolean> = {};
+}
 
 const getClientTranslation = cache((group: string, language: string) =>
   axiosInstance
@@ -69,7 +70,7 @@ export function useI18n(): TranslateFunction {
               }
             });
         } catch (e) {
-          keys[group] = EMPTY;
+          keys[group] = {};
           localStorage.removeItem(localStorageKey);
         }
 
@@ -98,7 +99,10 @@ export function useI18n(): TranslateFunction {
       const translated = value[key];
 
       if (!translated) {
-        console.warn(`Missing key: ${text}`);
+        if (!Empty.missingKeys[text]) {
+          console.warn(`Missing key: ${text}`);
+          Empty.missingKeys[text] = true;
+        }
         return text;
       }
 
