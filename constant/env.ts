@@ -14,6 +14,7 @@ const env = {
     api: process.env.NEXT_PUBLIC_BACKEND_URL as string,
     image: process.env.NEXT_PUBLIC_CLOUDINARY_IMAGE_URL as string,
   },
+  supportedImageFormat: ['jpg', 'jpeg', 'png', 'webp'],
 };
 
 export default env;

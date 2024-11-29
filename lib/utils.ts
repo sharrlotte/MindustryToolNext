@@ -488,10 +488,18 @@ export function extractTranslationKey(text: string) {
   return { text, key, group };
 }
 
-export function insertAtCaret(input: HTMLTextAreaElement | null, text: string, value: string) {
+type TextArea = {
+  value: string;
+  selectionStart?: number;
+  selectionEnd?: number;
+  focus: () => void;
+  setSelectionRange: (start: number, end: number) => void;
+};
+
+export function insertAtCaret(input: TextArea | null, text: string, value: string) {
   if (!input) return text;
 
-  const position = input.selectionStart ?? input.value.length;
+  const position = input.selectionStart === undefined ? input.value.length : input.selectionStart;
 
   const newPosition = position + value.length;
   input.focus();
@@ -500,11 +508,17 @@ export function insertAtCaret(input: HTMLTextAreaElement | null, text: string, v
   return text.substring(0, position) + value + text.substring(position);
 }
 
-export function wrapAtCaret(input: HTMLTextAreaElement | null, text: string, before: string, after: string) {
+export function wrapAtCaret(input: TextArea | null, text: string, before: string, after: string) {
   if (!input) return text;
 
-  const start = input.selectionStart;
-  const end = input.selectionEnd;
+  let start = input.selectionStart === undefined ? input.value.length : input.selectionStart;
+  let end = input.selectionEnd === undefined ? input.value.length : input.selectionEnd;
+
+  if (start > end) {
+    [start, end] = [end, start];
+  }
+
+  console.log(input, start, end, before, after);
 
   if (start !== end) {
     input.focus();
@@ -521,4 +535,8 @@ export function wrapAtCaret(input: HTMLTextAreaElement | null, text: string, bef
 
     return text.substring(0, position) + before + after + text.substring(position);
   }
+}
+
+export function isNumeric(n: any) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
 }

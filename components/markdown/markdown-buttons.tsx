@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { BoldIcon, CheckListIcon, CodeBlockIcon, HRIcon, ImageIcon, ItalicIcon, LinkChainIcon, ListIcon, OrderedListIcon, QuoteIcon, StrikethroughIcon, TitleIcon, XIcon } from '@/components/common/icons';
@@ -9,25 +10,34 @@ import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import env from '@/constant/env';
 import { insertAtCaret, wrapAtCaret } from '@/lib/utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
+type TextArea = {
+  value: string;
+  selectionStart?: number;
+  selectionEnd?: number;
+  focus: () => void;
+  setSelectionRange: (start: number, end: number) => void;
+};
+
 type Props = {
-  callback: (fn: (input: HTMLTextAreaElement | null, value: string) => string) => void;
+  callback: (fn: (input: TextArea | null, value: string) => string) => void;
 };
 
 export function BoldButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '**', '**'))}>
-      <BoldIcon className="h-3 w-3" />
+      <BoldIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
 export function ItalicButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '*', '*'))}>
-      <ItalicIcon className="h-3 w-3" />
+      <ItalicIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
@@ -35,7 +45,7 @@ export function ItalicButton({ callback }: Props) {
 export function StrikethroughButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '~~', '~~'))}>
-      <StrikethroughIcon className="h-3 w-3" />
+      <StrikethroughIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
@@ -43,7 +53,7 @@ export function StrikethroughButton({ callback }: Props) {
 export function HRButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '\n----------\n'))}>
-      <HRIcon className="h-3 w-3" />
+      <HRIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
@@ -51,7 +61,7 @@ export function HRButton({ callback }: Props) {
 export function TitleButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '# ', ' \n'))}>
-      <TitleIcon className="h-3 w-3" />
+      <TitleIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
@@ -59,7 +69,7 @@ export function TitleButton({ callback }: Props) {
 export function QuoteButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '> '))}>
-      <QuoteIcon className="h-3 w-3" />
+      <QuoteIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
@@ -67,7 +77,7 @@ export function QuoteButton({ callback }: Props) {
 export function CodeBlockButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '`', '`'))}>
-      <CodeBlockIcon className="h-3 w-3" />
+      <CodeBlockIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
@@ -75,7 +85,7 @@ export function CodeBlockButton({ callback }: Props) {
 export function ListButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '- '))}>
-      <ListIcon className="h-3 w-3" />
+      <ListIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
@@ -83,7 +93,7 @@ export function ListButton({ callback }: Props) {
 export function OrderedListButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '1. '))}>
-      <OrderedListIcon className="h-3 w-3" />
+      <OrderedListIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
@@ -91,13 +101,13 @@ export function OrderedListButton({ callback }: Props) {
 export function CheckListButton({ callback }: Props) {
   return (
     <Button className="w-5 p-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '- [] '))}>
-      <CheckListIcon className="h-3 w-3" />
+      <CheckListIcon className="size-4 min-w-4 min-h-4" />
     </Button>
   );
 }
 
 type LinkDialogProps = {
-  callback: (fn: (input: HTMLTextAreaElement | null, value: string) => string) => void;
+  callback: (fn: (input: TextArea | null, value: string) => string) => void;
 };
 
 const LinkFormSchema = z.object({
@@ -126,21 +136,21 @@ export function LinkDialog({ callback }: LinkDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="w-5 p-1" size="icon" title="add-link" variant="icon">
-          <LinkChainIcon className="h-3 w-3" />
+          <LinkChainIcon className="size-4 min-w-4 min-h-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-auto p-6">
+      <DialogContent
+        className="overflow-auto p-6"
+        onSubmit={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        }}
+      >
         <DialogTitle>
           <Tran text="add-link" />
         </DialogTitle>
         <Form {...form}>
-          <form
-            className="space-y-2"
-            onSubmit={(event) => {
-              event.stopPropagation();
-              return form.handleSubmit(handleAccept);
-            }}
-          >
+          <form className="space-y-2" onSubmit={form.handleSubmit(handleAccept)}>
             <FormField
               control={form.control}
               name="header"
@@ -190,7 +200,7 @@ const ImageFormSchema = z.object({
 });
 
 type ImageDialogProps = {
-  callback: (fn: (input: HTMLTextAreaElement | null, value: string) => { text: string; file: { file?: File; url: string } }) => void;
+  callback: (fn: (input: TextArea | null, value: string) => { text: string; file: { file?: File; url: string } }) => void;
 };
 
 export function ImageDialog({ callback }: ImageDialogProps) {
@@ -225,35 +235,49 @@ export function ImageDialog({ callback }: ImageDialogProps) {
     }
 
     const file = files[0];
-    const url = URL.createObjectURL(file).replace('blob:', '');
+
+    const filename = file.name;
+    const extension = filename.split('.').pop();
+
+    if (!extension) {
+      toast.error(<Tran text="upload.invalid-image-file" />);
+      return;
+    }
+
+    if (!env.supportedImageFormat.includes(extension)) {
+      toast.error(<Tran text="upload.invalid-image-file" />);
+      return;
+    }
+    const url = URL.createObjectURL(file).replace('blob:', '') + '.' + extension;
 
     setFile(file);
 
     form.setValue('image', url);
   }
 
-  const imageUrl = form.getValues('image') && 'blob:' + form.getValues('image');
+  const url = form.getValues('image');
+  const imageUrl = url && 'blob:' + url.substring(0, url.lastIndexOf('.'));
   const hasImage = URL.canParse(imageUrl);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="w-5 p-1" size="icon" title="add-image" variant="icon">
-          <ImageIcon className="h-3 w-3" />
+          <ImageIcon className="size-4 min-w-4 min-h-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-auto p-6">
+      <DialogContent
+        className="overflow-auto p-6"
+        onSubmit={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        }}
+      >
         <DialogTitle>
           <Tran text="add-image" />
         </DialogTitle>
         <Form {...form}>
-          <form
-            className="space-y-2"
-            onSubmit={(event) => {
-              event.stopPropagation();
-              return form.handleSubmit(handleAccept);
-            }}
-          >
+          <form className="space-y-2" onSubmit={form.handleSubmit(handleAccept)}>
             <FormField
               control={form.control}
               name="header"

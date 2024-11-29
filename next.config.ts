@@ -1,6 +1,5 @@
 import { NextConfig } from 'next';
 
-
 const nextConfig: NextConfig = {
   experimental: {
     ppr: 'incremental',
@@ -24,19 +23,24 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn.discordapp.com',
-        port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'api.mindustry-tool.app',
-        port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'image.mindustry-tool.app',
-        port: '',
+        pathname: '/**',
+      },
+      {
+        hostname: 'blob:mindustry-tool.app',
+        pathname: '/**',
+      },
+      {
+        hostname: 'blob:localhost',
         pathname: '/**',
       },
     ],

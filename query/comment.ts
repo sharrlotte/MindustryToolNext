@@ -29,7 +29,7 @@ export async function createComment(axios: AxiosInstance, itemId: string, { cont
 
   form.append('content', content);
 
-  attachments.filter(({ file }) => !!file).forEach(({ file, url }) => form.append('files', file as File, url));
+  attachments.filter(({ file }) => !!file).forEach(({ file, url }) => form.append('attachments', file as File, url));
 
   return await axios.post(`/items/${itemId}/comments`, form, {
     data: form,

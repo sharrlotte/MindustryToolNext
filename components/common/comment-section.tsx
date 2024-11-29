@@ -20,6 +20,8 @@ import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
+import { useI18n } from '@/i18n/client';
+import { isNumeric } from '@/lib/utils';
 import { CreateCommentSchema, CreateCommentSchemaType, createComment, getComments } from '@/query/comment';
 import { getUser } from '@/query/user';
 import { Comment } from '@/types/response/Comment';
@@ -142,15 +144,14 @@ type CommentInputProps = {
   itemId: string;
 };
 
-type CommentInputType = HTMLTextAreaElement & AutosizeTextAreaRef;
-
 function CommentInput({ itemId }: CommentInputProps) {
   const axios = useClientApi();
-  const inputRef = useRef<CommentInputType>(null);
+  const inputRef = useRef<AutosizeTextAreaRef>(null);
+  const t = useI18n();
 
   const { session } = useSession();
 
-  const { pushByKey, invalidateByKey } = useQueriesData();
+  const { pushByKey, invalidateByKey, filterByKey } = useQueriesData();
   const { mutate, isPending } = useMutation({
     mutationFn: (payload: CreateCommentSchemaType) => createComment(axios, itemId, payload),
     mutationKey: ['create-comment'],
@@ -159,6 +160,9 @@ function CommentInput({ itemId }: CommentInputProps) {
     },
     onSuccess: () => {
       invalidateByKey([`comments-${itemId}`]);
+    },
+    onError: () => {
+      filterByKey<Comment>([`comments-${itemId}`], (comment) => !isNumeric(comment.id));
     },
     onSettled: () => {
       form.reset();
@@ -185,7 +189,9 @@ function CommentInput({ itemId }: CommentInputProps) {
                 <FormControl>
                   <AutosizeTextarea
                     className="focus-visible:outline-none border-transparent focus-visible:ring-transparent border-none focus-visible:border-none resize-none"
+                    placeholder={t('add-comment')}
                     ref={inputRef}
+                    value={field.value}
                     onChange={(event) => {
                       field.onChange(event.target.value);
                     }}
@@ -195,19 +201,19 @@ function CommentInput({ itemId }: CommentInputProps) {
               </FormItem>
             )}
           />
-          <div className="flex gap-1">
-            <BoldButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
-            <ItalicButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
-            <StrikethroughButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
-            <HRButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
-            <TitleButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
-            <Divider />
-            <LinkDialog callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
-            <QuoteButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
-            <CodeBlockButton callback={(fn) => form.setValue('content', fn(inputRef.current, form.getValues('content')))} />
+          <div className="flex gap-4">
+            <BoldButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <ItalicButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <StrikethroughButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <HRButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <TitleButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <Divider className="border-r h-full w-0" />
+            <LinkDialog callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <QuoteButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <CodeBlockButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
             <ImageDialog
               callback={(fn) => {
-                const result = fn(inputRef.current, form.getValues('content'));
+                const result = fn(inputRef.current?.textArea ?? null, form.getValues('content'));
 
                 if (result.file) {
                   form.setValue('attachments', [...form.getValues('attachments'), { file: result.file.file, url: result.file.url }]);
@@ -218,7 +224,6 @@ function CommentInput({ itemId }: CommentInputProps) {
                 form.setValue('attachments', [...form.getValues('attachments'), { url: (result.file as any).url }]);
               }}
             />
-            <Divider />
             <Button className="ml-auto" variant="primary" type="submit" disabled={isPending}>
               <Tran text="send" />
             </Button>

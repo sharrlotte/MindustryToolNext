@@ -43,7 +43,10 @@ export type AutosizeTextAreaRef = {
   textArea: HTMLTextAreaElement;
   maxHeight: number;
   minHeight: number;
-} ;
+  setSelectionRange: HTMLTextAreaElement['setSelectionRange'];
+  value: string;
+  focus: () => void;
+};
 
 type AutosizeTextAreaProps = {
   maxHeight?: number;
@@ -64,9 +67,13 @@ export const AutosizeTextarea = React.forwardRef<AutosizeTextAreaRef, AutosizeTe
 
     useImperativeHandle(ref, () => ({
       textArea: textAreaRef.current as HTMLTextAreaElement,
+      setSelectionRange: (start: number, end: number) => textAreaRef.current?.setSelectionRange(start, end),
       focus: () => textAreaRef?.current?.focus(),
       maxHeight,
       minHeight,
+      value: textAreaRef.current?.value as string,
+      selectionStart: textAreaRef?.current?.selectionStart,
+      selectionEnd: textAreaRef?.current?.selectionEnd,
     }));
 
     React.useEffect(() => {
