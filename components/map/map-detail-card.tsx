@@ -9,7 +9,6 @@ import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
-import LikeCount from '@/components/like/like-count';
 import { DeleteMapButton } from '@/components/map/delete-map-button';
 import { TakeDownMapButton } from '@/components/map/take-down-map-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
@@ -24,7 +23,7 @@ type MapDetailCardProps = {
   map: MapDetail;
 };
 
-export default function MapDetailCard({ map: { id, name, description, tags, verifierId, itemId, likes, userLike, userId, isVerified, width, height, downloadCount } }: MapDetailCardProps) {
+export default function MapDetailCard({ map: { id, name, description, tags, verifierId, itemId, likes, dislikes, userLike, userId, isVerified, width, height, downloadCount } }: MapDetailCardProps) {
   const { session } = useSession();
 
   const link = `${env.url.base}/maps/${id}`;
@@ -54,9 +53,8 @@ export default function MapDetailCard({ map: { id, name, description, tags, veri
         </DetailInfo>
         <DetailActions>
           <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
-          <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
+          <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes} initialLikeData={userLike}>
             <LikeButton />
-            <LikeCount />
             <DislikeButton />
           </LikeComponent>
           <EllipsisButton>

@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -44,7 +45,7 @@ const commentSorts = ['newest', 'oldest'];
 
 type CommentSort = (typeof commentSorts)[number];
 
-export default function CommentSection({ itemId }: CommentSectionProps) {
+function CommentSection({ itemId }: CommentSectionProps) {
   const [sort, setSort] = useState<CommentSort>('newest');
 
   return (
@@ -67,6 +68,10 @@ export default function CommentSection({ itemId }: CommentSectionProps) {
     </div>
   );
 }
+
+CommentSection.displayName = 'CommentSection';
+
+export default dynamic(() => Promise.resolve(CommentSection), { ssr: false });
 
 type CommentsProps = {
   itemId: string;

@@ -10,6 +10,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 import { Post } from '@/types/response/Post';
+import AloneDislikeCount from '@/components/like/alone-dislike-count';
 
 type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
@@ -34,8 +35,9 @@ function InternalPostPreviewCard({ className, post, ...rest }: PostPreviewCardPr
             <CopyButton data={link} content={link}>
               <LinkIcon />
             </CopyButton>
-            <LikeComponent initialLikeCount={post.likes} itemId={post.itemId}>
+            <LikeComponent initialLikeCount={post.likes} initialDislikeCount={post.dislikes} itemId={post.itemId}>
               <AloneLikeCount />
+              <AloneDislikeCount />
             </LikeComponent>
           </div>
         </div>

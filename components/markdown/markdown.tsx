@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
 
@@ -35,11 +35,17 @@ function RouterLink({ href, children }: any) {
 }
 
 function MarkdownImage({ src, alt }: any) {
+  const [isError, setError] = useState(false);
+
   if (src && src.includes(env.url.base)) {
     src = 'blob:' + src;
   }
 
-  return <Image className="markdown-image" alt={alt} src={src} width={1024} height={800} loader={({ src }) => `${src}`} />;
+  if (isError) {
+    return <p>{alt}</p>;
+  }
+
+  return <Image className="markdown-image rounded-md" alt={alt} src={src} width={1024} height={800} loader={({ src }) => `${src}`} onError={() => setError(true)} />;
 }
 
 export default function Markdown({ className, children }: MarkdownProps) {

@@ -16,24 +16,29 @@ import { Like } from '@/types/response/Like';
 
 import { useMutation } from '@tanstack/react-query';
 
+const DISLIKE = -1;
+const LIKE = 1;
+const UNSET = 0;
+
 type State = {
-  cache: Record<string, Like & { count: number }>;
-  setCache: (id: string, data: Like & { count: number }) => void;
+  cache: Record<string, Like & { like: number; dislike: number }>;
+  setCache: (id: string, data: Like & { like: number; dislike: number }) => void;
 };
 
 const useCache = create<State>((set) => ({
   cache: {},
-  setCache: (id: string, data: Like & { count: number }) => set((prev) => ({ cache: { ...prev.cache, [id]: data } })),
+  setCache: (id: string, data: Like & { like: number; dislike: number }) => set((prev) => ({ cache: { ...prev.cache, [id]: data } })),
 }));
 
 type LikeComponentProps = {
   children: ReactNode;
   initialLikeCount: number;
+  initialDislikeCount: number;
   initialLikeData?: Like;
   itemId: string;
 };
 
-function LikeComponent({ initialLikeCount = 0, initialLikeData, children, itemId }: LikeComponentProps) {
+function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialLikeData, children, itemId }: LikeComponentProps) {
   const { session } = useSession();
   const axios = useClientApi();
   const { cache, setCache } = useCache();
@@ -41,11 +46,13 @@ function LikeComponent({ initialLikeCount = 0, initialLikeData, children, itemId
     () => ({
       ...(cache[itemId] ?? {
         ...(initialLikeData ?? FakeLike),
-        count: initialLikeCount,
+        like: initialLikeCount,
+        dislike: initialDislikeCount,
       }),
     }),
     [cache, initialLikeCount, initialLikeData, itemId],
   );
+
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (action: LikeAction) =>
@@ -65,40 +72,64 @@ function LikeComponent({ initialLikeCount = 0, initialLikeData, children, itemId
         return toast(<Tran text="like.require-login" />);
       }
 
-      let change: -2 | -1 | 0 | 1 | 2;
+      let likeChange: number = 0;
+      let dislikeChange: number = 0;
       let state: 0 | 1 | -1;
 
       if (action === 'LIKE') {
-        change = likeData.state === -1 ? 2 : likeData.state === 0 ? 1 : -1;
-        state = likeData.state === -1 ? 1 : likeData.state === 0 ? 1 : 0;
+        if (likeData.state === LIKE) {
+          likeChange = -1;
+          state = UNSET;
+        } else if (likeData.state === DISLIKE) {
+          likeChange = 1;
+          dislikeChange = -1;
+          state = LIKE;
+        } else {
+          likeChange = 1;
+          state = LIKE;
+        }
       } else {
-        change = likeData.state === 1 ? -2 : likeData.state === 0 ? -1 : 1;
-        state = likeData.state === 1 ? -1 : likeData.state === 0 ? -1 : 0;
+        if (likeData.state === DISLIKE) {
+          dislikeChange = -1;
+          state = UNSET;
+        } else if (likeData.state === LIKE) {
+          dislikeChange = 1;
+          likeChange = -1;
+          state = DISLIKE;
+        } else {
+          dislikeChange = 1;
+          state = DISLIKE;
+        }
       }
+
+      likeData.state = state;
 
       setCache(itemId, {
         ...likeData,
         state,
-        count: likeData.count + change,
+        like: likeData.like + likeChange,
+        dislike: likeData.dislike + dislikeChange,
       });
 
       return mutate(action, {
         onError: () => setCache(itemId, { ...likeData }),
         onSuccess: (result) => {
           setCache(itemId, {
-            count: likeData.count + result.amount,
+            like: likeData.like + result.amountLike,
+            dislike: likeData.dislike + result.amountDislike,
             ...result.like,
           });
         },
       });
     },
-    [isPending, itemId, likeData, mutate, session, setCache, toast],
+    [isPending, itemId, likeData, mutate, session, setCache],
   );
 
   return (
     <LikeContext.Provider
       value={{
-        count: cache[itemId]?.count ?? initialLikeCount,
+        like: cache[itemId]?.like ?? initialLikeCount,
+        dislike: cache[itemId]?.dislike ?? initialDislikeCount,
         likeData,
         isLoading: isPending,
         handleAction,

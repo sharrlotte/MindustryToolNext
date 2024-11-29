@@ -12,7 +12,6 @@ import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
-import LikeCount from '@/components/like/like-count';
 import Markdown from '@/components/markdown/markdown';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
@@ -33,7 +32,7 @@ type PostDetailCardProps = {
   post: PostDetail;
 };
 
-export default function PostDetailCard({ post: { title, content, tags, id, userId, userLike, likes, isVerified, itemId, createdAt } }: PostDetailCardProps) {
+export default function PostDetailCard({ post: { title, content, tags, id, userId, userLike, likes, dislikes, isVerified, itemId, createdAt } }: PostDetailCardProps) {
   const displayTags = Tags.parseStringArray(tags);
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
@@ -87,9 +86,8 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
         </header>
         <footer className="flex justify-between rounded-md p-2">
           <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-            <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
+            <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes} initialLikeData={userLike}>
               <LikeButton />
-              <LikeCount />
               <DislikeButton />
             </LikeComponent>
             <EllipsisButton>
