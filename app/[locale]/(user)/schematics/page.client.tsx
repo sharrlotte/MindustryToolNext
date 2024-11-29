@@ -52,7 +52,7 @@ export default function Client({ schematics }: Props) {
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch tags={schematic} />
       <div className="flex justify-between">
-        <Tran text="found" args={{ number: data }} />
+        <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
       <TagBadges

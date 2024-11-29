@@ -5,6 +5,8 @@ import { ServerIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
+
+import { cn } from '@/lib/utils';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 
 type MyServerInstancesCardProps = {
@@ -18,7 +20,7 @@ export default async function InternalServerCard({ server: { id, name, players, 
         <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
         <ColorText className="text-2xl font-bold" text={name} />
       </div>
-      <div className="grid grid-cols-2 gap-3 text-sm font-medium capitalize">
+      <div className={cn('grid grid-cols-2 gap-3 text-sm font-medium capitalize text-muted-foreground', { 'text-foreground': started })}>
         <div className="flex flex-col gap-0.5">
           <Tran text="server.status" />
           <ServerStatus alive={alive} started={started} />

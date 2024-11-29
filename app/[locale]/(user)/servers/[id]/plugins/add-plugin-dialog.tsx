@@ -77,7 +77,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={plugin} />
           <div className="flex justify-between">
-            <Tran text="found" args={{ number: data }} />
+            <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
             <PaginationLayoutSwitcher />
           </div>
           <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>

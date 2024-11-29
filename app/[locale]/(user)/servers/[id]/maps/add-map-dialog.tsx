@@ -79,7 +79,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />
           <div className="flex justify-between">
-            <Tran text="found" args={{ number: data }} />
+            <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
             <PaginationLayoutSwitcher />
           </div>
           <ListLayout>
