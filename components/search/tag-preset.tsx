@@ -76,11 +76,11 @@ type TagPresetCardProps = {
   onClick: (tags: TagGroup[]) => void;
 };
 
-function TagPresetCard({ preset: { name, tags }, onClick }: TagPresetCardProps) {
+function TagPresetCard({ preset: { name, tags, type }, onClick }: TagPresetCardProps) {
   const { invalidateByKey } = useQueriesData();
 
   function handleDeletePreset() {
-    deleteTagPreset(name);
+    deleteTagPreset(name, type);
     invalidateByKey(['preset']);
   }
 
