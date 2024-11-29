@@ -4,10 +4,9 @@ import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { FilterIcon, SearchIcon, XIcon } from '@/components/common/icons';
+import { FilterIcon, SearchIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import ScrollContainer from '@/components/common/scroll-container';
-import { ShowOnScroll } from '@/components/common/show-on-scroll';
 import Tran from '@/components/common/tran';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { SortDropdown } from '@/components/search/sort-dropdown';
@@ -169,50 +168,48 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
   const displayTags = useMemo(() => Tags.fromTagGroup(filterBy), [filterBy]);
 
   return (
-    <ShowOnScroll dir='height'>
-      <div className={cn('flex flex-col gap-2', className)}>
-        <div className="flex justify-center gap-2">
-          <SearchBar className="h-10">
-            <SearchIcon className="p-1" />
-            <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
-          </SearchBar>
-          {useTag && (
-            <Button className="h-10 border-none bg-secondary shadow-md" title="filter" variant="outline" onClick={handleShowFilterDialog}>
-              <FilterIcon className="size-5" />
-            </Button>
-          )}
-        </div>
-        <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
+    <div className={cn('flex flex-col gap-2', className)}>
+      <div className="flex justify-center gap-2">
+        <SearchBar className="h-10">
+          <SearchIcon className="p-1" />
+          <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
+        </SearchBar>
         {useTag && (
-          <div
-            className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {
-              flex: showFilterDialog,
-            })}
-          >
-            <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6" onClickOutside={handleHideFilterDialog}>
-              <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
-                <div className="flex gap-1">
-                  <SearchBar className="w-full p-1">
-                    <SearchIcon className="p-1" />
-                    <SearchInput placeholder="filter" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
-                  </SearchBar>
-                  {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
-                </div>
-                <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">
-                  <ScrollContainer className="overscroll-none">
-                    <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
-                  </ScrollContainer>
-                </CardContent>
-                <CardFooter className="flex justify-end gap-1 p-0">
-                  <Button onClick={handleHideFilterDialog} variant="primary">
-                    {isChanged ? <Tran text="search" /> : <Tran text="close" />}
-                  </Button>
-                </CardFooter>
-              </Card>
-            </OutsideWrapper>
-          </div>
+          <Button className="h-10 border-none bg-secondary shadow-md" title="filter" variant="outline" onClick={handleShowFilterDialog}>
+            <FilterIcon className="size-5" />
+          </Button>
         )}
       </div>
-    </ShowOnScroll>
+      <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
+      {useTag && (
+        <div
+          className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {
+            flex: showFilterDialog,
+          })}
+        >
+          <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6" onClickOutside={handleHideFilterDialog}>
+            <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
+              <div className="flex gap-1">
+                <SearchBar className="w-full p-1">
+                  <SearchIcon className="p-1" />
+                  <SearchInput placeholder="filter" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
+                </SearchBar>
+                {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
+              </div>
+              <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">
+                <ScrollContainer className="overscroll-none">
+                  <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
+                </ScrollContainer>
+              </CardContent>
+              <CardFooter className="flex justify-end gap-1 p-0">
+                <Button onClick={handleHideFilterDialog} variant="primary">
+                  {isChanged ? <Tran text="search" /> : <Tran text="close" />}
+                </Button>
+              </CardFooter>
+            </Card>
+          </OutsideWrapper>
+        </div>
+      )}
+    </div>
   );
 }

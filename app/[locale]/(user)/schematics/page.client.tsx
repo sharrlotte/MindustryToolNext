@@ -9,7 +9,6 @@ import InternalLink from '@/components/common/internal-link';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
-import { ShowOnScroll } from '@/components/common/show-on-scroll';
 import Tran from '@/components/common/tran';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';

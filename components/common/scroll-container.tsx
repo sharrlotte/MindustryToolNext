@@ -26,7 +26,9 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ad
 
     function handleScroll() {
       if (container) {
-        setVisible(container.scrollTop < lastScrollTop.current);
+        if (container.scrollTop !== lastScrollTop.current) {
+          setVisible(container.scrollTop < lastScrollTop.current);
+        }
 
         setHasGapForScrollbar(container.scrollHeight > container.clientHeight);
         lastScrollTop.current = container.scrollTop;
