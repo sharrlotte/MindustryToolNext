@@ -59,7 +59,7 @@ export default function TagPresetList({ type, onPresetChoose }: TagPresetListPro
         </Hidden>
         <SearchBar className="w-full p-1">
           <SearchIcon className="p-1" />
-          <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
+          <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
         </SearchBar>
         <ScrollContainer className="grid h-fit items-start grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
           {preset.map((item) => (

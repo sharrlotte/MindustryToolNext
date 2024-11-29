@@ -164,10 +164,6 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
     });
   }
 
-  function handleFilterChange(event: any) {
-    setFilter(event.currentTarget.value);
-  }
-
   const displayTags = useMemo(() => Tags.fromTagGroup(filterBy), [filterBy]);
 
   return (
@@ -175,7 +171,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
       <div className="flex justify-center gap-2">
         <SearchBar className="h-10">
           <SearchIcon className="p-1" />
-          <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} />
+          <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={() => handleEditName('')} />
           {name && (
             <Button className="p-0" title="reset" onClick={handleResetName} variant="icon">
               <XIcon />
@@ -200,7 +196,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
               <div className="flex gap-1">
                 <SearchBar className="w-full p-1">
                   <SearchIcon className="p-1" />
-                  <SearchInput placeholder="filter" value={filter} onChange={handleFilterChange} />
+                  <SearchInput placeholder="filter" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
                 </SearchBar>
                 {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
               </div>

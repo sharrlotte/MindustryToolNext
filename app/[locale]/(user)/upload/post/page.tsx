@@ -244,7 +244,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
             }))}
             onChange={(value) => setLanguage(value ?? '')}
           />
-          <TagSelector type='post' tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
+          <TagSelector type="post" tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
           <Button
             className="ml-auto"
             title="submit"
@@ -329,7 +329,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         </DialogTitle>
         <div className="flex flex-col gap-2">
           <SearchBar>
-            <SearchInput placeholder="upload.post-name" value={name} onChange={(event) => setName(event.currentTarget.value)} />
+            <SearchInput placeholder="upload.post-name" value={name} onChange={(event) => setName(event.currentTarget.value)} onClear={() => setName('')} />
             <SearchIcon />
           </SearchBar>
           <div className="flex w-full flex-col gap-1">{render()}</div>
