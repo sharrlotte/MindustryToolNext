@@ -11,6 +11,12 @@
 .react-flow__handle-top {
   top: -6px;
 }
+.react-flow__handle-right {
+  right: -6px;
+}
+.react-flow__handle-left {
+  left: -6px;
+}
 @media (max-width: 768px) {
   .react-flow__panel {
     margin: 12px;

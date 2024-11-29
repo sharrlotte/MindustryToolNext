@@ -30,8 +30,8 @@ const NodeContainer: React.FC<TextUpdaterNodeProps & { positions?: Position[]; c
       </div>
       {children}
     </div>
-    {positions.includes(Position.Right) && <Handle type="source" position={Position.Right} isConnectable={isConnectable} />}
-    {positions.includes(Position.Bottom) && <Handle type="source" position={Position.Bottom} isConnectable={isConnectable} />}
+    {positions.includes(Position.Right) && <Handle type="source" position={Position.Right} id={`true-${data.id}`} isConnectable={isConnectable} />}
+    {positions.includes(Position.Bottom) && <Handle type="source" position={Position.Bottom} id={`false-${data.id}`} isConnectable={isConnectable} />}
   </div>
 );
 
@@ -82,11 +82,11 @@ const OperationNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) 
       <div className="px-3" onClick={() => document.getElementById(`input-right-left-${data.id}`)?.focus()}>
         <input id={`input-right-left-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
       </div>
-      <p className="text-white">-</p>
+      <p className="text-white">|</p>
       <div className="px-3" onClick={() => document.getElementById(`input-right-middle-${data.id}`)?.focus()}>
         <input id={`input-right-middle-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
       </div>
-      <p className="text-white">-</p>
+      <p className="text-white">|</p>
       <div className="px-3" onClick={() => document.getElementById(`input-right-right-${data.id}`)?.focus()}>
         <input id={`input-right-right-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
       </div>
