@@ -2,12 +2,15 @@ import { type ClassValue, clsx } from 'clsx';
 import { notFound } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
+
+
 import { ApiError } from '@/action/action';
 import { AuthorityEnum, UserRole } from '@/constant/enum';
 import env from '@/constant/env';
 import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
 import TagGroup from '@/types/response/TagGroup';
+
 
 export function isError<T extends Record<string, any>>(req: T | ApiError | null): req is ApiError {
   if (req && typeof req === 'object' && 'error' in req && 'status' in req.error && req.error.status === 404) notFound();
@@ -432,8 +435,8 @@ export function getTagPreset(type?: PresetType): TagPreset[] {
   }
 }
 
-export function deleteTagPreset(name: string) {
-  const value = getTagPreset().filter((item) => item.name !== name);
+export function deleteTagPreset(name: string, type: PresetType) {
+  const value = getTagPreset().filter((item) => item.name !== name || item.type !== type);
 
   return localStorage.setItem(PRESET_LOCAL_STORAGE_NAME, JSON.stringify(value));
 }
@@ -441,7 +444,7 @@ export function deleteTagPreset(name: string) {
 export function addTagPreset(newPreset: TagPreset) {
   const preset = getTagPreset();
 
-  const sameName = preset.find((item) => item.name === newPreset.name);
+  const sameName = preset.find((item) => item.name === newPreset.name && item.type === newPreset.type);
   if (sameName) {
     sameName.tags = newPreset.tags;
   } else {

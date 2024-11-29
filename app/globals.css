@@ -80,7 +80,7 @@
     @apply h-full w-full;
   }
   body {
-    @apply dark:bg-gradient-background;
+    @apply bg-gradient-background;
   }
   * {
     @apply border-border;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { HTMLAttributes, useState } from 'react';
+import React, { HTMLAttributes } from 'react';
 
 import { XIcon } from '@/components/common/icons';
 import { Button } from '@/components/ui/button';

@@ -37,9 +37,9 @@ export default function TagBadges({ values }: Props) {
   }
 
   return (
-    <div className="flex gap-2 overflow-x-auto overflow-y-hidden h-12">
+    <div className="flex gap-4 overflow-x-auto overflow-y-hidden h-12">
       {values.map(({ sort, tag }, index) => (
-        <Button className="rounded-full py-1 text-sm" key={index} variant="outline" onClick={() => handleSearch({ sort, tag })}>
+        <Button className="p-0 text-sm" key={index} variant="icon" onClick={() => handleSearch({ sort, tag })}>
           {sort && <Tran text={sort} />}
           {tag && <Tran text={`tags.${tag}`} />}
         </Button>
