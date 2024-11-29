@@ -68,7 +68,7 @@ export default function Client({ maps }: Props) {
       <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
         <NameTagSearch tags={map} />
         <div className="flex items-center justify-between">
-          <Tran className='text-muted-foreground' text="found" args={{ number: data }} />
+          <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
           <div className="flex items-center gap-2">
             <BulkDeleteToggle />
             <PaginationLayoutSwitcher />
@@ -105,7 +105,7 @@ export default function Client({ maps }: Props) {
             </GridPaginationList>
           </GridLayout>
         </ScrollContainer>
-        <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2 justify-between">
           <GridLayout>
             <PaginationNavigator numberOfItems={data} />
           </GridLayout>

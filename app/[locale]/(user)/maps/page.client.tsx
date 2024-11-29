@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
-import { UploadIcon, UserIcon } from '@/components/common/icons';
+import { UploadIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import InternalLink from '@/components/common/internal-link';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
@@ -15,11 +15,9 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import env from '@/constant/env';
-import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
-import ProtectedElement from '@/layout/protected-element';
 import { omit } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -34,7 +32,6 @@ export default function Client({ maps }: Props) {
     searchTags: { map },
   } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
-  const { session } = useSession();
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
@@ -82,22 +79,14 @@ export default function Client({ maps }: Props) {
           </GridPaginationList>
         </GridLayout>
       </ScrollContainer>
-      <div className="flex flex-wrap items-center justify-end gap-2 sm:flex-row-reverse sm:justify-between">
+      <div className="flex flex-wrap items-center gap-2 justify-between">
+        <InternalLink variant="button-secondary" href={`${env.url.base}/upload/map`}>
+          <UploadIcon className="size-5" />
+          <Tran text="map.upload" />
+        </InternalLink>
         <GridLayout>
           <PaginationNavigator numberOfItems={data} />
         </GridLayout>
-        <div className="flex gap-2">
-          <ProtectedElement session={session} filter>
-            <InternalLink variant="button-secondary" href={`${env.url.base}/users/@me`}>
-              <UserIcon className="size-5" />
-              <Tran text="map.my-map" />
-            </InternalLink>
-          </ProtectedElement>
-          <InternalLink variant="button-secondary" href={`${env.url.base}/upload/map`}>
-            <UploadIcon className="size-5" />
-            <Tran text="map.upload" />
-          </InternalLink>
-        </div>
       </div>
     </div>
   );

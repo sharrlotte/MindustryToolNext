@@ -29,10 +29,10 @@ export function SearchInput({ className, placeholder, value, onChange, onClear, 
 
   return (
     <>
-      <input className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)} placeholder={t(placeholder)} value={value} onChange={onChange} {...props} />
+      <input className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)} suppressHydrationWarning placeholder={t(placeholder)} value={value} onChange={onChange} {...props} />
       {value && (
-        <Button variant="icon" onClick={onClear}>
-          <XIcon className="size-3" />
+        <Button className="p-0" variant="icon" onClick={onClear}>
+          <XIcon className="size-4" />
         </Button>
       )}
     </>

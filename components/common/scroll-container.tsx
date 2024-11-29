@@ -3,6 +3,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
+import { useSearchBarVisibility } from '@/zustand/auto-hide-search-store';
 
 type AdditionalPadding = `pr-${number}`;
 type Props = {
@@ -13,8 +14,10 @@ type Props = {
 
 const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, additionalPadding = 'pr-2', children }, forwardedRef) => {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-
+  const lastScrollTop = React.useRef(0);
   const [hasGapForScrollbar, setHasGapForScrollbar] = useState(false);
+
+  const { setVisible } = useSearchBarVisibility();
 
   useEffect(() => {
     if (container === null) return;
@@ -22,7 +25,14 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ad
     setHasGapForScrollbar(container.scrollHeight > container.clientHeight);
 
     function handleScroll() {
-      if (container) setHasGapForScrollbar(container.scrollHeight > container.clientHeight);
+      if (container) {
+        if (container.scrollTop !== lastScrollTop.current) {
+          setVisible(container.scrollTop < lastScrollTop.current);
+        }
+
+        setHasGapForScrollbar(container.scrollHeight > container.clientHeight);
+        lastScrollTop.current = container.scrollTop;
+      }
     }
 
     container.addEventListener('scroll', handleScroll);

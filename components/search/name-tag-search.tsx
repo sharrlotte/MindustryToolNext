@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { FilterIcon, SearchIcon, XIcon } from '@/components/common/icons';
+import { FilterIcon, SearchIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -144,6 +144,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
 
   function handleResetName() {
     handleNameChange('');
+    setChanged(true);
   }
 
   function handleDeleteTag(tag: Tag) {
@@ -171,12 +172,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
       <div className="flex justify-center gap-2">
         <SearchBar className="h-10">
           <SearchIcon className="p-1" />
-          <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={() => handleEditName('')} />
-          {name && (
-            <Button className="p-0" title="reset" onClick={handleResetName} variant="icon">
-              <XIcon />
-            </Button>
-          )}
+          <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
         </SearchBar>
         {useTag && (
           <Button className="h-10 border-none bg-secondary shadow-md" title="filter" variant="outline" onClick={handleShowFilterDialog}>

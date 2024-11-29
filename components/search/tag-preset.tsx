@@ -37,7 +37,7 @@ export default function TagPresetList({ type, onPresetChoose }: TagPresetListPro
 
   const handlePresetChoose = useCallback(
     (tags: TagGroup[]) => {
-      onPresetChoose(tags);
+      onPresetChoose(JSON.parse(JSON.stringify(tags)));
       setOpen(false);
     },
     [onPresetChoose, setOpen],
