@@ -102,7 +102,7 @@ export default function TagSelector({ tags = [], type, value, onChange, disabled
           <Card className="grid grid-rows-[auto_1fr_auto] h-full w-full gap-2 rounded-none p-4 md:rounded-lg ">
             <SearchBar className="w-full p-1">
               <SearchIcon className="p-1" />
-              <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} />
+              <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
             </SearchBar>
             <ScrollContainer className="overscroll-none h-full">
               <CardContent className="flex h-full w-full flex-col p-0 ">

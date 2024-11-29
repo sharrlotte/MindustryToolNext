@@ -68,7 +68,7 @@ export default function Client({ maps }: Props) {
       <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
         <NameTagSearch tags={map} />
         <div className="flex items-center justify-between">
-          <Tran text="found" args={{ number: data }} />
+          <Tran className='text-muted-foreground' text="found" args={{ number: data }} />
           <div className="flex items-center gap-2">
             <BulkDeleteToggle />
             <PaginationLayoutSwitcher />

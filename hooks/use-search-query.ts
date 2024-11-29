@@ -6,7 +6,7 @@ import { QuerySchema } from '@/query/search-query';
 const groupParamsByKey = (params: URLSearchParams) =>
   [...params.entries()].reduce<Record<string, any>>((acc, tuple) => {
     const [key, val] = tuple;
-    if (acc.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(acc, key)) {
       if (Array.isArray(acc[key])) {
         acc[key] = [...acc[key], val];
       } else {

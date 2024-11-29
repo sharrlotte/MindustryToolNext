@@ -1,4 +1,4 @@
-import { Variants, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 

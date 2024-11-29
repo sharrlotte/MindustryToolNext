@@ -1,88 +1,147 @@
-import { AlertCircle, ArrowDown, ArrowDownToLine, ArrowLeft, ArrowLeftCircle, ArrowUpDown, BellIcon, BlocksIcon, BookOpenIcon, BotIcon, Check, CheckCircle, CheckSquare2, ChevronLeft, ChevronRight, ChevronsUpDown, ClipboardList, Copy, Crown, Expand, ExternalLink, Facebook, File, Filter, Folder, GanttChart, Github, Globe, HistoryIcon, Home, LayoutDashboard, LayoutGrid, LineChart, Link, List, LogIn, LogOut, Map, Menu, MessageCircleIcon, Moon, Paperclip, Pencil, Search, Send, Server, SettingsIcon, ShieldCheckIcon, Shrink, Sigma, Smile, Square, SquareKanbanIcon, Sun, TerminalIcon, ThumbsDown, ThumbsUp, Trash, Upload, User, Users, X, XCircle } from 'lucide-react';
+import {
+  AlertCircle,
+  ArrowDown,
+  ArrowDownToLine,
+  ArrowLeft,
+  ArrowLeftCircle,
+  ArrowUpDown,
+  BellIcon,
+  BlocksIcon,
+  BookOpenIcon,
+  BotIcon,
+  Check,
+  CheckCircle,
+  CheckSquare2,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsUpDown,
+  ClipboardList,
+  Copy,
+  Crown,
+  Expand,
+  ExternalLink,
+  Facebook,
+  File,
+  Filter,
+  Folder,
+  GanttChart,
+  Github,
+  Globe,
+  HistoryIcon,
+  Home,
+  LayoutDashboard,
+  LayoutGrid,
+  LineChart,
+  Link,
+  List,
+  LogIn,
+  LogOut,
+  Map,
+  Menu,
+  MessageCircleIcon,
+  Moon,
+  Paperclip,
+  Pencil,
+  Search,
+  Send,
+  Server,
+  SettingsIcon,
+  ShieldCheckIcon,
+  Shrink,
+  Sigma,
+  Smile,
+  Square,
+  SquareKanbanIcon,
+  Sun,
+  TerminalIcon,
+  ThumbsDown,
+  ThumbsUp,
+  Trash,
+  Upload,
+  User,
+  Users,
+  X,
+  XCircle,
+} from 'lucide-react';
 import Image from 'next/image';
-
-
 
 import { cn } from '@/lib/utils';
 import googleIcon from '@/public/icons/google.svg';
 
-
-
 import { DiscordLogoIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
-
 
 type Props = {
   className?: string;
 };
 
-export const AnalyticIcon = ({ className }: Props) => <LineChart className={cn('lucide', className)} />;
-export const XCircleIcon = ({ className }: Props) => <XCircle className={cn('lucide', className)} />;
-export const CheckCircleIcon = ({ className }: Props) => <CheckCircle className={cn('lucide', className)} />;
-export const BackIcon = ({ className }: Props) => <ArrowLeft className={cn('lucide', className)} />;
-export const SunIcon = ({ className }: Props) => <Sun className={cn('lucide', className)} />;
-export const MoonIcon = ({ className }: Props) => <Moon className={cn('lucide', className)} />;
-export const ExternalLinkIcon = ({ className }: Props) => <ExternalLink className={cn('lucide', className)} />;
-export const DislikeIcon = ({ className }: Props) => <ThumbsDown className={cn('lucide', className)} />;
-export const LikeIcon = ({ className }: Props) => <ThumbsUp className={cn('lucide', className)} />;
-export const FolderIcon = ({ className }: Props) => <Folder className={cn('lucide', className)} />;
-export const ChevronRightIcon = ({ className }: Props) => <ChevronRight className={cn('lucide', className)} />;
-export const ChevronLeftIcon = ({ className }: Props) => <ChevronLeft className={cn('lucide', className)} />;
-export const LayoutListIcon = ({ className }: Props) => <List className={cn('lucide', className)} />;
-export const LayoutGridIcon = ({ className }: Props) => <LayoutGrid className={cn('lucide', className)} />;
-export const ArrowUpDownIcon = ({ className }: Props) => <ArrowUpDown className={cn('lucide', className)} />;
-export const CheckIcon = ({ className }: Props) => <Check className={cn('lucide', className)} />;
-export const ArrowLeftCircleIcon = ({ className }: Props) => <ArrowLeftCircle className={cn('lucide', className)} />;
-export const FilterIcon = ({ className }: Props) => <Filter className={cn('lucide', className)} />;
-export const GanttChartIcon = ({ className }: Props) => <GanttChart className={cn('lucide', className)} />;
-export const LogoutIcon = ({ className }: Props) => <LogOut className={cn('lucide', className)} />;
-export const SquareIcon = ({ className }: Props) => <Square className={cn('lucide', className)} />;
-export const SquareCheckedIcon = ({ className }: Props) => <CheckSquare2 className={cn('lucide', className)} />;
-export const GlobIcon = ({ className }: Props) => <Globe className={cn('lucide', className)} />;
-export const LinkIcon = ({ className }: Props) => <Link className={cn('lucide', className)} />;
-export const PostIcon = ({ className }: Props) => <BookOpenIcon className={cn('lucide', className)} />;
-export const MindustryGptIcon = ({ className }: Props) => <BotIcon className={cn('lucide', className)} />;
-export const FileIcon = ({ className }: Props) => <File className={cn('lucide', className)} />;
-export const DocumentIcon = ({ className }: Props) => <Folder className={cn('lucide', className)} />;
-export const HomeIcon = ({ className }: Props) => <Home className={cn('lucide', className)} />;
-export const MapIcon = ({ className }: Props) => <Map className={cn('lucide', className)} />;
-export const ServerIcon = ({ className }: Props) => <Server className={cn('size-5 lucide min-h-5 min-w-5', className)} />;
-export const VerifyIcon = ({ className }: Props) => <ShieldCheckIcon className={cn('size-5 min-h-5 lucide min-w-5', className)} />;
-export const UserIcon = ({ className }: Props) => <User className={cn('lucide', className)} />;
-export const ChartIcon = ({ className }: Props) => <SquareKanbanIcon className={cn('lucide', className)} />;
-export const ChatIcon = ({ className }: Props) => <MessageCircleIcon className={cn('lucide', className)} />;
-export const LogIcon = ({ className }: Props) => <HistoryIcon className={cn('lucide', className)} />;
-export const SchematicIcon = ({ className }: Props) => <ClipboardList className={cn('lucide', className)} />;
-export const SettingIcon = ({ className }: Props) => <SettingsIcon className={cn('lucide', className)} />;
-export const RoleIcon = ({ className }: Props) => <Users className={cn('lucide', className)} />;
-export const CmdIcon = ({ className }: Props) => <TerminalIcon className={cn('lucide', className)} />;
-export const PluginIcon = ({ className }: Props) => <BlocksIcon className={cn('lucide', className)} />;
-export const WarningIcon = ({ className }: Props) => <AlertCircle className={cn('size-5 lucide', className)} />;
-export const EllipsisIcon = ({ className }: Props) => <DotsHorizontalIcon className={cn('size-5 lucide', className)} />;
-export const NotificationIcon = ({ className }: Props) => <BellIcon className={cn('lucide', className)} />;
-export const GithubIcon = ({ className }: Props) => <Github className={cn('lucide', className)} />;
-export const FacebookIcon = ({ className }: Props) => <Facebook className={cn('lucide', className)} />;
-export const DiscordIcon = ({ className }: Props) => <DiscordLogoIcon className={cn('lucide', className)} />;
-export const ArrowDownIcon = ({ className }: Props) => <ArrowDown className={cn('size-7 lucide', className)} />;
+export const AnalyticIcon = ({ className }: Props) => <LineChart className={cn(className ?? 'lucide')} />;
+export const XCircleIcon = ({ className }: Props) => <XCircle className={cn(className ?? 'lucide')} />;
+export const CheckCircleIcon = ({ className }: Props) => <CheckCircle className={cn(className ?? 'lucide')} />;
+export const BackIcon = ({ className }: Props) => <ArrowLeft className={cn(className ?? 'lucide')} />;
+export const SunIcon = ({ className }: Props) => <Sun className={cn(className ?? 'lucide')} />;
+export const MoonIcon = ({ className }: Props) => <Moon className={cn(className ?? 'lucide')} />;
+export const ExternalLinkIcon = ({ className }: Props) => <ExternalLink className={cn(className ?? 'lucide')} />;
+export const DislikeIcon = ({ className }: Props) => <ThumbsDown className={cn(className ?? 'lucide')} />;
+export const LikeIcon = ({ className }: Props) => <ThumbsUp className={cn(className ?? 'lucide')} />;
+export const FolderIcon = ({ className }: Props) => <Folder className={cn(className ?? 'lucide')} />;
+export const ChevronRightIcon = ({ className }: Props) => <ChevronRight className={cn(className ?? 'lucide')} />;
+export const ChevronLeftIcon = ({ className }: Props) => <ChevronLeft className={cn(className ?? 'lucide')} />;
+export const LayoutListIcon = ({ className }: Props) => <List className={cn(className ?? 'lucide')} />;
+export const LayoutGridIcon = ({ className }: Props) => <LayoutGrid className={cn(className ?? 'lucide')} />;
+export const ArrowUpDownIcon = ({ className }: Props) => <ArrowUpDown className={cn(className ?? 'lucide')} />;
+export const CheckIcon = ({ className }: Props) => <Check className={cn(className ?? 'lucide')} />;
+export const ArrowLeftCircleIcon = ({ className }: Props) => <ArrowLeftCircle className={cn(className ?? 'lucide')} />;
+export const FilterIcon = ({ className }: Props) => <Filter className={cn(className ?? 'lucide')} />;
+export const GanttChartIcon = ({ className }: Props) => <GanttChart className={cn(className ?? 'lucide')} />;
+export const LogoutIcon = ({ className }: Props) => <LogOut className={cn(className ?? 'lucide')} />;
+export const SquareIcon = ({ className }: Props) => <Square className={cn(className ?? 'lucide')} />;
+export const SquareCheckedIcon = ({ className }: Props) => <CheckSquare2 className={cn(className ?? 'lucide')} />;
+export const GlobIcon = ({ className }: Props) => <Globe className={cn(className ?? 'lucide')} />;
+export const LinkIcon = ({ className }: Props) => <Link className={cn(className ?? 'lucide')} />;
+export const PostIcon = ({ className }: Props) => <BookOpenIcon className={cn(className ?? 'lucide')} />;
+export const MindustryGptIcon = ({ className }: Props) => <BotIcon className={cn(className ?? 'lucide')} />;
+export const FileIcon = ({ className }: Props) => <File className={cn(className ?? 'lucide')} />;
+export const DocumentIcon = ({ className }: Props) => <Folder className={cn(className ?? 'lucide')} />;
+export const HomeIcon = ({ className }: Props) => <Home className={cn(className ?? 'lucide')} />;
+export const MapIcon = ({ className }: Props) => <Map className={cn(className ?? 'lucide')} />;
+export const ServerIcon = ({ className }: Props) => <Server className={cn(className ?? 'lucide')} />;
+export const VerifyIcon = ({ className }: Props) => <ShieldCheckIcon className={cn(className ?? 'lucide')} />;
+export const UserIcon = ({ className }: Props) => <User className={cn(className ?? 'lucide')} />;
+export const ChartIcon = ({ className }: Props) => <SquareKanbanIcon className={cn(className ?? 'lucide')} />;
+export const ChatIcon = ({ className }: Props) => <MessageCircleIcon className={cn(className ?? 'lucide')} />;
+export const LogIcon = ({ className }: Props) => <HistoryIcon className={cn(className ?? 'lucide')} />;
+export const SchematicIcon = ({ className }: Props) => <ClipboardList className={cn(className ?? 'lucide')} />;
+export const SettingIcon = ({ className }: Props) => <SettingsIcon className={cn(className ?? 'lucide')} />;
+export const RoleIcon = ({ className }: Props) => <Users className={cn(className ?? 'lucide')} />;
+export const CmdIcon = ({ className }: Props) => <TerminalIcon className={cn(className ?? 'lucide')} />;
+export const PluginIcon = ({ className }: Props) => <BlocksIcon className={cn(className ?? 'lucide')} />;
+export const WarningIcon = ({ className }: Props) => <AlertCircle className={cn(className ?? 'lucide')} />;
+export const EllipsisIcon = ({ className }: Props) => <DotsHorizontalIcon className={cn(className ?? 'lucide')} />;
+export const NotificationIcon = ({ className }: Props) => <BellIcon className={cn(className ?? 'lucide')} />;
+export const GithubIcon = ({ className }: Props) => <Github className={cn(className ?? 'lucide')} />;
+export const FacebookIcon = ({ className }: Props) => <Facebook className={cn(className ?? 'lucide')} />;
+export const DiscordIcon = ({ className }: Props) => <DiscordLogoIcon className={cn(className ?? 'lucide')} />;
+export const ArrowDownIcon = ({ className }: Props) => <ArrowDown className={cn(className ?? 'lucide')} />;
 export const MenuIcon = ({ className }: { className?: string }) => <Menu className={cn('size-10 lucide text-white', className)} />;
-export const UploadIcon = ({ className }: Props) => <Upload className={cn('lucide', className)} />;
-export const ExpandIcon = ({ className }: Props) => <Expand className={cn('lucide', className)} />;
-export const ShrinkIcon = ({ className }: Props) => <Shrink className={cn('lucide', className)} />;
-export const UsersIcon = ({ className }: Props) => <Users className={cn('lucide', className)} />;
-export const PaperclipIcon = ({ className }: Props) => <Paperclip className={cn('size-5 lucide', className)} />;
-export const SmileIcon = ({ className }: Props) => <Smile className={cn('size-5 lucide', className)} />;
-export const SearchIcon = ({ className }: Props) => <Search className={cn('lucide', className)} />;
-export const SendIcon = ({ className }: Props) => <Send className={cn('lucide', className)} />;
-export const EditIcon = ({ className }: Props) => <Pencil className={cn('lucide', className)} />;
-export const RatioIcon = ({ className }: Props) => <Sigma className={cn('lucide', className)} />;
-export const XIcon = ({ className }: Props) => <X className={cn('lucide', className)} />;
-export const CrownIcon = ({ className }: Props) => <Crown className={cn('size-5 lucide min-h-5 min-w-5', className)} />;
-export const ChevronsUpDownIcon = ({ className }: Props) => <ChevronsUpDown className={cn('size-5 lucide min-h-5 min-w-5', className)} />;
-export const LayoutDashboardIcon = ({ className }: Props) => <LayoutDashboard className={cn('size-5 lucide min-h-5 min-w-5', className)} />;
-export const CopyIcon = ({ className }: Props) => <Copy className={cn('size-5 lucide min-h-5 min-w-5', className)} />;
-export const DownloadIcon = ({ className }: Props) => <ArrowDownToLine className={cn('size-5 lucide min-h-5 min-w-5', className)} />;
-export const LoginIcon = ({ className }: Props) => <LogIn className={cn('size-5 lucide min-h-5 min-w-5', className)} />;
-export const TrashIcon = ({ className }: Props) => <Trash className={cn('size-5 lucide min-h-5 min-w-5', className)} />;
-export const GoogleIcon = ({ className }: Props) => <Image className={cn('lucide', className)} src={googleIcon} alt="google" />;
+export const UploadIcon = ({ className }: Props) => <Upload className={cn(className ?? 'lucide')} />;
+export const ExpandIcon = ({ className }: Props) => <Expand className={cn(className ?? 'lucide')} />;
+export const ShrinkIcon = ({ className }: Props) => <Shrink className={cn(className ?? 'lucide')} />;
+export const UsersIcon = ({ className }: Props) => <Users className={cn(className ?? 'lucide')} />;
+export const PaperclipIcon = ({ className }: Props) => <Paperclip className={cn(className ?? 'lucide')} />;
+export const SmileIcon = ({ className }: Props) => <Smile className={cn(className ?? 'lucide')} />;
+export const SearchIcon = ({ className }: Props) => <Search className={cn(className ?? 'lucide')} />;
+export const SendIcon = ({ className }: Props) => <Send className={cn(className ?? 'lucide')} />;
+export const EditIcon = ({ className }: Props) => <Pencil className={cn(className ?? 'lucide')} />;
+export const RatioIcon = ({ className }: Props) => <Sigma className={cn(className ?? 'lucide')} />;
+export const XIcon = ({ className }: Props) => <X className={cn(className ?? 'lucide')} />;
+export const CrownIcon = ({ className }: Props) => <Crown className={cn(className ?? 'lucide')} />;
+export const ChevronsUpDownIcon = ({ className }: Props) => <ChevronsUpDown className={cn(className ?? 'lucide')} />;
+export const LayoutDashboardIcon = ({ className }: Props) => <LayoutDashboard className={cn(className ?? 'lucide')} />;
+export const CopyIcon = ({ className }: Props) => <Copy className={cn(className ?? 'lucide')} />;
+export const DownloadIcon = ({ className }: Props) => <ArrowDownToLine className={cn(className ?? 'lucide')} />;
+export const LoginIcon = ({ className }: Props) => <LogIn className={cn(className ?? 'lucide')} />;
+export const TrashIcon = ({ className }: Props) => <Trash className={cn(className ?? 'lucide')} />;
+export const GoogleIcon = ({ className }: Props) => <Image className={cn(className ?? 'lucide')} src={googleIcon} alt="google" />;
 
 export function HRIcon({ className }: Props) {
   return (

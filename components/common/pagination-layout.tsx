@@ -21,10 +21,10 @@ export function PaginationLayoutSwitcher() {
   return (
     <ToggleGroup value={paginationType} type="single" onValueChange={(type: PaginationType) => setConfig('paginationType', paginationTypes.includes(type) ? type : 'grid')}>
       <ToggleGroupItem className="aspect-square" value="grid" title="grid">
-        <LayoutGridIcon className="size-5" />
+        <LayoutGridIcon className="min-w-4 min-h-4" />
       </ToggleGroupItem>
       <ToggleGroupItem className="aspect-square" value="infinite-scroll" title="infinite scroll">
-        <LayoutListIcon className="size-5" />
+        <LayoutListIcon className="min-w-4 min-h-4" />
       </ToggleGroupItem>
     </ToggleGroup>
   );
