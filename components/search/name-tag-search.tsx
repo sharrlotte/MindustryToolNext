@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
 import { defaultSortTag } from '@/constant/env';
+import { ContextTagGroup } from '@/context/tags-context';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { QueryParams } from '@/query/config/search-query-params';
@@ -22,7 +23,6 @@ import { ItemPaginationQuery } from '@/query/search-query';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import { ContextTagGroup } from '@/context/tags-context';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
 
@@ -97,6 +97,11 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
     (name: string, values: string[]) => {
       setFilterBy((prev) => {
         const group = prev.find((tag) => tag.name === name);
+        console.log({ name, values });
+
+        if (values.length === 0) {
+          return prev.filter((tag) => tag.name !== name);
+        }
 
         if (group) {
           return prev.map((item) => (item.name === name ? { ...item, values } : item));

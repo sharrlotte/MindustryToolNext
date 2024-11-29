@@ -43,7 +43,7 @@ type FilterTagGroupProps = {
 const InternalFilterTagGroup = ({ group, selectedGroup, handleTagGroupChange }: FilterTagGroupProps) => {
   const handleMultipleValueChange = useCallback((value: string[]) => handleTagGroupChange(group.name, value), [group, handleTagGroupChange]);
 
-  const handleSingleValueChange = useCallback((value: string) => handleTagGroupChange(group.name, [value]), [group, handleTagGroupChange]);
+  const handleSingleValueChange = useCallback((value: string) => handleTagGroupChange(group.name, value ? [value] : []), [group, handleTagGroupChange]);
 
   return group.duplicate ? (
     <MultipleFilerTags key={group.name} group={group} selectedValue={selectedGroup?.values ?? empty} handleTagGroupChange={handleMultipleValueChange} />

@@ -12,6 +12,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
+import TagBadges from '@/components/search/tag-badges';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import env from '@/constant/env';
@@ -54,6 +55,22 @@ export default function Client({ schematics }: Props) {
         <Tran text="found" args={{ number: data }} />
         <PaginationLayoutSwitcher />
       </div>
+      <TagBadges
+        values={[
+          {
+            sort: 'time_desc',
+          },
+          {
+            sort: 'download_count_desc',
+          },
+          {
+            sort: 'like_desc',
+          },
+          {
+            tag: 'planet_erekir',
+          },
+        ]}
+      />
       <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
         <ListLayout>
           <InfinitePage
