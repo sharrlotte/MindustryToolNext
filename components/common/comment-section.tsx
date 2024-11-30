@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
 import { RelativeTime } from '@/components/common/relative-time';
+import LoadingSpinner from '@/components/common/router-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import Markdown from '@/components/markdown/markdown';
@@ -166,10 +167,8 @@ function CommentInput({ itemId }: CommentInputProps) {
     onSuccess: () => {
       invalidateByKey([`comments-${itemId}`]);
     },
-    onError: () => {
-      filterByKey<Comment>([`comments-${itemId}`], (comment) => !isNumeric(comment.id));
-    },
     onSettled: () => {
+      filterByKey<Comment>([`comments-${itemId}`], (comment) => !isNumeric(comment.id));
       form.reset();
     },
   });
@@ -229,9 +228,15 @@ function CommentInput({ itemId }: CommentInputProps) {
                 form.setValue('attachments', [...form.getValues('attachments'), { url: (result.file as any).url }]);
               }}
             />
-            <Button className="ml-auto" variant="primary" type="submit" disabled={isPending}>
-              <Tran text="send" />
-            </Button>
+            {isPending ? (
+              <div className="ml-auto">
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <Button className="ml-auto" variant="primary" type="submit" disabled={isPending}>
+                <Tran text="send" />
+              </Button>
+            )}
           </div>
         </form>
       </Form>
