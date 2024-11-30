@@ -27,12 +27,18 @@ function RouterLink({ href, children }: any) {
     }
   }
 
-  return href.match(OTHER_WEBSITE_URL_REGEX) ? (
-    <a className="text-emerald-500" href={href} target="_blank" rel="noreferrer">
+  if (href.startsWith('http') && !href.startsWith(env.url.base)) {
+    return (
+      <a className="text-emerald-500" href={href} target="_blank" rel="noreferrer">
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <InternalLink className="text-emerald-500" href={href}>
       {children}
-    </a>
-  ) : (
-    <InternalLink href={href}>{children}</InternalLink>
+    </InternalLink>
   );
 }
 

@@ -104,7 +104,7 @@ type CommandCardProps = {
   comment: Comment;
 };
 
-function CommandCard({ comment }: CommandCardProps) {
+export function CommandCard({ comment }: CommandCardProps) {
   const { userId, content, createdAt } = comment;
 
   const { data } = useClientQuery({
@@ -117,9 +117,9 @@ function CommandCard({ comment }: CommandCardProps) {
       <div className="flex w-full gap-2 text-wrap items-center text-xs">
         {data ? <UserAvatar user={data} url /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
         <div className="overflow-hidden">
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-baseline">
             {data ? (
-              <ColorAsRole className="font-semibold capitalize" roles={data.roles}>
+              <ColorAsRole className="font-semibold capitalize text-base" roles={data.roles}>
                 {data.name}
               </ColorAsRole>
             ) : (
@@ -129,12 +129,12 @@ function CommandCard({ comment }: CommandCardProps) {
           </div>
         </div>
       </div>
-      <Markdown className="ml-10">{content}</Markdown>
+      <Markdown className="ml-10 text-sm">{content}</Markdown>
     </div>
   );
 }
 
-function CommentLoadingCard() {
+export function CommentLoadingCard() {
   return (
     <div className="flex gap-2">
       <Skeleton className="block h-8 w-8 rounded-full border border-border" />
