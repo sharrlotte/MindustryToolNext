@@ -127,13 +127,137 @@ const LookUpNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => 
   </NodeContainer>
 );
 
-const PackColorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-const SensorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-const ControlNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-const RadarNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-const PrintFlushNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-const DrawFlushNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-const GetLinkNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
+const PackColorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded">
+      <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
+        <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">= pack</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-one-${data.id}`)?.focus()}>
+        <input id={`input-one-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">|</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-two-${data.id}`)?.focus()}>
+        <input id={`input-two-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">|</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-three-${data.id}`)?.focus()}>
+        <input id={`input-three-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">|</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-four-${data.id}`)?.focus()}>
+        <input id={`input-four-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+    </div>
+  </NodeContainer>
+);
+const SensorNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded">
+      <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
+        <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">=</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-one-${data.id}`)?.focus()}>
+        <input id={`input-one-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">in</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-two-${data.id}`)?.focus()}>
+        <input id={`input-two-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+    </div>
+  </NodeContainer>
+);
+const ControlNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded">
+      <p className="text-white pl-3">set</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
+        <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">of</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-one-${data.id}`)?.focus()}>
+        <input id={`input-one-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white">to</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-two-${data.id}`)?.focus()}>
+        <input id={`input-two-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+    </div>
+  </NodeContainer>
+);
+const RadarNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex flex-col justify-center rounded pl-3">
+      <div className="flex items-center ">
+        <p className="text-white">from</p>
+        <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
+          <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+        </div>
+        <p className="text-white">target</p>
+        <div className="px-3" onClick={() => document.getElementById(`input-one-${data.id}`)?.focus()}>
+          <input id={`input-one-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+        </div>
+        <p className="text-white">and</p>
+        <div className="px-3" onClick={() => document.getElementById(`input-two-${data.id}`)?.focus()}>
+          <input id={`input-two-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+        </div>
+        <p className="text-white">and</p>
+        <div className="px-3" onClick={() => document.getElementById(`input-three-${data.id}`)?.focus()}>
+          <input id={`input-three-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+        </div>
+        <p className="text-white">other</p>
+        <div className="px-3" onClick={() => document.getElementById(`input-four-${data.id}`)?.focus()}>
+          <input id={`input-four-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+        </div>
+      </div>
+      <div className="flex items-center">
+        <p className="text-white">sort</p>
+        <div className="px-3" onClick={() => document.getElementById(`input-five-${data.id}`)?.focus()}>
+          <input id={`input-five-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+        </div>
+        <p className="text-white">output</p>
+        <div className="px-3" onClick={() => document.getElementById(`input-six-${data.id}`)?.focus()}>
+          <input id={`input-six-${data.id}`} type="text" className="nodrag w-7 bg-black rounded text-white block py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+        </div>
+      </div>
+    </div>
+  </NodeContainer>
+);
+const PrintFlushNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded">
+      <p className="text-white pl-3">set</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
+        <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+    </div>
+  </NodeContainer>
+);
+const DrawFlushNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded">
+      <p className="text-white pl-3">set</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
+        <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+    </div>
+  </NodeContainer>
+);
+const GetLinkNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded">
+      <div className="px-3" onClick={() => document.getElementById(`input-left-${data.id}`)?.focus()}>
+        <input id={`input-left-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+      <p className="text-white ">= link#</p>
+      <div className="px-3" onClick={() => document.getElementById(`input-right-${data.id}`)?.focus()}>
+        <input id={`input-right-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+    </div>
+  </NodeContainer>
+);
 const UnitBindNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
 const UnitControlNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
 const UnitRadarNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
