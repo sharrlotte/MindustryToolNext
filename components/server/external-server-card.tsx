@@ -5,7 +5,7 @@ import ColorText from '@/components/common/color-text';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
-import LikeCount from '@/components/like/like-count';
+
 import { ExternalServer } from '@/types/response/ExternalServer';
 
 type MindustryServerCardProps = {
@@ -61,9 +61,8 @@ export default function ExternalServerCard({ server }: MindustryServerCardProps)
           )}
           <span>Ping: {server.ping}ms</span>
           <div className="flex justify-end gap-2">
-            <LikeComponent initialLikeCount={server.likes} initialLikeData={server.userLike} itemId={''}>
+            <LikeComponent initialLikeCount={server.likes} initialLikeData={server.userLike} initialDislikeCount={server.dislikes} itemId={''}>
               <LikeButton className="w-9" />
-              <LikeCount className="w-9" />
               <DislikeButton className="w-9" />
             </LikeComponent>
           </div>

@@ -1,6 +1,7 @@
 import { Like } from '@/types/response/Like';
 
 export type LikeChange = {
-  amount: number;
+  amountLike: number;
+  amountDislike: number;
   like: Like;
 };

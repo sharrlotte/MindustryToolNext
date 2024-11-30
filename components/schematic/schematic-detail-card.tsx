@@ -9,7 +9,6 @@ import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
-import LikeCount from '@/components/like/like-count';
 import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import { TakeDownSchematicButton } from '@/components/schematic/take-down-schematic-button';
@@ -28,7 +27,7 @@ type SchematicDetailCardProps = {
   schematic: SchematicDetail;
 };
 
-export default function SchematicDetailCard({ schematic: { id, name, description, tags, requirements, verifierId, itemId, likes, userLike, userId, isVerified, width, height, downloadCount } }: SchematicDetailCardProps) {
+export default function SchematicDetailCard({ schematic: { id, name, description, tags, requirements, verifierId, itemId, likes, dislikes, userLike, userId, isVerified, width, height, downloadCount } }: SchematicDetailCardProps) {
   const axios = useClientApi();
   const { session } = useSession();
 
@@ -68,9 +67,8 @@ export default function SchematicDetailCard({ schematic: { id, name, description
         <DetailActions>
           <CopyButton title={copyContent} data={getData} />
           <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
-          <LikeComponent itemId={itemId} initialLikeCount={likes} initialLikeData={userLike}>
+          <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes} initialLikeData={userLike}>
             <LikeButton />
-            <LikeCount />
             <DislikeButton />
           </LikeComponent>
           <EllipsisButton>

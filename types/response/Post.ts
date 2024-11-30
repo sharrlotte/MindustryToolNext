@@ -5,6 +5,7 @@ export type Post = {
   userId: string;
   title: string;
   likes: number;
+  dislikes: number;
   tags: string[];
   imageUrls: string[];
   createdAt: number;

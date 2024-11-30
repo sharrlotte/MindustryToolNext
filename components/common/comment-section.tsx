@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
+import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
-import Markdown from '@/components/common/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
+import LoadingSpinner from '@/components/common/router-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
+import Markdown from '@/components/markdown/markdown';
+import { BoldButton, CodeBlockButton, HRButton, ImageDialog, ItalicButton, LinkDialog, QuoteButton, StrikethroughButton, TitleButton } from '@/components/markdown/markdown-buttons';
+import { AutosizeTextAreaRef, AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
@@ -19,6 +22,8 @@ import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
+import { useI18n } from '@/i18n/client';
+import { isNumeric } from '@/lib/utils';
 import { CreateCommentSchema, CreateCommentSchemaType, createComment, getComments } from '@/query/comment';
 import { getUser } from '@/query/user';
 import { Comment } from '@/types/response/Comment';
@@ -41,7 +46,7 @@ const commentSorts = ['newest', 'oldest'];
 
 type CommentSort = (typeof commentSorts)[number];
 
-export default function CommentSection({ itemId }: CommentSectionProps) {
+function CommentSection({ itemId }: CommentSectionProps) {
   const [sort, setSort] = useState<CommentSort>('newest');
 
   return (
@@ -50,7 +55,7 @@ export default function CommentSection({ itemId }: CommentSectionProps) {
         <Tran text="comments" />
         <div className="flex gap-2 justify-center items-center">
           <ComboBox
-            className="bg-transparent min-w-0 w-fit p-0 hover:bg-transparent"
+            className="bg-transparent min-w-0 w-fit p-0 hover:bg-transparent shadow-none"
             searchBar={false}
             value={{ label: sort, value: sort }}
             values={commentSorts.map((value) => ({ label: value, value: value as CommentSort }))}
@@ -64,6 +69,10 @@ export default function CommentSection({ itemId }: CommentSectionProps) {
     </div>
   );
 }
+
+CommentSection.displayName = 'CommentSection';
+
+export default dynamic(() => Promise.resolve(CommentSection), { ssr: false });
 
 type CommentsProps = {
   itemId: string;
@@ -95,7 +104,7 @@ type CommandCardProps = {
   comment: Comment;
 };
 
-function CommandCard({ comment }: CommandCardProps) {
+export function CommandCard({ comment }: CommandCardProps) {
   const { userId, content, createdAt } = comment;
 
   const { data } = useClientQuery({
@@ -108,9 +117,9 @@ function CommandCard({ comment }: CommandCardProps) {
       <div className="flex w-full gap-2 text-wrap items-center text-xs">
         {data ? <UserAvatar user={data} url /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
         <div className="overflow-hidden">
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-baseline">
             {data ? (
-              <ColorAsRole className="font-semibold capitalize" roles={data.roles}>
+              <ColorAsRole className="font-semibold capitalize text-base" roles={data.roles}>
                 {data.name}
               </ColorAsRole>
             ) : (
@@ -120,12 +129,12 @@ function CommandCard({ comment }: CommandCardProps) {
           </div>
         </div>
       </div>
-      <Markdown className="ml-10">{content}</Markdown>
+      <Markdown className="ml-10 text-sm">{content}</Markdown>
     </div>
   );
 }
 
-function CommentLoadingCard() {
+export function CommentLoadingCard() {
   return (
     <div className="flex gap-2">
       <Skeleton className="block h-8 w-8 rounded-full border border-border" />
@@ -143,25 +152,28 @@ type CommentInputProps = {
 
 function CommentInput({ itemId }: CommentInputProps) {
   const axios = useClientApi();
+  const inputRef = useRef<AutosizeTextAreaRef>(null);
+  const t = useI18n();
 
   const { session } = useSession();
 
-  const { pushByKey, invalidateByKey } = useQueriesData();
+  const { pushByKey, invalidateByKey, filterByKey } = useQueriesData();
   const { mutate, isPending } = useMutation({
     mutationFn: (payload: CreateCommentSchemaType) => createComment(axios, itemId, payload),
     mutationKey: ['create-comment'],
     onMutate: (data) => {
-      pushByKey<Comment>([`comments-${itemId}`], { ...data, id: genId(), path: '', userId: session?.id || '', createdAt: new Date().toISOString() });
+      pushByKey<Comment>([`comments-${itemId}`], { ...data, attachments: [], id: genId(), path: '', userId: session?.id || '', createdAt: new Date().toISOString() });
     },
     onSuccess: () => {
       invalidateByKey([`comments-${itemId}`]);
     },
     onSettled: () => {
+      filterByKey<Comment>([`comments-${itemId}`], (comment) => !isNumeric(comment.id));
       form.reset();
     },
   });
 
-  const form = useForm({
+  const form = useForm<CreateCommentSchemaType>({
     resolver: zodResolver(CreateCommentSchema),
     defaultValues: {
       content: '',
@@ -172,22 +184,60 @@ function CommentInput({ itemId }: CommentInputProps) {
   return (
     <div className="flex gap-2 w-full border rounded-md p-2">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit((data) => mutate(data))} className="w-full flex gap-2 items-end">
+        <form onSubmit={form.handleSubmit((data) => mutate(data))} className="w-full grid gap-2">
           <FormField
             name="content"
             control={form.control}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <AutosizeTextarea className="focus-visible:outline-none border-transparent focus-visible:ring-transparent border-none focus-visible:border-none resize-none" {...field} />
+                  <AutosizeTextarea
+                    className="focus-visible:outline-none border-transparent focus-visible:ring-transparent border-none focus-visible:border-none resize-none"
+                    placeholder={t('add-comment')}
+                    ref={inputRef}
+                    value={field.value}
+                    onChange={(event) => {
+                      field.onChange(event.target.value);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button variant="primary" type="submit" disabled={isPending}>
-            <Tran text="send" />
-          </Button>
+          <div className="flex gap-4">
+            <BoldButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <ItalicButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <StrikethroughButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <HRButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <TitleButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <Divider className="border-r h-full w-0" />
+            <LinkDialog callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <QuoteButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <CodeBlockButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+            <ImageDialog
+              callback={(fn) => {
+                const result = fn(inputRef.current?.textArea ?? null, form.getValues('content'));
+
+                if (result.file) {
+                  form.setValue('attachments', [...form.getValues('attachments'), { file: result.file.file, url: result.file.url }]);
+                  form.setValue('content', result.text);
+                  return;
+                }
+                form.setValue('content', result.text);
+                form.setValue('attachments', [...form.getValues('attachments'), { url: (result.file as any).url }]);
+              }}
+            />
+            {isPending ? (
+              <div className="ml-auto">
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <Button className="ml-auto" variant="primary" type="submit" disabled={isPending}>
+                <Tran text="send" />
+              </Button>
+            )}
+          </div>
         </form>
       </Form>
     </div>

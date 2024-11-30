@@ -12,6 +12,7 @@ export type MapDetail = {
   description: string;
   tags: string[];
   likes: number;
+  dislikes: number;
   height: number;
   width: number;
   status: Status;

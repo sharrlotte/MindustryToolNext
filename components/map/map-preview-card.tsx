@@ -13,13 +13,14 @@ import LikeComponent from '@/components/like/like-component';
 import env from '@/constant/env';
 import useImageLoading from '@/hooks/use-image-loading';
 import { Map } from '@/types/response/Map';
+import AloneDislikeCount from '@/components/like/alone-dislike-count';
 
 type MapPreviewCardProps = {
   map: Map;
   imageCount: number;
 };
 
-function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, downloadCount }, imageCount }: MapPreviewCardProps) {
+function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes,dislikes, downloadCount }, imageCount }: MapPreviewCardProps) {
   const link = `${env.url.base}/maps/${id}`;
   const detailLink = `/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
@@ -45,8 +46,9 @@ function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, do
         <PreviewActions>
           <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
           {isVerified && (
-            <LikeComponent itemId={itemId} initialLikeCount={likes}>
+            <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes}>
               <AloneLikeCount />
+              <AloneDislikeCount />
             </LikeComponent>
           )}
         </PreviewActions>

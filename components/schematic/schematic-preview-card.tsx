@@ -9,8 +9,10 @@ import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
+import AloneDislikeCount from '@/components/like/alone-dislike-count';
 import AloneLikeCount from '@/components/like/alone-like-count';
 import LikeComponent from '@/components/like/like-component';
+
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useImageLoading from '@/hooks/use-image-loading';
@@ -23,7 +25,7 @@ type SchematicPreviewCardProps = {
   imageCount: number;
 };
 
-function InternalSchematicPreviewCard({ schematic: { id, name, itemId, likes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
+function InternalSchematicPreviewCard({ schematic: { id, name, itemId, likes, dislikes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
   const axios = useClientApi();
 
   const link = `${env.url.base}/schematics/${id}`;
@@ -58,8 +60,9 @@ function InternalSchematicPreviewCard({ schematic: { id, name, itemId, likes, do
         <PreviewActions>
           <CopyButton content={copyContent} data={getData} />
           <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
-          <LikeComponent itemId={itemId} initialLikeCount={likes}>
+          <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes}>
             <AloneLikeCount />
+            <AloneDislikeCount />
           </LikeComponent>
         </PreviewActions>
       </PreviewDescription>

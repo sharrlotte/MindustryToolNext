@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import Moment from 'react-moment';
 import { useStore } from 'zustand';
 
 import { Locale } from '@/i18n/config';
@@ -27,6 +28,8 @@ export function useLocaleStore() {
 
 export default function I18nProvider({ locale, children }: Props) {
   const storeRef = useRef<ContextType>();
+
+  Moment.globalLocale = locale;
 
   if (!storeRef.current) {
     storeRef.current = createServerStore(locale);

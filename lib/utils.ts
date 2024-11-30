@@ -2,15 +2,12 @@ import { type ClassValue, clsx } from 'clsx';
 import { notFound } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
-
-
 import { ApiError } from '@/action/action';
 import { AuthorityEnum, UserRole } from '@/constant/enum';
 import env from '@/constant/env';
 import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
 import TagGroup from '@/types/response/TagGroup';
-
 
 export function isError<T extends Record<string, any>>(req: T | ApiError | null): req is ApiError {
   if (req && typeof req === 'object' && 'error' in req && 'status' in req.error && req.error.status === 404) notFound();
@@ -489,4 +486,55 @@ export function extractTranslationKey(text: string) {
   text = `${group}.${key}`;
 
   return { text, key, group };
+}
+
+type TextArea = {
+  value: string;
+  selectionStart?: number;
+  selectionEnd?: number;
+  focus: () => void;
+  setSelectionRange: (start: number, end: number) => void;
+};
+
+export function insertAtCaret(input: TextArea | null, text: string, value: string) {
+  if (!input) return text;
+
+  const position = input.selectionStart === undefined ? input.value.length : input.selectionStart;
+
+  const newPosition = position + value.length;
+  input.focus();
+  setTimeout(() => input.setSelectionRange(newPosition, newPosition));
+
+  return text.substring(0, position) + value + text.substring(position);
+}
+
+export function wrapAtCaret(input: TextArea | null, text: string, before: string, after: string) {
+  if (!input) return text;
+
+  let start = input.selectionStart === undefined ? input.value.length : input.selectionStart;
+  let end = input.selectionEnd === undefined ? input.value.length : input.selectionEnd;
+
+  if (start > end) {
+    [start, end] = [end, start];
+  }
+
+  if (start !== end) {
+    input.focus();
+
+    setTimeout(() => input.setSelectionRange(start + before.length, end + after.length));
+    return text.substring(0, start) + before + text.substring(start, end) + after + text.substring(end);
+  } else {
+    const position = start;
+
+    let newPosition = position + before.length;
+    newPosition = newPosition > 0 ? Math.round(newPosition) : 0;
+    input.focus();
+    setTimeout(() => input.setSelectionRange(newPosition, newPosition));
+
+    return text.substring(0, position) + before + after + text.substring(position);
+  }
+}
+
+export function isNumeric(n: any) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
 }

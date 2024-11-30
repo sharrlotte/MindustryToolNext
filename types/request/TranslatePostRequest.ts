@@ -1,4 +1,4 @@
-import { MarkdownData } from '@/components/common/markdown-editor';
+import { MarkdownData } from '@/components/markdown/markdown-editor';
 
 type TranslatePostRequest = {
   id: string;

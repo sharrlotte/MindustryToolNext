@@ -7,6 +7,7 @@ export type PostDetail = {
   title: string;
   content: string;
   likes: number;
+  dislikes: number;
   tags: string[];
   lang: string;
   imageUrls: string[];
