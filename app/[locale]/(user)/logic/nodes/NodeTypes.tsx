@@ -21,8 +21,6 @@ const adjustInputWidth = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 const NodeContainer: React.FC<TextUpdaterNodeProps & { positions?: Position[]; className?: string }> = ({ data, isConnectable, children, positions = [Position.Top, Position.Bottom], className = '' }) => (
   <div className={cn('p-1.5 border border-[#1a192b] rounded bg-white text-xs', className)}>
-    {positions.includes(Position.Top) && <Handle type="target" position={Position.Top} isConnectable={isConnectable} />}
-    {positions.includes(Position.Left) && <Handle type="source" position={Position.Left} isConnectable={isConnectable} />}
     <div className="flex flex-col gap-1 text-black">
       <div className="w-full flex justify-between items-center">
         <p>{data.label || 'Node'}:</p>
@@ -30,8 +28,10 @@ const NodeContainer: React.FC<TextUpdaterNodeProps & { positions?: Position[]; c
       </div>
       {children}
     </div>
-    {positions.includes(Position.Right) && <Handle type="source" position={Position.Right} id={`true-${data.id}`} isConnectable={isConnectable} />}
-    {positions.includes(Position.Bottom) && <Handle type="source" position={Position.Bottom} id={`false-${data.id}`} isConnectable={isConnectable} />}
+    {positions.includes(Position.Top) && <Handle type="target" position={Position.Top} isConnectable={isConnectable} />}
+    {positions.includes(Position.Bottom) && <Handle type="source" position={Position.Bottom} isConnectable={isConnectable} />}
+    {positions.includes(Position.Right) && <Handle type="source" position={Position.Right} isConnectable={isConnectable} />}
+    {positions.includes(Position.Left) && <Handle type="source" position={Position.Left} isConnectable={isConnectable} />}
   </div>
 );
 

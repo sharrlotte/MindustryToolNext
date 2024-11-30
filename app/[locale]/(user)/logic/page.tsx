@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, addEdge, applyEdgeChanges, applyNodeChanges } from 'reactflow';
+import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, ReactFlowProvider, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { toast } from 'sonner';
 
@@ -75,6 +75,14 @@ const nodeTypes = {
 };
 
 export default function Page() {
+  return (
+    <ReactFlowProvider>
+      <Flow />
+    </ReactFlowProvider>
+  );
+}
+
+function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [nodeIdCounter, setNodeIdCounter] = useState(initialNodes.length + 1);
@@ -87,25 +95,27 @@ export default function Page() {
 
   const deleteOnClick = useToggle();
   const modal = useToggle();
+  const { project } = useReactFlow();
 
   const showToast = useCallback((description: string) => {
     toast('Erase mode', { description });
   }, []);
 
   const addNewNode = useCallback(
-    (type: any, label: any) => {
+    (type: string, label: string) => {
+      const position = project({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
       const newNode: Node = {
         id: `${nodeIdCounter}`,
-        type: type,
-        data: { label: label, id: nodeIdCounter },
-        position: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+        type,
+        data: { label, id: nodeIdCounter },
+        position,
       };
       const newNodes = [...nodes, newNode];
       setNodes(newNodes);
       setNodeIdCounter((prev) => prev + 1);
       updateHistory(newNodes, edges);
     },
-    [nodeIdCounter, nodes, edges],
+    [nodeIdCounter, nodes, edges, project],
   );
 
   const customApplyNodeChanges = useCallback((changes: NodeChange[], nodes: Node[]): Node[] => {
@@ -224,7 +234,7 @@ export default function Page() {
 
   const onNodeDragStop = useCallback(
     (_event: React.MouseEvent, node: Node) => {
-      const newNodes = nodes.map((n) => (n.id === node.id ? node : n));
+      const newNodes = nodes.map((n) => (n.id === node.id ? { ...n, position: node.position } : n));
       setNodes(newNodes);
       updateHistory(newNodes, edges);
     },
@@ -405,6 +415,7 @@ export default function Page() {
         onEdgeContextMenu={onEdgeContextMenu}
         onNodeDragStop={onNodeDragStop}
         proOptions={proOptions}
+        fitView
       >
         <MiniMap />
         <Controls />
