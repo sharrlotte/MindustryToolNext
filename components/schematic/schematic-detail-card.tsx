@@ -44,8 +44,6 @@ export default function SchematicDetailCard({ schematic: { id, name, description
   const downloadUrl = `${env.url.api}/schematics/${id}/download`;
   const downloadName = `{${name}}.msch`;
 
-  console.log({ likes, dislikes });
-
   return (
     <Detail>
       <DetailContent>

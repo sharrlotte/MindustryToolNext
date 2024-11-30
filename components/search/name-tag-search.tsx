@@ -97,7 +97,6 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
     (name: string, values: string[]) => {
       setFilterBy((prev) => {
         const group = prev.find((tag) => tag.name === name);
-        console.log({ name, values });
 
         if (values.length === 0) {
           return prev.filter((tag) => tag.name !== name);

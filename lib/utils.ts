@@ -518,8 +518,6 @@ export function wrapAtCaret(input: TextArea | null, text: string, before: string
     [start, end] = [end, start];
   }
 
-  console.log(input, start, end, before, after);
-
   if (start !== end) {
     input.focus();
 
