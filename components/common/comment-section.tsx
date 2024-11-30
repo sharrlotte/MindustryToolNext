@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
@@ -166,6 +167,9 @@ function CommentInput({ itemId }: CommentInputProps) {
     },
     onSuccess: () => {
       invalidateByKey([`comments-${itemId}`]);
+    },
+    onError: (error) => {
+      toast.error(<Tran text="error" />, { description: error.message });
     },
     onSettled: () => {
       filterByKey<Comment>([`comments-${itemId}`], (comment) => !isNumeric(comment.id));
