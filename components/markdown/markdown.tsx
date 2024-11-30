@@ -1,9 +1,11 @@
-import Image from 'next/image';
+/* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
 
+import { Hidden } from '@/components/common/hidden';
 import InternalLink from '@/components/common/internal-link';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 import env from '@/constant/env';
 import { YOUTUBE_VIDEO_REGEX, cn, extractYouTubeID } from '@/lib/utils';
@@ -42,10 +44,25 @@ function MarkdownImage({ src, alt }: any) {
   }
 
   if (isError) {
-    return <p>{alt}</p>;
+    return alt;
   }
 
-  return <Image className="markdown-image rounded-md" alt={alt} src={src} width={1024} height={800} loader={({ src }) => `${src}`} onError={() => setError(true)} />;
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <div>
+          <img className="markdown-image rounded-md max-h-[50dvh]" alt={alt} src={src} onError={() => setError(true)} />
+        </div>
+      </DialogTrigger>
+      <DialogContent className="max-w-[100dvw] max-h-dvh sm:max-h-dvh flex justify-center items-center h-full">
+        <Hidden>
+          <DialogTitle />
+          <DialogDescription />
+        </Hidden>
+        <img alt={alt} src={src} onError={() => setError(true)} />
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 export default function Markdown({ className, children }: MarkdownProps) {
