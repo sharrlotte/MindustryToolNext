@@ -296,10 +296,10 @@ const UnitLocateNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable })
           </React.Fragment>
         ))}
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center pl-3">
         {['outX', 'outY', 'found', 'building'].map((label, index) => (
           <React.Fragment key={label}>
-            <p className="text-white pl-3">{label}</p>
+            <p className="text-white ">{label}</p>
             <div className="px-3" onClick={() => document.getElementById(`input-${label}-${data.id}`)?.focus()}>
               <input id={`input-${index}-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
             </div>
@@ -309,11 +309,57 @@ const UnitLocateNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable })
     </div>
   </NodeContainer>
 );
-const ReadNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-const WriteNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-const DrawNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-const PrintNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => <></>;
-
+const ReadNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded pl-3">
+      {['read', '=', 'at'].map((label, index) => (
+        <React.Fragment key={label}>
+          <p className="text-white ">{label}</p>
+          <div className="px-3" onClick={() => document.getElementById(`input-${label}-${data.id}`)?.focus()}>
+            <input id={`input-${index}-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
+  </NodeContainer>
+);
+const WriteNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded pl-3">
+      {['write', 'to', 'at'].map((label, index) => (
+        <React.Fragment key={label}>
+          <p className="text-white ">{label}</p>
+          <div className="px-3" onClick={() => document.getElementById(`input-${label}-${data.id}`)?.focus()}>
+            <input id={`input-${index}-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
+  </NodeContainer>
+);
+const DrawNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded pl-3">
+      {['clear', 'r', 'g', 'b'].map((label, index) => (
+        <React.Fragment key={label}>
+          <p className="text-white ">{label}</p>
+          <div className="px-3" onClick={() => document.getElementById(`input-${label}-${data.id}`)?.focus()}>
+            <input id={`input-${index}-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
+  </NodeContainer>
+);
+const PrintNode: React.FC<TextUpdaterNodeProps> = ({ data, isConnectable }) => (
+  <NodeContainer data={data} isConnectable={isConnectable}>
+    <div className="bg-black flex items-center rounded ">
+      <div className="px-3" onClick={() => document.getElementById(`input-${data.id}`)?.focus()}>
+        <input id={`input-${data.id}`} type="text" className="nodrag bg-black text-white block w-7 rounded py-1.5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm outline-none" onChange={adjustInputWidth} />
+      </div>
+    </div>
+  </NodeContainer>
+);
 export {
   ControlNode,
   DrawFlushNode,
