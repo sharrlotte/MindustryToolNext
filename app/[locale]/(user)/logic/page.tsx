@@ -11,8 +11,8 @@ import { cn } from '@/lib/utils';
 
 import SmartBezierEdge from '@tisoap/react-flow-smart-edge';
 
-import HelperLines from './HelperLines';
 import initialEdges from './edge';
+import HelperLines from './helper-lines';
 import {
   ControlNode,
   DrawFlushNode,
@@ -37,7 +37,7 @@ import {
   UnitRadarNode,
   WaitNode,
   WriteNode,
-} from './nodes/NodeTypes';
+} from './nodes/node-types';
 import initialNodes from './nodes/nodes';
 import './style.css';
 import { getHelperLines } from './utils';
