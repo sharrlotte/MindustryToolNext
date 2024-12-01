@@ -9,7 +9,7 @@ import useToggle from '@/hooks/use-state-toggle';
 import Modal from '@/layout/modal';
 import { cn } from '@/lib/utils';
 
-import { SmartBezierEdge } from '@tisoap/react-flow-smart-edge';
+import SmartBezierEdge from '@tisoap/react-flow-smart-edge';
 
 import HelperLines from './HelperLines';
 import initialEdges from './edge';
