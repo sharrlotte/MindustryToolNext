@@ -35,7 +35,7 @@ const getCachedTags = unstable_cache(
     };
   },
   ['tags'],
-  { revalidate: 60000 },
+  { revalidate: 3600 },
 );
 
 export type ContextTagGroup = {

@@ -15,6 +15,7 @@ import QueryProvider from '@/query/config/query-provider';
 
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 type RootProps = {
   children: React.ReactNode;
@@ -36,6 +37,7 @@ export default async function Root({ children, params }: RootProps) {
         <>
           <Analytics />
           <SpeedInsights />
+           <GoogleAnalytics gaId="G-1R9S5SV72C" />
         </>
       )}
       <CookiesProvider>
