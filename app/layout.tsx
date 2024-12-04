@@ -64,8 +64,8 @@ type Props = {
 };
 
 export default async function Root({ children }: Props) {
-  ReactDOM.preconnect('https://image.mindustry-tool.app');
-  ReactDOM.preconnect('https://api.mindustry-tool.app');
+  ReactDOM.preconnect('https://image.mindustry-tool.com');
+  ReactDOM.preconnect('https://api.mindustry-tool.com');
   ReactDOM.preconnect('https://fonts.googleapis.com');
   ReactDOM.preconnect('https://fonts.gstatic.com', { crossOrigin: 'anonymous' });
 

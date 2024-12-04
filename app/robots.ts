@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api/v3/',
     },
-    sitemap: 'https://mindustry-tool.app/sitemap.xml',
+    sitemap: 'https://mindustry-tool.com/sitemap.xml',
   };
 }

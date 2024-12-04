@@ -27,16 +27,16 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'api.mindustry-tool.app',
+        hostname: 'api.mindustry-tool.com',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'image.mindustry-tool.app',
+        hostname: 'image.mindustry-tool.com',
         pathname: '/**',
       },
       {
-        hostname: 'blob:mindustry-tool.app',
+        hostname: 'blob:mindustry-tool.com',
         pathname: '/**',
       },
       {
