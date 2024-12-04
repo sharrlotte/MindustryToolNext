@@ -1,9 +1,6 @@
 import { MiddlewareConfig, NextRequest, NextResponse, userAgent } from 'next/server';
 
-
-
 import { Locale, defaultLocale, locales } from '@/i18n/config';
-
 
 function getLanguage(acceptLanguage: string | null) {
   if (!acceptLanguage) return null;
