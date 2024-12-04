@@ -324,8 +324,8 @@ function Flow() {
   ];
 
   const modalItems = () => {
-    return nodeOptions.map((option) => (
-      <div className="flex flex-col border-b py-2 gap-2">
+    return nodeOptions.map((option, index) => (
+      <div className="flex flex-col border-b py-2 gap-2" key={index}>
         <p className="text-lg">{option.label}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {option.items.map((item: { type: string; label: string }) => (
