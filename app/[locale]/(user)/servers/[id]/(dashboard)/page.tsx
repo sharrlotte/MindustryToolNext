@@ -17,7 +17,7 @@ import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import IdUserCard from '@/components/user/id-user-card';
 
-import { getSession, serverApi, translate } from '@/action/action';
+import { getSession, serverApi } from '@/action/action';
 import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, formatTitle, hasAccess, isError } from '@/lib/utils';
