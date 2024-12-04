@@ -8,17 +8,17 @@ export default function useMessageQuery<P extends MessageQuery>(room: string, pa
   const { socket } = useSocket();
 
   const getNextPageParam = (lastPage: Message[], allPages: Message[][], lastPageParams: P) => {
-    if (lastPage.length === 0 || lastPage.length < params.size) {
+    if (!lastPage || lastPage.length === 0 || lastPage.length < params.size || !allPages || allPages.length === 0) {
       return undefined;
     }
 
-    const last = allPages?.at(-1)?.at(-1)?.id;
+    const last = lastPage.at(-1);
 
     if (!last) {
       return undefined;
     }
 
-    return { ...lastPageParams, cursor: last ?? null };
+    return { ...lastPageParams, cursor: last.id ?? null };
   };
 
   const getPreviousPageParam = (lastPage: Message[], allPages: Message[][], lastPageParams: P) => {

@@ -225,7 +225,7 @@ export const groups: readonly PathGroup[] = [
       },
       {
         name: <Tran text="analytic" />,
-        path: 'https://analytic.mindustry-tool.app',
+        path: 'https://analytic.mindustry-tool.com',
         icon: <AnalyticIcon />,
         filter: { authority: 'VIEW_DASH_BOARD' },
       },

@@ -1,4 +1,4 @@
-# [MindustryTool](https://mindustry-tool.app)
+# [MindustryTool](https://mindustry-tool.com)
 
 This is a website about Mindustry game, the content include
 
