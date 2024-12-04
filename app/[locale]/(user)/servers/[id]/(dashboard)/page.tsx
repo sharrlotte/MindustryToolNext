@@ -32,11 +32,23 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const title = await translate(locale, 'dashboard');
+  const { id } = await params;
+  const server = await serverApi((axios) => getInternalServer(axios, { id }));
+
+  if (isError(server)) {
+    return { title: 'Error' };
+  }
+
+  const { name, description } = server;
 
   return {
-    title: formatTitle(title),
+    title: formatTitle(name),
+    description,
+    openGraph: {
+      title: formatTitle(name),
+      description,
+      images: `${env.url.api}/internal-servers/${id}/image`,
+    },
   };
 }
 
