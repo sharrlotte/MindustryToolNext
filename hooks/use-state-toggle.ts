@@ -1,12 +1,15 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
-const useToggle = (initialState = false) => {
+const useToggle = (initialState: boolean = false) => {
   const [isOpen, setIsOpen] = useState(initialState);
+
   const toggle = useCallback(() => setIsOpen((prevState) => !prevState), []);
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
-  return { isOpen, toggle, open, close };
+  const handlers = useMemo(() => ({ toggle, open, close }), [toggle, open, close]);
+
+  return { isOpen, ...handlers };
 };
 
 export default useToggle;
