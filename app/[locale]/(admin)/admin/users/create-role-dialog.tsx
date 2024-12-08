@@ -57,7 +57,7 @@ export default function CreateRoleDialog() {
           <Tran text="role.add-role" />
         </Button>
       </DialogTrigger>
-      <DialogContent asChild>
+      <DialogContent className="max-h-full h-full flex flex-col">
         <ScrollContainer className="p-4">
           <DialogTitle>
             <Tran text="role.add-role" />

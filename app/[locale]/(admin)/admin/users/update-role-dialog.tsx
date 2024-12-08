@@ -60,7 +60,7 @@ export default function UpdateRoleDialog({ role }: Props) {
           <Tran text="update" />
         </Button>
       </DialogTrigger>
-      <DialogContent asChild>
+      <DialogContent className="max-h-full h-full flex flex-col">
         <ScrollContainer className="p-4">
           <DialogTitle>
             <Tran text="update" />

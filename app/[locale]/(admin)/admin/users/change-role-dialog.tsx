@@ -118,7 +118,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
           )}
         </section>
       </DialogTrigger>
-      <DialogContent asChild>
+      <DialogContent className="max-h-full h-full flex flex-col">
         <ScrollContainer className="h-full space-y-2 p-6">
           <div className="space-y-2">
             <DialogTitle>Change Role for {name}</DialogTitle>

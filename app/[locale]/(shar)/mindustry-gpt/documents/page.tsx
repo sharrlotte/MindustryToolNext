@@ -79,7 +79,7 @@ function AddDocumentButton() {
           <Tran text="document.add" />
         </Button>
       </DialogTrigger>
-      <DialogContent asChild>
+      <DialogContent className="max-h-full h-full flex flex-col">
         <ScrollContainer className="flex h-full w-full flex-col justify-between gap-2 rounded-md">
           <Form {...form}>
             <form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
