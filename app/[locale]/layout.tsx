@@ -13,9 +13,9 @@ import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { GoogleAnalytics } from '@next/third-parties/google'
 
 type RootProps = {
   children: React.ReactNode;
@@ -37,7 +37,7 @@ export default async function Root({ children, params }: RootProps) {
         <>
           <Analytics />
           <SpeedInsights />
-           <GoogleAnalytics gaId="G-1R9S5SV72C" />
+          <GoogleAnalytics gaId="G-1R9S5SV72C" />
         </>
       )}
       <CookiesProvider>
@@ -47,9 +47,10 @@ export default async function Root({ children, params }: RootProps) {
               <TagsProvider locale={locale}>
                 <SessionProvider>
                   <SocketProvider>
-                    <ClientInit />
                     <Toaster />
-                    <NavigationBar>{children}</NavigationBar>
+                    <NavigationBar>
+                      <ClientInit>{children}</ClientInit>
+                    </NavigationBar>
                   </SocketProvider>
                 </SessionProvider>
               </TagsProvider>
