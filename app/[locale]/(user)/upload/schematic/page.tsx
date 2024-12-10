@@ -24,10 +24,12 @@ import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import { useI18n } from '@/i18n/client';
-import { createSchematic, getSchematicPreview } from '@/query/schematic';
+import ProtectedElement from '@/layout/protected-element';
+import { createMultipleSchematic, createSchematic, getSchematicPreview } from '@/query/schematic';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
-import TagGroup from '@/types/response/TagGroup';
+import Tag from '@/types/response/Tag';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { CreateSchematicRequest, CreateSchematicSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -54,7 +56,9 @@ function Preview() {
   });
 
   useEffect(() => {
-    if (data) mutate({ data });
+    if (data) {
+      mutate({ data });
+    }
   }, [data, mutate]);
 
   if (isPending) {
@@ -84,6 +88,18 @@ type SchematicSelectorProps = {
 };
 
 function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
+  const axios = useClientApi();
+  const { session } = useSession();
+  const {
+    uploadTags: { schematic },
+  } = useTags();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: CreateSchematicRequest) => toast.promise(createMultipleSchematic(axios, data), { loading: <Tran text="upload.uploading" />, success: <Tran text="upload.success" />, error: <Tran text="upload.fail" /> }),
+  });
+
+  const [tags, setTags] = useState<TagGroup[]>([]);
+
   function handleFileChange(files: File[]) {
     if (!files.length || !files[0]) {
       return toast(<Tran text="upload.no-file" />);
@@ -93,11 +109,20 @@ function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
     const filename = file.name;
     const extension = filename.split('.').pop();
 
-    if (extension !== 'msch') {
+    if (extension !== 'msch' && extension !== 'zip') {
       return toast(<Tran text="upload.invalid-schematic-file" />);
     }
 
-    onSchematicSelected(file);
+    if (extension === 'zip') {
+      mutate({
+        name: '',
+        description: '',
+        tags: TagGroups.toString(tags),
+        data: file,
+      });
+    } else {
+      onSchematicSelected(file);
+    }
   }
 
   function handleCopyCode() {
@@ -117,14 +142,20 @@ function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
   }
 
   return (
-    <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-2 rounded-md p-2">
+    <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-8 rounded-md p-2">
       <section className="flex flex-row flex-wrap items-center gap-2 md:max-h-[50dvh] md:max-w-[50dvw] md:flex-row md:items-start">
         <div className="grid w-full items-center gap-2">
-          <UploadField onFileDrop={handleFileChange} />
+          <UploadField onFileDrop={handleFileChange} disabled={isPending} />
           <span className="text-center">or</span>
           <Button variant="primary" title={'copy-from-clipboard'} onClick={handleCopyCode}>
             <Tran text="copy-from-clipboard" />
           </Button>
+          <ProtectedElement session={session} filter={{ role: 'ADMIN' }}>
+            <div className="mt-10">
+              <Tran text="upload-zip" />
+              <TagSelector type="schematic" tags={schematic} value={tags} onChange={(fn) => setTags((prev) => fn(prev))} />
+            </div>
+          </ProtectedElement>
         </div>
       </section>
     </div>
@@ -165,8 +196,13 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: CreateSchematicRequest) => toast.promise(createSchematic(axios, data), { loading: toast(<Tran text="upload.uploading" />), success: toast(<Tran text="upload.success" />), error: <Tran text="upload.fail" /> }),
-    onMutate: () => toast(<Tran text="upload.uploading" />),
+    mutationFn: async (data: CreateSchematicRequest) =>
+      toast.promise(createSchematic(axios, data), {
+        //
+        loading: <Tran text="upload.uploading" />,
+        success: <Tran text="upload.success" />,
+        error: <Tran text="upload.fail" />,
+      }),
     onSuccess: () => {
       setData(undefined);
       setPreview(undefined);
@@ -250,7 +286,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <TagSelector type='schematic' tags={schematic} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                  <TagSelector type="schematic" tags={schematic} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

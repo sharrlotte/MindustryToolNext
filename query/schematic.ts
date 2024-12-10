@@ -95,6 +95,22 @@ export async function createSchematic(axios: AxiosInstance, { data, tags, name, 
     data: form,
   });
 }
+export async function createMultipleSchematic(axios: AxiosInstance, { data, tags, name, description }: CreateSchematicRequest): Promise<void> {
+  const form = new FormData();
+
+  if (typeof data === 'string') {
+    form.append('code', data);
+  } else if (data instanceof File) {
+    form.append('file', data);
+  }
+  form.append('tags', tags);
+  form.append('name', name);
+  form.append('description', description ?? '');
+
+  return axios.post('/schematics/multiple', form, {
+    data: form,
+  });
+}
 
 export async function verifySchematic(axios: AxiosInstance, { id, tags }: VerifySchematicRequest): Promise<void> {
   const data = { tags };
