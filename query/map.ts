@@ -81,6 +81,14 @@ export async function createMap(axios: AxiosInstance, data: CreateMapRequest): P
   });
 }
 
+export async function createMultipleMap(axios: AxiosInstance, data: CreateMapRequest): Promise<void> {
+  const form = toForm(data);
+
+  return await axios.post('/maps/multiple', form, {
+    data: form,
+  });
+}
+
 export async function verifyMap(axios: AxiosInstance, { id, tags }: VerifyMapRequest): Promise<void> {
   return axios.post(
     `/maps/${id}/verify`,

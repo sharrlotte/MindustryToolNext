@@ -1,16 +1,18 @@
 import React from 'react';
 
-import Tran from '@/components/common/tran';
-import { cn } from '@/lib/utils';
 import { UploadIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
+
+import { cn } from '@/lib/utils';
 
 type Props = {
   className?: string;
   onFileDrop: (files: File[]) => void;
   accept?: string;
+  disabled?: boolean;
 };
 
-export default function UploadField({ className, accept, onFileDrop }: Props) {
+export default function UploadField({ className, accept, disabled, onFileDrop }: Props) {
   function handleDrop(event: React.DragEvent) {
     event.preventDefault();
 
@@ -70,7 +72,7 @@ export default function UploadField({ className, accept, onFileDrop }: Props) {
         <label className="underline hover:cursor-pointer" htmlFor="file">
           <Tran text="upload.browse-file" />
         </label>
-        <input id="file" type="file" hidden accept={accept} onChange={handleFileSelect} />
+        <input id="file" type="file" hidden accept={accept} onChange={handleFileSelect} disabled={disabled} />
       </span>
     </div>
   );
