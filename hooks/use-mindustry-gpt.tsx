@@ -13,7 +13,6 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const decoder = new TextDecoder();
 async function* getChat(url: string, prompt: string, signal: AbortSignal) {
-  
   const requestUrl = new URL(url);
 
   requestUrl.searchParams.append('prompt', prompt);
@@ -39,7 +38,7 @@ async function* getChat(url: string, prompt: string, signal: AbortSignal) {
 
     let token = decoder.decode(value, { stream: true });
 
-    token = token.replaceAll('data:', '').replaceAll('\ndata:\ndata:', '\n').replaceAll('\r', '');
+    token = token.replaceAll('data:', '').replaceAll('\ndata:\ndata:', '\n').replaceAll('\r', '').replaceAll('\n\n\n', '\n');
 
     if (token.endsWith('\n\n')) {
       token = token.slice(0, -2);
