@@ -27,7 +27,9 @@ async function* getStreamData({ url, method }: { url: string; method: Method }) 
 
     if (done) return;
 
-    const token = decoder.decode(value, { stream: true });
+    let token = decoder.decode(value, { stream: true });
+
+    token = token.replaceAll('data:', '').replaceAll('\ndata:\ndata:', '\n').replaceAll('\r', '');
 
     yield token;
   }
