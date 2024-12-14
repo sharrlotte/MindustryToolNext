@@ -1,5 +1,6 @@
 'use client';
 
+import { Eraser, HelpCircle, Pencil, Redo2, Undo2 } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, ReactFlowProvider, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -347,7 +348,7 @@ function Flow() {
 
   return (
     <>
-      <div className="m-3 md:m-[15px] top-0 left-0 absolute flex-col flex z-20">
+      <div className="m-3 md:m-[15px] top-0 left-0 absolute flex-col flex z-20 text-black">
         <button
           className={cn('p-[5px] border h-[28px] w-[28px] border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')}
           onClick={() => {
@@ -355,48 +356,19 @@ function Flow() {
             showToast(deleteOnClick.isOpen ? 'Erase mode off' : 'Erase mode on');
           }}
         >
-          <svg id="icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" className="h-[16px] w-[16px]">
-            <defs>
-              <style dangerouslySetInnerHTML={{ __html: '.cls-1{fill:none;}' }} />
-            </defs>
-            <title />
-            <rect height={2} width={23} x={7} y={27} />
-            <path d="M27.38,10.51,19.45,2.59a2,2,0,0,0-2.83,0l-14,14a2,2,0,0,0,0,2.83L7.13,24h9.59L27.38,13.34A2,2,0,0,0,27.38,10.51ZM15.89,22H8L4,18l6.31-6.31,7.93,7.92Zm3.76-3.76-7.92-7.93L18,4,26,11.93Z" transform="translate(0 0)" />
-            <rect className="cls-1" data-name="<Transparent Rectangle>" height={32} id="_Transparent_Rectangle_" width={32} />
-          </svg>
+          <Eraser className="h-4 w-4" strokeWidth={1.5} />
         </button>
         <button className="bg-white p-[5px] py-[7px] h-[28px] w-[28px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center" onClick={modal.open}>
-          <svg version="1.1" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" className="h-[12px] w-[12px]">
-            <title />
-            <desc />
-            <defs />
-            <g fill="none" fillRule="evenodd" id="Page-1" stroke="none" strokeWidth="{1}">
-              <g fill="#000000" id="Core" transform="translate(-213.000000, -129.000000)">
-                <g id="creat</g>e" transform="translate(213.000000, 129.000000)">
-                  <path d="M0,14.2 L0,18 L3.8,18 L14.8,6.9 L11,3.1 L0,14.2 L0,14.2 Z M17.7,4 C18.1,3.6 18.1,3 17.7,2.6 L15.4,0.3 C15,-0.1 14.4,-0.1 14,0.3 L12.2,2.1 L16,5.9 L17.7,4 L17.7,4 Z" id="Shape" />
-                </g>
-              </g>
-            </g>
-          </svg>
+          <Pencil className="h-4 w-4" strokeWidth={1.5} />
         </button>
         <button className="bg-white h-[28px] w-[28px] p-[5px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center">
-          <svg viewBox="0 0 512 512" xmlns="http://ww</svg>w.w3.org/2000/svg" className="h-[14px] w-[14px]">
-            <path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 336c-18 0-32 14-32 32s13.1 32 32 32c17.1 0 32-14 32-32S273.1 336 256 336zM289.1 128h-51.1C199 128 168 159 168 198c0 13 11 24 24 24s24-11 24-24C216 186 225.1 176 237.1 176h51.1C301.1 176 312 186 312 198c0 8-4 14.1-11 18.1L244 251C236 256 232 264 232 272V288c0 13 11 24 24 24S280 301 280 288V286l45.1-28c21-13 34-36 34-60C360 159 329 128 289.1 128z" />
-          </svg>
+          <HelpCircle className="h-4 w-4" strokeWidth={1.5} />
         </button>
         <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center items-center active:bg-slate-400" onClick={undo}>
-          <svg height={14} viewBox="0 0 24 24" width={14} xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M4,11.3657652 C4.49917056,10.7119331 5.15071201,9.87402102 5.57081738,9.41292976 C7.53403185,7.25818217 9.76148028,6 12.5,6 C18.8896519,6 22,10.4122224 22,16 L20,16 C20,11.397186 17.6051907,8 12.5,8 C10.4088444,8 8.66775023,8.98346321 7.04921005,10.7599097 C6.62640264,11.2239667 5.82047984,12.2824394 5.26844212,13 L11,13 L11,15 L2,15 L2,6 L4,6 L4,11.3657652 Z"
-              fillRule="evenodd"
-            />
-          </svg>
+          <Undo2 className="h-4 w-4" strokeWidth={1.5} />
         </button>
         <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center </button>items-center active:bg-slate-400" onClick={redo}>
-          <svg height={14} viewBox="0 0 48 48" width={14} xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0h48v48h-48z" fill="none" />
-            <path d="M36.79 21.2c-3.68-3.23-8.5-5.2-13.79-5.2-9.3 0-17.17 6.06-19.92 14.44l4.73 1.56c2.1-6.39 8.1-11 15.19-11 3.91 0 7.46 1.44 10.23 3.77l-7.23 7.23h18v-18l-7.21 7.2z" />
-          </svg>
+          <Redo2 className="h-4 w-4" strokeWidth={1.5} />
         </button>
       </div>
       <ReactFlow

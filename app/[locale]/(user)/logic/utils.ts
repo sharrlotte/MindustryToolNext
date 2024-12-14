@@ -7,13 +7,13 @@ type GetHelperLinesResult = {
 };
 
 export function getHelperLines(change: NodePositionChange, nodes: Node[], distance = 5): GetHelperLinesResult {
-  const defaultResult = {
+  const defaultResult: GetHelperLinesResult = {
     horizontal: undefined,
     vertical: undefined,
     snapPosition: { x: undefined, y: undefined },
   };
-  const nodeA = nodes.find((node) => node.id === change.id);
 
+  const nodeA = nodes.find((node) => node.id === change.id);
   if (!nodeA || !change.position) {
     return defaultResult;
   }
@@ -42,60 +42,63 @@ export function getHelperLines(change: NodePositionChange, nodes: Node[], distan
         height: nodeB.height ?? 0,
       };
 
-      const distanceLeftLeft = Math.abs(nodeABounds.left - nodeBBounds.left);
-      if (distanceLeftLeft < verticalDistance) {
+      const distances = {
+        distanceLeftLeft: Math.abs(nodeABounds.left - nodeBBounds.left),
+        distanceRightRight: Math.abs(nodeABounds.right - nodeBBounds.right),
+        distanceLeftRight: Math.abs(nodeABounds.left - nodeBBounds.right),
+        distanceRightLeft: Math.abs(nodeABounds.right - nodeBBounds.left),
+        distanceTopTop: Math.abs(nodeABounds.top - nodeBBounds.top),
+        distanceBottomTop: Math.abs(nodeABounds.bottom - nodeBBounds.top),
+        distanceBottomBottom: Math.abs(nodeABounds.bottom - nodeBBounds.bottom),
+        distanceTopBottom: Math.abs(nodeABounds.top - nodeBBounds.bottom),
+      };
+
+      if (distances.distanceLeftLeft < verticalDistance) {
         result.snapPosition.x = nodeBBounds.left;
         result.vertical = nodeBBounds.left;
-        verticalDistance = distanceLeftLeft;
+        verticalDistance = distances.distanceLeftLeft;
       }
 
-      const distanceRightRight = Math.abs(nodeABounds.right - nodeBBounds.right);
-      if (distanceRightRight < verticalDistance) {
+      if (distances.distanceRightRight < verticalDistance) {
         result.snapPosition.x = nodeBBounds.right - nodeABounds.width;
         result.vertical = nodeBBounds.right;
-        verticalDistance = distanceRightRight;
+        verticalDistance = distances.distanceRightRight;
       }
 
-      const distanceLeftRight = Math.abs(nodeABounds.left - nodeBBounds.right);
-      if (distanceLeftRight < verticalDistance) {
+      if (distances.distanceLeftRight < verticalDistance) {
         result.snapPosition.x = nodeBBounds.right;
         result.vertical = nodeBBounds.right;
-        verticalDistance = distanceLeftRight;
+        verticalDistance = distances.distanceLeftRight;
       }
 
-      const distanceRightLeft = Math.abs(nodeABounds.right - nodeBBounds.left);
-      if (distanceRightLeft < verticalDistance) {
+      if (distances.distanceRightLeft < verticalDistance) {
         result.snapPosition.x = nodeBBounds.left - nodeABounds.width;
         result.vertical = nodeBBounds.left;
-        verticalDistance = distanceRightLeft;
+        verticalDistance = distances.distanceRightLeft;
       }
 
-      const distanceTopTop = Math.abs(nodeABounds.top - nodeBBounds.top);
-      if (distanceTopTop < horizontalDistance) {
+      if (distances.distanceTopTop < horizontalDistance) {
         result.snapPosition.y = nodeBBounds.top;
         result.horizontal = nodeBBounds.top;
-        horizontalDistance = distanceTopTop;
+        horizontalDistance = distances.distanceTopTop;
       }
 
-      const distanceBottomTop = Math.abs(nodeABounds.bottom - nodeBBounds.top);
-      if (distanceBottomTop < horizontalDistance) {
+      if (distances.distanceBottomTop < horizontalDistance) {
         result.snapPosition.y = nodeBBounds.top - nodeABounds.height;
         result.horizontal = nodeBBounds.top;
-        horizontalDistance = distanceBottomTop;
+        horizontalDistance = distances.distanceBottomTop;
       }
 
-      const distanceBottomBottom = Math.abs(nodeABounds.bottom - nodeBBounds.bottom);
-      if (distanceBottomBottom < horizontalDistance) {
+      if (distances.distanceBottomBottom < horizontalDistance) {
         result.snapPosition.y = nodeBBounds.bottom - nodeABounds.height;
         result.horizontal = nodeBBounds.bottom;
-        horizontalDistance = distanceBottomBottom;
+        horizontalDistance = distances.distanceBottomBottom;
       }
 
-      const distanceTopBottom = Math.abs(nodeABounds.top - nodeBBounds.bottom);
-      if (distanceTopBottom < horizontalDistance) {
+      if (distances.distanceTopBottom < horizontalDistance) {
         result.snapPosition.y = nodeBBounds.bottom;
         result.horizontal = nodeBBounds.bottom;
-        horizontalDistance = distanceTopBottom;
+        horizontalDistance = distances.distanceTopBottom;
       }
 
       return result;
