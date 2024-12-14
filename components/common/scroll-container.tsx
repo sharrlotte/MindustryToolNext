@@ -47,11 +47,11 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ad
       container.removeEventListener('scroll', handleScroll);
       observer.disconnect();
     };
-  }, [container]);
+  }, [container, setVisible]);
 
   return (
     <div
-      className={cn('h-full overflow-y-auto w-full overflow-x-hidden', className, {
+      className={cn('h-full pagination-container overflow-y-auto w-full overflow-x-hidden', className, {
         [additionalPadding]: hasGapForScrollbar,
       })}
       ref={(current) => {
