@@ -2,43 +2,51 @@
   height: 8px;
   width: 8px;
 }
+
 .react-flow__minimap {
   border: 1px solid #eee;
 }
+
 .react-flow__handle-bottom {
   bottom: -6px;
 }
+
 .react-flow__handle-top {
   top: -6px;
 }
+
 .react-flow__handle-right {
   right: -6px;
 }
+
 .react-flow__handle-left {
   left: -6px;
 }
+
 @media (max-width: 768px) {
   .react-flow__panel {
     margin: 12px;
   }
+
   .react-flow__panel svg {
     width: 150px;
     height: 100px;
   }
+
   .react-flow__minimap {
     top: 0;
     bottom: unset !important;
   }
+
   .react-flow__handle {
     height: 10px;
     width: 10px;
   }
-  .react-flow__minimap {
-    border: 1px solid #eee;
-  }
+
   .react-flow__handle-bottom {
     bottom: -8px;
   }
+
   .react-flow__handle-top {
     top: -8px;
   }
