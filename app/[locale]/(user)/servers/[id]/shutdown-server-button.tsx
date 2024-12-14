@@ -3,8 +3,9 @@
 import React from 'react';
 import { toast } from 'sonner';
 
+import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
 import { revalidate } from '@/action/action';
@@ -22,11 +23,12 @@ export default function ShutdownServerButton({ id }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['internal-servers'],
-    mutationFn: () => shutdownInternalServer(axios, id),
-    onSuccess: () => {
-      toast.success(<Tran text="server.shutdown-success" />);
-    },
-    onError: (error) => toast.error(<Tran text="server.shutdown-fail" />, { description: error.message }),
+    mutationFn: async () =>
+      toast.promise(shutdownInternalServer(axios, id), {
+        loading: <Tran text="server.shutting-down" />,
+        success: <Tran text="server.shutdown-success" />,
+        error: <Tran text="server.shutdown-fail" />,
+      }),
     onSettled: () => {
       revalidate({ path: '/servers' });
     },
@@ -40,7 +42,12 @@ export default function ShutdownServerButton({ id }: Props) {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        <Tran text="server.shutdown-confirm" />
+        <AlertDialogTitle>
+          <Tran text="server.shutdown-confirm" />
+        </AlertDialogTitle>
+        <Hidden>
+          <AlertDialogDescription></AlertDialogDescription>
+        </Hidden>
         <AlertDialogFooter>
           <AlertDialogCancel>
             <Tran text="cancel" />

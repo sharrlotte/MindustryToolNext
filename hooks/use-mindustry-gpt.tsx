@@ -13,7 +13,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const decoder = new TextDecoder();
 async function* getChat(url: string, prompt: string, signal: AbortSignal) {
+  
   const requestUrl = new URL(url);
+
   requestUrl.searchParams.append('prompt', prompt);
 
   const res = await fetch(requestUrl, {

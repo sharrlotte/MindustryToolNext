@@ -1,39 +1,77 @@
 'use client';
 
-import React from 'react';
-import { toast } from 'sonner';
+import React, { useEffect, useState } from 'react';
 
+import ColorText from '@/components/common/color-text';
+import { Hidden } from '@/components/common/hidden';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 
-import { revalidate } from '@/action/action';
-import useClientApi from '@/hooks/use-client';
-import { startInternalServer } from '@/query/server';
-
-import { useMutation } from '@tanstack/react-query';
+import env from '@/constant/env';
+import useHttpStream from '@/hooks/use-http-stream';
 
 type Props = {
   id: string;
 };
 
 export default function StartServerButton({ id }: Props) {
-  const axios = useClientApi();
+  const [visible, setVisible] = useState(false);
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-servers'],
-    mutationFn: () => startInternalServer(axios, id),
-    onSuccess: () => {
-      toast.success(<Tran text="server.start-success" />);
-    },
-    onError: (error) => toast.error(<Tran text="server.start-fail" />, { description: error.message }),
-    onSettled: () => {
-      revalidate({ path: '/servers' });
-    },
+  const { data, mutate, isPending, isSuccess } = useHttpStream({
+    url: `${env.url.api}/internal-servers/${id}/start`,
+    method: 'POST',
+    mutationKey: ['internal-servers', id],
   });
 
+  useEffect(() => {
+    const containers = document.getElementsByClassName('pagination-container');
+
+    if (containers) {
+      for (const container of containers) {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    }
+  }, [data]);
+
   return (
-    <Button className="w-20" title="Start" variant="primary" disabled={isPending} onClick={() => mutate()}>
-      <Tran text="server.start" />
-    </Button>
+    <>
+      <Button
+        className="w-20"
+        title="Start"
+        variant="primary"
+        disabled={isPending}
+        onClick={() => {
+          mutate();
+          setVisible(true);
+        }}
+      >
+        <Tran text="server.start" />
+      </Button>
+      <Dialog open={visible} onOpenChange={setVisible}>
+        <DialogContent className="h-full w-full p-6 flex flex-col">
+          <DialogTitle>
+            <Tran text="server.starting-server" asChild />
+          </DialogTitle>
+          <Hidden>
+            <DialogDescription></DialogDescription>
+          </Hidden>
+          <ScrollContainer className="h-full flex-1 w-full overflow-x-auto">
+            <ColorText text={data} />
+          </ScrollContainer>
+          {isSuccess && (
+            <DialogClose className="ml-auto" asChild>
+              <Button>
+                <Tran text="server.started" />
+              </Button>
+            </DialogClose>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

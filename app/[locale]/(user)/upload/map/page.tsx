@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import Image from 'next/image';
@@ -32,6 +33,8 @@ import { CreateMapRequest, CreateMapSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+/* eslint-disable @next/next/no-img-element */
 
 export default function Page() {
   const { session } = useSession();
@@ -174,7 +177,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
     <Form {...form}>
       <form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
         <ScrollContainer className="flex flex-col gap-2">
-          <Image loader={({ src }) => src} src={IMAGE_PREFIX + preview.image.trim()} alt="Map" width={512} height={512} />
+          <img src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
           <UserCard user={session} />
           <FormField
             control={form.control}
