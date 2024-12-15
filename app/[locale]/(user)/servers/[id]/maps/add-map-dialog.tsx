@@ -82,8 +82,8 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
             <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
             <PaginationLayoutSwitcher />
           </div>
-          <ListLayout>
-            <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>
+          <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>
+            <ListLayout>
               <InfinitePage
                 params={params}
                 queryKey={['maps']}
@@ -96,21 +96,21 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
               >
                 {({ id, name }) => <ServerMapCard key={id} id={id} name={name} isAdded={added.includes(id)} mutate={mutate} />}
               </InfinitePage>
-            </ScrollContainer>
-          </ListLayout>
-          <GridLayout>
-            <GridPaginationList
-              params={params}
-              queryKey={['maps']}
-              queryFn={getMaps}
-              skeleton={{
-                amount: 20,
-                item: <Skeleton className="h-preview-height" />,
-              }}
-            >
-              {({ id, name }) => <ServerMapCard key={id} id={id} name={name} isAdded={added.includes(id)} mutate={mutate} />}
-            </GridPaginationList>
-          </GridLayout>
+            </ListLayout>
+            <GridLayout>
+              <GridPaginationList
+                params={params}
+                queryKey={['maps']}
+                queryFn={getMaps}
+                skeleton={{
+                  amount: 20,
+                  item: <Skeleton className="h-preview-height" />,
+                }}
+              >
+                {({ id, name }) => <ServerMapCard key={id} id={id} name={name} isAdded={added.includes(id)} mutate={mutate} />}
+              </GridPaginationList>
+            </GridLayout>
+          </ScrollContainer>
           <div className="flex justify-end">
             <GridLayout>
               <PaginationNavigator numberOfItems={data} />
