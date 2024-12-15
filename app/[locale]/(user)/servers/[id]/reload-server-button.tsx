@@ -1,56 +1,100 @@
 'use client';
 
-import React from 'react';
-import { toast } from 'sonner';
+import React, { useEffect, useState } from 'react';
 
+import ColorText from '@/components/common/color-text';
+import { Hidden } from '@/components/common/hidden';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 
 import { revalidate } from '@/action/action';
-import useClientApi from '@/hooks/use-client';
-import { createReloadInternalServer } from '@/query/server';
-
-import { useMutation } from '@tanstack/react-query';
+import env from '@/constant/env';
+import useHttpStream from '@/hooks/use-http-stream';
 
 type Props = {
   id: string;
 };
 
 export default function ReloadServerButton({ id }: Props) {
-  const axios = useClientApi();
+  const [visible, setVisible] = useState(false);
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-server, internal-servers'],
-    mutationFn: () => createReloadInternalServer(axios, id),
-    onSuccess: () => {
-      toast.success(<Tran text="server.reload-success" />);
-    },
-    onError: (error) => toast.error(<Tran text="server.reload-fail" />, { description: error.message }),
-    onSettled: () => {
-      revalidate({ path: '/servers' });
-    },
+  const { data, mutate, isPending, isSuccess } = useHttpStream({
+    url: `${env.url.api}/internal-servers/${id}/reload`,
+    method: 'POST',
+    mutationKey: ['internal-servers', id, 'reload'],
   });
 
+  useEffect(() => {
+    const containers = document.getElementsByClassName('pagination-container');
+
+    if (containers) {
+      for (const container of containers) {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    }
+  }, [data]);
+
+  function handleVisible(value: boolean) {
+    setVisible(value);
+
+    if (isSuccess) {
+      revalidate({ path: '/servers' });
+    }
+  }
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button className="min-w-20" title="Delete" variant="destructive" disabled={isPending}>
-          <Tran text="server.reload" />
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogFooter>
-          <AlertDialogCancel>
-            <Tran text="cancel" />
-          </AlertDialogCancel>
-          <AlertDialogAction variant="destructive" asChild>
-            <Button title="reload" disabled={isPending} onClick={() => mutate()}>
-              <Tran text="server.reload" />
-            </Button>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button className="min-w-20" title="Delete" variant="destructive" disabled={isPending}>
+            <Tran text="server.reload" />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogFooter>
+            <AlertDialogCancel>
+              <Tran text="cancel" />
+            </AlertDialogCancel>
+            <AlertDialogAction variant="destructive" asChild>
+              <Button
+                title="reload"
+                disabled={isPending}
+                onClick={() => {
+                  mutate();
+                  setVisible(true);
+                }}
+              >
+                <Tran text="server.reload" />
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <Dialog open={visible} onOpenChange={handleVisible}>
+        <DialogContent className="h-full w-full p-6 flex flex-col">
+          <DialogTitle>
+            <Tran text="server.reload" asChild />
+          </DialogTitle>
+          <Hidden>
+            <DialogDescription></DialogDescription>
+          </Hidden>
+          <ScrollContainer className="h-full flex-1 w-full overflow-x-auto">
+            <ColorText text={data} />
+          </ScrollContainer>
+          {isSuccess && (
+            <DialogClose className="ml-auto" asChild>
+              <Button>
+                <Tran text="server.started" />
+              </Button>
+            </DialogClose>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

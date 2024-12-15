@@ -23,7 +23,7 @@ export default function StartServerButton({ id }: Props) {
   const { data, mutate, isPending, isSuccess } = useHttpStream({
     url: `${env.url.api}/internal-servers/${id}/start`,
     method: 'POST',
-    mutationKey: ['internal-servers', id],
+    mutationKey: ['internal-servers', id, 'start'],
   });
 
   useEffect(() => {
