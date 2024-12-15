@@ -9,6 +9,7 @@ import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 
+import { revalidate } from '@/action/action';
 import env from '@/constant/env';
 import useHttpStream from '@/hooks/use-http-stream';
 
@@ -38,6 +39,14 @@ export default function StartServerButton({ id }: Props) {
     }
   }, [data]);
 
+  function handleVisible(value: boolean) {
+    setVisible(value);
+
+    if (isSuccess) {
+      revalidate({ path: '/servers' });
+    }
+  }
+
   return (
     <>
       <Button
@@ -52,7 +61,7 @@ export default function StartServerButton({ id }: Props) {
       >
         <Tran text="server.start" />
       </Button>
-      <Dialog open={visible} onOpenChange={setVisible}>
+      <Dialog open={visible} onOpenChange={handleVisible}>
         <DialogContent className="h-full w-full p-6 flex flex-col">
           <DialogTitle>
             <Tran text="server.starting-server" asChild />

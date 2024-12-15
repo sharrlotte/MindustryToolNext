@@ -1,6 +1,6 @@
 import { useId, useRef, useState } from 'react';
 
-import { QueryKey, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 const decoder = new TextDecoder();
 
@@ -27,13 +27,19 @@ async function* getStreamData({ url, method }: { url: string; method: Method }) 
 
     if (done) return;
 
-    const token = decoder.decode(value, { stream: true });
+    let token = decoder.decode(value, { stream: true });
+
+    token = token.replaceAll('data:', '').replaceAll('\ndata:\ndata:', '\n').replaceAll('\r', '').replaceAll('\n\n\n', '\n');
+
+    if (token.endsWith('\n\n')) {
+      token = token.slice(0, -2).trim();
+    }
 
     yield token;
   }
 }
 
-export default function useHttpStream({ url, mutationKey, method, onSuccess }: { url: string; mutationKey: QueryKey; method: Method; onSuccess?: () => void }) {
+export default function useHttpStream({ url, mutationKey, method, ...rest }: { url: string; method: Method } & Omit<Parameters<typeof useMutation<void, any, void, unknown>>[0], 'mutationFn'>) {
   const id = useId();
   const requestId = useRef(0);
 
@@ -41,7 +47,7 @@ export default function useHttpStream({ url, mutationKey, method, onSuccess }: {
 
   const mutation = useMutation({
     mutationKey: [mutationKey, id],
-    onSuccess,
+    ...rest,
     mutationFn: async () => {
       requestId.current = requestId.current + 1;
 
