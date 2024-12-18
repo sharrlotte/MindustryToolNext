@@ -55,6 +55,8 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   const { session } = useSession();
   const {
@@ -196,7 +198,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
     <Form {...form}>
       <form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
         <ScrollContainer className="flex flex-col gap-2">
-          <img src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
+          <img className="max-h-dvh" src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
           <UserCard user={session} />
           <FormField
             control={form.control}
