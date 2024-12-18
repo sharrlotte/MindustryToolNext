@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -28,7 +28,6 @@ import ProtectedElement from '@/layout/protected-element';
 import { createMultipleSchematic, createSchematic, getSchematicPreview } from '@/query/schematic';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
-import Tag from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { CreateSchematicRequest, CreateSchematicSchema } from '@/types/schema/zod-schema';
 
@@ -218,7 +217,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
     <Form {...form}>
       <form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
         <ScrollContainer className="flex flex-col gap-2">
-          <Image loader={({ src }) => src} src={IMAGE_PREFIX + preview.image.trim()} alt="Schematic" width={512} height={512} />
+          <img  src={IMAGE_PREFIX + preview.image.trim()} alt="Schematic"  />
           <UserCard user={session} />
           <FormField
             control={form.control}
