@@ -69,9 +69,7 @@ export default function StartServerButton({ id }: Props) {
           <Hidden>
             <DialogDescription></DialogDescription>
           </Hidden>
-          <ScrollContainer className="h-full flex-1 w-full overflow-x-auto">
-            <ColorText text={data} />
-          </ScrollContainer>
+          <ScrollContainer className="h-full flex-1 flex w-full flex-col overflow-x-auto">{data?.split('\n').map((text, index) => <ColorText key={index} text={text} />)}</ScrollContainer>
           {isSuccess && (
             <DialogClose className="ml-auto" asChild>
               <Button>
