@@ -1,5 +1,6 @@
+import dynamic from 'next/dynamic';
+
 import ClientInit from '@/app/[locale]/client-init';
-import NavigationBar from '@/app/[locale]/navigation';
 
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
@@ -16,6 +17,8 @@ import QueryProvider from '@/query/config/query-provider';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+
+const NavigationBar = dynamic(() => import('@/app/[locale]/navigation'), { ssr: false });
 
 type RootProps = {
   children: React.ReactNode;
