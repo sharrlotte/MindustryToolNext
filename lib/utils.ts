@@ -342,15 +342,19 @@ export function getErrorMessage(error: TError) {
 }
 
 export function getLoggedErrorMessage(error: TError) {
-  if (!error) {
-    return 'Something is wrong';
-  }
+  try {
+    if (!error) {
+      return 'Something is wrong';
+    }
 
-  if (typeof error === 'string') {
-    return error;
-  }
+    if (typeof error === 'string') {
+      return error;
+    }
 
-  return JSON.stringify(error, Object.getOwnPropertyNames(error));
+    return JSON.stringify(error, Object.getOwnPropertyNames(error));
+  } catch (e) {
+    return JSON.stringify(e);
+  }
 }
 
 export type Filter =
