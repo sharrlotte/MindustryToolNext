@@ -1,4 +1,4 @@
-import { AxiosError, isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import { type ClassValue, clsx } from 'clsx';
 import { notFound } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
@@ -195,10 +195,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function delay(timeMilis: number) {
-  return await new Promise((resolve) => setTimeout(resolve, timeMilis));
-}
-
 export function fillMetric(start: Date, numberOfDays: number, array: Metric[] | undefined, defaultValue: number): ChartData[] {
   if (!array) return [];
 
@@ -315,10 +311,6 @@ const DEFAULT_NEXTJS_ERROR_MESSAGE =
 const INTERNAL_ERROR_MESSAGE = 'Request failed with status code 500';
 
 export function getErrorMessage(error: TError) {
-  if (process.env.NODE_ENV === 'development') {
-    console.error(error);
-  }
-
   if (!error) {
     return 'Something is wrong';
   }
@@ -360,6 +352,7 @@ export function getLoggedErrorMessage(error: TError) {
       return JSON.stringify({
         request: JSON.stringify(error.request),
         response: JSON.stringify(error.response),
+        config: JSON.stringify(error.config),
         stacktrace: error.stack,
         message: error.message,
       });

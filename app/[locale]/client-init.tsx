@@ -1,22 +1,23 @@
 'use client';
 
-import ErrorScreen from '@/components/common/error-screen';
-
 import useClientApi from '@/hooks/use-client';
 
 import { useQuery } from '@tanstack/react-query';
 
-export default function ClientInit({ children }: { children: React.ReactNode }) {
+export default function ClientInit() {
   const axios = useClientApi();
 
-  const { isError, error } = useQuery({
-    queryFn: () => axios.get('/ping?client=web'),
+  useQuery({
+    queryFn: () => {
+      try {
+        axios.get('/ping?client=web');
+      } catch {
+        // Ignore
+      }
+      return null;
+    },
     queryKey: ['ping'],
   });
 
-  if (isError) {
-    return <ErrorScreen error={error} />;
-  }
-
-  return children;
+  return undefined;
 }

@@ -43,7 +43,6 @@ export function parseIconString(text: string) {
       const iconName = (icon as any)[key.toString()].split('|')[1];
 
       if (!iconName) {
-        console.error('Icon not found: ' + key);
         continue;
       }
 

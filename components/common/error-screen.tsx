@@ -20,7 +20,6 @@ export default function ErrorScreen({ error }: { error: TError }) {
 
   useEffect(() => {
     reportError(axios, `${path} > ${loggedMessage}`);
-    console.error(loggedMessage);
   }, [axios, message, path, loggedMessage]);
 
   if (typeof error === 'object' && 'error' in error && 'status' in error.error && error.error.status === 404) return <NotFound />;

@@ -3,26 +3,30 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { cache, use, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
 
+import { ApiError } from '@/action/action';
 import { useLocaleStore } from '@/context/locale-context';
 import { Locale, TranslateFunction, locales } from '@/i18n/config';
-import { extractTranslationKey, formatTranslation } from '@/lib/utils';
+import { extractTranslationKey, formatTranslation, isError } from '@/lib/utils';
 import axiosInstance from '@/query/config/config';
 
 class Empty {
   static missingKeys: Record<string, boolean> = {};
 }
 
-const getClientTranslation = cache((group: string, language: string) =>
-  axiosInstance
-    .get('/translations', {
-      params: {
-        group,
-        language,
-      },
-    })
-    .then(({ data }) => data)
-    .catch((err) => console.error(err)),
-);
+const getClientTranslation = cache(async (group: string, language: string): Promise<Record<string, string> | ApiError> => {
+  try {
+    return await axiosInstance
+      .get('/translations', {
+        params: {
+          group,
+          language,
+        },
+      })
+      .then(({ data }) => data);
+  } catch (error) {
+    return { error };
+  }
+});
 
 const getServerTranslation = unstable_cache(
   (group: string, language: string) =>
@@ -65,7 +69,7 @@ export function useI18n(): TranslateFunction {
 
           getClientTranslation(group, currentLocale) //
             .then((result) => {
-              if (result) {
+              if (result && !isError(result)) {
                 localStorage.setItem(localStorageKey, JSON.stringify(result));
               }
             });
@@ -80,7 +84,7 @@ export function useI18n(): TranslateFunction {
           use(
             getClientTranslation(group, currentLocale) //
               .then((result) => {
-                if (result) {
+                if (result && !isError(result)) {
                   localStorage.setItem(localStorageKey, JSON.stringify(result));
 
                   keys[group] = result;
@@ -128,7 +132,6 @@ export function useI18n(): TranslateFunction {
         return formatTranslation(translated, args) || text;
       } catch (err) {
         if (err && typeof err === 'object' && 'error' in err) {
-          console.info(err);
           return text;
         }
 

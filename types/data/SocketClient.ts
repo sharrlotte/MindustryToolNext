@@ -89,7 +89,6 @@ export default class SocketClient {
 
           const promise = new Promise<any>((resolve, reject) => {
             const timeout = setTimeout(() => {
-              console.error(`Join room timeout: ${task.room}, request: ${json}`);
 
               delete this.requests[id];
 
