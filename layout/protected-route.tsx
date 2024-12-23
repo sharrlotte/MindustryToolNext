@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import { ApiError } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import RequireLogin from '@/components/common/require-login';
 import Tran from '@/components/common/tran';
+
+import { ApiError } from '@/action/action';
 import { Filter, hasAccess, isError } from '@/lib/utils';
 import { Session } from '@/types/response/Session';
 
@@ -31,7 +32,6 @@ export default function ProtectedRoute({ filter, children, session }: Props) {
   const canAccess = hasAccess(session, filter);
 
   if (!canAccess) {
-    console.error(filter, session);
     return <NoPermission />;
   }
 

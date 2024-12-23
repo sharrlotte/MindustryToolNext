@@ -52,7 +52,8 @@ export default async function Root({ children, params }: RootProps) {
                   <SocketProvider>
                     <Toaster />
                     <NavigationBar>
-                      <ClientInit>{children}</ClientInit>
+                      <ClientInit />
+                      {children}
                     </NavigationBar>
                   </SocketProvider>
                 </SessionProvider>
