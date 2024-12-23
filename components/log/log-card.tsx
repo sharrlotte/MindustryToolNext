@@ -20,7 +20,12 @@ export default function LogCard({ log: { requestUrl, ip, userId, content, create
       {requestUrl && <span onClick={() => onClick({ url: requestUrl })}>URL: {requestUrl}</span>}
       <span onClick={() => onClick({ ip })}>IP: {ip}</span>
       Env: {environment === 1 ? 'Prod' : 'Dev'}
-      <span onClick={() => onClick({ content })}>Content: {content}</span>
+      <div onClick={() => onClick({ content })}>
+        Content:
+        {content.split('\n').map((item, index) => (
+          <span key={index}>{item}</span>
+        ))}
+      </div>
       <span>Created at: {new Date(createdAt).toLocaleString()}</span>
     </div>
   );

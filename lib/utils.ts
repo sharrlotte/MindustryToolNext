@@ -1,3 +1,4 @@
+import { AxiosError, isAxiosError } from 'axios';
 import { type ClassValue, clsx } from 'clsx';
 import { notFound } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
@@ -342,15 +343,28 @@ export function getErrorMessage(error: TError) {
 }
 
 export function getLoggedErrorMessage(error: TError) {
-  if (!error) {
-    return 'Something is wrong';
-  }
+  try {
+    if (!error) {
+      return 'Something is wrong';
+    }
 
-  if (typeof error === 'string') {
-    return error;
-  }
+    if (typeof error === 'string') {
+      return error;
+    }
 
-  return JSON.stringify(error, Object.getOwnPropertyNames(error));
+    if (isAxiosError(error)) {
+      return JSON.stringify({
+        request: JSON.stringify(error.request),
+        response: JSON.stringify(error.response),
+        stacktrace: error.stack,
+        message: error.message,
+      });
+    }
+
+    return JSON.stringify(error);
+  } catch (e) {
+    return JSON.stringify(e);
+  }
 }
 
 export type Filter =
