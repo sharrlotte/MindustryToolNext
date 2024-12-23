@@ -18,7 +18,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-const NavigationBar = dynamic(() => import('@/app/[locale]/navigation'), { ssr: false });
+const NavigationBar = dynamic(() => import('@/app/[locale]/navigation'));
 
 type RootProps = {
   children: React.ReactNode;
