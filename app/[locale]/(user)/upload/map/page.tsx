@@ -23,11 +23,10 @@ import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import { useI18n } from '@/i18n/client';
-import ProtectedElement from '@/layout/protected-element';
-import { createMap, createMultipleMap, getMapPreview } from '@/query/map';
+import { createMap, getMapPreview } from '@/query/map';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import TagGroup from '@/types/response/TagGroup';
 import { CreateMapRequest, CreateMapSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -35,50 +34,7 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
 export default function Page() {
-  const { session } = useSession();
-  const {
-    uploadTags: { map },
-  } = useTags();
-
-  const { mutate: uploadMultiple, isPending: isUploadingMultiple } = useMutation({
-    mutationFn: async (data: CreateMapRequest) => toast.promise(createMultipleMap(axios, data), { loading: <Tran text="upload.uploading" />, success: <Tran text="upload.success" />, error: <Tran text="upload.fail" /> }),
-  });
-
-  const [tags, setTags] = useState<TagGroup[]>([]);
-
   const axios = useClientApi();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState<MapPreviewResponse>();
@@ -103,21 +59,12 @@ export default function Page() {
     const filename = file.name;
     const extension = filename.split('.').pop();
 
-    if (extension !== 'msav' && extension !== 'zip') {
+    if (extension !== 'msav') {
       return toast.error(<Tran text="upload.invalid-map-file" />);
     }
 
-    if (extension === 'zip') {
-      uploadMultiple({
-        name: '',
-        description: '',
-        file,
-        tags: TagGroups.toString(tags),
-      });
-    } else {
-      setPreview(undefined);
-      setFile(file);
-    }
+    setPreview(undefined);
+    setFile(file);
   }
 
   useEffect(() => {
@@ -141,13 +88,7 @@ export default function Page() {
   return (
     <div className="flex h-full w-full flex-1 flex-col items-center justify-center gap-2 rounded-md p-2">
       <section className="flex flex-row flex-wrap items-center gap-2 md:h-1/2 md:w-1/2 md:flex-row md:items-start">
-        <UploadField onFileDrop={handleFileChange} disabled={isUploadingMultiple} />
-        <ProtectedElement session={session} filter={{ role: 'ADMIN' }}>
-          <div className="mt-10">
-            <Tran text="upload-zip" />
-            <TagSelector type="schematic" tags={map} value={tags} onChange={(fn) => setTags((prev) => fn(prev))} />
-          </div>
-        </ProtectedElement>
+        <UploadField onFileDrop={handleFileChange} />
       </section>
     </div>
   );
