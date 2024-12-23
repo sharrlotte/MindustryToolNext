@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  productionBrowserSourceMaps: false,
   crossOrigin: 'anonymous',
   reactStrictMode: true,
   images: {

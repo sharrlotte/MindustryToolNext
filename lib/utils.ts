@@ -13,7 +13,7 @@ import { Session } from '@/types/response/Session';
 import TagGroup from '@/types/response/TagGroup';
 
 export function isError<T extends Record<string, any>>(req: T | ApiError | null): req is ApiError {
-  if (req && typeof req === 'object' && 'error' in req && 'status' in req.error && req.error.status === 404) notFound();
+  if (req && typeof req === 'object' && 'error' in req && typeof req.error === 'object' && 'status' in req.error && req.error.status === 404) notFound();
 
   const isError = !!req && 'error' in req;
 
