@@ -307,7 +307,7 @@ export function omit<T extends Record<string, any>>(obj: T, ...keys: Array<keyof
   return Object.fromEntries(Object.entries(obj).filter(([key]) => !keys.includes(key)));
 }
 
-export type TError = (Error & { digest?: string }) | { error: { message: string } } | string;
+export type TError = Error | { error: { message: string } | Error } | string | { message: string };
 
 const DEFAULT_NEXTJS_ERROR_MESSAGE =
   'An error occurred in the Server Components render. The specific message is omitted in production builds to avoid leaking sensitive details. A digest property is included on this error instance which may provide additional details about the nature of the error.';
@@ -352,6 +352,10 @@ export function getLoggedErrorMessage(error: TError) {
       return error;
     }
 
+    if ('error' in error) {
+      return getLoggedErrorMessage(error.error);
+    }
+
     if (isAxiosError(error)) {
       return JSON.stringify({
         request: JSON.stringify(error.request),
@@ -361,9 +365,9 @@ export function getLoggedErrorMessage(error: TError) {
       });
     }
 
-    return JSON.stringify(error);
+    return JSON.stringify(error, Object.getOwnPropertyNames(error));
   } catch (e) {
-    return JSON.stringify(e);
+    return JSON.stringify(error, Object.getOwnPropertyNames(error));
   }
 }
 
