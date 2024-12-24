@@ -94,8 +94,6 @@ export function useI18n(): TranslateFunction {
         }
       }
 
-      console.log(keys);
-
       if (!value || Object.keys(value).length === 0) {
         return text;
       }
