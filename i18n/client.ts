@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie';
 import { ApiError } from '@/action/action';
 import { useLocaleStore } from '@/context/locale-context';
 import { Locale, TranslateFunction, locales } from '@/i18n/config';
-import { extractTranslationKey, formatTranslation } from '@/lib/utils';
+import { extractTranslationKey, formatTranslation, isError } from '@/lib/utils';
 import axiosInstance from '@/query/config/config';
 
 class Empty {
@@ -22,7 +22,7 @@ const getClientTranslation = cache(async (group: string, language: string): Prom
           language,
         },
       })
-      .then(({ data }: { data: Record<string, string> }) => data);
+      .then(({ data }) => data);
   } catch (error) {
     return { error };
   }
@@ -38,8 +38,8 @@ const getServerTranslation = unstable_cache(
         },
         timeout: 1000,
       })
-      .then(({ data }: { data: Record<string, string> }) => data)
-      .catch((err: any) => console.error(err)),
+      .then(({ data }) => data)
+      .catch((err) => console.error(err)),
   ['translations'],
   { revalidate: 3600 },
 );
@@ -69,7 +69,7 @@ export function useI18n(): TranslateFunction {
 
           getClientTranslation(group, currentLocale) //
             .then((result) => {
-              if (result) {
+              if (result && !isError(result)) {
                 localStorage.setItem(localStorageKey, JSON.stringify(result));
               }
             });
@@ -81,16 +81,18 @@ export function useI18n(): TranslateFunction {
         value = keys[group];
 
         if (value === null) {
-          getClientTranslation(group, currentLocale) //
-            .then((result) => {
-              if (result) {
-                localStorage.setItem(localStorageKey, JSON.stringify(result));
+          use(
+            getClientTranslation(group, currentLocale) //
+              .then((result) => {
+                if (result && !isError(result)) {
+                  localStorage.setItem(localStorageKey, JSON.stringify(result));
 
-                keys[group] = result;
+                  keys[group] = result;
 
-                setTranslation({ [group]: result });
-              }
-            });
+                  setTranslation({ [group]: result });
+                }
+              }),
+          );
         }
       }
 
