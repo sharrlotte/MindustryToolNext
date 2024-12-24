@@ -1,8 +1,7 @@
 'use server';
 
 import { AxiosInstance } from 'axios';
-import { expireTag, unstable_cache, unstable_noStore } from 'next/cache';
-import { expirePath } from 'next/cache';
+import { revalidatePath, revalidateTag, unstable_cache, unstable_noStore } from 'next/cache';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 import 'server-only';
@@ -16,11 +15,11 @@ import { Session } from '@/types/response/Session';
 export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
   'use server';
   if (path) {
-    expirePath(path);
+    revalidatePath(path);
   }
 
   if (tag) {
-    expireTag(tag);
+    revalidateTag(tag);
   }
 }
 
