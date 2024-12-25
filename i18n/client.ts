@@ -28,7 +28,9 @@ i18next
 
 export function useI18n(namespace: string | string[] = 'common', options?: any) {
   const { locale } = useParams();
+  
   let language = String(locale);
+
   language = locales.includes(language as any) ? language : defaultLocale;
 
   const [cookies, setCookie] = useCookies([cookieName, 'i18next']);
