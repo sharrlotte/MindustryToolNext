@@ -353,6 +353,7 @@ export function getLoggedErrorMessage(error: TError) {
         request: JSON.stringify(error.request),
         response: JSON.stringify(error.response),
         config: JSON.stringify(error.config),
+        url: error.config?.url,
         stacktrace: error.stack,
         message: error.message,
       });

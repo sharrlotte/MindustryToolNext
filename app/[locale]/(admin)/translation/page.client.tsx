@@ -121,6 +121,7 @@ function RefreshButton() {
 
 function CompareTable({ language, target }: CompareTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
+
   const { data } = useClientQuery({
     queryKey: ['translations', 'compare', 'total', params.language, params.target],
     queryFn: (axios) => getTranslationCompareCount(axios, params),
