@@ -234,7 +234,7 @@ function CommentInput({ itemId }: CommentInputProps) {
             />
             {isPending ? (
               <div className="ml-auto">
-                <LoadingSpinner />
+                <LoadingSpinner className="p-0" />
               </div>
             ) : (
               <Button className="ml-auto" variant="primary" type="submit" disabled={isPending}>
