@@ -5,11 +5,6 @@ import { Locale } from '@/i18n/config';
 import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
 
-export async function getTranslation(axios: AxiosInstance, params: PaginationQuery & { language: Locale }): Promise<Record<string, string>[]> {
-  const result = await axios.get('/translations', { params });
-
-  return result.data;
-}
 
 export async function getTranslationDiff(axios: AxiosInstance, params: PaginationQuery & { language: Locale; target: Locale }): Promise<TranslationDiff[]> {
   const result = await axios.get('/translations/diff', { params });
