@@ -57,7 +57,7 @@
     "i18next-http-backend": "^3.0.1",
     "konva": "^9.3.18",
     "lucide-react": "^0.292.0",
-    "next": "15.1.1-canary.14",
+    "next": "15.0.4-canary.52",
     "next-logger": "^5.0.1",
     "next-themes": "^0.2.1",
     "nextjs-toploader": "^1.6.12",
