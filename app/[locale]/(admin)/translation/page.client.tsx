@@ -57,6 +57,7 @@ export default function TranslationPage() {
         <div className="flex items-center gap-2">
           <ComboBox<Locale>
             className="h-10"
+            searchBar={false}
             value={{ label: t(language), value: language as Locale }}
             values={locales.map((locale) => ({
               label: t(locale),
@@ -67,6 +68,7 @@ export default function TranslationPage() {
           {'=>'}
           <ComboBox<Locale>
             className="h-10"
+            searchBar={false}
             value={{ label: t(target), value: target as Locale }}
             values={locales.map((locale) => ({
               label: t(locale),
@@ -76,6 +78,7 @@ export default function TranslationPage() {
           />
           <ComboBox<TranslateMode>
             className="h-10"
+            searchBar={false}
             value={{
               label: t(mode),
               value: mode as TranslateMode,
