@@ -18,7 +18,7 @@ axiosInstance.interceptors.response.use(
     return res;
   },
   (error) => {
-    if (error.errno === -4078) {
+    if (error.errno === -4078 || error.code === 'ERR_BAD_RESPONSE') {
       throw {
         message: 'Service is unavailable, please try again later',
         status: 503,
@@ -46,6 +46,13 @@ axiosInstance.interceptors.response.use(
       throw {
         message: error.response.data.message,
         status: error.response.data.status,
+      };
+    }
+
+    if (error.message) {
+      throw {
+        message: error.message,
+        status: error.status,
       };
     }
 
