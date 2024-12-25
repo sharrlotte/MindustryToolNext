@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
-import { Locale, cookieName, getOptions, locales } from '@/i18n/config';
+import { Locale, cookieName, defaultLocale, getOptions, locales } from '@/i18n/config';
 
 const runsOnServerSide = typeof window === 'undefined';
 
@@ -28,7 +28,11 @@ i18next
 
 export function useI18n(namespace: string | string[] = 'common', options?: any) {
   const { locale } = useParams();
-  const language = String(locale);
+  
+  let language = String(locale);
+
+  language = locales.includes(language as any) ? language : defaultLocale;
+
   const [cookies, setCookie] = useCookies([cookieName, 'i18next']);
   const ret = useTranslationOrg(namespace, options);
 
@@ -38,16 +42,19 @@ export function useI18n(namespace: string | string[] = 'common', options?: any) 
   } else {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [activeLng, setActiveLng] = useState(i18n.resolvedLanguage);
+
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       if (activeLng === i18n.resolvedLanguage) return;
       setActiveLng(i18n.resolvedLanguage);
     }, [activeLng, i18n.resolvedLanguage]);
+
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       if (!language || i18n.resolvedLanguage === language) return;
       i18n.changeLanguage(language);
     }, [language, i18n]);
+
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       if (cookies.i18next === language) return;
