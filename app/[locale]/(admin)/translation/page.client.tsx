@@ -48,7 +48,7 @@ const defaultState = {
 
 export default function TranslationPage() {
   const [{ language, target, mode, key }, setQueryState] = useQueryState(defaultState);
-  const { t } = useI18n();
+  const { t } = useI18n(['common', 'translation']);
 
   return (
     <Fragment>

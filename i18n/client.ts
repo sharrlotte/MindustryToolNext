@@ -26,7 +26,7 @@ i18next
     preload: runsOnServerSide ? locales : [],
   });
 
-export function useI18n(namespace?: string, options?: any) {
+export function useI18n(namespace?: string | string[], options?: any) {
   const { locale } = useParams();
   const language = String(locale);
   const [cookies, setCookie] = useCookies([cookieName, 'i18next']);
