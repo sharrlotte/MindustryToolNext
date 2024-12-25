@@ -3,12 +3,11 @@
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import HttpApi from 'i18next-http-backend';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
-import { useLocaleStore } from '@/context/locale-context';
 import { Locale, cookieName, getOptions, locales } from '@/i18n/config';
 
 const runsOnServerSide = typeof window === 'undefined';
@@ -28,7 +27,8 @@ i18next
   });
 
 export function useI18n(namespace?: string, options?: any) {
-  const { currentLocale: language } = useLocaleStore();
+  const { locale } = useParams();
+  const language = String(locale);
   const [cookies, setCookie] = useCookies([cookieName, 'i18next']);
   const ret = useTranslationOrg(namespace, options);
 
@@ -59,7 +59,6 @@ export function useI18n(namespace?: string, options?: any) {
 
 export function useChangeLocale() {
   const [_, setCookie] = useCookies();
-  const { setCurrentLocale } = useLocaleStore();
   const pathname = usePathname();
   const router = useRouter();
   const params = useSearchParams();
@@ -69,7 +68,6 @@ export function useChangeLocale() {
 
     const url = pathnameHasLocale ? `/${locale}/${pathname.slice(4)}` : `/${locale}${pathname}`;
 
-    setCurrentLocale(locale);
     setCookie('Locale', locale, { path: '/' });
 
     router.push(`${url}?${new URLSearchParams(params).toString()}`);
