@@ -13,17 +13,31 @@ let dismissLast: (() => void) | null = null;
 
 export default function useClipboard() {
   return useCallback(async ({ data, title = <Tran text="copied" />, content = '' }: CopyProps) => {
-    await navigator.clipboard.writeText(data);
+    let id: undefined | string | number;
 
-    if (dismissLast) {
-      dismissLast();
+    async function copy() {
+      await navigator.clipboard.writeText(data);
+
+      if (dismissLast) {
+        dismissLast();
+      }
+
+      id = toast(title, {
+        description: content,
+      });
+
+      dismissLast = () => toast.dismiss(id);
     }
 
-    const id = toast(title, {
-      description: content,
+    navigator.permissions.query({ name: 'clipboard-write' as PermissionName }).then(async (result) => {
+      if (result.state === 'denied') {
+        copy();
+      } else {
+        result.onchange = async () => {
+          copy();
+        };
+      }
     });
-
-    dismissLast = () => toast.dismiss(id);
 
     return () => toast.dismiss(id);
   }, []);

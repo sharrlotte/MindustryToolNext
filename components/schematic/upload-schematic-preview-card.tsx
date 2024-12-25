@@ -1,3 +1,4 @@
+import { useParams } from 'next/navigation';
 import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -8,6 +9,7 @@ import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
+
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useImageLoading from '@/hooks/use-image-loading';
@@ -22,8 +24,9 @@ type UploadSchematicPreviewCardProps = {
 
 function InternalUploadSchematicPreviewCard({ schematic: { id, name }, imageCount }: UploadSchematicPreviewCardProps) {
   const axios = useClientApi();
+  const { locale } = useParams();
 
-  const link = `${env.url.base}/admin/schematics/${id}`;
+  const link = `${env.url.base}/${locale}/admin/schematics/${id}`;
   const detailLink = `/admin/schematics/${id}`;
   const imageLink = `${env.url.image}/schematic-previews/${id}${env.imageFormat}`;
   const detailImageLink = `${env.url.image}/schematics/${id}${env.imageFormat}`;

@@ -209,7 +209,7 @@ function CommentInput({ itemId }: CommentInputProps) {
               </FormItem>
             )}
           />
-          <div className="flex gap-4">
+          <div className="flex justify-center items-center p-1 gap-1">
             <BoldButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
             <ItalicButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
             <StrikethroughButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
@@ -234,7 +234,7 @@ function CommentInput({ itemId }: CommentInputProps) {
             />
             {isPending ? (
               <div className="ml-auto">
-                <LoadingSpinner />
+                <LoadingSpinner className="p-0" />
               </div>
             ) : (
               <Button className="ml-auto" variant="primary" type="submit" disabled={isPending}>

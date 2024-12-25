@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -36,8 +37,9 @@ export default function UploadSchematicDetailCard({ schematic: { id, name, tags,
   useEffect(() => {
     setSelectedTags(TagGroups.parseString(tags, schematic));
   }, [tags, schematic]);
+  const { locale } = useParams();
 
-  const link = `${env.url.base}/schematics/${id}`;
+  const link = `${env.url.base}/${locale}/schematics/${id}`;
   const imageUrl = `${env.url.image}/schematics/${id}${env.imageFormat}`;
   const errorImageUrl = `${env.url.api}/schematics/${id}/image`;
   const copyMessage = `Copied schematic ${name}`;

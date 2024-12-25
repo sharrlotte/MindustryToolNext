@@ -1,8 +1,10 @@
+import { useParams } from 'next/navigation';
 import React, { HTMLAttributes } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import AloneDislikeCount from '@/components/like/alone-dislike-count';
 import AloneLikeCount from '@/components/like/alone-like-count';
 import LikeComponent from '@/components/like/like-component';
 import IdUserCard from '@/components/user/id-user-card';
@@ -10,14 +12,15 @@ import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
 import { Post } from '@/types/response/Post';
-import AloneDislikeCount from '@/components/like/alone-dislike-count';
 
 type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
 function InternalPostPreviewCard({ className, post, ...rest }: PostPreviewCardProps) {
-  const link = `${env.url.base}/posts/${post.id}`;
+  const { locale } = useParams();
+
+  const link = `${env.url.base}/${locale}/posts/${post.id}`;
   const firstImage = post.imageUrls ? post.imageUrls[0] : '';
 
   return (

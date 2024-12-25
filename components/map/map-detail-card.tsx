@@ -1,5 +1,7 @@
 'use client';
 
+import { useParams } from 'next/navigation';
+
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import CommentSection from '@/components/common/comment-section';
@@ -25,8 +27,9 @@ type MapDetailCardProps = {
 
 export default function MapDetailCard({ map: { id, name, description, tags, verifierId, itemId, likes, dislikes, userLike, userId, isVerified, width, height, downloadCount } }: MapDetailCardProps) {
   const { session } = useSession();
+  const { locale } = useParams();
 
-  const link = `${env.url.base}/maps/${id}`;
+  const link = `${env.url.base}/${locale}/maps/${id}`;
   const imageUrl = `${env.url.image}/maps/${id}${env.imageFormat}`;
   const errorImageUrl = `${env.url.api}/maps/${id}/image`;
   const downloadUrl = `${env.url.api}/maps/${id}/download`;

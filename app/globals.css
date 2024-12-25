@@ -177,6 +177,10 @@
     }
   }
 
+  .layout > .error {
+    @apply absolute inset-0;
+  }
+
   [contenteditable='true']:empty:not(:focus):before {
     content: attr(data-placeholder);
     @apply text-muted-foreground;

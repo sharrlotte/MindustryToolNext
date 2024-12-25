@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -31,7 +32,9 @@ export default function UploadMapDetailCard({ map: { id, name, tags, description
     setSelectedTags(TagGroups.parseString(tags, map));
   }, [tags, map]);
 
-  const link = `${env.url.base}/maps/${id}`;
+  const { locale } = useParams();
+
+  const link = `${env.url.base}/${locale}/maps/${id}`;
   const imageUrl = `${env.url.image}/maps/${id}${env.imageFormat}`;
   const errorImageUrl = `${env.url.api}/maps/${id}/image`;
   const downloadUrl = `${env.url.api}/maps/${id}/download`;

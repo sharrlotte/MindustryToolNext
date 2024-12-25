@@ -1,3 +1,4 @@
+import { useParams } from 'next/navigation';
 import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -7,6 +8,7 @@ import ColorText from '@/components/common/color-text';
 import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
+
 import env from '@/constant/env';
 import useImageLoading from '@/hooks/use-image-loading';
 import { Map } from '@/types/response/Map';
@@ -17,7 +19,9 @@ type UploadMapPreviewCardProps = {
 };
 
 function InternalUploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPreviewCardProps) {
-  const link = `${env.url.base}/admin/maps/${id}`;
+  const { locale } = useParams();
+
+  const link = `${env.url.base}/${locale}/admin/maps/${id}`;
   const detailLink = `/admin/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
   const detailImageLink = `${env.url.image}/maps/${id}${env.imageFormat}`;

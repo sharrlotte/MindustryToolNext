@@ -47,11 +47,11 @@ export default function Page() {
   // If post is not undefined then its a translate request
   const [post, setPost] = useState<PostDetail>();
   const [title, setTitle] = useState<string>('');
+  const [language, setLanguage] = useState('en');
   const [content, setContent] = useState<MarkdownData>({
     text: '',
     files: [],
   });
-  const [language, setLanguage] = useState('');
 
   function handlePostSelect(post: PostDetail) {
     setPost(post);
@@ -147,10 +147,10 @@ function TranslatePage({
   const uploadCheck = checkUploadRequirement();
 
   const validLanguages = languages
-    .filter((language) => language !== post.lang && post.translations && !Object.keys(post.translations).includes(language))
+    .filter((language) => language !== post.lang)
     .map((value) => ({
       value,
-      label: value,
+      label: t(value),
     }));
 
   return (
@@ -161,7 +161,7 @@ function TranslatePage({
           <MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
         </div>
         <div className="flex items-center justify-start gap-2 rounded-md ">
-          <ComboBox placeholder={t('upload.select-language')} value={{ label: t(language || 'en'), value: language }} values={validLanguages} onChange={(value) => setLanguage(value ?? '')} />
+          <ComboBox placeholder={t('select-language')} value={{ label: t(language || 'en'), value: language }} values={validLanguages} onChange={(value) => setLanguage(value ?? '')} />
           <Button
             className="ml-auto"
             title="submit"
@@ -200,7 +200,6 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
     mutationFn: (data: CreatePostRequest) => createPost(axios, data),
     onSuccess: () => {
       toast.success(<Tran text="upload.success" />);
-
       setTitle('');
       setContent({ text: '', files: [] });
       setSelectedTags([]);
