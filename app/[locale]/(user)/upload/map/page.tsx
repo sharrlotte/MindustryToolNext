@@ -34,6 +34,10 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   const axios = useClientApi();
   const [file, setFile] = useState<File>();
@@ -114,7 +118,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
     uploadTags: { map },
   } = useTags();
 
-  const t = useI18n();
+  const { t } = useI18n();
   const axios = useClientApi();
 
   const form = useForm<FormData>({

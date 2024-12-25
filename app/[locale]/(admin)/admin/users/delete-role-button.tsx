@@ -37,7 +37,7 @@ export default function DeleteRoleButton({ role }: Props) {
     },
   });
 
-  const t = useI18n();
+  const { t } = useI18n();
 
   return <DeleteButton variant="command" isLoading={isPending} description={<Tran text="role.delete" args={{ name: t(name) }} />} onClick={mutate} />;
 }

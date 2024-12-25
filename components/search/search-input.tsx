@@ -25,7 +25,7 @@ type InputProps = HTMLAttributes<HTMLInputElement> & {
 };
 
 export function SearchInput({ className, placeholder, value, onChange, onClear, ...props }: InputProps) {
-  const t = useI18n();
+  const { t } = useI18n();
 
   return (
     <>

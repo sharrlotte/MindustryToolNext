@@ -1,9 +1,11 @@
 'use client';
 
+import { Trans } from 'react-i18next';
+
 import ComboBox from '@/components/common/combo-box';
 import { Hidden } from '@/components/common/hidden';
-import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+
 import { useLocaleStore } from '@/context/locale-context';
 import { useChangeLocale, useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
@@ -11,7 +13,7 @@ import { Locale, locales } from '@/i18n/config';
 export function ChangeLanguageDialog() {
   const { currentLocale } = useLocaleStore();
   const setCurrentLocale = useChangeLocale();
-  const t = useI18n();
+  const { t } = useI18n('common');
 
   function onLanguageChange(value: any) {
     setCurrentLocale(value ?? 'en');
@@ -20,7 +22,7 @@ export function ChangeLanguageDialog() {
   return (
     <Dialog>
       <DialogTrigger className="w-full text-start">
-        <Tran text="switch-language" />
+        <Trans text="switch-language" />
       </DialogTrigger>
       <DialogContent className="p-6">
         <Hidden>

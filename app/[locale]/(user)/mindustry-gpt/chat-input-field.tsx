@@ -11,7 +11,7 @@ type ChatInputFieldProps = {
 };
 
 export default function ChatInputField({ reset, setPrompt, handleKeyPress }: ChatInputFieldProps) {
-  const t = useI18n();
+  const { t } = useI18n();
 
   return (
     <AutosizeTextarea

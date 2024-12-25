@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { useI18n } from '@/i18n/client';
+import { extractTranslationKey } from '@/lib/utils';
 
 type Props = {
   className?: string;
@@ -13,15 +14,16 @@ type Props = {
 };
 
 function InternalTran({ className, text, args, asChild, ...rest }: Props): React.ReactNode {
-  const t = useI18n();
+  const { group, key } = extractTranslationKey(text);
+  const { t } = useI18n(group);
 
   if (asChild) {
-    return t(text, args);
+    return t(key, args);
   }
 
   return (
     <span className={className} {...rest}>
-      {t(text, args)}
+      {t(key, args)}
     </span>
   );
 }

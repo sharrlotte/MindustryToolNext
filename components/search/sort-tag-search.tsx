@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ComboBox from '@/components/common/combo-box';
+
 import { defaultSortTag } from '@/constant/env';
 import useQueryState from '@/hooks/use-query-state';
 import { useI18n } from '@/i18n/client';
@@ -12,7 +13,7 @@ const defaultState = {
 
 export default function SortTagSearch() {
   const [{ selectedSortTag }, setSelectedSortTag] = useQueryState(defaultState);
-  const t = useI18n();
+  const { t } = useI18n();
 
   const sortTags = sortTagGroup.values.map((value) => ({
     label: value,

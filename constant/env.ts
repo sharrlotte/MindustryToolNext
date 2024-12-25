@@ -1,10 +1,10 @@
-import { locales } from '@/i18n/config';
 import SortTag from '@/types/response/SortTag';
+
 
 const env = {
   webVersion: 'v1.1.1',
   webName: 'Mindustry Tool',
-  locales: locales,
+  locales: ['en', 'vi', 'kr', 'cn', 'jp', 'ru', 'uk'] as const,
   defaultLocale: 'en',
   imageFormat: '.webp',
   requestTimeout: parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT || '0') || 9000,

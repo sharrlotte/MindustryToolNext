@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default function WebsiteVisitRate({ start, dates, data }: Props) {
-  const t = useI18n();
+  const { t } = useI18n();
   const filledData = fillMetric(start, dates, data, 0);
 
   const chart = {

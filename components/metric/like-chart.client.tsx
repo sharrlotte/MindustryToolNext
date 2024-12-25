@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function LikeChartClient({ data }: Props) {
-  const t = useI18n();
+  const { t } = useI18n();
 
   const chart = {
     labels: data.map(({ createdAt }) => createdAt.toLocaleDateString()),

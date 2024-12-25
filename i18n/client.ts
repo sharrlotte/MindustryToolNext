@@ -1,147 +1,60 @@
-import { unstable_cache } from 'next/cache';
+'use client';
+
+import i18next from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import HttpApi from 'i18next-http-backend';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { cache, use, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
-import { ApiError } from '@/action/action';
 import { useLocaleStore } from '@/context/locale-context';
-import { Locale, TranslateFunction, locales } from '@/i18n/config';
-import { extractTranslationKey, formatTranslation, isError } from '@/lib/utils';
-import axiosInstance from '@/query/config/config';
+import { Locale, cookieName, getOptions, locales } from '@/i18n/config';
 
-class Empty {
-  static missingKeys: Record<string, boolean> = {};
-}
+const runsOnServerSide = typeof window === 'undefined';
 
-const getClientTranslation = cache(async (group: string, language: string): Promise<Record<string, string> | ApiError> => {
-  try {
-    return await axiosInstance
-      .get('/translations', {
-        params: {
-          group,
-          language,
-        },
-      })
-      .then(({ data }) => data);
-  } catch (error) {
-    return { error };
-  }
-});
-
-const getServerTranslation = unstable_cache(
-  (group: string, language: string) =>
-    axiosInstance
-      .get('/translations', {
-        params: {
-          group,
-          language,
-        },
-        timeout: 1000,
-      })
-      .then(({ data }) => data)
-      .catch((err) => console.error(err)),
-  ['translations'],
-  { revalidate: 3600 },
-);
-
-export function useI18n(): TranslateFunction {
-  const { currentLocale, translation, setTranslation } = useLocaleStore();
-
-  if (translation[currentLocale] === undefined) {
-    translation[currentLocale] = {};
-  }
-
-  const keys = translation[currentLocale];
-
-  const t = useCallback(
-    (translationKey: string, args?: Record<string, string>) => {
-      const { text, group, key } = extractTranslationKey(translationKey);
-
-      let value = keys[group];
-
-      const localStorageKey = `${currentLocale}.translation.${group}`;
-
-      if (value === undefined) {
-        try {
-          value = JSON.parse(localStorage.getItem(localStorageKey) || 'null');
-
-          keys[group] = value;
-
-          getClientTranslation(group, currentLocale) //
-            .then((result) => {
-              if (result && !isError(result)) {
-                localStorage.setItem(localStorageKey, JSON.stringify(result));
-              }
-            });
-        } catch (e) {
-          keys[group] = {};
-          localStorage.removeItem(localStorageKey);
-        }
-
-        value = keys[group];
-
-        if (value === null) {
-          use(
-            getClientTranslation(group, currentLocale) //
-              .then((result) => {
-                if (result && !isError(result)) {
-                  localStorage.setItem(localStorageKey, JSON.stringify(result));
-
-                  keys[group] = result;
-
-                  setTranslation({ [group]: result });
-                }
-              }),
-          );
-        }
-      }
-
-      if (!value || Object.keys(value).length === 0) {
-        return text;
-      }
-
-      const translated = value[key];
-
-      if (!translated) {
-        if (!Empty.missingKeys[text]) {
-          console.warn(`Missing key: ${text}`);
-          Empty.missingKeys[text] = true;
-        }
-        return text;
-      }
-
-      return formatTranslation(translated, args) || text;
+//
+i18next
+  .use(initReactI18next)
+  .use(LanguageDetector)
+  .use(HttpApi)
+  .init({
+    ...getOptions(),
+    lng: undefined, // let detect the language on client side
+    detection: {
+      order: ['path', 'htmlTag', 'cookie', 'navigator'],
     },
-    [keys, currentLocale, setTranslation],
-  );
+    preload: runsOnServerSide ? locales : [],
+  });
 
-  if (typeof window === 'undefined') {
-    return (translationKey: string, args?: Record<string, string>) => {
-      const { text, group, key } = extractTranslationKey(translationKey);
+export function useI18n(namespace?: string, options?: any) {
+  const { currentLocale: language } = useLocaleStore();
+  const [cookies, setCookie] = useCookies([cookieName, 'i18next']);
+  const ret = useTranslationOrg(namespace, options);
 
-      try {
-        const data = getServerTranslation(group, currentLocale);
-        const value = use(data);
-
-        if (!value) {
-          return text;
-        }
-
-        const translated = value[key];
-
-        return formatTranslation(translated, args) || text;
-      } catch (err) {
-        if (err && typeof err === 'object' && 'error' in err) {
-          return text;
-        }
-
-        // Rethrow for react suspend error
-        throw err;
-      }
-    };
+  const { i18n } = ret;
+  if (runsOnServerSide && language && i18n.resolvedLanguage !== language) {
+    i18n.changeLanguage(language);
+  } else {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [activeLng, setActiveLng] = useState(i18n.resolvedLanguage);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      if (activeLng === i18n.resolvedLanguage) return;
+      setActiveLng(i18n.resolvedLanguage);
+    }, [activeLng, i18n.resolvedLanguage]);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      if (!language || i18n.resolvedLanguage === language) return;
+      i18n.changeLanguage(language);
+    }, [language, i18n]);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      if (cookies.i18next === language) return;
+      setCookie(cookieName, language, { path: '/' });
+    }, [language, cookies.i18next, setCookie]);
   }
-
-  return t;
+  return ret;
 }
 
 export function useChangeLocale() {
