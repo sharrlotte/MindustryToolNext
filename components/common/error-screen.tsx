@@ -25,7 +25,7 @@ export default function ErrorScreen({ error }: { error: TError }) {
   if (typeof error === 'object' && 'error' in error && 'status' in error.error && error.error.status === 404) return <NotFound />;
 
   return (
-    <div className="col-span-full flex h-full w-full flex-col items-center justify-center gap-2 bg-background p-2">
+    <div className="error col-span-full flex h-full w-full flex-col items-center justify-center gap-2 bg-background p-2">
       <h2 className="text-base font-bold">{message}</h2>
       <div className="grid grid-cols-2 items-center justify-center gap-2">
         <a className="h-9 flex-1 text-nowrap rounded-md text-sm border border-border justify-center items-center px-4 py-2" href="https://discord.gg/DCX5yrRUyp" target="_blank" rel="noopener noreferrer">

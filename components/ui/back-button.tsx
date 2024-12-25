@@ -11,12 +11,13 @@ import { cn } from '@/lib/utils';
 export default function BackButton({ className, children, ...props }: Omit<ButtonProps, 'title'>) {
   const router = useRouter();
 
-  children = children ?? (
-    <Button className={cn('gap-1 whitespace-nowrap text-nowrap', className)} title="back" variant="outline" {...props} onClick={() => router.back()}>
-      <BackIcon className="size-5" />
-      <Tran text="back" />
-    </Button>
-  );
+  if (!children)
+    return (
+      <Button className={cn('gap-1 whitespace-nowrap text-nowrap', className)} title="back" variant="outline" {...props} onClick={() => router.back()}>
+        <BackIcon className="size-5" />
+        <Tran text="back" />
+      </Button>
+    );
 
   return (
     <Button className={cn('gap-1 whitespace-nowrap text-nowrap', className)} title="back" variant="outline" {...props} onClick={() => router.back()}>
