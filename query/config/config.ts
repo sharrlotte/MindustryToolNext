@@ -1,6 +1,8 @@
 import Axios from 'axios';
+import axios from 'axios';
 
 import env from '@/constant/env';
+import { getLoggedErrorMessage } from '@/lib/utils';
 
 const axiosInstance = Axios.create({
   baseURL: env.url.api,
@@ -38,6 +40,10 @@ axiosInstance.interceptors.response.use(
             status: 503,
           };
       }
+    }
+
+    if (axios.isAxiosError(error)) {
+      throw new Error(getLoggedErrorMessage(error));
     }
 
     if (error?.response?.data) {
