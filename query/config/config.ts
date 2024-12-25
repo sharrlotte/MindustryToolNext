@@ -42,15 +42,15 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    if (axios.isAxiosError(error)) {
-      throw new Error(getLoggedErrorMessage(error));
-    }
-
     if (error?.response?.data) {
       throw {
         message: error.response.data.message,
         status: error.response.data.status,
       };
+    }
+
+    if (axios.isAxiosError(error)) {
+      throw new Error(getLoggedErrorMessage(error));
     }
 
     throw error;
