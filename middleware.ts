@@ -25,6 +25,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(`/${language}${req.nextUrl.pathname}`, req.url));
   }
 
+  
   if (req.headers.has('referer')) {
     const refererUrl = new URL(req.headers.get('referer') || '');
     const languageInReferer = locales.find((l) => refererUrl.pathname.startsWith(`/${l}`));
