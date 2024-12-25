@@ -25,6 +25,8 @@ export default function useQueryState(initialState: Record<string, string>) {
     (value: Record<string, string | undefined>) => {
       const queryParams = new URLSearchParams(params);
 
+      value = { ...currentValue, ...value };
+
       const filteredValue = Object.fromEntries(Object.entries(value).filter(([_, value]) => value !== undefined)) as Record<string, string>;
 
       setCurrentValue(filteredValue);

@@ -4,8 +4,9 @@ import Client from '@/app/[locale]/(user)/schematics/page.client';
 
 import ErrorScreen from '@/components/common/error-screen';
 
-import { serverApi, translate } from '@/action/action';
+import { serverApi } from '@/action/action';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { formatTitle, isError } from '@/lib/utils';
 import { getSchematics } from '@/query/schematic';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
@@ -14,7 +15,8 @@ export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const title = await translate(locale, 'schematic');
+  const { t } = await getTranslation(locale);
+  const title = await t(locale, 'schematic');
 
   return {
     title: formatTitle(title),

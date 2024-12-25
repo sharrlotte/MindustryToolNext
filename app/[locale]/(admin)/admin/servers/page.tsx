@@ -13,8 +13,9 @@ import Tran from '@/components/common/tran';
 import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
-import { getSession, translate } from '@/action/action';
+import { getSession } from '@/action/action';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import ProtectedElement from '@/layout/protected-element';
 import { formatTitle } from '@/lib/utils';
 
@@ -25,7 +26,8 @@ type Props = {
 };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const title = await translate(locale, 'server');
+  const { t } = await getTranslation(locale);
+  const title = await t(locale, 'server');
 
   return {
     title: formatTitle(title),

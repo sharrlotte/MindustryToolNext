@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
 
-import { translate } from '@/action/action';
 import TranslationPage from '@/app/[locale]/(admin)/translation/page.client';
+
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';
 
 type Props = {
@@ -13,7 +14,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const title = await translate(locale, 'translation');
+  const { t } = await getTranslation(locale);
+  const title = await t(locale, 'translation');
 
   return {
     title: formatTitle(title),

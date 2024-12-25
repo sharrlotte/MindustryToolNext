@@ -8,8 +8,8 @@ import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 
-import { translate } from '@/action/action';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';
 
 import { YouTubeEmbed } from '@next/third-parties/google';
@@ -24,7 +24,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const title = await translate(locale, 'home');
+  const { t } = await getTranslation(locale);
+  const title = await t(locale, 'home');
 
   return {
     title: formatTitle(title),

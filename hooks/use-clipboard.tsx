@@ -29,15 +29,19 @@ export default function useClipboard() {
       dismissLast = () => toast.dismiss(id);
     }
 
-    navigator.permissions.query({ name: 'clipboard-write' as PermissionName }).then(async (result) => {
-      if (result.state === 'denied') {
-        copy();
-      } else {
-        result.onchange = async () => {
+    try {
+      navigator.permissions.query({ name: 'clipboard-write' as PermissionName }).then(async (result) => {
+        if (result.state === 'denied') {
           copy();
-        };
-      }
-    });
+        } else {
+          result.onchange = async () => {
+            copy();
+          };
+        }
+      });
+    } catch {
+      copy();
+    }
 
     return () => toast.dismiss(id);
   }, []);
