@@ -4,6 +4,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { useInterval } from 'usehooks-ts';
 
 import env from '@/constant/env';
+import useWindow from '@/hooks/use-window';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
 
 export type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
@@ -33,6 +34,13 @@ export function useSocket(): UseSocket {
 export function SocketProvider({ children }: { children: ReactNode }) {
   const [socket] = useState<SocketClient>(defaultContextValue.socket);
   const [state, setState] = useState<SocketState>('disconnected');
+  const windowIsActive = useWindow();
+
+  useEffect(() => {
+    if (windowIsActive) {
+      socket.connect();
+    }
+  }, [socket, windowIsActive]);
 
   useEffect(() => {
     socket.connect();

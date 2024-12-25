@@ -2,7 +2,7 @@ import { createInstance } from 'i18next';
 import HttpApi from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
-import { Locale, getOptions } from '@/i18n/config';
+import { Locale, defaultLocale, getOptions, locales } from '@/i18n/config';
 
 const initI18next = async (language: Locale, namespace: string) => {
   const i18nInstance = createInstance();
@@ -11,7 +11,9 @@ const initI18next = async (language: Locale, namespace: string) => {
   return i18nInstance;
 };
 
-export async function getTranslation(language: Locale, namespace: string | string[], options: { keyPrefix?: string } = {}) {
+export async function getTranslation(locale: Locale, namespace: string | string[], options: { keyPrefix?: string } = {}) {
+  const language = locales.includes(locale as any) ? locale : defaultLocale;
+
   const singleNamespace = Array.isArray(namespace) ? namespace[0] : namespace;
   const i18nextInstance = await initI18next(language, singleNamespace);
 
