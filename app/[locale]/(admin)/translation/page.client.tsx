@@ -13,6 +13,7 @@ import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
+import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
@@ -48,13 +49,14 @@ const defaultState = {
 
 export default function TranslationPage() {
   const [{ language, target, mode, key }, setQueryState] = useQueryState(defaultState);
-  const { t } = useI18n(['common', 'translation']);
+  const { t } = useI18n();
 
   return (
     <Fragment>
       <div className="hidden h-full flex-col gap-2 p-2 landscape:flex">
         <div className="flex items-center gap-2">
           <ComboBox<Locale>
+            className="h-10"
             value={{ label: t(language), value: language as Locale }}
             values={locales.map((locale) => ({
               label: t(locale),
@@ -64,6 +66,7 @@ export default function TranslationPage() {
           />
           {'=>'}
           <ComboBox<Locale>
+            className="h-10"
             value={{ label: t(target), value: target as Locale }}
             values={locales.map((locale) => ({
               label: t(locale),
@@ -72,17 +75,20 @@ export default function TranslationPage() {
             onChange={(target) => setQueryState({ target: target ?? 'en' })}
           />
           <ComboBox<TranslateMode>
+            className="h-10"
             value={{
-              label: t(`translation.${mode}`),
+              label: t(mode),
               value: mode as TranslateMode,
             }}
             values={translateModes.map((value) => ({
-              label: t(`translation.${value}`),
+              label: t(value),
               value,
             }))}
             onChange={(mode) => setQueryState({ mode: mode ?? 'compare' })}
           />
-          <Input placeholder={t('translation.search-by-key')} value={key} onChange={(event) => setQueryState({ key: event.currentTarget.value })} />
+          <SearchBar>
+            <SearchInput placeholder={t('translation.search-by-key')} value={key} onChange={(event) => setQueryState({ key: event.currentTarget.value })} />
+          </SearchBar>
           <RefreshButton />
           <AddNewKeyDialog />
         </div>
@@ -104,7 +110,7 @@ function RefreshButton() {
   const { invalidateByKey } = useQueriesData();
 
   return (
-    <Button className="ml-auto" variant="secondary" onClick={() => invalidateByKey(['translations'])}>
+    <Button className="ml-auto h-10" variant="secondary" onClick={() => invalidateByKey(['translations'])}>
       <Tran text="translation.refresh" />
     </Button>
   );
@@ -355,7 +361,7 @@ function AddNewKeyDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="primary" title="translation add">
+        <Button className="h-10" variant="primary" title="translation add">
           <Tran text="translation.add" />
         </Button>
       </DialogTrigger>

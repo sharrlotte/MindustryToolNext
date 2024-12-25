@@ -17,13 +17,13 @@ type Props = {
 };
 
 export default function LikeChartClient({ data }: Props) {
-  const { t } = useI18n();
+  const { t } = useI18n('metric');
 
   const chart = {
     labels: data.map(({ createdAt }) => createdAt.toLocaleDateString()),
     datasets: [
       {
-        label: t('metric.like'),
+        label: t('like'),
         data: data.map(({ value }) => value),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',

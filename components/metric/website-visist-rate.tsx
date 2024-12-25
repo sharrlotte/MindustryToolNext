@@ -20,14 +20,14 @@ type Props = {
 };
 
 export default function WebsiteVisitRate({ start, dates, data }: Props) {
-  const { t } = useI18n();
+  const { t } = useI18n('metric');
   const filledData = fillMetric(start, dates, data, 0);
 
   const chart = {
     labels: filledData.map(({ createdAt }) => createdAt.toLocaleDateString()),
     datasets: [
       {
-        label: t('metric.visit-rate'),
+        label: t('visit-rate'),
         data: filledData.map(({ value }) => value),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
