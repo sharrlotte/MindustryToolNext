@@ -20,34 +20,34 @@ type Props = {
 };
 
 export default function ClientChartClient({ web, mod, server, total }: Props) {
-  const { t } = useI18n();
+  const { t } = useI18n('metric');
 
   const chart = {
     labels: web.map(({ createdAt }) => createdAt.toLocaleDateString()),
     datasets: [
       {
-        label: t('metric.mod-user'),
+        label: t('mod-user'),
         data: mod.map(({ value }) => value),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         tension: 0.3,
       },
       {
-        label: t('metric.web-user'),
+        label: t('web-user'),
         data: web.map(({ value }) => value),
         borderColor: 'rgb(99, 255, 132)',
         backgroundColor: 'rgba(99, 255, 132)',
         tension: 0.3,
       },
       {
-        label: t('metric.server-user'),
+        label: t('server-user'),
         data: server.map(({ value }) => value),
         borderColor: 'rgb(255, 255, 132)',
         backgroundColor: 'rgba(255, 255, 132)',
         tension: 0.3,
       },
       {
-        label: t('metric.total-user'),
+        label: t('total-user'),
         data: total.map(({ value }) => value),
         borderColor: 'rgb(99, 132, 255)',
         backgroundColor: 'rgb(99, 132, 255)',
@@ -60,7 +60,7 @@ export default function ClientChartClient({ web, mod, server, total }: Props) {
     <MetricWrapper className="col-span-full">
       <div className="flex h-full w-full flex-col gap-2 bg-card p-2">
         <span className="font-bold">
-          <Tran text="client" />
+          <Tran text="metric.client" />
         </span>
         <Line
           options={{

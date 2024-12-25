@@ -19,27 +19,27 @@ type Props = {
 };
 
 export default function LoginChartClient({ loggedDaily, daily, total }: Props) {
-  const { t } = useI18n();
+  const { t } = useI18n('metric');
 
   const data = {
     labels: loggedDaily.map(({ createdAt }) => createdAt.toLocaleDateString()),
     datasets: [
       {
-        label: t('metric.daily-user'),
+        label: t('daily-user'),
         data: daily.map(({ value }) => value),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         tension: 0.3,
       },
       {
-        label: t('metric.logged-user'),
+        label: t('logged-user'),
         data: loggedDaily.map(({ value }) => value),
         borderColor: 'rgb(99, 255, 132)',
         backgroundColor: 'rgba(99, 255, 132)',
         tension: 0.3,
       },
       {
-        label: t('metric.total-user'),
+        label: t('total-user'),
         data: total.map(({ value }) => value),
         borderColor: 'rgb(99, 132, 255)',
         backgroundColor: 'rgb(99, 132, 255)',

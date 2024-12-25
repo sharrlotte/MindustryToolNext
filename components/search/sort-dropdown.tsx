@@ -10,15 +10,16 @@ type SortDropdownProps = {
 
 export function SortDropdown({ sortBy, handleSortChange }: SortDropdownProps) {
   const { t } = useI18n();
+
   return (
     <ComboBox
       className="h-full"
       value={{
-        label: t(sortBy.toLowerCase()),
+        label: t(sortBy.toLowerCase().replaceAll('_', '-')),
         value: sortBy,
       }}
       values={sortTagGroup.values.map((value) => ({
-        label: t(value.toLowerCase()),
+        label: t(value.toLowerCase().replaceAll('_', '-')),
         value: value as SortTag,
       }))}
       onChange={handleSortChange}
