@@ -70,14 +70,14 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
       })}
     >
       <section className="flex divide-x">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center p-1 gap-1">
           <BoldButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
           <ItalicButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
           <StrikethroughButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
           <HRButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
           <TitleButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
         </div>
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center p-1 gap-1">
           <LinkDialog callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
           <QuoteButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
           <CodeBlockButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
@@ -95,25 +95,25 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
             }
           />
         </div>
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center p-1 gap-1">
           <ListButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
           <OrderedListButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
           <CheckListButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
         </div>
         <div className="ml-auto flex divide-x">
-          <div>
-            <Button className="p-1 m-1" size="icon" disabled={mode === 'edit'} title="edit-mode" variant="icon" onClick={() => setMode('edit')}>
+          <div className="flex justify-center items-center p-1 gap-1">
+            <Button size="icon" disabled={mode === 'edit'} title="edit-mode" variant="icon" onClick={() => setMode('edit')}>
               <EditPanelIcon className="size-5" />
             </Button>
-            <Button className="p-1 m-1" disabled={mode === 'live'} size="icon" title="live-mode" variant="icon" onClick={() => setMode('live')}>
+            <Button disabled={mode === 'live'} size="icon" title="live-mode" variant="icon" onClick={() => setMode('live')}>
               <LivePanelIcon className="size-5" />
             </Button>
-            <Button className="p-1 m-1" disabled={mode === 'preview'} size="icon" title="preview-mode" variant="icon" onClick={() => setMode('preview')}>
+            <Button disabled={mode === 'preview'} size="icon" title="preview-mode" variant="icon" onClick={() => setMode('preview')}>
               <PreviewPanelIcon className="size-5" />
             </Button>
           </div>
-          <div className="px-1">
-            <Button className="p-1 m-1" size="icon" title="fullscreen" variant="icon" onClick={toggleFullscreen}>
+          <div className="px-1 flex justify-center items-center">
+            <Button size="icon" title="fullscreen" variant="icon" onClick={toggleFullscreen}>
               <FullScreenIcon className="size-5" />
             </Button>
           </div>

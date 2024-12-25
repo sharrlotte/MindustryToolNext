@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -27,8 +28,9 @@ type SchematicPreviewCardProps = {
 
 function InternalSchematicPreviewCard({ schematic: { id, name, itemId, likes, dislikes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
   const axios = useClientApi();
+  const { locale } = useParams();
 
-  const link = `${env.url.base}/schematics/${id}`;
+  const link = `${env.url.base}/${locale}/schematics/${id}`;
   const detailLink = `/schematics/${id}`;
   const imageLink = `${env.url.image}/schematic-previews/${id}${env.imageFormat}`;
   const detailImageLink = `${env.url.image}/schematics/${id}${env.imageFormat}`;

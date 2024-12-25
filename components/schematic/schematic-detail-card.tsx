@@ -1,5 +1,7 @@
 'use client';
 
+import { useParams } from 'next/navigation';
+
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import CommentSection from '@/components/common/comment-section';
@@ -36,8 +38,9 @@ export default function SchematicDetailCard({ schematic: { id, name, description
     content: <Tran text="downloading-data" />,
     action: async () => await getSchematicData(axios, id),
   });
+  const { locale } = useParams();
 
-  const link = `${env.url.base}/schematics/${id}`;
+  const link = `${env.url.base}/${locale}/schematics/${id}`;
   const copyContent = <Tran text="copied-name" args={{ name }} />;
   const imageUrl = `${env.url.image}/schematics/${id}${env.imageFormat}`;
   const errorImageUrl = `${env.url.api}/schematics/${id}/image`;

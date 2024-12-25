@@ -29,14 +29,14 @@ type Props = {
 
 export function BoldButton({ callback }: Props) {
   return (
-    <Button className="h-6 py-1 px-0 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '**', '**'))}>
+    <Button className="h-6 p-0 min-w-0 w-fit" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '**', '**'))}>
       <BoldIcon className="size-5" />
     </Button>
   );
 }
 export function ItalicButton({ callback }: Props) {
   return (
-    <Button className="h-6 py-1 px-0 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '*', '*'))}>
+    <Button className="h-6 p-0 min-w-0 w-auto" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '*', '*'))}>
       <ItalicIcon className="size-5" />
     </Button>
   );
@@ -44,64 +44,64 @@ export function ItalicButton({ callback }: Props) {
 
 export function StrikethroughButton({ callback }: Props) {
   return (
-    <Button className="h-6 p-1 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '~~', '~~'))}>
-      <StrikethroughIcon className="size-6" />
+    <Button className="h-6" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '~~', '~~'))}>
+      <StrikethroughIcon className="size-5" />
     </Button>
   );
 }
 
 export function HRButton({ callback }: Props) {
   return (
-    <Button className="h-6 p-1 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '\n----------\n'))}>
-      <HRIcon className="size-6" />
+    <Button className="h-6" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '\n----------\n'))}>
+      <HRIcon className="size-5" />
     </Button>
   );
 }
 
 export function TitleButton({ callback }: Props) {
   return (
-    <Button className="h-6 p-1 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '# ', ' \n'))}>
-      <TitleIcon className="size-6" />
+    <Button className="h-6" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '# ', ' \n'))}>
+      <TitleIcon className="size-5" />
     </Button>
   );
 }
 
 export function QuoteButton({ callback }: Props) {
   return (
-    <Button className="h-6 p-1 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '> '))}>
-      <QuoteIcon className="size-6" />
+    <Button className="h-6" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '> '))}>
+      <QuoteIcon className="size-5" />
     </Button>
   );
 }
 
 export function CodeBlockButton({ callback }: Props) {
   return (
-    <Button className="h-6 p-1 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '`', '`'))}>
-      <CodeBlockIcon className="size-6" />
+    <Button className="h-6" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => wrapAtCaret(input, value, '`', '`'))}>
+      <CodeBlockIcon className="size-5" />
     </Button>
   );
 }
 
 export function ListButton({ callback }: Props) {
   return (
-    <Button className="h-6 p-1 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '- '))}>
-      <ListIcon className="size-6" />
+    <Button className="h-6" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '- '))}>
+      <ListIcon className="size-5" />
     </Button>
   );
 }
 
 export function OrderedListButton({ callback }: Props) {
   return (
-    <Button className="h-6 p-1 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '1. '))}>
-      <OrderedListIcon className="size-6" />
+    <Button className="h-6" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '1. '))}>
+      <OrderedListIcon className="size-5" />
     </Button>
   );
 }
 
 export function CheckListButton({ callback }: Props) {
   return (
-    <Button className="h-6 p-1 m-1" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '- [] '))}>
-      <CheckListIcon className="size-6" />
+    <Button className="h-6" size="icon" title="bold" variant="icon" type="button" onClick={() => callback((input, value) => insertAtCaret(input, value, '- [] '))}>
+      <CheckListIcon className="size-5" />
     </Button>
   );
 }
@@ -135,8 +135,8 @@ export function LinkDialog({ callback }: LinkDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="h-6 p-1 m-1" size="icon" title="add-link" variant="icon">
-          <LinkChainIcon className="size-6" />
+        <Button className="h-6" size="icon" title="add-link" variant="icon">
+          <LinkChainIcon className="size-5" />
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -262,8 +262,8 @@ export function ImageDialog({ callback }: ImageDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="h-6 p-1 m-1" size="icon" title="add-image" variant="icon">
-          <ImageIcon className="size-6" />
+        <Button className="h-6" size="icon" title="add-image" variant="icon">
+          <ImageIcon className="size-5" />
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -305,7 +305,7 @@ export function ImageDialog({ callback }: ImageDialogProps) {
                     <div className="flex gap-2">
                       <Input {...field} />
                       <label className="flex h-9 items-center justify-center rounded-md border p-2" htmlFor="image" hidden>
-                        <ImageIcon className="size-6" />
+                        <ImageIcon className="size-5" />
                       </label>
                       <input id="image" className="w-16" hidden accept=".png, .jpg, .jpeg" type="file" onChange={handleFilePick} />
                     </div>
