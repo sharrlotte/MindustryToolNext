@@ -154,7 +154,7 @@ type CommentInputProps = {
 function CommentInput({ itemId }: CommentInputProps) {
   const axios = useClientApi();
   const inputRef = useRef<AutosizeTextAreaRef>(null);
-  const t = useI18n();
+  const { t } = useI18n();
 
   const { session } = useSession();
 

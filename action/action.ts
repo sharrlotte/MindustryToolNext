@@ -39,6 +39,19 @@ type ServerApi<T> =
 
 export type ApiError = { error: any };
 
+export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>): Promise<T | ApiError> {
+  try {
+    const data = 'queryFn' in queryFn ? await queryFn.queryFn(axios) : await queryFn(axios);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    return { error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))) };
+  }
+}
+
 export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError> {
   try {
     unstable_noStore(); // To opt out of static renderer

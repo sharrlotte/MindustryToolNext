@@ -4,6 +4,7 @@ import ComboBox from '@/components/common/combo-box';
 import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+
 import { useLocaleStore } from '@/context/locale-context';
 import { useChangeLocale, useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
@@ -11,7 +12,8 @@ import { Locale, locales } from '@/i18n/config';
 export function ChangeLanguageDialog() {
   const { currentLocale } = useLocaleStore();
   const setCurrentLocale = useChangeLocale();
-  const t = useI18n();
+
+  const { t } = useI18n('common');
 
   function onLanguageChange(value: any) {
     setCurrentLocale(value ?? 'en');

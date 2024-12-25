@@ -116,7 +116,7 @@ function TranslatePage({
 
   const { invalidateByKey } = useQueriesData();
   const languages = useLanguages();
-  const t = useI18n();
+  const { t } = useI18n();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: TranslatePostRequest) => translatePost(axios, data),
@@ -194,7 +194,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
     uploadTags: { post: postTags },
   } = useTags();
   const languages = useLanguages();
-  const t = useI18n();
+  const { t } = useI18n();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: CreatePostRequest) => createPost(axios, data),

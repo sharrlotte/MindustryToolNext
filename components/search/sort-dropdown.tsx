@@ -9,7 +9,7 @@ type SortDropdownProps = {
 };
 
 export function SortDropdown({ sortBy, handleSortChange }: SortDropdownProps) {
-  const t = useI18n();
+  const { t } = useI18n();
   return (
     <ComboBox
       className="h-full"

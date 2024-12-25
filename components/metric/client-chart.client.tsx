@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default function ClientChartClient({ web, mod, server, total }: Props) {
-  const t = useI18n();
+  const { t } = useI18n();
 
   const chart = {
     labels: web.map(({ createdAt }) => createdAt.toLocaleDateString()),

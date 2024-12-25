@@ -3,8 +3,6 @@ import { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   experimental: {
     ppr: 'incremental',
-    forceSwcTransforms: true,
-    optimizePackageImports: ['lucide-react', 'chart.js'],
   },
   compiler: {
     styledComponents: true,

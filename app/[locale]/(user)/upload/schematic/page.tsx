@@ -41,6 +41,10 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   return <Preview />;
 }
@@ -161,7 +165,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
     uploadTags: { schematic },
   } = useTags();
 
-  const t = useI18n();
+  const { t } = useI18n();
   const axios = useClientApi();
 
   const form = useForm<UploadFormData>({

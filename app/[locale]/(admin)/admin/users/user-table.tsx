@@ -27,7 +27,7 @@ const defaultState = {
 };
 
 export function UserTable() {
-  const t = useI18n();
+  const { t } = useI18n();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const params = useSearchQuery(ItemPaginationQuery);
 

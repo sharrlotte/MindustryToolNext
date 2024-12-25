@@ -19,7 +19,7 @@ type Props = {
 };
 
 export default function LoginChartClient({ loggedDaily, daily, total }: Props) {
-  const t = useI18n();
+  const { t } = useI18n();
 
   const data = {
     labels: loggedDaily.map(({ createdAt }) => createdAt.toLocaleDateString()),

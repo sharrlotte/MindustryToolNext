@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function RamUsageChart({ ramUsage, totalRam }: Props) {
-  const t = useI18n();
+  const { t } = useI18n();
 
   ramUsage = isNaN(ramUsage) ? 0 : ramUsage;
   totalRam = isNaN(totalRam) ? 0 : totalRam;
