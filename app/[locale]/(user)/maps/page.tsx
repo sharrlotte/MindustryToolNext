@@ -1,9 +1,12 @@
 import { Metadata } from 'next/dist/types';
 
-import { serverApi, translate } from '@/action/action';
 import Client from '@/app/[locale]/(user)/maps/page.client';
+
 import ErrorScreen from '@/components/common/error-screen';
+
+import { serverApi } from '@/action/action';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { formatTitle, isError } from '@/lib/utils';
 import { getMaps } from '@/query/map';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
@@ -12,7 +15,8 @@ export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const title = await translate(locale, 'map');
+  const { t } = await getTranslation(locale);
+  const title = await t(locale, 'map');
 
   return {
     title: formatTitle(title),

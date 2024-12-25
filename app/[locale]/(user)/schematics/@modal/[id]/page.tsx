@@ -1,11 +1,13 @@
 import { Metadata } from 'next/dist/types';
 import React from 'react';
 
-import { serverApi, translate } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
+
+import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { formatTitle, isError } from '@/lib/utils';
 import { getSchematic } from '@/query/schematic';
 

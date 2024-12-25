@@ -42,10 +42,6 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
     const data = 'queryFn' in queryFn ? await queryFn.queryFn(axios) : await queryFn(axios);
     return data;
   } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    }
-
     return { error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))) };
   }
 }

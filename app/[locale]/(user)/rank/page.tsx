@@ -1,9 +1,12 @@
 import { Metadata } from 'next';
 
-import { serverApi, translate } from '@/action/action';
 import { PageClient, RankPaginationNavigator } from '@/app/[locale]/(user)/rank/page.client';
+
 import ErrorScreen from '@/components/common/error-screen';
+
+import { serverApi } from '@/action/action';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { formatTitle, isError } from '@/lib/utils';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 import { getRank } from '@/query/user';
@@ -15,7 +18,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const title = await translate(locale, 'rank');
+  const { t } = await getTranslation(locale);
+  const title = await t(locale, 'rank');
 
   return {
     title: formatTitle(title),

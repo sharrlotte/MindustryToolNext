@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
-import { translate } from '@/action/action';
 import ScrollContainer from '@/components/common/scroll-container';
 import ClientChart from '@/components/metric/client-chart';
 import LikeChart from '@/components/metric/like-chart';
@@ -9,7 +8,9 @@ import LoginChart from '@/components/metric/login-chart';
 import LoginHistory from '@/components/metric/login-history';
 import LoginLog from '@/components/metric/login-log';
 import { Skeleton } from '@/components/ui/skeleton';
+
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { cn, formatTitle } from '@/lib/utils';
 
 export const experimental_ppr = true;
@@ -22,7 +23,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const title = await translate(locale, 'dashboard');
+  const { t } = await getTranslation(locale);
+  const title = await t(locale, 'dashboard');
 
   return {
     title: formatTitle(title),

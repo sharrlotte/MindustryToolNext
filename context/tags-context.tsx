@@ -3,9 +3,10 @@ import React, { ReactNode } from 'react';
 
 import ErrorScreen from '@/components/common/error-screen';
 
-import { catchError, translate } from '@/action/action';
+import { catchError } from '@/action/action';
 import { ContextAllTagGroup, TagsProviderClient } from '@/context/tags-context.client';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { isError } from '@/lib/utils';
 import axiosInstance from '@/query/config/config';
 import { getTags } from '@/query/tag';
@@ -15,6 +16,7 @@ const predicate = (tag: ContextTagGroup) => tag.name !== 'size';
 
 const getCachedTags = unstable_cache(
   async (locale: Locale) => {
+    const { t } = await getTranslation(locale, 'tags');
     const data = await catchError(axiosInstance, () => getTags(axiosInstance));
 
     if (isError(data)) {
@@ -26,8 +28,8 @@ const getCachedTags = unstable_cache(
         items.sort().map(async (item) => ({
           ...item,
           name: item.name,
-          displayName: await translate(locale, `tags.${item.name}`),
-          values: await Promise.all(item.values.sort().map(async (value) => ({ value, display: await translate(locale, `tags.${value}`) }))),
+          displayName: await t(item.name),
+          values: await Promise.all(item.values.sort().map(async (value) => ({ value, display: await t(value) }))),
         })),
       );
     }

@@ -11,7 +11,7 @@ const initI18next = async (language: Locale, namespace: string) => {
   return i18nInstance;
 };
 
-export async function getTranslation(locale: Locale, namespace: string | string[], options: { keyPrefix?: string } = {}) {
+export async function getTranslation(locale: Locale, namespace: string | string[] = 'common', options: { keyPrefix?: string } = {}) {
   const language = locales.includes(locale as any) ? locale : defaultLocale;
 
   const singleNamespace = Array.isArray(namespace) ? namespace[0] : namespace;

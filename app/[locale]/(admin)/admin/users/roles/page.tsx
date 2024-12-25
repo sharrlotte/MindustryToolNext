@@ -3,8 +3,9 @@ import React from 'react';
 
 import { RoleTable } from '@/app/[locale]/(admin)/admin/users/role-table';
 
-import { getSession, translate } from '@/action/action';
+import { getSession } from '@/action/action';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import ProtectedRoute from '@/layout/protected-route';
 import { formatTitle } from '@/lib/utils';
 
@@ -17,7 +18,8 @@ type Props = {
 };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const title = await translate(locale, 'user');
+  const { t } = await getTranslation(locale);
+  const title = await t(locale, 'user');
 
   return {
     title: formatTitle(title),
