@@ -13,7 +13,7 @@ export const defaultNamespace = 'comment';
 
 export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: { backend: HttpBackendOptions } & Record<any, any> = {
-    // debug: true,
+    debug: process.env.NODE_ENV === 'development',
     supportedLngs: locales,
     fallbackLng: defaultLocale,
     lng,

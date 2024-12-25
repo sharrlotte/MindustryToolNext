@@ -499,8 +499,8 @@ export function extractTranslationKey(text: string) {
     throw new Error('Bad key');
   }
 
-  const group = parts.length === 1 ? 'common' : parts[0];
-  const key = parts.length === 1 ? parts[0] : parts[1];
+  const group = (parts.length === 1 ? 'common' : parts[0]).toLowerCase();
+  const key = (parts.length === 1 ? parts[0] : parts[1]).toLowerCase();
 
   text = `${group}.${key}`;
 
