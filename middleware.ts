@@ -12,20 +12,19 @@ export const config = {
 export function middleware(req: NextRequest) {
   const { isBot } = userAgent(req);
 
-  if (isBot) {
-    return NextResponse.next();
-  }
-
   let language;
   if (req.cookies.has(cookieName)) language = acceptLanguage.get(req.cookies.get(cookieName)?.value);
   if (!language) language = acceptLanguage.get(req.headers.get('Accept-Language'));
   if (!language) language = defaultLocale;
 
   if (!locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && !req.nextUrl.pathname.startsWith('/_next')) {
+    if (isBot) {
+      return;
+    }
+
     return NextResponse.redirect(new URL(`/${language}${req.nextUrl.pathname}`, req.url));
   }
 
-  
   if (req.headers.has('referer')) {
     const refererUrl = new URL(req.headers.get('referer') || '');
     const languageInReferer = locales.find((l) => refererUrl.pathname.startsWith(`/${l}`));
