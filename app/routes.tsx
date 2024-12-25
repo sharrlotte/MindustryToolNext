@@ -363,16 +363,20 @@ function ChatIconPath() {
   const [lastMessage] = useLocalStorage('LAST_MESSAGE_GLOBAL', '');
 
   useEffect(() => {
-    socket
-      .onRoom('GLOBAL')
-      .await({ method: 'LAST_MESSAGE' })
-      .then((newestMessage) => {
-        if (isError(newestMessage)) {
-          return;
-        }
+    try {
+      socket
+        .onRoom('GLOBAL')
+        .await({ method: 'LAST_MESSAGE' })
+        .then((newestMessage) => {
+          if (isError(newestMessage)) {
+            return;
+          }
 
-        setHasNewMessage(newestMessage.id !== lastMessage);
-      });
+          setHasNewMessage(newestMessage.id !== lastMessage);
+        });
+    } catch (e) {
+      console.error(e);
+    }
 
     return socket.onRoom('GLOBAL').onMessage('MESSAGE', (message) => {
       if ('error' in message) {
