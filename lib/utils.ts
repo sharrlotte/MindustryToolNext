@@ -18,7 +18,11 @@ export function isError<T extends Record<string, any>>(req: T | ApiError | null)
   const isError = !!req && 'error' in req;
 
   if (isError) {
-    reportError(axiosInstance, getLoggedErrorMessage(req as any));
+    try {
+      reportError(axiosInstance, getLoggedErrorMessage(req as any));
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return isError;

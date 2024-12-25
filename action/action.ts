@@ -3,11 +3,9 @@
 import { AxiosInstance } from 'axios';
 import { revalidatePath, revalidateTag, unstable_cache, unstable_noStore } from 'next/cache';
 import { cookies } from 'next/headers';
-import { cache } from 'react';
 import 'server-only';
 import { z } from 'zod';
 
-import { extractTranslationKey, formatTranslation } from '@/lib/utils';
 import axiosInstance from '@/query/config/config';
 import { QuerySchema } from '@/query/search-query';
 import { Session } from '@/types/response/Session';
@@ -53,21 +51,15 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
 }
 
 export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError> {
-  try {
-    unstable_noStore(); // To opt out of static renderer
+  unstable_noStore(); // To opt out of static renderer
 
-    const axios = await getServerApi();
+  const axios = await getServerApi();
 
+  return catchError(axios, async () => {
     const data = 'queryFn' in queryFn ? await queryFn.queryFn(axios) : await queryFn(axios);
 
     return data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    }
-
-    return { error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))) };
-  }
+  });
 }
 
 const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> = unstable_cache(
@@ -105,41 +97,7 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
   return axiosInstance;
 };
 
-const getCachedTranslation = cache(
-  unstable_cache(
-    async (language: string, group: string) =>
-      axiosInstance
-        .get('/translations', {
-          params: {
-            group,
-            language,
-          },
-        })
-        .then((r) => r.data),
-    ['translations'],
-    { revalidate: 3600, tags: ['translations'] },
-  ),
-);
-
 export async function getLocaleFromCookie() {
   const cookie = await cookies();
   return cookie.get('Locale')?.value || 'en';
-}
-
-export async function translate(locale: string, translationKey: string, args?: Record<string, any>) {
-  const { text, group, key } = extractTranslationKey(translationKey);
-
-  try {
-    const keys = await getCachedTranslation(locale, group);
-
-    if (!keys) {
-      return text;
-    }
-
-    const value = keys[key];
-
-    return value ? (formatTranslation(value, args) ?? text) : text;
-  } catch (error) {
-    return text;
-  }
 }
