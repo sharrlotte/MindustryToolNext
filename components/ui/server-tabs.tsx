@@ -1,23 +1,12 @@
 'use client';
 
-import { AnimatePresence, Variants, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
-
-const tabContentVariants: Variants = {
-  initial: {
-    opacity: 0,
-  },
-  enter: {
-    opacity: 1,
-  },
-  exit: {
-    opacity: 0,
-  },
-};
 
 type ContextType = {
   value: string;
@@ -114,23 +103,14 @@ export function ServerTabsContent({ className, value, children }: ServerTabsCont
   const { value: current } = useTab();
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={current}
-        className={cn('hidden overflow-hidden', className, {
-          block: value === current,
-        })}
-        variants={tabContentVariants}
-        initial="initial"
-        animate="enter"
-        exit="exit"
-        transition={{
-          duration: 0.3,
-        }}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div
+      key={current}
+      className={cn('hidden overflow-hidden', className, {
+        block: value === current,
+      })}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -143,10 +123,7 @@ export function ServerTabsList({ className, children }: ServerTabsListProps) {
   const { setHovered } = useTab();
 
   return (
-    <div
-      className={cn('no-scrollbar flex min-h-12 items-center justify-center gap-2 overflow-x-auto overflow-y-hidden rounded-md bg-card px-2 text-muted-foreground', className)}
-      onMouseLeave={() => setHovered('')}
-    >
+    <div className={cn('no-scrollbar flex min-h-12 items-center justify-center gap-2 overflow-x-auto overflow-y-hidden rounded-md bg-card px-2 text-muted-foreground', className)} onMouseLeave={() => setHovered('')}>
       {children}
     </div>
   );

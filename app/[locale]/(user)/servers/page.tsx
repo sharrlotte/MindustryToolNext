@@ -17,14 +17,6 @@ import ProtectedElement from '@/layout/protected-element';
 
 export const experimental_ppr = true;
 
-const skeleton = (
-  <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
-    <Skeletons number={20}>
-      <InternalServerCardSkeleton />
-    </Skeletons>
-  </ScrollContainer>
-);
-
 function LoginToCreateServer() {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2">
@@ -35,8 +27,6 @@ function LoginToCreateServer() {
 }
 
 export default async function Page() {
-  const session = await getSession();
-
   return (
     <div className="flex h-full flex-col overflow-hidden space-y-2 p-2">
       <ServerTabs className="flex h-full w-full flex-col overflow-hidden" name="tab" value="official-server" values={['official-server', 'community-server', 'my-server']}>
@@ -51,35 +41,65 @@ export default async function Page() {
             <Tran text="server.my-server" />
           </ServerTabsTrigger>
         </ServerTabsList>
-        <ServerTabsContent className="overflow-hidden" value="official-server">
-          <Suspense fallback={skeleton}>
+        <Suspense fallback={<ServersSkeleton />}>
+          <ServerTabsContent className="overflow-hidden" value="official-server">
             <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
               <OfficialServer />
             </ScrollContainer>
-          </Suspense>
-        </ServerTabsContent>
-        <ServerTabsContent className="overflow-hidden" value="community-server">
-          <Suspense fallback={skeleton}>
+          </ServerTabsContent>
+        </Suspense>
+        <Suspense fallback={<ServersSkeleton />}>
+          <ServerTabsContent className="overflow-hidden" value="community-server">
             <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
               <CommunityServer />
             </ScrollContainer>
-          </Suspense>
-        </ServerTabsContent>
-        <ServerTabsContent className="overflow-hidden" value="my-server">
-          <ProtectedElement session={session} filter={true} alt={<LoginToCreateServer />}>
-            <Suspense fallback={skeleton}>
-              <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
-                <MeServer />
-              </ScrollContainer>
-            </Suspense>
-          </ProtectedElement>
-        </ServerTabsContent>
+          </ServerTabsContent>
+        </Suspense>
+        <Suspense fallback={<ServersSkeleton />}>
+          <ServerTabsContent className="overflow-hidden" value="my-server">
+            <MyServer />
+          </ServerTabsContent>
+        </Suspense>
       </ServerTabs>
-      <footer className="flex w-full justify-end">
-        <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
-          <CreateServerDialog />
-        </ProtectedElement>
-      </footer>
+      <Suspense>
+        <Footer />
+      </Suspense>
     </div>
+  );
+}
+
+async function Footer() {
+  const session = await getSession();
+
+  return (
+    <footer className="flex w-full justify-end">
+      <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
+        <CreateServerDialog />
+      </ProtectedElement>
+    </footer>
+  );
+}
+
+async function ServersSkeleton() {
+  return (
+    <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
+      <Skeletons number={20}>
+        <InternalServerCardSkeleton />
+      </Skeletons>
+    </div>
+  );
+}
+
+async function MyServer() {
+  const session = await getSession();
+
+  return (
+    <Suspense fallback={<ServersSkeleton />}>
+      <ProtectedElement session={session} filter={true} alt={<LoginToCreateServer />}>
+        <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
+          <MeServer />
+        </ScrollContainer>
+      </ProtectedElement>
+    </Suspense>
   );
 }

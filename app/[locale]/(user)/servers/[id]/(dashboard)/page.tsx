@@ -156,8 +156,8 @@ export default async function Page({ params }: Props) {
               {started ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
             </ProtectedElement>
           </div>
-          <ProtectedElement session={session} filter={showPlayer}>
-            <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">
+          <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">
+            <ProtectedElement session={session} filter={showPlayer}>
               <div className="flex flex-col gap-2">
                 <h3 className="p-4 text-xl">
                   <Tran text="server.players" /> {players}
@@ -166,8 +166,8 @@ export default async function Page({ params }: Props) {
                   <PlayersCard id={id} />
                 </Suspense>
               </div>
-            </div>
-          </ProtectedElement>
+            </ProtectedElement>
+          </div>
         </div>
       </div>
     </ScrollContainer>

@@ -9,8 +9,6 @@ import { getTranslation } from '@/i18n/server';
 import ProtectedRoute from '@/layout/protected-route';
 import { formatTitle } from '@/lib/utils';
 
-export const experimental_ppr = true;
-
 type Props = {
   params: Promise<{
     locale: Locale;
