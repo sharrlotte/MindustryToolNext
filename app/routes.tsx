@@ -372,7 +372,7 @@ function ChatIconPath() {
             return;
           }
 
-          setHasNewMessage(newestMessage.id !== lastMessage);
+          setHasNewMessage(newestMessage && newestMessage.id !== lastMessage);
         });
     } catch (e) {
       console.error(e);

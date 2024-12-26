@@ -1,4 +1,6 @@
-import { HttpBackendOptions } from 'i18next-http-backend';
+import { InitOptions } from 'i18next';
+import { ChainedBackendOptions } from 'i18next-chained-backend';
+import HttpApi from 'i18next-http-backend';
 
 import env from '@/constant/env';
 
@@ -12,7 +14,7 @@ export type TranslateFunction = (key: string, args?: Record<string, any>) => str
 export const defaultNamespace = 'comment';
 
 export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
-  const options: { backend: HttpBackendOptions } & Record<any, any> = {
+  const options: InitOptions<ChainedBackendOptions> = {
     debug: process.env.NODE_ENV === 'development',
     supportedLngs: locales,
     fallbackLng: defaultLocale,
@@ -21,7 +23,8 @@ export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
     defaultNS: defaultNamespace,
     ns,
     backend: {
-      loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
+      backends: [HttpApi],
+      backendOptions: [{ loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}` }],
     },
   };
 

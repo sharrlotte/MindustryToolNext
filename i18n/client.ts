@@ -2,12 +2,13 @@
 
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import HttpApi from 'i18next-http-backend';
+import Backend from 'i18next-chained-backend';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
+// primary use cache
 import { Locale, cookieName, defaultLocale, getOptions, locales } from '@/i18n/config';
 
 const runsOnServerSide = typeof window === 'undefined';
@@ -16,7 +17,7 @@ const runsOnServerSide = typeof window === 'undefined';
 i18next
   .use(initReactI18next)
   .use(LanguageDetector)
-  .use(HttpApi)
+  .use(Backend)
   .init({
     ...getOptions(),
     lng: undefined, // let detect the language on client side
@@ -28,7 +29,7 @@ i18next
 
 export function useI18n(namespace: string | string[] = 'common', options?: any) {
   const { locale } = useParams();
-  
+
   let language = String(locale);
 
   language = locales.includes(language as any) ? language : defaultLocale;
