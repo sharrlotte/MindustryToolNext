@@ -8,8 +8,11 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
+
+
 // primary use cache
 import { Locale, cookieName, defaultLocale, getOptions, locales } from '@/i18n/config';
+
 
 const runsOnServerSide = typeof window === 'undefined';
 
@@ -55,8 +58,9 @@ export function useI18n(namespace: string | string[] = 'common', options?: any) 
     useEffect(() => {
       if (!language || i18n.resolvedLanguage === language) return;
       i18n.changeLanguage(language);
-      console.log(['lang', language, i18n]);
-    }, [language, i18n]);
+      console.log(['lang', language, i18n.resolvedLanguage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [language, i18n.resolvedLanguage]);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
@@ -65,7 +69,8 @@ export function useI18n(namespace: string | string[] = 'common', options?: any) 
       console.log(['cookie', language, cookies.i18next]);
 
       setCookie(cookieName, language, { path: '/' });
-    }, [language, cookies.i18next, setCookie]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [language, cookies.i18next]);
   }
   return ret;
 }
