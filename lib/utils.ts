@@ -28,6 +28,15 @@ export function isError<T extends Record<string, any>>(req: T | ApiError | null)
   return isError;
 }
 
+export function stripColors(input: string): string {
+  const colorNames = Object.keys('\\[' + colours + '\\]').join('|');
+  const hexPattern = '\\[#[0-9a-fA-F]{1,6}\\]';
+
+  const regex = new RegExp(`\\b(${colorNames})\\b|${hexPattern}`, 'gi');
+
+  return input.replace(regex, '').trim();
+}
+
 const colours: Record<string, string> = {
   aliceblue: '#f0f8ff',
   antiquewhite: '#faebd7',
@@ -488,7 +497,7 @@ export function formatTranslation(text: string, args?: Record<string, string>) {
 }
 
 export function formatTitle(title: string) {
-  return `${title} - ${env.webName}`;
+  return `${stripColors(title)} - ${env.webName}`;
 }
 
 export function extractTranslationKey(text: string) {

@@ -37,7 +37,7 @@ export default function InternalServerPluginCard({ plugin: { serverId, name, plu
 
   return (
     <Popover>
-      <div className="relative grid h-24 gap-2 overflow-hidden rounded-sm bg-card p-4">
+      <div className="relative grid h-32 gap-2 overflow-hidden rounded-sm bg-card p-4">
         <PopoverTrigger className="flex w-full items-start justify-start overflow-hidden text-ellipsis">
           <h2 className="line-clamp-1 overflow-hidden text-ellipsis whitespace-normal text-nowrap">{name}</h2>
         </PopoverTrigger>

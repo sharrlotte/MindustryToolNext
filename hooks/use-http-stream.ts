@@ -74,6 +74,8 @@ export default function useHttpStream({ url, mutationKey, method, ...rest }: { u
 
           return new Map(prev);
         });
+
+        throw error;
       }
     },
   });
