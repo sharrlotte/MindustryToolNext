@@ -25,6 +25,10 @@ axiosInstance.interceptors.response.use(
       };
     }
 
+    if (error.code === 'ECONNABORTED') {
+      throw new Error(getLoggedErrorMessage(error));
+    }
+
     if ('code' in error) {
       const code = error.code;
 
