@@ -386,8 +386,8 @@ export type Filter =
       any: Filter[];
     }
   | boolean
-  | { role: UserRole }
-  | { authority: AuthorityEnum }
+  | { role: UserRole | UserRole[] }
+  | { authority: AuthorityEnum | AuthorityEnum[] }
   | { authorId: string | null | undefined }
   | undefined;
 
@@ -417,10 +417,18 @@ export function hasAccess(session: Session | undefined | null, filter: Filter): 
   }
 
   if ('role' in filter) {
+    if (Array.isArray(filter.role)) {
+      return filter.role.every((f) => session.roles?.map((r) => r.name).includes(f));
+    }
+
     return session.roles?.map((r) => r.name).includes(filter.role);
   }
 
   if ('authority' in filter) {
+    if (Array.isArray(filter.authority)) {
+      return filter.authority.every((f) => session.authorities?.includes(f));
+    }
+
     return session.authorities?.includes(filter.authority);
   }
 
