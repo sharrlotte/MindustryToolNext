@@ -1,5 +1,6 @@
 import { ReactNode, useCallback } from 'react';
-import { toast } from 'sonner';
+
+import { toast } from '@/components/ui/sonner';
 
 type UseToastActionParam<T> = {
   title: ReactNode;

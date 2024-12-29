@@ -1,5 +1,6 @@
 import {
   AlertCircle,
+  AlertTriangle,
   ArrowDown,
   ArrowDownToLine,
   ArrowLeft,
@@ -74,6 +75,7 @@ type Props = {
   className?: string;
 };
 
+export const AlertTriangleIcon = ({ className }: Props) => <AlertTriangle className={cn(className ?? 'lucide')} />;
 export const AnalyticIcon = ({ className }: Props) => <LineChart className={cn(className ?? 'lucide')} />;
 export const XCircleIcon = ({ className }: Props) => <XCircle className={cn(className ?? 'lucide')} />;
 export const CheckCircleIcon = ({ className }: Props) => <CheckCircle className={cn(className ?? 'lucide')} />;

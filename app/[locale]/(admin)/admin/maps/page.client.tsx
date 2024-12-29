@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { toast } from 'sonner';
 
 import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -13,6 +12,7 @@ import Tran from '@/components/common/tran';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import { toast } from '@/components/ui/sonner';
 
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';

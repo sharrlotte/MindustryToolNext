@@ -1,6 +1,6 @@
 import { InitOptions } from 'i18next';
 import { ChainedBackendOptions } from 'i18next-chained-backend';
-import HttpApi from 'i18next-http-backend';
+import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
 
 import env from '@/constant/env';
 
@@ -11,7 +11,7 @@ export const locales = env.locales;
 export type Locale = (typeof locales)[number];
 
 export type TranslateFunction = (key: string, args?: Record<string, any>) => string;
-export const defaultNamespace = 'comment';
+export const defaultNamespace: string | string[] = ['common', 'tags'];
 
 export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: InitOptions<ChainedBackendOptions> = {
@@ -24,7 +24,16 @@ export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
     ns,
     backend: {
       backends: [HttpApi],
-      backendOptions: [{ loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}` }],
+      backendOptions: [
+        {
+          loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
+          requestOptions: {
+            next: {
+              revalidate: 600,
+            },
+          },
+        } as HttpBackendOptions,
+      ],
     },
   };
 

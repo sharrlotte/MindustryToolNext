@@ -7,7 +7,6 @@ import PostDetailCard from '@/components/post/post-detail-card';
 
 import { serverApi } from '@/action/action';
 import { Locale } from '@/i18n/config';
-import { getTranslation } from '@/i18n/server';
 import { YOUTUBE_VIDEO_REGEX, formatTitle, isError } from '@/lib/utils';
 import { getPost } from '@/query/post';
 

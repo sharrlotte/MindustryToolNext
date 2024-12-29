@@ -7,7 +7,6 @@ import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
-import { getTranslation } from '@/i18n/server';
 import { formatTitle, isError } from '@/lib/utils';
 import { getSchematic } from '@/query/schematic';
 

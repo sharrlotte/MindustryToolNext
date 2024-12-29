@@ -4,7 +4,8 @@ import { Eraser, HelpCircle, Pencil, Redo2, Undo2 } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, ReactFlowProvider, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { toast } from 'sonner';
+
+import { toast } from '@/components/ui/sonner';
 
 import useToggle from '@/hooks/use-state-toggle';
 import Modal from '@/layout/modal';

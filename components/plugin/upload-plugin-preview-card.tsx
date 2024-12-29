@@ -2,7 +2,6 @@
 
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import { Hidden } from '@/components/common/hidden';
@@ -14,6 +13,7 @@ import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
 import { useTags } from '@/context/tags-context.client';

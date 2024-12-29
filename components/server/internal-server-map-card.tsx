@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
+import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';

@@ -1,7 +1,7 @@
 import { ReactNode, useCallback } from 'react';
-import { toast } from 'sonner';
 
 import Tran from '@/components/common/tran';
+import { toast } from '@/components/ui/sonner';
 
 type CopyProps = {
   data: string;
@@ -13,7 +13,7 @@ let dismissLast: (() => void) | null = null;
 
 export default function useClipboard() {
   return useCallback(async ({ data, title = <Tran text="copied" />, content = '' }: CopyProps) => {
-    let id: undefined | string | number;
+    let id: string | number;
 
     async function copy() {
       await navigator.clipboard.writeText(data);

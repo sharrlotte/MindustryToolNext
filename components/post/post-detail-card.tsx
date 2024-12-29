@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import TakeDownButton from '@/components/button/take-down-button';
@@ -16,6 +15,7 @@ import Markdown from '@/components/markdown/markdown';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
+import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
 import { useSession } from '@/context/session-context.client';

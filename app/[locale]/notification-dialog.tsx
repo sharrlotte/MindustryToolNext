@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { toast } from 'sonner';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { Hidden } from '@/components/common/hidden';
@@ -16,6 +15,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
+import { toast } from '@/components/ui/sonner';
 
 import { useSession } from '@/context/session-context.client';
 import { useSocket } from '@/context/socket-context';
@@ -69,12 +69,14 @@ type NotificationDialogButtonProps = {
 };
 function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
   const { socket } = useSocket();
+  const { state } = useSession();
   const { invalidateByKey } = useQueriesData();
   const { postNotification } = useNotification();
 
   let { data } = useClientQuery({
     queryKey: ['notifications', 'count'],
     queryFn: (axios) => getMyUnreadNotificationCount(axios),
+    enabled: state === 'authenticated',
   });
 
   data = data ?? 0;

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { toast } from 'sonner';
 
 import InternalLink from '@/components/common/internal-link';
+import { toast } from '@/components/ui/sonner';
 
 import { useSession } from '@/context/session-context.client';
 

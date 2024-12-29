@@ -133,8 +133,8 @@ const Footer = () => (
     </div>
     <div className="flex w-full justify-center bg-black p-4 text-center text-sm">Copyright © 2024 ‧ MindustryTool. All rights reserved.</div>
     <div>
-      <Link className="aspect-square rounded-full border bg-[rgb(88,101,242)] p-2" href="https://discord.gg/72324gpuCd">
-        <DiscordIcon />
+      <Link className="p-2" href="/credit">
+        Credit
       </Link>
     </div>
     <Ads />

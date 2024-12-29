@@ -1,11 +1,11 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { toast } from 'sonner';
 
 import { ImageIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -44,7 +44,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
     mutationFn: async (file: File) =>
       toast.promise(updateThumbnail(axios, file), {
         loading: <Tran text="upload.uploading" />,
-        error: <Tran text="upload.fail" />,
+        error: (error) => ({ title: <Tran text="upload.fail" />, description: error?.message }),
         success: <Tran text="user.update-thumbnail-success" />,
       }),
     onSuccess: () => {

@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import VerifyButton from '@/components/button/verify-button';
@@ -12,6 +11,7 @@ import Markdown from '@/components/markdown/markdown';
 import TagSelector from '@/components/search/tag-selector';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
+import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
 import { useTags } from '@/context/tags-context.client';

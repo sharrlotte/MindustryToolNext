@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { toast } from 'sonner';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
@@ -12,6 +11,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from '@/components/ui/sonner';
 
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';

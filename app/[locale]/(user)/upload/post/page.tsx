@@ -2,7 +2,6 @@
 
 import dynamic from 'next/dynamic';
 import { Fragment, useState } from 'react';
-import { toast } from 'sonner';
 import { useDebounceValue } from 'usehooks-ts';
 
 import ComboBox from '@/components/common/combo-box';
@@ -17,6 +16,7 @@ import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/sonner';
 
 import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import InternalLink from '@/components/common/internal-link';
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 
