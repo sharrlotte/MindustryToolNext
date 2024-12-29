@@ -41,25 +41,25 @@ export default async function Page() {
             <Tran text="server.my-server" />
           </ServerTabsTrigger>
         </ServerTabsList>
-        <Suspense fallback={<ServersSkeleton />}>
-          <ServerTabsContent className="overflow-hidden" value="official-server">
+        <ServerTabsContent className="overflow-hidden" value="official-server">
+          <Suspense fallback={<ServersSkeleton />}>
             <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
               <OfficialServer />
             </ScrollContainer>
-          </ServerTabsContent>
-        </Suspense>
-        <Suspense fallback={<ServersSkeleton />}>
-          <ServerTabsContent className="overflow-hidden" value="community-server">
+          </Suspense>
+        </ServerTabsContent>
+        <ServerTabsContent className="overflow-hidden" value="community-server">
+          <Suspense fallback={<ServersSkeleton />}>
             <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
               <CommunityServer />
             </ScrollContainer>
-          </ServerTabsContent>
-        </Suspense>
-        <Suspense fallback={<ServersSkeleton />}>
-          <ServerTabsContent className="overflow-hidden" value="my-server">
+          </Suspense>
+        </ServerTabsContent>
+        <ServerTabsContent className="overflow-hidden" value="my-server">
+          <Suspense fallback={<ServersSkeleton />}>
             <MyServer />
-          </ServerTabsContent>
-        </Suspense>
+          </Suspense>
+        </ServerTabsContent>
       </ServerTabs>
       <Suspense>
         <Footer />
