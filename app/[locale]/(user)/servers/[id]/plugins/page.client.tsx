@@ -8,6 +8,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import InternalServerPluginCard from '@/components/server/internal-server-plugin-card';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { getInternalServerPlugins } from '@/query/server';
 
@@ -38,6 +39,10 @@ export default function ServerPluginPage({ id }: Props) {
           queryKey={['servers', id, 'plugins']}
           queryFn={(axios, params) => getInternalServerPlugins(axios, id, params)}
           container={() => ref.current}
+          skeleton={{
+            amount: 20,
+            item: <Skeleton className="h-32 w-full" />,
+          }}
         >
           {(data) => <InternalServerPluginCard key={data.pluginId} plugin={data} />}
         </InfinitePage>
