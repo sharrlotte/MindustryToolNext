@@ -130,16 +130,15 @@ type ServerPluginCardProps = {
 
 function ServerPluginCard({ id, name, description, isAdded, mutate }: ServerPluginCardProps) {
   return (
-    <Button
-      className={cn('relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md border border-border bg-card p-4 text-start hover:bg-brand/70', {
-        'border border-success': isAdded,
+    <div
+      className={cn('relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:bg-brand/70 cursor-pointer', {
+        'border-success': isAdded,
       })}
-      variant="outline"
       key={id}
       onClick={() => mutate(id)}
     >
       <h2 className="line-clamp-1 w-full text-ellipsis whitespace-normal text-nowrap">{name}</h2>
       <span className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>{' '}
-    </Button>
+    </div>
   );
 }
