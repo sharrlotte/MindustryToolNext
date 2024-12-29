@@ -23,8 +23,8 @@ export function UserDisplay() {
   );
 }
 export function Internal() {
-  const { session, state } = useSession();
   const modal = useToggle();
+  const { session, state } = useSession();
 
   if (state === 'authenticated' && session) {
     return (

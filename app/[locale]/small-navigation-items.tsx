@@ -4,12 +4,15 @@ import React, { ReactNode, useCallback, useState } from 'react';
 import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
 
+import LoginButton from '@/components/button/login-button';
 import { MenuIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
+import { Skeleton } from '@/components/ui/skeleton';
+import UserAvatar from '@/components/user/user-avatar';
 
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
@@ -42,7 +45,7 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
   const hideSidebar = useCallback(() => setConfig('showNav', false), [setConfig]);
 
   return (
-    <div className="flex h-nav w-full items-center justify-between bg-brand px-1 py-2 shadow-lg">
+    <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg">
       <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
         <MenuIcon />
       </Button>
@@ -87,8 +90,23 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
           </div>
         </motion.div>
       </div>
+      <NavUserAvatar />
     </div>
   );
+}
+
+function NavUserAvatar() {
+  const { session, state } = useSession();
+
+  if (state === 'loading') {
+    return <Skeleton className="block h-8 w-8 rounded-full border border-border" />;
+  }
+
+  if (session === null) {
+    return <LoginButton className="w-fit" />;
+  }
+
+  return <UserAvatar user={session} url="/users/@me" />;
 }
 
 type NavItemsProps = {
