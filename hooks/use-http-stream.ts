@@ -67,7 +67,6 @@ export default function useHttpStream({ url, mutationKey, method, ...rest }: { u
           });
         }
       } catch (error: any) {
-        console.error(error);
         data.set(requestId.current, error?.message);
         setData(new Map(data));
       }
