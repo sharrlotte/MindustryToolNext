@@ -1,12 +1,14 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
+
+const MotionDiv = dynamic(() => import('framer-motion').then((result) => result.motion.div));
 
 type ContextType = {
   value: string;
@@ -79,7 +81,7 @@ export function ServerTabsTrigger({ className, value, children }: ServerTabsTrig
   return (
     <Button className={cn('relative h-12 min-w-fit space-y-2 px-0 py-2', className)} variant="ghost" onClick={() => setValue(value)} onMouseEnter={() => setHovered(value)}>
       <div className="relative">
-        {isHovered && <motion.div layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
+        {isHovered && <MotionDiv layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
         <div
           className={cn('relative z-10 bg-transparent p-2 text-foreground/70 hover:text-foreground', {
             'text-foreground': isSelected,
@@ -88,7 +90,7 @@ export function ServerTabsTrigger({ className, value, children }: ServerTabsTrig
           {children}
         </div>
       </div>
-      {isSelected && <motion.div layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
+      {isSelected && <MotionDiv layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
     </Button>
   );
 }

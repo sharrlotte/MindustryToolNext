@@ -51,12 +51,12 @@ export default function useHttpStream({ url, mutationKey, method, ...rest }: { u
     mutationFn: async () => {
       requestId.current = requestId.current + 1;
 
-      setData((prev) => {
-        prev.set(requestId.current, '');
-        return new Map(prev);
-      });
-
       try {
+        setData((prev) => {
+          prev.set(requestId.current, '');
+          return new Map(prev);
+        });
+
         for await (const token of getStreamData({ url, method })) {
           setData((prev) => {
             const current = prev.get(requestId.current);
@@ -67,8 +67,7 @@ export default function useHttpStream({ url, mutationKey, method, ...rest }: { u
           });
         }
       } catch (error: any) {
-        console.error(error);
-        data.set(requestId.current, error.message);
+        data.set(requestId.current, error?.message);
         setData(new Map(data));
       }
     },
