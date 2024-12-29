@@ -15,7 +15,7 @@ export const defaultNamespace = 'comment';
 
 export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: InitOptions<ChainedBackendOptions> = {
-    debug: process.env.NODE_ENV === 'development',
+    // debug: process.env.NODE_ENV === 'development',
     supportedLngs: locales,
     fallbackLng: defaultLocale,
     lng,
