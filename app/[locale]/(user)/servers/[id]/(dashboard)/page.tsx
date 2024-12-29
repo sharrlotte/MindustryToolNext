@@ -72,8 +72,6 @@ export default async function Page({ params }: Props) {
     all: [canAccess, started],
   });
 
-  console.log([canAccess, showPlayer]);
-
   return (
     <ScrollContainer className="flex flex-col gap-2 h-full">
       <CheckServerMaps id={id} />
@@ -81,7 +79,7 @@ export default async function Page({ params }: Props) {
         <div
           className={cn('grid min-h-full w-full grid-cols-1 grid-rows-[auto_auto_60px] flex-col gap-2 md:grid-cols-[auto_300px] md:grid-rows-[auto_auto_60px]', {
             'grid-rows-[auto_auto_60px] md:grid-cols-1': !showPlayer,
-            'grid-rows-[auto_auto_60px]': canAccess,
+            'grid-rows-[auto_auto_auto_60px]': canAccess,
           })}
         >
           <div className="col-span-1 flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card p-4">
