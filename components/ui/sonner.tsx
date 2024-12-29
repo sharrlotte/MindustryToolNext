@@ -6,6 +6,9 @@ import { Toaster as Sonner } from 'sonner';
 import { toast as defaultToast } from 'sonner';
 
 import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon } from '@/components/common/icons';
+import LoadingSpinner from '@/components/common/router-spinner';
+
+import { cn } from '@/lib/utils';
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
@@ -34,12 +37,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
 type ToastOptions = {
   description?: ReactNode;
   icon?: ReactNode;
+  className?: string;
 } & Record<string, any>;
 
 function toast(title: ReactNode, options?: ToastOptions) {
   if (options?.description) {
     return defaultToast(
-      <div className="grid text-base">
+      <div className={cn('grid text-base', options.className)}>
         <div className="flex gap-1 items-center">
           {options.icon}
           {title}
@@ -52,33 +56,71 @@ function toast(title: ReactNode, options?: ToastOptions) {
     );
   }
 
-  defaultToast(<div className="flex">{title}</div>, options);
+  return defaultToast(<div className="flex">{title}</div>, options);
 }
 
 toast.success = (title: ReactNode, options?: ToastOptions) => {
-  toast(title, { icon: <CheckCircleIcon className="size-4" />, ...options });
+  return toast(title, { icon: <CheckCircleIcon className="size-4" />, className: 'text-success bg-success/30', ...options });
 };
 
 toast.error = (title: ReactNode, options?: ToastOptions) => {
-  toast(title, { icon: <XCircleIcon className="size-4" />, ...options });
+  return toast(title, { icon: <XCircleIcon className="size-4" />, className: 'text-destructive bg-destructive/30', ...options });
 };
 
 toast.warning = (title: ReactNode, options?: ToastOptions) => {
-  toast(title, { icon: <AlertTriangleIcon className="size-4" />, ...options });
+  return toast(title, { icon: <AlertTriangleIcon className="size-4" />, ...options });
+};
+
+toast.loading = (title: ReactNode, options?: ToastOptions) => {
+  return toast(title, { icon: <LoadingSpinner className="size-4 p-0" />, ...options });
 };
 
 toast.dismiss = (id: number | string) => {
   return defaultToast.dismiss(id);
 };
 
+type O = {
+  title: ReactNode;
+  description: ReactNode;
+};
+
 type PromiseToastOption<T> = {
   loading?: ReactNode;
-  success?: (data: T) => ReactNode | ReactNode;
-  error?: (error: any) => ReactNode | ReactNode;
+  success?: ((data: T) => ReactNode) | ((data: T) => O) | ReactNode;
+  error?: ((error: any) => ReactNode) | ((error: any) => O) | ReactNode;
 };
 
 function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
-  defaultToast.promise(promise, options);
+  const id = toast.loading(options.loading);
+
+  promise
+    .then((result) => {
+      if (options.success && typeof options.success === 'function') {
+        const r = options.success(result);
+
+        if (r && typeof r === 'object' && 'title' in r) {
+          toast.success(r.title, { description: r.description });
+        } else {
+          toast.success(r);
+        }
+      } else {
+        toast.success(options.success);
+      }
+    })
+    .catch((error) => {
+      if (options.error && typeof options.error === 'function') {
+        const r = options.error(error);
+
+        if (r && typeof r === 'object' && 'title' in r) {
+          toast.error(r.title, { description: r.description });
+        } else {
+          toast.error(r);
+        }
+      } else {
+        toast.error(options.error);
+      }
+    })
+    .finally(() => toast.dismiss(id));
 }
 
 toast.promise = promise;

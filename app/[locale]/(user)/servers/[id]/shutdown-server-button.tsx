@@ -27,7 +27,7 @@ export default function ShutdownServerButton({ id }: Props) {
       toast.promise(shutdownInternalServer(axios, id), {
         loading: <Tran text="server.shutting-down" />,
         success: <Tran text="server.shutdown-success" />,
-        error: <Tran text="server.shutdown-fail" />,
+        error: (error) => ({ title: <Tran text="server.shutdown-fail" />, description: error?.message }),
       }),
     onSettled: () => {
       revalidate({ path: '/servers' });

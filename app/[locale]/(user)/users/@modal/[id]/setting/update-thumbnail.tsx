@@ -44,7 +44,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
     mutationFn: async (file: File) =>
       toast.promise(updateThumbnail(axios, file), {
         loading: <Tran text="upload.uploading" />,
-        error: <Tran text="upload.fail" />,
+        error: (error) => ({ title: <Tran text="upload.fail" />, description: error?.message }),
         success: <Tran text="user.update-thumbnail-success" />,
       }),
     onSuccess: () => {

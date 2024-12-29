@@ -47,6 +47,12 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   return <Preview />;
 }
@@ -186,7 +192,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
         //
         loading: <Tran text="upload.uploading" />,
         success: <Tran text="upload.success" />,
-        error: <Tran text="upload.fail" />,
+        error: (error) => ({ title: <Tran text="upload.fail" />, description: error?.message }),
       }),
     onSuccess: () => {
       setData(undefined);
