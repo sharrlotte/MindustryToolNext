@@ -69,12 +69,14 @@ type NotificationDialogButtonProps = {
 };
 function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
   const { socket } = useSocket();
+  const { state } = useSession();
   const { invalidateByKey } = useQueriesData();
   const { postNotification } = useNotification();
 
   let { data } = useClientQuery({
     queryKey: ['notifications', 'count'],
     queryFn: (axios) => getMyUnreadNotificationCount(axios),
+    enabled: state === 'authenticated',
   });
 
   data = data ?? 0;

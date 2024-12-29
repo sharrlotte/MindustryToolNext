@@ -22,6 +22,8 @@ export function middleware(req: NextRequest) {
       return;
     }
 
+    console.log('Redirect to: ' + language);
+
     return NextResponse.redirect(new URL(`/${language}${req.nextUrl.pathname}`, req.url));
   }
 
@@ -29,7 +31,9 @@ export function middleware(req: NextRequest) {
     const refererUrl = new URL(req.headers.get('referer') || '');
     const languageInReferer = locales.find((l) => refererUrl.pathname.startsWith(`/${l}`));
     const response = NextResponse.next();
+
     if (languageInReferer) response.cookies.set(cookieName, languageInReferer);
+
     return response;
   }
 
