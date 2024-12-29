@@ -29,10 +29,15 @@ export function isError<T extends Record<string, any>>(req: T | ApiError | null)
 }
 
 export function stripColors(input: string): string {
-  const colorNames = Object.keys('\\[' + colours + '\\]').join('|');
+  const colorNamesPattern = Object.keys(colours)
+    .map((color) => `\\[${color}\\]`)
+    .join('|');
+
   const hexPattern = '\\[#[0-9a-fA-F]{1,6}\\]';
 
-  const regex = new RegExp(`\\b(${colorNames})\\b|${hexPattern}`, 'gi');
+  const combinedPattern = `${colorNamesPattern}|${hexPattern}`;
+
+  const regex = new RegExp(combinedPattern, 'gi');
 
   return input.replace(regex, '').trim();
 }
@@ -365,7 +370,7 @@ export function getLoggedErrorMessage(error: TError) {
       return JSON.stringify({
         request: JSON.stringify(error.request),
         response: JSON.stringify(error.response),
-        config: JSON.stringify(error.config),
+        config: JSON.stringify(error.config, Object.keys(error.config ?? {})),
         url: error.config?.url,
         stacktrace: error.stack,
         message: error.message,
