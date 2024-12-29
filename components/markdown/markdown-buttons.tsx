@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { BoldIcon, CheckListIcon, CodeBlockIcon, HRIcon, ImageIcon, ItalicIcon, LinkChainIcon, ListIcon, OrderedListIcon, QuoteIcon, StrikethroughIcon, TitleIcon, XIcon } from '@/components/common/icons';
@@ -9,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
 import { insertAtCaret, wrapAtCaret } from '@/lib/utils';

@@ -1,5 +1,4 @@
 import React from 'react';
-import { toast } from 'sonner';
 
 import DownloadButton from '@/components/button/download-button';
 import NoResult from '@/components/common/no-result';
@@ -8,6 +7,7 @@ import FileCard from '@/components/file/file-card';
 import { ContextMenuItem } from '@/components/ui/context-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
+import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';

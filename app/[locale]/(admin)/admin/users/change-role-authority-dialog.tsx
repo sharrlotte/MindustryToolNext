@@ -1,11 +1,11 @@
 'use client';
 
 import React, { Fragment, useMemo, useState } from 'react';
-import { toast } from 'sonner';
 
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { toast } from '@/components/ui/sonner';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 import { revalidate } from '@/action/action';

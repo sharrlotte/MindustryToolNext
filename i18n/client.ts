@@ -47,6 +47,7 @@ export function useI18n(namespace: string | string[] = 'common', options?: any) 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       if (activeLng === i18n.resolvedLanguage) return;
+      console.log(['active', activeLng, i18n.resolvedLanguage]);
       setActiveLng(i18n.resolvedLanguage);
     }, [activeLng, i18n.resolvedLanguage]);
 
@@ -54,12 +55,15 @@ export function useI18n(namespace: string | string[] = 'common', options?: any) 
     useEffect(() => {
       if (!language || i18n.resolvedLanguage === language) return;
       i18n.changeLanguage(language);
+      console.log(['active', language, i18n.resolvedLanguage]);
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [language, i18n.resolvedLanguage]);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       if (cookies[cookieName] === language) return;
+      console.log(['active', language, cookies[cookieName]]);
 
       setCookie(cookieName, language, { path: '/' });
       // eslint-disable-next-line react-hooks/exhaustive-deps

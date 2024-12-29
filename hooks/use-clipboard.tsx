@@ -1,7 +1,7 @@
 import { ReactNode, useCallback } from 'react';
-import { toast } from 'sonner';
 
 import Tran from '@/components/common/tran';
+import { toast } from '@/components/ui/sonner';
 
 type CopyProps = {
   data: string;

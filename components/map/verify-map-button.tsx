@@ -1,9 +1,9 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { toast } from 'sonner';
 
 import VerifyButton from '@/components/button/verify-button';
 import Tran from '@/components/common/tran';
+import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';

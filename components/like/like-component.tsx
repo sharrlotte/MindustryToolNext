@@ -2,10 +2,10 @@
 
 import React, { useCallback, useMemo } from 'react';
 import { ReactNode } from 'react';
-import { toast } from 'sonner';
 import { create } from 'zustand';
 
 import Tran from '@/components/common/tran';
+import { toast } from '@/components/ui/sonner';
 
 import { LikeAction } from '@/constant/enum';
 import { FakeLike, LikeContext } from '@/context/like-context';
@@ -52,7 +52,6 @@ function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialL
     }),
     [cache, initialLikeCount, initialLikeData, itemId],
   );
-
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (action: LikeAction) =>

@@ -1,10 +1,10 @@
 import React from 'react';
-import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
 import useClientApi from '@/hooks/use-client';

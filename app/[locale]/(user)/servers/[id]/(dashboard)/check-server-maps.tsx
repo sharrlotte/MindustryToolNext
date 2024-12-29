@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import { toast } from 'sonner';
 
 import Tran from '@/components/common/tran';
+import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import { getInternalServerMaps } from '@/query/server';

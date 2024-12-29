@@ -1,5 +1,4 @@
 import { Fragment, useMemo, useState } from 'react';
-import { toast } from 'sonner';
 
 import { Hidden } from '@/components/common/hidden';
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
@@ -7,6 +6,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
+import { toast } from '@/components/ui/sonner';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 import { useMe, useSession } from '@/context/session-context.client';

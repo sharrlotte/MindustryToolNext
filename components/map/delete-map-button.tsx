@@ -1,10 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 
 import DeleteButton, { DeleteButtonProps } from '@/components/button/delete-button';
 import Tran from '@/components/common/tran';
+import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';

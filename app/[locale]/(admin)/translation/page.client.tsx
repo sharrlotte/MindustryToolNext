@@ -3,7 +3,6 @@
 import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { debounce } from 'throttle-debounce';
 
 import CopyButton from '@/components/button/copy-button';
@@ -20,6 +19,7 @@ import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from '@/components/ui/sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 

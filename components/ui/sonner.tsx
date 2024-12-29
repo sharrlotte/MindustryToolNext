@@ -1,7 +1,11 @@
 'use client';
 
 import { useTheme } from 'next-themes';
+import { ReactNode } from 'react';
 import { Toaster as Sonner } from 'sonner';
+import { toast as defaultToast } from 'sonner';
+
+import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon } from '@/components/common/icons';
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
@@ -27,4 +31,56 @@ const Toaster = ({ ...props }: ToasterProps) => {
   );
 };
 
-export { Toaster };
+type ToastOptions = {
+  description?: ReactNode;
+  icon?: ReactNode;
+} & Record<string, any>;
+
+function toast(title: ReactNode, options?: ToastOptions) {
+  if (options?.description) {
+    return defaultToast(
+      <div className="grid text-base">
+        <div className="flex gap-1 items-center">
+          {options.icon}
+          {title}
+        </div>
+        <div className="text-muted-foreground text-sm">{options.description}</div>
+      </div>,
+      {
+        duration: 100000,
+      },
+    );
+  }
+
+  defaultToast(<div className="flex">{title}</div>, options);
+}
+
+toast.success = (title: ReactNode, options?: ToastOptions) => {
+  toast(title, { icon: <CheckCircleIcon className="size-4" />, ...options });
+};
+
+toast.error = (title: ReactNode, options?: ToastOptions) => {
+  toast(title, { icon: <XCircleIcon className="size-4" />, ...options });
+};
+
+toast.warning = (title: ReactNode, options?: ToastOptions) => {
+  toast(title, { icon: <AlertTriangleIcon className="size-4" />, ...options });
+};
+
+toast.dismiss = (id: number | string) => {
+  return defaultToast.dismiss(id);
+};
+
+type PromiseToastOption<T> = {
+  loading?: ReactNode;
+  success?: (data: T) => ReactNode;
+  error?: (error: T) => ReactNode;
+};
+
+function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
+  defaultToast.promise(promise, options);
+}
+
+toast.promise = promise;
+
+export { Toaster, toast };

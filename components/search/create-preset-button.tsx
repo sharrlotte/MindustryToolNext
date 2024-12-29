@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Hidden } from '@/components/common/hidden';
@@ -12,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/sonner';
 
 import useQueriesData from '@/hooks/use-queries-data';
 import { PresetType, addTagPreset } from '@/lib/utils';

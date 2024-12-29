@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { toast } from 'sonner';
 
 import DeleteButton from '@/components/button/delete-button';
 import Tran from '@/components/common/tran';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
