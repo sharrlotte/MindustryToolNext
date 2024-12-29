@@ -67,28 +67,21 @@ export default async function Page({ params }: Props) {
 
   const { started, name, description, port, mode, ramUsage, totalRam, players, mapName, alive, userId } = server;
 
+  const canAccess = hasAccess(session, { any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: server.userId }] });
   const showPlayer = hasAccess(session, {
-    all: [
-      {
-        any: [
-          {
-            authorId: userId,
-          },
-          { authority: 'VIEW_ADMIN_SERVER' },
-        ],
-      },
-      started,
-      false,
-    ],
+    all: [canAccess, started],
   });
+
+  console.log([canAccess, showPlayer]);
 
   return (
     <ScrollContainer className="flex flex-col gap-2 h-full">
       <CheckServerMaps id={id} />
       <div className="h-full">
         <div
-          className={cn('grid min-h-full w-full grid-cols-1 grid-rows-[auto_auto_auto_60px] flex-col gap-2 md:grid-cols-[auto_300px] md:grid-rows-[auto_auto_60px]', {
+          className={cn('grid min-h-full w-full grid-cols-1 grid-rows-[auto_auto_60px] flex-col gap-2 md:grid-cols-[auto_300px] md:grid-rows-[auto_auto_60px]', {
             'grid-rows-[auto_auto_60px] md:grid-cols-1': !showPlayer,
+            'grid-rows-[auto_auto_60px]': canAccess,
           })}
         >
           <div className="col-span-1 flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card p-4">
@@ -150,14 +143,8 @@ export default async function Page({ params }: Props) {
               )}
             </div>
           </div>
-          <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
-            <ProtectedElement session={session} filter={{ any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: session?.id }] }}>
-              <ReloadServerButton id={id} />
-              {started ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
-            </ProtectedElement>
-          </div>
-          <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">
-            <ProtectedElement session={session} filter={showPlayer}>
+          <ProtectedElement session={session} filter={showPlayer}>
+            <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">
               <div className="flex flex-col gap-2">
                 <h3 className="p-4 text-xl">
                   <Tran text="server.players" /> {players}
@@ -166,8 +153,14 @@ export default async function Page({ params }: Props) {
                   <PlayersCard id={id} />
                 </Suspense>
               </div>
-            </ProtectedElement>
-          </div>
+            </div>
+          </ProtectedElement>
+          <ProtectedElement session={session} filter={canAccess}>
+            <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
+              <ReloadServerButton id={id} />
+              {started ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
+            </div>
+          </ProtectedElement>
         </div>
       </div>
     </ScrollContainer>
