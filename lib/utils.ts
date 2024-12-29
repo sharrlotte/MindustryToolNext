@@ -29,17 +29,18 @@ export function isError<T extends Record<string, any>>(req: T | ApiError | null)
 }
 
 export function stripColors(input: string): string {
-  const colorNamesPattern = Object.keys(colours)
-    .map((color) => `\\[${color}\\]`)
-    .join('|');
+  const colorKeys = new Set(Object.keys(colours));
 
-  const hexPattern = '\\[#[0-9a-fA-F]{1,6}\\]';
+  const hexPattern = /\[#[0-9a-fA-F]{1,6}\]/g;
+  const colorNamePattern = /\[([^\]]+)\]/g;
 
-  const combinedPattern = `${colorNamesPattern}|${hexPattern}`;
+  input = input.replace(colorNamePattern, (match, p1) => {
+    return colorKeys.has(p1) ? '' : match; // Remove if it's a color name
+  });
 
-  const regex = new RegExp(combinedPattern, 'gi');
+  input = input.replace(hexPattern, '');
 
-  return input.replace(regex, '').trim();
+  return input.trim();
 }
 
 const colours: Record<string, string> = {
