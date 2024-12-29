@@ -67,8 +67,13 @@ export default function useHttpStream({ url, mutationKey, method, ...rest }: { u
           });
         }
       } catch (error: any) {
-        data.set(requestId.current, error?.message);
-        setData(new Map(data));
+        setData((prev) => {
+          const current = prev.get(requestId.current);
+
+          prev.set(requestId.current, current + error?.message);
+
+          return new Map(prev);
+        });
       }
     },
   });
