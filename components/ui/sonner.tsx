@@ -74,7 +74,7 @@ toast.dismiss = (id: number | string) => {
 type PromiseToastOption<T> = {
   loading?: ReactNode;
   success?: (data: T) => ReactNode | ReactNode;
-  error?: (error: T) => ReactNode | ReactNode;
+  error?: (error: any) => ReactNode | ReactNode;
 };
 
 function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
