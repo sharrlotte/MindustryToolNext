@@ -68,7 +68,7 @@ toast.error = (title: ReactNode, options?: ToastOptions) => {
 };
 
 toast.warning = (title: ReactNode, options?: ToastOptions) => {
-  return toast(title, { icon: <AlertTriangleIcon className="size-4" />, ...options });
+  return toast(title, { icon: <AlertTriangleIcon className="size-4" />, className: 'text-warning bg-warning/30',...options });
 };
 
 toast.loading = (title: ReactNode, options?: ToastOptions) => {

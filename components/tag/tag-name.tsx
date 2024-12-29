@@ -3,8 +3,6 @@
 import Image from 'next/image';
 import React, { ReactNode } from 'react';
 
-import Tran from '@/components/common/tran';
-
 import { cn } from '@/lib/utils';
 
 const icons: Record<string, string> = {

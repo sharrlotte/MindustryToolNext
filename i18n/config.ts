@@ -11,11 +11,11 @@ export const locales = env.locales;
 export type Locale = (typeof locales)[number];
 
 export type TranslateFunction = (key: string, args?: Record<string, any>) => string;
-export const defaultNamespace = ['common', 'tags'];
+export const defaultNamespace: string | string[] = ['common', 'tags'];
 
 export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: InitOptions<ChainedBackendOptions> = {
-    debug: process.env.NODE_ENV === 'development',
+    // debug: process.env.NODE_ENV === 'development',
     supportedLngs: locales,
     fallbackLng: defaultLocale,
     lng,

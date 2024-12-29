@@ -50,7 +50,7 @@ function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialL
         dislike: initialDislikeCount,
       }),
     }),
-    [cache, initialLikeCount, initialLikeData, itemId],
+    [cache, initialLikeCount, initialDislikeCount, initialLikeData, itemId],
   );
 
   const { mutate, isPending } = useMutation({
