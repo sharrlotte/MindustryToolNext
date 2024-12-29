@@ -23,7 +23,6 @@ import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useNotification from '@/hooks/use-notification';
 import useQueriesData from '@/hooks/use-queries-data';
-import ProtectedElement from '@/layout/protected-element';
 import { cn, isError } from '@/lib/utils';
 import { deleteAllNotifications, deleteNotification, getMyNotifications, getMyUnreadNotificationCount, markAsRead, markAsReadById } from '@/query/notification';
 import { Notification } from '@/types/response/Notification';
@@ -32,7 +31,6 @@ import { useMutation } from '@tanstack/react-query';
 
 export default function NotificationDialog() {
   const {
-    session,
     config: { showNav: isVisible },
   } = useSession();
 
@@ -40,31 +38,29 @@ export default function NotificationDialog() {
   const expand = isSmall ? true : isVisible;
 
   return (
-    <ProtectedElement session={session} filter>
-      <Dialog>
-        <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
-          <NotificationDialogButton expand={expand} />
-        </DialogTrigger>
-        <DialogContent className="p-6 max-h-full flex flex-col" closeButton={false}>
-          <DialogTitle className="flex items-center justify-between w-full">
-            <Tran className="text-2xl" text="notification" />
-            <EllipsisButton variant="ghost">
-              <MarkAsReadAllButton />
-              <DeleteAllButton />
-            </EllipsisButton>
-          </DialogTitle>
-          <Hidden>
-            <DialogDescription>This is a notification dialog.</DialogDescription>
-          </Hidden>
-          <NotificationList />
-          <DialogClose asChild>
-            <Button className="ml-auto" variant="secondary">
-              <Tran text="close" />
-            </Button>
-          </DialogClose>
-        </DialogContent>
-      </Dialog>
-    </ProtectedElement>
+    <Dialog>
+      <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
+        <NotificationDialogButton expand={expand} />
+      </DialogTrigger>
+      <DialogContent className="p-6 max-h-full flex flex-col" closeButton={false}>
+        <DialogTitle className="flex items-center justify-between w-full">
+          <Tran className="text-2xl" text="notification" />
+          <EllipsisButton variant="ghost">
+            <MarkAsReadAllButton />
+            <DeleteAllButton />
+          </EllipsisButton>
+        </DialogTitle>
+        <Hidden>
+          <DialogDescription>This is a notification dialog.</DialogDescription>
+        </Hidden>
+        <NotificationList />
+        <DialogClose asChild>
+          <Button className="ml-auto" variant="secondary">
+            <Tran text="close" />
+          </Button>
+        </DialogClose>
+      </DialogContent>
+    </Dialog>
   );
 }
 

@@ -31,6 +31,7 @@ const tabs: Tab = [
     {
       icon: undefined,
       action: <NotificationDialog />,
+      filter: true,
     },
     {
       icon: <SettingIcon />,
