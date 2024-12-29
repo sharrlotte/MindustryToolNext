@@ -19,8 +19,8 @@ export async function SessionProvider({ children }: { children: ReactNode }) {
   const showNav = cookie.get(SHOW_NAV_PERSISTENT_KEY)?.value;
 
   const config: Config = {
-    paginationSize: paginationSizeString ? Number(paginationSizeString) : DEFAULT_PAGINATION_SIZE,
     paginationType: paginationTypes.includes(paginationType) ? paginationType : DEFAULT_PAGINATION_TYPE,
+    paginationSize: paginationSizeString ? Number(paginationSizeString) : DEFAULT_PAGINATION_SIZE,
     showNav: showNav === 'true',
   };
 

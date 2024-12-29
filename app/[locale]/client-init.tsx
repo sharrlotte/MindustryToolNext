@@ -8,15 +8,8 @@ export default function ClientInit() {
   const axios = useClientApi();
 
   useQuery({
-    queryFn: () => {
-      try {
-        axios.get('/ping?client=web');
-      } catch {
-        // Ignore
-      }
-      return null;
-    },
     queryKey: ['ping'],
+    queryFn: () => axios.get('/ping?client=web'),
   });
 
   return undefined;
