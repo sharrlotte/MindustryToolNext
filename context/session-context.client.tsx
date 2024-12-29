@@ -78,8 +78,6 @@ export default function ClientSessionProvider({ session: init, children }: { ses
         return prev;
       }
 
-      console.log(prev.config, config);
-
       return { ...prev, config };
     });
   }, [config]);
