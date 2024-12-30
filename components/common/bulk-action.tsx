@@ -2,18 +2,9 @@ import React, { ReactNode, useCallback, useState } from 'react';
 
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+
 import { cn } from '@/lib/utils';
 
 type ContextType = {
@@ -93,7 +84,7 @@ export function BulkDeleteToggle() {
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="secondary">
+          <Button className="border-none" variant="secondary">
             <Tran text="selected" args={{ number: value.length }} />
           </Button>
         </AlertDialogTrigger>
@@ -122,7 +113,7 @@ export function BulkDeleteToggle() {
   }
 
   return (
-    <Button variant="secondary" onClick={() => setShow(!show)}>
+    <Button className="border-none" variant="secondary" onClick={() => setShow(!show)}>
       <Tran text="bulk-delete" />
     </Button>
   );

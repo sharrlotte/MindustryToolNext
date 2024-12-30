@@ -18,17 +18,18 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps['theme']}
-      className="toaster group"
+      className="toaster group border-none"
       position="top-right"
       toastOptions={{
         classNames: {
-          toast: 'group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg',
+          toast: 'group p-0 border-none group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:shadow-lg',
           description: 'group-[.toast]:text-muted-foreground',
           actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
           cancelButton: 'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground',
         },
       }}
       offset={16}
+      duration={process.env.NODE_ENV === 'development' ? 100000 : undefined}
       {...props}
     />
   );
@@ -43,7 +44,7 @@ type ToastOptions = {
 function toast(title: ReactNode, options?: ToastOptions) {
   if (options?.description) {
     return defaultToast(
-      <div className={cn('grid text-base', options.className)}>
+      <div className={cn('grid text-base border-none w-full rounded-lg p-4', options.className)}>
         <div className="flex gap-1 items-center">
           {options.icon}
           {title}
@@ -56,7 +57,7 @@ function toast(title: ReactNode, options?: ToastOptions) {
     );
   }
 
-  return defaultToast(<div className="flex">{title}</div>, options);
+  return defaultToast(<div className={cn('grid text-sm border-none w-full rounded-lg p-4', options?.className)}>{title}</div>, options);
 }
 
 toast.success = (title: ReactNode, options?: ToastOptions) => {
@@ -64,11 +65,11 @@ toast.success = (title: ReactNode, options?: ToastOptions) => {
 };
 
 toast.error = (title: ReactNode, options?: ToastOptions) => {
-  return toast(title, { icon: <XCircleIcon className="size-4" />, className: 'text-destructive bg-destructive/30', ...options });
+  return toast(title, { icon: <XCircleIcon className="size-4" />, className: 'text-destructive bg-destructive/20', ...options });
 };
 
 toast.warning = (title: ReactNode, options?: ToastOptions) => {
-  return toast(title, { icon: <AlertTriangleIcon className="size-4" />, className: 'text-warning bg-warning/30',...options });
+  return toast(title, { icon: <AlertTriangleIcon className="size-4" />, className: 'text-warning bg-warning/30', ...options });
 };
 
 toast.loading = (title: ReactNode, options?: ToastOptions) => {
@@ -99,12 +100,12 @@ function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
         const r = options.success(result);
 
         if (r && typeof r === 'object' && 'title' in r) {
-          toast.success(r.title, { description: r.description });
+          toast.success(r.title, { description: r.description, id });
         } else {
-          toast.success(r);
+          toast.success(r, { id });
         }
       } else {
-        toast.success(options.success);
+        toast.success(options.success, { id });
       }
     })
     .catch((error) => {
@@ -112,12 +113,12 @@ function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
         const r = options.error(error);
 
         if (r && typeof r === 'object' && 'title' in r) {
-          toast.error(r.title, { description: r.description });
+          toast.error(r.title, { description: r.description, id });
         } else {
-          toast.error(r);
+          toast.error(r, { id });
         }
       } else {
-        toast.error(options.error);
+        toast.error(options.error, { id });
       }
     })
     .finally(() => toast.dismiss(id));

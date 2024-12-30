@@ -4,6 +4,8 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+
+
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
 import LoadingScreen from '@/components/common/loading-screen';
@@ -19,6 +21,8 @@ import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
 
+
+
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context.client';
 import { useTags } from '@/context/tags-context.client';
@@ -30,8 +34,14 @@ import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewRespo
 import TagGroup from '@/types/response/TagGroup';
 import { CreateSchematicRequest, CreateSchematicSchema } from '@/types/schema/zod-schema';
 
+
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+
+/* eslint-disable @next/next/no-img-element */
+
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -108,7 +118,7 @@ type SchematicSelectorProps = {
 function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
   function handleFileChange(files: File[]) {
     if (!files.length || !files[0]) {
-      return toast(<Tran text="upload.no-file" />);
+      return toast.error(<Tran text="upload.no-file" />);
     }
 
     const file = files[0];
@@ -116,7 +126,7 @@ function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
     const extension = filename.split('.').pop();
 
     if (extension !== 'msch') {
-      return toast(<Tran text="upload.invalid-schematic-file" />);
+      return toast.error(<Tran text="upload.invalid-schematic-file" />);
     }
 
     onSchematicSelected(file);
@@ -127,11 +137,11 @@ function SchematicSelector({ onSchematicSelected }: SchematicSelectorProps) {
       .readText() //
       .then((text) => {
         if (!text || text.length === 0) {
-          return toast(<Tran text="upload.clipboard-empty" />);
+          return toast.error(<Tran text="upload.clipboard-empty" />);
         }
 
         if (!text.startsWith('bXNja')) {
-          return toast(<Tran text="upload.invalid-schematic-code" />);
+          return toast.error(<Tran text="upload.invalid-schematic-code" />);
         }
 
         onSchematicSelected(text);
