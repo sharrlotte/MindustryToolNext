@@ -13,23 +13,15 @@ let dismissLast: (() => void) | null = null;
 
 export default function useClipboard() {
   return useCallback(async ({ data, title = <Tran text="copied" />, content = '' }: CopyProps) => {
-    let id: string | number;
-
-    async function copy() {
-      await navigator.clipboard.writeText(data);
-
-      if (dismissLast) {
-        dismissLast();
-      }
-
-      id = toast(title, {
-        description: content,
-      });
-
-      dismissLast = () => toast.dismiss(id);
+    if (dismissLast) {
+      dismissLast();
     }
 
-    copy();
+    const id = toast.promise(navigator.clipboard.writeText(data), {
+      loading: () => ({ title, description: content }),
+    });
+
+    dismissLast = () => toast.dismiss(id);
 
     return () => toast.dismiss(id);
   }, []);
