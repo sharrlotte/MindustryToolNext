@@ -100,12 +100,12 @@ function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
         const r = options.success(result);
 
         if (r && typeof r === 'object' && 'title' in r) {
-          toast.success(r.title, { description: r.description });
+          toast.success(r.title, { description: r.description, id });
         } else {
-          toast.success(r);
+          toast.success(r, { id });
         }
       } else {
-        toast.success(options.success);
+        toast.success(options.success, { id });
       }
     })
     .catch((error) => {
@@ -113,12 +113,12 @@ function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
         const r = options.error(error);
 
         if (r && typeof r === 'object' && 'title' in r) {
-          toast.error(r.title, { description: r.description });
+          toast.error(r.title, { description: r.description, id });
         } else {
-          toast.error(r);
+          toast.error(r, { id });
         }
       } else {
-        toast.error(options.error);
+        toast.error(options.error, { id });
       }
     })
     .finally(() => toast.dismiss(id));
