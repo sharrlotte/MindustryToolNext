@@ -32,6 +32,7 @@ export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
               revalidate: 600,
             },
           },
+          alternateFetch: fetch,
         } as HttpBackendOptions,
       ],
     },
