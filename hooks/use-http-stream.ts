@@ -6,12 +6,16 @@ const decoder = new TextDecoder();
 
 type Method = 'GET' | 'POST';
 
-async function* getStreamData({ url, method }: { url: string; method: Method }) {
+async function* getStreamData({ url, method, body }: { url: string; method: Method; body?: BodyInit | Record<string, any> }) {
   const requestUrl = new URL(url);
 
   const res = await fetch(requestUrl, {
     method,
     credentials: 'include',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 
   if (!res.ok) {
@@ -39,7 +43,7 @@ async function* getStreamData({ url, method }: { url: string; method: Method }) 
   }
 }
 
-export default function useHttpStream({ url, mutationKey, method, ...rest }: { url: string; method: Method } & Omit<Parameters<typeof useMutation<void, any, void, unknown>>[0], 'mutationFn'>) {
+export default function useHttpStream({ url, mutationKey, method, body, ...rest }: { url: string; method: Method; body?: BodyInit | Record<string, any> } & Omit<Parameters<typeof useMutation<void, any, void, unknown>>[0], 'mutationFn'>) {
   const id = useId();
   const requestId = useRef(0);
 
@@ -57,7 +61,7 @@ export default function useHttpStream({ url, mutationKey, method, ...rest }: { u
           return new Map(prev);
         });
 
-        for await (const token of getStreamData({ url, method })) {
+        for await (const token of getStreamData({ url, method, body })) {
           setData((prev) => {
             const current = prev.get(requestId.current);
 
