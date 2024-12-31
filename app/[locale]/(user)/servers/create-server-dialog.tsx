@@ -14,7 +14,6 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, Dia
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
-import { Textarea } from '@/components/ui/textarea';
 
 import { revalidate } from '@/action/action';
 import env from '@/constant/env';
