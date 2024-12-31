@@ -46,7 +46,6 @@ export default function CreateServerDialog() {
     method: 'POST',
     mutationKey: ['internal-servers'],
     body: form.getValues(),
-    onMutate: () => setVisible(true),
     onSuccess: () => {
       toast.success(<Tran text="upload.success" />);
 
