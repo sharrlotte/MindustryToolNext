@@ -76,7 +76,7 @@ toast.loading = (title: ReactNode, options?: ToastOptions) => {
   return toast(title, { icon: <LoadingSpinner className="size-4 p-0" />, ...options });
 };
 
-toast.dismiss = (id: number | string) => {
+toast.dismiss = (id?: number | string) => {
   return defaultToast.dismiss(id);
 };
 
@@ -86,13 +86,24 @@ type O = {
 };
 
 type PromiseToastOption<T> = {
-  loading?: ReactNode;
+  loading?: (() => ReactNode) | (() => O) | ReactNode;
   success?: ((data: T) => ReactNode) | ((data: T) => O) | ReactNode;
   error?: ((error: any) => ReactNode) | ((error: any) => O) | ReactNode;
 };
 
 function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
-  const id = toast.loading(options.loading);
+  let id;
+  if (options.loading && typeof options.loading === 'function') {
+    const r = options.loading();
+
+    if (r && typeof r === 'object' && 'title' in r) {
+      id = toast.loading(r.title, { description: r.description, id });
+    } else {
+      id = toast.loading(r, { id });
+    }
+  } else {
+    id = toast.loading(options.loading, { id });
+  }
 
   promise
     .then((result) => {
@@ -122,6 +133,8 @@ function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
       }
     })
     .finally(() => toast.dismiss(id));
+
+  return id;
 }
 
 toast.promise = promise;
