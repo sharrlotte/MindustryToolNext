@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -44,37 +44,37 @@ async function* getStreamData({ url, method, body }: { url: string; method: Meth
 }
 
 export default function useHttpStream({ url, mutationKey, method, body, ...rest }: { url: string; method: Method; body?: BodyInit | Record<string, any> } & Omit<Parameters<typeof useMutation<void, any, void, unknown>>[0], 'mutationFn'>) {
-  const id = useId();
   const requestId = useRef(0);
 
-  const [data, setData] = useState<Map<number, string>>(new Map());
+  const [data, setData] = useState<Map<number, string[]>>(new Map());
 
   const mutation = useMutation({
-    mutationKey: [mutationKey, id],
+    mutationKey: [mutationKey],
     ...rest,
     mutationFn: async () => {
       requestId.current = requestId.current + 1;
 
       try {
         setData((prev) => {
-          prev.set(requestId.current, '');
+          prev.set(requestId.current, []);
           return new Map(prev);
         });
 
         for await (const token of getStreamData({ url, method, body })) {
-          setData((prev) => {
-            const current = prev.get(requestId.current);
+          if (!token) continue;
 
-            prev.set(requestId.current, current + token);
+          setData((prev) => {
+            const current = prev.get(requestId.current) ?? [];
+
+            prev.set(requestId.current, [...current, ...token.split('\n').filter(Boolean)]);
 
             return new Map(prev);
           });
         }
       } catch (error: any) {
         setData((prev) => {
-          const current = prev.get(requestId.current);
-
-          prev.set(requestId.current, current + error?.message);
+          const current = prev.get(requestId.current) ?? [];
+          prev.set(requestId.current, [...current, error?.message]);
 
           return new Map(prev);
         });
@@ -84,5 +84,7 @@ export default function useHttpStream({ url, mutationKey, method, body, ...rest 
     },
   });
 
-  return { ...mutation, data: data.get(requestId.current) };
+  const d = data.get(requestId.current);
+
+  return { ...mutation, data: d, last: d && d.length >= 1 ? d[d.length - 1] : undefined };
 }

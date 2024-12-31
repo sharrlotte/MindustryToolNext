@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 
 import ColorText from '@/components/common/color-text';
-import { Hidden } from '@/components/common/hidden';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -13,6 +12,8 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } fr
 import { revalidate } from '@/action/action';
 import env from '@/constant/env';
 import useHttpStream from '@/hooks/use-http-stream';
+import LoadingSpinner from '@/components/common/loading-spinner';
+import { CheckCircleIcon } from '@/components/common/icons';
 
 type Props = {
   id: string;
@@ -21,7 +22,7 @@ type Props = {
 export default function ReloadServerButton({ id }: Props) {
   const [visible, setVisible] = useState(false);
 
-  const { data, mutate, isPending, isSuccess } = useHttpStream({
+  const { data, mutate, isPending, isSuccess, last } = useHttpStream({
     url: `${env.url.api}/internal-servers/${id}/reload`,
     method: 'POST',
     mutationKey: ['internal-servers', id, 'reload'],
@@ -80,10 +81,10 @@ export default function ReloadServerButton({ id }: Props) {
           <DialogTitle>
             <Tran text="server.reload" asChild />
           </DialogTitle>
-          <Hidden>
-            <DialogDescription></DialogDescription>
-          </Hidden>
-          <ScrollContainer className="h-full flex-1 flex w-full flex-col overflow-x-auto">{data?.split('\n').map((text, index) => <ColorText key={index} text={text} />)}</ScrollContainer>
+          <DialogDescription className="flex gap-1 overflow-hidden w-full text-ellipsis items-center">
+            {isPending ? <LoadingSpinner className="p-0 w-4" /> : <CheckCircleIcon className="w-4" />} <ColorText text={last} />
+          </DialogDescription>
+          <ScrollContainer className="h-full flex-1 flex w-full flex-col overflow-x-auto">{data?.map((text, index) => <ColorText key={index} text={text} />)}</ScrollContainer>
           {isSuccess && (
             <DialogClose className="ml-auto" asChild>
               <Button>
