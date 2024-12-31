@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -35,6 +36,8 @@ export default function CreateServerDialog() {
     },
   });
 
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
 
   const { invalidateByKey } = useQueriesData();
@@ -46,12 +49,13 @@ export default function CreateServerDialog() {
     method: 'POST',
     mutationKey: ['internal-servers'],
     body: form.getValues(),
-    onMutate: () => setVisible(true),
-    onSuccess: () => {
+    onSuccess: (data: any) => {
       toast.success(<Tran text="upload.success" />);
 
       form.reset();
       setOpen(false);
+
+      router.push(`/servers/${data.id}`);
     },
     onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
 
