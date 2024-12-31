@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 
 import ColorText from '@/components/common/color-text';
-import { Hidden } from '@/components/common/hidden';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
