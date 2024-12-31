@@ -78,6 +78,7 @@ function addFormat(keys: string[]) {
 function render(text?: string) {
   if (!text) return <></>;
 
+
   const index = text.search(COLOR_REGEX);
   let key = 0;
 
