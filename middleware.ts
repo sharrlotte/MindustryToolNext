@@ -22,7 +22,6 @@ export function middleware(req: NextRequest) {
       return;
     }
 
-    console.log('Redirect to: ' + language);
 
     return NextResponse.redirect(new URL(`/${language}${req.nextUrl.pathname}`, req.url));
   }
