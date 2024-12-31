@@ -12,7 +12,7 @@ export default function useMessageQuery<P extends MessageQuery>(room: string, pa
       return undefined;
     }
 
-    const last = lastPage.at(-1);
+    const last = lastPage?.at(-1);
 
     if (!last) {
       return undefined;
