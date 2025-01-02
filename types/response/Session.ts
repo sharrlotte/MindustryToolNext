@@ -11,4 +11,5 @@ export type Session = {
   lastLogin: number;
   createdAt: number;
   stats: UserStats;
+  isBanned: boolean;
 };
