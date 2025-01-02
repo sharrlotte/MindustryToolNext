@@ -7,6 +7,7 @@ import {
   ChartIcon,
   ChatIcon,
   CmdIcon,
+  CommentIcon,
   CrownIcon,
   DocumentIcon,
   FileIcon,
@@ -152,6 +153,12 @@ export const groups: readonly PathGroup[] = [
         path: '/logs',
         icon: <LogIcon />,
         filter: { authority: 'VIEW_LOG' },
+      },
+      {
+        name: <Tran text="comment" />,
+        path: '/admin/comments',
+        icon: <CommentIcon />,
+        filter: { authority: 'MANAGE_COMMENT' },
       },
       {
         name: <VerifyPath />,

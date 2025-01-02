@@ -63,6 +63,7 @@ import {
   Users,
   X,
   XCircle,
+  MessageSquareIcon
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -75,6 +76,7 @@ type Props = {
   className?: string;
 };
 
+export const CommentIcon = ({ className }: Props) => <MessageSquareIcon className={cn(className ?? 'lucide')} />;
 export const AlertTriangleIcon = ({ className }: Props) => <AlertTriangle className={cn(className ?? 'lucide')} />;
 export const AnalyticIcon = ({ className }: Props) => <LineChart className={cn(className ?? 'lucide')} />;
 export const XCircleIcon = ({ className }: Props) => <XCircle className={cn(className ?? 'lucide')} />;

@@ -16,6 +16,20 @@ export async function getComments(axios: AxiosInstance, id: string, params: Pagi
   return result.data;
 }
 
+export async function getAllComments(axios: AxiosInstance, params: PaginationQuery): Promise<Comment[]> {
+  const result = await axios.get(`/comments`, {
+    params,
+  });
+
+  return result.data;
+}
+
+export async function getAllCommentCount(axios: AxiosInstance): Promise<number> {
+  const result = await axios.get(`/comments/count`);
+
+  return result.data;
+}
+
 export async function getCommentsById(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<Comment[]> {
   const result = await axios.get(`/comments/${id}`, {
     params,
