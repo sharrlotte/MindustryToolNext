@@ -38,6 +38,12 @@ export async function getCommentsById(axios: AxiosInstance, id: string, params: 
   return result.data;
 }
 
+export async function deleteCommentById(axios: AxiosInstance, id: string): Promise<void[]> {
+  const result = await axios.delete(`/comments/${id}`);
+
+  return result.data;
+}
+
 export const CreateCommentSchema = z.object({
   content: z.string().min(1).max(1024),
   attachments: z
