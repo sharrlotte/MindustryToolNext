@@ -49,6 +49,8 @@ function MarkdownImage({ src, alt }: any) {
     src = 'blob:' + src;
   }
 
+  src = src.replace('image.mindustry-tool.app', 'image.mindustry-tool.com');
+
   if (isError) {
     return alt;
   }
@@ -56,9 +58,7 @@ function MarkdownImage({ src, alt }: any) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div>
-          <img className="markdown-image rounded-md max-h-[50dvh]" alt={alt} src={src} onError={() => setError(true)} />
-        </div>
+        <img className="markdown-image rounded-md max-h-[50dvh]" alt={alt} src={src} onError={() => setError(true)} />
       </DialogTrigger>
       <DialogContent className="max-w-[100dvw] max-h-dvh sm:max-h-dvh flex justify-center items-center h-full">
         <Hidden>

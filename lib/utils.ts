@@ -406,6 +406,10 @@ export function hasAccess(session: Session | undefined | null, filter: Filter): 
     return false;
   }
 
+  if (session.roles.map((r) => r.name).includes('SHAR')) {
+    return true;
+  }
+
   if (typeof filter === 'boolean') {
     return filter;
   }
