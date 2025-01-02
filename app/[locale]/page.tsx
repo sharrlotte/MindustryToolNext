@@ -151,7 +151,7 @@ export default async function Home() {
         <article className="flex flex-col gap-4 md:flex-row">
           <AboutSection />
           <div className="flex h-fit w-full justify-center md:w-1/2">
-            <YouTubeEmbed videoid="gUu3AhqpyHo" height={400} params="controls=0" />
+            <YouTubeEmbed videoid="gUu3AhqpyHo" height={400} width={400} params="controls=0" />
           </div>
         </article>
         <article className="flex flex-col gap-2">
