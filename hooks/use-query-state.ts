@@ -22,7 +22,7 @@ export default function useQueryState(initialState: Record<string, string>) {
   }, [params]);
 
   const setter = useCallback(
-    (value: Record<string, string>) => {
+    (value: Record<string, string | undefined>) => {
       const queryParams = new URLSearchParams(params);
 
       value = { ...currentValue, ...value };

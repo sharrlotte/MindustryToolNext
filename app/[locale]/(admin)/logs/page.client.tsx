@@ -62,7 +62,7 @@ function LiveLog() {
           label: item,
           value: item,
         }))}
-        onChange={(collection) => setQueryState({ collection })}
+        onChange={(collection) => setQueryState({ collection: collection ?? 'LIVE' })}
       />
       <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
         <div className="flex h-full w-full overflow-hidden rounded-md bg-card">
@@ -166,7 +166,7 @@ function StaticLog() {
               label: item,
               value: item,
             }))}
-            onChange={(collection) => setFilter({ collection })}
+            onChange={(collection) => setFilter({ collection: collection ?? 'LIVE' })}
           />
           <ComboBox<'Prod' | 'Dev'>
             value={{ label: env, value: env as LogEnvironment }}
@@ -176,7 +176,7 @@ function StaticLog() {
             ]}
             onChange={(env) => setFilter({ env: env || 'Prod' })}
           />
-          <FilterDialog filter={filter} setFilter={setFilter} />
+          <FilterDialog filter={filter} setFilter={(value) => setFilter(value)} />
         </div>
         <PaginationLayoutSwitcher />
       </div>
