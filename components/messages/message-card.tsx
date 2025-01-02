@@ -26,7 +26,7 @@ export function MessageCard({ className, message }: Props) {
   });
 
   return (
-    <div className={cn('flex w-full gap-2 text-wrap rounded-lg p-2 text-xs', className)}>
+    <div className={cn('flex w-full gap-2 text-wrap rounded-lg p-2 text-base', className)}>
       {data ? <UserAvatar user={data} /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
       <div className="overflow-hidden">
         <div className="flex gap-2">
@@ -41,7 +41,7 @@ export function MessageCard({ className, message }: Props) {
         </div>
         <div className="no-scrollbar grid w-full gap-1 overflow-hidden">
           {contents.map(({ text }, index) => (
-            <ColorText className="overflow-hidden break-words" key={index} text={text} />
+            <ColorText className="overflow-hidden break-words text-base" key={index} text={text} />
           ))}
         </div>
       </div>

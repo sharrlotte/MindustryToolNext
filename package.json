@@ -50,6 +50,7 @@
     "constate": "^3.3.2",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.5.1",
+    "emoji-picker-react": "^4.12.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^10.18.0",
     "i18next": "^24.2.0",
