@@ -3,32 +3,31 @@
 import React, { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
+import { TrashIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
-import ScrollContainer from '@/components/common/scroll-container';
-
-import useClientQuery from '@/hooks/use-client-query';
-import useSearchQuery from '@/hooks/use-search-query';
-import { omit } from '@/lib/utils';
-import { ItemPaginationQuery } from '@/query/search-query';
-
-import { deleteCommentById, getAllCommentCount, getAllComments } from '@/query/comment';
-import { Comment } from '@/types/response/Comment';
-import Markdown from '@/components/markdown/markdown';
 import { RelativeTime } from '@/components/common/relative-time';
+import LoadingSpinner from '@/components/common/router-spinner';
+import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
+import Markdown from '@/components/markdown/markdown';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
-import { getUser } from '@/query/user';
-import { TrashIcon } from '@/components/common/icons';
-import Tran from '@/components/common/tran';
-import { Button } from '@/components/ui/button';
-import { useMutation } from '@tanstack/react-query';
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import LoadingSpinner from '@/components/common/router-spinner';
 
+import useClientApi from '@/hooks/use-client';
+import useClientQuery from '@/hooks/use-client-query';
+import useQueriesData from '@/hooks/use-queries-data';
+import useSearchQuery from '@/hooks/use-search-query';
+import { omit } from '@/lib/utils';
+import { deleteCommentById, getAllCommentCount, getAllComments } from '@/query/comment';
+import { ItemPaginationQuery } from '@/query/search-query';
+import { getUser } from '@/query/user';
+import { Comment } from '@/types/response/Comment';
+
+import { useMutation } from '@tanstack/react-query';
 
 export default function Client() {
   const params = useSearchQuery(ItemPaginationQuery);
@@ -40,52 +39,38 @@ export default function Client() {
     placeholderData: 0,
   });
 
-
   return (
-      <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
-<div className='flex justify-end'>
-        <PaginationLayoutSwitcher/>
-</div>
-        <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
-          <ListLayout>
-            <InfinitePage
-            className='flex flex-col gap-1'
-              params={params}
-              queryKey={['comments']}
-              queryFn={getAllComments}
-              container={() => container}
-
-            >
-              {(data) => <CommentCard key={data.id} comment={data} />}
-            </InfinitePage>
-          </ListLayout>
-          <GridLayout>
-            <GridPaginationList
-            className='flex flex-col gap-1'
-params={params}
-              queryKey={['comments']}
-              queryFn={getAllComments}
-            >
-              {(data) => <CommentCard key={data.id} comment={data} />}
-            </GridPaginationList>
-          </GridLayout>
-        </ScrollContainer>
-        <div className="flex flex-wrap items-center gap-2 justify-end">
-          <GridLayout>
-            <PaginationNavigator numberOfItems={data} />
-          </GridLayout>
-        </div>
+    <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
+      <div className="flex justify-end">
+        <PaginationLayoutSwitcher />
       </div>
+      <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
+        <ListLayout>
+          <InfinitePage className="flex flex-col gap-1" params={params} queryKey={['comments']} queryFn={getAllComments} container={() => container}>
+            {(data) => <CommentCard key={data.id} comment={data} />}
+          </InfinitePage>
+        </ListLayout>
+        <GridLayout>
+          <GridPaginationList className="flex flex-col gap-1" params={params} queryKey={['comments']} queryFn={getAllComments}>
+            {(data) => <CommentCard key={data.id} comment={data} />}
+          </GridPaginationList>
+        </GridLayout>
+      </ScrollContainer>
+      <div className="flex flex-wrap items-center gap-2 justify-end">
+        <GridLayout>
+          <PaginationNavigator numberOfItems={data} />
+        </GridLayout>
+      </div>
+    </div>
   );
 }
 
-
 type CommentCardProps = {
-  comment: Comment
-}
+  comment: Comment;
+};
 
-function CommentCard({comment} : CommentCardProps){
-const {id, userId, content, createdAt } = comment;
+function CommentCard({ comment }: CommentCardProps) {
+  const { id, userId, content, createdAt } = comment;
 
   const { data } = useClientQuery({
     queryKey: ['users', userId],
@@ -109,40 +94,38 @@ const {id, userId, content, createdAt } = comment;
           </div>
         </div>
       </div>
-<div className='flex justify-between'>
-      <Markdown className="ml-10 text-sm">{content}</Markdown>
-
-    <DeleteCommentButton id={id}/>
-</div>
+      <div className="flex justify-between gap-2 items-end">
+        <Markdown className="ml-10 text-sm">{content}</Markdown>
+        <DeleteCommentButton id={id} />
+      </div>
     </div>
-  )  
+  );
 }
-
 
 type DeleteCommentButtonProps = {
-  id: string
-}
+  id: string;
+};
 
-function DeleteCommentButton({id}: DeleteCommentButtonProps){
-
-  const {invalidateByKey} = useQueriesData()
-const axios = useClientApi();
-  const {mutate, isPending} = useMutation({
-    mutationFn: () =>  deleteCommentById(axios, id),
+function DeleteCommentButton({ id }: DeleteCommentButtonProps) {
+  const { invalidateByKey } = useQueriesData();
+  const axios = useClientApi();
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => deleteCommentById(axios, id),
     onSuccess: () => {
-invalidateByKey(['comments'])
-    }
-  })
+      invalidateByKey(['comments']);
+    },
+  });
 
-
-  return <Button disabled={isPending} onClick={() => mutate()}>
-    {isPending ?
-  <LoadingSpinner className='p-0'/>
-  :
-  <>
-    <TrashIcon  />
-  <Tran  text='delete'/>
-  </>
-  }
-  </Button>
+  return (
+    <Button className="gap-1 items-center flex" disabled={isPending} onClick={() => mutate()}>
+      {isPending ? (
+        <LoadingSpinner className="p-0" />
+      ) : (
+        <>
+          <TrashIcon />
+          <Tran className="text-base" text="delete" />
+        </>
+      )}
+    </Button>
+  );
 }
