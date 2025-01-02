@@ -4,10 +4,10 @@ import { useInterval, useLocalStorage } from 'usehooks-ts';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
+
 import { useSocket } from '@/context/socket-context';
 import useMessageQuery from '@/hooks/use-message-query';
 import useNotification from '@/hooks/use-notification';
-import useWindow from '@/hooks/use-window';
 import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
 import { MessageQuery } from '@/types/data/pageable-search-schema';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
@@ -52,10 +52,6 @@ export default function MessageList({
   const isEndReached = isReachedEnd(currentContainer, threshold);
   const { socket } = useSocket();
 
-  const isFocused = useWindow();
-
-  const [shouldCheck, setShouldCheck] = useState(true);
-
   const clientHeight = list?.clientHeight || 0;
   const lastHeight = lastHeightRef.current || 0;
   const scrollTop = scrollTopRef.current || 0;
@@ -71,10 +67,6 @@ export default function MessageList({
   lastHeightRef.current = clientHeight;
 
   const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, queryKey);
-
-  useEffect(() => {
-    setShouldCheck(isFocused);
-  }, [isFocused]);
 
   const { postNotification } = useNotification();
 
@@ -100,8 +92,6 @@ export default function MessageList({
   }, [data, setLastMessage]);
 
   const checkIfNeedFetchMore = useCallback(() => {
-    if (!shouldCheck) return;
-
     const handleEndReach = () => {
       if (hasNextPage && !isFetching) {
         fetchNextPage();
@@ -113,7 +103,7 @@ export default function MessageList({
         handleEndReach();
       }
     }
-  }, [currentContainer, fetchNextPage, hasNextPage, isFetching, shouldCheck, threshold]);
+  }, [currentContainer, fetchNextPage, hasNextPage, isFetching, threshold]);
 
   useEffect(() => {
     if (currentContainer && isEndReached) {
@@ -161,10 +151,10 @@ export default function MessageList({
         }),
     [room, queryKey, socket, queryClient, isEndReached, currentContainer, showNotification, postNotification],
   );
+  useInterval(() => checkIfNeedFetchMore(), 1000);
 
   useEffect(() => {
     function onScroll() {
-      setShouldCheck(true);
       checkIfNeedFetchMore();
 
       if (currentContainer) {

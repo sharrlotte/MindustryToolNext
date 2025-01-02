@@ -30,7 +30,7 @@ type Props<T, P> = {
 };
 
 export default function GridPaginationList<T, P extends PaginationQuery>({ className, queryKey, params, loader, noResult, skeleton, asChild, initialData, queryFn, children }: Props<T, P>) {
-  const { data, isFetching, error } = useClientQuery({
+  const { data,  error, isLoading } = useClientQuery({
     queryFn: (axios) => queryFn(axios, params),
     queryKey: [...queryKey, params],
     initialData,
@@ -50,7 +50,7 @@ export default function GridPaginationList<T, P extends PaginationQuery>({ class
   }
 
   function render() {
-    if (isFetching) {
+    if (isLoading) {
       return loader ? loader : skeletonElements;
     }
 
