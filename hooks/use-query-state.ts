@@ -1,7 +1,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-export default function useQueryState(initialState: Record<string, string>) {
+export default function useQueryState(initialState: Record<string, string | undefined>) {
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -62,10 +62,10 @@ export default function useQueryState(initialState: Record<string, string>) {
     }
   }
 
-  let result = Object.fromEntries(params.entries());
+  let result: Record<string, string | undefined> = Object.fromEntries(params.entries());
 
   Object.entries(currentValue).forEach(([key, value]) => {
-    result[key] = value;
+    if (value) result[key] = value;
   });
 
   Object.entries(result).forEach(([key, value]) => {

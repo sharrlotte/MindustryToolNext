@@ -91,7 +91,7 @@ type PromiseToastOption<T> = {
   error?: ((error: any) => ReactNode) | ((error: any) => O) | ReactNode;
 };
 
-function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
+async function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
   let id;
   if (options.loading && typeof options.loading === 'function') {
     const r = options.loading();
@@ -105,7 +105,7 @@ function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
     id = toast.loading(options.loading, { id });
   }
 
-  promise
+  await promise
     .then((result) => {
       if (options.success && typeof options.success === 'function') {
         const r = options.success(result);
@@ -131,9 +131,8 @@ function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
       } else {
         toast.error(options.error, { id });
       }
-    })
-    .finally(() => toast.dismiss(id));
-
+    });
+    
   return id;
 }
 

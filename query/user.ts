@@ -138,3 +138,15 @@ export async function sendNotification(axios: AxiosInstance, data: SendNotificat
 
   return result.data;
 }
+
+export async function banUser(axios: AxiosInstance, id: string) {
+  const result = await axios.put(`/users/${id}/ban`);
+
+  return result.data;
+}
+
+export async function unbanUser(axios: AxiosInstance, id: string) {
+  const result = await axios.put(`/users/${id}/unban`);
+
+  return result.data;
+}
