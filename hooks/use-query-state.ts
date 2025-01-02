@@ -62,10 +62,10 @@ export default function useQueryState(initialState: Record<string, string>) {
     }
   }
 
-  let result = Object.fromEntries(params.entries());
+  let result: Record<string, string> = Object.fromEntries(params.entries());
 
   Object.entries(currentValue).forEach(([key, value]) => {
-    result[key] = value;
+    if (value) result[key] = value;
   });
 
   Object.entries(result).forEach(([key, value]) => {

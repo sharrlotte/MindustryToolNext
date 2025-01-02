@@ -17,4 +17,5 @@ export type User = {
   roles: Role[];
   authorities: Authority[];
   stats: UserStats;
+  isBanned: boolean;
 };

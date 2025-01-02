@@ -46,12 +46,12 @@ export default function Client() {
       </div>
       <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
         <ListLayout>
-          <InfinitePage className="flex flex-col gap-1" params={params} queryKey={['comments']} queryFn={getAllComments} container={() => container}>
+          <InfinitePage className="flex flex-col gap-2" params={params} queryKey={['comments']} queryFn={getAllComments} container={() => container} loader={<LoadingSpinner className="p-0 m-auto" />}>
             {(data) => <CommentCard key={data.id} comment={data} />}
           </InfinitePage>
         </ListLayout>
         <GridLayout>
-          <GridPaginationList className="flex flex-col gap-1" params={params} queryKey={['comments']} queryFn={getAllComments}>
+          <GridPaginationList className="flex flex-col gap-2" params={params} queryKey={['comments']} queryFn={getAllComments} loader={<LoadingSpinner className="p-0 m-auto" />}>
             {(data) => <CommentCard key={data.id} comment={data} />}
           </GridPaginationList>
         </GridLayout>
@@ -109,6 +109,7 @@ type DeleteCommentButtonProps = {
 function DeleteCommentButton({ id }: DeleteCommentButtonProps) {
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
+
   const { mutate, isPending } = useMutation({
     mutationFn: () => deleteCommentById(axios, id),
     onSuccess: () => {
@@ -117,7 +118,7 @@ function DeleteCommentButton({ id }: DeleteCommentButtonProps) {
   });
 
   return (
-    <Button className="gap-1 items-center flex" disabled={isPending} onClick={() => mutate()}>
+    <Button className="gap-2 items-center flex" variant="destructive" disabled={isPending} onClick={() => mutate()}>
       {isPending ? (
         <LoadingSpinner className="p-0" />
       ) : (

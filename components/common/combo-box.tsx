@@ -24,19 +24,28 @@ type ComboBoxProps<T> = {
   value?: Value<T>;
   values: Array<Value<T>>;
   searchBar?: boolean;
+  nullable?: boolean;
   onChange: (value: T | undefined) => void;
 } & (RequiredComboBox<T> | NoneComboBox<T>);
 
-export default function ComboBox<T>({ className, placeholder = 'Select', values, value, searchBar = true, onChange }: ComboBoxProps<T>) {
+export default function ComboBox<T>({ className, placeholder = 'Select', values, value, searchBar = true, nullable = false, onChange }: ComboBoxProps<T>) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
 
   const currentLabel = value?.label;
 
   function handleSelect(item: Value<T>) {
-    if (currentLabel === item.label) {
+    if (currentLabel === item?.label) {
       if (value) {
-        onChange(value.value);
+        if (nullable) {
+          if (value.value !== item.value) {
+            onChange(value.value);
+          } else {
+            onChange(undefined);
+          }
+        } else {
+          onChange(value.value);
+        }
       } else {
         onChange(undefined);
       }
