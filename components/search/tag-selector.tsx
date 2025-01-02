@@ -98,7 +98,7 @@ export default function TagSelector({ tags = [], type, value, onChange, disabled
         {!hideSelectedTag && <TagContainer className="justify-start" tags={displayTags} handleDeleteTag={handleDeleteTag} />}
       </div>
       <div className={cn('fixed inset-0 z-50 hidden items-center justify-center backdrop-blur-sm', { flex: showFilterDialog })}>
-        <div className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6">
+        <div className="flex h-screen w-screen items-center justify-center md:h-2/3 md:w-2/3">
           <Card className="grid grid-rows-[auto_1fr_auto] h-full w-full gap-2 rounded-none p-4 md:rounded-lg ">
             <SearchBar className="w-full p-1">
               <SearchIcon className="p-1" />
