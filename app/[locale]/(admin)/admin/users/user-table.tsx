@@ -25,7 +25,7 @@ import { Role } from '@/types/response/Role';
 
 const defaultState = {
   name: '',
-  is_banned: undefined,
+  is_banned: '',
 };
 
 const banFilterState = ['', 'true', 'false'];
@@ -54,7 +54,14 @@ export function UserTable() {
       <div>
         <div className="flex h-10 gap-2">
           <Input className="h-full" value={name} onChange={(event) => setQueryState({ name: event.target.value })} placeholder="Search using username" />
-          <ComboBox className="h-full" nullable placeholder="All" value={{ value: isBanned, label: isBanned ?? '' }} values={banFilterState.map((d) => ({ value: d, label: d || 'All' }))} onChange={(value) => setQueryState({ is_banned: value })} />
+          <ComboBox
+            className="h-full"
+            nullable
+            placeholder="All"
+            value={{ value: isBanned, label: isBanned ?? '' }}
+            values={banFilterState.map((d) => ({ value: d, label: d || 'All' }))}
+            onChange={(value) => setQueryState({ is_banned: value ?? '' })}
+          />
           <ComboBox className="h-full" nullable placeholder="Select role" value={{ value: role, label: role?.name ? t(role.name) : '' }} values={roles?.map((d) => ({ value: d, label: t(d.name) })) ?? []} onChange={(value) => setRole(value)} />
         </div>
       </div>
