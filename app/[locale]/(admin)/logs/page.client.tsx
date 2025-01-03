@@ -1,9 +1,7 @@
 'use client';
 
-import React, { FormEvent, Fragment, useCallback, useRef, useState } from 'react';
+import React, { FormEvent, useCallback, useRef, useState } from 'react';
 import { z } from 'zod';
-
-
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -24,71 +22,60 @@ import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-
-
+import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
 import { LogType } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
 import useClientQuery from '@/hooks/use-client-query';
 import useMessage from '@/hooks/use-message';
-import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { getLogCollections, getLogCount, getLogs } from '@/query/log';
 import { PaginationQuery } from '@/query/search-query';
 import { Log } from '@/types/response/Log';
 
-
-const defaultState = {
-  collection: 'LIVE',
-};
-
 export default function LogPage() {
-  const [{ collection }] = useQueryState(defaultState);
-
-  return <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-2">{collection === 'LIVE' ? <LiveLog /> : <StaticLog />}</div>;
+  return (
+    <ServerTabs className="p-4 h-full" value="live" name={'tab'} values={['live', 'static']}>
+      <ServerTabsList className="justify-start">
+        <ServerTabsTrigger value="live">
+          <Tran text="log.live" />
+        </ServerTabsTrigger>
+        <ServerTabsTrigger value="static">
+          <Tran text="log.static" />
+        </ServerTabsTrigger>
+      </ServerTabsList>
+      <ServerTabsContent className="h-full" value="live">
+        <LiveLog />
+      </ServerTabsContent>
+      <ServerTabsContent className="h-full" value="static">
+        <StaticLog />
+      </ServerTabsContent>
+    </ServerTabs>
+  );
 }
 
 function LiveLog() {
   const { state } = useSocket();
   const ref = useRef<HTMLDivElement>(null);
-  const [{ collection }, _setState] = useState(defaultState);
-
-  const setState = useCallback((value: Partial<typeof defaultState>) => _setState((prev) => ({ ...prev, ...value })), []);
-
-
-  const { data } = useClientQuery({
-    queryKey: ['log-collections'],
-    queryFn: async (axios) => getLogCollections(axios),
-  });
 
   return (
-    <Fragment>
-      <ComboBox
-        value={{ label: collection, value: collection }}
-        values={['LIVE', ...(data ?? [])].map((item) => ({
-          label: item,
-          value: item,
-        }))}
-        onChange={(collection) => setState({ collection: collection ?? 'LIVE' })}
-      />
-      <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
-        <div className="flex h-full w-full overflow-hidden rounded-md bg-card">
-          <div className="flex h-full w-full overflow-hidden">
-            {state !== 'connected' ? (
-              <LoadingSpinner className="flex h-full w-full items-center justify-center" />
-            ) : (
-              <ScrollContainer ref={ref}>
-                <MessageList className="flex h-full w-full flex-col gap-2" queryKey={['live-log']} room="LOG" container={() => ref.current} params={{ size: 50 }} showNotification={false}>
-                  {(data) => <MessageCard key={data.id} message={data} />}
-                </MessageList>
-              </ScrollContainer>
-            )}
-          </div>
+    <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
+      <div className="flex h-full w-full overflow-hidden rounded-md bg-card">
+        <div className="flex h-full w-full overflow-hidden">
+          {state !== 'connected' ? (
+            <LoadingSpinner className="flex h-full w-full items-center justify-center" />
+          ) : (
+            <ScrollContainer ref={ref}>
+              <MessageList className="flex h-full w-full flex-col gap-2" queryKey={['live-log']} room="LOG" container={() => ref.current} params={{ size: 50 }} showNotification={false}>
+                {(data) => <MessageCard key={data.id} message={data} />}
+              </MessageList>
+            </ScrollContainer>
+          )}
         </div>
-        <SendMessageButton />
       </div>
-    </Fragment>
+      <SendMessageButton />
+    </div>
   );
 }
 function SendMessageButton() {
@@ -129,7 +116,7 @@ type Filter = {
 };
 
 const defaultFilter: Filter = {
-  collection: 'LIVE',
+  collection: 'SERVER',
   env: 'Prod',
   ip: '',
   userId: '',
@@ -154,12 +141,10 @@ function StaticLog() {
 
   const setFilter = useCallback((value: Partial<Filter>) => _setFilter((prev) => ({ ...prev, ...value })), []);
 
-
   const { data: total } = useClientQuery({
     queryKey: ['log', 'total', collection, filter],
     queryFn: (axios) => getLogCount(axios, { ...filter, collection: collection as LogType }),
     placeholderData: 0,
-    enabled: collection !== 'LIVE',
   });
 
   const { data } = useClientQuery({
@@ -173,11 +158,11 @@ function StaticLog() {
         <div className="flex items-center gap-2">
           <ComboBox
             value={{ label: collection, value: collection }}
-            values={['LIVE', ...(data ?? [])].map((item) => ({
+            values={[...(data ?? [])].map((item) => ({
               label: item,
               value: item,
             }))}
-            onChange={(collection) => setFilter({ collection: collection ?? 'LIVE' })}
+            onChange={(collection) => setFilter({ collection: collection ?? 'SERVER' })}
           />
           <ComboBox<'Prod' | 'Dev'>
             value={{ label: env, value: env as LogEnvironment }}
