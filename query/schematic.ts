@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
+import { ItemPaginationQueryType } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import { Schematic } from '@/types/response/Schematic';
@@ -9,7 +9,7 @@ import { SchematicDetail } from '@/types/response/SchematicDetail';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import { CreateSchematicRequest } from '@/types/schema/zod-schema';
 
-export async function getSchematicCount(axios: AxiosInstance, params: PaginationSearchQuery): Promise<number> {
+export async function getSchematicCount(axios: AxiosInstance, params: ItemPaginationQueryType): Promise<number> {
   const result = await axios.get('/schematics/total', { params });
 
   return result.data;
@@ -50,7 +50,7 @@ export async function getSchematicUpload(axios: AxiosInstance, { id }: IdSearchP
   return result.data;
 }
 
-export async function getSchematicUploads(axios: AxiosInstance, params: PaginationSearchQuery): Promise<Schematic[]> {
+export async function getSchematicUploads(axios: AxiosInstance, params: ItemPaginationQueryType): Promise<Schematic[]> {
   const result = await axios.get('/schematics/upload', {
     params,
   });
@@ -63,7 +63,7 @@ export async function getSchematic(axios: AxiosInstance, { id }: IdSearchParams)
   return result.data;
 }
 
-export async function getSchematics(axios: AxiosInstance, params: PaginationSearchQuery): Promise<Schematic[]> {
+export async function getSchematics(axios: AxiosInstance, params: ItemPaginationQueryType): Promise<Schematic[]> {
   const result = await axios.get('/schematics', {
     params,
   });
@@ -71,7 +71,7 @@ export async function getSchematics(axios: AxiosInstance, params: PaginationSear
   return result.data;
 }
 
-export async function getSchematicUploadCount(axios: AxiosInstance, params: Omit<PaginationSearchQuery, 'page' | 'size'>): Promise<number> {
+export async function getSchematicUploadCount(axios: AxiosInstance, params: Omit<ItemPaginationQueryType, 'page' | 'size'>): Promise<number> {
   const result = await axios.get('/schematics/upload/total', {
     params,
   });

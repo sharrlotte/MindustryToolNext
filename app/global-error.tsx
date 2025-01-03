@@ -9,6 +9,8 @@ import useClientApi from '@/hooks/use-client';
 import { TError, getErrorMessage, getLoggedErrorMessage } from '@/lib/utils';
 import { reportError } from '@/query/api';
 
+import './globals.css';
+
 export default function Error({ error }: { error: TError }) {
   const message = getErrorMessage(error);
   const loggedMessage = getLoggedErrorMessage(error);

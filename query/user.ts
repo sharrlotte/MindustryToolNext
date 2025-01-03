@@ -1,10 +1,9 @@
 import { AxiosInstance } from 'axios';
-import { object, z } from 'zod';
+import { z } from 'zod';
 
 import { UserRole } from '@/constant/enum';
+import { ItemPaginationQueryType, PaginationQuery, StatusPaginationSearchQuery } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { PaginationSearchQuery, StatusPaginationSearchQuery } from '@/types/data/pageable-search-schema';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 import { Map } from '@/types/response/Map';
 import { Post } from '@/types/response/Post';
@@ -65,7 +64,7 @@ export async function getMe(axios: AxiosInstance): Promise<User> {
   return result.data;
 }
 
-export async function getUserMaps(axios: AxiosInstance, userId: string, params: PaginationSearchQuery): Promise<Map[]> {
+export async function getUserMaps(axios: AxiosInstance, userId: string, params: ItemPaginationQueryType): Promise<Map[]> {
   const result = await axios.get(`/users/${userId}/maps`, {
     params,
   });
@@ -73,7 +72,7 @@ export async function getUserMaps(axios: AxiosInstance, userId: string, params: 
   return result.data;
 }
 
-export async function getUserPosts(axios: AxiosInstance, userId: string, params: PaginationSearchQuery): Promise<Post[]> {
+export async function getUserPosts(axios: AxiosInstance, userId: string, params: ItemPaginationQueryType): Promise<Post[]> {
   const result = await axios.get(`/users/${userId}/posts`, {
     params,
   });
@@ -81,7 +80,7 @@ export async function getUserPosts(axios: AxiosInstance, userId: string, params:
   return result.data;
 }
 
-export async function getUserSchematics(axios: AxiosInstance, userId: string, params: PaginationSearchQuery): Promise<Schematic[]> {
+export async function getUserSchematics(axios: AxiosInstance, userId: string, params: ItemPaginationQueryType): Promise<Schematic[]> {
   const result = await axios.get(`/users/${userId}/schematics`, {
     params,
   });

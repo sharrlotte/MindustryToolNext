@@ -14,7 +14,7 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } fro
 
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
-import { PaginationQuery } from '@/query/search-query';
+import { PaginationQuerySchema } from '@/query/search-query';
 
 type Props = {
   numberOfItems?: number;
@@ -24,7 +24,7 @@ type Props = {
 export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20, 30, 50, 100] }: Props) {
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(0);
-  const params = useSearchQuery(PaginationQuery);
+  const params = useSearchQuery(PaginationQuerySchema);
   const router = useRouter();
   const searchParams = useSearchParams();
 

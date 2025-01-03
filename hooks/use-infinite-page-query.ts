@@ -1,9 +1,9 @@
 import { AxiosInstance } from 'axios';
 
 import useClientApi from '@/hooks/use-client';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import { PaginationQuery } from '@/query/search-query';
 
 export default function useInfinitePageQuery<T, P extends PaginationQuery>(queryFn: (axios: AxiosInstance, params: P) => Promise<T[]>, params: P, queryKey: QueryKey, initialData?: T[], enabled?: boolean) {
   const axios = useClientApi();

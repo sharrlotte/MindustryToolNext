@@ -9,10 +9,10 @@ import { useSocket } from '@/context/socket-context';
 import useMessageQuery from '@/hooks/use-message-query';
 import useNotification from '@/hooks/use-notification';
 import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
-import { MessageQuery } from '@/types/data/pageable-search-schema';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
+import { MessageQuery } from '@/query/search-query';
 
 type MessageListProps = {
   className?: string;

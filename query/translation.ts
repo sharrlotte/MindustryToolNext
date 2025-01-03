@@ -2,9 +2,8 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
 import { Locale } from '@/i18n/config';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
+import { PaginationQuery } from '@/query/search-query';
 import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
-
 
 export async function getTranslationDiff(axios: AxiosInstance, params: PaginationQuery & { language: Locale; target: Locale }): Promise<TranslationDiff[]> {
   const result = await axios.get('/translations/diff', { params });

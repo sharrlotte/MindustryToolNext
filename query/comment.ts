@@ -1,12 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
-
-
 import { toForm } from '@/lib/utils';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import { Comment } from '@/types/response/Comment';
-
+import { PaginationQuery } from '@/query/search-query';
 
 export async function getComments(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<Comment[]> {
   const result = await axios.get(`/items/${id}/comments`, {

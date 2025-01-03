@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 
-import { DocumentPaginationQuery } from '@/types/data/pageable-search-schema';
 import { CreateDocumentRequest } from '@/types/request/CreateDocumentRequest';
 import { Document } from '@/types/response/Document';
+import { DocumentPaginationQuery } from '@/query/search-query';
 
 export async function deleteDocument(axios: AxiosInstance, id: string): Promise<void> {
   const result = await axios.delete(`/documents/${id}`);

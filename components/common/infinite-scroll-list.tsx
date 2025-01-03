@@ -7,9 +7,9 @@ import NoResult from '@/components/common/no-result';
 
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { isReachedEnd, makeArray, mapReversed, mergeNestArray } from '@/lib/utils';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
+import { PaginationQuery } from '@/query/search-query';
 
 type InfiniteScrollListProps<T, P> = {
   className?: string;

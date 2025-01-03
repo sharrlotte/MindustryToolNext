@@ -2,15 +2,15 @@ import { AxiosInstance } from 'axios';
 
 import { toForm } from '@/lib/utils';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 import { Map } from '@/types/response/Map';
 import { MapDetail } from '@/types/response/MapDetail';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 import { CreateMapRequest } from '@/types/schema/zod-schema';
+import { ItemPaginationQueryType } from '@/query/search-query';
 
-export async function getMapCount(axios: AxiosInstance, params: PaginationSearchQuery): Promise<number> {
+export async function getMapCount(axios: AxiosInstance, params: ItemPaginationQueryType): Promise<number> {
   const result = await axios.get('/maps/total', { params });
 
   return result.data;
@@ -33,7 +33,7 @@ export async function getMapUpload(axios: AxiosInstance, { id }: IdSearchParams)
   return result.data;
 }
 
-export async function getMapUploads(axios: AxiosInstance, params: PaginationSearchQuery): Promise<Map[]> {
+export async function getMapUploads(axios: AxiosInstance, params: ItemPaginationQueryType): Promise<Map[]> {
   const result = await axios.get('/maps/upload', {
     params,
   });
@@ -46,7 +46,7 @@ export async function getMap(axios: AxiosInstance, { id }: IdSearchParams): Prom
   return result.data;
 }
 
-export async function getMaps(axios: AxiosInstance, params: PaginationSearchQuery): Promise<Map[]> {
+export async function getMaps(axios: AxiosInstance, params: ItemPaginationQueryType): Promise<Map[]> {
   const result = await axios.get('/maps', {
     params,
   });
@@ -54,7 +54,7 @@ export async function getMaps(axios: AxiosInstance, params: PaginationSearchQuer
   return result.data;
 }
 
-export async function getMapUploadCount(axios: AxiosInstance, params: Omit<PaginationSearchQuery, 'page' | 'size'>): Promise<number> {
+export async function getMapUploadCount(axios: AxiosInstance, params: Omit<ItemPaginationQueryType, 'page' | 'size'>): Promise<number> {
   const result = await axios.get('/maps/upload/total', {
     params,
   });

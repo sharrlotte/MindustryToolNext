@@ -1,12 +1,11 @@
 import { AxiosInstance } from 'axios';
 
-import { PluginPaginationQuery } from '@/types/data/pageable-search-schema';
-import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
 import { CreatePluginRequest } from '@/types/request/CreatePluginRequest';
 import VerifyPluginRequest from '@/types/request/VerifyPluginRequest';
 import { Plugin } from '@/types/response/Plugin';
+import { ItemPaginationQueryType, PluginPaginationQuery } from '@/query/search-query';
 
-export async function getPluginUploadCount(axios: AxiosInstance, params: Omit<PaginationSearchQuery, 'page' | 'size'>): Promise<number> {
+export async function getPluginUploadCount(axios: AxiosInstance, params: Omit<ItemPaginationQueryType, 'page' | 'size'>): Promise<number> {
   const result = await axios.get('/plugins/upload/total', {
     params,
   });
@@ -14,7 +13,7 @@ export async function getPluginUploadCount(axios: AxiosInstance, params: Omit<Pa
   return result.data;
 }
 
-export async function getPluginCount(axios: AxiosInstance, params: Omit<PaginationSearchQuery, 'page' | 'size'>): Promise<number> {
+export async function getPluginCount(axios: AxiosInstance, params: Omit<ItemPaginationQueryType, 'page' | 'size'>): Promise<number> {
   const result = await axios.get('/plugins/total', {
     params,
   });
@@ -28,7 +27,7 @@ export async function deletePlugin(axios: AxiosInstance, id: string): Promise<vo
   return result.data;
 }
 
-export async function getPluginUploads(axios: AxiosInstance, params: PaginationSearchQuery): Promise<Plugin[]> {
+export async function getPluginUploads(axios: AxiosInstance, params: ItemPaginationQueryType): Promise<Plugin[]> {
   const result = await axios.get('/plugins/upload', {
     params,
   });

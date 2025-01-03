@@ -9,9 +9,9 @@ import RouterSpinner from '@/components/common/router-spinner';
 
 import useClientQuery from '@/hooks/use-client-query';
 import { cn } from '@/lib/utils';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
 
 import { QueryKey } from '@tanstack/react-query';
+import { PaginationQuery } from '@/query/search-query';
 
 type Props<T, P> = {
   className?: string;
@@ -30,7 +30,7 @@ type Props<T, P> = {
 };
 
 export default function GridPaginationList<T, P extends PaginationQuery>({ className, queryKey, params, loader, noResult, skeleton, asChild, initialData, queryFn, children }: Props<T, P>) {
-  const { data,  error, isLoading } = useClientQuery({
+  const { data, error, isLoading } = useClientQuery({
     queryFn: (axios) => queryFn(axios, params),
     queryKey: [...queryKey, params],
     initialData,
