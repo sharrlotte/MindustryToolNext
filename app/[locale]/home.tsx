@@ -86,14 +86,6 @@ export async function InformationGroup() {
   return (
     <Suspense>
       <InternalInformationGroup />
-      <Link className="p-2 text-emerald-400" href="/credit">
-        <h3 className="font-bold">Credit</h3>
-      </Link>
-      <Link className="p-2 text-emerald-400" href="https://discord.gg/72324gpuCd">
-        <h3 className="font-bold">
-          <Tran text="report" />
-        </h3>
-      </Link>
     </Suspense>
   );
 }
@@ -167,6 +159,12 @@ async function InternalInformationGroup() {
           <UserCard key={user.id} user={user} />
         ))}
       </div>
+      <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="/credit">
+        Credit
+      </Link>
+      <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="https://discord.gg/72324gpuCd">
+        <Tran text="report" />
+      </Link>
     </ul>
   );
 }
