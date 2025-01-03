@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 
 import { toForm } from '@/lib/utils';
+import { PaginationQuerySchema } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
 import CreateInternalServerPluginRequest from '@/types/request/CreaeteInternalServerPluginRequest';
 import CreateInternalServerMapRequest from '@/types/request/CreateInternalServerMapRequest';
 import { CreateInternalServerRequest } from '@/types/request/CreateInternalServerRequest';

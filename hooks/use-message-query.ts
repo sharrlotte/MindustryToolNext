@@ -1,5 +1,5 @@
 import { useSocket } from '@/context/socket-context';
-import { MessageQuery } from '@/types/data/pageable-search-schema';
+import { MessageQuery } from '@/query/search-query';
 import { Message } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';

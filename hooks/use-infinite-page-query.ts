@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import useClientApi from '@/hooks/use-client';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
+import { PaginationQuerySchema } from '@/query/search-query';
 
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 

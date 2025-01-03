@@ -15,13 +15,13 @@ import { isError } from '@/lib/utils';
 import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
 import { getUsers } from '@/query/user';
-import { PaginationSearchQuery } from '@/types/data/pageable-search-schema';
+import { ItemPaginationQueryType } from '@/query/search-query';
 
 const skeleton = Array(20)
   .fill(1)
   .map((_, index) => <PreviewSkeleton key={index} />);
 
-export async function HomeSchematicPreview({ queryParam }: { queryParam: PaginationSearchQuery }) {
+export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
@@ -37,7 +37,7 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: Paginat
     </ul>
   );
 }
-export async function HomeMapPreview({ queryParam }: { queryParam: PaginationSearchQuery }) {
+export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
       <Suspense fallback={skeleton}>
@@ -54,7 +54,7 @@ export async function HomeMapPreview({ queryParam }: { queryParam: PaginationSea
   );
 }
 
-async function InternalSchematicRowView({ queryParam }: { queryParam: PaginationSearchQuery }) {
+async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   const result = await serverApi((axios) => getSchematics(axios, queryParam));
 
   if (isError(result)) {
@@ -68,7 +68,7 @@ async function InternalSchematicRowView({ queryParam }: { queryParam: Pagination
   ));
 }
 
-async function InternalHomeMapPreview({ queryParam }: { queryParam: PaginationSearchQuery }) {
+async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   const result = await serverApi((axios) => getMaps(axios, queryParam));
 
   if (isError(result)) {

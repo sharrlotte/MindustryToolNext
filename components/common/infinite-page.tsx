@@ -9,7 +9,7 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
+import { PaginationQuerySchema } from '@/query/search-query';
 
 import { QueryKey } from '@tanstack/react-query';
 

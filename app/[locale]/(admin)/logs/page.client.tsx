@@ -31,7 +31,7 @@ import useMessage from '@/hooks/use-message';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { getLogCollections, getLogCount, getLogs } from '@/query/log';
-import { PaginationQuery } from '@/query/search-query';
+import { PaginationQuerySchema } from '@/query/search-query';
 import { Log } from '@/types/response/Log';
 
 export default function LogPage() {
@@ -126,14 +126,14 @@ const defaultFilter: Filter = {
   after: '',
 };
 
-type LogPaginationQuery = z.infer<typeof PaginationQuery> & {
+type LogPaginationQuery = z.infer<typeof PaginationQuerySchema> & {
   collection: LogType;
   env: LogEnvironment;
 } & Filter;
 
 function StaticLog() {
   const [filter, _setFilter] = useState(defaultFilter);
-  const { page, size } = useSearchQuery(PaginationQuery);
+  const { page, size } = useSearchQuery(PaginationQuerySchema);
 
   const { env, ip, userId, url, content, before, after, collection } = filter;
 

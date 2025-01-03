@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 
 import { LogType } from '@/constant/enum';
-import Pageable from '@/types/data/pageable-schema';
 import { Log } from '@/types/response/Log';
+import Pageable from '@/query/search-query';
 
 export async function getLogCollections(axios: AxiosInstance): Promise<string[]> {
   const result = await axios.get(`logs`);

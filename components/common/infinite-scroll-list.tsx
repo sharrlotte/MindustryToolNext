@@ -7,7 +7,7 @@ import NoResult from '@/components/common/no-result';
 
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import { isReachedEnd, makeArray, mapReversed, mergeNestArray } from '@/lib/utils';
-import { PaginationQuery } from '@/types/data/pageable-search-schema';
+import { PaginationQuerySchema } from '@/query/search-query';
 
 import { QueryKey } from '@tanstack/react-query';
 
