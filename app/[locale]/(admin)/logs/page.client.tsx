@@ -1,7 +1,9 @@
 'use client';
 
-import React, { FormEvent, Fragment, useRef, useState } from 'react';
+import React, { FormEvent, Fragment, useCallback, useRef, useState } from 'react';
 import { z } from 'zod';
+
+
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -23,6 +25,8 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
+
+
 import { LogType } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
 import useClientQuery from '@/hooks/use-client-query';
@@ -33,6 +37,7 @@ import { cn } from '@/lib/utils';
 import { getLogCollections, getLogCount, getLogs } from '@/query/log';
 import { PaginationQuery } from '@/query/search-query';
 import { Log } from '@/types/response/Log';
+
 
 const defaultState = {
   collection: 'LIVE',
@@ -47,7 +52,10 @@ export default function LogPage() {
 function LiveLog() {
   const { state } = useSocket();
   const ref = useRef<HTMLDivElement>(null);
-  const [{ collection }, setQueryState] = useQueryState(defaultState);
+  const [{ collection }, _setState] = useState(defaultState);
+
+  const setState = useCallback((value: Partial<typeof defaultState>) => _setState((prev) => ({ ...prev, ...value })), []);
+
 
   const { data } = useClientQuery({
     queryKey: ['log-collections'],
@@ -62,7 +70,7 @@ function LiveLog() {
           label: item,
           value: item,
         }))}
-        onChange={(collection) => setQueryState({ collection: collection ?? 'LIVE' })}
+        onChange={(collection) => setState({ collection: collection ?? 'LIVE' })}
       />
       <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
         <div className="flex h-full w-full overflow-hidden rounded-md bg-card">
@@ -110,14 +118,14 @@ function SendMessageButton() {
 type LogEnvironment = 'Prod' | 'Dev';
 
 type Filter = {
-  collection?: string;
-  env?: LogEnvironment;
-  ip?: string;
-  userId?: string;
-  url?: string;
-  content?: string;
-  before?: string;
-  after?: string;
+  collection: string;
+  env: LogEnvironment;
+  ip: string;
+  userId: string;
+  url: string;
+  content: string;
+  before: string;
+  after: string;
 };
 
 const defaultFilter: Filter = {
@@ -137,12 +145,15 @@ type LogPaginationQuery = z.infer<typeof PaginationQuery> & {
 } & Filter;
 
 function StaticLog() {
-  const [filter, setFilter] = useQueryState(defaultFilter);
+  const [filter, _setFilter] = useState(defaultFilter);
   const { page, size } = useSearchQuery(PaginationQuery);
 
   const { env, ip, userId, url, content, before, after, collection } = filter;
 
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
+
+  const setFilter = useCallback((value: Partial<Filter>) => _setFilter((prev) => ({ ...prev, ...value })), []);
+
 
   const { data: total } = useClientQuery({
     queryKey: ['log', 'total', collection, filter],

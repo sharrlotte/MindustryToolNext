@@ -26,7 +26,6 @@ import { Textarea } from '@/components/ui/textarea';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
-import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
@@ -48,8 +47,10 @@ const defaultState = {
 };
 
 export default function TranslationPage() {
-  const [{ language, target, mode, key }, setQueryState] = useQueryState(defaultState);
+  const [{ language, target, mode, key }, _setState] = useState(defaultState);
   const { t } = useI18n();
+
+  const setState = useCallback((value: Partial<typeof defaultState>) => _setState((prev) => ({ ...prev, ...value })), []);
 
   return (
     <Fragment>
@@ -63,7 +64,7 @@ export default function TranslationPage() {
               label: t(locale),
               value: locale,
             }))}
-            onChange={(language) => setQueryState({ language: language ?? 'en' })}
+            onChange={(language) => setState({ language: language ?? 'en' })}
           />
           {'=>'}
           <ComboBox<Locale>
@@ -74,7 +75,7 @@ export default function TranslationPage() {
               label: t(locale),
               value: locale,
             }))}
-            onChange={(target) => setQueryState({ target: target ?? 'en' })}
+            onChange={(target) => setState({ target: target ?? 'en' })}
           />
           <ComboBox<TranslateMode>
             className="h-10"
@@ -87,10 +88,10 @@ export default function TranslationPage() {
               label: t(value),
               value,
             }))}
-            onChange={(mode) => setQueryState({ mode: mode ?? 'compare' })}
+            onChange={(mode) => setState({ mode: mode ?? 'compare' })}
           />
           <SearchBar>
-            <SearchInput placeholder={t('translation.search-by-key')} value={key} onChange={(event) => setQueryState({ key: event.currentTarget.value })} />
+            <SearchInput placeholder={t('translation.search-by-key')} value={key} onChange={(event) => setState({ key: event.currentTarget.value })} />
           </SearchBar>
           <RefreshButton />
           <AddNewKeyDialog />
