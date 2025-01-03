@@ -4,7 +4,7 @@ import React, { ReactNode, useState } from 'react';
 
 import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
 
-import { CmdIcon, LayoutDashboardIcon, MapIcon, PluginIcon, SettingIcon } from '@/components/common/icons';
+import { CmdIcon, FileIcon, LayoutDashboardIcon, MapIcon, PluginIcon, SettingIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
 import { useSession } from '@/context/session-context.client';
@@ -35,6 +35,7 @@ const links: {
     label: <Tran text="console" />,
     icon: <CmdIcon />,
   },
+  { id: 'file', href: '/files', label: <Tran text="file" />, icon: <FileIcon /> },
   { id: 'setting', href: '/setting', label: <Tran text="setting" />, icon: <SettingIcon /> },
 ];
 
