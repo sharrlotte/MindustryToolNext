@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Suspense } from 'react';
 
 import ErrorScreen from '@/components/common/error-screen';
@@ -158,6 +159,12 @@ async function InternalInformationGroup() {
           <UserCard key={user.id} user={user} />
         ))}
       </div>
+      <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="/credit">
+        Credit
+      </Link>
+      <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="https://discord.gg/72324gpuCd">
+        <Tran text="report" />
+      </Link>
     </ul>
   );
 }
