@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Suspense } from 'react';
 
 import ErrorScreen from '@/components/common/error-screen';
@@ -85,6 +86,14 @@ export async function InformationGroup() {
   return (
     <Suspense>
       <InternalInformationGroup />
+      <Link className="p-2 text-emerald-400" href="/credit">
+        <h3 className="font-bold">Credit</h3>
+      </Link>
+      <Link className="p-2 text-emerald-400" href="https://discord.gg/72324gpuCd">
+        <h3 className="font-bold">
+          <Tran text="report" />
+        </h3>
+      </Link>
     </Suspense>
   );
 }
