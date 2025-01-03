@@ -9,9 +9,9 @@ import RouterSpinner from '@/components/common/router-spinner';
 
 import useClientQuery from '@/hooks/use-client-query';
 import { cn } from '@/lib/utils';
-import { PaginationQuerySchema } from '@/query/search-query';
 
 import { QueryKey } from '@tanstack/react-query';
+import { PaginationQuery } from '@/query/search-query';
 
 type Props<T, P> = {
   className?: string;

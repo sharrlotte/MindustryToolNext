@@ -11,7 +11,7 @@ type Pageable = {
 
 export default Pageable;
 
-export const sortSchema = z.enum(sortTag).default(defaultSortTag).catch(defaultSortTag);
+export const sortSchema = z.enum(sortTag).default(defaultSortTag).optional().catch(defaultSortTag);
 export const sizeSchema = z.coerce.number().gte(1).default(30).catch(30);
 export const pageSchema = z.coerce.number().gte(0).default(0).catch(0);
 export const nameSchema = z.string().optional();
@@ -67,19 +67,19 @@ export type MessageQuery = {
   size: number;
 };
 
-export const statusSearchSchema = z.object({
+export const StatusSearchSchema = z.object({
   ...PaginationParam,
   ...ItemSearchParam,
   status: z.enum(verifyStatus).default('UNSET'),
 });
 
-export type StatusPaginationSearchQuery = z.infer<typeof statusSearchSchema>;
+export type StatusPaginationSearchQuery = z.infer<typeof StatusSearchSchema>;
 
-export const pluginSearchSchema = z.object({
+export const PluginSearchSchema = z.object({
   ...PaginationParam,
   tags: tagsSchema,
 });
 
-export type PluginPaginationQuery = z.infer<typeof pluginSearchSchema>;
+export type PluginPaginationQuery = z.infer<typeof PluginSearchSchema>;
 
 export type DocumentPaginationQuery = Omit<PluginPaginationQuery, 'tags'>;

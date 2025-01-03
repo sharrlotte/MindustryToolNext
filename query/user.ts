@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
 import { UserRole } from '@/constant/enum';
-import { ItemPaginationQueryType, PaginationQuerySchema, StatusPaginationSearchQuery } from '@/query/search-query';
+import { ItemPaginationQueryType, PaginationQuery, StatusPaginationSearchQuery } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 import { Map } from '@/types/response/Map';

@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import { PaginationQuerySchema } from '@/query/search-query';
+import { PaginationQuery } from '@/query/search-query';
 import { Notification } from '@/types/response/Notification';
 
 export async function getMyNotifications(axios: AxiosInstance, params: PaginationQuery): Promise<Notification[]> {

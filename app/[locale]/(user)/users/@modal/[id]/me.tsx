@@ -17,7 +17,8 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { useTags } from '@/context/tags-context.client';
-import useStatusSearchParams from '@/hooks/use-status-search-params';
+import useSearchQuery from '@/hooks/use-search-query';
+import { StatusSearchSchema } from '@/query/search-query';
 import { getMeMaps, getMePosts, getMeSchematics } from '@/query/user';
 import { User } from '@/types/response/User';
 
@@ -29,7 +30,7 @@ export default function Me({ me }: TabProps) {
     searchTags: { schematic, map, post },
   } = useTags();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const params = useStatusSearchParams();
+  const params = useSearchQuery(StatusSearchSchema);
 
   return (
     <div className="absolute inset-0 space-y-2 overflow-auto bg-background p-2" ref={(ref) => setContainer(ref)}>
@@ -59,9 +60,7 @@ export default function Me({ me }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data, index) =>
-                data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={index} />
-              }
+              {(data, index) => (data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={index} />)}
             </InfinitePage>
           </div>
         </TabsContent>
@@ -85,13 +84,7 @@ export default function Me({ me }: TabProps) {
         <TabsContent value="post">
           <div className="flex h-full w-full flex-col gap-2">
             <NameTagSearch tags={post} />
-            <InfinitePage
-              className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2"
-              params={params}
-              queryKey={['me', 'posts']}
-              queryFn={getMePosts}
-              container={() => container}
-            >
+            <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['me', 'posts']} queryFn={getMePosts} container={() => container}>
               {(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}
             </InfinitePage>
           </div>
