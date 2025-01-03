@@ -43,7 +43,7 @@ export default function AddFileDialog({ id, path }: Props) {
     mutationKey: ['add-file'],
     mutationFn: async (file: File) => createServerFile(axios, id, path, file),
     onSuccess: () => {
-      invalidateByKey(['server-files', path]);
+      invalidateByKey(['server', id, 'server-files', path]);
     },
   });
 

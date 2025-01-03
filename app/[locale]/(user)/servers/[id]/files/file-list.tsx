@@ -17,18 +17,18 @@ import { deleteServerFile, getServerFiles } from '@/query/server';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 type FileListProps = {
-  id: string
+  id: string;
   path: string;
   filter: string;
   setFilePath: (path: string) => void;
 };
 
-export default function FileList({id, path, filter, setFilePath }: FileListProps) {
+export default function FileList({ id, path, filter, setFilePath }: FileListProps) {
   const axios = useClientApi();
 
   const { data, error, isFetching } = useQuery({
     queryKey: ['server-files', path],
-    queryFn: async () => getServerFiles(axios,id,  path),
+    queryFn: async () => getServerFiles(axios, id, path),
     placeholderData: [],
   });
 
@@ -36,12 +36,12 @@ export default function FileList({id, path, filter, setFilePath }: FileListProps
 
   const { mutate: deleteFile } = useMutation({
     mutationKey: ['delete-file'],
-    mutationFn: async (path: string) => deleteServerFile(axios,id, path),
+    mutationFn: async (path: string) => deleteServerFile(axios, id, path),
     onError: (error) => {
       toast.error(<Tran text="delete-fail" />, { description: error.message });
     },
     onSettled: () => {
-      invalidateByKey(['server-files', path]);
+      invalidateByKey(['server', id, 'server-files', path]);
     },
   });
 
