@@ -89,7 +89,6 @@ export default class SocketClient {
 
           const promise = new Promise<any>((resolve, reject) => {
             const timeout = setTimeout(() => {
-
               delete this.requests[id];
 
               resolve(undefined);
@@ -288,6 +287,10 @@ export default class SocketClient {
   public close() {
     this.tasks = [];
     this.rooms = [];
+
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
 
     if (this.socket && this.getState() === 'connected') {
       this.socket.close();
