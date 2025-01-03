@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 
 import FileList from '@/app/[locale]/(user)/servers/[id]/files/file-list';
 
@@ -19,7 +19,8 @@ const defaultState = {
   path: '/',
 };
 
-export default function Page({ params: { id } }: { params: { id: string } }) {
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const [{ path }, setQueryState] = useQueryState(defaultState);
   const [search, setSearch] = useState('');
 
