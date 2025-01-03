@@ -2,7 +2,7 @@ import Axios from 'axios';
 import axios from 'axios';
 
 import env from '@/constant/env';
-import { getLoggedErrorMessage } from '@/lib/utils';
+import { getErrorMessage, getLoggedErrorMessage } from '@/lib/utils';
 
 const axiosInstance = Axios.create({
   baseURL: env.url.api,
@@ -61,7 +61,7 @@ axiosInstance.interceptors.response.use(
     }
 
     if (axios.isAxiosError(error)) {
-      throw new Error(getLoggedErrorMessage(error));
+      throw new Error(getErrorMessage(error));
     }
 
     throw error;
