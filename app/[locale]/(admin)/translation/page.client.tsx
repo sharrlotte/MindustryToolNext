@@ -124,7 +124,7 @@ function CompareTable({ language, target }: CompareTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
 
   const { data } = useClientQuery({
-    queryKey: ['translations', 'compare', 'total', params.language, params.target],
+    queryKey: ['translations', 'compare', 'total', params.language, params.target, params.key],
     queryFn: (axios) => getTranslationCompareCount(axios, params),
     placeholderData: 0,
   });
@@ -152,7 +152,7 @@ function CompareTable({ language, target }: CompareTableProps) {
         <TableBody>
           <GridPaginationList
             params={{ ...params, language }}
-            queryKey={['translations', 'compare', language]}
+            queryKey={['translations', 'compare', language, target, params.key]}
             queryFn={getTranslationCompare}
             noResult={<Fragment></Fragment>}
             skeleton={{
@@ -180,7 +180,7 @@ type DiffTableProps = {
 function DiffTable({ language, target }: DiffTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
   const { data } = useClientQuery({
-    queryKey: ['translations', 'diff', 'total', params.language, params.target],
+    queryKey: ['translations', 'diff', 'total', params.language, params.target, params.key],
     queryFn: (axios) => getTranslationDiffCount(axios, params),
     placeholderData: 0,
   });
@@ -207,7 +207,7 @@ function DiffTable({ language, target }: DiffTableProps) {
         <TableBody>
           <GridPaginationList
             params={{ ...params, language }}
-            queryKey={['translations', 'diff', language]}
+            queryKey={['translations', 'diff', language, target, params.key]}
             queryFn={getTranslationDiff}
             noResult={<Fragment></Fragment>}
             skeleton={{
