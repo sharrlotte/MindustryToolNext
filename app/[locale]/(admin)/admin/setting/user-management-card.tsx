@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ChangeRoleDialog } from '@/app/[locale]/(admin)/admin/users/change-role-dialog';
-import UserManagementActionButton from '@/app/[locale]/(admin)/admin/users/user-management-action-button';
+import { ChangeRoleDialog } from '@/app/[locale]/(admin)/admin/setting/change-role-dialog';
+import UserManagementActionButton from '@/app/[locale]/(admin)/admin/setting/user-management-action-button';
 
 import CopyButton from '@/components/button/copy-button';
 import UserAvatar from '@/components/user/user-avatar';

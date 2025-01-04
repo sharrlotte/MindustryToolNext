@@ -10,6 +10,7 @@ import {
   BlocksIcon,
   BookOpenIcon,
   BotIcon,
+  Box,
   Check,
   CheckCircle,
   CheckSquare2,
@@ -40,6 +41,7 @@ import {
   Map,
   Menu,
   MessageCircleIcon,
+  MessageSquareIcon,
   Moon,
   Paperclip,
   Pencil,
@@ -54,6 +56,7 @@ import {
   Square,
   SquareKanbanIcon,
   Sun,
+  Tag,
   TerminalIcon,
   ThumbsDown,
   ThumbsUp,
@@ -63,7 +66,6 @@ import {
   Users,
   X,
   XCircle,
-  MessageSquareIcon
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -76,6 +78,8 @@ type Props = {
   className?: string;
 };
 
+export const TagIcon = ({ className }: Props) => <Tag className={cn(className ?? 'lucide')} />;
+export const BoxIcon = ({ className }: Props) => <Box className={cn(className ?? 'lucide')} />;
 export const CommentIcon = ({ className }: Props) => <MessageSquareIcon className={cn(className ?? 'lucide')} />;
 export const AlertTriangleIcon = ({ className }: Props) => <AlertTriangle className={cn(className ?? 'lucide')} />;
 export const AnalyticIcon = ({ className }: Props) => <LineChart className={cn(className ?? 'lucide')} />;

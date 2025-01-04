@@ -29,7 +29,7 @@ export default function UserManagementActionButton({ user }: UserManagementActio
 
   return (
     <EllipsisButton variant="icon">
-      <InternalLink href={`admin/users/notifications?userId=${id}`} variant="command">
+      <InternalLink href={`admin/setting/notifications?userId=${id}`} variant="command">
         <Tran text="notification.send-notification" />
       </InternalLink>
       <ProtectedElement session={session} filter={{ authority: 'EDIT_USER' }}>

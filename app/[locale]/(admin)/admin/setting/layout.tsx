@@ -5,7 +5,7 @@ import React from 'react';
 
 import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
 
-import { GanttChartIcon, NotificationIcon, UsersIcon } from '@/components/common/icons';
+import { GanttChartIcon, NotificationIcon, SettingIcon, TagIcon, UsersIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
 import { useSession } from '@/context/session-context.client';
@@ -20,9 +20,9 @@ const links: {
   filter?: Filter;
 }[] = [
   {
-    id: 'dashboard',
+    id: 'users',
     href: '',
-    label: <Tran text="manage" />,
+    label: <Tran text="user" />,
     icon: <GanttChartIcon />,
     filter: { authority: 'EDIT_USER_AUTHORITY' },
   },
@@ -34,11 +34,25 @@ const links: {
     filter: { authority: 'EDIT_ROLE_AUTHORITY' },
   },
   {
+    id: 'tag',
+    href: 'tags',
+    label: <Tran text="tag" />,
+    icon: <TagIcon />,
+    filter: { authority: 'MANAGE_TAG' },
+  },
+  {
     id: 'notification',
     href: 'notifications',
     label: <Tran text="notification" />,
     icon: <NotificationIcon />,
     filter: { authority: 'CREATE_NOTIFICATION' },
+  },
+  {
+    id: 'config',
+    label: <Tran text="setting" />,
+    href: 'config',
+    icon: <SettingIcon />,
+    filter: { authority: 'VIEW_SETTING' },
   },
 ];
 
@@ -55,7 +69,7 @@ export default function ServerLayout({ children }: LayoutProps) {
       <div className="no-scrollbar flex h-full gap-3 overflow-x-auto bg-card px-2" onMouseLeave={() => setHovered('Yes this is empty')} onTouchCancel={() => setHovered('Yes this is empty')}>
         {links.map((item) => (
           <ProtectedElement key={item.id} session={session} filter={item.filter ?? true}>
-            <NavLink {...item} root="admin/users" hovered={hovered} setHovered={setHovered} />
+            <NavLink {...item} root="admin/setting" hovered={hovered} setHovered={setHovered} />
           </ProtectedElement>
         ))}
       </div>

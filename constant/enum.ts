@@ -46,7 +46,7 @@ export type AuthorityEnum =
   | 'EDIT_DOCUMENT'
   | 'DELETE_DOCUMENT' //
   | 'EDIT_USER' //
-| "MANAGE_COMMENT"
-   ;
+  | 'MANAGE_TAG' //
+  | 'MANAGE_COMMENT';
 
 export type LikeAction = 'LIKE' | 'DISLIKE';

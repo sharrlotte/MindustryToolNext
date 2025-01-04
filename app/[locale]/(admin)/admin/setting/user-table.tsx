@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-import { UserManagementCard } from '@/app/[locale]/(admin)/admin/users/user-management-card';
+import { UserManagementCard } from '@/app/[locale]/(admin)/admin/setting/user-management-card';
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
