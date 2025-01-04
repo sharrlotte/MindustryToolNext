@@ -4,6 +4,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import { IconNotification } from '@/components/common/icon-notification';
 import {
   AnalyticIcon,
+  BoxIcon,
   ChartIcon,
   ChatIcon,
   CmdIcon,
@@ -21,8 +22,6 @@ import {
   RatioIcon,
   SchematicIcon,
   ServerIcon,
-  SettingIcon,
-  UserIcon,
   VerifyIcon,
 } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
@@ -143,10 +142,10 @@ export const groups: readonly PathGroup[] = [
         filter: { authority: 'VIEW_DASH_BOARD' },
       },
       {
-        name: <Tran text="user" />,
-        path: '/admin/users',
-        icon: <UserIcon />,
-        filter: { any: [{ authority: 'EDIT_USER_ROLE' }, { authority: 'EDIT_USER_AUTHORITY' }] },
+        name: <Tran text="setting" />,
+        path: '/admin/setting',
+        icon: <BoxIcon />,
+        filter: { any: [{ authority: 'EDIT_USER_ROLE' }, { authority: 'EDIT_USER_AUTHORITY' }, { authority: 'MANAGE_TAG' }, { authority: 'VIEW_SETTING' }] },
       },
       {
         name: <Tran text="log" />,
@@ -217,12 +216,6 @@ export const groups: readonly PathGroup[] = [
         path: '/translation',
         icon: <TranslationPathIcon />,
         filter: { authority: 'VIEW_TRANSLATION' },
-      },
-      {
-        name: <Tran text="setting" />,
-        path: '/admin/settings',
-        icon: <SettingIcon />,
-        filter: { authority: 'VIEW_SETTING' },
       },
       {
         name: <Tran text="file" />,

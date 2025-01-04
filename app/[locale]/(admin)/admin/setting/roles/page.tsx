@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { RoleTable } from '@/app/[locale]/(admin)/admin/users/role-table';
+import { RoleTable } from '@/app/[locale]/(admin)/admin/setting/role-table';
 
 import { getSession } from '@/action/action';
 import { Locale } from '@/i18n/config';

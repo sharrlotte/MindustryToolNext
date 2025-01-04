@@ -1,7 +1,9 @@
 'use client';
 
-import RoleCard from '@/app/[locale]/(admin)/admin/users/role-card';
+import RoleCard from '@/app/[locale]/(admin)/admin/setting/role-card';
+
 import ErrorScreen from '@/components/common/error-screen';
+
 import useClientQuery from '@/hooks/use-client-query';
 import { getRoles } from '@/query/role';
 

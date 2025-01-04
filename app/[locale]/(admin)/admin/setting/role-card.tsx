@@ -1,11 +1,13 @@
 import React from 'react';
 
-import ChangeRoleAuthorityDialog from '@/app/[locale]/(admin)/admin/users/change-role-authority-dialog';
-import DeleteRoleButton from '@/app/[locale]/(admin)/admin/users/delete-role-button';
-import UpdateRoleDialog from '@/app/[locale]/(admin)/admin/users/update-role-dialog';
+import ChangeRoleAuthorityDialog from '@/app/[locale]/(admin)/admin/setting/change-role-authority-dialog';
+import DeleteRoleButton from '@/app/[locale]/(admin)/admin/setting/delete-role-button';
+import UpdateRoleDialog from '@/app/[locale]/(admin)/admin/setting/update-role-dialog';
+
 import Tran from '@/components/common/tran';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { TableCell, TableRow } from '@/components/ui/table';
+
 import { RoleWithAuthorities } from '@/types/response/Role';
 
 type Props = {
