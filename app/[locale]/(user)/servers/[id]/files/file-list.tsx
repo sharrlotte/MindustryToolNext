@@ -26,7 +26,7 @@ type FileListProps = {
 export default function FileList({ id, path, filter, setFilePath }: FileListProps) {
   const axios = useClientApi();
 
-  const { data, error, isFetching } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: ['server-files', id, path],
     queryFn: async () => getServerFiles(axios, id, path),
     placeholderData: [],
@@ -49,7 +49,7 @@ export default function FileList({ id, path, filter, setFilePath }: FileListProp
     return <div>{error?.message}</div>;
   }
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <Skeletons number={10}>
         <Skeleton className="h-10 w-full rounded-md" />
