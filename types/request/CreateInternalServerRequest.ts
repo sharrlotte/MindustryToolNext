@@ -6,7 +6,7 @@ export const CreateInternalServerSchema = z.object({
   name: z.string().min(1).max(50),
   description: z.string().min(1).max(200),
   mode: z.enum(InternalServerModes).default('SURVIVAL'),
-  startCommand: z.string().max(1000).optional(),
+  hostCommand: z.string().max(1000).optional(),
 });
 
 export type CreateInternalServerRequest = z.infer<typeof CreateInternalServerSchema>;

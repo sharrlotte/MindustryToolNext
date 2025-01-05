@@ -35,7 +35,7 @@ export default function ServerUpdateForm({ server }: Props) {
     resolver: zodResolver(PutInternalServerSchema),
     defaultValues: {
       ...currentServer,
-      startCommand: currentServer.startCommand ?? '',
+      hostCommand: currentServer.hostCommand ?? '',
     },
   });
   const { invalidateByKey } = useQueriesData();
@@ -125,7 +125,7 @@ export default function ServerUpdateForm({ server }: Props) {
             />
             <FormField
               control={form.control}
-              name="startCommand"
+              name="hostCommand"
               render={({ field }) => (
                 <FormItem className="grid">
                   <FormLabel>

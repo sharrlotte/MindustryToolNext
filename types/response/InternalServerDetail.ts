@@ -18,5 +18,5 @@ export type InternalServerDetail = {
     uuid: string;
   }[];
   mapName: string;
-  startCommand?: string;
+  hostCommand?: string;
 };
