@@ -74,7 +74,7 @@ async function Footer() {
   return (
     <footer className="flex w-full justify-end">
       <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
-        <CreateServerDialog />
+        <CreateServerDialog />  
       </ProtectedElement>
     </footer>
   );

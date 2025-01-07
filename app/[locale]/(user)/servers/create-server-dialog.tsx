@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import CreateServerManagerDialog from '@/app/[locale]/(user)/servers/create-server-manager-dialog';
+
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import { CheckCircleIcon } from '@/components/common/icons';
@@ -18,12 +20,15 @@ import { toast } from '@/components/ui/sonner';
 
 import { revalidate } from '@/action/action';
 import env from '@/constant/env';
+import useClientApi from '@/hooks/use-client';
 import useHttpStream from '@/hooks/use-http-stream';
 import useQueriesData from '@/hooks/use-queries-data';
+import { getMyServerManager } from '@/query/server';
 import { CreateInternalServerRequest, CreateInternalServerSchema } from '@/types/request/CreateInternalServerRequest';
 import { InternalServerModes } from '@/types/request/UpdateInternalServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery } from '@tanstack/react-query';
 
 export default function CreateServerDialog() {
   const form = useForm<CreateInternalServerRequest>({
@@ -43,6 +48,12 @@ export default function CreateServerDialog() {
   const { invalidateByKey } = useQueriesData();
 
   const [visible, setVisible] = useState(false);
+  const axios = useClientApi();
+
+  const { data: managers } = useQuery({
+    queryKey: ['server-managers', 'me'],
+    queryFn: () => getMyServerManager(axios),
+  });
 
   const { data, mutate, isPending, isSuccess, last } = useHttpStream({
     url: `${env.url.api}/internal-servers`,
@@ -157,6 +168,54 @@ export default function CreateServerDialog() {
                     </FormControl>
                     <FormDescription>
                       <Tran text="server.game-mode-description" />
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="gamemode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      <Tran text="server.game-mode-name" />
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Flood" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      <Tran text="server.game-mode-name-description" />
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="managerId"
+                render={({ field }) => (
+                  <FormItem className="grid">
+                    <FormLabel>
+                      <Tran text="server.manager" />
+                    </FormLabel>
+                    <FormControl>
+                      <div className="flex gap-2 w-full">
+                        <ComboBox
+                          searchBar={false}
+                          values={
+                            managers?.map((manager) => ({
+                              label: manager.address,
+                              value: manager.id,
+                            })) ?? []
+                          }
+                          onChange={(value) => field.onChange(value)}
+                        />
+                        <CreateServerManagerDialog />
+                      </div>
+                    </FormControl>
+                    <FormDescription>
+                      <Tran text="server.server-manager-description" />
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

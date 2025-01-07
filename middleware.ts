@@ -1,10 +1,7 @@
 import acceptLanguage from 'accept-language';
 import { NextRequest, NextResponse, userAgent } from 'next/server';
 
-
-
 import { cookieName, defaultLocale, locales } from '@/i18n/config';
-
 
 acceptLanguage.languages(locales as any);
 

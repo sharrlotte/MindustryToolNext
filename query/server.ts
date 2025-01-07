@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
 
 import { toForm } from '@/lib/utils';
+import { PaginationQuery } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import CreateInternalServerPluginRequest from '@/types/request/CreaeteInternalServerPluginRequest';
 import CreateInternalServerMapRequest from '@/types/request/CreateInternalServerMapRequest';
-import { CreateInternalServerRequest } from '@/types/request/CreateInternalServerRequest';
+import { CreateInternalServerRequest, CreateServerManagerRequest } from '@/types/request/CreateInternalServerRequest';
 import CreateServerRequest from '@/types/request/CreateServerRequest';
 import { PutInternalServerPortRequest, PutInternalServerRequest } from '@/types/request/UpdateInternalServerRequest';
 import { ExternalServer } from '@/types/response/ExternalServer';
@@ -14,7 +15,7 @@ import { InternalServerPlugin } from '@/types/response/InternalServerPlugin';
 import { Player } from '@/types/response/Player';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
 import { ServerFile } from '@/types/response/ServerFile';
-import { PaginationQuery } from '@/query/search-query';
+import { ServerManager } from '@/types/response/ServerManager';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
   const result = await axios.delete(`/internal-servers/${id}/files`, {
@@ -91,6 +92,18 @@ export async function getServers(axios: AxiosInstance, params: PaginationQuery):
       size: 40,
     },
   });
+
+  return result.data;
+}
+
+export async function getMyServerManager(axios: AxiosInstance): Promise<ServerManager[]> {
+  const result = await axios.get(`/@me/server-manager`);
+
+  return result.data;
+}
+
+export async function createServerManager(axios: AxiosInstance, payload: CreateServerManagerRequest): Promise<void> {
+  const result = await axios.post(`/@me/server-manager`, payload);
 
   return result.data;
 }
