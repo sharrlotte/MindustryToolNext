@@ -58,12 +58,12 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className={cn('w-[200px] gap-2 items-center justify-between border-none bg-secondary capitalize shadow-md', className)} title={value?.label?.toLowerCase() || placeholder} role="combobox" variant="outline">
+        <Button className={cn('w-[200px] gap-2 items-center border border-input justify-between capitalize shadow-md', className)} title={value?.label?.toLowerCase() || placeholder} role="combobox" variant="outline">
           {value?.label?.toLowerCase() || placeholder}
           <ChevronsUpDownIcon className="size-4 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="z-50 w-full min-w-20 bg-card p-0">
+      <PopoverContent className="z-50 w-full min-w-20 p-0">
         <div className="mt-0.5 divide-y">
           {searchBar && (
             <div className="flex gap-1 p-1">
