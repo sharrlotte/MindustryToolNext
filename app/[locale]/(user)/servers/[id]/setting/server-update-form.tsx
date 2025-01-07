@@ -59,7 +59,7 @@ export default function ServerUpdateForm({ server }: Props) {
     },
   });
 
-  const isChanged = JSON.stringify(form.getValues()) !== JSON.stringify(currentServer);
+  const isChanged = Object.entries(form.getValues()).some(([key, value]) => value !== currentServer[key as keyof typeof currentServer]);
 
   return (
     <div className="relative flex h-full flex-col justify-between gap-2">
@@ -143,8 +143,8 @@ export default function ServerUpdateForm({ server }: Props) {
             />
           </ScrollContainer>
           <div
-            className={cn('flex justify-end gap-2 opacity-0', {
-              'opacity-100': isChanged,
+            className={cn('flex justify-end gap-2 transition-all translate-y-full opacity-0', {
+              'opacity-100 translate-y-0': isChanged,
             })}
           >
             <Button className="flex justify-end" variant="secondary" title="reset" onClick={() => form.reset()} disabled={!isChanged || isPending}>

@@ -89,7 +89,7 @@ export default function CreateServerDialog() {
                 <Tran className="font-bold text-xl" text="server.host-free-server" />
                 <Tran className="text-muted-foreground" text="server.host-free-server-description" />
               </div>
-              <Button className="mt-auto" onClick={() => setManagerId(undefined)}>
+              <Button className="mt-auto" variant="secondary" onClick={() => setManagerId(undefined)}>
                 <Tran text="next" />
               </Button>
             </div>

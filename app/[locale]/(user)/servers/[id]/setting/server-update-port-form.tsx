@@ -92,8 +92,8 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
           />
         </div>
         <div
-          className={cn('flex justify-end gap-2 opacity-0', {
-            'opacity-100': isChanged,
+          className={cn('flex justify-end gap-2 opacity-0 translate-y-full transition-all', {
+            'opacity-100 translate-y-0': isChanged,
           })}
         >
           <Button className="flex justify-end" variant="secondary" title="reset" onClick={() => form.reset()} disabled={!isChanged || isPending}>
