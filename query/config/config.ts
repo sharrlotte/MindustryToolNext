@@ -18,7 +18,15 @@ axiosInstance.interceptors.response.use(
     return res;
   },
   (error) => {
+    if (error?.response?.data) {
+      throw {
+        message: error.response.data.message,
+        status: error.response.data.status,
+      };
+    }
+
     if (error.errno === -4078 || error.code === 'ERR_BAD_RESPONSE') {
+      console.error(error);
       throw {
         message: 'Service is unavailable, please try again later',
         status: 503,
@@ -44,13 +52,6 @@ axiosInstance.interceptors.response.use(
             status: 503,
           };
       }
-    }
-
-    if (error?.response?.data) {
-      throw {
-        message: error.response.data.message,
-        status: error.response.data.status,
-      };
     }
 
     if (error.message) {

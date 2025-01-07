@@ -17,7 +17,7 @@ export default function Page() {
 
   if (!token) {
     return (
-      <div className="flex h-full items-center justify-center text-3xl font-bold text-success">
+      <div className="flex h-full items-center justify-center text-3xl font-bold text-destructive">
         <Tran text="token.invalid" />
       </div>
     );
