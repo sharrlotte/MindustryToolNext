@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 import { cn } from '@/lib/utils';
 
-type Value<T> = { label: string; value: T };
+type Value<T> = { label?: string; value: T };
 
 type RequiredComboBox<T> = {
   value: Value<T>;
