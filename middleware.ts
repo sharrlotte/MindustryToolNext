@@ -1,7 +1,10 @@
 import acceptLanguage from 'accept-language';
 import { NextRequest, NextResponse, userAgent } from 'next/server';
 
+
+
 import { cookieName, defaultLocale, locales } from '@/i18n/config';
+
 
 acceptLanguage.languages(locales as any);
 
@@ -22,8 +25,9 @@ export function middleware(req: NextRequest) {
       return;
     }
 
+    req.nextUrl.pathname = `/${language}${req.nextUrl.pathname}`;
 
-    return NextResponse.redirect(new URL(`/${language}${req.nextUrl.pathname}`, req.url));
+    return NextResponse.redirect(req.nextUrl);
   }
 
   if (req.headers.has('referer')) {
