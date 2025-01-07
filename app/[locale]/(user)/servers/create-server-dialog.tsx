@@ -97,6 +97,8 @@ export default function CreateServerDialog() {
     }
   }
 
+  const selectedManager = managers?.find((v) => v.id === form.getValues('managerId'));
+
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -203,6 +205,8 @@ export default function CreateServerDialog() {
                       <div className="flex gap-2 w-full">
                         <ComboBox
                           searchBar={false}
+                          nullable
+                          value={{ label: selectedManager?.address, value: selectedManager?.id }}
                           values={
                             managers?.map((manager) => ({
                               label: manager.address,
