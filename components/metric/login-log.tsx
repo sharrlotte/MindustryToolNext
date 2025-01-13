@@ -6,7 +6,7 @@ import MetricWrapper from '@/components/metric/metric-wrapper';
 import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getLogs } from '@/query/log';
-import { Log } from '@/types/response/Log';
+import { Log } from '@/types/Log';
 
 export default async function LoginLog() {
   return (

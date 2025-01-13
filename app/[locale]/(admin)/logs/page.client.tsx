@@ -32,7 +32,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { getLogCollections, getLogCount, getLogs } from '@/query/log';
 import { PaginationQuerySchema } from '@/query/search-query';
-import { Log } from '@/types/response/Log';
+import { Log } from '@/types/Log';
 
 export default function LogPage() {
   return (

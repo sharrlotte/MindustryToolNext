@@ -13,9 +13,11 @@ export const CreateInternalServerSchema = z.object({
 
 export type CreateInternalServerRequest = z.infer<typeof CreateInternalServerSchema>;
 
+const HTTPS_REGEX = /(https:\/\/[^\s"']+)|(localhost)/g;
+
 export const CreateServerManagerSchema = z.object({
   name: z.string().min(1).max(50),
-  address: z.string().min(1).max(50),
+  address: z.string().min(1).max(50).regex(HTTPS_REGEX, 'Invalid url'),
 });
 
 export type CreateServerManagerRequest = z.infer<typeof CreateServerManagerSchema>;

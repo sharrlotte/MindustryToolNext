@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
+import SessionList from '@/app/[locale]/(admin)/admin/(dashboard)/session-list';
+
 import ScrollContainer from '@/components/common/scroll-container';
 import ClientChart from '@/components/metric/client-chart';
 import LikeChart from '@/components/metric/like-chart';
@@ -59,6 +61,11 @@ export default async function Page() {
           </Suspense>
           <Suspense fallback={<ChartSkeleton />}>
             <LoginHistory />
+          </Suspense>
+        </div>
+        <div className="relative grid gap-2 w-full bg-card p-2">
+          <Suspense>
+            <SessionList />
           </Suspense>
         </div>
       </div>

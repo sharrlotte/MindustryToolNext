@@ -97,13 +97,13 @@ export async function getServers(axios: AxiosInstance, params: PaginationQuery):
 }
 
 export async function getMyServerManager(axios: AxiosInstance): Promise<ServerManager[]> {
-  const result = await axios.get(`/@me/server-manager`);
+  const result = await axios.get(`/users/@me/server-managers`);
 
   return result.data;
 }
 
 export async function createServerManager(axios: AxiosInstance, payload: CreateServerManagerRequest): Promise<void> {
-  const result = await axios.post(`/@me/server-manager`, payload);
+  const result = await axios.post(`/server-managers`, payload);
 
   return result.data;
 }
