@@ -28,6 +28,7 @@ type MessagePayload =
   | { method: 'JOIN_ROOM'; data: string }
   | { method: 'LEAVE_ROOM'; data: string }
   | { method: 'GET_MEMBER'; page: number; size: number }
+  | { method: 'CLOSE' }
   | { method: 'LAST_MESSAGE' };
 
 export type MessageMethod = MessagePayload['method'];
@@ -284,7 +285,7 @@ export default class SocketClient {
     this.errors.push(handler);
   }
 
-  public close() {
+  public async close() {
     this.tasks = [];
     this.rooms = [];
 
@@ -293,6 +294,7 @@ export default class SocketClient {
     }
 
     if (this.socket && this.getState() === 'connected') {
+      await this.await({ method: 'CLOSE' });
       this.socket.close();
     } else {
       this.onConnect(() => {
