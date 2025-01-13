@@ -92,7 +92,7 @@ type PromiseToastOption<T> = {
 };
 
 async function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
-  let id;
+  let id: any;
   if (options.loading && typeof options.loading === 'function') {
     const r = options.loading();
 
@@ -101,8 +101,6 @@ async function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
     } else {
       id = toast.loading(r, { id });
     }
-  } else {
-    id = toast.loading(options.loading, { id });
   }
 
   await promise
@@ -132,7 +130,7 @@ async function promise<T>(promise: Promise<T>, options: PromiseToastOption<T>) {
         toast.error(options.error, { id });
       }
     });
-    
+
   return id;
 }
 

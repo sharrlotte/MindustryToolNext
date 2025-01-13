@@ -18,7 +18,7 @@ export default function useClipboard() {
     }
 
     const id = await toast.promise(navigator.clipboard.writeText(data), {
-      loading: () => ({ title, description: content }),
+      success: () => ({ title, description: content }),
     });
 
     dismissLast = () => toast.dismiss(id);
