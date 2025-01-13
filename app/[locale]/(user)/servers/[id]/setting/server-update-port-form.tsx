@@ -78,7 +78,7 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
             name="official"
             render={({ field }) => (
               <FormItem>
-                <div className="flex gap-1">
+                <div className="flex gap-1">  
                   <FormControl>
                     <Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
                   </FormControl>
