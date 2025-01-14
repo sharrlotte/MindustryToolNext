@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Tran from '@/components/common/tran';
-import { Badge } from '@/components/ui/badge';
 
 type Props = {
   alive: boolean;
@@ -11,27 +10,15 @@ type Props = {
 export default function ServerStatus({ alive, started }: Props) {
   function render() {
     if (!alive) {
-      return (
-        <Badge variant="destructive">
-          <Tran text="server.stopped" asChild />
-        </Badge>
-      );
+      return <Tran className="text-destructive" text="server.stopped" />;
     }
 
     if (started) {
-      return (
-        <Badge variant="success">
-          <Tran text="server.online" asChild />
-        </Badge>
-      );
+      return <Tran className="text-success" text="server.online" />;
     }
 
-    return (
-      <Badge variant="secondary">
-        <Tran text="server.offline" asChild />
-      </Badge>
-    );
+    return <Tran className="text-warning" text="server.offline" />;
   }
 
-  return <div className="flex items-center gap-1 h-8">{render()}</div>;
+  return <div className="flex items-center gap-1">{render()}</div>;
 }
