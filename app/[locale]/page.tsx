@@ -12,8 +12,6 @@ import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';
 
-import { YouTubeEmbed } from '@next/third-parties/google';
-
 export const experimental_ppr = true;
 
 type Props = {
@@ -97,7 +95,7 @@ const RecommendedArticles = () => (
 );
 
 const AboutSection = () => (
-  <div className="flex flex-col space-y-8 md:w-1/2">
+  <div className="flex flex-col space-y-4 md:w-1/2 text-foreground">
     {[
       { title: 'home.about-mindustry', content: 'home.content-about-mindustry' },
       { title: 'home.content-platform-info', content: 'home.content-platform' },
@@ -116,7 +114,7 @@ const AboutSection = () => (
 );
 
 const Footer = () => (
-  <footer className="z-10 bg-zinc-950/95">
+  <footer className="bg-zinc-950/95">
     <div className="space-y-4 p-6 pb-6">
       <span className="flex w-full justify-center text-center text-xl font-extrabold">MindustryTool</span>
       <div className="flex justify-center gap-2">
@@ -130,46 +128,50 @@ const Footer = () => (
           <DiscordIcon />
         </Link>
       </div>
+      <div className="flex w-full justify-center p-4 text-center text-sm">Copyright © 2024 ‧ MindustryTool. All rights reserved.</div>
     </div>
-    <div className="flex w-full justify-center bg-black p-4 text-center text-sm">Copyright © 2024 ‧ MindustryTool. All rights reserved.</div>
     <Ads />
   </footer>
 );
 
 export default async function Home() {
   return (
-    <main className="no-scrollbar flex h-full flex-col bg-[url('/assets/home.jpg')] bg-cover bg-center text-white">
-      <div className="mx-auto flex w-full flex-col gap-10 p-4 pt-10 backdrop-blur-sm backdrop-brightness-50 md:gap-20 md:px-32">
-        <h1 className="w-full text-center text-xl font-extrabold">
-          <Tran text="home.hero-title" />
-        </h1>
-        <article className="flex flex-col gap-4 md:flex-row">
-          <AboutSection />
-          <div className="flex h-fit w-full justify-center md:w-1/2">
-            <YouTubeEmbed videoid="gUu3AhqpyHo" height={400} width={400} params="controls=0" />
-          </div>
-        </article>
-        <article className="flex flex-col gap-2">
-          <h3 className="font-bold">
-            <Tran text="home.schematic-preview" />
-          </h3>
-          <HomeSchematicPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
-        </article>
-        <article className="flex flex-col gap-2">
-          <h3 className="font-bold">
-            <Tran text="home.map-preview" />
-          </h3>
-          <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
-        </article>
-        <div className="flex w-full flex-col gap-4 md:flex-row">
-          <div className="flex w-full flex-col gap-8 md:w-1/2">
-            <RecommendedArticles />
-            <CommunityLinks />
-            <YoutubeLinks />
-          </div>
-          <div className="flex w-full flex-col md:w-1/2">
-            <SectionTitle text="home.website-info" />
-            <InformationGroup />
+    <main className="no-scrollbar flex h-full flex-col bg-center text-foreground px-4 gap-4 pt-4">
+      <h1 className="w-full text-center text-xl font-extrabold">
+        <Tran text="home.hero-title" />
+      </h1>
+      <article className="flex flex-col gap-4 md:flex-row">
+        <AboutSection />
+      </article>
+      <article className="flex flex-col gap-2">
+        <h3 className="font-bold">
+          <Tran text="home.schematic-preview" />
+        </h3>
+        <HomeSchematicPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
+      </article>
+      <article className="flex flex-col gap-2">
+        <h3 className="font-bold">
+          <Tran text="home.map-preview" />
+        </h3>
+        <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
+      </article>
+      <div className="flex w-full flex-col gap-4 md:flex-row">
+        <div className="flex w-full flex-col gap-8 md:w-1/2">
+          <RecommendedArticles />
+          <CommunityLinks />
+          <YoutubeLinks />
+        </div>
+        <div className="flex w-full flex-col md:w-1/2">
+          <SectionTitle text="home.website-info" />
+          <InformationGroup />
+          <SectionTitle text="home.credit" />
+          <div className="grid grid-rows-2">
+            <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="/credit">
+              Credit
+            </Link>
+            <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="https://discord.gg/72324gpuCd">
+              <Tran text="report" />
+            </Link>
           </div>
         </div>
       </div>

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Suspense } from 'react';
 
 import ErrorScreen from '@/components/common/error-screen';
@@ -14,8 +13,8 @@ import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
-import { getUsers } from '@/query/user';
 import { ItemPaginationQueryType } from '@/query/search-query';
+import { getUsers } from '@/query/user';
 
 const skeleton = Array(20)
   .fill(1)
@@ -23,7 +22,7 @@ const skeleton = Array(20)
 
 export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
       <Suspense fallback={skeleton}>
         <InternalSchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
@@ -39,7 +38,7 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPag
 }
 export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-1 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
       <Suspense fallback={skeleton}>
         <InternalHomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
@@ -134,7 +133,7 @@ async function InternalInformationGroup() {
   const onlyContributors = contributors.filter((user) => !shar.map((u) => u.id).includes(user.id) && !admins.map((u) => u.id).includes(user.id));
 
   return (
-    <ul className="grid grid-cols-1 items-start justify-start gap-y-8 md:grid-cols-2">
+    <ul className="grid grid-cols-1 items-start justify-start gap-y-4 md:grid-cols-2">
       <p className="list-item h-8 whitespace-nowrap">
         <Tran text="web-owner" />
       </p>
@@ -159,12 +158,6 @@ async function InternalInformationGroup() {
           <UserCard key={user.id} user={user} />
         ))}
       </div>
-      <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="/credit">
-        Credit
-      </Link>
-      <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="https://discord.gg/72324gpuCd">
-        <Tran text="report" />
-      </Link>
     </ul>
   );
 }

@@ -24,7 +24,7 @@ function InternalPostPreviewCard({ className, post, ...rest }: PostPreviewCardPr
   const firstImage = post.imageUrls ? post.imageUrls[0] : '';
 
   return (
-    <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative flex flex-col overflow-hidden rounded-lg border border-border bg-cover bg-center', className)} {...rest}>
+    <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative flex flex-col overflow-hidden rounded-md text-white bg-cover bg-center', className)} {...rest}>
       <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-blur-sm backdrop-brightness-50">
         <InternalLink href={`/posts/${post.id}`}>
           <span className="flex text-2xl">{post.title}</span>
