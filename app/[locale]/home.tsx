@@ -25,7 +25,7 @@ import { getUsers } from '@/query/user';
 
 export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
+    <ul className="flex w-full snap-x min-h-preview-height list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
       <Suspense>
         <InternalSchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
@@ -41,7 +41,7 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPag
 }
 export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 min-h-preview-height overflow-x-auto overflow-y-hidden pb-4 text-foreground">
       <Suspense>
         <InternalHomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
@@ -57,10 +57,10 @@ export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginatio
 }
 export async function HomeServerPreview() {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto min-h-[200px] overflow-y-hidden pb-4 text-foreground">
       <Suspense>
         <InternalHomeServerPreview />
-        <li key="more" className="m-0 snap-center text-nowrap p-0">
+        <li key="more" className="m-0 snap-center h-full text-nowrap p-0">
           <InternalLink href="/servers" className="cursor-pointer px-2 text-center font-light">
             <div className="flex items-center justify-center">
               <Tran text="home.preview-more" />
@@ -112,7 +112,7 @@ async function InternalHomeServerPreview() {
   }
 
   return result.map((server, index) => (
-    <li key={server.id} className="m-0 snap-center p-0 w-[320px] min-w-[320px]">
+    <li key={server.id} className="m-0 snap-center p-0 h-full w-[320px] min-w-[320px]">
       <FadeIn delay={index}>
         <InternalServerCard server={server} />
       </FadeIn>
