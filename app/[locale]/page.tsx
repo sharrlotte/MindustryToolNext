@@ -95,7 +95,7 @@ const RecommendedArticles = () => (
 );
 
 const AboutSection = () => (
-  <div className="flex flex-col space-y-4 md:w-1/2 text-foreground">
+  <div className="flex flex-col space-y-4 lg:w-1/2 text-foreground">
     {[
       { title: 'home.about-mindustry', content: 'home.content-about-mindustry' },
       { title: 'home.content-platform-info', content: 'home.content-platform' },
@@ -105,7 +105,7 @@ const AboutSection = () => (
         <h3 className="font-bold">
           <Tran text={title} />
         </h3>
-        <p className='text-muted-foreground'>
+        <p className="text-muted-foreground">
           <Tran text={content} />
         </p>
       </div>
@@ -140,7 +140,7 @@ export default async function Home() {
       <h1 className="w-full text-3xl font-extrabold">
         <Tran text="home.hero-title" />
       </h1>
-      <article className="flex flex-col gap-4 md:flex-row">
+      <article className="flex gap-4 flex-row">
         <AboutSection />
       </article>
       <article className="flex flex-col gap-2">

@@ -61,13 +61,6 @@ export async function HomeServerPreview() {
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto min-h-[200px] overflow-y-hidden pb-4 text-foreground">
       <Suspense>
         <InternalHomeServerPreview />
-        <li key="more" className="m-0 snap-center h-full text-nowrap p-0">
-          <InternalLink href="/servers" className="cursor-pointer px-2 text-center font-light">
-            <div className="flex items-center justify-center">
-              <Tran text="home.preview-more" />
-            </div>
-          </InternalLink>
-        </li>
       </Suspense>
     </ul>
   );
