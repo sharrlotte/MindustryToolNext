@@ -24,24 +24,26 @@ function InternalPostPreviewCard({ className, post, ...rest }: PostPreviewCardPr
   const firstImage = post.imageUrls ? post.imageUrls[0] : '';
 
   return (
-    <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative flex flex-col overflow-hidden rounded-md text-white bg-cover bg-center', className)} {...rest}>
-      <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-blur-sm backdrop-brightness-50">
-        <InternalLink href={`/posts/${post.id}`}>
-          <span className="flex text-2xl">{post.title}</span>
-        </InternalLink>
-        <div className="flex flex-col gap-2">
-          <div>
-            <IdUserCard id={post.userId} />
-            <span>{new Date(post.createdAt).toLocaleString()}</span>
-          </div>
-          <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
-            <CopyButton data={link} content={link}>
-              <LinkIcon />
-            </CopyButton>
-            <LikeComponent initialLikeCount={post.likes} initialDislikeCount={post.dislikes} itemId={post.itemId}>
-              <AloneLikeCount />
-              <AloneDislikeCount />
-            </LikeComponent>
+    <div className='bg-card overflow-hidden rounded-md'>
+      <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative flex flex-col h-full overflow-hidden rounded-md text-white bg-cover bg-center', className)} {...rest}>
+        <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-blur-sm backdrop-brightness-50">
+          <InternalLink href={`/posts/${post.id}`}>
+            <span className="flex text-2xl">{post.title}</span>
+          </InternalLink>
+          <div className="flex flex-col gap-2">
+            <div>
+              <IdUserCard id={post.userId} />
+              <span>{new Date(post.createdAt).toLocaleString()}</span>
+            </div>
+            <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
+              <CopyButton data={link} content={link}>
+                <LinkIcon />
+              </CopyButton>
+              <LikeComponent initialLikeCount={post.likes} initialDislikeCount={post.dislikes} itemId={post.itemId}>
+                <AloneLikeCount />
+                <AloneDislikeCount />
+              </LikeComponent>
+            </div>
           </div>
         </div>
       </div>
