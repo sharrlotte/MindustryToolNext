@@ -73,8 +73,14 @@ export async function HomeServerPreview() {
   );
 }
 
+const findSchematics = unstable_cache((axios, queryParams) => getSchematics(axios, queryParams), ['home-schematics'], { revalidate: 60 * 60 });
+
+const findMaps = unstable_cache((axios, queryParams) => getMaps(axios, queryParams), ['home-maps'], { revalidate: 60 * 60 });
+
+const findServers = unstable_cache((axios) => getInternalServers(axios), ['home-servers'], { revalidate: 60 * 60 });
+
 async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPaginationQueryType }) {
-  const result = await serverApi((axios) => getSchematics(axios, queryParam));
+  const result = await serverApi((axios) => findSchematics(axios, queryParam));
 
   if (isError(result)) {
     return <ErrorScreen error={result} />;
@@ -90,7 +96,7 @@ async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPagina
 }
 
 async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
-  const result = await serverApi((axios) => getMaps(axios, queryParam));
+  const result = await serverApi((axios) => findMaps(axios, queryParam));
 
   if (isError(result)) {
     return <ErrorScreen error={result} />;
@@ -106,7 +112,7 @@ async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginati
 }
 
 async function InternalHomeServerPreview() {
-  const result = await serverApi((axios) => getInternalServers(axios));
+  const result = await serverApi((axios) => findServers(axios));
 
   if (isError(result)) {
     return <ErrorScreen error={result} />;
