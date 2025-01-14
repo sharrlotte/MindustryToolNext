@@ -79,7 +79,7 @@ export async function getInternalServer(axios: AxiosInstance, { id }: IdSearchPa
   return result.data;
 }
 
-export async function getInternalServers(axios: AxiosInstance, params?: { official: boolean }): Promise<InternalServerDetail[]> {
+export async function getInternalServers(axios: AxiosInstance, params?: { official?: boolean }): Promise<InternalServerDetail[]> {
   const result = await axios.get(`/internal-servers`, { params });
 
   return result.data;

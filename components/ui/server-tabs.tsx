@@ -79,7 +79,14 @@ export function ServerTabsTrigger({ className, value, children }: ServerTabsTrig
   const isHovered = value === hovered;
 
   return (
-    <Button className={cn('relative h-12 min-w-fit space-y-2 px-0 py-2', className)} variant="ghost" onClick={() => setValue(value)} onMouseEnter={() => setHovered(value)}>
+    <Button
+      className={cn('relative h-12 min-w-fit space-y-2 px-0 py-2 opacity-70', className, {
+        'opacity-100': isSelected,
+      })}
+      variant="ghost"
+      onClick={() => setValue(value)}
+      onMouseEnter={() => setHovered(value)}
+    >
       <div className="relative">
         {isHovered && <MotionDiv layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
         <div

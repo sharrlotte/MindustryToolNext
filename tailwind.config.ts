@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'gradient-background': 'linear-gradient(10deg, #000000 0%, #121212 70%, #121212 100%)',
+        'gradient-background': 'linear-gradient(10deg, #000000 0%, #000000 70%, #121212 100%)',
       },
       height: {
         screen: ['100vh /* fallback for Opera, IE and etc. */', '100dvh'],

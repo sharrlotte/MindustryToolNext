@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, cache } from 'react';
 
 import ErrorScreen from '@/components/common/error-screen';
 
@@ -14,35 +14,37 @@ import TagGroup from '@/types/response/TagGroup';
 
 const predicate = (tag: ContextTagGroup) => tag.name !== 'size';
 
-const getCachedTags = unstable_cache(
-  async (locale: Locale) => {
-    const { t } = await getTranslation(locale, 'tags');
-    const data = await catchError(axiosInstance, () => getTags(axiosInstance));
+const getCachedTags = cache(
+  unstable_cache(
+    async (locale: Locale) => {
+      const { t } = await getTranslation(locale, 'tags');
+      const data = await catchError(axiosInstance, () => getTags(axiosInstance));
 
-    if (isError(data)) {
-      throw data;
-    }
+      if (isError(data)) {
+        throw data;
+      }
 
-    function map(items: TagGroup[]): Promise<ContextTagGroup[]> {
-      return Promise.all(
-        items.sort().map(async (item) => ({
-          ...item,
-          name: item.name,
-          displayName: await t(item.name),
-          values: await Promise.all(item.values.sort().map(async (value) => ({ value, display: await t(value) }))),
-        })),
-      );
-    }
+      function map(items: TagGroup[]): Promise<ContextTagGroup[]> {
+        return Promise.all(
+          items.sort().map(async (item) => ({
+            ...item,
+            name: item.name,
+            displayName: await t(item.name),
+            values: await Promise.all(item.values.sort().map(async (value) => ({ value, display: await t(value) }))),
+          })),
+        );
+      }
 
-    return {
-      schematic: await map(data.schematic),
-      map: await map(data.map),
-      post: await map(data.post),
-      plugin: await map(data.plugin),
-    };
-  },
-  ['tags'],
-  { revalidate: 3600 },
+      return {
+        schematic: await map(data.schematic),
+        map: await map(data.map),
+        post: await map(data.post),
+        plugin: await map(data.plugin),
+      };
+    },
+    ['tags'],
+    { revalidate: 3600 },
+  ),
 );
 
 export type ContextTagGroup = {

@@ -7,7 +7,6 @@ import {
   ArrowLeftCircle,
   ArrowUpDown,
   BellIcon,
-  BlocksIcon,
   BookOpenIcon,
   BotIcon,
   Box,
@@ -45,6 +44,7 @@ import {
   Moon,
   Paperclip,
   Pencil,
+  Plug,
   Search,
   Send,
   Server,
@@ -122,7 +122,7 @@ export const SchematicIcon = ({ className }: Props) => <ClipboardList className=
 export const SettingIcon = ({ className }: Props) => <SettingsIcon className={cn(className ?? 'lucide')} />;
 export const RoleIcon = ({ className }: Props) => <Users className={cn(className ?? 'lucide')} />;
 export const CmdIcon = ({ className }: Props) => <TerminalIcon className={cn(className ?? 'lucide')} />;
-export const PluginIcon = ({ className }: Props) => <BlocksIcon className={cn(className ?? 'lucide')} />;
+export const PluginIcon = ({ className }: Props) => <Plug className={cn(className ?? 'lucide')} />;
 export const WarningIcon = ({ className }: Props) => <AlertCircle className={cn(className ?? 'lucide')} />;
 export const EllipsisIcon = ({ className }: Props) => <DotsHorizontalIcon className={cn(className ?? 'lucide')} />;
 export const NotificationIcon = ({ className }: Props) => <BellIcon className={cn(className ?? 'lucide')} />;

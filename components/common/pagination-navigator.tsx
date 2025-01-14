@@ -59,21 +59,7 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
   const hasNextPage = currentPage < lastPage;
   const hasPrevPage = currentPage > 0;
 
-  let firstNumber = currentPage - 1;
-  let secondNumber = currentPage;
-
-  if (firstNumber <= -1) {
-    firstNumber += 1;
-    secondNumber += 1;
-  }
-
-  const secondLastNumber = lastPage - 1;
   const lastNumber = lastPage;
-
-  if (secondNumber >= secondLastNumber) {
-    firstNumber = 0;
-    secondNumber = 1;
-  }
 
   const nextPage = currentPage + 1;
   const previousPage = currentPage - 1;
@@ -100,31 +86,10 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
           </Button>
         </PaginationItem>
         <PaginationItem>
-          <Button
-            className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-              'bg-secondary dark:text-foreground': firstNumber === currentPage,
-            })}
-            title="prev"
-            onClick={() => handlePageChange(firstNumber)}
-            variant="icon"
-          >
-            {firstNumber}
+          <Button className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1 bg-secondary dark:text-foreground', {})} title="prev" onClick={() => handlePageChange(currentPage)} variant="icon">
+            {currentPage}
           </Button>
         </PaginationItem>
-        {lastPage > 0 && (
-          <PaginationItem>
-            <Button
-              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-secondary text-background dark:text-foreground': secondNumber === currentPage,
-              })}
-              title="prev"
-              onClick={() => handlePageChange(secondNumber)}
-              variant="icon"
-            >
-              {secondNumber}
-            </Button>
-          </PaginationItem>
-        )}
         <PaginationItem>
           <Dialog open={open} onOpenChange={setOpen}>
             {lastPage > 1 && (
@@ -153,20 +118,6 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
             </DialogContent>
           </Dialog>
         </PaginationItem>
-        {lastPage > 2 && (
-          <PaginationItem>
-            <Button
-              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-secondary text-background dark:text-foreground': secondLastNumber === currentPage,
-              })}
-              title="prev"
-              onClick={() => handlePageChange(secondLastNumber)}
-              variant="icon"
-            >
-              {secondLastNumber}
-            </Button>
-          </PaginationItem>
-        )}
         {lastPage > 1 && (
           <PaginationItem>
             <Button
