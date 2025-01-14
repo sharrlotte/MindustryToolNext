@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-import { HomeMapPreview, HomeSchematicPreview, InformationGroup } from '@/app/[locale]/home';
+import { HomeMapPreview, HomeSchematicPreview, HomeServerPreview, InformationGroup } from '@/app/[locale]/home';
 
 import Ads from '@/components/common/ads';
 import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons';
@@ -136,7 +136,7 @@ const Footer = () => (
 
 export default async function Home() {
   return (
-    <main className="no-scrollbar flex h-full flex-col bg-center text-foreground px-4 gap-4 pt-4">
+    <main className="no-scrollbar flex h-full flex-col bg-center text-foreground px-4 gap-8 pt-4">
       <h1 className="w-full text-center text-xl font-extrabold">
         <Tran text="home.hero-title" />
       </h1>
@@ -154,6 +154,12 @@ export default async function Home() {
           <Tran text="home.map-preview" />
         </h3>
         <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
+      </article>
+      <article className="flex flex-col gap-2">
+        <h3 className="font-bold">
+          <Tran text="home.server-preview" />
+        </h3>
+        <HomeServerPreview />
       </article>
       <div className="flex w-full flex-col gap-4 md:flex-row">
         <div className="flex w-full flex-col gap-8 md:w-1/2">

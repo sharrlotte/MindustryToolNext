@@ -1,12 +1,14 @@
 import { Suspense } from 'react';
 
+import FadeIn from '@/app/[locale]/fade-in';
+
 import ErrorScreen from '@/components/common/error-screen';
 import InternalLink from '@/components/common/internal-link';
 import { Preview } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import InternalServerCard from '@/components/server/internal-server-card';
 import UserCard from '@/components/user/user-card';
 
 import { serverApi } from '@/action/action';
@@ -14,16 +16,17 @@ import { isError } from '@/lib/utils';
 import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
 import { ItemPaginationQueryType } from '@/query/search-query';
+import { getInternalServers } from '@/query/server';
 import { getUsers } from '@/query/user';
 
-const skeleton = Array(20)
-  .fill(1)
-  .map((_, index) => <PreviewSkeleton key={index} />);
+// const skeleton = Array(20)
+//   .fill(1)
+//   .map((_, index) => <PreviewSkeleton key={index} />);
 
 export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
-      <Suspense fallback={skeleton}>
+      <Suspense>
         <InternalSchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
           <InternalLink href="/schematics" className="cursor-pointer px-2 font-light">
@@ -39,13 +42,29 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPag
 export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
     <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
-      <Suspense fallback={skeleton}>
+      <Suspense>
         <InternalHomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
           <InternalLink href="/maps" className="cursor-pointer px-2 text-center font-light">
             <Preview className="flex items-center justify-center">
               <Tran text="home.preview-more" />
             </Preview>
+          </InternalLink>
+        </li>
+      </Suspense>
+    </ul>
+  );
+}
+export async function HomeServerPreview() {
+  return (
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
+      <Suspense>
+        <InternalHomeServerPreview />
+        <li key="more" className="m-0 snap-center text-nowrap p-0">
+          <InternalLink href="/servers" className="cursor-pointer px-2 text-center font-light">
+            <div className="flex items-center justify-center">
+              <Tran text="home.preview-more" />
+            </div>
           </InternalLink>
         </li>
       </Suspense>
@@ -62,7 +81,9 @@ async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPagina
 
   return result.map((schematic, index) => (
     <li key={schematic.id} className="m-0 snap-center p-0">
-      <SchematicPreviewCard schematic={schematic} imageCount={index} />
+      <FadeIn delay={index}>
+        <SchematicPreviewCard schematic={schematic} imageCount={index} />
+      </FadeIn>
     </li>
   ));
 }
@@ -76,7 +97,25 @@ async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginati
 
   return result.map((map, index) => (
     <li key={map.id} className="m-0 snap-center p-0">
-      <MapPreviewCard map={map} imageCount={index} />
+      <FadeIn delay={index}>
+        <MapPreviewCard map={map} imageCount={index} />
+      </FadeIn>
+    </li>
+  ));
+}
+
+async function InternalHomeServerPreview() {
+  const result = await serverApi((axios) => getInternalServers(axios));
+
+  if (isError(result)) {
+    return <ErrorScreen error={result} />;
+  }
+
+  return result.map((server, index) => (
+    <li key={server.id} className="m-0 snap-center p-0 w-[320px] min-w-[320px]">
+      <FadeIn delay={index}>
+        <InternalServerCard server={server} />
+      </FadeIn>
     </li>
   ));
 }
