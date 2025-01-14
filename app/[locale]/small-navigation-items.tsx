@@ -69,8 +69,8 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
                 <div className="flex h-full flex-col justify-between overflow-hidden p-2">
                   <div className="flex h-full flex-col overflow-hidden">
                     <span className="flex flex-col gap-2">
-                      <span className="flex items-center justify-between rounded-sm p-2">
-                        <div className="flex items-center gap-2">
+                      <span className="flex justify-between items-start rounded-sm p-2">
+                        <div className="flex flex-col gap-2">
                           <h1 className="text-xl font-medium">MindustryTool</h1>
                           <span className="text-xs">{env.webVersion}</span>
                         </div>

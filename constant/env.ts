@@ -1,8 +1,9 @@
 import SortTag from '@/types/response/SortTag';
 
+const date = new Date();
 
 const env = {
-  webVersion: 'v1.1.1',
+  webVersion: `v${date.getFullYear()}${date.getMonth()}${date.getDate()}.${date.getHours()}.${date.getMinutes()}`,
   webName: 'Mindustry Tool',
   locales: ['en', 'vi', 'kr', 'cn', 'jp', 'ru', 'uk'] as const,
   defaultLocale: 'en',
