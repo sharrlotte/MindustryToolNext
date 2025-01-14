@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import { Suspense } from 'react';
 
 import FadeIn from '@/app/[locale]/fade-in';
@@ -128,30 +129,45 @@ export async function InformationGroup() {
   );
 }
 
-async function InternalInformationGroup() {
-  const getAdmins = serverApi((axios) =>
+const findAdmins = unstable_cache(
+  (axios) =>
     getUsers(axios, {
       page: 0,
       size: 20,
       role: 'ADMIN',
     }),
-  );
+  ['admins'],
+  { revalidate: 60 * 60 },
+);
 
-  const getShar = serverApi((axios) =>
+const findShar = unstable_cache(
+  (axios) =>
     getUsers(axios, {
       page: 0,
       size: 20,
       role: 'SHAR',
     }),
-  );
+  ['shars'],
+  { revalidate: 60 * 60 },
+);
 
-  const getContributor = serverApi((axios) =>
+const findContributors = unstable_cache(
+  (axios) =>
     getUsers(axios, {
       page: 0,
       size: 20,
       role: 'CONTRIBUTOR',
     }),
-  );
+  ['contributors'],
+  { revalidate: 60 * 60 },
+);
+
+async function InternalInformationGroup() {
+  const getAdmins = serverApi(findAdmins);
+
+  const getShar = serverApi(findShar);
+
+  const getContributor = serverApi(findContributors);
 
   const [shar, admins, contributors] = await Promise.all([getShar, getAdmins, getContributor]);
 
