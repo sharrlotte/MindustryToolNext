@@ -17,6 +17,12 @@ export function middleware(req: NextRequest) {
   if (!language) language = acceptLanguage.get(req.headers.get('Accept-Language'));
   if (!language) language = defaultLocale;
 
+
+  // Ignore auto local for google bot
+  if (locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && isBot) {
+    return;
+  }
+
   if (!locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && !req.nextUrl.pathname.startsWith('/_next')) {
     if (isBot) {
       return;
