@@ -54,13 +54,15 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
       animate={isVisible ? 'open' : 'closed'}
     >
       <div className={cn('flex h-full w-full flex-col p-1', { 'p-2': expand })}>
-        <div className={cn('flex items-center justify-center p-2', { 'gap-1': expand })}>
-          <motion.div className="overflow-hidden whitespace-nowrap" animate={{ display: expand ? 'block' : 'none' }}>
-            <h1 className="text-xl font-medium">MindustryTool</h1>
-          </motion.div>
-          <motion.span className="overflow-hidden whitespace-nowrap text-xs" animate={{ display: expand ? 'block' : 'none' }}>
-            {env.webVersion}
-          </motion.span>
+        <div className={cn('flex justify-between p-2', { 'gap-1': expand })}>
+          <div className='flex flex-col'>
+            <motion.div className="overflow-hidden whitespace-nowrap" animate={{ display: expand ? 'block' : 'none' }}>
+              <h1 className="text-xl font-medium">MindustryTool</h1>
+            </motion.div>
+            <motion.span className="overflow-hidden whitespace-nowrap text-xs" animate={{ display: expand ? 'block' : 'none' }}>
+              {env.webVersion}
+            </motion.span>
+          </div>
           <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
             <MenuIcon className="size-6 text-foreground" />
           </Button>
