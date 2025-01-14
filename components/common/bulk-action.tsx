@@ -134,8 +134,8 @@ export function BulkActionSelector({ className, value, children }: BulkActionSel
   }
 
   return (
-    <Button className={cn('absolute right-1 top-1', className)} variant="icon" size="icon" onClick={() => onSelect(value)}>
-      {children || (isSelected ? <SquareCheckedIcon /> : <SquareIcon />)}
+    <Button className={cn('absolute right-1 top-1 size-8 p-0', className)} variant="icon" onClick={() => onSelect(value)}>
+      {children || (isSelected ? <SquareCheckedIcon className="size-8" /> : <SquareIcon className="size-8" />)}
     </Button>
   );
 }
