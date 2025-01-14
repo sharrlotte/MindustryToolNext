@@ -17,29 +17,29 @@ type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
-function InternalPostPreviewCard({ className, post, ...rest }: PostPreviewCardProps) {
+function InternalPostPreviewCard({ className, post: { id, imageUrls, title, likes, itemId, dislikes, createdAt, userId }, ...rest }: PostPreviewCardProps) {
   const { locale } = useParams();
 
-  const link = `${env.url.base}/${locale}/posts/${post.id}`;
-  const firstImage = post.imageUrls ? post.imageUrls[0] : '';
+  const link = `${env.url.base}/${locale}/posts/${id}`;
+  const firstImage = imageUrls ? imageUrls[0] : '';
 
   return (
-    <div className='bg-card overflow-hidden rounded-md'>
-      <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative flex flex-col h-full overflow-hidden rounded-md text-white bg-cover bg-center', className)} {...rest}>
-        <div className="flex h-full flex-col justify-between gap-2 p-4 backdrop-blur-sm backdrop-brightness-50">
-          <InternalLink href={`/posts/${post.id}`}>
-            <span className="flex text-2xl">{post.title}</span>
+    <div className="bg-card overflow-hidden rounded-md h-[212px]">
+      <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative backdrop-blur-sm backdrop-brightness-50 flex flex-col h-full overflow-hidden rounded-lg text-white bg-cover bg-center', className)} {...rest}>
+        <div className="flex h-full flex-col justify-between gap-2 p-4">
+          <InternalLink href={`/posts/${id}`}>
+            <p className="text-2xl w-full text-ellipsis overflow-hidden line-clamp-2">{title}</p>
           </InternalLink>
           <div className="flex flex-col gap-2">
             <div>
-              <IdUserCard id={post.userId} />
-              <span>{new Date(post.createdAt).toLocaleString()}</span>
+              <IdUserCard id={userId} />
+              <span className='text-muted-foreground'>{new Date(createdAt).toLocaleString()}</span>
             </div>
             <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
               <CopyButton data={link} content={link}>
                 <LinkIcon />
               </CopyButton>
-              <LikeComponent initialLikeCount={post.likes} initialDislikeCount={post.dislikes} itemId={post.itemId}>
+              <LikeComponent initialLikeCount={likes} initialDislikeCount={dislikes} itemId={itemId}>
                 <AloneLikeCount />
                 <AloneDislikeCount />
               </LikeComponent>

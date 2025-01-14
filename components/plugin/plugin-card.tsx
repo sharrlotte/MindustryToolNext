@@ -1,9 +1,11 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
+import FallbackImage from '@/components/common/fallback-image';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
@@ -48,7 +50,15 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
 
   return (
     <div className="relative flex h-32 flex-col gap-2 overflow-hidden rounded-md bg-card p-4">
-      <Link href={githubUrl}>
+      <Link href={githubUrl} className="flex gap-1 items-center">
+        <FallbackImage
+          width={20}
+          height={20}
+          className="size-5 rounded-sm overflow-hidden"
+          src={`https://raw.githubusercontent.com/${user}/${repo}/master/icon.png`}
+          errorSrc="https://raw.githubusercontent.com/Anuken/Mindustry/master/core/assets/sprites/error.png"
+          alt={''}
+        />
         <h2 className="line-clamp-1 w-full overflow-hidden text-ellipsis whitespace-normal text-nowrap">{name}</h2>
       </Link>
       <span className="line-clamp-2 h-full w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>

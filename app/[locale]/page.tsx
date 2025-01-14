@@ -105,7 +105,7 @@ const AboutSection = () => (
         <h3 className="font-bold">
           <Tran text={title} />
         </h3>
-        <p>
+        <p className='text-muted-foreground'>
           <Tran text={content} />
         </p>
       </div>
@@ -137,7 +137,7 @@ const Footer = () => (
 export default async function Home() {
   return (
     <main className="no-scrollbar flex h-full flex-col bg-center text-foreground px-4 gap-8 pt-4">
-      <h1 className="w-full text-center text-xl font-extrabold">
+      <h1 className="w-full text-3xl font-extrabold">
         <Tran text="home.hero-title" />
       </h1>
       <article className="flex flex-col gap-4 md:flex-row">
