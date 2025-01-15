@@ -15,15 +15,12 @@ export const defaultNamespace: string | string[] = ['common', 'tags'];
 
 export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: InitOptions<ChainedBackendOptions> = {
-    // debug: process.env.NODE_ENV === 'development',
+    debug: process.env.NODE_ENV === 'development',
     supportedLngs: locales,
     fallbackLng: defaultLocale,
     lng,
     interpolation: {
       escapeValue: false,
-    },
-    react: {
-      useSuspense: true,
     },
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,

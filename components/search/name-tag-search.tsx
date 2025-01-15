@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { FilterIcon, SearchIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
@@ -179,36 +179,38 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
           </Button>
         )}
       </div>
-      <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
-      {useTag && (
-        <div
-          className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {
-            flex: showFilterDialog,
-          })}
-        >
-          <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6" onClickOutside={handleHideFilterDialog}>
-            <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
-              <div className="flex gap-1">
-                <SearchBar className="w-full p-1">
-                  <SearchIcon className="p-1" />
-                  <SearchInput placeholder="filter" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
-                </SearchBar>
-                {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
-              </div>
-              <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">
-                <ScrollContainer className="overscroll-none">
-                  <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
-                </ScrollContainer>
-              </CardContent>
-              <CardFooter className="flex justify-end gap-1 p-0">
-                <Button onClick={handleHideFilterDialog} variant="primary">
-                  {isChanged ? <Tran text="search" /> : <Tran text="close" />}
-                </Button>
-              </CardFooter>
-            </Card>
-          </OutsideWrapper>
-        </div>
-      )}
+      <Suspense>
+        <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
+        {useTag && (
+          <div
+            className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {
+              flex: showFilterDialog,
+            })}
+          >
+            <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6" onClickOutside={handleHideFilterDialog}>
+              <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
+                <div className="flex gap-1">
+                  <SearchBar className="w-full p-1">
+                    <SearchIcon className="p-1" />
+                    <SearchInput placeholder="filter" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
+                  </SearchBar>
+                  {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
+                </div>
+                <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">
+                  <ScrollContainer className="overscroll-none">
+                    <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
+                  </ScrollContainer>
+                </CardContent>
+                <CardFooter className="flex justify-end gap-1 p-0">
+                  <Button onClick={handleHideFilterDialog} variant="primary">
+                    {isChanged ? <Tran text="search" /> : <Tran text="close" />}
+                  </Button>
+                </CardFooter>
+              </Card>
+            </OutsideWrapper>
+          </div>
+        )}
+      </Suspense>
     </div>
   );
 }

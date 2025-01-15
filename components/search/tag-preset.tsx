@@ -47,12 +47,12 @@ export default function TagPresetList({ type, onPresetChoose }: TagPresetListPro
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="primary">
-          <Tran text="tags.preset" />
+          <Tran text="preset" />
         </Button>
       </DialogTrigger>
       <DialogContent className="flex h-full max-h-dvh w-full flex-col overflow-hidden p-6 sm:max-w-[calc(100%-24px)]" onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogTitle>
-          <Tran text="tags.preset" />
+          <Tran text="preset" />
         </DialogTitle>
         <Hidden>
           <DialogDescription />

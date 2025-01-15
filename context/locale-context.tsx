@@ -1,14 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { I18nextProvider } from 'react-i18next';
 import Moment from 'react-moment';
 import { useStore } from 'zustand';
 
 import { Locale } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
 import { createServerStore } from '@/zustand/locale-store';
-import i18next from '@/i18n/client';
 
 export type TranslationGroup = Record<string, Record<string, string>>;
 export type LocaleData = Record<string, TranslationGroup>;
@@ -41,11 +39,5 @@ export default function I18nProvider({ locale, children }: Props) {
     axiosInstance.defaults.headers['Accept-Language'] = locale as string;
   }, [locale]);
 
-  return (
-    <Context.Provider value={storeRef.current}>
-      <I18nextProvider i18n={i18next} defaultNS={'common'}>
-        {children}
-      </I18nextProvider>
-    </Context.Provider>
-  );
+  return <Context.Provider value={storeRef.current}>{children}</Context.Provider>;
 }

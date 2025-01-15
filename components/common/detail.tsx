@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { HTMLAttributes, Suspense } from 'react';
 
 import ColorText from '@/components/common/color-text';
 import FallbackImage from '@/components/common/fallback-image';
@@ -82,7 +82,11 @@ type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
 export function DetailTagsCard({ className, tags }: TagsProps) {
   const values = Tags.parseStringArray(tags);
 
-  return <TagContainer className={className} tags={values} />;
+  return (
+    <Suspense>
+      <TagContainer className={className} tags={values} />
+    </Suspense>
+  );
 }
 
 type DescriptionProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {

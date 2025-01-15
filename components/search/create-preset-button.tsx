@@ -43,7 +43,7 @@ export default function CreatePresetButton({ tags, type }: CreatePresetButtonPro
     addTagPreset({ name, tags: tags || [], type });
     setOpen(false);
     invalidateByKey(['preset']);
-    toast(<Tran text="tags.preset-create-success" />);
+    toast.success(<Tran text="tags.preset-create-success" />);
   }
 
   return (
