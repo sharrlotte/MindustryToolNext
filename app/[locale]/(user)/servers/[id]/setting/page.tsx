@@ -14,7 +14,7 @@ import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ProtectedElement from '@/layout/protected-element';
 import { formatTitle, isError } from '@/lib/utils';
-import { getInternalServer } from '@/query/server';
+import { getServer } from '@/query/server';
 
 type Props = {
   params: Promise<{ id: string; locale: Locale }>;
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  const [server, session] = await Promise.all([serverApi((axios) => getInternalServer(axios, { id })), getSession()]);
+  const [server, session] = await Promise.all([serverApi((axios) => getServer(axios, { id })), getSession()]);
 
   if (isError(server)) {
     return <ErrorScreen error={server} />;

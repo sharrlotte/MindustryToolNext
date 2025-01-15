@@ -6,16 +6,16 @@ import React, { useRef } from 'react';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import InternalServerMapCard from '@/components/server/internal-server-map-card';
+import ServerMapCard from '@/components/server/server-map-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Button } from '@/components/ui/button';
 
-import { getInternalServerMaps } from '@/query/server';
+import { getServerMaps } from '@/query/server';
 
 const AddMapDialog = dynamic(() => import('@/app/[locale]/(user)/servers/[id]/maps/add-map-dialog'), {
   loading: () => (
     <Button className="ml-auto" title="Add map" variant="secondary">
-      <Tran text="internal-server.add-map" />
+      <Tran text="server.add-map" />
     </Button>
   ),
 });
@@ -36,14 +36,14 @@ export default function ServerMaps({ id }: Props) {
         <InfinitePage
           params={{ page: 0, size: 20 }}
           queryKey={['servers', id, 'maps']}
-          queryFn={(axios, params) => getInternalServerMaps(axios, id, params)}
+          queryFn={(axios, params) => getServerMaps(axios, id, params)}
           container={() => ref.current}
           skeleton={{
             amount: 20,
             item: <PreviewSkeleton />,
           }}
         >
-          {(data) => <InternalServerMapCard key={data.mapId} map={data} />}
+          {(data) => <ServerMapCard key={data.mapId} map={data} />}
         </InfinitePage>
       </ScrollContainer>
     </div>

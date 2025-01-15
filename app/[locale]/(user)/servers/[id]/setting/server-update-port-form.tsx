@@ -14,20 +14,20 @@ import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { cn } from '@/lib/utils';
-import { updateInternalServerPort } from '@/query/server';
-import { PutInternalServerPortRequest, PutInternalServerPortSchema } from '@/types/request/UpdateInternalServerRequest';
-import { InternalServerDetail } from '@/types/response/InternalServerDetail';
+import { updateServerPort } from '@/query/server';
+import { PutServerPortRequest, PutServerPortSchema } from '@/types/request/UpdateServerRequest';
+import { ServerDetail } from '@/types/response/ServerDetail';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 type Props = {
-  server: InternalServerDetail;
+  server: ServerDetail;
 };
 
 export default function ServerUpdatePortForm({ server: { id, port, official } }: Props) {
-  const form = useForm<PutInternalServerPortRequest>({
-    resolver: zodResolver(PutInternalServerPortSchema),
+  const form = useForm<PutServerPortRequest>({
+    resolver: zodResolver(PutServerPortSchema),
     defaultValues: {
       port,
       official,
@@ -38,7 +38,7 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: (data: PutInternalServerPortRequest) => updateInternalServerPort(axios, id, data),
+    mutationFn: (data: PutServerPortRequest) => updateServerPort(axios, id, data),
     onSuccess: () => {
       toast.success(<Tran text="update.success" />);
     },
@@ -78,7 +78,7 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
             name="official"
             render={({ field }) => (
               <FormItem>
-                <div className="flex gap-1">  
+                <div className="flex gap-1">
                   <FormControl>
                     <Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
                   </FormControl>

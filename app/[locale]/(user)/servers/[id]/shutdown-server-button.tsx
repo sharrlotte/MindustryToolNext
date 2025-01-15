@@ -10,7 +10,7 @@ import { toast } from '@/components/ui/sonner';
 
 import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
-import { shutdownInternalServer } from '@/query/server';
+import { shutdownServer } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -22,9 +22,9 @@ export default function ShutdownServerButton({ id }: Props) {
   const axios = useClientApi();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['internal-servers'],
+    mutationKey: ['servers'],
     mutationFn: async () =>
-      toast.promise(shutdownInternalServer(axios, id), {
+      toast.promise(shutdownServer(axios, id), {
         loading: <Tran text="server.shutting-down" />,
         success: <Tran text="server.shutdown-success" />,
         error: (error) => ({ title: <Tran text="server.shutdown-fail" />, description: error?.message }),

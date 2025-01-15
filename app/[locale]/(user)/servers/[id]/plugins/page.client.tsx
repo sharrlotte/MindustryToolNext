@@ -6,16 +6,16 @@ import React, { useRef } from 'react';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import InternalServerPluginCard from '@/components/server/internal-server-plugin-card';
+import ServerPluginCard from '@/components/server/server-plugin-card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import { getInternalServerPlugins } from '@/query/server';
+import { getServerPlugins } from '@/query/server';
 
 const AddPluginDialog = dynamic(() => import('@/app/[locale]/(user)/servers/[id]/plugins/add-plugin-dialog'), {
   loading: () => (
     <Button className="ml-auto" title="Add plugin" variant="secondary">
-      <Tran text="internal-server.add-plugin" />
+      <Tran text="server.add-plugin" />
     </Button>
   ),
 });
@@ -37,14 +37,14 @@ export default function ServerPluginPage({ id }: Props) {
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
           params={{ page: 0, size: 20 }}
           queryKey={['servers', id, 'plugins']}
-          queryFn={(axios, params) => getInternalServerPlugins(axios, id, params)}
+          queryFn={(axios, params) => getServerPlugins(axios, id, params)}
           container={() => ref.current}
           skeleton={{
             amount: 20,
             item: <Skeleton className="h-32 w-full" />,
           }}
         >
-          {(data) => <InternalServerPluginCard key={data.pluginId} plugin={data} />}
+          {(data) => <ServerPluginCard key={data.pluginId} plugin={data} />}
         </InfinitePage>
       </ScrollContainer>
     </div>

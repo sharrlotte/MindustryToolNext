@@ -9,7 +9,7 @@ import { Preview } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
-import InternalServerCard from '@/components/server/internal-server-card';
+import ServerCard from '@/components/server/server-card';
 import UserCard from '@/components/user/user-card';
 
 import { serverApi } from '@/action/action';
@@ -17,7 +17,7 @@ import { isError } from '@/lib/utils';
 import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
 import { ItemPaginationQueryType } from '@/query/search-query';
-import { getInternalServers } from '@/query/server';
+import { getServers } from '@/query/server';
 import { getUsers } from '@/query/user';
 
 // const skeleton = Array(20)
@@ -70,7 +70,7 @@ const findSchematics = unstable_cache((axios, queryParams) => getSchematics(axio
 
 const findMaps = unstable_cache((axios, queryParams) => getMaps(axios, queryParams), ['home-maps'], { revalidate: 60 * 60 });
 
-const findServers = unstable_cache((axios) => getInternalServers(axios), ['home-servers'], { revalidate: 60 * 60 });
+const findServers = unstable_cache((axios) => getServers(axios), ['home-servers'], { revalidate: 60 * 60 });
 
 async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   const result = await serverApi((axios) => findSchematics(axios, queryParam));
@@ -114,7 +114,7 @@ async function InternalHomeServerPreview() {
   return result.map((server, index) => (
     <li key={server.id} className="m-0 snap-center p-0 h-full w-[320px] min-w-[320px]">
       <FadeIn delay={index}>
-        <InternalServerCard server={server} />
+        <ServerCard server={server} />
       </FadeIn>
     </li>
   ));

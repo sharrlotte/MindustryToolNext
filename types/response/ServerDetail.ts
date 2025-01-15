@@ -1,13 +1,13 @@
-import { InternalServerMode } from '@/types/request/UpdateInternalServerRequest';
+import { ServerMode } from '@/types/request/UpdateServerRequest';
 
-export type InternalServerDetail = {
+export type ServerDetail = {
   id: string;
   name: string;
   userId: string;
   description: string;
   port: number;
   official: boolean;
-  mode: InternalServerMode;
+  mode: ServerMode;
   started: boolean;
   alive: boolean;
   ramUsage: number;

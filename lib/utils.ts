@@ -322,6 +322,10 @@ export function omit<T extends Record<string, any>>(obj: T, ...keys: Array<keyof
   return Object.fromEntries(Object.entries(obj).filter(([key]) => !keys.includes(key)));
 }
 
+export function select<T extends Record<string, any>>(obj: T, ...keys: Array<keyof T>) {
+  return Object.fromEntries(Object.entries(obj).filter(([key]) => keys.includes(key)));
+}
+
 export type TError = Error | { error: { message: string } | Error } | string | { message: string };
 
 const DEFAULT_NEXTJS_ERROR_MESSAGE =

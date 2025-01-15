@@ -1,4 +1,4 @@
-export type InternalServerPlugin = {
+export type ServerPlugin = {
   serverId: string;
   pluginId: string;
   name: string;

@@ -9,7 +9,7 @@ import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { reloadInternalServers } from '@/query/server';
+import { reloadServers } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -20,7 +20,7 @@ export default function ReloadServerDialog() {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: () => reloadInternalServers(axios),
+    mutationFn: () => reloadServers(axios),
     onSuccess: () => {
       toast.success(<Tran text="update.success" />);
     },

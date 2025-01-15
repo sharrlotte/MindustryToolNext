@@ -17,7 +17,7 @@ declare global {
     | 'me-schematics'
     | 'me-maps'
     | 'me-posts'
-    | 'internal-server-files'
+    | 'server-files'
   ) &
     any;
 

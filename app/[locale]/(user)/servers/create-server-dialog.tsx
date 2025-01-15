@@ -18,9 +18,9 @@ import { toast } from '@/components/ui/sonner';
 import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { createInternalServer, getMyServerManager } from '@/query/server';
-import { CreateInternalServerRequest, CreateInternalServerSchema } from '@/types/request/CreateInternalServerRequest';
-import { InternalServerModes } from '@/types/request/UpdateInternalServerRequest';
+import { createServer, getMyServerManager } from '@/query/server';
+import { CreateServerRequest, CreateServerSchema } from '@/types/request/CreateServerRequest';
+import { ServerModes } from '@/types/request/UpdateServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -32,8 +32,8 @@ export default function CreateServerDialog() {
     queryFn: () => getMyServerManager(axios),
   });
 
-  const form = useForm<CreateInternalServerRequest>({
-    resolver: zodResolver(CreateInternalServerSchema),
+  const form = useForm<CreateServerRequest>({
+    resolver: zodResolver(CreateServerSchema),
     defaultValues: {
       name: '',
       description: '',
@@ -53,8 +53,8 @@ export default function CreateServerDialog() {
   const axios = useClientApi();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: CreateInternalServerRequest) => createInternalServer(axios, data),
-    mutationKey: ['internal-servers'],
+    mutationFn: (data: CreateServerRequest) => createServer(axios, data),
+    mutationKey: ['servers'],
     onSuccess: (data: any) => {
       toast.success(<Tran text="upload.success" />);
 
@@ -183,9 +183,9 @@ export default function CreateServerDialog() {
                   <FormControl>
                     <ComboBox
                       searchBar={false}
-                      placeholder={InternalServerModes[0]}
+                      placeholder={ServerModes[0]}
                       value={{ label: field.value, value: field.value }}
-                      values={InternalServerModes.map((value) => ({
+                      values={ServerModes.map((value) => ({
                         label: value,
                         value,
                       }))}

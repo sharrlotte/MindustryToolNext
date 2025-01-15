@@ -7,13 +7,13 @@ import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 
 import { cn } from '@/lib/utils';
-import { InternalServerDetail } from '@/types/response/InternalServerDetail';
+import { ServerDetail } from '@/types/response/ServerDetail';
 
 type MyServerInstancesCardProps = {
-  server: InternalServerDetail;
+  server: ServerDetail;
 };
 
-export default async function InternalServerCard({ server: { id, name, players, port, alive, started, mapName, mode } }: MyServerInstancesCardProps) {
+export default async function ServerCard({ server: { id, name, players, port, alive, started, mapName, mode } }: MyServerInstancesCardProps) {
   return (
     <InternalLink className="flex h-full flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-2" href={`/servers/${id}`}>
       <div className="flex items-center gap-2">
