@@ -1,9 +1,11 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 import InternalLink from '@/components/common/internal-link';
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 
 import { cn } from '@/lib/utils';
 
@@ -60,6 +62,8 @@ const colorArray = [
   '#6666FF',
 ];
 
+const UserContextMenu = dynamic(() => import('@/components/user/user-context-menu'));
+
 type UserAvatarProps = {
   className?: string;
   url?: string | boolean;
@@ -74,21 +78,29 @@ type UserAvatarProps = {
 export default function UserAvatar({ className, url, user }: UserAvatarProps) {
   if (typeof url === 'string') {
     return (
-      <InternalLink className="cursor-pointer" href={url}>
-        <AvatarImage className={className} user={user} />
-      </InternalLink>
+      <ContextMenuTab>
+        <InternalLink className="cursor-pointer" href={url}>
+          <AvatarImage className={className} user={user} />
+        </InternalLink>
+      </ContextMenuTab>
     );
   }
 
   if (url === true) {
     return (
-      <InternalLink className="cursor-pointer" href={`/users/${user.id}`}>
-        <AvatarImage className={className} user={user} />
-      </InternalLink>
+      <ContextMenuTab>
+        <InternalLink className="cursor-pointer" href={`/users/${user.id}`}>
+          <AvatarImage className={className} user={user} />
+        </InternalLink>
+      </ContextMenuTab>
     );
   }
 
-  return <AvatarImage className={className} user={user} />;
+  return (
+    <ContextMenuTab>
+      <AvatarImage className={className} user={user} />
+    </ContextMenuTab>
+  );
 }
 
 type AvatarImageProps = {
@@ -124,5 +136,16 @@ function AvatarImage({ className, user: { imageUrl, name } }: AvatarImageProps) 
     <div className={cn('flex size-8 min-h-8 min-w-8 items-center aspect-square justify-center overflow-hidden rounded-full border border-border capitalize', className)}>
       <Image className={cn('h-full w-full object-cover', className)} height={32} width={32} src={imageUrl + '?size=32'} alt={username} priority onError={() => setError(true)} />
     </div>
+  );
+}
+
+function ContextMenuTab({ children }: { children: ReactNode }) {
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
+      <ContextMenuContent>
+        <UserContextMenu />
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }
