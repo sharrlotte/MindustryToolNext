@@ -106,6 +106,12 @@ export async function getUserCount(axios: AxiosInstance, params: { name?: string
   return result.data;
 }
 
+export async function getOnline(axios: AxiosInstance): Promise<number> {
+  const result = await axios.get(`/online`);
+
+  return result.data;
+}
+
 export async function updateThumbnail(axios: AxiosInstance, file: File): Promise<User[]> {
   const formData = new FormData();
 

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-import { HomeMapPreview, HomeSchematicPreview, HomeServerPreview, InformationGroup } from '@/app/[locale]/home';
+import { HomeMapPreview, HomeSchematicPreview, HomeServerPreview, InformationGroup, OnlineDisplay } from '@/app/[locale]/home';
 
 import Ads from '@/components/common/ads';
 import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons';
@@ -115,7 +115,7 @@ const AboutSection = () => (
 
 const Footer = () => (
   <footer className="bg-zinc-950/95">
-    <div className="space-y-4 p-6 pb-6">
+    <div className="space-y-4 p-2 pb-2">
       <span className="flex w-full justify-center text-center text-xl font-extrabold">MindustryTool</span>
       <div className="flex justify-center gap-2">
         <Link className="aspect-square rounded-full border bg-black p-2" href="https://github.com/MindustryVN">
@@ -129,6 +129,7 @@ const Footer = () => (
         </Link>
       </div>
       <div className="flex w-full justify-center p-4 text-center text-sm">Copyright © 2024 ‧ MindustryTool. All rights reserved.</div>
+      <OnlineDisplay />
     </div>
     <Ads />
   </footer>
