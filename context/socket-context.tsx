@@ -37,9 +37,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const windowIsActive = useWindow();
 
   useEffect(() => {
-    if (windowIsActive) {
-      socket.connect();
-    }
+    socket.connect();
   }, [socket, windowIsActive]);
 
   useEffect(() => {
