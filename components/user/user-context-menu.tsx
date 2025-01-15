@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Tran from '@/components/common/tran';
 import {
   ContextMenuCheckboxItem,
   ContextMenuItem,
@@ -17,8 +18,7 @@ export default function UserContextMenu() {
   return (
     <>
       <ContextMenuItem inset>
-        Back
-        <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+        <Tran text="admin.send-notification" />
       </ContextMenuItem>
       <ContextMenuItem inset disabled>
         Forward

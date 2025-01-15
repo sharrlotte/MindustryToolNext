@@ -22,9 +22,6 @@ export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
     interpolation: {
       escapeValue: false,
     },
-    react: {
-      useSuspense: true,
-    },
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,
     ns,

@@ -289,6 +289,8 @@ export default class SocketClient {
   public async close() {
     this.tasks = [];
     this.rooms = [];
+    this.connects = []
+    this.disconnects = []
 
     if (this.interval) {
       clearInterval(this.interval);

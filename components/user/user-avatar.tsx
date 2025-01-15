@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, Suspense, useEffect, useState } from 'react';
 
 import InternalLink from '@/components/common/internal-link';
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
@@ -143,9 +143,11 @@ function ContextMenuTab({ children }: { children: ReactNode }) {
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
-      <ContextMenuContent>
-        <UserContextMenu />
-      </ContextMenuContent>
+      <Suspense>
+        <ContextMenuContent>
+          <UserContextMenu />
+        </ContextMenuContent>
+      </Suspense>
     </ContextMenu>
   );
 }
