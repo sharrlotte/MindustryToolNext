@@ -1,6 +1,8 @@
 'use client';
 
+import i18next from 'i18next';
 import React, { useEffect, useRef } from 'react';
+import { I18nextProvider } from 'react-i18next';
 import Moment from 'react-moment';
 import { useStore } from 'zustand';
 
@@ -39,5 +41,11 @@ export default function I18nProvider({ locale, children }: Props) {
     axiosInstance.defaults.headers['Accept-Language'] = locale as string;
   }, [locale]);
 
-  return <Context.Provider value={storeRef.current}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={storeRef.current}>
+      <I18nextProvider i18n={i18next} defaultNS={'common'}>
+        {children}
+      </I18nextProvider>
+    </Context.Provider>
+  );
 }
