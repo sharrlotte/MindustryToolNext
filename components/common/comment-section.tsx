@@ -210,7 +210,7 @@ function CommentInput({ itemId }: CommentInputProps) {
             )}
           />
           <div className="flex gap-2 w-full overflow-hidden">
-            <div className="flex justify-center items-center p-1 gap-1 w-full overflow-x-auto">
+            <div className="flex justify-start items-center p-1 gap-1 w-full overflow-x-auto">
               <BoldButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
               <ItalicButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
               <StrikethroughButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
