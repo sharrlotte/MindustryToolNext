@@ -8,21 +8,20 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
-// primary use cache
 import { Locale, cookieName, defaultLocale, getOptions, locales } from '@/i18n/config';
 
 const runsOnServerSide = typeof window === 'undefined';
 
 //
 i18next
-  .use(initReactI18next)
   .use(LanguageDetector)
   .use(Backend)
+  .use(initReactI18next)
   .init({
     ...getOptions(),
     lng: undefined, // let detect the language on client side
     detection: {
-      order: ['path', 'htmlTag', 'cookie', 'navigator'],
+      order: ['path'],
     },
     preload: runsOnServerSide ? locales : [],
   });

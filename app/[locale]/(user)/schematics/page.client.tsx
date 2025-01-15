@@ -46,8 +46,7 @@ export default function Client({ schematics }: Props) {
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch tags={schematic} />
-      <div className="flex justify-between items-center">
-        <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
+      <div className="flex justify-end items-center">
         <PaginationLayoutSwitcher />
       </div>
       <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>

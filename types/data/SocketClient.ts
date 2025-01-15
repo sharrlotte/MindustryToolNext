@@ -1,4 +1,5 @@
-import ReconnectingWebSocket, { CloseEvent, ErrorEvent, Event } from 'reconnecting-websocket';
+import { WebSocket } from 'partysocket';
+import { ErrorEvent } from 'partysocket/ws';
 
 import { Message } from '@/types/response/Message';
 import { Notification } from '@/types/response/Notification';
@@ -55,7 +56,7 @@ type Task =
 
 export default class SocketClient {
   private tasks: Task[] = [];
-  private socket: ReconnectingWebSocket | null = null;
+  private socket: WebSocket | null = null;
   private handlers: Record<string, EventHandler[]> = {};
   private errors: ((event: ErrorEvent) => void)[] = [];
   private connects: ((event: Event) => void)[] = [];
@@ -137,7 +138,7 @@ export default class SocketClient {
       return this.socket;
     }
 
-    const instance = new ReconnectingWebSocket(this.url);
+    const instance = new WebSocket(this.url);
 
     this.socket = instance;
 

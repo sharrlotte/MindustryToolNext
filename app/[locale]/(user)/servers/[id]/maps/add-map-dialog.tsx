@@ -68,18 +68,17 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild>
         <Button className="ml-auto" title="Add map" variant="secondary">
-          <Tran text="server.add-map" />
+          <Tran text="internal-server.add-map" />
         </Button>
       </DialogTrigger>
       <DialogContent className="flex w-full flex-col overflow-hidden max-w-full max-h-full p-4">
         <DialogTitle>
-          <Tran text="server.select-map" />
+          <Tran text="internal-server.select-map" />
         </DialogTitle>
         {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={map} />
-          <div className="flex justify-between">
-            <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
+          <div className="flex justify-end">
             <PaginationLayoutSwitcher />
           </div>
           <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>

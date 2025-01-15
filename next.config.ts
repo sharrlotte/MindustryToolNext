@@ -5,9 +5,6 @@ const nextConfig: NextConfig = {
     ppr: 'incremental',
     scrollRestoration: true,
   },
-  compiler: {
-    styledComponents: true,
-  },
   crossOrigin: 'anonymous',
   reactStrictMode: true,
   images: {

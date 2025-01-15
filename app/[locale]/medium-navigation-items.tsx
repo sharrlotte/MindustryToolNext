@@ -16,6 +16,7 @@ import UserAvatar from '@/components/user/user-avatar';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
+import env from '@/constant/env';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
@@ -47,8 +48,6 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
 
   const toggleSidebar = useCallback(() => setConfig('showNav', !isVisible), [isVisible, setConfig]);
 
-  const date = new Date();
-  const webVersion = `v${date.getUTCFullYear()}${date.getUTCMonth()}${date.getUTCDay()}.${date.getUTCHours()}.${date.getUTCMinutes()}`;
   return (
     <motion.div
       className="relative flex h-full overflow-hidden border-r min-w-nav"
@@ -66,7 +65,7 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
             >
               <h1 className="text-xl font-medium">MindustryTool</h1>
             </div>
-            <span className={cn('hidden overflow-hidden whitespace-nowrap text-xs', { block: isVisible })}>{webVersion}</span>
+            <span className={cn('hidden overflow-hidden whitespace-nowrap text-xs', { block: isVisible })}>{env.webVersion}</span>
           </div>
           <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
             <MenuIcon className="size-6 text-foreground" />
