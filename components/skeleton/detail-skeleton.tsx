@@ -16,15 +16,6 @@ export default function DetailSkeleton() {
             <UserCardSkeleton />
           </div>
         </div>
-        <div className="flex justify-between">
-          <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
-            <Skeleton className="border border-border rounded-md" />
-            <Skeleton className="border border-border rounded-md" />
-            <Skeleton className="border border-border rounded-md" />
-            <Skeleton className="border border-border rounded-md" />
-          </div>
-          <Skeleton className="h-9 w-16 border border-border rounded-md" />
-        </div>
       </div>
     </div>
   );
