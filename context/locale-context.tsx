@@ -1,6 +1,5 @@
 'use client';
 
-import i18next from 'i18next';
 import React, { useEffect, useRef } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import Moment from 'react-moment';
@@ -9,6 +8,7 @@ import { useStore } from 'zustand';
 import { Locale } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
 import { createServerStore } from '@/zustand/locale-store';
+import i18next from '@/i18n/client';
 
 export type TranslationGroup = Record<string, Record<string, string>>;
 export type LocaleData = Record<string, TranslationGroup>;

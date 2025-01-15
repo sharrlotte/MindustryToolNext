@@ -26,6 +26,8 @@ i18next
     preload: runsOnServerSide ? locales : [],
   });
 
+export default i18next;
+
 export function useI18n(namespace: string | string[] = 'common', options?: any) {
   const { locale } = useParams();
 
