@@ -1,6 +1,7 @@
 import SortTag from '@/types/response/SortTag';
 
 const env = {
+  webVersion: 'v202503.7.1',
   webName: 'Mindustry Tool',
   locales: ['en', 'vi', 'kr', 'cn', 'jp', 'ru', 'uk'] as const,
   defaultLocale: 'en',

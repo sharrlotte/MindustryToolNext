@@ -66,18 +66,17 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild>
         <Button className="ml-auto" title="Add plugin" variant="secondary">
-          <Tran text="server.add-plugin" />
+          <Tran text="internal-server.add-plugin" />
         </Button>
       </DialogTrigger>
       <DialogContent className="flex w-full flex-col max-w-full max-h-full h-full overflow-hidden p-4">
         <DialogTitle>
-          <Tran text="server.select-plugin" />
+          <Tran text="internal-server.select-plugin" />
         </DialogTitle>
         {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch tags={plugin} />
-          <div className="flex justify-between">
-            <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
+          <div className="flex justify-end">
             <PaginationLayoutSwitcher />
           </div>
           <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>

@@ -67,8 +67,7 @@ export default function Client({ schematics }: Props) {
     <BulkActionContainer onActionPerform={handleBulkDelete}>
       <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
         <NameTagSearch tags={schematic} />
-        <div className="flex items-center justify-between">
-          <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
+        <div className="flex items-center justify-end">
           <div className="flex items-center gap-2">
             <BulkDeleteToggle />
             <PaginationLayoutSwitcher />

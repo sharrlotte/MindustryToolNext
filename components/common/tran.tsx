@@ -13,7 +13,7 @@ type Props = {
   asChild?: boolean;
 };
 
-function InternalTran({ className, text, args, asChild, ...rest }: Props): React.ReactNode {
+function Tran({ className, text, args, asChild, ...rest }: Props): React.ReactNode {
   const { group, key } = extractTranslationKey(text);
   const { t } = useI18n(group);
 
@@ -27,7 +27,5 @@ function InternalTran({ className, text, args, asChild, ...rest }: Props): React
     </span>
   );
 }
-
-const Tran = React.memo(InternalTran);
 
 export default Tran;

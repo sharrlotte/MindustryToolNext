@@ -19,6 +19,12 @@ export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
     supportedLngs: locales,
     fallbackLng: defaultLocale,
     lng,
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: true,
+    },
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,
     ns,

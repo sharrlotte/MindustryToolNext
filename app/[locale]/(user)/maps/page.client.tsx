@@ -44,8 +44,7 @@ export default function Client({ maps }: Props) {
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch tags={map} />
-      <div className="flex justify-between">
-        <Tran className="text-muted-foreground" text="found" args={{ number: data }} />
+      <div className="flex justify-end">
         <PaginationLayoutSwitcher />
       </div>
       <ScrollContainer ref={(ref) => setContainer(ref)}>

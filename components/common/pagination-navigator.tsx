@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
+import Hydrated from '@/components/common/hydrated';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -79,77 +80,79 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
 
   return (
     <Pagination className="h-9">
-      <PaginationContent>
-        <PaginationItem>
-          <Button className="w-full min-w-9 rounded-sm p-0 px-2 py-1" title="0" onClick={() => handlePageChange(previousPage)} variant="icon" disabled={!hasPrevPage}>
-            <ChevronLeftIcon className="size-5" />
-          </Button>
-        </PaginationItem>
-        <PaginationItem>
-          <Button className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1 bg-secondary dark:text-foreground', {})} title="prev" onClick={() => handlePageChange(currentPage)} variant="icon">
-            {currentPage}
-          </Button>
-        </PaginationItem>
-        <PaginationItem>
-          <Dialog open={open} onOpenChange={setOpen}>
-            {lastPage > 1 && (
-              <DialogTrigger asChild>
-                <Button className="p-0" variant="icon" title="choose">
-                  <PaginationEllipsis />
-                </Button>
-              </DialogTrigger>
-            )}
-            <DialogContent className="p-6">
-              <DialogTitle>
-                <Tran text="select-page" />
-              </DialogTitle>
-              <DialogDescription />
-              <Input type="number" value={selectedPage} onChange={(event) => setSelectedPage(event.currentTarget.valueAsNumber)} />
-              {(selectedPage < 0 || selectedPage > lastPage) && (
-                <span className="text-sm text-destructive">
-                  <Tran text="page-constrain" args={{ max: lastPage }} />
-                </span>
-              )}
-              <div className="flex justify-end">
-                <Button className="flex" onClick={handleSelectPage} title="Go to page" variant="primary">
-                  Go
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
-        </PaginationItem>
-        {lastPage > 1 && (
+      <Hydrated>
+        <PaginationContent>
           <PaginationItem>
-            <Button
-              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-secondary text-background dark:text-foreground': lastNumber === currentPage,
-              })}
-              title="prev"
-              onClick={() => handlePageChange(lastNumber)}
-              variant="icon"
-            >
-              {lastNumber}
+            <Button className="w-full min-w-9 rounded-sm p-0 px-2 py-1" title="0" onClick={() => handlePageChange(previousPage)} variant="icon" disabled={!hasPrevPage}>
+              <ChevronLeftIcon className="size-5" />
             </Button>
           </PaginationItem>
-        )}
-        <PaginationItem>
-          <Button className="w-full min-w-9 rounded-sm p-0 px-2 py-1" title="0" onClick={() => handlePageChange(nextPage)} variant="icon" disabled={!hasNextPage}>
-            <ChevronRightIcon className="size-5" />
-          </Button>
-        </PaginationItem>
-        <ComboBox
-          className="w-20 rounded-sm"
-          searchBar={false}
-          value={{ label: size.toString(), value: size }}
-          values={sizes.map((size) => ({
-            label: size.toString(),
-            value: size,
-          }))}
-          onChange={handleSizeChange}
-        />
-      </PaginationContent>
-      <Link href={`?${prevPath.toString()}`} />
-      <Link href={`?${nextPath.toString()}`} prefetch />
+          <PaginationItem>
+            <Button className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1 bg-secondary dark:text-foreground', {})} title="prev" onClick={() => handlePageChange(currentPage)} variant="icon">
+              {currentPage}
+            </Button>
+          </PaginationItem>
+          <PaginationItem>
+            <Dialog open={open} onOpenChange={setOpen}>
+              {lastPage > 1 && (
+                <DialogTrigger asChild>
+                  <Button className="p-0" variant="icon" title="choose">
+                    <PaginationEllipsis />
+                  </Button>
+                </DialogTrigger>
+              )}
+              <DialogContent className="p-6">
+                <DialogTitle>
+                  <Tran text="select-page" />
+                </DialogTitle>
+                <DialogDescription />
+                <Input type="number" value={selectedPage} onChange={(event) => setSelectedPage(event.currentTarget.valueAsNumber)} />
+                {(selectedPage < 0 || selectedPage > lastPage) && (
+                  <span className="text-sm text-destructive">
+                    <Tran text="page-constrain" args={{ max: lastPage }} />
+                  </span>
+                )}
+                <div className="flex justify-end">
+                  <Button className="flex" onClick={handleSelectPage} title="Go to page" variant="primary">
+                    Go
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </PaginationItem>
+          {lastPage > 1 && (
+            <PaginationItem>
+              <Button
+                className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+                  'bg-secondary text-background dark:text-foreground': lastNumber === currentPage,
+                })}
+                title="prev"
+                onClick={() => handlePageChange(lastNumber)}
+                variant="icon"
+              >
+                {lastNumber}
+              </Button>
+            </PaginationItem>
+          )}
+          <PaginationItem>
+            <Button className="w-full min-w-9 rounded-sm p-0 px-2 py-1" title="0" onClick={() => handlePageChange(nextPage)} variant="icon" disabled={!hasNextPage}>
+              <ChevronRightIcon className="size-5" />
+            </Button>
+          </PaginationItem>
+          <ComboBox
+            className="w-20 rounded-sm"
+            searchBar={false}
+            value={{ label: size.toString(), value: size }}
+            values={sizes.map((size) => ({
+              label: size.toString(),
+              value: size,
+            }))}
+            onChange={handleSizeChange}
+          />
+        </PaginationContent>
+        <Link href={`?${prevPath.toString()}`} />
+        <Link href={`?${nextPath.toString()}`} prefetch />
+      </Hydrated>
     </Pagination>
   );
 }
