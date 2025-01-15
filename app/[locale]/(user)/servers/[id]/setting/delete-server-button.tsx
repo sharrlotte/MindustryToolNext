@@ -10,7 +10,7 @@ import { toast } from '@/components/ui/sonner';
 import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { deleteInternalServer } from '@/query/server';
+import { deleteServer } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -25,7 +25,7 @@ export function DeleteServerButton({ id }: DeleteServerButtonProps) {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: () => deleteInternalServer(axios, id),
+    mutationFn: () => deleteServer(axios, id),
     onSuccess: () => {
       toast.success(<Tran text="delete-success" />);
 

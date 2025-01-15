@@ -12,21 +12,21 @@ import { toast } from '@/components/ui/sonner';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { deleteInternalServerMap } from '@/query/server';
-import { InternalServerMap } from '@/types/response/InternalServerMap';
+import { deleteServerMap } from '@/query/server';
+import { ServerMap } from '@/types/response/ServerMap';
 
 import { useMutation } from '@tanstack/react-query';
 
-type InternalServerMapCardProps = {
-  map: InternalServerMap;
+type ServerMapCardProps = {
+  map: ServerMap;
 };
 
-export default function InternalServerMapCard({ map: { name, mapId, serverId } }: InternalServerMapCardProps) {
+export default function ServerMapCard({ map: { name, mapId, serverId } }: ServerMapCardProps) {
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => deleteInternalServerMap(axios, serverId, mapId),
+    mutationFn: () => deleteServerMap(axios, serverId, mapId),
     onSuccess: () => {
       toast(<Tran text="delete-success" />);
     },

@@ -23,7 +23,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { cn, omit } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
-import { createInternalServerMap } from '@/query/server';
+import { createServerMap } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -51,7 +51,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (mapId: string) => createInternalServerMap(axios, serverId, { mapId }),
+    mutationFn: (mapId: string) => createServerMap(axios, serverId, { mapId }),
     onSuccess: (_, mapId) => {
       toast.success(<Tran text="interval-server.add-map-success" />);
       setAdded((prev) => [...prev, mapId]);
@@ -68,12 +68,12 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild>
         <Button className="ml-auto" title="Add map" variant="secondary">
-          <Tran text="internal-server.add-map" />
+          <Tran text="server.add-map" />
         </Button>
       </DialogTrigger>
       <DialogContent className="flex w-full flex-col overflow-hidden max-w-full max-h-full p-4">
         <DialogTitle>
-          <Tran text="internal-server.select-map" />
+          <Tran text="server.select-map" />
         </DialogTitle>
         {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">

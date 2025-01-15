@@ -3,8 +3,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-
-
 import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -13,18 +11,13 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-
-
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { createServerManager } from '@/query/server';
-import { CreateServerManagerRequest, CreateServerManagerSchema } from '@/types/request/CreateInternalServerRequest';
-
-
+import { CreateServerManagerRequest, CreateServerManagerSchema } from '@/types/request/CreateServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-
 
 export default function CreateServerManagerDialog() {
   const form = useForm<CreateServerManagerRequest>({

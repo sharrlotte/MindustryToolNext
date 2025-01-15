@@ -8,7 +8,7 @@ import { OfficialServer } from '@/app/[locale]/(user)/servers/official-server';
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import InternalServerCardSkeleton from '@/components/server/internal-server-card-skeleton';
+import ServerCardSkeleton from '@/components/server/server-card-skeleton';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 import Skeletons from '@/components/ui/skeletons';
 
@@ -74,7 +74,7 @@ async function Footer() {
   return (
     <footer className="flex w-full justify-end">
       <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
-        <CreateServerDialog />  
+        <CreateServerDialog />
       </ProtectedElement>
     </footer>
   );
@@ -84,7 +84,7 @@ async function ServersSkeleton() {
   return (
     <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
       <Skeletons number={20}>
-        <InternalServerCardSkeleton />
+        <ServerCardSkeleton />
       </Skeletons>
     </div>
   );

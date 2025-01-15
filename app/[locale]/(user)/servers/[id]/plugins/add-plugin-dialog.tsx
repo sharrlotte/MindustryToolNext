@@ -21,7 +21,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { cn, omit } from '@/lib/utils';
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
-import { createInternalServerPlugin } from '@/query/server';
+import { createServerPlugin } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -49,7 +49,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (pluginId: string) => createInternalServerPlugin(axios, serverId, { pluginId }),
+    mutationFn: (pluginId: string) => createServerPlugin(axios, serverId, { pluginId }),
     onSuccess: (_, pluginId) => {
       toast.success(<Tran text="interval-server.add-plugin-success" />);
       setAdded((prev) => [...prev, pluginId]);
@@ -66,12 +66,12 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
     <Dialog open={show} onOpenChange={setShow}>
       <DialogTrigger asChild>
         <Button className="ml-auto" title="Add plugin" variant="secondary">
-          <Tran text="internal-server.add-plugin" />
+          <Tran text="server.add-plugin" />
         </Button>
       </DialogTrigger>
       <DialogContent className="flex w-full flex-col max-w-full max-h-full h-full overflow-hidden p-4">
         <DialogTitle>
-          <Tran text="internal-server.select-plugin" />
+          <Tran text="server.select-plugin" />
         </DialogTitle>
         {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">

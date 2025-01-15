@@ -6,7 +6,7 @@ import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
-import { getInternalServerMaps } from '@/query/server';
+import { getServerMaps } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -18,7 +18,7 @@ export default function CheckServerMaps({ id }: Props) {
   const axios = useClientApi();
 
   const { isLoading, data, error } = useQuery({
-    queryFn: () => getInternalServerMaps(axios, id, { size: 1, page: 0 }),
+    queryFn: () => getServerMaps(axios, id, { size: 1, page: 0 }),
     queryKey: ['server', id, 'maps-check'],
   });
 

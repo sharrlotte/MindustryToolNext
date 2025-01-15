@@ -17,22 +17,22 @@ import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { cn } from '@/lib/utils';
-import { updateInternalServer } from '@/query/server';
-import { InternalServerModes, PutInternalServerRequest, PutInternalServerSchema } from '@/types/request/UpdateInternalServerRequest';
-import { InternalServerDetail } from '@/types/response/InternalServerDetail';
+import { updateServer } from '@/query/server';
+import { PutServerRequest, PutServerSchema, ServerModes } from '@/types/request/UpdateServerRequest';
+import { ServerDetail } from '@/types/response/ServerDetail';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 type Props = {
-  server: InternalServerDetail;
+  server: ServerDetail;
 };
 
 export default function ServerUpdateForm({ server }: Props) {
   const [currentServer, setCurrentServer] = useState(server);
 
-  const form = useForm<PutInternalServerRequest>({
-    resolver: zodResolver(PutInternalServerSchema),
+  const form = useForm<PutServerRequest>({
+    resolver: zodResolver(PutServerSchema),
     defaultValues: {
       ...currentServer,
       hostCommand: currentServer.hostCommand ?? '',
@@ -45,7 +45,7 @@ export default function ServerUpdateForm({ server }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: (data: PutInternalServerRequest) => updateInternalServer(axios, id, data),
+    mutationFn: (data: PutServerRequest) => updateServer(axios, id, data),
     onSuccess: (_, data) => {
       server = { ...currentServer, ...form.getValues() };
       toast.success(<Tran text="update.success" />);
@@ -107,9 +107,9 @@ export default function ServerUpdateForm({ server }: Props) {
                   <FormControl>
                     <ComboBox
                       searchBar={false}
-                      placeholder={InternalServerModes[0]}
+                      placeholder={ServerModes[0]}
                       value={{ label: field.value, value: field.value }}
-                      values={InternalServerModes.map((value) => ({
+                      values={ServerModes.map((value) => ({
                         label: value,
                         value,
                       }))}

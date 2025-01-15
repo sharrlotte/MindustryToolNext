@@ -9,21 +9,21 @@ import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { deleteInternalServerPlugin } from '@/query/server';
-import { InternalServerPlugin } from '@/types/response/InternalServerPlugin';
+import { deleteServerPlugin } from '@/query/server';
+import { ServerPlugin } from '@/types/response/ServerPlugin';
 
 import { useMutation } from '@tanstack/react-query';
 
 type Props = {
-  plugin: InternalServerPlugin;
+  plugin: ServerPlugin;
 };
 
-export default function InternalServerPluginCard({ plugin: { serverId, name, pluginId, isVerified, description } }: Props) {
+export default function ServerPluginCard({ plugin: { serverId, name, pluginId, isVerified, description } }: Props) {
   const { invalidateByKey } = useQueriesData();
 
   const axios = useClientApi();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
-    mutationFn: () => deleteInternalServerPlugin(axios, serverId, pluginId),
+    mutationFn: () => deleteServerPlugin(axios, serverId, pluginId),
     onSuccess: () => {
       toast.success(<Tran text="delete-success" />);
     },

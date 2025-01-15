@@ -1,16 +1,16 @@
 import ErrorScreen from '@/components/common/error-screen';
-import InternalServerCard from '@/components/server/internal-server-card';
+import ServerCard from '@/components/server/server-card';
 
 import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
-import { getInternalServers } from '@/query/server';
+import { getServers } from '@/query/server';
 
 export async function OfficialServer() {
-  const servers = await serverApi((axios) => getInternalServers(axios, { official: true }));
+  const servers = await serverApi((axios) => getServers(axios, { official: true }));
 
   if (isError(servers)) {
     return <ErrorScreen error={servers} />;
   }
 
-  return servers.map((server) => <InternalServerCard server={server} key={server.port} />);
+  return servers.map((server) => <ServerCard server={server} key={server.port} />);
 }

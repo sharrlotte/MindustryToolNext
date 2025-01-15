@@ -1,6 +1,7 @@
-import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
-import InternalServerCard from '@/components/server/internal-server-card';
+import ServerCard from '@/components/server/server-card';
+
+import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getMeServers } from '@/query/user';
 
@@ -11,5 +12,5 @@ export async function MeServer() {
     return <ErrorScreen error={servers} />;
   }
 
-  return servers.map((server) => <InternalServerCard server={server} key={server.port} />);
+  return servers.map((server) => <ServerCard server={server} key={server.port} />);
 }

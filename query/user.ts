@@ -4,13 +4,13 @@ import { z } from 'zod';
 import { UserRole } from '@/constant/enum';
 import { ItemPaginationQueryType, PaginationQuery, StatusPaginationSearchQuery } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
-import { InternalServerDetail } from '@/types/response/InternalServerDetail';
 import { Map } from '@/types/response/Map';
 import { Post } from '@/types/response/Post';
 import { Schematic } from '@/types/response/Schematic';
+import { ServerDetail } from '@/types/response/ServerDetail';
 import { User } from '@/types/response/User';
 
-export async function getMeServers(axios: AxiosInstance): Promise<InternalServerDetail[]> {
+export async function getMeServers(axios: AxiosInstance): Promise<ServerDetail[]> {
   const result = await axios.get(`/users/@me/servers`);
 
   return result.data;

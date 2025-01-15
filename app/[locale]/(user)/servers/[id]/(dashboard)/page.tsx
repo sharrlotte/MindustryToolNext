@@ -21,7 +21,7 @@ import { getSession, serverApi } from '@/action/action';
 import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { cn, formatTitle, hasAccess, isError } from '@/lib/utils';
-import { getInternalServer } from '@/query/server';
+import { getServer } from '@/query/server';
 
 const RamUsageChart = dynamic(() => import('@/components/metric/ram-usage-chart'));
 
@@ -33,7 +33,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const server = await serverApi((axios) => getInternalServer(axios, { id }));
+  const server = await serverApi((axios) => getServer(axios, { id }));
 
   if (isError(server)) {
     return { title: 'Error' };
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: formatTitle(name),
       description,
-      images: `${env.url.api}/internal-servers/${id}/image`,
+      images: `${env.url.api}/servers/${id}/image`,
     },
   };
 }
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  const [server, session] = await Promise.all([serverApi((axios) => getInternalServer(axios, { id })), getSession()]);
+  const [server, session] = await Promise.all([serverApi((axios) => getServer(axios, { id })), getSession()]);
 
   if (isError(server)) {
     return <ErrorScreen error={server} />;
@@ -134,7 +134,7 @@ export default async function Page({ params }: Props) {
               {started ? (
                 <>
                   <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
-                  <Image key={started + ''} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/internal-servers/${id}/image`} alt={name} width={500} height={500} />
+                  <Image key={started + ''} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/servers/${id}/image`} alt={name} width={500} height={500} />
                 </>
               ) : (
                 <Tran text="server.server-is-not-running" />

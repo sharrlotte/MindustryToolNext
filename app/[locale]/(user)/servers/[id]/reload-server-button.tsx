@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 
 import ColorText from '@/components/common/color-text';
+import { CheckCircleIcon } from '@/components/common/icons';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -12,8 +14,6 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } fr
 import { revalidate } from '@/action/action';
 import env from '@/constant/env';
 import useHttpStream from '@/hooks/use-http-stream';
-import LoadingSpinner from '@/components/common/loading-spinner';
-import { CheckCircleIcon } from '@/components/common/icons';
 
 type Props = {
   id: string;
@@ -23,9 +23,9 @@ export default function ReloadServerButton({ id }: Props) {
   const [visible, setVisible] = useState(false);
 
   const { data, mutate, isPending, isSuccess, last } = useHttpStream({
-    url: `${env.url.api}/internal-servers/${id}/reload`,
+    url: `${env.url.api}/servers/${id}/reload`,
     method: 'POST',
-    mutationKey: ['internal-servers', id, 'reload'],
+    mutationKey: ['servers', id, 'reload'],
   });
 
   useEffect(() => {
