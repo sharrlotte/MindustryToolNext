@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     ppr: 'incremental',
     scrollRestoration: true,
   },
+  productionBrowserSourceMaps: true,
   crossOrigin: 'anonymous',
   reactStrictMode: true,
   images: {
