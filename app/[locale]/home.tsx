@@ -18,7 +18,7 @@ import { getMaps } from '@/query/map';
 import { getSchematics } from '@/query/schematic';
 import { ItemPaginationQueryType } from '@/query/search-query';
 import { getServers } from '@/query/server';
-import { getUsers } from '@/query/user';
+import { getOnline, getUsers } from '@/query/user';
 
 // const skeleton = Array(20)
 //   .fill(1)
@@ -160,6 +160,18 @@ const findContributors = unstable_cache(
   ['contributors'],
   { revalidate: 60 * 60 },
 );
+export async function OnlineDisplay() {
+  return (
+    <Suspense>
+      <OnlineCount />
+    </Suspense>
+  );
+}
+async function OnlineCount() {
+  const online = await serverApi(getOnline);
+
+  return <Tran className="text-xs text-muted-foreground" text="current-online" args={{ number: online }} />;
+}
 
 async function InternalInformationGroup() {
   const getAdmins = serverApi(findAdmins);
