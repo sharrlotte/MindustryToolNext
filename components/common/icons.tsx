@@ -60,7 +60,7 @@ import {
   TerminalIcon,
   ThumbsDown,
   ThumbsUp,
-  Trash,
+  Trash2,
   Upload,
   User,
   Users,
@@ -148,7 +148,7 @@ export const LayoutDashboardIcon = ({ className }: Props) => <LayoutDashboard cl
 export const CopyIcon = ({ className }: Props) => <Copy className={cn(className ?? 'lucide')} />;
 export const DownloadIcon = ({ className }: Props) => <ArrowDownToLine className={cn(className ?? 'lucide')} />;
 export const LoginIcon = ({ className }: Props) => <LogIn className={cn(className ?? 'lucide')} />;
-export const TrashIcon = ({ className }: Props) => <Trash className={cn(className ?? 'lucide')} />;
+export const TrashIcon = ({ className }: Props) => <Trash2 className={cn(className ?? 'lucide')} />;
 export const GoogleIcon = ({ className }: Props) => <Image className={cn(className ?? 'lucide')} src={googleIcon} alt="google" />;
 
 export function HRIcon({ className }: Props) {
