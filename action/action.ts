@@ -3,6 +3,7 @@
 import { AxiosInstance } from 'axios';
 import { revalidatePath, revalidateTag, unstable_cache, unstable_noStore } from 'next/cache';
 import { cookies } from 'next/headers';
+import { cache } from 'react';
 import 'server-only';
 import { z } from 'zod';
 
@@ -58,21 +59,23 @@ export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError>
   });
 }
 
-const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> = unstable_cache(
-  async (cookie: string) => {
-    try {
-      axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
+const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> = cache(
+  unstable_cache(
+    async (cookie: string) => {
+      try {
+        axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
 
-      return await axiosInstance
-        .get('/auth/session')
-        .then((r) => r.data)
-        .then((data) => data ?? null);
-    } catch (error) {
-      return { error: JSON.parse(JSON.stringify(error)) };
-    }
-  },
-  ['session'],
-  { revalidate: 60 },
+        return await axiosInstance
+          .get('/auth/session')
+          .then((r) => r.data)
+          .then((data) => data ?? null);
+      } catch (error) {
+        return { error: JSON.parse(JSON.stringify(error)) };
+      }
+    },
+    ['session'],
+    { revalidate: 60 },
+  ),
 );
 
 export async function getSession() {
@@ -89,6 +92,7 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
   const cookie = await cookies();
 
   axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie.toString());
+  axiosInstance.defaults.headers['Server'] = true;
 
   return axiosInstance;
 };
