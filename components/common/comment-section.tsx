@@ -56,7 +56,7 @@ function CommentSection({ itemId }: CommentSectionProps) {
         <Tran text="comments" />
         <div className="flex gap-2 justify-center items-center">
           <ComboBox
-            className="bg-transparent min-w-0 w-fit p-0 hover:bg-transparent shadow-none"
+            className="bg-transparent min-w-0 w-fit p-0 px-2 hover:bg-transparent shadow-none"
             searchBar={false}
             value={{ label: sort, value: sort }}
             values={commentSorts.map((value) => ({ label: value, value: value as CommentSort }))}
@@ -186,7 +186,7 @@ function CommentInput({ itemId }: CommentInputProps) {
   });
 
   return (
-    <div className="flex gap-2 w-full border rounded-md p-2">
+    <div className="flex gap-2 w-full border rounded-md p-2 overflow-x-hidden">
       <Form {...form}>
         <form onSubmit={form.handleSubmit((data) => mutate(data))} className="w-full grid gap-2">
           <FormField
@@ -209,29 +209,31 @@ function CommentInput({ itemId }: CommentInputProps) {
               </FormItem>
             )}
           />
-          <div className="flex justify-center items-center p-1 gap-1">
-            <BoldButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-            <ItalicButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-            <StrikethroughButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-            <HRButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-            <TitleButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-            <Divider className="border-r h-full w-0" />
-            <LinkDialog callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-            <QuoteButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-            <CodeBlockButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-            <ImageDialog
-              callback={(fn) => {
-                const result = fn(inputRef.current?.textArea ?? null, form.getValues('content'));
+          <div className="flex gap-2 w-full overflow-hidden">
+            <div className="flex justify-center items-center p-1 gap-1 w-full overflow-x-auto">
+              <BoldButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+              <ItalicButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+              <StrikethroughButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+              <HRButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+              <TitleButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+              <Divider className="border-r h-full w-0" />
+              <LinkDialog callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+              <QuoteButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+              <CodeBlockButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+              <ImageDialog
+                callback={(fn) => {
+                  const result = fn(inputRef.current?.textArea ?? null, form.getValues('content'));
 
-                if (result.file) {
-                  form.setValue('attachments', [...form.getValues('attachments'), { file: result.file.file, url: result.file.url }]);
+                  if (result.file) {
+                    form.setValue('attachments', [...form.getValues('attachments'), { file: result.file.file, url: result.file.url }]);
+                    form.setValue('content', result.text);
+                    return;
+                  }
                   form.setValue('content', result.text);
-                  return;
-                }
-                form.setValue('content', result.text);
-                form.setValue('attachments', [...form.getValues('attachments'), { url: (result.file as any).url }]);
-              }}
-            />
+                  form.setValue('attachments', [...form.getValues('attachments'), { url: (result.file as any).url }]);
+                }}
+              />
+            </div>
             {isPending ? (
               <div className="ml-auto">
                 <LoadingSpinner className="p-0" />
