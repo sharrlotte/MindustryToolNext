@@ -60,7 +60,7 @@
     "idb-keyval": "^6.2.1",
     "konva": "^9.3.18",
     "lucide-react": "^0.292.0",
-    "next": "15.0.4-canary.52",
+    "next": "15.2.0-canary.10",
     "next-logger": "^5.0.1",
     "next-themes": "^0.2.1",
     "nextjs-toploader": "^1.6.12",
