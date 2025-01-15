@@ -78,7 +78,7 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
   prevPath.set('page', previousPage.toString());
 
   return (
-    <Pagination>
+    <Pagination className="h-9">
       <PaginationContent>
         <PaginationItem>
           <Button className="w-full min-w-9 rounded-sm p-0 px-2 py-1" title="0" onClick={() => handlePageChange(previousPage)} variant="icon" disabled={!hasPrevPage}>
