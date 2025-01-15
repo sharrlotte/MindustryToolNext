@@ -2,20 +2,10 @@
 
 import React, { ReactNode } from 'react';
 
+import { TakeDownIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { TrashIcon } from '@/components/common/icons';
 
 type TakeDownButtonProps = {
   isLoading: boolean;
@@ -28,7 +18,7 @@ export default function TakeDownButton({ isLoading, description, onClick }: Take
     <AlertDialog>
       <AlertDialogTrigger asChild disabled={isLoading}>
         <Button className="hover:bg-destructive/80" variant="command" size="command" disabled={isLoading}>
-          <TrashIcon className="size-5" />
+          <TakeDownIcon className="size-5" />
           <Tran text="take-down" />
         </Button>
       </AlertDialogTrigger>

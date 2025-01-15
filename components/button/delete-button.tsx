@@ -3,7 +3,7 @@
 import { VariantProps, cva } from 'class-variance-authority';
 import React, { ReactNode } from 'react';
 
-import { XIcon } from '@/components/common/icons';
+import { TrashIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
@@ -34,7 +34,7 @@ export default function DeleteButton({ className, isLoading, variant, descriptio
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button className={cn('hover:border-none', buttonVariants({ className, variant }))} variant={variant} size="command" disabled={isLoading}>
-          <XIcon />
+          <TrashIcon />
           {variant === 'command' && <Tran text="delete" />}
         </Button>
       </AlertDialogTrigger>

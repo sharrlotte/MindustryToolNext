@@ -2,6 +2,7 @@ import {
   AlertCircle,
   AlertTriangle,
   ArrowDown,
+  ArrowDownFromLine,
   ArrowDownToLine,
   ArrowLeft,
   ArrowLeftCircle,
@@ -150,6 +151,7 @@ export const DownloadIcon = ({ className }: Props) => <ArrowDownToLine className
 export const LoginIcon = ({ className }: Props) => <LogIn className={cn(className ?? 'lucide')} />;
 export const TrashIcon = ({ className }: Props) => <Trash2 className={cn(className ?? 'lucide')} />;
 export const GoogleIcon = ({ className }: Props) => <Image className={cn(className ?? 'lucide')} src={googleIcon} alt="google" />;
+export const TakeDownIcon = ({ className }: Props) => <ArrowDownFromLine className={cn(className ?? 'lucide')} />;
 
 export function HRIcon({ className }: Props) {
   return (
