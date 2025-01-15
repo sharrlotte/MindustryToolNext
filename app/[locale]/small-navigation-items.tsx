@@ -14,7 +14,6 @@ import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 
-import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
@@ -44,6 +43,9 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
   const showSidebar = useCallback(() => setConfig('showNav', true), [setConfig]);
   const hideSidebar = useCallback(() => setConfig('showNav', false), [setConfig]);
 
+  const date = new Date();
+  const webVersion = `v${date.getUTCFullYear()}${date.getUTCMonth()}${date.getUTCDay()}.${date.getUTCHours()}.${date.getUTCMinutes()}`;
+
   return (
     <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg">
       <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
@@ -72,7 +74,7 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
                       <span className="flex justify-between items-start rounded-sm p-2">
                         <div className="flex flex-col gap-2">
                           <h1 className="text-xl font-medium">MindustryTool</h1>
-                          <span className="text-xs">{env.webVersion}</span>
+                          <span className="text-xs">{webVersion}</span>
                         </div>
 
                         <button className="text-2xl" onClick={hideSidebar}>

@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 import UserAvatar from '@/components/user/user-avatar';
 
-import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
@@ -46,6 +45,8 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
 
   const toggleSidebar = useCallback(() => setConfig('showNav', !isVisible), [isVisible, setConfig]);
 
+  const date = new Date();
+  const webVersion = `v${date.getUTCFullYear()}${date.getUTCMonth()}${date.getUTCDay()}.${date.getUTCHours()}.${date.getUTCMinutes()}`;
   return (
     <motion.div
       className="relative flex h-full overflow-hidden border-r min-w-nav"
@@ -55,12 +56,12 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
     >
       <div className={cn('flex h-full w-full flex-col p-1', { 'p-2': expand })}>
         <div className={cn('flex justify-between p-2', { 'gap-1': expand })}>
-          <div className='flex flex-col'>
+          <div className="flex flex-col">
             <motion.div className="overflow-hidden whitespace-nowrap" animate={{ display: expand ? 'block' : 'none' }}>
               <h1 className="text-xl font-medium">MindustryTool</h1>
             </motion.div>
             <motion.span className="overflow-hidden whitespace-nowrap text-xs" animate={{ display: expand ? 'block' : 'none' }}>
-              {env.webVersion}
+              {webVersion}
             </motion.span>
           </div>
           <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
