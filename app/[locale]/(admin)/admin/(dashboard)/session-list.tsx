@@ -22,5 +22,11 @@ export default async function SessionList() {
     return <ErrorScreen error={data} />;
   }
 
-  return data.map((session) => <pre className='p-2' key={session.id}>{JSON.stringify(session, null, 2)}</pre>);
+  return data.map((session) => (
+    <div className="p-2 grid" key={session.id}>
+      <span>{session.id}</span>
+      <span>{session.user.name}</span>
+      <span>{session.room}</span>
+    </div>
+  ));
 }
