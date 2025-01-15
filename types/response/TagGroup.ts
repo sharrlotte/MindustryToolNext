@@ -30,6 +30,7 @@ export class TagGroups {
   static parseString(str: string[], tags: ContextTagGroup[]) {
     const tagsArray =
       str
+        .filter(Boolean) //
         ?.map((value) => value.split(TAG_SEPARATOR))
         .filter((value) => value.length === 2)
         .map((value) => ({ name: value[0], value: value[1] })) ?? [];

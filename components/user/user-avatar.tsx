@@ -115,7 +115,7 @@ function AvatarImage({ className, user: { imageUrl, name } }: AvatarImageProps) 
 
     return (
       <div className={cn('flex size-8 text-white min-h-8 min-w-8 items-center aspect-square justify-center rounded-full border border-border capitalize', className)} style={{ backgroundColor: color }}>
-        {username.at(0)}
+        {username?.at(0)}
       </div>
     );
   }
