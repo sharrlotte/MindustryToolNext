@@ -7,11 +7,12 @@ import InfiniteScroll from 'react-infinite-scroller';
 import EndOfPage from '@/components/common/end-of-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
+import Tran from '@/components/common/tran';
 
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
+import { PaginationQuery } from '@/query/search-query';
 
 import { QueryKey } from '@tanstack/react-query';
-import { PaginationQuery } from '@/query/search-query';
 
 type InfinitePageProps<T, P> = {
   className?: string;
@@ -58,8 +59,13 @@ export default function InfinitePage<T, P extends PaginationQuery>({ className, 
 
   end = useMemo(() => end ?? <EndOfPage />, [end]);
 
-  if (isError || error) {
-    return <div className="flex w-full justify-center">{error?.message}</div>;
+  if (isError) {
+    return (
+      <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
+        <Tran className="font-semibold" text="error" />
+        <p className="text-muted-foreground">{JSON.stringify(error)}</p>
+      </div>
+    );
   }
 
   if (isLoading || !data) {

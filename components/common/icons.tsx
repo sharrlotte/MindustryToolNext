@@ -67,6 +67,7 @@ import {
   Users,
   X,
   XCircle,
+  Loader,
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -79,6 +80,7 @@ type Props = {
   className?: string;
 };
 
+export const LoaderIcon = ({ className }: Props) => <Loader className={cn(className ?? 'lucide')} />;
 export const TagIcon = ({ className }: Props) => <Tag className={cn(className ?? 'lucide')} />;
 export const BoxIcon = ({ className }: Props) => <Box className={cn(className ?? 'lucide')} />;
 export const CommentIcon = ({ className }: Props) => <MessageSquareIcon className={cn(className ?? 'lucide')} />;

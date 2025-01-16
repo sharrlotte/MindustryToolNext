@@ -30,19 +30,30 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
 import { TranslationPaginationQuery } from '@/query/search-query';
-import { CreateTranslationRequest, CreateTranslationSchema, createTranslation, deleteTranslation, getTranslationCompare, getTranslationCompareCount, getTranslationDiff, getTranslationDiffCount } from '@/query/translation';
-import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
+import {
+  CreateTranslationRequest,
+  CreateTranslationSchema,
+  createTranslation,
+  deleteTranslation,
+  getTranslationCompare,
+  getTranslationCompareCount,
+  getTranslationDiff,
+  getTranslationDiffCount,
+  getTranslationSearch,
+  getTranslationSearchCount,
+} from '@/query/translation';
+import { Translation, TranslationCompare, TranslationDiff } from '@/types/response/Translation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-const translateModes = ['diff', 'compare'] as const;
+const translateModes = ['search', 'diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];
 
 const defaultState = {
   target: 'vi',
   language: 'en',
-  mode: 'diff',
+  mode: 'search',
   key: '',
 };
 
@@ -56,27 +67,6 @@ export default function TranslationPage() {
     <Fragment>
       <div className="hidden h-full flex-col gap-2 p-2 landscape:flex">
         <div className="flex items-center gap-2">
-          <ComboBox<Locale>
-            className="h-10"
-            searchBar={false}
-            value={{ label: t(language), value: language as Locale }}
-            values={locales.map((locale) => ({
-              label: t(locale),
-              value: locale,
-            }))}
-            onChange={(language) => setState({ language: language ?? 'en' })}
-          />
-          {'=>'}
-          <ComboBox<Locale>
-            className="h-10"
-            searchBar={false}
-            value={{ label: t(target), value: target as Locale }}
-            values={locales.map((locale) => ({
-              label: t(locale),
-              value: locale,
-            }))}
-            onChange={(target) => setState({ target: target ?? 'en' })}
-          />
           <ComboBox<TranslateMode>
             className="h-10"
             searchBar={false}
@@ -90,13 +80,45 @@ export default function TranslationPage() {
             }))}
             onChange={(mode) => setState({ mode: mode ?? 'compare' })}
           />
+          <ComboBox<Locale>
+            className="h-10"
+            searchBar={false}
+            value={{ label: t(language), value: language as Locale }}
+            values={locales.map((locale) => ({
+              label: t(locale),
+              value: locale,
+            }))}
+            onChange={(language) => setState({ language: language ?? 'en' })}
+          />
+          {mode !== 'search' && (
+            <>
+              {'=>'}
+              <ComboBox<Locale>
+                className="h-10"
+                searchBar={false}
+                value={{ label: t(target), value: target as Locale }}
+                values={locales.map((locale) => ({
+                  label: t(locale),
+                  value: locale,
+                }))}
+                onChange={(target) => setState({ target: target ?? 'en' })}
+              />
+            </>
+          )}
+
           <SearchBar>
             <SearchInput placeholder={t('translation.search-by-key')} value={key} onChange={(event) => setState({ key: event.currentTarget.value })} />
           </SearchBar>
           <RefreshButton />
           <AddNewKeyDialog />
         </div>
-        {mode === 'compare' ? <CompareTable language={language as Locale} target={target as Locale} tKey={key} /> : <DiffTable language={language as Locale} target={target as Locale} tKey={key} />}
+        {mode === 'compare' ? (
+          <CompareTable language={language as Locale} target={target as Locale} tKey={key} />
+        ) : mode === 'search' ? (
+          <SearchTable language={language as Locale} />
+        ) : (
+          <DiffTable language={language as Locale} target={target as Locale} tKey={key} />
+        )}
       </div>
       <div className="flex h-full w-full items-center justify-center">
         <Tran text="translation.only-work-on-landscape" />
@@ -123,8 +145,6 @@ function RefreshButton() {
 
 function CompareTable({ language, target, tKey: key }: CompareTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
-
-  console.log(key);
 
   const { data } = useClientQuery({
     queryKey: ['translations', 'compare', 'total', language, target, key],
@@ -165,6 +185,60 @@ function CompareTable({ language, target, tKey: key }: CompareTableProps) {
             asChild
           >
             {(data) => <CompareCard key={data.id} translation={data} language={language} target={target} />}
+          </GridPaginationList>
+        </TableBody>
+      </Table>
+      <div className="mt-auto flex justify-end">
+        <PaginationNavigator numberOfItems={data} />
+      </div>
+    </Fragment>
+  );
+}
+
+type SearchTableProps = {
+  language: Locale;
+  tKey?: string;
+};
+
+function SearchTable({ language, tKey: key }: SearchTableProps) {
+  const params = useSearchQuery(TranslationPaginationQuery);
+
+  const { data } = useClientQuery({
+    queryKey: ['translations', 'search', 'total', language, key],
+    queryFn: (axios) => getTranslationSearchCount(axios, { ...params, language, key: key }),
+    placeholderData: 0,
+  });
+
+  return (
+    <Fragment>
+      <Table className="table-fixed">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-40 overflow-x-auto">
+              <Tran text="translation.key-group" />
+            </TableHead>
+            <TableHead className="w-40 overflow-x-auto">
+              <Tran text="translation.key" />
+            </TableHead>
+            <TableHead>
+              <Tran text={language} />
+            </TableHead>
+            <TableHead className="w-20"></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <GridPaginationList
+            params={{ ...params, language, key: key }}
+            queryKey={['translations', 'search', params, language, key]}
+            queryFn={getTranslationSearch}
+            noResult={<Fragment></Fragment>}
+            skeleton={{
+              amount: 20,
+              item: (index) => <TranslationCardSkeleton key={index} />,
+            }}
+            asChild
+          >
+            {(data) => <SearchCard key={data.id} translation={data} language={language} />}
           </GridPaginationList>
         </TableBody>
       </Table>
@@ -299,8 +373,6 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
     [],
   );
 
-  console.log(value[language]);
-
   return (
     <TableRow>
       <TableCell className="align-top">{keyGroup}</TableCell>
@@ -312,6 +384,47 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
       </TableCell>
       <TableCell>
         <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value[target]} onChange={handleChange} />
+      </TableCell>
+      <TableCell className="flex justify-center">
+        <EllipsisButton variant="ghost">
+          <DeleteTranslationDialog value={{ key, id }} />
+        </EllipsisButton>
+      </TableCell>
+    </TableRow>
+  );
+}
+
+type SearchCardProps = {
+  translation: Translation;
+  language: Locale;
+};
+
+function SearchCard({ translation: { key, id, value, keyGroup }, language }: SearchCardProps) {
+  const axios = useClientApi();
+  const { mutate } = useMutation({
+    mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
+  });
+
+  const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    mutate({
+      key,
+      keyGroup,
+      language: language,
+      value: event.target.value,
+    });
+  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleChange = useCallback(
+    debounce(1000, (event: ChangeEvent<HTMLTextAreaElement>) => create(event)),
+    [],
+  );
+
+  return (
+    <TableRow>
+      <TableCell className="align-top">{keyGroup}</TableCell>
+      <TableCell className="align-top"> {key}</TableCell>
+      <TableCell>
+        <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value} onChange={handleChange} />
       </TableCell>
       <TableCell className="flex justify-center">
         <EllipsisButton variant="ghost">

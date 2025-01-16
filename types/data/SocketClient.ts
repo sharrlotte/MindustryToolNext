@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { WebSocket } from 'partysocket';
 import { ErrorEvent } from 'partysocket/ws';
 
@@ -24,9 +25,7 @@ type SocketEvent = BaseSocketEvent &
 
 type MessagePayload =
   | { method: 'MESSAGE'; data: string }
-  | { method: 'SERVER_MESSAGE'; data: string }
   | { method: 'GET_MESSAGE'; cursor: string | null; size: number }
-  | { method: 'JOIN_ROOM'; data: string }
   | { method: 'LEAVE_ROOM'; data: string }
   | { method: 'GET_MEMBER'; page: number; size: number }
   | { method: 'CLOSE' }
@@ -45,14 +44,9 @@ function genId() {
 
 type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
 
-type Task =
-  | {
-      room: string;
-      id: string;
-    }
-  | {
-      request: any;
-    };
+type Task = {
+  request: any;
+};
 
 export default class SocketClient {
   private requestTimeout = 2000;
@@ -63,7 +57,6 @@ export default class SocketClient {
   private connects: ((event: Event) => void)[] = [];
   private disconnects: ((event: CloseEvent) => void)[] = [];
   private room: string = '';
-  private rooms: string[] = [];
   private requests: Record<string, PromiseReceiver> = {};
   private url: string;
   private isProcessing = false;
@@ -82,50 +75,11 @@ export default class SocketClient {
 
       if (!task) break;
 
-      try {
-        if ('room' in task) {
-          if (this.rooms.includes(task.room)) {
-            continue;
-          }
-
-          const id = task.id;
-
-          const promise = new Promise<any>((resolve, reject) => {
-            const timeout = setTimeout(() => {
-              delete this.requests[id];
-
-              resolve(undefined);
-            }, this.requestTimeout);
-
-            this.requests[id] = { timeout, resolve, reject };
-
-            if (!this.socket) {
-              throw new Error('Socket is not connected');
-            }
-
-            const json = JSON.stringify({
-              id,
-              method: 'JOIN_ROOM',
-              data: task.room,
-              room: task.room,
-              acknowledge: true,
-            });
-
-            this.socket.send(json);
-          });
-
-          await promise;
-
-          this.rooms.push(task.room);
-        } else {
-          if (!this.socket) {
-            throw new Error('Socket is not connected');
-          }
-          this.socket.send(task.request);
-        }
-      } catch (err) {
-        console.error(err);
+      if (!this.socket) {
+        throw new Error('Socket is not connected');
       }
+
+      this.socket.send(task.request);
     }
 
     this.isProcessing = false;
@@ -186,12 +140,10 @@ export default class SocketClient {
 
     this.socket.onerror = (event) => this.errors.forEach((error) => error(event));
     this.socket.onopen = (event) => {
-      this.rooms = [];
       this.connects.forEach((connect) => connect(event));
       this.interval = setInterval(async () => await this.processTask(), 10);
     };
     this.socket.onclose = (event) => {
-      this.rooms = [];
       this.disconnects.forEach((disconnect) => disconnect(event));
 
       if (this.interval) {
@@ -204,9 +156,6 @@ export default class SocketClient {
 
   public onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
     const room = this.room;
-    if (room && !this.rooms.includes(room)) {
-      this.joinRoom(room);
-    }
 
     const handlers = this.handlers[method + room];
 
@@ -231,11 +180,11 @@ export default class SocketClient {
 
   public onRoom(room: SocketRoom) {
     this.room = room;
+
     return this;
   }
 
   public async send(payload: MessagePayload) {
-    this.joinRoom(this.room);
     const json = JSON.stringify({ ...payload, room: this.room });
     this.tasks.push({ request: json });
 
@@ -245,8 +194,6 @@ export default class SocketClient {
   }
 
   public async await<T extends MessagePayload>(payload: T): Promise<SocketResult<T['method']>> {
-    this.joinRoom(this.room);
-
     const id = genId();
     const promise = new Promise<any>((resolve, reject) => {
       const timeout = setTimeout(() => {
@@ -267,14 +214,6 @@ export default class SocketClient {
     return await promise;
   }
 
-  public async joinRoom(room: string) {
-    const has = this.tasks.find((task) => 'room' in task && task.room === room);
-
-    if (!has) {
-      this.tasks.push({ room: room, id: genId() });
-    }
-  }
-
   public onConnect(handler: (event: Event) => void) {
     this.connects.push(handler);
   }
@@ -289,7 +228,6 @@ export default class SocketClient {
 
   public async close() {
     this.tasks = [];
-    this.rooms = [];
     this.connects = [];
     this.disconnects = [];
 

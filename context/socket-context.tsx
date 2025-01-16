@@ -6,8 +6,6 @@ import { useInterval } from 'usehooks-ts';
 import env from '@/constant/env';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
 
-export type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
-
 type SocketContextType = {
   socket: SocketClient;
   state: SocketState;
@@ -38,8 +36,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     socket.connect();
     socket.onDisconnect(() => setState('disconnected'));
     socket.onConnect(() => setState('connected'));
-
-    console.log('Connect socket');
 
     return () => {
       socket.close();
