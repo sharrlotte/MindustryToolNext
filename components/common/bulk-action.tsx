@@ -77,7 +77,10 @@ export function BulkActionContainer({ onActionPerform, children, variant }: Bulk
         onSelect,
         setShow,
         onActionPerform: handleAction,
-        onActionCancel: () => setShow(false),
+        onActionCancel: () => {
+          setShow(false);
+          setSelected([]);
+        },
       }}
     >
       {children}
@@ -86,7 +89,7 @@ export function BulkActionContainer({ onActionPerform, children, variant }: Bulk
 }
 
 export function BulkDeleteToggle() {
-  const { show, setShow, value, onActionPerform, onActionCancel } = useBulkAction();
+  const { show, setShow, value, onActionPerform } = useBulkAction();
 
   if (value.length > 0) {
     return (
@@ -106,7 +109,7 @@ export function BulkDeleteToggle() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={onActionCancel}>
+            <AlertDialogCancel>
               <Tran text="cancel" />
             </AlertDialogCancel>
             <AlertDialogAction className="bg-destructive hover:bg-destructive" asChild>

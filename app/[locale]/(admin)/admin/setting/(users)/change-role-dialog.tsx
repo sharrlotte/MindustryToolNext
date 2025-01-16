@@ -110,7 +110,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
       <DialogTrigger>
         <section className="flex justify-end gap-1">
           {bestRole ? (
-            <span key={bestRole.id} className={cn(bestRole.color)}>
+            <span key={bestRole.id} style={{ color: bestRole.color }}>
               {bestRole.name}
             </span>
           ) : (
@@ -130,7 +130,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
           <ToggleGroup className="grid grid-cols-2" type={'multiple'} onValueChange={handleRoleChange} defaultValue={roles.map((r) => r.name)}>
             {filteredRole.map(({ id, name, color }) => (
               <ToggleGroupItem className="justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent" key={id} value={name}>
-                <span key={id} className={cn(color)}>
+                <span key={id} style={{ color }}>
                   {name}
                 </span>
                 {selectedRole.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}

@@ -12,24 +12,27 @@ import { RoleWithAuthorities } from '@/types/response/Role';
 
 type Props = {
   role: RoleWithAuthorities;
+  bestPosition: number;
 };
 
-export default function RoleCard({ role }: Props) {
-  const { name, color } = role;
+export default function RoleCard({ role, bestPosition }: Props) {
+  const { name, color, position } = role;
 
   return (
-    <TableRow>
+    <TableRow className="h-14">
       <TableCell>
-        <Tran className={color} text={name.toLowerCase()} />
+        <Tran style={{ color }} text={name.toLowerCase()} />
       </TableCell>
       <TableCell className="w-full overflow-hidden text-ellipsis">
         <ChangeRoleAuthorityDialog role={role} />
       </TableCell>
       <TableCell className="flex items-center justify-center">
-        <EllipsisButton variant="ghost">
-          <UpdateRoleDialog role={role} />
-          <DeleteRoleButton role={role} />
-        </EllipsisButton>
+        {bestPosition > position && (
+          <EllipsisButton variant="ghost">
+            <UpdateRoleDialog role={role} />
+            <DeleteRoleButton role={role} />
+          </EllipsisButton>
+        )}
       </TableCell>
     </TableRow>
   );

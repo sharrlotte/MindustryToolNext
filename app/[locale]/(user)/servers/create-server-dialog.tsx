@@ -79,7 +79,7 @@ export default function CreateServerDialog() {
             <Tran text="server.add" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="p-8">
+        <DialogContent className="p-6">
           <DialogTitle>
             <Tran text="server.add" />
           </DialogTitle>
@@ -127,7 +127,7 @@ export default function CreateServerDialog() {
           <Tran text="server.add" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-8">
+      <DialogContent className="p-6">
         <Form {...form}>
           <DialogTitle>
             <Tran text="server.add" />

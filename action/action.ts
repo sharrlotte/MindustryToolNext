@@ -101,6 +101,15 @@ export async function getSession() {
 
   return getCachedSession(cookie.toString());
 }
+export async function getAuthSession() {
+  const session = await getSession();
+
+  if (!session) {
+    throw new Error('Invalid state: No session');
+  }
+
+  return session;
+}
 
 export const getServerApi = async (): Promise<AxiosInstance> => {
   const cookie = await cookies();

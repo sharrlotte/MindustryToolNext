@@ -10,19 +10,15 @@ type ColorAsRoleProps = {
 };
 
 export default function ColorAsRole({ className, children, roles }: ColorAsRoleProps) {
-  const roleNames = roles?.map((r) => r.name) ?? [];
-
-  if (!roles) {
-    return <span className={cn(className)}>{children}</span>;
+  if (!roles || roles.length === 0) {
+    return <span>{children}</span>;
   }
 
-  if (roleNames.includes('SHAR')) {
-    return <span className={cn('text-pink-500', className)}>{children}</span>;
-  }
+  const bestRole = roles.sort((a, b) => b.position - a.position)[0];
 
-  if (roleNames.includes('ADMIN')) {
-    return <span className={cn('text-emerald-400', className)}>{children}</span>;
-  }
-
-  return <span className={cn(className)}>{children}</span>;
+  return (
+    <span className={cn(className)} style={{ color: bestRole.color }}>
+      {children}
+    </span>
+  );
 }

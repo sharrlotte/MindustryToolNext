@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
 import { useForm } from 'react-hook-form';
 
 import { Hidden } from '@/components/common/hidden';
@@ -60,8 +61,8 @@ export default function UpdateRoleDialog({ role }: Props) {
           <Tran text="update" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-full h-full flex flex-col">
-        <ScrollContainer className="p-4">
+      <DialogContent className="max-h-full flex flex-col p-6">
+        <ScrollContainer>
           <DialogTitle>
             <Tran text="update" />
           </DialogTitle>
@@ -79,7 +80,7 @@ export default function UpdateRoleDialog({ role }: Props) {
                       <Tran text="name" />
                     </FormLabel>
                     <FormControl>
-                      <Input className={form.getValues('color')} {...field} />
+                      <Input style={{ color: field.value }} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -123,9 +124,20 @@ export default function UpdateRoleDialog({ role }: Props) {
                     <FormLabel>
                       <Tran text="color" />
                     </FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
+                    <Dialog>
+                      <FormControl>
+                        <div className="flex gap-2">
+                          <Input {...field} />
+                          <DialogTrigger className="aspect-square justify-center items-center flex border rounded-md size-9">
+                            <EditIcon />
+                          </DialogTrigger>
+                        </div>
+                      </FormControl>
+                      <DialogContent className="p-6">
+                        <HexColorPicker color={field.value} onChange={field.onChange} />
+                        <p>{field.value}</p>
+                      </DialogContent>
+                    </Dialog>
                     <FormMessage />
                   </FormItem>
                 )}
