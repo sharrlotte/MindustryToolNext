@@ -43,7 +43,14 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
     const data = 'queryFn' in queryFn ? await queryFn.queryFn(axios) : await queryFn(axios);
     return data;
   } catch (error) {
-    return { error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))) };
+    return {
+      error: JSON.parse(
+        JSON.stringify(
+          error,
+          Object.getOwnPropertyNames(error).filter((field) => field !== 'stack'),
+        ),
+      ),
+    };
   }
 }
 
@@ -70,7 +77,14 @@ const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> =
           .then((r) => r.data)
           .then((data) => data ?? null);
       } catch (error) {
-        return { error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))) };
+        return {
+          error: JSON.parse(
+            JSON.stringify(
+              error,
+              Object.getOwnPropertyNames(error).filter((field) => field !== 'stack'),
+            ),
+          ),
+        };
       }
     },
     ['session'],

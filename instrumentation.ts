@@ -24,7 +24,7 @@ export function onRequestError(
         body: JSON.stringify({ message: JSON.stringify({ error: JSON.stringify(error, Object.getOwnPropertyNames(error)), request, context }) }),
       });
     } catch (error) {
-      //
+      console.error(error);
     }
   }
 }
