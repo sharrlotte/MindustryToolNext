@@ -97,39 +97,43 @@ export default async function Root({ children, params }: RootProps) {
   ReactDOM.preconnect('https://fonts.gstatic.com', { crossOrigin: 'anonymous' });
 
   return (
-    <html className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable)} lang={locale} dir={dir(locale)} data-color-mode="dark" suppressHydrationWarning>
+    <html
+      className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable, locale === 'kr' ? 'font-noto' : 'font-inter')}
+      lang={locale}
+      dir={dir(locale)}
+      data-color-mode="dark"
+      suppressHydrationWarning
+    >
       <body className="h-full w-full overflow-hidden">
-        <div className={cn('h-full w-full overflow-hidden', locale === 'kr' ? 'font-noto' : 'font-inter')}>
-          {process.env.NODE_ENV === 'production' ? (
-            <>
-              <Analytics />
-              <SpeedInsights />
-              <GoogleAnalytics gaId="G-1R9S5SV72C" />
-            </>
-          ) : (
-            // <Script src="https://unpkg.com/react-scan/dist/auto.global.js" async />
-            <div></div>
-          )}
-          <CookiesProvider>
-            <I18nProvider locale={locale}>
-              <QueryProvider>
-                <ThemeProvider>
-                  <TagsProvider locale={locale}>
-                    <SessionProvider>
-                      <SocketProvider>
-                        <Toaster />
-                        <NavigationBar>
-                          <ClientInit />
-                          {children}
-                        </NavigationBar>
-                      </SocketProvider>
-                    </SessionProvider>
-                  </TagsProvider>
-                </ThemeProvider>
-              </QueryProvider>
-            </I18nProvider>
-          </CookiesProvider>
-        </div>
+        {process.env.NODE_ENV === 'production' ? (
+          <>
+            <Analytics />
+            <SpeedInsights />
+            <GoogleAnalytics gaId="G-1R9S5SV72C" />
+          </>
+        ) : (
+          // <Script src="https://unpkg.com/react-scan/dist/auto.global.js" async />
+          <div></div>
+        )}
+        <CookiesProvider>
+          <I18nProvider locale={locale}>
+            <QueryProvider>
+              <ThemeProvider>
+                <TagsProvider locale={locale}>
+                  <SessionProvider>
+                    <SocketProvider>
+                      <Toaster />
+                      <NavigationBar>
+                        <ClientInit />
+                        {children}
+                      </NavigationBar>
+                    </SocketProvider>
+                  </SessionProvider>
+                </TagsProvider>
+              </ThemeProvider>
+            </QueryProvider>
+          </I18nProvider>
+        </CookiesProvider>
       </body>
     </html>
   );
