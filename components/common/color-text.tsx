@@ -111,7 +111,7 @@ function render(text?: string) {
     let nextIndex = -1;
 
     for (let i = 1; i < arr.length; i++) {
-      var test = getColorAndFormat(arr[i]);
+      const test = getColorAndFormat(arr[i]);
       if (test.color) {
         nextIndex = text.indexOf(arr[i], arr[0].length);
         break;
