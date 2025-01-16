@@ -129,13 +129,13 @@ export function BulkActionSelector({ className, value, children }: BulkActionSel
   const { show, value: selected, onSelect } = useBulkAction();
   const isSelected = selected.includes(value);
 
-  if (!show) {
-    return undefined;
-  }
+  if (show)
+    return (
+      <div className="h-full w-full" onClick={() => onSelect(value)}>
+        <div className={cn('h-full w-full', { 'pointer-events-none': show })}>{children}</div>
+        <div className={cn('absolute right-1 top-1 size-10 p-0', className, { 'pointer-events-none': show })}>{isSelected ? <SquareCheckedIcon className="size-10" /> : <SquareIcon className="size-10" />}</div>
+      </div>
+    );
 
-  return (
-    <Button className={cn('absolute right-1 top-1 size-16 p-0', className)} variant="icon" onClick={() => onSelect(value)}>
-      {children || (isSelected ? <SquareCheckedIcon className="size-16" /> : <SquareIcon className="size-16" />)}
-    </Button>
-  );
+  return children;
 }
