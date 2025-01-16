@@ -9,7 +9,6 @@ import { Hidden } from '@/components/common/hidden';
 import { IconNotification } from '@/components/common/icon-notification';
 import { FilterIcon, XIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
-import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
@@ -56,22 +55,17 @@ export default function LogPage() {
 }
 
 function LiveLog() {
-  const { state } = useSocket();
   const ref = useRef<HTMLDivElement>(null);
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="flex h-full w-full overflow-hidden rounded-md bg-card">
         <div className="flex h-full w-full overflow-hidden">
-          {state !== 'connected' ? (
-            <LoadingSpinner className="flex h-full w-full items-center justify-center" />
-          ) : (
-            <ScrollContainer ref={ref}>
-              <MessageList className="flex h-full w-full flex-col gap-2" queryKey={['live-log']} room="LOG" container={() => ref.current} params={{ size: 50 }} showNotification={false}>
-                {(data) => <MessageCard key={data.id} message={data} />}
-              </MessageList>
-            </ScrollContainer>
-          )}
+          <ScrollContainer ref={ref}>
+            <MessageList className="flex h-full w-full flex-col gap-2" queryKey={['live-log']} room="LOG" container={() => ref.current} params={{ size: 50 }} showNotification={false}>
+              {(data) => <MessageCard key={data.id} message={data} />}
+            </MessageList>
+          </ScrollContainer>
         </div>
       </div>
       <SendMessageButton />

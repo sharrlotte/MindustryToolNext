@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useInterval, useLocalStorage } from 'usehooks-ts';
 
-import LoadingSpinner from '@/components/common/loading-spinner';
+import { LoaderIcon } from '@/components/common/icons';
 import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
 
@@ -9,10 +9,10 @@ import { useSocket } from '@/context/socket-context';
 import useMessageQuery from '@/hooks/use-message-query';
 import useNotification from '@/hooks/use-notification';
 import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
+import { MessageQuery } from '@/query/search-query';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
-import { MessageQuery } from '@/query/search-query';
 
 type MessageListProps = {
   className?: string;
@@ -178,24 +178,25 @@ export default function MessageList({
   useInterval(checkIfNeedFetchMore, 100);
 
   if (!loader) {
-    loader = <LoadingSpinner key="loading" className="col-span-full m-auto flex h-full w-full items-center justify-center" />;
+    loader = <LoaderIcon key="loading" className="col-span-full m-auto flex h-full w-full items-center justify-center animate-spin size-10" />;
   }
 
   end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
 
-  if (isError || error) {
+  if (isError) {
     return (
-      <div className="col-span-full flex w-full items-center justify-center">
-        <Tran text="error" />: {error?.message}
+      <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
+        <Tran className="font-semibold" text="error" />
+        <p className="text-muted-foreground">{JSON.stringify(error)}</p>
       </div>
     );
   }
 
-  if (!data || !currentContainer) {
+  if (!currentContainer) {
     return <div className={cn('col-span-full flex h-full w-full items-center justify-center', className)}>{loader}</div>;
   }
 
-  if (pages.length === 0) {
+  if (!data || pages.length === 0) {
     return noResult;
   }
 

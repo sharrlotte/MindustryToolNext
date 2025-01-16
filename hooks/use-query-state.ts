@@ -75,7 +75,5 @@ export default function useQueryState(initialState: Record<string, string>) {
 
   result = { ...initialState, ...result };
 
-  console.log(result);
-
   return [result, setter] as const;
 }

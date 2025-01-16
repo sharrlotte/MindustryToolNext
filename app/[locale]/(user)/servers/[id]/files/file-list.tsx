@@ -46,9 +46,13 @@ export default function FileList({ id, path, filter, setFilePath }: FileListProp
   });
 
   if (error) {
-    return <div>{error?.message}</div>;
+    return (
+      <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
+        <Tran className="font-semibold" text="error" />
+        <p className="text-muted-foreground">{JSON.stringify(error)}</p>
+      </div>
+    );
   }
-
   if (isLoading) {
     return (
       <Skeletons number={10}>

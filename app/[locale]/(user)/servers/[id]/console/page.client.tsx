@@ -54,7 +54,7 @@ function ChatInput({ id }: ChatInputProps) {
 
   const { sendMessage } = useMessage({
     room: `SERVER-${id}`,
-    method: 'SERVER_MESSAGE',
+    method: 'MESSAGE',
   });
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {

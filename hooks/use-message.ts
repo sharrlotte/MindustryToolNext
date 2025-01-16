@@ -4,7 +4,7 @@ import { useSocket } from '@/context/socket-context';
 
 type Props = {
   room: string;
-  method?: 'SERVER_MESSAGE';
+  method?: 'MESSAGE';
 };
 
 export default function useMessage({ room, method }: Props) {
