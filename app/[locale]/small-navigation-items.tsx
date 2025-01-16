@@ -181,7 +181,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
       <Accordion type="single" collapsible className="w-full" value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn('flex gap-2 rounded-md px-1 py-2 opacity-80 hover:bg-brand hover:text-brand-foreground hover:opacity-100', {
+            className={cn('flex gap-2 rounded-md px-1 py-2 text-base opacity-80 hover:bg-brand hover:text-brand-foreground hover:opacity-100', {
               'bg-brand text-background opacity-100 hover:bg-brand hover:text-brand-foreground hover:opacity-100': path.some((path) => path.path === bestMatch) && !value,
             })}
           >
@@ -195,7 +195,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
               <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
                   key={item.path}
-                  className={cn('flex items-end gap-2 rounded-md px-1 py-2 opacity-80 duration-300 hover:bg-brand hover:text-brand-foreground hover:opacity-100', {
+                  className={cn('flex items-end gap-2 text-base rounded-md px-1 py-2 opacity-80 duration-300 hover:bg-brand hover:text-brand-foreground hover:opacity-100', {
                     'bg-brand text-brand-foreground opacity-100': item.path === bestMatch,
                   })}
                   href={item.path}

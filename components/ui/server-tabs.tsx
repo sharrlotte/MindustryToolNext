@@ -80,7 +80,7 @@ export function ServerTabsTrigger({ className, value, children }: ServerTabsTrig
 
   return (
     <Button
-      className={cn('relative h-12 min-w-fit space-y-2 px-0 py-2 opacity-70', className, {
+      className={cn('text-foreground relative h-12 min-w-fit space-y-2 px-0 py-2 opacity-70', className, {
         'opacity-100': isSelected,
       })}
       variant="ghost"
