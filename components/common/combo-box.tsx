@@ -77,14 +77,14 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
             {values.map((item) => (
               <Button
                 className={cn('justify-start capitalize hover:bg-brand text-foreground hover:text-brand-foreground', {
-                  'bg-brand text-background': item.label === currentLabel,
+                  'bg-brand text-brand-foreground': item.label === currentLabel,
                 })}
                 key={item.label}
                 variant="ghost"
                 onClick={() => handleSelect(item)}
               >
                 {item.label?.toLowerCase()}
-              </Button>
+            </Button>
             ))}
           </div>
         </div>

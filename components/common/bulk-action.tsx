@@ -122,7 +122,7 @@ export function BulkDeleteToggle() {
 
   return (
     <Button className="border-none" variant="secondary" onClick={() => setShow(!show)}>
-      <Tran text="bulk-delete" />
+      {value.length === 0 && show ? <Tran text="cancel" /> : <Tran text="bulk-delete" />}
     </Button>
   );
 }
