@@ -60,6 +60,7 @@ export function UserTable() {
           <ComboBox
             className="h-full"
             nullable
+            searchBar={false}
             placeholder="All"
             value={{ value: isBanned, label: isBanned ?? '' }}
             values={banFilterState.map((d) => ({ value: d, label: d || 'All' }))}

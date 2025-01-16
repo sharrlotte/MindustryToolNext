@@ -76,7 +76,7 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
           <div className="grid gap-1 p-1">
             {values.map((item) => (
               <Button
-                className={cn('justify-start capitalize hover:bg-brand text-foreground hover:text-background', {
+                className={cn('justify-start capitalize hover:bg-brand text-foreground hover:text-brand-foreground', {
                   'bg-brand text-background': item.label === currentLabel,
                 })}
                 key={item.label}
