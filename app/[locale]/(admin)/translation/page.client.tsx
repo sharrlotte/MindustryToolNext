@@ -53,7 +53,7 @@ type TranslateMode = (typeof translateModes)[number];
 const defaultState = {
   target: 'vi',
   language: 'en',
-  mode: 'diff',
+  mode: 'search',
   key: '',
 };
 
