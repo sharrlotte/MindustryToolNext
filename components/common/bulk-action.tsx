@@ -12,6 +12,7 @@ type ContextType = {
   setShow: (value: boolean) => void;
   value: string[];
   onSelect: (value: string) => void;
+  onActionCancel: () => void;
   onActionPerform: (value: string[]) => void;
 };
 
@@ -20,6 +21,7 @@ const defaultContextValue: ContextType = {
   setShow: () => {},
   value: [],
   onSelect: () => {},
+  onActionCancel: () => {},
   onActionPerform: () => {},
 };
 
@@ -70,6 +72,7 @@ export function BulkActionContainer({ onActionPerform, children }: BulkActionPro
         onSelect,
         setShow,
         onActionPerform: handleAction,
+        onActionCancel: () => setShow(false),
       }}
     >
       {children}
@@ -78,7 +81,7 @@ export function BulkActionContainer({ onActionPerform, children }: BulkActionPro
 }
 
 export function BulkDeleteToggle() {
-  const { show, setShow, value, onActionPerform } = useBulkAction();
+  const { show, setShow, value, onActionPerform, onActionCancel } = useBulkAction();
 
   if (value.length > 0) {
     return (
@@ -98,7 +101,7 @@ export function BulkDeleteToggle() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>
+            <AlertDialogCancel onClick={onActionCancel}>
               <Tran text="cancel" />
             </AlertDialogCancel>
             <AlertDialogAction className="bg-destructive hover:bg-destructive" asChild>
