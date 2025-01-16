@@ -1,8 +1,17 @@
 import Axios from 'axios';
-import axios from 'axios';
 
 import env from '@/constant/env';
-import { getErrorMessage } from '@/lib/utils';
+
+class StatusError extends Error {
+  status: number;
+
+  constructor(status: number, message: string, error: any) {
+    super(message, {
+      cause: error,
+    });
+    this.status = status;
+  }
+}
 
 const axiosInstance = Axios.create({
   baseURL: env.url.api,
@@ -18,24 +27,12 @@ axiosInstance.interceptors.response.use(
     return res;
   },
   (error) => {
-    console.error(JSON.stringify(error));
-
     if (error?.response?.data) {
-      throw {
-        message: error.response.data.message,
-        status: error.response.data.status,
-      };
+      throw new StatusError(error.response.data.status, error.response.data.message, error);
     }
 
-    if (error.errno === -4078 || error.code === 'ERR_BAD_RESPONSE') {
-      throw {
-        message: 'Service is unavailable, please try again later',
-        status: 503,
-      };
-    }
-
-    if (error.code === 'ECONNABORTED') {
-      throw new Error(getErrorMessage(error));
+    if (error.errno === -4078) {
+      throw new StatusError(503, 'Service is unavailable, please try again later', error);
     }
 
     if ('code' in error) {
@@ -43,30 +40,21 @@ axiosInstance.interceptors.response.use(
 
       if (code === 'ERR_NETWORK') {
         if (!navigator?.onLine) {
-          throw {
-            message: 'You are offline',
-            status: 503,
-          };
-        } else
-          throw {
-            message: 'Service is unavailable, please try again later',
-            status: 503,
-          };
+          throw new StatusError(503, 'You are offline', error);
+        } else {
+          throw new StatusError(error.response.data.status, error.response.data.message, error);
+        }
       }
     }
 
-    if (error.message) {
-      throw {
-        message: error.message,
-        status: error.status,
-      };
-    }
+    console.error(
+      JSON.stringify(
+        error,
+        Object.getOwnPropertyNames(error).filter((field) => field !== 'stack'),
+      ),
+    );
 
-    if (axios.isAxiosError(error)) {
-      throw new Error(getErrorMessage(error));
-    }
-
-    throw error;
+    throw new StatusError(500, 'An unknown error occurred', error);
   },
 );
 
