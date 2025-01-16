@@ -138,7 +138,7 @@ const InternalPathGroupElement = ({ group, bestMatch, onClick }: PathGroupElemen
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
       <nav className="space-y-1">
-        <span className="font-semibold">{name}</span>
+        <span className="">{name}</span>
         {group.paths.map((path, index) => (
           <PathElement key={index} segment={path} bestMatch={bestMatch} onClick={onClick} />
         ))}
@@ -163,7 +163,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
-          className={cn('flex items-end gap-2 rounded-md px-1 py-2 text-sm font-semibold text-opacity-50 opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
+          className={cn('flex items-end gap-2 rounded-md px-1 py-2 text-opacity-50 opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
             'bg-brand text-background opacity-100 dark:text-foreground': path === bestMatch,
           })}
           href={path}
@@ -181,7 +181,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
       <Accordion type="single" collapsible className="w-full" value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn('flex gap-2 rounded-md px-1 py-2 text-sm font-semibold opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground', {
+            className={cn('flex gap-2 rounded-md px-1 py-2 opacity-80 transition-colors duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground', {
               'bg-brand text-background opacity-100 hover:bg-brand hover:text-background hover:opacity-100 dark:text-foreground dark:hover:text-foreground': path.some((path) => path.path === bestMatch) && !value,
             })}
           >
@@ -195,7 +195,7 @@ function PathElement({ segment, bestMatch, onClick }: PathElementProps) {
               <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
                   key={item.path}
-                  className={cn('flex items-end gap-2 rounded-md px-1 py-2 text-sm font-semibold opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
+                  className={cn('flex items-end gap-2 rounded-md px-1 py-2 opacity-80 duration-300 hover:bg-brand hover:text-background hover:opacity-100 dark:hover:text-foreground', {
                     'bg-brand text-background opacity-100 dark:text-foreground': item.path === bestMatch,
                   })}
                   href={item.path}

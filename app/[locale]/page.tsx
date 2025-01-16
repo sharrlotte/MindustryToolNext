@@ -65,96 +65,99 @@ export default async function Page({ params }: Props) {
   const { locale } = await params;
 
   return (
-    <main className="no-scrollbar flex h-full flex-col bg-center text-foreground px-4 gap-8 pt-4">
-      <h1 className="w-full text-3xl font-extrabold">
-        <ServerTran locale={locale} text="home.hero-title" />
-      </h1>
-      <article className="flex gap-4 flex-row">
-        <div className="flex flex-col space-y-4 lg:w-1/2 text-foreground">
-          {heroTexts.map(({ title, content }) => (
-            <div key={title}>
-              <h3 className="font-bold">
-                <ServerTran locale={locale} text={title} />
-              </h3>
-              <p className="text-muted-foreground">
-                <ServerTran locale={locale} text={content} />
-              </p>
+    <main className="no-scrollbar flex h-full flex-col bg-center text-foreground gap-8 pt-4">
+      <div className="px-4">
+        <h1 className="w-full text-3xl font-extrabold">
+          <ServerTran locale={locale} text="home.hero-title" />
+        </h1>
+        <article className="flex gap-4 flex-row">
+          <div className="flex flex-col space-y-4 lg:w-1/2 text-foreground">
+            {heroTexts.map(({ title, content }) => (
+              <div key={title}>
+                <h3 className="font-bold">
+                  <ServerTran locale={locale} text={title} />
+                </h3>
+                <p className="text-muted-foreground">
+                  <ServerTran locale={locale} text={content} />
+                </p>
+              </div>
+            ))}
+          </div>
+        </article>
+        <article className="flex flex-col gap-2">
+          <h3 className="font-bold">
+            <ServerTran locale={locale} text="home.schematic-preview" />
+          </h3>
+          <HomeSchematicPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
+        </article>
+        <article className="flex flex-col gap-2">
+          <h3 className="font-bold">
+            <ServerTran locale={locale} text="home.map-preview" />
+          </h3>
+          <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
+        </article>
+        <article className="flex flex-col gap-2">
+          <h3 className="font-bold">
+            <ServerTran locale={locale} text="home.server-preview" />
+          </h3>
+          <HomeServerPreview />
+        </article>
+        <div className="flex w-full flex-col gap-4 md:flex-row">
+          <div className="flex w-full flex-col gap-8 md:w-1/2">
+            <div className="space-y-2">
+              <SectionTitle locale={locale} text="home.content-recommended-article" />
+              <ul className="mb-5 flex flex-col">
+                {postLinks.map(({ href, text }) => (
+                  <li key={href} className="p-0">
+                    <InternalLink className="text-lg" variant="primary" href={href}>
+                      <ServerTran locale={locale} text={text} />
+                    </InternalLink>
+                  </li>
+                ))}
+              </ul>
             </div>
-          ))}
-        </div>{' '}
-      </article>
-      <article className="flex flex-col gap-2">
-        <h3 className="font-bold">
-          <ServerTran locale={locale} text="home.schematic-preview" />
-        </h3>
-        <HomeSchematicPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
-      </article>
-      <article className="flex flex-col gap-2">
-        <h3 className="font-bold">
-          <ServerTran locale={locale} text="home.map-preview" />
-        </h3>
-        <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
-      </article>
-      <article className="flex flex-col gap-2">
-        <h3 className="font-bold">
-          <ServerTran locale={locale} text="home.server-preview" />
-        </h3>
-        <HomeServerPreview />
-      </article>
-      <div className="flex w-full flex-col gap-4 md:flex-row">
-        <div className="flex w-full flex-col gap-8 md:w-1/2">
-          <div className="space-y-2">
-            <SectionTitle locale={locale} text="home.content-recommended-article" />
-            <ul className="mb-5 flex flex-col">
-              {postLinks.map(({ href, text }) => (
-                <li key={href} className="p-0">
-                  <InternalLink className="text-lg" variant="primary" href={href}>
-                    <ServerTran locale={locale} text={text} />
-                  </InternalLink>
-                </li>
-              ))}
-            </ul>
+            <section className="space-y-2">
+              <SectionTitle locale={locale} text="home.community" />
+              <ul className="mb-5 flex flex-col">
+                {relativeLinks.map(({ href, text }) => (
+                  <li key={href} className="p-0">
+                    <a className="text-lg text-brand hover:text-brand" href={href} target="_blank" rel="noopener noreferrer">
+                      <ServerTran locale={locale} text={text} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <section className="space-y-2">
+              <SectionTitle locale={locale} text="home.youtube" />
+              <ul className="mb-5 flex flex-col">
+                {youtubeLinks.map(({ href, text }) => (
+                  <li key={href} className="p-0">
+                    <a className="text-lg text-brand hover:text-brand" href={href} target="_blank" rel="noopener noreferrer">
+                      {text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
           </div>
-          <section className="space-y-2">
-            <SectionTitle locale={locale} text="home.community" />
-            <ul className="mb-5 flex flex-col">
-              {relativeLinks.map(({ href, text }) => (
-                <li key={href} className="p-0">
-                  <a className="text-lg text-brand hover:text-brand" href={href} target="_blank" rel="noopener noreferrer">
-                    <ServerTran locale={locale} text={text} />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-          <section className="space-y-2">
-            <SectionTitle locale={locale} text="home.youtube" />
-            <ul className="mb-5 flex flex-col">
-              {youtubeLinks.map(({ href, text }) => (
-                <li key={href} className="p-0">
-                  <a className="text-lg text-brand hover:text-brand" href={href} target="_blank" rel="noopener noreferrer">
-                    {text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
-        <div className="flex w-full flex-col md:w-1/2">
-          <SectionTitle locale={locale} text="home.website-info" />
-          <InformationGroup />
-          <SectionTitle locale={locale} text="home.credit" />
-          <div className="grid grid-rows-2">
-            <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="/credit">
-              Credit
-            </Link>
-            <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="https://discord.gg/72324gpuCd">
-              <ServerTran locale={locale} text="report" />
-            </Link>
+          <div className="flex w-full flex-col md:w-1/2">
+            <SectionTitle locale={locale} text="home.website-info" />
+            <InformationGroup />
+            <SectionTitle locale={locale} text="home.credit" />
+            <div className="grid grid-rows-2">
+              <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="/credit">
+                Credit
+              </Link>
+              <Link className="text-emerald-400 list-item h-8 whitespace-nowrap" href="https://discord.gg/72324gpuCd">
+                <ServerTran locale={locale} text="report" />
+              </Link>
+            </div>
           </div>
         </div>
+        <OnlineDisplay />
       </div>
-      <footer className="bg-zinc-950/95">
+      <footer className="bg-zinc-950 text-white">
         <div className="space-y-4 p-2 pb-2">
           <span className="flex w-full justify-center text-center text-xl font-extrabold">MindustryTool</span>
           <div className="flex justify-center gap-2">
@@ -169,7 +172,6 @@ export default async function Page({ params }: Props) {
             </Link>
           </div>
           <div className="flex w-full justify-center p-4 text-center text-sm">Copyright © 2024 ‧ MindustryTool. All rights reserved.</div>
-          <OnlineDisplay />
         </div>
         <Ads />
       </footer>
