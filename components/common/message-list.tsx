@@ -66,7 +66,7 @@ export default function MessageList({
 
   lastHeightRef.current = clientHeight;
 
-  const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, queryKey);
+  const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, ['messages', ...queryKey]);
 
   const { postNotification } = useNotification();
 
