@@ -105,7 +105,6 @@ export default class SocketClient {
     this.socket.onmessage = async (event) => {
       try {
         const data = event.data;
-        console.log(data);
         const message = JSON.parse(data);
 
         if (!message.method) throw new Error('Invalid message method: ' + message);
