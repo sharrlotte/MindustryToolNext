@@ -7,13 +7,13 @@ export function RoleListSkeleton() {
     <Skeletons number={20}>
       <TableRow>
         <TableCell>
-          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full rounded-sm" />
         </TableCell>
         <TableCell>
-          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full rounded-sm" />
         </TableCell>
         <TableCell>
-          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full rounded-sm" />
         </TableCell>
       </TableRow>
     </Skeletons>

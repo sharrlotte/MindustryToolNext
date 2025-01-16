@@ -18,7 +18,7 @@ import { SendNotificationSchema, SendNotificationSchemaType, sendNotification } 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-const MarkdownEditor = dynamic(() => import('@/components/markdown/markdown-editor'));
+const MarkdownEditor = dynamic(() => import('@/components/markdown/markdown-editor'), { ssr: false });
 
 const initialState = {
   userId: '',

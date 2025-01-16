@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useDebounceValue } from 'usehooks-ts';
 
-import { UserManagementCard } from '@/app/[locale]/(admin)/admin/setting/user-management-card';
+import { UserManagementCard } from '@/app/[locale]/(admin)/admin/setting/(users)/user-management-card';
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -14,12 +15,11 @@ import ScrollContainer from '@/components/common/scroll-container';
 import { Input } from '@/components/ui/input';
 
 import useClientQuery from '@/hooks/use-client-query';
-import useQueryState from '@/hooks/use-query-state';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useI18n } from '@/i18n/client';
 import { omit } from '@/lib/utils';
 import { getRoles } from '@/query/role';
-import { ItemPaginationQuery } from '@/query/search-query';
+import { PaginationQuerySchema } from '@/query/search-query';
 import { getUserCount, getUsers } from '@/query/user';
 import { Role } from '@/types/response/Role';
 
@@ -33,9 +33,10 @@ const banFilterState = ['', 'true', 'false'];
 export function UserTable() {
   const { t } = useI18n();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const params = useSearchQuery(ItemPaginationQuery);
+  const params = useSearchQuery(PaginationQuerySchema);
 
-  const [{ name, is_banned: isBanned }, setQueryState] = useQueryState(defaultState);
+  const [{ name, is_banned: isBanned }, setState] = useState(defaultState);
+  const setQueryState = (value: Partial<typeof defaultState>) => setState((prev) => ({ ...prev, ...value }));
 
   const [role, setRole] = useState<Role>();
   const { data: roles } = useClientQuery({
@@ -43,9 +44,11 @@ export function UserTable() {
     queryKey: ['roles'],
   });
 
+  const [debouncedName] = useDebounceValue(name, 300);
+
   const { data: userCount } = useClientQuery({
-    queryKey: ['users', 'total', omit(params, 'page', 'size'), name, isBanned],
-    queryFn: (axios) => getUserCount(axios, { ...params, role: role?.name }),
+    queryKey: ['users', 'total', omit(params, 'page', 'size'), debouncedName, isBanned],
+    queryFn: (axios) => getUserCount(axios, { name, is_banned: isBanned, role: role?.name }),
     placeholderData: 0,
   });
 
@@ -69,7 +72,7 @@ export function UserTable() {
         <ListLayout>
           <InfinitePage
             className="flex h-full w-full flex-col justify-start gap-2"
-            params={{ ...params, role: role?.name, name, is_banned: isBanned }}
+            params={{ ...params, role: role?.name, name: debouncedName, is_banned: isBanned }}
             queryKey={['users', 'management']}
             queryFn={getUsers}
             container={() => container}
@@ -81,7 +84,7 @@ export function UserTable() {
         <GridLayout>
           <GridPaginationList
             className="flex flex-col gap-2" //
-            params={{ ...params, role: role?.name, name, is_banned: isBanned }}
+            params={{ ...params, role: role?.name, name: debouncedName, is_banned: isBanned }}
             queryKey={['users', 'management']}
             queryFn={getUsers}
             loader={<LoadingSpinner className="p-0 m-auto" />}

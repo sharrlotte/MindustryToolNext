@@ -19,7 +19,7 @@ export default function useQueryState(initialState: Record<string, string>) {
     }
 
     setCurrentValue(result);
-  }, [params]);
+  }, []);
 
   const setter = useCallback(
     (value: Record<string, string | undefined>) => {
@@ -29,13 +29,12 @@ export default function useQueryState(initialState: Record<string, string>) {
 
       const filteredValue = Object.fromEntries(Object.entries(value).filter(([_, value]) => value !== undefined)) as Record<string, string>;
 
-      setCurrentValue(filteredValue);
-
       Object.entries(value).forEach(([key, value]) => {
         if (value !== undefined && value !== '') queryParams.set(key, value);
         else queryParams.delete(key);
       });
 
+      setCurrentValue(filteredValue);
       navigate(queryParams);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,6 +74,8 @@ export default function useQueryState(initialState: Record<string, string>) {
   });
 
   result = { ...initialState, ...result };
+
+  console.log(result);
 
   return [result, setter] as const;
 }

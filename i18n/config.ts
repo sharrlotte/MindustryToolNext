@@ -25,6 +25,9 @@ export function getOptions(lng = defaultLocale, ns = defaultNamespace) {
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,
     ns,
+    react: {
+      useSuspense: true,
+    },
     backend: {
       backends: [HttpApi],
       backendOptions: [
