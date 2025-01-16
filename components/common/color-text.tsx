@@ -95,7 +95,7 @@ function render(text?: string) {
   if (!arr) return <span>{text}</span>;
 
   while (arr.length > 0) {
-    let rawColor = arr[0].toLocaleLowerCase();
+    const rawColor = arr[0].toLocaleLowerCase();
 
     const { color, format } = getColorAndFormat(rawColor);
 
