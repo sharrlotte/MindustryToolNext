@@ -95,7 +95,7 @@ const colours: Record<string, string> = {
   gold: '#ffd700',
   goldenrod: '#daa520',
   gray: '#808080',
-  green: '#008000',
+  green: '#38E08C',
   greenyellow: '#adff2f',
   honeydew: '#f0fff0',
   hotpink: '#ff69b4',
@@ -183,11 +183,15 @@ const colours: Record<string, string> = {
   wheat: '#f5deb3',
   white: '#ffffff',
   whitesmoke: '#f5f5f5',
-  yellow: '#ffff00',
+  yellow: '#ffe900',
   yellowgreen: '#9acd32',
   accent: 'yellow',
   '': 'white',
 };
+
+export function getColor(color: string) {
+  return colours[color];
+}
 
 export type GroupBy<T> = {
   key: string;
@@ -288,10 +292,6 @@ export function max<T>(array: T[], transformer: (value: T) => number) {
   }
 
   return value;
-}
-
-export function getColor(color: string) {
-  return colours[color];
 }
 
 export function mergeNestArray<T>(size: T[][]) {
