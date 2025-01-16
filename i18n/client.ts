@@ -1,7 +1,7 @@
 'use client';
 
 import i18next from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import LanguageDetector, { DetectorOptions } from 'i18next-browser-languagedetector';
 import Backend from 'i18next-chained-backend';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -21,8 +21,10 @@ i18next
     ...getOptions(),
     lng: undefined, // let detect the language on client side
     detection: {
-      order: ['path'],
-    },
+      order: ['path', 'cookie', 'navigator'],
+      lookupLocalStorage: 'Locale',
+      lookupCookie: 'Locale',
+    } satisfies DetectorOptions,
     preload: runsOnServerSide ? locales : [],
   });
 
