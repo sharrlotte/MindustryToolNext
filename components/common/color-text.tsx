@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo } from 'react';
 
 import { cn, getColor } from '@/lib/utils';
 
-const COLOR_REGEX = /\[([#a-zA-Z0-9]*)\]|\\u001b\[([0-9;]*)[0-9]+m([0-9]*)/gim;
+const COLOR_REGEX = /(\[[#a-zA-Z0-9]*\]|\\u001b\[[0-9;]*[0-9]+m[0-9]*)/gim;
 
 const ANSI: Record<string, Format> = {
   //ANSI color codes
@@ -78,7 +78,6 @@ function addFormat(keys: string[]) {
 function render(text?: string) {
   if (!text) return <></>;
 
-
   const index = text.search(COLOR_REGEX);
   let key = 0;
 
@@ -96,24 +95,9 @@ function render(text?: string) {
   if (!arr) return <span>{text}</span>;
 
   while (arr.length > 0) {
-    let color = arr[0].toLocaleLowerCase();
+    const rawColor = arr[0].toLocaleLowerCase();
 
-    let format: Format = {};
-
-    if (color.startsWith('[')) {
-      color = color.substring(1, color.length - 1);
-      color = color.startsWith('#') ? color.padEnd(7, '0') : getColor(color);
-
-      format = {
-        foreground: color,
-      };
-    } else {
-      color = color.substring('\\u001b['.length);
-
-      const keys = color.substring(0, color.indexOf('m')).split(';').filter(Boolean);
-
-      format = addFormat(keys);
-    }
+    const { color, format } = getColorAndFormat(rawColor);
 
     if (arr.length === 1) {
       if (color) {
@@ -124,7 +108,15 @@ function render(text?: string) {
       break;
     }
 
-    const nextIndex = text.indexOf(arr[1], arr[0].length);
+    let nextIndex = -1;
+
+    for (let i = 1; i < arr.length; i++) {
+      const test = getColorAndFormat(arr[i]);
+      if (test.color) {
+        nextIndex = text.indexOf(arr[i], arr[0].length);
+        break;
+      }
+    }
 
     if (color) {
       key = add(result, text.substring(arr[0].length, nextIndex), format, key);
@@ -137,7 +129,34 @@ function render(text?: string) {
 
   return result;
 }
+
+function getColorAndFormat(color: string) {
+  if (color.startsWith('[')) {
+    color = color.substring(1, color.length - 1);
+    color = color.startsWith('#') ? color.padEnd(7, '0') : getColor(color.toLowerCase().trim());
+
+    return {
+      format: {
+        foreground: color,
+      },
+      color,
+    };
+  } else {
+    color = color.substring('\\u001b['.length);
+
+    const keys = color.substring(0, color.indexOf('m')).split(';').filter(Boolean);
+
+    return {
+      color,
+      format: addFormat(keys),
+    };
+  }
+}
+
 function add(result: ReactNode[], text: string, format: Format, key: number) {
+  if (!text) {
+    return key + 1;
+  }
   const r = breakdown(text, format, key);
   result.push(...r.result);
   key = r.key;

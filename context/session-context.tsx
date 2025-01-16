@@ -7,7 +7,8 @@ import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SI
 import { isError } from '@/lib/utils';
 
 export async function SessionProvider({ children }: { children: ReactNode }) {
-  let [session, cookie] = await Promise.all([getSession(), cookies()]);
+  const cookie = await cookies();
+  let session = await getSession();
 
   if (isError(session)) {
     session = null;
