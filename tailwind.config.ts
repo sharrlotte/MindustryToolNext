@@ -24,7 +24,6 @@ module.exports = {
         nav: 'var(--nav)',
       },
       colors: {
-        brand: 'hsl(var(--brand))',
         success: 'hsl(var(--success))',
         warning: 'hsl(var(--warning))',
         border: 'hsl(var(--border))',
@@ -32,6 +31,10 @@ module.exports = {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        brand: {
+          DEFAULT: 'hsl(var(--brand))',
+          foreground: 'hsl(var(--brand-foreground))',
+        },
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',

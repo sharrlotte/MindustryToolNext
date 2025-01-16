@@ -30,6 +30,7 @@
     --ring: 24 5.7% 20%;
 
     --brand: 240 50% 60%;
+    --brand-foreground: 240 10% 100%;
 
     --radius: 0.5rem;
 
@@ -71,6 +72,7 @@
     --ring: 24 5.7% 82.9%;
 
     --brand: 160 84.1% 39.4%;
+    --brand-foreground: 240 10% 100%;
   }
 }
 

@@ -94,7 +94,7 @@ function NavFooter() {
       <NotificationDialog />
       <ProtectedElement session={session} filter>
         <InternalLink
-          className={cn('flex h-10 items-center justify-center rounded-md p-1 duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
+          className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
             'justify-start gap-2 py-2': expand,
           })}
           href="/users/@me/setting"
@@ -176,8 +176,8 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
         <InternalLink
-          className={cn('flex h-10 items-center justify-center rounded-md p-1 duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
-            'bg-brand text-background dark:text-foreground': path === bestMatch,
+          className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
+            'bg-brand text-brand-foreground': path === bestMatch,
             'justify-start gap-2 py-2': expand,
             'w-10': !expand,
           })}
@@ -195,8 +195,8 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
       <Accordion type="single" collapsible className={cn('w-full', { 'w-10': !expand })} value={value} onValueChange={setValue}>
         <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
           <AccordionTrigger
-            className={cn('flex h-10 items-center justify-center gap-0 rounded-md p-1 duration-300 hover:bg-brand hover:text-background dark:text-foreground dark:hover:text-foreground', {
-              'bg-brand text-background dark:text-foreground': path.some((path) => path.path === bestMatch) && !value,
+            className={cn('flex h-10 items-center justify-center gap-0 rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
+              'bg-brand text-brand-foreground': path.some((path) => path.path === bestMatch) && !value,
               'justify-start gap-2 py-2': expand,
             })}
             showChevron={expand}
@@ -210,8 +210,8 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
               <ProtectedElement key={item.path} session={session} filter={item.filter}>
                 <InternalLink
                   key={item.path}
-                  className={cn('flex items-end gap-3 rounded-md px-1 py-2 duration-300 hover:bg-brand hover:text-background dark:hover:text-foreground', {
-                    'bg-brand text-background dark:text-foreground': item.path === bestMatch,
+                  className={cn('flex items-end gap-3 rounded-md px-1 py-2 hover:bg-brand hover:text-brand-foreground', {
+                    'bg-brand text-brand-foreground': item.path === bestMatch,
                   })}
                   href={item.path}
                 >
