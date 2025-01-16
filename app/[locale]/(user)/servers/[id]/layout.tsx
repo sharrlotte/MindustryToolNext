@@ -2,21 +2,13 @@
 
 import React, { ReactNode, useState } from 'react';
 
-
-
-import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
-
-
-
 import { CmdIcon, FileIcon, LayoutDashboardIcon, MapIcon, PluginIcon, SettingIcon } from '@/components/common/icons';
+import NavLink from '@/components/common/nav-link';
 import Tran from '@/components/common/tran';
-
-
 
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
-
 
 type LayoutProps = {
   params: Promise<{

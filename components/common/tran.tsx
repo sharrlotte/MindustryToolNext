@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { useI18n } from '@/i18n/client';
 import { extractTranslationKey } from '@/lib/utils';
@@ -13,9 +13,11 @@ type Props = {
   asChild?: boolean;
 };
 
-function Tran({ className, text, args, asChild, ...rest }: Props): React.ReactNode {
+function ITran({ className, text, args, asChild, ...rest }: Props): React.ReactNode {
   const { group, key } = extractTranslationKey(text);
   const { t } = useI18n(group);
+
+  console.log(text);
 
   if (asChild) {
     return t(key, args);
@@ -28,4 +30,10 @@ function Tran({ className, text, args, asChild, ...rest }: Props): React.ReactNo
   );
 }
 
-export default Tran;
+export default function Tran(props: Parameters<typeof ITran>[0]) {
+  return (
+    <Suspense>
+      <ITran {...props} />
+    </Suspense>
+  );
+}

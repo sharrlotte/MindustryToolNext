@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { Locale } from '@/i18n/config';
 import { PaginationQuery } from '@/query/search-query';
-import { TranslationCompare, TranslationDiff } from '@/types/response/Translation';
+import { Translation, TranslationCompare, TranslationDiff } from '@/types/response/Translation';
 
 export async function getTranslationDiff(axios: AxiosInstance, params: PaginationQuery & { language: Locale; target: Locale; key?: string }): Promise<TranslationDiff[]> {
   const result = await axios.get('/translations/diff', { params });
@@ -27,6 +27,19 @@ export async function getTranslationCompare(axios: AxiosInstance, params: Pagina
 
 export async function getTranslationCompareCount(axios: AxiosInstance, params: { language: Locale; target: Locale; key?: string }) {
   const result = await axios.get('/translations/compare/count', {
+    params,
+  });
+
+  return result.data;
+}
+export async function getTranslationSearch(axios: AxiosInstance, params: PaginationQuery & { language: Locale; key?: string }): Promise<Translation[]> {
+  const result = await axios.get('/translations/search', { params });
+
+  return result.data;
+}
+
+export async function getTranslationSearchCount(axios: AxiosInstance, params: { language: Locale; key?: string }) {
+  const result = await axios.get('/translations/search/count', {
     params,
   });
 
