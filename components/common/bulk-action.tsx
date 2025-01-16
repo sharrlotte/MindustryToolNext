@@ -7,10 +7,13 @@ import { Button } from '@/components/ui/button';
 
 import { cn } from '@/lib/utils';
 
+type BulkActionVariant = 'success' | 'destructive';
+
 type ContextType = {
   show: boolean;
-  setShow: (value: boolean) => void;
   value: string[];
+  variant?: BulkActionVariant;
+  setShow: (value: boolean) => void;
   onSelect: (value: string) => void;
   onActionCancel: () => void;
   onActionPerform: (value: string[]) => void;
@@ -18,8 +21,8 @@ type ContextType = {
 
 const defaultContextValue: ContextType = {
   show: false,
-  setShow: () => {},
   value: [],
+  setShow: () => {},
   onSelect: () => {},
   onActionCancel: () => {},
   onActionPerform: () => {},
@@ -40,9 +43,10 @@ export function useBulkAction() {
 type BulkActionProps = {
   onActionPerform: (value: string[]) => void;
   children: ReactNode;
+  variant?: BulkActionVariant;
 };
 
-export function BulkActionContainer({ onActionPerform, children }: BulkActionProps) {
+export function BulkActionContainer({ onActionPerform, children, variant }: BulkActionProps) {
   const [selected, setSelected] = useState<string[]>([]);
   const [show, setShow] = useState(false);
 
@@ -68,6 +72,7 @@ export function BulkActionContainer({ onActionPerform, children }: BulkActionPro
     <context.Provider
       value={{
         show,
+        variant,
         value: selected,
         onSelect,
         setShow,
@@ -129,13 +134,13 @@ type BulkActionSelectorProps = {
 };
 
 export function BulkActionSelector({ className, value, children }: BulkActionSelectorProps) {
-  const { show, value: selected, onSelect } = useBulkAction();
+  const { show, variant, value: selected, onSelect } = useBulkAction();
   const isSelected = selected.includes(value);
 
   if (show)
     return (
       <div className="h-full w-full" onClick={() => onSelect(value)}>
-        <div className={cn('h-full w-full', { 'pointer-events-none': show })}>{children}</div>
+        <div className={cn('h-full w-full', { 'pointer-events-none': show }, { 'border-2 overflow-hidden rounded-md': isSelected, 'border-success': variant === 'success', 'border-destructive': variant === 'destructive' })}>{children}</div>
         <div className={cn('absolute right-1 top-1 size-10 p-0', className, { 'pointer-events-none': show })}>{isSelected ? <SquareCheckedIcon className="size-10" /> : <SquareIcon className="size-10" />}</div>
       </div>
     );
