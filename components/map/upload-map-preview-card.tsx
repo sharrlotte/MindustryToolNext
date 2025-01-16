@@ -36,10 +36,11 @@ function InternalUploadMapPreviewCard({ map: { id, name }, imageCount }: UploadM
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <LinkIcon />
       </CopyButton>
-      <BulkActionSelector value={id} />
-      <InternalLink href={detailLink} preloadImage={detailImageLink}>
-        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
-      </InternalLink>
+      <BulkActionSelector value={id}>
+        <InternalLink href={detailLink} preloadImage={detailImageLink}>
+          <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
+        </InternalLink>
+      </BulkActionSelector>
       <PreviewDescription>
         <PreviewHeader>
           <ColorText text={name} />
