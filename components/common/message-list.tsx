@@ -50,7 +50,7 @@ export default function MessageList({
 
   const queryClient = useQueryClient();
   const isEndReached = isReachedEnd(currentContainer, threshold);
-  const { socket } = useSocket();
+  const { socket, state } = useSocket();
 
   const clientHeight = list?.clientHeight || 0;
   const lastHeight = lastHeightRef.current || 0;
@@ -192,11 +192,11 @@ export default function MessageList({
     );
   }
 
-  if (!currentContainer) {
+  if (!data || !currentContainer || state !== 'connected') {
     return <div className={cn('col-span-full flex h-full w-full items-center justify-center', className)}>{loader}</div>;
   }
 
-  if (!data || pages.length === 0) {
+  if (pages.length === 0) {
     return noResult;
   }
 
