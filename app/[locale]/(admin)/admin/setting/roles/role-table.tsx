@@ -10,6 +10,8 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components
 const CreateRoleDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/roles/create-role-dialog'));
 
 export async function RoleTable() {
+  
+
   return (
     <div className="flex h-full flex-col justify-between overflow-hidden">
       <Table className="table-fixed border-none">

@@ -5,7 +5,7 @@ import { TableCell, TableRow } from '@/components/ui/table';
 export function RoleListSkeleton() {
   return (
     <Skeletons number={20}>
-      <TableRow>
+      <TableRow className="h-14">
         <TableCell>
           <Skeleton className="h-8 w-full rounded-sm" />
         </TableCell>
