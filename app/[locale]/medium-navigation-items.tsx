@@ -54,18 +54,16 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
       animate={isVisible ? 'open' : 'closed'}
     >
       <div className={cn('flex h-full w-full flex-col p-1', { 'p-2': expand })}>
-        <div className={cn('flex justify-between p-2', { 'gap-1': expand })}>
-          <div className="flex flex-col">
-            <div
-              className={cn('overflow-hidden hidden whitespace-nowrap', {
-                block: isVisible,
-              })}
-            >
-              <h1 className="text-xl font-medium">MindustryTool</h1>
+        <div className={cn('flex justify-between', { 'gap-1': expand })}>
+          {isVisible && (
+            <div className="flex flex-col">
+              <div className="overflow-hidden whitespace-nowrap">
+                <h1 className="text-xl font-medium">MindustryTool</h1>
+              </div>
+              <span className="overflow-hidden whitespace-nowrap text-xs">{env.webVersion}</span>
             </div>
-            <span className={cn('hidden overflow-hidden whitespace-nowrap text-xs', { block: isVisible })}>{env.webVersion}</span>
-          </div>
-          <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
+          )}
+          <Button title="Navbar" className="justify-center aspect-square size-10 items-center" type="button" variant="link" size="icon" onClick={toggleSidebar}>
             <MenuIcon className="size-6 text-foreground" />
           </Button>
         </div>
