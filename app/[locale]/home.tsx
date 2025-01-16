@@ -32,7 +32,7 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPag
         <li key="more" className="m-0 snap-center text-nowrap p-0">
           <InternalLink href="/schematics" className="cursor-pointer px-2 font-light">
             <Preview className="flex items-center justify-center">
-              <Tran text="home.preview-more" />
+              <Tran text="view-more" />
             </Preview>
           </InternalLink>
         </li>
@@ -48,7 +48,7 @@ export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginatio
         <li key="more" className="m-0 snap-center text-nowrap p-0">
           <InternalLink href="/maps" className="cursor-pointer px-2 text-center font-light">
             <Preview className="flex items-center justify-center">
-              <Tran text="home.preview-more" />
+              <Tran text="view-more" />
             </Preview>
           </InternalLink>
         </li>
