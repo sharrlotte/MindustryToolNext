@@ -20,13 +20,13 @@ export async function RoleList() {
     return <ErrorScreen error={session} />;
   }
 
-  const bestPosition = session.roles === null || session.roles.length === 0 ? 0 : session.roles.sort((o1, o2) => o2.position - o1.position)[0].position;
+  const bestRole = session.roles === null || session.roles.length === 0 ? undefined : session.roles.sort((o1, o2) => o2.position - o1.position)[0];
 
   return data
     ?.sort((o1, o2) => o2.position - o1.position)
     .map((role) => (
       <Suspense key={role.id}>
-        <RoleCard role={role} bestPosition={bestPosition} />
+        <RoleCard role={role} bestRole={bestRole} />
       </Suspense>
     ));
 }

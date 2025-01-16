@@ -49,7 +49,7 @@ export default function UpdateRoleDialog({ role }: Props) {
     onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['roles']);
-      revalidate({ path: '/users' });
+      revalidate({ path: '/' });
     },
   });
 
@@ -134,6 +134,8 @@ export default function UpdateRoleDialog({ role }: Props) {
                         </div>
                       </FormControl>
                       <DialogContent className="p-6">
+                        <DialogTitle />
+                        <DialogDescription />
                         <HexColorPicker color={field.value} onChange={field.onChange} />
                         <p>{field.value}</p>
                       </DialogContent>

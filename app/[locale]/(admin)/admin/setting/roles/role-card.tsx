@@ -8,14 +8,14 @@ import Tran from '@/components/common/tran';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { TableCell, TableRow } from '@/components/ui/table';
 
-import { RoleWithAuthorities } from '@/types/response/Role';
+import { Role, RoleWithAuthorities } from '@/types/response/Role';
 
 type Props = {
   role: RoleWithAuthorities;
-  bestPosition: number;
+  bestRole?: Role;
 };
 
-export default function RoleCard({ role, bestPosition }: Props) {
+export default function RoleCard({ role, bestRole }: Props) {
   const { name, color, position } = role;
 
   return (
@@ -27,7 +27,7 @@ export default function RoleCard({ role, bestPosition }: Props) {
         <ChangeRoleAuthorityDialog role={role} />
       </TableCell>
       <TableCell className="flex items-center justify-center">
-        {bestPosition > position && (
+        {bestRole && (bestRole.position > position || bestRole.name.toUpperCase() === 'SHAR') && (
           <EllipsisButton variant="ghost">
             <UpdateRoleDialog role={role} />
             <DeleteRoleButton role={role} />
