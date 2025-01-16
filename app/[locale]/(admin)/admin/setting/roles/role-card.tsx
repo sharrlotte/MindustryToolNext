@@ -21,7 +21,7 @@ export default function RoleCard({ role, bestPosition }: Props) {
   return (
     <TableRow className="h-14">
       <TableCell>
-        <Tran className={color} text={name.toLowerCase()} />
+        <Tran style={{ color }} text={name.toLowerCase()} />
       </TableCell>
       <TableCell className="w-full overflow-hidden text-ellipsis">
         <ChangeRoleAuthorityDialog role={role} />
