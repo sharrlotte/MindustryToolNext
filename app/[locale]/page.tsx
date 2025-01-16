@@ -67,7 +67,7 @@ export default async function Page({ params }: Props) {
   return (
     <main className="no-scrollbar flex h-full flex-col bg-center text-foreground gap-8 pt-4">
       <div className="px-4">
-        <h1 className="w-full text-3xl font-extrabold">
+        <h1 className="w-full text-3xl font-extrabold pb-4">
           <ServerTran locale={locale} text="home.hero-title" />
         </h1>
         <article className="flex gap-4 flex-row">
