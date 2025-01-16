@@ -4,9 +4,11 @@ import { usePathname } from 'next/navigation';
 import React, { useLayoutEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
+import { LogoutIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
+
 import env from '@/constant/env';
 import { cn } from '@/lib/utils';
-import { LogoutIcon } from '@/components/common/icons';
 
 export default function LogoutButton({ className }: { className?: string }) {
   const [_, setCookie] = useCookies();
@@ -20,7 +22,8 @@ export default function LogoutButton({ className }: { className?: string }) {
 
   return (
     <a className={cn(className)} href={`${env.url.api}/auth/logout`}>
-      <LogoutIcon className="size-5" />
+      <LogoutIcon className="size-5 stroke-1" />
+      <Tran text="logout" />
     </a>
   );
 }

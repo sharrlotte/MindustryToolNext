@@ -13,7 +13,7 @@ type Props = {
   asChild?: boolean;
 };
 
-function Tran({ className, text, args, asChild, ...rest }: Props): React.ReactNode {
+export default function Tran({ className, text, args, asChild, ...rest }: Props): React.ReactNode {
   const { group, key } = extractTranslationKey(text);
   const { t } = useI18n(group);
 
@@ -27,5 +27,3 @@ function Tran({ className, text, args, asChild, ...rest }: Props): React.ReactNo
     </span>
   );
 }
-
-export default Tran;

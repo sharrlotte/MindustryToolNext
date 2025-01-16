@@ -55,6 +55,7 @@ type Task =
     };
 
 export default class SocketClient {
+  private requestTimeout = 2000;
   private tasks: Task[] = [];
   private socket: WebSocket | null = null;
   private handlers: Record<string, EventHandler[]> = {};
@@ -94,7 +95,7 @@ export default class SocketClient {
               delete this.requests[id];
 
               resolve(undefined);
-            }, 10000);
+            }, this.requestTimeout);
 
             this.requests[id] = { timeout, resolve, reject };
 
@@ -252,7 +253,7 @@ export default class SocketClient {
         delete this.requests[id];
 
         reject(`Await request timeout: ${json}`);
-      }, 20000);
+      }, this.requestTimeout);
 
       this.requests[id] = { timeout, resolve, reject };
 
@@ -289,8 +290,8 @@ export default class SocketClient {
   public async close() {
     this.tasks = [];
     this.rooms = [];
-    this.connects = []
-    this.disconnects = []
+    this.connects = [];
+    this.disconnects = [];
 
     if (this.interval) {
       clearInterval(this.interval);

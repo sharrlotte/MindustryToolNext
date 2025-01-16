@@ -13,3 +13,10 @@ export type TranslationCompare = {
   value: Record<Locale, string>;
   keyGroup: string;
 };
+
+export type Translation = {
+  id: string;
+  key: string;
+  value: string;
+  keyGroup: string;
+};

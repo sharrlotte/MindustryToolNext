@@ -124,7 +124,7 @@ export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20
             <PaginationItem>
               <Button
                 className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                  'bg-secondary text-background dark:text-foreground': lastNumber === currentPage,
+                  'bg-secondary text-brand-foreground': lastNumber === currentPage,
                 })}
                 title="prev"
                 onClick={() => handlePageChange(lastNumber)}

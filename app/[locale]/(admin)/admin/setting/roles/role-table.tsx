@@ -1,10 +1,13 @@
-import React from 'react';
+import dynamic from 'next/dynamic';
+import React, { Suspense } from 'react';
 
-import CreateRoleDialog from '@/app/[locale]/(admin)/admin/setting/create-role-dialog';
-import { RoleList } from '@/app/[locale]/(admin)/admin/setting/role-list';
+import { RoleList } from '@/app/[locale]/(admin)/admin/setting/roles/role-list';
+import { RoleListSkeleton } from '@/app/[locale]/(admin)/admin/setting/roles/role-list-skeleton';
 
 import Tran from '@/components/common/tran';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
+const CreateRoleDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/roles/create-role-dialog'));
 
 export async function RoleTable() {
   return (
@@ -22,7 +25,9 @@ export async function RoleTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <RoleList />
+          <Suspense fallback={<RoleListSkeleton />}>
+            <RoleList />
+          </Suspense>
         </TableBody>
       </Table>
       <div className="flex w-full justify-end">

@@ -94,13 +94,13 @@ export async function getUser(axios: AxiosInstance, { id }: IdSearchParams): Pro
   return result.data;
 }
 
-export async function getUsers(axios: AxiosInstance, params: PaginationQuery & { name?: string; role?: UserRole }): Promise<User[]> {
+export async function getUsers(axios: AxiosInstance, params: PaginationQuery & { name?: string; role?: UserRole; is_banned?: string }): Promise<User[]> {
   const result = await axios.get(`/users`, { params });
 
   return result.data;
 }
 
-export async function getUserCount(axios: AxiosInstance, params: { name?: string; role?: UserRole }): Promise<number> {
+export async function getUserCount(axios: AxiosInstance, params: { name?: string; role?: UserRole; is_banned?: string }): Promise<number> {
   const result = await axios.get(`/users/count`, { params });
 
   return result.data;

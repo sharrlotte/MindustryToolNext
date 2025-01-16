@@ -3,9 +3,8 @@
 import { ReactNode, useState } from 'react';
 import React from 'react';
 
-import NavLink from '@/app/[locale]/(user)/servers/[id]/nav-link';
-
 import { GanttChartIcon, NotificationIcon, SettingIcon, TagIcon, UsersIcon } from '@/components/common/icons';
+import NavLink from '@/components/common/nav-link';
 import Tran from '@/components/common/tran';
 
 import { useSession } from '@/context/session-context.client';

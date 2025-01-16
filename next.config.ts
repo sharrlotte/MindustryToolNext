@@ -3,6 +3,9 @@ import { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   experimental: {
     ppr: 'incremental',
+    staleTimes: {
+      static: 600,
+    },
   },
   productionBrowserSourceMaps: true,
   crossOrigin: 'anonymous',

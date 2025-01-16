@@ -1,29 +1,21 @@
-'use client';
-
 import React from 'react';
 
 import ErrorScreen from '@/components/common/error-screen';
-import LoadingScreen from '@/components/common/loading-screen';
 
-import useClientApi from '@/hooks/use-client';
+import { serverApi } from '@/action/action';
+import { isError } from '@/lib/utils';
 import { getTags } from '@/query/tag';
 
-import { useQuery } from '@tanstack/react-query';
+export default async function PageClient() {
+  const data = await serverApi(getTags);
 
-export default function PageClient() {
-  const axios = useClientApi();
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['tags'],
-    queryFn: () => getTags(axios),
-  });
-
-  if (isError) {
-    return <ErrorScreen error={error} />;
+  if (isError(data)) {
+    return <ErrorScreen error={data} />;
   }
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <div className="h-full overflow-y-auto">
+      <pre className='border-none'>{JSON.stringify(data, null, 2)}</pre>
+    </div>
+  );
 }

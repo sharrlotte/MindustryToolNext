@@ -15,7 +15,7 @@ export default function NotFoundScreen() {
         </p>
       </div>
       <div className="grid grid-cols-2 gap-2">
-        <Link className="rounded-md text-center border bg-brand p-2 text-sm text-background dark:text-foreground" href="/">
+        <Link className="rounded-md text-center border bg-brand p-2 text-sm text-brand-foreground" href="/">
           <Tran text="home" />
         </Link>
         <BackButton variant="primary" />

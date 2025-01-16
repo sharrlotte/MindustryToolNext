@@ -137,7 +137,7 @@ function ServerPluginCard({ id, name, description, isAdded, mutate }: ServerPlug
       onClick={() => mutate(id)}
     >
       <h2 className="line-clamp-1 w-full text-ellipsis whitespace-normal text-nowrap">{name}</h2>
-      <span className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>{' '}
+      <span className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>
     </div>
   );
 }

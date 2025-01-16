@@ -28,7 +28,7 @@ function InternalTagCard({ tag, className, onDelete, ...props }: TagCardProps) {
 
   return (
     <span
-      className={cn('flex cursor-pointer items-center gap-0.5 flex-nowrap whitespace-nowrap rounded-full px-2 py-2 text-center text-xs text-background dark:text-foreground', className)}
+      className={cn('flex cursor-pointer items-center gap-0.5 flex-nowrap whitespace-nowrap rounded-full px-2 py-2 text-center text-xs text-brand-foreground', className)}
       style={{ backgroundColor: color }}
       onClick={() => handleOnDelete(tag)}
       {...props}

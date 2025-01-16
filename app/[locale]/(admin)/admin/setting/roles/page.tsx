@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { RoleTable } from '@/app/[locale]/(admin)/admin/setting/role-table';
+import { RoleTable } from '@/app/[locale]/(admin)/admin/setting/roles/role-table';
 
 import { getSession } from '@/action/action';
 import { Locale } from '@/i18n/config';
@@ -14,6 +14,9 @@ type Props = {
     locale: Locale;
   }>;
 };
+
+export const experimental_ppr = true;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);

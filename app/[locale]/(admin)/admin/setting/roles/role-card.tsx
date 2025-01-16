@@ -1,8 +1,8 @@
 import React from 'react';
 
-import ChangeRoleAuthorityDialog from '@/app/[locale]/(admin)/admin/setting/change-role-authority-dialog';
-import DeleteRoleButton from '@/app/[locale]/(admin)/admin/setting/delete-role-button';
-import UpdateRoleDialog from '@/app/[locale]/(admin)/admin/setting/update-role-dialog';
+import ChangeRoleAuthorityDialog from '@/app/[locale]/(admin)/admin/setting/roles/change-role-authority-dialog';
+import DeleteRoleButton from '@/app/[locale]/(admin)/admin/setting/roles/delete-role-button';
+import UpdateRoleDialog from '@/app/[locale]/(admin)/admin/setting/roles/update-role-dialog';
 
 import Tran from '@/components/common/tran';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
