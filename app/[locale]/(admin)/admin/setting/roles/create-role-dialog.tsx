@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
 import { useForm } from 'react-hook-form';
 
 import { Hidden } from '@/components/common/hidden';
+import { EditIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -76,7 +78,7 @@ export default function CreateRoleDialog() {
                       <Tran text="name" />
                     </FormLabel>
                     <FormControl>
-                      <Input className={form.getValues('color')} {...field} />
+                      <Input style={{ color: field.value }} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -120,9 +122,20 @@ export default function CreateRoleDialog() {
                     <FormLabel>
                       <Tran text="color" />
                     </FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
+                    <Dialog>
+                      <FormControl>
+                        <div className="flex gap-2">
+                          <Input {...field} />
+                          <DialogTrigger className="aspect-square justify-center items-center flex border rounded-md size-9">
+                            <EditIcon />
+                          </DialogTrigger>
+                        </div>
+                      </FormControl>
+                      <DialogContent className="p-6">
+                        <HexColorPicker color={field.value} onChange={field.onChange} />
+                        <p>{field.value}</p>
+                      </DialogContent>
+                    </Dialog>
                     <FormMessage />
                   </FormItem>
                 )}

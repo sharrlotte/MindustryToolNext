@@ -1,15 +1,17 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 import { Factory, Value, blocks } from '@/app/[locale]/(user)/ratio/block-data';
+
+import { ChevronsUpDownIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { ChevronsUpDownIcon } from '@/components/common/icons';
 
 type Tree = {
   factory: Factory;
@@ -29,6 +31,7 @@ export default function RatioPage() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 overflow-auto p-2">
+      <Link href="https://mindustry-calculator.vercel.app/">App link</Link>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button className="h-12 min-w-[200px] justify-between border-none bg-secondary p-2 capitalize shadow-md" title="" role="combobox" variant="outline">
