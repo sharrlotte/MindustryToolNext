@@ -52,16 +52,16 @@ function InternalUploadSchematicPreviewCard({ schematic: { id, name }, imageCoun
         <InternalLink href={detailLink} preloadImage={detailImageLink}>
           <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
         </InternalLink>
+        <PreviewDescription>
+          <PreviewHeader>
+            <ColorText text={name} />
+          </PreviewHeader>
+          <PreviewActions>
+            <CopyButton content={copyContent} data={getData} />
+            <DownloadButton href={downloadLink} fileName={downloadName} />
+          </PreviewActions>
+        </PreviewDescription>
       </BulkActionSelector>
-      <PreviewDescription>
-        <PreviewHeader>
-          <ColorText text={name} />
-        </PreviewHeader>
-        <PreviewActions>
-          <CopyButton content={copyContent} data={getData} />
-          <DownloadButton href={downloadLink} fileName={downloadName} />
-        </PreviewActions>
-      </PreviewDescription>
     </Preview>
   );
 }
