@@ -1,26 +1,27 @@
+'use client';
+
 import { Suspense } from 'react';
 
 import RoleCard from '@/app/[locale]/(admin)/admin/setting/roles/role-card';
 
-import ErrorScreen from '@/components/common/error-screen';
-
-import { getAuthSession, serverApi } from '@/action/action';
-import { isError } from '@/lib/utils';
+import useClientApi from '@/hooks/use-client';
 import { getRoles } from '@/query/role';
+import { Role, RoleWithAuthorities } from '@/types/response/Role';
 
-export async function RoleList() {
-  const data = await serverApi(getRoles);
-  const session = await getAuthSession();
+import { useQuery } from '@tanstack/react-query';
 
-  if (isError(data)) {
-    return <ErrorScreen error={data} />;
-  }
+type Props = {
+  roles: RoleWithAuthorities[];
+  bestRole: Role;
+};
+export function RoleList({ roles, bestRole }: Props) {
+  const axios = useClientApi();
 
-  if (isError(session)) {
-    return <ErrorScreen error={session} />;
-  }
-
-  const bestRole = session.roles === null || session.roles.length === 0 ? undefined : session.roles.sort((o1, o2) => o2.position - o1.position)[0];
+  const { data } = useQuery({
+    queryKey: ['roles'],
+    queryFn: () => getRoles(axios),
+    initialData: roles,
+  });
 
   return data
     ?.sort((o1, o2) => o2.position - o1.position)
