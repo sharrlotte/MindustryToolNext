@@ -13,7 +13,7 @@ import IdUserCard from '@/components/user/id-user-card';
 
 import useClientApi from '@/hooks/use-client';
 import useQueryState from '@/hooks/use-query-state';
-import { SendNotificationSchema, SendNotificationSchemaType, sendNotification } from '@/query/user';
+import { SendNotificationRequest, SendNotificationSchema, sendNotification } from '@/query/user';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -27,7 +27,7 @@ const initialState = {
 export default function PageClient() {
   const [{ userId }] = useQueryState(initialState);
 
-  const form = useForm<SendNotificationSchemaType>({
+  const form = useForm<SendNotificationRequest>({
     resolver: zodResolver(SendNotificationSchema),
     defaultValues: {
       userId,
@@ -39,7 +39,7 @@ export default function PageClient() {
   const axios = useClientApi();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: SendNotificationSchemaType) => sendNotification(axios, { ...data, userId }),
+    mutationFn: (data: SendNotificationRequest) => sendNotification(axios, { ...data, userId }),
     onSuccess: () => {
       form.reset();
       toast.success(<Tran text="notification.send-success" />);

@@ -136,9 +136,9 @@ export const SendNotificationSchema = z.object({
   content: z.string().min(1).max(4096),
 });
 
-export type SendNotificationSchemaType = z.infer<typeof SendNotificationSchema>;
+export type SendNotificationRequest = z.infer<typeof SendNotificationSchema>;
 
-export async function sendNotification(axios: AxiosInstance, data: SendNotificationSchemaType): Promise<void> {
+export async function sendNotification(axios: AxiosInstance, data: SendNotificationRequest): Promise<void> {
   const result = await axios.post(`/notifications`, data, { data });
 
   return result.data;

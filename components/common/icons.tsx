@@ -68,6 +68,7 @@ import {
   X,
   XCircle,
   Loader,
+  ChevronsLeftRight
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -80,6 +81,7 @@ type Props = {
   className?: string;
 };
 
+export const ModIcon = ({ className }: Props) => <ChevronsLeftRight className={cn(className ?? 'lucide')} />;
 export const LoaderIcon = ({ className }: Props) => <Loader className={cn(className ?? 'lucide')} />;
 export const TagIcon = ({ className }: Props) => <Tag className={cn(className ?? 'lucide')} />;
 export const BoxIcon = ({ className }: Props) => <Box className={cn(className ?? 'lucide')} />;
