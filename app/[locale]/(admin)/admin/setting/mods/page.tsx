@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 import CreateModDialog from '@/app/[locale]/(admin)/admin/setting/mods/create-mod-dialog';
 import DeleteModDialog from '@/app/[locale]/(admin)/admin/setting/mods/delete-mod-dialog';
 import UpdateModDialog from '@/app/[locale]/(admin)/admin/setting/mods/update-mod-dialog';
@@ -56,10 +58,11 @@ type ModCardProps = {
 };
 
 function ModCard({ mod }: ModCardProps) {
-  const { name } = mod;
+  const { name, icon } = mod;
 
   return (
     <div className="bg-card rounded-md overflow-hidden gap-2 w-full flex justify-between p-2">
+      {icon && <Image width={48} height={48} className="size-12 object-cover" src={icon} alt={name} />}
       <h2 className="w-full text-ellipsis overflow-hidden text-wrap">{name}</h2>
       <EllipsisButton variant="ghost">
         <UpdateModDialog mod={mod} />

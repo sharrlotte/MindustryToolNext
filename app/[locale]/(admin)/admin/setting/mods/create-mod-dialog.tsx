@@ -1,9 +1,11 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Hidden } from '@/components/common/hidden';
+import { ImageIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -26,6 +28,7 @@ export default function CreateModDialog() {
     },
   });
 
+  const [url, setUrl] = useState<string>();
   const [open, setOpen] = useState(false);
 
   const { invalidateByKey } = useQueriesData();
@@ -82,6 +85,43 @@ export default function CreateModDialog() {
                   <FormControl>
                     <Input placeholder="Test" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="icon"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <Tran text="mod.icon" />
+                  </FormLabel>
+                  <FormControl>
+                    <div className="flex gap-2">
+                      <label className="flex h-9 items-center justify-center rounded-md border p-2" htmlFor="image" hidden>
+                        <ImageIcon className="size-5" />
+                      </label>
+                      {url && <Image key={url} width={48} height={48} className="size-16 object-cover" src={url} loader={({ src }) => src} alt="preview" />}
+                      <input
+                        id="image"
+                        className="w-16"
+                        hidden
+                        accept=".png, .jpg, .jpeg"
+                        type="file"
+                        onChange={(event) => {
+                          const files = event.target.files;
+                          if (files && files.length > 0) {
+                            setUrl(URL.createObjectURL(files[0]));
+                            field.onChange(files[0]);
+                          }
+                        }}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    <Tran text="mod.icon-description" />
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
