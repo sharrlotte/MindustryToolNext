@@ -3,7 +3,7 @@
 import { ReactNode, useState } from 'react';
 import React from 'react';
 
-import { GanttChartIcon, NotificationIcon, SettingIcon, TagIcon, UsersIcon } from '@/components/common/icons';
+import { GanttChartIcon, ModIcon, NotificationIcon, SettingIcon, TagIcon, UsersIcon } from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
 import Tran from '@/components/common/tran';
 
@@ -37,6 +37,13 @@ const links: {
     href: 'tags',
     label: <Tran text="tag" />,
     icon: <TagIcon />,
+    filter: { authority: 'MANAGE_TAG' },
+  },
+  {
+    id: 'mod',
+    href: 'mods',
+    label: <Tran text="mod" />,
+    icon: <ModIcon />,
     filter: { authority: 'MANAGE_TAG' },
   },
   {

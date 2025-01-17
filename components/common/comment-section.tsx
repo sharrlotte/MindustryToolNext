@@ -25,7 +25,7 @@ import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useI18n } from '@/i18n/client';
 import { isNumeric } from '@/lib/utils';
-import { CreateCommentSchema, CreateCommentSchemaType, createComment, getComments } from '@/query/comment';
+import { CreateCommentRequest, CreateCommentSchema, createComment, getComments } from '@/query/comment';
 import { getUser } from '@/query/user';
 import { Comment } from '@/types/response/Comment';
 
@@ -166,7 +166,7 @@ function CommentInput({ itemId }: CommentInputProps) {
 
   const { pushByKey, invalidateByKey, filterByKey } = useQueriesData();
   const { mutate, isPending } = useMutation({
-    mutationFn: (payload: CreateCommentSchemaType) => createComment(axios, itemId, payload),
+    mutationFn: (payload: CreateCommentRequest) => createComment(axios, itemId, payload),
     mutationKey: ['create-comment'],
     onMutate: (data) => {
       pushByKey<Comment>([`comments-${itemId}`], { ...data, attachments: [], id: genId(), path: '', userId: session?.id || '', createdAt: new Date().toISOString() });
@@ -183,7 +183,7 @@ function CommentInput({ itemId }: CommentInputProps) {
     },
   });
 
-  const form = useForm<CreateCommentSchemaType>({
+  const form = useForm<CreateCommentRequest>({
     resolver: zodResolver(CreateCommentSchema),
     defaultValues: {
       content: '',

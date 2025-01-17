@@ -7,7 +7,6 @@ import { useMediaQuery } from 'usehooks-ts';
 
 import { Path, SubPath, groups } from '@/app/routes';
 
-
 import { useSession } from '@/context/session-context.client';
 import { hasAccess, max } from '@/lib/utils';
 
@@ -40,7 +39,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
     return (
       <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
         <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
-        <div className="relative h-full w-full overflow-hidden">{children}</div>
+        {children}
       </div>
     );
   }
@@ -48,7 +47,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
   return (
     <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center sm:grid">
       <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
-      <div className="relative h-full w-full overflow-hidden">{children}</div>
+      {children}
     </div>
   );
 }

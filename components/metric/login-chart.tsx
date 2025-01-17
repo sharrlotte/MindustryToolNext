@@ -1,9 +1,13 @@
-import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import LoginChartClient from '@/components/metric/login-chart.client';
+
+
+
+import { serverApi } from '@/action/action';
 import { fillMetric } from '@/lib/utils';
 import { isError } from '@/lib/utils';
 import { getMetric } from '@/query/metric';
+
 
 type Props = {
   start: Date;
@@ -12,7 +16,7 @@ type Props = {
 };
 
 export default async function LoginChart({ start, dates, end }: Props) {
-  const [logged, daily] = await Promise.all([serverApi((axios) => getMetric(axios, start, end, 'DAILY_LIKE')), serverApi((axios) => getMetric(axios, start, end, 'LOGGED_DAILY_USER'))]);
+  const [logged, daily] = await Promise.all([serverApi((axios) => getMetric(axios, start, end, 'LOGGED_DAILY_USER')), serverApi((axios) => getMetric(axios, start, end, 'DAILY_USER'))]);
 
   if (isError(logged)) {
     return <ErrorScreen error={logged} />;

@@ -33,7 +33,7 @@ export default function DeleteRoleButton({ role }: Props) {
     onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['roles']);
-      revalidate({ path: '/users' });
+      revalidate({ path: '/roles' });
     },
   });
 

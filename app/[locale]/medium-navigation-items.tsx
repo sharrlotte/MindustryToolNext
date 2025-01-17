@@ -48,32 +48,24 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
 
   return (
     <motion.div
-      className="relative flex h-full overflow-hidden border-r min-w-nav"
+      className={cn('relative gap-2 flex h-full overflow-hidden border-r min-w-nav w-full flex-col p-1', { 'p-2': expand })}
       variants={sidebarVariants}
       initial={isVisible ? { width: sidebarVariants.open.width } : { width: sidebarVariants.closed.width }}
       animate={isVisible ? 'open' : 'closed'}
     >
-      <div className={cn('flex h-full w-full flex-col p-1', { 'p-2': expand })}>
-        <div className={cn('flex justify-between p-2', { 'gap-1': expand })}>
+      <div className={cn('flex justify-between h-fit', { 'gap-1': expand })}>
+        {isVisible && (
           <div className="flex flex-col">
-            <div
-              className={cn('overflow-hidden hidden whitespace-nowrap', {
-                block: isVisible,
-              })}
-            >
-              <h1 className="text-xl font-medium">MindustryTool</h1>
-            </div>
-            <span className={cn('hidden overflow-hidden whitespace-nowrap text-xs', { block: isVisible })}>{env.webVersion}</span>
+            <h1 className="text-xl font-medium">MindustryTool</h1>
+            <span className="overflow-hidden whitespace-nowrap text-xs">{env.webVersion}</span>
           </div>
-          <Button title="Navbar" type="button" variant="link" size="icon" onClick={toggleSidebar}>
-            <MenuIcon className="size-6 text-foreground" />
-          </Button>
-        </div>
-        <div className="flex h-full flex-col justify-between overflow-hidden">
-          <MediumNavItems pathGroups={pathGroups} bestMatch={bestMatch} />
-          {expand ? <UserDisplay /> : <NavFooter />}
-        </div>
+        )}
+        <Button title="Navbar" className="justify-center aspect-square size-10 items-center" type="button" variant="link" size="icon" onClick={toggleSidebar}>
+          <MenuIcon className="size-6 text-foreground" />
+        </Button>
       </div>
+      <MediumNavItems pathGroups={pathGroups} bestMatch={bestMatch} />
+      {expand ? <UserDisplay /> : <NavFooter />}
     </motion.div>
   );
 }
@@ -89,7 +81,7 @@ function NavFooter() {
   const expand = isSmall ? true : isVisible;
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-1 mt-auto">
       <Divider />
       <NotificationDialog />
       <ProtectedElement session={session} filter>

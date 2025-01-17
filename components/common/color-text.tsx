@@ -53,7 +53,11 @@ type Format = {
 export default function ColorText({ text, className }: ColorTextProps) {
   const result = useMemo(() => render(text), [text]);
 
-  return <span className={cn(className)}>{result}</span>;
+  if (!className) {
+    return result;
+  }
+
+  return <span className={className}>{result}</span>;
 }
 
 function addFormat(keys: string[]) {
@@ -81,7 +85,7 @@ function render(text?: string) {
   const index = text.search(COLOR_REGEX);
   let key = 0;
 
-  if (index < 0) return <span>{text}</span>;
+  if (index < 0) return text;
 
   const result: ReactNode[] = [];
 
@@ -92,7 +96,7 @@ function render(text?: string) {
 
   const arr = text.match(COLOR_REGEX);
 
-  if (!arr) return <span>{text}</span>;
+  if (!arr) return text;
 
   while (arr.length > 0) {
     const rawColor = arr[0].toLocaleLowerCase();
@@ -183,6 +187,12 @@ function breakdown(text: string, format: Format, key: number) {
   key += 1;
 
   if (s.length === 1) {
+    if (!style) {
+      return {
+        result: [text],
+        key,
+      };
+    }
     return {
       result: [
         <span key={key} style={style}>
@@ -193,22 +203,32 @@ function breakdown(text: string, format: Format, key: number) {
     };
   }
 
-  r.push(
-    <span key={key} style={style}>
-      {s[0]}
-    </span>,
-  );
+  if (!style) {
+    r.push(s[0]);
+  } else {
+    r.push(
+      <span key={key} style={style}>
+        {s[0]}
+      </span>,
+    );
+  }
 
   for (let i = 1; i < s.length; i++) {
     key += 1;
+
     r.push(<br key={key} />);
 
     key += 1;
-    r.push(
-      <span key={key} style={style}>
-        {s[i]}
-      </span>,
-    );
+
+    if (!style) {
+      r.push(s[i]);
+    } else {
+      r.push(
+        <span key={key} style={style}>
+          {s[i]}
+        </span>,
+      );
+    }
   }
   return { result: r, key };
 }

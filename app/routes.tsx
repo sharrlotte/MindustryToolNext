@@ -76,56 +76,56 @@ export const groups: readonly PathGroup[] = [
     paths: [
       {
         path: '/', //
-        name: <Tran text="home" />,
+        name: <Tran asChild text="home" />,
         icon: <HomeIcon />,
       },
       {
         path: '/schematics', //
-        name: <Tran text="schematic" />,
+        name: <Tran asChild text="schematic" />,
         icon: <SchematicIcon />,
       },
       {
         path: '/maps',
-        name: <Tran text="map" />,
+        name: <Tran asChild text="map" />,
         icon: <MapIcon />,
       },
       {
-        name: <Tran text="plugin" />,
+        name: <Tran asChild text="plugin" />,
         path: '/plugins',
         icon: <PluginIcon />,
       },
       {
         path: '/posts', //
-        name: <Tran text="post" />,
+        name: <Tran asChild text="post" />,
         icon: <PostIcon />,
       },
       {
         path: '/servers', //
-        name: <Tran text="server" />,
+        name: <Tran asChild text="server" />,
         icon: <ServerIcon />,
       },
       {
         path: '/logic', //
-        name: <Tran text="logic" />,
+        name: <Tran asChild text="logic" />,
         icon: <CmdIcon />,
       },
       {
         path: '/chat', //
-        name: <Tran text="chat" />,
+        name: <Tran asChild text="chat" />,
         icon: <ChatIconPath />,
       },
       {
         path: '/mindustry-gpt', //
-        name: <Tran text="mindustry-gpt" />,
+        name: <Tran asChild text="mindustry-gpt" />,
         icon: <MindustryGptIcon />,
       },
       {
-        name: <Tran text="rank" />,
+        name: <Tran asChild text="rank" />,
         path: '/rank',
         icon: <CrownIcon />,
       },
       {
-        name: <Tran text="ratio" />,
+        name: <Tran asChild text="ratio" />,
         path: '/ratio',
         icon: <RatioIcon />,
       },
@@ -133,28 +133,28 @@ export const groups: readonly PathGroup[] = [
   },
   {
     key: 'admin',
-    name: <Tran text="admin" />,
+    name: <Tran className="font-semibold" text="admin" />,
     paths: [
       {
-        name: <Tran text="dashboard" />,
+        name: <Tran asChild text="dashboard" />,
         path: '/admin',
         icon: <ChartIcon />,
         filter: { authority: 'VIEW_DASH_BOARD' },
       },
       {
-        name: <Tran text="setting" />,
+        name: <Tran asChild text="setting" />,
         path: '/admin/setting',
         icon: <BoxIcon />,
         filter: { any: [{ authority: 'EDIT_USER_ROLE' }, { authority: 'EDIT_USER_AUTHORITY' }, { authority: 'MANAGE_TAG' }, { authority: 'VIEW_SETTING' }] },
       },
       {
-        name: <Tran text="log" />,
+        name: <Tran asChild text="log" />,
         path: '/logs',
         icon: <LogIcon />,
         filter: { authority: 'VIEW_LOG' },
       },
       {
-        name: <Tran text="comment" />,
+        name: <Tran asChild text="comment" />,
         path: '/admin/comments',
         icon: <CommentIcon />,
         filter: { authority: 'MANAGE_COMMENT' },
@@ -206,7 +206,7 @@ export const groups: readonly PathGroup[] = [
         icon: <VerifyPathIcon />,
       },
       {
-        name: <Tran text="server" />,
+        name: <Tran asChild text="server" />,
         path: '/admin/servers',
         icon: <ServerIcon />,
         filter: { authority: 'VIEW_ADMIN_SERVER' },
@@ -218,13 +218,13 @@ export const groups: readonly PathGroup[] = [
         filter: { authority: 'VIEW_TRANSLATION' },
       },
       {
-        name: <Tran text="file" />,
+        name: <Tran asChild text="file" />,
         path: '/files',
         icon: <FileIcon />,
         filter: { authority: 'VIEW_FILE' },
       },
       {
-        name: <Tran text="analytic" />,
+        name: <Tran asChild text="analytic" />,
         path: 'https://analytic.mindustry-tool.com',
         icon: <AnalyticIcon />,
         filter: { authority: 'VIEW_DASH_BOARD' },
@@ -287,7 +287,7 @@ function VerifyPathIcon() {
 }
 
 function VerifyPath() {
-  return <Tran text="verify" />;
+  return <Tran asChild text="verify" />;
 }
 
 function SchematicPath() {
@@ -295,7 +295,7 @@ function SchematicPath() {
 
   return (
     <>
-      <Tran text="schematic" />
+      <Tran asChild text="schematic" />
       {schematicCount > 0 && <span> ({schematicCount})</span>}
     </>
   );
@@ -305,7 +305,7 @@ function MapPath() {
 
   return (
     <>
-      <Tran text="map" />
+      <Tran asChild text="map" />
       {mapCount > 0 && <span> ({mapCount})</span>}
     </>
   );
@@ -315,7 +315,7 @@ function PostPath() {
 
   return (
     <>
-      <Tran text="post" />
+      <Tran asChild text="post" />
       {postCount > 0 && <span> ({postCount})</span>}
     </>
   );
@@ -325,14 +325,14 @@ function PluginPath() {
 
   return (
     <>
-      <Tran text="plugin" />
+      <Tran asChild text="plugin" />
       {pluginCount > 0 && <span> ({pluginCount})</span>}
     </>
   );
 }
 
 function TranslationPath() {
-  return <Tran text="translation" />;
+  return <Tran asChild text="translation" />;
 }
 
 function TranslationPathIcon() {

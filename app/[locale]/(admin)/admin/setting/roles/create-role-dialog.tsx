@@ -132,6 +132,8 @@ export default function CreateRoleDialog() {
                         </div>
                       </FormControl>
                       <DialogContent className="p-6">
+                        <DialogTitle />
+                        <DialogDescription />
                         <HexColorPicker color={field.value} onChange={field.onChange} />
                         <p>{field.value}</p>
                       </DialogContent>
