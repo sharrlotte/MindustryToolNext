@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import React from 'react';
+import React, { cache } from 'react';
 import removeMd from 'remove-markdown';
 
 import ErrorScreen from '@/components/common/error-screen';
@@ -14,9 +14,11 @@ type Props = {
   params: Promise<{ id: string; locale: Locale }>;
 };
 
+const getCachedPost = cache((id: string) => serverApi((axios) => getPost(axios, { id })));
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const post = await serverApi((axios) => getPost(axios, { id }));
+  const post = await getCachedPost(id);
 
   if (isError(post)) {
     return { title: 'Error' };
@@ -39,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { id } = await params;
-  const post = await serverApi((axios) => getPost(axios, { id }));
+  const post = await getCachedPost(id);
 
   if (isError(post)) {
     return <ErrorScreen error={post} />;

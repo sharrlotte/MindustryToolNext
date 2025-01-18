@@ -1,4 +1,3 @@
-import { log } from 'console';
 import { WebSocket } from 'partysocket';
 import { ErrorEvent } from 'partysocket/ws';
 
@@ -195,23 +194,31 @@ export default class SocketClient {
 
   public async await<T extends MessagePayload>(payload: T): Promise<SocketResult<T['method']>> {
     const id = genId();
-    const promise = new Promise<any>((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        delete this.requests[id];
+    try {
+      const promise = new Promise<any>((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          delete this.requests[id];
 
-        reject(`Await request timeout: ${json}`);
-      }, this.requestTimeout);
+          reject(`Await request timeout: ${json}`);
+        }, this.requestTimeout);
 
-      this.requests[id] = { timeout, resolve, reject };
+        this.requests[id] = { timeout, resolve, reject };
 
-      const json = JSON.stringify({ id, ...payload, room: this.room, acknowledge: true });
+        const json = JSON.stringify({ id, ...payload, room: this.room, acknowledge: true });
 
-      this.tasks.push({ request: json });
+        this.tasks.push({ request: json });
 
-      this.room = '';
-    });
+        this.room = '';
+      });
 
-    return await promise;
+      return await promise;
+    } catch (error) {
+      return {
+        error: {
+          message: JSON.stringify(error),
+        },
+      };
+    }
   }
 
   public onConnect(handler: (event: Event) => void) {

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React, { Fragment, Suspense } from 'react';
+import React, { Fragment, Suspense, cache } from 'react';
 
 import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/check-server-maps';
 import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(user)/servers/[id]/(dashboard)/player-card';
@@ -31,9 +31,11 @@ type Props = {
   params: Promise<{ id: string; locale: string }>;
 };
 
+const getCachedServer = cache((id: string) => serverApi((axios) => getServer(axios, { id })));
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const server = await serverApi((axios) => getServer(axios, { id }));
+  const server = await getCachedServer(id);
 
   if (isError(server)) {
     return { title: 'Error' };
@@ -55,7 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  const [server, session] = await Promise.all([serverApi((axios) => getServer(axios, { id })), getSession()]);
+  const [server, session] = await Promise.all([getCachedServer(id), getSession()]);
 
   if (isError(server)) {
     return <ErrorScreen error={server} />;

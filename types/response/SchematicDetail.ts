@@ -8,7 +8,7 @@ export type SchematicDetail = {
   name: string;
   userId: string;
   description: string;
-  requirements: ItemRequirement[];
+  metadata: { requirements: ItemRequirement[] };
   tags: string[];
   likes: number;
   dislikes: number;

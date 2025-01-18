@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -13,16 +14,22 @@ import { SortDropdown } from '@/components/search/sort-dropdown';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 import { defaultSortTag } from '@/constant/env';
 import { ContextTagGroup } from '@/context/tags-context';
+import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { QueryParams } from '@/query/config/search-query-params';
+import { getMods } from '@/query/mod';
 import { ItemPaginationQuery } from '@/query/search-query';
+import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
+import { useQuery } from '@tanstack/react-query';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
 
@@ -49,6 +56,15 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
 
   const handleShowFilterDialog = useCallback(() => setShowFilterDialog(true), [setShowFilterDialog]);
   const handleHideFilterDialog = useCallback(() => setShowFilterDialog(false), [setShowFilterDialog]);
+
+  const axios = useClientApi();
+
+  const { data } = useQuery({
+    queryKey: ['mods'],
+    queryFn: () => getMods(axios),
+  });
+
+  const mods = data ?? [];
 
   useEffect(() => {
     if (tags.length > 0) {
@@ -187,7 +203,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
               flex: showFilterDialog,
             })}
           >
-            <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6" onClickOutside={handleHideFilterDialog}>
+            <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6 gap-4" onClickOutside={handleHideFilterDialog}>
               <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
                 <div className="flex gap-1">
                   <SearchBar className="w-full p-1">
@@ -196,6 +212,12 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
                   </SearchBar>
                   {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
                 </div>
+                <div className="flex gap-2 overflow-x-auto w-full">
+                  {mods.map((mod) => (
+                    <ModCard key={mod.id} mod={mod} />
+                  ))}
+                </div>
+                <Separator className="border" orientation="horizontal" />
                 <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">
                   <ScrollContainer className="overscroll-none">
                     <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
@@ -211,6 +233,18 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
           </div>
         )}
       </Suspense>
+    </div>
+  );
+}
+
+type ModCardProps = {
+  mod: Mod;
+};
+function ModCard({ mod }: ModCardProps) {
+  return (
+    <div className="flex gap-1 rounded-full p-2 text-sm text-center items-center justify-center border min-w-20">
+      {mod.icon && <Image key={mod.icon} width={48} height={48} className="size-8 object-cover rounded-full" src={mod.icon} loader={({ src }) => src} alt="preview" />}
+      {mod.name}
     </div>
   );
 }
