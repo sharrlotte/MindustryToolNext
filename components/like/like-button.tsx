@@ -13,7 +13,7 @@ export default function LikeButton({ className, ...props }: LikeButtonProps) {
 
   return (
     <button
-      className={cn('flex h-9 min-w-9 gap-2 text-lg hover:border-none items-center justify-center rounded-md border border-border p-2 hover:bg-success hover:text-background dark:hover:text-foreground', className, {
+      className={cn('flex h-9 min-w-9 gap-2 text-lg hover:border-success items-center justify-center rounded-md border border-border px-2 hover:bg-success hover:text-background dark:hover:text-foreground', className, {
         'bg-success text-brand-foreground': likeData?.state === 1,
       })}
       title="like"

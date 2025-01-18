@@ -85,12 +85,12 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
           </div>
         </header>
         <footer className="flex justify-between rounded-md p-2">
-          <div className="grid w-full grid-cols-[repeat(auto-fit,3rem)] gap-2">
+          <div className="grid grid-flow-col w-fit gap-2">
             <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes} initialLikeData={userLike}>
               <LikeButton />
               <DislikeButton />
             </LikeComponent>
-            <EllipsisButton>
+            <EllipsisButton size="default">
               <ProtectedElement
                 session={session}
                 filter={{
