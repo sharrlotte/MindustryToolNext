@@ -65,7 +65,7 @@ export default function TranslationPage() {
 
   return (
     <Fragment>
-      <div className="hidden h-full flex-col gap-2 p-2 landscape:flex">
+      <div className="hidden h-full flex-col gap-2 p-2 landscape:flex overflow-y-auto">
         <div className="flex items-center gap-2">
           <ComboBox<TranslateMode>
             className="h-10"
@@ -120,7 +120,7 @@ export default function TranslationPage() {
           <DiffTable language={language as Locale} target={target as Locale} tKey={key} />
         )}
       </div>
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center landscape:hidden">
         <Tran text="translation.only-work-on-landscape" />
       </div>
     </Fragment>

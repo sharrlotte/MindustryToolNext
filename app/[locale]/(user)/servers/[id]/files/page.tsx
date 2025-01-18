@@ -20,7 +20,7 @@ const defaultState = {
 };
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+  const { id } = use(params);
   const [{ path }, setQueryState] = useQueryState(defaultState);
   const [search, setSearch] = useState('');
 
@@ -33,7 +33,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const isNotRoot = path !== '/';
 
   return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden p-2 py-2">
+    <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-2">
       <FileHierarchy path={path} onClick={setFilePath} />
       <div className="flex gap-2">
         <Input placeholder="Search file name" value={search} onChange={(event) => setSearch(event.target.value)} />
