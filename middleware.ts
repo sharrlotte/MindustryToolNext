@@ -17,18 +17,19 @@ export function middleware(req: NextRequest) {
   if (!language) language = acceptLanguage.get(req.headers.get('Accept-Language'));
   if (!language) language = defaultLocale;
 
-
   // Ignore auto local for google bot
   if (locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && isBot) {
-    return;
+    return NextResponse.next();
   }
 
   if (!locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && !req.nextUrl.pathname.startsWith('/_next')) {
     if (isBot) {
-      return;
+      return NextResponse.next();
     }
 
     req.nextUrl.pathname = `/${language}${req.nextUrl.pathname}`;
+
+    console.log('Redirect to ' + req.nextUrl.pathname);
 
     return NextResponse.redirect(req.nextUrl);
   }
