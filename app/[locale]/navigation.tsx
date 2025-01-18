@@ -39,7 +39,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
     return (
       <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
         <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
-        <div className="h-full w-full flex overflow-hidden">{children}</div>
+        <div className="h-full w-full overflow-hidden">{children}</div>
       </div>
     );
   }
@@ -47,7 +47,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
   return (
     <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center sm:grid">
       <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
-      <div className="h-full w-full flex overflow-hidden">{children}</div>
+      <div className="h-full w-full overflow-hidden">{children}</div>
     </div>
   );
 }
