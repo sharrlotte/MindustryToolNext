@@ -1,5 +1,5 @@
 import { Metadata } from 'next/dist/types';
-import React from 'react';
+import React, { cache } from 'react';
 
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
@@ -16,9 +16,11 @@ type Props = {
   params: Promise<{ id: string; locale: Locale }>;
 };
 
+const getCachedSchematicUpload = cache((id: string) => serverApi((axios) => getSchematicUpload(axios, { id })));
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const schematic = await serverApi((axios) => getSchematicUpload(axios, { id }));
+  const schematic = await getCachedSchematicUpload(id);
 
   if (isError(schematic)) {
     return { title: 'Error' };
@@ -40,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  const schematic = await serverApi((axios) => getSchematicUpload(axios, { id }));
+  const schematic = await getCachedSchematicUpload(id);
 
   if (isError(schematic)) {
     return <ErrorScreen error={schematic} />;

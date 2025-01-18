@@ -1,11 +1,12 @@
 import { Metadata } from 'next';
-import React from 'react';
+import React, { cache } from 'react';
 
-import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
 import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
 import BackButton from '@/components/ui/back-button';
+
+import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
@@ -15,10 +16,12 @@ type Props = {
   params: Promise<{ id: string; locale: Locale }>;
 };
 
+const getCachedMapUpload = cache((id: string) => serverApi((axios) => getMapUpload(axios, { id })));
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
 
-  const map = await serverApi((axios) => getMapUpload(axios, { id }));
+  const map = await getCachedMapUpload(id);
 
   if (isError(map)) {
     return { title: 'Error' };
@@ -39,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { id } = await params;
-  const map = await serverApi((axios) => getMapUpload(axios, { id }));
+  const map = await getCachedMapUpload(id);
 
   if (isError(map)) {
     return <ErrorScreen error={map} />;

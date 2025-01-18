@@ -1,9 +1,10 @@
 import { Metadata } from 'next/dist/types';
-import React from 'react';
+import React, { cache } from 'react';
 
-import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import MapDetailCard from '@/components/map/map-detail-card';
+
+import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
@@ -13,9 +14,11 @@ type Props = {
   params: Promise<{ id: string; locale: Locale }>;
 };
 
+const getCachedMap = cache((id: string) => serverApi((axios) => getMap(axios, { id })));
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const map = await serverApi((axios) => getMap(axios, { id }));
+  const map = await getCachedMap(id);
 
   if (isError(map)) {
     return { title: 'Error' };
@@ -36,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { id } = await params;
-  const map = await serverApi((axios) => getMap(axios, { id }));
+  const map = await getCachedMap(id);
 
   if (isError(map)) {
     return <ErrorScreen error={map} />;

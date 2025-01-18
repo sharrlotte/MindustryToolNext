@@ -1,28 +1,25 @@
-import React from 'react';
-
-
+import { Metadata } from 'next';
+import React, { cache } from 'react';
+import removeMd from 'remove-markdown';
 
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
 import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
 import BackButton from '@/components/ui/back-button';
 
-
-
 import { serverApi } from '@/action/action';
-import { formatTitle, isError, YOUTUBE_VIDEO_REGEX } from '@/lib/utils';
+import { YOUTUBE_VIDEO_REGEX, formatTitle, isError } from '@/lib/utils';
 import { getPostUpload } from '@/query/post';
-import { Metadata } from 'next';
-import removeMd from 'remove-markdown';
-
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
+const getCachedPostUpload = cache((id: string) => serverApi((axios) => getPostUpload(axios, { id })));
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const post = await serverApi((axios) => getPostUpload(axios, { id }));
+  const post = await getCachedPostUpload(id);
 
   if (isError(post)) {
     return { title: 'Error' };
@@ -45,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { id } = await params;
-  const post = await serverApi((axios) => getPostUpload(axios, { id }));
+  const post = await getCachedPostUpload(id);
 
   if (isError(post)) {
     return <ErrorScreen error={post} />;

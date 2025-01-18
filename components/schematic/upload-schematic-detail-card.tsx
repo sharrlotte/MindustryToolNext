@@ -26,7 +26,18 @@ type UploadSchematicDetailCardProps = {
   schematic: SchematicDetail;
 };
 
-export default function UploadSchematicDetailCard({ schematic: { id, name, tags, requirements, description, userId, width, height } }: UploadSchematicDetailCardProps) {
+export default function UploadSchematicDetailCard({
+  schematic: {
+    id,
+    name,
+    tags,
+    metadata: { requirements },
+    description,
+    userId,
+    width,
+    height,
+  },
+}: UploadSchematicDetailCardProps) {
   const axios = useClientApi();
   const {
     uploadTags: { schematic },

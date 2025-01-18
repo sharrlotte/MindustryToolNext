@@ -29,7 +29,25 @@ type SchematicDetailCardProps = {
   schematic: SchematicDetail;
 };
 
-export default function SchematicDetailCard({ schematic: { id, name, description, tags, requirements, verifierId, itemId, likes, dislikes, userLike, userId, isVerified, width, height, downloadCount } }: SchematicDetailCardProps) {
+export default function SchematicDetailCard({
+  schematic: {
+    id,
+    name,
+    description,
+    tags,
+    metadata: { requirements },
+    verifierId,
+    itemId,
+    likes,
+    dislikes,
+    userLike,
+    userId,
+    isVerified,
+    width,
+    height,
+    downloadCount,
+  },
+}: SchematicDetailCardProps) {
   const axios = useClientApi();
   const { session } = useSession();
 
