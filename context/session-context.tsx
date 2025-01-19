@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 import { getSession } from '@/action/action';
 import ClientSessionProvider from '@/context/session-context.client';
-import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, SHOW_NAV_PERSISTENT_KEY, paginationTypes } from '@/context/session-context.type';
+import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, paginationTypes } from '@/context/session-context.type';
 import { isError } from '@/lib/utils';
 
 export async function SessionProvider({ children }: { children: ReactNode }) {
