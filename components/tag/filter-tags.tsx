@@ -40,7 +40,7 @@ type FilterTagGroupProps = {
   handleTagGroupChange: (group: string, value: string[]) => void;
 };
 
-const InternalFilterTagGroup = ({ group, selectedGroup, handleTagGroupChange }: FilterTagGroupProps) => {
+const FilterTagGroup = ({ group, selectedGroup, handleTagGroupChange }: FilterTagGroupProps) => {
   const handleMultipleValueChange = useCallback((value: string[]) => handleTagGroupChange(group.name, value), [group, handleTagGroupChange]);
 
   const handleSingleValueChange = useCallback((value: string) => handleTagGroupChange(group.name, value ? [value] : []), [group, handleTagGroupChange]);
@@ -52,4 +52,3 @@ const InternalFilterTagGroup = ({ group, selectedGroup, handleTagGroupChange }: 
   );
 };
 
-const FilterTagGroup = React.memo(InternalFilterTagGroup);
