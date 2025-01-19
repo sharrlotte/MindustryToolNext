@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import React, { ReactNode, useCallback, useState } from 'react';
 
 import { UserDisplay } from '@/app/[locale]/user-display';
@@ -18,17 +17,7 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-
-const sidebarVariants = {
-  open: {
-    width: 'auto',
-    transition: { type: 'spring', stiffness: 300, damping: 30, duration: 0.5 },
-  },
-  closed: {
-    width: 'var(--nav)',
-    transition: { type: 'spring', stiffness: 300, damping: 30, duration: 0.5 },
-  },
-};
+import { useNavBar } from '@/zustand/navbar-store';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
@@ -36,13 +25,11 @@ type NavigationBarProps = {
 };
 
 export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: NavigationBarProps) {
-  const {
-    config: { showNav: isVisible },
-    setConfig,
-  } = useSession();
 
-  const showSidebar = useCallback(() => setConfig('showNav', true), [setConfig]);
-  const hideSidebar = useCallback(() => setConfig('showNav', false), [setConfig]);
+  const {visible, setVisible} = useNavBar()
+
+  const showSidebar = useCallback(() => setVisible( true), [setVisible]);
+  const hideSidebar = useCallback(() => setVisible( false), [setVisible]);
 
   return (
     <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg">
@@ -51,13 +38,13 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
       </Button>
       <div
         className={cn('pointer-events-none fixed inset-0 z-50 h-screen bg-transparent text-foreground', {
-          'backdrop-blur-sm backdrop-brightness-50': isVisible,
+          'backdrop-blur-sm backdrop-brightness-50': visible,
         })}
       >
-        <motion.div variants={sidebarVariants} initial={isVisible ? { width: sidebarVariants.open.width } : { width: sidebarVariants.closed.width }} animate={isVisible ? 'open' : 'closed'}>
+        <div >
           <div
-            className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background dark:bg-background/90', {
-              'translate-x-0': isVisible,
+            className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background dark:bg-background/90 transition-transform', {
+              'translate-x-0': visible,
             })}
           >
             <div
@@ -88,7 +75,7 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
               </OutsideWrapper>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
       <NavUserAvatar />
     </div>

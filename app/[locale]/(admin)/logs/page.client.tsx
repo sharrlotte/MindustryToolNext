@@ -131,7 +131,7 @@ function StaticLog() {
 
   const { env, ip, userId, url, content, before, after, collection } = filter;
 
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const container = useRef<HTMLDivElement | null>(null);
 
   const setFilter = useCallback((value: Partial<Filter>) => _setFilter((prev) => ({ ...prev, ...value })), []);
 
@@ -170,7 +170,7 @@ function StaticLog() {
         </div>
         <PaginationLayoutSwitcher />
       </div>
-      <ScrollContainer className="relative flex h-full flex-col gap-2" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="relative flex h-full flex-col gap-2" ref={container}>
         <ListLayout>
           <InfinitePage<Log, LogPaginationQuery>
             className="flex w-full flex-col items-center justify-center gap-2"
@@ -186,7 +186,7 @@ function StaticLog() {
               before,
               after,
             }}
-            container={() => container}
+            container={() => container.current}
             queryKey={['logs']}
             queryFn={getLogs}
           >

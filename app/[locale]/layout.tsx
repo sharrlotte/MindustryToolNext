@@ -2,7 +2,7 @@ import { dir } from 'i18next';
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 
 import ClientInit from '@/app/[locale]/client-init';
@@ -123,8 +123,10 @@ export default async function Root({ children, params }: RootProps) {
                 <TagsProvider locale={locale}>
                   <SessionProvider>
                     <SocketProvider>
+                      <Suspense>
                       <Toaster />
                       <NavigationBar>{children}</NavigationBar>
+                      </Suspense>
                     </SocketProvider>
                   </SessionProvider>
                 </TagsProvider>

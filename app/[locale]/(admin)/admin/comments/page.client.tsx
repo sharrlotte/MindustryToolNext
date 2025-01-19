@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { TrashIcon } from '@/components/common/icons';
@@ -31,7 +31,7 @@ import { useMutation } from '@tanstack/react-query';
 
 export default function Client() {
   const params = useSearchQuery(ItemPaginationQuery);
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const container = useRef<HTMLDivElement | null>(null);
 
   const { data } = useClientQuery({
     queryKey: ['comments', omit(params, 'page', 'size')],
@@ -44,9 +44,9 @@ export default function Client() {
       <div className="flex justify-end">
         <PaginationLayoutSwitcher />
       </div>
-      <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="relative flex h-full flex-col" ref={container}>
         <ListLayout>
-          <InfinitePage className="flex flex-col gap-2" params={params} queryKey={['comments']} queryFn={getAllComments} container={() => container} loader={<LoadingSpinner className="p-0 m-auto" />}>
+          <InfinitePage className="flex flex-col gap-2" params={params} queryKey={['comments']} queryFn={getAllComments} container={() => container.current} loader={<LoadingSpinner className="p-0 m-auto" />}>
             {(data) => <CommentCard key={data.id} comment={data} />}
           </InfinitePage>
         </ListLayout>

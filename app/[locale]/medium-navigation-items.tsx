@@ -17,6 +17,7 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
+import { useNavBar } from '@/zustand/navbar-store';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
@@ -35,26 +36,23 @@ const sidebarVariants = {
 };
 
 export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: NavigationBarProps) {
-  const {
-    config: { showNav: isVisible },
-    setConfig,
-  } = useSession();
+  const {visible, setVisible} = useNavBar()
 
   const isSmall = useMediaQuery('(max-width: 640px)');
 
-  const expand = isSmall ? true : isVisible;
+  const expand = isSmall ? true : visible;
 
-  const toggleSidebar = useCallback(() => setConfig('showNav', !isVisible), [isVisible, setConfig]);
+  const toggleSidebar = useCallback(() => setVisible( !visible), [visible, setVisible]);
 
   return (
     <motion.div
       className={cn('relative gap-2 flex h-full overflow-hidden border-r min-w-nav w-full flex-col p-1', { 'p-2': expand })}
       variants={sidebarVariants}
-      initial={isVisible ? { width: sidebarVariants.open.width } : { width: sidebarVariants.closed.width }}
-      animate={isVisible ? 'open' : 'closed'}
+      initial={visible ? { width: sidebarVariants.open.width } : { width: sidebarVariants.closed.width }}
+      animate={visible ? 'open' : 'closed'}
     >
       <div className={cn('flex justify-between h-fit', { 'gap-1': expand })}>
-        {isVisible && (
+        {visible && (
           <div className="flex flex-col">
             <h1 className="text-xl font-medium">MindustryTool</h1>
             <span className="overflow-hidden whitespace-nowrap text-xs">{env.webVersion}</span>
@@ -73,12 +71,12 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
 function NavFooter() {
   const {
     session,
-    config: { showNav: isVisible },
   } = useSession();
+  const {visible} = useNavBar()
 
   const isSmall = useMediaQuery('(max-width: 640px)');
 
-  const expand = isSmall ? true : isVisible;
+  const expand = isSmall ? true : visible;
 
   return (
     <div className="space-y-1 mt-auto">
@@ -122,14 +120,14 @@ type PathGroupElementProps = {
 const PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNode => {
   const {
     session,
-    config: { showNav: isVisible },
   } = useSession();
+  const {visible} = useNavBar()
 
   const { key, name, filter } = group;
 
   const isSmall = useMediaQuery('(max-width: 640px)');
 
-  const expand = isSmall ? true : isVisible;
+  const expand = isSmall ? true : visible;
 
   return (
     <ProtectedElement key={key} filter={filter} session={session}>
@@ -155,11 +153,12 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
   const isSmall = useMediaQuery('(max-width: 640px)');
   const {
     session,
-    config: { showNav: isVisible },
-    setConfig,
   } = useSession();
 
-  const expand = isSmall ? true : isVisible;
+    const {visible, setVisible} = useNavBar()
+  
+
+  const expand = isSmall ? true : visible;
 
   const { filter, name, icon, path } = segment;
 
@@ -191,7 +190,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
               'justify-start gap-2 py-2': expand,
             })}
             showChevron={expand}
-            onClick={() => setConfig('showNav', true)}
+            onClick={() => setVisible( true)}
           >
             {icon}
             {expand && name}

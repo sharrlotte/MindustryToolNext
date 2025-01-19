@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FormEvent, KeyboardEvent, useState } from 'react';
+import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
@@ -18,7 +18,7 @@ export default function ServerConsolePage() {
   const { id } = useSearchId();
 
   const { state } = useSocket();
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const container = useRef<HTMLDivElement | null>(null);
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_2.5rem] gap-2 overflow-hidden">
@@ -27,8 +27,8 @@ export default function ServerConsolePage() {
           {state !== 'connected' ? (
             <LoadingSpinner className="m-auto" />
           ) : (
-            <ScrollContainer className="flex h-full w-full overflow-x-hidden" ref={(ref) => setContainer(ref)}>
-              <MessageList className="flex h-full flex-col gap-1" queryKey={['servers', id, 'messages']} room={`SERVER-${id}`} container={() => container} params={{ size: 50 }} showNotification={false}>
+            <ScrollContainer className="flex h-full w-full overflow-x-hidden" ref={container}>
+              <MessageList className="flex h-full flex-col gap-1" queryKey={['servers', id, 'messages']} room={`SERVER-${id}`} container={() => container.current} params={{ size: 50 }} showNotification={false}>
                 {(data) => <MessageCard key={data.id} message={data} />}
               </MessageList>
             </ScrollContainer>

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
-import { Locale, cookieName, defaultLocale, getOptions, locales } from '@/i18n/config';
+import { Locale, cookieName, defaultLocale, getClientOptions, locales } from '@/i18n/config';
 
 const runsOnServerSide = typeof window === 'undefined';
 
@@ -18,7 +18,7 @@ i18next
   .use(Backend)
   .use(initReactI18next)
   .init({
-    ...getOptions(),
+    ...getClientOptions(),
     lng: undefined, // let detect the language on client side
     detection: {
       order: ['path', 'cookie', 'navigator'],

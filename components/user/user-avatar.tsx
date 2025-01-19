@@ -1,13 +1,12 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React, { ReactNode, Suspense, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 
 import InternalLink from '@/components/common/internal-link';
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 
 import { cn } from '@/lib/utils';
+import UserAvatarContextMenu from '@/components/user/user-avatar-context-menu';
 
 const colorArray = [
   '#FF6633',
@@ -62,7 +61,6 @@ const colorArray = [
   '#6666FF',
 ];
 
-const UserContextMenu = dynamic(() => import('@/components/user/user-context-menu'));
 
 type UserAvatarProps = {
   className?: string;
@@ -78,28 +76,28 @@ type UserAvatarProps = {
 export default function UserAvatar({ className, url, user }: UserAvatarProps) {
   if (typeof url === 'string') {
     return (
-      <ContextMenuTab>
+      <UserAvatarContextMenu>
         <InternalLink className="cursor-pointer" href={url}>
           <AvatarImage className={className} user={user} />
         </InternalLink>
-      </ContextMenuTab>
+      </UserAvatarContextMenu>
     );
   }
 
   if (url === true) {
     return (
-      <ContextMenuTab>
+      <UserAvatarContextMenu>
         <InternalLink className="cursor-pointer" href={`/users/${user.id}`}>
           <AvatarImage className={className} user={user} />
         </InternalLink>
-      </ContextMenuTab>
+      </UserAvatarContextMenu>
     );
   }
 
   return (
-    <ContextMenuTab>
+    <UserAvatarContextMenu>
       <AvatarImage className={className} user={user} />
-    </ContextMenuTab>
+    </UserAvatarContextMenu>
   );
 }
 
@@ -136,18 +134,5 @@ function AvatarImage({ className, user: { imageUrl, name } }: AvatarImageProps) 
     <div className={cn('flex size-8 min-h-8 min-w-8 items-center aspect-square justify-center overflow-hidden rounded-full border border-border capitalize', className)}>
       <Image className={cn('h-full w-full object-cover', className)} height={32} width={32} src={imageUrl + '?size=32'} alt={username} priority onError={() => setError(true)} />
     </div>
-  );
-}
-
-function ContextMenuTab({ children }: { children: ReactNode }) {
-  return (
-    <ContextMenu>
-      <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
-      <Suspense>
-        <ContextMenuContent>
-          <UserContextMenu />
-        </ContextMenuContent>
-      </Suspense>
-    </ContextMenu>
   );
 }

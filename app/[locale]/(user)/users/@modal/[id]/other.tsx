@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
 import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
 
@@ -32,10 +32,10 @@ export default function Other({ user }: TabProps) {
     searchTags: { schematic, map, post },
   } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const container = useRef<HTMLDivElement | null>(null);
 
   return (
-    <ScrollContainer className="absolute inset-0 space-y-2 bg-background p-2" ref={(ref) => setContainer(ref)}>
+    <ScrollContainer className="absolute inset-0 space-y-2 bg-background p-2" ref={container}>
       <UserDetail user={user} />
       <Tabs className="w-full" defaultValue="schematic">
         <TabsList className="w-full justify-start bg-card">
@@ -56,7 +56,7 @@ export default function Other({ user }: TabProps) {
               params={params}
               queryKey={['users', id, 'schematics']}
               queryFn={(axios, params) => getUserSchematics(axios, id, params)}
-              container={() => container}
+              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -73,7 +73,7 @@ export default function Other({ user }: TabProps) {
               params={params}
               queryKey={['users', id, 'maps']}
               queryFn={(axios, params) => getUserMaps(axios, id, params)}
-              container={() => container}
+              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -91,7 +91,7 @@ export default function Other({ user }: TabProps) {
               params={params}
               queryKey={['users', id, 'posts']}
               queryFn={(axios, params) => getUserPosts(axios, id, params)}
-              container={() => container}
+              container={() => container.current}
             >
               {(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}
             </InfinitePage>

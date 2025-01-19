@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { UploadIcon } from '@/components/common/icons';
@@ -35,7 +35,7 @@ export default function Client({ schematics }: Props) {
 
   const uploadLink = `${env.url.base}/upload/schematic`;
 
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const container = useRef<HTMLDivElement | null>(null);
 
   const { data } = useClientQuery({
     queryKey: ['schematics', 'total', omit(params, 'page', 'size', 'sort')],
@@ -49,13 +49,13 @@ export default function Client({ schematics }: Props) {
       <div className="flex justify-end items-center">
         <PaginationLayoutSwitcher />
       </div>
-      <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="relative flex h-full flex-col" ref={container}>
         <ListLayout>
           <InfinitePage
             params={params}
             queryKey={['schematics']}
             queryFn={getSchematics}
-            container={() => container}
+            container={() => container.current}
             initialData={schematics}
             skeleton={{
               amount: 20,

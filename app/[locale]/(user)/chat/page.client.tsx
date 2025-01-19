@@ -3,7 +3,7 @@
 import { Theme } from 'emoji-picker-react';
 import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/app/[locale]/(user)/chat/member-pannel';
@@ -67,7 +67,7 @@ export default function ChatPage() {
 }
 
 function MessageContainer() {
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const container = useRef<HTMLDivElement | null>(null);
   const { state } = useSocket();
 
   if (state !== 'connected') {
@@ -75,13 +75,13 @@ function MessageContainer() {
   }
 
   return (
-    <ScrollContainer className="h-full w-full" ref={(ref) => setContainer(ref)}>
+    <ScrollContainer className="h-full w-full" ref={container}>
       <MessageList
         showNotification
         className="flex h-full flex-col gap-1"
         queryKey={['global']}
         room="GLOBAL"
-        container={() => container}
+        container={() => container.current}
         params={{ size: 50 }}
         noResult={<div className="flex h-full w-full items-center justify-center font-semibold">{"Let's start a conversation"}</div>}
       >

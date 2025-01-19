@@ -1,6 +1,6 @@
 import React, { ReactNode, useMemo } from 'react';
 
-import { cn, getColor } from '@/lib/utils';
+import {  getColor } from '@/lib/utils';
 
 const COLOR_REGEX = /(\[[#a-zA-Z0-9]*\]|\\u001b\[[0-9;]*[0-9]+m[0-9]*)/gim;
 

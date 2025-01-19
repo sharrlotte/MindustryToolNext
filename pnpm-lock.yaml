@@ -143,6 +143,9 @@ importers:
       i18next-http-backend:
         specifier: ^3.0.1
         version: 3.0.1
+      i18next-localstorage-backend:
+        specifier: ^4.2.0
+        version: 4.2.0
       idb-keyval:
         specifier: ^6.2.1
         version: 6.2.1
@@ -2479,6 +2482,9 @@ packages:
 
   i18next-http-backend@3.0.1:
     resolution: {integrity: sha512-XT2lYSkbAtDE55c6m7CtKxxrsfuRQO3rUfHzj8ZyRtY9CkIX3aRGwXGTkUhpGWce+J8n7sfu3J0f2wTzo7Lw0A==}
+
+  i18next-localstorage-backend@4.2.0:
+    resolution: {integrity: sha512-vglEQF0AnLriX7dLA2drHnqAYzHxnLwWQzBDw8YxcIDjOvYZz5rvpal59Dq4In+IHNmGNM32YgF0TDjBT0fHmA==}
 
   i18next@24.2.0:
     resolution: {integrity: sha512-ArJJTS1lV6lgKH7yEf4EpgNZ7+THl7bsGxxougPYiXRTJ/Fe1j08/TBpV9QsXCIYVfdE/HWG/xLezJ5DOlfBOA==}
@@ -6350,6 +6356,10 @@ snapshots:
       cross-fetch: 4.0.0
     transitivePeerDependencies:
       - encoding
+
+  i18next-localstorage-backend@4.2.0:
+    dependencies:
+      '@babel/runtime': 7.26.0
 
   i18next@24.2.0(typescript@5.7.2):
     dependencies:

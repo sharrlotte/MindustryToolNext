@@ -4,11 +4,11 @@ import { ChainedBackendOptions } from 'i18next-chained-backend';
 import { cache } from 'react';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
-import { Locale, defaultLocale, getOptions, locales } from '@/i18n/config';
+import { Locale, defaultLocale, getServerOptions, locales } from '@/i18n/config';
 
 const initI18next = async (language: Locale, namespace: string) => {
   const i18nInstance = createInstance();
-  await i18nInstance.use(initReactI18next).use(Backend).init<ChainedBackendOptions>(getOptions(language, namespace));
+  await i18nInstance.use(initReactI18next).use(Backend).init<ChainedBackendOptions>(getServerOptions(language, namespace));
 
   return i18nInstance;
 };

@@ -44,7 +44,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
   const [filter, setFilter] = useState('');
   const router = useRouter();
   const pathname = usePathname();
-
+    
   const params = useSearchQuery(ItemPaginationQuery);
 
   const [page, setPage] = useState(0);
@@ -100,7 +100,10 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
         params.set(QueryParams.name, name);
       }
 
-      if (tags.length != 0) {
+
+      if (tags.length != 0 && isChanged) {
+        console.log(`${pathname}?${params.toString()}`);
+        setChanged(false)
         router.replace(`${pathname}?${params.toString()}`);
       }
     };
@@ -199,7 +202,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
       </div>
       <Suspense>
         <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
-        {useTag && (
+        {useTag && showFilterDialog && (
           <div
             className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {
               flex: showFilterDialog,

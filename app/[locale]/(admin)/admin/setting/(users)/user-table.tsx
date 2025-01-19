@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
 import { UserManagementCard } from '@/app/[locale]/(admin)/admin/setting/(users)/user-management-card';
@@ -32,7 +32,7 @@ const banFilterState = ['', 'true', 'false'];
 
 export function UserTable() {
   const { t } = useI18n();
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const container = useRef<HTMLDivElement | null>(null);
   const params = useSearchQuery(PaginationQuerySchema);
 
   const [{ name, is_banned: isBanned }, setState] = useState(defaultState);
@@ -69,14 +69,14 @@ export function UserTable() {
           <ComboBox className="h-full" nullable placeholder="Select role" value={{ value: role, label: role?.name ? t(role.name) : '' }} values={roles?.map((d) => ({ value: d, label: t(d.name) })) ?? []} onChange={(value) => setRole(value)} />
         </div>
       </div>
-      <ScrollContainer className="flex h-full flex-col gap-2" ref={(ref) => setContainer(ref)}>
+      <ScrollContainer className="flex h-full flex-col gap-2" ref={container}>
         <ListLayout>
           <InfinitePage
             className="flex h-full w-full flex-col justify-start gap-2"
             params={{ ...params, role: role?.name, name: debouncedName, is_banned: isBanned }}
             queryKey={['users', 'management']}
             queryFn={getUsers}
-            container={() => container}
+            container={() => container.current}
             loader={<LoadingSpinner className="p-0 m-auto" />}
           >
             {(data) => <UserManagementCard key={data.id} user={data} />}
