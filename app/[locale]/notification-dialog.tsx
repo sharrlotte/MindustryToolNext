@@ -21,9 +21,6 @@ import { useNavBar } from '@/zustand/navbar-store';
 const NotificationForm = dynamic(() => import('@/app/[locale]/notification-form'));
 
 export default function NotificationDialog() {
-  const {
-  } = useSession();
-
     const {visible} = useNavBar()
   
   const isSmall = useMediaQuery('(max-width: 640px)');

@@ -12,7 +12,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useMe, useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { cn, groupBy } from '@/lib/utils';
+import {  groupBy } from '@/lib/utils';
 import { getAuthorities } from '@/query/authorities';
 import { changeRoles, getRoles } from '@/query/role';
 import { changeAuthorities } from '@/query/user';
