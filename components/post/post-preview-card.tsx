@@ -17,7 +17,7 @@ type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
-function InternalPostPreviewCard({ className, post: { id, imageUrls, title, likes, itemId, dislikes, createdAt, userId }, ...rest }: PostPreviewCardProps) {
+function PostPreviewCard({ className, post: { id, imageUrls, title, likes, itemId, dislikes, createdAt, userId }, ...rest }: PostPreviewCardProps) {
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/posts/${id}`;
@@ -51,6 +51,5 @@ function InternalPostPreviewCard({ className, post: { id, imageUrls, title, like
   );
 }
 
-const PostPreviewCard = React.memo(InternalPostPreviewCard);
 
 export default PostPreviewCard;

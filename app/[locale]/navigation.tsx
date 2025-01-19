@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { ReactNode, useMemo } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
@@ -9,9 +8,8 @@ import { Path, SubPath, groups } from '@/app/routes';
 
 import { useSession } from '@/context/session-context.client';
 import { hasAccess, max } from '@/lib/utils';
-
-const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/medium-navigation-items'));
-const SmallScreenNavigationBar = dynamic(() => import('@/app/[locale]/small-navigation-items'));
+import SmallScreenNavigationBar from '@/app/[locale]/small-navigation-items';
+import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
 
 const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
 

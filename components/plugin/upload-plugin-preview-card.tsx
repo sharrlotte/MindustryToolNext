@@ -33,7 +33,7 @@ type Props = {
 
 const GITHUBInternalPATTERN = /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
 
-function InternalUploadPluginCard({ plugin }: Props) {
+function UploadPluginCard({ plugin }: Props) {
   const { id, name, description, url, userId } = plugin;
 
   const { invalidateByKey } = useQueriesData();
@@ -73,7 +73,6 @@ function InternalUploadPluginCard({ plugin }: Props) {
   );
 }
 
-const UploadPluginCard = React.memo(InternalUploadPluginCard);
 
 export default UploadPluginCard;
 

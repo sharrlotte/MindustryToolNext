@@ -18,7 +18,7 @@ type UploadMapPreviewCardProps = {
   imageCount: number;
 };
 
-function InternalUploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPreviewCardProps) {
+function UploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPreviewCardProps) {
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/admin/maps/${id}`;
@@ -53,6 +53,5 @@ function InternalUploadMapPreviewCard({ map: { id, name }, imageCount }: UploadM
   );
 }
 
-const UploadMapPreviewCard = React.memo(InternalUploadMapPreviewCard);
 
 export default UploadMapPreviewCard;

@@ -119,7 +119,7 @@ type PathGroupElementProps = {
   bestMatch: string | null;
 };
 
-const InternalPathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNode => {
+const PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNode => {
   const {
     session,
     config: { showNav: isVisible },
@@ -143,7 +143,6 @@ const InternalPathGroupElement = ({ group, bestMatch }: PathGroupElementProps): 
     </ProtectedElement>
   );
 };
-const PathGroupElement = React.memo(InternalPathGroupElement);
 
 type PathElementProps = {
   segment: Path;

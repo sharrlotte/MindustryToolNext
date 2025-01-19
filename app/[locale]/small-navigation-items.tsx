@@ -131,7 +131,7 @@ type PathGroupElementProps = {
   onClick: () => void;
 };
 
-const InternalPathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps): ReactNode => {
+const PathGroupElement = ({ group, bestMatch, onClick }: PathGroupElementProps): ReactNode => {
   const { session } = useSession();
   const { key, name, filter } = group;
 
@@ -146,7 +146,6 @@ const InternalPathGroupElement = ({ group, bestMatch, onClick }: PathGroupElemen
     </ProtectedElement>
   );
 };
-const PathGroupElement = React.memo(InternalPathGroupElement);
 
 type PathElementProps = {
   segment: Path;

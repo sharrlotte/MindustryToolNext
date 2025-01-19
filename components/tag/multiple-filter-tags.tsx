@@ -1,11 +1,10 @@
 import React from 'react';
 
 import { TagName } from '@/components/tag/tag-name';
-import TagTooltip from '@/components/tag/tag-tooltip';
 import { Separator } from '@/components/ui/separator';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 import { ContextTagGroup } from '@/context/tags-context';
+import { cn } from '@/lib/utils';
 
 type MultipleFilerTagsProps = {
   group: ContextTagGroup;
@@ -14,19 +13,24 @@ type MultipleFilerTagsProps = {
 };
 
 export default function MultipleFilerTags({ group, selectedValue, handleTagGroupChange }: MultipleFilerTagsProps) {
+  const handleClick = (value: string) => {
+    const index = selectedValue.indexOf(value);
+    if (index === -1) {
+      handleTagGroupChange([...selectedValue, value]);
+    } else {
+      handleTagGroupChange([...selectedValue.slice(0, index),...selectedValue.slice(index + 1)]);
+    }
+  }
+
   return (
-    <ToggleGroup className="flex w-full flex-wrap justify-start" type={'multiple'} onValueChange={handleTagGroupChange} value={selectedValue}>
-      <TagName className="whitespace-nowrap text-lg capitalize" value={group.name}>
-        {group.displayName}
-      </TagName>
+    <div className="flex w-full flex-wrap justify-start py-2 gap-1">
+      <TagName className="whitespace-nowrap text-lg capitalize" value={group.name}>{group.displayName}</TagName>
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map(({ value, display }) => (
-        <TagTooltip value={value} key={value}>
-          <ToggleGroupItem className="capitalize hover:bg-brand hover:text-background data-[state=on]:bg-brand data-[state=on]:text-background dark:hover:text-foreground data-[state=on]:dark:text-foreground" key={value} value={value}>
+          <button className={cn("capitalize hover:bg-brand hover:text-brand-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg", {"bg-brand text-brand-foreground": selectedValue.includes(value)})} key={value} onClick={() => handleClick(value)}>
             <TagName value={value}>{display}</TagName>
-          </ToggleGroupItem>
-        </TagTooltip>
+          </button>
       ))}
-    </ToggleGroup>
+    </div>
   );
 }

@@ -10,7 +10,7 @@ type UploadPostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
-function InternalUploadPostPreviewCard({ className, post, ...rest }: UploadPostPreviewCardProps) {
+function UploadPostPreviewCard({ className, post, ...rest }: UploadPostPreviewCardProps) {
   const firstImage = post.imageUrls ? post.imageUrls[0] : '';
   const { id, title, userId, createdAt } = post;
 
@@ -31,6 +31,5 @@ function InternalUploadPostPreviewCard({ className, post, ...rest }: UploadPostP
   );
 }
 
-const UploadPostPreviewCard = React.memo(InternalUploadPostPreviewCard);
 
 export default UploadPostPreviewCard;

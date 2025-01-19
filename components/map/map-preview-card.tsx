@@ -22,7 +22,7 @@ type MapPreviewCardProps = {
   imageCount: number;
 };
 
-function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, dislikes, downloadCount }, imageCount }: MapPreviewCardProps) {
+function MapPreviewCard({ map: { id, itemId, name, isVerified, likes, dislikes, downloadCount }, imageCount }: MapPreviewCardProps) {
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/maps/${id}`;
@@ -60,7 +60,5 @@ function InternalMapPreviewCard({ map: { id, itemId, name, isVerified, likes, di
     </Preview>
   );
 }
-
-const MapPreviewCard = React.memo(InternalMapPreviewCard);
 
 export default MapPreviewCard;

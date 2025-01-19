@@ -22,7 +22,7 @@ type UploadSchematicPreviewCardProps = {
   imageCount: number;
 };
 
-function InternalUploadSchematicPreviewCard({ schematic: { id, name }, imageCount }: UploadSchematicPreviewCardProps) {
+function UploadSchematicPreviewCard({ schematic: { id, name }, imageCount }: UploadSchematicPreviewCardProps) {
   const axios = useClientApi();
   const { locale } = useParams();
 
@@ -66,6 +66,5 @@ function InternalUploadSchematicPreviewCard({ schematic: { id, name }, imageCoun
   );
 }
 
-const UploadSchematicPreviewCard = React.memo(InternalUploadSchematicPreviewCard);
 
 export default UploadSchematicPreviewCard;

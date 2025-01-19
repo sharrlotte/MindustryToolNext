@@ -88,9 +88,11 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
         TagGroups.toStringArray(filterBy).forEach((value) => params.append(QueryParams.tags, value));
       }
 
-      params.set(QueryParams.page, page.toString());
+      if (page !== 0) {
+        params.set(QueryParams.page, page.toString());
+      }
 
-      if (useSort) {
+      if (useSort && sortBy !== defaultSortTag) {
         params.set(QueryParams.sort, sortBy);
       }
 
