@@ -2,19 +2,15 @@ import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import TagGroup from '@/types/response/TagGroup';
 
 type Tag = {
-  id?: string;
   name: string;
   value: string;
   color: string;
-  icon?: string;
-  modId?: string;
 };
 
 export type TagDto = {
   id: string;
   name: string;
   categoryId: string;
-  color: string;
   icon?: string;
   modId?: string;
 };
