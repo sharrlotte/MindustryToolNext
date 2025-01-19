@@ -1,14 +1,16 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+
+
 
 import { FilterIcon, SearchIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import ModFilter from '@/components/search/mod-filter';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { SortDropdown } from '@/components/search/sort-dropdown';
 import TagContainer from '@/components/tag/tag-container';
@@ -16,20 +18,25 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+
+
 import { defaultSortTag } from '@/constant/env';
 import { ContextTagGroup } from '@/context/tags-context';
 import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { QueryParams } from '@/query/config/search-query-params';
-import { getMods } from '@/query/mod';
 import { ItemPaginationQuery } from '@/query/search-query';
+import { getTags } from '@/query/tag';
 import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
+
+
 import { useQuery } from '@tanstack/react-query';
+
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
 
@@ -40,11 +47,13 @@ type NameTagSearchProps = {
   useTag?: boolean;
 };
 
-export default function NameTagSearch({ className, tags = [], useSort = true, useTag = true }: NameTagSearchProps) {
+export default function NameTagSearch({ className, tags: vanillaTags = [], useSort = true, useTag = true }: NameTagSearchProps) {
   const [filter, setFilter] = useState('');
   const router = useRouter();
   const pathname = usePathname();
-    
+
+  const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
+
   const params = useSearchQuery(ItemPaginationQuery);
 
   const [page, setPage] = useState(0);
@@ -57,20 +66,31 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
   const handleShowFilterDialog = useCallback(() => setShowFilterDialog(true), [setShowFilterDialog]);
   const handleHideFilterDialog = useCallback(() => setShowFilterDialog(false), [setShowFilterDialog]);
 
-  const axios = useClientApi();
+  function map(items: TagGroup[]) {
+    return items.sort().map((item) => ({
+      ...item,
+      name: item.name,
+      displayName: item.name,
+      values: item.values.sort().map((value) => ({ value, display: value })),
+    }));
+  }
 
+  // TODO: better
+  const axios = useClientApi();
   const { data } = useQuery({
-    queryKey: ['mods'],
-    queryFn: () => getMods(axios),
+    queryKey: ['tags', selectedMod?.id],
+    queryFn: async () =>
+      getTags(axios, selectedMod?.id)
+        .then((data) => ({ schematic: map(data.schematic), map: map(data.map), post: map(data.post), plugin: map(data.plugin) }))
+        .then((data) => data.schematic),
+    initialData: vanillaTags,
   });
 
-  const mods = data ?? [];
-
   useEffect(() => {
-    if (tags.length > 0) {
+    if (vanillaTags.length > 0) {
       const { sort: sortString, name: nameString, tags: tagsString, page } = params;
 
-      const tagGroup = tagsString ? TagGroups.parseString(tagsString, tags) : [];
+      const tagGroup = tagsString ? TagGroups.parseString(tagsString, vanillaTags) : [];
 
       setPage(page);
       setSortBy(sortString ?? defaultSortTag);
@@ -78,7 +98,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
       setName(nameString ?? '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tags]);
+  }, [vanillaTags]);
 
   useEffect(() => {
     const handleSearch = () => {
@@ -100,10 +120,9 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
         params.set(QueryParams.name, name);
       }
 
-
-      if (tags.length != 0 && isChanged) {
+      if (vanillaTags.length != 0 && isChanged) {
         console.log(`${pathname}?${params.toString()}`);
-        setChanged(false)
+        setChanged(false);
         router.replace(`${pathname}?${params.toString()}`);
       }
     };
@@ -126,7 +145,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
         if (group) {
           return prev.map((item) => (item.name === name ? { ...item, values } : item));
         } else {
-          const result = tags.find((tag) => tag.name === name);
+          const result = vanillaTags.find((tag) => tag.name === name);
 
           // Ignore tag that not match with server
           if (result) {
@@ -140,7 +159,7 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
       setChanged(true);
     },
 
-    [tags, setFilterBy],
+    [vanillaTags, setFilterBy],
   );
 
   function handleSortChange(value: any) {
@@ -217,15 +236,11 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
                   </SearchBar>
                   {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
                 </div>
-                <div className="flex gap-2 overflow-x-auto w-full">
-                  {mods.map((mod) => (
-                    <ModCard key={mod.id} mod={mod} />
-                  ))}
-                </div>
+                <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
                 <Separator className="border" orientation="horizontal" />
                 <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">
                   <ScrollContainer className="overscroll-none">
-                    <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
+                    <FilterTags filter={filter} filterBy={filterBy} tags={data} handleTagGroupChange={handleTagGroupChange} />
                   </ScrollContainer>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-1 p-0">
@@ -238,18 +253,6 @@ export default function NameTagSearch({ className, tags = [], useSort = true, us
           </div>
         )}
       </Suspense>
-    </div>
-  );
-}
-
-type ModCardProps = {
-  mod: Mod;
-};
-function ModCard({ mod }: ModCardProps) {
-  return (
-    <div className="flex gap-1 rounded-full p-2 text-sm text-center items-center justify-center border min-w-20">
-      {mod.icon && <Image key={mod.icon} width={48} height={48} className="size-8 object-cover rounded-full" src={mod.icon} loader={({ src }) => src} alt="preview" />}
-      {mod.name}
     </div>
   );
 }

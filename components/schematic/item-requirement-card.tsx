@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function ItemRequirementCard({ requirements }: Props) {
-  if (!requirements) return <></>;
+  if (!requirements || requirements.length === 0 || (requirements[0].amount === null)) return <></>;
 
   return (
     <section className=" flex flex-row flex-wrap gap-2">

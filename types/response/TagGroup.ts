@@ -12,6 +12,18 @@ type TagGroup = {
 
 export default TagGroup;
 
+export type TagGroupDto = {
+  id: number;
+  name: string;
+  description: string;
+};
+
+export type TagCategoryDto = {
+  id: number;
+  name: string;
+  description: string;
+};
+
 export type AllTagGroup = {
   schematic: TagGroup[];
   map: TagGroup[];

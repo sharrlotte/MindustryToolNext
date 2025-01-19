@@ -7,6 +7,14 @@ type Tag = {
   color: string;
 };
 
+export type TagDto = {
+  id: string;
+  name: string;
+  categoryId: string;
+  icon?: string;
+  modId?: string;
+};
+
 export default Tag;
 
 export class Tags {
