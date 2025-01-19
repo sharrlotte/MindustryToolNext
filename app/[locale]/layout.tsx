@@ -118,15 +118,13 @@ export default async function Root({ children, params }: RootProps) {
         <CookiesProvider>
           <I18nProvider locale={locale}>
             <QueryProvider>
+              <ClientInit />
               <ThemeProvider>
                 <TagsProvider locale={locale}>
                   <SessionProvider>
                     <SocketProvider>
                       <Toaster />
-                      <NavigationBar>
-                        <ClientInit />
-                        {children}
-                      </NavigationBar>
+                      <NavigationBar>{children}</NavigationBar>
                     </SocketProvider>
                   </SessionProvider>
                 </TagsProvider>
