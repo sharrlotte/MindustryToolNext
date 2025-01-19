@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { ChangeRoleDialog } from '@/app/[locale]/(admin)/admin/setting/(users)/change-role-dialog';
 import UserManagementActionButton from '@/app/[locale]/(admin)/admin/setting/(users)/user-management-action-button';
@@ -21,8 +21,12 @@ export function UserManagementCard({ user }: Props) {
           <h3>{user.name}</h3>
         </CopyButton>
       </div>
-      <ChangeRoleDialog user={user} />
-      <UserManagementActionButton user={user} />
+      <Suspense>
+          <ChangeRoleDialog user={user} />
+      </Suspense>
+      <Suspense>
+        <UserManagementActionButton user={user} />
+      </Suspense>
     </div>
   );
 }
