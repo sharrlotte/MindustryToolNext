@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -22,13 +22,13 @@ export default function Client({ plugins }: Props) {
     searchTags: { plugin },
   } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const container = useRef<HTMLDivElement | null>(null);
 
   return (
     <div className="relative flex h-full flex-col gap-2 p-2">
       <NameTagSearch tags={plugin} />
-      <ScrollContainer className="relative flex h-full flex-col gap-2" ref={(ref) => setContainer(ref)}>
-        <InfinitePage queryKey={['plugins', 'upload']} queryFn={getPluginUploads} params={params} container={() => container} initialData={plugins}>
+      <ScrollContainer className="relative flex h-full flex-col gap-2" ref={container}>
+        <InfinitePage queryKey={['plugins', 'upload']} queryFn={getPluginUploads} params={params} container={() => container.current} initialData={plugins}>
           {(data) => <UploadPluginCard key={data.id} plugin={data} />}
         </InfinitePage>
       </ScrollContainer>

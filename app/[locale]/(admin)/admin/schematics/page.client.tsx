@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
 import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -36,7 +36,7 @@ export default function Client({ schematics }: Props) {
   } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
 
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const container = useRef<HTMLDivElement | null>(null);
 
   const { data } = useClientQuery({
     queryKey: ['schematics', 'total', 'upload', omit(params, 'page', 'size', 'sort')],
@@ -73,13 +73,13 @@ export default function Client({ schematics }: Props) {
             <PaginationLayoutSwitcher />
           </div>
         </div>
-        <ScrollContainer className="relative flex h-full flex-col" ref={(ref) => setContainer(ref)}>
+        <ScrollContainer className="relative flex h-full flex-col" ref={container}>
           <ListLayout>
             <InfinitePage
               params={params}
               queryKey={['schematics', 'upload']}
               queryFn={getSchematicUploads}
-              container={() => container}
+              container={() => container.current}
               initialData={schematics}
               skeleton={{
                 amount: 20,

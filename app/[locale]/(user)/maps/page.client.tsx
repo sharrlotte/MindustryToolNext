@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { UploadIcon } from '@/components/common/icons';
@@ -33,7 +33,7 @@ export default function Client({ maps }: Props) {
   } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
 
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
+    const container = useRef<HTMLDivElement | null>(null);
 
   const { data } = useClientQuery({
     queryKey: ['maps', 'total', omit(params, 'page', 'size', 'sort')],
@@ -47,13 +47,13 @@ export default function Client({ maps }: Props) {
       <div className="flex justify-end">
         <PaginationLayoutSwitcher />
       </div>
-      <ScrollContainer ref={(ref) => setContainer(ref)}>
+      <ScrollContainer ref={container}>
         <ListLayout>
           <InfinitePage
             params={params}
             queryKey={['maps']}
             queryFn={getMaps}
-            container={() => container}
+            container={() => container.current}
             initialData={maps}
             skeleton={{
               amount: 20,
