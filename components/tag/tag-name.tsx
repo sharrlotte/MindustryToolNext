@@ -10,7 +10,7 @@ export function TagName({ className, value, children }: { className?: string; va
 
   return (
     <span className={cn('text-sx flex flex-row flex-nowrap items-center gap-1 capitalize', className)}>
-      {icon && <Image className="h-4 min-h-4 w-4 min-w-4" src={`/assets/sprite/${icon}`} width={16} height={16} alt={value} />}
+      {icon && <Image loading='lazy' className="h-4 min-h-4 w-4 min-w-4" src={`/assets/sprite/${icon}`} width={16} height={16} alt={value} />}
       {children}
     </span>
   );

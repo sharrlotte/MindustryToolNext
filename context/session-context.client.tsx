@@ -7,12 +7,11 @@ import {
   Config,
   DEFAULT_PAGINATION_SIZE,
   DEFAULT_PAGINATION_TYPE,
-  DEFAULT_SHOW_NAV,
   PAGINATION_SIZE_PERSISTENT_KEY,
   PAGINATION_TYPE_PERSISTENT_KEY,
-  SHOW_NAV_PERSISTENT_KEY,
   ServerSessionContextType,
   SessionContextType,
+  paginationTypes,
 } from '@/context/session-context.type';
 
 const defaultContextValue: SessionContextType = {
@@ -20,7 +19,6 @@ const defaultContextValue: SessionContextType = {
   state: 'loading',
   createdAt: 0,
   config: {
-    showNav: DEFAULT_SHOW_NAV,
     paginationType: DEFAULT_PAGINATION_TYPE,
     paginationSize: DEFAULT_PAGINATION_SIZE,
   },
@@ -58,15 +56,14 @@ export function useMe() {
 }
 
 export default function ClientSessionProvider({ session: init, children }: { session: ServerSessionContextType; children: ReactNode }) {
-  const [{ paginationSize, paginationType, showNav }, _setConfig] = useCookies([PAGINATION_TYPE_PERSISTENT_KEY, SHOW_NAV_PERSISTENT_KEY, PAGINATION_SIZE_PERSISTENT_KEY]);
+  const [{ paginationSize, paginationType }, _setConfig] = useCookies([PAGINATION_TYPE_PERSISTENT_KEY,  PAGINATION_SIZE_PERSISTENT_KEY]);
 
   const config = useMemo(
     () => ({
       paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
       paginationSize: paginationSize ? Number(paginationSize) : DEFAULT_PAGINATION_SIZE,
-      showNav: Boolean(showNav),
     }),
-    [paginationSize, paginationType, showNav],
+    [paginationSize, paginationType],
   );
 
   const setConfig = useCallback(<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }), [_setConfig]);

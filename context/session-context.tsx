@@ -16,12 +16,10 @@ export async function SessionProvider({ children }: { children: ReactNode }) {
 
   const paginationSizeString = cookie.get(PAGINATION_SIZE_PERSISTENT_KEY)?.value;
   const paginationType = cookie.get(PAGINATION_TYPE_PERSISTENT_KEY)?.value as any;
-  const showNav = cookie.get(SHOW_NAV_PERSISTENT_KEY)?.value;
 
   const config: Config = {
     paginationType: paginationTypes.includes(paginationType) ? paginationType : DEFAULT_PAGINATION_TYPE,
     paginationSize: paginationSizeString ? Number(paginationSizeString) : DEFAULT_PAGINATION_SIZE,
-    showNav: showNav === 'true',
   };
 
   return (

@@ -16,16 +16,18 @@ import useNotification from '@/hooks/use-notification';
 import useQueriesData from '@/hooks/use-queries-data';
 import { cn, isError } from '@/lib/utils';
 import { getMyUnreadNotificationCount } from '@/query/notification';
+import { useNavBar } from '@/zustand/navbar-store';
 
 const NotificationForm = dynamic(() => import('@/app/[locale]/notification-form'));
 
 export default function NotificationDialog() {
   const {
-    config: { showNav: isVisible },
   } = useSession();
 
+    const {visible} = useNavBar()
+  
   const isSmall = useMediaQuery('(max-width: 640px)');
-  const expand = isSmall ? true : isVisible;
+  const expand = isSmall ? true : visible;
 
   return (
     <Dialog>
@@ -47,13 +49,12 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
   const { invalidateByKey } = useQueriesData();
   const { postNotification } = useNotification();
 
-  let { data } = useClientQuery({
+  const { data } = useClientQuery({
     queryKey: ['notifications', 'count'],
     queryFn: (axios) => getMyUnreadNotificationCount(axios),
     enabled: state === 'authenticated',
+    placeholderData: 0
   });
-
-  data = data ?? 0;
 
   useEffect(
     () =>
@@ -69,7 +70,7 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
 
   return (
     <>
-      <IconNotification number={data}>
+      <IconNotification number={data ?? 0}>
         <NotificationIcon />
       </IconNotification>
       {expand && <Tran text="notification" />}
