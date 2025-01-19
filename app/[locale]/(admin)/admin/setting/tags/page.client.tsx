@@ -58,7 +58,7 @@ type TagCardProps = {
 
 function TagCard({ tag: { icon, name, modId, categoryId } }: TagCardProps) {
   return (
-    <div className="flex gap-2 p-4 border rounded-lg">
+    <div className="flex gap-2 p-4 border rounded-lg bg-card">
       {icon && <Image className="w-10 h-10 rounded-full" src={icon} alt={name} />}
       <div className="flex flex-col">
         <Tran className="font-semibold text-sm" text={name} />
