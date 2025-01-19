@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 
 import CreateTagDialog from '@/app/[locale]/(admin)/admin/setting/tags/create-tag-dialog';
 
@@ -12,16 +12,34 @@ import ModFilter from '@/components/search/mod-filter';
 
 import useClientApi from '@/hooks/use-client';
 import { getTagDetail } from '@/query/tag';
+import { Mod } from '@/types/response/Mod';
 import { TagDto } from '@/types/response/Tag';
 
 import { useQuery } from '@tanstack/react-query';
 
 export default function PageClient() {
-  const axios = useClientApi();
+  const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
 
+  return (
+    <div className="space-y-2 h-full flex flex-col">
+      <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
+      <TagList modId={selectedMod?.id} />
+      <div className="flex justify-end">
+        <CreateTagDialog />
+      </div>
+    </div>
+  );
+}
+
+type TagListProps = {
+  modId?: string;
+};
+
+function TagList({ modId }: TagListProps) {
+  const axios = useClientApi();
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['tags-detail'],
-    queryFn: async () => getTagDetail(axios),
+    queryKey: ['tags-detail', modId],
+    queryFn: async () => getTagDetail(axios, modId),
   });
 
   if (isError) {
@@ -40,16 +58,7 @@ export default function PageClient() {
       </div>
     );
   }
-
-  return (
-    <div className="space-y-2 h-full flex flex-col">
-      <ModFilter />
-      <ScrollContainer className="h-full overflow-y-auto space-y-2">{data?.map((tag) => <TagCard key={tag.id} tag={tag} />)}</ScrollContainer>
-      <div className="flex justify-end">
-        <CreateTagDialog />
-      </div>
-    </div>
-  );
+  return <ScrollContainer className="h-full overflow-y-auto space-y-2">{data?.map((tag) => <TagCard key={tag.id} tag={tag} />)}</ScrollContainer>;
 }
 
 type TagCardProps = {

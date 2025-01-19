@@ -5,8 +5,8 @@ import { toForm } from '@/lib/utils';
 import { TagDto } from '@/types/response/Tag';
 import { AllTagGroup, TagCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
 
-export async function getTags(axios: AxiosInstance): Promise<AllTagGroup> {
-  const { data } = await axios.get('/tags');
+export async function getTags(axios: AxiosInstance, modId?: string): Promise<AllTagGroup> {
+  const { data } = await axios.get('/tags', { params: { modId } });
   return data;
 }
 
@@ -20,8 +20,8 @@ export async function getTagGroup(axios: AxiosInstance): Promise<TagGroupDto[]> 
   return data;
 }
 
-export async function getTagDetail(axios: AxiosInstance): Promise<TagDto[]> {
-  const { data } = await axios.get('/tags/detail');
+export async function getTagDetail(axios: AxiosInstance, modId?: string): Promise<TagDto[]> {
+  const { data } = await axios.get('/tags/detail', { params: { modId } });
 
   return data;
 }
