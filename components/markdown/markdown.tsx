@@ -51,7 +51,6 @@ function MarkdownImage({ src, alt }: any) {
   
   src = src.replace('image.mindustry-tool.app', 'image.mindustry-tool.com');
   
-  console.log(src)
   if (isError) {
     return alt;
   }
