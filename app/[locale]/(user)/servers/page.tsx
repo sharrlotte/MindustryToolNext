@@ -5,6 +5,7 @@ import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dial
 import { MeServer } from '@/app/[locale]/(user)/servers/my-server';
 import { OfficialServer } from '@/app/[locale]/(user)/servers/official-server';
 
+import InternalLink from '@/components/common/internal-link';
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -72,8 +73,11 @@ async function Footer() {
   const session = await getSession();
 
   return (
-    <footer className="flex w-full justify-end">
+    <footer className="flex w-full justify-end gap-2">
       <ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
+        <InternalLink variant="button-secondary" href="/server-managers">
+          <Tran text="server-manager" />
+        </InternalLink>
         <CreateServerDialog />
       </ProtectedElement>
     </footer>

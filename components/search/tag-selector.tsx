@@ -109,16 +109,16 @@ export default function TagSelector({ initialValue, type, value, onChange, disab
         {!hideSelectedTag && <TagContainer className="justify-start" tags={displayTags} handleDeleteTag={handleDeleteTag} />}
       </div>
       <div className={cn('fixed inset-0 z-50 hidden items-center justify-center backdrop-blur-sm', { flex: showFilterDialog })}>
-        <div className="flex h-screen w-screen items-center justify-center md:h-2/3 md:w-2/3">
+        <div className="flex h-screen w-screen items-center justify-center md:h-4/5 md:w-4/5">
           <Card className="grid grid-rows-[auto_1fr_auto] h-full w-full gap-2 rounded-none p-4 md:rounded-lg ">
             <SearchBar className="w-full p-1">
               <SearchIcon className="p-1" />
               <SearchInput value={filter} placeholder="filter" onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
             </SearchBar>
             <ScrollContainer className="overscroll-none h-full">
+              <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
+              <Separator className="border" orientation="horizontal" />
               <CardContent className="flex h-full w-full flex-col p-0 ">
-                <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
-                <Separator className="border" orientation="horizontal" />
                 <FilterTags filter={filter} filterBy={value} tags={tags} handleTagGroupChange={handleTagGroupChange} />
               </CardContent>
             </ScrollContainer>
