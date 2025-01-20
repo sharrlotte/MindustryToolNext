@@ -178,7 +178,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
     });
   }
 
-  const displayTags = useMemo(() => Tags.fromTagGroup(filterBy), [filterBy]);
+  const displayTags = useMemo(() => Tags.fromTagGroupWithSource(filterBy, tags), [filterBy, tags]);
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>

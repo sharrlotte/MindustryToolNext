@@ -40,9 +40,11 @@ export async function createTag(axios: AxiosInstance, payload: CreateTagRequest)
   return result.data;
 }
 
+const TAG_NAME_REGEX = new RegExp('[a-z0-9-]');
+
 export const CreateTagSchema = z.object({
-  name: z.string().min(1).max(100),
-  description: z.string().min(1).max(100),
+  name: z.string().min(1).max(100).trim().regex(TAG_NAME_REGEX),
+  description: z.string().min(1).trim().max(100),
   categoryId: z.number().int(),
   modId: z.string().optional(),
   icon: z.any(),
@@ -51,8 +53,8 @@ export const CreateTagSchema = z.object({
 export type CreateTagRequest = z.infer<typeof CreateTagSchema>;
 
 export const UpdateTagSchema = z.object({
-  name: z.string().min(1).max(100),
-  description: z.string().min(1).max(100),
+  name: z.string().min(1).max(100).trim().regex(TAG_NAME_REGEX),
+  description: z.string().min(1).max(100).trim(),
   categoryId: z.number().int(),
   modId: z.string().optional().nullable(),
   icon: z.any(),
@@ -83,16 +85,16 @@ export async function createTagCategory(axios: AxiosInstance, payload: CreateTag
 }
 
 export const CreateTagCategorySchema = z.object({
-  name: z.string().min(1).max(100),
-  color: z.string().min(1).max(100),
+  name: z.string().min(1).max(100).trim().regex(TAG_NAME_REGEX),
+  color: z.string().min(1).max(100).trim(),
   duplicate: z.boolean(),
 });
 
 export type CreateTagCategoryRequest = z.infer<typeof CreateTagCategorySchema>;
 
 export const UpdateTagCategorySchema = z.object({
-  name: z.string().min(1).max(100),
-  color: z.string().min(1).max(100),
+  name: z.string().min(1).max(100).trim().regex(TAG_NAME_REGEX),
+  color: z.string().min(1).max(100).trim(),
   duplicate: z.boolean(),
 });
 

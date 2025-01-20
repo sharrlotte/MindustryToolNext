@@ -1,12 +1,12 @@
 import React from 'react';
 
 import Tran from '@/components/common/tran';
+import { FilterTag } from '@/components/tag/filter-tags';
 import { TagName } from '@/components/tag/tag-name';
 import { Separator } from '@/components/ui/separator';
 
 import { cn } from '@/lib/utils';
 import TagGroup from '@/types/response/TagGroup';
-import { FilterTag } from '@/components/tag/filter-tags';
 
 type SingeFilerTagsProps = {
   group: TagGroup;
@@ -23,7 +23,7 @@ function SingeFilerTags({ group, selectedValue, handleTagGroupChange }: SingeFil
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map((value) => (
         <button
-          className={cn('capitalize hover:bg-brand hover:text-brand-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', { 'bg-brand text-brand-foreground': value === selectedValue })}
+          className={cn('capitalize hover:bg-brand hover:text-brand-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', { 'bg-brand text-brand-foreground': value.name === selectedValue?.name })}
           key={value.name}
           onClick={() => handleTagGroupChange(value)}
         >
