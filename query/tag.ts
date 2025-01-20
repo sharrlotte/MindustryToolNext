@@ -17,7 +17,7 @@ export async function getTagCategories(axios: AxiosInstance): Promise<TagCategor
 
 export async function getTagCategory(axios: AxiosInstance, id: number): Promise<TagCategoryDto> {
   const { data } = await axios.get(`/tags/categories/${id}`);
-  
+
   return data;
 }
 
@@ -54,7 +54,7 @@ export const UpdateTagSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().min(1).max(100),
   categoryId: z.number().int(),
-  modId: z.string().optional(),
+  modId: z.string().optional().nullable(),
   icon: z.any(),
 });
 

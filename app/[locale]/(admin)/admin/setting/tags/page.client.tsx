@@ -103,9 +103,9 @@ function TagCard({ tag }: TagCardProps) {
   const { icon, name } = tag;
 
   return (
-    <div className="flex gap-2 p-4 border rounded-lg bg-secondary">
-      {icon && <Image className="w-10 h-10 rounded-full" src={icon} alt={name} />}
-      <Tran className="text-muted-foreground text-sm" text={name} />
+    <div className="flex gap-2 p-2 border rounded-lg bg-secondary items-center">
+      {icon && <Image className="w-10 h-10 rounded-lg" width={40} height={40} src={icon} alt={name} />}
+      <Tran className="text-sm text-muted-foreground" text={name} />
       <div className="ml-auto">
         <EllipsisButton variant="ghost">
           <UpdateTagDialog tag={tag} />
@@ -147,5 +147,5 @@ function CategoryCard({ categoryId }: CategoryCardProps) {
 
   const { name } = data;
 
-  return <Tran className="text-muted-foreground w-32 overflow-hidden text-ellipsis" text={name} />;
+  return <Tran className="w-32 overflow-hidden text-ellipsis" text={name} />;
 }
