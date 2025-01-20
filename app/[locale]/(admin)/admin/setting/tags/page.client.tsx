@@ -1,14 +1,17 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
 import CreateTagDialog from '@/app/[locale]/(admin)/admin/setting/tags/create-tag-dialog';
+import DeleteTagDialog from '@/app/[locale]/(admin)/admin/setting/tags/delete-tag-dialog';
 
 import RouterSpinner from '@/components/common/router-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ModFilter from '@/components/search/mod-filter';
+import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Skeleton } from '@/components/ui/skeleton';
 
 import useClientApi from '@/hooks/use-client';
@@ -18,6 +21,8 @@ import { Mod } from '@/types/response/Mod';
 import { TagDto } from '@/types/response/Tag';
 
 import { useQuery } from '@tanstack/react-query';
+
+const UpdateTagDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/tags/update-tag-dialog'));
 
 export default function PageClient() {
   const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
@@ -94,12 +99,18 @@ type TagCardProps = {
   tag: TagDto;
 };
 
-function TagCard({ tag: { icon, name } }: TagCardProps) {
+function TagCard({ tag }: TagCardProps) {
+  const { icon, name } = tag;
+
   return (
     <div className="flex gap-2 p-4 border rounded-lg bg-secondary">
       {icon && <Image className="w-10 h-10 rounded-full" src={icon} alt={name} />}
-      <div className="flex flex-col">
-        <Tran className="text-muted-foreground text-sm" text={name} />
+      <Tran className="text-muted-foreground text-sm" text={name} />
+      <div className="ml-auto">
+        <EllipsisButton variant="ghost">
+          <UpdateTagDialog tag={tag} />
+          <DeleteTagDialog tag={tag} />
+        </EllipsisButton>
       </div>
     </div>
   );

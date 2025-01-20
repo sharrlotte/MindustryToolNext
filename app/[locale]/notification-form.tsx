@@ -1,5 +1,4 @@
 import React from 'react';
-import { toast } from 'sonner';
 
 import { Hidden } from '@/components/common/hidden';
 import InfinitePage from '@/components/common/infinite-page';
@@ -11,6 +10,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
+import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';

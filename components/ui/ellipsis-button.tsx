@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { EllipsisIcon } from '@/components/common/icons';
 import { Button, ButtonProps } from '@/components/ui/button';
@@ -18,7 +18,9 @@ const EllipsisButton = ({ className, variant, children, ...props }: Props) => {
           <EllipsisIcon />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="gap-1 p-1 text-sm font-light grid">{children}</PopoverContent>
+      <PopoverContent className="gap-1 p-1 text-sm font-light grid">
+        <Suspense>{children}</Suspense>
+      </PopoverContent>
     </Popover>
   );
 };
