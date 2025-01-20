@@ -21,7 +21,6 @@ import UserCard from '@/components/user/user-card';
 
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context.client';
-import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import { useI18n } from '@/i18n/client';
 import { createSchematic, getSchematicPreview } from '@/query/schematic';
@@ -32,6 +31,12 @@ import { CreateSchematicRequest, CreateSchematicSchema } from '@/types/schema/zo
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -151,9 +156,6 @@ type UploadFormData = {
 
 function Upload({ data, preview, setData, setPreview }: UploadProps) {
   const { session } = useSession();
-  const {
-    uploadTags: { schematic },
-  } = useTags();
 
   const { t } = useI18n();
   const axios = useClientApi();
@@ -261,7 +263,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <TagSelector type="schematic" tags={schematic} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                  <TagSelector type="schematic" initialValue={[]} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

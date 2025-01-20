@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import DeleteButton from '@/components/button/delete-button';
@@ -16,7 +16,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
-import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import verifyPlugin, { deletePlugin } from '@/query/plugin';
@@ -73,7 +72,6 @@ function UploadPluginCard({ plugin }: Props) {
   );
 }
 
-
 export default UploadPluginCard;
 
 type DialogProps = {
@@ -82,9 +80,6 @@ type DialogProps = {
 
 function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const axios = useClientApi();
-  const {
-    uploadTags: { plugin },
-  } = useTags();
 
   const { invalidateByKey } = useQueriesData();
 
@@ -94,10 +89,6 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
       tags: [],
     },
   });
-
-  useEffect(() => {
-    form.setValue('tags', TagGroups.parseString(tags, plugin));
-  }, [tags, plugin, form]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: VerifyPluginRequest) => verifyPlugin(axios, data),
@@ -142,7 +133,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                         <Tran text="plugin.tags" />
                       </FormLabel>
                       <FormControl>
-                        <TagSelector type="plugin" tags={plugin} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                        <TagSelector type="plugin" initialValue={tags} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

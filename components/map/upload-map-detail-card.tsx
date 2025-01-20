@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
@@ -14,23 +14,15 @@ import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
-import { useTags } from '@/context/tags-context.client';
 import { MapDetail } from '@/types/response/MapDetail';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import TagGroup from '@/types/response/TagGroup';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;
 };
 
 export default function UploadMapDetailCard({ map: { id, name, tags, description, userId, width, height } }: UploadMapDetailCardProps) {
-  const {
-    uploadTags: { map },
-  } = useTags();
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-
-  useEffect(() => {
-    setSelectedTags(TagGroups.parseString(tags, map));
-  }, [tags, map]);
 
   const { locale } = useParams();
 
@@ -55,7 +47,7 @@ export default function UploadMapDetailCard({ map: { id, name, tags, description
               <Tran text="size" /> {width}x{height}
             </span>
             <DetailDescription>{description}</DetailDescription>
-            <TagSelector type="map" tags={map} value={selectedTags} onChange={setSelectedTags} />
+            <TagSelector initialValue={tags} type="map" value={selectedTags} onChange={setSelectedTags} />
           </DetailHeader>
         </DetailInfo>
         <DetailActions>

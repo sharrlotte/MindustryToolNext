@@ -15,7 +15,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import env from '@/constant/env';
-import { useTags } from '@/context/tags-context.client';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { omit } from '@/lib/utils';
@@ -28,9 +27,6 @@ type Props = {
 };
 
 export default function Client({ schematics }: Props) {
-  const {
-    searchTags: { schematic },
-  } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
 
   const uploadLink = `${env.url.base}/upload/schematic`;
@@ -45,7 +41,7 @@ export default function Client({ schematics }: Props) {
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
-      <NameTagSearch tags={schematic} />
+      <NameTagSearch type="schematic" />
       <div className="flex justify-end items-center">
         <PaginationLayoutSwitcher />
       </div>

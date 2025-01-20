@@ -18,7 +18,6 @@ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useLanguages from '@/hooks/use-languages';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -190,9 +189,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
   const axios = useClientApi();
 
   const { invalidateByKey } = useQueriesData();
-  const {
-    uploadTags: { post: postTags },
-  } = useTags();
+
   const languages = useLanguages();
   const { t } = useI18n();
 
@@ -243,7 +240,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
             }))}
             onChange={(value) => setLanguage(value ?? '')}
           />
-          <TagSelector type="post" tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
+          <TagSelector initialValue={[]} type="post" value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
           <Button
             className="ml-auto"
             title="submit"

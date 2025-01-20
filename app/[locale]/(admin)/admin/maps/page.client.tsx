@@ -14,7 +14,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { toast } from '@/components/ui/sonner';
 
-import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -31,11 +30,8 @@ type Props = {
 };
 
 export default function Client({ maps }: Props) {
-  const {
-    searchTags: { map },
-  } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
-    const container = useRef<HTMLDivElement | null>(null);
+  const container = useRef<HTMLDivElement | null>(null);
 
   const { data } = useClientQuery({
     queryKey: ['maps', 'total', 'upload', omit(params, 'page', 'size', 'sort')],
@@ -66,7 +62,7 @@ export default function Client({ maps }: Props) {
   return (
     <BulkActionContainer variant="destructive" onActionPerform={handleBulkDelete}>
       <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
-        <NameTagSearch tags={map} />
+        <NameTagSearch type="map" />
         <div className="flex items-center justify-end">
           <div className="flex items-center gap-2">
             <BulkDeleteToggle />

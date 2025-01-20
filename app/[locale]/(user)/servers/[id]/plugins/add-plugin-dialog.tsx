@@ -13,7 +13,6 @@ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/sonner';
 
-import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -33,9 +32,6 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [added, setAdded] = useState<string[]>([]);
 
-  const {
-    searchTags: { plugin },
-  } = useTags();
   const [show, setShow] = useState(false);
   const axios = useClientApi();
 
@@ -75,7 +71,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
         </DialogTitle>
         {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
-          <NameTagSearch tags={plugin} />
+          <NameTagSearch type="plugin" />
           <div className="flex justify-end">
             <PaginationLayoutSwitcher />
           </div>

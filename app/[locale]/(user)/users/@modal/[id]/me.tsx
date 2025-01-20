@@ -16,7 +16,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import { useTags } from '@/context/tags-context.client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { StatusSearchSchema } from '@/query/search-query';
 import { getMeMaps, getMePosts, getMeSchematics } from '@/query/user';
@@ -26,10 +25,7 @@ type TabProps = {
   me: User;
 };
 export default function Me({ me }: TabProps) {
-  const {
-    searchTags: { schematic, map, post },
-  } = useTags();
-    const container = useRef<HTMLDivElement | null>(null);
+  const container = useRef<HTMLDivElement | null>(null);
   const params = useSearchQuery(StatusSearchSchema);
 
   return (
@@ -49,7 +45,7 @@ export default function Me({ me }: TabProps) {
         </TabsList>
         <TabsContent value="schematic">
           <div className="relative flex h-full flex-col gap-2">
-            <NameTagSearch tags={schematic} />
+            <NameTagSearch type="schematic" />
             <InfinitePage
               params={params}
               queryKey={['me', 'schematics']}
@@ -66,7 +62,7 @@ export default function Me({ me }: TabProps) {
         </TabsContent>
         <TabsContent value="map">
           <div className="flex h-full w-full flex-col gap-2">
-            <NameTagSearch tags={map} />
+            <NameTagSearch type="map" />
             <InfinitePage
               params={params}
               queryKey={['me', 'maps']}
@@ -83,7 +79,7 @@ export default function Me({ me }: TabProps) {
         </TabsContent>
         <TabsContent value="post">
           <div className="flex h-full w-full flex-col gap-2">
-            <NameTagSearch tags={post} />
+            <NameTagSearch type="post" />
             <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['me', 'posts']} queryFn={getMePosts} container={() => container.current}>
               {(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}
             </InfinitePage>
