@@ -5,7 +5,7 @@ export const VerifyPluginSchema = z.object({
     .array(
       z.object({
         name: z.string(),
-        values: z.array(z.string()),
+        values: z.array(z.object({ name: z.string() })),
         color: z.string(),
         duplicate: z.boolean(),
       }),
