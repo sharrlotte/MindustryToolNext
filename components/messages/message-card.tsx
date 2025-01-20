@@ -6,6 +6,7 @@ import UserAvatar from '@/components/user/user-avatar';
 
 import useClientApi from '@/hooks/use-client';
 import { cn } from '@/lib/utils';
+import { persister } from '@/query/config/query-config';
 import { getUser } from '@/query/user';
 import { MessageGroup } from '@/types/response/Message';
 
@@ -23,6 +24,7 @@ export function MessageCard({ className, message }: Props) {
   const { data } = useQuery({
     queryKey: ['users', userId],
     queryFn: () => getUser(axios, { id: userId }),
+    persister
   });
 
   return (

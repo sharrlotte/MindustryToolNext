@@ -31,6 +31,7 @@ import { Comment } from '@/types/response/Comment';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { persister } from '@/query/config/query-config';
 
 type CommentSectionProps = {
   itemId: string;
@@ -117,6 +118,7 @@ export function CommandCard({ comment }: CommandCardProps) {
   const { data } = useClientQuery({
     queryKey: ['users', userId],
     queryFn: (axios) => getUser(axios, { id: userId }),
+    persister
   });
 
   return (

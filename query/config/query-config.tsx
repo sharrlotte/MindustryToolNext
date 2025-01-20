@@ -1,4 +1,10 @@
+import { experimental_createPersister } from '@tanstack/query-persist-client-core';
 import { QueryClientConfig } from '@tanstack/react-query';
+
+export const persister = experimental_createPersister({
+  storage: localStorage,
+  maxAge: 1000 * 60 * 60 * 12, // 12 hours
+}) as any;
 
 const queryClientConfig: QueryClientConfig = {
   defaultOptions: {

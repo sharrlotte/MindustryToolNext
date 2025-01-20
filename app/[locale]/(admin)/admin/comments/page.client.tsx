@@ -28,6 +28,7 @@ import { getUser } from '@/query/user';
 import { Comment } from '@/types/response/Comment';
 
 import { useMutation } from '@tanstack/react-query';
+import { persister } from '@/query/config/query-config';
 
 export default function Client() {
   const params = useSearchQuery(ItemPaginationQuery);
@@ -75,6 +76,7 @@ function CommentCard({ comment }: CommentCardProps) {
   const { data } = useClientQuery({
     queryKey: ['users', userId],
     queryFn: (axios) => getUser(axios, { id: userId }),
+    persister
   });
 
   return (
