@@ -1,11 +1,14 @@
 import { z } from 'zod';
 
+
+
 import { TranslateFunction } from '@/i18n/config';
 import { TagGroups } from '@/types/response/TagGroup';
 
+
 export const TAG_GROUP_SCHEMA = z.object({
   name: z.string(),
-  values: z.array(z.string()).default([]),
+  values: z.array(z.object({ name: z.string() })),
   color: z.string(),
   duplicate: z.boolean(),
 });

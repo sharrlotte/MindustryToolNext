@@ -10,6 +10,7 @@ import CreatePresetButton from '@/components/search/create-preset-button';
 import ModFilter from '@/components/search/mod-filter';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import TagPreset from '@/components/search/tag-preset';
+import { FilterTag } from '@/components/tag/filter-tags';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -20,7 +21,6 @@ import { PresetType, cn } from '@/lib/utils';
 import { Mod } from '@/types/response/Mod';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 
@@ -49,7 +49,7 @@ export default function TagSelector({ initialValue, type, value, onChange, disab
   }, [tags, initialValue, onChange]);
 
   const handleTagGroupChange = useCallback(
-    (name: string, values: string[]) => {
+    (name: string, values: FilterTag[]) => {
       onChange((value) => {
         const group = value.find((tag) => tag.name === name);
         if (group) {
@@ -83,7 +83,7 @@ export default function TagSelector({ initialValue, type, value, onChange, disab
             item.name === tag.name
               ? {
                   ...item,
-                  values: group.values.filter((item) => item !== tag.value),
+                  values: group.values.filter((item) => item !== tag),
                 }
               : item,
           );

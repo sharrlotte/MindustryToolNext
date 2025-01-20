@@ -16,8 +16,8 @@ export default function SortTagSearch() {
   const { t } = useI18n();
 
   const sortTags = sortTagGroup.values.map((value) => ({
-    label: value,
-    value: value as SortTag,
+    label: value.name,
+    value: value.name as SortTag,
   }));
 
   return <ComboBox<SortTag> searchBar={false} value={{ label: t(selectedSortTag), value: selectedSortTag as SortTag }} values={sortTags} onChange={(sort) => setSelectedSortTag({ sort })} />;

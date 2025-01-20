@@ -6,7 +6,7 @@ type SortTag = (typeof sortTag)[number];
 
 export const sortTagGroup: TagGroup = {
   name: 'sort',
-  values: [...sortTag],
+  values: sortTag.map((v) => ({ name: v })),
   color: 'green',
   duplicate: false,
 };
