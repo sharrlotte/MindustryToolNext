@@ -123,6 +123,8 @@ export default async function Root({ children, params }: RootProps) {
                   <SocketProvider>
                     <Suspense>
                       <Toaster />
+                    </Suspense>
+                    <Suspense>
                       <NavigationBar>{children}</NavigationBar>
                     </Suspense>
                   </SocketProvider>

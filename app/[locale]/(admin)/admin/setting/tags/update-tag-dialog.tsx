@@ -53,7 +53,7 @@ export default function UpdateTagDialog({ tag }: Props) {
   });
 
   const { data: categoryQuery } = useQuery({
-    queryKey: ['tags-category'],
+    queryKey: ['tag-category'],
     queryFn: () => getTagCategories(axios),
   });
 

@@ -26,5 +26,5 @@ export default function DeleteModDialog({ mod }: Props) {
     },
   });
 
-  return <DeleteButton isLoading={isPending} description={<Tran text="mods.delete-confirm" args={{ name }} />} onClick={mutate} variant="command" />;
+  return <DeleteButton isLoading={isPending} description={<Tran text="delete-alert" args={{ name }} />} onClick={mutate} variant="command" />;
 }

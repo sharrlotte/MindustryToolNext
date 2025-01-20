@@ -73,3 +73,51 @@ export async function deleteTag(axios: AxiosInstance, id: string): Promise<void>
 
   return result.data;
 }
+
+// --------------------------
+
+export async function createTagCategory(axios: AxiosInstance, payload: CreateTagCategoryRequest): Promise<void> {
+  const result = await axios.post(`/tags/categories`, payload);
+
+  return result.data;
+}
+
+export const CreateTagCategorySchema = z.object({
+  name: z.string().min(1).max(100),
+  color: z.string().min(1).max(100),
+  duplicate: z.boolean(),
+});
+
+export type CreateTagCategoryRequest = z.infer<typeof CreateTagCategorySchema>;
+
+export const UpdateTagCategorySchema = z.object({
+  name: z.string().min(1).max(100),
+  color: z.string().min(1).max(100),
+  duplicate: z.boolean(),
+});
+
+export type UpdateTagCategoryRequest = z.infer<typeof UpdateTagCategorySchema>;
+
+export async function updateTagCategory(axios: AxiosInstance, id: string, payload: UpdateTagCategoryRequest): Promise<void> {
+  const result = await axios.put(`/tags/${id}`, payload);
+
+  return result.data;
+}
+
+export async function deleteTagCategory(axios: AxiosInstance, id: string): Promise<void> {
+  const result = await axios.delete(`/tags/${id}`);
+
+  return result.data;
+}
+
+export async function createGroupInfo(axios: AxiosInstance, groupId: number, categoryId: number): Promise<void> {
+  const result = await axios.post(`/tags/groups/${groupId}/${categoryId}`);
+
+  return result.data;
+}
+
+export async function deleteGroupInfo(axios: AxiosInstance, categoryId: number, groupId: number): Promise<void> {
+  const result = await axios.delete(`/tags/groups/${groupId}/${categoryId}`);
+
+  return result.data;
+}

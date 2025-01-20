@@ -8,7 +8,7 @@ export const TAG_DEFAULT_COLOR = 'green';
 
 export const TAG_SEPARATOR = '_';
 
-export const itemTypes = ['schematic', 'map', 'post'];
+export const itemTypes = ['schematic', 'map', 'post', 'server', 'plugin'];
 
 export type ItemType = (typeof itemTypes)[number];
 

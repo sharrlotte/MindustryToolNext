@@ -43,7 +43,7 @@ export default function CreateTagDialog() {
   });
 
   const { data: categoryQuery } = useQuery({
-    queryKey: ['tags-category'],
+    queryKey: ['tag-category'],
     queryFn: () => getTagCategories(axios),
   });
 

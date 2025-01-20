@@ -27,14 +27,15 @@ export type DeleteButtonProps = {
   className?: string;
   isLoading: boolean;
   description: ReactNode;
+  children?: ReactNode;
   onClick: () => void;
 } & VariantProps<typeof buttonVariants>;
-export default function DeleteButton({ className, isLoading, variant, description, onClick }: DeleteButtonProps) {
+export default function DeleteButton({ className, isLoading, variant, description, children, onClick }: DeleteButtonProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button className={cn('hover:border-none', buttonVariants({ className, variant }))} variant={variant} size="command" disabled={isLoading}>
-          <TrashIcon />
+          {children ?? <TrashIcon />}
           {variant === 'command' && <Tran text="delete" />}
         </Button>
       </AlertDialogTrigger>
