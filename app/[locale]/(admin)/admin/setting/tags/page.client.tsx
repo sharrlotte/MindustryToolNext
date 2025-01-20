@@ -28,6 +28,8 @@ import { useQuery } from '@tanstack/react-query';
 
 const DeleteTagDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/tags/delete-tag-dialog'));
 const UpdateTagDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/tags/update-tag-dialog'));
+const DeleteTagCategoryDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/tags/delete-tag-category-dialog'));
+const UpdateTagCategoryDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/tags/update-tag-category-dialog'));
 
 export default function PageClient() {
   const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
@@ -43,7 +45,7 @@ export default function PageClient() {
       <div className="flex justify-end gap-2">
         <CreateTagCategoryDialog />
         <CreateTagDialog />
-      </div>  
+      </div>
     </div>
   );
 }
@@ -150,6 +152,7 @@ function TagGroupCard({ categoryId, tags }: TagGroupCardProps) {
   return (
     <div className="grid md:grid-cols-[128px_1fr] gap-2 p-4 rounded-lg bg-card border">
       <CategoryCard categoryId={categoryId} />
+
       <div className="flex flex-col flex-grow gap-2">
         {tags.map((tag) => (
           <TagCard key={tag.id} tag={tag} />
@@ -211,5 +214,13 @@ function CategoryCard({ categoryId }: CategoryCardProps) {
 
   const { name, color } = data;
 
-  return <Tran className="overflow-hidden text-ellipsis font-semibold text-lg" style={{ color }} text={name} />;
+  return (
+    <div className="flex justify-start flex-col items-start">
+      <Tran className="overflow-hidden text-ellipsis font-semibold text-lg" style={{ color }} text={name} />
+      <EllipsisButton className="p-0" variant="ghost">
+        <UpdateTagCategoryDialog category={data} />
+        <DeleteTagCategoryDialog category={data} />
+      </EllipsisButton>
+    </div>
+  );
 }

@@ -14,7 +14,7 @@ import { SortDropdown } from '@/components/search/sort-dropdown';
 import { FilterTag } from '@/components/tag/filter-tags';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 import { TagType } from '@/constant/constant';
@@ -72,8 +72,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tags]);
-
-  console.log(filterBy);
 
   useEffect(() => {
     const handleSearch = () => {

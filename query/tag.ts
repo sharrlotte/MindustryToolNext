@@ -98,14 +98,14 @@ export const UpdateTagCategorySchema = z.object({
 
 export type UpdateTagCategoryRequest = z.infer<typeof UpdateTagCategorySchema>;
 
-export async function updateTagCategory(axios: AxiosInstance, id: string, payload: UpdateTagCategoryRequest): Promise<void> {
-  const result = await axios.put(`/tags/${id}`, payload);
+export async function updateTagCategory(axios: AxiosInstance, id: number, payload: UpdateTagCategoryRequest): Promise<void> {
+  const result = await axios.put(`/tags/categories/${id}`, payload);
 
   return result.data;
 }
 
-export async function deleteTagCategory(axios: AxiosInstance, id: string): Promise<void> {
-  const result = await axios.delete(`/tags/${id}`);
+export async function deleteTagCategory(axios: AxiosInstance, id: number): Promise<void> {
+  const result = await axios.delete(`/tags/categories/${id}`);
 
   return result.data;
 }
