@@ -4,7 +4,10 @@ import { Tags } from '@/types/response/Tag';
 
 type TagGroup = {
   name: string;
-  values: string[];
+  values: {
+    name: string;
+    icon?: string;
+  }[];
   color: string;
   duplicate: boolean;
 };
@@ -40,7 +43,7 @@ export class TagGroups {
     return Tags.fromTagGroup(tags).map((tag) => tag.name + TAG_SEPARATOR + tag.value);
   }
 
-  static parseString(str: string[], tags: TagGroup[]) {
+  static parseString(str: string[], tags: TagGroup[]): TagGroup[] {
     const tagsArray =
       str
         .filter(Boolean) //
@@ -51,7 +54,7 @@ export class TagGroups {
     const tagGroup = groupBy(tagsArray, ({ name }) => name)
       .map(({ key, value }) => ({
         name: key,
-        values: value.map(({ value }) => value) ?? [],
+        values: value.map(({ value }) => ({ name: value })) ?? [],
       }))
       .map((tag) => {
         if (tags.length === 0) {

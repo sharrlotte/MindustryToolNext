@@ -11,6 +11,7 @@ import Tran from '@/components/common/tran';
 import ModFilter from '@/components/search/mod-filter';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { SortDropdown } from '@/components/search/sort-dropdown';
+import { FilterTag } from '@/components/tag/filter-tags';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -106,7 +107,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
   }, [name, showFilterDialog, filterBy, sortBy]);
 
   const handleTagGroupChange = useCallback(
-    (name: string, values: string[]) => {
+    (name: string, values: FilterTag[]) => {
       setFilterBy((prev) => {
         const group = prev.find((tag) => tag.name === name);
 
@@ -159,6 +160,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
   }
 
   function handleDeleteTag(tag: Tag) {
+    setChanged(true);
     setFilterBy((prev) => {
       const group = prev.find((item) => item.name === tag.name);
       if (group) {
@@ -166,7 +168,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
           item.name === tag.name
             ? {
                 ...item,
-                values: group.values.filter((item) => item !== tag.value),
+                values: group.values.filter((item) => item.name !== tag.value),
               }
             : item,
         );

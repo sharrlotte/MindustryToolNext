@@ -5,6 +5,7 @@ type Tag = {
   name: string;
   value: string;
   color: string;
+  icon?: string;
 };
 
 export type TagDto = {
@@ -46,7 +47,7 @@ export class Tags {
       group.values.map((v) => {
         return {
           name: group.name,
-          value: v,
+          value: v.name,
           color: group.color,
         };
       }),

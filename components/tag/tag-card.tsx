@@ -13,11 +13,10 @@ type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
   onDelete?: (tag: Tag) => void;
 };
 
-
 export default TagCard;
 
 function TagCard({ tag, className, onDelete, ...props }: TagCardProps) {
-  const { name, value, color } = tag;
+  const { name, value, icon, color } = tag;
 
   const hasDelete = !!onDelete;
 
@@ -33,11 +32,11 @@ function TagCard({ tag, className, onDelete, ...props }: TagCardProps) {
       {...props}
     >
       <TagTooltip value={value}>
-        <TagName value={name}>
+        <TagName icon={icon}>
           <Tran text={`tags.${name}`} />
         </TagName>
         (
-        <TagName value={value}>
+        <TagName icon={icon}>
           <Tran text={`tags.${value}`} />
         </TagName>
         )

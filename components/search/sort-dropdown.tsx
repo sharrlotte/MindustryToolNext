@@ -19,8 +19,8 @@ export function SortDropdown({ sortBy, handleSortChange }: SortDropdownProps) {
         value: sortBy,
       }}
       values={sortTagGroup.values.map((value) => ({
-        label: t(value.toLowerCase().replaceAll('_', '-')),
-        value: value as SortTag,
+        label: t(value.name.toLowerCase().replaceAll('_', '-')),
+        value: value.name as SortTag,
       }))}
       onChange={handleSortChange}
       searchBar={false}
