@@ -17,7 +17,7 @@ type TakeDownSchematicButtonProps = {
   name: string;
 };
 
-export function TakeDownSchematicButton({ id, name }: TakeDownSchematicButtonProps) {
+export default function TakeDownSchematicButton({ id, name }: TakeDownSchematicButtonProps) {
   const axios = useClientApi();
   const { back } = useRouter();
   const { invalidateByKey } = useQueriesData();

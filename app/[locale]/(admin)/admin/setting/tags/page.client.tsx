@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-import CreateGroupInfo from '@/app/[locale]/(admin)/admin/setting/tags/create-group-info-dialog';
 import CreateGroupInfoDialog from '@/app/[locale]/(admin)/admin/setting/tags/create-group-info-dialog';
 import CreateTagCategoryDialog from '@/app/[locale]/(admin)/admin/setting/tags/create-tag-category-dialog';
 import CreateTagDialog from '@/app/[locale]/(admin)/admin/setting/tags/create-tag-dialog';
@@ -102,7 +101,7 @@ type GroupCategoryCardProps = {
 
 function GroupCategoryCard({ group, category }: GroupCategoryCardProps) {
   return (
-    <div className="p-2 bg-secondary rounded-lg border text-sm text-muted-foreground group flex gap-2">
+    <div className="p-2 bg-secondary rounded-lg border text-sm text-muted-foreground group flex hover:gap-2">
       <Tran className="text-nowrap" text={`tags.${category.name}`} />
       <DeleteGroupInfoDialog group={group} category={category} />
     </div>

@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     staleTimes: {
       static: 600,
     },
+    optimizePackageImports: ['lucide-react'],
   },
   productionBrowserSourceMaps: true,
   crossOrigin: 'anonymous',
@@ -48,7 +49,6 @@ const nextConfig: NextConfig = {
 
 const analyze = process.env.ANALYZE === 'true';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: analyze,
 });

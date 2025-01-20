@@ -1,7 +1,7 @@
-import { dir } from 'i18next';
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -21,8 +21,6 @@ import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import './../globals.css';
 
@@ -99,20 +97,16 @@ export default async function Root({ children, params }: RootProps) {
     <html
       className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable, locale === 'kr' ? 'font-noto' : 'font-inter')}
       lang={locale}
-      dir={dir(locale)}
       data-color-mode="dark"
       suppressHydrationWarning
     >
       <body className="h-full w-full overflow-hidden">
         {process.env.NODE_ENV === 'production' ? (
           <>
-            <Analytics />
-            <SpeedInsights />
             <GoogleAnalytics gaId="G-1R9S5SV72C" />
           </>
         ) : (
-          // <Script src="https://unpkg.com/react-scan/dist/auto.global.js" async />
-          <div></div>
+          <Script src="https://unpkg.com/react-scan/dist/auto.global.js" async />
         )}
         <CookiesProvider>
           <I18nProvider locale={locale}>
