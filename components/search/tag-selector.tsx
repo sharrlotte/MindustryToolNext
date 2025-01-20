@@ -1,27 +1,31 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { SearchIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import CreatePresetButton from '@/components/search/create-preset-button';
+import ModFilter from '@/components/search/mod-filter';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import TagPreset from '@/components/search/tag-preset';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
-import { ContextTagGroup } from '@/context/tags-context';
+import useTags from '@/hooks/use-tags';
 import { PresetType, cn } from '@/lib/utils';
+import { Mod } from '@/types/response/Mod';
 import Tag, { Tags } from '@/types/response/Tag';
-import TagGroup from '@/types/response/TagGroup';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 
 type TagSelectorProps = {
-  tags?: ContextTagGroup[];
+  initialValue: string[];
   disabled?: boolean;
   hideSelectedTag?: boolean;
   value: TagGroup[];
@@ -29,13 +33,20 @@ type TagSelectorProps = {
   onChange: (fn: (value: TagGroup[]) => TagGroup[]) => void;
 };
 
-export default function TagSelector({ tags = [], type, value, onChange, disabled = false, hideSelectedTag }: TagSelectorProps) {
+export default function TagSelector({ initialValue, type, value, onChange, disabled = false, hideSelectedTag }: TagSelectorProps) {
+  const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
   const [filter, setFilter] = useState('');
 
   const [showFilterDialog, setShowFilterDialog] = useState(false);
 
   const handleShowFilterDialog = useCallback(() => setShowFilterDialog(true), [setShowFilterDialog]);
   const handleHideFilterDialog = useCallback(() => setShowFilterDialog(false), [setShowFilterDialog]);
+
+  const tags = useTags(type, selectedMod);
+
+  useEffect(() => {
+    onChange(() => TagGroups.parseString(initialValue, tags));
+  }, [tags, initialValue, onChange]);
 
   const handleTagGroupChange = useCallback(
     (name: string, values: string[]) => {
@@ -106,6 +117,8 @@ export default function TagSelector({ tags = [], type, value, onChange, disabled
             </SearchBar>
             <ScrollContainer className="overscroll-none h-full">
               <CardContent className="flex h-full w-full flex-col p-0 ">
+                <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
+                <Separator className="border" orientation="horizontal" />
                 <FilterTags filter={filter} filterBy={value} tags={tags} handleTagGroupChange={handleTagGroupChange} />
               </CardContent>
             </ScrollContainer>

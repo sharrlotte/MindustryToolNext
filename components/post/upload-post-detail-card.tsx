@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
 import VerifyButton from '@/components/button/verify-button';
@@ -14,7 +14,6 @@ import BackButton from '@/components/ui/back-button';
 import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
-import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { deletePost, verifyPost } from '@/query/post';
@@ -32,9 +31,7 @@ type UploadPostDetailCardProps = {
 export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps) {
   const { back } = useRouter();
   const axios = useClientApi();
-  const {
-    uploadTags: { post: postTags },
-  } = useTags();
+
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
   const { invalidateByKey } = useQueriesData();
 
@@ -66,10 +63,6 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
     },
   });
 
-  useEffect(() => {
-    setSelectedTags(TagGroups.parseString(tags, postTags));
-  }, [postTags, tags]);
-
   const isLoading = isVerifying || isDeleting;
   const displayTags = Tags.fromTagGroup(selectedTags);
 
@@ -88,7 +81,7 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
           </div>
         </header>
         <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
-          <TagSelector type="post" tags={postTags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
+          <TagSelector type="post" initialValue={tags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
           <DeleteButton variant="default" className="w-fit" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
           <VerifyButton
             description={<Tran text="verify-alert" args={{ name: title }} />}

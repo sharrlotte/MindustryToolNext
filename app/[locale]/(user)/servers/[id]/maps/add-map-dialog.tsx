@@ -15,7 +15,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
-import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -33,9 +32,7 @@ type AddMapDialogProps = {
 
 export default function AddMapDialog({ serverId }: AddMapDialogProps) {
   const [added, setAdded] = useState<string[]>([]);
-  const {
-    searchTags: { map },
-  } = useTags();
+
   const [show, setShow] = useState(false);
   const axios = useClientApi();
 
@@ -77,7 +74,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
         </DialogTitle>
         {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
-          <NameTagSearch tags={map} />
+          <NameTagSearch type="map" />
           <div className="flex justify-end">
             <PaginationLayoutSwitcher />
           </div>

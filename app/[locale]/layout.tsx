@@ -15,7 +15,6 @@ import env from '@/constant/env';
 import I18nProvider from '@/context/locale-context';
 import { SessionProvider } from '@/context/session-context';
 import { SocketProvider } from '@/context/socket-context';
-import { TagsProvider } from '@/context/tags-context';
 import { CookiesProvider } from '@/hooks/use-cookies';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
@@ -120,16 +119,16 @@ export default async function Root({ children, params }: RootProps) {
             <QueryProvider>
               <ClientInit />
               <ThemeProvider>
-                <TagsProvider locale={locale}>
-                  <SessionProvider>
-                    <SocketProvider>
-                      <Suspense>
+                <SessionProvider>
+                  <SocketProvider>
+                    <Suspense>
                       <Toaster />
+                    </Suspense>
+                    <Suspense>
                       <NavigationBar>{children}</NavigationBar>
-                      </Suspense>
-                    </SocketProvider>
-                  </SessionProvider>
-                </TagsProvider>
+                    </Suspense>
+                  </SocketProvider>
+                </SessionProvider>
               </ThemeProvider>
             </QueryProvider>
           </I18nProvider>

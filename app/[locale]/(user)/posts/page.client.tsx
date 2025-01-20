@@ -11,7 +11,6 @@ import PostPreviewCard from '@/components/post/post-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 
 import env from '@/constant/env';
-import { useTags } from '@/context/tags-context.client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { getPosts } from '@/query/post';
 import { ItemPaginationQuery } from '@/query/search-query';
@@ -22,9 +21,6 @@ type Props = {
 };
 
 export default function Client({ posts }: Props) {
-  const {
-    searchTags: { post },
-  } = useTags();
   const params = useSearchQuery(ItemPaginationQuery);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -32,7 +28,7 @@ export default function Client({ posts }: Props) {
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-2">
-      <NameTagSearch tags={post} />
+      <NameTagSearch type="post" />
       <ScrollContainer ref={ref}>
         <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['posts']} queryFn={getPosts} container={() => ref.current} initialData={posts}>
           {(data) => <PostPreviewCard key={data.id} post={data} />}

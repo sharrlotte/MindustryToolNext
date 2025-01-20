@@ -17,7 +17,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import { useTags } from '@/context/tags-context.client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { getUserMaps, getUserPosts, getUserSchematics } from '@/query/user';
@@ -28,9 +27,7 @@ type TabProps = {
 };
 export default function Other({ user }: TabProps) {
   const id = user.id;
-  const {
-    searchTags: { schematic, map, post },
-  } = useTags();
+
   const params = useSearchQuery(ItemPaginationQuery);
   const container = useRef<HTMLDivElement | null>(null);
 
@@ -51,7 +48,7 @@ export default function Other({ user }: TabProps) {
         </TabsList>
         <TabsContent value="schematic">
           <div className="relative flex h-full flex-col gap-2">
-            <NameTagSearch tags={schematic} />
+            <NameTagSearch type="schematic" />
             <InfinitePage
               params={params}
               queryKey={['users', id, 'schematics']}
@@ -68,7 +65,7 @@ export default function Other({ user }: TabProps) {
         </TabsContent>
         <TabsContent value="map">
           <div className="flex h-full w-full flex-col gap-2">
-            <NameTagSearch tags={map} />
+            <NameTagSearch type="map" />
             <InfinitePage
               params={params}
               queryKey={['users', id, 'maps']}
@@ -85,7 +82,7 @@ export default function Other({ user }: TabProps) {
         </TabsContent>
         <TabsContent value="post">
           <div className="flex h-full w-full flex-col gap-2">
-            <NameTagSearch tags={post} />
+            <NameTagSearch type="post" />
             <InfinitePage
               className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2"
               params={params}

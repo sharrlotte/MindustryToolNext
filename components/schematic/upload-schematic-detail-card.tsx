@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
@@ -15,12 +15,11 @@ import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
-import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import { getSchematicData } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import TagGroup from '@/types/response/TagGroup';
 
 type UploadSchematicDetailCardProps = {
   schematic: SchematicDetail;
@@ -39,15 +38,9 @@ export default function UploadSchematicDetailCard({
   },
 }: UploadSchematicDetailCardProps) {
   const axios = useClientApi();
-  const {
-    uploadTags: { schematic },
-  } = useTags();
 
   const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
 
-  useEffect(() => {
-    setSelectedTags(TagGroups.parseString(tags, schematic));
-  }, [tags, schematic]);
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/schematics/${id}`;
@@ -79,7 +72,7 @@ export default function UploadSchematicDetailCard({
             </span>
             <DetailDescription>{description}</DetailDescription>
             <ItemRequirementCard requirements={requirements} />
-            <TagSelector type="schematic" tags={schematic} value={selectedTags} onChange={setSelectedTags} />
+            <TagSelector type="schematic" initialValue={tags} value={selectedTags} onChange={setSelectedTags} />
           </DetailHeader>
         </DetailInfo>
         <DetailActions>

@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import ComboBox from '@/components/common/combo-box';
 import { Hidden } from '@/components/common/hidden';
-import { ImageIcon } from '@/components/common/icons';
+import { EditIcon, ImageIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -17,16 +17,26 @@ import { toast } from '@/components/ui/sonner';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { getMods } from '@/query/mod';
-import { CreateTagRequest, CreateTagSchema, createTag, getTagCategories } from '@/query/tag';
+import { UpdateTagRequest, UpdateTagSchema, getTagCategories, updateTag } from '@/query/tag';
+import { TagDto } from '@/types/response/Tag';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export default function CreateTagDialog() {
-  const form = useForm<CreateTagRequest>({
-    resolver: zodResolver(CreateTagSchema),
+type Props = {
+  tag: TagDto;
+};
+
+export default function UpdateTagDialog({ tag }: Props) {
+  const { id, name, description, categoryId, modId } = tag;
+
+  const form = useForm<UpdateTagRequest>({
+    resolver: zodResolver(UpdateTagSchema),
     defaultValues: {
-      name: '',
+      name,
+      description,
+      categoryId,
+      modId,
     },
   });
 
@@ -51,7 +61,7 @@ export default function CreateTagDialog() {
   const categories = categoryQuery ?? [];
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: CreateTagRequest) => createTag(axios, data),
+    mutationFn: (data: UpdateTagRequest) => updateTag(axios, id, data),
     mutationKey: ['tags'],
     onSuccess: () => {
       toast.success(<Tran text="upload.success" />);
@@ -69,14 +79,15 @@ export default function CreateTagDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="min-w-20" variant="secondary" title="server.add">
-          <Tran text="tag.add" />
+        <Button className="min-w-20 p-2" variant="command" title="server.edit">
+          <EditIcon />
+          <Tran text="tag.edit" />
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-card p-6">
         <Form {...form}>
           <DialogTitle>
-            <Tran text="tag.add" />
+            <Tran text="tag.edit" />
           </DialogTitle>
           <Hidden>
             <DialogDescription />

@@ -12,7 +12,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-import { useTags } from '@/context/tags-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { createPlugin } from '@/query/plugin';
@@ -24,9 +23,6 @@ import { useMutation } from '@tanstack/react-query';
 
 export default function AddPluginForm() {
   const axios = useClientApi();
-  const {
-    uploadTags: { plugin },
-  } = useTags();
 
   const { invalidateByKey } = useQueriesData();
 
@@ -130,7 +126,7 @@ export default function AddPluginForm() {
                         <Tran text="plugin.tags" />
                       </FormLabel>
                       <FormControl>
-                        <TagSelector type="plugin" tags={plugin} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                        <TagSelector type="plugin" initialValue={[]} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

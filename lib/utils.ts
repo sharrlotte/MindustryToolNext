@@ -309,15 +309,15 @@ export function extractYouTubeID(url: string) {
   const match = url.match(YOUTUBE_VIDEO_REGEX);
   return match ? match[1] : null;
 }
-export function groupBy<T>(array: T[], predicate: (value: T, index: number, array: T[]) => string) {
-  const defaultValue = {} as Record<string, T[]>;
+export function groupBy<T, R extends string | number>(array: T[], predicate: (value: T, index: number, array: T[]) => R) {
+  const defaultValue = {} as Record<R, T[]>;
 
   const map = array.reduce((acc, value, index, array) => {
     (acc[predicate(value, index, array)] ||= []).push(value);
     return acc;
   }, defaultValue);
 
-  return Object.entries(map).map(([key, value]) => ({ key, value }));
+  return Object.entries(map).map(([key, value]) => ({ key: key as R, value: value as T[] }));
 }
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -359,15 +359,15 @@ export function isSameDay(date1: Date, date2: Date): boolean {
   return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
 }
 
-export function toForm(data: Record<string, string | number | File | undefined>) {
+export function toForm(data: Record<string, string | number | File | undefined | null | boolean>) {
   const form = new FormData();
 
   Object.entries(data).forEach(([key, value]) => {
-    if (value === undefined) {
-        return;
+    if (value === undefined || value === null) {
+      return;
     }
 
-    if (typeof value === 'number') value = '' + value;
+    if (typeof value === 'number' || typeof value === 'boolean') value = '' + value;
     form.append(key, value);
   });
   return form;

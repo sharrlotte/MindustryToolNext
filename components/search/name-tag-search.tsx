@@ -4,8 +4,6 @@ import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 
-
-
 import { FilterIcon, SearchIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -18,36 +16,28 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
-
-
+import { TagType } from '@/constant/constant';
 import { defaultSortTag } from '@/constant/env';
-import { ContextTagGroup } from '@/context/tags-context';
-import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
+import useTags from '@/hooks/use-tags';
 import { cn } from '@/lib/utils';
 import { QueryParams } from '@/query/config/search-query-params';
 import { ItemPaginationQuery } from '@/query/search-query';
-import { getTags } from '@/query/tag';
 import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
-
-
-import { useQuery } from '@tanstack/react-query';
-
-
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
 
 type NameTagSearchProps = {
   className?: string;
-  tags?: ContextTagGroup[];
+  type: TagType;
   useSort?: boolean;
   useTag?: boolean;
 };
 
-export default function NameTagSearch({ className, tags: vanillaTags = [], useSort = true, useTag = true }: NameTagSearchProps) {
+export default function NameTagSearch({ className, type, useSort = true, useTag = true }: NameTagSearchProps) {
   const [filter, setFilter] = useState('');
   const router = useRouter();
   const pathname = usePathname();
@@ -66,31 +56,13 @@ export default function NameTagSearch({ className, tags: vanillaTags = [], useSo
   const handleShowFilterDialog = useCallback(() => setShowFilterDialog(true), [setShowFilterDialog]);
   const handleHideFilterDialog = useCallback(() => setShowFilterDialog(false), [setShowFilterDialog]);
 
-  function map(items: TagGroup[]) {
-    return items.sort().map((item) => ({
-      ...item,
-      name: item.name,
-      displayName: item.name,
-      values: item.values.sort().map((value) => ({ value, display: value })),
-    }));
-  }
-
-  // TODO: better
-  const axios = useClientApi();
-  const { data } = useQuery({
-    queryKey: ['tags', selectedMod?.id],
-    queryFn: async () =>
-      getTags(axios, selectedMod?.id)
-        .then((data) => ({ schematic: map(data.schematic), map: map(data.map), post: map(data.post), plugin: map(data.plugin) }))
-        .then((data) => data.schematic),
-    initialData: vanillaTags,
-  });
+  const tags = useTags(type, selectedMod);
 
   useEffect(() => {
-    if (vanillaTags.length > 0) {
+    if (tags.length > 0) {
       const { sort: sortString, name: nameString, tags: tagsString, page } = params;
 
-      const tagGroup = tagsString ? TagGroups.parseString(tagsString, vanillaTags) : [];
+      const tagGroup = tagsString ? TagGroups.parseString(tagsString, tags) : [];
 
       setPage(page);
       setSortBy(sortString ?? defaultSortTag);
@@ -98,7 +70,7 @@ export default function NameTagSearch({ className, tags: vanillaTags = [], useSo
       setName(nameString ?? '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vanillaTags]);
+  }, [tags]);
 
   useEffect(() => {
     const handleSearch = () => {
@@ -120,7 +92,7 @@ export default function NameTagSearch({ className, tags: vanillaTags = [], useSo
         params.set(QueryParams.name, name);
       }
 
-      if (vanillaTags.length != 0 && isChanged) {
+      if (tags.length != 0 && isChanged) {
         console.log(`${pathname}?${params.toString()}`);
         setChanged(false);
         router.replace(`${pathname}?${params.toString()}`);
@@ -145,7 +117,7 @@ export default function NameTagSearch({ className, tags: vanillaTags = [], useSo
         if (group) {
           return prev.map((item) => (item.name === name ? { ...item, values } : item));
         } else {
-          const result = vanillaTags.find((tag) => tag.name === name);
+          const result = tags.find((tag) => tag.name === name);
 
           // Ignore tag that not match with server
           if (result) {
@@ -159,7 +131,7 @@ export default function NameTagSearch({ className, tags: vanillaTags = [], useSo
       setChanged(true);
     },
 
-    [vanillaTags, setFilterBy],
+    [tags, setFilterBy],
   );
 
   function handleSortChange(value: any) {
@@ -240,7 +212,7 @@ export default function NameTagSearch({ className, tags: vanillaTags = [], useSo
                 <Separator className="border" orientation="horizontal" />
                 <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">
                   <ScrollContainer className="overscroll-none">
-                    <FilterTags filter={filter} filterBy={filterBy} tags={data} handleTagGroupChange={handleTagGroupChange} />
+                    <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
                   </ScrollContainer>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-1 p-0">

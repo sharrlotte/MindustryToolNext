@@ -1,5 +1,4 @@
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
-import { ContextTagGroup } from '@/context/tags-context';
 import { groupBy } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
 
@@ -16,12 +15,14 @@ export type TagGroupDto = {
   id: number;
   name: string;
   description: string;
+  categories: TagCategoryDto[];
 };
 
 export type TagCategoryDto = {
   id: number;
   name: string;
-  description: string;
+  color: string;
+  duplicate: boolean;
 };
 
 export type AllTagGroup = {
@@ -39,7 +40,7 @@ export class TagGroups {
     return Tags.fromTagGroup(tags).map((tag) => tag.name + TAG_SEPARATOR + tag.value);
   }
 
-  static parseString(str: string[], tags: ContextTagGroup[]) {
+  static parseString(str: string[], tags: TagGroup[]) {
     const tagsArray =
       str
         .filter(Boolean) //
