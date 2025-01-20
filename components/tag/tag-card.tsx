@@ -36,7 +36,7 @@ function TagCard({ tag, className, onDelete, ...props }: TagCardProps) {
           <Tran text={`tags.${name}`} />
         </TagName>
         (
-        <TagName icon={icon}>
+        <TagName>
           <Tran text={`tags.${value}`} />
         </TagName>
         )

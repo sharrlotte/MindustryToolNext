@@ -49,6 +49,20 @@ export class Tags {
           name: group.name,
           value: v.name,
           color: group.color,
+          icon: v.icon,
+        };
+      }),
+    );
+  }
+
+  static fromTagGroupWithSource(tags: TagGroup[], source: TagGroup[]): Tag[] {
+    return tags.flatMap((group) =>
+      group.values.map((v) => {
+        return {
+          name: group.name,
+          value: v.name,
+          color: group.color,
+          icon: source.find((g) => g.name === group.name)?.values.find((t) => t.name === v.name)?.icon,
         };
       }),
     );

@@ -16,7 +16,7 @@ type MultipleFilerTagsProps = {
 
 export default function MultipleFilerTags({ group, selectedValue, handleTagGroupChange }: MultipleFilerTagsProps) {
   const handleClick = (value: FilterTag) => {
-    const index = selectedValue.indexOf(value);
+    const index = selectedValue.map((v) => v.name).indexOf(value.name);
     if (index === -1) {
       handleTagGroupChange([...selectedValue, value]);
     } else {
@@ -32,7 +32,9 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map((value) => (
         <button
-          className={cn('capitalize hover:bg-brand hover:text-brand-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', { 'bg-brand text-brand-foreground': selectedValue.includes(value) })}
+          className={cn('capitalize hover:bg-brand hover:text-brand-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', {
+            'bg-brand text-brand-foreground': selectedValue.map((v) => v.name).includes(value.name),
+          })}
           key={value.name}
           onClick={() => handleClick(value)}
         >

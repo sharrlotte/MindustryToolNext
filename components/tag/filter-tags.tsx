@@ -1,14 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
 
-
-
 import MultipleFilerTags from '@/components/tag/multiple-filter-tags';
 import SingeFilerTags from '@/components/tag/single-filter-tags';
 
-
-
 import TagGroup from '@/types/response/TagGroup';
-
 
 export type FilterTag = { name: string; icon?: string };
 
@@ -22,6 +17,7 @@ type FilterTagProps = {
 const empty: FilterTag[] = [];
 
 export default function FilterTags({ filter, tags, filterBy, handleTagGroupChange }: FilterTagProps) {
+  //TODO: Fix search
   const filteredTags = useMemo(
     () =>
       filter.length === 0
