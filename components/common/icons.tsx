@@ -16,12 +16,15 @@ import {
   CheckSquare2,
   ChevronLeft,
   ChevronRight,
+  ChevronsLeftRight,
   ChevronsUpDown,
   ClipboardList,
   Copy,
   Crown,
   Expand,
   ExternalLink,
+  Eye,
+  EyeOff,
   Facebook,
   File,
   Filter,
@@ -36,6 +39,7 @@ import {
   LineChart,
   Link,
   List,
+  Loader,
   LogIn,
   LogOut,
   Map,
@@ -46,6 +50,7 @@ import {
   Paperclip,
   Pencil,
   Plug,
+  Plus,
   Search,
   Send,
   Server,
@@ -67,9 +72,6 @@ import {
   Users,
   X,
   XCircle,
-  Loader,
-  ChevronsLeftRight,
-  Plus
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -82,6 +84,8 @@ type Props = {
   className?: string;
 };
 
+export const EyeIcon = ({ className }: Props) => <Eye className={className ?? 'lucide'} />;
+export const EyeOffIcon = ({ className }: Props) => <EyeOff className={className ?? 'lucide'} />;
 export const PlusIcon = ({ className }: Props) => <Plus className={className ?? 'lucide'} />;
 export const ModIcon = ({ className }: Props) => <ChevronsLeftRight className={className ?? 'lucide'} />;
 export const LoaderIcon = ({ className }: Props) => <Loader className={className ?? 'lucide'} />;

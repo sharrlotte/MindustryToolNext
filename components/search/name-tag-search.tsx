@@ -73,6 +73,8 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tags]);
 
+  console.log(filterBy);
+
   useEffect(() => {
     const handleSearch = () => {
       const params = new URLSearchParams();
@@ -108,6 +110,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
   const handleTagGroupChange = useCallback(
     (name: string, values: FilterTag[]) => {
+      setChanged(true);
       setFilterBy((prev) => {
         const group = prev.find((tag) => tag.name === name);
 
@@ -129,7 +132,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
           return [];
         }
       });
-      setChanged(true);
     },
 
     [tags, setFilterBy],
@@ -201,7 +203,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
               flex: showFilterDialog,
             })}
           >
-            <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-5/6 md:w-5/6 gap-4" onClickOutside={handleHideFilterDialog}>
+            <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-4/5 md:w-4/5 gap-4" onClickOutside={handleHideFilterDialog}>
               <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
                 <div className="flex gap-1">
                   <SearchBar className="w-full p-1">
@@ -210,13 +212,11 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
                   </SearchBar>
                   {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
                 </div>
-                <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
                 <Separator className="border" orientation="horizontal" />
-                <CardContent className="flex h-full w-full flex-col overflow-hidden p-0">
-                  <ScrollContainer className="overscroll-none">
-                    <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
-                  </ScrollContainer>
-                </CardContent>
+                <ScrollContainer className="overscroll-none">
+                  <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
+                  <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
+                </ScrollContainer>
                 <CardFooter className="flex justify-end gap-1 p-0">
                   <Button onClick={handleHideFilterDialog} variant="primary">
                     {isChanged ? <Tran text="search" /> : <Tran text="close" />}

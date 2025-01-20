@@ -9,11 +9,11 @@ export default function Loading() {
   return (
     <div className="flex h-full w-full flex-col gap-2 p-2">
       <NameTagSearchSkeleton />
-      <PreviewContainerSkeleton>
+      <div className="relative flex h-full flex-col gap-2">
         <Skeletons number={20}>
           <PluginCardSkeleton />
         </Skeletons>
-      </PreviewContainerSkeleton>
+      </div>
     </div>
   );
 }

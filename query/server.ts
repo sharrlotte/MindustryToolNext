@@ -11,7 +11,7 @@ import { Player } from '@/types/response/Player';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
 import { ServerDetail } from '@/types/response/ServerDetail';
 import { ServerFile } from '@/types/response/ServerFile';
-import { ServerManager } from '@/types/response/ServerManager';
+import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManager';
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 
@@ -89,8 +89,20 @@ export async function getMyServerManager(axios: AxiosInstance): Promise<ServerMa
   return result.data;
 }
 
+export async function getMyServerManagerById(axios: AxiosInstance, id: string): Promise<ServerManagerDetail> {
+  const result = await axios.get(`/server-managers/${id}`);
+
+  return result.data;
+}
+
 export async function createServerManager(axios: AxiosInstance, payload: CreateServerManagerRequest): Promise<void> {
   const result = await axios.post(`/server-managers`, payload);
+
+  return result.data;
+}
+
+export async function resetTokenServerManager(axios: AxiosInstance, id: string): Promise<void> {
+  const result = await axios.post(`/server-managers/${id}/reset-token`);
 
   return result.data;
 }
