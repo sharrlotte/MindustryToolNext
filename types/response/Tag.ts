@@ -10,7 +10,7 @@ type Tag = {
 export type TagDto = {
   id: string;
   name: string;
-  categoryId: string;
+  categoryId: number;
   icon?: string;
   modId?: string;
 };

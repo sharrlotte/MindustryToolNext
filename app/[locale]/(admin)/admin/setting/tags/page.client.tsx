@@ -9,9 +9,11 @@ import RouterSpinner from '@/components/common/router-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ModFilter from '@/components/search/mod-filter';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import useClientApi from '@/hooks/use-client';
-import { getTagDetail } from '@/query/tag';
+import { groupBy } from '@/lib/utils';
+import { getTagCategory, getTagDetail } from '@/query/tag';
 import { Mod } from '@/types/response/Mod';
 import { TagDto } from '@/types/response/Tag';
 
@@ -42,15 +44,15 @@ function TagList({ modId }: TagListProps) {
     queryFn: async () => getTagDetail(axios, modId),
   });
 
-  if (isError) {
+  if (isLoading) {
     return (
       <div className="col-span-full flex h-full w-full justify-center">
-        <RouterSpinner message={error.message} />
+        <RouterSpinner />
       </div>
     );
   }
 
-  if (isLoading) {
+  if (isError) {
     return (
       <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
         <Tran className="font-semibold" text="error" />
@@ -58,38 +60,81 @@ function TagList({ modId }: TagListProps) {
       </div>
     );
   }
-  return <ScrollContainer className="h-full overflow-y-auto space-y-2">{data?.map((tag) => <TagCard key={tag.id} tag={tag} />)}</ScrollContainer>;
+
+  const groups = groupBy(data ?? [], (value) => value.categoryId);
+
+  return (
+    <ScrollContainer className="h-full overflow-y-auto space-y-2">
+      {groups.map(({ key: categoryId, value: tags }) => (
+        <TagGroupCard key={categoryId} categoryId={categoryId} tags={tags} />
+      ))}
+    </ScrollContainer>
+  );
+}
+
+type TagGroupCardProps = {
+  categoryId: number;
+  tags: TagDto[];
+};
+
+function TagGroupCard({ categoryId, tags }: TagGroupCardProps) {
+  return (
+    <div className="flex gap-2 p-4 rounded-lg bg-card flex-wrap">
+      <CategoryCard categoryId={categoryId} />
+      <div className="flex flex-col flex-grow gap-2">
+        {tags.map((tag) => (
+          <TagCard key={tag.id} tag={tag} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 type TagCardProps = {
   tag: TagDto;
 };
 
-function TagCard({ tag: { icon, name, modId, categoryId } }: TagCardProps) {
+function TagCard({ tag: { icon, name } }: TagCardProps) {
   return (
-    <div className="flex gap-2 p-4 border rounded-lg bg-card">
+    <div className="flex gap-2 p-4 border rounded-lg bg-secondary">
       {icon && <Image className="w-10 h-10 rounded-full" src={icon} alt={name} />}
       <div className="flex flex-col">
-        <Tran className="font-semibold text-sm" text={name} />
+        <Tran className="text-muted-foreground text-sm" text={name} />
       </div>
-      <CategoryCard categoryId={categoryId} />
-      {modId && <ModCard modId={modId} />}
     </div>
   );
 }
 
-type ModCardProps = {
-  modId: string;
-};
-
-function ModCard({ modId }: ModCardProps) {
-  return <div className="text-muted-foreground">{modId}</div>;
-}
-
 type CategoryCardProps = {
-  categoryId: string;
+  categoryId: number;
 };
 
 function CategoryCard({ categoryId }: CategoryCardProps) {
-  return <div className="text-muted-foreground">{categoryId}</div>;
+  const axios = useClientApi();
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['tag-category', categoryId],
+    queryFn: async () => getTagCategory(axios, categoryId),
+  });
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
+
+  if (isError) {
+    return (
+      <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
+        <Tran className="font-semibold" text="error" />
+        <p className="text-muted-foreground">{JSON.stringify(error)}</p>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  const { name } = data;
+
+  return <Tran className="text-muted-foreground w-32 overflow-hidden text-ellipsis" text={name} />;
 }

@@ -309,15 +309,15 @@ export function extractYouTubeID(url: string) {
   const match = url.match(YOUTUBE_VIDEO_REGEX);
   return match ? match[1] : null;
 }
-export function groupBy<T>(array: T[], predicate: (value: T, index: number, array: T[]) => string) {
-  const defaultValue = {} as Record<string, T[]>;
+export function groupBy<T, R extends string | number>(array: T[], predicate: (value: T, index: number, array: T[]) => R) {
+  const defaultValue = {} as Record<R, T[]>;
 
   const map = array.reduce((acc, value, index, array) => {
     (acc[predicate(value, index, array)] ||= []).push(value);
     return acc;
   }, defaultValue);
 
-  return Object.entries(map).map(([key, value]) => ({ key, value }));
+  return Object.entries(map).map(([key, value]) => ({ key: key as R, value: value as T[] }));
 }
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -364,7 +364,7 @@ export function toForm(data: Record<string, string | number | File | undefined>)
 
   Object.entries(data).forEach(([key, value]) => {
     if (value === undefined) {
-        return;
+      return;
     }
 
     if (typeof value === 'number') value = '' + value;

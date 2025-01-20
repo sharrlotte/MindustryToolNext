@@ -15,6 +15,12 @@ export async function getTagCategories(axios: AxiosInstance): Promise<TagCategor
   return data;
 }
 
+export async function getTagCategory(axios: AxiosInstance, id: number): Promise<TagCategoryDto> {
+  const { data } = await axios.get(`/tags/categories/${id}`);
+  
+  return data;
+}
+
 export async function getTagGroup(axios: AxiosInstance): Promise<TagGroupDto[]> {
   const { data } = await axios.get('/tags/groups');
   return data;
