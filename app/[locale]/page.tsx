@@ -48,7 +48,7 @@ const heroTexts = [
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);
-  const title = await t('home');
+  const title = t('home');
 
   return {
     title: formatTitle(title),

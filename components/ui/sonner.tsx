@@ -2,8 +2,7 @@
 
 import { useTheme } from 'next-themes';
 import { ReactNode } from 'react';
-import { Toaster as Sonner } from 'sonner';
-import { toast as defaultToast } from 'sonner';
+import { Toaster as Sonner, toast as defaultToast } from 'sonner';
 
 import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/router-spinner';

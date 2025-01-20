@@ -13,7 +13,6 @@ import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import { TakeDownSchematicButton } from '@/components/schematic/take-down-schematic-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
 
@@ -24,6 +23,9 @@ import useToastAction from '@/hooks/use-toast-action';
 import ProtectedElement from '@/layout/protected-element';
 import { getSchematicData } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
+import dynamic from 'next/dynamic';
+
+const TakeDownSchematicButton = dynamic(() => import('@/components/schematic/take-down-schematic-button'));
 
 type SchematicDetailCardProps = {
   schematic: SchematicDetail;
