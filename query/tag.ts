@@ -1,9 +1,12 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
+
+
 import { toForm } from '@/lib/utils';
 import { TagDto } from '@/types/response/Tag';
 import { AllTagGroup, TagCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
+
 
 export async function getTags(axios: AxiosInstance, modId?: string): Promise<AllTagGroup> {
   const { data } = await axios.get('/tags', { params: { modId } });
@@ -62,7 +65,7 @@ export const UpdateTagSchema = z.object({
 
 export type UpdateTagRequest = z.infer<typeof UpdateTagSchema>;
 
-export async function updateTag(axios: AxiosInstance, id: string, payload: UpdateTagRequest): Promise<void> {
+export async function updateTag(axios: AxiosInstance, id: number, payload: UpdateTagRequest): Promise<void> {
   const form = toForm(payload);
 
   const result = await axios.put(`/tags/${id}`, form, { data: form });
@@ -70,7 +73,7 @@ export async function updateTag(axios: AxiosInstance, id: string, payload: Updat
   return result.data;
 }
 
-export async function deleteTag(axios: AxiosInstance, id: string): Promise<void> {
+export async function deleteTag(axios: AxiosInstance, id: number): Promise<void> {
   const result = await axios.delete(`/tags/${id}`);
 
   return result.data;
@@ -114,6 +117,17 @@ export async function deleteTagCategory(axios: AxiosInstance, id: number): Promi
 
 export async function createGroupInfo(axios: AxiosInstance, groupId: number, categoryId: number): Promise<void> {
   const result = await axios.post(`/tags/groups/${groupId}/${categoryId}`);
+
+  return result.data;
+}
+export const UpdateTagGroupInfoSchema = z.object({
+  position: z.number().int(),
+});
+
+export type UpdateTagGroupInfoRequest = z.infer<typeof UpdateTagGroupInfoSchema>;
+
+export async function updateGroupInfo(axios: AxiosInstance, groupId: number, categoryId: number, payload: UpdateTagGroupInfoRequest): Promise<void> {
+  const result = await axios.put(`/tags/groups/${groupId}/${categoryId}`, payload);
 
   return result.data;
 }
