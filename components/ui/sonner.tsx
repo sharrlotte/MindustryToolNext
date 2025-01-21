@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes';
 import { ReactNode } from 'react';
 import { Toaster as Sonner, toast as defaultToast } from 'sonner';
 
-import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon } from '@/components/common/icons';
+import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon, XIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/router-spinner';
 
 import { cn } from '@/lib/utils';
@@ -42,8 +42,11 @@ type ToastOptions = {
 
 function toast(title: ReactNode, options?: ToastOptions) {
   if (options?.description) {
-    return defaultToast(
-      <div className={cn('grid text-base border-none w-full rounded-lg p-4', options.className)}>
+    const id = defaultToast(
+      <div className={cn('grid text-base border-none w-full rounded-lg p-4 relative', options.className)}>
+        <div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
+          <XIcon className="size-4" />
+        </div>
         <div className="flex gap-1 items-center">
           {options.icon}
           {title}
@@ -54,9 +57,21 @@ function toast(title: ReactNode, options?: ToastOptions) {
         duration: 100000,
       },
     );
+
+    return id;
   }
 
-  return defaultToast(<div className={cn('grid text-sm border-none w-full rounded-lg p-4', options?.className)}>{title}</div>, options);
+  const id = defaultToast(
+    <div className={cn('relative grid text-sm border-none w-full rounded-lg p-4', options?.className)}>
+      <div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
+        <XIcon className="size-4" />
+      </div>
+      {title}
+    </div>,
+    options,
+  );
+
+  return id;
 }
 
 toast.success = (title: ReactNode, options?: ToastOptions) => {
