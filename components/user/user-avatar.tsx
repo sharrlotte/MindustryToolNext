@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import InternalLink from '@/components/common/internal-link';
+import UserAvatarContextMenu from '@/components/user/user-avatar-context-menu';
 
 import { cn } from '@/lib/utils';
-import UserAvatarContextMenu from '@/components/user/user-avatar-context-menu';
 
 const colorArray = [
   '#FF6633',
@@ -60,7 +60,6 @@ const colorArray = [
   '#99E6E6',
   '#6666FF',
 ];
-
 
 type UserAvatarProps = {
   className?: string;
@@ -125,7 +124,7 @@ function AvatarImage({ className, user: { imageUrl, name } }: AvatarImageProps) 
 
     return (
       <div className={cn('flex size-8 text-white min-h-8 min-w-8 items-center aspect-square justify-center rounded-full border border-border capitalize', className)} style={{ backgroundColor: color }}>
-        {username?.at(0)}
+        {typeof username === 'string' ? username.at(0) : ''}
       </div>
     );
   }
