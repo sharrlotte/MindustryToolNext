@@ -21,6 +21,7 @@ import { CreateTagRequest, CreateTagSchema, createTag, getTagCategories } from '
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { acceptedImageFormats } from '@/constant/constant';
 
 export default function CreateTagDialog() {
   const form = useForm<CreateTagRequest>({
@@ -179,7 +180,7 @@ export default function CreateTagDialog() {
                         id="image"
                         className="w-16"
                         hidden
-                        accept=".png, .jpg, .jpeg"
+                        accept={acceptedImageFormats}
                         type="file"
                         onChange={(event) => {
                           const files = event.target.files;

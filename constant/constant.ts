@@ -1,4 +1,4 @@
-import { AllTagGroup } from "@/types/response/TagGroup";
+import { AllTagGroup } from '@/types/response/TagGroup';
 
 export const dateFormat = 'dd-MM-yyyy hh:mm:ss';
 
@@ -12,4 +12,6 @@ export const itemTypes = ['schematic', 'map', 'post', 'server', 'plugin'];
 
 export type ItemType = (typeof itemTypes)[number];
 
-export type TagType = keyof AllTagGroup
+export type TagType = keyof AllTagGroup;
+
+export const acceptedImageFormats = '.png, .jpg, .jpeg, .webp';

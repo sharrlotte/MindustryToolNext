@@ -19,6 +19,7 @@ import { CreateModRequest, CreateModSchema, createMod } from '@/query/mod';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { acceptedImageFormats } from '@/constant/constant';
 
 export default function CreateModDialog() {
   const form = useForm<CreateModRequest>({
@@ -107,7 +108,7 @@ export default function CreateModDialog() {
                         id="image"
                         className="w-16"
                         hidden
-                        accept=".png, .jpg, .jpeg"
+                        accept={acceptedImageFormats}
                         type="file"
                         onChange={(event) => {
                           const files = event.target.files;

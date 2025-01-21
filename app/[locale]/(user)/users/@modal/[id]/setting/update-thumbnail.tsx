@@ -12,6 +12,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { getUser, updateThumbnail } from '@/query/user';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { acceptedImageFormats } from '@/constant/constant';
 
 type UpdateThumbnailProps = {
   id: string;
@@ -55,7 +56,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
 
   return (
     <div className="flex gap-2 flex-col">
-      <input id="image" className="w-16" hidden accept=".png, .jpg, .jpeg" type="file" onChange={handleFilePick} />
+      <input id="image" className="w-16" hidden accept={acceptedImageFormats} type="file" onChange={handleFilePick} />
       <label className="flex cursor-pointer items-center justify-center overflow-hidden" htmlFor="image" hidden>
         {imageUrl && (
           // eslint-disable-next-line @next/next/no-img-element
