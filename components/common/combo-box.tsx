@@ -73,7 +73,7 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
               <input className="border-none bg-transparent font-thin outline-none" value={input} placeholder="Search" onChange={(event) => setInput(event.currentTarget.value)} />
             </div>
           )}
-          <div className="grid gap-1 p-1">
+          <div className="grid gap-1 p-1 max-h-[50dvh] overflow-y-auto">
             {values.map((item) => (
               <Button
                 className={cn('justify-start capitalize hover:bg-brand text-foreground hover:text-brand-foreground', {

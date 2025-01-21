@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { TagType } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import { getTags } from '@/query/tag';
@@ -12,7 +14,7 @@ export default function useTags(type: TagType, mod?: Mod) {
     queryFn: async () => getTags(axios, mod?.id),
   });
 
-  const tags = (data  && type in data ? data[type].filter((v) => v.values.length > 0) : [])
+  const tags = useMemo(() => (data && type in data ? data[type].filter((v) => v.values.length > 0) : []), [data, type]);
 
   return tags;
 }
