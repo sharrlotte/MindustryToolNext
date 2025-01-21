@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
         if (!navigator?.onLine) {
           throw new StatusError(503, 'You are offline', error);
         } else {
-          throw new StatusError(error.response.data.status, error.response.data.message, error);
+          throw new StatusError(503, 'Network error', error);
         }
       }
     }

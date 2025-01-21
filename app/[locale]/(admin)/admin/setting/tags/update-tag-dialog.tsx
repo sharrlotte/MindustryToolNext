@@ -22,6 +22,7 @@ import { TagDto } from '@/types/response/Tag';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { acceptedImageFormats } from '@/constant/constant';
 
 type Props = {
   tag: TagDto;
@@ -190,7 +191,7 @@ export default function UpdateTagDialog({ tag }: Props) {
                         id="image"
                         className="w-16"
                         hidden
-                        accept=".png, .jpg, .jpeg"
+                        accept={acceptedImageFormats}
                         type="file"
                         onChange={(event) => {
                           const files = event.target.files;

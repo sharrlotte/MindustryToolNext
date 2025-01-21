@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
+import { acceptedImageFormats } from '@/constant/constant';
 import env from '@/constant/env';
 import { insertAtCaret, wrapAtCaret } from '@/lib/utils';
 
@@ -307,7 +308,7 @@ export function ImageDialog({ callback }: ImageDialogProps) {
                       <label className="flex h-9 items-center justify-center rounded-md border p-2" htmlFor="image" hidden>
                         <ImageIcon className="size-5" />
                       </label>
-                      <input id="image" className="w-16" hidden accept=".png, .jpg, .jpeg" type="file" onChange={handleFilePick} />
+                      <input id="image" className="w-16" hidden accept={acceptedImageFormats} type="file" onChange={handleFilePick} />
                     </div>
                   </FormControl>
                   <FormMessage />

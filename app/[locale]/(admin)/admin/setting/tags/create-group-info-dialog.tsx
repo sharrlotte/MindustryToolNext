@@ -45,8 +45,8 @@ export default function CreateGroupInfoPopover({ group }: Props) {
       <PopoverTrigger className="p-2 bg-secondary rounded-lg border">
         <PlusIcon />
       </PopoverTrigger>
-      <PopoverContent className="p-6">
-        <ScrollContainer className="grid gap-1">
+      <PopoverContent className="p-6 overflow-hidden h-[50dvh]">
+        <ScrollContainer className="grid gap-1 overflow-y-auto">
           {data
             ?.filter((category) => !group.categories.map((value) => value.id).includes(category.id))
             .map((category) => (

@@ -20,6 +20,7 @@ import { Mod } from '@/types/response/Mod';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { acceptedImageFormats } from '@/constant/constant';
 
 type Props = {
   mod: Mod;
@@ -115,7 +116,7 @@ export default function UpdateModDialog({ mod }: Props) {
                         id="image"
                         className="w-16"
                         hidden
-                        accept=".png, .jpg, .jpeg"
+                        accept={acceptedImageFormats}
                         type="file"
                         onChange={(event) => {
                           const files = event.target.files;
