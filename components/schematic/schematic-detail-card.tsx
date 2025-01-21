@@ -84,7 +84,7 @@ export default function SchematicDetailCard({
             </span>
             <DetailDescription>{description}</DetailDescription>
             <ItemRequirementCard requirements={requirements} />
-            <DetailTagsCard tags={tags} />
+            <DetailTagsCard tags={tags} type='schematic' />
           </DetailHeader>
         </DetailInfo>
         <DetailActions>

@@ -3,6 +3,7 @@ export type ServerManager = {
   name: string;
   address: string;
   userId: string;
+  status: string;
 };
 
 export type ServerManagerDetail = {
@@ -10,6 +11,7 @@ export type ServerManagerDetail = {
   name: string;
   address: string;
   userId: string;
+  status: string;
   accessToken: string;
   securityKey: string;
 };

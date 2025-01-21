@@ -51,7 +51,7 @@ export default function MapDetailCard({ map: { id, name, description, tags, veri
               <Tran text="size" /> {width}x{height}
             </span>
             <DetailDescription>{description}</DetailDescription>
-            <DetailTagsCard tags={tags} />
+            <DetailTagsCard tags={tags} type="map" />
           </DetailHeader>
         </DetailInfo>
         <DetailActions>

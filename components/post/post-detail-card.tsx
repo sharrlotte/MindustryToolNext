@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
 import TakeDownButton from '@/components/button/take-down-button';
@@ -21,6 +21,7 @@ import IdUserCard from '@/components/user/id-user-card';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
+import useTags from '@/hooks/use-tags';
 import ProtectedElement from '@/layout/protected-element';
 import { deletePost, unverifyPost } from '@/query/post';
 import { PostDetail } from '@/types/response/PostDetail';
@@ -33,7 +34,8 @@ type PostDetailCardProps = {
 };
 
 export default function PostDetailCard({ post: { title, content, tags, id, userId, userLike, likes, dislikes, isVerified, itemId, createdAt } }: PostDetailCardProps) {
-  const displayTags = Tags.parseStringArray(tags);
+  const source = useTags('post');
+  const displayTags = useMemo(() => Tags.parseStringArray(tags, source), [source, tags]);
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
   const { back } = useRouter();
