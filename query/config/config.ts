@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import axios from 'axios';
 
 import env from '@/constant/env';
 
@@ -54,7 +55,11 @@ axiosInstance.interceptors.response.use(
       ),
     );
 
-    throw new StatusError(500, 'An unknown error occurred', error);
+    if (axios.isAxiosError(error)) {
+      throw new StatusError(500, 'Axios error at path: ' + JSON.stringify(error.request), error);
+    }
+
+    throw new StatusError(500, 'An unknown error occurred: ' + error.message, error);
   },
 );
 
