@@ -16,8 +16,6 @@ export default async function Page() {
     return <ErrorScreen error={managers} />;
   }
 
-  console.log(managers);
-
   return (
     <div className="p-2 space-y-4">
       <h1>Server Managers</h1>
@@ -26,6 +24,7 @@ export default async function Page() {
           <InternalLink className="bg-card p-4 rounded-lg grid" key={manager.id} href={`server-managers/${manager.id}`}>
             <div>{manager.name}</div>
             <div className="text-sm text-muted-foreground">{manager.address}</div>
+            <div className="text-sm text-muted-foreground">{manager.status}</div>
           </InternalLink>
         ))}
       </ul>

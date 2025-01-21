@@ -26,8 +26,9 @@ export class Tags {
     if (!name || !value) throw new Error(`Invalid tag: ${str}`);
 
     const tag = source.find((t) => t.name === name);
+    const icon = tag?.values.find((t) => t.name === value)?.icon
 
-    return { name, value, color: tag?.color ?? TAG_DEFAULT_COLOR };
+    return { name, value, color: tag?.color ?? TAG_DEFAULT_COLOR, icon: icon };
   }
 
   static parseStringArray(arr: string[] | null, source: TagGroup[]) {
