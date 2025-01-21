@@ -9,8 +9,10 @@ export default function useTags(type: TagType, mod?: Mod) {
   const axios = useClientApi();
   const { data } = useQuery({
     queryKey: ['tags', mod?.id],
-    queryFn: async () => getTags(axios, mod?.id).then((data) => (type in data ? data[type].filter((v) => v.values.length > 0) : [])),
+    queryFn: async () => getTags(axios, mod?.id),
   });
 
-  return data ?? [];
+  const tags = (data  && type in data ? data[type].filter((v) => v.values.length > 0) : [])
+
+  return tags;
 }
