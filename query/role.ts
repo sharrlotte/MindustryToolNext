@@ -20,8 +20,8 @@ export async function getRoles(axios: AxiosInstance): Promise<RoleWithAuthoritie
 export const CreateRoleSchema = z.object({
   position: z.coerce.number().int().min(0).max(32767),
   name: z.string().min(1).max(100),
-  description: z.string().min(1).max(1000),
-  color: z.string().min(1).max(100),
+  description: z.string(),
+  color: z.string(),
 });
 
 export type CreateRoleRequest = z.infer<typeof CreateRoleSchema>;
@@ -35,8 +35,8 @@ export async function createRole(axios: AxiosInstance, payload: CreateRoleReques
 export const UpdateRoleSchema = z.object({
   position: z.coerce.number().int().min(0).max(32767),
   name: z.string().min(1).max(100),
-  description: z.string().min(1).max(1000),
-  color: z.string().min(1).max(100),
+  description: z.string(),
+  color: z.string(),
 });
 
 export type UpdateRoleRequest = z.infer<typeof UpdateRoleSchema>;
