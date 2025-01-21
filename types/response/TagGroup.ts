@@ -18,7 +18,15 @@ export type TagGroupDto = {
   id: number;
   name: string;
   description: string;
-  categories: TagCategoryDto[];
+  categories: TagGroupCategoryDto[];
+};
+
+export type TagGroupCategoryDto = {
+  id: number;
+  name: string;
+  color: string;
+  duplicate: boolean;
+  position: number;
 };
 
 export type TagCategoryDto = {

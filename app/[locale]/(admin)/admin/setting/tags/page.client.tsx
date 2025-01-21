@@ -24,10 +24,10 @@ import { toast } from '@/components/ui/sonner';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { groupBy, omit } from '@/lib/utils';
-import { getTagCategory, getTagDetail, getTagGroup, updateTag } from '@/query/tag';
+import { getTagCategory, getTagDetail, getTagGroup, updateGroupInfo, updateTag } from '@/query/tag';
 import { Mod } from '@/types/response/Mod';
 import { TagDto } from '@/types/response/Tag';
-import { TagCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
+import { TagCategoryDto, TagGroupCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -88,13 +88,49 @@ type GroupCardProps = {
 
 function GroupCard({ group }: GroupCardProps) {
   const { name, categories } = group;
+  const axios = useClientApi();
+
+  const { invalidateByKey } = useQueriesData();
+
+  const { mutate } = useMutation({
+    mutationKey: ['tag-group'],
+    mutationFn: ({ category1, category2 }: { category1: TagGroupCategoryDto; category2: TagGroupCategoryDto }) => {
+      let category1Position = category2.position;
+      const category2Position = category1.position;
+
+      if (category1Position === category2Position) {
+        category1Position += 1;
+      }
+
+      return Promise.all([updateGroupInfo(axios, group.id, category1.id, { position: category1Position }), updateGroupInfo(axios, group.id, category2.id, { position: category2Position })]);
+    },
+    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+    onSettled: () => {
+      invalidateByKey(['tag-group']);
+    },
+  });
+
+  function onDrop(dragId: number, hoverId: number) {
+    const category1 = categories.find((r) => r.id === dragId);
+    const category2 = categories.find((r) => r.id === hoverId);
+
+    if (!category1 || !category2) {
+      throw new Error('Role not found');
+    }
+
+    mutate({ category1, category2 });
+  }
   return (
     <div className="p-4 bg-card rounded-lg grid md:grid-cols-[128px_1fr] gap-2 border">
       <Tran className="text-lg font-semibold" text={name} />
       <div className="flex gap-2 flex-wrap">
-        {categories.map((category) => (
-          <GroupCategoryCard key={category.id} group={group} category={category} />
-        ))}
+        <DndProvider backend={HTML5Backend}>
+          {categories
+            .sort((a, b) => b.position - a.position)
+            .map((category) => (
+              <GroupCategoryCard key={category.id} group={group} category={category} onDrop={onDrop} />
+            ))}
+        </DndProvider>
         <CreateGroupInfoDialog group={group} />
       </div>
     </div>
@@ -103,12 +139,49 @@ function GroupCard({ group }: GroupCardProps) {
 
 type GroupCategoryCardProps = {
   group: TagGroupDto;
-  category: TagCategoryDto;
+  category: TagGroupCategoryDto;
+  onDrop: (dragId: number, hoverId: number) => void;
 };
 
-function GroupCategoryCard({ group, category }: GroupCategoryCardProps) {
+function GroupCategoryCard({ group, category, onDrop }: GroupCategoryCardProps) {
+  const { id } = category;
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
+    accept: group.id.toString(),
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    drop(item: DragItem) {
+      if (!ref.current) {
+        return;
+      }
+      const dragId = item.id;
+      const hoverId = id;
+
+      onDrop(dragId, hoverId);
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: group.id.toString(),
+    item: () => {
+      return { id };
+    },
+    collect: (monitor: any) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0 : 1;
+
+  drag(drop(ref));
+
   return (
-    <div className="p-2 bg-secondary rounded-lg border text-sm text-muted-foreground group flex hover:gap-2">
+    <div className="p-2 bg-secondary rounded-lg border text-sm text-muted-foreground group flex hover:gap-2" ref={ref} style={{ opacity }} data-handler-id={handlerId}>
       <Tran className="text-nowrap" text={`tags.${category.name}`} />
       <DeleteGroupInfoDialog group={group} category={category} />
     </div>
@@ -188,7 +261,7 @@ function TagList({ modId }: TagListProps) {
 type TagGroupCardProps = {
   tags: TagDto[];
   categoryId: number;
-  onDrop: (dragIndex: number, hoverIndex: number) => void;
+  onDrop: (dragId: number, hoverId: number) => void;
 };
 
 function TagGroupCard({ categoryId, tags, onDrop }: TagGroupCardProps) {
@@ -213,7 +286,7 @@ interface DragItem {
 
 type TagCardProps = {
   tag: TagDto;
-  onDrop: (dragIndex: number, hoverIndex: number) => void;
+  onDrop: (dragId: number, hoverId: number) => void;
 };
 
 function TagCard({ tag, onDrop }: TagCardProps) {
@@ -231,10 +304,10 @@ function TagCard({ tag, onDrop }: TagCardProps) {
       if (!ref.current) {
         return;
       }
-      const dragIndex = item.id;
-      const hoverIndex = id;
+      const dragId = item.id;
+      const hoverId = id;
 
-      onDrop(dragIndex, hoverIndex);
+      onDrop(dragId, hoverId);
     },
   });
 
@@ -253,7 +326,6 @@ function TagCard({ tag, onDrop }: TagCardProps) {
   drag(drop(ref));
   return (
     <div className="flex gap-2 p-2 border rounded-lg bg-secondary items-center" ref={ref} style={{ opacity }} data-handler-id={handlerId}>
-      {id}
       {icon && <Image className="w-10 h-10 rounded-lg" width={40} height={40} src={icon} alt={name} />}
       <Tran className="text-sm text-muted-foreground" text={name} />
       <div className="ml-auto">
