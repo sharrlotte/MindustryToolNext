@@ -21,21 +21,23 @@ export type TagDto = {
 export default Tag;
 
 export class Tags {
-  static parseString(str: string) {
+  static parseString(str: string, source: TagGroup[]) {
     const [name, value] = str.split(TAG_SEPARATOR);
     if (!name || !value) throw new Error(`Invalid tag: ${str}`);
 
-    return { name, value, color: TAG_DEFAULT_COLOR };
+    const tag = source.find((t) => t.name === name);
+
+    return { name, value, color: tag?.color ?? TAG_DEFAULT_COLOR };
   }
 
-  static parseStringArray(arr: string[] | null) {
+  static parseStringArray(arr: string[] | null, source: TagGroup[]) {
     if (!arr) {
       return [];
     }
     const result = [];
     for (const tag of arr) {
       try {
-        result.push(Tags.parseString(tag));
+        result.push(Tags.parseString(tag, source));
       } catch (err) {
         // ignore
       }

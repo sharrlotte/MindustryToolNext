@@ -11,6 +11,8 @@ import IdUserCard from '@/components/user/id-user-card';
 
 import { cn } from '@/lib/utils';
 import { Tags } from '@/types/response/Tag';
+import { TagType } from '@/constant/constant';
+import useTags from '@/hooks/use-tags';
 
 type DetailProps = HTMLAttributes<HTMLDivElement>;
 
@@ -77,10 +79,12 @@ export function DetailActions({ className, children, back = true }: ActionsProps
 
 type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
   tags: string[];
+  type: TagType
 };
 
-export function DetailTagsCard({ className, tags }: TagsProps) {
-  const values = Tags.parseStringArray(tags);
+export function DetailTagsCard({ className, tags, type }: TagsProps) {
+  const source = useTags(type);
+  const values = Tags.parseStringArray(tags, source);
 
   return (
     <Suspense>
