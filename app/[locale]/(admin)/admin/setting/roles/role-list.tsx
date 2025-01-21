@@ -43,9 +43,6 @@ export function RoleList({ roles, bestRole }: Props) {
 
       return Promise.all([updateRole(axios, role1.id, role1), updateRole(axios, role2.id, role2)]);
     },
-    onSuccess: () => {
-      toast.success(<Tran text="upload.success" />);
-    },
     onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['roles']);
@@ -130,16 +127,13 @@ export default function RoleCard({ role, bestRole, onDrop }: RoleCardProps) {
     }),
   });
 
-  const opacity = isDragging ? 0.5 : 1;
+  const opacity = isDragging ? 0 : 1;
 
   drag(drop(ref));
 
   return (
     <div className="grid bg-card p-2 grid-cols-[140px_auto_40px] gap-2 items-center" ref={ref} style={{ opacity }} data-handler-id={handlerId}>
-      <div className="flex gap-2">
-        {id}
-        <Tran style={{ color }} text={name.toLowerCase()} />
-      </div>
+      <Tran style={{ color }} text={name.toLowerCase()} />
       <div className="overflow-hidden text-ellipsis w-full">
         <ChangeRoleAuthorityDialog role={role} />
       </div>

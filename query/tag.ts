@@ -62,7 +62,7 @@ export const UpdateTagSchema = z.object({
 
 export type UpdateTagRequest = z.infer<typeof UpdateTagSchema>;
 
-export async function updateTag(axios: AxiosInstance, id: string, payload: UpdateTagRequest): Promise<void> {
+export async function updateTag(axios: AxiosInstance, id: number, payload: UpdateTagRequest): Promise<void> {
   const form = toForm(payload);
 
   const result = await axios.put(`/tags/${id}`, form, { data: form });
@@ -70,7 +70,7 @@ export async function updateTag(axios: AxiosInstance, id: string, payload: Updat
   return result.data;
 }
 
-export async function deleteTag(axios: AxiosInstance, id: string): Promise<void> {
+export async function deleteTag(axios: AxiosInstance, id: number): Promise<void> {
   const result = await axios.delete(`/tags/${id}`);
 
   return result.data;
