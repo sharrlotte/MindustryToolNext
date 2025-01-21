@@ -83,7 +83,7 @@ export default function TagSelector({ initialValue, type, value, onChange, disab
             item.name === tag.name
               ? {
                   ...item,
-                  values: group.values.filter((item) => item !== tag),
+                  values: group.values.filter((item) => item.name !== tag.value),
                 }
               : item,
           );
