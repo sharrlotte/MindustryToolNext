@@ -364,7 +364,7 @@ function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
       {icon && <Image className="size-8 rounded-lg" width={40} height={40} src={icon} alt={name} />}
       <Tran text={name} />
       <div className="ml-auto">
-        <EllipsisButton variant="ghost" className="p-0">
+        <EllipsisButton variant="ghost" className="p-0 text-muted-foreground">
           <UpdateTagDialog tag={tag} />
           <DeleteTagDialog tag={tag} />
         </EllipsisButton>
