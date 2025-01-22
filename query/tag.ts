@@ -1,12 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
-
-
 import { toForm } from '@/lib/utils';
 import { TagDto } from '@/types/response/Tag';
 import { AllTagGroup, TagCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
-
 
 export async function getTags(axios: AxiosInstance, modId?: string): Promise<AllTagGroup> {
   const { data } = await axios.get('/tags', { params: { modId } });
@@ -61,6 +58,7 @@ export const UpdateTagSchema = z.object({
   categoryId: z.number().int(),
   modId: z.string().optional().nullable(),
   icon: z.any(),
+  position: z.number().int(),
 });
 
 export type UpdateTagRequest = z.infer<typeof UpdateTagSchema>;

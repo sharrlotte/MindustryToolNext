@@ -17,7 +17,7 @@ export default function useTags(type: TagType, mod?: Mod) {
 
   const { data: mods } = useQuery({
     queryKey: ['tags', mod?.id],
-    queryFn: async () => (mod ? getTags(axios, mod.id) : ({} as unknown as AllTagGroup)),
+    queryFn: async () => (mod ? getTags(axios, mod.id) : ({} as AllTagGroup)),
   });
 
   const tags = useMemo(() => merge(validateTags(data, type), validateTags(mods, type)), [data, mods, type]);

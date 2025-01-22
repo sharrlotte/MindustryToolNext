@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, Suspense } from 'react';
+import React, { HTMLAttributes, Suspense, useMemo } from 'react';
 
 import ColorText from '@/components/common/color-text';
 import FallbackImage from '@/components/common/fallback-image';
@@ -9,10 +9,9 @@ import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import IdUserCard from '@/components/user/id-user-card';
 
-import { cn } from '@/lib/utils';
-import { Tags } from '@/types/response/Tag';
 import { TagType } from '@/constant/constant';
-import useTags from '@/hooks/use-tags';
+import { cn } from '@/lib/utils';
+import { DetailTagDto, Tags } from '@/types/response/Tag';
 
 type DetailProps = HTMLAttributes<HTMLDivElement>;
 
@@ -78,13 +77,12 @@ export function DetailActions({ className, children, back = true }: ActionsProps
 }
 
 type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
-  tags: string[];
-  type: TagType
+  tags: DetailTagDto[];
+  type: TagType;
 };
 
-export function DetailTagsCard({ className, tags, type }: TagsProps) {
-  const source = useTags(type);
-  const values = Tags.parseStringArray(tags, source);
+export function DetailTagsCard({ className, tags }: TagsProps) {
+  const values = useMemo(() => Tags.parseStringArray(tags), [tags]);
 
   return (
     <Suspense>

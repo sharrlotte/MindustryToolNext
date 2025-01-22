@@ -1,18 +1,17 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
 import TakeDownButton from '@/components/button/take-down-button';
 import CommentSection from '@/components/common/comment-section';
-import { Detail, DetailContent } from '@/components/common/detail';
+import { Detail, DetailContent, DetailTagsCard } from '@/components/common/detail';
 import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 import Markdown from '@/components/markdown/markdown';
-import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { toast } from '@/components/ui/sonner';
@@ -21,11 +20,9 @@ import IdUserCard from '@/components/user/id-user-card';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useTags from '@/hooks/use-tags';
 import ProtectedElement from '@/layout/protected-element';
 import { deletePost, unverifyPost } from '@/query/post';
 import { PostDetail } from '@/types/response/PostDetail';
-import { Tags } from '@/types/response/Tag';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -34,8 +31,6 @@ type PostDetailCardProps = {
 };
 
 export default function PostDetailCard({ post: { title, content, tags, id, userId, userLike, likes, dislikes, isVerified, itemId, createdAt } }: PostDetailCardProps) {
-  const source = useTags('post');
-  const displayTags = useMemo(() => Tags.parseStringArray(tags, source), [source, tags]);
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
   const { back } = useRouter();
@@ -80,7 +75,7 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
           <div className="grid gap-2">
             <IdUserCard id={userId} />
             <span>{new Date(createdAt).toLocaleString()}</span>
-            <TagContainer tags={displayTags} />
+            <DetailTagsCard type="post" tags={tags} />
           </div>
           <div className="flex h-full flex-1">
             <Markdown>{content}</Markdown>

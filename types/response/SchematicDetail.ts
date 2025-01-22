@@ -1,7 +1,11 @@
 import { Status } from '@/types/response/Status';
 
+
+
 import { ItemRequirement } from './ItemRequirement';
 import { Like } from './Like';
+import { DetailTagDto } from '@/types/response/Tag';
+
 
 export type SchematicDetail = {
   id: string;
@@ -9,7 +13,7 @@ export type SchematicDetail = {
   userId: string;
   description: string;
   metadata: { requirements: ItemRequirement[] };
-  tags: string[];
+  tags: DetailTagDto[];
   likes: number;
   dislikes: number;
   height: number;
