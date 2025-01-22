@@ -84,8 +84,6 @@ type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
 export function DetailTagsCard({ className, tags }: TagsProps) {
   const values = useMemo(() => Tags.parseStringArray(tags), [tags]);
 
-  console.log({ values, tags });
-
   return (
     <Suspense>
       <TagContainer className={className} tags={values} />
