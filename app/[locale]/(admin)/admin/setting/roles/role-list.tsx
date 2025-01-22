@@ -2,7 +2,7 @@
 
 import type { Identifier } from 'dnd-core';
 import dynamic from 'next/dynamic';
-import { Suspense, useRef } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import React from 'react';
 import { DndProvider } from 'react-dnd';
 import { useDrag, useDrop } from 'react-dnd';
@@ -15,6 +15,7 @@ import { toast } from '@/components/ui/sonner';
 import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
+import { cn } from '@/lib/utils';
 import { getRoles, updateRole } from '@/query/role';
 import { Role, RoleWithAuthorities } from '@/types/response/Role';
 
@@ -30,8 +31,8 @@ type Props = {
 };
 export function RoleList({ roles, bestRole }: Props) {
   const axios = useClientApi();
-
   const { invalidateByKey } = useQueriesData();
+  const [hoverId, setHoverId] = useState<number>();
 
   const { mutate } = useMutation({
     mutationKey: ['roles'],
@@ -40,6 +41,10 @@ export function RoleList({ roles, bestRole }: Props) {
 
       role1.position = role2.position;
       role2.position = role1Position;
+
+      if (role1.position === role2.position) {
+        role1.position += 1;
+      }
 
       return Promise.all([updateRole(axios, role1.id, role1), updateRole(axios, role2.id, role2)]);
     },
@@ -57,16 +62,13 @@ export function RoleList({ roles, bestRole }: Props) {
   });
 
   function onDrop(dragId: number, hoverId: number) {
+    setHoverId(undefined);
+
     const role1 = data.find((r) => r.id === dragId);
     const role2 = data.find((r) => r.id === hoverId);
 
     if (!role1 || !role2) {
       throw new Error('Role not found');
-    }
-
-    if (bestRole.position < role1.position || bestRole.position < role2.position) {
-      toast.error(<Tran text="role.position.error" />);
-      return;
     }
 
     mutate({ role1, role2 });
@@ -76,7 +78,7 @@ export function RoleList({ roles, bestRole }: Props) {
       <DndProvider backend={HTML5Backend}>
         <div className="flex flex-col gap-2">
           {data.map((role) => (
-            <RoleCard key={role.id} role={role} bestRole={bestRole} onDrop={onDrop} />
+            <RoleCard key={role.id} isHovered={hoverId === role.id} role={role} bestRole={bestRole} onDrop={onDrop} onHover={setHoverId} />
           ))}
         </div>
       </DndProvider>
@@ -87,7 +89,9 @@ export function RoleList({ roles, bestRole }: Props) {
 type RoleCardProps = {
   role: RoleWithAuthorities;
   bestRole?: Role;
+  isHovered: boolean;
   onDrop: (dragIndex: number, hoverIndex: number) => void;
+  onHover: (hoverIndex: number) => void;
 };
 
 interface DragItem {
@@ -95,7 +99,7 @@ interface DragItem {
   type: string;
 }
 
-export default function RoleCard({ role, bestRole, onDrop }: RoleCardProps) {
+export default function RoleCard({ isHovered, role, bestRole, onDrop, onHover }: RoleCardProps) {
   const { id, name, color, position } = role;
 
   const ref = useRef<HTMLDivElement>(null);
@@ -115,6 +119,15 @@ export default function RoleCard({ role, bestRole, onDrop }: RoleCardProps) {
 
       onDrop(dragIndex, hoverIndex);
     },
+    hover() {
+      if (!ref.current) {
+        return;
+      }
+
+      const hoverIndex = id;
+
+      onHover(hoverIndex);
+    },
   });
 
   const [{ isDragging }, drag] = useDrag({
@@ -127,12 +140,18 @@ export default function RoleCard({ role, bestRole, onDrop }: RoleCardProps) {
     }),
   });
 
-  const opacity = isDragging ? 0 : 1;
-
   drag(drop(ref));
 
   return (
-    <div className="grid bg-card p-2 grid-cols-[140px_auto_40px] gap-2 items-center" ref={ref} style={{ opacity }} data-handler-id={handlerId}>
+    <div
+      className={cn('grid bg-card p-2 grid-cols-[100px_140px_auto_40px] gap-2 items-center', {
+        'border-success border': isHovered,
+        'border-destructive border opacity-50': isDragging,
+      })}
+      ref={ref}
+      data-handler-id={handlerId}
+    >
+      <div>{position}</div>
       <Tran style={{ color }} text={name.toLowerCase()} />
       <div className="overflow-hidden text-ellipsis w-full">
         <ChangeRoleAuthorityDialog role={role} />

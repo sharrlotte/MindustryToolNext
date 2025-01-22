@@ -23,11 +23,11 @@ import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { groupBy, omit } from '@/lib/utils';
+import { cn, groupBy, omit } from '@/lib/utils';
 import { getTagCategory, getTagDetail, getTagGroup, updateGroupInfo, updateTag } from '@/query/tag';
 import { Mod } from '@/types/response/Mod';
 import { TagDto } from '@/types/response/Tag';
-import { TagCategoryDto, TagGroupCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
+import { TagGroupCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -89,6 +89,7 @@ type GroupCardProps = {
 function GroupCard({ group }: GroupCardProps) {
   const { name, categories } = group;
   const axios = useClientApi();
+  const [hoverId, setHoverId] = useState<number>();
 
   const { invalidateByKey } = useQueriesData();
 
@@ -111,6 +112,8 @@ function GroupCard({ group }: GroupCardProps) {
   });
 
   function onDrop(dragId: number, hoverId: number) {
+    setHoverId(undefined);
+
     const category1 = categories.find((r) => r.id === dragId);
     const category2 = categories.find((r) => r.id === hoverId);
 
@@ -125,11 +128,9 @@ function GroupCard({ group }: GroupCardProps) {
       <Tran className="text-lg font-semibold" text={name} />
       <div className="flex gap-2 flex-wrap">
         <DndProvider backend={HTML5Backend}>
-          {categories
-            .sort((a, b) => b.position - a.position)
-            .map((category) => (
-              <GroupCategoryCard key={category.id} group={group} category={category} onDrop={onDrop} />
-            ))}
+          {categories.map((category) => (
+            <GroupCategoryCard isHovered={category.id === hoverId} key={category.id} group={group} category={category} onDrop={onDrop} onHover={setHoverId} />
+          ))}
         </DndProvider>
         <CreateGroupInfoDialog group={group} />
       </div>
@@ -140,11 +141,13 @@ function GroupCard({ group }: GroupCardProps) {
 type GroupCategoryCardProps = {
   group: TagGroupDto;
   category: TagGroupCategoryDto;
-  onDrop: (dragId: number, hoverId: number) => void;
+  isHovered: boolean;
+  onDrop: (dragIndex: number, hoverIndex: number) => void;
+  onHover: (hoverIndex: number) => void;
 };
 
-function GroupCategoryCard({ group, category, onDrop }: GroupCategoryCardProps) {
-  const { id } = category;
+function GroupCategoryCard({ group, category, isHovered, onDrop, onHover }: GroupCategoryCardProps) {
+  const { id, position } = category;
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -164,6 +167,15 @@ function GroupCategoryCard({ group, category, onDrop }: GroupCategoryCardProps) 
 
       onDrop(dragId, hoverId);
     },
+    hover() {
+      if (!ref.current) {
+        return;
+      }
+
+      const hoverIndex = id;
+
+      onHover(hoverIndex);
+    },
   });
 
   const [{ isDragging }, drag] = useDrag({
@@ -176,13 +188,19 @@ function GroupCategoryCard({ group, category, onDrop }: GroupCategoryCardProps) 
     }),
   });
 
-  const opacity = isDragging ? 0 : 1;
-
   drag(drop(ref));
 
   return (
-    <div className="p-2 bg-secondary rounded-lg border text-sm text-muted-foreground group flex hover:gap-2" ref={ref} style={{ opacity }} data-handler-id={handlerId}>
-      <Tran className="text-nowrap" text={`tags.${category.name}`} />
+    <div
+      className={cn('p-2 bg-secondary rounded-lg border text-sm text-muted-foreground group flex group', {
+        'border-success border': isHovered,
+        'border-destructive border opacity-50': isDragging,
+      })}
+      ref={ref}
+      data-handler-id={handlerId}
+    >
+      <span className="mr-2">{position}</span>
+      <Tran className="text-nowrap group-hover:mr-2" text={`tags.${category.name}`} />
       <DeleteGroupInfoDialog group={group} category={category} />
     </div>
   );
@@ -200,6 +218,7 @@ function TagList({ modId }: TagListProps) {
   });
 
   const { invalidateByKey } = useQueriesData();
+  const [hoverId, setHoverId] = useState<number>();
 
   const { mutate } = useMutation({
     mutationKey: ['tags-detail'],
@@ -225,6 +244,8 @@ function TagList({ modId }: TagListProps) {
     if (!data) {
       return;
     }
+
+    setHoverId(undefined);
 
     const tag1 = data.find((r) => r.id === dragId);
     const tag2 = data.find((r) => r.id === hoverId);
@@ -255,23 +276,25 @@ function TagList({ modId }: TagListProps) {
 
   const groups = groupBy(data ?? [], (value) => value.categoryId);
 
-  return groups.map(({ key: categoryId, value: tags }) => <TagGroupCard key={categoryId} categoryId={categoryId} tags={tags} onDrop={onDrop} />);
+  return groups.map(({ key: categoryId, value: tags }) => <TagGroupCard key={categoryId} hoveredId={hoverId} categoryId={categoryId} tags={tags} onDrop={onDrop} onHover={setHoverId} />);
 }
 
 type TagGroupCardProps = {
   tags: TagDto[];
   categoryId: number;
+  hoveredId?: number;
   onDrop: (dragId: number, hoverId: number) => void;
+  onHover: (hoverIndex: number) => void;
 };
 
-function TagGroupCard({ categoryId, tags, onDrop }: TagGroupCardProps) {
+function TagGroupCard({ categoryId, tags, hoveredId, onDrop, onHover }: TagGroupCardProps) {
   return (
     <div className="grid md:grid-cols-[128px_1fr] gap-2 p-4 rounded-lg bg-card border">
       <CategoryCard categoryId={categoryId} />
       <div className="flex flex-col flex-grow gap-2">
         <DndProvider backend={HTML5Backend}>
           {tags.map((tag) => (
-            <TagCard key={tag.id} tag={tag} onDrop={onDrop} />
+            <TagCard key={tag.id} isHovered={hoveredId === tag.id} tag={tag} onDrop={onDrop} onHover={onHover} />
           ))}
         </DndProvider>
       </div>
@@ -286,11 +309,13 @@ interface DragItem {
 
 type TagCardProps = {
   tag: TagDto;
+  isHovered: boolean;
   onDrop: (dragId: number, hoverId: number) => void;
+  onHover: (hoverIndex: number) => void;
 };
 
-function TagCard({ tag, onDrop }: TagCardProps) {
-  const { id, icon, name, categoryId } = tag;
+function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
+  const { id, icon, name, categoryId, position } = tag;
 
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
@@ -309,6 +334,15 @@ function TagCard({ tag, onDrop }: TagCardProps) {
 
       onDrop(dragId, hoverId);
     },
+    hover() {
+      if (!ref.current) {
+        return;
+      }
+
+      const hoverIndex = id;
+
+      onHover(hoverIndex);
+    },
   });
 
   const [{ isDragging }, drag] = useDrag({
@@ -321,11 +355,10 @@ function TagCard({ tag, onDrop }: TagCardProps) {
     }),
   });
 
-  const opacity = isDragging ? 0 : 1;
-
   drag(drop(ref));
   return (
-    <div className="flex gap-2 p-2 border rounded-lg bg-secondary items-center" ref={ref} style={{ opacity }} data-handler-id={handlerId}>
+    <div className={cn('flex gap-2 p-2 border rounded-lg bg-secondary items-center', { 'border-success border': isHovered, 'border-destructive border opacity-50': isDragging })} ref={ref} data-handler-id={handlerId}>
+      {position}
       {icon && <Image className="w-10 h-10 rounded-lg" width={40} height={40} src={icon} alt={name} />}
       <Tran className="text-sm text-muted-foreground" text={name} />
       <div className="ml-auto">
