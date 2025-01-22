@@ -16,7 +16,6 @@ import RouterSpinner from '@/components/common/router-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ModFilter from '@/components/search/mod-filter';
-import Divider from '@/components/ui/divider';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/sonner';
@@ -33,6 +32,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 const DeleteTagDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/tags/delete-tag-dialog'));
 const UpdateTagDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/tags/update-tag-dialog'));
+
 const DeleteTagCategoryDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/tags/delete-tag-category-dialog'));
 const UpdateTagCategoryDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/tags/update-tag-category-dialog'));
 
@@ -43,13 +43,17 @@ export default function PageClient() {
     <div className="space-y-2 h-full flex flex-col">
       <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
       <ScrollContainer className="space-y-2">
-        <TagGroupList />
-        <Divider />
-        <TagList modId={selectedMod?.id} />
+        <div className="p-2 border rounded-lg space-y-2">
+          <Tran className="py-2 text-lg font-semibold" text="tags.group" />
+          <TagGroupList />
+        </div>
+        <div className="p-2 border rounded-lg space-y-2">
+          <Tran className="py-2 text-lg font-semibold" text="tags.category" />
+          <TagList modId={selectedMod?.id} />
+        </div>
       </ScrollContainer>
       <div className="flex justify-end gap-2">
         <CreateTagCategoryDialog />
-        <CreateTagDialog />
       </div>
     </div>
   );
@@ -125,7 +129,7 @@ function GroupCard({ group }: GroupCardProps) {
   }
   return (
     <div className="p-4 bg-card rounded-lg grid md:grid-cols-[128px_1fr] gap-2 border">
-      <Tran className="text-lg font-semibold" text={name} />
+      <Tran className="text-lg" text={name} />
       <div className="flex gap-2 flex-wrap">
         <DndProvider backend={HTML5Backend}>
           {categories.map((category) => (
@@ -147,7 +151,7 @@ type GroupCategoryCardProps = {
 };
 
 function GroupCategoryCard({ group, category, isHovered, onDrop, onHover }: GroupCategoryCardProps) {
-  const { id, position } = category;
+  const { id } = category;
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -199,7 +203,6 @@ function GroupCategoryCard({ group, category, isHovered, onDrop, onHover }: Grou
       ref={ref}
       data-handler-id={handlerId}
     >
-      <span className="mr-2">{position}</span>
       <Tran className="text-nowrap group-hover:mr-2" text={`tags.${category.name}`} />
       <DeleteGroupInfoDialog group={group} category={category} />
     </div>
@@ -289,16 +292,16 @@ type TagGroupCardProps = {
 
 function TagGroupCard({ categoryId, tags, hoveredId, onDrop, onHover }: TagGroupCardProps) {
   return (
-    <div className="grid md:grid-cols-[128px_1fr] gap-2 p-4 rounded-lg bg-card border">
-      <CategoryCard categoryId={categoryId} />
-      <div className="flex flex-col flex-grow gap-2">
+    <CategoryCard categoryId={categoryId}>
+      <div className="flex flex-wrap gap-2">
         <DndProvider backend={HTML5Backend}>
           {tags.map((tag) => (
             <TagCard key={tag.id} isHovered={hoveredId === tag.id} tag={tag} onDrop={onDrop} onHover={onHover} />
           ))}
+          <CreateTagDialog />
         </DndProvider>
       </div>
-    </div>
+    </CategoryCard>
   );
 }
 
@@ -315,7 +318,7 @@ type TagCardProps = {
 };
 
 function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
-  const { id, icon, name, categoryId, position } = tag;
+  const { id, icon, name, categoryId } = tag;
 
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
@@ -357,12 +360,11 @@ function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
 
   drag(drop(ref));
   return (
-    <div className={cn('flex gap-2 p-2 border rounded-lg bg-secondary items-center', { 'border-success border': isHovered, 'border-destructive border opacity-50': isDragging })} ref={ref} data-handler-id={handlerId}>
-      {position}
-      {icon && <Image className="w-10 h-10 rounded-lg" width={40} height={40} src={icon} alt={name} />}
-      <Tran className="text-sm text-muted-foreground" text={name} />
+    <div className={cn('flex text-sm gap-2 px-2 border rounded-lg bg-secondary text-muted-foreground items-center', { 'border-success border': isHovered, 'border-destructive border opacity-50': isDragging })} ref={ref} data-handler-id={handlerId}>
+      {icon && <Image className="size-8 rounded-lg" width={40} height={40} src={icon} alt={name} />}
+      <Tran text={name} />
       <div className="ml-auto">
-        <EllipsisButton variant="ghost">
+        <EllipsisButton variant="ghost" className="p-0">
           <UpdateTagDialog tag={tag} />
           <DeleteTagDialog tag={tag} />
         </EllipsisButton>
@@ -373,9 +375,10 @@ function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
 
 type CategoryCardProps = {
   categoryId: number;
+  children: React.ReactNode;
 };
 
-function CategoryCard({ categoryId }: CategoryCardProps) {
+function CategoryCard({ categoryId, children }: CategoryCardProps) {
   const axios = useClientApi();
 
   const { data, isLoading, isError, error } = useQuery({
@@ -403,8 +406,9 @@ function CategoryCard({ categoryId }: CategoryCardProps) {
   const { name, color } = data;
 
   return (
-    <div className="flex justify-start flex-col items-start">
-      <Tran className="overflow-hidden text-ellipsis font-semibold text-lg" style={{ color }} text={name} />
+    <div className="grid p-4 gap-2 rounded-lg grid-cols-[128px_auto_40px] bg-card items-start">
+      <Tran className="overflow-hidden text-ellipsis text-lg" style={{ color }} text={name} />
+      {children}
       <EllipsisButton className="p-0" variant="ghost">
         <UpdateTagCategoryDialog category={data} />
         <DeleteTagCategoryDialog category={data} />

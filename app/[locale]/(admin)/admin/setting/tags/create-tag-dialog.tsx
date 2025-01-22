@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import ComboBox from '@/components/common/combo-box';
 import { Hidden } from '@/components/common/hidden';
-import { ImageIcon } from '@/components/common/icons';
+import { ImageIcon, PlusIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -14,6 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
+import { acceptedImageFormats } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { getMods } from '@/query/mod';
@@ -21,7 +22,6 @@ import { CreateTagRequest, CreateTagSchema, createTag, getTagCategories } from '
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { acceptedImageFormats } from '@/constant/constant';
 
 export default function CreateTagDialog() {
   const form = useForm<CreateTagRequest>({
@@ -70,8 +70,8 @@ export default function CreateTagDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="min-w-20" variant="secondary" title="server.add">
-          <Tran text="tag.add" />
+        <Button className="p-0 aspect-square" variant="secondary" title="server.add">
+          <PlusIcon />
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-card p-6">
