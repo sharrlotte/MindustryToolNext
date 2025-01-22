@@ -1,6 +1,6 @@
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import { groupBy } from '@/lib/utils';
-import { Tags } from '@/types/response/Tag';
+import { DetailTagDto, Tags } from '@/types/response/Tag';
 
 type TagGroup = {
   name: string;
@@ -76,6 +76,33 @@ export class TagGroups {
           return r;
         }
       })
+      .filter((value) => !!value);
+
+    return tagGroup;
+  }
+  static parsTagDto(str: DetailTagDto[] | undefined): TagGroup[] {
+    if (!str) {
+      return [];
+    }
+
+    const tagsArray =
+      str
+        .filter(Boolean) //
+        ?.map((value) => ({
+          str: value.name.split(TAG_SEPARATOR),
+          value,
+        }))
+        .filter((value) => value.str.length === 2)
+        .map((value) => ({ name: value.str[0], value: value.str[1], icon: value.value.icon, color: value.value.color })) ?? [];
+
+    const tagGroup = groupBy(tagsArray, ({ name }) => name)
+      .map(({ key, value }) => ({
+        name: key,
+        color: value[0]?.color,
+        duplicate: true,
+        values: value.map(({ value }) => ({ name: value })) ?? [],
+      }))
+
       .filter((value) => !!value);
 
     return tagGroup;

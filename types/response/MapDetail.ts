@@ -3,6 +3,7 @@ import { Status } from '@/types/response/Status';
 
 
 import { Like } from './Like';
+import { DetailTagDto } from '@/types/response/Tag';
 
 
 export type MapDetail = {
@@ -10,7 +11,7 @@ export type MapDetail = {
   name: string;
   userId: string;
   description: string;
-  tags: string[];
+  tags: DetailTagDto[];
   likes: number;
   dislikes: number;
   height: number;

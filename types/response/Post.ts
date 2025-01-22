@@ -1,4 +1,6 @@
 import { Status } from '@/types/response/Status';
+import { DetailTagDto } from '@/types/response/Tag';
+
 
 export type Post = {
   id: string;
@@ -6,7 +8,7 @@ export type Post = {
   title: string;
   likes: number;
   dislikes: number;
-  tags: string[];
+  tags: DetailTagDto[];
   imageUrls: string[];
   createdAt: number;
   status: Status;

@@ -19,13 +19,13 @@ import { Separator } from '@/components/ui/separator';
 import useTags from '@/hooks/use-tags';
 import { PresetType, cn } from '@/lib/utils';
 import { Mod } from '@/types/response/Mod';
-import Tag, { Tags } from '@/types/response/Tag';
+import Tag, { DetailTagDto, Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 
 type TagSelectorProps = {
-  initialValue: string[];
+  initialValue: DetailTagDto[];
   disabled?: boolean;
   hideSelectedTag?: boolean;
   value: TagGroup[];
@@ -45,7 +45,7 @@ export default function TagSelector({ initialValue, type, value, onChange, disab
   const tags = useTags(type, selectedMod);
 
   useEffect(() => {
-    onChange(() => TagGroups.parseString(initialValue, tags));
+    onChange(() => TagGroups.parsTagDto(initialValue));
   }, [tags, initialValue, onChange]);
 
   const handleTagGroupChange = useCallback(

@@ -1,6 +1,12 @@
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import TagGroup from '@/types/response/TagGroup';
 
+export type DetailTagDto = {
+  name: string;
+  icon: string;
+  color: string;
+};
+
 type Tag = {
   name: string;
   value: string;
@@ -21,24 +27,21 @@ export type TagDto = {
 export default Tag;
 
 export class Tags {
-  static parseString(str: string, source: TagGroup[]) {
-    const [name, value] = str.split(TAG_SEPARATOR);
+  static parseString(str: DetailTagDto) {
+    const [name, value] = str.name.split(TAG_SEPARATOR);
     if (!name || !value) throw new Error(`Invalid tag: ${str}`);
 
-    const tag = source.find((t) => t.name === name);
-    const icon = tag?.values.find((t) => t.name === value)?.icon
-
-    return { name, value, color: tag?.color ?? TAG_DEFAULT_COLOR, icon: icon };
+    return { name, value, color: str.color ?? TAG_DEFAULT_COLOR, icon: str.icon };
   }
 
-  static parseStringArray(arr: string[] | null, source: TagGroup[]) {
+  static parseStringArray(arr: DetailTagDto[] | null) {
     if (!arr) {
       return [];
     }
     const result = [];
     for (const tag of arr) {
       try {
-        result.push(Tags.parseString(tag, source));
+        result.push(Tags.parseString(tag));
       } catch (err) {
         // ignore
       }

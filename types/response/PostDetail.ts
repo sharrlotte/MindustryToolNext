@@ -1,5 +1,7 @@
 import { Like } from '@/types/response/Like';
 import { Status } from '@/types/response/Status';
+import { DetailTagDto } from '@/types/response/Tag';
+
 
 export type PostDetail = {
   id: string;
@@ -8,7 +10,7 @@ export type PostDetail = {
   content: string;
   likes: number;
   dislikes: number;
-  tags: string[];
+  tags: DetailTagDto[];
   lang: string;
   imageUrls: string[];
   status: Status;
