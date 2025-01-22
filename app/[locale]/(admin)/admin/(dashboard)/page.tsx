@@ -37,6 +37,7 @@ export default async function Page() {
   const start = new Date();
   const end = new Date();
 
+  end.setDate(new Date().getDate() + 1);
   end.setUTCHours(23, 59, 59, 999);
 
   start.setDate(new Date().getDate() - NUMBER_OF_DAY);

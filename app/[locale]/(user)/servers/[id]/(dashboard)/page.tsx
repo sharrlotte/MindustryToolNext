@@ -67,11 +67,11 @@ export default async function Page({ params }: Props) {
     return <ErrorScreen error={session} />;
   }
 
-  const { started, name, description, port, mode, ramUsage, totalRam, players, mapName, alive, userId } = server;
+  const { name, description, port, mode, ramUsage, totalRam, players, mapName, status, userId } = server;
 
   const canAccess = hasAccess(session, { any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: server.userId }] });
   const showPlayer = hasAccess(session, {
-    all: [canAccess, started],
+    all: [canAccess, status === 'HOST'],
   });
 
   return (
@@ -104,7 +104,7 @@ export default async function Page({ params }: Props) {
               </div>
               <div className="flex flex-col gap-0.5">
                 <Tran text="server.status" />
-                <ServerStatus alive={alive} started={started} />
+                <ServerStatus status={status} />
               </div>
               <div className="flex flex-col gap-0.5">
                 <Tran text="server.players" />
@@ -133,10 +133,10 @@ export default async function Page({ params }: Props) {
               <h3 className="text-xl">
                 <Tran text="server.system-status" />
               </h3>
-              {started ? (
+              {status === 'HOST' ? (
                 <>
                   <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
-                  <Image key={started + ''} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/servers/${id}/image`} alt={name} width={500} height={500} />
+                  <Image key={status} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/servers/${id}/image`} alt={name} width={500} height={500} />
                 </>
               ) : (
                 <Tran text="server.server-is-not-running" />
@@ -158,7 +158,7 @@ export default async function Page({ params }: Props) {
           <ProtectedElement session={session} filter={canAccess}>
             <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
               <ReloadServerButton id={id} />
-              {started ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
+              {status === 'HOST' ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
             </div>
           </ProtectedElement>
         </div>
