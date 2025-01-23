@@ -88,13 +88,13 @@ export default async function Page({ params }: Props) {
           <h3 className="font-bold">
             <ServerTran locale={locale} text="home.schematic-preview" />
           </h3>
-          <HomeSchematicPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
+          <HomeSchematicPreview queryParam={{ page: 0, size: 5, sort: 'time_desc' }} />
         </article>
         <article className="flex flex-col gap-2">
           <h3 className="font-bold">
             <ServerTran locale={locale} text="home.map-preview" />
           </h3>
-          <HomeMapPreview queryParam={{ page: 0, size: 10, sort: 'time_desc' }} />
+          <HomeMapPreview queryParam={{ page: 0, size: 5, sort: 'time_desc' }} />
         </article>
         <article className="flex flex-col gap-2">
           <h3 className="font-bold">

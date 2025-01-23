@@ -111,7 +111,7 @@ async function InternalHomeServerPreview() {
     return <ErrorScreen error={result} />;
   }
 
-  return result.map((server, index) => (
+  return result.slice(0, 10).map((server, index) => (
     <li key={server.id} className="m-0 snap-center p-0 h-full w-[320px] min-w-[320px]">
       <FadeIn delay={index}>
         <ServerCard server={server} />
