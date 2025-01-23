@@ -40,9 +40,8 @@ import { getPostUploadCount } from '@/query/post';
 import { getSchematicUploadCount } from '@/query/schematic';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import { getTranslationDiffCount } from '@/query/translation';
-import { useVerifyCount } from '@/zustand/verify-count-store';
 
-import { useQueries } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 
 export type PathGroup = {
   key: string;
@@ -248,8 +247,6 @@ export const groups: readonly PathGroup[] = [
 function VerifyPathIcon() {
   const axios = useClientApi();
 
-  const set = useVerifyCount((data) => data.set);
-
   const [{ data: schematicCount }, { data: mapCount }, { data: postCount }, { data: pluginCount }] = useQueries({
     queries: [
       {
@@ -275,8 +272,6 @@ function VerifyPathIcon() {
     ],
   });
 
-  useEffect(() => set({ schematicCount, mapCount, postCount, pluginCount }), [mapCount, postCount, schematicCount, pluginCount, set]);
-
   const total = (schematicCount || 0) + (mapCount || 0) + (postCount || 0) + (pluginCount || 0);
 
   return (
@@ -291,42 +286,58 @@ function VerifyPath() {
 }
 
 function SchematicPath() {
-  const schematicCount = useVerifyCount((data) => data.schematicCount);
-
+  const axios = useClientApi();
+  const { data } = useQuery({
+    queryFn: () => getSchematicUploadCount(axios, {}),
+    queryKey: ['schematics', 'total', 'upload'],
+    placeholderData: 0,
+  });
   return (
     <>
       <Tran asChild text="schematic" />
-      {schematicCount > 0 && <span> ({schematicCount})</span>}
+      {data && data > 0 && <span> ({data})</span>}
     </>
   );
 }
 function MapPath() {
-  const mapCount = useVerifyCount((data) => data.mapCount);
-
+  const axios = useClientApi();
+  const { data } = useQuery({
+    queryFn: () => getMapUploadCount(axios, {}),
+    queryKey: ['maps', 'total', 'upload'],
+    placeholderData: 0,
+  });
   return (
     <>
       <Tran asChild text="map" />
-      {mapCount > 0 && <span> ({mapCount})</span>}
+      {data && data > 0 && <span> ({data})</span>}
     </>
   );
 }
 function PostPath() {
-  const postCount = useVerifyCount((data) => data.postCount);
-
+  const axios = useClientApi();
+  const { data } = useQuery({
+    queryFn: () => getPostUploadCount(axios, {}),
+    queryKey: ['posts', 'total', 'upload'],
+    placeholderData: 0,
+  });
   return (
     <>
       <Tran asChild text="post" />
-      {postCount > 0 && <span> ({postCount})</span>}
+      {data && data > 0 && <span> ({data})</span>}
     </>
   );
 }
 function PluginPath() {
-  const pluginCount = useVerifyCount((data) => data.pluginCount);
-
+  const axios = useClientApi();
+  const { data } = useQuery({
+    queryFn: () => getPluginUploadCount(axios, {}),
+    queryKey: ['plugins', 'total', 'upload'],
+    placeholderData: 0,
+  });
   return (
     <>
       <Tran asChild text="plugin" />
-      {pluginCount > 0 && <span> ({pluginCount})</span>}
+      {data && data > 0 && <span> ({data})</span>}
     </>
   );
 }

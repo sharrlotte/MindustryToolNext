@@ -17,7 +17,7 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import { useNavBar } from '@/zustand/navbar-store';
+import { useNavBar } from '@/app/[locale]/navigation';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
@@ -36,13 +36,13 @@ const sidebarVariants = {
 };
 
 export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: NavigationBarProps) {
-  const {visible, setVisible} = useNavBar()
+  const { visible, setVisible } = useNavBar();
 
   const isSmall = useMediaQuery('(max-width: 640px)');
 
   const expand = isSmall ? true : visible;
 
-  const toggleSidebar = useCallback(() => setVisible( !visible), [visible, setVisible]);
+  const toggleSidebar = useCallback(() => setVisible(!visible), [visible, setVisible]);
 
   return (
     <motion.div
@@ -69,10 +69,8 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
 }
 
 function NavFooter() {
-  const {
-    session,
-  } = useSession();
-  const {visible} = useNavBar()
+  const { session } = useSession();
+  const { visible } = useNavBar();
 
   const isSmall = useMediaQuery('(max-width: 640px)');
 
@@ -118,10 +116,8 @@ type PathGroupElementProps = {
 };
 
 const PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNode => {
-  const {
-    session,
-  } = useSession();
-  const {visible} = useNavBar()
+  const { session } = useSession();
+  const { visible } = useNavBar();
 
   const { key, name, filter } = group;
 
@@ -151,12 +147,9 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
   const [value, setValue] = useState('');
 
   const isSmall = useMediaQuery('(max-width: 640px)');
-  const {
-    session,
-  } = useSession();
+  const { session } = useSession();
 
-    const {visible, setVisible} = useNavBar()
-  
+  const { visible, setVisible } = useNavBar();
 
   const expand = isSmall ? true : visible;
 
@@ -190,7 +183,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
               'justify-start gap-2 py-2': expand,
             })}
             showChevron={expand}
-            onClick={() => setVisible( true)}
+            onClick={() => setVisible(true)}
           >
             {icon}
             {expand && name}

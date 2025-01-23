@@ -1,34 +1,47 @@
-'use client';
-
-import React, { useCallback, useMemo } from 'react';
-import { ReactNode } from 'react';
-import { create } from 'zustand';
+import { ReactNode, createContext, useCallback, useContext, useMemo, useState } from 'react';
+import React from 'react';
 
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
 import { LikeAction } from '@/constant/enum';
-import { FakeLike, LikeContext } from '@/context/like-context';
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import { postLike } from '@/query/like';
+import { LikeData } from '@/types/data/LikeData';
 import { Like } from '@/types/response/Like';
 
 import { useMutation } from '@tanstack/react-query';
+
+export const FakeLike: LikeData = {
+  userId: '',
+  itemId: '',
+  state: 0,
+  like: 0,
+  dislike: 0,
+};
 
 const DISLIKE = -1;
 const LIKE = 1;
 const UNSET = 0;
 
-type State = {
-  cache: Record<string, Like & { like: number; dislike: number }>;
-  setCache: (id: string, data: Like & { like: number; dislike: number }) => void;
+type LikeComponentContextType = {
+  like: number;
+  dislike: number;
+  likeData: Like & { like: number; dislike: number };
+  isLoading: boolean;
+  handleAction: (action: 'LIKE' | 'DISLIKE') => void;
 };
 
-const useCache = create<State>((set) => ({
-  cache: {},
-  setCache: (id: string, data: Like & { like: number; dislike: number }) => set((prev) => ({ cache: { ...prev.cache, [id]: data } })),
-}));
+const LikeComponentContext = createContext<LikeComponentContextType | undefined>(undefined);
+
+export function useLike() {
+  const context = useContext(LikeComponentContext);
+  if (!context) {
+    throw new Error('useLikeComponent must be used within LikeComponent');
+  }
+  return context;
+}
 
 type LikeComponentProps = {
   children: ReactNode;
@@ -38,10 +51,10 @@ type LikeComponentProps = {
   itemId: string;
 };
 
-function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialLikeData, children, itemId }: LikeComponentProps) {
+export default function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialLikeData, children, itemId }: LikeComponentProps) {
   const { session } = useSession();
   const axios = useClientApi();
-  const { cache, setCache } = useCache();
+  const [cache, setCache] = useState<Record<string, Like & { like: number; dislike: number }>>({});
   const likeData = useMemo(
     () => ({
       ...(cache[itemId] ?? {
@@ -63,6 +76,7 @@ function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialL
 
   const handleAction = useCallback(
     (action: 'LIKE' | 'DISLIKE') => {
+      console.log(action);
       if (isPending) {
         return;
       }
@@ -103,40 +117,42 @@ function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialL
 
       likeData.state = state;
 
-      setCache(itemId, {
-        ...likeData,
-        state,
-        like: likeData.like + likeChange,
-        dislike: likeData.dislike + dislikeChange,
-      });
+      setCache((prev) => ({
+        ...prev,
+        [itemId]: {
+          ...likeData,
+          state,
+          like: likeData.like + likeChange,
+          dislike: likeData.dislike + dislikeChange,
+        },
+      }));
 
       return mutate(action, {
-        onError: () => setCache(itemId, { ...likeData }),
+        onError: () => {
+          setCache((prev) => ({ ...prev, [itemId]: likeData }));
+        },
         onSuccess: (result) => {
-          setCache(itemId, {
-            like: likeData.like + result.amountLike,
-            dislike: likeData.dislike + result.amountDislike,
-            ...result.like,
-          });
+          setCache((prev) => ({
+            ...prev,
+            [itemId]: {
+              like: likeData.like + result.amountLike,
+              dislike: likeData.dislike + result.amountDislike,
+              ...result.like,
+            },
+          }));
         },
       });
     },
-    [isPending, itemId, likeData, mutate, session, setCache],
+    [isPending, itemId, likeData, mutate, session],
   );
 
-  return (
-    <LikeContext.Provider
-      value={{
-        like: cache[itemId]?.like ?? initialLikeCount,
-        dislike: cache[itemId]?.dislike ?? initialDislikeCount,
-        likeData,
-        isLoading: isPending,
-        handleAction,
-      }}
-    >
-      {children}
-    </LikeContext.Provider>
-  );
+  const contextValue = {
+    like: cache[itemId]?.like ?? initialLikeCount,
+    dislike: cache[itemId]?.dislike ?? initialDislikeCount,
+    likeData,
+    isLoading: isPending,
+    handleAction,
+  };
+
+  return <LikeComponentContext.Provider value={contextValue}>{children}</LikeComponentContext.Provider>;
 }
-
-export default LikeComponent;

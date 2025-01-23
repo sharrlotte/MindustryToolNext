@@ -1,43 +1,53 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import Moment from 'react-moment';
-import { useStore } from 'zustand';
+import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
-import { Locale } from '@/i18n/config';
+import { Locale, locales } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
-import { createServerStore } from '@/zustand/locale-store';
 
 export type TranslationGroup = Record<string, Record<string, string>>;
 export type LocaleData = Record<string, TranslationGroup>;
-type Props = { locale: Locale; children: React.ReactNode };
 
-type ContextType = ReturnType<typeof createServerStore>;
-
-const Context = React.createContext<ContextType | undefined>(undefined);
-
-export function useLocaleStore() {
-  const value = React.useContext(Context);
-
-  if (!value) {
-    throw new Error('Can not use out side of context');
-  }
-
-  return useStore(value);
+interface LocaleContextType {
+  currentLocale: Locale;
+  setCurrentLocale: (locale: Locale) => void;
 }
 
-export default function I18nProvider({ locale, children }: Props) {
-  const storeRef = useRef<ContextType>();
+const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
-  Moment.globalLocale = locale;
+type I18nProviderProps = {
+  locale: Locale;
+  children: ReactNode;
+};
 
-  if (!storeRef.current) {
-    storeRef.current = createServerStore(locale);
-  }
+export function I18nProvider({ locale, children }: I18nProviderProps): JSX.Element {
+  const [currentLocale, setCurrentLocaleState] = useState<Locale>(locales.includes(locale) ? locale : 'en');
+
+  const setCurrentLocale = (newLocale: Locale) => {
+    if (locales.includes(newLocale)) {
+      setCurrentLocaleState(newLocale);
+    } else {
+      console.warn(`Invalid locale "${newLocale}", defaulting to 'en'.`);
+      setCurrentLocaleState('en');
+    }
+  };
 
   useEffect(() => {
-    axiosInstance.defaults.headers['Accept-Language'] = locale as string;
-  }, [locale]);
+    axiosInstance.defaults.headers['Accept-Language'] = currentLocale;
+  }, [currentLocale]);
 
-  return <Context.Provider value={storeRef.current}>{children}</Context.Provider>;
+  const value: LocaleContextType = {
+    currentLocale,
+    setCurrentLocale,
+  };
+
+  return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
+}
+
+export function useLocaleStore(): LocaleContextType {
+  const context = useContext(LocaleContext);
+  if (!context) {
+    throw new Error('useLocaleStore must be used within an I18nProvider');
+  }
+  return context;
 }
