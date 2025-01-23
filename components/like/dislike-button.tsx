@@ -1,9 +1,9 @@
 'use client';
 
 import { DislikeIcon } from '@/components/common/icons';
+import { useLike } from '@/components/like/like-component';
 import { ButtonProps } from '@/components/ui/button';
 
-import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
 
 type LikeButtonProps = Omit<ButtonProps, 'title'>;

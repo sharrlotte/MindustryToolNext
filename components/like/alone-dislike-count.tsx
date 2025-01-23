@@ -1,6 +1,6 @@
 import { DislikeIcon } from '@/components/common/icons';
+import { useLike } from '@/components/like/like-component';
 
-import { useLike } from '@/context/like-context';
 import { cn } from '@/lib/utils';
 
 export default function AloneDislikeCount() {
