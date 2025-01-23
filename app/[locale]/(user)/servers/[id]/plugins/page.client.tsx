@@ -44,7 +44,7 @@ export default function ServerPluginPage({ id }: Props) {
             item: <Skeleton className="h-32 w-full" />,
           }}
         >
-          {(data) => <ServerPluginCard key={data.pluginId} plugin={data} />}
+          {(data) => <ServerPluginCard key={data.id} plugin={data} />}
         </InfinitePage>
       </ScrollContainer>
     </div>

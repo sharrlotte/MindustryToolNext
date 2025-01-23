@@ -1,5 +1,7 @@
 import { ServerMode } from '@/types/request/UpdateServerRequest';
 
+export type ServerStatus = 'DOWN' | 'UP' | 'HOST';
+
 export type ServerDetail = {
   id: string;
   name: string;
@@ -8,8 +10,7 @@ export type ServerDetail = {
   port: number;
   official: boolean;
   mode: ServerMode;
-  started: boolean;
-  alive: boolean;
+  status: ServerStatus;
   ramUsage: number;
   totalRam: number;
   players: number;

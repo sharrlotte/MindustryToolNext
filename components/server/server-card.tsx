@@ -13,7 +13,7 @@ type MyServerInstancesCardProps = {
   server: ServerDetail;
 };
 
-export default async function ServerCard({ server: { id, name, players, port, alive, started, mapName, mode } }: MyServerInstancesCardProps) {
+export default async function ServerCard({ server: { id, name, players, port, status, mapName, mode } }: MyServerInstancesCardProps) {
   return (
     <InternalLink className="flex h-full flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-2" href={`/servers/${id}`}>
       <Suspense>
@@ -21,10 +21,10 @@ export default async function ServerCard({ server: { id, name, players, port, al
           <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
           <ColorText className="text-2xl font-bold" text={name} />
         </div>
-        <div className={cn('grid grid-cols-2 gap-3 text-sm font-medium capitalize text-muted-foreground', { 'text-foreground': started })}>
+        <div className={cn('grid grid-cols-2 gap-3 text-sm font-medium capitalize text-muted-foreground', { 'text-foreground': status === 'HOST' })}>
           <div className="flex flex-col gap-0.5">
             <Tran asChild text="server.status" />
-            <ServerStatus alive={alive} started={started} />
+            <ServerStatus status={status} />
           </div>
           <div className="flex flex-col gap-0.5">
             <Tran asChild text="server.game-mode" />

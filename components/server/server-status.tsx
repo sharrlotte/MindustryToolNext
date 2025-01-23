@@ -3,14 +3,15 @@ import React from 'react';
 import Tran from '@/components/common/tran';
 import { Badge } from '@/components/ui/badge';
 
+import { type ServerStatus } from '@/types/response/ServerDetail';
+
 type Props = {
-  alive: boolean;
-  started: boolean;
+  status: ServerStatus;
 };
 
-export default function ServerStatus({ alive, started }: Props) {
+export default function ServerStatus({ status }: Props) {
   function render() {
-    if (!alive) {
+    if (status === 'UP') {
       return (
         <Badge variant="destructive">
           <Tran text="server.stopped" asChild />
@@ -18,7 +19,7 @@ export default function ServerStatus({ alive, started }: Props) {
       );
     }
 
-    if (started) {
+    if (status === 'HOST') {
       return (
         <Badge variant="success">
           <Tran text="server.online" asChild />

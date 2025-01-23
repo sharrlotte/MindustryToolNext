@@ -17,16 +17,15 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ModFilter from '@/components/search/mod-filter';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { cn, groupBy, omit } from '@/lib/utils';
-import { getTagCategory, getTagDetail, getTagGroup, updateGroupInfo, updateTag } from '@/query/tag';
+import { cn, omit } from '@/lib/utils';
+import { getTagDetail, getTagGroup, updateGroupInfo, updateTag } from '@/query/tag';
 import { Mod } from '@/types/response/Mod';
 import { TagDto } from '@/types/response/Tag';
-import { TagGroupCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
+import { TagDetailDto, TagGroupCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -220,8 +219,36 @@ function TagList({ modId }: TagListProps) {
     queryFn: async () => getTagDetail(axios, modId),
   });
 
+  if (isLoading) {
+    return (
+      <div className="col-span-full flex h-full w-full justify-center">
+        <RouterSpinner />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
+        <Tran className="font-semibold" text="error" />
+        <p className="text-muted-foreground">{JSON.stringify(error)}</p>
+      </div>
+    );
+  }
+
+  return data?.map((category) => <TagCategoryCard key={category.id} category={category} />);
+}
+
+type TagCategoryCardProps = {
+  category: TagDetailDto;
+};
+
+function TagCategoryCard({ category }: TagCategoryCardProps) {
+  const { color, name, values } = category;
+
   const { invalidateByKey } = useQueriesData();
   const [hoverId, setHoverId] = useState<number>();
+  const axios = useClientApi();
 
   const { mutate } = useMutation({
     mutationKey: ['tags-detail'],
@@ -244,14 +271,10 @@ function TagList({ modId }: TagListProps) {
   });
 
   function onDrop(dragId: number, hoverId: number) {
-    if (!data) {
-      return;
-    }
-
     setHoverId(undefined);
 
-    const tag1 = data.find((r) => r.id === dragId);
-    const tag2 = data.find((r) => r.id === hoverId);
+    const tag1 = values.find((r) => r.id === dragId);
+    const tag2 = values.find((r) => r.id === hoverId);
 
     if (!tag1 || !tag2) {
       throw new Error('Role not found');
@@ -260,48 +283,22 @@ function TagList({ modId }: TagListProps) {
     mutate({ tag1: omit(tag1, 'icon'), tag2: omit(tag2, 'icon') });
   }
 
-  if (isLoading) {
-    return (
-      <div className="col-span-full flex h-full w-full justify-center">
-        <RouterSpinner />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
-        <Tran className="font-semibold" text="error" />
-        <p className="text-muted-foreground">{JSON.stringify(error)}</p>
-      </div>
-    );
-  }
-
-  const groups = groupBy(data ?? [], (value) => value.categoryId);
-
-  return groups.map(({ key: categoryId, value: tags }) => <TagGroupCard key={categoryId} hoveredId={hoverId} categoryId={categoryId} tags={tags} onDrop={onDrop} onHover={setHoverId} />);
-}
-
-type TagGroupCardProps = {
-  tags: TagDto[];
-  categoryId: number;
-  hoveredId?: number;
-  onDrop: (dragId: number, hoverId: number) => void;
-  onHover: (hoverIndex: number) => void;
-};
-
-function TagGroupCard({ categoryId, tags, hoveredId, onDrop, onHover }: TagGroupCardProps) {
   return (
-    <CategoryCard categoryId={categoryId}>
+    <div className="grid p-4 gap-2 rounded-lg grid-cols-[128px_auto_40px] bg-card items-start">
+      <Tran className="overflow-hidden text-ellipsis text-lg" style={{ color }} text={name} />
       <div className="flex flex-wrap gap-2">
         <DndProvider backend={HTML5Backend}>
-          {tags.map((tag) => (
-            <TagCard key={tag.id} isHovered={hoveredId === tag.id} tag={tag} onDrop={onDrop} onHover={onHover} />
+          {values.map((tag) => (
+            <TagCard key={tag.id} isHovered={hoverId === tag.id} tag={tag} onDrop={onDrop} onHover={setHoverId} />
           ))}
-          <CreateTagDialog />
+          <CreateTagDialog key="dialog" />
         </DndProvider>
       </div>
-    </CategoryCard>
+      <EllipsisButton className="p-0" variant="ghost">
+        <UpdateTagCategoryDialog category={category} />
+        <DeleteTagCategoryDialog category={category} />
+      </EllipsisButton>
+    </div>
   );
 }
 
@@ -369,50 +366,6 @@ function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
           <DeleteTagDialog tag={tag} />
         </EllipsisButton>
       </div>
-    </div>
-  );
-}
-
-type CategoryCardProps = {
-  categoryId: number;
-  children: React.ReactNode;
-};
-
-function CategoryCard({ categoryId, children }: CategoryCardProps) {
-  const axios = useClientApi();
-
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['tag-category', categoryId],
-    queryFn: async () => getTagCategory(axios, categoryId),
-  });
-
-  if (isLoading) {
-    return <Skeleton />;
-  }
-
-  if (isError) {
-    return (
-      <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
-        <Tran className="font-semibold" text="error" />
-        <p className="text-muted-foreground">{JSON.stringify(error)}</p>
-      </div>
-    );
-  }
-
-  if (!data) {
-    return null;
-  }
-
-  const { name, color } = data;
-
-  return (
-    <div className="grid p-4 gap-2 rounded-lg grid-cols-[128px_auto_40px] bg-card items-start">
-      <Tran className="overflow-hidden text-ellipsis text-lg" style={{ color }} text={name} />
-      {children}
-      <EllipsisButton className="p-0" variant="ghost">
-        <UpdateTagCategoryDialog category={data} />
-        <DeleteTagCategoryDialog category={data} />
-      </EllipsisButton>
     </div>
   );
 }
