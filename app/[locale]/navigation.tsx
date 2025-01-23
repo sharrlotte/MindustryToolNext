@@ -2,16 +2,47 @@
 
 import { usePathname } from 'next/navigation';
 import { ReactNode, useMemo } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
+import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
+import SmallScreenNavigationBar from '@/app/[locale]/small-navigation-items';
 import { Path, SubPath, groups } from '@/app/routes';
 
 import { useSession } from '@/context/session-context.client';
 import { hasAccess, max } from '@/lib/utils';
-import SmallScreenNavigationBar from '@/app/[locale]/small-navigation-items';
-import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
 
 const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
+
+interface NavBarContextType {
+  visible: boolean;
+  setVisible: (data: boolean) => void;
+}
+
+const NavBarContext = createContext<NavBarContextType | null>(null);
+
+interface NavBarProviderProps {
+  children: ReactNode;
+}
+
+const NavBarProvider: React.FC<NavBarProviderProps> = ({ children }) => {
+  const [visible, setVisible] = useState(false);
+
+  const value: NavBarContextType = {
+    visible,
+    setVisible,
+  };
+
+  return <NavBarContext.Provider value={value}>{children}</NavBarContext.Provider>;
+};
+
+export const useNavBar = (): NavBarContextType => {
+  const context = useContext(NavBarContext);
+  if (!context) {
+    throw new Error('useNavBar must be used within a NavBarProvider');
+  }
+  return context;
+};
 
 export default function NavigationBar({ children }: { children: ReactNode }) {
   const isSmall = useMediaQuery('(max-width: 640px)');
@@ -21,9 +52,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
   const bestMatch = useMemo(() => {
     const route = '/' + PATH_PATTERN.exec(pathName)?.at(1);
 
-    const allPaths: string[] = groups
-      .reduce<Path[]>((prev, curr) => prev.concat(curr.paths), []) //
-      .reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
+    const allPaths: string[] = groups.reduce<Path[]>((prev, curr) => prev.concat(curr.paths), []).reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
 
     return max(allPaths, (value) => value.length * (route.startsWith(value) ? 1 : 0));
   }, [pathName]);
@@ -35,18 +64,22 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
 
   if (isSmall) {
     return (
-      <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
-        <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
-        <div className="h-full w-full overflow-hidden">{children}</div>
-      </div>
+      <NavBarProvider>
+        <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
+          <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
+          <div className="h-full w-full overflow-hidden">{children}</div>
+        </div>
+      </NavBarProvider>
     );
   }
 
   return (
-    <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center sm:grid">
-      <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
-      <div className="h-full w-full overflow-hidden">{children}</div>
-    </div>
+    <NavBarProvider>
+      <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center sm:grid">
+        <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
+        <div className="h-full w-full overflow-hidden">{children}</div>
+      </div>
+    </NavBarProvider>
   );
 }
 

@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic';
 import React, { useEffect } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
+import { useNavBar } from '@/app/[locale]/navigation';
+
 import { IconNotification } from '@/components/common/icon-notification';
 import { NotificationIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
@@ -16,13 +18,12 @@ import useNotification from '@/hooks/use-notification';
 import useQueriesData from '@/hooks/use-queries-data';
 import { cn, isError } from '@/lib/utils';
 import { getMyUnreadNotificationCount } from '@/query/notification';
-import { useNavBar } from '@/zustand/navbar-store';
 
 const NotificationForm = dynamic(() => import('@/app/[locale]/notification-form'));
 
 export default function NotificationDialog() {
-    const {visible} = useNavBar()
-  
+  const { visible } = useNavBar();
+
   const isSmall = useMediaQuery('(max-width: 640px)');
   const expand = isSmall ? true : visible;
 
@@ -50,7 +51,7 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
     queryKey: ['notifications', 'count'],
     queryFn: (axios) => getMyUnreadNotificationCount(axios),
     enabled: state === 'authenticated',
-    placeholderData: 0
+    placeholderData: 0,
   });
 
   useEffect(

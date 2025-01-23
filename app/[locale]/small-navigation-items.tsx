@@ -1,5 +1,6 @@
 import React, { ReactNode, useCallback, useState } from 'react';
 
+import { useNavBar } from '@/app/[locale]/navigation';
 import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
 
@@ -17,7 +18,6 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import { useNavBar } from '@/zustand/navbar-store';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
@@ -25,11 +25,10 @@ type NavigationBarProps = {
 };
 
 export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: NavigationBarProps) {
+  const { visible, setVisible } = useNavBar();
 
-  const {visible, setVisible} = useNavBar()
-
-  const showSidebar = useCallback(() => setVisible( true), [setVisible]);
-  const hideSidebar = useCallback(() => setVisible( false), [setVisible]);
+  const showSidebar = useCallback(() => setVisible(true), [setVisible]);
+  const hideSidebar = useCallback(() => setVisible(false), [setVisible]);
 
   return (
     <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg">
@@ -41,7 +40,7 @@ export default function SmallScreenNavigationBar({ bestMatch, pathGroups }: Navi
           'backdrop-blur-sm backdrop-brightness-50': visible,
         })}
       >
-        <div >
+        <div>
           <div
             className={cn('pointer-events-auto fixed bottom-0 top-0 min-w-[280px] translate-x-[-100%] justify-between overflow-hidden bg-background dark:bg-background/90 transition-transform', {
               'translate-x-0': visible,
