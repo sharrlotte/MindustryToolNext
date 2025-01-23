@@ -1,6 +1,6 @@
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import { groupBy } from '@/lib/utils';
-import { DetailTagDto, Tags } from '@/types/response/Tag';
+import { DetailTagDto, TagDto, Tags } from '@/types/response/Tag';
 
 type TagGroup = {
   name: string;
@@ -27,6 +27,14 @@ export type TagGroupCategoryDto = {
   color: string;
   duplicate: boolean;
   position: number;
+};
+
+export type TagDetailDto = {
+  id: number;
+  name: string;
+  color: string;
+  duplicate: boolean;
+  values: TagDto[];
 };
 
 export type TagCategoryDto = {

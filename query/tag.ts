@@ -2,8 +2,7 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
 import { toForm } from '@/lib/utils';
-import { TagDto } from '@/types/response/Tag';
-import { AllTagGroup, TagCategoryDto, TagGroupDto } from '@/types/response/TagGroup';
+import { AllTagGroup, TagCategoryDto, TagDetailDto, TagGroupDto } from '@/types/response/TagGroup';
 
 export async function getTags(axios: AxiosInstance, modId?: string): Promise<AllTagGroup> {
   const { data } = await axios.get('/tags', { params: { modId } });
@@ -26,7 +25,7 @@ export async function getTagGroup(axios: AxiosInstance): Promise<TagGroupDto[]> 
   return data;
 }
 
-export async function getTagDetail(axios: AxiosInstance, modId?: string): Promise<TagDto[]> {
+export async function getTagDetail(axios: AxiosInstance, modId?: string): Promise<TagDetailDto[]> {
   const { data } = await axios.get('/tags/detail', { params: { modId } });
 
   return data;
