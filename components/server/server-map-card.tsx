@@ -21,12 +21,12 @@ type ServerMapCardProps = {
   map: ServerMap;
 };
 
-export default function ServerMapCard({ map: { name, mapId, serverId } }: ServerMapCardProps) {
+export default function ServerMapCard({ map: { name, id, serverId } }: ServerMapCardProps) {
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => deleteServerMap(axios, serverId, mapId),
+    mutationFn: () => deleteServerMap(axios, serverId, id),
     onSuccess: () => {
       toast(<Tran text="delete-success" />);
     },
@@ -40,8 +40,8 @@ export default function ServerMapCard({ map: { name, mapId, serverId } }: Server
 
   return (
     <Preview className="group relative flex flex-col justify-between">
-      <InternalLink href={`/maps/${mapId}`}>
-        <PreviewImage src={`${env.url.image}/map-previews/${mapId}${env.imageFormat}`} errorSrc={`${env.url.api}/maps/${mapId}/image`} alt={name ?? 'internal server map'} />
+      <InternalLink href={`/maps/${id}`}>
+        <PreviewImage src={`${env.url.image}/map-previews/${id}${env.imageFormat}`} errorSrc={`${env.url.api}/maps/${id}/image`} alt={name ?? 'internal server map'} />
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader className="h-12">

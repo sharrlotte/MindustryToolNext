@@ -43,7 +43,7 @@ export default function ServerMaps({ id }: Props) {
             item: <PreviewSkeleton />,
           }}
         >
-          {(data) => <ServerMapCard key={data.mapId} map={data} />}
+          {(data) => <ServerMapCard key={data.id} map={data} />}
         </InfinitePage>
       </ScrollContainer>
     </div>

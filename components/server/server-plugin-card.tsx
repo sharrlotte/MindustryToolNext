@@ -18,12 +18,12 @@ type Props = {
   plugin: ServerPlugin;
 };
 
-export default function ServerPluginCard({ plugin: { serverId, name, pluginId, isVerified, description } }: Props) {
+export default function ServerPluginCard({ plugin: { serverId, name, id, description } }: Props) {
   const { invalidateByKey } = useQueriesData();
 
   const axios = useClientApi();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
-    mutationFn: () => deleteServerPlugin(axios, serverId, pluginId),
+    mutationFn: () => deleteServerPlugin(axios, serverId, id),
     onSuccess: () => {
       toast.success(<Tran text="delete-success" />);
     },
@@ -41,7 +41,6 @@ export default function ServerPluginCard({ plugin: { serverId, name, pluginId, i
         <PopoverTrigger className="flex w-full items-start justify-start overflow-hidden text-ellipsis">
           <h2 className="line-clamp-1 overflow-hidden text-ellipsis whitespace-normal text-nowrap">{name}</h2>
         </PopoverTrigger>
-        <Tran className="text-muted-foreground" text={isVerified ? 'Verified' : 'Unverified'} />
         <DeleteButton className="right-1 top-1 backdrop-brightness-100" variant="ghost" description={<Tran text="delete-alert" args={{ name }} />} isLoading={isDeleting} onClick={() => deletePluginById()} />
       </div>
       <PopoverContent>
