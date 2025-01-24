@@ -30,15 +30,17 @@ function validateTags(data: AllTagGroup | undefined, type: TagType) {
 }
 
 function merge(tags1: TagGroup[], tags2: TagGroup[]): TagGroup[] {
+  const result: TagGroup[] = tags1.map((v) => ({ ...v, values: [...v.values] }));
+
   tags2.forEach((value) => {
-    const group = tags1.find((v) => v.name === value.name);
+    const group = result.find((v) => v.name === value.name);
 
     if (group) {
-      group.values.concat(value.values);
+      group.values = group.values.concat(value.values);
     } else {
-      tags1.push(value);
+      result.push({ ...value, values: [...value.values] });
     }
   });
 
-  return tags1;
+  return result;
 }
