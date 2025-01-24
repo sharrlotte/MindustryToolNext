@@ -56,7 +56,7 @@ axiosInstance.interceptors.response.use(
     );
 
     if (axios.isAxiosError(error)) {
-      throw new StatusError(500, 'Axios error at path: ' + JSON.stringify(error.request), error);
+      throw new StatusError(500, 'Axios error at path: ' + error.message, error);
     }
 
     throw new StatusError(500, 'An unknown error occurred: ' + error.message, error);

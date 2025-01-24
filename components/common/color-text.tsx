@@ -1,6 +1,6 @@
 import React, { ReactNode, useMemo } from 'react';
 
-import {  getColor } from '@/lib/utils';
+import { getColor } from '@/lib/utils';
 
 const COLOR_REGEX = /(\[[#a-zA-Z0-9]*\]|\\u001b\[[0-9;]*[0-9]+m[0-9]*)/gim;
 
@@ -54,7 +54,7 @@ export default function ColorText({ text, className }: ColorTextProps) {
   const result = useMemo(() => render(text), [text]);
 
   if (!className) {
-    return result;
+    return <span>{result}</span>;
   }
 
   return <span className={className}>{result}</span>;
