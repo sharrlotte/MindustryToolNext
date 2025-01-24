@@ -47,6 +47,18 @@ export async function updateRole(axios: AxiosInstance, id: number, payload: Upda
   return result.data;
 }
 
+export async function moveRole(
+  axios: AxiosInstance,
+  payload: {
+    id: number;
+    index: number;
+  }[],
+) {
+  const result = await axios.put(`/roles/move`, payload, { data: payload });
+
+  return result.data;
+}
+
 export async function deleteRole(axios: AxiosInstance, id: number) {
   const result = await axios.delete(`/roles/${id}`);
 
