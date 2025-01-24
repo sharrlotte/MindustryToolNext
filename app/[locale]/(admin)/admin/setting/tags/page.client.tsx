@@ -41,12 +41,12 @@ export default function PageClient() {
   return (
     <div className="space-y-2 h-full flex flex-col">
       <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
-      <ScrollContainer className="space-y-2">
-        <div className="p-2 border rounded-lg space-y-2">
+      <ScrollContainer className="space-y-4">
+        <div className="p-2 rounded-lg space-y-2">
           <Tran className="py-2 text-lg font-semibold" text="tags.group" />
           <TagGroupList />
         </div>
-        <div className="p-2 border rounded-lg space-y-2">
+        <div className="p-2 rounded-lg space-y-2">
           <Tran className="py-2 text-lg font-semibold" text="tags.category" />
           <TagList modId={selectedMod?.id} />
         </div>
@@ -127,7 +127,7 @@ function GroupCard({ group }: GroupCardProps) {
     mutate({ category1, category2 });
   }
   return (
-    <div className="p-4 bg-card rounded-lg grid md:grid-cols-[128px_1fr] gap-2 border">
+    <div className="p-4 bg-card rounded-lg grid md:grid-cols-[128px_1fr] gap-2">
       <Tran className="text-lg" text={name} />
       <div className="flex gap-2 flex-wrap">
         <DndProvider backend={HTML5Backend}>
@@ -195,7 +195,7 @@ function GroupCategoryCard({ group, category, isHovered, onDrop, onHover }: Grou
 
   return (
     <div
-      className={cn('p-2 bg-secondary rounded-lg border text-sm text-muted-foreground group flex group', {
+      className={cn('p-2 bg-secondary rounded-lg text-sm text-muted-foreground group border flex group', {
         'border-success border': isHovered,
         'border-destructive border opacity-50': isDragging,
       })}
@@ -236,14 +236,15 @@ function TagList({ modId }: TagListProps) {
     );
   }
 
-  return data?.map((category) => <TagCategoryCard key={category.id} category={category} />);
+  return data?.map((category) => <TagCategoryCard key={category.id} category={category} modId={modId} />);
 }
 
 type TagCategoryCardProps = {
   category: TagDetailDto;
+  modId?: string;
 };
 
-function TagCategoryCard({ category }: TagCategoryCardProps) {
+function TagCategoryCard({ category, modId }: TagCategoryCardProps) {
   const { color, name, values } = category;
 
   const { invalidateByKey } = useQueriesData();
@@ -291,7 +292,7 @@ function TagCategoryCard({ category }: TagCategoryCardProps) {
           {values.map((tag) => (
             <TagCard key={tag.id} isHovered={hoverId === tag.id} tag={tag} onDrop={onDrop} onHover={setHoverId} />
           ))}
-          <CreateTagDialog key="dialog" />
+          <CreateTagDialog categoryId={category.id} modId={modId} />
         </DndProvider>
       </div>
       <EllipsisButton className="p-0" variant="ghost">
@@ -357,7 +358,7 @@ function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
 
   drag(drop(ref));
   return (
-    <div className={cn('flex text-sm gap-2 px-2 border rounded-lg bg-secondary text-muted-foreground items-center', { 'border-success border': isHovered, 'border-destructive border opacity-50': isDragging })} ref={ref} data-handler-id={handlerId}>
+    <div className={cn('flex text-sm gap-2 px-2 rounded-lg bg-secondary text-muted-foreground items-center border', { 'border-success border': isHovered, 'border-destructive border opacity-50': isDragging })} ref={ref} data-handler-id={handlerId}>
       {icon && <Image className="size-8 rounded-lg" width={40} height={40} src={icon} alt={name} />}
       <Tran text={name} />
       <div className="ml-auto">

@@ -4,7 +4,6 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import ComboBox from '@/components/common/combo-box';
 import { Hidden } from '@/components/common/hidden';
 import { ImageIcon, PlusIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
@@ -17,17 +16,23 @@ import { toast } from '@/components/ui/sonner';
 import { acceptedImageFormats } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { getMods } from '@/query/mod';
-import { CreateTagRequest, CreateTagSchema, createTag, getTagCategories } from '@/query/tag';
+import { CreateTagRequest, CreateTagSchema, createTag } from '@/query/tag';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
-export default function CreateTagDialog() {
+type Props = {
+  categoryId: number;
+  modId?: string;
+};
+
+export default function CreateTagDialog({ categoryId, modId }: Props) {
   const form = useForm<CreateTagRequest>({
     resolver: zodResolver(CreateTagSchema),
     defaultValues: {
       name: '',
+      categoryId,
+      modId,
     },
   });
 
@@ -37,19 +42,6 @@ export default function CreateTagDialog() {
   const { invalidateByKey } = useQueriesData();
 
   const axios = useClientApi();
-
-  const { data: modQuery } = useQuery({
-    queryKey: ['mods'],
-    queryFn: () => getMods(axios),
-  });
-
-  const { data: categoryQuery } = useQuery({
-    queryKey: ['tag-category'],
-    queryFn: () => getTagCategories(axios),
-  });
-
-  const mods = modQuery ?? [];
-  const categories = categoryQuery ?? [];
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: CreateTagRequest) => createTag(axios, data),
@@ -115,48 +107,6 @@ export default function CreateTagDialog() {
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="Description" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="modId"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-2">
-                  <FormLabel>
-                    <Tran text="mod" />
-                  </FormLabel>
-                  <FormControl>
-                    <ComboBox
-                      className="w-full overflow-hidden"
-                      value={{ label: mods.find((mod) => mod.id === field.value)?.name, value: field.value }}
-                      values={mods.map((mod) => ({ value: mod.id, label: mod.name }))}
-                      onChange={field.onChange}
-                      nullable
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="categoryId"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-2">
-                  <FormLabel>
-                    <Tran text="category" />
-                  </FormLabel>
-                  <FormControl>
-                    <ComboBox
-                      className="w-full overflow-hidden"
-                      value={{ label: categories.find((category) => category.id === field.value)?.name, value: field.value }}
-                      values={categories.map((category) => ({ value: category.id, label: category.name }))}
-                      onChange={field.onChange}
-                      nullable
-                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
