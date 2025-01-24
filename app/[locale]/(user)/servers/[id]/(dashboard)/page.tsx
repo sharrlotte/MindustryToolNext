@@ -5,6 +5,7 @@ import React, { Fragment, Suspense, cache } from 'react';
 
 import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/check-server-maps';
 import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(user)/servers/[id]/(dashboard)/player-card';
+import InitServerButton from '@/app/[locale]/(user)/servers/[id]/init-server-button';
 import ReloadServerButton from '@/app/[locale]/(user)/servers/[id]/reload-server-button';
 import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-server-button';
 import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-button';
@@ -158,7 +159,7 @@ export default async function Page({ params }: Props) {
           <ProtectedElement session={session} filter={canAccess}>
             <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
               <ReloadServerButton id={id} />
-              {status === 'HOST' ? <ShutdownServerButton id={id} /> : <StartServerButton id={id} />}
+              {status === 'HOST' ? <ShutdownServerButton id={id} /> : status === 'UP' ? <StartServerButton id={id} /> : <InitServerButton id={id} />}
             </div>
           </ProtectedElement>
         </div>
