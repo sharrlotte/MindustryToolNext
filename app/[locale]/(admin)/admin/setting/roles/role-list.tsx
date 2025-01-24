@@ -170,7 +170,7 @@ export default function RoleCard({ index, role, bestRole, onDrop, onHover }: Rol
     >
       <div>{position}</div>
       <Tran className="text-ellipsis overflow-hidden w-full h-full text-nowrap" style={{ color }} text={name.toLowerCase()} />
-      <div className="overflow-hidden text-ellipsis w-full">
+      <div className="overflow-hidden text-ellipsis w-full h-full">
         <ChangeRoleAuthorityDialog role={role} />
       </div>
       <div className="flex items-center justify-center">

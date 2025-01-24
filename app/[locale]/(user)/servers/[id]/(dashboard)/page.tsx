@@ -32,7 +32,7 @@ type Props = {
   params: Promise<{ id: string; locale: string }>;
 };
 
-const getCachedServer = cache((id: string) => serverApi((axios) => getServer(axios, { id })));
+const getCachedServer = cache((id: string) => serverApi(async (axios) => await getServer(axios, { id })));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
