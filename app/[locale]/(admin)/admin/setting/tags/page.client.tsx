@@ -292,7 +292,7 @@ function TagCategoryCard({ category, modId }: TagCategoryCardProps) {
           {values.map((tag) => (
             <TagCard key={tag.id} isHovered={hoverId === tag.id} tag={tag} onDrop={onDrop} onHover={setHoverId} />
           ))}
-          <CreateTagDialog categoryId={category.id} modId={modId} />
+          <CreateTagDialog key={modId} categoryId={category.id} modId={modId} />
         </DndProvider>
       </div>
       <EllipsisButton className="p-0" variant="ghost">
