@@ -57,6 +57,10 @@ export function RoleList({ roles, bestRole }: Props) {
   }
 
   function onHover(dragIndex: number, hoverIndex: number) {
+    if (dragIndex >= bestRole.position || hoverIndex >= bestRole.position) {
+      return;
+    }
+
     queryClient.setQueryData<RoleWithAuthorities[]>(['roles'], () => {
       const updated = [...data];
 
