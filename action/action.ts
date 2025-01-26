@@ -69,23 +69,12 @@ export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError>
 const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> = cache(
   unstable_cache(
     async (cookie: string) => {
-      try {
-        axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
+      axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);
 
-        return await axiosInstance
-          .get('/auth/session')
-          .then((r) => r.data)
-          .then((data) => data ?? null);
-      } catch (error) {
-        return {
-          error: JSON.parse(
-            JSON.stringify(
-              error,
-              Object.getOwnPropertyNames(error).filter((field) => field !== 'stack'),
-            ),
-          ),
-        };
-      }
+      return await axiosInstance
+        .get('/auth/session')
+        .then((r) => r.data)
+        .then((data) => data ?? null);
     },
     ['session'],
     { revalidate: 60 },
