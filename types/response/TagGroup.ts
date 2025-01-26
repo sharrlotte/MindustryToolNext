@@ -6,6 +6,7 @@ type TagGroup = {
   name: string;
   values: {
     name: string;
+    modId?: string;
     icon?: string;
   }[];
   color: string;
