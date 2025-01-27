@@ -4,7 +4,6 @@ import React, { Suspense } from 'react';
 import { CommunityServer } from '@/app/[locale]/(user)/servers/community-server';
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
 import { OfficialServer } from '@/app/[locale]/(user)/servers/official-server';
-import ReloadServerDialog from '@/app/[locale]/(user)/servers/reload-server-dialog';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -49,7 +48,6 @@ export default async function Page() {
             </ServerTabsList>
           </div>
           <div className="space-x-2">
-            <ReloadServerDialog />
             <CreateServerDialog />
           </div>
         </div>
