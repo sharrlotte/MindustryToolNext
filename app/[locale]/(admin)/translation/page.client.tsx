@@ -115,7 +115,7 @@ export default function TranslationPage() {
         {mode === 'compare' ? (
           <CompareTable language={language as Locale} target={target as Locale} tKey={key} />
         ) : mode === 'search' ? (
-          <SearchTable language={language as Locale} tkey={key}/>
+          <SearchTable language={language as Locale} tKey={key} />
         ) : (
           <DiffTable language={language as Locale} target={target as Locale} tKey={key} />
         )}
