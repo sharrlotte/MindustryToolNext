@@ -1,8 +1,8 @@
 import { InitOptions } from 'i18next';
 import { ChainedBackendOptions } from 'i18next-chained-backend';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
+import LocalStorageBackend from 'i18next-localstorage-backend';
 import { unstable_cache } from 'next/cache';
-import LocalStorageBackend from "i18next-localstorage-backend";
 
 import env from '@/constant/env';
 import axiosInstance from '@/query/config/config';
@@ -16,8 +16,7 @@ export type Locale = (typeof locales)[number];
 export type TranslateFunction = (key: string, args?: Record<string, any>) => string;
 export const defaultNamespace: string | string[] = ['common', 'tags'];
 
-const getTranslationFn =
- unstable_cache(async (url: string) => await axiosInstance.get(url).then((res) => res.data), ['server-translations'], { revalidate: 3600 });
+const getTranslationFn = unstable_cache(async (url: string) => await axiosInstance.get(url).then((res) => res.data), ['server-translations'], { revalidate: 3600 });
 
 export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: InitOptions<ChainedBackendOptions> = {
@@ -31,16 +30,19 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,
     ns,
+    saveMissing: true,
     react: {
       useSuspense: true,
     },
     backend: {
       backends: [LocalStorageBackend, HttpApi],
-      backendOptions: [{
-        expirationTime: 7 * 24 * 60 * 60 * 1000 // 7 days
-      },
+      backendOptions: [
+        {
+          expirationTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+        },
         {
           loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
+          //   addPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
           requestOptions: {
             next: {
               revalidate: 600,
@@ -53,7 +55,6 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
 
   return options;
 }
-
 
 export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: InitOptions<ChainedBackendOptions> = {
