@@ -18,12 +18,12 @@ type Props = {
   plugin: ServerPlugin;
 };
 
-export default function ServerPluginCard({ plugin: { serverId, name, id, description } }: Props) {
+export default function ServerPluginCard({ plugin: { serverId, pluginId, name, description } }: Props) {
   const { invalidateByKey } = useQueriesData();
 
   const axios = useClientApi();
   const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
-    mutationFn: () => deleteServerPlugin(axios, serverId, id),
+    mutationFn: () => deleteServerPlugin(axios, serverId, pluginId),
     onSuccess: () => {
       toast.success(<Tran text="delete-success" />);
     },
