@@ -157,7 +157,9 @@ export default async function Page({ params }: Props) {
           </ProtectedElement>
           <ProtectedElement session={session} filter={canAccess}>
             <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
-              {status === 'HOST' ? <ShutdownServerButton id={id} /> : status === 'UP' ? <StartServerButton id={id} /> : <InitServerButton id={id} />}
+              {status === 'HOST' ? <ShutdownServerButton id={id} /> : status === 'UP' ?
+              // TODO: Shutdown button
+              <StartServerButton id={id} /> : <InitServerButton id={id} />}
             </div>
           </ProtectedElement>
         </div>
