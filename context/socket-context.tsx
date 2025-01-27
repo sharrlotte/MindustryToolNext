@@ -1,7 +1,6 @@
 'use client';
 
 import React, { ReactNode, useEffect, useState } from 'react';
-import { useInterval } from 'usehooks-ts';
 
 import env from '@/constant/env';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
@@ -41,14 +40,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       socket.close();
     };
   }, [socket]);
-
-  useEffect(() => {
-    if (socket.getState() !== state) {
-      setState(socket?.getState() ?? 'disconnected');
-    }
-  }, [socket, state]);
-
-  useInterval(() => setState(socket?.getState() ?? 'disconnected'), 10000);
 
   return (
     <SocketContext.Provider
