@@ -154,7 +154,7 @@ export async function stopServer(axios: AxiosInstance, id: string): Promise<Post
   return result.data;
 }
 
-export async function startServer(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
+export async function host(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
   const result = await axios.post(`/servers/${id}/start`);
 
   return result.data;
