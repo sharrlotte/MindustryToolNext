@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
@@ -18,7 +19,6 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
@@ -81,17 +81,15 @@ function NavFooter() {
     <div className="space-y-1 mt-auto">
       <Divider />
       <NotificationDialog />
-      <ProtectedElement session={session} filter>
-        <InternalLink
-          className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
-            'justify-start gap-2 py-2': expand,
-          })}
-          href="/users/@me/setting"
-        >
-          <SettingIcon />
-        </InternalLink>
-        {session && <UserAvatar className="size-10" url="/users/@me" user={session} />}
-      </ProtectedElement>
+      <InternalLink
+        className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
+          'justify-start gap-2 py-2': expand,
+        })}
+        href="/users/@me/setting"
+      >
+        <SettingIcon />
+      </InternalLink>
+      {session && <UserAvatar className="size-10" url="/users/@me" user={session} />}
     </div>
   );
 }
@@ -104,7 +102,7 @@ type NavItemsProps = {
 
 function MediumNavItems({ pathGroups, bestMatch, isSmall }: NavItemsProps) {
   return (
-    <section className="no-scrollbar space-y-2">
+    <section className="no-scrollbar space-y-2 overflow-hidden">
       {pathGroups.map((group) => (
         <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} isSmall={isSmall} />
       ))}
@@ -119,16 +117,16 @@ type PathGroupElementProps = {
 };
 
 const PathGroupElement = ({ group, bestMatch, isSmall }: PathGroupElementProps): ReactNode => {
-  const { session } = useSession();
   const { visible } = useNavBar();
+  const { session } = useSession();
 
   const { key, name, filter } = group;
 
   const expand = isSmall ? true : visible;
 
   return (
-    <ProtectedElement key={key} filter={filter} session={session}>
-      <nav className="space-y-1">
+    <ProtectedElement session={session} filter={filter}>
+      <nav className="space-y-1" key={key}>
         {expand && name}
         {name && <Divider />}
         {group.paths.map((path, index) => (
@@ -147,18 +145,15 @@ type PathElementProps = {
 
 function PathElement({ segment, bestMatch, isSmall }: PathElementProps) {
   const [value, setValue] = useState('');
-
-  const { session } = useSession();
-
   const { visible, setVisible } = useNavBar();
-
+  const { session } = useSession();
   const expand = isSmall ? true : visible;
 
-  const { filter, name, icon, path } = segment;
+  const { id, name, icon, path, filter } = segment;
 
   if (typeof path === 'string') {
     return (
-      <ProtectedElement key={path} session={session} filter={filter}>
+      <ProtectedElement session={session} filter={filter}>
         <Link
           className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
             'bg-brand text-brand-foreground': path === bestMatch,
@@ -175,38 +170,35 @@ function PathElement({ segment, bestMatch, isSmall }: PathElementProps) {
   }
 
   return (
-    <ProtectedElement session={session} filter={filter}>
-      <Accordion type="single" collapsible className={cn('w-full', { 'w-10': !expand })} value={value} onValueChange={setValue}>
-        <AccordionItem className="w-full" value={path.reduce((prev, curr) => prev + curr.name, '')}>
-          <AccordionTrigger
-            className={cn('flex h-10 items-center justify-center text-base gap-0 rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
-              'bg-brand text-brand-foreground': path.some((path) => path.path === bestMatch) && !value,
-              'justify-start gap-2 py-2': expand,
-            })}
-            showChevron={expand}
-            onClick={() => setVisible(true)}
-          >
-            {icon}
-            {expand && name}
-          </AccordionTrigger>
-          <AccordionContent className={cn('hidden space-y-1 pl-3', { block: expand })}>
-            {path.map((item) => (
-              <ProtectedElement key={item.path} session={session} filter={item.filter}>
-                <InternalLink
-                  key={item.path}
-                  className={cn('flex text-base items-end gap-3 rounded-md px-1 py-2 hover:bg-brand hover:text-brand-foreground', {
-                    'bg-brand text-brand-foreground': item.path === bestMatch,
-                  })}
-                  href={item.path}
-                >
-                  {item.icon}
-                  {item.name}
-                </InternalLink>
-              </ProtectedElement>
-            ))}
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </ProtectedElement>
+    <Accordion type="single" collapsible className={cn('w-full', { 'w-10': !expand })} value={value} onValueChange={setValue}>
+      <AccordionItem className="w-full" value={id}>
+        <AccordionTrigger
+          className={cn('flex h-10 items-center justify-center text-base gap-0 rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
+            'bg-brand text-brand-foreground': path.some((path) => path.path === bestMatch) && !value,
+            'justify-start gap-2 py-2': expand,
+          })}
+          showChevron={expand}
+          onClick={() => setVisible(true)}
+        >
+          {icon}
+          {expand && name}
+        </AccordionTrigger>
+        <AccordionContent className={cn('hidden space-y-1 pl-3', { block: expand })}>
+          {path.map((item) => (
+            <ProtectedElement key={item.path} session={session} filter={item.filter}>
+              <InternalLink
+                className={cn('flex text-base items-end gap-3 rounded-md px-1 py-2 hover:bg-brand hover:text-brand-foreground', {
+                  'bg-brand text-brand-foreground': item.path === bestMatch,
+                })}
+                href={item.path}
+              >
+                {item.icon}
+                {item.name}
+              </InternalLink>
+            </ProtectedElement>
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
