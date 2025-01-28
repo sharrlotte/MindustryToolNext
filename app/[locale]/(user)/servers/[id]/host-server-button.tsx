@@ -18,13 +18,13 @@ type Props = {
   id: string;
 };
 
-export default function StartServerButton({ id }: Props) {
+export default function HostServerButton({ id }: Props) {
   const [visible, setVisible] = useState(false);
 
   const { data, last, mutate, isPending, isSuccess } = useHttpStream({
-    url: `${env.url.api}/servers/${id}/start`,
+    url: `${env.url.api}/servers/${id}/host`,
     method: 'POST',
-    mutationKey: ['servers', id, 'start'],
+    mutationKey: ['servers', id, 'host'],
   });
 
   useEffect(() => {
@@ -60,12 +60,12 @@ export default function StartServerButton({ id }: Props) {
           setVisible(true);
         }}
       >
-        <Tran text="server.start" />
+        <Tran text="server.host" />
       </Button>
       <Dialog open={visible} onOpenChange={handleVisible}>
         <DialogContent className="h-full w-full p-6 flex flex-col">
           <DialogTitle>
-            <Tran text="server.starting-server" asChild />
+            <Tran text="server.hosting-server" asChild />
           </DialogTitle>
           <DialogDescription className="flex gap-1 overflow-hidden w-full text-ellipsis items-center">
             {isPending ? <LoadingSpinner className="p-0 w-4" /> : <CheckCircleIcon className="w-4" />} <ColorText text={last} />
@@ -74,7 +74,7 @@ export default function StartServerButton({ id }: Props) {
           {isSuccess && (
             <DialogClose className="ml-auto" asChild>
               <Button>
-                <Tran text="server.started" />
+                <Tran text="server.hosted" />
               </Button>
             </DialogClose>
           )}

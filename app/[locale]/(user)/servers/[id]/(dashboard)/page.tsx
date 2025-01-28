@@ -5,9 +5,9 @@ import React, { Fragment, Suspense, cache } from 'react';
 
 import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/check-server-maps';
 import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(user)/servers/[id]/(dashboard)/player-card';
+import HostServerButton from '@/app/[locale]/(user)/servers/[id]/host-server-button';
 import InitServerButton from '@/app/[locale]/(user)/servers/[id]/init-server-button';
 import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-server-button';
-import StartServerButton from '@/app/[locale]/(user)/servers/[id]/start-server-button';
 import StopServerButton from '@/app/[locale]/(user)/servers/[id]/stop-server-button';
 
 import ColorText from '@/components/common/color-text';
@@ -159,7 +159,7 @@ export default async function Page({ params }: Props) {
           <ProtectedElement session={session} filter={canAccess}>
             <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
               <ShutdownServerButton id={id} />
-              {status === 'HOST' ? <StopServerButton id={id} /> : status === 'UP' ? <StartServerButton id={id} /> : <InitServerButton id={id} />}
+              {status === 'HOST' ? <StopServerButton id={id} /> : status === 'UP' ? <HostServerButton id={id} /> : <InitServerButton id={id} />}
             </div>
           </ProtectedElement>
         </div>
