@@ -16,6 +16,7 @@ import { useSocket } from '@/context/socket-context';
 import useClientQuery from '@/hooks/use-client-query';
 import useNotification from '@/hooks/use-notification';
 import useQueriesData from '@/hooks/use-queries-data';
+import ProtectedElement from '@/layout/protected-element';
 import { cn, isError } from '@/lib/utils';
 import { getMyUnreadNotificationCount } from '@/query/notification';
 
@@ -23,6 +24,7 @@ const NotificationForm = dynamic(() => import('@/app/[locale]/notification-form'
 
 export default function NotificationDialog() {
   const { visible } = useNavBar();
+  const { session } = useSession();
 
   const isSmall = useMediaQuery('(max-width: 640px)');
   const expand = isSmall ? true : visible;
@@ -33,7 +35,9 @@ export default function NotificationDialog() {
         <NotificationDialogButton expand={expand} />
       </DialogTrigger>
       <DialogContent className="p-6 max-h-full flex flex-col" closeButton={false}>
-        <NotificationForm />
+        <ProtectedElement session={session} filter>
+          <NotificationForm />
+        </ProtectedElement>
       </DialogContent>
     </Dialog>
   );

@@ -42,7 +42,7 @@
     --destructive-foreground: 210 40% 98%;
 
     --success: 150 73% 55%;
-    --warning: 60 100% 55%;
+    --warning: 60 100% 35%;
   }
 
   .dark {
