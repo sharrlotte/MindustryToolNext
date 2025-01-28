@@ -135,7 +135,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
     [tags, setFilterBy],
   );
 
-  function handleSortChange(value: any) {
+  const handleSortChange = useCallback((value: any) => {
     if (value && sortTag.includes(value)) {
       setSortBy(value);
       setChanged(true);
@@ -143,23 +143,26 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
       setSortBy(defaultSortTag);
       setChanged(true);
     }
-  }
+  }, []);
 
-  function handleNameChange(value: string) {
+  const handleNameChange = useCallback((value: string) => {
     setName(value);
     setChanged(true);
-  }
+  }, []);
 
-  function handleEditName(event: any) {
-    handleNameChange(event.currentTarget.value);
-  }
+  const handleEditName = useCallback(
+    (event: any) => {
+      handleNameChange(event.currentTarget.value);
+    },
+    [handleNameChange],
+  );
 
-  function handleResetName() {
+  const handleResetName = useCallback(() => {
     handleNameChange('');
     setChanged(true);
-  }
+  }, [handleNameChange]);
 
-  function handleDeleteTag(tag: Tag) {
+  const handleDeleteTag = useCallback((tag: Tag) => {
     setChanged(true);
     setFilterBy((prev) => {
       const group = prev.find((item) => item.name === tag.name);
@@ -176,7 +179,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
       return [...prev];
     });
-  }
+  }, []);
 
   const displayTags = useMemo(() => Tags.fromTagGroupWithSource(filterBy, tags), [filterBy, tags]);
 

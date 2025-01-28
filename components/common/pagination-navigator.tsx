@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
-import Hydrated from '@/components/common/hydrated';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
