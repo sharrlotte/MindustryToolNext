@@ -2,10 +2,10 @@
 
 import { VariantProps, cva } from 'class-variance-authority';
 import Link from 'next/link';
-import React, { useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import env from '@/constant/env';
-import { useLocaleStore } from '@/context/locale-context';
+import useLocaleStore from '@/hooks/use-current-locale';
 import { locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
@@ -35,10 +35,13 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
 
 export default function InternalLink({ className, variant, title, href, children, ...props }: InternalLinkProps) {
   const { currentLocale } = useLocaleStore();
+  const [isMounted, setMounted] = useState(false);
 
   const stripBase = href.replace(env.url.base, '');
   const parts = stripBase.split('/');
   let hrefWithLocale = href;
+
+  useEffect(() => setMounted(true), []);
 
   if (parts.length > 0 && !locales.includes(parts[0] as any)) {
     hrefWithLocale = env.url.base + '/' + currentLocale + '/' + stripBase;
@@ -52,8 +55,16 @@ export default function InternalLink({ className, variant, title, href, children
     );
   }
 
+  if (!isMounted) {
+    return (
+      <Link className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title}>
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <Link className={cn(linkVariants({ variant, className }))} {...props} href={hrefWithLocale} hrefLang={currentLocale} title={title} onMouseEnter={handlePreload} onTouchStart={handlePreload}>
+    <Link className={cn(linkVariants({ variant, className }))} {...props} href={hrefWithLocale} title={title}>
       {children}
     </Link>
   );

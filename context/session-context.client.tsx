@@ -3,16 +3,7 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
-import {
-  Config,
-  DEFAULT_PAGINATION_SIZE,
-  DEFAULT_PAGINATION_TYPE,
-  PAGINATION_SIZE_PERSISTENT_KEY,
-  PAGINATION_TYPE_PERSISTENT_KEY,
-  ServerSessionContextType,
-  SessionContextType,
-  paginationTypes,
-} from '@/context/session-context.type';
+import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, ServerSessionContextType, SessionContextType, paginationTypes } from '@/context/session-context.type';
 
 const defaultContextValue: SessionContextType = {
   session: null,
@@ -56,7 +47,7 @@ export function useMe() {
 }
 
 export default function ClientSessionProvider({ session: init, children }: { session: ServerSessionContextType; children: ReactNode }) {
-  const [{ paginationSize, paginationType }, _setConfig] = useCookies([PAGINATION_TYPE_PERSISTENT_KEY,  PAGINATION_SIZE_PERSISTENT_KEY]);
+  const [{ paginationSize, paginationType }, _setConfig] = useCookies([PAGINATION_TYPE_PERSISTENT_KEY, PAGINATION_SIZE_PERSISTENT_KEY]);
 
   const config = useMemo(
     () => ({
@@ -71,7 +62,7 @@ export default function ClientSessionProvider({ session: init, children }: { ses
 
   useEffect(() => {
     setSession((prev) => {
-      if (JSON.stringify(config) === JSON.stringify(prev.config)) {
+      if (prev.config.paginationSize === config.paginationSize && prev.config.paginationType === config.paginationType) {
         return prev;
       }
 

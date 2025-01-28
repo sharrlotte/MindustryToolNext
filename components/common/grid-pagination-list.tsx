@@ -9,9 +9,9 @@ import RouterSpinner from '@/components/common/router-spinner';
 
 import useClientQuery from '@/hooks/use-client-query';
 import { cn } from '@/lib/utils';
+import { PaginationQuery } from '@/query/search-query';
 
 import { QueryKey } from '@tanstack/react-query';
-import { PaginationQuery } from '@/query/search-query';
 
 type Props<T, P> = {
   className?: string;
@@ -49,33 +49,44 @@ export default function GridPaginationList<T, P extends PaginationQuery>({ class
     loader = <LoadingSpinner key="loading" className="absolute inset-0 col-span-full flex h-full w-full items-center justify-center" />;
   }
 
-  function render() {
-    if (isLoading) {
-      return loader ? loader : skeletonElements;
-    }
-
-    if (error) {
-      return (
-        <div className="col-span-full flex h-full w-full justify-center">
-          <RouterSpinner message={error?.message} />
-        </div>
-      );
-    }
-
-    if (!data) {
-      return noResult;
-    }
-
-    return data.map((item, index) => children(item, index));
-  }
-
   if (asChild) {
-    return render();
+    return <Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult} children={children} />;
   }
 
   return (
     <div className="pagination-container h-full">
-      <div className={cn('grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2', className)}>{render()}</div>
+      <div className={cn('grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2', className)}>
+        <Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult} children={children} />
+      </div>
     </div>
   );
+}
+
+type RenderProps<T> = {
+  isLoading: boolean;
+  loader: ReactNode;
+  skeletonElements?: React.JSX.Element[];
+  error: any;
+  data?: T[];
+  noResult: ReactNode;
+  children: (data: T, index: number) => ReactNode;
+};
+function Render<T>({ isLoading, loader, skeletonElements, error, data, noResult, children }: RenderProps<T>) {
+  if (isLoading) {
+    return loader ? loader : skeletonElements;
+  }
+
+  if (error) {
+    return (
+      <div className="col-span-full flex h-full w-full justify-center">
+        <RouterSpinner message={error?.message} />
+      </div>
+    );
+  }
+
+  if (!data) {
+    return noResult;
+  }
+
+  return data.map((item, index) => children(item, index));
 }
