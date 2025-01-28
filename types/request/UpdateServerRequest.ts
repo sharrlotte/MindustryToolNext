@@ -17,7 +17,7 @@ export const PutServerPortSchema = z.object({
   port: z.coerce
     .number()
     .int()
-    .refine((value) => value === 0 || (value >= 6567 && value <= 6577)),
+    .refine((value) => value >= 100000),
   official: z.boolean(),
 });
 

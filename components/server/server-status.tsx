@@ -13,7 +13,7 @@ export default function ServerStatus({ status }: Props) {
   function render() {
     if (status === 'UP') {
       return (
-        <Badge variant="destructive">
+        <Badge variant="warning">
           <Tran text="server.stopped" asChild />
         </Badge>
       );
@@ -28,7 +28,7 @@ export default function ServerStatus({ status }: Props) {
     }
 
     return (
-      <Badge variant="secondary">
+      <Badge variant="destructive">
         <Tran text="server.offline" asChild />
       </Badge>
     );
