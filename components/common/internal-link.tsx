@@ -31,10 +31,9 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
     asChild?: boolean;
   } & {
     href: string;
-    preloadImage?: string;
   };
 
-export default function InternalLink({ className, variant, title, href, children, preloadImage, ...props }: InternalLinkProps) {
+export default function InternalLink({ className, variant, title, href, children, ...props }: InternalLinkProps) {
   const { currentLocale } = useLocaleStore();
 
   const stripBase = href.replace(env.url.base, '');
@@ -44,13 +43,6 @@ export default function InternalLink({ className, variant, title, href, children
   if (parts.length > 0 && !locales.includes(parts[0] as any)) {
     hrefWithLocale = env.url.base + '/' + currentLocale + '/' + stripBase;
   }
-
-  const handlePreload = useCallback(() => {
-    if (preloadImage) {
-      const image = new Image();
-      image.src = preloadImage;
-    }
-  }, [preloadImage]);
 
   if (href.startsWith('http') && !href.startsWith(env.url.base)) {
     return (

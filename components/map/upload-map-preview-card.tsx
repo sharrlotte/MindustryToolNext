@@ -24,7 +24,6 @@ function UploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPrevie
   const link = `${env.url.base}/${locale}/admin/maps/${id}`;
   const detailLink = `/admin/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
-  const detailImageLink = `${env.url.image}/maps/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/maps/${id}/image`;
   const downloadLink = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msch`;
@@ -37,7 +36,7 @@ function UploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPrevie
         <LinkIcon />
       </CopyButton>
       <BulkActionSelector value={id}>
-        <InternalLink href={detailLink} preloadImage={detailImageLink}>
+        <InternalLink href={detailLink}>
           <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
         </InternalLink>
       </BulkActionSelector>
@@ -52,6 +51,5 @@ function UploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPrevie
     </Preview>
   );
 }
-
 
 export default UploadMapPreviewCard;

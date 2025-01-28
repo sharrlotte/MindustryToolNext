@@ -27,7 +27,6 @@ function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, download
   const link = `${env.url.base}/${locale}/maps/${id}`;
   const detailLink = `/maps/${id}`;
   const imageLink = `${env.url.image}/map-previews/${id}${env.imageFormat}`;
-  const detailImageLink = `${env.url.image}/maps/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/maps/${id}/image`;
   const downloadLink = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msav`;
@@ -39,7 +38,7 @@ function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, download
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <LinkIcon />
       </CopyButton>
-      <InternalLink href={detailLink} preloadImage={detailImageLink}>
+      <InternalLink href={detailLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
       </InternalLink>
       <PreviewDescription>

@@ -74,7 +74,6 @@ import {
   XCircle,
 } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react';
 
 import { cn } from '@/lib/utils';
 import googleIcon from '@/public/icons/google.svg';
@@ -162,10 +161,7 @@ export const LoginIcon = ({ className }: Props) => <LogIn className={className ?
 export const TrashIcon = ({ className }: Props) => <Trash2 className={className ?? 'lucide'} />;
 export const GoogleIcon = ({ className }: Props) => <Image className={className ?? 'lucide'} src={googleIcon} alt="google" />;
 export const TakeDownIcon = ({ className }: Props) => <ArrowDownFromLine className={className ?? 'lucide'} />;
-
-const ICopyIcon = ({ className }: Props) => <Copy className={className ?? 'lucide'} />;
-
-export const CopyIcon = React.memo(ICopyIcon);
+export const CopyIcon = ({ className }: Props) => <Copy id="copy" className={className ?? 'lucide'} />;
 
 export function HRIcon({ className }: Props) {
   return (
