@@ -1,47 +1,17 @@
-import { ReactNode, useEffect, useState } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import { ReactNode } from 'react';
 
-import { IconNotification } from '@/components/common/icon-notification';
-import {
-  AnalyticIcon,
-  BoxIcon,
-  ChartIcon,
-  ChatIcon,
-  CmdIcon,
-  CommentIcon,
-  CrownIcon,
-  DocumentIcon,
-  FileIcon,
-  GlobIcon,
-  HomeIcon,
-  LogIcon,
-  MapIcon,
-  MindustryGptIcon,
-  PluginIcon,
-  PostIcon,
-  RatioIcon,
-  SchematicIcon,
-  ServerIcon,
-  VerifyIcon,
-} from '@/components/common/icons';
+import { ChatIconPath } from '@/app/chat-icon-path';
+import { MapPath } from '@/app/map-path';
+import { PluginPath } from '@/app/plugin-path';
+import { PostPath } from '@/app/post-path';
+import { SchematicPath } from '@/app/schematic-path';
+import { TranslationPathIcon } from '@/app/translation-path-icon';
+import { VerifyPathIcon } from '@/app/verify-path-icon';
+
+import { AnalyticIcon, BoxIcon, ChartIcon, CmdIcon, CommentIcon, CrownIcon, DocumentIcon, FileIcon, HomeIcon, LogIcon, MapIcon, MindustryGptIcon, PluginIcon, PostIcon, RatioIcon, SchematicIcon, ServerIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
-import { useSocket } from '@/context/socket-context';
-import useClientApi from '@/hooks/use-client';
-import useClientQuery from '@/hooks/use-client-query';
-import useLocaleStore from '@/hooks/use-current-locale';
-import useNotification from '@/hooks/use-notification';
-import useSearchQuery from '@/hooks/use-search-query';
-import { Filter, cn } from '@/lib/utils';
-import { isError } from '@/lib/utils';
-import { getMapUploadCount } from '@/query/map';
-import { getPluginUploadCount } from '@/query/plugin';
-import { getPostUploadCount } from '@/query/post';
-import { getSchematicUploadCount } from '@/query/schematic';
-import { TranslationPaginationQuery } from '@/query/search-query';
-import { getTranslationDiffCount } from '@/query/translation';
-
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { Filter } from '@/lib/utils';
 
 export type PathGroup = {
   key: string;
@@ -176,7 +146,7 @@ export const groups: readonly PathGroup[] = [
       },
       {
         id: 'verify',
-        name: <VerifyPath />,
+        name: <Tran asChild text="verify" />,
         path: [
           {
             id: 'admin-schematics',
@@ -219,7 +189,7 @@ export const groups: readonly PathGroup[] = [
       {
         id: 'translation',
         path: '/translation',
-        name: <TranslationPath />,
+        name: <Tran asChild text="translation" />,
         icon: <TranslationPathIcon />,
         filter: { authority: 'VIEW_TRANSLATION' },
       },
@@ -254,166 +224,3 @@ export const groups: readonly PathGroup[] = [
     ],
   },
 ];
-
-function VerifyPathIcon() {
-  const axios = useClientApi();
-
-  const [{ data: schematicCount }, { data: mapCount }, { data: postCount }, { data: pluginCount }] = useQueries({
-    queries: [
-      {
-        queryFn: () => getSchematicUploadCount(axios, {}),
-        queryKey: ['schematics', 'total', 'upload'],
-        placeholderData: 0,
-      },
-      {
-        queryFn: () => getMapUploadCount(axios, {}),
-        queryKey: ['maps', 'total', 'upload'],
-        placeholderData: 0,
-      },
-      {
-        queryFn: () => getPostUploadCount(axios, {}),
-        queryKey: ['posts', 'total', 'upload'],
-        placeholderData: 0,
-      },
-      {
-        queryFn: () => getPluginUploadCount(axios, {}),
-        queryKey: ['plugins', 'total', 'upload'],
-        placeholderData: 0,
-      },
-    ],
-  });
-
-  const total = (schematicCount || 0) + (mapCount || 0) + (postCount || 0) + (pluginCount || 0);
-
-  return (
-    <IconNotification number={total}>
-      <VerifyIcon />
-    </IconNotification>
-  );
-}
-
-function VerifyPath() {
-  return <Tran asChild text="verify" />;
-}
-
-function SchematicPath() {
-  const axios = useClientApi();
-  const { data } = useQuery({
-    queryFn: () => getSchematicUploadCount(axios, {}),
-    queryKey: ['schematics', 'total', 'upload'],
-    placeholderData: 0,
-  });
-  return (
-    <>
-      <Tran asChild text="schematic" />
-      {data && data > 0 && <span> ({data})</span>}
-    </>
-  );
-}
-function MapPath() {
-  const axios = useClientApi();
-  const { data } = useQuery({
-    queryFn: () => getMapUploadCount(axios, {}),
-    queryKey: ['maps', 'total', 'upload'],
-    placeholderData: 0,
-  });
-  return (
-    <>
-      <Tran asChild text="map" />
-      {data && data > 0 && <span> ({data})</span>}
-    </>
-  );
-}
-function PostPath() {
-  const axios = useClientApi();
-  const { data } = useQuery({
-    queryFn: () => getPostUploadCount(axios, {}),
-    queryKey: ['posts', 'total', 'upload'],
-    placeholderData: 0,
-  });
-  return (
-    <>
-      <Tran asChild text="post" />
-      {data && data > 0 && <span> ({data})</span>}
-    </>
-  );
-}
-function PluginPath() {
-  const axios = useClientApi();
-  const { data } = useQuery({
-    queryFn: () => getPluginUploadCount(axios, {}),
-    queryKey: ['plugins', 'total', 'upload'],
-    placeholderData: 0,
-  });
-  return (
-    <>
-      <Tran asChild text="plugin" />
-      {data && data > 0 && <span> ({data})</span>}
-    </>
-  );
-}
-
-function TranslationPath() {
-  return <Tran asChild text="translation" />;
-}
-
-function TranslationPathIcon() {
-  const params = useSearchQuery(TranslationPaginationQuery);
-  const { currentLocale } = useLocaleStore();
-
-  if (params.language === params.target) {
-    params.target = currentLocale;
-  }
-
-  const { data } = useClientQuery({
-    queryKey: ['translations', 'diff', 'total', params.language, params.target],
-    queryFn: (axios) => getTranslationDiffCount(axios, params),
-    placeholderData: 0,
-  });
-
-  return (
-    <IconNotification number={data}>
-      <GlobIcon />
-    </IconNotification>
-  );
-}
-
-function ChatIconPath() {
-  const { socket } = useSocket();
-  const { postNotification } = useNotification();
-  const [hasNewMessage, setHasNewMessage] = useState(false);
-  const [lastMessage] = useLocalStorage('LAST_MESSAGE_GLOBAL', '');
-
-  useEffect(() => {
-    try {
-      socket
-        .onRoom('GLOBAL')
-        .await({ method: 'LAST_MESSAGE' })
-        .then((newestMessage) => {
-          if (isError(newestMessage)) {
-            return;
-          }
-
-          setHasNewMessage(newestMessage && newestMessage.id !== lastMessage);
-        });
-    } catch (e) {
-      console.error(e);
-    }
-
-    return socket.onRoom('GLOBAL').onMessage('MESSAGE', (message) => {
-      if ('error' in message) {
-        return;
-      }
-
-      postNotification(message.content, message.userId);
-    });
-  }, [socket, postNotification, lastMessage]);
-
-  return (
-    <div className="relative">
-      <ChatIcon />
-      <span className={cn('absolute -right-2 -top-2 hidden h-3 w-3 animate-ping rounded-full bg-red-500 opacity-75', { 'inline-flex': hasNewMessage })} />
-      <span className={cn('absolute -right-2 -top-2 hidden h-3 w-3 rounded-full bg-red-500 opacity-75', { 'inline-flex ': hasNewMessage })} />
-    </div>
-  );
-}

@@ -1,84 +1,53 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
-import { ReactNode, useMemo } from 'react';
-import React, { createContext, useContext, useState } from 'react';
-import { useMediaQuery } from 'usehooks-ts';
+import { ReactNode } from 'react';
 
 import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
 import SmallScreenNavigationBar from '@/app/[locale]/small-navigation-items';
-import { Path, SubPath, groups } from '@/app/routes';
+import { SubPath, groups } from '@/app/routes';
 
-import { useSession } from '@/context/session-context.client';
-import { hasAccess, max } from '@/lib/utils';
+import ErrorScreen from '@/components/common/error-screen';
 
-const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
+import { getSession } from '@/action/action';
+import { NavBarProvider } from '@/context/navbar-context';
+import IsSmall from '@/layout/is-small';
+import { hasAccess, isError } from '@/lib/utils';
 
-interface NavBarContextType {
-  visible: boolean;
-  setVisible: (data: boolean) => void;
-}
+// const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
 
-const NavBarContext = createContext<NavBarContextType | null>(null);
+export default async function NavigationBar({ children }: { children: ReactNode }) {
+  const session = await getSession();
 
-interface NavBarProviderProps {
-  children: ReactNode;
-}
-
-const NavBarProvider: React.FC<NavBarProviderProps> = ({ children }) => {
-  const [visible, setVisible] = useState(false);
-
-  const value: NavBarContextType = {
-    visible,
-    setVisible,
-  };
-
-  return <NavBarContext.Provider value={value}>{children}</NavBarContext.Provider>;
-};
-
-export const useNavBar = (): NavBarContextType => {
-  const context = useContext(NavBarContext);
-  if (!context) {
-    throw new Error('useNavBar must be used within a NavBarProvider');
+  if (isError(session)) {
+    return <ErrorScreen error={session} />;
   }
-  return context;
-};
+  // const { session } = useSession();
+  // const pathName = usePathname();
 
-export default function NavigationBar({ children }: { children: ReactNode }) {
-  const isSmall = useMediaQuery('(max-width: 640px)');
-  const { session } = useSession();
-  const pathName = usePathname();
+  // const bestMatch = useMemo(() => {
+  //   const route = '/' + PATH_PATTERN.exec(pathName)?.at(1);
 
-  const bestMatch = useMemo(() => {
-    const route = '/' + PATH_PATTERN.exec(pathName)?.at(1);
+  //   const allPaths: string[] = groups.reduce<Path[]>((prev, curr) => prev.concat(curr.paths), []).reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
 
-    const allPaths: string[] = groups.reduce<Path[]>((prev, curr) => prev.concat(curr.paths), []).reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
+  //   return max(allPaths, (value) => value.length * (route.startsWith(value) ? 1 : 0));
+  // }, [pathName]);
 
-    return max(allPaths, (value) => value.length * (route.startsWith(value) ? 1 : 0));
-  }, [pathName]);
-
-  const routeGroups = useMemo(
-    () => groups.filter((group) => hasAccess(session, group.filter) && group.paths.some(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.some((sub) => hasAccess(session, sub.filter))))),
-    [session],
-  );
-
-  if (isSmall) {
-    return (
-      <NavBarProvider>
-        <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
-          <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
-          <div className="h-full w-full overflow-hidden">{children}</div>
-        </div>
-      </NavBarProvider>
-    );
-  }
+  const routeGroups = groups.filter((group) => hasAccess(session, group.filter) && group.paths.some(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.some((sub) => hasAccess(session, sub.filter)))));
 
   return (
     <NavBarProvider>
-      <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center sm:grid">
-        <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={bestMatch} />
-        <div className="h-full w-full overflow-hidden">{children}</div>
-      </div>
+      <IsSmall
+        small={
+          <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
+            <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={null} />
+            <div className="h-full w-full overflow-hidden">{children}</div>
+          </div>
+        }
+        notSmall={
+          <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center sm:grid">
+            <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={null} />
+            <div className="h-full w-full overflow-hidden">{children}</div>
+          </div>
+        }
+      />
     </NavBarProvider>
   );
 }

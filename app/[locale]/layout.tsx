@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import Script from 'next/script';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ClientInit from '@/app/[locale]/client-init';
 import NavigationBar from '@/app/[locale]/navigation';
 
 import { ThemeProvider } from '@/components/theme/theme-provider';
@@ -21,6 +21,8 @@ import QueryProvider from '@/query/config/query-provider';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 import './../globals.css';
+
+const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
 const inter = Inter({
   variable: '--font-inter',

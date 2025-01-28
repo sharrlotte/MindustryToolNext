@@ -1,6 +1,7 @@
+'use client';
+
 import React, { ReactNode, useCallback, useState } from 'react';
 
-import { useNavBar } from '@/app/[locale]/navigation';
 import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
 
@@ -15,6 +16,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 
 import env from '@/constant/env';
+import { useNavBar } from '@/context/navbar-context';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';

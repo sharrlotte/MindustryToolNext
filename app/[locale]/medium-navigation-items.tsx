@@ -1,12 +1,12 @@
+'use client';
+  
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
-import { useNavBar } from '@/app/[locale]/navigation';
 import NotificationDialog from '@/app/[locale]/notification-dialog';
 import { UserDisplay } from '@/app/[locale]/user-display';
-import { Path, PathGroup } from '@/app/routes';
+import { PathGroup } from '@/app/routes';
 
 import { MenuIcon, SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
@@ -16,9 +16,10 @@ import Divider from '@/components/ui/divider';
 import UserAvatar from '@/components/user/user-avatar';
 
 import env from '@/constant/env';
+import { useNavBar } from '@/context/navbar-context';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
-import { cn } from '@/lib/utils';
+import { Filter, cn } from '@/lib/utils';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
@@ -129,45 +130,41 @@ const PathGroupElement = ({ group, bestMatch, isSmall }: PathGroupElementProps):
       <nav className="space-y-1" key={key}>
         {expand && name}
         {name && <Divider />}
-        {group.paths.map((path, index) => (
-          <PathElement key={index} segment={path} bestMatch={bestMatch} isSmall={isSmall} />
-        ))}
+        {group.paths.map((path, index) =>
+          typeof path.path === 'string' ? <PathElement key={index} segment={path as any} bestMatch={bestMatch} isSmall={isSmall} /> : <NestedPathElement key={index} segment={path as any} bestMatch={bestMatch} isSmall={isSmall} />,
+        )}
       </nav>
     </ProtectedElement>
   );
 };
 
-type PathElementProps = {
-  segment: Path;
+type NestedPathElementProps = {
+  segment: {
+    id: string;
+    path: {
+      id: string;
+      path: string;
+      name: ReactNode;
+      icon: ReactNode;
+      enabled?: boolean;
+      filter?: Filter;
+    }[];
+    name: ReactNode;
+    icon: ReactNode;
+    enabled?: boolean;
+    filter?: Filter;
+  };
   bestMatch: string | null;
   isSmall: boolean;
 };
 
-function PathElement({ segment, bestMatch, isSmall }: PathElementProps) {
+function NestedPathElement({ segment, bestMatch, isSmall }: NestedPathElementProps) {
   const [value, setValue] = useState('');
   const { visible, setVisible } = useNavBar();
   const { session } = useSession();
   const expand = isSmall ? true : visible;
 
-  const { id, name, icon, path, filter } = segment;
-
-  if (typeof path === 'string') {
-    return (
-      <ProtectedElement session={session} filter={filter}>
-        <Link
-          className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
-            'bg-brand text-brand-foreground': path === bestMatch,
-            'justify-start gap-2 py-2': expand,
-            'w-10': !expand,
-          })}
-          href={path}
-        >
-          {icon}
-          {expand && name}
-        </Link>
-      </ProtectedElement>
-    );
-  }
+  const { id, name, icon, path } = segment;
 
   return (
     <Accordion type="single" collapsible className={cn('w-full', { 'w-10': !expand })} value={value} onValueChange={setValue}>
@@ -200,5 +197,41 @@ function PathElement({ segment, bestMatch, isSmall }: PathElementProps) {
         </AccordionContent>
       </AccordionItem>
     </Accordion>
+  );
+}
+
+type PathElementProps = {
+  segment: {
+    id: string;
+    path: string;
+    name: ReactNode;
+    icon: ReactNode;
+    enabled?: boolean;
+    filter?: Filter;
+  };
+  bestMatch: string | null;
+  isSmall: boolean;
+};
+function PathElement({ segment, bestMatch, isSmall }: PathElementProps) {
+  const { visible } = useNavBar();
+  const { session } = useSession();
+  const expand = isSmall ? true : visible;
+
+  const { name, icon, path, filter } = segment;
+
+  return (
+    <ProtectedElement session={session} filter={filter}>
+      <InternalLink
+        className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
+          'bg-brand text-brand-foreground': path === bestMatch,
+          'justify-start gap-2 py-2': expand,
+          'w-10': !expand,
+        })}
+        href={path}
+      >
+        {icon}
+        {expand && name}
+      </InternalLink>
+    </ProtectedElement>
   );
 }
