@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { defaultSortTag } from '@/constant/env';
+import { DEFAULT_PAGINATION_SIZE } from '@/context/session-context.type';
 import { locales } from '@/i18n/config';
 import { sortTag } from '@/types/response/SortTag';
 import { verifyStatus } from '@/types/response/Status';
@@ -12,7 +13,7 @@ type Pageable = {
 export default Pageable;
 
 export const sortSchema = z.enum(sortTag).default(defaultSortTag).optional().catch(defaultSortTag);
-export const sizeSchema = z.coerce.number().gte(1).default(30).catch(30);
+export const sizeSchema = z.coerce.number().gte(1).default(DEFAULT_PAGINATION_SIZE).catch(DEFAULT_PAGINATION_SIZE);
 export const pageSchema = z.coerce.number().gte(0).default(0).catch(0);
 export const nameSchema = z.string().optional();
 export const authorIdSchema = z.string().optional();

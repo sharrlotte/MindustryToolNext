@@ -10,12 +10,12 @@ export const PAGINATION_TYPE_PERSISTENT_KEY = 'paginationType';
 export const PAGINATION_SIZE_PERSISTENT_KEY = 'paginationSize';
 
 export const DEFAULT_PAGINATION_TYPE = 'grid';
-export const DEFAULT_PAGINATION_SIZE = 30;
+export const DEFAULT_PAGINATION_SIZE = 10;
 
 export type Config = {
   paginationType: PaginationType;
   paginationSize: number;
-  Locale: Locale
+  Locale: Locale;
 };
 
 export type ServerSessionContextType = (

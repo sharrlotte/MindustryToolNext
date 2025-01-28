@@ -15,6 +15,7 @@ type Props = {
 };
 
 const getCachedSchematic = cache((id: string) => serverApi((axios) => getSchematic(axios, { id })));
+export const experimental_ppr = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
