@@ -53,6 +53,7 @@ export type PathGroup = {
 export type SubPath =
   | string
   | {
+      id: string;
       path: string;
       name: ReactNode;
       icon: ReactNode;
@@ -61,71 +62,82 @@ export type SubPath =
     }[];
 
 export type Path = {
+  id: string;
   path: SubPath;
   name: ReactNode;
   icon: ReactNode;
   enabled?: boolean;
   filter?: Filter;
 };
-
 export const groups: readonly PathGroup[] = [
   {
     key: 'user',
     name: '',
     paths: [
       {
-        path: '/', //
+        id: 'home',
+        path: '/',
         name: <Tran asChild text="home" />,
         icon: <HomeIcon />,
       },
       {
-        path: '/schematics', //
+        id: 'schematics',
+        path: '/schematics',
         name: <Tran asChild text="schematic" />,
         icon: <SchematicIcon />,
       },
       {
+        id: 'maps',
         path: '/maps',
         name: <Tran asChild text="map" />,
         icon: <MapIcon />,
       },
       {
-        name: <Tran asChild text="plugin" />,
+        id: 'plugins',
         path: '/plugins',
+        name: <Tran asChild text="plugin" />,
         icon: <PluginIcon />,
       },
       {
-        path: '/posts', //
+        id: 'posts',
+        path: '/posts',
         name: <Tran asChild text="post" />,
         icon: <PostIcon />,
       },
       {
-        path: '/servers', //
+        id: 'servers',
+        path: '/servers',
         name: <Tran asChild text="server" />,
         icon: <ServerIcon />,
       },
       {
-        path: '/logic', //
+        id: 'logic',
+        path: '/logic',
         name: <Tran asChild text="logic" />,
         icon: <CmdIcon />,
       },
       {
-        path: '/chat', //
+        id: 'chat',
+        path: '/chat',
         name: <Tran asChild text="chat" />,
         icon: <ChatIconPath />,
       },
       {
-        path: '/mindustry-gpt', //
+        id: 'mindustry-gpt',
+        path: '/mindustry-gpt',
         name: <Tran asChild text="mindustry-gpt" />,
         icon: <MindustryGptIcon />,
       },
       {
-        name: <Tran asChild text="rank" />,
+        id: 'rank',
         path: '/rank',
+        name: <Tran asChild text="rank" />,
         icon: <CrownIcon />,
       },
       {
-        name: <Tran asChild text="ratio" />,
+        id: 'ratio',
         path: '/ratio',
+        name: <Tran asChild text="ratio" />,
         icon: <RatioIcon />,
       },
     ],
@@ -135,67 +147,60 @@ export const groups: readonly PathGroup[] = [
     name: <Tran className="font-semibold" text="admin" />,
     paths: [
       {
-        name: <Tran asChild text="dashboard" />,
+        id: 'admin',
         path: '/admin',
+        name: <Tran asChild text="dashboard" />,
         icon: <ChartIcon />,
         filter: { authority: 'VIEW_DASH_BOARD' },
       },
       {
-        name: <Tran asChild text="setting" />,
+        id: 'admin-setting',
         path: '/admin/setting',
+        name: <Tran asChild text="setting" />,
         icon: <BoxIcon />,
         filter: { any: [{ authority: 'EDIT_USER_ROLE' }, { authority: 'EDIT_USER_AUTHORITY' }, { authority: 'MANAGE_TAG' }, { authority: 'VIEW_SETTING' }] },
       },
       {
-        name: <Tran asChild text="log" />,
+        id: 'logs',
         path: '/logs',
+        name: <Tran asChild text="log" />,
         icon: <LogIcon />,
         filter: { authority: 'VIEW_LOG' },
       },
       {
-        name: <Tran asChild text="comment" />,
+        id: 'admin-comments',
         path: '/admin/comments',
+        name: <Tran asChild text="comment" />,
         icon: <CommentIcon />,
         filter: { authority: 'MANAGE_COMMENT' },
       },
       {
+        id: 'verify',
         name: <VerifyPath />,
-        filter: {
-          any: [
-            {
-              authority: 'VERIFY_SCHEMATIC',
-            },
-            {
-              authority: 'VERIFY_MAP',
-            },
-            {
-              authority: 'VERIFY_POST',
-            },
-            {
-              authority: 'VERIFY_PLUGIN',
-            },
-          ],
-        },
         path: [
           {
+            id: 'admin-schematics',
             name: <SchematicPath />,
             path: '/admin/schematics',
             icon: <SchematicIcon />,
             filter: { authority: 'VERIFY_SCHEMATIC' },
           },
           {
+            id: 'admin-maps',
             name: <MapPath />,
             path: '/admin/maps',
             icon: <MapIcon />,
             filter: { authority: 'VERIFY_MAP' },
           },
           {
+            id: 'admin-posts',
             name: <PostPath />,
             path: '/admin/posts',
             icon: <PostIcon />,
             filter: { authority: 'VERIFY_POST' },
           },
           {
+            id: 'admin-plugins',
             name: <PluginPath />,
             path: '/admin/plugins',
             icon: <PluginIcon />,
@@ -205,35 +210,41 @@ export const groups: readonly PathGroup[] = [
         icon: <VerifyPathIcon />,
       },
       {
-        name: <Tran asChild text="server" />,
+        id: 'admin-servers',
         path: '/admin/servers',
+        name: <Tran asChild text="server" />,
         icon: <ServerIcon />,
         filter: { authority: 'VIEW_ADMIN_SERVER' },
       },
       {
-        name: <TranslationPath />,
+        id: 'translation',
         path: '/translation',
+        name: <TranslationPath />,
         icon: <TranslationPathIcon />,
         filter: { authority: 'VIEW_TRANSLATION' },
       },
       {
-        name: <Tran asChild text="file" />,
+        id: 'files',
         path: '/files',
+        name: <Tran asChild text="file" />,
         icon: <FileIcon />,
         filter: { authority: 'VIEW_FILE' },
       },
       {
-        name: <Tran asChild text="analytic" />,
+        id: 'analytic',
         path: 'https://analytic.mindustry-tool.com',
+        name: <Tran asChild text="analytic" />,
         icon: <AnalyticIcon />,
         filter: { authority: 'VIEW_DASH_BOARD' },
       },
       {
+        id: 'mindustry-gpt-documents',
         name: 'MindustryGPT',
         icon: <MindustryGptIcon />,
         filter: { authority: 'VIEW_DOCUMENT' },
         path: [
           {
+            id: 'mindustry-gpt-documents',
             name: 'Document',
             path: '/mindustry-gpt/documents',
             icon: <DocumentIcon />,
