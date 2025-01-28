@@ -1,7 +1,5 @@
 'use client';
 
-import { useRef } from 'react';
-
 import { UploadIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import InternalLink from '@/components/common/internal-link';
@@ -22,15 +20,14 @@ type Props = {
 
 export default function Client({ posts }: Props) {
   const params = useSearchQuery(ItemPaginationQuery);
-  const ref = useRef<HTMLDivElement | null>(null);
 
   const uploadLink = `${env.url.base}/upload/post`;
 
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="post" />
-      <ScrollContainer ref={ref}>
-        <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['posts']} queryFn={getPosts} container={() => ref.current} initialData={posts}>
+      <ScrollContainer>
+        <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['posts']} queryFn={getPosts} initialData={posts}>
           {(data) => <PostPreviewCard key={data.id} post={data} />}
         </InfinitePage>
       </ScrollContainer>

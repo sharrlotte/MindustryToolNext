@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 
 import AddPluginForm from '@/app/[locale]/(user)/plugins/add-plugin-form';
 
@@ -21,18 +21,16 @@ type Props = {
 
 export default function Client({ plugins }: Props) {
   const params = useSearchQuery(ItemPaginationQuery);
-  const ref = useRef<HTMLDivElement | null>(null);
 
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
       <NameTagSearch type="plugin" useSort={false} />
-      <ScrollContainer className="relative flex h-full flex-col" ref={ref}>
+      <ScrollContainer className="relative flex h-full flex-col">
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
           queryKey={['plugins']}
           queryFn={getPlugins}
           params={params}
-          container={() => ref.current}
           initialData={plugins}
           skeleton={{
             amount: 20,

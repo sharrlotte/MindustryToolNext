@@ -74,6 +74,7 @@ import {
   XCircle,
 } from 'lucide-react';
 import Image from 'next/image';
+import React from 'react';
 
 import { cn } from '@/lib/utils';
 import googleIcon from '@/public/icons/google.svg';
@@ -156,12 +157,15 @@ export const XIcon = ({ className }: Props) => <X className={className ?? 'lucid
 export const CrownIcon = ({ className }: Props) => <Crown className={className ?? 'lucide'} />;
 export const ChevronsUpDownIcon = ({ className }: Props) => <ChevronsUpDown className={className ?? 'lucide'} />;
 export const LayoutDashboardIcon = ({ className }: Props) => <LayoutDashboard className={className ?? 'lucide'} />;
-export const CopyIcon = ({ className }: Props) => <Copy className={className ?? 'lucide'} />;
 export const DownloadIcon = ({ className }: Props) => <ArrowDownToLine className={className ?? 'lucide'} />;
 export const LoginIcon = ({ className }: Props) => <LogIn className={className ?? 'lucide'} />;
 export const TrashIcon = ({ className }: Props) => <Trash2 className={className ?? 'lucide'} />;
 export const GoogleIcon = ({ className }: Props) => <Image className={className ?? 'lucide'} src={googleIcon} alt="google" />;
 export const TakeDownIcon = ({ className }: Props) => <ArrowDownFromLine className={className ?? 'lucide'} />;
+
+const ICopyIcon = ({ className }: Props) => <Copy className={className ?? 'lucide'} />;
+
+export const CopyIcon = React.memo(ICopyIcon);
 
 export function HRIcon({ className }: Props) {
   return (
