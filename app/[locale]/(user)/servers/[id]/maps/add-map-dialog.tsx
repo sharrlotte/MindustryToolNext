@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
@@ -16,7 +16,6 @@ import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
-import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn, omit } from '@/lib/utils';
@@ -39,13 +38,6 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
   const { invalidateByKey } = useQueriesData();
 
   const params = useSearchQuery(ItemPaginationQuery);
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  const { data } = useClientQuery({
-    queryKey: ['maps', 'total', omit(params, 'page', 'size', 'sort')],
-    queryFn: (axios) => getMapCount(axios, params),
-    placeholderData: 0,
-  });
 
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) => createServerMap(axios, serverId, { mapId }),
@@ -84,7 +76,6 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
                 params={params}
                 queryKey={['maps']}
                 queryFn={(axios, params) => getMaps(axios, params)}
-                container={() => ref.current}
                 skeleton={{
                   amount: 20,
                   item: <Skeleton className="h-preview-height" />,
@@ -109,7 +100,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
           </ScrollContainer>
           <div className="flex justify-end">
             <GridLayout>
-              <PaginationNavigator numberOfItems={data} />
+              <PaginationNavigator numberOfItems={(axios) => getMapCount(axios, params)} queryKey={['maps', 'total', omit(params, 'page', 'size', 'sort')]} />
             </GridLayout>
           </div>
         </div>

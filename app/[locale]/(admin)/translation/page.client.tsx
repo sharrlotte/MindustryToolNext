@@ -24,7 +24,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
-import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
 import { useI18n } from '@/i18n/client';
@@ -146,12 +145,6 @@ function RefreshButton() {
 function CompareTable({ language, target, tKey: key }: CompareTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
 
-  const { data } = useClientQuery({
-    queryKey: ['translations', 'compare', 'total', language, target, key],
-    queryFn: (axios) => getTranslationCompareCount(axios, { ...params, language, target, key: key }),
-    placeholderData: 0,
-  });
-
   return (
     <Fragment>
       <Table className="table-fixed">
@@ -189,7 +182,7 @@ function CompareTable({ language, target, tKey: key }: CompareTableProps) {
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">
-        <PaginationNavigator numberOfItems={data} />
+        <PaginationNavigator numberOfItems={(axios) => getTranslationCompareCount(axios, { ...params, language, target, key: key })} queryKey={['translations', 'compare', 'total', language, target, key]} />
       </div>
     </Fragment>
   );
@@ -202,12 +195,6 @@ type SearchTableProps = {
 
 function SearchTable({ language, tKey: key }: SearchTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
-
-  const { data } = useClientQuery({
-    queryKey: ['translations', 'search', 'total', language, key],
-    queryFn: (axios) => getTranslationSearchCount(axios, { ...params, language, key: key }),
-    placeholderData: 0,
-  });
 
   return (
     <Fragment>
@@ -243,7 +230,7 @@ function SearchTable({ language, tKey: key }: SearchTableProps) {
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">
-        <PaginationNavigator numberOfItems={data} />
+        <PaginationNavigator numberOfItems={(axios) => getTranslationSearchCount(axios, { ...params, language, key: key })} queryKey={['translations', 'search', 'total', language, key]} />
       </div>
     </Fragment>
   );
@@ -257,11 +244,6 @@ type DiffTableProps = {
 
 function DiffTable({ language, target, tKey: key }: DiffTableProps) {
   const params = useSearchQuery(TranslationPaginationQuery);
-  const { data } = useClientQuery({
-    queryKey: ['translations', 'diff', 'total', language, target, key],
-    queryFn: (axios) => getTranslationDiffCount(axios, { language, target, key: key }),
-    placeholderData: 0,
-  });
 
   return (
     <Fragment>
@@ -299,7 +281,7 @@ function DiffTable({ language, target, tKey: key }: DiffTableProps) {
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">
-        <PaginationNavigator numberOfItems={data} />
+        <PaginationNavigator numberOfItems={(axios) => getTranslationDiffCount(axios, { language, target, key: key })} queryKey={['translations', 'diff', 'total', language, target, key]} />
       </div>
     </Fragment>
   );

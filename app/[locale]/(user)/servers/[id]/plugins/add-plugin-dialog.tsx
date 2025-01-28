@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
@@ -14,7 +14,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
-import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn, omit } from '@/lib/utils';
@@ -29,7 +28,6 @@ type AddPluginDialogProps = {
 };
 
 export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
-  const ref = useRef<HTMLDivElement | null>(null);
   const [added, setAdded] = useState<string[]>([]);
 
   const [show, setShow] = useState(false);
@@ -37,12 +35,6 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
 
   const params = useSearchQuery(ItemPaginationQuery);
   const { invalidateByKey } = useQueriesData();
-
-  const { data } = useClientQuery({
-    queryKey: ['plugins', 'total', omit(params, 'page', 'size', 'sort')],
-    queryFn: (axios) => getPluginCount(axios, params),
-    placeholderData: 0,
-  });
 
   const { mutate, isPending } = useMutation({
     mutationFn: (pluginId: string) => createServerPlugin(axios, serverId, { pluginId }),
@@ -81,7 +73,6 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
                 params={params}
                 queryKey={['plugin']}
                 queryFn={(axios, params) => getPlugins(axios, params)}
-                container={() => ref.current}
                 skeleton={{
                   amount: 20,
                   item: <Skeleton className="h-20" />,
@@ -106,7 +97,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
           </ScrollContainer>
           <div className="flex justify-end">
             <GridLayout>
-              <PaginationNavigator numberOfItems={data} />
+              <PaginationNavigator numberOfItems={(axios) => getPluginCount(axios, params)} queryKey={['plugins', 'total', omit(params, 'page', 'size', 'sort')]} />
             </GridLayout>
           </div>
         </div>

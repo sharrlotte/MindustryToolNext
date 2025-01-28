@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 
 import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -15,7 +15,6 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
-import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
 import { omit } from '@/lib/utils';
@@ -31,14 +30,6 @@ type Props = {
 
 export default function Client({ maps }: Props) {
   const params = useSearchQuery(ItemPaginationQuery);
-  const container = useRef<HTMLDivElement | null>(null);
-
-  const { data } = useClientQuery({
-    queryKey: ['maps', 'total', 'upload', omit(params, 'page', 'size', 'sort')],
-    queryFn: (axios) => getMapUploadCount(axios, params),
-    placeholderData: 0,
-  });
-
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
 
@@ -69,7 +60,7 @@ export default function Client({ maps }: Props) {
             <PaginationLayoutSwitcher />
           </div>
         </div>
-        <ScrollContainer className="relative flex h-full flex-col" ref={container}>
+        <ScrollContainer className="relative flex h-full flex-col">
           <ListLayout>
             <InfinitePage
               params={params}
@@ -101,7 +92,7 @@ export default function Client({ maps }: Props) {
         </ScrollContainer>
         <div className="flex flex-wrap items-center gap-2 justify-between">
           <GridLayout>
-            <PaginationNavigator numberOfItems={data} />
+            <PaginationNavigator numberOfItems={(axios) => getMapUploadCount(axios, params)} queryKey={['maps', 'total', 'upload', omit(params, 'page', 'size', 'sort')]} />
           </GridLayout>
         </div>
       </div>

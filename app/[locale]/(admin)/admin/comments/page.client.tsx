@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { TrashIcon } from '@/components/common/icons';
@@ -23,31 +23,24 @@ import useQueriesData from '@/hooks/use-queries-data';
 import useSearchQuery from '@/hooks/use-search-query';
 import { omit } from '@/lib/utils';
 import { deleteCommentById, getAllCommentCount, getAllComments } from '@/query/comment';
+import { persister } from '@/query/config/query-config';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { getUser } from '@/query/user';
 import { Comment } from '@/types/response/Comment';
 
 import { useMutation } from '@tanstack/react-query';
-import { persister } from '@/query/config/query-config';
 
 export default function Client() {
   const params = useSearchQuery(ItemPaginationQuery);
-    const container = useRef<HTMLDivElement | null>(null);
-
-  const { data } = useClientQuery({
-    queryKey: ['comments', omit(params, 'page', 'size')],
-    queryFn: (axios) => getAllCommentCount(axios),
-    placeholderData: 0,
-  });
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <div className="flex justify-end">
         <PaginationLayoutSwitcher />
       </div>
-      <ScrollContainer className="relative flex h-full flex-col" ref={container}>
+      <ScrollContainer className="relative flex h-full flex-col">
         <ListLayout>
-          <InfinitePage className="flex flex-col gap-2" params={params} queryKey={['comments']} queryFn={getAllComments} container={() => container.current} loader={<LoadingSpinner className="p-0 m-auto" />}>
+          <InfinitePage className="flex flex-col gap-2" params={params} queryKey={['comments']} queryFn={getAllComments} loader={<LoadingSpinner className="p-0 m-auto" />}>
             {(data) => <CommentCard key={data.id} comment={data} />}
           </InfinitePage>
         </ListLayout>
@@ -59,7 +52,7 @@ export default function Client() {
       </ScrollContainer>
       <div className="flex flex-wrap items-center gap-2 justify-end">
         <GridLayout>
-          <PaginationNavigator numberOfItems={data} />
+          <PaginationNavigator numberOfItems={(axios) => getAllCommentCount(axios)} queryKey={['comments', omit(params, 'page', 'size')]} />
         </GridLayout>
       </div>
     </div>
@@ -76,7 +69,7 @@ function CommentCard({ comment }: CommentCardProps) {
   const { data } = useClientQuery({
     queryKey: ['users', userId],
     queryFn: (axios) => getUser(axios, { id: userId }),
-    persister
+    persister,
   });
 
   return (
