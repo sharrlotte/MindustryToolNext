@@ -50,13 +50,19 @@ export default function GridPaginationList<T, P extends PaginationQuery>({ class
   }
 
   if (asChild) {
-    return <Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult} children={children} />;
+    return (
+      <Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult}>
+        {children}
+      </Render>
+    );
   }
 
   return (
     <div className="pagination-container h-full">
       <div className={cn('grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2', className)}>
-        <Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult} children={children} />
+        <Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult}>
+          {children}
+        </Render>
       </div>
     </div>
   );
