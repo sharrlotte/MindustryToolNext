@@ -70,7 +70,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
           <div className="flex justify-end">
             <PaginationLayoutSwitcher />
           </div>
-          <ScrollContainer className="flex h-full w-full flex-col gap-2" ref={ref}>
+          <ScrollContainer className="flex h-full w-full flex-col gap-2">
             <ListLayout>
               <InfinitePage
                 params={params}
