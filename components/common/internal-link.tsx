@@ -2,10 +2,10 @@
 
 import { VariantProps, cva } from 'class-variance-authority';
 import Link from 'next/link';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import env from '@/constant/env';
-import { useLocaleStore } from '@/context/locale-context';
+import useLocaleStore from '@/hooks/use-current-locale';
 import { locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
@@ -31,10 +31,9 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
     asChild?: boolean;
   } & {
     href: string;
-    preloadImage?: string;
   };
 
-export default function InternalLink({ className, variant, title, href, children, preloadImage, ...props }: InternalLinkProps) {
+export default function InternalLink({ className, variant, title, href, children, ...props }: InternalLinkProps) {
   const { currentLocale } = useLocaleStore();
 
   const stripBase = href.replace(env.url.base, '');
@@ -45,13 +44,6 @@ export default function InternalLink({ className, variant, title, href, children
     hrefWithLocale = env.url.base + '/' + currentLocale + '/' + stripBase;
   }
 
-  const handlePreload = useCallback(() => {
-    if (preloadImage) {
-      const image = new Image();
-      image.src = preloadImage;
-    }
-  }, [preloadImage]);
-
   if (href.startsWith('http') && !href.startsWith(env.url.base)) {
     return (
       <a className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title} target="_blank">
@@ -61,7 +53,7 @@ export default function InternalLink({ className, variant, title, href, children
   }
 
   return (
-    <Link className={cn(linkVariants({ variant, className }))} {...props} href={hrefWithLocale} hrefLang={currentLocale} title={title} onMouseEnter={handlePreload} onTouchStart={handlePreload}>
+    <Link className={cn(linkVariants({ variant, className }))} {...props} href={hrefWithLocale} title={title}>
       {children}
     </Link>
   );

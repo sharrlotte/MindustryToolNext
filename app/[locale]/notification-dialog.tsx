@@ -30,16 +30,16 @@ export default function NotificationDialog() {
   const expand = isSmall ? true : visible;
 
   return (
-    <Dialog>
-      <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
-        <NotificationDialogButton expand={expand} />
-      </DialogTrigger>
-      <DialogContent className="p-6 max-h-full flex flex-col" closeButton={false}>
-        <ProtectedElement session={session} filter>
+    <ProtectedElement session={session} filter>
+      <Dialog>
+        <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
+          <NotificationDialogButton expand={expand} />
+        </DialogTrigger>
+        <DialogContent className="p-6 max-h-full flex flex-col" closeButton={false}>
           <NotificationForm />
-        </ProtectedElement>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+    </ProtectedElement>
   );
 }
 type NotificationDialogButtonProps = {

@@ -1,7 +1,7 @@
 import ComboBox from '@/components/common/combo-box';
 import { Hidden } from '@/components/common/hidden';
 import { DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { useLocaleStore } from '@/context/locale-context';
+import useLocaleStore from '@/hooks/use-current-locale';
 import { useChangeLocale, useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
 import React from 'react';

@@ -26,10 +26,10 @@ import {
 } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
-import { useLocaleStore } from '@/context/locale-context';
 import { useSocket } from '@/context/socket-context';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
+import useLocaleStore from '@/hooks/use-current-locale';
 import useNotification from '@/hooks/use-notification';
 import useSearchQuery from '@/hooks/use-search-query';
 import { Filter, cn } from '@/lib/utils';

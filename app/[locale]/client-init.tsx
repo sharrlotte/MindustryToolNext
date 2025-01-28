@@ -1,7 +1,5 @@
 'use client';
 
-import { Router } from 'next/router';
-import { useEffect } from 'react';
 
 import useClientApi from '@/hooks/use-client';
 
@@ -14,15 +12,6 @@ export default function ClientInit() {
     queryKey: ['ping'],
     queryFn: () => axios.get('/ping?client=web'),
   });
-
-  useEffect(() => {
-    function onRouterStart() {
-      console.log('routeChangeStart');
-    }
-    Router.events.on('routeChangeStart', onRouterStart);
-
-    return Router.events.off('routeChangeStart', onRouterStart);
-  }, []);
 
   return undefined;
 }

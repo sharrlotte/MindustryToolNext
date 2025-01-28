@@ -12,7 +12,6 @@ import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImag
 import Tran from '@/components/common/tran';
 import AloneDislikeCount from '@/components/like/alone-dislike-count';
 import AloneLikeCount from '@/components/like/alone-like-count';
-import LikeComponent from '@/components/like/like-component';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
@@ -26,14 +25,13 @@ type SchematicPreviewCardProps = {
   imageCount: number;
 };
 
-function SchematicPreviewCard({ schematic: { id, name, itemId, likes, dislikes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
+function SchematicPreviewCard({ schematic: { id, name, likes, dislikes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
   const axios = useClientApi();
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/schematics/${id}`;
   const detailLink = `/schematics/${id}`;
   const imageLink = `${env.url.image}/schematic-previews/${id}${env.imageFormat}`;
-  const detailImageLink = `${env.url.image}/schematics/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/schematics/${id}/image`;
   const copyContent = `Copied schematic ${name}`;
   const downloadLink = `${env.url.api}/schematics/${id}/download`;
@@ -52,7 +50,7 @@ function SchematicPreviewCard({ schematic: { id, name, itemId, likes, dislikes, 
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <LinkIcon />
       </CopyButton>
-      <InternalLink href={detailLink} preloadImage={detailImageLink}>
+      <InternalLink href={detailLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
       </InternalLink>
       <PreviewDescription>
@@ -62,15 +60,12 @@ function SchematicPreviewCard({ schematic: { id, name, itemId, likes, dislikes, 
         <PreviewActions>
           <CopyButton content={copyContent} data={getData} />
           <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
-          <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes}>
-            <AloneLikeCount />
-            <AloneDislikeCount />
-          </LikeComponent>
+          <AloneLikeCount like={likes} />
+          <AloneDislikeCount dislike={dislikes} />
         </PreviewActions>
       </PreviewDescription>
     </Preview>
   );
 }
-
 
 export default SchematicPreviewCard;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import InfinitePage from '@/components/common/infinite-page';
@@ -25,12 +25,11 @@ import { useMutation } from '@tanstack/react-query';
 
 export default function Page() {
   const params = useSearchQuery(ItemPaginationQuery);
-    const container = useRef<HTMLDivElement | null>(null);
 
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
-      <ScrollContainer className="relative flex h-full flex-col" ref={container}>
-        <InfinitePage className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3" queryKey={['documents']} queryFn={getDocuments} params={params} container={() => container.current}>
+      <ScrollContainer className="relative flex h-full flex-col">
+        <InfinitePage className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3" queryKey={['documents']} queryFn={getDocuments} params={params}>
           {(data) => <DocumentCard key={data.id} document={data} />}
         </InfinitePage>
       </ScrollContainer>

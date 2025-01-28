@@ -6,7 +6,6 @@ import { LinkIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import AloneDislikeCount from '@/components/like/alone-dislike-count';
 import AloneLikeCount from '@/components/like/alone-like-count';
-import LikeComponent from '@/components/like/like-component';
 import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
@@ -17,7 +16,7 @@ type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
-function PostPreviewCard({ className, post: { id, imageUrls, title, likes, itemId, dislikes, createdAt, userId }, ...rest }: PostPreviewCardProps) {
+function PostPreviewCard({ className, post: { id, imageUrls, title, likes, dislikes, createdAt, userId }, ...rest }: PostPreviewCardProps) {
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/posts/${id}`;
@@ -33,16 +32,14 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, itemI
           <div className="flex flex-col gap-2">
             <div>
               <IdUserCard id={userId} />
-              <span className='text-muted-foreground'>{new Date(createdAt).toLocaleString()}</span>
+              <span className="text-muted-foreground">{new Date(createdAt).toLocaleString()}</span>
             </div>
             <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
               <CopyButton data={link} content={link}>
                 <LinkIcon />
               </CopyButton>
-              <LikeComponent initialLikeCount={likes} initialDislikeCount={dislikes} itemId={itemId}>
-                <AloneLikeCount />
-                <AloneDislikeCount />
-              </LikeComponent>
+              <AloneLikeCount like={likes} />
+              <AloneDislikeCount dislike={dislikes} />
             </div>
           </div>
         </div>
@@ -50,6 +47,5 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, itemI
     </div>
   );
 }
-
 
 export default PostPreviewCard;

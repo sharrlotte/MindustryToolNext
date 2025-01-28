@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { UploadIcon } from '@/components/common/icons';
@@ -15,7 +15,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import env from '@/constant/env';
-import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { omit } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
@@ -29,27 +28,18 @@ type Props = {
 export default function Client({ maps }: Props) {
   const params = useSearchQuery(ItemPaginationQuery);
 
-  const container = useRef<HTMLDivElement | null>(null);
-
-  const { data } = useClientQuery({
-    queryKey: ['maps', 'total', omit(params, 'page', 'size', 'sort')],
-    queryFn: (axios) => getMapCount(axios, params),
-    placeholderData: 0,
-  });
-
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="map" />
       <div className="flex justify-end">
         <PaginationLayoutSwitcher />
       </div>
-      <ScrollContainer ref={container}>
+      <ScrollContainer>
         <ListLayout>
           <InfinitePage
             params={params}
             queryKey={['maps']}
             queryFn={getMaps}
-            container={() => container.current}
             initialData={maps}
             skeleton={{
               amount: 20,
@@ -80,7 +70,7 @@ export default function Client({ maps }: Props) {
           <Tran text="map.upload" />
         </InternalLink>
         <GridLayout>
-          <PaginationNavigator numberOfItems={data} />
+          <PaginationNavigator numberOfItems={(axios) => getMapCount(axios, params)} queryKey={['maps', 'total', omit(params, 'page', 'size', 'sort')]} />
         </GridLayout>
       </div>
     </div>

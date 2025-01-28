@@ -12,7 +12,6 @@ import UserCard from '@/components/user/user-card';
 
 import { useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
-import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
@@ -154,16 +153,10 @@ function MyRankCard() {
 }
 
 export function RankPaginationNavigator() {
-  const { data } = useClientQuery({
-    queryKey: ['rank', 'total'],
-    queryFn: (axios) => getUsersCount(axios),
-    placeholderData: 0,
-  });
-
   return (
     <div className="mt-auto flex justify-end">
       <GridLayout>
-        <PaginationNavigator numberOfItems={data} />
+        <PaginationNavigator numberOfItems={(axios) => getUsersCount(axios)} queryKey={['rank', 'total']} />
       </GridLayout>
     </div>
   );

@@ -32,7 +32,7 @@ const banFilterState = ['', 'true', 'false'];
 
 export function UserTable() {
   const { t } = useI18n();
-    const container = useRef<HTMLDivElement | null>(null);
+  const container = useRef<HTMLDivElement | null>(null);
   const params = useSearchQuery(PaginationQuerySchema);
 
   const [{ name, is_banned: isBanned }, setState] = useState(defaultState);
@@ -76,7 +76,6 @@ export function UserTable() {
             params={{ ...params, role: role?.name, name: debouncedName, is_banned: isBanned }}
             queryKey={['users', 'management']}
             queryFn={getUsers}
-            container={() => container.current}
             loader={<LoadingSpinner className="p-0 m-auto" />}
           >
             {(data) => <UserManagementCard key={data.id} user={data} />}

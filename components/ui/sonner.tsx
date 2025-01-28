@@ -28,7 +28,6 @@ const Toaster = ({ ...props }: ToasterProps) => {
         },
       }}
       offset={16}
-      duration={process.env.NODE_ENV === 'development' ? 100000 : undefined}
       {...props}
     />
   );

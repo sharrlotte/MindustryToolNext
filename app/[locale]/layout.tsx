@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
-import React, { Suspense } from 'react';
+import Script from 'next/script';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import ClientInit from '@/app/[locale]/client-init';
@@ -11,7 +12,6 @@ import { ThemeProvider } from '@/components/theme/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
-import { I18nProvider } from '@/context/locale-context';
 import { SessionProvider } from '@/context/session-context';
 import { SocketProvider } from '@/context/socket-context';
 import { Locale, locales } from '@/i18n/config';
@@ -104,25 +104,19 @@ export default async function Root({ children, params }: RootProps) {
             <GoogleAnalytics gaId="G-1R9S5SV72C" />
           </>
         ) : (
-          <>{/* // <Script src="https://unpkg.com/react-scan/dist/auto.global.js" async /> */}</>
+          <>{<Script src="https://unpkg.com/react-scan/dist/auto.global.js" async />}</>
         )}
-        <I18nProvider locale={locale}>
-          <QueryProvider>
-            <ClientInit />
-            <ThemeProvider>
-              <SessionProvider>
-                <SocketProvider>
-                  <Suspense>
-                    <Toaster />
-                  </Suspense>
-                  <Suspense>
-                    <NavigationBar>{children}</NavigationBar>
-                  </Suspense>
-                </SocketProvider>
-              </SessionProvider>
-            </ThemeProvider>
-          </QueryProvider>
-        </I18nProvider>
+        <QueryProvider>
+          <ClientInit />
+          <ThemeProvider>
+            <SessionProvider>
+              <SocketProvider>
+                <Toaster />
+                <NavigationBar>{children}</NavigationBar>
+              </SocketProvider>
+            </SessionProvider>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

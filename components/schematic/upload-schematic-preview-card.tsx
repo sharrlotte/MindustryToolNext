@@ -29,7 +29,6 @@ function UploadSchematicPreviewCard({ schematic: { id, name }, imageCount }: Upl
   const link = `${env.url.base}/${locale}/admin/schematics/${id}`;
   const detailLink = `/admin/schematics/${id}`;
   const imageLink = `${env.url.image}/schematic-previews/${id}${env.imageFormat}`;
-  const detailImageLink = `${env.url.image}/schematics/${id}${env.imageFormat}`;
   const errorImageLink = `${env.url.api}/schematics/${id}/image`;
   const copyContent = `Copied schematic ${name}`;
   const downloadLink = `${env.url.api}/schematics/${id}/download`;
@@ -49,7 +48,7 @@ function UploadSchematicPreviewCard({ schematic: { id, name }, imageCount }: Upl
         <LinkIcon />
       </CopyButton>
       <BulkActionSelector value={id}>
-        <InternalLink href={detailLink} preloadImage={detailImageLink}>
+        <InternalLink href={detailLink}>
           <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
         </InternalLink>
         <PreviewDescription>
@@ -65,6 +64,5 @@ function UploadSchematicPreviewCard({ schematic: { id, name }, imageCount }: Upl
     </Preview>
   );
 }
-
 
 export default UploadSchematicPreviewCard;
