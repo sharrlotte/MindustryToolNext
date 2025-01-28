@@ -50,7 +50,6 @@ export default function Me({ me }: TabProps) {
               params={params}
               queryKey={['me', 'schematics']}
               queryFn={getMeSchematics}
-              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -67,7 +66,6 @@ export default function Me({ me }: TabProps) {
               params={params}
               queryKey={['me', 'maps']}
               queryFn={getMeMaps}
-              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,

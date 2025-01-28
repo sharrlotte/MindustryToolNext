@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -104,7 +105,7 @@ export default async function Root({ children, params }: RootProps) {
             <GoogleAnalytics gaId="G-1R9S5SV72C" />
           </>
         ) : (
-          <>{/* // <Script src="https://unpkg.com/react-scan/dist/auto.global.js" async /> */}</>
+          <>{<Script src="https://unpkg.com/react-scan/dist/auto.global.js" async />}</>
         )}
         <I18nProvider locale={locale}>
           <QueryProvider>

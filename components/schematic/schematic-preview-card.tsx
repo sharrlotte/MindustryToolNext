@@ -12,7 +12,6 @@ import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImag
 import Tran from '@/components/common/tran';
 import AloneDislikeCount from '@/components/like/alone-dislike-count';
 import AloneLikeCount from '@/components/like/alone-like-count';
-import LikeComponent from '@/components/like/like-component';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
@@ -26,7 +25,7 @@ type SchematicPreviewCardProps = {
   imageCount: number;
 };
 
-function SchematicPreviewCard({ schematic: { id, name, itemId, likes, dislikes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
+function SchematicPreviewCard({ schematic: { id, name, likes, dislikes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
   const axios = useClientApi();
   const { locale } = useParams();
 
@@ -62,15 +61,12 @@ function SchematicPreviewCard({ schematic: { id, name, itemId, likes, dislikes, 
         <PreviewActions>
           <CopyButton content={copyContent} data={getData} />
           <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
-          <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes}>
-            <AloneLikeCount />
-            <AloneDislikeCount />
-          </LikeComponent>
+          <AloneLikeCount like={likes} />
+          <AloneDislikeCount dislike={dislikes} />
         </PreviewActions>
       </PreviewDescription>
     </Preview>
   );
 }
-
 
 export default SchematicPreviewCard;

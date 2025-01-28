@@ -9,7 +9,7 @@ type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function Preview({ className, children, ...props }: CardProps) {
   return (
-    <div className={cn('group relative flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] bg-card max-w-[calc(var(--preview-size)*2)] flex-col rounded-md shadow-md', className)} {...props}>
+    <div className={cn('group overflow-hidden relative flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] bg-card max-w-[calc(var(--preview-size)*2)] flex-col rounded-md shadow-md', className)} {...props}>
       {children}
     </div>
   );

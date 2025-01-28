@@ -49,7 +49,6 @@ export default function Client({ maps }: Props) {
             params={params}
             queryKey={['maps']}
             queryFn={getMaps}
-            container={() => container.current}
             initialData={maps}
             skeleton={{
               amount: 20,

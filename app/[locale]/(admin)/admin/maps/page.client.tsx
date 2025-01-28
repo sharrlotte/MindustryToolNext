@@ -75,7 +75,6 @@ export default function Client({ maps }: Props) {
               params={params}
               queryKey={['maps', 'upload']}
               queryFn={getMapUploads}
-              container={() => container.current}
               initialData={maps}
               skeleton={{
                 amount: 20,

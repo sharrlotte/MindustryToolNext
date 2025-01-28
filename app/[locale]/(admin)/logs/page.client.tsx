@@ -131,7 +131,7 @@ function StaticLog() {
 
   const { env, ip, userId, url, content, before, after, collection } = filter;
 
-    const container = useRef<HTMLDivElement | null>(null);
+  const container = useRef<HTMLDivElement | null>(null);
 
   const setFilter = useCallback((value: Partial<Filter>) => _setFilter((prev) => ({ ...prev, ...value })), []);
 
@@ -186,7 +186,6 @@ function StaticLog() {
               before,
               after,
             }}
-            container={() => container.current}
             queryKey={['logs']}
             queryFn={getLogs}
           >

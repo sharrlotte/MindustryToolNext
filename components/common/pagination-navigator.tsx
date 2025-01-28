@@ -1,5 +1,6 @@
 'use client';
 
+import { AxiosInstance } from 'axios';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
@@ -13,16 +14,51 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/components/ui/pagination';
 
+import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { PaginationQuerySchema } from '@/query/search-query';
 
 type Props = {
-  numberOfItems?: number;
   sizes?: number[];
-};
+} & (
+  | {
+      numberOfItems?: number;
+    }
+  | {
+      numberOfItems?: (axios: AxiosInstance) => Promise<number>;
+      queryKey: any[];
+    }
+);
 
-export default function PaginationNavigator({ numberOfItems = 0, sizes = [10, 20, 30, 50, 100] }: Props) {
+export default function PaginationNavigator({ numberOfItems, sizes = [10, 20, 30, 50, 100], ...rest }: Props) {
+  if (typeof numberOfItems === 'function') {
+    return <QueryPaginationNavigator numberOfItems={numberOfItems} sizes={sizes} queryKey={(rest as any).queryKey} />;
+  }
+
+  return <PaginationNavigatorInternal numberOfItems={numberOfItems ?? 0} sizes={sizes} />;
+}
+
+type QueryPaginationNavigatorProps = {
+  numberOfItems: (axios: AxiosInstance) => Promise<number>;
+  sizes: number[];
+  queryKey: any[];
+};
+function QueryPaginationNavigator({ queryKey, numberOfItems, sizes }: QueryPaginationNavigatorProps) {
+  const { data } = useClientQuery({
+    queryKey,
+    queryFn: numberOfItems,
+    placeholderData: 0,
+  });
+
+  return <PaginationNavigatorInternal numberOfItems={data ?? 0} sizes={sizes} />;
+}
+
+type InternalProps = {
+  numberOfItems: number;
+  sizes: number[];
+};
+function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(0);
   const params = useSearchQuery(PaginationQuerySchema);

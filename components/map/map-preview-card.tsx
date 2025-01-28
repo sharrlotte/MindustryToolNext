@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import React from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -10,19 +11,17 @@ import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import AloneDislikeCount from '@/components/like/alone-dislike-count';
 import AloneLikeCount from '@/components/like/alone-like-count';
-import LikeComponent from '@/components/like/like-component';
 
 import env from '@/constant/env';
 import useImageLoading from '@/hooks/use-image-loading';
 import { Map } from '@/types/response/Map';
-import { useParams } from 'next/navigation';
 
 type MapPreviewCardProps = {
   map: Map;
   imageCount: number;
 };
 
-function MapPreviewCard({ map: { id, itemId, name, isVerified, likes, dislikes, downloadCount }, imageCount }: MapPreviewCardProps) {
+function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, downloadCount }, imageCount }: MapPreviewCardProps) {
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/maps/${id}`;
@@ -50,10 +49,10 @@ function MapPreviewCard({ map: { id, itemId, name, isVerified, likes, dislikes, 
         <PreviewActions>
           <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
           {isVerified && (
-            <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes}>
-              <AloneLikeCount />
-              <AloneDislikeCount />
-            </LikeComponent>
+            <>
+              <AloneLikeCount like={likes} />
+              <AloneDislikeCount dislike={dislikes} />
+            </>
           )}
         </PreviewActions>
       </PreviewDescription>

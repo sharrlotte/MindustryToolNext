@@ -75,7 +75,6 @@ export default function Client({ schematics }: Props) {
               params={params}
               queryKey={['schematics', 'upload']}
               queryFn={getSchematicUploads}
-              container={() => container.current}
               initialData={schematics}
               skeleton={{
                 amount: 20,

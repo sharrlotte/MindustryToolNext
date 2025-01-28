@@ -53,7 +53,6 @@ export default function Other({ user }: TabProps) {
               params={params}
               queryKey={['users', id, 'schematics']}
               queryFn={(axios, params) => getUserSchematics(axios, id, params)}
-              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -70,7 +69,6 @@ export default function Other({ user }: TabProps) {
               params={params}
               queryKey={['users', id, 'maps']}
               queryFn={(axios, params) => getUserMaps(axios, id, params)}
-              container={() => container.current}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -83,13 +81,7 @@ export default function Other({ user }: TabProps) {
         <TabsContent value="post">
           <div className="flex h-full w-full flex-col gap-2">
             <NameTagSearch type="post" />
-            <InfinitePage
-              className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2"
-              params={params}
-              queryKey={['users', id, 'posts']}
-              queryFn={(axios, params) => getUserPosts(axios, id, params)}
-              container={() => container.current}
-            >
+            <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['users', id, 'posts']} queryFn={(axios, params) => getUserPosts(axios, id, params)}>
               {(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}
             </InfinitePage>
           </div>

@@ -1,7 +1,5 @@
 'use client';
 
-import { useRef } from 'react';
-
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { UploadIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
@@ -15,7 +13,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import env from '@/constant/env';
-import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { omit } from '@/lib/utils';
 import { getSchematicCount, getSchematics } from '@/query/schematic';
@@ -31,27 +28,18 @@ export default function Client({ schematics }: Props) {
 
   const uploadLink = `${env.url.base}/upload/schematic`;
 
-  const container = useRef<HTMLDivElement | null>(null);
-
-  const { data } = useClientQuery({
-    queryKey: ['schematics', 'total', omit(params, 'page', 'size', 'sort')],
-    queryFn: (axios) => getSchematicCount(axios, params),
-    placeholderData: 0,
-  });
-
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="schematic" />
       <div className="flex justify-end items-center">
         <PaginationLayoutSwitcher />
       </div>
-      <ScrollContainer className="relative flex h-full flex-col" ref={container}>
+      <ScrollContainer className="relative flex h-full flex-col">
         <ListLayout>
           <InfinitePage
             params={params}
             queryKey={['schematics']}
             queryFn={getSchematics}
-            container={() => container.current}
             initialData={schematics}
             skeleton={{
               amount: 20,
@@ -82,7 +70,7 @@ export default function Client({ schematics }: Props) {
           <Tran text="upload-schematic" />
         </InternalLink>
         <GridLayout>
-          <PaginationNavigator numberOfItems={data} />
+          <PaginationNavigator numberOfItems={(axios) => getSchematicCount(axios, params)} queryKey={['schematics', 'total', omit(params, 'page', 'size', 'sort')]} />
         </GridLayout>
       </div>
     </div>
