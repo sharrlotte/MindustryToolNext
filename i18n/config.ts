@@ -22,7 +22,6 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: InitOptions<ChainedBackendOptions> = {
     // debug: process.env.NODE_ENV === 'development',
     supportedLngs: locales,
-    fallbackLng: defaultLocale,
     lng,
     interpolation: {
       escapeValue: false,
@@ -31,9 +30,6 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
     defaultNS: defaultNamespace,
     ns,
     saveMissing: true,
-    react: {
-      useSuspense: true,
-    },
     backend: {
       backends: [LocalStorageBackend, HttpApi],
       backendOptions: [
@@ -60,7 +56,6 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: InitOptions<ChainedBackendOptions> = {
     // debug: process.env.NODE_ENV === 'development',
     supportedLngs: locales,
-    fallbackLng: defaultLocale,
     lng,
     interpolation: {
       escapeValue: false,
@@ -68,9 +63,6 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,
     ns,
-    react: {
-      useSuspense: true,
-    },
     backend: {
       backends: [HttpApi],
       backendOptions: [

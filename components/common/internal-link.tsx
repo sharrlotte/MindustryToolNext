@@ -2,7 +2,7 @@
 
 import { VariantProps, cva } from 'class-variance-authority';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import env from '@/constant/env';
 import useLocaleStore from '@/hooks/use-current-locale';
@@ -35,13 +35,10 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
 
 export default function InternalLink({ className, variant, title, href, children, ...props }: InternalLinkProps) {
   const { currentLocale } = useLocaleStore();
-  const [isMounted, setMounted] = useState(false);
 
   const stripBase = href.replace(env.url.base, '');
   const parts = stripBase.split('/');
   let hrefWithLocale = href;
-
-  useEffect(() => setMounted(true), []);
 
   if (parts.length > 0 && !locales.includes(parts[0] as any)) {
     hrefWithLocale = env.url.base + '/' + currentLocale + '/' + stripBase;
@@ -52,14 +49,6 @@ export default function InternalLink({ className, variant, title, href, children
       <a className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title} target="_blank">
         {children}
       </a>
-    );
-  }
-
-  if (!isMounted) {
-    return (
-      <Link className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title}>
-        {children}
-      </Link>
     );
   }
 

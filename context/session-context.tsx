@@ -5,6 +5,7 @@ import { getSession } from '@/action/action';
 import ClientSessionProvider from '@/context/session-context.client';
 import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, paginationTypes } from '@/context/session-context.type';
 import { isError } from '@/lib/utils';
+import { cookieName, defaultLocale, Locale } from '@/i18n/config';
 
 export async function SessionProvider({ children }: { children: ReactNode }) {
   const cookie = await cookies();
@@ -16,10 +17,12 @@ export async function SessionProvider({ children }: { children: ReactNode }) {
 
   const paginationSizeString = cookie.get(PAGINATION_SIZE_PERSISTENT_KEY)?.value;
   const paginationType = cookie.get(PAGINATION_TYPE_PERSISTENT_KEY)?.value as any;
+  const Locale = cookie.get(cookieName)?.value as Locale ?? defaultLocale;
 
   const config: Config = {
     paginationType: paginationTypes.includes(paginationType) ? paginationType : DEFAULT_PAGINATION_TYPE,
     paginationSize: paginationSizeString ? Number(paginationSizeString) : DEFAULT_PAGINATION_SIZE,
+    Locale
   };
 
   return (

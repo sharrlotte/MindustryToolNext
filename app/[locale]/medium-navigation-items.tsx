@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
+import { useNavBar } from '@/app/[locale]/navigation';
 import NotificationDialog from '@/app/[locale]/notification-dialog';
 import { UserDisplay } from '@/app/[locale]/user-display';
 import { Path, PathGroup } from '@/app/routes';
@@ -17,7 +18,7 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context.client';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import { useNavBar } from '@/app/[locale]/navigation';
+import Link from 'next/link';
 
 type NavigationBarProps = {
   pathGroups: PathGroup[];
@@ -62,7 +63,7 @@ export default function MediumScreenNavigationBar({ pathGroups, bestMatch }: Nav
           <MenuIcon className="size-6 text-foreground" />
         </Button>
       </div>
-      <MediumNavItems pathGroups={pathGroups} bestMatch={bestMatch} />
+      <MediumNavItems pathGroups={pathGroups} bestMatch={bestMatch} isSmall={isSmall} />
       {expand ? <UserDisplay /> : <NavFooter />}
     </motion.div>
   );
@@ -98,13 +99,14 @@ function NavFooter() {
 type NavItemsProps = {
   pathGroups: PathGroup[];
   bestMatch: string | null;
+  isSmall: boolean;
 };
 
-function MediumNavItems({ pathGroups, bestMatch }: NavItemsProps) {
+function MediumNavItems({ pathGroups, bestMatch, isSmall }: NavItemsProps) {
   return (
     <section className="no-scrollbar space-y-2">
       {pathGroups.map((group) => (
-        <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} />
+        <PathGroupElement key={group.key} group={group} bestMatch={bestMatch} isSmall={isSmall} />
       ))}
     </section>
   );
@@ -113,15 +115,14 @@ function MediumNavItems({ pathGroups, bestMatch }: NavItemsProps) {
 type PathGroupElementProps = {
   group: PathGroup;
   bestMatch: string | null;
+  isSmall: boolean;
 };
 
-const PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNode => {
+const PathGroupElement = ({ group, bestMatch, isSmall }: PathGroupElementProps): ReactNode => {
   const { session } = useSession();
   const { visible } = useNavBar();
 
   const { key, name, filter } = group;
-
-  const isSmall = useMediaQuery('(max-width: 640px)');
 
   const expand = isSmall ? true : visible;
 
@@ -131,7 +132,7 @@ const PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNod
         {expand && name}
         {name && <Divider />}
         {group.paths.map((path, index) => (
-          <PathElement key={index} segment={path} bestMatch={bestMatch} />
+          <PathElement key={index} segment={path} bestMatch={bestMatch} isSmall={isSmall} />
         ))}
       </nav>
     </ProtectedElement>
@@ -141,12 +142,12 @@ const PathGroupElement = ({ group, bestMatch }: PathGroupElementProps): ReactNod
 type PathElementProps = {
   segment: Path;
   bestMatch: string | null;
+  isSmall: boolean;
 };
 
-function PathElement({ segment, bestMatch }: PathElementProps) {
+function PathElement({ segment, bestMatch, isSmall }: PathElementProps) {
   const [value, setValue] = useState('');
 
-  const isSmall = useMediaQuery('(max-width: 640px)');
   const { session } = useSession();
 
   const { visible, setVisible } = useNavBar();
@@ -158,7 +159,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
   if (typeof path === 'string') {
     return (
       <ProtectedElement key={path} session={session} filter={filter}>
-        <InternalLink
+        <Link
           className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
             'bg-brand text-brand-foreground': path === bestMatch,
             'justify-start gap-2 py-2': expand,
@@ -168,7 +169,7 @@ function PathElement({ segment, bestMatch }: PathElementProps) {
         >
           {icon}
           {expand && name}
-        </InternalLink>
+        </Link>
       </ProtectedElement>
     );
   }

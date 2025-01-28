@@ -4,6 +4,7 @@ import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'rea
 import { useCookies } from 'react-cookie';
 
 import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, ServerSessionContextType, SessionContextType, paginationTypes } from '@/context/session-context.type';
+import { cookieName, defaultLocale } from '@/i18n/config';
 
 const defaultContextValue: SessionContextType = {
   session: null,
@@ -12,6 +13,7 @@ const defaultContextValue: SessionContextType = {
   config: {
     paginationType: DEFAULT_PAGINATION_TYPE,
     paginationSize: DEFAULT_PAGINATION_SIZE,
+    Locale: defaultLocale,
   },
   setConfig: () => {},
 };
@@ -47,14 +49,15 @@ export function useMe() {
 }
 
 export default function ClientSessionProvider({ session: init, children }: { session: ServerSessionContextType; children: ReactNode }) {
-  const [{ paginationSize, paginationType }, _setConfig] = useCookies([PAGINATION_TYPE_PERSISTENT_KEY, PAGINATION_SIZE_PERSISTENT_KEY]);
+  const [{ Locale, paginationSize, paginationType }, _setConfig] = useCookies([PAGINATION_TYPE_PERSISTENT_KEY, PAGINATION_SIZE_PERSISTENT_KEY, cookieName]);
 
   const config = useMemo(
     () => ({
       paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
       paginationSize: paginationSize ? Number(paginationSize) : DEFAULT_PAGINATION_SIZE,
+      Locale: Locale ?? defaultLocale,
     }),
-    [paginationSize, paginationType],
+    [paginationSize, paginationType, Locale],
   );
 
   const setConfig = useCallback(<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }), [_setConfig]);
@@ -62,7 +65,7 @@ export default function ClientSessionProvider({ session: init, children }: { ses
 
   useEffect(() => {
     setSession((prev) => {
-      if (prev.config.paginationSize === config.paginationSize && prev.config.paginationType === config.paginationType) {
+      if (prev.config.paginationSize === config.paginationSize && prev.config.paginationType === config.paginationType && prev.config.Locale === config.Locale) {
         return prev;
       }
 
