@@ -3,8 +3,6 @@ import { type ClassValue, clsx } from 'clsx';
 import { notFound } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
-
-
 import { ApiError } from '@/action/action';
 import { AuthorityEnum, UserRole } from '@/constant/enum';
 import env from '@/constant/env';
@@ -14,11 +12,10 @@ import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
 import TagGroup from '@/types/response/TagGroup';
 
-
-export function isError<T extends Record<string, any>>(req: T | ApiError | null): req is ApiError {
+export function isError<T extends Record<string, any> | number>(req: T | ApiError | null): req is ApiError {
   if (req && typeof req === 'object' && 'error' in req && typeof req.error === 'object' && 'status' in req.error && req.error.status === 404) notFound();
 
-  const isError = !!req && 'error' in req;
+  const isError = !!req && typeof req === 'object' && 'error' in req;
 
   if (isError) {
     try {
@@ -328,7 +325,6 @@ export function getImageById(folder: ImageFolder, id: string) {
 export function omit<T extends Record<string, any>, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
   return Object.fromEntries(Object.entries(obj).filter(([key]) => !keys.includes(key as K))) as Omit<T, K>;
 }
-
 
 export function select<T extends Record<string, any>>(obj: T, ...keys: Array<keyof T>) {
   return Object.fromEntries(Object.entries(obj).filter(([key]) => keys.includes(key)));
