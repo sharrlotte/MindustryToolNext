@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
 import SmallScreenNavigationBar from '@/app/[locale]/small-navigation-items';
-import { SubPath, groups } from '@/app/routes';
+import { groups } from '@/app/routes';
 
 import ErrorScreen from '@/components/common/error-screen';
 
@@ -19,16 +19,6 @@ export default async function NavigationBar({ children }: { children: ReactNode 
   if (isError(session)) {
     return <ErrorScreen error={session} />;
   }
-  // const { session } = useSession();
-  // const pathName = usePathname();
-
-  // const bestMatch = useMemo(() => {
-  //   const route = '/' + PATH_PATTERN.exec(pathName)?.at(1);
-
-  //   const allPaths: string[] = groups.reduce<Path[]>((prev, curr) => prev.concat(curr.paths), []).reduce<string[]>((prev, curr) => prev.concat(getPath(curr.path)), []);
-
-  //   return max(allPaths, (value) => value.length * (route.startsWith(value) ? 1 : 0));
-  // }, [pathName]);
 
   const routeGroups = groups.filter((group) => hasAccess(session, group.filter) && group.paths.some(({ path, filter }) => hasAccess(session, filter) && (typeof path === 'string' ? true : path.some((sub) => hasAccess(session, sub.filter)))));
 
@@ -37,25 +27,17 @@ export default async function NavigationBar({ children }: { children: ReactNode 
       <IsSmall
         small={
           <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
-            <SmallScreenNavigationBar pathGroups={routeGroups} bestMatch={null} />
+            <SmallScreenNavigationBar pathGroups={routeGroups} />
             <div className="h-full w-full overflow-hidden">{children}</div>
           </div>
         }
         notSmall={
           <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center sm:grid">
-            <MediumScreenNavigationBar pathGroups={routeGroups} bestMatch={null} />
+            <MediumScreenNavigationBar pathGroups={routeGroups} />
             <div className="h-full w-full overflow-hidden">{children}</div>
           </div>
         }
       />
     </NavBarProvider>
   );
-}
-
-export function getPath(path: SubPath): string[] {
-  if (typeof path === 'string') {
-    return [path];
-  }
-
-  return path.reduce<string[]>((prev, curr) => prev.concat(curr.path), []);
 }

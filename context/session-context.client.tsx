@@ -3,7 +3,7 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
-import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, ServerSessionContextType, SessionContextType, paginationTypes } from '@/context/session-context.type';
+import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, ServerSessionContextType, SessionContextType } from '@/context/session-context.type';
 import { cookieName, defaultLocale } from '@/i18n/config';
 
 const defaultContextValue: SessionContextType = {
