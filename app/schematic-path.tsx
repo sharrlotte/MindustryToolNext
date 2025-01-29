@@ -17,7 +17,7 @@ export function SchematicPath() {
   return (
     <>
       <Tran asChild text="schematic" />
-      {data && data > 0 && <span> ({data})</span>}
+      {(data ?? 0) > 0 && <span> ({data})</span>}
     </>
   );
 }

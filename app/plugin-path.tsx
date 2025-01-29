@@ -17,7 +17,7 @@ export function PluginPath() {
   return (
     <>
       <Tran asChild text="plugin" />
-      {data && data > 0 && <span> ({data})</span>}
+      {(data ?? 0) > 0 && <span> ({data})</span>}
     </>
   );
 }
