@@ -192,7 +192,7 @@ export default function MessageList({
     );
   }
 
-  if (!data || !currentContainer || state !== 'connected') {
+  if (!data || state !== 'connected') {
     return <div className={cn('col-span-full flex h-full w-full items-center justify-center', className)}>{loader}</div>;
   }
 
