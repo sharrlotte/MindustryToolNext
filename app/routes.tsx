@@ -164,7 +164,7 @@ export const groups: readonly PathGroup[] = [
         name: <Tran asChild text="log" />,
         icon: <LogIcon />,
         filter: { authority: 'VIEW_LOG' },
-        regex: [`^${localesRegex}/log$`],
+        regex: [`^${localesRegex}/logs$`],
       },
       {
         id: 'admin-comments',
@@ -185,7 +185,7 @@ export const groups: readonly PathGroup[] = [
             path: '/admin/schematics',
             icon: <SchematicIcon />,
             filter: { authority: 'VERIFY_SCHEMATIC' },
-            regex: [`^${localesRegex}/schematics`],
+            regex: [`^${localesRegex}/admin/schematics`],
           },
           {
             id: 'admin-maps',
@@ -193,7 +193,7 @@ export const groups: readonly PathGroup[] = [
             path: '/admin/maps',
             icon: <MapIcon />,
             filter: { authority: 'VERIFY_MAP' },
-            regex: [`^${localesRegex}/maps`],
+            regex: [`^${localesRegex}/admin/maps`],
           },
           {
             id: 'admin-posts',
@@ -201,7 +201,7 @@ export const groups: readonly PathGroup[] = [
             path: '/admin/posts',
             icon: <PostIcon />,
             filter: { authority: 'VERIFY_POST' },
-            regex: [`^${localesRegex}/posts`],
+            regex: [`^${localesRegex}/admin/posts`],
           },
           {
             id: 'admin-plugins',
@@ -209,7 +209,7 @@ export const groups: readonly PathGroup[] = [
             path: '/admin/plugins',
             icon: <PluginIcon />,
             filter: { authority: 'VERIFY_PLUGIN' },
-            regex: [`^${localesRegex}/plugins`],
+            regex: [`^${localesRegex}/admin/plugins`],
           },
         ],
         icon: <VerifyPathIcon />,

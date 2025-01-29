@@ -17,7 +17,7 @@ export function PostPath() {
   return (
     <>
       <Tran asChild text="post" />
-      {data && data > 0 && <span> ({data})</span>}
+      {(data ?? 0) > 0 && <span> ({data})</span>}
     </>
   );
 }

@@ -72,20 +72,22 @@ async function PathGroupElement({ group }: PathGroupElementProps) {
     return <ErrorScreen error={session} />;
   }
 
-  const { key, name, filter } = group;
+  const { key, name, filter, paths } = group;
 
   return (
     <ProtectedElement session={session} filter={filter}>
       <nav className="space-y-1" key={key}>
         <NavbarVisible>{name}</NavbarVisible>
         {name && <Divider />}
-        {group.paths.map((path, index) =>
-          typeof path.path === 'string' ? ( //
-            <PathElement key={index} segment={path as any} /> //
+        {paths.map((p) => {
+          const { path, ...rest } = p;
+
+          return typeof path === 'string' ? ( //
+            <PathElement key={rest.id} segment={{ ...rest, path }} /> //
           ) : (
-            <NestedPathElement key={index} segment={path as any} />
-          ),
-        )}
+            <NestedPathElement key={rest.id} segment={{ ...rest, path }} />
+          );
+        })}
       </nav>
     </ProtectedElement>
   );
@@ -109,9 +111,14 @@ async function PathElement({ segment }: PathElementProps) {
     return <ErrorScreen error={session} />;
   }
 
+  const { icon, name } = segment;
+
   return (
     <ProtectedElement session={session} filter={segment.filter}>
-      <NavbarLink {...segment} />
+      <NavbarLink {...segment}>
+        {icon}
+        <NavbarVisible>{name}</NavbarVisible>
+      </NavbarLink>
     </ProtectedElement>
   );
 }

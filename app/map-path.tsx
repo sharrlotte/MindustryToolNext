@@ -17,7 +17,7 @@ export function MapPath() {
   return (
     <>
       <Tran asChild text="map" />
-      {data && data > 0 && <span> ({data})</span>}
+      {(data ?? 0) > 0 && <span> ({data})</span>}
     </>
   );
 }

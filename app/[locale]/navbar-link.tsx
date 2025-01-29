@@ -3,20 +3,17 @@
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
-import NavbarVisible from '@/app/navbar-visible';
-
 import InternalLink from '@/components/common/internal-link';
 
 import { useNavBar } from '@/context/navbar-context';
 import { cn } from '@/lib/utils';
 
 type Props = {
+  children: React.ReactNode;
   path: string;
-  name: React.ReactNode;
-  icon: React.ReactNode;
   regex: string[];
 };
-export default function NavbarLink({ name, icon, path, regex }: Props) {
+export default function NavbarLink({ children, path, regex }: Props) {
   const { visible } = useNavBar();
   const currentPath = usePathname();
 
@@ -29,8 +26,7 @@ export default function NavbarLink({ name, icon, path, regex }: Props) {
       })}
       href={path}
     >
-      {icon}
-      <NavbarVisible>{name}</NavbarVisible>
+      {children}
     </InternalLink>
   );
 }
