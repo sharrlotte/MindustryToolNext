@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
 
 import NavbarLink from '@/app/[locale]/navbar-link';
+import NavbarVisible from '@/app/navbar-visible';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
@@ -55,8 +56,11 @@ export default function NestedPathElement({ segment }: NestedPathElementProps) {
         </AccordionTrigger>
         <AccordionContent className={cn('hidden space-y-1 pl-3', { block: visible })}>
           {path.map((item) => (
-            <ProtectedElement key={item.path} session={session} filter={item.filter}>
-              <NavbarLink {...item} />
+            <ProtectedElement key={item.id} session={session} filter={item.filter}>
+              <NavbarLink {...item}>
+                {item.icon}
+                <NavbarVisible>{item.name}</NavbarVisible>
+              </NavbarLink>
             </ProtectedElement>
           ))}
         </AccordionContent>
