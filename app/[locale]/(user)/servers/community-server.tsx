@@ -6,7 +6,7 @@ import { isError } from '@/lib/utils';
 import { getServers } from '@/query/server';
 
 export async function CommunityServer() {
-  const servers = await serverApi((axios) => getServers(axios, { official: false }));
+  const servers = await serverApi((axios) => getServers(axios, { official: false, page: 0, size: 50 }));
 
   if (isError(servers)) {
     return <ErrorScreen error={servers} />;
