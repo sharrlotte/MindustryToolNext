@@ -60,7 +60,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
           <Tran text="internal-server.add-map" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex w-full flex-col overflow-hidden max-w-full max-h-full p-4">
+      <DialogContent className="flex w-full h-full flex-col overflow-hidden max-w-full max-h-full p-4">
         <DialogTitle>
           <Tran text="internal-server.select-map" />
         </DialogTitle>
