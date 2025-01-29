@@ -26,6 +26,7 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
     interpolation: {
       escapeValue: false,
     },
+    fallbackLng: defaultLocale,
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,
     ns,
@@ -60,6 +61,7 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
     interpolation: {
       escapeValue: false,
     },
+    fallbackLng: defaultLocale,
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,
     ns,
