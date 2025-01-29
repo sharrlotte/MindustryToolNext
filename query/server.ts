@@ -77,7 +77,7 @@ export async function getServer(axios: AxiosInstance, { id }: IdSearchParams): P
   return result.data;
 }
 
-export async function getServers(axios: AxiosInstance, params?: { official?: boolean }): Promise<ServerDetail[]> {
+export async function getServers(axios: AxiosInstance, params: { official?: boolean } & PaginationQuery): Promise<ServerDetail[]> {
   const result = await axios.get(`/servers`, { params });
 
   return result.data;

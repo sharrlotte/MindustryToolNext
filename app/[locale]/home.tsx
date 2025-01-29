@@ -70,7 +70,7 @@ const findSchematics = unstable_cache((axios, queryParams) => getSchematics(axio
 
 const findMaps = unstable_cache((axios, queryParams) => getMaps(axios, queryParams), ['home-maps'], { revalidate: 60 * 60 });
 
-const findServers = unstable_cache((axios) => getServers(axios), ['home-servers'], { revalidate: 60 * 60 });
+const findServers = unstable_cache((axios) => getServers(axios, { page: 0, size: 10 }), ['home-servers'], { revalidate: 60 * 60 });
 
 async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   const result = await serverApi((axios) => findSchematics(axios, queryParam));
