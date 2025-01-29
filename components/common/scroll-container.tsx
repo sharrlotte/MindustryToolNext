@@ -14,7 +14,7 @@ type Props = {
 const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, additionalPadding = 'pr-2', children }, forwardedRef) => {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const lastScrollTop = React.useRef(0);
-  const [hasGapForScrollbar, setHasGapForScrollbar] = useState(true);
+  const [hasGapForScrollbar, setHasGapForScrollbar] = useState(false);
 
   useEffect(() => {
     if (container === null) return;
