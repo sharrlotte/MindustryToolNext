@@ -16,7 +16,6 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ad
   const lastScrollTop = React.useRef(0);
   const [hasGapForScrollbar, setHasGapForScrollbar] = useState(true);
 
-
   useEffect(() => {
     if (container === null) return;
 
@@ -54,6 +53,8 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ad
           setContainer(current);
         } else if (forwardedRef !== null) {
           forwardedRef.current = current;
+        } else {
+          setContainer(current);
         }
       }}
     >
