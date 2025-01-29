@@ -6,11 +6,11 @@ import { LogoutIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import Divider from '@/components/ui/divider';
-import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
 
-import { useSession } from '@/context/session-context.client';
+import { getSession } from '@/action/action';
+import { isError } from '@/lib/utils';
 
 export function UserDisplay() {
   return (
@@ -21,10 +21,14 @@ export function UserDisplay() {
     </div>
   );
 }
-export function Internal() {
-  const { session, state } = useSession();
+export async function Internal() {
+  const session = await getSession();
 
-  if (state === 'authenticated' && session) {
+  if (isError(session)) {
+    return undefined;
+  }
+
+  if (session) {
     return (
       <AlertDialog>
         <div className="flex h-16 items-center justify-between rounded-sm bg-card p-1">
@@ -59,10 +63,6 @@ export function Internal() {
         </AlertDialogContent>
       </AlertDialog>
     );
-  }
-
-  if (state === 'loading') {
-    return <Skeleton className="flex h-16 max-h-16 flex-1 items-center justify-between rounded-sm bg-card p-1" />;
   }
 
   return <LoginButton className="w-full justify-start gap-1" />;

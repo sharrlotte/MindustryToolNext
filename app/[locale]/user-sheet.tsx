@@ -8,7 +8,7 @@ import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 
-import { useSession } from '@/context/session-context.client';
+import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
 
@@ -43,8 +43,8 @@ const tabs: Tab = [
   },
 ];
 
-export function UserActions() {
-  const { session } = useSession();
+export async function UserActions() {
+  const session = await getSession();
 
   return tabs.map(({ action, icon, filter }, index) => (
     <ProtectedElement session={session} filter={filter} key={index}>
