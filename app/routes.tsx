@@ -164,7 +164,7 @@ export const groups: readonly PathGroup[] = [
         name: <Tran asChild text="log" />,
         icon: <LogIcon />,
         filter: { authority: 'VIEW_LOG' },
-        regex: [`^${localesRegex}/log$`],
+        regex: [`^${localesRegex}/logs$`],
       },
       {
         id: 'admin-comments',
