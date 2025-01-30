@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
-import { CommunityServer } from '@/app/[locale]/(user)/servers/community-server';
+import { CommunityAdminServer } from '@/app/[locale]/(admin)/admin/servers/community-admin-server';
+import { OfficialAdminServer } from '@/app/[locale]/(admin)/admin/servers/official-admin-server';
 import CreateServerDialog from '@/app/[locale]/(user)/servers/create-server-dialog';
-import { OfficialServer } from '@/app/[locale]/(user)/servers/official-server';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -54,14 +54,14 @@ export default async function Page() {
         <ServerTabsContent className="overflow-hidden" value="official-server">
           <Suspense fallback={<ServersSkeleton />}>
             <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
-              <OfficialServer />
+              <OfficialAdminServer />
             </ScrollContainer>
           </Suspense>
         </ServerTabsContent>
         <ServerTabsContent className="overflow-hidden" value="community-server">
           <Suspense fallback={<ServersSkeleton />}>
             <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
-              <CommunityServer />
+              <CommunityAdminServer />
             </ScrollContainer>
           </Suspense>
         </ServerTabsContent>
