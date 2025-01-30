@@ -16,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { cn, deepCompare } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { updateServer } from '@/query/server';
 import { PutServerRequest, PutServerSchema, ServerModes } from '@/types/request/UpdateServerRequest';
 import { ServerDetail } from '@/types/response/ServerDetail';
