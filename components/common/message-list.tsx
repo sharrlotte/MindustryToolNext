@@ -193,8 +193,12 @@ export default function MessageList({
     );
   }
 
-  if (!data || state !== 'connected') {
+  if (state !== 'connected') {
     return <div className={cn('col-span-full flex h-full w-full items-center justify-center', className)}>{loader}</div>;
+  }
+
+  if (!data) {
+    return undefined;
   }
 
   if (pages.length === 0) {
