@@ -7,6 +7,7 @@ import { cache } from 'react';
 import 'server-only';
 import { z } from 'zod';
 
+import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/context/session-context.type';
 import axiosInstance from '@/query/config/config';
 import { QuerySchema } from '@/query/search-query';
 import { Session } from '@/types/response/Session';
@@ -105,6 +106,17 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
 
   axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie.toString());
   axiosInstance.defaults.headers['Server'] = true;
+
+  axiosInstance.interceptors.request.use(async (config) => {
+    const params = config.params;
+    if (!params || !('size' in params)) {
+      return config;
+    }
+
+    config.params['size'] = cookie.get(PAGINATION_SIZE_PERSISTENT_KEY) ?? DEFAULT_PAGINATION_SIZE;
+
+    return config;
+  });
 
   return axiosInstance;
 };
