@@ -14,10 +14,7 @@ export const PutServerSchema = z.object({
 export type PutServerRequest = z.infer<typeof PutServerSchema>;
 
 export const PutServerPortSchema = z.object({
-  port: z.coerce
-    .number()
-    .int()
-    .refine((value) => value >= 100000),
+  port: z.coerce.number().min(1).int(),
   official: z.boolean(),
 });
 
