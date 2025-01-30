@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/components/ui/pagination';
 
+import { useSession } from '@/context/session-context.client';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
@@ -63,10 +64,13 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   const params = useSearchQuery(PaginationQuerySchema);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { setConfig } = useSession();
 
   const size = params.size || sizes[0];
 
   function handleSizeChange(size: number | undefined) {
+    setConfig('paginationSize', size ?? 10);
+
     const path = new URLSearchParams(searchParams);
     path.set('size', (size || sizes[0]).toString());
     router.replace(`?${path.toString()}`);
