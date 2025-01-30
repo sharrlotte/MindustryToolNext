@@ -184,8 +184,8 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
           onChange={handleSizeChange}
         />
       </PaginationContent>
-      <Link href={`?${prevPath.toString()}`} />
-      <Link href={`?${nextPath.toString()}`} prefetch />
+      <Link href={`?${prevPath.toString()}`} shallow />
+      <Link href={`?${nextPath.toString()}`} shallow />
     </Pagination>
   );
 }
