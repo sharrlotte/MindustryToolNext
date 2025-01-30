@@ -1,13 +1,12 @@
-'use client';
-
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import React from 'react';
 
 import { GanttChartIcon, ModIcon, NotificationIcon, SettingIcon, TagIcon, UsersIcon } from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
+import NavLinkContainer from '@/components/common/nav-link-container';
 import Tran from '@/components/common/tran';
 
-import { useSession } from '@/context/session-context.client';
+import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
 
@@ -66,19 +65,18 @@ type LayoutProps = {
   children: ReactNode;
 };
 
-export default function ServerLayout({ children }: LayoutProps) {
-  const { session } = useSession();
-  const [hovered, setHovered] = useState<string>('Yes this is empty');
+export default async function ServerLayout({ children }: LayoutProps) {
+  const session = await getSession();
 
   return (
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden p-2">
-      <div className="no-scrollbar flex h-full gap-3 overflow-x-auto bg-card px-2" onMouseLeave={() => setHovered('Yes this is empty')} onTouchCancel={() => setHovered('Yes this is empty')}>
+      <NavLinkContainer>
         {links.map((item) => (
           <ProtectedElement key={item.id} session={session} filter={item.filter ?? true}>
-            <NavLink {...item} root="admin/setting" hovered={hovered} setHovered={setHovered} />
+            <NavLink {...item} root="admin/setting" />
           </ProtectedElement>
         ))}
-      </div>
+      </NavLinkContainer>
       <div className="h-full w-full overflow-hidden flex flex-col" key="child">
         {children}
       </div>

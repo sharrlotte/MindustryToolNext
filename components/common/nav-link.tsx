@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 import InternalLink from '@/components/common/internal-link';
+import { useNavLink } from '@/components/common/nav-link-container';
 
 import { cn } from '@/lib/utils';
 
@@ -12,12 +13,11 @@ type Props = {
   href: string;
   label: ReactNode;
   icon: ReactNode;
-  hovered: string;
   root: string;
-  setHovered: (value: string) => void;
 };
 
-export default function NavLink({ root, href, label, icon, hovered, setHovered }: Props) {
+export default function NavLink({ root, href, label, icon }: Props) {
+  const { hovered, setHovered } = useNavLink();
   const pathname = usePathname();
   const firstSlash = pathname.indexOf('/', 1);
   const route = pathname.slice(firstSlash);

@@ -48,7 +48,7 @@ export default function ServerMapCard({ map: { name, id, mapId, serverId } }: Se
   return (
     <Preview className="group relative flex flex-col justify-between">
       <InternalLink href={`/maps/${id}`}>
-        <PreviewImage src={`${env.url.image}/map-previews/${mapId}${env.imageFormat}`} errorSrc={`${env.url.api}/maps/${id}/image`} alt={name ?? 'internal server map'} />
+        <PreviewImage src={`${env.url.image}/map-previews/${mapId}${env.imageFormat}`} errorSrc={`${env.url.api}/maps/${mapId}/image`} alt={name ?? 'internal server map'} />
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader className="h-12">

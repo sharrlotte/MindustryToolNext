@@ -36,7 +36,8 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
 export default function InternalLink({ className, variant, title, href, children, ...props }: InternalLinkProps) {
   const { currentLocale } = useLocaleStore();
 
-  const stripBase = href.replace(env.url.base, '');
+  let stripBase = href.replace(env.url.base, '');
+  stripBase = stripBase.startsWith('/') ? stripBase.substring(1) : stripBase;
   const parts = stripBase.split('/');
   let hrefWithLocale = href;
 

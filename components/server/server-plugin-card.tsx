@@ -31,7 +31,7 @@ export default function ServerPluginCard({ plugin: { serverId, pluginId, name, d
       toast.error(<Tran text="delete-fail" />, { description: error.message });
     },
     onSettled: () => {
-      invalidateByKey(['servers', serverId, 'plugins']);
+      invalidateByKey(['servers', pluginId, 'plugins']);
     },
   });
 
