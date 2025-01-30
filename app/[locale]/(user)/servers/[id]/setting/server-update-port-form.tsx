@@ -49,7 +49,7 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
     },
   });
 
-  const isChanged = form.getValues('port') !== port || form.getValues('official') !== official;
+  const isChanged = form.formState.isDirty;
 
   return (
     <Form {...form}>

@@ -16,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { revalidate } from '@/action/action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { cn } from '@/lib/utils';
+import { cn, deepCompare } from '@/lib/utils';
 import { updateServer } from '@/query/server';
 import { PutServerRequest, PutServerSchema, ServerModes } from '@/types/request/UpdateServerRequest';
 import { ServerDetail } from '@/types/response/ServerDetail';
@@ -59,7 +59,7 @@ export default function ServerUpdateForm({ server }: Props) {
     },
   });
 
-  const isChanged = Object.entries(form.getValues()).some(([key, value]) => value !== currentServer[key as keyof typeof currentServer]);
+  const isChanged = form.formState.isDirty;
 
   return (
     <div className="relative flex h-full flex-col justify-between gap-2">
