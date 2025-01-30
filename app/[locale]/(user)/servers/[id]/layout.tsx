@@ -35,7 +35,13 @@ export default function ServerLayout({ params, children }: LayoutProps) {
       label: <Tran text="dashboard" />,
       icon: <LayoutDashboardIcon className="size-5" />,
     },
-    { id: 'map', href: '/maps', label: <Tran text="map" />, icon: <MapIcon />, filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: id }] } },
+    {
+      id: 'map', //
+      href: '/maps',
+      label: <Tran text="map" />,
+      icon: <MapIcon />,
+      filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: id }] },
+    },
     {
       id: 'plugin',
       href: '/plugins',
@@ -57,7 +63,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden p-2">
       <div className="no-scrollbar flex h-full gap-3 overflow-x-auto bg-card px-2" onMouseLeave={() => setHovered('Yes this is empty')} onTouchCancel={() => setHovered('Yes this is empty')}>
         {links.map((item) => (
-          <ProtectedElement key={item.id} session={session} filter={true}>
+          <ProtectedElement key={item.id} session={session} filter={item.filter}>
             <NavLink {...item} root={`servers/${id}`} hovered={hovered} setHovered={setHovered} />
           </ProtectedElement>
         ))}
