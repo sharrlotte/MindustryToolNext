@@ -3,6 +3,7 @@ import { useInterval, useLocalStorage } from 'usehooks-ts';
 
 import { LoaderIcon } from '@/components/common/icons';
 import NoResult from '@/components/common/no-result';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 
 import { useSocket } from '@/context/socket-context';
@@ -24,7 +25,6 @@ type MessageListProps = {
   threshold?: number;
   room: string;
   showNotification?: boolean;
-  container: () => HTMLElement | null;
   children: (data: MessageGroup, index?: number, endIndex?: number) => ReactNode;
 };
 
@@ -38,10 +38,9 @@ export default function MessageList({
   threshold = 1000,
   room,
   showNotification = true,
-  container,
   children,
 }: MessageListProps) {
-  const currentContainer = container();
+  const container = useRef<HTMLDivElement>(null);
   const [_, setLastMessage] = useLocalStorage(`LAST_MESSAGE_${room}`, '');
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
@@ -49,17 +48,17 @@ export default function MessageList({
   const lastHeightRef = useRef(0);
 
   const queryClient = useQueryClient();
-  const isEndReached = isReachedEnd(currentContainer, threshold);
+  const isEndReached = isReachedEnd(container.current, threshold);
   const { socket, state } = useSocket();
 
   const clientHeight = list?.clientHeight || 0;
   const lastHeight = lastHeightRef.current || 0;
   const scrollTop = scrollTopRef.current || 0;
 
-  if (clientHeight != lastHeight && currentContainer && list && !isEndReached) {
+  if (clientHeight != lastHeight && container.current && list && !isEndReached) {
     const diff = clientHeight - lastHeight + scrollTop;
 
-    currentContainer.scrollTo({
+    container.current.scrollTo({
       top: diff,
     });
   }
@@ -98,21 +97,21 @@ export default function MessageList({
       }
     };
 
-    if (currentContainer) {
-      if (currentContainer.scrollTop <= threshold) {
+    if (container.current) {
+      if (container.current.scrollTop <= threshold) {
         handleEndReach();
       }
     }
-  }, [currentContainer, fetchNextPage, hasNextPage, isFetching, threshold]);
+  }, [fetchNextPage, hasNextPage, isFetching, threshold]);
 
   useEffect(() => {
-    if (currentContainer && isEndReached) {
-      currentContainer.scrollTo({
-        top: currentContainer.scrollHeight,
+    if (container.current && isEndReached) {
+      container.current.scrollTo({
+        top: container.current.scrollHeight,
         behavior: 'smooth',
       });
     }
-  }, [currentContainer, pages, isEndReached]);
+  }, [pages, isEndReached]);
 
   useEffect(
     () =>
@@ -142,14 +141,14 @@ export default function MessageList({
             } satisfies InfiniteData<Message[], unknown>;
           });
 
-          if (currentContainer && isEndReached) {
-            currentContainer.scrollTo({
-              top: currentContainer.scrollHeight,
+          if (container.current && isEndReached) {
+            container.current.scrollTo({
+              top: container.current.scrollHeight,
               behavior: 'smooth',
             });
           }
         }),
-    [room, queryKey, socket, queryClient, isEndReached, currentContainer, showNotification, postNotification],
+    [room, queryKey, socket, queryClient, isEndReached, showNotification, postNotification],
   );
   useInterval(() => checkIfNeedFetchMore(), 1000);
 
@@ -157,10 +156,12 @@ export default function MessageList({
     function onScroll() {
       checkIfNeedFetchMore();
 
-      if (currentContainer) {
-        scrollTopRef.current = currentContainer.scrollTop;
+      if (container.current) {
+        scrollTopRef.current = container.current.scrollTop;
       }
     }
+
+    const currentContainer = container.current;
 
     currentContainer?.addEventListener('scrollend', onScroll);
     currentContainer?.addEventListener('scroll', onScroll);
@@ -173,7 +174,7 @@ export default function MessageList({
 
       list?.removeEventListener('scroll', checkIfNeedFetchMore);
     };
-  }, [checkIfNeedFetchMore, currentContainer, list, scrollTopRef]);
+  }, [checkIfNeedFetchMore, list, scrollTopRef]);
 
   useInterval(checkIfNeedFetchMore, 100);
 
@@ -192,8 +193,12 @@ export default function MessageList({
     );
   }
 
-  if (!data || state !== 'connected') {
+  if (state !== 'connected') {
     return <div className={cn('col-span-full flex h-full w-full items-center justify-center', className)}>{loader}</div>;
+  }
+
+  if (!data) {
+    return undefined;
   }
 
   if (pages.length === 0) {
@@ -201,10 +206,12 @@ export default function MessageList({
   }
 
   return (
-    <div className="h-fit w-full" ref={(ref) => setList(ref)}>
-      {!hasNextPage && end}
-      {isFetching && loader}
-      {pages}
-    </div>
+    <ScrollContainer className="flex h-full w-full overflow-x-hidden" ref={container}>
+      <div className="h-fit w-full" ref={(ref) => setList(ref)}>
+        {!hasNextPage && end}
+        {isFetching && loader}
+        {pages}
+      </div>
+    </ScrollContainer>
   );
 }

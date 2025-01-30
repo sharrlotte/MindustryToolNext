@@ -59,7 +59,7 @@ export default function ServerUpdateForm({ server }: Props) {
     },
   });
 
-  const isChanged = Object.entries(form.getValues()).some(([key, value]) => value !== currentServer[key as keyof typeof currentServer]);
+  const isChanged = form.formState.isDirty;
 
   return (
     <div className="relative flex h-full flex-col justify-between gap-2">

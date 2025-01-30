@@ -55,17 +55,13 @@ export default function LogPage() {
 }
 
 function LiveLog() {
-  const ref = useRef<HTMLDivElement>(null);
-
   return (
     <div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
       <div className="flex h-full w-full overflow-hidden rounded-md bg-card">
         <div className="flex h-full w-full overflow-hidden">
-          <ScrollContainer ref={ref}>
-            <MessageList className="flex h-full w-full flex-col gap-2" queryKey={['live-log']} room="LOG" container={() => ref.current} params={{ size: 50 }} showNotification={false}>
-              {(data) => <MessageCard key={data.id} message={data} />}
-            </MessageList>
-          </ScrollContainer>
+          <MessageList className="flex h-full w-full flex-col gap-2" queryKey={['live-log']} room="LOG" params={{ size: 50 }} showNotification={false}>
+            {(data) => <MessageCard key={data.id} message={data} />}
+          </MessageList>
         </div>
       </div>
       <SendMessageButton />
