@@ -32,7 +32,7 @@ type Props = {
   params: Promise<{ id: string; locale: string }>;
 };
 
-const getCachedServer = cache((id: string) => serverApi(async (axios) => await getServer(axios, { id })));
+export const getCachedServer = cache((id: string) => serverApi(async (axios) => await getServer(axios, { id })));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
@@ -150,9 +150,11 @@ export default async function Page({ params }: Props) {
                 <h3 className="p-4 text-xl">
                   <Tran text="server.players" /> {players}
                 </h3>
-                <Suspense fallback={<PlayersCardSkeleton players={players} />}>
-                  <PlayersCard id={id} />
-                </Suspense>
+                {status === 'HOST' && (
+                  <Suspense fallback={<PlayersCardSkeleton players={players} />}>
+                    <PlayersCard id={id} />
+                  </Suspense>
+                )}
               </div>
             </div>
           </ProtectedElement>
