@@ -41,6 +41,8 @@ export default function InitServerButton({ id }: Props) {
   }, [data]);
 
   function handleVisible(value: boolean) {
+    if (isPending) return;
+
     setVisible(value);
 
     if (isSuccess) {

@@ -41,6 +41,8 @@ export default function HostServerButton({ id }: Props) {
   }, [data]);
 
   function handleVisible(value: boolean) {
+    if (isPending) return;
+
     setVisible(value);
 
     if (isSuccess) {
