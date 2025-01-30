@@ -83,6 +83,12 @@ export async function getServers(axios: AxiosInstance, params: { official?: bool
   return result.data;
 }
 
+export async function getServersByAdmin(axios: AxiosInstance, params: { official?: boolean } & PaginationQuery): Promise<ServerDetail[]> {
+  const result = await axios.get(`/servers/admin`, { params });
+
+  return result.data;
+}
+
 export async function getMyServerManager(axios: AxiosInstance): Promise<ServerManager[]> {
   const result = await axios.get(`/users/@me/server-managers`);
 
