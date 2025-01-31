@@ -16,7 +16,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import useSearchQuery from '@/hooks/use-search-query';
 import { StatusSearchSchema } from '@/query/search-query';
 import { getMeMaps, getMePosts, getMeSchematics } from '@/query/user';
 import { User } from '@/types/response/User';
@@ -25,8 +24,6 @@ type TabProps = {
   me: User;
 };
 export default function Me({ me }: TabProps) {
-  const params = useSearchQuery(StatusSearchSchema);
-
   return (
     <div className="absolute inset-0 space-y-2 overflow-auto bg-background p-2">
       <UserDetail user={me} />
@@ -46,7 +43,7 @@ export default function Me({ me }: TabProps) {
           <div className="relative flex h-full flex-col gap-2">
             <NameTagSearch type="schematic" />
             <InfinitePage
-              params={params}
+              paramSchema={StatusSearchSchema}
               queryKey={['me', 'schematics']}
               queryFn={getMeSchematics}
               skeleton={{
@@ -62,7 +59,7 @@ export default function Me({ me }: TabProps) {
           <div className="flex h-full w-full flex-col gap-2">
             <NameTagSearch type="map" />
             <InfinitePage
-              params={params}
+              paramSchema={StatusSearchSchema}
               queryKey={['me', 'maps']}
               queryFn={getMeMaps}
               skeleton={{
@@ -77,7 +74,7 @@ export default function Me({ me }: TabProps) {
         <TabsContent value="post">
           <div className="flex h-full w-full flex-col gap-2">
             <NameTagSearch type="post" />
-            <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['me', 'posts']} queryFn={getMePosts}>
+            <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" paramSchema={StatusSearchSchema} queryKey={['me', 'posts']} queryFn={getMePosts}>
               {(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}
             </InfinitePage>
           </div>

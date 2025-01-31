@@ -26,12 +26,13 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { useI18n } from '@/i18n/client';
 import { isNumeric } from '@/lib/utils';
 import { CreateCommentRequest, CreateCommentSchema, createComment, getComments } from '@/query/comment';
+import { persister } from '@/query/config/query-config';
+import { CommentPaginationQuerySchema, CommentSort, commentSorts } from '@/query/search-query';
 import { getUser } from '@/query/user';
 import { Comment } from '@/types/response/Comment';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { persister } from '@/query/config/query-config';
 
 type CommentSectionProps = {
   itemId: string;
@@ -43,10 +44,6 @@ function genId() {
   count = (count + 1) % Number.MAX_SAFE_INTEGER;
   return count.toString();
 }
-
-const commentSorts = ['newest', 'oldest'];
-
-type CommentSort = (typeof commentSorts)[number];
 
 function CommentSection({ itemId }: CommentSectionProps) {
   const [sort, setSort] = useState<CommentSort>('newest');
@@ -89,8 +86,9 @@ function Comments({ itemId, sort }: CommentsProps) {
       <InfinitePage
         className="flex gap-6 flex-col" //
         queryKey={[`comments-${itemId}`]}
+        paramSchema={CommentPaginationQuerySchema}
         queryFn={(axios, params) => getComments(axios, itemId, params)}
-        params={{ page: 0, size: 20, sort }}
+        params={{ sort }}
         noResult={
           <div className="flex justify-center">
             <Tran text="no-comment" />
@@ -118,7 +116,7 @@ export function CommandCard({ comment }: CommandCardProps) {
   const { data } = useClientQuery({
     queryKey: ['users', userId],
     queryFn: (axios) => getUser(axios, { id: userId }),
-    persister
+    persister,
   });
 
   return (

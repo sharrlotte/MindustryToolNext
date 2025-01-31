@@ -1,12 +1,12 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 import InternalLink from '@/components/common/internal-link';
-import { useNavLink } from '@/components/common/nav-link-container';
 
+import { useNavLink } from '@/context/nav-link-context';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -35,8 +35,10 @@ export default function NavLink({ root, href, label, icon }: Props) {
       onTouchStart={() => setHovered(href)}
     >
       <div className="relative w-full">
-        {isHovered && <motion.div layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
-        {isSelected && <motion.div layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
+        <AnimatePresence>
+          {isHovered && <motion.div key="hover-indicator" layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
+          {isSelected && <motion.div key="select-indicator" layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}`
+        </AnimatePresence>
         <div
           className={cn('relative z-10 bg-transparent p-2 text-foreground/70 hover:text-foreground', {
             'text-foreground': isSelected,

@@ -2,6 +2,7 @@ import Axios from 'axios';
 import axios from 'axios';
 
 import env from '@/constant/env';
+import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/context/session-context.type';
 
 class StatusError extends Error {
   status: number;
@@ -21,6 +22,29 @@ const axiosInstance = Axios.create({
     indexes: null,
   },
   withCredentials: true,
+});
+function getCookie(name: string): string | null {
+  const cookies = document.cookie.split('; ');
+  for (const cookie of cookies) {
+    const [key, value] = cookie.split('=');
+    if (key === name) {
+      return decodeURIComponent(value);
+    }
+  }
+  return null;
+}
+
+axiosInstance.interceptors.request.use(async (config) => {
+  const params = config.params;
+  if (!params || !('size' in params)) {
+    return config;
+  }
+
+  if (typeof window !== 'undefined') {
+    config.params['size'] = getCookie(PAGINATION_SIZE_PERSISTENT_KEY) ?? DEFAULT_PAGINATION_SIZE;
+  }
+
+  return config;
 });
 
 axiosInstance.interceptors.response.use(

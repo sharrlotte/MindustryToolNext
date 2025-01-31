@@ -3,6 +3,7 @@
 import { AxiosInstance } from 'axios';
 import React, { JSXElementConstructor, ReactElement, ReactNode, useCallback, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
+import { z } from 'zod';
 
 import EndOfPage from '@/components/common/end-of-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -10,14 +11,16 @@ import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
 
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
-import { PaginationQuery } from '@/query/search-query';
+import useSearchQuery from '@/hooks/use-search-query';
+import { QuerySchema } from '@/query/search-query';
 
 import { QueryKey } from '@tanstack/react-query';
 
-type InfinitePageProps<T, P> = {
+type InfinitePageProps<T, P extends QuerySchema> = {
   className?: string;
   queryKey: QueryKey;
-  params: P;
+  paramSchema: P;
+  params?: Omit<z.infer<P>, 'page' | 'size'>;
   loader?: ReactElement<any, string | JSXElementConstructor<any>>;
   noResult?: ReactNode;
   end?: ReactNode;
@@ -28,13 +31,13 @@ type InfinitePageProps<T, P> = {
   reversed?: boolean;
   enabled?: boolean;
   initialData?: T[];
-  queryFn: (axios: AxiosInstance, params: P) => Promise<T[]>;
-  // container?: () => HTMLElement | null;
+  queryFn: (axios: AxiosInstance, params: z.infer<P>) => Promise<T[]>;
   children: (data: T, index: number) => ReactNode;
 };
 
-export default function InfinitePage<T, P extends PaginationQuery>({ className, queryKey, params, loader, noResult, end, skeleton, reversed, initialData, enabled, queryFn, children }: InfinitePageProps<T, P>) {
-  const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(queryFn, params, queryKey, initialData, enabled);
+export default function InfinitePage<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, end, skeleton, reversed, initialData, enabled, params, queryFn, children }: InfinitePageProps<T, P>) {
+  const p = useSearchQuery(paramSchema, params);
+  const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(queryFn, p, queryKey, initialData, enabled);
 
   const loadMore = useCallback(
     (_: number) => {
@@ -86,7 +89,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({ className, 
       threshold={400}
       getScrollParent={() => {
         {
-          const containers = document.getElementsByClassName('pagination-container');
+          const containers = document.getElementsByClassName('scroll-container');
 
           if (containers) {
             return containers[0] as HTMLElement;

@@ -1,16 +1,13 @@
 import { AxiosInstance } from 'axios';
 
-
-
 import { toForm } from '@/lib/utils';
+import { ItemPaginationQueryType } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import CreatePostRequest from '@/types/request/CreatePostRequest';
 import TranslatePostRequest from '@/types/request/TranslatePostRequest';
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 import { Post } from '@/types/response/Post';
 import { PostDetail } from '@/types/response/PostDetail';
-import { ItemPaginationQueryType } from '@/query/search-query';
-
 
 export async function deletePost(axios: AxiosInstance, id: string): Promise<void> {
   const result = await axios.delete(`/posts/${id}`);
@@ -36,6 +33,11 @@ export async function getPostUploads(axios: AxiosInstance, params: ItemPaginatio
 
 export async function getPost(axios: AxiosInstance, { id }: IdSearchParams): Promise<PostDetail> {
   const result = await axios.get(`/posts/${id}`);
+  return result.data;
+}
+
+export async function getPostCount(axios: AxiosInstance, params: ItemPaginationQueryType): Promise<number> {
+  const result = await axios.get(`/posts/total`, { params });
   return result.data;
 }
 

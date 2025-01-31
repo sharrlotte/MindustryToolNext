@@ -2,7 +2,9 @@ export type LogType = 'SYSTEM' | 'DATABASE' | 'API' | 'DISCORD_MESSAGE' | 'REQUE
 
 export type MetricType = 'DAILY_LIKE' | 'DAILY_USER' | 'LOGGED_DAILY_USER' | 'DAILY_MOD_USER' | 'DAILY_WEB_USER' | 'DAILY_SERVER_USER';
 
-export type UserRole = 'ADMIN' | 'USER' | 'SHAR' | 'CONTRIBUTOR';
+export const userRoles = ['ADMIN', 'USER', 'SHAR', 'CONTRIBUTOR'] as const;
+
+export type UserRole = (typeof userRoles)[number];
 
 export type AuthorityEnum =
   | 'CREATE_NOTIFICATION' //

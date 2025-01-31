@@ -1,7 +1,6 @@
 'use client';
 
 import React, { FormEvent, useCallback, useRef, useState } from 'react';
-import { z } from 'zod';
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -27,10 +26,9 @@ import { LogType } from '@/constant/enum';
 import { useSocket } from '@/context/socket-context';
 import useClientQuery from '@/hooks/use-client-query';
 import useMessage from '@/hooks/use-message';
-import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { getLogCollections, getLogCount, getLogs } from '@/query/log';
-import { PaginationQuerySchema } from '@/query/search-query';
+import { LogEnvironment, LogPaginationQuerySchema, LogPaginationQueryType } from '@/query/search-query';
 import { Log } from '@/types/Log';
 
 export default function LogPage() {
@@ -92,20 +90,7 @@ function SendMessageButton() {
   );
 }
 
-type LogEnvironment = 'Prod' | 'Dev';
-
-type Filter = {
-  collection: string;
-  env: LogEnvironment;
-  ip: string;
-  userId: string;
-  url: string;
-  content: string;
-  before: string;
-  after: string;
-};
-
-const defaultFilter: Filter = {
+const defaultFilter: Omit<LogPaginationQueryType, 'page' | 'size'> = {
   collection: 'SERVER',
   env: 'Prod',
   ip: '',
@@ -116,20 +101,13 @@ const defaultFilter: Filter = {
   after: '',
 };
 
-type LogPaginationQuery = z.infer<typeof PaginationQuerySchema> & {
-  collection: LogType;
-  env: LogEnvironment;
-} & Filter;
-
 function StaticLog() {
-  const [filter, _setFilter] = useState(defaultFilter);
-  const { page, size } = useSearchQuery(PaginationQuerySchema);
-
+  const [filter, _setFilter] = useState<Omit<LogPaginationQueryType, 'page' | 'size'>>(defaultFilter);
   const { env, ip, userId, url, content, before, after, collection } = filter;
 
   const container = useRef<HTMLDivElement | null>(null);
 
-  const setFilter = useCallback((value: Partial<Filter>) => _setFilter((prev) => ({ ...prev, ...value })), []);
+  const setFilter = useCallback((value: Partial<Omit<LogPaginationQueryType, 'page' | 'size'>>) => _setFilter((prev) => ({ ...prev, ...value })), []);
 
   const { data: total } = useClientQuery({
     queryKey: ['log', 'total', collection, filter],
@@ -168,13 +146,12 @@ function StaticLog() {
       </div>
       <ScrollContainer className="relative flex h-full flex-col gap-2" ref={container}>
         <ListLayout>
-          <InfinitePage<Log, LogPaginationQuery>
+          <InfinitePage<Log, typeof LogPaginationQuerySchema>
             className="flex w-full flex-col items-center justify-center gap-2"
+            paramSchema={LogPaginationQuerySchema}
             params={{
-              page,
-              size,
-              collection: (collection === 'LIVE' ? 'SYSTEM' : collection) as LogType,
               env: env as LogEnvironment,
+              collection: (collection === 'LIVE' ? 'SYSTEM' : collection) as LogType,
               content,
               userId,
               ip,
@@ -189,11 +166,10 @@ function StaticLog() {
           </InfinitePage>
         </ListLayout>
         <GridLayout>
-          <GridPaginationList
+          <GridPaginationList<Log, typeof LogPaginationQuerySchema>
             className="flex w-full flex-col items-center justify-center gap-2"
+            paramSchema={LogPaginationQuerySchema}
             params={{
-              page,
-              size,
               collection: (collection === 'LIVE' ? 'SYSTEM' : collection) as LogType,
               env: env as LogEnvironment,
               content,
@@ -220,7 +196,7 @@ function StaticLog() {
 }
 
 type FilterDialogProps = {
-  filter: Filter;
+  filter: Omit<LogPaginationQueryType, 'size' | 'page'>;
   setFilter: (value: Record<string, string | undefined>) => void;
 };
 

@@ -4,13 +4,15 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import InfinitePage from '@/components/common/infinite-page';
+import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ServerMapCard from '@/components/server/server-map-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Button } from '@/components/ui/button';
 
-import { getServerMaps } from '@/query/server';
+import { PaginationQuerySchema } from '@/query/search-query';
+import { getServerMapCount, getServerMaps } from '@/query/server';
 
 const AddMapDialog = dynamic(() => import('@/app/[locale]/(user)/servers/[id]/maps/add-map-dialog'), {
   loading: () => (
@@ -32,7 +34,7 @@ export default function ServerMaps({ id }: Props) {
       </div>
       <ScrollContainer className="flex h-full w-full flex-col gap-2">
         <InfinitePage
-          params={{ page: 0, size: 20 }}
+          paramSchema={PaginationQuerySchema}
           queryKey={['servers', id, 'maps']}
           queryFn={(axios, params) => getServerMaps(axios, id, params)}
           skeleton={{
@@ -43,6 +45,9 @@ export default function ServerMaps({ id }: Props) {
           {(data) => <ServerMapCard key={data.id} map={data} />}
         </InfinitePage>
       </ScrollContainer>
+      <div className="flex justify-end">
+        <PaginationNavigator numberOfItems={(axios, params) => getServerMapCount(axios, id, params)} queryKey={['servers', id, 'maps', 'total']} />
+      </div>
     </div>
   );
 }

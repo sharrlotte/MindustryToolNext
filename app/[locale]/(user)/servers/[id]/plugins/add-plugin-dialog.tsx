@@ -15,8 +15,7 @@ import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useSearchQuery from '@/hooks/use-search-query';
-import { cn, omit } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { createServerPlugin } from '@/query/server';
@@ -33,7 +32,6 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const [show, setShow] = useState(false);
   const axios = useClientApi();
 
-  const params = useSearchQuery(ItemPaginationQuery);
   const { invalidateByKey } = useQueriesData();
 
   const { mutate, isPending } = useMutation({
@@ -70,7 +68,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
           <ScrollContainer className="flex h-full w-full flex-col gap-2">
             <ListLayout>
               <InfinitePage
-                params={params}
+                paramSchema={ItemPaginationQuery}
                 queryKey={['plugin']}
                 queryFn={(axios, params) => getPlugins(axios, params)}
                 skeleton={{
@@ -83,7 +81,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
             </ListLayout>
             <GridLayout>
               <GridPaginationList
-                params={params}
+                paramSchema={ItemPaginationQuery}
                 queryKey={['plugin']}
                 queryFn={getPlugins}
                 skeleton={{
@@ -97,7 +95,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
           </ScrollContainer>
           <div className="flex justify-end">
             <GridLayout>
-              <PaginationNavigator numberOfItems={(axios) => getPluginCount(axios, params)} queryKey={['plugins', 'total', omit(params, 'page', 'size', 'sort')]} />
+              <PaginationNavigator numberOfItems={getPluginCount} queryKey={['plugins', 'total']} />
             </GridLayout>
           </div>
         </div>

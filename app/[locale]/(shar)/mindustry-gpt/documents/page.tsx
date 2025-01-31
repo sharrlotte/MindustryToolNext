@@ -15,7 +15,6 @@ import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useSearchQuery from '@/hooks/use-search-query';
 import createDocument, { getDocuments } from '@/query/document';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { CreateDocumentRequest, CreateDocumentSchema } from '@/types/request/CreateDocumentRequest';
@@ -24,12 +23,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 export default function Page() {
-  const params = useSearchQuery(ItemPaginationQuery);
-
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
       <ScrollContainer className="relative flex h-full flex-col">
-        <InfinitePage className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3" queryKey={['documents']} queryFn={getDocuments} params={params}>
+        <InfinitePage className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3" queryKey={['documents']} queryFn={getDocuments} paramSchema={ItemPaginationQuery}>
           {(data) => <DocumentCard key={data.id} document={data} />}
         </InfinitePage>
       </ScrollContainer>

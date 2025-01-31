@@ -17,8 +17,7 @@ import { toast } from '@/components/ui/sonner';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useSearchQuery from '@/hooks/use-search-query';
-import { cn, omit } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { createServerMap } from '@/query/server';
@@ -36,8 +35,6 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
   const axios = useClientApi();
 
   const { invalidateByKey } = useQueriesData();
-
-  const params = useSearchQuery(ItemPaginationQuery);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (mapId: string) => createServerMap(axios, serverId, { mapId }),
@@ -73,7 +70,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
           <ScrollContainer className="flex h-full w-full flex-col gap-2">
             <ListLayout>
               <InfinitePage
-                params={params}
+                paramSchema={ItemPaginationQuery}
                 queryKey={['maps']}
                 queryFn={(axios, params) => getMaps(axios, params)}
                 skeleton={{
@@ -86,7 +83,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
             </ListLayout>
             <GridLayout>
               <GridPaginationList
-                params={params}
+                paramSchema={ItemPaginationQuery}
                 queryKey={['maps']}
                 queryFn={getMaps}
                 skeleton={{
@@ -100,7 +97,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
           </ScrollContainer>
           <div className="flex justify-end">
             <GridLayout>
-              <PaginationNavigator numberOfItems={(axios) => getMapCount(axios, params)} queryKey={['maps', 'total', omit(params, 'page', 'size', 'sort')]} />
+              <PaginationNavigator numberOfItems={getMapCount} queryKey={['maps', 'total']} />
             </GridLayout>
           </div>
         </div>

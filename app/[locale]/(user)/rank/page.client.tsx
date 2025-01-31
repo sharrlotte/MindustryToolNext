@@ -15,7 +15,7 @@ import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import { ItemPaginationQuery } from '@/query/search-query';
+import { ItemPaginationQuery, PaginationQuerySchema } from '@/query/search-query';
 import { getMyRank, getRank, getUsersCount } from '@/query/user';
 import { User } from '@/types/response/User';
 
@@ -47,7 +47,7 @@ export function PageClient({ users }: Props) {
       </TableHeader>
       <TableBody className="h-full">
         <GridPaginationList
-          params={params}
+          paramSchema={PaginationQuerySchema}
           queryKey={['rank']}
           queryFn={getRank}
           initialData={users}

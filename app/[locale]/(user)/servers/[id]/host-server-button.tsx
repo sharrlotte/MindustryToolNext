@@ -28,7 +28,7 @@ export default function HostServerButton({ id }: Props) {
   });
 
   useEffect(() => {
-    const containers = document.getElementsByClassName('pagination-container');
+    const containers = document.getElementsByClassName('scroll-container');
 
     if (containers) {
       for (const container of containers) {
@@ -70,7 +70,7 @@ export default function HostServerButton({ id }: Props) {
             <Tran text="server.hosting-server" asChild />
           </DialogTitle>
           <DialogDescription className="flex gap-1 overflow-hidden w-full text-ellipsis items-center">
-            {isPending ? <LoadingSpinner className="p-0 w-4" /> : <CheckCircleIcon className="w-4" />} <ColorText text={last} />
+            {isPending ? <LoadingSpinner className="p-0 w-4 justify-start m-0" /> : <CheckCircleIcon className="w-4" />} <ColorText text={last} />
           </DialogDescription>
           <ScrollContainer className="h-full flex-1 flex w-full flex-col overflow-x-auto">{data?.map((text, index) => <ColorText key={index} text={text} />)}</ScrollContainer>
           {isSuccess && (
