@@ -76,7 +76,6 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
 
   const handleAction = useCallback(
     (action: 'LIKE' | 'DISLIKE') => {
-      console.log(action);
       if (isPending) {
         return;
       }

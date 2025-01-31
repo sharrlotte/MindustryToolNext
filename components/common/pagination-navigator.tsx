@@ -1,7 +1,6 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
 
@@ -65,7 +64,6 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(0);
   const params = useSearchQuery(PaginationQuerySchema);
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const handlePageChange = useCallback(
@@ -83,9 +81,9 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
 
       const path = new URLSearchParams(searchParams);
       path.set('page', page.toString());
-      router.replace(`?${path.toString()}`);
+      window.history.replaceState(null, '', `?${path.toString()}`);
     },
-    [router, searchParams],
+    [searchParams],
   );
 
   const currentPage = params.page;
@@ -104,19 +102,13 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
     setOpen(false);
   }, [handlePageChange, lastPage, selectedPage]);
 
-  const nextPath = new URLSearchParams(searchParams);
-  nextPath.set('page', nextPage.toString());
-
-  const prevPath = new URLSearchParams(searchParams);
-  prevPath.set('page', previousPage.toString());
-
   return (
     <Pagination className="h-9">
       <PaginationContent>
         <PaginationItem>
-          <Link className={cn('px-2 py-1 flex', { hidden: !hasPrevPage })} href={`?${prevPath.toString()}`} shallow>
+          <Button className="px-2 py-1 flex" variant="ghost" disabled={!hasPrevPage} onClick={() => handlePageChange(previousPage)}>
             <ChevronLeftIcon className="size-5" />
-          </Link>
+          </Button>
         </PaginationItem>
         <PaginationItem>
           <Button className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1 bg-secondary dark:text-foreground', {})} title="prev" onClick={() => handlePageChange(currentPage)} variant="icon">
@@ -166,9 +158,9 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
           </PaginationItem>
         )}
         <PaginationItem>
-          <Link className={cn('px-2 py-1 flex', { hidden: !hasNextPage })} href={`?${nextPath.toString()}`} shallow>
+          <Button className="px-2 py-1 flex" variant="ghost" disabled={!hasNextPage} onClick={() => handlePageChange(nextPage)}>
             <ChevronRightIcon className="size-5" />
-          </Link>
+          </Button>
         </PaginationItem>
         <SizeSelector sizes={sizes} />
       </PaginationContent>

@@ -1,19 +1,20 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useEffect, useMemo } from 'react';
 import { z } from 'zod';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import RouterSpinner from '@/components/common/router-spinner';
 
+import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { QuerySchema } from '@/query/search-query';
 
-import { QueryKey } from '@tanstack/react-query';
+import { QueryKey, useQuery } from '@tanstack/react-query';
 
 type Props<T, P extends QuerySchema> = {
   className?: string;
@@ -35,10 +36,12 @@ type Props<T, P extends QuerySchema> = {
 export default function GridPaginationList<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, skeleton, asChild, initialData, params, queryFn, children }: Props<T, P>) {
   const p = useSearchQuery(paramSchema, params);
 
-  const { data, error, isLoading } = useClientQuery({
-    queryFn: (axios) => queryFn(axios, p),
-    queryKey: [...queryKey, p],
-    initialData,
+  const axios = useClientApi();
+  const { data, error, isLoading } = useQuery({
+    queryFn: () => queryFn(axios, p),
+    queryKey: [p, ...queryKey],
+    //TODO: Fix this, not load new data when page change
+    // initialData,
   });
 
   const skeletonElements = useMemo(() => {
@@ -50,8 +53,6 @@ export default function GridPaginationList<T, P extends QuerySchema>({ className
 
   noResult = useMemo(() => noResult ?? <NoResult className="flex w-full items-center justify-center" />, [noResult]);
   loader = useMemo(() => (!loader && !skeleton ? <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" /> : undefined), [loader, skeleton]);
-
-  console.log({ p });
 
   if (asChild) {
     return (

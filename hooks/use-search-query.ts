@@ -1,4 +1,5 @@
 import { useSearchParams } from 'next/navigation';
+import { useMemo } from 'react';
 import { z } from 'zod';
 
 import { groupParamsByKey } from '@/lib/utils';
@@ -8,11 +9,13 @@ export default function useSearchQuery<T extends QuerySchema>(schema: T, additio
   const query = useSearchParams();
   const data = groupParamsByKey(query);
 
-  const result = schema.parse(data);
+  return useMemo(() => {
+    const result = schema.parse(data);
 
-  if (additional) {
-    return { ...result, ...additional };
-  }
+    if (additional) {
+      return { ...additional, ...result };
+    }
 
-  return result;
+    return result;
+  }, [additional, data, schema]);
 }

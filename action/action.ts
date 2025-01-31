@@ -107,6 +107,7 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
   axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie.toString());
   axiosInstance.defaults.headers['Server'] = true;
 
+  axiosInstance.interceptors.request.clear();
   axiosInstance.interceptors.request.use(async (config) => {
     const params = config.params;
     if (!params || !('size' in params)) {

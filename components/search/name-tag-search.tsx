@@ -94,7 +94,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
       }
 
       if (tags.length != 0 && isChanged) {
-        console.log(`${pathname}?${params.toString()}`);
         setChanged(false);
         router.replace(`${pathname}?${params.toString()}`);
       }
