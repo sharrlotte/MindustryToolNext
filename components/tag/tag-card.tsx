@@ -1,9 +1,8 @@
-import React, { HTMLAttributes } from 'react';
+import React, { HTMLAttributes, useCallback } from 'react';
 
 import { XIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { TagName } from '@/components/tag/tag-name';
-import TagTooltip from '@/components/tag/tag-tooltip';
 
 import { cn } from '@/lib/utils';
 import Tag from '@/types/response/Tag';
@@ -20,9 +19,9 @@ function TagCard({ tag, className, onDelete, ...props }: TagCardProps) {
 
   const hasDelete = !!onDelete;
 
-  const handleOnDelete = (tag: Tag) => {
+  const handleOnDelete = useCallback((tag: Tag) => {
     if (onDelete) onDelete(tag);
-  };
+  }, []);
 
   return (
     <span
@@ -31,17 +30,14 @@ function TagCard({ tag, className, onDelete, ...props }: TagCardProps) {
       onClick={() => handleOnDelete(tag)}
       {...props}
     >
-      <TagTooltip value={value}>
-        <TagName icon={icon}>
-          <Tran text={`tags.${name}`} />
-        </TagName>
-        (
-        <TagName>
-          <Tran text={`tags.${value}`} />
-        </TagName>
-        )
-      </TagTooltip>
-      {hasDelete && <XIcon className="size-4" />}
+      <TagName icon={icon}>
+        <Tran text={`tags.${name}`} />
+      </TagName>
+      (
+      <TagName>
+        <Tran text={`tags.${value}`} />
+      </TagName>
+      ){hasDelete && <XIcon className="size-4" />}
     </span>
   );
 }

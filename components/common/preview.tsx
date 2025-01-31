@@ -17,7 +17,7 @@ export function Preview({ className, children, ...props }: CardProps) {
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function PreviewHeader({ className, children }: HeaderProps) {
-  return <h1 className={cn('h-12 overflow-hidden px-2 text-xl text-center capitalize', className)}>{children}</h1>;
+  return <h1 className={cn('h-12 overflow-hidden px-2 text-xl text-center capitalize w-full text-ellipsis', className)}>{children}</h1>;
 }
 
 type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
