@@ -20,7 +20,7 @@ export default function FileCard({ file, children, onClick }: Props) {
   return (
     <ContextMenu>
       <ContextMenuTrigger
-        className="flex h-10 cursor-pointer items-center justify-start gap-1 rounded-md border p-2 text-sm"
+        className="flex h-10 cursor-pointer items-center justify-start gap-1 rounded-md bg-card p-2 text-sm"
         onClick={() => {
           if (size <= 5000000) onClick(file);
         }}

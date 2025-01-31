@@ -8,12 +8,12 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import RouterSpinner from '@/components/common/router-spinner';
 
-import useClientQuery from '@/hooks/use-client-query';
+import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { QuerySchema } from '@/query/search-query';
 
-import { QueryKey } from '@tanstack/react-query';
+import { QueryKey, useQuery } from '@tanstack/react-query';
 
 type Props<T, P extends QuerySchema> = {
   className?: string;
@@ -35,10 +35,12 @@ type Props<T, P extends QuerySchema> = {
 export default function GridPaginationList<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, skeleton, asChild, initialData, params, queryFn, children }: Props<T, P>) {
   const p = useSearchQuery(paramSchema, params);
 
-  const { data, error, isLoading } = useClientQuery({
-    queryFn: (axios) => queryFn(axios, p),
-    queryKey: [...queryKey, p],
-    initialData,
+  const axios = useClientApi();
+  const { data, error, isLoading } = useQuery({
+    queryFn: () => queryFn(axios, p),
+    queryKey: [p, ...queryKey],
+    //TODO: Fix this, not load new data when page change
+    // initialData,
   });
 
   const skeletonElements = useMemo(() => {
@@ -60,7 +62,7 @@ export default function GridPaginationList<T, P extends QuerySchema>({ className
   }
 
   return (
-    <div className="container h-full">
+    <div className="scroll-container h-full">
       <div className={cn('grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2', className)}>
         <Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult}>
           {children}

@@ -25,7 +25,7 @@ export function PaginationLayoutSwitcher() {
         })}
         onClick={() => setConfig('paginationType', 'grid')}
       >
-        <LayoutGridIcon className="min-w-5 min-h-5" />
+        <LayoutGridIcon className="size-5" />
       </button>
       <button
         className={cn('p-2', {
@@ -33,7 +33,7 @@ export function PaginationLayoutSwitcher() {
         })}
         onClick={() => setConfig('paginationType', 'infinite-scroll')}
       >
-        <LayoutListIcon className="min-w-5 min-h-5" />
+        <LayoutListIcon className="size-5" />
       </button>
     </div>
   );

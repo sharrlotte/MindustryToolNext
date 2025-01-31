@@ -18,8 +18,6 @@ export default function ErrorScreen({ error }: { error: TError }) {
   const message = getErrorMessage(error);
   const loggedMessage = getLoggedErrorMessage(error);
 
-  console.log(loggedMessage);
-
   useEffect(() => {
     reportError(axios, `${path} > ${loggedMessage}`);
   }, [axios, message, path, loggedMessage]);
