@@ -25,12 +25,14 @@ type Props = {
   server: ServerDetail;
 };
 
-export default function ServerUpdatePortForm({ server: { id, port, official } }: Props) {
+export default function ServerUpdatePortForm({ server: { id, port, official, autoTurnOff, hub } }: Props) {
   const form = useForm<PutServerPortRequest>({
     resolver: zodResolver(PutServerPortSchema),
     defaultValues: {
       port,
       official,
+      autoTurnOff,
+      hub,
     },
   });
   const { invalidateByKey } = useQueriesData();

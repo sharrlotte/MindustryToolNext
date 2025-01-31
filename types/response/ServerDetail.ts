@@ -19,5 +19,7 @@ export type ServerDetail = {
     uuid: string;
   }[];
   mapName: string;
+  autoTurnOff: boolean;
+  hub: boolean;
   hostCommand?: string;
 };
