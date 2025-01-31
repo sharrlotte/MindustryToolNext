@@ -9,6 +9,7 @@ import NavLinkContainer from '@/components/common/nav-link-container';
 import Tran from '@/components/common/tran';
 
 import { getSession } from '@/action/action';
+import { NavLinkProvider } from '@/context/nav-link-context';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter, isError } from '@/lib/utils';
 
@@ -84,13 +85,15 @@ export default async function ServerLayout({ params, children }: LayoutProps) {
 
   return (
     <div className="grid h-full grid-flow-row grid-rows-[auto,1fr] gap-2 overflow-hidden p-2">
-      <NavLinkContainer>
-        {links.map((item) => (
-          <ProtectedElement key={item.id} session={session} filter={item.filter}>
-            <NavLink {...item} root={`servers/${id}`} />
-          </ProtectedElement>
-        ))}
-      </NavLinkContainer>
+      <NavLinkProvider>
+        <NavLinkContainer>
+          {links.map((item) => (
+            <ProtectedElement key={item.id} session={session} filter={item.filter ?? true}>
+              <NavLink {...item} root={`servers/${id}`} />
+            </ProtectedElement>
+          ))}
+        </NavLinkContainer>
+      </NavLinkProvider>
       <div className="h-full w-full overflow-hidden flex flex-col" key="child">
         {children}
       </div>
