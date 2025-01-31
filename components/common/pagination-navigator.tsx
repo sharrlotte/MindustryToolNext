@@ -66,7 +66,9 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   const searchParams = useSearchParams();
   const { setConfig } = useSession();
 
-  const size = params.size || sizes[0];
+  const {
+    config: { paginationSize: size },
+  } = useSession();
 
   function handleSizeChange(size: number | undefined) {
     setConfig('paginationSize', size ?? 10);
