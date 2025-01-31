@@ -28,6 +28,7 @@ import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import TagBadgeContainer from '@/components/tag/tag-badge-container';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
 
@@ -186,7 +187,8 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex justify-center gap-2">
         <SearchBar className="h-10">
-          <SearchIcon className="p-1" />
+          <SearchIcon className="size-6 shrink-0" />
+          <TagBadgeContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
           <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
         </SearchBar>
         {useTag && (
@@ -196,7 +198,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
         )}
       </div>
       <Suspense>
-        <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
         {useTag && showFilterDialog && (
           <div
             className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {
