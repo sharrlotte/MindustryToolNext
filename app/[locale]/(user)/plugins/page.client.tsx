@@ -5,13 +5,13 @@ import React from 'react';
 import AddPluginForm from '@/app/[locale]/(user)/plugins/add-plugin-form';
 
 import InfinitePage from '@/components/common/infinite-page';
+import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import PluginCard from '@/components/plugin/plugin-card';
 import PluginCardSkeleton from '@/components/plugin/plugin-card-skeleton';
 import NameTagSearch from '@/components/search/name-tag-search';
 
-import useSearchQuery from '@/hooks/use-search-query';
-import { getPlugins } from '@/query/plugin';
+import { getPluginCount, getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Plugin } from '@/types/response/Plugin';
 
@@ -20,8 +20,6 @@ type Props = {
 };
 
 export default function Client({ plugins }: Props) {
-  const params = useSearchQuery(ItemPaginationQuery);
-
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
       <NameTagSearch type="plugin" useSort={false} />
@@ -30,7 +28,7 @@ export default function Client({ plugins }: Props) {
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
           queryKey={['plugins']}
           queryFn={getPlugins}
-          params={params}
+          paramSchema={ItemPaginationQuery}
           initialData={plugins}
           skeleton={{
             amount: 20,
@@ -40,8 +38,9 @@ export default function Client({ plugins }: Props) {
           {(data) => <PluginCard key={data.id} plugin={data} />}
         </InfinitePage>
       </ScrollContainer>
-      <div className="flex justify-end">
+      <div className="flex justify-between">
         <AddPluginForm />
+        <PaginationNavigator numberOfItems={getPluginCount} queryKey={['plugin', 'total']} />
       </div>
     </div>
   );

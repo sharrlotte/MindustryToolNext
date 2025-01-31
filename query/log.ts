@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import { LogType } from '@/constant/enum';
-import Pageable from '@/query/search-query';
+import { LogPaginationQueryType } from '@/query/search-query';
 import { Log } from '@/types/Log';
 
 export async function getLogCollections(axios: AxiosInstance): Promise<string[]> {
@@ -10,12 +10,7 @@ export async function getLogCollections(axios: AxiosInstance): Promise<string[]>
   return result.data;
 }
 
-type GetLogParams = Pageable & {
-  collection: LogType;
-  env?: 'Prod' | 'Dev';
-};
-
-export async function getLogs(axios: AxiosInstance, { collection, page, ...rest }: GetLogParams): Promise<Log[]> {
+export async function getLogs(axios: AxiosInstance, { collection, page, ...rest }: LogPaginationQueryType): Promise<Log[]> {
   const params = Object.fromEntries(Object.entries(rest).filter(([_, value]) => value));
 
   const result = await axios.get(`logs/${collection}`, {

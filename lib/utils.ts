@@ -226,7 +226,7 @@ export function fillMetric(start: Date, numberOfDays: number, array: Metric[] | 
   // Iterate over the number of days
   for (let i = 0; i < numberOfDays; i++) {
     const targetDay = new Date(start);
-    targetDay.setDate(start.getDate() + i + 1); // Increment day-by-day from the start date
+    targetDay.setDate(start.getDate() + i); // Increment day-by-day from the start date
 
     // Ensure we compare dates without time components
     const value = array.find((v) => isSameDay(v.createdAt, targetDay));
@@ -593,3 +593,19 @@ export function wrapAtCaret(input: TextArea | null, text: string, before: string
 export function isNumeric(n: any) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
+export const groupParamsByKey = (params: URLSearchParams) =>
+  [...params.entries()].reduce<Record<string, any>>((acc, tuple) => {
+    const [key, val] = tuple;
+    if (Object.prototype.hasOwnProperty.call(acc, key)) {
+      if (Array.isArray(acc[key])) {
+        acc[key] = [...acc[key], val];
+      } else {
+        acc[key] = [acc[key], val];
+      }
+    } else {
+      acc[key] = val;
+    }
+
+    return acc;
+  }, {});

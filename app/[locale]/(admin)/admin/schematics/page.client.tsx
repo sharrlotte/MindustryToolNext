@@ -16,8 +16,6 @@ import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useSearchQuery from '@/hooks/use-search-query';
-import { omit } from '@/lib/utils';
 import { deleteSchematic, getSchematicUploadCount, getSchematicUploads } from '@/query/schematic';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Schematic } from '@/types/response/Schematic';
@@ -29,8 +27,6 @@ type Props = {
 };
 
 export default function Client({ schematics }: Props) {
-  const params = useSearchQuery(ItemPaginationQuery);
-
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
   const { mutate } = useMutation({
@@ -63,7 +59,7 @@ export default function Client({ schematics }: Props) {
         <ScrollContainer className="relative flex h-full flex-col">
           <ListLayout>
             <InfinitePage
-              params={params}
+              paramSchema={ItemPaginationQuery}
               queryKey={['schematics', 'upload']}
               queryFn={getSchematicUploads}
               initialData={schematics}
@@ -77,7 +73,7 @@ export default function Client({ schematics }: Props) {
           </ListLayout>
           <GridLayout>
             <GridPaginationList
-              params={params}
+              paramSchema={ItemPaginationQuery}
               queryKey={['schematics', 'upload']}
               queryFn={getSchematicUploads}
               initialData={schematics}
@@ -92,7 +88,7 @@ export default function Client({ schematics }: Props) {
         </ScrollContainer>
         <div className="flex flex-wrap items-center gap-2 justify-between">
           <GridLayout>
-            <PaginationNavigator numberOfItems={(axios) => getSchematicUploadCount(axios, params)} queryKey={['schematics', 'total', 'upload', omit(params, 'page', 'size', 'sort')]} />
+            <PaginationNavigator numberOfItems={getSchematicUploadCount} queryKey={['schematics', 'total', 'upload']} />
           </GridLayout>
         </div>
       </div>

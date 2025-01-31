@@ -15,8 +15,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import env from '@/constant/env';
-import useSearchQuery from '@/hooks/use-search-query';
-import { omit } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Map } from '@/types/response/Map';
@@ -26,8 +24,6 @@ type Props = {
 };
 
 export default function Client({ maps }: Props) {
-  const params = useSearchQuery(ItemPaginationQuery);
-
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="map" />
@@ -37,7 +33,7 @@ export default function Client({ maps }: Props) {
       <ScrollContainer>
         <ListLayout>
           <InfinitePage
-            params={params}
+            paramSchema={ItemPaginationQuery}
             queryKey={['maps']}
             queryFn={getMaps}
             initialData={maps}
@@ -51,7 +47,7 @@ export default function Client({ maps }: Props) {
         </ListLayout>
         <GridLayout>
           <GridPaginationList
-            params={params}
+            paramSchema={ItemPaginationQuery}
             queryKey={['maps']}
             queryFn={getMaps}
             initialData={maps}
@@ -70,7 +66,7 @@ export default function Client({ maps }: Props) {
           <Tran text="map.upload" />
         </InternalLink>
         <GridLayout>
-          <PaginationNavigator numberOfItems={(axios) => getMapCount(axios, params)} queryKey={['maps', 'total', omit(params, 'page', 'size', 'sort')]} />
+          <PaginationNavigator numberOfItems={getMapCount} queryKey={['maps', 'total']} />
         </GridLayout>
       </div>
     </div>

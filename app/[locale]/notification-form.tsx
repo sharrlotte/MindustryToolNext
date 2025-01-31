@@ -16,6 +16,7 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { cn } from '@/lib/utils';
 import { deleteAllNotifications, deleteNotification, getMyNotifications, markAsRead, markAsReadById } from '@/query/notification';
+import { PaginationQuerySchema } from '@/query/search-query';
 import { Notification } from '@/types/response/Notification';
 
 import { useMutation } from '@tanstack/react-query';
@@ -34,7 +35,7 @@ export default function NotificationForm() {
         <DialogDescription>This is a notification dialog.</DialogDescription>
       </Hidden>
       <ScrollContainer className="border-t">
-        <InfinitePage className="gap-2 flex flex-col divide-y" queryKey={['notifications']} params={{ page: 0, size: 30 }} queryFn={getMyNotifications} noResult={<Tran text="notification.no-notification" />}>
+        <InfinitePage className="gap-2 flex flex-col divide-y" queryKey={['notifications']} paramSchema={PaginationQuerySchema} queryFn={getMyNotifications} noResult={<Tran text="notification.no-notification" />}>
           {(notification) => <NotificationCard key={notification.id} notification={notification} />}
         </InfinitePage>
       </ScrollContainer>

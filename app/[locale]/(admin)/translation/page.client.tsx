@@ -25,7 +25,6 @@ import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useSearchQuery from '@/hooks/use-search-query';
 import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
 import { TranslationPaginationQuery } from '@/query/search-query';
@@ -143,8 +142,6 @@ function RefreshButton() {
 }
 
 function CompareTable({ language, target, tKey: key }: CompareTableProps) {
-  const params = useSearchQuery(TranslationPaginationQuery);
-
   return (
     <Fragment>
       <Table className="table-fixed">
@@ -167,8 +164,9 @@ function CompareTable({ language, target, tKey: key }: CompareTableProps) {
         </TableHeader>
         <TableBody>
           <GridPaginationList
-            params={{ ...params, language, target, key: key }}
-            queryKey={['translations', 'compare', params, language, target, key]}
+            paramSchema={TranslationPaginationQuery}
+            params={{ language, target, key: key }}
+            queryKey={['translations', 'compare']}
             queryFn={getTranslationCompare}
             noResult={<Fragment></Fragment>}
             skeleton={{
@@ -182,7 +180,7 @@ function CompareTable({ language, target, tKey: key }: CompareTableProps) {
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">
-        <PaginationNavigator numberOfItems={(axios) => getTranslationCompareCount(axios, { ...params, language, target, key: key })} queryKey={['translations', 'compare', 'total', language, target, key]} />
+        <PaginationNavigator numberOfItems={(axios) => getTranslationCompareCount(axios, { language, target, key: key })} queryKey={['translations', 'compare', 'total', language, target, key]} />
       </div>
     </Fragment>
   );
@@ -194,8 +192,6 @@ type SearchTableProps = {
 };
 
 function SearchTable({ language, tKey: key }: SearchTableProps) {
-  const params = useSearchQuery(TranslationPaginationQuery);
-
   return (
     <Fragment>
       <Table className="table-fixed">
@@ -215,8 +211,9 @@ function SearchTable({ language, tKey: key }: SearchTableProps) {
         </TableHeader>
         <TableBody>
           <GridPaginationList
-            params={{ ...params, language, key: key }}
-            queryKey={['translations', 'search', params, language, key]}
+            paramSchema={TranslationPaginationQuery}
+            params={{ language, key: key, target: 'en' }}
+            queryKey={['translations', 'search', language, key]}
             queryFn={getTranslationSearch}
             noResult={<Fragment></Fragment>}
             skeleton={{
@@ -230,7 +227,7 @@ function SearchTable({ language, tKey: key }: SearchTableProps) {
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">
-        <PaginationNavigator numberOfItems={(axios) => getTranslationSearchCount(axios, { ...params, language, key: key })} queryKey={['translations', 'search', 'total', language, key]} />
+        <PaginationNavigator numberOfItems={(axios) => getTranslationSearchCount(axios, { language, key: key })} queryKey={['translations', 'search', 'total', language, key]} />
       </div>
     </Fragment>
   );
@@ -243,8 +240,6 @@ type DiffTableProps = {
 };
 
 function DiffTable({ language, target, tKey: key }: DiffTableProps) {
-  const params = useSearchQuery(TranslationPaginationQuery);
-
   return (
     <Fragment>
       <Table className="table-fixed">
@@ -266,8 +261,9 @@ function DiffTable({ language, target, tKey: key }: DiffTableProps) {
         </TableHeader>
         <TableBody>
           <GridPaginationList
-            params={{ ...params, language, target, key: key }}
-            queryKey={['translations', 'diff', params, language, target, key]}
+            paramSchema={TranslationPaginationQuery}
+            params={{ language, target, key: key }}
+            queryKey={['translations', 'diff', language, target, key]}
             queryFn={getTranslationDiff}
             noResult={<Fragment></Fragment>}
             skeleton={{

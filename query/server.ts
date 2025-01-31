@@ -62,9 +62,24 @@ export async function getServerMaps(axios: AxiosInstance, id: string, params: Pa
 
   return result.data;
 }
+export async function getServerMapCount(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<number> {
+  const result = await axios.get(`/servers/${id}/maps/total`, {
+    params: params,
+  });
+
+  return result.data;
+}
 
 export async function getServerPlugins(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<ServerPlugin[]> {
   const result = await axios.get(`/servers/${id}/plugins`, {
+    params: params,
+  });
+
+  return result.data;
+}
+
+export async function getServerPluginCount(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<number> {
+  const result = await axios.get(`/servers/${id}/plugins/total`, {
     params: params,
   });
 

@@ -19,7 +19,7 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { useI18n } from '@/i18n/client';
 import { omit } from '@/lib/utils';
 import { getRoles } from '@/query/role';
-import { PaginationQuerySchema } from '@/query/search-query';
+import { PaginationQuerySchema, SearchUserQuerySchema } from '@/query/search-query';
 import { getUserCount, getUsers } from '@/query/user';
 import { Role } from '@/types/response/Role';
 
@@ -73,7 +73,8 @@ export function UserTable() {
         <ListLayout>
           <InfinitePage
             className="flex h-full w-full flex-col justify-start gap-2"
-            params={{ ...params, role: role?.name, name: debouncedName, is_banned: isBanned }}
+            params={{ ...params, role: role?.name, name: debouncedName, is_banned: !!isBanned }}
+            paramSchema={SearchUserQuerySchema}
             queryKey={['users', 'management']}
             queryFn={getUsers}
             loader={<LoadingSpinner className="p-0 m-auto" />}
@@ -84,7 +85,8 @@ export function UserTable() {
         <GridLayout>
           <GridPaginationList
             className="flex flex-col gap-2" //
-            params={{ ...params, role: role?.name, name: debouncedName, is_banned: isBanned }}
+            params={{ ...params, role: role?.name, name: debouncedName, is_banned: !!isBanned }}
+            paramSchema={SearchUserQuerySchema}
             queryKey={['users', 'management']}
             queryFn={getUsers}
             loader={<LoadingSpinner className="p-0 m-auto" />}

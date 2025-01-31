@@ -13,8 +13,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import env from '@/constant/env';
-import useSearchQuery from '@/hooks/use-search-query';
-import { omit } from '@/lib/utils';
 import { getSchematicCount, getSchematics } from '@/query/schematic';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Schematic } from '@/types/response/Schematic';
@@ -24,8 +22,6 @@ type Props = {
 };
 
 export default function Client({ schematics }: Props) {
-  const params = useSearchQuery(ItemPaginationQuery);
-
   const uploadLink = `${env.url.base}/upload/schematic`;
 
   return (
@@ -37,7 +33,7 @@ export default function Client({ schematics }: Props) {
       <ScrollContainer className="relative flex h-full flex-col">
         <ListLayout>
           <InfinitePage
-            params={params}
+            paramSchema={ItemPaginationQuery}
             queryKey={['schematics']}
             queryFn={getSchematics}
             initialData={schematics}
@@ -51,7 +47,7 @@ export default function Client({ schematics }: Props) {
         </ListLayout>
         <GridLayout>
           <GridPaginationList
-            params={params}
+            paramSchema={ItemPaginationQuery}
             queryKey={['schematics']}
             queryFn={getSchematics}
             initialData={schematics}
@@ -70,7 +66,7 @@ export default function Client({ schematics }: Props) {
           <Tran text="upload-schematic" />
         </InternalLink>
         <GridLayout>
-          <PaginationNavigator numberOfItems={(axios) => getSchematicCount(axios, params)} queryKey={['schematics', 'total', omit(params, 'page', 'size', 'sort')]} />
+          <PaginationNavigator numberOfItems={getSchematicCount} queryKey={['schematics', 'total']} />
         </GridLayout>
       </div>
     </div>

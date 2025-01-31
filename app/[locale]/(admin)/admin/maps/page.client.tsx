@@ -16,8 +16,6 @@ import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import useSearchQuery from '@/hooks/use-search-query';
-import { omit } from '@/lib/utils';
 import { deleteMap, getMapUploadCount, getMapUploads } from '@/query/map';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Map } from '@/types/response/Map';
@@ -29,7 +27,6 @@ type Props = {
 };
 
 export default function Client({ maps }: Props) {
-  const params = useSearchQuery(ItemPaginationQuery);
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
 
@@ -63,7 +60,7 @@ export default function Client({ maps }: Props) {
         <ScrollContainer className="relative flex h-full flex-col">
           <ListLayout>
             <InfinitePage
-              params={params}
+              paramSchema={ItemPaginationQuery}
               queryKey={['maps', 'upload']}
               queryFn={getMapUploads}
               initialData={maps}
@@ -77,7 +74,7 @@ export default function Client({ maps }: Props) {
           </ListLayout>
           <GridLayout>
             <GridPaginationList
-              params={params}
+              paramSchema={ItemPaginationQuery}
               queryKey={['maps', 'upload']}
               queryFn={getMapUploads}
               initialData={maps}
@@ -92,7 +89,7 @@ export default function Client({ maps }: Props) {
         </ScrollContainer>
         <div className="flex flex-wrap items-center gap-2 justify-between">
           <GridLayout>
-            <PaginationNavigator numberOfItems={(axios) => getMapUploadCount(axios, params)} queryKey={['maps', 'total', 'upload', omit(params, 'page', 'size', 'sort')]} />
+            <PaginationNavigator numberOfItems={getMapUploadCount} queryKey={['maps', 'total', 'upload']} />
           </GridLayout>
         </div>
       </div>

@@ -2,21 +2,24 @@
 
 import { AxiosInstance } from 'axios';
 import React, { ReactNode, useMemo } from 'react';
+import { z } from 'zod';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 import RouterSpinner from '@/components/common/router-spinner';
 
 import useClientQuery from '@/hooks/use-client-query';
+import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
-import { PaginationQuery } from '@/query/search-query';
+import { QuerySchema } from '@/query/search-query';
 
 import { QueryKey } from '@tanstack/react-query';
 
-type Props<T, P> = {
+type Props<T, P extends QuerySchema> = {
   className?: string;
   queryKey: QueryKey;
-  params: P;
+  paramSchema: P;
+  params?: Omit<z.infer<P>, 'page' | 'size'>;
   loader?: ReactNode;
   noResult?: ReactNode;
   skeleton?: {
@@ -25,14 +28,16 @@ type Props<T, P> = {
   };
   asChild?: boolean;
   initialData?: T[];
-  queryFn: (axios: AxiosInstance, params: P) => Promise<T[]>;
+  queryFn: (axios: AxiosInstance, params: z.infer<P>) => Promise<T[]>;
   children: (data: T, index: number) => ReactNode;
 };
 
-export default function GridPaginationList<T, P extends PaginationQuery>({ className, queryKey, params, loader, noResult, skeleton, asChild, initialData, queryFn, children }: Props<T, P>) {
+export default function GridPaginationList<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, skeleton, asChild, initialData, params, queryFn, children }: Props<T, P>) {
+  const p = useSearchQuery(paramSchema, params);
+
   const { data, error, isLoading } = useClientQuery({
-    queryFn: (axios) => queryFn(axios, params),
-    queryKey: [...queryKey, params],
+    queryFn: (axios) => queryFn(axios, p),
+    queryKey: [...queryKey, p],
     initialData,
   });
 

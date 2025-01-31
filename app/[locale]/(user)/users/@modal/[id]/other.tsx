@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 
 import UserDetail from '@/app/[locale]/(user)/users/@modal/[id]/user-detail';
 
@@ -17,7 +17,6 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import useSearchQuery from '@/hooks/use-search-query';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { getUserMaps, getUserPosts, getUserSchematics } from '@/query/user';
 import { User } from '@/types/response/User';
@@ -28,11 +27,8 @@ type TabProps = {
 export default function Other({ user }: TabProps) {
   const id = user.id;
 
-  const params = useSearchQuery(ItemPaginationQuery);
-  const container = useRef<HTMLDivElement | null>(null);
-
   return (
-    <ScrollContainer className="absolute inset-0 space-y-2 bg-background p-2" ref={container}>
+    <ScrollContainer className="absolute inset-0 space-y-2 bg-background p-2">
       <UserDetail user={user} />
       <Tabs className="w-full" defaultValue="schematic">
         <TabsList className="w-full justify-start bg-card">
@@ -50,7 +46,7 @@ export default function Other({ user }: TabProps) {
           <div className="relative flex h-full flex-col gap-2">
             <NameTagSearch type="schematic" />
             <InfinitePage
-              params={params}
+              paramSchema={ItemPaginationQuery}
               queryKey={['users', id, 'schematics']}
               queryFn={(axios, params) => getUserSchematics(axios, id, params)}
               skeleton={{
@@ -66,7 +62,7 @@ export default function Other({ user }: TabProps) {
           <div className="flex h-full w-full flex-col gap-2">
             <NameTagSearch type="map" />
             <InfinitePage
-              params={params}
+              paramSchema={ItemPaginationQuery}
               queryKey={['users', id, 'maps']}
               queryFn={(axios, params) => getUserMaps(axios, id, params)}
               skeleton={{
@@ -81,7 +77,12 @@ export default function Other({ user }: TabProps) {
         <TabsContent value="post">
           <div className="flex h-full w-full flex-col gap-2">
             <NameTagSearch type="post" />
-            <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" params={params} queryKey={['users', id, 'posts']} queryFn={(axios, params) => getUserPosts(axios, id, params)}>
+            <InfinitePage
+              className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2"
+              paramSchema={ItemPaginationQuery}
+              queryKey={['users', id, 'posts']}
+              queryFn={(axios, params) => getUserPosts(axios, id, params)}
+            >
               {(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}
             </InfinitePage>
           </div>

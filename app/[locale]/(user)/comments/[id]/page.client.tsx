@@ -8,6 +8,7 @@ import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 
 import { getCommentsById } from '@/query/comment';
+import { PaginationQuerySchema } from '@/query/search-query';
 
 export default function PageClient() {
   const { id: commentId } = useParams();
@@ -18,7 +19,7 @@ export default function PageClient() {
         className="flex gap-6 flex-col" //
         queryKey={[`comments-${commentId}`]}
         queryFn={(axios, params) => getCommentsById(axios, commentId as string, params)}
-        params={{ page: 0, size: 20 }}
+        paramSchema={PaginationQuerySchema}
         noResult
         end
         skeleton={{
