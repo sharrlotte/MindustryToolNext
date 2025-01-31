@@ -19,7 +19,6 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { deletePost, verifyPost } from '@/query/post';
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 import { PostDetail } from '@/types/response/PostDetail';
-import { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation } from '@tanstack/react-query';
@@ -64,7 +63,6 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
   });
 
   const isLoading = isVerifying || isDeleting;
-  const displayTags = Tags.fromTagGroup(selectedTags);
 
   return (
     <Detail>
@@ -74,7 +72,7 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
           <div className="grid gap-2">
             <IdUserCard id={userId} />
             <span>{new Date(createdAt).toLocaleString()}</span>
-            <TagContainer tags={displayTags} />
+            <TagContainer tagGroups={selectedTags} />
           </div>
           <div>
             <Markdown>{content}</Markdown>

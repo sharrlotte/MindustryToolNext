@@ -23,7 +23,7 @@ export default function ModFilter({ value, onValueSelected }: Props) {
 
   const mods = data ?? [];
   return (
-    <div className="flex gap-2 hover:overflow-x-auto focus:overflow-x-auto overflow-hidden w-full pb-2 h-14">
+    <div className="flex gap-2 hover:overflow-x-auto focus:overflow-x-auto overflow-hidden w-full pb-2 h-12">
       {mods.map((mod) => (
         <ModCard key={mod.id} value={value} mod={mod} onValueSelected={(selected) => onValueSelected(selected === value ? undefined : selected)} />
       ))}
@@ -39,7 +39,7 @@ type ModCardProps = {
 function ModCard({ mod, value, onValueSelected }: ModCardProps) {
   return (
     <div
-      className={cn('flex gap-1 rounded-full p-2 text-sm text-center items-center cursor-pointer bg-card justify-center border min-w-20 shrink-0 hover:bg-brand hover:text-brand-foreground', {
+      className={cn('flex gap-1 rounded-full px-2 py-1 text-sm text-center items-center cursor-pointer bg-card justify-center border min-w-20 shrink-0 hover:bg-brand hover:text-brand-foreground', {
         'bg-brand text-brand-foreground': value === mod,
       })}
       onClick={() => onValueSelected(mod)}

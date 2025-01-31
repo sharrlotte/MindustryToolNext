@@ -11,7 +11,8 @@ import IdUserCard from '@/components/user/id-user-card';
 
 import { TagType } from '@/constant/constant';
 import { cn } from '@/lib/utils';
-import { DetailTagDto, Tags } from '@/types/response/Tag';
+import { DetailTagDto } from '@/types/response/Tag';
+import { TagGroups } from '@/types/response/TagGroup';
 
 type DetailProps = HTMLAttributes<HTMLDivElement>;
 
@@ -82,11 +83,11 @@ type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
 };
 
 export function DetailTagsCard({ className, tags }: TagsProps) {
-  const values = useMemo(() => Tags.parseStringArray(tags), [tags]);
+  const values = useMemo(() => TagGroups.parsTagDto(tags), [tags]);
 
   return (
     <Suspense>
-      <TagContainer className={className} tags={values} />
+      <TagContainer className={className} tagGroups={values} />
     </Suspense>
   );
 }

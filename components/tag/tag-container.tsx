@@ -1,25 +1,31 @@
-import React from 'react';
+import React, { Suspense, useMemo } from 'react';
 
 import TagCard from '@/components/tag/tag-card';
+
+import useTagSearch from '@/hooks/use-tag-search';
 import { cn } from '@/lib/utils';
 import Tag from '@/types/response/Tag';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 type TagContainerProps = {
   className?: string;
-  tags?: Tag[];
+  tagGroups: TagGroup[];
   handleDeleteTag?: (item: Tag) => void;
 };
 
-export default function TagContainer({ className, tags, handleDeleteTag }: TagContainerProps) {
-  if (tags === undefined || tags.length === 0) {
-    return <></>;
-  }
+export default function TagContainer({ className, tagGroups, handleDeleteTag }: TagContainerProps) {
+  const tagNames = useMemo(() => TagGroups.toStringArray(tagGroups), [tagGroups]);
+  let { data } = useTagSearch(tagNames);
+
+  data = data ?? [];
 
   return (
-    <section className={cn('flex w-full flex-wrap gap-1', className)}>
-      {tags.map((item) => (
-        <TagCard key={item.name + item.value} tag={item} onDelete={handleDeleteTag && (() => handleDeleteTag(item))} />
-      ))}
-    </section>
+    <Suspense>
+      <section className={cn('flex w-full flex-wrap gap-1', className)}>
+        {data.map((item) => (
+          <TagCard key={item.name} tag={item} onDelete={handleDeleteTag && ((tag) => handleDeleteTag(tag))} />
+        ))}
+      </section>
+    </Suspense>
   );
 }

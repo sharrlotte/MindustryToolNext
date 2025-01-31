@@ -6,23 +6,27 @@ import { TagName } from '@/components/tag/tag-name';
 import TagTooltip from '@/components/tag/tag-tooltip';
 
 import { cn } from '@/lib/utils';
-import Tag from '@/types/response/Tag';
+import Tag, { DetailTagDto, Tags } from '@/types/response/Tag';
 
 type TagBadgeProps = HTMLAttributes<HTMLSpanElement> & {
-  tag: Tag;
+  tag: DetailTagDto;
   onDelete?: (tag: Tag) => void;
 };
 
 export default TagBadge;
 
-function TagBadge({ tag, className, onDelete, ...props }: TagBadgeProps) {
-  const { name, value, icon, color } = tag;
+function TagBadge({ tag: tagDetail, className, onDelete, ...props }: TagBadgeProps) {
+  const tag = Tags.parseString(tagDetail);
+  const { name, icon, color, value } = tag;
 
   const hasDelete = !!onDelete;
 
-  const handleOnDelete = useCallback((tag: Tag) => {
-    if (onDelete) onDelete(tag);
-  }, []);
+  const handleOnDelete = useCallback(
+    (value: Tag) => {
+      if (onDelete) onDelete(value);
+    },
+    [onDelete],
+  );
 
   return (
     <span

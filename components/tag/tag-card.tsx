@@ -6,23 +6,26 @@ import { TagName } from '@/components/tag/tag-name';
 import TagTooltip from '@/components/tag/tag-tooltip';
 
 import { cn } from '@/lib/utils';
-import Tag from '@/types/response/Tag';
+import Tag, { DetailTagDto, Tags } from '@/types/response/Tag';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
-  tag: Tag;
+  tag: DetailTagDto;
   onDelete?: (tag: Tag) => void;
 };
 
 export default TagCard;
 
-function TagCard({ tag, className, onDelete, ...props }: TagCardProps) {
+function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps) {
+  const tag = Tags.parseString(tagDetail);
   const { name, value, icon, color } = tag;
-
   const hasDelete = !!onDelete;
 
-  const handleOnDelete = useCallback((tag: Tag) => {
-    if (onDelete) onDelete(tag);
-  }, []);
+  const handleOnDelete = useCallback(
+    (tag: Tag) => {
+      if (onDelete) onDelete(tag);
+    },
+    [onDelete],
+  );
 
   return (
     <span
