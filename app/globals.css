@@ -84,18 +84,8 @@
   body {
     @apply dark:bg-gradient-background;
   }
-  * {
-    @apply border-border;
-  }
   div {
     @apply box-border border-border;
-  }
-
-  .markdown-image {
-    @apply my-4;
-  }
-  .markdown > * {
-    @apply overflow-hidden;
   }
 
   h1 {
@@ -125,21 +115,31 @@
   pre {
     @apply my-4 rounded-md border bg-background bg-opacity-60 p-1 text-foreground;
   }
+  .markdown-image {
+    @apply my-4;
+  }
+  .markdown > * {
+    @apply overflow-hidden;
+  }
 
-  *::-webkit-scrollbar-track {
+  .scroll-container::-webkit-scrollbar-track {
     @apply bg-white bg-opacity-20 bg-clip-padding;
   }
 
-  *::-webkit-scrollbar {
+  .scroll-container::-webkit-scrollbar {
     @apply size-2;
   }
 
-  *::-webkit-scrollbar-thumb {
+  .scroll-container::-webkit-scrollbar-thumb {
     @apply rounded-full bg-white bg-clip-padding;
   }
 
-  *::-webkit-scrollbar-button {
+  .scroll-container::-webkit-scrollbar-button {
     @apply hidden;
+  }
+
+  .scroll-container {
+    @apply w-full;
   }
   ul {
     list-style-type: disc;
@@ -167,16 +167,16 @@
   g path {
     @apply focus:border-none focus:outline-none;
   }
+}
 
-  @layer utilities {
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-      overflow-y: auto;
-    }
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: auto;
   }
 
   .layout > .error {

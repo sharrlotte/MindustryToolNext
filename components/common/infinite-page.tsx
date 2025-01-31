@@ -86,7 +86,7 @@ export default function InfinitePage<T, P extends PaginationQuery>({ className, 
       threshold={400}
       getScrollParent={() => {
         {
-          const containers = document.getElementsByClassName('pagination-container');
+          const containers = document.getElementsByClassName('scroll-container');
 
           if (containers) {
             return containers[0] as HTMLElement;

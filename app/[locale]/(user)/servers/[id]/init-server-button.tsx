@@ -28,7 +28,7 @@ export default function InitServerButton({ id }: Props) {
   });
 
   useEffect(() => {
-    const containers = document.getElementsByClassName('pagination-container');
+    const containers = document.getElementsByClassName('scroll-container');
 
     if (containers) {
       for (const container of containers) {

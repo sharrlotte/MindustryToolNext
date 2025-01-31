@@ -3,7 +3,7 @@
 import { AxiosInstance } from 'axios';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
@@ -64,36 +64,26 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   const params = useSearchQuery(PaginationQuerySchema);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setConfig } = useSession();
 
-  const {
-    config: { paginationSize: size },
-  } = useSession();
+  const handlePageChange = useCallback(
+    (page: number) => {
+      const containers = document.getElementsByClassName('scroll-container');
 
-  function handleSizeChange(size: number | undefined) {
-    setConfig('paginationSize', size ?? 10);
-
-    const path = new URLSearchParams(searchParams);
-    path.set('size', (size || sizes[0]).toString());
-    router.replace(`?${path.toString()}`);
-  }
-
-  function handlePageChange(page: number) {
-    const containers = document.getElementsByClassName('pagination-container');
-
-    if (containers) {
-      for (const container of containers) {
-        container.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
+      if (containers) {
+        for (const container of containers) {
+          container.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+        }
       }
-    }
 
-    const path = new URLSearchParams(searchParams);
-    path.set('page', page.toString());
-    router.replace(`?${path.toString()}`);
-  }
+      const path = new URLSearchParams(searchParams);
+      path.set('page', page.toString());
+      router.replace(`?${path.toString()}`);
+    },
+    [router, searchParams],
+  );
 
   const currentPage = params.page;
   const lastPage = Math.ceil(numberOfItems / params.size) - 1;
@@ -101,17 +91,15 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   const hasNextPage = currentPage < lastPage;
   const hasPrevPage = currentPage > 0;
 
-  const lastNumber = lastPage;
-
   const nextPage = currentPage + 1;
   const previousPage = currentPage - 1;
 
-  function handleSelectPage() {
+  const handleSelectPage = useCallback(() => {
     if (selectedPage < 0 || selectedPage > lastPage) return;
 
     handlePageChange(selectedPage);
     setOpen(false);
-  }
+  }, [handlePageChange, lastPage, selectedPage]);
 
   const nextPath = new URLSearchParams(searchParams);
   nextPath.set('page', nextPage.toString());
@@ -164,13 +152,13 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
           <PaginationItem>
             <Button
               className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
-                'bg-secondary text-brand-foreground': lastNumber === currentPage,
+                'bg-secondary text-brand-foreground': lastPage === currentPage,
               })}
               title="prev"
-              onClick={() => handlePageChange(lastNumber)}
+              onClick={() => handlePageChange(lastPage)}
               variant="icon"
             >
-              {lastNumber}
+              {lastPage}
             </Button>
           </PaginationItem>
         )}
@@ -179,19 +167,47 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
             <ChevronRightIcon className="size-5" />
           </Button>
         </PaginationItem>
-        <ComboBox
-          className="w-20 rounded-sm"
-          searchBar={false}
-          value={{ label: size.toString(), value: size }}
-          values={sizes.map((size) => ({
-            label: size.toString(),
-            value: size,
-          }))}
-          onChange={handleSizeChange}
-        />
+        <SizeSelector sizes={sizes} />
       </PaginationContent>
       <Link href={`?${prevPath.toString()}`} shallow />
       <Link href={`?${nextPath.toString()}`} shallow />
     </Pagination>
+  );
+}
+
+type SizeSelectorProps = {
+  sizes: number[];
+};
+function SizeSelector({ sizes }: SizeSelectorProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const {
+    config: { paginationSize: size },
+    setConfig,
+  } = useSession();
+
+  const handleSizeChange = useCallback(
+    (size: number | undefined) => {
+      setConfig('paginationSize', size ?? 10);
+
+      const path = new URLSearchParams(searchParams);
+      path.set('size', (size ?? 10).toString());
+      router.replace(`?${path.toString()}`);
+    },
+    [router, searchParams, setConfig],
+  );
+
+  return (
+    <ComboBox
+      className="w-20 rounded-sm"
+      searchBar={false}
+      value={{ label: size.toString(), value: size }}
+      values={sizes.map((size) => ({
+        label: size.toString(),
+        value: size,
+      }))}
+      onChange={handleSizeChange}
+    />
   );
 }
