@@ -30,7 +30,6 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,
     ns,
-    saveMissing: true,
     backend: {
       backends: [LocalStorageBackend, HttpApi],
       backendOptions: [
