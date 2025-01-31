@@ -25,7 +25,7 @@ type SchematicPreviewCardProps = {
   imageCount: number;
 };
 
-function SchematicPreviewCard({ schematic: { id, name, likes, dislikes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
+export default function SchematicPreviewCard({ schematic: { id, name, likes, dislikes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
   const axios = useClientApi();
   const { locale } = useParams();
 
@@ -67,5 +67,3 @@ function SchematicPreviewCard({ schematic: { id, name, likes, dislikes, download
     </Preview>
   );
 }
-
-export default SchematicPreviewCard;

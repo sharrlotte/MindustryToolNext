@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -15,7 +15,6 @@ import { toast } from '@/components/ui/sonner';
 
 import useQueriesData from '@/hooks/use-queries-data';
 import { PresetType, addTagPreset } from '@/lib/utils';
-import { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,8 +35,6 @@ export default function CreatePresetButton({ tags, type }: CreatePresetButtonPro
       name: '',
     },
   });
-
-  const values = useMemo(() => Tags.fromTagGroup(tags), [tags]);
 
   function createPreset({ name }: { name: string }) {
     addTagPreset({ name, tags: tags || [], type });
@@ -75,7 +72,7 @@ export default function CreatePresetButton({ tags, type }: CreatePresetButtonPro
                 </FormItem>
               )}
             />
-            <TagContainer tags={values} />
+            <TagContainer tagGroups={tags} />
             <div className="flex justify-end gap-1">
               <DialogClose asChild>
                 <Button variant="secondary" type="submit">

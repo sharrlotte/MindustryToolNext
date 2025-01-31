@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 
 import { FilterIcon, SearchIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
@@ -12,7 +12,7 @@ import ModFilter from '@/components/search/mod-filter';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { SortDropdown } from '@/components/search/sort-dropdown';
 import { FilterTag } from '@/components/tag/filter-tags';
-import TagContainer from '@/components/tag/tag-container';
+import TagBadgeContainer from '@/components/tag/tag-badge-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -26,7 +26,7 @@ import { QueryParams } from '@/query/config/search-query-params';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
-import Tag, { Tags } from '@/types/response/Tag';
+import Tag from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
@@ -180,13 +180,12 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
     });
   }, []);
 
-  const displayTags = useMemo(() => Tags.fromTagGroupWithSource(filterBy, tags), [filterBy, tags]);
-
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex justify-center gap-2">
         <SearchBar className="h-10">
-          <SearchIcon className="p-1" />
+          <SearchIcon className="size-6 shrink-0" />
+          <TagBadgeContainer tagGroups={filterBy} handleDeleteTag={handleDeleteTag} />
           <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
         </SearchBar>
         {useTag && (
@@ -196,7 +195,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
         )}
       </div>
       <Suspense>
-        <TagContainer tags={displayTags} handleDeleteTag={handleDeleteTag} />
         {useTag && showFilterDialog && (
           <div
             className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {

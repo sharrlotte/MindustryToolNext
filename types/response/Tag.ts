@@ -22,6 +22,7 @@ export type TagDto = {
   position: number;
   icon?: string;
   modId?: string;
+  fullname: string;
 };
 
 export default Tag;

@@ -51,27 +51,24 @@ export function useMe() {
 export default function ClientSessionProvider({ session: init, children }: { session: ServerSessionContextType; children: ReactNode }) {
   const [{ Locale, paginationSize, paginationType }, _setConfig] = useCookies([PAGINATION_TYPE_PERSISTENT_KEY, PAGINATION_SIZE_PERSISTENT_KEY, cookieName]);
 
-  const config = useMemo(
-    () => ({
-      paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
-      paginationSize: paginationSize ? Number(paginationSize) : DEFAULT_PAGINATION_SIZE,
-      Locale: Locale ?? defaultLocale,
-    }),
-    [paginationSize, paginationType, Locale],
-  );
-
   const setConfig = useCallback(<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }), [_setConfig]);
-  const [session, setSession] = useState<SessionContextType>({ ...init, setConfig: setConfig });
+  const [session, setSession] = useState<SessionContextType>(() => ({ ...init, setConfig: setConfig }));
 
   useEffect(() => {
     setSession((prev) => {
+      const config = {
+        paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
+        paginationSize: paginationSize ? Number(paginationSize) : DEFAULT_PAGINATION_SIZE,
+        Locale: Locale ?? defaultLocale,
+      };
+
       if (prev.config.paginationSize === config.paginationSize && prev.config.paginationType === config.paginationType && prev.config.Locale === config.Locale) {
         return prev;
       }
 
       return { ...prev, config };
     });
-  }, [config]);
+  }, [paginationType, paginationSize, Locale]);
 
   return <SessionContext.Provider value={session}>{children}</SessionContext.Provider>;
 }

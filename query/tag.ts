@@ -2,10 +2,15 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
 import { toForm } from '@/lib/utils';
+import { DetailTagDto } from '@/types/response/Tag';
 import { AllTagGroup, TagCategoryDto, TagDetailDto, TagGroupDto } from '@/types/response/TagGroup';
 
 export async function getTags(axios: AxiosInstance, modId?: string): Promise<AllTagGroup> {
   const { data } = await axios.get('/tags', { params: { modId } });
+  return data;
+}
+export async function searchTags(axios: AxiosInstance, tags: string[]): Promise<DetailTagDto[]> {
+  const { data } = await axios.get('/tags/search', { params: { tags } });
   return data;
 }
 

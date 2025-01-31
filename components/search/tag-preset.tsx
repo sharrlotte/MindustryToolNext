@@ -14,7 +14,6 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 
 import useQueriesData from '@/hooks/use-queries-data';
 import { PresetType, TagPreset, deleteTagPreset, getTagPreset } from '@/lib/utils';
-import { Tags } from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
 
 import { useQuery } from '@tanstack/react-query';
@@ -92,7 +91,7 @@ function TagPresetCard({ preset: { name, tags, type }, onClick }: TagPresetCardP
     <div className="flex cursor-pointer items-start justify-between rounded-sm bg-card p-2">
       <div className="space-y-1" onClick={handleClick}>
         <span className="font-bold">{name}</span>
-        <TagContainer tags={Tags.fromTagGroup(tags)} />
+        <TagContainer tagGroups={tags} />
       </div>
       <Button className="p-0" variant="icon" size="icon" onClick={handleDeletePreset}>
         <XIcon />

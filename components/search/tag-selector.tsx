@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { SearchIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -19,7 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import useTags from '@/hooks/use-tags';
 import { PresetType, cn } from '@/lib/utils';
 import { Mod } from '@/types/response/Mod';
-import Tag, { DetailTagDto, Tags } from '@/types/response/Tag';
+import Tag, { DetailTagDto } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
@@ -95,18 +95,16 @@ export default function TagSelector({ initialValue, type, value, onChange, disab
     [onChange],
   );
 
-  const displayTags = useMemo(() => Tags.fromTagGroup(value), [value]);
-
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           <Button className="w-fit text-nowrap" variant="primary" title="add-tag" disabled={disabled} onClick={handleShowFilterDialog}>
-            <Tran text="add-tag" />({displayTags.length})
+            <Tran text="add-tag" />
           </Button>
           <TagPreset type={type} onPresetChoose={(value) => onChange(() => value)} />
         </div>
-        {!hideSelectedTag && <TagContainer className="justify-start" tags={displayTags} handleDeleteTag={handleDeleteTag} />}
+        {!hideSelectedTag && <TagContainer className="justify-start" tagGroups={value} handleDeleteTag={handleDeleteTag} />}
       </div>
       <div className={cn('fixed inset-0 z-50 hidden items-center justify-center backdrop-blur-sm', { flex: showFilterDialog })}>
         <div className="flex h-screen w-screen items-center justify-center md:h-4/5 md:w-4/5">
