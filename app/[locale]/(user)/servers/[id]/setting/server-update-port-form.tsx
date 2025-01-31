@@ -90,6 +90,40 @@ export default function ServerUpdatePortForm({ server: { id, port, official } }:
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="hub"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-1">
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
+                  </FormControl>
+                  <FormLabel>
+                    <Tran text="server.is-hub" />
+                  </FormLabel>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="autoTurnOff"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-1">
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
+                  </FormControl>
+                  <FormLabel>
+                    <Tran text="server.is-auto-turn-off" />
+                  </FormLabel>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <div
           className={cn('flex justify-end gap-2 opacity-0 translate-y-full transition-all', {

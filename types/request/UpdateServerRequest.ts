@@ -16,6 +16,8 @@ export type PutServerRequest = z.infer<typeof PutServerSchema>;
 export const PutServerPortSchema = z.object({
   port: z.coerce.number().min(1).int(),
   official: z.boolean(),
+  hub: z.boolean(),
+  autoTurnOff: z.boolean(),
 });
 
 export type PutServerPortRequest = z.infer<typeof PutServerPortSchema>;
