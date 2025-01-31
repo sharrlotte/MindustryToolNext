@@ -1,7 +1,7 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, { ReactNode, useEffect, useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { z } from 'zod';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -9,7 +9,6 @@ import NoResult from '@/components/common/no-result';
 import RouterSpinner from '@/components/common/router-spinner';
 
 import useClientApi from '@/hooks/use-client';
-import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { QuerySchema } from '@/query/search-query';
