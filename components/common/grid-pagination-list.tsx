@@ -51,6 +51,8 @@ export default function GridPaginationList<T, P extends QuerySchema>({ className
   noResult = useMemo(() => noResult ?? <NoResult className="flex w-full items-center justify-center" />, [noResult]);
   loader = useMemo(() => (!loader && !skeleton ? <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" /> : undefined), [loader, skeleton]);
 
+  console.log({ p });
+
   if (asChild) {
     return (
       <Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult}>
