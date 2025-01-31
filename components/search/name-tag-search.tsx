@@ -12,7 +12,7 @@ import ModFilter from '@/components/search/mod-filter';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { SortDropdown } from '@/components/search/sort-dropdown';
 import { FilterTag } from '@/components/tag/filter-tags';
-import TagContainer from '@/components/tag/tag-container';
+import TagBadgeContainer from '@/components/tag/tag-badge-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -28,7 +28,6 @@ import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag, { Tags } from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import TagBadgeContainer from '@/components/tag/tag-badge-container';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
 
