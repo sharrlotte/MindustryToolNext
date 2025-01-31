@@ -113,7 +113,7 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
       return config;
     }
 
-    config.params['size'] = cookie.get(PAGINATION_SIZE_PERSISTENT_KEY) ?? DEFAULT_PAGINATION_SIZE;
+    config.params['size'] = cookie.get(PAGINATION_SIZE_PERSISTENT_KEY)?.value ?? DEFAULT_PAGINATION_SIZE;
 
     return config;
   });
