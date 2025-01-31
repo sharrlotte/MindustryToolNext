@@ -21,7 +21,7 @@ type LoginLogCardProps = {
 };
 
 async function LoginTable() {
-  const data = await serverApi((axios) => getLogs(axios, { page: 0, collection: 'USER_LOGIN' }));
+  const data = await serverApi((axios) => getLogs(axios, { page: 0, size: 20, env: 'Prod', collection: 'USER_LOGIN' }));
 
   if (isError(data)) {
     return <ErrorScreen error={data} />;
