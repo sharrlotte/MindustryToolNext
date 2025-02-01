@@ -6,6 +6,9 @@ import { QueryClientConfig } from '@tanstack/react-query';
 export const persister = experimental_createPersister({
   storage: typeof window === 'undefined' ? null : localStorage,
   maxAge: 1000 * 60 * 60 * 12, // 12 hours
+  filters: {
+    queryKey: ['users', 'tag-search'],
+  },
 }) as any;
 
 const queryClientConfig: QueryClientConfig = {
