@@ -13,6 +13,46 @@ import { Player } from '@/types/response/Player';
 type PlayersCardProps = {
   id: string;
 };
+
+const localeToFlag: Record<string, string> = {
+  be: '🇧🇾', // Belarus
+  bg: '🇧🇬', // Bulgaria
+  ca: '🇪🇸', // Catalonia (Spain)
+  cs: '🇨🇿', // Czech Republic
+  da: '🇩🇰', // Denmark
+  de: '🇩🇪', // Germany
+  es: '🇪🇸', // Spain
+  et: '🇪🇪', // Estonia
+  eu: '🇪🇸', // Basque (Spain)
+  fi: '🇫🇮', // Finland
+  fil: '🇵🇭', // Philippines
+  fr: '🇫🇷', // France
+  hu: '🇭🇺', // Hungary
+  id_ID: '🇮🇩', // Indonesia
+  it: '🇮🇹', // Italy
+  ja: '🇯🇵', // Japan
+  ko: '🇰🇷', // South Korea
+  lt: '🇱🇹', // Lithuania
+  nl: '🇳🇱', // Netherlands
+  nl_BE: '🇧🇪', // Dutch (Belgium)
+  pl: '🇵🇱', // Poland
+  pt_BR: '🇧🇷', // Brazil
+  pt_PT: '🇵🇹', // Portugal
+  ro: '🇷🇴', // Romania
+  ru: '🇷🇺', // Russia
+  sr: '🇷🇸', // Serbia
+  sv: '🇸🇪', // Sweden
+  th: '🇹🇭', // Thailand
+  tk: '🇹🇲', // Turkmenistan
+  tr: '🇹🇷', // Turkey
+  uk_UA: '🇺🇦', // Ukraine
+  vi: '🇻🇳', // Vietnam
+  zh_CN: '🇨🇳', // China
+  zh_TW: '🇹🇼', // Taiwan
+};
+
+export default localeToFlag;
+
 export async function PlayersCard({ id }: PlayersCardProps) {
   const players = await serverApi((axios) => getServerPlayers(axios, id));
 
@@ -47,13 +87,14 @@ export function PlayersCardSkeleton({ players }: PlayersCardSkeletonProps) {
 type PlayerCardProps = {
   player: Player;
 };
-async function PlayerCard({ player: { userId, name, team } }: PlayerCardProps) {
+async function PlayerCard({ player: { locale, userId, name, team } }: PlayerCardProps) {
   return (
     <ContextMenu>
       <ContextMenuTrigger>
         <div className="flex flex-col justify-between gap-1 px-4 py-1 hover:bg-secondary">
           <div className="flex justify-between gap-1">
             <ColorText className="text-lg font-semibold" text={name} />
+            {locale && localeToFlag[locale]}
             {userId && <IdUserCard id={userId} />}
           </div>
           <div className="border-b-2" style={{ borderColor: `#${team.color}` }} />
