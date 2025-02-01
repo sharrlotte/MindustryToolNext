@@ -31,8 +31,11 @@ function findOne(str: string) {
   return -1;
 }
 
-export function parseIconString(text: string) {
+export function parseIconString(text?: string) {
   const result: TextOrIcon[] = [];
+
+  if (!text) return result;
+
   let index = -1;
 
   do {

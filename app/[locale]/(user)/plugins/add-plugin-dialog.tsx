@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
+import { Switch } from '@/components/ui/switch';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -21,7 +22,7 @@ import { TagGroups } from '@/types/response/TagGroup';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-export default function AddPluginForm() {
+export default function AddPluginDialog() {
   const axios = useClientApi();
 
   const { invalidateByKey } = useQueriesData();
@@ -33,6 +34,8 @@ export default function AddPluginForm() {
       description: '',
       tags: [],
       url: '',
+      bearerToken: '',
+      isPrivate: false,
     },
   });
 
@@ -132,6 +135,38 @@ export default function AddPluginForm() {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="isPrivate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <Tran text="is-private" />
+                      </FormLabel>
+                      <FormControl>
+                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {form.getValues('isPrivate') && (
+                  <FormField
+                    control={form.control}
+                    name="bearerToken"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          <Tran text="plugin.bearer-token" />
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Github bearer token" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
               <div className="flex flex-col items-end justify-center rounded-md p-2">
                 <Button className="w-fit" variant="primary" type="submit" title="upload" disabled={isPending}>

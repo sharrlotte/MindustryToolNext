@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
 
@@ -30,6 +31,14 @@ import { CreateMapRequest, CreateMapSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -118,20 +127,13 @@ type UploadProps = {
   setPreview: (data?: MapPreviewResponse) => void;
 };
 
-type FormData = {
-  name: string;
-  description: string;
-  tags: TagGroup[];
-  file: File;
-};
-
 function Upload({ file, preview, setFile, setPreview }: UploadProps) {
   const { session } = useSession();
 
   const { t } = useI18n();
   const axios = useClientApi();
 
-  const form = useForm<FormData>({
+  const form = useForm<Omit<CreateMapRequest, 'tags'> & { tags: TagGroup[] }>({
     resolver: zodResolver(CreateMapSchema(t)),
     defaultValues: {
       name: preview.name,
@@ -231,6 +233,21 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
                 </FormLabel>
                 <FormControl>
                   <TagSelector initialValue={[]} type="map" value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isPrivate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  <Tran text="is-private" />
+                </FormLabel>
+                <FormControl>
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
