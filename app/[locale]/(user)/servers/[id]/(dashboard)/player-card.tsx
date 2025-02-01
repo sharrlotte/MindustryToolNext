@@ -92,8 +92,8 @@ async function PlayerCard({ player: { locale, userId, name, team } }: PlayerCard
     <ContextMenu>
       <ContextMenuTrigger>
         <div className="flex flex-col justify-between gap-1 px-4 py-1 hover:bg-secondary">
-          <div className="flex justify-between gap-1">
-            <ColorText className="text-lg font-semibold" text={name} />
+          <div className="flex text-lg justify-between gap-1">
+            <ColorText className="font-semibold" text={name} />
             {locale && localeToFlag[locale]}
             {userId && <IdUserCard id={userId} />}
           </div>
