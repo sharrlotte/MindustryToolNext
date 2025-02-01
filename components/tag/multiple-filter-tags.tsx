@@ -30,7 +30,7 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
 
   return (
     <div className="flex w-full flex-wrap justify-start py-2 gap-1">
-      <TagName className="whitespace-nowrap text-lg capitalize">{`tags.${group.name}`}</TagName>
+      <TagName className="whitespace-nowrap text-lg capitalize">{group.name}</TagName>
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map((value) => (
         <button
