@@ -1,14 +1,14 @@
 import React from 'react';
+import { useCookies } from 'react-cookie';
 
 import { FilterTag } from '@/components/tag/filter-tags';
 import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 import { Separator } from '@/components/ui/separator';
 
+import { SHOW_TAG_NAME_PERSISTENT_KEY } from '@/constant/constant';
 import { cn } from '@/lib/utils';
 import TagGroup from '@/types/response/TagGroup';
-import { SHOW_TAG_NAME_PERSISTENT_KEY } from '@/constant/constant';
-import { useCookies } from 'react-cookie';
 
 type SingeFilerTagsProps = {
   group: TagGroup;
@@ -21,7 +21,7 @@ function SingeFilerTags({ group, selectedValue, handleTagGroupChange }: SingeFil
 
   return (
     <div className="flex w-full flex-wrap justify-start py-2 gap-1">
-      <TagName className="whitespace-nowrap text-lg capitalize">{`tags.${group.name}`}</TagName>
+      <TagName className="whitespace-nowrap text-lg capitalize">{group.name}</TagName>
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map((value) => (
         <button
