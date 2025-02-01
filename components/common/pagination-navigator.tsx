@@ -47,6 +47,8 @@ function QueryPaginationNavigator({ queryKey, numberOfItems, sizes }: QueryPagin
   const query = useSearchParams();
   const params = groupParamsByKey(query);
 
+  console.log(params);
+
   const { data } = useClientQuery({
     queryKey: [...queryKey, omit(params, 'page', 'sort')],
     queryFn: (axios) => numberOfItems(axios, params),

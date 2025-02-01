@@ -28,7 +28,7 @@ type Props = {
 
 export default function ServerMaps({ id }: Props) {
   return (
-    <div className="flex flex-col gap-2 overflow-hidden">
+    <div className="flex flex-col gap-2 overflow-hidden h-full">
       <div className="flex h-14 items-center justify-end bg-card p-2">
         <AddMapDialog serverId={id} />
       </div>
