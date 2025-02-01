@@ -37,8 +37,8 @@ function TagBadge({ tag: tagDetail, className, onDelete, ...props }: TagBadgePro
     >
       <TagTooltip value={value}>
         <TagName>{name}</TagName>
-        <TagIcon>{icon}</TagIcon>
         <TagName>{value}</TagName>
+        <TagIcon>{icon}</TagIcon>
       </TagTooltip>
       {hasDelete && <XIcon className="size-4 group-hover:block group-focus:block hidden" />}
     </span>

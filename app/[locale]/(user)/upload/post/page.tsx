@@ -240,7 +240,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
             }))}
             onChange={(value) => setLanguage(value ?? '')}
           />
-          <TagSelector initialValue={[]} type="post" value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
+          <TagSelector type="post" value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
           <Button
             className="ml-auto"
             title="submit"

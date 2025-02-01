@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { SearchIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -19,13 +19,12 @@ import { Separator } from '@/components/ui/separator';
 import useTags from '@/hooks/use-tags';
 import { PresetType, cn } from '@/lib/utils';
 import { Mod } from '@/types/response/Mod';
-import Tag, { DetailTagDto } from '@/types/response/Tag';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import Tag from '@/types/response/Tag';
+import TagGroup from '@/types/response/TagGroup';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 
 type TagSelectorProps = {
-  initialValue: DetailTagDto[];
   disabled?: boolean;
   hideSelectedTag?: boolean;
   value: TagGroup[];
@@ -33,7 +32,7 @@ type TagSelectorProps = {
   onChange: (fn: (value: TagGroup[]) => TagGroup[]) => void;
 };
 
-export default function TagSelector({ initialValue, type, value, onChange, disabled = false, hideSelectedTag }: TagSelectorProps) {
+export default function TagSelector({ type, value, onChange, disabled = false, hideSelectedTag }: TagSelectorProps) {
   const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
   const [filter, setFilter] = useState('');
 
@@ -43,10 +42,6 @@ export default function TagSelector({ initialValue, type, value, onChange, disab
   const handleHideFilterDialog = useCallback(() => setShowFilterDialog(false), [setShowFilterDialog]);
 
   const tags = useTags(type, selectedMod);
-
-  useEffect(() => {
-    onChange(() => TagGroups.parsTagDto(initialValue));
-  }, [tags, initialValue, onChange]);
 
   const handleTagGroupChange = useCallback(
     (name: string, values: FilterTag[]) => {
@@ -96,7 +91,13 @@ export default function TagSelector({ initialValue, type, value, onChange, disab
   );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div
+      className="flex flex-col gap-2"
+      onSubmit={(event) => {
+        event.stopPropagation();
+        event.preventDefault();
+      }}
+    >
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           <Button className="w-fit text-nowrap" variant="primary" title="add-tag" disabled={disabled} onClick={handleShowFilterDialog}>

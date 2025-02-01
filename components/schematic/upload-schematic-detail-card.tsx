@@ -19,7 +19,7 @@ import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import { getSchematicData } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
-import TagGroup from '@/types/response/TagGroup';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 type UploadSchematicDetailCardProps = {
   schematic: SchematicDetail;
@@ -39,7 +39,7 @@ export default function UploadSchematicDetailCard({
 }: UploadSchematicDetailCardProps) {
   const axios = useClientApi();
 
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(TagGroups.parsTagDto(tags));
 
   const { locale } = useParams();
 
@@ -72,7 +72,7 @@ export default function UploadSchematicDetailCard({
             </span>
             <DetailDescription>{description}</DetailDescription>
             <ItemRequirementCard requirements={requirements} />
-            <TagSelector type="schematic" initialValue={tags} value={selectedTags} onChange={setSelectedTags} />
+            <TagSelector type="schematic" value={selectedTags} onChange={setSelectedTags} />
           </DetailHeader>
         </DetailInfo>
         <DetailActions>

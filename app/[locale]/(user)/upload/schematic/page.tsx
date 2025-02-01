@@ -40,6 +40,8 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   return <Preview />;
 }
@@ -263,7 +265,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <TagSelector type="schematic" initialValue={[]} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                  <TagSelector type="schematic" value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
