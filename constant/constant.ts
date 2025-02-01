@@ -15,3 +15,5 @@ export type ItemType = (typeof itemTypes)[number];
 export type TagType = keyof AllTagGroup;
 
 export const acceptedImageFormats = '.png, .jpg, .jpeg, .webp';
+
+export const SHOW_TAG_NAME_PERSISTENT_KEY = "showTagName"

@@ -2,6 +2,7 @@ import React, { HTMLAttributes, useCallback } from 'react';
 
 import { XIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
+import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 import TagTooltip from '@/components/tag/tag-tooltip';
 
@@ -35,14 +36,9 @@ function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps
       {...props}
     >
       <TagTooltip value={value}>
-        <TagName icon={icon}>
-          <Tran text={`tags.${name}`} />
-        </TagName>
-        (
-        <TagName>
-          <Tran text={`tags.${value}`} />
-        </TagName>
-        )
+        <TagName>{name}</TagName>
+        <TagIcon>{icon}</TagIcon>
+        <TagName>{value}</TagName>
       </TagTooltip>
       {hasDelete && <XIcon className="size-4" />}
     </span>

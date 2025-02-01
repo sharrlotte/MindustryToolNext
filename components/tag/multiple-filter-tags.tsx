@@ -1,10 +1,12 @@
 import React from 'react';
+import { useCookies } from 'react-cookie';
 
-import Tran from '@/components/common/tran';
 import { FilterTag } from '@/components/tag/filter-tags';
+import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 import { Separator } from '@/components/ui/separator';
 
+import { SHOW_TAG_NAME_PERSISTENT_KEY } from '@/constant/constant';
 import { cn } from '@/lib/utils';
 import TagGroup from '@/types/response/TagGroup';
 
@@ -15,6 +17,8 @@ type MultipleFilerTagsProps = {
 };
 
 export default function MultipleFilerTags({ group, selectedValue, handleTagGroupChange }: MultipleFilerTagsProps) {
+  const [{ showTagName }] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY]);
+
   const handleClick = (value: FilterTag) => {
     const index = selectedValue.map((v) => v.name).indexOf(value.name);
     if (index === -1) {
@@ -26,21 +30,18 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
 
   return (
     <div className="flex w-full flex-wrap justify-start py-2 gap-1">
-      <TagName className="whitespace-nowrap text-lg capitalize">
-        <Tran text={`tags.${group.name}`} />
-      </TagName>
+      <TagName className="whitespace-nowrap text-lg capitalize">{`tags.${group.name}`}</TagName>
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map((value) => (
         <button
-          className={cn('capitalize hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', {
+          className={cn('capitalize flex items-center gap-1 hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', {
             'bg-brand text-brand-foreground': selectedValue.map((v) => v.name).includes(value.name),
           })}
           key={value.name}
           onClick={() => handleClick(value)}
         >
-          <TagName icon={value.icon}>
-            <Tran text={`tags.${value.name}`} />
-          </TagName>
+          <TagIcon>{value.icon}</TagIcon>
+          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}
         </button>
       ))}
     </div>

@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
 import Script from 'next/script';
+import NextTopLoader from 'nextjs-toploader';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -114,6 +115,7 @@ export default async function Root({ children, params }: RootProps) {
             <SessionProvider>
               <SocketProvider>
                 <Toaster />
+                <NextTopLoader />
                 <NavigationBar>{children}</NavigationBar>
               </SocketProvider>
             </SessionProvider>

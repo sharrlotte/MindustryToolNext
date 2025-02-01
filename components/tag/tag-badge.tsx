@@ -1,7 +1,7 @@
 import React, { HTMLAttributes, useCallback } from 'react';
 
 import { XIcon } from '@/components/common/icons';
-import Tran from '@/components/common/tran';
+import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 import TagTooltip from '@/components/tag/tag-tooltip';
 
@@ -36,14 +36,9 @@ function TagBadge({ tag: tagDetail, className, onDelete, ...props }: TagBadgePro
       {...props}
     >
       <TagTooltip value={value}>
-        <TagName icon={icon}>
-          <Tran text={`tags.${name}`} />
-        </TagName>
-        (
-        <TagName>
-          <Tran text={`tags.${value}`} />
-        </TagName>
-        )
+        <TagName>{name}</TagName>
+        <TagIcon>{icon}</TagIcon>
+        <TagName>{value}</TagName>
       </TagTooltip>
       {hasDelete && <XIcon className="size-4 group-hover:block group-focus:block hidden" />}
     </span>
