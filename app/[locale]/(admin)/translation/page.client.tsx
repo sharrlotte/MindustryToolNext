@@ -166,7 +166,7 @@ function CompareTable({ language, target, tKey: key }: CompareTableProps) {
           <GridPaginationList
             paramSchema={TranslationPaginationQuery}
             params={{ language, target, key: key }}
-            queryKey={['translations', 'compare']}
+            queryKey={['translations', 'compare', language, target, key]}
             queryFn={getTranslationCompare}
             noResult={<Fragment></Fragment>}
             skeleton={{
