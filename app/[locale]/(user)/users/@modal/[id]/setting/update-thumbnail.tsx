@@ -60,7 +60,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
       <label className="flex cursor-pointer items-center justify-center overflow-hidden" htmlFor="image" hidden>
         {imageUrl && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img className="object-scale-down" src={imageUrl} alt="preview" />
+          <img className="object-scale-down border border-border w-full min-h-60 p-2 text-center rounded-lg overflow-hidden" src={imageUrl} alt="preview" />
         )}
       </label>
       {file ? (
@@ -68,7 +68,7 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
           <Tran text="user.update-thumbnail" />
         </Button>
       ) : (
-        <label className="flex h-fit w-fit cursor-pointer gap-1 justify-center items-center rounded-sm border px-2 py-1" htmlFor="image">
+        <label className="flex h-fit w-fit cursor-pointer gap-1 border-border justify-center items-center rounded-sm border px-2 py-1" htmlFor="image">
           <ImageIcon className="size-5" />
           <Tran text="user.upload-thumbnail" />
         </label>

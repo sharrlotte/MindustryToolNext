@@ -1,10 +1,13 @@
 import React from 'react';
 
 import UpdateThumbnail from '@/app/[locale]/(user)/users/@modal/[id]/setting/update-thumbnail';
+import UserSettings from '@/app/[locale]/(user)/users/@modal/[id]/setting/user-settings';
 
 import ErrorScreen from '@/components/common/error-screen';
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
+import Divider from '@/components/ui/divider';
 
 import { getSession } from '@/action/action';
 import ProtectedElement from '@/layout/protected-element';
@@ -23,8 +26,20 @@ export default async function Page() {
 
   return (
     <ProtectedElement session={session} filter={true}>
-      <ScrollContainer>
-        <UpdateThumbnail id={session.id} />
+      <ScrollContainer className="p-4 space-y-8">
+        <section className="space-y-4">
+          <h3>
+            <Tran text="user.profile" asChild />
+          </h3>
+          <UpdateThumbnail id={session.id} />
+        </section>
+        <Divider />
+        <section className="space-y-4">
+          <h3>
+            <Tran text="user.setting" asChild />
+          </h3>
+          <UserSettings />
+        </section>
       </ScrollContainer>
     </ProtectedElement>
   );
