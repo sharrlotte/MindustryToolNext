@@ -1,7 +1,6 @@
 import React, { HTMLAttributes, useCallback } from 'react';
 
 import { XIcon } from '@/components/common/icons';
-import Tran from '@/components/common/tran';
 import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 import TagTooltip from '@/components/tag/tag-tooltip';
