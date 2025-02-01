@@ -60,6 +60,8 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   const axios = useClientApi();
   const [file, setFile] = useState<File>();
@@ -232,7 +234,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
                   <Tran text="tags" />
                 </FormLabel>
                 <FormControl>
-                  <TagSelector initialValue={[]} type="map" value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                  <TagSelector type="map" value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

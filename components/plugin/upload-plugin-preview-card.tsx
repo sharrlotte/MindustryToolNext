@@ -86,7 +86,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
   const form = useForm<VerifyPluginRequestData>({
     resolver: zodResolver(VerifyPluginSchema),
     defaultValues: {
-      tags: [],
+      tags: TagGroups.parsTagDto(tags),
     },
   });
 
@@ -133,7 +133,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
                         <Tran text="plugin.tags" />
                       </FormLabel>
                       <FormControl>
-                        <TagSelector type="plugin" initialValue={tags} value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+                        <TagSelector type="plugin" value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

@@ -15,14 +15,14 @@ import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
 import { MapDetail } from '@/types/response/MapDetail';
-import TagGroup from '@/types/response/TagGroup';
+import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
 type UploadMapDetailCardProps = {
   map: MapDetail;
 };
 
 export default function UploadMapDetailCard({ map: { id, name, tags, description, userId, width, height } }: UploadMapDetailCardProps) {
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(TagGroups.parsTagDto(tags));
 
   const { locale } = useParams();
 
@@ -47,7 +47,7 @@ export default function UploadMapDetailCard({ map: { id, name, tags, description
               <Tran text="size" /> {width}x{height}
             </span>
             <DetailDescription>{description}</DetailDescription>
-            <TagSelector initialValue={tags} type="map" value={selectedTags} onChange={setSelectedTags} />
+            <TagSelector type="map" value={selectedTags} onChange={setSelectedTags} />
           </DetailHeader>
         </DetailInfo>
         <DetailActions>

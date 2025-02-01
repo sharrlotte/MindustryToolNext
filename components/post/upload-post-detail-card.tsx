@@ -28,13 +28,13 @@ type UploadPostDetailCardProps = {
 };
 
 export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps) {
+  const { id, title, userId, content, createdAt, tags } = post;
+
   const { back } = useRouter();
   const axios = useClientApi();
 
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
+  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(TagGroups.parsTagDto(tags));
   const { invalidateByKey } = useQueriesData();
-
-  const { id, title, userId, content, createdAt, tags } = post;
 
   const { mutate: verifyPostById, isPending: isVerifying } = useMutation({
     mutationFn: (data: VerifyPostRequest) => verifyPost(axios, data),
@@ -79,7 +79,7 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
           </div>
         </header>
         <footer className="flex justify-start gap-1 rounded-md bg-card p-2">
-          <TagSelector type="post" initialValue={tags} value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
+          <TagSelector type="post" value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
           <DeleteButton variant="default" className="w-fit" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
           <VerifyButton
             description={<Tran text="verify-alert" args={{ name: title }} />}
