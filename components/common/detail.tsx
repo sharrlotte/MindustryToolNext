@@ -93,7 +93,7 @@ export function DetailTagsCard({ className, tags }: TagsProps) {
 }
 
 type DescriptionProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
-  children: string;
+  children?: string;
 };
 
 export function DetailDescription({ className, children }: DescriptionProps) {

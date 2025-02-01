@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import AddPluginForm from '@/app/[locale]/(user)/plugins/add-plugin-form';
+import AddPluginDialog from '@/app/[locale]/(user)/plugins/add-plugin-dialog';
 
 import InfinitePage from '@/components/common/infinite-page';
 import PaginationNavigator from '@/components/common/pagination-navigator';
@@ -39,7 +39,7 @@ export default function Client({ plugins }: Props) {
         </InfinitePage>
       </ScrollContainer>
       <div className="flex justify-between">
-        <AddPluginForm />
+        <AddPluginDialog />
         <PaginationNavigator numberOfItems={getPluginCount} queryKey={['plugin', 'total']} />
       </div>
     </div>

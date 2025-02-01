@@ -1,10 +1,7 @@
 import { z } from 'zod';
 
-
-
 import { TranslateFunction } from '@/i18n/config';
 import { TagGroups } from '@/types/response/TagGroup';
-
 
 export const TAG_GROUP_SCHEMA = z.object({
   name: z.string(),
@@ -32,6 +29,7 @@ export const CreateMapSchema = (t: TranslateFunction) =>
     name: z.string().min(1).max(128),
     description: z.string().max(1024).optional(),
     file: z.any(),
+    isPrivate: z.boolean().default(false),
     tags: z
       .array(TAG_GROUP_SCHEMA)
       .min(1, { message: t('tag.min-tags-size') })
