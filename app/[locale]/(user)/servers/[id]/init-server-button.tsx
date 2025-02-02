@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 
 import ColorText from '@/components/common/color-text';
+import ErrorMessage from '@/components/common/error-message';
 import { CheckCircleIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -21,7 +22,7 @@ type Props = {
 export default function InitServerButton({ id }: Props) {
   const [visible, setVisible] = useState(false);
 
-  const { data, last, mutate, isPending, isSuccess } = useHttpStream({
+  const { data, last, mutate, isPending, isSuccess, isError, error } = useHttpStream({
     url: `${env.url.api}/servers/${id}/init`,
     method: 'POST',
     mutationKey: ['servers', id, 'init'],
@@ -70,9 +71,11 @@ export default function InitServerButton({ id }: Props) {
             <Tran text="server.initiating-server" asChild />
           </DialogTitle>
           <DialogDescription className="flex gap-1 overflow-hidden w-full text-ellipsis items-center">
-            {isPending ? <LoadingSpinner className="p-0 w-4 justify-start m-0" /> : <CheckCircleIcon className="w-4" />} <ColorText text={last} />
+            {isPending ? <LoadingSpinner className="p-0 w-4 justify-start m-0" /> : isError ? <ErrorMessage error={error} /> : <CheckCircleIcon className="w-4" />} <ColorText text={last} />
           </DialogDescription>
-          <ScrollContainer className="h-full flex-1 flex w-full flex-col overflow-x-auto">{data?.map((text, index) => <ColorText key={index} text={text} />)}</ScrollContainer>
+          <ScrollContainer className="h-full flex-1 flex w-full flex-col overflow-x-auto">
+            {data?.map((text, index) => <ColorText key={index} text={text} />)} {isError && <ErrorMessage error={error} />}
+          </ScrollContainer>
           {isSuccess && (
             <DialogClose className="ml-auto" asChild>
               <Button>
