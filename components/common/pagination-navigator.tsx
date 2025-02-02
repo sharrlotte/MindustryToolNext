@@ -13,7 +13,6 @@ import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/components/ui/pagination';
 
 import { useSession } from '@/context/session-context.client';
-import { DEFAULT_PAGINATION_SIZE } from '@/context/session-context.type';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn, groupParamsByKey, omit } from '@/lib/utils';
@@ -48,10 +47,6 @@ function QueryPaginationNavigator({ queryKey, numberOfItems, sizes }: QueryPagin
   const query = useSearchParams();
   const params = groupParamsByKey(query);
 
-  if (!('size' in params)) {
-    params['size'] = DEFAULT_PAGINATION_SIZE;
-  }
-
   const { data } = useClientQuery({
     queryKey: [...queryKey, omit(params, 'page', 'sort')],
     queryFn: (axios) => numberOfItems(axios, params),
@@ -70,6 +65,10 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   const [selectedPage, setSelectedPage] = useState(0);
   const params = useSearchQuery(PaginationQuerySchema);
   const searchParams = useSearchParams();
+
+  const {
+    config: { paginationSize: size },
+  } = useSession();
 
   const handlePageChange = useCallback(
     (page: number) => {
@@ -92,7 +91,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   );
 
   const currentPage = params.page;
-  const lastPage = Math.ceil(numberOfItems / params.size) - 1;
+  const lastPage = Math.ceil(numberOfItems / size) - 1;
 
   const hasNextPage = currentPage < lastPage;
   const hasPrevPage = currentPage > 0;
