@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { Suspense } from 'react';
 
 import CreateModDialog from '@/app/[locale]/(admin)/admin/setting/mods/create-mod-dialog';
 
@@ -67,8 +68,10 @@ function ModCard({ mod }: ModCardProps) {
       {icon && <Image width={48} height={48} className="size-12 object-cover" src={icon} alt={name} />}
       <h2 className="w-full text-ellipsis overflow-hidden text-wrap">{name}</h2>
       <EllipsisButton variant="ghost">
-        <UpdateModDialog mod={mod} />
-        <DeleteModDialog mod={mod} />
+        <Suspense>
+          <UpdateModDialog mod={mod} />
+          <DeleteModDialog mod={mod} />
+        </Suspense>
       </EllipsisButton>
     </div>
   );
