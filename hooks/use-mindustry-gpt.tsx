@@ -98,8 +98,13 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
         }
       } catch (error: any) {
         console.error(error);
-        data.set(requestId.current, { text: 'Error: ' + error.message, prompt });
-        setData(new Map(data));
+        const current = data.get(requestId.current);
+
+        if (current) {
+          data.set(requestId.current, { text: current.text + error.message, prompt });
+        } else {
+          data.set(requestId.current, { text: error.message, prompt });
+        }
       }
       setAbortController(null);
     },
