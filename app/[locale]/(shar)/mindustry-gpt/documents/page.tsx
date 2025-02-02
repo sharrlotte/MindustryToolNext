@@ -45,7 +45,7 @@ function AddDocumentButton() {
   const form = useForm<CreateDocumentRequest>({
     resolver: zodResolver(CreateDocumentSchema),
     defaultValues: {
-      content: '',
+      text: '',
       metadata: '',
     },
   });
@@ -83,11 +83,26 @@ function AddDocumentButton() {
               <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
                 <FormField
                   control={form.control}
-                  name="content"
+                  name="text"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
                         <Tran text="document.description" />
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea className="min-h-60" placeholder="Some cool stuff" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="metadata"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        <Tran text="document.metadata" />
                       </FormLabel>
                       <FormControl>
                         <Textarea className="min-h-60" placeholder="Some cool stuff" {...field} />

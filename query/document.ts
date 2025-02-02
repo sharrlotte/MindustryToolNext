@@ -23,3 +23,4 @@ export default async function createDocument(axios: AxiosInstance, data: CreateD
     data,
   });
 }
+
