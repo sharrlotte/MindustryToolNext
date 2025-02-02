@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/components/ui/pagination';
 
 import { useSession } from '@/context/session-context.client';
+import { DEFAULT_PAGINATION_SIZE } from '@/context/session-context.type';
 import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn, groupParamsByKey, omit } from '@/lib/utils';
@@ -46,6 +47,10 @@ type QueryPaginationNavigatorProps = {
 function QueryPaginationNavigator({ queryKey, numberOfItems, sizes }: QueryPaginationNavigatorProps) {
   const query = useSearchParams();
   const params = groupParamsByKey(query);
+
+  if (!('size' in params)) {
+    params['size'] = DEFAULT_PAGINATION_SIZE;
+  }
 
   const { data } = useClientQuery({
     queryKey: [...queryKey, omit(params, 'page', 'sort')],
