@@ -14,7 +14,7 @@ type Props = {
   regex: string[];
 };
 export default function NavbarLink({ children, path, regex }: Props) {
-  const { visible } = useNavBar();
+  const { visible, setVisible } = useNavBar();
   const currentPath = usePathname();
 
   return (
@@ -25,6 +25,7 @@ export default function NavbarLink({ children, path, regex }: Props) {
         'w-10': !visible,
       })}
       href={path}
+      onClick={() => setVisible(false)}
     >
       {children}
     </InternalLink>

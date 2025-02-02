@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
 
-
-
 import { ChatIconPath } from '@/app/chat-icon-path';
 import { MapPath } from '@/app/map-path';
 import { PluginPath } from '@/app/plugin-path';
@@ -10,16 +8,11 @@ import { SchematicPath } from '@/app/schematic-path';
 import { TranslationPathIcon } from '@/app/translation-path-icon';
 import { VerifyPathIcon } from '@/app/verify-path-icon';
 
-
-
 import { AnalyticIcon, BoxIcon, ChartIcon, CmdIcon, CommentIcon, CrownIcon, DocumentIcon, FileIcon, HomeIcon, LogIcon, MapIcon, MindustryGptIcon, PluginIcon, PostIcon, RatioIcon, SchematicIcon, ServerIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
-
-
 import { locales } from '@/i18n/config';
 import { Filter } from '@/lib/utils';
-
 
 const localesRegex = `/(${locales.join('|')})`;
 
@@ -120,7 +113,7 @@ export const groups: readonly PathGroup[] = [
         path: '/mindustry-gpt',
         name: <Tran asChild text="mindustry-gpt" />,
         icon: <MindustryGptIcon />,
-        regex: [`^${localesRegex}/mindustry-gpt`],
+        regex: [`^${localesRegex}/mindustry-gpt$`],
       },
       {
         id: 'rank',
@@ -251,14 +244,14 @@ export const groups: readonly PathGroup[] = [
         name: 'MindustryGPT',
         icon: <MindustryGptIcon />,
         filter: { authority: 'VIEW_DOCUMENT' },
-        regex: [`^${localesRegex}/mindustry-gpt-documents`],
+        regex: [`^${localesRegex}/mindustry-gpt`],
         path: [
           {
             id: 'mindustry-gpt-documents',
             name: 'Document',
             path: '/mindustry-gpt/documents',
             icon: <DocumentIcon />,
-            regex: [`^${localesRegex}/mindustry-gpt-documents`],
+            regex: [`^${localesRegex}/mindustry-gpt/documents`],
           },
         ],
       },
