@@ -29,6 +29,7 @@ export const tagsSchema = z
 export const languageSchema = z.enum(locales).default('en').catch('en');
 export const targetLanguageSchema = z.enum(locales).default('vi').catch('vi');
 export const languageKeySchema = z.string().optional();
+export const isTranslatedSchema = z.boolean().optional().nullable();
 
 export type QuerySchema = typeof PaginationQuerySchema;
 
@@ -67,6 +68,7 @@ export const TranslationPaginationQuery = z.object({
   language: languageSchema,
   target: targetLanguageSchema,
   key: languageKeySchema,
+  isTranslated: isTranslatedSchema,
 });
 
 export type PaginationQuery = {
