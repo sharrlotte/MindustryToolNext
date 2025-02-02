@@ -1,10 +1,10 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { Suspense } from 'react';
 
 import CreateModDialog from '@/app/[locale]/(admin)/admin/setting/mods/create-mod-dialog';
-import DeleteModDialog from '@/app/[locale]/(admin)/admin/setting/mods/delete-mod-dialog';
-import UpdateModDialog from '@/app/[locale]/(admin)/admin/setting/mods/update-mod-dialog';
 
 import LoadingSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
@@ -15,6 +15,9 @@ import { getMods } from '@/query/mod';
 import { Mod } from '@/types/response/Mod';
 
 import { useQuery } from '@tanstack/react-query';
+
+const DeleteModDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/mods/delete-mod-dialog'));
+const UpdateModDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/mods/update-mod-dialog'));
 
 export default function Page() {
   return (
@@ -65,8 +68,10 @@ function ModCard({ mod }: ModCardProps) {
       {icon && <Image width={48} height={48} className="size-12 object-cover" src={icon} alt={name} />}
       <h2 className="w-full text-ellipsis overflow-hidden text-wrap">{name}</h2>
       <EllipsisButton variant="ghost">
-        <UpdateModDialog mod={mod} />
-        <DeleteModDialog mod={mod} />
+        <Suspense>
+          <UpdateModDialog mod={mod} />
+          <DeleteModDialog mod={mod} />
+        </Suspense>
       </EllipsisButton>
     </div>
   );

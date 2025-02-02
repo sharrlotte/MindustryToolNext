@@ -42,7 +42,7 @@ export default function CreateGroupInfoPopover({ group }: Props) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger className="p-2 bg-secondary rounded-lg border">
+      <PopoverTrigger className="p-2 bg-secondary rounded-lg border border-border">
         <PlusIcon />
       </PopoverTrigger>
       <PopoverContent className="p-6 overflow-hidden h-[50dvh]">

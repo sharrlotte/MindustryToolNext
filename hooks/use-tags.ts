@@ -2,7 +2,7 @@ import { TagType } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import { getTags } from '@/query/tag';
 import { Mod } from '@/types/response/Mod';
-import { AllTagGroup } from '@/types/response/TagGroup';
+import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -16,6 +16,8 @@ export default function useTags(type: TagType, mod?: Mod) {
   return validateTags(data, type);
 }
 
-function validateTags(data: AllTagGroup | undefined, type: TagType) {
-  return data && type in data ? data[type]?.filter((v) => v.values.length > 0) : [];
+function validateTags(data: AllTagGroup | undefined, type: TagType): TagGroup[] {
+  const result = data && type in data ? data[type]?.filter((v) => v.values.length > 0) : [];
+
+  return result ?? [];
 }

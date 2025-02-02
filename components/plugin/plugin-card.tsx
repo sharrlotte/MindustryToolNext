@@ -62,7 +62,7 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
       </Link>
       <span className="line-clamp-2 h-full w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>
       <div className="flex gap-2">
-        <ProtectedElement session={session} filter={{ authorId: userId }}>
+        <ProtectedElement session={session} filter={{ any: [{ authorId: userId }, { authority: 'DELETE_PLUGIN' }] }}>
           <DeleteButton className="right-1 top-1 backdrop-brightness-100" variant="ghost" description={<Tran text="delete-alert" args={{ name }} />} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
         </ProtectedElement>
       </div>
