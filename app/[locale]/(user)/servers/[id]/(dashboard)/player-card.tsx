@@ -94,7 +94,7 @@ async function PlayerCard({ player: { locale, userId, name, team } }: PlayerCard
         <div className="flex flex-col justify-between gap-1 px-4 py-1 hover:bg-secondary">
           <div className="flex text-lg justify-between gap-1">
             <ColorText className="font-semibold" text={name} />
-            {locale && localeToFlag[locale]}
+            {locale && (localeToFlag[locale] ?? locale)}
             {userId && <IdUserCard id={userId} />}
           </div>
           <div className="border-b-2" style={{ borderColor: `#${team.color}` }} />

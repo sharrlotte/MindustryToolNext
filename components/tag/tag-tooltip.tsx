@@ -13,7 +13,7 @@ function TagTooltip({ value, children }: Props) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className="flex">{children}</span>
+          <span className="flex gap-1">{children}</span>
         </TooltipTrigger>
         <TooltipContent className="bg-foreground normal-case text-background">
           <Tran text={`tags.${value}.description`} />
