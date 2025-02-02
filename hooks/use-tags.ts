@@ -17,5 +17,5 @@ export default function useTags(type: TagType, mod?: Mod) {
 }
 
 function validateTags(data: AllTagGroup | undefined, type: TagType) {
-  return data && type in data ? data[type].filter((v) => v.values.length > 0) : [];
+  return data && type in data ? data[type]?.filter((v) => v.values.length > 0) : [];
 }
