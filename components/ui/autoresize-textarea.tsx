@@ -16,7 +16,7 @@ export const useAutosizeTextArea = ({ textAreaRef, triggerAutoSize, maxHeight = 
   const [init, setInit] = React.useState(true);
   React.useEffect(() => {
     // We need to reset the height momentarily to get the correct scrollHeight for the textarea
-    const offsetBorder = 2;
+    const offsetBorder = 4;
     const textAreaElement = textAreaRef.current;
     if (textAreaElement) {
       if (init) {
@@ -26,7 +26,7 @@ export const useAutosizeTextArea = ({ textAreaRef, triggerAutoSize, maxHeight = 
         }
         setInit(false);
       }
-      textAreaElement.style.height = `${minHeight + offsetBorder}px`;
+      textAreaElement.style.height = `${Math.ceil((minHeight + offsetBorder) / 5) * 5}px`;
       const scrollHeight = textAreaElement.scrollHeight;
       // We then set the height directly, outside of the render loop
       // Trying to set this with state or a ref will product an incorrect value.
@@ -86,7 +86,7 @@ export const AutosizeTextarea = React.forwardRef<AutosizeTextAreaRef, AutosizeTe
         value={value}
         ref={textAreaRef}
         className={cn(
-          'flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+          'flex w-full rounded-md border overscroll-none border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
         onChange={(e) => {
