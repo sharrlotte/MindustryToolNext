@@ -15,6 +15,7 @@ type PlayersCardProps = {
 };
 
 const localeToFlag: Record<string, string> = {
+  en: '🇬🇧',
   be: '🇧🇾', // Belarus
   bg: '🇧🇬', // Bulgaria
   ca: '🇪🇸', // Catalonia (Spain)
