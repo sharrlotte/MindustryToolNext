@@ -46,6 +46,7 @@ function AddDocumentButton() {
     resolver: zodResolver(CreateDocumentSchema),
     defaultValues: {
       content: '',
+      metadata: '',
     },
   });
 
