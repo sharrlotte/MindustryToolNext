@@ -48,15 +48,22 @@ import { useMutation } from '@tanstack/react-query';
 const translateModes = ['search', 'diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];
 
-const defaultState = {
+const defaultState: {
+  isTranslated: boolean | null;
+  target: Locale;
+  language: Locale;
+  mode: TranslateMode;
+  key: string;
+} = {
   target: 'vi',
   language: 'en',
   mode: 'search',
   key: '',
+  isTranslated: null,
 };
 
 export default function TranslationPage() {
-  const [{ language, target, mode, key }, _setState] = useState(defaultState);
+  const [{ language, target, mode, key, isTranslated }, _setState] = useState(defaultState);
   const { t } = useI18n();
 
   const setState = useCallback((value: Partial<typeof defaultState>) => _setState((prev) => ({ ...prev, ...value })), []);
@@ -78,17 +85,28 @@ export default function TranslationPage() {
             }))}
             onChange={(mode) => setState({ mode: mode ?? 'compare' })}
           />
-          <ComboBox<Locale>
+          <ComboBox
             className="h-10"
             searchBar={false}
-            value={{ label: t(language), value: language as Locale }}
-            values={locales.map((locale) => ({
-              label: t(locale),
-              value: locale,
+            value={{ label: isTranslated + '', value: isTranslated }}
+            values={[null, true, false].map((value) => ({
+              label: value + '',
+              value: value,
             }))}
-            onChange={(language) => setState({ language: language ?? 'en' })}
+            onChange={(value) => setState({ isTranslated: value })}
           />
-          {mode !== 'search' && (
+          {mode === 'search' ? (
+            <ComboBox<Locale>
+              className="h-10"
+              searchBar={false}
+              value={{ label: t(target), value: target as Locale }}
+              values={locales.map((locale) => ({
+                label: t(locale),
+                value: locale,
+              }))}
+              onChange={(target) => setState({ target: target ?? 'en' })}
+            />
+          ) : (
             <>
               {'=>'}
               <ComboBox<Locale>
@@ -113,7 +131,7 @@ export default function TranslationPage() {
         {mode === 'compare' ? (
           <CompareTable language={language as Locale} target={target as Locale} tKey={key} />
         ) : mode === 'search' ? (
-          <SearchTable language={language as Locale} tKey={key} />
+          <SearchTable language={language as Locale} tKey={key} isTranslated={isTranslated} />
         ) : (
           <DiffTable language={language as Locale} target={target as Locale} tKey={key} />
         )}
@@ -189,9 +207,10 @@ function CompareTable({ language, target, tKey: key }: CompareTableProps) {
 type SearchTableProps = {
   language: Locale;
   tKey?: string;
+  isTranslated: boolean | null;
 };
 
-function SearchTable({ language, tKey: key }: SearchTableProps) {
+function SearchTable({ language, tKey: key, isTranslated }: SearchTableProps) {
   return (
     <Fragment>
       <Table className="table-fixed">
@@ -212,8 +231,8 @@ function SearchTable({ language, tKey: key }: SearchTableProps) {
         <TableBody>
           <GridPaginationList
             paramSchema={TranslationPaginationQuery}
-            params={{ language, key: key, target: 'en' }}
-            queryKey={['translations', 'search', language, key]}
+            params={{ language, key: key, target: 'en', isTranslated }}
+            queryKey={['translations', 'search', language, key, isTranslated]}
             queryFn={getTranslationSearch}
             noResult={<Fragment></Fragment>}
             skeleton={{

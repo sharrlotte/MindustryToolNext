@@ -26,6 +26,7 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
     interpolation: {
       escapeValue: false,
     },
+    saveMissing: true,
     fallbackLng: defaultLocale,
     fallbackNS: defaultNamespace,
     defaultNS: defaultNamespace,
@@ -38,7 +39,7 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
         },
         {
           loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
-          //   addPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
+          addPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
           requestOptions: {
             next: {
               revalidate: 600,
@@ -57,6 +58,7 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
     // debug: process.env.NODE_ENV === 'development',
     supportedLngs: locales,
     lng,
+    saveMissing: true,
     interpolation: {
       escapeValue: false,
     },
@@ -69,6 +71,7 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
       backendOptions: [
         {
           loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
+          addPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
           request(options, url, payload, callback) {
             getTranslationFn(url)
               .then((result) => callback(undefined, { status: 200, data: result }))

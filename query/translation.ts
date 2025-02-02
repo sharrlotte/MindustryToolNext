@@ -32,7 +32,7 @@ export async function getTranslationCompareCount(axios: AxiosInstance, params: {
 
   return result.data;
 }
-export async function getTranslationSearch(axios: AxiosInstance, params: PaginationQuery & { language: Locale; key?: string }): Promise<Translation[]> {
+export async function getTranslationSearch(axios: AxiosInstance, params: PaginationQuery & { language: Locale; key?: string; isTranslated?: boolean | null }): Promise<Translation[]> {
   const result = await axios.get('/translations/search', { params });
 
   return result.data;
