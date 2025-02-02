@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -13,9 +14,11 @@ export function ChangeLanguageDialog() {
       <DialogTrigger className="w-full text-start">
         <Tran text="switch-language" />
       </DialogTrigger>
-      <DialogContent className="p-6">
-        <ChangeLocaleForm />
-      </DialogContent>
+      <Suspense>
+        <DialogContent className="p-6">
+          <ChangeLocaleForm />
+        </DialogContent>
+      </Suspense>
     </Dialog>
   );
 }

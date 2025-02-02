@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { IconNotification } from '@/components/common/icon-notification';
@@ -34,9 +34,11 @@ export default function NotificationDialog() {
         <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
           <NotificationDialogButton expand={expand} />
         </DialogTrigger>
-        <DialogContent className="p-6 max-h-full flex flex-col" closeButton={false}>
-          <NotificationForm />
-        </DialogContent>
+        <Suspense>
+          <DialogContent className="p-6 max-h-full flex flex-col" closeButton={false}>
+            <NotificationForm />
+          </DialogContent>
+        </Suspense>
       </Dialog>
     </ProtectedElement>
   );
