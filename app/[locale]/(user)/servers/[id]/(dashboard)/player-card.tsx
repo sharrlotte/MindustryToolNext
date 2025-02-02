@@ -41,6 +41,7 @@ const localeToFlag: Record<string, string> = {
   pt_PT: '🇵🇹', // Portugal
   ro: '🇷🇴', // Romania
   ru: '🇷🇺', // Russia
+  ru_KZ: '🇰🇿',
   sr: '🇷🇸', // Serbia
   sv: '🇸🇪', // Sweden
   th: '🇹🇭', // Thailand
