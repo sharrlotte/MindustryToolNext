@@ -64,8 +64,8 @@ function ModCard({ mod }: ModCardProps) {
   const { name, icon } = mod;
 
   return (
-    <div className="bg-card rounded-md overflow-hidden gap-2 w-full flex justify-between p-2">
-      {icon && <Image width={48} height={48} className="size-12 object-cover" src={icon} alt={name} />}
+    <div className="bg-card rounded-md overflow-hidden gap-2 w-full flex justify-between items-center p-2">
+      {icon && <Image width={48} height={48} className="size-12 object-cover overflow-hidden rounded-lg aspect-square shrink-0" src={icon} alt={name} />}
       <h2 className="w-full text-ellipsis overflow-hidden text-wrap">{name}</h2>
       <EllipsisButton variant="ghost">
         <Suspense>
