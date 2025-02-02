@@ -28,6 +28,7 @@ function SingeFilerTags({ group, selectedValue, handleTagGroupChange }: SingeFil
           className={cn('capitalize flex hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', {
             'bg-brand text-brand-foreground': value.name === selectedValue?.name,
           })}
+          type="button"
           key={value.name}
           onClick={() => handleTagGroupChange(value)}
         >

@@ -78,6 +78,7 @@ export default function AddPluginDialog() {
           <ScrollContainer className="flex h-full w-full flex-col justify-between gap-2 rounded-md">
             <Form {...form}>
               <form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
+                <FormMessage />
                 <div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
                   <FormField
                     control={form.control}
