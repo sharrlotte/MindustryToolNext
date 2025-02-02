@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { Transition, motion } from 'framer-motion';
 import React, { ReactNode } from 'react';
 
 import { useNavBar } from '@/context/navbar-context';
@@ -13,11 +13,11 @@ type Props = {
 const sidebarVariants = {
   open: {
     width: '235px',
-    transition: { type: 'spring', stiffness: 250, damping: 25, duration: 0.5 },
+    transition: { ease: ['easeIn', 'easeOut'], stiffness: 250, duration: 0.1 } as Transition,
   },
   closed: {
     width: 'var(--nav)',
-    transition: { type: 'spring', stiffness: 200, damping: 25, duration: 0.5 },
+    transition: { ease: ['easeIn', 'easeOut'], stiffness: 200, duration: 0.1 },
   },
 };
 
