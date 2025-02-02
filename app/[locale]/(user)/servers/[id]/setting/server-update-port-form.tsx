@@ -42,6 +42,7 @@ export default function ServerUpdatePortForm({ server: { id, port, official, aut
     mutationKey: ['servers'],
     mutationFn: (data: PutServerPortRequest) => updateServerPort(axios, id, data),
     onSuccess: () => {
+      revalidate({ path: '/servers' });
       toast.success(<Tran text="update.success" />);
     },
     onError: (error) => toast.error(<Tran text="update.fail" />, { description: error.message }),

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import ColorText from '@/components/common/color-text';
@@ -29,28 +29,24 @@ type Props = {
 };
 
 export default function ServerUpdateForm({ server }: Props) {
-  const [currentServer, setCurrentServer] = useState(server);
-
   const form = useForm<PutServerRequest>({
     resolver: zodResolver(PutServerSchema),
     defaultValues: {
-      ...currentServer,
-      hostCommand: currentServer.hostCommand ?? '',
+      ...server,
+      hostCommand: server.hostCommand ?? '',
     },
   });
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
 
-  const { id } = currentServer;
+  const { id } = server;
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
     mutationFn: (data: PutServerRequest) => updateServer(axios, id, data),
-    onSuccess: (_, data) => {
-      server = { ...currentServer, ...form.getValues() };
+    onSuccess: () => {
       toast.success(<Tran text="update.success" />);
-
-      setCurrentServer((prev) => ({ ...prev, ...data }));
+      revalidate({ path: '/servers' });
     },
     onError: (error) => toast.error(<Tran text="update.fail" />, { description: error.message }),
     onSettled: () => {
