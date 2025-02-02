@@ -31,7 +31,9 @@ export default function RatioPage() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 overflow-auto p-2">
-      <Link href="https://mindustry-calculator.vercel.app/">App link</Link>
+      <Link className="text-5xl text-brand" href="https://mindustry-calculator.vercel.app/">
+        App link
+      </Link>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button className="h-12 min-w-[200px] justify-between border-none bg-secondary p-2 capitalize shadow-md" title="" role="combobox" variant="outline">

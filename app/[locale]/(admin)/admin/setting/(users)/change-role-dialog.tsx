@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, Suspense, useMemo, useState } from 'react';
 
 import { Hidden } from '@/components/common/hidden';
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
@@ -12,7 +12,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useMe, useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import {  groupBy } from '@/lib/utils';
+import { groupBy } from '@/lib/utils';
 import { getAuthorities } from '@/query/authorities';
 import { changeRoles, getRoles } from '@/query/role';
 import { changeAuthorities } from '@/query/user';
@@ -117,50 +117,52 @@ export function ChangeRoleDialog({ user }: DialogProps) {
             <span>Add role</span>
           )}
         </section>
-      </DialogTrigger>
-      <DialogContent className="max-h-full h-full flex flex-col">
-        <ScrollContainer className="h-full space-y-2 p-6">
-          <div className="space-y-2">
-            <DialogTitle>Change Role for {name}</DialogTitle>
-            <Hidden>
-              <DialogDescription />
-            </Hidden>
-            <Divider />
-          </div>
-          <ToggleGroup className="grid grid-cols-2" type={'multiple'} onValueChange={handleRoleChange} defaultValue={roles.map((r) => r.name)}>
-            {filteredRole.map(({ id, name, color }) => (
-              <ToggleGroupItem className="justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent" key={id} value={name}>
-                <span key={id} style={{ color }}>
-                  {name}
-                </span>
-                {selectedRole.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
-          <div className="space-y-2">
-            <span className="font-bold">Authority</span>
-            <Divider />
-          </div>
-          <ToggleGroup className="flex flex-col items-start justify-start gap-4" type={'multiple'} onValueChange={handleAuthorityChange} defaultValue={authorities.map((r) => r.name)}>
-            {groups.map(({ key, value }) => (
-              <Fragment key={key}>
-                <span className="font-bold">{key}</span>
-                {value.map(({ id, name, description }) => (
-                  <ToggleGroupItem key={id} className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent" value={name}>
-                    <div className="w-full space-y-1">
-                      <div className="flex w-full justify-between gap-1">
-                        <span className="text-sm lowercase">{name}</span>
-                        {selectedAuthorities.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
+      </DialogTrigger>{' '}
+      <Suspense>
+        <DialogContent className="max-h-full h-full flex flex-col">
+          <ScrollContainer className="h-full space-y-2 p-6">
+            <div className="space-y-2">
+              <DialogTitle>Change Role for {name}</DialogTitle>
+              <Hidden>
+                <DialogDescription />
+              </Hidden>
+              <Divider />
+            </div>
+            <ToggleGroup className="grid grid-cols-2" type={'multiple'} onValueChange={handleRoleChange} defaultValue={roles.map((r) => r.name)}>
+              {filteredRole.map(({ id, name, color }) => (
+                <ToggleGroupItem className="justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent" key={id} value={name}>
+                  <span key={id} style={{ color }}>
+                    {name}
+                  </span>
+                  {selectedRole.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+            <div className="space-y-2">
+              <span className="font-bold">Authority</span>
+              <Divider />
+            </div>
+            <ToggleGroup className="flex flex-col items-start justify-start gap-4" type={'multiple'} onValueChange={handleAuthorityChange} defaultValue={authorities.map((r) => r.name)}>
+              {groups.map(({ key, value }) => (
+                <Fragment key={key}>
+                  <span className="font-bold">{key}</span>
+                  {value.map(({ id, name, description }) => (
+                    <ToggleGroupItem key={id} className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent" value={name}>
+                      <div className="w-full space-y-1">
+                        <div className="flex w-full justify-between gap-1">
+                          <span className="text-sm lowercase">{name}</span>
+                          {selectedAuthorities.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
+                        </div>
+                        <p className="text-start text-xs lowercase">{description}</p>
                       </div>
-                      <p className="text-start text-xs lowercase">{description}</p>
-                    </div>
-                  </ToggleGroupItem>
-                ))}
-              </Fragment>
-            ))}
-          </ToggleGroup>
-        </ScrollContainer>
-      </DialogContent>
+                    </ToggleGroupItem>
+                  ))}
+                </Fragment>
+              ))}
+            </ToggleGroup>
+          </ScrollContainer>
+        </DialogContent>
+      </Suspense>
     </Dialog>
   );
 }

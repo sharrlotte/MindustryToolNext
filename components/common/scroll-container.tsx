@@ -28,8 +28,6 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ad
       }
     }
 
-    container.addEventListener('scroll', handleScroll);
-
     const observer = new ResizeObserver(() => {
       handleScroll();
     });
@@ -37,7 +35,6 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ad
     observer.observe(container);
 
     return () => {
-      container.removeEventListener('scroll', handleScroll);
       observer.disconnect();
     };
   }, [container]);

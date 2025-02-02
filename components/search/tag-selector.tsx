@@ -95,7 +95,7 @@ export default function TagSelector({ type, value, onChange, disabled = false, h
       className="flex flex-col gap-2"
       onSubmit={(event) => {
         event.stopPropagation();
-        event.preventDefault();
+        event.nativeEvent.stopImmediatePropagation();
       }}
     >
       <div className="flex flex-col gap-2">

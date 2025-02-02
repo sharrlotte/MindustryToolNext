@@ -40,7 +40,7 @@ export default function Me({ me }: TabProps) {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="schematic">
-          <div className="relative flex h-full flex-col gap-2">
+          <div className="relative flex h-full flex-col gap-2 min-h-dvh">
             <NameTagSearch type="schematic" />
             <InfinitePage
               paramSchema={StatusSearchSchema}
@@ -56,7 +56,7 @@ export default function Me({ me }: TabProps) {
           </div>
         </TabsContent>
         <TabsContent value="map">
-          <div className="flex h-full w-full flex-col gap-2">
+          <div className="flex h-full w-full flex-col gap-2 min-h-dvh">
             <NameTagSearch type="map" />
             <InfinitePage
               paramSchema={StatusSearchSchema}
@@ -72,7 +72,7 @@ export default function Me({ me }: TabProps) {
           </div>
         </TabsContent>
         <TabsContent value="post">
-          <div className="flex h-full w-full flex-col gap-2">
+          <div className="flex h-full w-full flex-col gap-2 min-h-dvh">
             <NameTagSearch type="post" />
             <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" paramSchema={StatusSearchSchema} queryKey={['me', 'posts']} queryFn={getMePosts}>
               {(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}
