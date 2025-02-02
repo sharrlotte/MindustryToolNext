@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 import { FilterIcon, SearchIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
@@ -15,9 +16,11 @@ import { FilterTag } from '@/components/tag/filter-tags';
 import TagBadgeContainer from '@/components/tag/tag-badge-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter } from '@/components/ui/card';
+import Divider from '@/components/ui/divider';
 import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
 
-import { TagType } from '@/constant/constant';
+import { SHOW_TAG_NAME_PERSISTENT_KEY, TagType } from '@/constant/constant';
 import { defaultSortTag } from '@/constant/env';
 import useSearchQuery from '@/hooks/use-search-query';
 import useTags from '@/hooks/use-tags';
@@ -42,6 +45,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
   const [filter, setFilter] = useState('');
   const router = useRouter();
   const pathname = usePathname();
+  const [{ showTagName }, setConfig] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY]);
 
   const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
 
@@ -215,7 +219,12 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
                   <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
                   <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
                 </ScrollContainer>
-                <CardFooter className="flex justify-end gap-1 p-0">
+                <Divider />
+                <CardFooter className="flex justify-between gap-1 p-0">
+                  <div className="flex gap-1">
+                    <Switch checked={showTagName} onCheckedChange={(value) => setConfig('showTagName', value)} />
+                    <Tran className="text-sm" text="setting.show-tag-name" />
+                  </div>
                   <Button onClick={handleHideFilterDialog} variant="primary">
                     {isChanged ? <Tran text="search" /> : <Tran text="close" />}
                   </Button>
