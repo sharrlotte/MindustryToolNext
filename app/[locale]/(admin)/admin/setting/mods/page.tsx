@@ -1,10 +1,9 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
 import CreateModDialog from '@/app/[locale]/(admin)/admin/setting/mods/create-mod-dialog';
-import DeleteModDialog from '@/app/[locale]/(admin)/admin/setting/mods/delete-mod-dialog';
-import UpdateModDialog from '@/app/[locale]/(admin)/admin/setting/mods/update-mod-dialog';
 
 import LoadingSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
@@ -15,6 +14,9 @@ import { getMods } from '@/query/mod';
 import { Mod } from '@/types/response/Mod';
 
 import { useQuery } from '@tanstack/react-query';
+
+const DeleteModDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/mods/delete-mod-dialog'));
+const UpdateModDialog = dynamic(() => import('@/app/[locale]/(admin)/admin/setting/mods/update-mod-dialog'));
 
 export default function Page() {
   return (
