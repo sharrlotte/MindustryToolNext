@@ -15,12 +15,12 @@ const decoder = new TextDecoder();
 async function* getChat(url: string, prompt: string, signal: AbortSignal) {
   const requestUrl = new URL(url);
 
-  requestUrl.searchParams.append('prompt', prompt);
-
   const res = await fetch(requestUrl, {
-    method: 'GET',
+    method: 'POST',
     signal,
     credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: prompt }),
   });
 
   if (!res.ok) {
