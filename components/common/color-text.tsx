@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode } from 'react';
 
 import { getColor } from '@/lib/utils';
 
@@ -51,13 +51,11 @@ type Format = {
 };
 
 export default function ColorText({ text, className }: ColorTextProps) {
-  const result = useMemo(() => render(text), [text]);
-
-  if (!className) {
-    return <span>{result}</span>;
-  }
-
-  return <span className={className}>{result}</span>;
+  return (
+    <span className={className}>
+      <Render text={text} />
+    </span>
+  );
 }
 
 function addFormat(keys: string[]) {
@@ -79,7 +77,7 @@ function addFormat(keys: string[]) {
   return format;
 }
 
-function render(text?: string) {
+function Render({ text }: { text?: string }) {
   if (!text) return <></>;
 
   const index = text.search(COLOR_REGEX);

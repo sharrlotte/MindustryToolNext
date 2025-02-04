@@ -14,7 +14,6 @@ export const persister = experimental_createPersister({
 const queryClientConfig: QueryClientConfig = {
   defaultOptions: {
     queries: {
-      refetchOnMount: true,
       refetchOnWindowFocus: false,
       retry: 3,
       staleTime: 1000 * 60 * 5,
