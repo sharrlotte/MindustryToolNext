@@ -21,7 +21,7 @@ export function PaginationLayoutSwitcher() {
     <div>
       <button
         className={cn('p-2', {
-          'bg-secondary rounded-md hover:bg-secondary bg-opacity-80': paginationType === 'grid',
+          'bg-secondary rounded-sm hover:bg-secondary bg-opacity-80': paginationType === 'grid',
         })}
         onClick={() => setConfig('paginationType', 'grid')}
       >
@@ -29,7 +29,7 @@ export function PaginationLayoutSwitcher() {
       </button>
       <button
         className={cn('p-2', {
-          'bg-secondary rounded-md hover:bg-secondary bg-opacity-80': paginationType === 'infinite-scroll',
+          'bg-secondary rounded-sm hover:bg-secondary bg-opacity-80': paginationType === 'infinite-scroll',
         })}
         onClick={() => setConfig('paginationType', 'infinite-scroll')}
       >

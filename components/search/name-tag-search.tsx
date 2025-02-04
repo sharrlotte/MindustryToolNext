@@ -3,7 +3,6 @@
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
 
 import { FilterIcon, SearchIcon } from '@/components/common/icons';
 import OutsideWrapper from '@/components/common/outside-wrapper';
@@ -12,15 +11,15 @@ import Tran from '@/components/common/tran';
 import ModFilter from '@/components/search/mod-filter';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { SortDropdown } from '@/components/search/sort-dropdown';
+import TagSettingDialog from '@/components/search/tag-setting-dialog';
 import { FilterTag } from '@/components/tag/filter-tags';
 import TagBadgeContainer from '@/components/tag/tag-badge-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter } from '@/components/ui/card';
 import Divider from '@/components/ui/divider';
 import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
 
-import { SHOW_TAG_NAME_PERSISTENT_KEY, TagType } from '@/constant/constant';
+import { TagType } from '@/constant/constant';
 import { defaultSortTag } from '@/constant/env';
 import useSearchQuery from '@/hooks/use-search-query';
 import useTags from '@/hooks/use-tags';
@@ -45,7 +44,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
   const [filter, setFilter] = useState('');
   const router = useRouter();
   const pathname = usePathname();
-  const [{ showTagName }, setConfig] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY]);
 
   const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
 
@@ -186,14 +184,14 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
-      <div className="flex justify-center gap-2">
-        <SearchBar>
+      <div className="flex justify-center gap-1.5 rounded-md overflow-hidden">
+        <SearchBar className="border-none bg-card ">
           <SearchIcon className="size-5 shrink-0" />
           <TagBadgeContainer tagGroups={filterBy} handleDeleteTag={handleDeleteTag} />
           <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
         </SearchBar>
         {useTag && (
-          <Button className="h-10 border shadow-md" title="filter" variant="outline" onClick={handleShowFilterDialog}>
+          <Button className="h-11 shadow-md bg-card rounded-sm" title="filter" variant="ghost" onClick={handleShowFilterDialog}>
             <FilterIcon className="size-5" />
           </Button>
         )}
@@ -221,10 +219,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
                 </ScrollContainer>
                 <Divider />
                 <CardFooter className="flex justify-between gap-1 p-0">
-                  <div className="flex gap-1">
-                    <Switch checked={showTagName} onCheckedChange={(value) => setConfig('showTagName', value)} />
-                    <Tran className="text-sm" text="setting.show-tag-name" />
-                  </div>
+                  <TagSettingDialog />
                   <Button onClick={handleHideFilterDialog} variant="primary">
                     {isChanged ? <Tran text="search" /> : <Tran text="close" />}
                   </Button>
