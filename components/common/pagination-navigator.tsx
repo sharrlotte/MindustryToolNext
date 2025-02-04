@@ -65,6 +65,9 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   const [selectedPage, setSelectedPage] = useState(0);
   const params = useSearchQuery(PaginationQuerySchema);
   const searchParams = useSearchParams();
+  const {
+    config: { paginationSize },
+  } = useSession();
 
   const handlePageChange = useCallback(
     (page: number) => {
@@ -87,7 +90,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   );
 
   const currentPage = params.page;
-  const lastPage = Math.ceil(numberOfItems / params.size) - 1;
+  const lastPage = Math.ceil(numberOfItems / paginationSize) - 1;
 
   const hasNextPage = currentPage < lastPage;
   const hasPrevPage = currentPage > 0;
