@@ -24,7 +24,7 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, disli
 
   return (
     <div className="bg-card overflow-hidden rounded-md h-[212px] relative group">
-      <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative backdrop-blur-sm backdrop-brightness-50 flex flex-col h-full overflow-hidden rounded-lg text-white bg-cover bg-center', className)} {...rest}>
+      <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative backdrop-blur-sm backdrop-brightness-75 flex flex-col h-full overflow-hidden rounded-lg text-white bg-cover bg-center', className)} {...rest}>
         <div className="flex h-full flex-col justify-between gap-2 p-4">
           <InternalLink href={`/posts/${id}`}>
             <p className="text-2xl w-full text-ellipsis overflow-hidden line-clamp-2">{title}</p>

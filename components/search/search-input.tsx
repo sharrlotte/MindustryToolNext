@@ -12,7 +12,7 @@ type SearchProps = HTMLAttributes<HTMLDivElement>;
 
 export function SearchBar({ className, children, ...props }: SearchProps) {
   return (
-    <div className={cn('flex h-10 w-full items-center justify-center gap-2 rounded-sm border px-2 shadow-md', className)} {...props}>
+    <div className={cn('flex h-11 w-full items-center justify-center gap-2 rounded-sm border px-3 shadow-md', className)} {...props}>
       {children}
     </div>
   );
