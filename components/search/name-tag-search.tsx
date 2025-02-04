@@ -5,7 +5,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 
 import { FilterIcon, SearchIcon } from '@/components/common/icons';
-import OutsideWrapper from '@/components/common/outside-wrapper';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ModFilter from '@/components/search/mod-filter';
@@ -203,29 +202,27 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
               flex: showFilterDialog,
             })}
           >
-            <OutsideWrapper className="flex h-screen w-screen items-center justify-center md:h-4/5 md:w-4/5 gap-4" onClickOutside={handleHideFilterDialog}>
-              <Card className="flex h-full w-full flex-col justify-between gap-2 rounded-none p-4 md:rounded-lg">
-                <div className="flex gap-1">
-                  <SearchBar className="w-full p-1">
-                    <SearchIcon className="p-1" />
-                    <SearchInput placeholder="filter" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
-                  </SearchBar>
-                  {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
-                </div>
-                <Separator className="border" orientation="horizontal" />
-                <ScrollContainer className="overscroll-none">
-                  <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
-                  <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
-                </ScrollContainer>
-                <Divider />
-                <CardFooter className="flex justify-between gap-1 p-0">
-                  <TagSettingDialog />
-                  <Button onClick={handleHideFilterDialog} variant="primary">
-                    {isChanged ? <Tran text="search" /> : <Tran text="close" />}
-                  </Button>
-                </CardFooter>
-              </Card>
-            </OutsideWrapper>
+            <Card className="flex h-screen w-screen items-center md:h-4/5 md:w-4/5 flex-col gap-2 rounded-none p-4 md:rounded-lg">
+              <div className="flex gap-1 w-full">
+                <SearchBar className="w-full p-1">
+                  <SearchIcon className="p-1" />
+                  <SearchInput placeholder="filter" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
+                </SearchBar>
+                {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
+              </div>
+              <Separator className="border" orientation="horizontal" />
+              <ScrollContainer className="overscroll-none">
+                <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
+                <FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
+              </ScrollContainer>
+              <Divider />
+              <CardFooter className="flex w-full justify-between gap-1 p-0">
+                <TagSettingDialog />
+                <Button onClick={handleHideFilterDialog} variant="primary">
+                  {isChanged ? <Tran text="search" /> : <Tran text="close" />}
+                </Button>
+              </CardFooter>
+            </Card>
           </div>
         )}
       </Suspense>
