@@ -1,5 +1,6 @@
 'use client';
 
+import { VariantProps, cva } from 'class-variance-authority';
 import React, { Suspense } from 'react';
 
 import { EllipsisIcon } from '@/components/common/icons';
@@ -8,18 +9,31 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 import { cn } from '@/lib/utils';
 
-type Props = Pick<ButtonProps, 'size' | 'variant' | 'children' | 'className'>;
+const ellipsisVariants = cva('', {
+  variants: {
+    variant: {
+      default: 'bg-secondary',
+      ghost: 'aspect-square',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
+type Props = Pick<ButtonProps, 'size' | 'children' | 'className'> & VariantProps<typeof ellipsisVariants>;
 const EllipsisButton = ({ className, variant, children, ...props }: Props) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className={cn('bg-transparent', className)} variant={variant} type="button" {...props}>
+        <Button className={cn(ellipsisVariants({ className, variant }))} variant={variant} type="button" {...props}>
           <EllipsisIcon />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="gap-1 p-1 text-sm font-light grid">
-        <Suspense>{children}</Suspense>
+      <PopoverContent className="bg-transparent border-none p-0">
+        <Suspense>
+          <div className="gap-1 p-1 text-sm font-light grid border bg-card rounded-md">{children}</div>
+        </Suspense>
       </PopoverContent>
     </Popover>
   );

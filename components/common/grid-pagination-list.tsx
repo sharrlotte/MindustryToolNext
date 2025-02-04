@@ -1,7 +1,7 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useMemo, useRef } from 'react';
 import { z } from 'zod';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -35,12 +35,13 @@ type Props<T, P extends QuerySchema> = {
 export default function GridPaginationList<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, skeleton, asChild, initialData, params, queryFn, children }: Props<T, P>) {
   const p = useSearchQuery(paramSchema, params);
 
+  const ref = useRef<typeof p>(p);
+
   const axios = useClientApi();
   const { data, error, isLoading } = useQuery({
     queryFn: () => queryFn(axios, p),
     queryKey: [p, ...queryKey],
-    //TODO: Fix this, not load new data when page change
-    // initialData,
+    initialData: ref.current === p ? initialData : undefined,
   });
 
   const skeletonElements = useMemo(() => {

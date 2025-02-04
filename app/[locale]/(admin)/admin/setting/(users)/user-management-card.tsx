@@ -14,15 +14,15 @@ type Props = {
 
 export function UserManagementCard({ user }: Props) {
   return (
-    <div className="grid w-full grid-cols-[1fr_10rem_auto] gap-4 bg-card px-4 py-2">
+    <div className="grid w-full grid-cols-[1fr_10rem_auto] gap-4 bg-card px-4 py-2 rounded-sm">
       <div className="flex justify-between space-x-2 overflow-hidden">
         <UserAvatar user={user} url />
-        <CopyButton className="w-full justify-start overflow-hidden hover:bg-transparent" data={user.id} variant="ghost" content={user.id}>
+        <CopyButton className="w-full justify-start overflow-hidden hover:bg-transparent bg-transparent border-none" data={user.id} content={user.id}>
           <h3>{user.name}</h3>
         </CopyButton>
       </div>
       <Suspense>
-          <ChangeRoleDialog user={user} />
+        <ChangeRoleDialog user={user} />
       </Suspense>
       <Suspense>
         <UserManagementActionButton user={user} />
@@ -30,4 +30,3 @@ export function UserManagementCard({ user }: Props) {
     </div>
   );
 }
-

@@ -65,6 +65,9 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   const [selectedPage, setSelectedPage] = useState(0);
   const params = useSearchQuery(PaginationQuerySchema);
   const searchParams = useSearchParams();
+  const {
+    config: { paginationSize },
+  } = useSession();
 
   const handlePageChange = useCallback(
     (page: number) => {
@@ -87,7 +90,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   );
 
   const currentPage = params.page;
-  const lastPage = Math.ceil(numberOfItems / params.size) - 1;
+  const lastPage = Math.ceil(numberOfItems / paginationSize) - 1;
 
   const hasNextPage = currentPage < lastPage;
   const hasPrevPage = currentPage > 0;
@@ -103,8 +106,9 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   }, [handlePageChange, lastPage, selectedPage]);
 
   return (
-    <Pagination className="h-9">
+    <Pagination className="h-9 bg-card rounded-sm">
       <PaginationContent>
+        <SizeSelector sizes={sizes} />
         <PaginationItem>
           <Button className="px-2 py-1 flex" variant="ghost" disabled={!hasPrevPage} onClick={() => handlePageChange(previousPage)}>
             <ChevronLeftIcon className="size-5" />
@@ -119,7 +123,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
           <Dialog open={open} onOpenChange={setOpen}>
             {lastPage > 1 && (
               <DialogTrigger asChild>
-                <Button className="p-0" variant="icon" title="choose">
+                <Button className="p-0 rounded-none" variant="icon" title="choose">
                   <PaginationEllipsis />
                 </Button>
               </DialogTrigger>
@@ -162,7 +166,6 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
             <ChevronRightIcon className="size-5" />
           </Button>
         </PaginationItem>
-        <SizeSelector sizes={sizes} />
       </PaginationContent>
     </Pagination>
   );
@@ -193,7 +196,7 @@ function SizeSelector({ sizes }: SizeSelectorProps) {
 
   return (
     <ComboBox
-      className="w-20 rounded-sm"
+      className="w-auto rounded-sm border-none"
       searchBar={false}
       value={{ label: size.toString(), value: size }}
       values={sizes.map((size) => ({

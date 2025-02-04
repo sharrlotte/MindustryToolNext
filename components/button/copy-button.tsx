@@ -14,13 +14,13 @@ import { useMutation } from '@tanstack/react-query';
 const copyButtonVariants = cva('p-2 bg-transparent group/copy-button', {
   variants: {
     variant: {
-      default: 'border border-border hover:bg-brand hover:border-none',
-      ghost: '',
+      default: 'bg-secondary border border-border hover:bg-brand hover:border-none',
+      ghost: 'bg-none bg-card/50 hidden group-hover:flex group-focus:flex hidden group-hover:flex group-focus:flex',
     },
     position: {
       relative: '',
-      absolute: 'absolute left-1 top-1 aspect-square backdrop-blur-sm backdrop-brightness-50',
-      'absolute-right': 'absolute right-1 top-1 aspect-square backdrop-blur-sm backdrop-brightness-50',
+      absolute: 'absolute left-1 top-1',
+      'absolute-right': 'absolute right-1 top-1',
     },
   },
   defaultVariants: {
