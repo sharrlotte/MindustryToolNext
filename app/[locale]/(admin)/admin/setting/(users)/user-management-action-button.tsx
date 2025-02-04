@@ -28,7 +28,7 @@ export default function UserManagementActionButton({ user }: UserManagementActio
   const { session } = useSession();
 
   return (
-    <EllipsisButton variant="icon">
+    <EllipsisButton variant="ghost">
       <InternalLink href={`admin/setting/notifications?userId=${id}`} variant="command">
         <Tran text="notification.send-notification" />
       </InternalLink>

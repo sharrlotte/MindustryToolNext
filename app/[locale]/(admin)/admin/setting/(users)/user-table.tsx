@@ -1,14 +1,13 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
 import { UserManagementCard } from '@/app/[locale]/(admin)/admin/setting/(users)/user-management-card';
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
-import InfinitePage from '@/components/common/infinite-page';
-import { GridLayout, ListLayout } from '@/components/common/pagination-layout';
+import { GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import LoadingSpinner from '@/components/common/router-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -32,7 +31,6 @@ const banFilterState = ['', 'true', 'false'];
 
 export function UserTable() {
   const { t } = useI18n();
-  const container = useRef<HTMLDivElement | null>(null);
   const params = useSearchQuery(PaginationQuerySchema);
 
   const [{ name, is_banned: isBanned }, setState] = useState(defaultState);
@@ -55,7 +53,7 @@ export function UserTable() {
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
       <div>
-        <div className="flex h-10 gap-2">
+        <div className="flex h-14 gap-2 p-2 bg-card">
           <Input className="h-full" value={name} onChange={(event) => setQueryState({ name: event.target.value })} placeholder="Search using username" />
           <ComboBox
             className="h-full"
@@ -66,22 +64,18 @@ export function UserTable() {
             values={banFilterState.map((d) => ({ value: d, label: d || 'All' }))}
             onChange={(value) => setQueryState({ is_banned: value ?? '' })}
           />
-          <ComboBox className="h-full" nullable placeholder="Select role" value={{ value: role, label: role?.name ? t(role.name) : '' }} values={roles?.map((d) => ({ value: d, label: t(d.name) })) ?? []} onChange={(value) => setRole(value)} />
+          <ComboBox
+            className="h-full"
+            nullable
+            placeholder="Select role"
+            searchBar={false}
+            value={{ value: role, label: role?.name ? t(role.name) : '' }}
+            values={roles?.map((d) => ({ value: d, label: t(d.name) })) ?? []}
+            onChange={(value) => setRole(value)}
+          />
         </div>
       </div>
-      <ScrollContainer className="flex h-full flex-col gap-2" ref={container}>
-        <ListLayout>
-          <InfinitePage
-            className="flex h-full w-full flex-col justify-start gap-2"
-            params={{ ...params, role: role?.name, name: debouncedName, is_banned: !!isBanned }}
-            paramSchema={SearchUserQuerySchema}
-            queryKey={['users', 'management']}
-            queryFn={getUsers}
-            loader={<LoadingSpinner className="p-0 m-auto" />}
-          >
-            {(data) => <UserManagementCard key={data.id} user={data} />}
-          </InfinitePage>
-        </ListLayout>
+      <ScrollContainer className="flex h-full flex-col gap-1">
         <GridLayout>
           <GridPaginationList
             className="flex flex-col gap-2" //

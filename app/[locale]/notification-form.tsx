@@ -86,7 +86,7 @@ function NotificationCard({ notification }: NotificationCardProps) {
           </ScrollContainer>
         </DialogContent>
       </Dialog>
-      <EllipsisButton variant="icon">
+      <EllipsisButton variant="ghost">
         {!read && <MarkAsReadButton notification={notification} />}
         <DeleteButton notification={notification} />
       </EllipsisButton>

@@ -51,7 +51,7 @@ export default function UserDetail({ user }: Props) {
       )}
       <div className="relative flex gap-2 bg-card bg-cover bg-center p-2">
         <UserAvatar className="h-20 w-20 min-w-20 min-h-20" user={user} />
-        <EllipsisButton className="absolute right-2 top-2 aspect-square border-none bg-transparent">
+        <EllipsisButton className="absolute right-2 top-2 aspect-square border-none bg-transparent" variant="ghost">
           <ProtectedElement session={session} filter={{ authorId: user.id }}>
             <InternalLink variant="command" href="/users/@me/setting">
               <EditIcon />

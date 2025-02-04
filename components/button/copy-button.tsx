@@ -3,20 +3,13 @@
 import { VariantProps, cva } from 'class-variance-authority';
 import React, { ReactNode } from 'react';
 
-
-
 import { CopyIcon } from '@/components/common/icons';
 import { Button, ButtonProps } from '@/components/ui/button';
-
-
 
 import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 
-
-
 import { useMutation } from '@tanstack/react-query';
-
 
 const copyButtonVariants = cva('p-2 bg-transparent group/copy-button', {
   variants: {
