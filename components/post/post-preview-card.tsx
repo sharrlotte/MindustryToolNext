@@ -23,7 +23,7 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, disli
   const firstImage = imageUrls ? imageUrls[0] : '';
 
   return (
-    <div className="bg-card overflow-hidden rounded-md h-[212px]">
+    <div className="bg-card overflow-hidden rounded-md h-[212px] relative group">
       <div style={{ backgroundImage: `url(${firstImage})` }} className={cn('relative backdrop-blur-sm backdrop-brightness-50 flex flex-col h-full overflow-hidden rounded-lg text-white bg-cover bg-center', className)} {...rest}>
         <div className="flex h-full flex-col justify-between gap-2 p-4">
           <InternalLink href={`/posts/${id}`}>
@@ -35,7 +35,7 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, disli
               <span className="text-muted-foreground">{new Date(createdAt).toLocaleString()}</span>
             </div>
             <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
-              <CopyButton data={link} content={link}>
+              <CopyButton position='absolute-right' variant='ghost' data={link} content={link}>
                 <LinkIcon />
               </CopyButton>
               <AloneLikeCount like={likes} />

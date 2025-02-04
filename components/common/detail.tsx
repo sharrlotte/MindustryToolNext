@@ -58,7 +58,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 };
 
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
-  return <FallbackImage className="object-cover max-h-[80dvh] md:max-w-[min(min(80dvh,80dvw),1920px)] min-w-full md:min-w-[min(800px,50dvw)]" src={src} alt={alt} errorSrc={errorSrc} />;
+  return <FallbackImage className="object-cover max-h-[80dvh] md:max-w-[min(min(80dvh,80dvw),1920px)] min-w-full md:min-w-[min(800px,50dvw)] rounded-lg" src={src} alt={alt} errorSrc={errorSrc} />;
 }
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 export function DetailHeader({ className, children }: HeaderProps) {
