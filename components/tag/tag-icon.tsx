@@ -1,9 +1,10 @@
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import React from 'react';
 
-export default function TagIcon({ children }: { children?: string }) {
+export default function TagIcon({ className, children }: { className?: string, children?: string }) {
   if (!children) {
     return undefined;
   }
-  return <Image loading="lazy" className="size-7 min-h-7 min-w-7 rounded-md overflow-hidden" src={children} width={28} height={28} alt={children} />;
+  return <Image loading="lazy" className={cn("size-7 shrink-0 rounded-md overflow-hidden", className)} src={children} width={28} height={28} alt={children} />;
 }
