@@ -18,7 +18,7 @@ type DeleteSchematicButtonProps = {
   variant?: DeleteButtonProps['variant'];
 };
 
-export function DeleteSchematicButton({ id, name, variant }: DeleteSchematicButtonProps) {
+export default function DeleteSchematicButton({ id, name, variant }: DeleteSchematicButtonProps) {
   const axios = useClientApi();
   const { back } = useRouter();
   const { invalidateByKey } = useQueriesData();

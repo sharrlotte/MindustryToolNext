@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -8,7 +9,6 @@ import DownloadButton from '@/components/button/download-button';
 import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
 import { LinkIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import VerifySchematicButton from '@/components/schematic/verify-schematic-button';
 import TagSelector from '@/components/search/tag-selector';
@@ -20,6 +20,8 @@ import useToastAction from '@/hooks/use-toast-action';
 import { getSchematicData } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+
+const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic-button'));
 
 type UploadSchematicDetailCardProps = {
   schematic: SchematicDetail;

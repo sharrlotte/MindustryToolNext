@@ -50,7 +50,7 @@ export default function SchematicPreviewCard({ schematic: { id, name, likes, dis
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <LinkIcon />
       </CopyButton>
-      <InternalLink href={detailLink}>
+      <InternalLink href={detailLink}> 
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
       </InternalLink>
       <PreviewDescription>
