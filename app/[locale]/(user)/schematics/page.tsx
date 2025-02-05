@@ -7,7 +7,7 @@ import ErrorScreen from '@/components/common/error-screen';
 import { serverApi } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, isError, sleep } from '@/lib/utils';
+import { formatTitle, isError } from '@/lib/utils';
 import { getSchematics } from '@/query/schematic';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
@@ -36,8 +36,6 @@ export default async function Page({ searchParams }: Props) {
   }
 
   const schematics = await serverApi((axios) => getSchematics(axios, data));
-
-  await sleep(10000);
 
   if (isError(schematics)) {
     return <ErrorScreen error={schematics} />;
