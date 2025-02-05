@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 export function TagName({ className, children }: { className?: string; children: string }) {
   return (
-    <span className={cn('text-sm flex flex-row flex-nowrap items-center gap-1 capitalize', className)}>
+    <span className={cn('flex flex-row flex-nowrap items-center gap-1 capitalize', className)}>
       <Tran asChild text={`tags.${children}`} />
     </span>
   );
