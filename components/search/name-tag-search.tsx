@@ -183,14 +183,14 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
-      <div className="flex justify-center gap-1.5 rounded-md overflow-hidden">
-        <SearchBar className="border-none bg-card ">
+      <div className="flex justify-center gap-1.5 overflow-hidden rounded-sm">
+        <SearchBar className="border-none bg-card rounded-none">
           <SearchIcon className="size-5 shrink-0" />
           <TagBadgeContainer tagGroups={filterBy} handleDeleteTag={handleDeleteTag} />
           <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
         </SearchBar>
         {useTag && (
-          <Button className="h-11 shadow-md bg-card rounded-sm" title="filter" variant="ghost" onClick={handleShowFilterDialog}>
+          <Button className="h-11 shadow-md bg-card rounded-none" title="filter" variant="ghost" onClick={handleShowFilterDialog}>
             <FilterIcon className="size-5" />
           </Button>
         )}

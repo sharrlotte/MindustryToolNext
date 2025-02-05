@@ -18,7 +18,7 @@ export function PaginationLayoutSwitcher() {
   } = useSession();
 
   return (
-    <div className='bg-card rounded-md'> 
+    <div>
       <button
         className={cn('p-2', {
           'bg-secondary rounded-md hover:bg-secondary bg-opacity-80': paginationType === 'grid',

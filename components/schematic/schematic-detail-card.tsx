@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 
 import CopyButton from '@/components/button/copy-button';
@@ -11,7 +12,6 @@ import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
-import { DeleteSchematicButton } from '@/components/schematic/delete-schematic-button';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
@@ -23,8 +23,8 @@ import useToastAction from '@/hooks/use-toast-action';
 import ProtectedElement from '@/layout/protected-element';
 import { getSchematicData } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
-import dynamic from 'next/dynamic';
 
+const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic-button'));
 const TakeDownSchematicButton = dynamic(() => import('@/components/schematic/take-down-schematic-button'));
 
 type SchematicDetailCardProps = {
@@ -84,7 +84,7 @@ export default function SchematicDetailCard({
             </span>
             <DetailDescription>{description}</DetailDescription>
             <ItemRequirementCard requirements={requirements} />
-            <DetailTagsCard tags={tags} type='schematic' />
+            <DetailTagsCard tags={tags} type="schematic" />
           </DetailHeader>
         </DetailInfo>
         <DetailActions>
