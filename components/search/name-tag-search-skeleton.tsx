@@ -11,7 +11,7 @@ export default function NameTagSearchSkeleton() {
 
   return (
     <div className="flex h-11 justify-center gap-1.5 rounded-md">
-      <div className="flex h-11 w-full items-center justify-center gap-2 rounded-sm px-3 shadow-md">
+      <div className="flex h-11 w-full items-center justify-center gap-2 rounded-sm px-3 shadow-md bg-card">
         <SearchIcon className="size-5 shrink-0" />
         <input placeholder={t('search-by-name')} className="h-full w-full bg-card hover:outline-none focus:outline-none" />
       </div>
