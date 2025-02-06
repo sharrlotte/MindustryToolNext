@@ -99,15 +99,25 @@ export default function TranslationPage() {
             <ComboBox<Locale>
               className="h-10"
               searchBar={false}
-              value={{ label: t(target), value: target as Locale }}
+              value={{ label: t(language), value: language as Locale }}
               values={locales.map((locale) => ({
                 label: t(locale),
                 value: locale,
               }))}
-              onChange={(target) => setState({ target: target ?? 'en' })}
+              onChange={(language) => setState({ language: language ?? 'en' })}
             />
           ) : (
             <>
+              <ComboBox<Locale>
+                className="h-10"
+                searchBar={false}
+                value={{ label: t(language), value: language as Locale }}
+                values={locales.map((locale) => ({
+                  label: t(locale),
+                  value: locale,
+                }))}
+                onChange={(language) => setState({ language: language ?? 'en' })}
+              />
               {'=>'}
               <ComboBox<Locale>
                 className="h-10"
@@ -121,7 +131,6 @@ export default function TranslationPage() {
               />
             </>
           )}
-
           <SearchBar>
             <SearchInput placeholder={t('translation.search-by-key')} value={key} onChange={(event) => setState({ key: event.currentTarget.value })} />
           </SearchBar>
