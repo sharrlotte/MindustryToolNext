@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
-import { LinkIcon } from '@/components/common/icons';
+import { ShareIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { DeleteMapButton } from '@/components/map/delete-map-button';
 import VerifyMapButton from '@/components/map/verify-map-button';
@@ -37,7 +37,7 @@ export default function UploadMapDetailCard({ map: { id, name, tags, description
       <DetailContent>
         <DetailInfo>
           <CopyButton position="absolute" variant="ghost" data={link} content={link}>
-            <LinkIcon />
+            <ShareIcon />
           </CopyButton>
           <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
           <DetailHeader>

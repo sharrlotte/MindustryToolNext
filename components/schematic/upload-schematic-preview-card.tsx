@@ -5,7 +5,7 @@ import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
-import { LinkIcon } from '@/components/common/icons';
+import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
@@ -45,7 +45,7 @@ function UploadSchematicPreviewCard({ schematic: { id, name }, imageCount }: Upl
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
-        <LinkIcon />
+        <ShareIcon />
       </CopyButton>
       <BulkActionSelector value={id}>
         <InternalLink href={detailLink}>

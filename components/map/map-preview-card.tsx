@@ -6,7 +6,7 @@ import React from 'react';
 import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import ColorText from '@/components/common/color-text';
-import { LinkIcon } from '@/components/common/icons';
+import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import AloneDislikeCount from '@/components/like/alone-dislike-count';
@@ -36,7 +36,7 @@ function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, download
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
-        <LinkIcon />
+        <ShareIcon />
       </CopyButton>
       <InternalLink href={detailLink}>
         <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />

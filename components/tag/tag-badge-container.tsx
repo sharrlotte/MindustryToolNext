@@ -19,6 +19,10 @@ export default function TagBadgeContainer({ tagGroups, handleDeleteTag }: Props)
 
   data = data ?? [];
 
+  if (data.length === 0) {
+    return undefined;
+  }
+
   return (
     <section className="flex gap-1 shrink-0">
       {data?.slice(0, MAX_DISPLAYED).map((item) => <TagBadge key={item.name} tag={item} onDelete={handleDeleteTag && ((tag) => handleDeleteTag(tag))} />)}
