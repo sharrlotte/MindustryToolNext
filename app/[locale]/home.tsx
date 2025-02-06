@@ -42,7 +42,7 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPag
 }
 export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground min-w-preview-height">
       <Suspense>
         <InternalHomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
@@ -58,7 +58,7 @@ export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginatio
 }
 export async function HomeServerPreview() {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto min-h-[200px] overflow-y-hidden pb-4 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto min-h-[200px] overflow-y-hidden pb-4 text-foreground min-w-preview-height">
       <Suspense>
         <InternalHomeServerPreview />
       </Suspense>
