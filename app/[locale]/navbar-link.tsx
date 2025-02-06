@@ -19,7 +19,7 @@ export default function NavbarLink({ children, path, regex }: Props) {
 
   return (
     <InternalLink
-      className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
+      className={cn('flex h-10 items-center capitalize justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
         'bg-brand text-brand-foreground': regex.some((r) => currentPath.match(r)),
         'justify-start gap-2 py-2': visible,
         'w-10': !visible,

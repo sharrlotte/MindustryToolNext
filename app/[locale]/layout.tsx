@@ -107,9 +107,7 @@ export default async function Root({ children, params }: RootProps) {
             <GoogleAnalytics gaId="G-1R9S5SV72C" />
           </>
         ) : (
-          <>
-          {/* {<Script src="https://unpkg.com/react-scan/dist/auto.global.js" async />} // */}
-          </>
+          <>{/* {<Script src="https://unpkg.com/react-scan/dist/auto.global.js" async />} // */}</>
         )}
         <QueryProvider>
           <ClientInit />

@@ -349,29 +349,6 @@ function Flow() {
 
   return (
     <>
-      <div className="m-3 md:m-[15px] top-0 left-0 absolute flex-col flex z-20 text-black">
-        <button
-          className={cn('p-[5px] border h-[28px] w-[28px] border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')}
-          onClick={() => {
-            deleteOnClick.toggle();
-            showToast(deleteOnClick.isOpen ? 'Erase mode off' : 'Erase mode on');
-          }}
-        >
-          <Eraser className="h-4 w-4" strokeWidth={1.5} />
-        </button>
-        <button className="bg-white p-[5px] py-[7px] h-[28px] w-[28px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center" onClick={modal.open}>
-          <Pencil className="h-4 w-4" strokeWidth={1.5} />
-        </button>
-        <button className="bg-white h-[28px] w-[28px] p-[5px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center">
-          <HelpCircle className="h-4 w-4" strokeWidth={1.5} />
-        </button>
-        <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center items-center active:bg-slate-400" onClick={undo}>
-          <Undo2 className="h-4 w-4" strokeWidth={1.5} />
-        </button>
-        <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center </button>items-center active:bg-slate-400" onClick={redo}>
-          <Redo2 className="h-4 w-4" strokeWidth={1.5} />
-        </button>
-      </div>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -390,6 +367,29 @@ function Flow() {
         proOptions={proOptions}
         fitView
       >
+        <div className="top-0 left-0 absolute flex-col flex z-10 text-black m-[15px]">
+          <button
+            className={cn('p-[5px] border h-[28px] w-[28px] border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')}
+            onClick={() => {
+              deleteOnClick.toggle();
+              showToast(deleteOnClick.isOpen ? 'Erase mode off' : 'Erase mode on');
+            }}
+          >
+            <Eraser className="h-4 w-4" strokeWidth={1.5} />
+          </button>
+          <button className="bg-white p-[5px] py-[7px] h-[28px] w-[28px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center" onClick={modal.open}>
+            <Pencil className="h-4 w-4" strokeWidth={1.5} />
+          </button>
+          <button className="bg-white h-[28px] w-[28px] p-[5px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center">
+            <HelpCircle className="h-4 w-4" strokeWidth={1.5} />
+          </button>
+          <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center items-center active:bg-slate-400" onClick={undo}>
+            <Undo2 className="h-4 w-4" strokeWidth={1.5} />
+          </button>
+          <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center </button>items-center active:bg-slate-400" onClick={redo}>
+            <Redo2 className="h-4 w-4" strokeWidth={1.5} />
+          </button>
+        </div>
         <MiniMap />
         <Controls />
         <Background />

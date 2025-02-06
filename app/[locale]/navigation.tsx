@@ -28,13 +28,13 @@ export default async function NavigationBar({ children }: { children: ReactNode 
         small={
           <div className="grid h-full w-full grid-rows-[var(--nav)_1fr] overflow-hidden">
             <SmallScreenNavigationBar pathGroups={routeGroups} />
-            <div className="h-full w-full overflow-hidden">{children}</div>
+            <div className="relative h-full w-full overflow-hidden">{children}</div>
           </div>
         }
         notSmall={
           <div className="hidden h-full w-full grid-cols-[auto_1fr] justify-center sm:grid">
             <MediumScreenNavigationBar pathGroups={routeGroups} />
-            <div className="h-full w-full overflow-hidden">{children}</div>
+            <div className="relative h-full w-full overflow-hidden">{children}</div>
           </div>
         }
       />

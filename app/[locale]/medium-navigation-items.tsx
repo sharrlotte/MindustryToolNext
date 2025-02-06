@@ -76,7 +76,7 @@ async function PathGroupElement({ group }: PathGroupElementProps) {
 
   return (
     <ProtectedElement session={session} filter={filter}>
-      <nav className="space-y-1" key={key}>
+      <nav className="space-y-1 uppercase" key={key}>
         <NavbarVisible>{name}</NavbarVisible>
         {name && <Divider />}
         {paths.map((p) => {
