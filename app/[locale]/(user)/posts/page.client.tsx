@@ -3,6 +3,7 @@
 import { UploadIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import InternalLink from '@/components/common/internal-link';
+import { PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -24,6 +25,9 @@ export default function Client({ posts }: Props) {
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="post" />
+      <div className="flex justify-end items-center">
+        <PaginationLayoutSwitcher />
+      </div>
       <ScrollContainer>
         <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" paramSchema={ItemPaginationQuery} queryKey={['posts']} queryFn={getPosts} initialData={posts}>
           {(data) => <PostPreviewCard key={data.id} post={data} />}

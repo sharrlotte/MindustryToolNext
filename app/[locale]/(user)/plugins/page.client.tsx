@@ -14,6 +14,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
 import { Plugin } from '@/types/response/Plugin';
+import { PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 
 type Props = {
   plugins: Plugin[];
@@ -23,6 +24,9 @@ export default function Client({ plugins }: Props) {
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
       <NameTagSearch type="plugin" useSort={false} />
+      <div className="flex justify-end items-center">
+        <PaginationLayoutSwitcher />
+      </div>
       <ScrollContainer className="relative flex h-full flex-col">
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
