@@ -26,7 +26,7 @@ import { getOnline, getUsers } from '@/query/user';
 
 export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="flex w-full snap-x h-preview-height list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
       <Suspense>
         <InternalSchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
@@ -42,7 +42,7 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPag
 }
 export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 h-preview-height overflow-x-auto overflow-y-hidden pb-4 text-foreground">
+    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
       <Suspense>
         <InternalHomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0">
@@ -80,7 +80,7 @@ async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPagina
   }
 
   return result.map((schematic, index) => (
-    <li key={schematic.id} className="m-0 snap-center p-0">
+    <li key={schematic.id} className="m-0 snap-center p-0 w-preview">
       <FadeIn delay={index}>
         <SchematicPreviewCard schematic={schematic} imageCount={index} />
       </FadeIn>
@@ -96,7 +96,7 @@ async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginati
   }
 
   return result.map((map, index) => (
-    <li key={map.id} className="m-0 snap-center p-0">
+    <li key={map.id} className="m-0 snap-center p-0 w-preview">
       <FadeIn delay={index}>
         <MapPreviewCard map={map} imageCount={index} />
       </FadeIn>
