@@ -17,7 +17,7 @@ export default async function ServerCard({ server: { id, name, players, port, st
   return (
     <InternalLink className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-2 h-52" href={`/servers/${id}`}>
       <Suspense>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-nowrap w-full overflow-hidden text-ellipsis">
           <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
           <ColorText className="text-2xl font-bold" text={name} />
         </div>
