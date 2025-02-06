@@ -7,7 +7,7 @@ import CopyButton from '@/components/button/copy-button';
 import DownloadButton from '@/components/button/download-button';
 import CommentSection from '@/components/common/comment-section';
 import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
-import { LinkIcon } from '@/components/common/icons';
+import { ShareIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
@@ -73,7 +73,7 @@ export default function SchematicDetailCard({
         <DetailInfo>
           <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
           <CopyButton position="absolute" variant="ghost" data={link} content={link}>
-            <LinkIcon />
+            <ShareIcon />
           </CopyButton>
           <DetailHeader>
             <DetailTitle>{name}</DetailTitle>

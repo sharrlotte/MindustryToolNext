@@ -2,7 +2,7 @@ import { useParams } from 'next/navigation';
 import React, { HTMLAttributes } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
-import { LinkIcon } from '@/components/common/icons';
+import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import AloneDislikeCount from '@/components/like/alone-dislike-count';
 import AloneLikeCount from '@/components/like/alone-like-count';
@@ -35,8 +35,8 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, disli
               <span className="text-muted-foreground">{new Date(createdAt).toLocaleString()}</span>
             </div>
             <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
-              <CopyButton position='absolute-right' variant='ghost' data={link} content={link}>
-                <LinkIcon />
+              <CopyButton position="absolute-right" variant="ghost" data={link} content={link}>
+                <ShareIcon />
               </CopyButton>
               <AloneLikeCount like={likes} />
               <AloneDislikeCount dislike={dislikes} />

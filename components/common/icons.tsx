@@ -72,6 +72,7 @@ import {
   Users,
   X,
   XCircle,
+  Share2
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -84,6 +85,7 @@ type Props = {
   className?: string;
 };
 
+export const ShareIcon = ({ className }: Props) => <Share2 className={className ?? 'lucide'} />;
 export const EyeIcon = ({ className }: Props) => <Eye className={className ?? 'lucide'} />;
 export const EyeOffIcon = ({ className }: Props) => <EyeOff className={className ?? 'lucide'} />;
 export const PlusIcon = ({ className }: Props) => <Plus className={className ?? 'lucide'} />;
