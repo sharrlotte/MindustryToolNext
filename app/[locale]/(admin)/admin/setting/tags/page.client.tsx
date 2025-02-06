@@ -359,7 +359,7 @@ function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
   drag(drop(ref));
   return (
     <div className={cn('flex text-sm gap-2 px-2 rounded-lg bg-secondary text-muted-foreground items-center border', { 'border-success border': isHovered, 'border-destructive border opacity-50': isDragging })} ref={ref} data-handler-id={handlerId}>
-      {icon && <Image className="size-8 rounded-lg" width={40} height={40} src={icon} alt={name} />}
+      {icon && <Image className="size-6 rounded-lg" width={40} height={40} src={icon} alt={name} />}
       <Tran text={name} />
       <div className="ml-auto">
         <EllipsisButton variant="ghost" className="p-0 text-muted-foreground">
