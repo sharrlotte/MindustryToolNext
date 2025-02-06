@@ -199,6 +199,7 @@ function GroupCategoryCard({ group, category, isHovered, onDrop, onHover }: Grou
         'border-success border': isHovered,
         'border-destructive border opacity-50': isDragging,
       })}
+      style={{ color: category.color }}
       ref={ref}
       data-handler-id={handlerId}
     >
