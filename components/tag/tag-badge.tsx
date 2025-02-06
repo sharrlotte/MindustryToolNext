@@ -3,7 +3,6 @@ import React, { HTMLAttributes, useCallback } from 'react';
 import { XIcon } from '@/components/common/icons';
 import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
-import TagTooltip from '@/components/tag/tag-tooltip';
 
 import { cn } from '@/lib/utils';
 import Tag, { DetailTagDto, Tags } from '@/types/response/Tag';
@@ -29,18 +28,16 @@ function TagBadge({ tag: tagDetail, className, onDelete, ...props }: TagBadgePro
   );
 
   return (
-    <span
+    <div
       className={cn('flex cursor-pointer items-center gap-0.5 flex-nowrap whitespace-nowrap rounded-full px-2 py-1 text-center text-xs text-brand-foreground group', className)}
       style={{ backgroundColor: color }}
       onClick={() => handleOnDelete(tag)}
       {...props}
     >
-      <TagTooltip value={value}>
-        <TagIcon>{icon}</TagIcon>
-        <TagName>{name}</TagName>
-        <TagName className="size-4">{value}</TagName>
-      </TagTooltip>
+      <TagIcon className="size-4">{icon}</TagIcon>
+      <TagName>{name}</TagName>
+      <TagName>{value}</TagName>
       {hasDelete && <XIcon className="size-4 group-hover:block group-focus:block hidden" />}
-    </span>
+    </div>
   );
 }
