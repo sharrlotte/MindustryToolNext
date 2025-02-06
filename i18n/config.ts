@@ -35,7 +35,7 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
       backends: [LocalStorageBackend, HttpApi],
       backendOptions: [
         {
-          expirationTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+          expirationTime: 24 * 60 * 60 * 1000, // 7 days
         },
         {
           loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
