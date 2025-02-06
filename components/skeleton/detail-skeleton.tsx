@@ -9,7 +9,7 @@ export default function DetailSkeleton() {
       <div className="relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch">
         <div className="flex flex-col gap-2 md:flex-row">
           <div className="relative overflow-hidden rounded-lg">
-            <Skeleton className="object-cover w-full md:w-[40vw] rounded-lg" />
+            <Skeleton className="object-cover w-full md:w-[min(40vw,80vh)] aspect-square rounded-lg" />
           </div>
           <div className="flex flex-col gap-1">
             <Skeleton className="h-8 w-80 text-xl capitalize" />
