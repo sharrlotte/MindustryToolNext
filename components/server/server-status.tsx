@@ -3,7 +3,7 @@ import React from 'react';
 import Tran from '@/components/common/tran';
 import { Badge } from '@/components/ui/badge';
 
-import { type ServerStatus } from '@/types/response/ServerDetail';
+import { type ServerStatus } from '@/types/response/ServerDto';
 
 type Props = {
   status: ServerStatus;

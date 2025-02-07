@@ -2,7 +2,7 @@ import { ServerMode } from '@/types/request/UpdateServerRequest';
 
 export type ServerStatus = 'DOWN' | 'UP' | 'HOST';
 
-export type ServerDetail = {
+export type ServerDto = {
   id: string;
   name: string;
   userId: string;
