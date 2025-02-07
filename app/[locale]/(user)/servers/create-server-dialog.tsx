@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import CreateServerManagerDialog from '@/app/[locale]/(user)/servers/create-server-manager-dialog';
@@ -39,9 +39,12 @@ export default function CreateServerDialog() {
       description: '',
       mode: 'SURVIVAL',
       hostCommand: '',
-      managerId,
+      managerId: null,
     },
   });
+
+  useEffect(() => form.setValue('managerId', managerId), [form, managerId]);
+
   const selectedManager = managers?.find((v) => v.id === managerId);
 
   const router = useRouter();
