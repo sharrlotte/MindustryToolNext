@@ -64,7 +64,7 @@ export default async function Page() {
             <LoginHistory />
           </Suspense>
         </div>
-        <div className="relative grid gap-2 w-full bg-card p-2">
+        <div className="relative grid w-full bg-card p-2">
           <Suspense>
             <SessionList />
           </Suspense>

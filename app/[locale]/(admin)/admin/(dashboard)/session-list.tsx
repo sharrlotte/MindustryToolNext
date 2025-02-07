@@ -22,12 +22,20 @@ export default async function SessionList() {
     return <ErrorScreen error={data} />;
   }
 
-  return data.map((session, index) => (
-    <div className="p-2 grid" key={session.id}>
-      <span>{index}</span>
-      <span>{session.id}</span>
-      <span>{session.user.name}</span>
-      <span>{session.room}</span>
-    </div>
-  ));
+  return (
+    <>
+      <div className="gap-1 items-center grid grid-cols-[50px_200px_auto]">
+        <span className="font-bold">Index</span>
+        <span>Id</span>
+        <span>User</span>
+      </div>
+      {data.map((session, index) => (
+        <div className="gap-1 items-center grid grid-cols-[50px_200px_auto]" key={session.id}>
+          <span className="font-bold">{index}.</span>
+          <span>{session.id}</span>
+          <span>{session.user.name}</span>
+        </div>
+      ))}
+    </>
+  );
 }
