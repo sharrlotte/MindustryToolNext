@@ -14,10 +14,6 @@ export type ServerDetail = {
   ramUsage: number;
   totalRam: number;
   players: number;
-  playerList: {
-    name: string;
-    uuid: string;
-  }[];
   mapName: string;
   autoTurnOff: boolean;
   hub: boolean;
