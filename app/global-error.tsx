@@ -3,11 +3,14 @@
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { Button } from '@/components/ui/button';
+import { MovingStars } from '@/app/universe-scene';
 
 import useClientApi from '@/hooks/use-client';
 import { TError, getErrorMessage, getLoggedErrorMessage } from '@/lib/utils';
 import { reportError } from '@/query/api';
+
+import { Text } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
 
 import './globals.css';
 
@@ -25,16 +28,13 @@ export default function Error({ error }: { error: TError }) {
   return (
     <html>
       <body>
-        <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-          <h2 className="text-base font-bold">{message}</h2>
-          <div className="grid grid-cols-2 items-center justify-center gap-2">
-            <a className="h-9 text-sm flex-1 text-nowrap rounded-md border border-border justify-center items-center px-4 py-2" href="https://discord.gg/DCX5yrRUyp" target="_blank" rel="noopener noreferrer">
-              Report Error At
-            </a>
-            <Button className="flex-1" variant="primary" title="Refresh" onClick={() => window.location.reload()}>
-              Refresh
-            </Button>
-          </div>
+        <div className="h-full w-full bg-black">
+          <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
+            <MovingStars />
+            <Text position={[0, 0, 0]} color="white" fontSize={0.5} maxWidth={5} lineHeight={1} letterSpacing={0.02} textAlign="center">
+              {message}
+            </Text>
+          </Canvas>
         </div>
       </body>
     </html>

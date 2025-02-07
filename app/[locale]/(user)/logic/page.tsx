@@ -1,15 +1,14 @@
 'use client';
 
 import { Eraser, HelpCircle, Pencil, Redo2, Undo2 } from 'lucide-react';
-import { useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useContext, useMemo, useState } from 'react';
+import React from 'react';
 import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, ReactFlowProvider, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-import { toast } from '@/components/ui/sonner';
+import { MlogNode, nodeOptions } from '@/app/[locale]/(user)/logic/node';
 
-import useToggle from '@/hooks/use-state-toggle';
-import Modal from '@/layout/modal';
-import { cn } from '@/lib/utils';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 import SmartBezierEdge from '@tisoap/react-flow-smart-edge';
 
@@ -51,6 +50,7 @@ const edgeTypes = {
 };
 
 const nodeTypes = {
+  mlog: MlogNode,
   textUpdater: TextUpdaterNode,
   waitNode: WaitNode,
   stopNode: StopNode,
@@ -84,6 +84,27 @@ export default function Page() {
   );
 }
 
+const LogicEditorContext = React.createContext<LogicEditorContextType | null>(null);
+
+type LogicEditorContextType = {
+  isDeleteOnClick: boolean;
+
+  undo: () => void;
+  redo: () => void;
+  addNode: (type: string, label: string) => void;
+  toggleDeleteOnClick: () => void;
+};
+
+export const useLogicEditor = () => {
+  const context = useContext(LogicEditorContext);
+
+  if (!context) {
+    throw new Error('useLogicEditor must be used within a LogicEditorProvider');
+  }
+
+  return context;
+};
+
 function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
@@ -94,16 +115,21 @@ function Flow() {
   const [nodeHistory, setNodeHistory] = useState<Node[][]>([initialNodes]);
   const [edgeHistory, setEdgeHistory] = useState<Edge[][]>([initialEdges]);
   const [historyIndex, setHistoryIndex] = useState(0);
+  const [isDeleteOnClick, setDeleteOnClick] = useState(false);
 
-  const deleteOnClick = useToggle();
-  const modal = useToggle();
   const { project } = useReactFlow();
 
-  const showToast = useCallback((description: string) => {
-    toast('Erase mode', { description });
-  }, []);
+  const updateHistory = useCallback(
+    (newNodes: Node[], newEdges: Edge[]) => {
+      const newHistoryIndex = historyIndex + 1;
+      setNodeHistory((prev) => [...prev.slice(0, newHistoryIndex), newNodes]);
+      setEdgeHistory((prev) => [...prev.slice(0, newHistoryIndex), newEdges]);
+      setHistoryIndex(newHistoryIndex);
+    },
+    [historyIndex],
+  );
 
-  const addNewNode = useCallback(
+  const addNode = useCallback(
     (type: string, label: string) => {
       const position = project({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
       const newNode: Node = {
@@ -117,7 +143,7 @@ function Flow() {
       setNodeIdCounter((prev) => prev + 1);
       updateHistory(newNodes, edges);
     },
-    [nodeIdCounter, nodes, edges, project],
+    [project, nodeIdCounter, nodes, updateHistory, edges],
   );
 
   const customApplyNodeChanges = useCallback((changes: NodeChange[], nodes: Node[]): Node[] => {
@@ -151,7 +177,7 @@ function Flow() {
       setEdges(newEdges);
       updateHistory(nodes, newEdges);
     },
-    [nodes, edges],
+    [edges, updateHistory, nodes],
   );
 
   const onEdgeConnect = useCallback(
@@ -160,7 +186,7 @@ function Flow() {
       setEdges(newEdges);
       updateHistory(nodes, newEdges);
     },
-    [nodes, edges],
+    [edges, updateHistory, nodes],
   );
 
   const onNodesDelete = useCallback(
@@ -171,7 +197,7 @@ function Flow() {
       setEdges(newEdges);
       updateHistory(newNodes, newEdges);
     },
-    [nodes, edges],
+    [nodes, edges, updateHistory],
   );
 
   const onEdgesDelete = useCallback(
@@ -180,12 +206,12 @@ function Flow() {
       setEdges(newEdges);
       updateHistory(nodes, newEdges);
     },
-    [nodes, edges],
+    [edges, updateHistory, nodes],
   );
 
   const onNodeClick = useCallback(
     (_event: React.MouseEvent, node: Node) => {
-      if (deleteOnClick.isOpen) {
+      if (isDeleteOnClick) {
         const newNodes = nodes.filter((n) => n.id !== node.id);
         const newEdges = edges.filter((e) => e.source !== node.id && e.target !== node.id);
         setNodes(newNodes);
@@ -193,25 +219,25 @@ function Flow() {
         updateHistory(newNodes, newEdges);
       }
     },
-    [deleteOnClick, nodes, edges],
+    [isDeleteOnClick, nodes, edges, updateHistory],
   );
 
   const onEdgeClick = useCallback(
     (event: React.MouseEvent, edge: Edge) => {
       event.preventDefault();
-      if (deleteOnClick.isOpen) {
+      if (isDeleteOnClick) {
         const newEdges = edges.filter((e) => e.id !== edge.id);
         setEdges(newEdges);
         updateHistory(nodes, newEdges);
       }
     },
-    [deleteOnClick, nodes, edges],
+    [isDeleteOnClick, edges, updateHistory, nodes],
   );
 
   const onNodeContextMenu = useCallback(
     (event: React.MouseEvent, node: Node) => {
       event.preventDefault();
-      if (!deleteOnClick.isOpen) {
+      if (!isDeleteOnClick) {
         const newNodes = nodes.filter((n) => n.id !== node.id);
         const newEdges = edges.filter((e) => e.source !== node.id && e.target !== node.id);
         setNodes(newNodes);
@@ -219,19 +245,19 @@ function Flow() {
         updateHistory(newNodes, newEdges);
       }
     },
-    [deleteOnClick, nodes, edges],
+    [isDeleteOnClick, nodes, edges, updateHistory],
   );
 
   const onEdgeContextMenu = useCallback(
     (event: React.MouseEvent, edge: Edge) => {
       event.preventDefault();
-      if (!deleteOnClick.isOpen) {
+      if (!isDeleteOnClick) {
         const newEdges = edges.filter((e) => e.id !== edge.id);
         setEdges(newEdges);
         updateHistory(nodes, newEdges);
       }
     },
-    [deleteOnClick, nodes, edges],
+    [isDeleteOnClick, edges, updateHistory, nodes],
   );
 
   const onNodeDragStop = useCallback(
@@ -240,15 +266,8 @@ function Flow() {
       setNodes(newNodes);
       updateHistory(newNodes, edges);
     },
-    [nodes, edges],
+    [nodes, updateHistory, edges],
   );
-
-  const updateHistory = (newNodes: Node[], newEdges: Edge[]) => {
-    const newHistoryIndex = historyIndex + 1;
-    setNodeHistory((prev) => [...prev.slice(0, newHistoryIndex), newNodes]);
-    setEdgeHistory((prev) => [...prev.slice(0, newHistoryIndex), newEdges]);
-    setHistoryIndex(newHistoryIndex);
-  };
 
   const undo = () => {
     if (historyIndex > 0) {
@@ -271,84 +290,8 @@ function Flow() {
   const memoizedNodeTypes = useMemo(() => nodeTypes, []);
   const memoizedEdgeTypes = useMemo(() => edgeTypes, []);
 
-  const nodeOptions = [
-    {
-      label: 'Input/Output',
-      items: [
-        { type: 'readNode', label: 'Read' },
-        { type: 'writeNode', label: 'Write' },
-        { type: 'drawNode', label: 'Draw' },
-        { type: 'printNode', label: 'Print' },
-      ],
-    },
-    {
-      label: 'Block Control',
-      items: [
-        { type: 'drawFlushNode', label: 'Draw flush' },
-        { type: 'printFlushNode', label: 'Print flush' },
-        { type: 'getLinkNode', label: 'Get link' },
-        { type: 'controlNode', label: 'Control' },
-        { type: 'radarNode', label: 'Radar' },
-        { type: 'sensorNode', label: 'Sensor' },
-      ],
-    },
-    {
-      label: 'Operation',
-      items: [
-        { type: 'setNode', label: 'Set' },
-        { type: 'operationNode', label: 'Operation' },
-        { type: 'lookUpNode', label: 'Look up' },
-        { type: 'packColorNode', label: 'Pack color' },
-      ],
-    },
-    {
-      label: 'Flow Control',
-      items: [
-        { type: 'waitNode', label: 'Wait' },
-        { type: 'stopNode', label: 'Stop' },
-        { type: 'endNode', label: 'End' },
-        { type: 'jumpNode', label: 'Jump' },
-      ],
-    },
-    {
-      label: 'Unit Control',
-      items: [
-        { type: 'unitBindNode', label: 'Unit bind' },
-        { type: 'unitControlNode', label: 'Unit control' },
-        { type: 'unitRadarNode', label: 'Unit radar' },
-        { type: 'unitLocateNode', label: 'Unit locate' },
-      ],
-    },
-    {
-      label: 'Other',
-      items: [{ type: 'textUpdater', label: 'Custom Node' }],
-    },
-  ];
-
-  const modalItems = () => {
-    return nodeOptions.map((option, index) => (
-      <div className="flex flex-col border-b py-2 gap-2" key={index}>
-        <p className="text-lg">{option.label}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {option.items.map((item: { type: string; label: string }) => (
-            <div
-              key={item.type}
-              className="cursor-pointer hover:text-slate-500 transition-colors"
-              onClick={() => {
-                modal.close();
-                addNewNode(item.type, item.label);
-              }}
-            >
-              {item.label}
-            </div>
-          ))}
-        </div>
-      </div>
-    ));
-  };
-
   return (
-    <>
+    <LogicEditorContext.Provider value={{ isDeleteOnClick, redo, undo, addNode, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev) }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -367,37 +310,77 @@ function Flow() {
         proOptions={proOptions}
         fitView
       >
-        <div className="top-0 left-0 absolute flex-col flex z-10 text-black m-[15px]">
-          <button
-            className={cn('p-[5px] border h-[28px] w-[28px] border-[#eee] hover:bg-[#f4f4f4] border-b-0 transition-colors', deleteOnClick.isOpen ? 'bg-white' : 'bg-slate-200')}
-            onClick={() => {
-              deleteOnClick.toggle();
-              showToast(deleteOnClick.isOpen ? 'Erase mode off' : 'Erase mode on');
-            }}
-          >
-            <Eraser className="h-4 w-4" strokeWidth={1.5} />
-          </button>
-          <button className="bg-white p-[5px] py-[7px] h-[28px] w-[28px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center" onClick={modal.open}>
-            <Pencil className="h-4 w-4" strokeWidth={1.5} />
-          </button>
-          <button className="bg-white h-[28px] w-[28px] p-[5px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center">
-            <HelpCircle className="h-4 w-4" strokeWidth={1.5} />
-          </button>
-          <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center items-center active:bg-slate-400" onClick={undo}>
-            <Undo2 className="h-4 w-4" strokeWidth={1.5} />
-          </button>
-          <button className="bg-white h-[28px] w-[28px] p-[5px] py-[7px] transition-colors hover:bg-[#f4f4f4] border border-[#eee] flex justify-center </button>items-center active:bg-slate-400" onClick={redo}>
-            <Redo2 className="h-4 w-4" strokeWidth={1.5} />
-          </button>
-        </div>
+        <TopLeftMenu />
         <MiniMap />
         <Controls />
         <Background />
         <HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
       </ReactFlow>
-      <Modal isOpen={modal.isOpen} onClose={modal.toggle}>
-        <div className="p-2 grid grid-cols-2 gap-4 max-h-[80vh] overflow-y-scroll no-scrollbar text-center text-white transition-colors">{modalItems()}</div>
-      </Modal>
-    </>
+    </LogicEditorContext.Provider>
+  );
+}
+
+function TopLeftMenu() {
+  const { redo, undo, toggleDeleteOnClick } = useLogicEditor();
+
+  return (
+    <div className="top-0 left-0 absolute flex-col flex z-10 text-black m-[15px]">
+      <MlogEditorButton onClick={toggleDeleteOnClick}>
+        <Eraser className="h-4 w-4" strokeWidth={1.5} />
+      </MlogEditorButton>
+      <AddNodeDialog />
+      <MlogEditorButton>
+        <HelpCircle className="h-4 w-4" strokeWidth={1.5} />
+      </MlogEditorButton>
+      <MlogEditorButton onClick={undo}>
+        <Undo2 className="h-4 w-4" strokeWidth={1.5} />
+      </MlogEditorButton>
+      <MlogEditorButton onClick={redo}>
+        <Redo2 className="h-4 w-4" strokeWidth={1.5} />
+      </MlogEditorButton>
+    </div>
+  );
+}
+
+function AddNodeDialog() {
+  const { addNode } = useLogicEditor();
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <MlogEditorButton>
+          <Pencil className="h-4 w-4" strokeWidth={1.5} />
+        </MlogEditorButton>
+      </DialogTrigger>
+      <DialogContent className="p-6 rounded-lg">
+        <DialogTitle />
+        <DialogDescription />
+        {nodeOptions.map((option, index) => (
+          <div className="flex flex-col border-b py-2 gap-2" key={index}>
+            <p className="text-lg">{option.label}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {option.items.map((item: { type: string; label: string }) => (
+                <DialogClose key={item.type} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(item.type, item.label)}>
+                  {item.label}
+                </DialogClose>
+              ))}
+            </div>
+          </div>
+        ))}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+type MlogEditorButtonProps = {
+  onClick?: () => void;
+  children: ReactNode;
+};
+
+function MlogEditorButton({ onClick, children }: MlogEditorButtonProps) {
+  return (
+    <button className="bg-white p-[5px] py-[7px] h-[28px] w-[28px] transition-colors hover:bg-[#f4f4f4] border-[#eee] border flex items-center justify-center" onClick={onClick}>
+      {children}
+    </button>
   );
 }

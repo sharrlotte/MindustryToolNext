@@ -22,8 +22,9 @@ export default async function SessionList() {
     return <ErrorScreen error={data} />;
   }
 
-  return data.map((session) => (
+  return data.map((session, index) => (
     <div className="p-2 grid" key={session.id}>
+      <span>{index}</span>
       <span>{session.id}</span>
       <span>{session.user.name}</span>
       <span>{session.room}</span>
