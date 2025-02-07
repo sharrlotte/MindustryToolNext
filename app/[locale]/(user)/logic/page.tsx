@@ -1,7 +1,7 @@
 'use client';
 
 import { Eraser, HelpCircle, Pencil, Redo2, Undo2 } from 'lucide-react';
-import { ReactNode, useCallback, useContext, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import React from 'react';
 import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, ReactFlowProvider, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -42,6 +42,7 @@ import {
 import initialNodes from './nodes/nodes';
 import './style.css';
 import { getHelperLines } from './utils';
+import { LogicEditorContext, useLogicEditor } from '@/app/[locale]/(user)/logic/logic-editor-context';
 
 const proOptions: ProOptions = { hideAttribution: true };
 
@@ -84,26 +85,6 @@ export default function Page() {
   );
 }
 
-const LogicEditorContext = React.createContext<LogicEditorContextType | null>(null);
-
-type LogicEditorContextType = {
-  isDeleteOnClick: boolean;
-
-  undo: () => void;
-  redo: () => void;
-  addNode: (type: string, label: string) => void;
-  toggleDeleteOnClick: () => void;
-};
-
-export const useLogicEditor = () => {
-  const context = useContext(LogicEditorContext);
-
-  if (!context) {
-    throw new Error('useLogicEditor must be used within a LogicEditorProvider');
-  }
-
-  return context;
-};
 
 function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
