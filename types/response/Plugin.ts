@@ -1,4 +1,4 @@
-import { DetailTagDto } from "@/types/response/Tag";
+import { DetailTagDto } from '@/types/response/Tag';
 
 export type Plugin = {
   id: string;
@@ -8,4 +8,5 @@ export type Plugin = {
   tags: DetailTagDto[];
   url: string;
   createdAt: number;
+  isPrivate: boolean;
 };

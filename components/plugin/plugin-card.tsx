@@ -6,6 +6,7 @@ import React from 'react';
 import DeleteButton from '@/components/button/delete-button';
 import FallbackImage from '@/components/common/fallback-image';
 import Tran from '@/components/common/tran';
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { toast } from '@/components/ui/sonner';
 
 import { useSession } from '@/context/session-context.client';
@@ -22,7 +23,7 @@ type Props = {
 };
 
 const GITHUB_PATTERN = /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
-export default function PluginCard({ plugin: { id, name, description, url, userId } }: Props) {
+export default function PluginCard({ plugin: { id, name, description, url, userId, isPrivate } }: Props) {
   const { invalidateByKey } = useQueriesData();
 
   const { session } = useSession();
@@ -48,24 +49,31 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
   const githubUrl = `https://github.com/${user}/${repo}`;
 
   return (
-    <div className="relative flex h-32 flex-col gap-2 overflow-hidden rounded-md bg-card p-4">
-      <Link href={githubUrl} className="flex gap-1 items-center">
-        <FallbackImage
-          width={20}
-          height={20}
-          className="size-5 rounded-sm overflow-hidden"
-          src={`https://raw.githubusercontent.com/${user}/${repo}/master/icon.png`}
-          errorSrc="https://raw.githubusercontent.com/Anuken/Mindustry/master/core/assets/sprites/error.png"
-          alt={''}
-        />
-        <h2 className="line-clamp-1 w-full overflow-hidden text-ellipsis whitespace-normal text-nowrap">{name}</h2>
-      </Link>
-      <span className="line-clamp-2 h-full w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>
-      <div className="flex gap-2">
-        <ProtectedElement session={session} filter={{ any: [{ authorId: userId }, { authority: 'DELETE_PLUGIN' }] }}>
-          <DeleteButton className="right-1 top-1 backdrop-brightness-100" variant="ghost" description={<Tran text="delete-alert" args={{ name }} />} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
-        </ProtectedElement>
-      </div>
-    </div>
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <div className="relative flex h-32 flex-col gap-2 overflow-hidden rounded-md bg-card p-4">
+          <Link href={githubUrl} className="flex gap-1 items-center">
+            <FallbackImage
+              width={20}
+              height={20}
+              className="size-5 rounded-sm overflow-hidden"
+              src={`https://raw.githubusercontent.com/${user}/${repo}/master/icon.png`}
+              errorSrc="https://raw.githubusercontent.com/Anuken/Mindustry/master/core/assets/sprites/error.png"
+              alt={''}
+            />
+            <h2 className="line-clamp-1 w-full overflow-hidden text-ellipsis whitespace-normal text-nowrap">{name}</h2>
+          </Link>
+          <span className="line-clamp-2 h-full w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>
+          {isPrivate && <span className="top-1 right-1 font-semibold text-sm absolute px-1">PRIVATE</span>}
+        </div>
+      </ContextMenuTrigger>
+      <ProtectedElement session={session} filter={{ any: [{ authorId: userId }, { authority: 'DELETE_PLUGIN' }] }}>
+        <ContextMenuContent>
+          <ContextMenuItem asChild>
+            <DeleteButton variant="command" description={<Tran text="delete-alert" args={{ name }} />} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
+          </ContextMenuItem>
+        </ContextMenuContent>
+      </ProtectedElement>
+    </ContextMenu>
   );
 }
