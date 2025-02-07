@@ -8,7 +8,7 @@ export const CreateServerSchema = z.object({
   mode: z.enum(ServerModes).default('SURVIVAL'),
   hostCommand: z.string().max(1000).optional(),
   gamemode: z.string().max(100).optional(),
-  managerId: z.string().max(100).optional(),
+  managerId: z.string().max(100).optional().nullable(),
 });
 
 export type CreateServerRequest = z.infer<typeof CreateServerSchema>;
