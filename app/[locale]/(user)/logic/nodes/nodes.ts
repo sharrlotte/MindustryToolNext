@@ -39,12 +39,4 @@ const initialNodes: Node[] = [
   },
 ];
 
-const nodes = initialNodes.map((node) => ({
-  ...node,
-  data: {
-    ...node.data,
-    id: node.id,
-  },
-}));
-
-export default nodes;
+export default initialNodes;

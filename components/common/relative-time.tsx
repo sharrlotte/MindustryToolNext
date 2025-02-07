@@ -11,7 +11,7 @@ export function RelativeTime({ className, date }: RelativeTimeProps) {
   const delta = Math.floor((now - target) / 1000); // Difference in seconds
 
   if (delta < 60) {
-    return <Tran className={className} text="second-ago" args={{ second: delta }} />;
+    return <Tran className={className} text="second-ago" args={{ second: delta < 0 ? 0 : delta }} />;
   }
 
   if (delta < 3600) {
