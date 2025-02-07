@@ -7,10 +7,10 @@ import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 
 import { cn } from '@/lib/utils';
-import { ServerDetail } from '@/types/response/ServerDetail';
+import { ServerDto } from '@/types/response/ServerDto';
 
 type MyServerInstancesCardProps = {
-  server: ServerDetail;
+  server: ServerDto;
 };
 
 export default async function ServerCard({ server: { id, name, players, port, status, mapName, mode } }: MyServerInstancesCardProps) {

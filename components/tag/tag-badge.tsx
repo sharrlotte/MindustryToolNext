@@ -34,7 +34,7 @@ function TagBadge({ tag: tagDetail, className, onDelete, ...props }: TagBadgePro
       onClick={() => handleOnDelete(tag)}
       {...props}
     >
-      <TagIcon className="size-4">{icon}</TagIcon>
+      <TagIcon>{icon}</TagIcon>
       <TagName>{name}</TagName>
       <TagName>{value}</TagName>
       {hasDelete && <XIcon className="size-4 group-hover:block group-focus:block hidden" />}

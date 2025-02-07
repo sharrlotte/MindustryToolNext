@@ -7,10 +7,10 @@ import { IdSearchParams } from '@/types/data/id-search-schema';
 import { Map } from '@/types/response/Map';
 import { Post } from '@/types/response/Post';
 import { Schematic } from '@/types/response/Schematic';
-import { ServerDetail } from '@/types/response/ServerDetail';
+import { ServerDto } from '@/types/response/ServerDto';
 import { User } from '@/types/response/User';
 
-export async function getMeServers(axios: AxiosInstance): Promise<ServerDetail[]> {
+export async function getMeServers(axios: AxiosInstance): Promise<ServerDto[]> {
   const result = await axios.get(`/users/@me/servers`);
 
   return result.data;

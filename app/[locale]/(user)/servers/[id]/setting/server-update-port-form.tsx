@@ -16,23 +16,23 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { cn } from '@/lib/utils';
 import { updateServerPort } from '@/query/server';
 import { PutServerPortRequest, PutServerPortSchema } from '@/types/request/UpdateServerRequest';
-import { ServerDetail } from '@/types/response/ServerDetail';
+import Server from '@/types/response/Server';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 type Props = {
-  server: ServerDetail;
+  server: Server;
 };
 
-export default function ServerUpdatePortForm({ server: { id, port, official, autoTurnOff, hub } }: Props) {
+export default function ServerUpdatePortForm({ server: { id, port, isOfficial, isAutoTurnOff, isHub } }: Props) {
   const form = useForm<PutServerPortRequest>({
     resolver: zodResolver(PutServerPortSchema),
     defaultValues: {
       port,
-      official,
-      autoTurnOff,
-      hub,
+      isOfficial,
+      isHub,
+      isAutoTurnOff,
     },
   });
   const { invalidateByKey } = useQueriesData();
@@ -78,7 +78,7 @@ export default function ServerUpdatePortForm({ server: { id, port, official, aut
           />
           <FormField
             control={form.control}
-            name="official"
+            name="isOfficial"
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-1">
@@ -95,7 +95,7 @@ export default function ServerUpdatePortForm({ server: { id, port, official, aut
           />
           <FormField
             control={form.control}
-            name="hub"
+            name="isHub"
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-1">
@@ -112,7 +112,7 @@ export default function ServerUpdatePortForm({ server: { id, port, official, aut
           />
           <FormField
             control={form.control}
-            name="autoTurnOff"
+            name="isAutoTurnOff"
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-1">

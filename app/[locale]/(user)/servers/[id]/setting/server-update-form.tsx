@@ -19,22 +19,19 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { cn } from '@/lib/utils';
 import { updateServer } from '@/query/server';
 import { PutServerRequest, PutServerSchema, ServerModes } from '@/types/request/UpdateServerRequest';
-import { ServerDetail } from '@/types/response/ServerDetail';
+import Server from '@/types/response/Server';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 type Props = {
-  server: ServerDetail;
+  server: Server;
 };
 
 export default function ServerUpdateForm({ server }: Props) {
   const form = useForm<PutServerRequest>({
     resolver: zodResolver(PutServerSchema),
-    defaultValues: {
-      ...server,
-      hostCommand: server.hostCommand ?? '',
-    },
+    defaultValues: server,
   });
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
@@ -128,7 +125,25 @@ export default function ServerUpdateForm({ server }: Props) {
                     <Tran text="server.start-command" />
                   </FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="host" />
+                    <Textarea {...field} value={field.value ?? ''} placeholder="host" />
+                  </FormControl>
+                  <FormDescription>
+                    <Tran text="server.start-command-description" />
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="webhook"
+              render={({ field }) => (
+                <FormItem className="grid">
+                  <FormLabel>
+                    <Tran text="server.start-command" />
+                  </FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} />
                   </FormControl>
                   <FormDescription>
                     <Tran text="server.start-command-description" />

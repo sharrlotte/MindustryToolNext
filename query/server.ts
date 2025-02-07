@@ -9,11 +9,12 @@ import { CreateServerManagerRequest, CreateServerRequest } from '@/types/request
 import { PutServerPortRequest, PutServerRequest } from '@/types/request/UpdateServerRequest';
 import { Player } from '@/types/response/Player';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
-import { ServerDetail } from '@/types/response/ServerDetail';
+import { ServerDto } from '@/types/response/ServerDto';
 import { ServerFile } from '@/types/response/ServerFile';
 import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManager';
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
+import Server from '@/types/response/Server';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
   const result = await axios.delete(`/servers/${id}/files`, {
@@ -86,19 +87,25 @@ export async function getServerPluginCount(axios: AxiosInstance, id: string, par
   return result.data;
 }
 
-export async function getServer(axios: AxiosInstance, { id }: IdSearchParams): Promise<ServerDetail> {
+export async function getServer(axios: AxiosInstance, { id }: IdSearchParams): Promise<ServerDto> {
   const result = await axios.get(`/servers/${id}`);
 
   return result.data;
 }
 
-export async function getServers(axios: AxiosInstance, params: { official?: boolean } & PaginationQuery): Promise<ServerDetail[]> {
+export async function getServerSetting(axios: AxiosInstance, { id }: IdSearchParams): Promise<Server> {
+  const result = await axios.get(`/servers/${id}/setting`);
+
+  return result.data;
+}
+
+export async function getServers(axios: AxiosInstance, params: { official?: boolean } & PaginationQuery): Promise<ServerDto[]> {
   const result = await axios.get(`/servers`, { params });
 
   return result.data;
 }
 
-export async function getServersByAdmin(axios: AxiosInstance, params: { official?: boolean } & PaginationQuery): Promise<ServerDetail[]> {
+export async function getServersByAdmin(axios: AxiosInstance, params: { official?: boolean } & PaginationQuery): Promise<ServerDto[]> {
   const result = await axios.get(`/servers/admin`, { params });
 
   return result.data;

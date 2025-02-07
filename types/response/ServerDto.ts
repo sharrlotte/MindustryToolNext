@@ -2,7 +2,7 @@ import { ServerMode } from '@/types/request/UpdateServerRequest';
 
 export type ServerStatus = 'DOWN' | 'UP' | 'HOST';
 
-export type ServerDetail = {
+export type ServerDto = {
   id: string;
   name: string;
   userId: string;
@@ -14,10 +14,6 @@ export type ServerDetail = {
   ramUsage: number;
   totalRam: number;
   players: number;
-  playerList: {
-    name: string;
-    uuid: string;
-  }[];
   mapName: string;
   autoTurnOff: boolean;
   hub: boolean;
