@@ -33,7 +33,7 @@ import { Log } from '@/types/Log';
 
 export default function LogPage() {
   return (
-    <ServerTabs className="p-4 h-full" value="live" name={'tab'} values={['live', 'static']}>
+    <ServerTabs className="p-2 h-full" value="live" name={'tab'} values={['live', 'static']}>
       <ServerTabsList className="justify-start">
         <ServerTabsTrigger value="live">
           <Tran text="log.live" />
