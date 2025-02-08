@@ -1,4 +1,4 @@
-import { Book, Cpu, DownloadIcon, FileCode, Flame, Gamepad2, Github, Globe, MapIcon, MessageSquareIcon, MessagesSquare, PlayIcon, RocketIcon, Server, ServerIcon, Sparkles, UserPlusIcon, YoutubeIcon } from 'lucide-react';
+import { Book, Cpu, DownloadIcon, FileCode, Flame, Gamepad2, Github, Globe, MapIcon, MessageSquareIcon, MessagesSquare, Milestone, PlayIcon, RocketIcon, Server, ServerIcon, Sparkles, Swords, UserPlusIcon, YoutubeIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import type { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';
+import CopyButton from '@/components/button/copy-button';
 
 export const experimental_ppr = true;
 
@@ -101,6 +102,16 @@ const links = [
   },
 ];
 
+const gamemode = [
+  {
+    title: 'home.catali-intro',
+    icon: Swords,
+    class: 'w-6 h-6 mr-2 text-red-400',
+    text: 'home.catali-infomation',
+    link: 'server.mindustry-tool.com:6568',
+  },
+];
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);
@@ -139,7 +150,7 @@ export default async function Page({ params }: Props) {
               <T className="w-full text-lg text-muted-foreground text-center max-w-3xl mx-auto mb-6" locale={locale} text={'home.tagline'} />
             </div>
             <div className="flex flex-col md:flex-row justify-center gap-4 mb-8">
-              <Button className="h-12 px-6 text-base bg-brand hover:bg-brand/90 text-white transition duration-300 ease-in-out">
+              <Button className="h-12 px-6 text-base border border-brand bg-brand/70 hover:bg-transparent text-theme hover:text-brand transition duration-300 ease-in-out">
                 <RocketIcon className="mr-2" />
                 <T locale={locale} text="home.get-started" />
               </Button>
@@ -197,7 +208,7 @@ export default async function Page({ params }: Props) {
             ].map((feature, index) => (
               <div key={index} className={commonClasses.card}>
                 <div className={`${commonClasses.iconWrapper} bg-${feature.color}/10`}>
-                  <feature.icon className={`w-8 h-8 ${feature.color}`} />
+                  <feature.icon className={`w-8 h-8 text-${feature.color}`} />
                 </div>
                 <T className="text-xl font-bold mb-4 text-card-foreground" locale={locale} text={feature.title} />
                 <T className="mb-4 text-muted-foreground flex-grow" locale={locale} text={feature.description} />
@@ -216,8 +227,8 @@ export default async function Page({ params }: Props) {
           <div className="grid grid-col md:grid-row-3 gap-4">
             <div className="grid md:grid-cols-2 bg-card p-8 rounded-xl transition-all duration-300 ease-in-out">
               <div className="grid pr-4">
-                <div className={`${commonClasses.iconWrapper} bg-brand/10`}>
-                  <Cpu className="w-8 h-8 text-brand" />
+                <div className={`${commonClasses.iconWrapper} bg-cyan-400/10`}>
+                  <Cpu className="w-8 h-8 text-cyan-400" />
                 </div>
                 <T className="text-xl font-bold mb-4 text-card-foreground" locale={locale} text="home.about-mindustry" />
                 <T className="mb-4 text-muted-foreground" locale={locale} text="home.mindustry-description" />
@@ -227,13 +238,13 @@ export default async function Page({ params }: Props) {
                 </Button>
               </div>
               <div className="flex items-center justify-center">
-                <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-brand/20 bg-zinc-900/50">{/* TODO: Thêm nội dung video */}</div>
+                <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-border bg-zinc-900/50">{/* TODO: Thêm nội dung video */}</div>
               </div>
             </div>
 
             <div className={commonClasses.card}>
-              <div className={`${commonClasses.iconWrapper} bg-cyan-400/10`}>
-                <Globe className="w-8 h-8 text-cyan-400" />
+              <div className={`${commonClasses.iconWrapper} bg-brand/10`}>
+                <Globe className="w-8 h-8 text-brand" />
               </div>
               <T className="text-xl font-bold mb-4 text-card-foreground" locale={locale} text="home.about-webpage" />
               <T className="mb-4 text-muted-foreground" locale={locale} text="home.webpage-description" />
@@ -274,48 +285,58 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* Hosting Your Server Section */}
-      <section className="p-4">
-        <div className={`${commonClasses.section} bg-card p-8 rounded-xl shadow-lg gap-8`}>
-          <div className="flex items-center mb-8">
+      <section>
+        <div className={commonClasses.section}>
+          <div className={commonClasses.title}>
             <Gamepad2 className="w-8 h-8 mr-2 text-blue-400 drop-shadow-xl" />
             <T className={`text-3xl font-bold ${commonClasses.gradientText}`} locale={locale} text="home.hosting-your-server" />
           </div>
-          <div className="grid gap-8 md:grid-cols-2">
-            <div className="col-span-1">
-              <h3 className="text-xl font-bold text-brand mb-4 flex items-center">
-                <Server className="w-6 h-6 mr-2" />
-                <T locale={locale} text="home.why-choose-us" />
+          <div className="grid gap-8">
+            <div className={`container overflow-hidden ${commonClasses.card}`}>
+              <div className="grid gap-8 md:grid-cols-5">
+                <div className="col-span-2">
+                  <h3 className="text-xl font-bold text-brand mb-4 flex items-center">
+                    <Server className="w-8 h-8 mr-2" />
+                    <T locale={locale} text="home.why-choose-us" />
+                  </h3>
+                  <p className="mb-6 text-muted-foreground">
+                    <T locale={locale} text="home.server-features" />
+                  </p>
+                  <Button variant="outline" className="text-brand border-brand hover:bg-brand hover:text-white transition-colors duration-300">
+                    <T locale={locale} text="home.claim-free-server" />
+                  </Button>
+                </div>
+                <div className="col-span-3">
+                  <div className="flex items-center mb-8">
+                    <Milestone className="w-8 h-8 mr-2 text-cyan-400 drop-shadow-xl" />
+                    <T className="text-xl font-bold text-brand" locale={locale} text="home.recommend-gamemode" />
+                  </div>
+                  <div className="grid gap-8">
+                    {gamemode.map((object, index) => (
+                      <div key={index} className="grid gap-4">
+                        <div className="text-lg font-bold flex items-center">
+                          <object.icon className={object.class} />
+                          <T locale={locale} text={object.title} />
+                        </div>
+                        <T locale={locale} text={object.title} className='text-muted-foreground' />
+                        <CopyButton data={object.link}>
+                          <T locale={locale} text='home.copy-gamemode-ip' />
+                        </CopyButton>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`container overflow-hidden ${commonClasses.card}`}>
+              <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center">
+                <Globe className="w-6 h-6 mr-2" />
+                <T locale={locale} text="home.mindustry-tool-servers" />
               </h3>
-              <p className="mb-6 text-muted-foreground">
-                <T locale={locale} text="home.server-features" />
-              </p>
-              <Button variant="outline" className="text-brand border-brand hover:bg-brand hover:text-white transition-colors duration-300">
-                <T locale={locale} text="home.claim-free-server" />
-              </Button>
-            </div>
-            <div className="col-span-1">
-              <div className="flex items-center mb-8">
-                <Sparkles className="w-6 h-6 mr-2 text-yellow-400 drop-shadow-xl" />
-                <T className="text-xl font-bold text-brand" locale={locale} text="home.recommend-gamemode" />
-              </div>
-              <div className="grid gap-8">
-                {['a', 'b'].map((object, index) => (
-                  <div key={index}>{object}</div>
-                ))}
+              <div className="no-scrollbar">
+                <HomeServerPreview />
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="p-4">
-        <div className={`${commonClasses.section} bg-card rounded-xl shadow-lg p-8 overflow-hidden`}>
-          <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center">
-            <Globe className="w-6 h-6 mr-2" />
-            <T locale={locale} text="home.mindustry-tool-servers" />
-          </h3>
-          <div className="no-scrollbar">
-            <HomeServerPreview />
           </div>
         </div>
       </section>
@@ -362,7 +383,7 @@ export default async function Page({ params }: Props) {
               <T locale={locale} text="home.register-and-join" />
             </p>
             <div className="flex flex-col md:flex-row justify-center gap-4">
-              <Button className="h-12 px-6 text-base bg-brand hover:bg-brand/90 text-white transition duration-300 ease-in-out gap-2">
+              <Button className="h-12 px-6 text-base border border-brand bg-brand/70 hover:bg-transparent text-theme hover:text-brand transition duration-300 ease-in-out gap-2">
                 <UserPlusIcon />
                 <T locale={locale} text="home.register-now" />
               </Button>
