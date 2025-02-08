@@ -140,7 +140,7 @@ export default async function Page({ params }: Props) {
             <ServerTran locale={locale} text="home.hot-features" />
           </h2>
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="bg-card p-8 rounded-xl border border-border hover:border-brand transition-all duration-300 ease-in-out flex flex-col">
+            <div className="bg-card p-8 rounded-xl transition-all duration-300 ease-in-out flex flex-col">
               <div className="w-16 h-16 bg-brand/10 rounded-lg flex items-center justify-center mb-6">
                 <DownloadIcon className="w-8 h-8 text-brand" />
               </div>
@@ -155,7 +155,7 @@ export default async function Page({ params }: Props) {
               </Button>
             </div>
 
-            <div className="bg-card p-8 rounded-xl border border-border hover:border-cyan-400 transition-all duration-300 ease-in-out flex flex-col">
+            <div className="bg-card p-8 rounded-xl transition-all duration-300 ease-in-out flex flex-col">
               <div className="w-16 h-16 bg-cyan-400/10 rounded-lg flex items-center justify-center mb-6">
                 <Cpu className="w-8 h-8 text-cyan-400" />
               </div>
@@ -170,7 +170,7 @@ export default async function Page({ params }: Props) {
               </Button>
             </div>
 
-            <div className="bg-card p-8 rounded-xl border border-border hover:border-purple-400 transition-all duration-300 ease-in-out flex flex-col">
+            <div className="bg-card p-8 rounded-xl transition-all duration-300 ease-in-out flex flex-col">
               <div className="w-16 h-16 bg-purple-400/10 rounded-lg flex items-center justify-center mb-6">
                 <Server className="w-8 h-8 text-purple-400" />
               </div>
@@ -192,7 +192,7 @@ export default async function Page({ params }: Props) {
       <section className="py-10 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid gap-8">
-            <div className="grid md:grid-cols-2 bg-card p-8 rounded-xl border border-border hover:border-brand transition-all duration-300 ease-in-out">
+            <div className="grid md:grid-cols-2 bg-card p-8 rounded-xl transition-all duration-300 ease-in-out">
               <div className="pr-4">
                 <div className="w-16 h-16 bg-brand/10 rounded-lg flex items-center justify-center mb-6">
                   <Cpu className="w-8 h-8 text-brand" />
@@ -215,7 +215,7 @@ export default async function Page({ params }: Props) {
               </div>
             </div>
 
-            <div className="bg-card p-8 rounded-xl border border-border hover:border-cyan-400 transition-all duration-300 ease-in-out">
+            <div className="bg-card p-8 rounded-xl transition-all duration-300 ease-in-out">
               <div className="w-16 h-16 bg-cyan-400/10 rounded-lg flex items-center justify-center mb-6">
                 <Globe className="w-8 h-8 text-cyan-400" />
               </div>
@@ -306,7 +306,7 @@ export default async function Page({ params }: Props) {
             <ServerTran locale={locale} text="home.active-community" />
           </h2>
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="bg-card rounded-xl p-6 border border-border">
+            <div className="bg-card rounded-xl p-6">
               <div className="flex min-h-16 items-center gap-4 mb-4">
                 <MessagesSquare className="w-8 h-8 text-[#5865F2]" />
                 <h3 className="text-xl font-bold text-card-foreground">
@@ -325,7 +325,7 @@ export default async function Page({ params }: Props) {
               </ul>
             </div>
 
-            <div className="bg-card rounded-xl p-6 border border-border">
+            <div className="bg-card rounded-xl p-6">
               <div className="flex min-h-16 items-center gap-4 mb-4">
                 <MessagesSquare className="w-8 h-8 text-[#5865F2]" />
                 <h3 className="text-xl font-bold text-card-foreground">
@@ -344,7 +344,7 @@ export default async function Page({ params }: Props) {
               </ul>
             </div>
 
-            <div className="bg-card rounded-xl p-6 border border-border">
+            <div className="bg-card rounded-xl p-6">
               <div className="flex min-h-16 items-center gap-4 mb-4">
                 <MessageSquareIcon className="w-8 h-8 text-brand" />
                 <h3 className="text-xl font-bold text-card-foreground">
