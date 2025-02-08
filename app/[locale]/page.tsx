@@ -4,17 +4,24 @@ import Link from 'next/link';
 import React from 'react';
 import 'server-only';
 
+
+
 import { HomeMapPreview, HomeSchematicPreview, HomeServerPreview, OnlineDisplay } from '@/app/[locale]/home';
 
+
+
+import CopyButton from '@/components/button/copy-button';
 import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
 import { Button } from '@/components/ui/button';
 
+
+
 import type { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';
-import CopyButton from '@/components/button/copy-button';
+
 
 export const experimental_ppr = true;
 
@@ -313,14 +320,15 @@ export default async function Page({ params }: Props) {
                   </div>
                   <div className="grid gap-8">
                     {gamemode.map((object, index) => (
-                      <div key={index} className="grid gap-4">
+                      <div key={index} className="grid gap-4 relative">
+                        {index !== 0 && <div className="border-t border-gray-300 w-full absolute -top-4"></div>}
                         <div className="text-lg font-bold flex items-center">
                           <object.icon className={object.class} />
                           <T locale={locale} text={object.title} />
                         </div>
-                        <T locale={locale} text={object.title} className='text-muted-foreground' />
+                        <T locale={locale} text={object.text} className="text-muted-foreground" />
                         <CopyButton data={object.link}>
-                          <T locale={locale} text='home.copy-gamemode-ip' />
+                          <T locale={locale} text="home.copy-gamemode-ip" />
                         </CopyButton>
                       </div>
                     ))}
