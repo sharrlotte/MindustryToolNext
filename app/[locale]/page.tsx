@@ -25,7 +25,7 @@ type Props = {
 
 const links = [
   {
-    key: 'home.offcial',
+    key: 'home.official',
     icon: MessagesSquare,
     color: '-cyan-400',
     value: [
