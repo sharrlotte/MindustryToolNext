@@ -1,14 +1,11 @@
+import clsx from 'clsx';
 import { Book, Cpu, DownloadIcon, FileCode, Flame, Gamepad2, Github, Globe, MapIcon, MessageSquareIcon, MessagesSquare, Milestone, PlayIcon, RocketIcon, Server, ServerIcon, Sparkles, Swords, UserPlusIcon, YoutubeIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import 'server-only';
 
-
-
 import { HomeMapPreview, HomeSchematicPreview, HomeServerPreview, OnlineDisplay } from '@/app/[locale]/home';
-
-
 
 import CopyButton from '@/components/button/copy-button';
 import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons';
@@ -16,12 +13,9 @@ import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
 import { Button } from '@/components/ui/button';
 
-
-
 import type { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';
-
 
 export const experimental_ppr = true;
 
@@ -35,7 +29,7 @@ const links = [
   {
     key: 'home.official',
     icon: MessagesSquare,
-    color: '-cyan-400',
+    color: 'cyan-400',
     value: [
       {
         href: 'https://discord.gg/mindustry',
@@ -60,7 +54,7 @@ const links = [
   {
     key: 'home.mindustrytool-and-vietnam',
     icon: MessagesSquare,
-    color: '-brand',
+    color: 'brand',
     value: [
       {
         href: 'https://discord.gg/nQDrEHVkrt',
@@ -91,7 +85,7 @@ const links = [
   {
     key: 'home.suggested-posts',
     icon: MessageSquareIcon,
-    color: '-purple-400',
+    color: 'purple-400',
     value: [
       {
         href: 'posts/e7610862-bf57-4ab0-9204-ae7a4a31d41b',
@@ -219,7 +213,16 @@ export default async function Page({ params }: Props) {
                 </div>
                 <T className="text-xl font-bold mb-4 text-card-foreground" locale={locale} text={feature.title} />
                 <T className="mb-4 text-muted-foreground flex-grow" locale={locale} text={feature.description} />
-                <Button variant="outline" className={`${feature.color} border-${feature.color} hover:bg-${feature.color} hover:text-white transition-colors duration-300 w-full mt-4`}>
+                {/* TODO: fix it  */}
+                <Button
+                  variant="outline"
+                  className={clsx(
+                    `w-full mt-4 transition-colors duration-300`,
+                    feature.color === 'brand' && 'hover:bg-brand hover:text-white border-brand',
+                    feature.color === 'cyan-400' && 'hover:bg-cyan-400 hover:text-white border-cyan-400',
+                    feature.color === 'purple-400' && 'hover:bg-purple-400 hover:text-white border-purple-400',
+                  )}
+                >
                   <T locale={locale} text="home.details" />
                 </Button>
               </div>
@@ -300,8 +303,8 @@ export default async function Page({ params }: Props) {
           </div>
           <div className="grid gap-8">
             <div className={`container overflow-hidden ${commonClasses.card}`}>
-              <div className="grid gap-8 md:grid-cols-5">
-                <div className="col-span-2">
+              <div className="grid gap-8 md:grid-cols-2">
+                <div className="">
                   <h3 className="text-xl font-bold text-brand mb-4 flex items-center">
                     <Server className="w-8 h-8 mr-2" />
                     <T locale={locale} text="home.why-choose-us" />
@@ -309,11 +312,11 @@ export default async function Page({ params }: Props) {
                   <p className="mb-6 text-muted-foreground">
                     <T locale={locale} text="home.server-features" />
                   </p>
-                  <Button variant="outline" className="text-brand border-brand hover:bg-brand hover:text-white transition-colors duration-300">
-                    <T locale={locale} text="home.claim-free-server" />
+                  <Button variant="outline" className="flex max-w-full text-brand border-brand hover:bg-brand hover:text-white transition-colors duration-300">
+                    <T className="block break-words whitespace-normal text-center" locale={locale} text="home.claim-free-server" />
                   </Button>
                 </div>
-                <div className="col-span-3">
+                <div className="">
                   <div className="flex items-center mb-8">
                     <Milestone className="w-8 h-8 mr-2 text-cyan-400 drop-shadow-xl" />
                     <T className="text-xl font-bold text-brand" locale={locale} text="home.recommend-gamemode" />
@@ -359,7 +362,7 @@ export default async function Page({ params }: Props) {
             {links.map((section, index) => (
               <div key={index} className="bg-card rounded-xl p-6">
                 <div className="flex min-h-16 items-center gap-4 mb-4">
-                  <section.icon className={`w-8 h-8 ${section.color}`} />
+                  <section.icon className={`min-w-8 min-h-8 text-${section.color}`} />
                   <h3 className="text-xl font-bold text-card-foreground">
                     <T locale={locale} text={section.key} />
                   </h3>
