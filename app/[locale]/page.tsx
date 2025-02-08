@@ -88,7 +88,7 @@ export default async function Page({ params }: Props) {
   const { locale } = await params;
 
   return (
-    <main className="no-scrollbar flex h-full flex-col bg-center text-foreground gap-6">
+    <main className="no-scrollbar flex h-full flex-col bg-center text-foreground gap-16 px-4">
       {/* Header / Hero Section */}
       <header className="w-full px-4 bg-gradient-to-b from-background to-background/80">
         <div className="py-8">
@@ -134,7 +134,7 @@ export default async function Page({ params }: Props) {
       </header>
 
       {/* Hot Features Section */}
-      <section className="py-10 bg-background/50">
+      <section className="bg-background/50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-16">
             <ServerTran locale={locale} text="home.hot-features" />
@@ -189,7 +189,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* About Section */}
-      <section className="py-10 bg-background">
+      <section className="bg-background">
         <div className="container mx-auto px-4">
           <div className="grid gap-8">
             <div className="grid md:grid-cols-2 bg-card p-8 rounded-xl transition-all duration-300 ease-in-out">
@@ -234,7 +234,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* New Designs Section */}
-      <section className="py-10 px-4 bg-background/50">
+      <section className=" bg-background/50">
         <div className="container mx-auto bg-card p-4 rounded-xl shadow-lg">
           <div className="p-4">
             <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-brand to-cyan-400 bg-clip-text text-transparent">
@@ -268,7 +268,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* Hosting Your Server Section */}
-      <section className="py-10 px-4 bg-background">
+      <section className="bg-background">
         <div className="container mx-auto bg-card p-6 rounded-xl shadow-lg">
           <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-brand to-cyan-400 bg-clip-text text-transparent">
             <ServerTran locale={locale} text="home.hosting-your-server" />
@@ -300,7 +300,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* Active Community Section */}
-      <section className="py-10 px-4 bg-background/50">
+      <section className="bg-background/50">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 text-card-foreground">
             <ServerTran locale={locale} text="home.active-community" />
@@ -366,7 +366,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* Call To Action Section */}
-      <section className="py-10 px-4 bg-background">
+      <section className="bg-background">
         <div className="container mx-auto text-center">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold mb-6 text-card-foreground">
