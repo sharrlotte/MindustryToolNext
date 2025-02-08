@@ -131,7 +131,7 @@ export default async function Page({ params }: Props) {
   return (
     <main className="no-scrollbar flex h-full flex-col bg-center text-foreground gap-16 px-4">
       {/* Header / Hero Section */}
-      <header className="w-full px-4 bg-gradient-to-b from-background to-background/80">
+      <header className="w-full px-4">
         <div className="py-8">
           <div className={commonClasses.section}>
             <div className="grid">
@@ -168,7 +168,7 @@ export default async function Page({ params }: Props) {
       </header>
 
       {/* Hot Features Section */}
-      <section className="bg-background/50">
+      <section>
         <div className={commonClasses.section}>
           <div className={commonClasses.title}>
             <Flame className="text-red-400 w-8 h-8 mr-2" />
@@ -211,7 +211,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* About Section */}
-      <section className="bg-background">
+      <section>
         <div className={commonClasses.section}>
           <div className="grid grid-col md:grid-row-3 gap-4">
             <div className="grid md:grid-cols-2 bg-card p-8 rounded-xl transition-all duration-300 ease-in-out">
@@ -246,7 +246,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* New Designs Section */}
-      <section className="bg-background/50">
+      <section>
         <div className={commonClasses.section}>
           <div className={commonClasses.title}>
             <Sparkles className="w-8 h-8 mr-2 text-yellow-400 drop-shadow-xl" />
@@ -274,7 +274,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* Hosting Your Server Section */}
-      <section className="bg-background p-4">
+      <section className="p-4">
         <div className={`${commonClasses.section} bg-card p-8 rounded-xl shadow-lg gap-8`}>
           <div className="flex items-center mb-8">
             <Gamepad2 className="w-8 h-8 mr-2 text-blue-400 drop-shadow-xl" />
@@ -308,7 +308,7 @@ export default async function Page({ params }: Props) {
         </div>
       </section>
 
-      <section className="bg-background p-4">
+      <section className="p-4">
         <div className={`${commonClasses.section} bg-card rounded-xl shadow-lg p-8 overflow-hidden`}>
           <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center">
             <Globe className="w-6 h-6 mr-2" />
@@ -321,7 +321,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* Active Community Section */}
-      <section className="bg-background/50">
+      <section>
         <div className={commonClasses.section}>
           <h2 className={`${commonClasses.title} text-card-foreground`}>
             <T locale={locale} text="home.active-community" />
@@ -338,7 +338,7 @@ export default async function Page({ params }: Props) {
                 <ul className="space-y-4">
                   {section.value.map((item, itemIndex) => (
                     <li key={itemIndex} className="flex ml-0 items-center gap-4">
-                      <item.icon className={item.class + " ml-2"} />
+                      <item.icon className={item.class + ' ml-2'} />
                       <InternalLink className="flex items-center hover:text-brand transition-colors duration-300" href={item.href}>
                         <T locale={locale} text={item.text} />
                       </InternalLink>
@@ -352,7 +352,7 @@ export default async function Page({ params }: Props) {
       </section>
 
       {/* Call To Action Section */}
-      <section className="bg-background">
+      <section>
         <div className={`${commonClasses.section} text-center`}>
           <div className="max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold mb-6 text-card-foreground">
