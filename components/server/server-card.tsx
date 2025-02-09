@@ -1,5 +1,6 @@
 import React, { Fragment, Suspense } from 'react';
 
+import CopyButton from '@/components/button/copy-button';
 import ColorText from '@/components/common/color-text';
 import { ServerIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
@@ -15,8 +16,9 @@ type MyServerInstancesCardProps = {
 
 export default async function ServerCard({ server: { id, name, players, port, status, mapName, mode, address } }: MyServerInstancesCardProps) {
   return (
-    <InternalLink className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-2 h-52" href={`/servers/${id}`}>
+    <InternalLink className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-2 h-52 relative" href={`/servers/${id}`}>
       <Suspense>
+        <CopyButton data={address} variant="ghost" />
         <div className="flex items-center gap-2 flex-nowrap w-full overflow-hidden text-ellipsis">
           <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
           <ColorText className="text-2xl font-bold" text={name} />
@@ -47,14 +49,6 @@ export default async function ServerCard({ server: { id, name, players, port, st
               <Fragment>
                 <Tran asChild text="server.map" />
                 <ColorText text={mapName} />
-              </Fragment>
-            )}
-          </div>
-          <div className="flex flex-col gap-0.5">
-            {address && (
-              <Fragment>
-                <Tran asChild text="server.address" />
-                <span>{address}</span>
               </Fragment>
             )}
           </div>
