@@ -330,7 +330,7 @@ export default async function Page({ params }: Props) {
                           <T locale={locale} text={object.title} />
                         </div>
                         <T locale={locale} text={object.text} className="text-muted-foreground" />
-                        <CopyButton data={object.link}>
+                        <CopyButton className='flex max-w-full text-brand border-brand hover:bg-brand hover:text-white transition-colors duration-300' data={object.link}>
                           <T locale={locale} text="home.copy-gamemode-ip" />
                         </CopyButton>
                       </div>
