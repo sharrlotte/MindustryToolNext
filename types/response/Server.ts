@@ -11,6 +11,7 @@ export default interface Server {
   gamemode: string | null;
   isOfficial: boolean;
   hostCommand: string | null;
+  address: string
   webhook: string | null;
   isAutoTurnOff: boolean;
   isHub: boolean;

@@ -13,7 +13,7 @@ type MyServerInstancesCardProps = {
   server: ServerDto;
 };
 
-export default async function ServerCard({ server: { id, name, players, port, status, mapName, mode } }: MyServerInstancesCardProps) {
+export default async function ServerCard({ server: { id, name, players, port, status, mapName, mode, address } }: MyServerInstancesCardProps) {
   return (
     <InternalLink className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-2 h-52" href={`/servers/${id}`}>
       <Suspense>
@@ -47,6 +47,14 @@ export default async function ServerCard({ server: { id, name, players, port, st
               <Fragment>
                 <Tran asChild text="server.map" />
                 <ColorText text={mapName} />
+              </Fragment>
+            )}
+          </div>
+          <div className="flex flex-col gap-0.5">
+            {address && (
+              <Fragment>
+                <Tran asChild text="server.address" />
+                <span>{address}</span>
               </Fragment>
             )}
           </div>

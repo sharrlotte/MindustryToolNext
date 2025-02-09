@@ -15,6 +15,7 @@ export type ServerDto = {
   totalRam: number;
   players: number;
   mapName: string;
+  address: string;
   autoTurnOff: boolean;
   hub: boolean;
   hostCommand?: string;
