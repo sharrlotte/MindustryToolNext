@@ -74,6 +74,13 @@ export const groups: readonly PathGroup[] = [
         regex: [`^${localesRegex}/maps`],
       },
       {
+        id: 'servers',
+        path: '/servers',
+        name: <Tran asChild text="server" />,
+        icon: <ServerIcon />,
+        regex: [`^${localesRegex}/servers`],
+      },
+      {
         id: 'plugins',
         path: '/plugins',
         name: <Tran asChild text="plugin" />,
@@ -86,20 +93,6 @@ export const groups: readonly PathGroup[] = [
         name: <Tran asChild text="post" />,
         icon: <PostIcon />,
         regex: [`^${localesRegex}/posts`],
-      },
-      {
-        id: 'servers',
-        path: '/servers',
-        name: <Tran asChild text="server" />,
-        icon: <ServerIcon />,
-        regex: [`^${localesRegex}/servers`],
-      },
-      {
-        id: 'logic',
-        path: '/logic',
-        name: <Tran asChild text="logic" />,
-        icon: <CmdIcon />,
-        regex: [`^${localesRegex}/logic`],
       },
       {
         id: 'chat',
@@ -128,6 +121,13 @@ export const groups: readonly PathGroup[] = [
         name: <Tran asChild text="ratio" />,
         icon: <RatioIcon />,
         regex: [`^${localesRegex}/ratio`],
+      },
+      {
+        id: 'logic',
+        path: '/logic',
+        name: <Tran asChild text="logic" />,
+        icon: <CmdIcon />,
+        regex: [`^${localesRegex}/logic`],
       },
     ],
   },
