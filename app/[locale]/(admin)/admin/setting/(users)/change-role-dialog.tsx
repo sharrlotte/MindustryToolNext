@@ -1,5 +1,7 @@
 import { Fragment, Suspense, useMemo, useState } from 'react';
 
+
+
 import { Hidden } from '@/components/common/hidden';
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -8,6 +10,8 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import Divider from '@/components/ui/divider';
 import { toast } from '@/components/ui/sonner';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+
+
 
 import { useMe, useSession } from '@/context/session-context.client';
 import useClientApi from '@/hooks/use-client';
@@ -19,7 +23,10 @@ import { changeAuthorities } from '@/query/user';
 import { Authority, Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
 
+
+
 import { useMutation, useQuery } from '@tanstack/react-query';
+
 
 type DialogProps = {
   user: User;
@@ -59,28 +66,28 @@ export function ChangeRoleDialog({ user }: DialogProps) {
   const groups = useMemo(() => groupBy(filteredAuthority?.sort((a, b) => a.authorityGroup.localeCompare(b.authorityGroup)) || [], (v) => v.authorityGroup), [filteredAuthority]);
 
   const { mutate: updateRole } = useMutation({
+    mutationKey: ['update-user-role', id],
     mutationFn: async (roleIds: number[]) => changeRoles(axios, { userId: id, roleIds }),
-    onSuccess: () => {
-      invalidateByKey(['management']);
-    },
     onError: (error) => {
       toast.error(<Tran text="error" />, { description: error.message });
       setSelectedRoles(roles);
     },
-    mutationKey: ['update-user-role', id],
+    onSettled: () => {
+      invalidateByKey(['users']);
+    },
   });
 
   const { mutate: updateAuthority } = useMutation({
     mutationFn: async (authorityIds: string[]) => changeAuthorities(axios, { userId: id, authorityIds }),
-    onSuccess: () => {
-      invalidateByKey(['management']);
-    },
+    mutationKey: ['update-user-authority', id],
     onError: (error) => {
       toast.error(<Tran text="error" />, { description: error.message });
 
       setSelectedAuthorities(authorities);
     },
-    mutationKey: ['update-user-authority', id],
+    onSettled: () => {
+      invalidateByKey(['users']);
+    },
   });
 
   function handleRoleChange(value: string[]) {

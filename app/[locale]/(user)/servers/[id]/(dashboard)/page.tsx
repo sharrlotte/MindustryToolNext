@@ -68,7 +68,7 @@ export default async function Page({ params }: Props) {
     return <ErrorScreen error={session} />;
   }
 
-  const { name, description, port, mode, ramUsage, totalRam, players, mapName, status, userId } = server;
+  const { name, description, port, mode, ramUsage, totalRam, players, mapName, status, userId, address } = server;
 
   const canAccess = hasAccess(session, { any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: server.userId }] });
   const showPlayer = hasAccess(session, {
@@ -124,6 +124,14 @@ export default async function Page({ params }: Props) {
                   <Fragment>
                     <Tran text="server.map" />
                     <ColorText text={mapName} />
+                  </Fragment>
+                )}
+              </div>
+              <div className="flex flex-col gap-0.5">
+                {address && (
+                  <Fragment>
+                    <Tran text="server.address" />
+                    <span>{address}</span>
                   </Fragment>
                 )}
               </div>

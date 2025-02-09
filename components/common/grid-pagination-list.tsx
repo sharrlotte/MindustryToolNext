@@ -41,7 +41,7 @@ export default function GridPaginationList<T, P extends QuerySchema>({ className
   const { data, error, isLoading } = useQuery({
     queryFn: () => queryFn(axios, p),
     queryKey: [p, ...queryKey],
-    initialData: ref.current === p ? initialData : undefined,
+    // TODO: Fix this
   });
 
   const skeletonElements = useMemo(() => {
