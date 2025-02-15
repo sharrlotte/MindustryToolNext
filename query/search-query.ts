@@ -63,6 +63,8 @@ export const ItemPaginationQuery = z.object({
 
 export type ItemPaginationQueryType = z.infer<typeof ItemPaginationQuery>;
 
+export type CountItemPaginationQueryType = Omit<ItemPaginationQueryType, 'page' | 'size'>;
+
 export const TranslationPaginationQuery = z.object({
   ...PaginationParam,
   language: languageSchema,

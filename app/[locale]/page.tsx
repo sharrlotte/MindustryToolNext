@@ -8,14 +8,21 @@ import 'server-only';
 import { HomeMapPreview, HomeSchematicPreview, HomeServerPreview, OnlineDisplay } from '@/app/[locale]/home';
 
 import CopyButton from '@/components/button/copy-button';
-import { DiscordIcon, FacebookIcon, GithubIcon } from '@/components/common/icons';
+import { DiscordIcon, FacebookIcon, GithubIcon, SchematicIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
 import { Button } from '@/components/ui/button';
 
+import { getServerApi } from '@/action/action';
 import type { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';
+import { getMapCount } from '@/query/map';
+import { getSchematicCount } from '@/query/schematic';
+
+import Counter from './counter';
+import StatisticCard from './statistic-card';
+import './style.css';
 
 export const experimental_ppr = true;
 
@@ -132,7 +139,6 @@ const SectionTitle = ({ text, locale }: { text: string; locale: Locale }) => (
 const commonClasses = {
   section: 'container mx-auto px-4',
   title: 'text-3xl font-bold mb-16 flex justify-center items-center',
-  gradientText: 'bg-gradient-to-r from-brand to-cyan-400 bg-clip-text text-transparent',
   card: 'bg-card p-8 rounded-xl transition-all duration-300 ease-in-out flex flex-col',
   iconWrapper: 'w-16 h-16 rounded-lg flex items-center justify-center mb-6',
 };
@@ -140,44 +146,51 @@ const commonClasses = {
 export default async function Page({ params }: Props) {
   const { locale } = await params;
 
+  const axios = await getServerApi();
+  const [schematics, maps] = await Promise.all([getSchematicCount(axios, {}), getMapCount(axios, {})]);
+
   return (
     <main className="no-scrollbar flex h-full flex-col bg-center text-foreground gap-16 px-4">
       {/* Header / Hero Section */}
-      <header className="w-full px-4">
-        <div className="py-8">
-          <div className={commonClasses.section}>
-            <div className="grid">
-              <T className={`w-full text-3xl md:text-5xl font-bold text-center mb-6 ${commonClasses.gradientText}`} locale={locale} text={'home.mindustrytool'} />
-              <T className="w-full text-lg text-muted-foreground text-center max-w-3xl mx-auto mb-6" locale={locale} text={'home.tagline'} />
-            </div>
-            <div className="flex flex-col md:flex-row justify-center gap-4 mb-8">
-              <Button className="h-12 px-6 text-base border border-brand bg-brand/70 hover:bg-transparent text-theme hover:text-brand transition duration-300 ease-in-out">
-                <RocketIcon className="mr-2" />
-                <T locale={locale} text="home.get-started" />
-              </Button>
-              <Button className="h-12 px-6 text-base border border-brand text-brand hover:bg-brand hover:text-white transition duration-300 ease-in-out" variant="outline">
-                <PlayIcon className="mr-2" />
-                <T locale={locale} text="home.explore-webpage" />
-              </Button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-zinc-700 max-w-4xl mx-auto bg-card/50 rounded-lg p-4">
-              {[
-                { icon: FileCode, text: 'home.schematics-count', count: '4.5k+', color: 'text-brand' },
-                { icon: MapIcon, text: 'home.maps-count', count: '1K+', color: 'text-cyan-400' },
-                { icon: ServerIcon, text: 'home.free-servers-count', count: '3 Slots', color: 'text-purple-400' },
-              ].map((item, index) => (
-                <div key={index} className="text-center py-4">
+      <header className="w-full space-y-10">
+        <div className="grid items-center text-center mt-10">
+          <h1 className="text-5xl text-gradient py-1 font-bold">
+            <T asChild locale={locale} text="home.mindustry-tool" />
+          </h1>
+          <T className="w-full text-lg text-muted-foreground text-center mx-auto" locale={locale} text={'home.tagline'} />
+        </div>
+        <div className="grid grid-cols-2 justify-center items-center w-fit mx-auto gap-2">
+          <InternalLink className="py-1 px-3 h-12 flex justify-center items-center border-brand rounded-md bg-brand hover:-translate-y-2 hover:bg-brand transition duration-300 ease-in-out" href="/schematics">
+            <RocketIcon />
+            <T locale={locale} text="home.get-started" />
+          </InternalLink>
+          <InternalLink className="py-1 px-3 h-12 flex justify-center items-center border-brand border rounded-md text-brand hover:-translate-y-2 transition duration-300 ease-in-out" href="/schematics">
+            <PlayIcon />
+            <T locale={locale} text="home.explore-webpage" />
+          </InternalLink>
+        </div>
+      </header>
+      <div className="py-8">
+        <div className={commonClasses.section}>
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-zinc-700 max-w-4xl mx-auto bg-card/50 rounded-lg p-4">
+            {[
+              { icon: SchematicIcon, text: 'home.schematics-count', count: schematics, color: 'text-brand' },
+              { icon: MapIcon, text: 'home.maps-count', count: maps, color: 'text-cyan-400' },
+              { icon: ServerIcon, text: 'home.free-servers-count', count: 3, color: 'text-purple-400' },
+            ].map((item, index) => (
+              <StatisticCard key={index}>
+                <div className="text-center py-4">
                   <div className={`text-xl md:text-4xl font-bold ${item.color} flex items-center justify-center`}>
                     <item.icon className="w-8 h-8 mr-2" />
-                    {item.count}
+                    <Counter from={0} to={item.count} />
                   </div>
                   <T locale={locale} text={item.text} />
                 </div>
-              ))}
-            </div>
+              </StatisticCard>
+            ))}
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Hot Features Section */}
       <section>
@@ -271,7 +284,7 @@ export default async function Page({ params }: Props) {
         <div className={commonClasses.section}>
           <div className={commonClasses.title}>
             <Sparkles className="w-8 h-8 mr-2 text-yellow-400 drop-shadow-xl" />
-            <T className={`text-3xl font-bold ${commonClasses.gradientText}`} locale={locale} text="home.new-designs" />
+            <T className={`text-3xl font-bold text-gradient`} locale={locale} text="home.new-designs" />
           </div>
           <div className="grid gap-8">
             {[
@@ -299,7 +312,7 @@ export default async function Page({ params }: Props) {
         <div className={commonClasses.section}>
           <div className={commonClasses.title}>
             <Gamepad2 className="w-8 h-8 mr-2 text-blue-400 drop-shadow-xl" />
-            <T className={`text-3xl font-bold ${commonClasses.gradientText}`} locale={locale} text="home.hosting-your-server" />
+            <T className={`text-3xl font-bold text-gradient`} locale={locale} text="home.hosting-your-server" />
           </div>
           <div className="grid gap-8">
             <div className={`container overflow-hidden ${commonClasses.card}`}>
@@ -330,7 +343,7 @@ export default async function Page({ params }: Props) {
                           <T locale={locale} text={object.title} />
                         </div>
                         <T locale={locale} text={object.text} className="text-muted-foreground" />
-                        <CopyButton className='flex max-w-full text-brand border-brand hover:bg-brand hover:text-white transition-colors duration-300' data={object.link}>
+                        <CopyButton className="flex max-w-full text-brand border-brand hover:bg-brand hover:text-white transition-colors duration-300" data={object.link}>
                           <T locale={locale} text="home.copy-gamemode-ip" />
                         </CopyButton>
                       </div>

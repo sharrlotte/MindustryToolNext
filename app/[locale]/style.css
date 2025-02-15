@@ -1,0 +1,3 @@
+.text-gradient {
+  @apply bg-gradient-to-r from-brand to-cyan-400 bg-clip-text text-transparent;
+}
