@@ -26,13 +26,13 @@ import { getOnline, getUsers } from '@/query/user';
 
 export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground">
+    <ul className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 list-none">
       <Suspense>
         <InternalSchematicRowView queryParam={queryParam} />
-        <li key="more" className="m-0 snap-center text-nowrap p-0">
-          <InternalLink href="/schematics" className="cursor-pointer px-2 font-light">
-            <Preview className="flex items-center justify-center">
-              <Tran text="view-more" />
+        <li key="more" className="m-0 snap-center text-nowrap p-0 h-full border-2 rounded-lg border-border">
+          <InternalLink href="/schematics" className="cursor-pointer px-2 font-light h-full w-full p-0">
+            <Preview className="flex items-center justify-center w-full">
+              <Tran className="text-gradient text-xl" text="view-more" />
             </Preview>
           </InternalLink>
         </li>
@@ -42,13 +42,13 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPag
 }
 export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="flex w-full snap-x list-none gap-2 overflow-x-auto overflow-y-hidden pb-4 text-foreground min-w-preview-height">
+    <ul className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 list-none">
       <Suspense>
         <InternalHomeMapPreview queryParam={queryParam} />
-        <li key="more" className="m-0 snap-center text-nowrap p-0">
-          <InternalLink href="/maps" className="cursor-pointer px-2 text-center font-light">
-            <Preview className="flex items-center justify-center">
-              <Tran text="view-more" />
+        <li key="more" className="m-0 snap-center text-nowrap p-0 h-full border-2 rounded-lg border-border">
+          <InternalLink href="/maps" className="cursor-pointer px-2 text-center font-light h-full w-full p-0">
+            <Preview className="flex items-center justify-center w-full">
+              <Tran className="text-gradient text-xl" text="view-more" />
             </Preview>
           </InternalLink>
         </li>
@@ -70,7 +70,7 @@ const findSchematics = unstable_cache((axios, queryParams) => getSchematics(axio
 
 const findMaps = unstable_cache((axios, queryParams) => getMaps(axios, queryParams), ['home-maps'], { revalidate: 60 * 60 });
 
-const findServers = unstable_cache((axios) => getServers(axios, { page: 0, size: 10 }), ['home-servers'], { revalidate: 60 * 60 });
+const findServers = unstable_cache((axios) => getServers(axios, { page: 0, size: 5 }), ['home-servers'], { revalidate: 60 * 60 });
 
 async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   const result = await serverApi((axios) => findSchematics(axios, queryParam));
@@ -79,8 +79,8 @@ async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPagina
     return <ErrorScreen error={result} />;
   }
 
-  return result.map((schematic, index) => (
-    <li key={schematic.id} className="m-0 snap-center p-0 w-preview">
+  return result.slice(0, 7).map((schematic, index) => (
+    <li key={schematic.id} className="m-0 snap-center p-0 border-2 rounded-lg border-border">
       <FadeIn delay={index}>
         <SchematicPreviewCard schematic={schematic} imageCount={index} />
       </FadeIn>
@@ -95,8 +95,8 @@ async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginati
     return <ErrorScreen error={result} />;
   }
 
-  return result.map((map, index) => (
-    <li key={map.id} className="m-0 snap-center p-0 w-preview">
+  return result.slice(0, 7).map((map, index) => (
+    <li key={map.id} className="m-0 snap-center p-0 border-2 rounded-lg border-border">
       <FadeIn delay={index}>
         <MapPreviewCard map={map} imageCount={index} />
       </FadeIn>
@@ -111,7 +111,7 @@ async function InternalHomeServerPreview() {
     return <ErrorScreen error={result} />;
   }
 
-  return result.slice(0, 10).map((server, index) => (
+  return result.slice(0, 7).map((server, index) => (
     <li key={server.id} className="m-0 snap-center p-0 h-full w-[320px] min-w-[320px]">
       <FadeIn delay={index}>
         <ServerCard server={server} />

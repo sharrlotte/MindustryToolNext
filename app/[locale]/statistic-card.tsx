@@ -10,6 +10,7 @@ export default function StatisticCard({ children, delay }: { children: ReactNode
         opacity: 0,
         translateY: -10,
       }}
+      viewport={{ once: true }}
       whileInView={{
         opacity: 1,
         translateY: 0,

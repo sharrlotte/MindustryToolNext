@@ -25,7 +25,7 @@ import { ServerModes } from '@/types/request/UpdateServerRequest';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export default function CreateServerDialog() {
+export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: boolean }) {
   const [managerId, setManagerId] = useState<string | undefined>('not-selected-yet');
   const { data: managers } = useQuery({
     queryKey: ['server-managers', 'me'],
@@ -49,7 +49,7 @@ export default function CreateServerDialog() {
 
   const router = useRouter();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
 
   const { invalidateByKey } = useQueriesData();
 
@@ -76,7 +76,7 @@ export default function CreateServerDialog() {
 
   if (managerId === 'not-selected-yet')
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog defaultOpen={defaultOpen} open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button className="min-w-20" variant="primary" title="server.add">
             <Tran text="server.add" />

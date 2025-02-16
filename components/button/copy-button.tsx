@@ -16,6 +16,7 @@ const copyButtonVariants = cva('p-2 bg-transparent group/copy-button', {
     variant: {
       default: 'bg-secondary border border-border hover:bg-brand hover:border-none',
       ghost: 'bg-none bg-card/50 hidden group-hover:flex group-focus:flex hidden group-hover:flex group-focus:flex',
+      none: '',
     },
     position: {
       relative: '',
@@ -29,8 +30,8 @@ const copyButtonVariants = cva('p-2 bg-transparent group/copy-button', {
   },
 });
 
-export type CopyButtonProps = VariantProps<typeof copyButtonVariants> &
-  Omit<ButtonProps, 'title'> & {
+export type CopyButtonProps = Omit<ButtonProps, 'title' | 'variant'> &
+  VariantProps<typeof copyButtonVariants> & {
     title?: ReactNode;
     content?: ReactNode;
     data: string | (() => Promise<string>);
