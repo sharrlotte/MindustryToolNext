@@ -112,14 +112,6 @@ export default async function Page({ params }: Props) {
                 <span>{players}/30</span>
               </div>
               <div className="flex flex-col gap-0.5">
-                {port > 0 && (
-                  <Fragment>
-                    <Tran text="server.port" />
-                    <span>{port}</span>
-                  </Fragment>
-                )}
-              </div>
-              <div className="flex flex-col gap-0.5">
                 {mapName && (
                   <Fragment>
                     <Tran text="server.map" />
