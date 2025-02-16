@@ -448,7 +448,7 @@ function About({ locale }: { locale: Locale }) {
   return (
     <section className="grid grid-col md:grid-row-3 gap-16">
       <StatisticCard>
-        <div className="grid md:grid-cols-2 bg-card/50 p-8 rounded-xl transition-all duration-300 ease-in-out">
+        <div className="grid md:grid-cols-2 bg-card/50 p-8 rounded-xl transition-all duration-300 ease-in-out gap-2">
           <div className="flex flex-col gap-2">
             <Cpu className="w-8 h-8 text-cyan-400" />
             <T className="text-xl font-bold text-card-foreground" locale={locale} text="home.about-mindustry" />
