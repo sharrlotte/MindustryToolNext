@@ -25,7 +25,11 @@ type Props = {
   server: Server;
 };
 
-export default function ServerUpdatePortForm({ server: { id, port, isOfficial, isAutoTurnOff, isHub } }: Props) {
+export default function ServerUpdatePortForm({ server }: Props) {
+  const { id, port, isOfficial, isAutoTurnOff, isHub } = server;
+
+  console.log(server);
+
   const form = useForm<PutServerPortRequest>({
     resolver: zodResolver(PutServerPortSchema),
     defaultValues: {
@@ -40,12 +44,10 @@ export default function ServerUpdatePortForm({ server: { id, port, isOfficial, i
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: (data: PutServerPortRequest) => updateServerPort(axios, id, data),
-    onSuccess: () => {
-      revalidate({ path: '/servers' });
-      toast.success(<Tran text="update.success" />);
-    },
-    onError: (error) => toast.error(<Tran text="update.fail" />, { description: error.message }),
+    mutationFn: (data: PutServerPortRequest) => toast.promise( updateServerPort(axios, id, data), {
+      'error': (error) => ({'title': <Tran text="update.fail" />, description: error.message }),
+      'success': <Tran text="update.success" />
+    }),
     onSettled: () => {
       invalidateByKey(['servers']);
       revalidate({ path: '/servers' });
@@ -57,6 +59,7 @@ export default function ServerUpdatePortForm({ server: { id, port, isOfficial, i
   return (
     <Form {...form}>
       <form className="relative flex flex-1 flex-col justify-between gap-4 bg-card p-4" onSubmit={form.handleSubmit((value) => mutate(value))}>
+        <FormMessage />
         <div className="space-y-6">
           <FormField
             control={form.control}

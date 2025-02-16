@@ -8,7 +8,7 @@ export type ServerDto = {
   userId: string;
   description: string;
   port: number;
-  official: boolean;
+  isOfficial: boolean;
   mode: ServerMode;
   status: ServerStatus;
   ramUsage: number;
@@ -16,7 +16,7 @@ export type ServerDto = {
   players: number;
   mapName: string;
   address: string;
-  autoTurnOff: boolean;
-  hub: boolean;
+  isAutoTurnOff: boolean;
+  isHub: boolean;
   hostCommand?: string;
 };
