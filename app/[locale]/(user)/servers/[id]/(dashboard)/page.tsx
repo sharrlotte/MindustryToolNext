@@ -10,6 +10,7 @@ import InitServerButton from '@/app/[locale]/(user)/servers/[id]/init-server-but
 import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-server-button';
 import StopServerButton from '@/app/[locale]/(user)/servers/[id]/stop-server-button';
 
+import CopyButton from '@/components/button/copy-button';
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import { ServerIcon } from '@/components/common/icons';
@@ -123,6 +124,7 @@ export default async function Page({ params }: Props) {
                 {address && (
                   <Fragment>
                     <Tran text="server.address" />
+                    <CopyButton variant="ghost" data={`${address}:${port}`} />
                     <span className="lowercase">
                       {address}:{port}
                     </span>
