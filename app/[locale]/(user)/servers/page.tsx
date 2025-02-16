@@ -27,7 +27,13 @@ function LoginToCreateServer() {
   );
 }
 
-export default async function Page() {
+type Props = {
+  searchParams: Promise<{ create?: boolean }>;
+};
+
+export default async function Page({ searchParams }: Props) {
+  const { create } = await searchParams;
+
   return (
     <div className="flex h-full flex-col overflow-hidden space-y-2 p-2">
       <ServerTabs className="flex h-full w-full flex-col overflow-hidden" name="tab" value="official-server" values={['official-server', 'community-server', 'my-server']}>
@@ -63,13 +69,13 @@ export default async function Page() {
         </ServerTabsContent>
       </ServerTabs>
       <Suspense>
-        <Footer />
+        <Footer create={create} />
       </Suspense>
     </div>
   );
 }
 
-async function Footer() {
+async function Footer({ create }: { create?: boolean }) {
   const session = await getSession();
 
   return (
@@ -78,7 +84,7 @@ async function Footer() {
         <InternalLink variant="button-secondary" href="/server-managers">
           <Tran text="server-manager" />
         </InternalLink>
-        <CreateServerDialog />
+        <CreateServerDialog defaultOpen={!!create} />
       </ProtectedElement>
     </footer>
   );

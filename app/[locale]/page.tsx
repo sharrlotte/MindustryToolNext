@@ -1,4 +1,4 @@
-import { Book, Cpu, DownloadIcon, FileCode, Flame, Gamepad2, Github, Globe, MapIcon, MessageSquareIcon, MessagesSquare, Milestone, PlayIcon, RocketIcon, Server, ServerIcon, Sparkles, Swords, UserPlusIcon, YoutubeIcon } from 'lucide-react';
+import { Book, Cpu, DownloadIcon, FileCode, Flame, Gamepad2, Github, Globe, MapIcon, MessageSquareIcon, MessagesSquare, Milestone, PlayIcon, RocketIcon, Server, ServerIcon, Swords, YoutubeIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
@@ -7,12 +7,12 @@ import 'server-only';
 import { HomeMapPreview, HomeSchematicPreview, HomeServerPreview, OnlineDisplay } from '@/app/[locale]/home';
 
 import CopyButton from '@/components/button/copy-button';
-import { DiscordIcon, FacebookIcon, GithubIcon, PostIcon, SchematicIcon } from '@/components/common/icons';
+import { CopyIcon, DiscordIcon, FacebookIcon, GithubIcon, PostIcon, SchematicIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
-import { Button } from '@/components/ui/button';
 
 import { getServerApi } from '@/action/action';
+import env from '@/constant/env';
 import type { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { cn, formatTitle } from '@/lib/utils';
@@ -99,13 +99,13 @@ const links = [
         href: 'posts/e7610862-bf57-4ab0-9204-ae7a4a31d41b',
         text: 'home.download-tutorial',
         icon: MessagesSquare,
-        class: 'min-w-8 h-8',
+        class: 'min-w-8 h-8 text-white',
       },
       {
         href: '/posts/fa6c9516-7b98-428d-9129-c86aa40ea3d6',
         text: 'home.play-with-friend-tutorial',
         icon: MessagesSquare,
-        class: 'min-w-8 h-8',
+        class: 'min-w-8 h-8 text-white',
       },
     ],
   },
@@ -115,7 +115,7 @@ const gamemode = [
   {
     title: 'home.catali-intro',
     icon: Swords,
-    class: 'w-6 h-6 mr-2 text-red-400',
+    class: 'w-6 h-6 text-red-400',
     text: 'home.catali-infomation',
     link: 'server.mindustry-tool.com:6568',
   },
@@ -141,12 +141,12 @@ export default async function Page({ params }: Props) {
   const { locale } = await params;
 
   return (
-    <main className="h-screen no-scrollbar overflow-auto bg-gradient">
-      <div className="container mx-auto flex h-full flex-col bg-center text-foreground gap-16 min-h-screen">
+    <main className="h-screen no-scrollbar overflow-auto bg-gradient dark">
+      <div className="container p-4 mx-auto flex h-full flex-col bg-center text-foreground gap-16 min-h-screen">
         <Header locale={locale} />
         <Statistic locale={locale} />
-        <Features locale={locale} />
         <About locale={locale} />
+        <Features locale={locale} />
         <Design locale={locale} />
         <Hosting locale={locale} />
         <Community locale={locale} />
@@ -159,13 +159,13 @@ export default async function Page({ params }: Props) {
 
 function Footer({ locale }: { locale: Locale }) {
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className="border-t border-border bg-background p-8">
       <div>
         <div className="grid gap-4 md:grid-cols-3">
           {/* Brand & Socials */}
           <div className="space-y-4 md:text-left">
-            <h3 className="text-xl font-bold text-card-foreground">
-              <T locale={locale} text="home.mindustrytool" />
+            <h3 className="text-3xl font-bold text-card-foreground text-gradient">
+              <T locale={locale} text="home.mindustry-tool" asChild />
             </h3>
             <div className="flex justify-center md:justify-start gap-2">
               {[
@@ -177,7 +177,7 @@ function Footer({ locale }: { locale: Locale }) {
                 },
                 { href: 'https://discord.gg/72324gpuCd', icon: DiscordIcon, bg: 'bg-[rgb(88,101,242)]' },
               ].map((social, index) => (
-                <Link key={index} className={`aspect-square rounded-full border ${social.bg} bg-opacity-30 p-2 transition-colors duration-300 hover:text-brand`} href={social.href}>
+                <Link key={index} className={`aspect-square border-border rounded-full border ${social.bg} bg-opacity-30 p-2 transition-colors duration-300 hover:text-brand`} href={social.href}>
                   <social.icon />
                 </Link>
               ))}
@@ -214,7 +214,7 @@ function Footer({ locale }: { locale: Locale }) {
           </div>
         </div>
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>Copyright © 2024 ‧ MindustryTool. All rights reserved.</p>
+          <p>Copyright © 2025 ‧ MindustryTool. All rights reserved.</p>
         </div>
       </div>
     </footer>
@@ -223,24 +223,19 @@ function Footer({ locale }: { locale: Locale }) {
 function Action({ locale }: { locale: Locale }) {
   return (
     <section>
-      <div>
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6 text-card-foreground">
-            <T locale={locale} text="home.ready-to-start" />
-          </h2>
-          <p className="mb-8 text-muted-foreground">
-            <T locale={locale} text="home.register-and-join" />
-          </p>
-          <div className="flex flex-col md:flex-row justify-center gap-4">
-            <Button className="h-12 px-6 text-base border border-brand bg-brand/70 hover:bg-transparent text-theme hover:text-brand transition duration-300 ease-in-out gap-2">
-              <UserPlusIcon />
-              <T locale={locale} text="home.register-now" />
-            </Button>
-            <Button className="h-12 px-6 text-base border border-brand text-brand hover:bg-brand hover:text-white transition duration-300 ease-in-out" variant="outline">
-              <PlayIcon />
-              <T locale={locale} text="home.start-exploring" />
-            </Button>
-          </div>
+      <div className="mx-auto">
+        <h2 className="text-3xl text-center font-bold text-card-foreground">
+          <T locale={locale} text="home.ready-to-start" asChild />
+        </h2>
+        <p className="text-muted-foreground text-center mb-4">
+          <T locale={locale} text="home.register-and-join" asChild />
+        </p>
+        <div className="flex flex-col md:flex-row justify-center gap-4">
+          <a className=" rounded-md bg-[rgb(88,101,242)] p-2 transition-colors hover:bg-[rgb(76,87,214)]" href={`${env.url.api}/oauth2/discord`}>
+            <div className="flex items-center justify-center gap-1">
+              <DiscordIcon /> <T locale={locale} text="home.login-with-discord" />
+            </div>
+          </a>
         </div>
       </div>
     </section>
@@ -248,33 +243,31 @@ function Action({ locale }: { locale: Locale }) {
 }
 function Community({ locale }: { locale: Locale }) {
   return (
-    <section>
-      <div>
-        <h2>
-          <T locale={locale} text="home.active-community" />
-        </h2>
-        <div className="grid gap-8 md:grid-cols-3 items-stretch">
-          {links.map((section, index) => (
-            <div key={index} className="rounded-xl p-6">
-              <div className="flex min-h-16 items-center gap-4 mb-4">
-                <section.icon className={`min-w-8 min-h-8 text-${section.color}`} />
-                <h3 className="text-xl font-bold text-card-foreground">
-                  <T locale={locale} text={section.key} />
-                </h3>
-              </div>
-              <ul className="space-y-4">
-                {section.value.map((item, itemIndex) => (
-                  <li key={itemIndex} className="flex ml-0 items-center gap-4">
-                    <item.icon className={item.class + ' ml-2'} />
-                    <InternalLink className="flex items-center hover:text-brand transition-colors duration-300" href={item.href}>
-                      <T locale={locale} text={item.text} />
-                    </InternalLink>
-                  </li>
-                ))}
-              </ul>
+    <section className="bg-card rounded-xl p-8 space-y-6">
+      <h2>
+        <T locale={locale} text="home.active-community" />
+      </h2>
+      <div className="grid gap-8 md:grid-cols-3 items-stretch">
+        {links.map((section, index) => (
+          <div key={index} className="space-y-4">
+            <div className="flex items-center gap-2">
+              <section.icon className={`min-w-8 min-h-8 text-${section.color}`} />
+              <h3 className="text-lg font-bold text-card-foreground">
+                <T locale={locale} text={section.key} />
+              </h3>
             </div>
-          ))}
-        </div>
+            <ul className="space-y-2">
+              {section.value.map((item, itemIndex) => (
+                <li key={itemIndex} className="flex items-center text-sm gap-2 text-muted-foreground">
+                  <item.icon className={item.class} />
+                  <InternalLink className="flex items-center hover:text-brand transition-colors duration-300" href={item.href}>
+                    <T locale={locale} text={item.text} />
+                  </InternalLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -282,60 +275,48 @@ function Community({ locale }: { locale: Locale }) {
 
 function Hosting({ locale }: { locale: Locale }) {
   return (
-    <section>
-      <div>
-        <div>
-          <Gamepad2 className="w-8 h-8 mr-2 text-blue-400 drop-shadow-xl" />
-          <T className={`text-3xl font-bold text-gradient`} locale={locale} text="home.hosting-your-server" />
-        </div>
-        <div className="grid gap-8">
+    <section className="p-8 rounded-xl bg-card/50 space-y-8">
+      <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
+        <div className="flex flex-col">
           <div>
-            <div className="grid gap-8 md:grid-cols-2">
-              <div className="">
-                <h3 className="text-xl font-bold text-brand mb-4 flex items-center">
-                  <Server className="w-8 h-8 mr-2" />
-                  <T locale={locale} text="home.why-choose-us" />
-                </h3>
-                <p className="mb-6 text-muted-foreground">
-                  <T locale={locale} text="home.server-features" />
-                </p>
-                <Button variant="outline" className="flex max-w-full text-brand border-brand hover:bg-brand hover:text-white transition-colors duration-300">
-                  <T className="block break-words whitespace-normal text-center" locale={locale} text="home.claim-free-server" />
-                </Button>
-              </div>
-              <div className="">
-                <div className="flex items-center mb-8">
-                  <Milestone className="w-8 h-8 mr-2 text-cyan-400 drop-shadow-xl" />
-                  <T className="text-xl font-bold text-brand" locale={locale} text="home.recommend-gamemode" />
-                </div>
-                <div className="grid gap-8">
-                  {gamemode.map((object, index) => (
-                    <div key={index} className="grid gap-4 relative">
-                      {index !== 0 && <div className="border-t border-gray-300 w-full absolute -top-4"></div>}
-                      <div className="text-lg font-bold flex items-center">
-                        <object.icon className={object.class} />
-                        <T locale={locale} text={object.title} />
-                      </div>
-                      <T locale={locale} text={object.text} className="text-muted-foreground" />
-                      <CopyButton className="flex max-w-full text-brand border-brand hover:bg-brand hover:text-white transition-colors duration-300" data={object.link}>
-                        <T locale={locale} text="home.copy-gamemode-ip" />
-                      </CopyButton>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <Gamepad2 className="w-8 h-8 text-purple-400 drop-shadow-xl" />
+            <T className={`text-2xl font-bold text-purple-400`} locale={locale} text="home.host-your-server" />
           </div>
-          <div>
-            <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center">
-              <Globe className="w-6 h-6 mr-2" />
-              <T locale={locale} text="home.mindustry-tool-servers" />
-            </h3>
-            <div className="no-scrollbar">
-              <HomeServerPreview />
-            </div>
+          <div className="grid gap-2">
+            <T className="text-muted-foreground" locale={locale} text="home.server-features" />
+            <InternalLink variant="button-primary" className="flex w-fit hover:bg-brand hover:text-white transition-colors duration-300" href="/servers?create=true">
+              <T className="block break-words whitespace-normal text-center" locale={locale} text="home.claim-free-server" />
+            </InternalLink>
           </div>
         </div>
+        <div className="space-y-2">
+          <div>
+            <Milestone className="w-8 h-8 text-cyan-400" />
+            <T className="text-2xl font-bold text-brand" locale={locale} text="home.recommend-gamemode" />
+          </div>
+          <div className="grid gap-8">
+            {gamemode.map((object, index) => (
+              <div key={index} className="grid gap-4 p-4 border-border border rounded-xl">
+                <div className="text-lg font-bold flex items-center gap-1">
+                  <object.icon className={object.class} />
+                  <T locale={locale} text={object.title} />
+                </div>
+                <T locale={locale} text={object.text} className="text-muted-foreground" />
+                <CopyButton variant="none" className="flex gap-1 max-w-full text-brand rainbow-border border bg-transparent text-white transition-colors duration-300" data={object.link}>
+                  <CopyIcon />
+                  <T locale={locale} text="home.copy-gamemode-ip" />
+                </CopyButton>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="space-y-4 overflow-y-auto no-scrollbar w-full">
+        <h3 className="text-2xl font-bold text-cyan-400 flex items-center">
+          <Globe className="w-6 h-6" />
+          <T locale={locale} text="home.mindustry-tool-servers" />
+        </h3>
+        <HomeServerPreview />
       </div>
     </section>
   );
@@ -343,37 +324,31 @@ function Hosting({ locale }: { locale: Locale }) {
 function Design({ locale }: { locale: Locale }) {
   return (
     <section>
-      <div>
-        <div>
-          <Sparkles className="w-8 h-8 mr-2 text-yellow-400 drop-shadow-xl" />
-          <T className={`text-3xl font-bold text-gradient`} locale={locale} text="home.new-designs" />
-        </div>
-        <div className="grid gap-8">
-          {[
-            { title: 'home.new-schematics', icon: FileCode, color: 'text-brand', component: HomeSchematicPreview },
-            { title: 'home.new-maps', icon: MapIcon, color: 'text-cyan-400', component: HomeMapPreview },
-          ].map((item, index) => (
-            <div key={index}>
-              <div className="rounded-lg overflow-hidden">
-                <h3 className="text-xl font-semibold mb-8 text-card-foreground flex items-center">
-                  <item.icon className={`w-6 h-6 mr-2 ${item.color}`} />
-                  <T locale={locale} text={item.title} />
-                </h3>
-                <div className="rounded-md no-scrollbar">
-                  <item.component queryParam={{ page: 0, size: 3 }} />
-                </div>
+      <div className="grid gap-8 overflow-hidden">
+        {[
+          { title: 'home.new-schematics', icon: FileCode, color: 'text-brand', component: HomeSchematicPreview },
+          { title: 'home.new-maps', icon: MapIcon, color: 'text-cyan-400', component: HomeMapPreview },
+        ].map((item, index) => (
+          <div key={index}>
+            <div className="rounded-xl overflow-hidden">
+              <h3 className="text-xl font-semibold mb-8 text-card-foreground flex items-center">
+                <item.icon className={`w-6 h-6 ${item.color}`} />
+                <T className="text-gradient" locale={locale} text={item.title} />
+              </h3>
+              <div className="rounded-md no-scrollbar">
+                <item.component queryParam={{ page: 0, size: 5 }} />
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );
 }
 function Header({ locale }: { locale: Locale }) {
   return (
-    <header className="w-full space-y-10">
-      <div className="grid items-center text-center mt-10">
+    <header className="w-full space-y-10 mt-10">
+      <div className="grid items-center text-center">
         <h1 className="text-5xl text-gradient py-1 font-bold">
           <T asChild locale={locale} text="home.mindustry-tool" />
         </h1>
@@ -399,7 +374,7 @@ async function Statistic({ locale }: { locale: Locale }) {
 
   return (
     <StatisticCard>
-      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x w-fit mx-auto rounded-lg bg-card/50 p-4 divide-zinc-800">
+      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x w-fit mx-auto rounded-xl bg-card/50 p-4 divide-zinc-800">
         {[
           { icon: SchematicIcon, text: 'home.schematics-count', count: schematics, color: 'text-brand' },
           { icon: MapIcon, text: 'home.maps-count', count: maps, color: 'text-cyan-400' },
@@ -408,7 +383,7 @@ async function Statistic({ locale }: { locale: Locale }) {
           <StatisticCard key={index}>
             <div className="text-center p-6">
               <div className={`text-xl md:text-4xl font-bold ${item.color} flex items-center justify-center`}>
-                <item.icon className="w-8 h-8 mr-2" />
+                <item.icon className="w-8 h-8" />
                 <Counter from={0} to={item.count} />
               </div>
               <T locale={locale} text={item.text} />
@@ -425,10 +400,10 @@ function Features({ locale }: { locale: Locale }) {
     <StatisticCard>
       <section className="space-y-4">
         <div className="flex justify-center items-center">
-          <Flame className="text-red-400 w-8 h-8 mr-2" />
+          <Flame className="text-red-400 w-8 h-8" />
           <T locale={locale} text="home.hot-features" />
         </div>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-3">
           {[
             {
               icon: DownloadIcon,
@@ -453,7 +428,7 @@ function Features({ locale }: { locale: Locale }) {
             },
           ].map((feature, index) => (
             <StatisticCard key={index} delay={index * 0.4}>
-              <div className="h-full bg-card/50 justify-between flex flex-col p-8 rounded-xl gap-2">
+              <div className="h-full bg-card/50 justify-between flex flex-col p-8 rounded-xl gap-2 hover:shadow-purple-400 shadow-xl">
                 <feature.icon className={cn(`w-8 h-8`, feature.color)} />
                 <T className="text-xl font-bold text-card-foreground" locale={locale} text={feature.title} />
                 <T className="mb-4 text-muted-foreground flex-grow" locale={locale} text={feature.description} />

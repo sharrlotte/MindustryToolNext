@@ -7,3 +7,24 @@
   background: -webkit-linear-gradient(45deg, #000000 70%, #434343); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(45deg, #000000 70%, #434343); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
+
+.rainbow-border {
+  --angle: 0deg;
+  
+  border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
+  border-image-slice: 1;
+
+  animation: 10s rotate linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
