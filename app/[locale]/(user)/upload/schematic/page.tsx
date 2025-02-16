@@ -42,6 +42,16 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   return <Preview />;
 }
@@ -177,14 +187,15 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
       toast.promise(createSchematic(axios, data), {
         //
         loading: <Tran text="upload.uploading" />,
-        success: <Tran text="upload.success" />,
+        success: () => {
+          setData(undefined);
+          setPreview(undefined);
+          form.reset();
+
+          return <Tran text="upload.success" />;
+        },
         error: (error) => ({ title: <Tran text="upload.fail" />, description: error?.message }),
       }),
-    onSuccess: () => {
-      setData(undefined);
-      setPreview(undefined);
-      form.reset();
-    },
   });
 
   function handleSubmit(data: any) {

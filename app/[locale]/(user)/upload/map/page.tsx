@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
+import { error } from 'console';
+import { title } from 'process';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -31,6 +33,28 @@ import { CreateMapRequest, CreateMapSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -147,15 +171,17 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: CreateMapRequest) => {
-      toast.promise(createMap(axios, data), { loading: <Tran text="upload.uploading" />, success: <Tran text="upload.success" /> });
-    },
-    onSuccess: () => {
-      setFile(undefined);
-      setPreview(undefined);
-      form.reset();
-    },
-    onError: (error) => {
-      toast.error(<Tran text="upload.fail" />, { description: error.message });
+      toast.promise(createMap(axios, data), {
+        loading: <Tran text="upload.uploading" />,
+        success: () => {
+          setFile(undefined);
+          setPreview(undefined);
+          form.reset();
+
+          return <Tran text="upload.success" />;
+        },
+        error: (error) => ({ title: <Tran text="upload.fail" />, description: error.message }),
+      });
     },
   });
 
@@ -167,7 +193,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
     <Form {...form}>
       <form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
         <ScrollContainer className="flex flex-col gap-2">
-          <img src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
+          <img className="max-w-[60vw]" src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
           <UserCard user={session} />
           <FormField
             control={form.control}
