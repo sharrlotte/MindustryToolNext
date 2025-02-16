@@ -159,7 +159,7 @@ export default async function Page({ params }: Props) {
 
 function Footer({ locale }: { locale: Locale }) {
   return (
-    <footer className="border-t border-border bg-background p-8">
+    <footer className="bg-background p-8">
       <div>
         <div className="grid gap-4 md:grid-cols-3">
           {/* Brand & Socials */}
