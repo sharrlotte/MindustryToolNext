@@ -140,13 +140,13 @@ export default function ServerUpdateForm({ server }: Props) {
               render={({ field }) => (
                 <FormItem className="grid">
                   <FormLabel>
-                    <Tran text="server.start-command" />
+                    <Tran text="server.webhook" />
                   </FormLabel>
                   <FormControl>
                     <Input {...field} value={field.value ?? ''} />
                   </FormControl>
                   <FormDescription>
-                    <Tran text="server.start-command-description" />
+                    <Tran text="server.webhook-description" />
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
