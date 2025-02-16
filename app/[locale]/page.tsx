@@ -398,8 +398,8 @@ async function Statistic({ locale }: { locale: Locale }) {
   const [schematics, maps] = await Promise.all([getSchematicCount(axios, {}), getMapCount(axios, {})]);
 
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x w-fit mx-auto rounded-lg bg-card p-4 divide-zinc-800">
+    <StatisticCard>
+      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x w-fit mx-auto rounded-lg bg-card/50 p-4 divide-zinc-800">
         {[
           { icon: SchematicIcon, text: 'home.schematics-count', count: schematics, color: 'text-brand' },
           { icon: MapIcon, text: 'home.maps-count', count: maps, color: 'text-cyan-400' },
@@ -416,62 +416,64 @@ async function Statistic({ locale }: { locale: Locale }) {
           </StatisticCard>
         ))}
       </div>
-    </div>
+    </StatisticCard>
   );
 }
 
 function Features({ locale }: { locale: Locale }) {
   return (
-    <section className="space-y-4">
-      <div className="flex justify-center items-center">
-        <Flame className="text-red-400 w-8 h-8 mr-2" />
-        <T locale={locale} text="home.hot-features" />
-      </div>
-      <div className="grid gap-4 md:grid-cols-3">
-        {[
-          {
-            icon: DownloadIcon,
-            title: 'home.schematics-and-maps',
-            description: 'home.find-what-you-need',
-            color: 'text-brand',
-            href: '/schematics',
-          },
-          {
-            icon: PostIcon,
-            title: 'home.wiki-and-tutorial',
-            description: 'home.wiki-and-tutorial-description',
-            color: 'text-cyan-400',
-            href: '/',
-          },
-          {
-            icon: Server,
-            title: 'home.free-servers',
-            description: 'home.claim-free-server',
-            color: 'text-purple-400',
-            href: '/servers',
-          },
-        ].map((feature, index) => (
-          <StatisticCard key={index} delay={index * 0.4}>
-            <div className="h-full bg-card justify-between flex flex-col p-8 rounded-xl gap-2">
-              <feature.icon className={cn(`w-8 h-8`, feature.color)} />
-              <T className="text-xl font-bold text-card-foreground" locale={locale} text={feature.title} />
-              <T className="mb-4 text-muted-foreground flex-grow" locale={locale} text={feature.description} />
-              <InternalLink className={cn(`w-full mt-4 transition-colors duration-300`, feature.color)} href={feature.href}>
-                <T locale={locale} text="home.details" />
-              </InternalLink>
-            </div>
-          </StatisticCard>
-        ))}
-      </div>
-    </section>
+    <StatisticCard>
+      <section className="space-y-4">
+        <div className="flex justify-center items-center">
+          <Flame className="text-red-400 w-8 h-8 mr-2" />
+          <T locale={locale} text="home.hot-features" />
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            {
+              icon: DownloadIcon,
+              title: 'home.schematics-and-maps',
+              description: 'home.find-what-you-need',
+              color: 'text-brand',
+              href: '/schematics',
+            },
+            {
+              icon: PostIcon,
+              title: 'home.wiki-and-tutorial',
+              description: 'home.wiki-and-tutorial-description',
+              color: 'text-cyan-400',
+              href: '/',
+            },
+            {
+              icon: Server,
+              title: 'home.free-servers',
+              description: 'home.claim-free-server',
+              color: 'text-purple-400',
+              href: '/servers',
+            },
+          ].map((feature, index) => (
+            <StatisticCard key={index} delay={index * 0.4}>
+              <div className="h-full bg-card/50 justify-between flex flex-col p-8 rounded-xl gap-2">
+                <feature.icon className={cn(`w-8 h-8`, feature.color)} />
+                <T className="text-xl font-bold text-card-foreground" locale={locale} text={feature.title} />
+                <T className="mb-4 text-muted-foreground flex-grow" locale={locale} text={feature.description} />
+                <InternalLink className={cn(`w-full mt-4 transition-colors duration-300`, feature.color)} href={feature.href}>
+                  <T locale={locale} text="home.details" />
+                </InternalLink>
+              </div>
+            </StatisticCard>
+          ))}
+        </div>
+      </section>
+    </StatisticCard>
   );
 }
 
 function About({ locale }: { locale: Locale }) {
   return (
-    <section>
-      <div className="grid grid-col md:grid-row-3 gap-2">
-        <div className="grid md:grid-cols-2 bg-card p-8 rounded-xl transition-all duration-300 ease-in-out">
+    <section className="grid grid-col md:grid-row-3 gap-16">
+      <StatisticCard>
+        <div className="grid md:grid-cols-2 bg-card/50 p-8 rounded-xl transition-all duration-300 ease-in-out">
           <div className="flex flex-col gap-2">
             <Cpu className="w-8 h-8 text-cyan-400" />
             <T className="text-xl font-bold text-card-foreground" locale={locale} text="home.about-mindustry" />
@@ -487,7 +489,9 @@ function About({ locale }: { locale: Locale }) {
             </div>
           </div>
         </div>
-        <div className="flex bg-card p-8 rounded-xl flex-col gap-2 transition-all duration-300 ease-in-out min-h-80">
+      </StatisticCard>
+      <StatisticCard>
+        <div className="flex bg-card/50 p-8 rounded-xl flex-col gap-2 transition-all duration-300 ease-in-out min-h-80">
           <Globe className="w-8 h-8 text-brand" />
           <T className="text-xl font-bold text-card-foreground" locale={locale} text="home.about-webpage" />
           <T className="text-muted-foreground" locale={locale} text="home.webpage-description" />
@@ -495,7 +499,7 @@ function About({ locale }: { locale: Locale }) {
             <T locale={locale} text="home.explore-webpage" />
           </InternalLink>
         </div>
-      </div>
+      </StatisticCard>
     </section>
   );
 }
