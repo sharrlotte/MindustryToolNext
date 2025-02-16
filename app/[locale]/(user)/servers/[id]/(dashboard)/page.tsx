@@ -131,7 +131,9 @@ export default async function Page({ params }: Props) {
                 {address && (
                   <Fragment>
                     <Tran text="server.address" />
-                    <span>{address}</span>
+                    <span className="lowercase">
+                      {address}:{port}
+                    </span>
                   </Fragment>
                 )}
               </div>
