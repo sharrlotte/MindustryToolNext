@@ -8,9 +8,9 @@ import { Map } from '@/types/response/Map';
 import { MapDetail } from '@/types/response/MapDetail';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 import { CreateMapRequest } from '@/types/schema/zod-schema';
-import { ItemPaginationQueryType } from '@/query/search-query';
+import { CountItemPaginationQueryType, ItemPaginationQueryType } from '@/query/search-query';
 
-export async function getMapCount(axios: AxiosInstance, params: ItemPaginationQueryType): Promise<number> {
+export async function getMapCount(axios: AxiosInstance, params: CountItemPaginationQueryType): Promise<number> {
   const result = await axios.get('/maps/total', { params });
 
   return result.data;
