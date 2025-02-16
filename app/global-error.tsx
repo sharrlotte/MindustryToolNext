@@ -31,8 +31,8 @@ export default function Error({ error }: { error: TError }) {
         <div className="h-full w-full bg-black">
           <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
             <MovingStars />
-            <Text position={[0, -10, 0]} color="white" fontSize={0.5} maxWidth={5} lineHeight={1} letterSpacing={0.02} textAlign="center">
-              {message}
+            <Text position={[0, 0, 0]} color="white" fontSize={0.02} maxWidth={0.5} lineHeight={1} letterSpacing={0.02} textAlign="center">
+              {message} {'\nPlease reload website or retry later'}
             </Text>
           </Canvas>
         </div>
