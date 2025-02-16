@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
-import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -57,102 +56,100 @@ export default function ServerUpdateForm({ server }: Props) {
   return (
     <div className="relative flex h-full flex-col justify-between gap-2">
       <Form {...form}>
-        <form className="flex flex-1 flex-col justify-between bg-card p-6" onSubmit={form.handleSubmit((value) => mutate(value))}>
-          <ScrollContainer className="space-y-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    <Tran text="server.name" />
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="Test" {...field} />
-                  </FormControl>
-                  <FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.name-description" />}</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <Tran text="server.description" />
-                  <FormControl>
-                    <Input placeholder="Some cool stuff" {...field} />
-                  </FormControl>
-                  <FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.description-description" />}</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="mode"
-              render={({ field }) => (
-                <FormItem className="grid">
-                  <FormLabel>
-                    <Tran text="server.game-mode" />
-                  </FormLabel>
-                  <FormControl>
-                    <ComboBox
-                      searchBar={false}
-                      placeholder={ServerModes[0]}
-                      value={{ label: field.value, value: field.value }}
-                      values={ServerModes.map((value) => ({
-                        label: value,
-                        value,
-                      }))}
-                      onChange={(value) => field.onChange(value)}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    <Tran text="server.game-mode-description" />
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="hostCommand"
-              render={({ field }) => (
-                <FormItem className="grid">
-                  <FormLabel>
-                    <Tran text="server.start-command" />
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea {...field} value={field.value ?? ''} placeholder="host" />
-                  </FormControl>
-                  <FormDescription>
-                    <Tran text="server.start-command-description" />
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="webhook"
-              render={({ field }) => (
-                <FormItem className="grid">
-                  <FormLabel>
-                    <Tran text="server.webhook" />
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} />
-                  </FormControl>
-                  <FormDescription>
-                    <Tran text="server.webhook-description" />
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </ScrollContainer>
+        <form className="flex flex-1 flex-col justify-between bg-card p-6 h-full" onSubmit={form.handleSubmit((value) => mutate(value))}>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  <Tran text="server.name" />
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Test" {...field} />
+                </FormControl>
+                <FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.name-description" />}</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <Tran text="server.description" />
+                <FormControl>
+                  <Input placeholder="Some cool stuff" {...field} />
+                </FormControl>
+                <FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.description-description" />}</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="mode"
+            render={({ field }) => (
+              <FormItem className="grid">
+                <FormLabel>
+                  <Tran text="server.game-mode" />
+                </FormLabel>
+                <FormControl>
+                  <ComboBox
+                    searchBar={false}
+                    placeholder={ServerModes[0]}
+                    value={{ label: field.value, value: field.value }}
+                    values={ServerModes.map((value) => ({
+                      label: value,
+                      value,
+                    }))}
+                    onChange={(value) => field.onChange(value)}
+                  />
+                </FormControl>
+                <FormDescription>
+                  <Tran text="server.game-mode-description" />
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="hostCommand"
+            render={({ field }) => (
+              <FormItem className="grid">
+                <FormLabel>
+                  <Tran text="server.start-command" />
+                </FormLabel>
+                <FormControl>
+                  <Textarea {...field} value={field.value ?? ''} placeholder="host" />
+                </FormControl>
+                <FormDescription>
+                  <Tran text="server.start-command-description" />
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="webhook"
+            render={({ field }) => (
+              <FormItem className="grid">
+                <FormLabel>
+                  <Tran text="server.webhook" />
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormDescription>
+                  <Tran text="server.webhook-description" />
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div
             className={cn('flex justify-end gap-2 transition-all translate-y-full opacity-0', {
               'opacity-100 translate-y-0': isChanged,
