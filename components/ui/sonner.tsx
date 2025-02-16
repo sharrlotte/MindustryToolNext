@@ -17,17 +17,16 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps['theme']}
-      className="toaster group border-none"
-      position="top-right"
+      className="toaster group border-none m-4"
       toastOptions={{
         classNames: {
-          toast: 'group p-0 z-50 border-none group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:shadow-lg',
+          toast: 'group p-0 border-none group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:shadow-lg',
           description: 'group-[.toast]:text-muted-foreground',
           actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
           cancelButton: 'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground',
         },
       }}
-      offset={16}
+      offset={-16}
       {...props}
     />
   );
@@ -42,13 +41,13 @@ type ToastOptions = {
 function toast(title: ReactNode, options?: ToastOptions) {
   if (options?.description) {
     const id = defaultToast(
-      <div className={cn('grid text-base border-none w-full rounded-lg p-4 relative', options.className)}>
+      <div className={cn('grid text-base border-none w-full rounded-lg p-4 relative m-4', options.className)}>
         <div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
           <XIcon className="size-4" />
         </div>
         <div className="flex gap-1 items-center">
           {options.icon}
-          {title}
+          {title ?? 'Unexpected error'}
         </div>
         <div className="text-muted-foreground text-sm">{options.description}</div>
       </div>,
@@ -61,11 +60,11 @@ function toast(title: ReactNode, options?: ToastOptions) {
   }
 
   const id = defaultToast(
-    <div className={cn('relative grid text-sm border-none w-full rounded-lg p-4', options?.className)}>
+    <div className={cn('relative grid text-sm border-none w-full rounded-lg p-4 m-4', options?.className)}>
       <div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
         <XIcon className="size-4" />
       </div>
-      {title}
+      {title ?? 'Unexpected error'}
     </div>,
     options,
   );

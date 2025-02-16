@@ -39,7 +39,7 @@ function Verify({ token }: { token: string }) {
       router.push(path.replace('verify-player', 'verify-player/success'));
     },
     onError: (error) => {
-      router.push(path.replace('verify-player', `verify-player/error?message=${error.message}`));
+      router.push(path.replace('verify-player', `verify-player/error?message=${error.message} ${token}`));
     },
     retry: 1,
   });
