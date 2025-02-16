@@ -28,8 +28,6 @@ type Props = {
 export default function ServerUpdatePortForm({ server }: Props) {
   const { id, port, isOfficial, isAutoTurnOff, isHub } = server;
 
-  console.log(server);
-
   const form = useForm<PutServerPortRequest>({
     resolver: zodResolver(PutServerPortSchema),
     defaultValues: {

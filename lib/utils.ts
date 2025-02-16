@@ -21,7 +21,7 @@ export function isError<T extends Record<string, any> | number>(req: T | ApiErro
     try {
       reportError(axiosInstance, getLoggedErrorMessage(req as any));
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
