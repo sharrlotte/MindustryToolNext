@@ -122,13 +122,13 @@ export default async function Page({ params }: Props) {
               </div>
               <div className="flex flex-col gap-0.5">
                 {address && (
-                  <Fragment>
+                  <div className="flex gap-1">
                     <Tran text="server.address" />
                     <CopyButton variant="ghost" data={`${address}:${port}`} />
                     <span className="lowercase">
                       {address}:{port}
                     </span>
-                  </Fragment>
+                  </div>
                 )}
               </div>
             </div>
