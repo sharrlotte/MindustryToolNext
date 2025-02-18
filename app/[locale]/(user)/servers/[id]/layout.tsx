@@ -70,7 +70,7 @@ export default async function ServerLayout({ params, children }: LayoutProps) {
     {
       id: 'log',
       href: '/logs',
-      label: <Tran text="logs" />,
+      label: <Tran text="log" />,
       icon: <LogIcon />,
       filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
     },
