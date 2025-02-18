@@ -41,7 +41,7 @@ type ToastOptions = {
 function toast(title: ReactNode, options?: ToastOptions) {
   if (options?.description) {
     const id = defaultToast(
-      <div className={cn('grid text-base border-none w-full rounded-lg p-4 relative m-4', options.className)}>
+      <div className={cn('grid text-base border-none w-full rounded-lg relative m-4', options.className)}>
         <div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
           <XIcon className="size-4" />
         </div>
@@ -60,7 +60,7 @@ function toast(title: ReactNode, options?: ToastOptions) {
   }
 
   const id = defaultToast(
-    <div className={cn('relative grid text-sm border-none w-full rounded-lg p-4 m-4', options?.className)}>
+    <div className={cn('relative grid text-sm border-none w-full rounded-lg m-4', options?.className)}>
       <div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
         <XIcon className="size-4" />
       </div>

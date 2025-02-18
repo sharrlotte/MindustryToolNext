@@ -2,6 +2,7 @@
 
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
 
 import { PaginationQuerySchema } from '@/query/search-query';
 import { getServerLogins } from '@/query/server';
@@ -14,8 +15,14 @@ type Props = {
 export default function PageClient({ id }: Props) {
   return (
     <ScrollContainer>
+      <div className="grid grid-cols-4 gap-2 bg-card p-1">
+        <Tran text="username" />
+        <Tran text="uuid" />
+        <Tran text="ip" />
+        <Tran text="time" />
+      </div>
       <InfinitePage className="grid grid-cols-4 gap-2" paramSchema={PaginationQuerySchema} queryKey={['server-login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
-        {(data) => <ServerLoginLogCard key={data.id} data={data} />}
+        {(data, index) => <ServerLoginLogCard key={data.id} index={index} data={data} />}
       </InfinitePage>
     </ScrollContainer>
   );
