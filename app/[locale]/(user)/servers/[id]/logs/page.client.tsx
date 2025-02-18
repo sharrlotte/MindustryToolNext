@@ -15,13 +15,13 @@ type Props = {
 export default function PageClient({ id }: Props) {
   return (
     <ScrollContainer>
-      <div className="grid grid-cols-4 gap-2 bg-card p-1">
+      <div className="md:grid hidden md:grid-cols-4 gap-2 bg-card p-4">
         <Tran text="username" />
         <Tran text="uuid" />
         <Tran text="ip" />
         <Tran text="time" />
       </div>
-      <InfinitePage className="grid grid-cols-4 gap-2" paramSchema={PaginationQuerySchema} queryKey={['server-login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
+      <InfinitePage className="grid" paramSchema={PaginationQuerySchema} queryKey={['server-login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
         {(data, index) => <ServerLoginLogCard key={data.id} index={index} data={data} />}
       </InfinitePage>
     </ScrollContainer>
