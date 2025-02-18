@@ -5,7 +5,15 @@ import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
 export default function useQueriesData() {
   const queryClient = useQueryClient();
 
-  const invalidateByKey = useCallback((...queryKeys: QueryKey[]) => queryKeys.forEach((queryKey) => queryClient.invalidateQueries({ queryKey, exact: false })), [queryClient]);
+  const invalidateByKey = useCallback(
+    (queryKeys: QueryKey) =>
+      queryKeys.forEach((queryKey) =>
+        queryClient.invalidateQueries({
+          predicate: (config) => config.queryKey.includes(queryKey),
+        }),
+      ),
+    [queryClient],
+  );
   const updateById = useCallback(
     <T extends { id: string }>(queryKey: QueryKey, id: string, updater: (data: T) => T) =>
       queryClient.setQueriesData({ queryKey }, (prev: InfiniteData<T[]> | undefined) => {

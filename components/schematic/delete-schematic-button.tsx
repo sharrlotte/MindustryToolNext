@@ -29,14 +29,12 @@ export default function DeleteSchematicButton({ id, name, variant }: DeleteSchem
     },
     mutationFn: (id: string) => deleteSchematic(axios, id),
     onSuccess: () => {
-      back();
+      invalidateByKey(['schematics']);
       toast.success(<Tran text="delete-success" />);
+      back();
     },
     onError: (error) => {
       toast.error(<Tran text="delete-fail" />, { description: error.message });
-    },
-    onSettled: () => {
-      invalidateByKey(['schematics']);
     },
   });
 

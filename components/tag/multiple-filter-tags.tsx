@@ -34,9 +34,12 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map((value) => (
         <button
-          className={cn('capitalize flex items-center gap-1 hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', {
-            'bg-brand text-brand-foreground': selectedValue.map((v) => v.name).includes(value.name),
-          })}
+          className={cn(
+            'capitalize flex items-center gap-1 bg-secondary hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground px-2 border border-border py-1 rounded-lg hover:border-brand',
+            {
+              'bg-brand text-brand-foreground border-brand': selectedValue.map((v) => v.name).includes(value.name),
+            },
+          )}
           type="button"
           key={value.name}
           onClick={() => handleClick(value)}

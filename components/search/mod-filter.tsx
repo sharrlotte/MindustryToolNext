@@ -39,7 +39,7 @@ type ModCardProps = {
 function ModCard({ mod, value, onValueSelected }: ModCardProps) {
   return (
     <div
-      className={cn('flex gap-1 rounded-full p-1 text-sm text-center items-center cursor-pointer bg-card justify-center border min-w-20 shrink-0 hover:bg-brand hover:text-brand-foreground', {
+      className={cn('flex gap-1 rounded-full bg-secondary p-1 text-sm text-center items-center cursor-pointer justify-center border min-w-20 shrink-0 hover:bg-brand hover:text-brand-foreground', {
         'bg-brand text-brand-foreground': value === mod,
       })}
       onClick={() => onValueSelected(mod)}
