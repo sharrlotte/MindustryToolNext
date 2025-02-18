@@ -9,12 +9,13 @@ import { CreateServerManagerRequest, CreateServerRequest } from '@/types/request
 import { PutServerPortRequest, PutServerRequest } from '@/types/request/UpdateServerRequest';
 import { Player } from '@/types/response/Player';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
+import Server from '@/types/response/Server';
 import { ServerDto } from '@/types/response/ServerDto';
 import { ServerFile } from '@/types/response/ServerFile';
+import ServerLoginLog from '@/types/response/ServerLoginLog';
 import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManager';
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
-import Server from '@/types/response/Server';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
   const result = await axios.delete(`/servers/${id}/files`, {
@@ -56,6 +57,13 @@ export async function getServerFiles(axios: AxiosInstance, id: string, path: str
   return result.data;
 }
 
+export async function getServerLogins(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<ServerLoginLog[]> {
+  const result = await axios.get(`/servers/${id}/logins`, {
+    params: params,
+  });
+
+  return result.data;
+}
 export async function getServerMaps(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<ServerMap[]> {
   const result = await axios.get(`/servers/${id}/maps`, {
     params: params,

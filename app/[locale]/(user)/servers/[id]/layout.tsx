@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { getCachedServer } from '@/app/[locale]/(user)/servers/[id]/(dashboard)/page';
 
 import ErrorScreen from '@/components/common/error-screen';
-import { CmdIcon, FileIcon, LayoutDashboardIcon, MapIcon, PluginIcon, SettingIcon } from '@/components/common/icons';
+import { CmdIcon, FileIcon, LayoutDashboardIcon, LogIcon, MapIcon, PluginIcon, SettingIcon } from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
 import Tran from '@/components/common/tran';
@@ -65,6 +65,13 @@ export default async function ServerLayout({ params, children }: LayoutProps) {
       href: '/console',
       label: <Tran text="console" />,
       icon: <CmdIcon />,
+      filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+    },
+    {
+      id: 'log',
+      href: '/logs',
+      label: <Tran text="logs" />,
+      icon: <LogIcon />,
       filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
     },
     {

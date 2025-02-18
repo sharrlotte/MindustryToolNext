@@ -37,11 +37,17 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
           className={cn('capitalize flex items-center gap-1 hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', {
             'bg-brand text-brand-foreground': selectedValue.map((v) => v.name).includes(value.name),
           })}
-          type='button'
+          type="button"
           key={value.name}
           onClick={() => handleClick(value)}
         >
-          <TagIcon>{value.icon}</TagIcon>
+          <TagIcon
+            className={cn({
+              'bg-background': !selectedValue.map((v) => v.name).includes(value.name),
+            })}
+          >
+            {value.icon}
+          </TagIcon>
           {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}
         </button>
       ))}

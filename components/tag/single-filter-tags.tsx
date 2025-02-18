@@ -33,7 +33,13 @@ function SingeFilerTags({ group, selectedValue, handleTagGroupChange }: SingeFil
           onClick={() => handleTagGroupChange(value)}
         >
           {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}
-          <TagIcon>{value.icon}</TagIcon>
+          <TagIcon
+            className={cn({
+              'bg-background': value.name !== selectedValue?.name,
+            })}
+          >
+            {value.icon}
+          </TagIcon>
         </button>
       ))}
     </div>
