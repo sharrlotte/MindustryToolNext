@@ -25,9 +25,12 @@ function SingeFilerTags({ group, selectedValue, handleTagGroupChange }: SingeFil
       <Separator className="border-[1px]" orientation="horizontal" />
       {group.values.map((value) => (
         <button
-          className={cn('capitalize flex hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground p-2 rounded-lg', {
-            'bg-brand text-brand-foreground': value.name === selectedValue?.name,
-          })}
+          className={cn(
+            'capitalize flex bg-secondary border overflow-hidden border-border hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground px-2 py-1 rounded-lg hover:border-brand',
+            {
+              'bg-brand text-brand-foreground border-brand': value.name === selectedValue?.name,
+            },
+          )}
           type="button"
           key={value.name}
           onClick={() => handleTagGroupChange(value)}
