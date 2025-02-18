@@ -10,7 +10,7 @@ type ServerLoginLogCardProps = {
 
 export default function ServerLoginLogCard({ data: { name, uuid, ip, createdAt }, index }: ServerLoginLogCardProps) {
   return (
-  <div className={cn('p-1', index % 2 === 0 ? 'bg-card/80' : 'bg-card')}>
+    <div className={cn('p-1 grid grid-cols-4', index % 2 === 0 ? 'bg-card/80' : 'bg-card')}>
       <span>{name}</span>
       <span>{uuid}</span>
       <span>{ip}</span>
