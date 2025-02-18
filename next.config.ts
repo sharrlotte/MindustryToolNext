@@ -56,6 +56,7 @@ const nextConfig: NextConfig = {
 
 const analyze = process.env.ANALYZE === 'true';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: analyze,
 });
