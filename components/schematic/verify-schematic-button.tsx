@@ -27,14 +27,12 @@ export default function VerifySchematicButton({ id, name, selectedTags }: Verify
   const { mutate, isPending } = useMutation({
     mutationFn: (data: VerifySchematicRequest) => verifySchematic(axios, data),
     onSuccess: () => {
-      back();
+      invalidateByKey(['schematics']);
       toast.success(<Tran text="verify-success" />);
+      back();
     },
     onError: (error) => {
       toast.error(<Tran text="verify-fail" />, { description: error.message });
-    },
-    onSettled: () => {
-      invalidateByKey(['schematics']);
     },
   });
 
