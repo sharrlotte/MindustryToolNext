@@ -100,11 +100,10 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
       }
     };
 
-    if (!showFilterDialog) {
+    if (!showFilterDialog && isChanged) {
       handleSearch();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, showFilterDialog, filterBy, sortBy]);
+  }, [name, showFilterDialog, filterBy, sortBy, useTag, page, useSort, tags.length, isChanged, router, pathname]);
 
   const handleTagGroupChange = useCallback(
     (name: string, values: FilterTag[]) => {
