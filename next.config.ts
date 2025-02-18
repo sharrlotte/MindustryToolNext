@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
     },
     optimizePackageImports: ['lucide-react'],
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+      hmrRefreshes: true,
+    },
+  },
   productionBrowserSourceMaps: true,
   crossOrigin: 'anonymous',
   reactStrictMode: true,
