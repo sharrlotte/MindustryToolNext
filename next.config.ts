@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
     },
     optimizePackageImports: ['lucide-react'],
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+      hmrRefreshes: true,
+    },
+  },
   productionBrowserSourceMaps: true,
   crossOrigin: 'anonymous',
   reactStrictMode: true,
@@ -50,6 +56,7 @@ const nextConfig: NextConfig = {
 
 const analyze = process.env.ANALYZE === 'true';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: analyze,
 });
