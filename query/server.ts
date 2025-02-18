@@ -64,6 +64,11 @@ export async function getServerLogins(axios: AxiosInstance, id: string, params: 
 
   return result.data;
 }
+export async function getServerLoginCount(axios: AxiosInstance, id: string): Promise<number> {
+  const result = await axios.get(`/servers/${id}/logins/count`);
+
+  return result.data;
+}
 export async function getServerMaps(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<ServerMap[]> {
   const result = await axios.get(`/servers/${id}/maps`, {
     params: params,
