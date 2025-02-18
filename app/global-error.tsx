@@ -3,14 +3,11 @@
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { MovingStars } from '@/app/universe-scene';
+import StarScene from '@/components/common/star-scene';
 
 import useClientApi from '@/hooks/use-client';
 import { TError, getErrorMessage, getLoggedErrorMessage } from '@/lib/utils';
 import { reportError } from '@/query/api';
-
-import { Text } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
 
 import './globals.css';
 
@@ -29,12 +26,7 @@ export default function Error({ error }: { error: TError }) {
     <html>
       <body>
         <div className="h-full w-full bg-black">
-          <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
-            <MovingStars />
-            <Text position={[0, 0, 0]} color="white" fontSize={0.02} maxWidth={0.5} lineHeight={1} letterSpacing={0.02} textAlign="center">
-              {message} {'\nPlease reload website or retry later'}
-            </Text>
-          </Canvas>
+          <StarScene message={message} />
         </div>
       </body>
     </html>
