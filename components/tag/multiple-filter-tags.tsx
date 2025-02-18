@@ -44,13 +44,7 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
           key={value.name}
           onClick={() => handleClick(value)}
         >
-          <TagIcon
-            className={cn({
-              'bg-background': !selectedValue.map((v) => v.name).includes(value.name),
-            })}
-          >
-            {value.icon}
-          </TagIcon>
+          <TagIcon>{value.icon}</TagIcon>
           {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}
         </button>
       ))}
