@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { usePathname, useRouter } from 'next/navigation';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 
 import { FilterIcon, SearchIcon } from '@/components/common/icons';
@@ -41,8 +40,6 @@ type NameTagSearchProps = {
 
 export default function NameTagSearch({ className, type, useSort = true, useTag = true }: NameTagSearchProps) {
   const [filter, setFilter] = useState('');
-  const router = useRouter();
-  const pathname = usePathname();
 
   const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
 
@@ -96,14 +93,15 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
       if (tags.length != 0 && isChanged) {
         setChanged(false);
-        router.replace(`${pathname}?${params.toString()}`);
       }
+
+      window.history.replaceState(null, '', `?${params.toString()}`);
     };
 
     if (!showFilterDialog && isChanged) {
       handleSearch();
     }
-  }, [name, showFilterDialog, filterBy, sortBy, useTag, page, useSort, tags.length, isChanged, router, pathname]);
+  }, [name, showFilterDialog, filterBy, sortBy, useTag, page, useSort, tags.length, isChanged]);
 
   const handleTagGroupChange = useCallback(
     (name: string, values: FilterTag[]) => {
