@@ -93,8 +93,9 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
       if (tags.length != 0 && isChanged) {
         setChanged(false);
-        window.history.replaceState(null, '', `?${params.toString()}`);
       }
+
+      window.history.replaceState(null, '', `?${params.toString()}`);
     };
 
     if (!showFilterDialog && isChanged) {

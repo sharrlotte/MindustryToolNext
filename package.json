@@ -62,7 +62,7 @@
     "i18next-http-backend": "^3.0.1",
     "i18next-localstorage-backend": "^4.2.0",
     "lucide-react": "^0.292.0",
-    "next": "15.2.0-canary.33",
+    "next": "15.2.0-canary.64",
     "next-themes": "^0.2.1",
     "nextjs-toploader": "^1.6.12",
     "partysocket": "^1.0.3",

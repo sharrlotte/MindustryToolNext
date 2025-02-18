@@ -3,7 +3,7 @@
 import { UploadIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import InternalLink from '@/components/common/internal-link';
-import { PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
+import { GridLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -38,8 +38,9 @@ export default function Client({ posts }: Props) {
           <UploadIcon />
           <Tran text="upload-post" />
         </InternalLink>
-
-        <PaginationNavigator numberOfItems={getPostCount} queryKey={['posts', 'total']} />
+        <GridLayout>
+          <PaginationNavigator numberOfItems={getPostCount} queryKey={['posts', 'total']} />
+        </GridLayout>
       </div>
     </div>
   );
