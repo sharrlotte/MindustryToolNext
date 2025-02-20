@@ -50,8 +50,10 @@ export default async function Page({ params }: Props) {
   return (
     <ScrollContainer className="flex h-full flex-col gap-2">
       <ServerUpdateForm server={server} />
-      <ProtectedElement session={session} filter={{ any: [{ authority: 'EDIT_ADMIN_SERVER' }, { authorId: server.userId }] }}>
+      <ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
         <ServerUpdatePortForm server={server} />
+      </ProtectedElement>
+      <ProtectedElement session={session} filter={{ any: [{ authority: 'EDIT_ADMIN_SERVER' }, { authorId: server.userId }] }}>
         <DeleteServerButton id={id} />
       </ProtectedElement>
     </ScrollContainer>
