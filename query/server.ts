@@ -17,6 +17,8 @@ import ServerLoginLog from '@/types/response/ServerLoginLog';
 import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManager';
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
+import ServerEnv from '@/types/response/ServerEnv';
+import { z } from 'zod';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
   const result = await axios.delete(`/servers/${id}/files`, {
@@ -240,6 +242,37 @@ export async function createServerAdmin(axios: AxiosInstance, serverId: string, 
 
 export async function deleteServerAdmin(axios: AxiosInstance, serverId: string, adminId: string): Promise<void> {
   const result = await axios.delete(`/servers/${serverId}/admin/${adminId}`);
+
+  return result.data;
+}
+export async function getServerEnv(axios: AxiosInstance, serverId: string): Promise<ServerEnv[]> {
+  const result = await axios.get(`/servers/${serverId}/env`);
+
+  return result.data;
+}
+
+export const CreateServerEnvSchema = z.object({
+  name: z.string().min(1).max(128),
+  value: z.string().min(1).max(1024),
+});
+
+export const UpdateServerEnvSchema = z.object({
+  name: z.string().min(1).max(128),
+  value: z.string().min(1).max(1024),
+});
+export async function createServerEnv(axios: AxiosInstance, serverId: string, payload: z.infer<typeof CreateServerEnvSchema>): Promise<ServerAdmin> {
+  const result = await axios.post(`/servers/${serverId}/env`, payload, { headers: { 'Content-Type': 'application/json' } });
+
+  return result.data;
+}
+export async function updateServerEnv(axios: AxiosInstance, serverId: string, payload: z.infer<typeof UpdateServerEnvSchema>): Promise<ServerAdmin> {
+  const result = await axios.post(`/servers/${serverId}/env`, payload, { headers: { 'Content-Type': 'application/json' } });
+
+  return result.data;
+}
+
+export async function deleteServerEnv(axios: AxiosInstance, serverId: string, envId: string): Promise<void> {
+  const result = await axios.delete(`/servers/${serverId}/env/${envId}`);
 
   return result.data;
 }

@@ -29,6 +29,9 @@ export default function PageClient({ id }: Props) {
         <h1 className="text-xl">
           <Tran asChild text="admin" />
         </h1>
+        <p className="text-muted-foreground text-sm">
+          <Tran asChild text="server.admin-description" />
+        </p>
         <Divider />
         <ServerAdminList id={id} />
       </div>
