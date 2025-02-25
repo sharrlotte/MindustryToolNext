@@ -62,7 +62,6 @@ export const UpdateTagSchema = z.object({
   categoryId: z.number().int(),
   modId: z.string().optional().nullable(),
   icon: z.any(),
-  position: z.number().int(),
 });
 
 export type UpdateTagRequest = z.infer<typeof UpdateTagSchema>;
