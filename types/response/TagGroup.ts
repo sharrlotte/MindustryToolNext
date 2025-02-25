@@ -2,6 +2,7 @@ import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import { groupBy } from '@/lib/utils';
 import { DetailTagDto, TagDto, Tags } from '@/types/response/Tag';
 
+
 type TagGroup = {
   name: string;
   values: {
@@ -11,6 +12,7 @@ type TagGroup = {
   }[];
   color: string;
   duplicate: boolean;
+  position: number;
 };
 
 export default TagGroup;
@@ -71,6 +73,7 @@ export class TagGroups {
     const tagGroup = groupBy(tagsArray, ({ name }) => name)
       .map(({ key, value }) => ({
         name: key,
+        position: 0,
         values: value.map(({ value }) => ({ name: value })) ?? [],
       }))
       .map((tag) => {
@@ -109,6 +112,7 @@ export class TagGroups {
         name: key,
         color: value[0]?.color,
         duplicate: true,
+        position: 0,
         values: value.map(({ value }) => ({ name: value })) ?? [],
       }))
 

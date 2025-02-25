@@ -187,7 +187,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
           <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
         </SearchBar>
         {useTag && (
-          <Button className="h-11 shadow-md bg-card rounded-none" title="filter" variant="ghost" onClick={handleShowFilterDialog}>
+          <Button className="h-10 shadow-md bg-card rounded-none" title="filter" variant="ghost" onClick={handleShowFilterDialog}>
             <FilterIcon className="size-5" />
           </Button>
         )}

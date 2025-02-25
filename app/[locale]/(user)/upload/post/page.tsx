@@ -126,7 +126,7 @@ function TranslatePage({
       setContent({ text: '', files: [] });
     },
     onError(error) {
-      toast.error(<Tran text="upload.fail" />, { description: error.message });
+      toast.error(<Tran text="upload.fail" />, { description: error?.message });
     },
     onSettled: () => {
       invalidateByKey(['posts']);
@@ -202,7 +202,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
       setSelectedTags([]);
     },
     onError(error) {
-      toast.error(<Tran text="upload.fail" />, { description: error.message });
+      toast.error(<Tran text="upload.fail" />, { description: error?.message });
     },
     onSettled: () => {
       invalidateByKey(['posts']);
@@ -294,7 +294,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
     }
 
     if (isError) {
-      return <span>{error.message}</span>;
+      return <span>{error?.message}</span>;
     }
 
     if (!data || data?.length === 0) {

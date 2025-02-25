@@ -9,6 +9,7 @@ export const sortTagGroup: TagGroup = {
   values: sortTag.map((v) => ({ name: v })),
   color: 'green',
   duplicate: false,
+  position: 0,
 };
 
 export default SortTag;

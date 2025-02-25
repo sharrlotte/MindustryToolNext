@@ -3,6 +3,7 @@ import React, { useCallback, useMemo } from 'react';
 import MultipleFilerTags from '@/components/tag/multiple-filter-tags';
 import SingeFilerTags from '@/components/tag/single-filter-tags';
 
+import { useI18n } from '@/i18n/client';
 import TagGroup from '@/types/response/TagGroup';
 
 export type FilterTag = { name: string; icon?: string };
@@ -17,20 +18,22 @@ type FilterTagProps = {
 const empty: FilterTag[] = [];
 
 export default function FilterTags({ filter, tags, filterBy, handleTagGroupChange }: FilterTagProps) {
-  //TODO: Fix search
+  const { t } = useI18n('tags');
+
   const filteredTags = useMemo(
     () =>
       filter.length === 0
-        ? tags
+        ? tags.sort((a, b) => a.position - b.position)
         : tags
+            .sort((a, b) => a.position - b.position)
             .map((tag) => {
               const v = { ...tag };
-              v.values = tag.values.filter((value) => value.name.toLowerCase().includes(filter.toLowerCase()));
+              v.values = tag.values.filter((value) => t(value.name).toLowerCase().includes(filter.toLowerCase()));
 
               return v;
             })
             .filter((tag) => tag.values.length > 0),
-    [filter, tags],
+    [filter, tags, t],
   );
 
   return filteredTags.map((group) => <FilterTagGroup key={group.name} selectedGroup={filterBy.find((value) => value.name === group.name)} group={group} handleTagGroupChange={handleTagGroupChange} />);

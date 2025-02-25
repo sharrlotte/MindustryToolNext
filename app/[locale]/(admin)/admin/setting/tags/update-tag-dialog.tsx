@@ -14,6 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
+import { acceptedImageFormats } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { getMods } from '@/query/mod';
@@ -22,7 +23,6 @@ import { TagDto } from '@/types/response/Tag';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { acceptedImageFormats } from '@/constant/constant';
 
 type Props = {
   tag: TagDto;
