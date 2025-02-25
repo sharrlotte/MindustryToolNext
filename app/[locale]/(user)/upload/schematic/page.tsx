@@ -40,18 +40,6 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
 export default function Page() {
   return <Preview />;
 }
@@ -183,19 +171,16 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: CreateSchematicRequest) =>
-      toast.promise(createSchematic(axios, data), {
-        //
-        loading: <Tran text="upload.uploading" />,
-        success: () => {
-          setData(undefined);
-          setPreview(undefined);
-          form.reset();
+    mutationFn: async (data: CreateSchematicRequest) => createSchematic(axios, data),
+    onMutate: () => toast.loading(<Tran text="upload.uploading" />),
+    onSuccess: () => {
+      setData(undefined);
+      setPreview(undefined);
+      form.reset();
 
-          return <Tran text="upload.success" />;
-        },
-        error: (error) => ({ title: <Tran text="upload.fail" />, description: error?.message }),
-      }),
+      return toast.success(<Tran text="upload.success" />);
+    },
+    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
   });
 
   function handleSubmit(data: any) {
