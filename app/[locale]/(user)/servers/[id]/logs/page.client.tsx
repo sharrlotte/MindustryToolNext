@@ -29,12 +29,12 @@ export default function PageClient({ id }: Props) {
       </div>
       <ScrollContainer>
         <ListLayout>
-          <InfinitePage className="grid grid-cols-1 gap-1" paramSchema={PaginationQuerySchema} queryKey={['server-login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
+          <InfinitePage className="grid grid-cols-1 gap-1" paramSchema={PaginationQuerySchema} queryKey={['server', id, 'login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
             {(data, index) => <ServerLoginLogCard key={data.id} index={index} data={data} />}
           </InfinitePage>
         </ListLayout>
         <GridLayout>
-          <GridPaginationList className="grid grid-cols-1" paramSchema={PaginationQuerySchema} queryKey={['server-login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
+          <GridPaginationList className="grid grid-cols-1" paramSchema={PaginationQuerySchema} queryKey={['server', id, 'login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
             {(data, index) => <ServerLoginLogCard key={data.id} index={index} data={data} />}
           </GridPaginationList>
         </GridLayout>
