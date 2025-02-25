@@ -42,7 +42,7 @@ export default async function Page({ searchParams }: Props) {
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
-      <PageClient users={users} />
+      <PageClient users={users} params={data} />
       <RankPaginationNavigator />
     </div>
   );

@@ -31,13 +31,15 @@ type InfinitePageProps<T, P extends QuerySchema> = {
   reversed?: boolean;
   enabled?: boolean;
   initialData?: T[];
+  initialParams?: z.infer<P>;
   queryFn: (axios: AxiosInstance, params: z.infer<P>) => Promise<T[]>;
   children: (data: T, index: number) => ReactNode;
 };
 
-export default function InfinitePage<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, end, skeleton, reversed, initialData, enabled, params, queryFn, children }: InfinitePageProps<T, P>) {
+export default function InfinitePage<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, end, skeleton, reversed, initialData, initialParams, enabled, params, queryFn, children }: InfinitePageProps<T, P>) {
   const p = useSearchQuery(paramSchema, params);
-  const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(queryFn, p, queryKey, initialData, enabled);
+
+  const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(queryFn, p, queryKey, JSON.stringify(p) === JSON.stringify(initialParams) ? initialData : undefined, enabled);
 
   const loadMore = useCallback(
     (_: number) => {

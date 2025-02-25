@@ -44,5 +44,5 @@ export default async function Page({ searchParams }: Props) {
     return <ErrorScreen error={maps} />;
   }
 
-  return <Client maps={maps} />;
+  return <Client maps={maps} params={data}/>;
 }

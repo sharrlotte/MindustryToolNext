@@ -16,14 +16,15 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import env from '@/constant/env';
 import { getMapCount, getMaps } from '@/query/map';
-import { ItemPaginationQuery } from '@/query/search-query';
+import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 import { Map } from '@/types/response/Map';
 
 type Props = {
   maps: Map[];
+  params: ItemPaginationQueryType;
 };
 
-export default function Client({ maps }: Props) {
+export default function Client({ maps, params }: Props) {
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="map" />
@@ -37,6 +38,7 @@ export default function Client({ maps }: Props) {
             queryKey={['maps']}
             queryFn={getMaps}
             initialData={maps}
+            initialParams={params}
             skeleton={{
               amount: 20,
               item: <PreviewSkeleton />,
@@ -51,6 +53,7 @@ export default function Client({ maps }: Props) {
             queryKey={['maps']}
             queryFn={getMaps}
             initialData={maps}
+            initialParams={params}
             skeleton={{
               amount: 20,
               item: <PreviewSkeleton />,

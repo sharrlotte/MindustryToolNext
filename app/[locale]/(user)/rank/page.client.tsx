@@ -15,7 +15,7 @@ import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import { ItemPaginationQuery, PaginationQuerySchema } from '@/query/search-query';
+import { ItemPaginationQuery, PaginationQuery, PaginationQuerySchema } from '@/query/search-query';
 import { getMyRank, getRank, getUsersCount } from '@/query/user';
 import { User } from '@/types/response/User';
 
@@ -23,12 +23,13 @@ import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   users: User[];
+  params: PaginationQuery;
 };
 
-export function PageClient({ users }: Props) {
-  const params = useSearchQuery(ItemPaginationQuery);
+export function PageClient({ users, params }: Props) {
+  const p = useSearchQuery(ItemPaginationQuery);
   const { session } = useSession();
-  const { page, size } = params;
+  const { page, size } = p;
 
   return (
     <Table className="border">
@@ -48,6 +49,7 @@ export function PageClient({ users }: Props) {
       <TableBody className="h-full">
         <GridPaginationList
           paramSchema={PaginationQuerySchema}
+          initialParams={params}
           queryKey={['rank']}
           queryFn={getRank}
           initialData={users}
