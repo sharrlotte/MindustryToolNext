@@ -14,8 +14,8 @@ const buttonVariants = cva('hover:bg-destructive/80', {
   variants: {
     variant: {
       command: '',
-      default: 'border border-border bg-transparent bg-secondary',
-      ghost: 'border-none absolute w-fit backdrop-brightness-50',
+      default: 'border border-border bg-transparent bg-secondary hover:border-destructive',
+      ghost: 'border-none absolute w-fit backdrop-brightness-50 hover:border-none',
     },
   },
   defaultVariants: {
@@ -34,7 +34,7 @@ export default function DeleteButton({ className, isLoading, variant, descriptio
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className={cn('hover:border-none', buttonVariants({ className, variant }))} variant={variant} size="command" disabled={isLoading}>
+        <Button className={cn(buttonVariants({ className, variant }))} variant={variant} size="command" disabled={isLoading}>
           {children ?? <TrashIcon />}
           {variant === 'command' && <Tran text="delete" />}
         </Button>
@@ -50,7 +50,7 @@ export default function DeleteButton({ className, isLoading, variant, descriptio
           <AlertDialogCancel>
             <Tran text="cancel" />
           </AlertDialogCancel>
-          <AlertDialogAction className="bg-destructive hover:bg-destructive" asChild>
+          <AlertDialogAction className="bg-destructive hover:bg-destructive border-destructive" asChild>
             <Button onClick={onClick}>
               <Tran text="delete" />
             </Button>

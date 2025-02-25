@@ -23,12 +23,8 @@ export default function Error({ error }: { error: TError }) {
   }, [axios, message, path, loggedMessage]);
 
   return (
-    <html>
-      <body>
-        <div className="h-full w-full bg-black">
-          <StarScene message={message} />
-        </div>
-      </body>
-    </html>
+    <div className="h-full w-full bg-black">
+      <StarScene message={message} />
+    </div>
   );
 }
