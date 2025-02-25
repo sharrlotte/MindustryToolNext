@@ -14,14 +14,15 @@ import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import env from '@/constant/env';
 import { getSchematicCount, getSchematics } from '@/query/schematic';
-import { ItemPaginationQuery } from '@/query/search-query';
+import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 import { Schematic } from '@/types/response/Schematic';
 
 type Props = {
   schematics: Schematic[];
+  params: ItemPaginationQueryType;
 };
 
-export default function Client({ schematics }: Props) {
+export default function Client({ schematics, params }: Props) {
   const uploadLink = `${env.url.base}/upload/schematic`;
 
   return (
@@ -34,6 +35,7 @@ export default function Client({ schematics }: Props) {
         <ListLayout>
           <InfinitePage
             paramSchema={ItemPaginationQuery}
+            initialParams={params}
             queryKey={['schematics']}
             queryFn={getSchematics}
             initialData={schematics}
@@ -48,6 +50,7 @@ export default function Client({ schematics }: Props) {
         <GridLayout>
           <GridPaginationList
             paramSchema={ItemPaginationQuery}
+            initialParams={params}
             queryKey={['schematics']}
             queryFn={getSchematics}
             initialData={schematics}

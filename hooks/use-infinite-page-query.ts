@@ -42,7 +42,7 @@ export default function useInfinitePageQuery<T, P extends PaginationQuery>(query
     queryKey: filteredQueryKey,
     initialPageParam: params,
     // TODO: Fix this
-    // initialData: data,
+    initialData: data,
     enabled,
     // @ts-expect-error idk
     queryFn: (context) => queryFn(axios, context.pageParam),

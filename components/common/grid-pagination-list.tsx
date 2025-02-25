@@ -1,7 +1,7 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, { ReactNode, useMemo, useRef } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { z } from 'zod';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -28,20 +28,19 @@ type Props<T, P extends QuerySchema> = {
   };
   asChild?: boolean;
   initialData?: T[];
+  initialParams?: z.infer<P>;
   queryFn: (axios: AxiosInstance, params: z.infer<P>) => Promise<T[]>;
   children: (data: T, index: number) => ReactNode;
 };
 
-export default function GridPaginationList<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, skeleton, asChild, initialData, params, queryFn, children }: Props<T, P>) {
+export default function GridPaginationList<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, skeleton, asChild, initialData, initialParams, params, queryFn, children }: Props<T, P>) {
   const p = useSearchQuery(paramSchema, params);
-
-  const ref = useRef<typeof p>(p);
 
   const axios = useClientApi();
   const { data, error, isLoading } = useQuery({
     queryFn: () => queryFn(axios, p),
     queryKey: [p, ...queryKey],
-    // TODO: Fix this
+    initialData: JSON.stringify(p) === JSON.stringify(initialParams) ? initialData : undefined,
   });
 
   const skeletonElements = useMemo(() => {
