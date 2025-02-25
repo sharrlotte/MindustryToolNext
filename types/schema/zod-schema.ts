@@ -8,6 +8,7 @@ export const TAG_GROUP_SCHEMA = z.object({
   values: z.array(z.object({ name: z.string() })),
   color: z.string(),
   duplicate: z.boolean(),
+  position: z.number(),
 });
 
 export const CreateSchematicSchema = (t: TranslateFunction) =>
