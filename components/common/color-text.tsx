@@ -110,7 +110,7 @@ function Render({ text }: { text?: string }) {
       break;
     }
 
-    let nextIndex = -1;
+    let nextIndex = text.length;
 
     for (let i = 1; i < arr.length; i++) {
       const test = getColorAndFormat(arr[i]);
