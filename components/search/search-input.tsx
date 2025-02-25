@@ -12,7 +12,7 @@ type SearchProps = HTMLAttributes<HTMLDivElement>;
 
 export function SearchBar({ className, children, ...props }: SearchProps) {
   return (
-    <div className={cn('flex h-11 w-full items-center justify-center gap-2 rounded-sm border px-3 shadow-md', className)} {...props}>
+    <div className={cn('flex h-10 w-full items-center justify-center gap-2 rounded-sm border px-3 shadow-md', className)} {...props}>
       {children}
     </div>
   );
@@ -25,7 +25,7 @@ type InputProps = HTMLAttributes<HTMLInputElement> & {
 };
 
 export function SearchInput({ className, placeholder, value, onChange, onClear, ...props }: InputProps) {
-  const {key, group} = extractTranslationKey(placeholder);
+  const { key, group } = extractTranslationKey(placeholder);
   const { t } = useI18n(group);
 
   return (

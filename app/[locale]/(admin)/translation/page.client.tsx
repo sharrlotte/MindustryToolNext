@@ -45,6 +45,9 @@ import { Translation, TranslationCompare, TranslationDiff } from '@/types/respon
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
+import HighLightTranslation from './highlight-translation';
+import TranslationStatus from './translation-status';
+
 const translateModes = ['search', 'diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];
 
@@ -85,16 +88,18 @@ export default function TranslationPage() {
             }))}
             onChange={(mode) => setState({ mode: mode ?? 'compare' })}
           />
-          <ComboBox
-            className="h-10"
-            searchBar={false}
-            value={{ label: isTranslated + '', value: isTranslated }}
-            values={[null, true, false].map((value) => ({
-              label: value + '',
-              value: value,
-            }))}
-            onChange={(value) => setState({ isTranslated: value })}
-          />
+          {mode === 'search' && (
+            <ComboBox
+              className="h-10"
+              searchBar={false}
+              value={{ label: isTranslated + '', value: isTranslated }}
+              values={[null, true, false].map((value) => ({
+                label: value + '',
+                value: value,
+              }))}
+              onChange={(value) => setState({ isTranslated: value })}
+            />
+          )}
           {mode === 'search' ? (
             <ComboBox<Locale>
               className="h-10"
@@ -174,18 +179,13 @@ function CompareTable({ language, target, tKey: key }: CompareTableProps) {
       <Table className="table-fixed">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-40 overflow-x-auto">
-              <Tran text="translation.key-group" />
-            </TableHead>
-            <TableHead className="w-40 overflow-x-auto">
-              <Tran text="translation.key" />
-            </TableHead>
             <TableHead>
               <Tran text={language} />
             </TableHead>
             <TableHead>
               <Tran text={target} />
             </TableHead>
+            <TableHead className="w-10"></TableHead>
             <TableHead className="w-20"></TableHead>
           </TableRow>
         </TableHeader>
@@ -225,15 +225,10 @@ function SearchTable({ language, tKey: key, isTranslated }: SearchTableProps) {
       <Table className="table-fixed">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-40 overflow-x-auto">
-              <Tran text="translation.key-group" />
-            </TableHead>
-            <TableHead className="w-40 overflow-x-auto">
-              <Tran text="translation.key" />
-            </TableHead>
             <TableHead>
               <Tran text={language} />
             </TableHead>
+            <TableHead className="w-10"></TableHead>
             <TableHead className="w-20"></TableHead>
           </TableRow>
         </TableHeader>
@@ -273,18 +268,13 @@ function DiffTable({ language, target, tKey: key }: DiffTableProps) {
       <Table className="table-fixed">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-40 overflow-x-auto">
-              <Tran text="translation.key-group" />
-            </TableHead>
-            <TableHead className="w-40 overflow-x-auto">
-              <Tran text="translation.key" />
-            </TableHead>
             <TableHead>
               <Tran text={language} />
             </TableHead>
             <TableHead>
               <Tran text={target} />
             </TableHead>
+            <TableHead className="w-10"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -319,7 +309,7 @@ type DiffCardProps = {
 function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardProps) {
   const axios = useClientApi();
 
-  const { mutate } = useMutation({
+  const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
   });
 
@@ -339,15 +329,19 @@ function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardP
 
   return (
     <TableRow>
-      <TableCell className="align-top">{keyGroup}</TableCell>
-      <TableCell className="align-top">{key}</TableCell>
       <TableCell className="align-top">
-        <CopyButton className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent" variant="ghost" data={value} content={value}>
-          {value}
+        <CopyButton className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent" variant="none" data={value} content={value}>
+          <HighLightTranslation text={value} />
         </CopyButton>
+        <div className="text-muted-foreground">
+          <span>{keyGroup}</span>.<span>{key}</span>
+        </div>
       </TableCell>
       <TableCell>
         <Textarea className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" placeholder={value} onChange={handleChange} />
+      </TableCell>
+      <TableCell>
+        <TranslationStatus status={status} />
       </TableCell>
     </TableRow>
   );
@@ -361,7 +355,7 @@ type CompareCardProps = {
 
 function CompareCard({ translation: { key, id, value, keyGroup }, language, target }: CompareCardProps) {
   const axios = useClientApi();
-  const { mutate } = useMutation({
+  const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
   });
 
@@ -381,15 +375,19 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
 
   return (
     <TableRow>
-      <TableCell className="align-top">{keyGroup}</TableCell>
-      <TableCell className="align-top"> {key}</TableCell>
       <TableCell className="align-top">
-        <CopyButton className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent" variant="ghost" data={value[language]} content={value[language]}>
-          {value[language]}
+        <CopyButton className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent" variant="none" data={value[language]} content={value[language]}>
+          <HighLightTranslation text={value[language]} />
         </CopyButton>
+        <div className="text-muted-foreground">
+          <span>{keyGroup}</span>.<span>{key}</span>
+        </div>
       </TableCell>
       <TableCell>
         <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value[target]} onChange={handleChange} />
+      </TableCell>
+      <TableCell>
+        <TranslationStatus status={status} />
       </TableCell>
       <TableCell className="flex justify-center">
         <EllipsisButton variant="ghost">
@@ -407,7 +405,7 @@ type SearchCardProps = {
 
 function SearchCard({ translation: { key, id, value, keyGroup }, language }: SearchCardProps) {
   const axios = useClientApi();
-  const { mutate } = useMutation({
+  const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
   });
 
@@ -427,12 +425,16 @@ function SearchCard({ translation: { key, id, value, keyGroup }, language }: Sea
 
   return (
     <TableRow>
-      <TableCell className="align-top">{keyGroup}</TableCell>
-      <TableCell className="align-top"> {key}</TableCell>
       <TableCell>
         <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value} onChange={handleChange} />
+        <div className="text-muted-foreground">
+          <span>{keyGroup}</span>.<span>{key}</span>
+        </div>
       </TableCell>
-      <TableCell className="flex justify-center">
+      <TableCell>
+        <TranslationStatus status={status} />
+      </TableCell>
+      <TableCell>
         <EllipsisButton variant="ghost">
           <DeleteTranslationDialog value={{ key, id }} />
         </EllipsisButton>
