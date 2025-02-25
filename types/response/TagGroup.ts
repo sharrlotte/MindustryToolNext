@@ -11,6 +11,7 @@ type TagGroup = {
   }[];
   color: string;
   duplicate: boolean;
+  position: number;
 };
 
 export default TagGroup;

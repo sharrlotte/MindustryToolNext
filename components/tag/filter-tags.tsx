@@ -33,7 +33,7 @@ export default function FilterTags({ filter, tags, filterBy, handleTagGroupChang
     [filter, tags],
   );
 
-  return filteredTags.map((group) => <FilterTagGroup key={group.name} selectedGroup={filterBy.find((value) => value.name === group.name)} group={group} handleTagGroupChange={handleTagGroupChange} />);
+  return filteredTags.sort((a, b) => a.position - b.position).map((group) => <FilterTagGroup key={group.name} selectedGroup={filterBy.find((value) => value.name === group.name)} group={group} handleTagGroupChange={handleTagGroupChange} />);
 }
 
 type FilterTagGroupProps = {
