@@ -13,7 +13,7 @@ export default function useSearchQuery<T extends QuerySchema>(schema: T, additio
     const result = schema.parse(data);
 
     if (additional) {
-      return { ...additional, ...result };
+      return { ...result, ...additional };
     }
 
     return result;
