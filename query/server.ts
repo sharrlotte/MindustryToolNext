@@ -10,6 +10,7 @@ import { PutServerPortRequest, PutServerRequest } from '@/types/request/UpdateSe
 import { Player } from '@/types/response/Player';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
 import Server from '@/types/response/Server';
+import ServerAdmin from '@/types/response/ServerAdmin';
 import { ServerDto } from '@/types/response/ServerDto';
 import { ServerFile } from '@/types/response/ServerFile';
 import ServerLoginLog from '@/types/response/ServerLoginLog';
@@ -223,4 +224,22 @@ export async function updateServerPort(axios: AxiosInstance, serverId: string, d
   return axios.put(`/servers/${serverId}/port`, data, {
     data,
   });
+}
+
+export async function getServerAdmin(axios: AxiosInstance, serverId: string): Promise<ServerAdmin[]> {
+  const result = await axios.get(`/servers/${serverId}/admin`);
+
+  return result.data;
+}
+
+export async function createServerAdmin(axios: AxiosInstance, serverId: string, userId: string): Promise<ServerAdmin> {
+  const result = await axios.post(`/servers/${serverId}/admin`, userId, { headers: { 'Content-Type': 'application/json' } });
+
+  return result.data;
+}
+
+export async function deleteServerAdmin(axios: AxiosInstance, serverId: string, adminId: string): Promise<void> {
+  const result = await axios.delete(`/servers/${serverId}/admin/${adminId}`);
+
+  return result.data;
 }

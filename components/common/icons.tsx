@@ -34,6 +34,7 @@ import {
   Globe,
   HistoryIcon,
   Home,
+  KeyRound,
   LayoutDashboard,
   LayoutGrid,
   LineChart,
@@ -55,6 +56,7 @@ import {
   Send,
   Server,
   SettingsIcon,
+  Share2,
   ShieldCheckIcon,
   Shrink,
   Sigma,
@@ -72,7 +74,6 @@ import {
   Users,
   X,
   XCircle,
-  Share2
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -85,6 +86,7 @@ type Props = {
   className?: string;
 };
 
+export const KeyRoundIcon = ({ className }: Props) => <KeyRound className={className ?? 'lucide'} />;
 export const ShareIcon = ({ className }: Props) => <Share2 className={className ?? 'lucide'} />;
 export const EyeIcon = ({ className }: Props) => <Eye className={className ?? 'lucide'} />;
 export const EyeOffIcon = ({ className }: Props) => <EyeOff className={className ?? 'lucide'} />;

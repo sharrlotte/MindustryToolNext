@@ -1,0 +1,76 @@
+'use client';
+
+import { AnimatePresence, motion } from 'framer-motion';
+
+import ErrorMessage from '@/components/common/error-message';
+import { XIcon } from '@/components/common/icons';
+import LoadingSpinner from '@/components/common/loading-spinner';
+import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
+import { toast } from '@/components/ui/sonner';
+import IdUserCard from '@/components/user/id-user-card';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+import { deleteServerAdmin, getServerAdmin } from '@/query/server';
+import ServerAdmin from '@/types/response/ServerAdmin';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
+
+type Props = {
+  id: string;
+};
+
+export default function PageClient({ id }: Props) {
+  const axios = useClientApi();
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['server', id, 'admin'],
+    queryFn: async () => getServerAdmin(axios, id),
+  });
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (isError) {
+    return <ErrorMessage error={error} />;
+  }
+
+  return (
+    <AnimatePresence>
+      <div className="bg-card p-4 space-y-2 h-full overflow-hidden flex flex-col">
+        <h1 className="text-xl">
+          <Tran asChild text="admin" />
+        </h1>
+        <ScrollContainer className="space-y-1">{data?.map((admin) => <ServerAdminCard key={admin.id} id={id} admin={admin} />)}</ScrollContainer>
+      </div>
+    </AnimatePresence>
+  );
+}
+
+type ServerAdminCardProps = {
+  id: string;
+  admin: ServerAdmin;
+};
+
+function ServerAdminCard({ id, admin }: ServerAdminCardProps) {
+  const axios = useClientApi();
+
+  const { invalidateByKey } = useQueriesData();
+  const { mutate, isPending, isIdle } = useMutation({
+    mutationFn: async () => deleteServerAdmin(axios, id, admin.id),
+    onError: (error) => toast.error(<Tran text="error" />, { description: error?.message }),
+    onSettled: () => invalidateByKey(['server']),
+  });
+
+  return (
+    <motion.div layout className="group cursor-pointer bg-background rounded-lg p-2 w-full flex justify-between items-center" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }}>
+      <IdUserCard id={admin.userId} />
+      <div onClick={() => mutate()}>
+        {isIdle && <XIcon className="group-hover:flex hidden group-focus:flex text-destructive" />}
+        {isPending && <LoadingSpinner className="m-0" />}
+      </div>
+    </motion.div>
+  );
+}
