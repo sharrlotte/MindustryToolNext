@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
 import { SettingIcon } from '@/components/common/icons';
@@ -10,6 +10,12 @@ import { SHOW_TAG_NAME_PERSISTENT_KEY } from '@/constant/constant';
 
 export default function TagSettingDialog() {
   const [{ showTagName }, setConfig] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY]);
+
+  useEffect(() => {
+    if (showTagName === undefined) {
+      setConfig('showTagName', true, { path: '/' });
+    }
+  }, [setConfig, showTagName]);
 
   return (
     <Dialog>
