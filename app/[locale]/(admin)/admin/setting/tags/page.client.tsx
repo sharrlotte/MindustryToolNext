@@ -131,9 +131,11 @@ function GroupCard({ group }: GroupCardProps) {
       <Tran className="text-lg" text={name} />
       <div className="flex gap-2 flex-wrap">
         <DndProvider backend={HTML5Backend}>
-          {categories.map((category) => (
-            <GroupCategoryCard isHovered={category.id === hoverId} key={category.id} group={group} category={category} onDrop={onDrop} onHover={setHoverId} />
-          ))}
+          {categories
+            .sort((a, b) => a.position - b.position)
+            .map((category) => (
+              <GroupCategoryCard isHovered={category.id === hoverId} key={category.id} group={group} category={category} onDrop={onDrop} onHover={setHoverId} />
+            ))}
         </DndProvider>
         <CreateGroupInfoDialog group={group} />
       </div>
