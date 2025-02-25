@@ -36,6 +36,12 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   const axios = useClientApi();
   const [file, setFile] = useState<File>();
@@ -120,19 +126,16 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: CreateMapRequest) => {
-      toast.promise(createMap(axios, data), {
-        loading: <Tran text="upload.uploading" />,
-        success: () => {
-          setFile(undefined);
-          setPreview(undefined);
-          form.reset();
+    mutationFn: async (data: CreateMapRequest) => createMap(axios, data),
+    onMutate: () => toast.loading(<Tran text="upload.uploading" />),
+    onSuccess: () => {
+      setFile(undefined);
+      setPreview(undefined);
+      form.reset();
 
-          return <Tran text="upload.success" />;
-        },
-        error: (error) => ({ title: <Tran text="upload.fail" />, description: error.message }),
-      });
+      return toast.success(<Tran text="upload.success" />);
     },
+    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
   });
 
   function handleSubmit(data: any) {
