@@ -235,7 +235,7 @@ function SearchTable({ language, tKey: key, isTranslated }: SearchTableProps) {
         <TableBody>
           <GridPaginationList
             paramSchema={TranslationPaginationQuery}
-            params={{ language, key: key, target: 'en', isTranslated }}
+            params={{ language, key, target: 'en', isTranslated }}
             queryKey={['translations', 'search', language, key, isTranslated]}
             queryFn={getTranslationSearch}
             noResult={<Fragment></Fragment>}

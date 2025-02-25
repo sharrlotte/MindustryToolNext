@@ -7,6 +7,7 @@ import { XIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import Divider from '@/components/ui/divider';
 import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
@@ -22,6 +23,23 @@ type Props = {
 };
 
 export default function PageClient({ id }: Props) {
+  return (
+    <AnimatePresence>
+      <div className="bg-card p-4 space-y-2 h-full overflow-hidden flex flex-col">
+        <h1 className="text-xl">
+          <Tran asChild text="admin" />
+        </h1>
+        <Divider />
+        <ServerAdminList id={id} />
+      </div>
+    </AnimatePresence>
+  );
+}
+
+type ServerAdminListProps = {
+  id: string;
+};
+function ServerAdminList({ id }: ServerAdminListProps) {
   const axios = useClientApi();
 
   const { data, isLoading, isError, error } = useQuery({
@@ -37,16 +55,7 @@ export default function PageClient({ id }: Props) {
     return <ErrorMessage error={error} />;
   }
 
-  return (
-    <AnimatePresence>
-      <div className="bg-card p-4 space-y-2 h-full overflow-hidden flex flex-col">
-        <h1 className="text-xl">
-          <Tran asChild text="admin" />
-        </h1>
-        <ScrollContainer className="space-y-1">{data?.map((admin) => <ServerAdminCard key={admin.id} id={id} admin={admin} />)}</ScrollContainer>
-      </div>
-    </AnimatePresence>
-  );
+  return <ScrollContainer className="flex flex-wrap gap-2">{data?.map((admin) => <ServerAdminCard key={admin.id} id={id} admin={admin} />)}</ScrollContainer>;
 }
 
 type ServerAdminCardProps = {
@@ -65,10 +74,10 @@ function ServerAdminCard({ id, admin }: ServerAdminCardProps) {
   });
 
   return (
-    <motion.div layout className="group cursor-pointer bg-background rounded-lg p-2 w-full flex justify-between items-center" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }}>
+    <motion.div layout className="group h-fit cursor-pointer bg-secondary rounded-md p-2 gap-4 flex justify-between items-center" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }}>
       <IdUserCard id={admin.userId} />
       <div onClick={() => mutate()}>
-        {isIdle && <XIcon className="group-hover:flex hidden group-focus:flex text-destructive" />}
+        {isIdle && <XIcon className="group-hover:opacity-100 opacity-0 group-focus:opacity-100 text-destructive" />}
         {isPending && <LoadingSpinner className="m-0" />}
       </div>
     </motion.div>
