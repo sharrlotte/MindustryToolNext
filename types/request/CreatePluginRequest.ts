@@ -18,6 +18,7 @@ export const CreatePluginSchema = z
           values: z.array(z.object({ name: z.string() })),
           color: z.string(),
           duplicate: z.boolean(),
+          position: z.number(),
         }),
       )
       .min(1),
