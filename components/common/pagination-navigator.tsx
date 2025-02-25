@@ -106,16 +106,16 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   }, [handlePageChange, lastPage, selectedPage]);
 
   return (
-    <Pagination className="h-9 bg-card rounded-sm">
+    <Pagination className="h-10 bg-card rounded">
       <PaginationContent>
         <SizeSelector sizes={sizes} />
         <PaginationItem>
-          <Button className="px-2 py-1 flex" variant="ghost" disabled={!hasPrevPage} onClick={() => handlePageChange(previousPage)}>
+          <Button className="px-2 size-10 py-1 flex" variant="ghost" disabled={!hasPrevPage} onClick={() => handlePageChange(previousPage)}>
             <ChevronLeftIcon className="size-5" />
           </Button>
         </PaginationItem>
         <PaginationItem>
-          <Button className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1 bg-secondary dark:text-foreground', {})} title="prev" onClick={() => handlePageChange(currentPage)} variant="icon">
+          <Button className={cn(' size-10 w-full min-w-10 h-10 rounded p-0 px-2 py-1 bg-secondary dark:text-foreground', {})} title="prev" onClick={() => handlePageChange(currentPage)} variant="icon">
             {currentPage}
           </Button>
         </PaginationItem>
@@ -123,7 +123,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
           <Dialog open={open} onOpenChange={setOpen}>
             {lastPage > 1 && (
               <DialogTrigger asChild>
-                <Button className="p-0 rounded-none" variant="icon" title="choose">
+                <Button className="p-0 size-10 rounded-none" variant="icon" title="choose">
                   <PaginationEllipsis />
                 </Button>
               </DialogTrigger>
@@ -140,7 +140,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
                 </span>
               )}
               <div className="flex justify-end">
-                <Button className="flex" onClick={handleSelectPage} title="Go to page" variant="primary">
+                <Button className="flex size-10" onClick={handleSelectPage} title="Go to page" variant="primary">
                   Go
                 </Button>
               </div>
@@ -150,7 +150,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
         {lastPage > 1 && (
           <PaginationItem>
             <Button
-              className={cn('w-full min-w-9 rounded-sm p-0 px-2 py-1', {
+              className={cn('w-full min-w-10 h-10 rounded p-0 px-2 py-1', {
                 'bg-secondary text-brand-foreground': lastPage === currentPage,
               })}
               title="prev"
@@ -162,7 +162,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
           </PaginationItem>
         )}
         <PaginationItem>
-          <Button className="px-2 py-1 flex" variant="ghost" disabled={!hasNextPage} onClick={() => handlePageChange(nextPage)}>
+          <Button className="px-2 size-10  py-1 flex" variant="ghost" disabled={!hasNextPage} onClick={() => handlePageChange(nextPage)}>
             <ChevronRightIcon className="size-5" />
           </Button>
         </PaginationItem>
@@ -196,7 +196,7 @@ function SizeSelector({ sizes }: SizeSelectorProps) {
 
   return (
     <ComboBox
-      className="w-auto rounded-sm border-none"
+      className="w-auto rounded border-none h-10"
       searchBar={false}
       value={{ label: size.toString(), value: size }}
       values={sizes.map((size) => ({
