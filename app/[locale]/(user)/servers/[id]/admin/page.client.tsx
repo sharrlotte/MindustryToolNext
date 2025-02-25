@@ -43,7 +43,7 @@ export default function PageClient({ id }: Props) {
         <h1 className="text-xl">
           <Tran asChild text="admin" />
         </h1>
-        <ScrollContainer className="space-y-1">{data?.map((admin) => <ServerAdminCard key={admin.id} id={id} admin={admin} />)}</ScrollContainer>
+        <ScrollContainer className="flex flex-wrap h-fit gap-2">{data?.map((admin) => <ServerAdminCard key={admin.id} id={id} admin={admin} />)}</ScrollContainer>
       </div>
     </AnimatePresence>
   );
@@ -65,10 +65,10 @@ function ServerAdminCard({ id, admin }: ServerAdminCardProps) {
   });
 
   return (
-    <motion.div layout className="group cursor-pointer bg-background rounded-lg p-2 w-full flex justify-between items-center" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }}>
+    <motion.div layout className="group cursor-pointer bg-secondary rounded-md p-2 gap-4 flex justify-between items-center" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }}>
       <IdUserCard id={admin.userId} />
       <div onClick={() => mutate()}>
-        {isIdle && <XIcon className="group-hover:flex hidden group-focus:flex text-destructive" />}
+        {isIdle && <XIcon className="group-hover:opacity-100 opacity-0 group-focus:opacity-100 text-destructive" />}
         {isPending && <LoadingSpinner className="m-0" />}
       </div>
     </motion.div>
