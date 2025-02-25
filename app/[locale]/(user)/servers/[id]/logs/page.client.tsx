@@ -17,7 +17,7 @@ type Props = {
 };
 export default function PageClient({ id }: Props) {
   return (
-    <div className="flex flex-col h-full gap-1">
+    <div className="flex flex-col h-full gap-2">
       <div className="ml-auto">
         <PaginationLayoutSwitcher />
       </div>
@@ -29,7 +29,7 @@ export default function PageClient({ id }: Props) {
       </div>
       <ScrollContainer>
         <ListLayout>
-          <InfinitePage className="grid grid-cols-1 gap-1" paramSchema={PaginationQuerySchema} queryKey={['server', id, 'login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
+          <InfinitePage className="grid grid-cols-1" paramSchema={PaginationQuerySchema} queryKey={['server', id, 'login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
             {(data, index) => <ServerLoginLogCard key={data.id} index={index} data={data} />}
           </InfinitePage>
         </ListLayout>
