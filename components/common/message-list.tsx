@@ -41,6 +41,7 @@ export default function MessageList({
   children,
 }: MessageListProps) {
   const container = useRef<HTMLDivElement>(null);
+  const renderCause = useRef<'fetch' | 'event'>('fetch');
   const [_, setLastMessage] = useLocalStorage(`LAST_MESSAGE_${room}`, '');
   const [list, setList] = useState<HTMLDivElement | null>(null);
 
@@ -55,8 +56,11 @@ export default function MessageList({
   const lastHeight = lastHeightRef.current || 0;
   const scrollTop = scrollTopRef.current || 0;
 
-  if (clientHeight != lastHeight && container.current && list && !isEndReached) {
+  // Only preserve scroll position when user scroll up
+  if (clientHeight != lastHeight && container.current && list && !isEndReached && renderCause.current === 'fetch') {
     const diff = clientHeight - lastHeight + scrollTop;
+
+    console.log('Scroll');
 
     container.current.scrollTo({
       top: diff,
@@ -65,7 +69,7 @@ export default function MessageList({
 
   lastHeightRef.current = clientHeight;
 
-  const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, queryKey);
+  const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, queryKey, () => (renderCause.current = 'fetch'));
 
   const { postNotification } = useNotification();
 
@@ -118,6 +122,8 @@ export default function MessageList({
       socket
         .onRoom(room) //
         .onMessage('MESSAGE', (message) => {
+          renderCause.current = 'event';
+
           queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
             if (message && 'error' in message) {
               return;

@@ -4,7 +4,7 @@ import { Message } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
-export default function useMessageQuery<P extends MessageQuery>(room: string, params: P, queryKey: QueryKey) {
+export default function useMessageQuery<P extends MessageQuery>(room: string, params: P, queryKey: QueryKey, onNewData?: (data: Message[]) => void) {
   const { socket, state } = useSocket();
 
   const getNextPageParam = (lastPage: Message[], allPages: Message[][], lastPageParams: P) => {
@@ -46,6 +46,10 @@ export default function useMessageQuery<P extends MessageQuery>(room: string, pa
 
       if (result && 'error' in result) {
         throw result;
+      }
+
+      if (onNewData) {
+        onNewData(result);
       }
 
       return result;
