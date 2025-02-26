@@ -7,13 +7,15 @@ type TranslationStatusProps = {
   status: ReturnType<typeof useMutation>['status'];
 };
 export default function TranslationStatus({ status }: TranslationStatusProps) {
-  return status === 'idle' ? (
-    <CheckCircleIcon /> //
-  ) : status === 'pending' ? (
-    <LoadingSpinner className="p-0 m-0" />
-  ) : status === 'success' ? (
-    <CheckCircleIcon className="text-success" />
-  ) : (
-    <XCircleIcon className="text-destructive" />
-  );
+  if (status === 'idle') return null;
+
+  if (status === 'pending') {
+    return <LoadingSpinner className="p-0 m-0" />;
+  }
+
+  if (status === 'success') {
+    return <CheckCircleIcon className="text-success" />;
+  }
+
+  return <XCircleIcon className="text-destructive" />;
 }

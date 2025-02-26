@@ -194,7 +194,7 @@ function CompareTable({ language, target, tKey: key }: CompareTableProps) {
             <TableHead>
               <Tran text={target} />
             </TableHead>
-            <TableHead className="w-10"></TableHead>
+
             <TableHead className="w-20"></TableHead>
           </TableRow>
         </TableHeader>
@@ -237,7 +237,7 @@ function SearchTable({ language, tKey: key, isTranslated }: SearchTableProps) {
             <TableHead>
               <Tran text={language} />
             </TableHead>
-            <TableHead className="w-10"></TableHead>
+
             <TableHead className="w-20"></TableHead>
           </TableRow>
         </TableHeader>
@@ -283,7 +283,6 @@ function DiffTable({ language, target, tKey: key }: DiffTableProps) {
             <TableHead>
               <Tran text={target} />
             </TableHead>
-            <TableHead className="w-10"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -317,6 +316,7 @@ type DiffCardProps = {
 
 function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardProps) {
   const axios = useClientApi();
+  const [isEdit, setEdit] = useState(false);
   const { invalidateByKey } = useQueriesData();
   const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
@@ -352,10 +352,16 @@ function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardP
         </div>
       </TableCell>
       <TableCell>
-        <Textarea className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" placeholder={value} onChange={handleChange} />
-      </TableCell>
-      <TableCell>
-        <TranslationStatus status={status} />
+        <div className="flex items-center gap-2">
+          {isEdit ? ( //
+            <Textarea className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" placeholder={value} onChange={handleChange} onBlur={() => setEdit(false)} />
+          ) : (
+            <div onClick={() => setEdit(true)}>
+              <HighLightTranslation text={value} />
+            </div>
+          )}
+          <TranslationStatus status={status} />
+        </div>
       </TableCell>
     </TableRow>
   );
@@ -368,6 +374,7 @@ type CompareCardProps = {
 };
 
 function CompareCard({ translation: { key, id, value, keyGroup }, language, target }: CompareCardProps) {
+  const [isEdit, setEdit] = useState(false);
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
   const { mutate, status } = useMutation({
@@ -404,10 +411,16 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
         </div>
       </TableCell>
       <TableCell>
-        <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value[target]} onChange={handleChange} />
-      </TableCell>
-      <TableCell>
-        <TranslationStatus status={status} />
+        <div className="flex items-center gap-2">
+          {isEdit ? ( //
+            <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value[target]} onChange={handleChange} onBlur={() => setEdit(false)} />
+          ) : (
+            <div onClick={() => setEdit(true)}>
+              <HighLightTranslation text={value[target]} />
+            </div>
+          )}
+          <TranslationStatus status={status} />
+        </div>
       </TableCell>
       <TableCell className="flex justify-center">
         <EllipsisButton variant="ghost">
@@ -425,6 +438,7 @@ type SearchCardProps = {
 
 function SearchCard({ translation: { key, id, value, keyGroup }, language }: SearchCardProps) {
   const axios = useClientApi();
+  const [isEdit, setEdit] = useState(false);
   const { invalidateByKey } = useQueriesData();
   const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
@@ -452,13 +466,21 @@ function SearchCard({ translation: { key, id, value, keyGroup }, language }: Sea
   return (
     <TableRow>
       <TableCell>
-        <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value} onChange={handleChange} />
-        <div className="text-muted-foreground">
-          <span>{keyGroup}</span>.<span>{key}</span>
+        <div className="flex items-center gap-2">
+          <div className="w-full">
+            {isEdit ? ( //
+              <Textarea className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" autoFocus defaultValue={value} onChange={handleChange} onBlur={() => setEdit(false)} />
+            ) : (
+              <div onClick={() => setEdit(true)}>
+                <HighLightTranslation text={value} />
+              </div>
+            )}
+            <div className="text-muted-foreground">
+              {keyGroup}.{key}
+            </div>
+          </div>
+          <TranslationStatus status={status} />
         </div>
-      </TableCell>
-      <TableCell>
-        <TranslationStatus status={status} />
       </TableCell>
       <TableCell>
         <EllipsisButton variant="ghost">
