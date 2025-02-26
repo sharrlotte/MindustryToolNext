@@ -10,6 +10,7 @@ import axiosInstance from '@/query/config/config';
 export const defaultLocale = 'en';
 export const cookieName = 'Locale';
 export const locales = env.locales;
+export const i18nCachePrefix = 'i18next';
 
 export type Locale = (typeof locales)[number];
 
@@ -36,6 +37,7 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
       backendOptions: [
         {
           expirationTime: 24 * 60 * 60 * 1000, // 7 days
+          prefix: i18nCachePrefix,
         },
         {
           loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,

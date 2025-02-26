@@ -26,7 +26,7 @@ import { Textarea } from '@/components/ui/textarea';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useI18n } from '@/i18n/client';
-import { Locale, locales } from '@/i18n/config';
+import { Locale, i18nCachePrefix, locales } from '@/i18n/config';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import {
   CreateTranslationRequest,
@@ -64,6 +64,15 @@ const defaultState: {
   key: '',
   isTranslated: null,
 };
+
+function clearTranslationCache() {
+  for (let i = localStorage.length - 1; i >= 0; i--) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith(i18nCachePrefix)) {
+      localStorage.removeItem(key);
+    }
+  }
+}
 
 export default function TranslationPage() {
   const [{ language, target, mode, key, isTranslated }, _setState] = useState(defaultState);
@@ -308,9 +317,14 @@ type DiffCardProps = {
 
 function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardProps) {
   const axios = useClientApi();
-
+  const { invalidateByKey } = useQueriesData();
   const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
+    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+    onSettled: () => {
+      invalidateByKey(['translations']);
+      clearTranslationCache();
+    },
   });
 
   const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -355,8 +369,14 @@ type CompareCardProps = {
 
 function CompareCard({ translation: { key, id, value, keyGroup }, language, target }: CompareCardProps) {
   const axios = useClientApi();
+  const { invalidateByKey } = useQueriesData();
   const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
+    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+    onSettled: () => {
+      invalidateByKey(['translations']);
+      clearTranslationCache();
+    },
   });
 
   const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -405,8 +425,14 @@ type SearchCardProps = {
 
 function SearchCard({ translation: { key, id, value, keyGroup }, language }: SearchCardProps) {
   const axios = useClientApi();
+  const { invalidateByKey } = useQueriesData();
   const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
+    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+    onSettled: () => {
+      invalidateByKey(['translations']);
+      clearTranslationCache();
+    },
   });
 
   const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -467,6 +493,7 @@ function AddNewKeyDialog() {
     onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
     onSettled: () => {
       invalidateByKey(['translations']);
+      clearTranslationCache();
     },
   });
 
@@ -578,6 +605,7 @@ function DeleteTranslationDialog({ value: { id, key } }: DeleteTranslationDialog
     mutationFn: (id: string) => deleteTranslation(axios, id),
     onSuccess: () => {
       invalidateByKey(['translations']);
+      clearTranslationCache();
     },
   });
 
