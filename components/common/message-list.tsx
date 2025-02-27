@@ -15,6 +15,8 @@ import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
 
+import ErrorMessage from './error-message';
+
 type MessageListProps = {
   className?: string;
   queryKey: QueryKey;
@@ -60,8 +62,6 @@ export default function MessageList({
   if (clientHeight != lastHeight && container.current && list && !isEndReached && renderCause.current === 'fetch') {
     const diff = clientHeight - lastHeight + scrollTop;
 
-    console.log('Scroll');
-
     container.current.scrollTo({
       top: diff,
     });
@@ -73,8 +73,6 @@ export default function MessageList({
 
   const { postNotification } = useNotification();
 
-  const pageMapper = useCallback((item: MessageGroup, index: number, array: MessageGroup[]) => children(item, index, array.length - params.size), [children, params.size]);
-
   const pages = useMemo(() => {
     if (!data) {
       return [];
@@ -83,8 +81,8 @@ export default function MessageList({
     const array = mergeNestArray(data.pages);
     const group = groupMessage(array);
 
-    return group.map(pageMapper);
-  }, [data, pageMapper]);
+    return group.map((item: MessageGroup, index: number, array: MessageGroup[]) => children(item, index, array.length - params.size));
+  }, [children, data, params.size]);
 
   useEffect(() => {
     const lastMessage = data?.pages?.at(0)?.at(0);
@@ -156,7 +154,6 @@ export default function MessageList({
         }),
     [room, queryKey, socket, queryClient, isEndReached, showNotification, postNotification],
   );
-  useInterval(() => checkIfNeedFetchMore(), 1000);
 
   useEffect(() => {
     function onScroll() {
@@ -182,22 +179,13 @@ export default function MessageList({
     };
   }, [checkIfNeedFetchMore, list, scrollTopRef]);
 
-  useInterval(checkIfNeedFetchMore, 100);
+  useInterval(checkIfNeedFetchMore, 1000);
 
   if (!loader) {
     loader = <LoaderIcon key="loading" className="col-span-full m-auto flex h-full w-full items-center justify-center animate-spin size-6 max-w-6 max-h-6" />;
   }
 
   end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
-
-  if (isError) {
-    return (
-      <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
-        <Tran className="font-semibold" text="error" />
-        <p className="text-muted-foreground">{JSON.stringify(error)}</p>
-      </div>
-    );
-  }
 
   if (state !== 'connected' || !data) {
     return <div className={cn('col-span-full flex h-full w-full items-center justify-center', className)}>{loader}</div>;
@@ -213,6 +201,7 @@ export default function MessageList({
         {!hasNextPage && end}
         {isFetching && loader}
         {pages}
+        {isError && <ErrorMessage error={error} />}
       </div>
     </ScrollContainer>
   );
