@@ -187,7 +187,11 @@ export default function MessageList({
 
   end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
 
-  if (state !== 'connected' || !data) {
+  if (state !== 'connected') {
+    return undefined;
+  }
+
+  if (!data) {
     return <div className={cn('col-span-full flex h-full w-full items-center justify-center', className)}>{loader}</div>;
   }
 
