@@ -24,7 +24,7 @@ export function MessageCard({ className, message }: Props) {
   const { data } = useQuery({
     queryKey: ['users', userId],
     queryFn: () => getUser(axios, { id: userId }),
-    persister
+    persister,
   });
 
   return (
@@ -45,6 +45,22 @@ export function MessageCard({ className, message }: Props) {
           {contents.map(({ text }, index) => (
             <ColorText className="overflow-hidden break-words text-base" key={index} text={text} />
           ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function MessageCardSkeleton() {
+  return (
+    <div className="h-16 flex w-full gap-2 text-wrap rounded-lg p-2 text-base">
+      <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />
+      <div className="overflow-hidden">
+        <div className="flex gap-2">
+          <Skeleton className="h-4 max-h-1 w-24" />
+        </div>
+        <div className="no-scrollbar grid w-full gap-1 overflow-hidden">
+          <Skeleton className="h-6 w-full rounded-md" />
         </div>
       </div>
     </div>
