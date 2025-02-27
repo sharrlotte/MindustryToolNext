@@ -5,10 +5,13 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 
+
+
 import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
+
 
 type PlayersCardProps = {
   id: string;
@@ -16,12 +19,15 @@ type PlayersCardProps = {
 
 const localeToFlag: Record<string, string> = {
   en: '🇬🇧',
+  en_US: '🇺🇸',
   be: '🇧🇾', // Belarus
   bg: '🇧🇬', // Bulgaria
   ca: '🇪🇸', // Catalonia (Spain)
   cs: '🇨🇿', // Czech Republic
+  cw: '🇨🇼', // Curaçao
   da: '🇩🇰', // Denmark
   de: '🇩🇪', // Germany
+  de_DE: '🇩🇪', // Germany
   es: '🇪🇸', // Spain
   et: '🇪🇪', // Estonia
   eu: '🇪🇸', // Basque (Spain)
@@ -30,6 +36,7 @@ const localeToFlag: Record<string, string> = {
   fr: '🇫🇷', // France
   hu: '🇭🇺', // Hungary
   id_ID: '🇮🇩', // Indonesia
+  in_ID: '🇮🇩', // Indonesia
   it: '🇮🇹', // Italy
   ja: '🇯🇵', // Japan
   ko: '🇰🇷', // South Korea
