@@ -53,7 +53,7 @@ export function UserTable() {
   return (
     <div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
       <div>
-        <div className="flex h-14 gap-2 p-2 bg-card">
+        <div className="flex h-14 gap-2 p-2 bg-card rounded-md">
           <Input className="h-full" value={name} onChange={(event) => setQueryState({ name: event.target.value })} placeholder="Search using username" />
           <ComboBox
             className="h-full"

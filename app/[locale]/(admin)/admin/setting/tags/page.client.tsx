@@ -42,11 +42,11 @@ export default function PageClient() {
     <div className="space-y-2 h-full flex flex-col">
       <ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
       <ScrollContainer className="space-y-4">
-        <div className="p-2 rounded-lg space-y-2">
+        <div className="rounded-lg space-y-2">
           <Tran className="py-2 text-lg font-semibold" text="tags.group" />
           <TagGroupList />
         </div>
-        <div className="p-2 rounded-lg space-y-2">
+        <div className="rounded-lg space-y-2">
           <Tran className="py-2 text-lg font-semibold" text="tags.category" />
           <TagList modId={selectedMod?.id} />
         </div>

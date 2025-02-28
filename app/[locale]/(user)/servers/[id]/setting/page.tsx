@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { DeleteServerButton } from '@/app/[locale]/(user)/servers/[id]/setting/delete-server-button';
+import { ServerSettingButton } from '@/app/[locale]/(user)/servers/[id]/setting/delete-setting-button';
 import ServerUpdateForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-form';
 import ServerUpdatePortForm from '@/app/[locale]/(user)/servers/[id]/setting/server-update-port-form';
 
@@ -54,7 +54,7 @@ export default async function Page({ params }: Props) {
         <ServerUpdatePortForm server={server} />
       </ProtectedElement>
       <ProtectedElement session={session} filter={{ any: [{ authority: 'EDIT_ADMIN_SERVER' }, { authorId: server.userId }] }}>
-        <DeleteServerButton id={id} />
+        <ServerSettingButton id={id} />
       </ProtectedElement>
     </ScrollContainer>
   );

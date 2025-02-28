@@ -71,7 +71,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger className="overflow-hidden text-ellipsis">
+      <DialogTrigger className="overflow-hidden text-ellipsis items-center h-full">
         <section className="space-x-2">
           {selectedAuthorities.length ? (
             selectedAuthorities.map(({ id, name }) => (

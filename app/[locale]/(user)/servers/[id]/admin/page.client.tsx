@@ -25,7 +25,7 @@ type Props = {
 export default function PageClient({ id }: Props) {
   return (
     <AnimatePresence>
-      <div className="bg-card p-4 space-y-2 h-full overflow-hidden flex flex-col">
+      <div className="bg-card rounded-md p-4 space-y-2 h-full overflow-hidden flex flex-col">
         <h1 className="text-xl">
           <Tran asChild text="admin" />
         </h1>

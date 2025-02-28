@@ -33,13 +33,15 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const isNotRoot = path !== '/';
 
   return (
-    <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-2">
-      <FileHierarchy path={path} onClick={setFilePath} />
-      <div className="flex gap-2">
-        <Input placeholder="Search file name" value={search} onChange={(event) => setSearch(event.target.value)} />
-        <AddFileDialog id={id} path={path} />
+    <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
+      <div className="bg-card rounded-md p-2 space-y-2">
+        <FileHierarchy path={path} onClick={setFilePath} />
+        <div className="flex gap-2">
+          <Input placeholder="Search file name" value={search} onChange={(event) => setSearch(event.target.value)} />
+          <AddFileDialog id={id} path={path} />
+        </div>
       </div>
-      <div className="flex h-full flex-col gap-2 overflow-hidden">
+      <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
         {isNotRoot && (
           <Button className="items-center h-10 justify-start px-2" title=".." onClick={() => setFilePath(path.split('/').slice(0, -1).join('/'))}>
             <ArrowLeftCircleIcon className="w-5"></ArrowLeftCircleIcon>

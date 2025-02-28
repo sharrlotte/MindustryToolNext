@@ -86,7 +86,7 @@ export default async function Page({ params }: Props) {
             'grid-rows-[auto_auto_auto_60px]': canAccess,
           })}
         >
-          <div className="col-span-1 flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card p-4">
+          <div className="col-span-1 flex w-full min-w-80 flex-col gap-6 overflow-hidden bg-card rounded-md p-4">
             <div className="flex items-center gap-2">
               <ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
               <ColorText className="text-2xl font-bold" text={name} />
@@ -133,7 +133,7 @@ export default async function Page({ params }: Props) {
               </div>
             </div>
           </div>
-          <div className="col-span-1 flex flex-col gap-2 bg-card md:col-start-1 md:row-start-2">
+          <div className="col-span-1 flex flex-col gap-2 bg-card rounded-md md:col-start-1 md:row-start-2">
             <div className="flex h-full flex-col items-start justify-start gap-1 p-4 shadow-lg">
               <h3 className="text-xl">
                 <Tran text="server.system-status" />
@@ -149,7 +149,7 @@ export default async function Page({ params }: Props) {
             </div>
           </div>
           <ProtectedElement session={session} filter={showPlayer}>
-            <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">
+            <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card rounded-md shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">
               <div className="flex flex-col gap-2">
                 <h3 className="p-4 text-xl">
                   <Tran text="server.players" /> {players}
@@ -163,7 +163,7 @@ export default async function Page({ params }: Props) {
             </div>
           </ProtectedElement>
           <ProtectedElement session={session} filter={canAccess}>
-            <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
+            <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
               {status !== 'DOWN' && <ShutdownServerButton id={id} />}
               {status === 'HOST' ? <StopServerButton id={id} /> : status === 'UP' ? <HostServerButton id={id} /> : <InitServerButton id={id} />}
             </div>

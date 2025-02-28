@@ -21,14 +21,14 @@ export default function PageClient({ id }: Props) {
     <div className="flex flex-col h-full gap-2">
       <ServerTabs name="type" value="login-log" values={['login-log', 'kick-log', 'building-destroy-log']}>
         <div className="flex justify-between items-center">
-          <ServerTabsList className="px-0 py-0 gap-0 rounded-none">
-            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted rounded-none h-11" value="login-log">
+          <ServerTabsList className="px-0 py-0 gap-0">
+            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted h-11" value="login-log">
               <Tran text="server.login-log" />
             </ServerTabsTrigger>
-            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted rounded-none h-11" value="kick-log">
+            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted h-11" value="kick-log">
               <Tran text="server.kick-log" />
             </ServerTabsTrigger>
-            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted rounded-none h-11" value="building-destroy-log">
+            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted h-11" value="building-destroy-log">
               <Tran text="server.building-destroy-log" />
             </ServerTabsTrigger>
           </ServerTabsList>

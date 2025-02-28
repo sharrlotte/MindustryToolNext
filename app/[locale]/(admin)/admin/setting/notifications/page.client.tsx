@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
@@ -50,7 +50,7 @@ export default function PageClient() {
   });
 
   return (
-    <div className="w-full p-6 gap-6 h-full flex flex-col">
+    <div className="w-full gap-6 h-full flex flex-col bg-card rounded-md p-4">
       {userId && (
         <div className="flex gap-2 items-center">
           <Tran text="notification.to" />
@@ -58,6 +58,7 @@ export default function PageClient() {
         </div>
       )}
       <Form {...form}>
+        <FormGlobalErrorMessage />
         <form className="flex gap-4 flex-col h-full" onSubmit={form.handleSubmit((data) => mutate(data))}>
           <FormField
             control={form.control}
