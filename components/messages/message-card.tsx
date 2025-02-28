@@ -40,19 +40,19 @@ export function MessageCard({ className, message }: Props) {
           ) : (
             <Skeleton className="h-4 max-h-1 w-24" />
           )}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <RelativeTime date={new Date(createdAt)} />
-              </TooltipTrigger>
-              <TooltipContent>{new Date(createdAt).toLocaleString()}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <RelativeTime date={new Date(createdAt)} />
         </div>
         <div className="no-scrollbar grid w-full gap-1 overflow-hidden">
-          {contents.map(({ text }, index) => (
-            <ColorText className="overflow-hidden break-words text-base" key={index} text={text} />
-          ))}
+          <TooltipProvider>
+            {contents.map(({ text, createdAt }, index) => (
+              <Tooltip key={index}>
+                <TooltipTrigger className="w-fit p-0">
+                  <ColorText className="overflow-hidden break-words text-base" text={text} />
+                </TooltipTrigger>
+                <TooltipContent>{new Date(createdAt).toLocaleString()}</TooltipContent>
+              </Tooltip>
+            ))}
+          </TooltipProvider>
         </div>
       </div>
     </div>
