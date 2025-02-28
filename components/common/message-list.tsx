@@ -60,6 +60,8 @@ export default function MessageList({ queryKey, params, loader, noResult = <NoRe
 
   const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, queryKey, () => (renderCause.current = 'fetch'));
 
+  console.log({ data, isFetching, error, isError, hasNextPage });
+
   const { postNotification } = useNotification();
 
   const pages = useMemo(() => {
@@ -176,7 +178,7 @@ export default function MessageList({ queryKey, params, loader, noResult = <NoRe
 
   end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
 
-  if (state !== 'connected') {
+  if (state !== 'connected' || !data) {
     return undefined;
   }
 

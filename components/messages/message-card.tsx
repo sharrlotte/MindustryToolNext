@@ -1,6 +1,7 @@
 import ColorText from '@/components/common/color-text';
 import { RelativeTime } from '@/components/common/relative-time';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 
@@ -42,9 +43,16 @@ export function MessageCard({ className, message }: Props) {
           <RelativeTime date={new Date(createdAt)} />
         </div>
         <div className="no-scrollbar grid w-full gap-1 overflow-hidden">
-          {contents.map(({ text }, index) => (
-            <ColorText className="overflow-hidden break-words text-base" key={index} text={text} />
-          ))}
+          <TooltipProvider>
+            {contents.map(({ text, createdAt }, index) => (
+              <Tooltip key={index}>
+                <TooltipTrigger className="w-fit p-0">
+                  <ColorText className="overflow-hidden break-words text-base" text={text} />
+                </TooltipTrigger>
+                <TooltipContent>{new Date(createdAt).toLocaleString()}</TooltipContent>
+              </Tooltip>
+            ))}
+          </TooltipProvider>
         </div>
       </div>
     </div>

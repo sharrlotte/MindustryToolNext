@@ -58,10 +58,6 @@ export default function useMessageQuery<P extends MessageQuery>(room: string, pa
     getPreviousPageParam,
     enabled: state === 'connected',
     refetchOnMount: true,
-    placeholderData: {
-      pages: [],
-      pageParams: [],
-    },
   });
 
   return data;
