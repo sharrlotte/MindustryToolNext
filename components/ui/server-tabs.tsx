@@ -38,7 +38,7 @@ export function useTab() {
 
 type ServerTabsProps<T> = {
   className?: string;
-  value: T;
+  value: NoInfer<T>;
   name: string;
   values: T[];
   children: ReactNode;
@@ -70,9 +70,10 @@ type ServerTabsTriggerProps = {
   className?: string;
   value: string;
   children: ReactNode;
+  animate?: boolean;
 };
 
-export function ServerTabsTrigger({ className, value, children }: ServerTabsTriggerProps) {
+export function ServerTabsTrigger({ className, value, animate = true, children }: ServerTabsTriggerProps) {
   const { value: current, setValue, hovered, setHovered } = useTab();
 
   const isSelected = value === current;
@@ -80,15 +81,16 @@ export function ServerTabsTrigger({ className, value, children }: ServerTabsTrig
 
   return (
     <Button
-      className={cn('text-foreground relative h-12 min-w-fit space-y-2 px-0 py-2 opacity-70', className, {
+      className={cn('text-foreground relative h-9 min-w-fit py-0 px-0 opacity-70', className, {
         'opacity-100': isSelected,
       })}
+      data-selected={isSelected}
       variant="ghost"
       onClick={() => setValue(value)}
       onMouseEnter={() => setHovered(value)}
     >
+      {animate && isHovered && <MotionDiv layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
       <div className="relative">
-        {isHovered && <MotionDiv layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-muted" />}
         <div
           className={cn('relative z-10 bg-transparent p-2 text-foreground/70 hover:text-foreground', {
             'text-foreground': isSelected,
@@ -97,7 +99,7 @@ export function ServerTabsTrigger({ className, value, children }: ServerTabsTrig
           {children}
         </div>
       </div>
-      {isSelected && <MotionDiv layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
+      {animate && isSelected && <MotionDiv layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
     </Button>
   );
 }
@@ -132,7 +134,7 @@ export function ServerTabsList({ className, children }: ServerTabsListProps) {
   const { setHovered } = useTab();
 
   return (
-    <div className={cn('no-scrollbar flex min-h-12 items-center justify-center gap-2 overflow-x-auto overflow-y-hidden rounded-md bg-card px-2 text-muted-foreground', className)} onMouseLeave={() => setHovered('')}>
+    <div className={cn('no-scrollbar flex min-h-9 items-center justify-center py-2 gap-2 overflow-x-auto overflow-y-hidden rounded-md bg-card px-2 text-muted-foreground', className)} onMouseLeave={() => setHovered('')}>
       {children}
     </div>
   );
