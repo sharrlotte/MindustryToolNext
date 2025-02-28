@@ -22,20 +22,20 @@ export default function PageClient({ id }: Props) {
       <ServerTabs name="type" value="login-log" values={['login-log', 'kick-log', 'building-destroy-log']}>
         <div className="flex justify-between items-center">
           <ServerTabsList className="px-0 py-0 gap-0">
-            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted rounded-sm h-11" value="login-log">
+            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted h-11" value="login-log">
               <Tran text="server.login-log" />
             </ServerTabsTrigger>
-            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted rounded-sm h-11" value="kick-log">
+            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted h-11" value="kick-log">
               <Tran text="server.kick-log" />
             </ServerTabsTrigger>
-            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted rounded-sm h-11" value="building-destroy-log">
+            <ServerTabsTrigger animate={false} className="data-[selected=true]:bg-muted h-11" value="building-destroy-log">
               <Tran text="server.building-destroy-log" />
             </ServerTabsTrigger>
           </ServerTabsList>
           <PaginationLayoutSwitcher />
         </div>
         <ScrollContainer>
-          <ServerTabsContent className='space-y-2' value="login-log">
+          <ServerTabsContent className="space-y-2" value="login-log">
             <div className="md:grid hidden md:grid-cols-4 gap-2 bg-card p-4">
               <Tran text="username" />
               <Tran text="uuid" />

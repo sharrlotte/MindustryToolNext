@@ -13,7 +13,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
@@ -30,7 +30,7 @@ type Props = {
 };
 export default function PageClient({ id }: Props) {
   return (
-    <div className="bg-card p-4 space-y-2 h-full overflow-hidden flex flex-col">
+    <div className="bg-card p-4 space-y-2 h-full overflow-hidden flex flex-col rounded-md">
       <h1 className="text-xl">
         <Tran asChild text="env" />
       </h1>
@@ -187,7 +187,7 @@ function AddEnvCard({ id }: AddEnvCardProps) {
             </FormItem>
           )}
         />
-        <Button variant="outline" type="submit">
+        <Button className="aspect-square" variant="outline" type="submit">
           {isPending ? <LoadingSpinner className="m-0" /> : <CheckIcon />}
         </Button>
       </form>

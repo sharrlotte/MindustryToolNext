@@ -19,7 +19,7 @@ export default function FileHierarchy({ path, onClick }: Props) {
   return (
     <div className="space-x-1 whitespace-nowrap text-base font-bold">
       <span className="cursor-pointer" onClick={() => onClick('/')}>
-        ROOT {path === '/' ? '' : '>'}
+        {path === '/' ? '' : '>'}
       </span>
       {path
         ?.split('/')

@@ -9,7 +9,7 @@ export default function Loading() {
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
       <div className="flex gap-2">
-        <Skeleton className="h-14 w-full" />
+        <Skeleton className="h-14 w-full rounded-md" />
       </div>
       <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2">
         <Skeletons number={20}>

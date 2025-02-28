@@ -65,7 +65,7 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
 
   return (
     <div
-      className={cn('flex h-full w-full flex-col divide-y overflow-hidden rounded-md border bg-background ', {
+      className={cn('flex h-full w-full flex-col divide-y overflow-hidden rounded-md border bg-transparent', {
         'fixed inset-0 z-50 rounded-none': isFullscreen,
       })}
     >

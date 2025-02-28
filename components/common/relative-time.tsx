@@ -1,4 +1,5 @@
 import Tran from '@/components/common/tran';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 type RelativeTimeProps = {
   className?: string;
@@ -6,6 +7,18 @@ type RelativeTimeProps = {
 };
 
 export function RelativeTime({ className, date }: RelativeTimeProps) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger className="w-fit p-0">
+          <RelativeTimeInternal className={className} date={date} />
+        </TooltipTrigger>
+        <TooltipContent>{date.toLocaleString()}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+function RelativeTimeInternal({ className, date }: RelativeTimeProps) {
   const now = Date.now();
   const target = typeof date === 'number' ? date : date.getTime();
   const delta = Math.floor((now - target) / 1000); // Difference in seconds

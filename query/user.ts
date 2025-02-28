@@ -131,9 +131,9 @@ export async function changeAuthorities(axios: AxiosInstance, data: { userId: st
 }
 
 export const SendNotificationSchema = z.object({
-  userId: z.string(),
   title: z.string().min(1).max(1024),
   content: z.string().min(1).max(4096),
+  userId: z.string().nonempty(),
 });
 
 export type SendNotificationRequest = z.infer<typeof SendNotificationSchema>;

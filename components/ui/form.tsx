@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Controller, ControllerProps, FieldPath, FieldValues, FormProvider, useFormContext } from 'react-hook-form';
 
+import Tran from '@/components/common/tran';
 import { Label } from '@/components/ui/label';
+
 import { cn } from '@/lib/utils';
 
 import * as LabelPrimitive from '@radix-ui/react-label';
@@ -100,4 +102,21 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<
 });
 FormMessage.displayName = 'FormMessage';
 
-export { useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField };
+const FormGlobalErrorMessage = () => {
+  const { formState } = useFormContext();
+  const { errors } = formState;
+  const messages = Object.values(errors)
+    .map((error) => error?.message)
+    .filter((message) => message);
+
+  if (messages.length)
+    return (
+      <div className="flex gap-1 items-center text-sm text-destructive">
+        <Tran text="error" /> <span>{JSON.stringify(messages)}</span>
+      </div>
+    );
+};
+
+FormGlobalErrorMessage.displayName = 'FormGlobalErrorMessage';
+
+export { useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormGlobalErrorMessage, FormField };
