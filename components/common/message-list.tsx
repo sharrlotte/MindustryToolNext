@@ -176,7 +176,7 @@ export default function MessageList({ queryKey, params, loader, noResult = <NoRe
 
   end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
 
-  if (state !== 'connected') {
+  if (state !== 'connected' || !data) {
     return undefined;
   }
 
