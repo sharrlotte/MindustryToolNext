@@ -5,13 +5,10 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 
-
-
 import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
-
 
 type PlayersCardProps = {
   id: string;
