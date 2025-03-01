@@ -5,10 +5,13 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 
+
+
 import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
+
 
 type PlayersCardProps = {
   id: string;
@@ -24,7 +27,6 @@ const localeToFlag: Record<string, string> = {
   cw: '🇨🇼', // Curaçao
   da: '🇩🇰', // Denmark
   de: '🇩🇪', // Germany
-  de_DE: '🇩🇪', // Germany
   es: '🇪🇸', // Spain
   et: '🇪🇪', // Estonia
   eu: '🇪🇸', // Basque (Spain)
@@ -32,6 +34,7 @@ const localeToFlag: Record<string, string> = {
   fil: '🇵🇭', // Philippines
   fr: '🇫🇷', // France
   hu: '🇭🇺', // Hungary
+  id: '🇮🇩', // Indonesia
   id_ID: '🇮🇩', // Indonesia
   in_ID: '🇮🇩', // Indonesia
   it: '🇮🇹', // Italy
@@ -94,6 +97,8 @@ type PlayerCardProps = {
   player: Player;
 };
 async function PlayerCard({ player: { locale, userId, name, team } }: PlayerCardProps) {
+  locale = locale && locale.includes('_') && locale.split('_')[0].toLowerCase() === locale.split('_')[1].toLowerCase() ? locale.split('_')[0] : locale;
+
   return (
     <ContextMenu>
       <ContextMenuTrigger>
