@@ -10,7 +10,6 @@ import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/app/[loc
 
 import LoginButton from '@/components/button/login-button';
 import { SearchIcon, SendIcon, SmileIcon } from '@/components/common/icons';
-import LoadingSpinner from '@/components/common/loading-spinner';
 import MessageList from '@/components/common/message-list';
 import Tran from '@/components/common/tran';
 import { MessageCard } from '@/components/messages/message-card';
@@ -66,12 +65,6 @@ export default function ChatPage() {
 }
 
 function MessageContainer() {
-  const { state } = useSocket();
-
-  if (state !== 'connected') {
-    return <LoadingSpinner className="m-auto" />;
-  }
-
   return (
     <MessageList
       showNotification
