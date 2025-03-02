@@ -37,7 +37,7 @@ export default function StopServerButton({ id }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="min-w-20" title="Delete" variant="destructive" disabled={isPending}>
+        <Button className="min-w-20" title="shutdown" variant="secondary" disabled={isPending}>
           <Tran text="server.stop" />
         </Button>
       </AlertDialogTrigger>
