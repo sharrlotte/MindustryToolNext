@@ -56,6 +56,7 @@ const localeToFlag: Record<string, string> = {
   tr: '🇹🇷', // Turkey
   uk_UA: '🇺🇦', // Ukraine
   vi: '🇻🇳', // Vietnam
+  vi_VN: '🇻🇳', // Vietnam
   zh_CN: '🇨🇳', // China
   zh_TW: '🇹🇼', // Taiwan
 };
