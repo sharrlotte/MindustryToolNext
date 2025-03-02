@@ -13,15 +13,13 @@ import AloneDislikeCount from '@/components/like/alone-dislike-count';
 import AloneLikeCount from '@/components/like/alone-like-count';
 
 import env from '@/constant/env';
-import useImageLoading from '@/hooks/use-image-loading';
 import { Map } from '@/types/response/Map';
 
 type MapPreviewCardProps = {
   map: Map;
-  imageCount: number;
 };
 
-function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, downloadCount }, imageCount }: MapPreviewCardProps) {
+function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, downloadCount } }: MapPreviewCardProps) {
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/maps/${id}`;
@@ -31,15 +29,13 @@ function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, download
   const downloadLink = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msav`;
 
-  const loading = useImageLoading(imageCount);
-
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <ShareIcon />
       </CopyButton>
       <InternalLink href={detailLink}>
-        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
+        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>

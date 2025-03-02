@@ -15,17 +15,15 @@ import AloneLikeCount from '@/components/like/alone-like-count';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
-import useImageLoading from '@/hooks/use-image-loading';
 import useToastAction from '@/hooks/use-toast-action';
 import { getSchematicData } from '@/query/schematic';
 import { Schematic } from '@/types/response/Schematic';
 
 type SchematicPreviewCardProps = {
   schematic: Schematic;
-  imageCount: number;
 };
 
-export default function SchematicPreviewCard({ schematic: { id, name, likes, dislikes, downloadCount }, imageCount }: SchematicPreviewCardProps) {
+export default function SchematicPreviewCard({ schematic: { id, name, likes, dislikes, downloadCount } }: SchematicPreviewCardProps) {
   const axios = useClientApi();
   const { locale } = useParams();
 
@@ -43,15 +41,13 @@ export default function SchematicPreviewCard({ schematic: { id, name, likes, dis
     action: async () => await getSchematicData(axios, id),
   });
 
-  const loading = useImageLoading(imageCount);
-
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
         <ShareIcon />
       </CopyButton>
       <InternalLink href={detailLink}>
-        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
+        <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>
