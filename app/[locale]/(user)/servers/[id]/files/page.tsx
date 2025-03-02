@@ -41,7 +41,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
           <AddFileDialog id={id} path={path} />
         </div>
       </div>
-      <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
+      <div className="flex h-full flex-col gap-2 overflow-hidden">
         {isNotRoot && (
           <Button className="items-center h-10 justify-start px-2" title=".." onClick={() => setFilePath(path.split('/').slice(0, -1).join('/'))}>
             <ArrowLeftCircleIcon className="w-5"></ArrowLeftCircleIcon>

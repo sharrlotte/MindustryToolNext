@@ -63,7 +63,7 @@ export default function AddFileDialog({ id, path }: Props) {
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
-          <form className="space-y-4" onSubmit={form.handleSubmit(handleSubmit)}>
+          <form className="space-y-4 p-6" onSubmit={form.handleSubmit(handleSubmit)}>
             <FormField
               control={form.control}
               name="file"
