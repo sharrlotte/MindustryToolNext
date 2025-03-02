@@ -54,7 +54,7 @@ export default function Other({ user }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data, index) => (data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} imageCount={index} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} imageCount={index} />)}
+              {(data, index) => (data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} />)}
             </InfinitePage>
           </div>
         </TabsContent>
@@ -70,7 +70,7 @@ export default function Other({ user }: TabProps) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data, index) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} imageCount={index} /> : <UploadMapPreview key={data.id} map={data} imageCount={index} />)}
+              {(data, index) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} /> : <UploadMapPreview key={data.id} map={data} />)}
             </InfinitePage>
           </div>
         </TabsContent>

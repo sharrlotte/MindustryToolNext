@@ -10,15 +10,13 @@ import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 
 import env from '@/constant/env';
-import useImageLoading from '@/hooks/use-image-loading';
 import { Map } from '@/types/response/Map';
 
 type UploadMapPreviewCardProps = {
   map: Map;
-  imageCount: number;
 };
 
-function UploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPreviewCardProps) {
+function UploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCardProps) {
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/admin/maps/${id}`;
@@ -28,8 +26,6 @@ function UploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPrevie
   const downloadLink = `${env.url.api}/maps/${id}/download`;
   const downloadName = `{${name}}.msch`;
 
-  const loading = useImageLoading(imageCount);
-
   return (
     <Preview>
       <CopyButton position="absolute" variant="ghost" data={link} content={link}>
@@ -37,7 +33,7 @@ function UploadMapPreviewCard({ map: { id, name }, imageCount }: UploadMapPrevie
       </CopyButton>
       <BulkActionSelector value={id}>
         <InternalLink href={detailLink}>
-          <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} loading={loading} />
+          <PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
         </InternalLink>
       </BulkActionSelector>
       <PreviewDescription>

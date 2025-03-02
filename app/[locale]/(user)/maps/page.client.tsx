@@ -44,7 +44,7 @@ export default function Client({ maps, params }: Props) {
               item: <PreviewSkeleton />,
             }}
           >
-            {(data, index) => <MapPreviewCard key={data.id} map={data} imageCount={index} />}
+            {(data, index) => <MapPreviewCard key={data.id} map={data} />}
           </InfinitePage>
         </ListLayout>
         <GridLayout>
@@ -59,7 +59,7 @@ export default function Client({ maps, params }: Props) {
               item: <PreviewSkeleton />,
             }}
           >
-            {(data, index) => <MapPreviewCard key={data.id} map={data} imageCount={index} />}
+            {(data, index) => <MapPreviewCard key={data.id} map={data} />}
           </GridPaginationList>
         </GridLayout>
       </ScrollContainer>
