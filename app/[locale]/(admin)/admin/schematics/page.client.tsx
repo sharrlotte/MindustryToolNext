@@ -70,7 +70,7 @@ export default function Client({ schematics, params }: Props) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data, index) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
+              {(data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
             </InfinitePage>
           </ListLayout>
           <GridLayout>
@@ -85,7 +85,7 @@ export default function Client({ schematics, params }: Props) {
                 item: <PreviewSkeleton />,
               }}
             >
-              {(data, index) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
+              {(data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
             </GridPaginationList>
           </GridLayout>
         </ScrollContainer>
