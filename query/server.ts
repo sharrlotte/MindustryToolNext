@@ -192,6 +192,12 @@ export async function shutdownServer(axios: AxiosInstance, id: string): Promise<
   return result.data;
 }
 
+export async function removeServer(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
+  const result = await axios.post(`/servers/${id}/remove`);
+
+  return result.data;
+}
+
 export async function stopServer(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
   const result = await axios.post(`/servers/${id}/stop`);
 

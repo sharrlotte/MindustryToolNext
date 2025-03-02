@@ -7,6 +7,7 @@ import CheckServerMaps from '@/app/[locale]/(user)/servers/[id]/(dashboard)/chec
 import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(user)/servers/[id]/(dashboard)/player-card';
 import HostServerButton from '@/app/[locale]/(user)/servers/[id]/host-server-button';
 import InitServerButton from '@/app/[locale]/(user)/servers/[id]/init-server-button';
+import RemoveServerButton from '@/app/[locale]/(user)/servers/[id]/remove-server-button';
 import ShutdownServerButton from '@/app/[locale]/(user)/servers/[id]/shutdown-server-button';
 import StopServerButton from '@/app/[locale]/(user)/servers/[id]/stop-server-button';
 
@@ -164,6 +165,7 @@ export default async function Page({ params }: Props) {
           </ProtectedElement>
           <ProtectedElement session={session} filter={canAccess}>
             <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
+              {status !== 'DOWN' && <RemoveServerButton id={id} />}
               {status !== 'DOWN' && <ShutdownServerButton id={id} />}
               {status === 'HOST' ? <StopServerButton id={id} /> : status === 'UP' ? <HostServerButton id={id} /> : <InitServerButton id={id} />}
             </div>
