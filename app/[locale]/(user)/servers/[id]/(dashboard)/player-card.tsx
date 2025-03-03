@@ -39,6 +39,7 @@ const localeToFlag: Record<string, string> = {
   in_ID: '🇮🇩', // Indonesia
   it: '🇮🇹', // Italy
   ja: '🇯🇵', // Japan
+  en_JP: '🇯🇵', // Japan
   ko: '🇰🇷', // South Korea
   lt: '🇱🇹', // Lithuania
   nl: '🇳🇱', // Netherlands
