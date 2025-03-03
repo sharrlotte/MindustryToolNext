@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';

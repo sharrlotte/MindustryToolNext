@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
@@ -5,13 +7,10 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 
-
-
 import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
-
 
 type PlayersCardProps = {
   id: string;
@@ -24,6 +23,7 @@ const localeToFlag: Record<string, string> = {
   bg: '🇧🇬', // Bulgaria
   ca: '🇪🇸', // Catalonia (Spain)
   cs: '🇨🇿', // Czech Republic
+  cs_CZ: '🇨🇿', // Czech Republic
   cw: '🇨🇼', // Curaçao
   da: '🇩🇰', // Denmark
   de: '🇩🇪', // Germany
@@ -39,6 +39,7 @@ const localeToFlag: Record<string, string> = {
   in_ID: '🇮🇩', // Indonesia
   it: '🇮🇹', // Italy
   ja: '🇯🇵', // Japan
+  en_JP: '🇯🇵', // Japan
   ko: '🇰🇷', // South Korea
   lt: '🇱🇹', // Lithuania
   nl: '🇳🇱', // Netherlands
@@ -109,19 +110,21 @@ async function PlayerCard({ player: { locale, userId, name, team } }: PlayerCard
             {locale && (localeToFlag[locale] ?? locale)}
             {userId && <IdUserCard id={userId} />}
           </div>
-          <div className="border-b-2" style={{ borderColor: `#${team.color}` }} />
+          <div className="border-b-4" style={{ borderColor: `#${team.color}` }} />
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem>
-          <Tran text="player.info" />
-        </ContextMenuItem>
-        <ContextMenuItem variant="destructive">
-          <Tran text="player.kick" />
-        </ContextMenuItem>
-        <ContextMenuItem variant="destructive">
-          <Tran text="player.ban" />
-        </ContextMenuItem>
+        <Suspense>
+          <ContextMenuItem>
+            <Tran text="player.info" />
+          </ContextMenuItem>
+          <ContextMenuItem variant="destructive">
+            <Tran text="player.kick" />
+          </ContextMenuItem>
+          <ContextMenuItem variant="destructive">
+            <Tran text="player.ban" />
+          </ContextMenuItem>
+        </Suspense>
       </ContextMenuContent>
     </ContextMenu>
   );
