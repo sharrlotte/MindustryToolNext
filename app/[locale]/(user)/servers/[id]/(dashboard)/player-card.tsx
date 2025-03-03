@@ -111,7 +111,7 @@ async function PlayerCard({ player: { locale, userId, name, team } }: PlayerCard
             {locale && (localeToFlag[locale] ?? locale)}
             {userId && <IdUserCard id={userId} />}
           </div>
-          <div className="border-b-2" style={{ borderColor: `#${team.color}` }} />
+          <div className="border-b-4" style={{ borderColor: `#${team.color}` }} />
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
