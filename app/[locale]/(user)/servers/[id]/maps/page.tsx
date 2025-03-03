@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 
+import AddMapDialog from '@/app/[locale]/(user)/servers/[id]/maps/add-map-dialog';
 import ServerMaps from '@/app/[locale]/(user)/servers/[id]/maps/page.client';
 
 import { Locale } from '@/i18n/config';
@@ -25,5 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { id } = await params;
-  return <ServerMaps id={id} />;
+  return (
+    <div className="flex flex-col gap-2 overflow-hidden h-full">
+      <div className="flex h-14 items-center justify-end bg-card rounded-md p-2">
+        <AddMapDialog serverId={id} />
+      </div>
+      <ServerMaps id={id} />
+    </div>
+  );
 }

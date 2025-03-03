@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -29,7 +31,6 @@ type AddPluginDialogProps = {
 export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   const [added, setAdded] = useState<string[]>([]);
 
-  const [show, setShow] = useState(false);
   const axios = useClientApi();
 
   const { invalidateByKey } = useQueriesData();
@@ -49,7 +50,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   });
 
   return (
-    <Dialog open={show} onOpenChange={setShow}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button className="ml-auto" title="Add plugin" variant="secondary">
           <Tran text="internal-server.add-plugin" />

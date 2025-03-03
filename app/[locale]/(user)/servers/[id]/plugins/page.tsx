@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 
+import AddPluginDialog from '@/app/[locale]/(user)/servers/[id]/plugins/add-plugin-dialog';
 import ServerPluginPage from '@/app/[locale]/(user)/servers/[id]/plugins/page.client';
 
 import { Locale } from '@/i18n/config';
@@ -26,5 +27,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  return <ServerPluginPage id={id} />;
+  return (
+    <div className="flex flex-col gap-2 overflow-hidden h-full">
+      <div className=" flex h-14 items-center justify-end bg-card rounded-md p-2">
+        <AddPluginDialog serverId={id} />
+      </div>
+      <ServerPluginPage id={id} />
+    </div>
+  );
 }
