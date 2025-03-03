@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
@@ -5,13 +7,10 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 
-
-
 import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
-
 
 type PlayersCardProps = {
   id: string;
@@ -115,15 +114,17 @@ async function PlayerCard({ player: { locale, userId, name, team } }: PlayerCard
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem>
-          <Tran text="player.info" />
-        </ContextMenuItem>
-        <ContextMenuItem variant="destructive">
-          <Tran text="player.kick" />
-        </ContextMenuItem>
-        <ContextMenuItem variant="destructive">
-          <Tran text="player.ban" />
-        </ContextMenuItem>
+        <Suspense>
+          <ContextMenuItem>
+            <Tran text="player.info" />
+          </ContextMenuItem>
+          <ContextMenuItem variant="destructive">
+            <Tran text="player.kick" />
+          </ContextMenuItem>
+          <ContextMenuItem variant="destructive">
+            <Tran text="player.ban" />
+          </ContextMenuItem>
+        </Suspense>
       </ContextMenuContent>
     </ContextMenu>
   );
