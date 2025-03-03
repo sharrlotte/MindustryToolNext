@@ -24,6 +24,7 @@ const localeToFlag: Record<string, string> = {
   bg: '🇧🇬', // Bulgaria
   ca: '🇪🇸', // Catalonia (Spain)
   cs: '🇨🇿', // Czech Republic
+  cs_CZ: '🇨🇿', // Czech Republic
   cw: '🇨🇼', // Curaçao
   da: '🇩🇰', // Denmark
   de: '🇩🇪', // Germany
