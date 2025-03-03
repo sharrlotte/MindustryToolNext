@@ -22,6 +22,9 @@ type Props = {
   sizes?: number[];
 } & (
   | {
+      numberOfItems?: string;
+    }
+  | {
       numberOfItems?: number;
     }
   | {
@@ -33,6 +36,10 @@ type Props = {
 export default function PaginationNavigator({ numberOfItems, sizes = [10, 20, 30, 50, 100], ...rest }: Props) {
   if (typeof numberOfItems === 'function') {
     return <QueryPaginationNavigator numberOfItems={numberOfItems} sizes={sizes} queryKey={(rest as any).queryKey} />;
+  }
+
+  if (typeof numberOfItems === 'string') {
+    return <PaginationNavigator numberOfItems={(axios, params) => axios.get(numberOfItems, { params }).then((r) => r.data)} sizes={sizes} queryKey={(rest as any).queryKey} />;
   }
 
   return <PaginationNavigatorInternal numberOfItems={numberOfItems ?? 0} sizes={sizes} />;
