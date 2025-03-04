@@ -87,6 +87,25 @@ export type Node = {
 };
 
 export const nodes: Record<string, NodeData> = {
+  start: new NodeData({
+    name: 'start',
+    label: 'Start',
+    color: 'green',
+    items: [],
+    inputs: 0,
+    outputs: [{ type: 'boolean', label: '', value: true }],
+    compile: () => '',
+  }),
+
+  end: new NodeData({
+    name: 'end',
+    label: 'End',
+    color: 'blue',
+    items: [],
+    inputs: 1,
+    outputs: [],
+    compile: () => '',
+  }),
   if: new NodeData({
     name: 'if',
     label: 'Jump',
@@ -188,7 +207,7 @@ export function MlogNode({ data }: Node) {
   const { id, label, color, inputs, outputs, items } = type;
 
   return (
-    <div className="custom-node p-1.5 rounded-sm text-white w-[440px]" style={{ backgroundColor: color }}>
+    <div className="custom-node p-1.5 rounded-sm text-white min-w-40 max-w-[440px]" style={{ backgroundColor: color }}>
       {Array(inputs)
         .fill(1)
         .map((_, i) => (
@@ -198,11 +217,13 @@ export function MlogNode({ data }: Node) {
         <OutputHandle id={`${id}-source-handle-${i}`} style={{ marginLeft: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }} label={output.label} key={i} type={'source'} position={Position.Bottom} />
       ))}
       <span className="text-sm font-bold">{label}</span>
-      <div className="bg-black p-2 rounded-sm flex gap-1 items-end jus flex-wrap">
-        {items.map((item, i) => (
-          <NodeItem key={i} color={color} data={item} state={state} setState={setState} />
-        ))}
-      </div>
+      {items.length > 0 && (
+        <div className="bg-black p-2 rounded-sm flex gap-1 items-end jus flex-wrap">
+          {items.map((item, i) => (
+            <NodeItem key={i} color={color} data={item} state={state} setState={setState} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -246,6 +267,19 @@ export function NodeItem({ color, data, state, setState }: { color: string; stat
 }
 
 export const nodeOptions = [
+  {
+    label: 'Special',
+    items: [
+      {
+        type: 'start',
+        label: 'Start',
+      },
+      {
+        type: 'end',
+        label: 'End',
+      },
+    ],
+  },
   {
     label: 'Input/Output',
     items: [
