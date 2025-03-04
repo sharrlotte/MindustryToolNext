@@ -1,81 +1,29 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { Eraser, HelpCircle, Pencil, Redo2, Undo2 } from 'lucide-react';
 import { ReactNode, useCallback, useMemo, useState } from 'react';
 import React from 'react';
-import ReactFlow, { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, ReactFlowProvider, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from 'reactflow';
-import 'reactflow/dist/style.css';
 
-import { MlogNode, nodeOptions } from '@/app/[locale]/(user)/logic/node';
+import { LogicEditorContext, useLogicEditor } from '@/app/[locale]/(user)/logic/logic-editor-context';
+import { nodeOptions } from '@/app/[locale]/(user)/logic/node';
+import { nodeTypes } from '@/app/[locale]/(user)/logic/node-type';
 
+import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
+import Tran from '@/components/common/tran';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { toast } from '@/components/ui/sonner';
 
-import SmartBezierEdge from '@tisoap/react-flow-smart-edge';
+import { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, ReactFlow, ReactFlowProvider, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
 import initialEdges from './edge';
 import HelperLines from './helper-lines';
-import {
-  ControlNode,
-  DrawFlushNode,
-  DrawNode,
-  EndNode,
-  GetLinkNode,
-  JumpNode,
-  LookUpNode,
-  OperationNode,
-  PackColorNode,
-  PrintFlushNode,
-  PrintNode,
-  RadarNode,
-  ReadNode,
-  SensorNode,
-  SetNode,
-  StopNode,
-  TextUpdaterNode,
-  UnitBindNode,
-  UnitControlNode,
-  UnitLocateNode,
-  UnitRadarNode,
-  WaitNode,
-  WriteNode,
-} from './nodes/node-types';
 import initialNodes from './nodes/nodes';
 import './style.css';
 import { getHelperLines } from './utils';
-import { LogicEditorContext, useLogicEditor } from '@/app/[locale]/(user)/logic/logic-editor-context';
 
 const proOptions: ProOptions = { hideAttribution: true };
-
-const edgeTypes = {
-  smart: SmartBezierEdge,
-};
-
-const nodeTypes = {
-  mlog: MlogNode,
-  textUpdater: TextUpdaterNode,
-  waitNode: WaitNode,
-  stopNode: StopNode,
-  endNode: EndNode,
-  jumpNode: JumpNode,
-  setNode: SetNode,
-  operationNode: OperationNode,
-  lookUpNode: LookUpNode,
-  packColorNode: PackColorNode,
-  sensorNode: SensorNode,
-  controlNode: ControlNode,
-  radarNode: RadarNode,
-  printFlushNode: PrintFlushNode,
-  drawFlushNode: DrawFlushNode,
-  getLinkNode: GetLinkNode,
-  unitBindNode: UnitBindNode,
-  unitControlNode: UnitControlNode,
-  unitRadarNode: UnitRadarNode,
-  unitLocateNode: UnitLocateNode,
-  readNode: ReadNode,
-  writeNode: WriteNode,
-  drawNode: DrawNode,
-  printNode: PrintNode,
-};
 
 export default function Page() {
   return (
@@ -84,7 +32,6 @@ export default function Page() {
     </ReactFlowProvider>
   );
 }
-
 
 function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
@@ -98,7 +45,7 @@ function Flow() {
   const [historyIndex, setHistoryIndex] = useState(0);
   const [isDeleteOnClick, setDeleteOnClick] = useState(false);
 
-  const { project } = useReactFlow();
+  const { screenToFlowPosition } = useReactFlow();
 
   const updateHistory = useCallback(
     (newNodes: Node[], newEdges: Edge[]) => {
@@ -110,13 +57,22 @@ function Flow() {
     [historyIndex],
   );
 
+  const findNode = useCallback((type: string) => nodes.find((node) => node.type === 'mlog' && node.data.type === type), [nodes]);
+
   const addNode = useCallback(
     (type: string, label: string) => {
-      const position = project({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
+      const position = screenToFlowPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
+      if (type === 'start') {
+        const target = findNode('start');
+        if (target) {
+          toast.error(<Tran text="logic.only-one-start" />);
+          return;
+        }
+      }
       const newNode: Node = {
         id: `${nodeIdCounter}`,
-        type,
-        data: { label, id: nodeIdCounter },
+        type: 'mlog',
+        data: { label, id: nodeIdCounter, type },
         position,
       };
       const newNodes = [...nodes, newNode];
@@ -124,7 +80,7 @@ function Flow() {
       setNodeIdCounter((prev) => prev + 1);
       updateHistory(newNodes, edges);
     },
-    [project, nodeIdCounter, nodes, updateHistory, edges],
+    [screenToFlowPosition, nodeIdCounter, nodes, updateHistory, edges, findNode],
   );
 
   const customApplyNodeChanges = useCallback((changes: NodeChange[], nodes: Node[]): Node[] => {
@@ -163,7 +119,7 @@ function Flow() {
 
   const onEdgeConnect = useCallback(
     (params: any) => {
-      const newEdges = addEdge({ ...params, animated: true, type: 'smart' }, edges);
+      const newEdges = addEdge({ ...params, animated: true }, edges);
       setEdges(newEdges);
       updateHistory(nodes, newEdges);
     },
@@ -268,39 +224,99 @@ function Flow() {
     }
   };
 
-  const memoizedNodeTypes = useMemo(() => nodeTypes, []);
-  const memoizedEdgeTypes = useMemo(() => edgeTypes, []);
-
   return (
-    <LogicEditorContext.Provider value={{ isDeleteOnClick, redo, undo, addNode, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev) }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodeChange}
-        onEdgesChange={onEdgeChange}
-        onConnect={onEdgeConnect}
-        onNodesDelete={onNodesDelete}
-        onEdgesDelete={onEdgesDelete}
-        nodeTypes={memoizedNodeTypes}
-        edgeTypes={memoizedEdgeTypes}
-        onNodeClick={onNodeClick}
-        onEdgeClick={onEdgeClick}
-        onNodeContextMenu={onNodeContextMenu}
-        onEdgeContextMenu={onEdgeContextMenu}
-        onNodeDragStop={onNodeDragStop}
-        proOptions={proOptions}
-        fitView
-      >
-        <TopLeftMenu />
-        <MiniMap />
-        <Controls />
-        <Background />
-        <HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
-      </ReactFlow>
-    </LogicEditorContext.Provider>
+    <ReactFlowProvider>
+      <LogicEditorContext.Provider value={{ edges, nodes, setEdges, setNodes, isDeleteOnClick, redo, undo, addNode, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev) }}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodeChange}
+          onEdgesChange={onEdgeChange}
+          onConnect={onEdgeConnect}
+          onNodesDelete={onNodesDelete}
+          onEdgesDelete={onEdgesDelete}
+          nodeTypes={nodeTypes}
+          onNodeClick={onNodeClick}
+          onEdgeClick={onEdgeClick}
+          onNodeContextMenu={onNodeContextMenu}
+          onEdgeContextMenu={onEdgeContextMenu}
+          onNodeDragStop={onNodeDragStop}
+          proOptions={proOptions}
+          fitView
+        >
+          <LiveCodePanel />
+          <TopLeftMenu />
+          <MiniMap />
+          <Controls />
+          <Background />
+          <HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
+        </ReactFlow>
+      </LogicEditorContext.Provider>
+    </ReactFlowProvider>
   );
 }
 
+function LiveCodePanel() {
+  const { nodes, edges } = useLogicEditor();
+  const [show, setShow] = useState(true);
+  const code = useMemo(() => {
+    const lines: string[] = [];
+    let index = 0;
+    const start = nodes.find((node) => node.type === 'mlog' && node.data.type === 'start');
+    if (!start) {
+      return lines;
+    }
+    const startEdge = edges.find((edge) => edge.source === start.id);
+
+    if (!startEdge) {
+      return lines;
+    }
+
+    let nextNode = nodes.find((node) => node.type === 'mlog' && node.id === startEdge.target);
+
+    if (!nextNode) {
+      return lines;
+    }
+
+    function findNextNode(node: Node) {
+      const edge = edges.find((edge) => edge.source === node.id);
+      if (!edge) return undefined;
+      const nextNode = nodes.find((node) => node.type === 'mlog' && node.id === edge.target);
+      return nextNode;
+    }
+
+    while (nextNode) {
+      lines.push(`${index} ${(nextNode.data.node as any).compile(nextNode.data.state)}`);
+      nextNode.data.index = index;
+      nextNode = findNextNode(nextNode);
+      index++;
+    }
+
+    return lines;
+  }, [edges, nodes]);
+
+  return (
+    <div className="top-0 right-0 absolute z-10 flex items-start gap-2">
+      <button className="bg-white p-2 rounded-md text-black" onClick={() => setShow((prev) => !prev)}>
+        {show ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+      </button>
+      <motion.div
+        animate={show ? 'open' : 'close'}
+        variants={{
+          open: {
+            width: 'min(100vw,600px)',
+          },
+          close: {
+            width: 0,
+          },
+        }}
+        className="p-2 text-lg rounded-md flex-col flex text-black bg-white h-[calc(100dvh-400px)]"
+      >
+        {show && <p>{code}</p>}
+      </motion.div>
+    </div>
+  );
+}
 function TopLeftMenu() {
   const { redo, undo, toggleDeleteOnClick } = useLogicEditor();
 

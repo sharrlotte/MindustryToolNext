@@ -208,14 +208,6 @@ export const groups: readonly PathGroup[] = [
         icon: <VerifyPathIcon />,
       },
       {
-        id: 'admin-servers',
-        path: '/admin/servers',
-        name: <Tran asChild text="server" />,
-        icon: <ServerIcon />,
-        filter: { authority: 'VIEW_ADMIN_SERVER' },
-        regex: [`^${localesRegex}/admin/servers`],
-      },
-      {
         id: 'translation',
         path: '/translation',
         name: <Tran asChild text="translation" />,

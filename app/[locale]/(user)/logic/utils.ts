@@ -1,4 +1,4 @@
-import { Node, NodePositionChange, XYPosition } from 'reactflow';
+import { Node, NodePositionChange, XYPosition } from '@xyflow/react';
 
 type GetHelperLinesResult = {
   horizontal?: number;

@@ -44,6 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@vercel/analytics": "^1.4.1",
     "@vercel/speed-insights": "^1.1.0",
+    "@xyflow/react": "^12.4.4",
     "accept-language": "^3.0.20",
     "axios": "^1.7.9",
     "babel-plugin-react-compiler": "0.0.0-experimental-334f00b-20240725",
@@ -113,7 +114,6 @@
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "reactflow": "^11.11.4",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2"
   }

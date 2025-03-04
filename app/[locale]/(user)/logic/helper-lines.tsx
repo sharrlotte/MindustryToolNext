@@ -1,5 +1,6 @@
 import { CSSProperties, useEffect, useRef } from 'react';
-import { ReactFlowState, useStore } from 'reactflow';
+
+import { ReactFlowState, useStore } from '@xyflow/react';
 
 const canvasStyle: CSSProperties = {
   width: '100%',
@@ -56,13 +57,7 @@ function HelperLinesRenderer({ horizontal, vertical }: HelperLinesProps) {
     }
   }, [width, height, transform, horizontal, vertical]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="react-flow__canvas"
-      style={canvasStyle}
-    />
-  );
+  return <canvas ref={canvasRef} className="react-flow__canvas" style={canvasStyle} />;
 }
 
 export default HelperLinesRenderer;
