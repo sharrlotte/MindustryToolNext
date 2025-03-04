@@ -296,7 +296,7 @@ function LiveCodePanel() {
   }, [edges, nodes]);
 
   return (
-    <div className="top-0 right-0 absolute z-10 flex items-start gap-2">
+    <div className="top-0 right-0 absolute z-10 flex items-start gap-2 m-4">
       <button className="bg-white p-2 rounded-md text-black" onClick={() => setShow((prev) => !prev)}>
         {show ? <ChevronRightIcon /> : <ChevronLeftIcon />}
       </button>
@@ -321,7 +321,7 @@ function TopLeftMenu() {
   const { redo, undo, toggleDeleteOnClick } = useLogicEditor();
 
   return (
-    <div className="top-0 left-0 absolute flex-col flex z-10 text-black m-[15px]">
+    <div className="top-0 left-0 absolute flex-col flex z-10 text-black m-4">
       <MlogEditorButton onClick={toggleDeleteOnClick}>
         <Eraser className="h-4 w-4" strokeWidth={1.5} />
       </MlogEditorButton>
