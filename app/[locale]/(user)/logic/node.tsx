@@ -110,6 +110,38 @@ export const nodes: Record<string, NodeData> = {
     ],
     compile: () => 'if (condition) { return b; }',
   }),
+  read: new NodeData({
+    name: 'read',
+    label: 'read',
+    color: '#A08A8A',
+    items: [
+      {
+        label: 'Read',
+      },
+      {
+        input: 'result',
+      },
+      {
+        label: '=',
+      },
+      {
+        input: 'cell',
+      },
+      {
+        label: 'at',
+      },
+      {
+        input: 'position',
+        defaultValue: '0',
+      },
+    ],
+    inputs: 1,
+    outputs: [
+      { type: 'boolean', name: 'Condition', value: null },
+      { type: 'boolean', name: 'Condition', value: null },
+    ],
+    compile: () => 'if (condition) { return b; }',
+  }),
 };
 
 function LimitedHandle(props: Parameters<typeof Handle>[0]) {
