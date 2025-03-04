@@ -1,4 +1,4 @@
-import { type Node } from 'reactflow';
+import { type Node } from '@xyflow/react';
 
 const initialNodes: Node[] = [
   {
@@ -35,6 +35,12 @@ const initialNodes: Node[] = [
     id: '6',
     data: { label: 'Print', value: 'result' },
     type: 'textUpdater',
+    position: { x: 450, y: 400 },
+  },
+  {
+    id: '6',
+    data: { type: 'if' },
+    type: 'mlog',
     position: { x: 450, y: 400 },
   },
 ];

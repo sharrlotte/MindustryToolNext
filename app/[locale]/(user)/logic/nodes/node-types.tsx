@@ -1,7 +1,8 @@
 import React from 'react';
-import { Handle, Position } from 'reactflow';
 
 import { cn } from '@/lib/utils';
+
+import { Handle, Position } from '@xyflow/react';
 
 interface TextUpdaterNodeProps {
   data: any;

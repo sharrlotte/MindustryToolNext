@@ -45,7 +45,6 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
     return data;
   } catch (error) {
     if (isAxiosError(error)) {
-
       return {
         error: {
           status: error.response?.status,
@@ -80,7 +79,8 @@ const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> =
       return await axiosInstance
         .get('/auth/session')
         .then((r) => r.data)
-        .then((data) => data ?? null);
+        .then((data) => data ?? null)
+        .catch(() => null);
     },
     ['session'],
     { revalidate: 60 },

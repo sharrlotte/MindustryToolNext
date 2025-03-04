@@ -72,7 +72,7 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    console.error(
+    console.log(
       JSON.stringify(
         error,
         Object.getOwnPropertyNames(error).filter((field) => field !== 'stack'),
@@ -80,7 +80,7 @@ axiosInstance.interceptors.response.use(
     );
 
     if (axios.isAxiosError(error)) {
-      throw new StatusError(500, 'Axios error at path: ' + error.message, error);
+      throw new StatusError(error.status ?? 500, 'Axios error at path: ' + error.message, error);
     }
 
     throw new StatusError(500, 'An unknown error occurred: ' + error.message, error);

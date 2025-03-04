@@ -25,10 +25,11 @@ type ComboBoxProps<T> = {
   values: Array<Value<T>>;
   searchBar?: boolean;
   nullable?: boolean;
+  chevron?: boolean;
   onChange: (value: T | undefined) => void;
 } & (RequiredComboBox<T> | NoneComboBox<T>);
 
-export default function ComboBox<T>({ className, placeholder = 'Select', values, value, searchBar = true, nullable = false, onChange }: ComboBoxProps<T>) {
+export default function ComboBox<T>({ className, placeholder = 'Select', values, value, searchBar = true, nullable = false, chevron = true, onChange }: ComboBoxProps<T>) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
 
@@ -60,7 +61,7 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
       <PopoverTrigger asChild>
         <Button className={cn('w-[200px] gap-2 items-center border border-border justify-between capitalize shadow-md', className)} title={value?.label?.toLowerCase() || placeholder} role="combobox" variant="outline">
           {value?.label?.toLowerCase() || placeholder}
-          <ChevronsUpDownIcon className="size-4 shrink-0" />
+          {chevron && <ChevronsUpDownIcon className="size-4 shrink-0" />}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="z-50 w-full min-w-20 p-0">
@@ -84,7 +85,7 @@ export default function ComboBox<T>({ className, placeholder = 'Select', values,
                 onClick={() => handleSelect(item)}
               >
                 {item.label?.toLowerCase()}
-            </Button>
+              </Button>
             ))}
           </div>
         </div>
