@@ -312,7 +312,11 @@ function LiveCodePanel() {
         }}
         className="p-2 text-lg rounded-md flex-col flex text-black bg-white h-[calc(100dvh-400px)]"
       >
-        {show && <p>{code}</p>}
+        {show && (
+          <div>
+            <div>{code}</div>
+          </div>
+        )}
       </motion.div>
     </div>
   );
