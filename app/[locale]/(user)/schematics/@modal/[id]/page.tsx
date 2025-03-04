@@ -4,10 +4,11 @@ import React, { cache } from 'react';
 import ErrorScreen from '@/components/common/error-screen';
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 
-import { getServerApi, serverApi } from '@/action/action';
+import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
+import axiosInstance from '@/query/config/config';
 import { getSchematic, getSchematicCount, getSchematics } from '@/query/schematic';
 
 type Props = {
@@ -39,10 +40,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const axios = await getServerApi();
-  const schematicCount = await getSchematicCount(axios, {});
+  const schematicCount = await getSchematicCount(axiosInstance, {});
   const page = schematicCount / 100;
-  const schematics = await Promise.all(Array.from({ length: Math.ceil(page) }, (_, i) => getSchematics(axios, { page: i, size: 100 })));
+  const schematics = await Promise.all(Array.from({ length: Math.ceil(page) }, (_, i) => getSchematics(axiosInstance, { page: i, size: 100 })));
 
   return schematics.reduce((acc, cur) => [...acc, ...cur], []).map(({ id }) => ({ params: { id } }));
 }
