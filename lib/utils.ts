@@ -347,7 +347,7 @@ export function getErrorMessage(error: TError) {
   }
 
   if ('error' in error) {
-    return error.error.message;
+    return getErrorMessage(error.error);
   }
 
   if ('message' in error) {
