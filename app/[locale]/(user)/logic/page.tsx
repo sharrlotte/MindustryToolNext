@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { Eraser, HelpCircle, Pencil, Redo2, Undo2 } from 'lucide-react';
 import { ReactNode, useCallback, useMemo, useState } from 'react';
 import React from 'react';
@@ -8,6 +9,7 @@ import { LogicEditorContext, useLogicEditor } from '@/app/[locale]/(user)/logic/
 import { nodeOptions } from '@/app/[locale]/(user)/logic/node';
 import { nodeTypes } from '@/app/[locale]/(user)/logic/node-type';
 
+import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/components/ui/sonner';
@@ -256,9 +258,10 @@ function Flow() {
 
 function LiveCodePanel() {
   const { nodes, edges } = useLogicEditor();
-
+  const [show, setShow] = useState(true);
   const code = useMemo(() => {
     const lines: string[] = [];
+    let index = 0;
     const start = nodes.find((node) => node.type === 'mlog' && node.data.type === 'start');
     if (!start) {
       return lines;
@@ -269,7 +272,7 @@ function LiveCodePanel() {
       return lines;
     }
 
-    let nextNode = nodes.find((node) => node.id === startEdge.target);
+    let nextNode = nodes.find((node) => node.type === 'mlog' && node.id === startEdge.target);
 
     if (!nextNode) {
       return lines;
@@ -278,17 +281,41 @@ function LiveCodePanel() {
     function findNextNode(node: Node) {
       const edge = edges.find((edge) => edge.source === node.id);
       if (!edge) return undefined;
-      const nextNode = nodes.find((node) => node.id === edge.target);
+      const nextNode = nodes.find((node) => node.type === 'mlog' && node.id === edge.target);
       return nextNode;
     }
 
     while (nextNode) {
-      lines.push((nextNode.data as unknown as any).type);
+      lines.push(`${index} ${(nextNode.data.node as any).compile(nextNode.data.state)}`);
+      nextNode.data.index = index;
       nextNode = findNextNode(nextNode);
+      index++;
     }
+
+    return lines;
   }, [edges, nodes]);
 
-  return <p className="top-0 right-0 absolute flex-col flex z-10 text-black bg-white m-[15px] w-[min(100vw,600px)] h-[calc(100dvh-400px)]">{code}</p>;
+  return (
+    <div className="top-0 right-0 absolute z-10 flex items-start gap-2">
+      <button className="bg-white p-2 rounded-md text-black" onClick={() => setShow((prev) => !prev)}>
+        {show ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+      </button>
+      <motion.div
+        animate={show ? 'open' : 'close'}
+        variants={{
+          open: {
+            width: 'min(100vw,600px)',
+          },
+          close: {
+            width: 0,
+          },
+        }}
+        className="p-2 text-lg rounded-md flex-col flex text-black bg-white h-[calc(100dvh-400px)]"
+      >
+        {show && <p>{code}</p>}
+      </motion.div>
+    </div>
+  );
 }
 function TopLeftMenu() {
   const { redo, undo, toggleDeleteOnClick } = useLogicEditor();

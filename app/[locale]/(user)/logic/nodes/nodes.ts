@@ -43,6 +43,12 @@ const initialNodes: Node[] = [
     type: 'mlog',
     position: { x: 450, y: 400 },
   },
+  {
+    id: '7',
+    data: { type: 'start' },
+    type: 'mlog',
+    position: { x: 450, y: 500 },
+  },
 ];
 
 export default initialNodes;

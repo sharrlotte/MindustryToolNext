@@ -46,6 +46,8 @@ type Output = {
   value: any;
 };
 
+type CompileFn = (state: Record<string, string | number>) => string;
+
 export class NodeData {
   id = uuid();
   name: string;
@@ -54,9 +56,9 @@ export class NodeData {
   items: NodeItem[];
   inputs: number;
   outputs: Output[];
-  compile: () => string;
+  compile: CompileFn;
 
-  constructor({ name, label, color, items, inputs, outputs, compile }: { name: string; label: string; color: string; items: NodeItem[]; inputs: number; outputs: Output[]; compile: () => string }) {
+  constructor({ name, label, color, items, inputs, outputs, compile }: { name: string; label: string; color: string; items: NodeItem[]; inputs: number; outputs: Output[]; compile: CompileFn }) {
     this.name = name;
     this.label = label;
     this.color = color;
@@ -82,7 +84,7 @@ export class NodeData {
 }
 
 export type Node = {
-  data: { type: keyof typeof nodes };
+  data: { type: keyof typeof nodes; index?: number; state: Record<string, any>; node: NodeData };
   isConnectable?: boolean;
 };
 
@@ -134,7 +136,7 @@ export const nodes: Record<string, NodeData> = {
       { type: 'boolean', label: 'True', value: null },
       { type: 'boolean', label: 'False', value: null },
     ],
-    compile: () => 'if (condition) { return b; }',
+    compile: (state) => `jump ${1} ${state.condition} ${state.a} ${state.b}`,
   }),
   read: new NodeData({
     name: 'read',
@@ -206,6 +208,9 @@ export function MlogNode({ data }: Node) {
   const [state, setState] = useState(type.getDefaultState());
   const { id, label, color, inputs, outputs, items } = type;
 
+  data.state = state;
+  data.node = type;
+
   return (
     <div className="custom-node p-1.5 rounded-sm text-white min-w-40 max-w-[440px]" style={{ backgroundColor: color }}>
       {Array(inputs)
@@ -216,7 +221,10 @@ export function MlogNode({ data }: Node) {
       {outputs.map((output, i) => (
         <OutputHandle id={`${id}-source-handle-${i}`} style={{ marginLeft: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }} label={output.label} key={i} type={'source'} position={Position.Bottom} />
       ))}
-      <span className="text-sm font-bold">{label}</span>
+      <div className="flex justify-between text-sm font-bold">
+        <span>{label}</span>
+        <span>{data.index}</span>
+      </div>
       {items.length > 0 && (
         <div className="bg-black p-2 rounded-sm flex gap-1 items-end jus flex-wrap">
           {items.map((item, i) => (
