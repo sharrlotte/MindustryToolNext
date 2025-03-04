@@ -58,8 +58,8 @@ function Flow() {
       const position = screenToFlowPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
       const newNode: Node = {
         id: `${nodeIdCounter}`,
-        type,
-        data: { label, id: nodeIdCounter },
+        type: 'mlog',
+        data: { label, id: nodeIdCounter, type },
         position,
       };
       const newNodes = [...nodes, newNode];

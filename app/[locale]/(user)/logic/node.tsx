@@ -124,29 +124,22 @@ export const nodes: Record<string, NodeData> = {
     items: [
       {
         label: 'Read',
-      },
-      {
+        defaultValue: 'result',
         input: 'result',
       },
       {
         label: '=',
-      },
-      {
+        defaultValue: 'cell1',
         input: 'cell',
       },
       {
         label: 'at',
-      },
-      {
-        input: 'position',
         defaultValue: '0',
+        input: 'position',
       },
     ],
     inputs: 1,
-    outputs: [
-      { type: 'boolean', label: 'Condition', value: true },
-      { type: 'boolean', label: 'Condition', value: false },
-    ],
+    outputs: [{ type: 'boolean', label: 'Next', value: true }],
     compile: () => 'if (condition) { return b; }',
   }),
   write: new NodeData({
@@ -156,29 +149,22 @@ export const nodes: Record<string, NodeData> = {
     items: [
       {
         label: 'Write',
-      },
-      {
+        defaultValue: 'result',
         input: 'result',
       },
       {
-        label: '=',
-      },
-      {
+        label: 'to',
+        defaultValue: 'cell1',
         input: 'cell',
       },
       {
         label: 'at',
-      },
-      {
-        input: 'position',
         defaultValue: '0',
+        input: 'position',
       },
     ],
     inputs: 1,
-    outputs: [
-      { type: 'boolean', label: 'True', value: null },
-      { type: 'boolean', label: 'False', value: null },
-    ],
+    outputs: [{ type: 'boolean', label: 'Next', value: null }],
     compile: () => 'if (condition) { return b; }',
   }),
 };
@@ -202,7 +188,7 @@ export function MlogNode({ data }: Node) {
   const { id, label, color, inputs, outputs, items } = type;
 
   return (
-    <div className="custom-node p-1.5 rounded-sm text-white min-w-80" style={{ backgroundColor: color }}>
+    <div className="custom-node p-1.5 rounded-sm text-white w-[440px]" style={{ backgroundColor: color }}>
       {Array(inputs)
         .fill(1)
         .map((_, i) => (
@@ -212,7 +198,7 @@ export function MlogNode({ data }: Node) {
         <OutputHandle id={`${id}-source-handle-${i}`} style={{ marginLeft: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }} label={output.label} key={i} type={'source'} position={Position.Bottom} />
       ))}
       <span className="text-sm font-bold">{label}</span>
-      <div className="bg-black p-2 min-w-40 rounded-sm flex gap-1 items-end">
+      <div className="bg-black p-2 rounded-sm flex gap-1 items-end jus flex-wrap">
         {items.map((item, i) => (
           <NodeItem key={i} color={color} data={item} state={state} setState={setState} />
         ))}
@@ -222,19 +208,14 @@ export function MlogNode({ data }: Node) {
 }
 
 export function NodeItem({ color, data, state, setState }: { color: string; state: Record<string, string | number>; setState: (data: Record<string, string | number>) => void; data: NodeItem }) {
-  if ('label' in data && (data.condition ? data.condition(state) : true)) {
-    return <span className="border-transparent border-b-[3px]">{data.label}</span>;
-  }
-
   if ('input' in data && (data.condition ? data.condition(state) : true)) {
     return (
-      <div className="flex gap-1">
+      <div className="flex gap-1 w-40">
         {data.label && <span className="border-transparent border-b-[3px]">{data.label}</span>}
         <input
           className="bg-transparent border-b-[3px] px-2 hover min-w-20 max-w-40 sm:max-w-80 focus:outline-none" //
           style={{ borderColor: color }}
           type="text"
-          defaultValue={data.defaultValue}
           value={state[data.input] ?? data.defaultValue ?? ''}
           onChange={(e) => setState({ ...state, [data.input]: e.target.value })}
         />
@@ -244,9 +225,9 @@ export function NodeItem({ color, data, state, setState }: { color: string; stat
 
   if ('options' in data) {
     return (
-      <div className="bg-transparent border-b-[3px] h-full" style={{ borderColor: color }}>
+      <div className="bg-transparent border-b-[3px] flex items-end" style={{ borderColor: color }}>
         <ComboBox
-          className="bg-transparent px-2 py-0 text-center w-fit font-bold border-none items-end"
+          className="bg-transparent px-2 py-0 text-center w-fit font-bold border-none items-end justify-end"
           value={{ value: state[data.name], label: state[data.name].toString() }}
           values={data.options.map((option) => ({ value: option, label: option.toString() }))}
           onChange={(value) => {
@@ -257,6 +238,10 @@ export function NodeItem({ color, data, state, setState }: { color: string; stat
         />
       </div>
     );
+  }
+
+  if ('label' in data && (data.condition ? data.condition(state) : true)) {
+    return <span className="border-transparent border-b-[3px]">{data.label}</span>;
   }
 }
 
