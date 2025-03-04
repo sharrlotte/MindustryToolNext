@@ -213,7 +213,7 @@ function Flow() {
 
   return (
     <ReactFlowProvider>
-      <LogicEditorContext.Provider value={{ isDeleteOnClick, redo, undo, addNode, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev) }}>
+      <LogicEditorContext.Provider value={{ edges, nodes, setEdges, setNodes, isDeleteOnClick, redo, undo, addNode, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev) }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}

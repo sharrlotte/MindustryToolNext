@@ -13,11 +13,13 @@
 // Autocomplete
 import { useMemo, useState } from 'react';
 
+import { useLogicEditor } from '@/app/[locale]/(user)/logic/logic-editor-context';
+
 import ComboBox from '@/components/common/combo-box';
 
 import { uuid } from '@/lib/utils';
 
-import { Handle, Position, useHandleConnections, useNodeConnections } from '@xyflow/react';
+import { Connection, Handle, Position, useNodeConnections } from '@xyflow/react';
 
 type LabelItem = {
   label: string;
@@ -25,6 +27,7 @@ type LabelItem = {
 };
 
 type InputItem = {
+  label?: string;
   input: string;
   defaultValue?: string;
   condition?: (state: Record<string, string | number>) => boolean;
@@ -37,6 +40,12 @@ type OptionItem = {
 
 type NodeItem = LabelItem | InputItem | OptionItem;
 
+type Output = {
+  type: string;
+  label: string;
+  value: any;
+};
+
 export class NodeData {
   id = uuid();
   name: string;
@@ -44,14 +53,10 @@ export class NodeData {
   color: string;
   items: NodeItem[];
   inputs: number;
-  outputs: {
-    type: string;
-    name: string;
-    value: any;
-  }[];
+  outputs: Output[];
   compile: () => string;
 
-  constructor({ name, label, color, items, inputs, outputs, compile }: { name: string; label: string; color: string; items: NodeItem[]; inputs: number; outputs: { type: string; name: string; value: any }[]; compile: () => string }) {
+  constructor({ name, label, color, items, inputs, outputs, compile }: { name: string; label: string; color: string; items: NodeItem[]; inputs: number; outputs: Output[]; compile: () => string }) {
     this.name = name;
     this.label = label;
     this.color = color;
@@ -92,6 +97,7 @@ export const nodes: Record<string, NodeData> = {
       },
       {
         input: 'a',
+        defaultValue: 'a',
         condition: (state) => state['condition'] !== 'always',
       },
       {
@@ -100,13 +106,14 @@ export const nodes: Record<string, NodeData> = {
       },
       {
         input: 'b',
+        defaultValue: 'b',
         condition: (state) => state['condition'] !== 'always',
       },
     ],
     inputs: 1,
     outputs: [
-      { type: 'boolean', name: 'Condition', value: null },
-      { type: 'boolean', name: 'Condition', value: null },
+      { type: 'boolean', label: 'True', value: null },
+      { type: 'boolean', label: 'False', value: null },
     ],
     compile: () => 'if (condition) { return b; }',
   }),
@@ -137,24 +144,56 @@ export const nodes: Record<string, NodeData> = {
     ],
     inputs: 1,
     outputs: [
-      { type: 'boolean', name: 'Condition', value: null },
-      { type: 'boolean', name: 'Condition', value: null },
+      { type: 'boolean', label: 'Condition', value: true },
+      { type: 'boolean', label: 'Condition', value: false },
+    ],
+    compile: () => 'if (condition) { return b; }',
+  }),
+  write: new NodeData({
+    name: 'write',
+    label: 'write',
+    color: '#A08A8A',
+    items: [
+      {
+        label: 'Write',
+      },
+      {
+        input: 'result',
+      },
+      {
+        label: '=',
+      },
+      {
+        input: 'cell',
+      },
+      {
+        label: 'at',
+      },
+      {
+        input: 'position',
+        defaultValue: '0',
+      },
+    ],
+    inputs: 1,
+    outputs: [
+      { type: 'boolean', label: 'True', value: null },
+      { type: 'boolean', label: 'False', value: null },
     ],
     compile: () => 'if (condition) { return b; }',
   }),
 };
 
-function LimitedHandle(props: Parameters<typeof Handle>[0]) {
+function OutputHandle(props: Parameters<typeof Handle>[0] & { label: string }) {
+  const { setEdges } = useLogicEditor();
   const connections = useNodeConnections({
+    handleType: props.type,
     handleId: props.id ?? '',
+    onConnect(connections: Connection[]) {
+      setEdges((prevEdges) => prevEdges.map((edge) => (edge.id === (connections[0] as unknown as any).edgeId ? { ...edge, label: props.label } : edge)));
+    },
   });
 
-  return (
-    <>
-      {props.id}
-      <Handle {...props} isConnectable={connections.length < 1} />
-    </>
-  );
+  return <Handle {...props} id={props.id} isConnectable={connections.length < 1} />;
 }
 
 export function MlogNode({ data }: Node) {
@@ -169,8 +208,8 @@ export function MlogNode({ data }: Node) {
         .map((_, i) => (
           <Handle style={{ marginLeft: 20 * i - ((inputs - 1) / 2) * 20 + 'px' }} key={i} type={'target'} position={Position.Top} isConnectable={true} />
         ))}
-      {outputs.map((_, i) => (
-        <LimitedHandle id={`${id}-source-handle-${i}`} style={{ marginLeft: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }} key={i} type={'source'} position={Position.Bottom} isConnectable={true} />
+      {outputs.map((output, i) => (
+        <OutputHandle id={`${id}-source-handle-${i}`} style={{ marginLeft: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }} label={output.label} key={i} type={'source'} position={Position.Bottom} />
       ))}
       <span className="text-sm font-bold">{label}</span>
       <div className="bg-black p-2 min-w-40 rounded-sm flex gap-1 items-end">
@@ -189,13 +228,17 @@ export function NodeItem({ color, data, state, setState }: { color: string; stat
 
   if ('input' in data && (data.condition ? data.condition(state) : true)) {
     return (
-      <input
-        className="bg-transparent border-b-[3px] px-2 hover min-w-20 max-w-40 sm:max-w-80 focus:outline-none" //
-        style={{ borderColor: color }}
-        type="text"
-        value={state[data.input] ?? data.input ?? ''}
-        onChange={(e) => setState({ ...state, [data.input]: e.target.value })}
-      />
+      <div className="flex gap-1">
+        {data.label && <span className="border-transparent border-b-[3px]">{data.label}</span>}
+        <input
+          className="bg-transparent border-b-[3px] px-2 hover min-w-20 max-w-40 sm:max-w-80 focus:outline-none" //
+          style={{ borderColor: color }}
+          type="text"
+          defaultValue={data.defaultValue}
+          value={state[data.input] ?? data.defaultValue ?? ''}
+          onChange={(e) => setState({ ...state, [data.input]: e.target.value })}
+        />
+      </div>
     );
   }
 
@@ -221,52 +264,48 @@ export const nodeOptions = [
   {
     label: 'Input/Output',
     items: [
-      { type: 'readNode', label: 'Read' },
-      { type: 'writeNode', label: 'Write' },
-      { type: 'drawNode', label: 'Draw' },
-      { type: 'printNode', label: 'Print' },
+      { type: 'read', label: 'Read' },
+      { type: 'write', label: 'Write' },
+      { type: 'draw', label: 'Draw' },
+      { type: 'print', label: 'Print' },
     ],
   },
   {
     label: 'Block Control',
     items: [
-      { type: 'drawFlushNode', label: 'Draw flush' },
-      { type: 'printFlushNode', label: 'Print flush' },
-      { type: 'getLinkNode', label: 'Get link' },
-      { type: 'controlNode', label: 'Control' },
-      { type: 'radarNode', label: 'Radar' },
-      { type: 'sensorNode', label: 'Sensor' },
+      { type: 'draw-flush', label: 'Draw flush' },
+      { type: 'print-flush', label: 'Print flush' },
+      { type: 'get-link', label: 'Get link' },
+      { type: 'control', label: 'Control' },
+      { type: 'radar', label: 'Radar' },
+      { type: 'sensor', label: 'Sensor' },
     ],
   },
   {
     label: 'Operation',
     items: [
-      { type: 'setNode', label: 'Set' },
-      { type: 'operationNode', label: 'Operation' },
-      { type: 'lookUpNode', label: 'Look up' },
-      { type: 'packColorNode', label: 'Pack color' },
+      { type: 'set', label: 'Set' },
+      { type: 'operation', label: 'Operation' },
+      { type: 'look-up', label: 'Look up' },
+      { type: 'pack-color', label: 'Pack color' },
     ],
   },
   {
     label: 'Flow Control',
     items: [
-      { type: 'waitNode', label: 'Wait' },
-      { type: 'stopNode', label: 'Stop' },
-      { type: 'endNode', label: 'End' },
-      { type: 'jumpNode', label: 'Jump' },
+      { type: 'wait', label: 'Wait' },
+      { type: 'stop', label: 'Stop' },
+      { type: 'end', label: 'End' },
+      { type: 'jump', label: 'Jump' },
     ],
   },
   {
     label: 'Unit Control',
     items: [
-      { type: 'unitBindNode', label: 'Unit bind' },
-      { type: 'unitControlNode', label: 'Unit control' },
-      { type: 'unitRadarNode', label: 'Unit radar' },
-      { type: 'unitLocateNode', label: 'Unit locate' },
+      { type: 'unit-bind', label: 'Unit bind' },
+      { type: 'unit-control', label: 'Unit control' },
+      { type: 'unit-radar', label: 'Unit radar' },
+      { type: 'unit-locate', label: 'Unit locate' },
     ],
-  },
-  {
-    label: 'Other',
-    items: [{ type: 'textUpdater', label: 'Custom Node' }],
   },
 ];
