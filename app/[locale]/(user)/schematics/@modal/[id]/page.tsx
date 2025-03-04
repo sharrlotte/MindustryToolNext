@@ -4,11 +4,11 @@ import React, { cache } from 'react';
 import ErrorScreen from '@/components/common/error-screen';
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 
-import { serverApi } from '@/action/action';
+import { getServerApi, serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
-import { getSchematic } from '@/query/schematic';
+import { getSchematic, getSchematicCount, getSchematics } from '@/query/schematic';
 
 type Props = {
   params: Promise<{ id: string; locale: Locale }>;
@@ -36,6 +36,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
     },
   };
+}
+
+export async function generateStaticParams() {
+  const axios = await getServerApi();
+  const schematicCount = await getSchematicCount(axios, {});
+  const page = schematicCount / 100;
+  const schematics = await Promise.all(Array.from({ length: Math.ceil(page) }, (_, i) => getSchematics(axios, { page: i, size: 100 })));
+
+  return schematics.reduce((acc, cur) => [...acc, ...cur], []).map(({ id }) => ({ params: { id } }));
 }
 
 export default async function Page({ params }: Props) {
