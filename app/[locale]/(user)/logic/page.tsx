@@ -8,7 +8,9 @@ import { LogicEditorContext, useLogicEditor } from '@/app/[locale]/(user)/logic/
 import { nodeOptions } from '@/app/[locale]/(user)/logic/node';
 import { nodeTypes } from '@/app/[locale]/(user)/logic/node-type';
 
+import Tran from '@/components/common/tran';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { toast } from '@/components/ui/sonner';
 
 import { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, ReactFlow, ReactFlowProvider, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
@@ -53,9 +55,18 @@ function Flow() {
     [historyIndex],
   );
 
+  const findNode = useCallback((type: string) => nodes.find((node) => node.type === 'mlog' && node.data.type === type), [nodes]);
+
   const addNode = useCallback(
     (type: string, label: string) => {
       const position = screenToFlowPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
+      if (type === 'start') {
+        const target = findNode('start');
+        if (target) {
+          toast.error(<Tran text="logic.only-one-start" />);
+          return;
+        }
+      }
       const newNode: Node = {
         id: `${nodeIdCounter}`,
         type: 'mlog',
@@ -67,7 +78,7 @@ function Flow() {
       setNodeIdCounter((prev) => prev + 1);
       updateHistory(newNodes, edges);
     },
-    [screenToFlowPosition, nodeIdCounter, nodes, updateHistory, edges],
+    [screenToFlowPosition, nodeIdCounter, nodes, updateHistory, edges, findNode],
   );
 
   const customApplyNodeChanges = useCallback((changes: NodeChange[], nodes: Node[]): Node[] => {
@@ -231,6 +242,7 @@ function Flow() {
           proOptions={proOptions}
           fitView
         >
+          <LiveCodePanel />
           <TopLeftMenu />
           <MiniMap />
           <Controls />
@@ -242,6 +254,42 @@ function Flow() {
   );
 }
 
+function LiveCodePanel() {
+  const { nodes, edges } = useLogicEditor();
+
+  const code = useMemo(() => {
+    const lines: string[] = [];
+    const start = nodes.find((node) => node.type === 'mlog' && node.data.type === 'start');
+    if (!start) {
+      return lines;
+    }
+    const startEdge = edges.find((edge) => edge.source === start.id);
+
+    if (!startEdge) {
+      return lines;
+    }
+
+    let nextNode = nodes.find((node) => node.id === startEdge.target);
+
+    if (!nextNode) {
+      return lines;
+    }
+
+    function findNextNode(node: Node) {
+      const edge = edges.find((edge) => edge.source === node.id);
+      if (!edge) return undefined;
+      const nextNode = nodes.find((node) => node.id === edge.target);
+      return nextNode;
+    }
+
+    while (nextNode) {
+      lines.push((nextNode.data as unknown as any).type);
+      nextNode = findNextNode(nextNode);
+    }
+  }, [edges, nodes]);
+
+  return <p className="top-0 right-0 absolute flex-col flex z-10 text-black bg-white m-[15px] w-[min(100vw,600px)] h-[calc(100dvh-400px)]">{code}</p>;
+}
 function TopLeftMenu() {
   const { redo, undo, toggleDeleteOnClick } = useLogicEditor();
 
