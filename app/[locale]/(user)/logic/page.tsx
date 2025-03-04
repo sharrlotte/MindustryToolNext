@@ -314,7 +314,9 @@ function LiveCodePanel() {
       >
         {show && (
           <div>
-            <div>{code}</div>
+            {code.map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
           </div>
         )}
       </motion.div>
