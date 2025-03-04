@@ -8,7 +8,8 @@ import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { formatTitle, isError } from '@/lib/utils';
-import { getSchematic } from '@/query/schematic';
+import axiosInstance from '@/query/config/config';
+import { getSchematic, getSchematicCount, getSchematics } from '@/query/schematic';
 
 type Props = {
   params: Promise<{ id: string; locale: Locale }>;
@@ -36,6 +37,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
     },
   };
+}
+
+export async function generateStaticParams() {
+  const schematicCount = await getSchematicCount(axiosInstance, {});
+  const page = schematicCount / 100;
+  const schematics = await Promise.all(Array.from({ length: Math.ceil(page) }, (_, i) => getSchematics(axiosInstance, { page: i, size: 100 })));
+
+  return schematics.reduce((acc, cur) => [...acc, ...cur], []).map(({ id }) => ({ params: { id } }));
 }
 
 export default async function Page({ params }: Props) {
