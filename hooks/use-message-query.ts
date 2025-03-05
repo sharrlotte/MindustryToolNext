@@ -58,6 +58,7 @@ export default function useMessageQuery<P extends MessageQuery>(room: string, pa
     getPreviousPageParam,
     enabled: state === 'connected',
     refetchOnMount: 'always',
+    refetchOnWindowFocus: 'always',
   });
 
   return data;

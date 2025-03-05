@@ -46,7 +46,7 @@ export function MessageCard({ className, message }: Props) {
           <TooltipProvider>
             {contents.map(({ text, createdAt }, index) => (
               <Tooltip key={index}>
-                <TooltipTrigger className="flex text-start w-fit p-0 items-start justify-start">
+                <TooltipTrigger className="flex text-start w-fit p-0 items-start justify-start cursor-default" >
                   <ColorText className="overflow-hidden break-words text-base" text={text} />
                 </TooltipTrigger>
                 <TooltipContent>{new Date(createdAt).toLocaleString()}</TooltipContent>
