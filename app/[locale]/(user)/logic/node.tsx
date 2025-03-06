@@ -20,6 +20,7 @@ import ComboBox from '@/components/common/combo-box';
 import { uuid } from '@/lib/utils';
 
 import { Connection, Handle, Position, useNodeConnections } from '@xyflow/react';
+import { type Node } from '@xyflow/react';
 
 type LabelItem = {
   label: string;
@@ -83,7 +84,7 @@ export class NodeData {
   }
 }
 
-export type Node = {
+export type InstructionNode = {
   data: { type: keyof typeof nodes; index?: number; state: Record<string, any>; node: NodeData };
   isConnectable?: boolean;
 };
@@ -203,7 +204,7 @@ function OutputHandle(props: Parameters<typeof Handle>[0] & { label: string }) {
   return <Handle {...props} id={props.id} isConnectable={connections.length < 1} />;
 }
 
-export function MlogNode({ data }: Node) {
+export function MlogNode({ data }: InstructionNode) {
   const type = useMemo(() => new NodeData(nodes[data.type]), [data]);
   const [state, setState] = useState(type.getDefaultState());
   const { id, label, color, inputs, outputs, items } = type;
@@ -334,5 +335,56 @@ export const nodeOptions = [
       { type: 'unit-radar', label: 'Unit radar' },
       { type: 'unit-locate', label: 'Unit locate' },
     ],
+  },
+];
+
+export const initialNodes: Node[] = [
+  {
+    id: '1',
+    type: 'default',
+    data: { label: 'Logic page' },
+    position: { x: 100, y: 100 },
+  },
+  {
+    id: '2',
+    data: { label: 'In development' },
+    type: 'default',
+    position: { x: 100, y: 200 },
+  },
+  {
+    id: '3',
+    data: { label: 'Set', value: 'result = 0' },
+    type: 'textUpdater',
+    position: { x: 300, y: 100 },
+  },
+  {
+    id: '4',
+    data: { label: 'Jump -> 6', value: 'if result == 0 { goto 6 }' },
+    type: 'textUpdater',
+    position: { x: 300, y: 250 },
+  },
+  {
+    id: '5',
+    data: { label: 'Set', value: 'set result = 5' },
+    type: 'textUpdater',
+    position: { x: 150, y: 400 },
+  },
+  {
+    id: '6',
+    data: { label: 'Print', value: 'result' },
+    type: 'textUpdater',
+    position: { x: 450, y: 400 },
+  },
+  {
+    id: '6',
+    data: { type: 'if' },
+    type: 'mlog',
+    position: { x: 450, y: 400 },
+  },
+  {
+    id: '7',
+    data: { type: 'start' },
+    type: 'mlog',
+    position: { x: 450, y: 500 },
   },
 ];
