@@ -6,7 +6,7 @@ import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 import { Separator } from '@/components/ui/separator';
 
-import { SHOW_TAG_NAME_PERSISTENT_KEY } from '@/constant/constant';
+import { SHOW_TAG_NAME_PERSISTENT_KEY, SHOW_TAG_NUMBER_PERSISTENT_KEY } from '@/constant/constant';
 import { cn } from '@/lib/utils';
 import TagGroup from '@/types/response/TagGroup';
 
@@ -17,7 +17,7 @@ type SingeFilerTagsProps = {
 };
 
 function SingeFilerTags({ group, selectedValue, handleTagGroupChange }: SingeFilerTagsProps) {
-  const [{ showTagName }] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY]);
+  const [{ showTagName, showTagNumber }] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY, SHOW_TAG_NUMBER_PERSISTENT_KEY]);
 
   return (
     <div className="flex w-full flex-wrap justify-start py-2 gap-1">
@@ -36,7 +36,7 @@ function SingeFilerTags({ group, selectedValue, handleTagGroupChange }: SingeFil
           onClick={() => handleTagGroupChange(value)}
         >
           <TagIcon>{value.icon}</TagIcon>
-          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}({value.count})
+          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}({showTagNumber && value.count})
         </button>
       ))}
     </div>
