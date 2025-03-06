@@ -1,5 +1,7 @@
 import { AxiosInstance } from 'axios';
 
+
+
 import { CountItemPaginationQueryType, ItemPaginationQueryType } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
@@ -7,7 +9,9 @@ import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import { Schematic } from '@/types/response/Schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
+import { TagGroups } from '@/types/response/TagGroup';
 import { CreateSchematicRequest } from '@/types/schema/zod-schema';
+
 
 export async function getSchematicCount(axios: AxiosInstance, params: CountItemPaginationQueryType): Promise<number> {
   const result = await axios.get('/schematics/total', { params });
@@ -87,7 +91,7 @@ export async function createSchematic(axios: AxiosInstance, { data, tags, name, 
   } else if (data instanceof File) {
     form.append('file', data);
   }
-  form.append('tags', tags);
+  form.append('tags', TagGroups.toString(tags));
   form.append('name', name);
   form.append('description', description ?? '');
 
@@ -103,7 +107,7 @@ export async function createMultipleSchematic(axios: AxiosInstance, { data, tags
   } else if (data instanceof File) {
     form.append('file', data);
   }
-  form.append('tags', tags);
+  form.append('tags', TagGroups.toString(tags));
   form.append('name', name);
   form.append('description', description ?? '');
 

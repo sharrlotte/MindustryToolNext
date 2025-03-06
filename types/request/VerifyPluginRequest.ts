@@ -1,17 +1,8 @@
+import { TAG_GROUP_SCHEMA } from '@/types/schema/zod-schema';
 import { z } from 'zod';
 
 export const VerifyPluginSchema = z.object({
-  tags: z
-    .array(
-      z.object({
-        name: z.string(),
-        values: z.array(z.object({ name: z.string() })),
-        color: z.string(),
-        duplicate: z.boolean(),
-        position: z.number(),
-      }),
-    )
-    .min(1),
+  tags: TAG_GROUP_SCHEMA,
 });
 
 export type VerifyPluginRequestData = z.infer<typeof VerifyPluginSchema>;

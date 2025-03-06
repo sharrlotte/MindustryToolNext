@@ -1,14 +1,15 @@
 import { AxiosInstance } from 'axios';
 
 import { toForm } from '@/lib/utils';
+import { CountItemPaginationQueryType, ItemPaginationQueryType } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 import { Map } from '@/types/response/Map';
 import { MapDetail } from '@/types/response/MapDetail';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
+import { TagGroups } from '@/types/response/TagGroup';
 import { CreateMapRequest } from '@/types/schema/zod-schema';
-import { CountItemPaginationQueryType, ItemPaginationQueryType } from '@/query/search-query';
 
 export async function getMapCount(axios: AxiosInstance, params: CountItemPaginationQueryType): Promise<number> {
   const result = await axios.get('/maps/total', { params });
@@ -73,16 +74,20 @@ export async function getMapPreview(axios: AxiosInstance, { file }: MapPreviewRe
   return result.data;
 }
 
-export async function createMap(axios: AxiosInstance, data: CreateMapRequest): Promise<void> {
+export async function createMap(axios: AxiosInstance, { tags, ...data }: CreateMapRequest): Promise<void> {
   const form = toForm(data);
+
+  form.append('tags', TagGroups.toString(tags));
 
   return axios.post('/maps', form, {
     data: form,
   });
 }
 
-export async function createMultipleMap(axios: AxiosInstance, data: CreateMapRequest): Promise<void> {
+export async function createMultipleMap(axios: AxiosInstance, { tags, ...data }: CreateMapRequest): Promise<void> {
   const form = toForm(data);
+
+  form.append('tags', TagGroups.toString(tags));
 
   return await axios.post('/maps/multiple', form, {
     data: form,

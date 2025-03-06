@@ -4,7 +4,7 @@ export const sortTag = ['time_desc', 'time_asc', 'like_desc', 'download_count_de
 
 type SortTag = (typeof sortTag)[number];
 
-export const sortTagGroup: TagGroup = {
+export const sortTagGroup: Omit<TagGroup, 'values'> & { values: { name: string }[] } = {
   name: 'sort',
   values: sortTag.map((v) => ({ name: v })),
   color: 'green',

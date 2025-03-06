@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { TAG_GROUP_SCHEMA } from '@/types/schema/zod-schema';
+
 export type CreatePluginRequest = {
   name: string;
   description: string;
@@ -11,17 +13,7 @@ export const CreatePluginSchema = z
   .object({
     name: z.string().min(1).max(100),
     description: z.string().min(1).max(100),
-    tags: z
-      .array(
-        z.object({
-          name: z.string(),
-          values: z.array(z.object({ name: z.string() })),
-          color: z.string(),
-          duplicate: z.boolean(),
-          position: z.number(),
-        }),
-      )
-      .min(1),
+    tags: TAG_GROUP_SCHEMA,
     url: z.string().regex(/https:\/\/github.com\/([a-zA-Z0-9-_]+)\/([a-zA-Z0-9-_]+)/, 'Invalid GitHub URL'),
     isPrivate: z.boolean().default(false),
     bearerToken: z.string().optional(),

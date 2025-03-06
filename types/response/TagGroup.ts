@@ -2,13 +2,13 @@ import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import { groupBy } from '@/lib/utils';
 import { DetailTagDto, TagDto, Tags } from '@/types/response/Tag';
 
-
 type TagGroup = {
   name: string;
   values: {
     name: string;
     modId?: string;
     icon?: string;
+    count: number;
   }[];
   color: string;
   duplicate: boolean;
@@ -74,7 +74,7 @@ export class TagGroups {
       .map(({ key, value }) => ({
         name: key,
         position: 0,
-        values: value.map(({ value }) => ({ name: value })) ?? [],
+        values: value.map(({ value }) => ({ name: value, count: 0 })) ?? [],
       }))
       .map((tag) => {
         if (tags.length === 0) {
@@ -105,7 +105,7 @@ export class TagGroups {
           value,
         }))
         .filter((value) => value.str.length === 2)
-        .map((value) => ({ name: value.str[0], value: value.str[1], icon: value.value.icon, color: value.value.color })) ?? [];
+        .map((value) => ({ name: value.str[0], value: value.str[1], icon: value.value.icon, color: value.value.color, count: 0 })) ?? [];
 
     const tagGroup = groupBy(tagsArray, ({ name }) => name)
       .map(({ key, value }) => ({
@@ -113,7 +113,7 @@ export class TagGroups {
         color: value[0]?.color,
         duplicate: true,
         position: 0,
-        values: value.map(({ value }) => ({ name: value })) ?? [],
+        values: value.map(({ value }) => ({ name: value, count: 0 })) ?? [],
       }))
 
       .filter((value) => !!value);
