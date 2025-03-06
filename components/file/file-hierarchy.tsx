@@ -17,17 +17,14 @@ export default function FileHierarchy({ path, onClick }: Props) {
   }
 
   return (
-    <div className="space-x-1 whitespace-nowrap text-base font-bold">
-      <span className="cursor-pointer" onClick={() => onClick('/')}>
-        {path === '/' ? '' : '>'}
-      </span>
+    <div className="space-x-1 whitespace-nowrap text-base min-h-8">
       {path
         ?.split('/')
         .filter(Boolean)
         .map((p, index, array) => (
           <span className="cursor-pointer" key={index} onClick={() => handleClick(index)}>
             {p}
-            {index === array.length - 1 ? '' : ' >'}
+            <span className="text-muted-foreground">{index === array.length - 1 ? '' : ' >'}</span>
           </span>
         ))}
     </div>
