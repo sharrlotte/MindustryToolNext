@@ -35,7 +35,7 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
       {group.values.map((value) => (
         <button
           className={cn(
-            'capitalize flex items-center gap-1 bg-secondary hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground px-2 border border-border py-1 rounded-lg hover:border-brand',
+            'capitalize flex items-center gap-1 bg-secondary gap-1 hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground px-2 border border-border py-1 rounded-lg hover:border-brand',
             {
               'bg-brand text-brand-foreground border-brand': selectedValue.map((v) => v.name).includes(value.name),
             },
@@ -45,7 +45,7 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
           onClick={() => handleClick(value)}
         >
           <TagIcon>{value.icon}</TagIcon>
-          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}
+          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}({value.count})
         </button>
       ))}
     </div>
