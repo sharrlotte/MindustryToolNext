@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { TranslateFunction } from '@/i18n/config';
-import { TagGroups } from '@/types/response/TagGroup';
 
 export const TAG_GROUP_SCHEMA = z
   .array(
@@ -14,8 +13,7 @@ export const TAG_GROUP_SCHEMA = z
     }),
   )
   .min(1, { message: 'tag.min-tags-size' })
-  .max(20, { message: 'tag.max-tags-size' })
-  .transform<string>((value) => TagGroups.toString(value));
+  .max(20, { message: 'tag.max-tags-size' });
 
 export const CreateSchematicSchema = (t: TranslateFunction) =>
   z.object({
