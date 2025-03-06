@@ -45,7 +45,7 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
           onClick={() => handleClick(value)}
         >
           <TagIcon>{value.icon}</TagIcon>
-          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}({showTagNumber && value.count})
+          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}{showTagNumber &&  `(${value.count})`}
         </button>
       ))}
     </div>
