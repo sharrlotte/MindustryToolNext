@@ -6,7 +6,7 @@ import { ReactNode, useCallback, useMemo, useState } from 'react';
 import React from 'react';
 
 import { LogicEditorContext, useLogicEditor } from '@/app/[locale]/(user)/logic/logic-editor-context';
-import { nodeOptions } from '@/app/[locale]/(user)/logic/node';
+import { initialNodes, nodeOptions } from '@/app/[locale]/(user)/logic/node';
 import { nodeTypes } from '@/app/[locale]/(user)/logic/node-type';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
@@ -17,11 +17,9 @@ import { toast } from '@/components/ui/sonner';
 import { Background, Controls, Edge, EdgeChange, MiniMap, Node, NodeChange, ProOptions, ReactFlow, ReactFlowProvider, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
-import initialEdges from './edge';
-import HelperLines from './helper-lines';
-import initialNodes from './nodes/nodes';
 import './style.css';
 import { getHelperLines } from './utils';
+import HelperLines from '@/app/[locale]/(user)/logic/helper-lines';
 
 const proOptions: ProOptions = { hideAttribution: true };
 
@@ -35,13 +33,13 @@ export default function Page() {
 
 function Flow() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
-  const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [edges, setEdges] = useState<Edge[]>([]);
   const [nodeIdCounter, setNodeIdCounter] = useState(initialNodes.length + 1);
   const [helperLineHorizontal, setHelperLineHorizontal] = useState<number | undefined>(undefined);
   const [helperLineVertical, setHelperLineVertical] = useState<number | undefined>(undefined);
 
   const [nodeHistory, setNodeHistory] = useState<Node[][]>([initialNodes]);
-  const [edgeHistory, setEdgeHistory] = useState<Edge[][]>([initialEdges]);
+  const [edgeHistory, setEdgeHistory] = useState<Edge[][]>([[]]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [isDeleteOnClick, setDeleteOnClick] = useState(false);
 
