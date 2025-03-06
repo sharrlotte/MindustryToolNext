@@ -60,8 +60,6 @@ export default function MessageList({ queryKey, params, loader, noResult = <NoRe
 
   const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, queryKey, () => (renderCause.current = 'fetch'));
 
-  console.log({ data, isFetching, error, isError, hasNextPage });
-
   const { postNotification } = useNotification();
 
   const pages = useMemo(() => {
