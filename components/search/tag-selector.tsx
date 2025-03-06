@@ -3,6 +3,8 @@
 import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
 
+
+
 import { SearchIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -16,11 +18,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+
+
 import useTags from '@/hooks/use-tags';
 import { PresetType, cn } from '@/lib/utils';
 import { Mod } from '@/types/response/Mod';
 import Tag from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
+
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 
@@ -48,15 +53,15 @@ export default function TagSelector({ type, value, onChange, disabled = false, h
       onChange((value) => {
         const group = value.find((tag) => tag.name === name);
         if (group) {
-          group.values = values;
+          group.values = values.map((v) => ({ ...v, count: 0 }));
 
-          return value.map((item) => (item.name === name ? { ...item, values } : item));
+          return value.map((item) => (item.name === name ? { ...item, values: values.map((v) => ({ ...v, count: 0 })) } : item));
         } else {
           const result = tags.find((tag) => tag.name === name);
 
           // Ignore tag that not match with server
           if (result) {
-            const r = { ...result, values };
+            const r = { ...result, values: values.map((v) => ({ ...v, count: 0 })) };
 
             return [...value, r];
           }
