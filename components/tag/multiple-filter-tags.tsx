@@ -6,7 +6,7 @@ import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 import { Separator } from '@/components/ui/separator';
 
-import { SHOW_TAG_NAME_PERSISTENT_KEY } from '@/constant/constant';
+import { SHOW_TAG_NAME_PERSISTENT_KEY, SHOW_TAG_NUMBER_PERSISTENT_KEY } from '@/constant/constant';
 import { cn } from '@/lib/utils';
 import TagGroup from '@/types/response/TagGroup';
 
@@ -17,7 +17,7 @@ type MultipleFilerTagsProps = {
 };
 
 export default function MultipleFilerTags({ group, selectedValue, handleTagGroupChange }: MultipleFilerTagsProps) {
-  const [{ showTagName }] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY]);
+  const [{ showTagName, showTagNumber }] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY, SHOW_TAG_NUMBER_PERSISTENT_KEY]);
 
   const handleClick = (value: FilterTag) => {
     const index = selectedValue.map((v) => v.name).indexOf(value.name);
@@ -45,7 +45,7 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
           onClick={() => handleClick(value)}
         >
           <TagIcon>{value.icon}</TagIcon>
-          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}({value.count})
+          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}({showTagNumber && value.count})
         </button>
       ))}
     </div>
