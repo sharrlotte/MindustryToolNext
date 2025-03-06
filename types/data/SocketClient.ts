@@ -43,13 +43,8 @@ function genId() {
 
 type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
 
-type Task = {
-  request: any;
-};
-
 export default class SocketClient {
   private requestTimeout = 2000;
-  private tasks: Task[] = [];
   private socket: WebSocket | null = null;
   private handlers: Record<string, EventHandler[]> = {};
   private errors: ((event: ErrorEvent) => void)[] = [];
@@ -58,30 +53,9 @@ export default class SocketClient {
   private room: string = '';
   private requests: Record<string, PromiseReceiver> = {};
   private url: string;
-  private isProcessing = false;
-  private interval: any;
 
   constructor(url: string) {
     this.url = url;
-  }
-
-  private async processTask() {
-    if (this.isProcessing) return;
-    this.isProcessing = true;
-
-    while (this.tasks.length !== 0) {
-      const task = this.tasks.shift();
-
-      if (!task) break;
-
-      if (!this.socket) {
-        throw new Error('Socket is not connected');
-      }
-
-      this.socket.send(task.request);
-    }
-
-    this.isProcessing = false;
   }
 
   public connect() {
@@ -138,17 +112,8 @@ export default class SocketClient {
     };
 
     this.socket.onerror = (event) => this.errors.forEach((error) => error(event));
-    this.socket.onopen = (event) => {
-      this.connects.forEach((connect) => connect(event));
-      this.interval = setInterval(async () => await this.processTask(), 10);
-    };
-    this.socket.onclose = (event) => {
-      this.disconnects.forEach((disconnect) => disconnect(event));
-
-      if (this.interval) {
-        clearInterval(this.interval);
-      }
-    };
+    this.socket.onopen = (event) => this.connects.forEach((connect) => connect(event));
+    this.socket.onclose = (event) => this.disconnects.forEach((disconnect) => disconnect(event));
 
     return instance;
   }
@@ -185,7 +150,7 @@ export default class SocketClient {
 
   public async send(payload: MessagePayload) {
     const json = JSON.stringify({ ...payload, room: this.room });
-    this.tasks.push({ request: json });
+    this.socket?.send(json);
 
     this.room = '';
 
@@ -206,7 +171,7 @@ export default class SocketClient {
 
         const json = JSON.stringify({ id, ...payload, room: this.room, acknowledge: true });
 
-        this.tasks.push({ request: json });
+        this.socket?.send(json);
 
         this.room = '';
       });
@@ -234,13 +199,8 @@ export default class SocketClient {
   }
 
   public async close() {
-    this.tasks = [];
     this.connects = [];
     this.disconnects = [];
-
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
 
     if (this.socket && this.getState() === 'connected') {
       await this.await({ method: 'CLOSE' });
