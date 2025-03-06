@@ -256,7 +256,7 @@ function Flow() {
 
 function LiveCodePanel() {
   const { nodes, edges } = useLogicEditor();
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const code = useMemo(() => {
     const lines: string[] = [];
     let index = 0;
