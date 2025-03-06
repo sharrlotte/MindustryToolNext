@@ -114,13 +114,13 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
         }
 
         if (group) {
-          return prev.map((item) => (item.name === name ? { ...item, values } : item));
+          return prev.map((item) => (item.name === name ? { ...item, values: values.map((v) => ({ ...v, count: 0 })) } : item));
         } else {
           const result = tags.find((tag) => tag.name === name);
 
           // Ignore tag that not match with server
           if (result) {
-            const t = { ...result, values };
+            const t = { ...result, values: values.map((v) => ({ ...v, count: 0 })) };
             return [...prev, t];
           }
 
