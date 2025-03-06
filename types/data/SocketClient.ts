@@ -44,7 +44,7 @@ function genId() {
 type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
 
 export default class SocketClient {
-  private requestTimeout = 2000;
+  private requestTimeout = 5000;
   private socket: WebSocket | null = null;
   private handlers: Record<string, EventHandler[]> = {};
   private errors: ((event: ErrorEvent) => void)[] = [];
@@ -171,7 +171,11 @@ export default class SocketClient {
 
         const json = JSON.stringify({ id, ...payload, room: this.room, acknowledge: true });
 
-        this.socket?.send(json);
+        if (!this.socket) {
+          throw new Error('WebSocket is not connected');
+        }
+
+        this.socket.send(json);
 
         this.room = '';
       });
