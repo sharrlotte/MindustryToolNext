@@ -36,7 +36,8 @@ function SingeFilerTags({ group, selectedValue, handleTagGroupChange }: SingeFil
           onClick={() => handleTagGroupChange(value)}
         >
           <TagIcon>{value.icon}</TagIcon>
-          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}({showTagNumber && value.count})
+          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}
+          {showTagNumber && `(${value.count})`}
         </button>
       ))}
     </div>
