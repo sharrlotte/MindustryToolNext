@@ -74,6 +74,7 @@ import {
   Users,
   X,
   XCircle,
+  Book
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -86,6 +87,7 @@ type Props = {
   className?: string;
 };
 
+export const DocsIcon = ({ className }: Props) => <Book className={className ?? 'lucide'} />;
 export const KeyRoundIcon = ({ className }: Props) => <KeyRound className={className ?? 'lucide'} />;
 export const ShareIcon = ({ className }: Props) => <Share2 className={className ?? 'lucide'} />;
 export const EyeIcon = ({ className }: Props) => <Eye className={className ?? 'lucide'} />;

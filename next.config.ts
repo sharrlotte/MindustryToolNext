@@ -1,5 +1,7 @@
 import { NextConfig } from 'next';
 
+import createMDX from '@next/mdx';
+
 const nextConfig: NextConfig = {
   experimental: {
     ppr: 'incremental',
@@ -9,6 +11,7 @@ const nextConfig: NextConfig = {
     },
     optimizePackageImports: ['lucide-react'],
   },
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   logging: {
     fetches: {
       fullUrl: true,
@@ -54,6 +57,10 @@ const nextConfig: NextConfig = {
   },
 };
 
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+});
+
 const analyze = process.env.ANALYZE === 'true';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -61,4 +68,4 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: analyze,
 });
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = withMDX(withBundleAnalyzer(nextConfig));

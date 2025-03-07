@@ -14,6 +14,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "@next/mdx": "^15.2.1",
     "@next/third-parties": "^15.1.2",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.4",
@@ -41,6 +44,7 @@
     "@tanstack/query-persist-client-core": "^5.64.2",
     "@tanstack/query-sync-storage-persister": "^5.64.1",
     "@tanstack/react-query": "^5.62.10",
+    "@types/mdx": "^2.0.13",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@vercel/analytics": "^1.4.1",
     "@vercel/speed-insights": "^1.1.0",
