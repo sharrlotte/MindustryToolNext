@@ -8,7 +8,7 @@ import { SchematicPath } from '@/app/schematic-path';
 import { TranslationPathIcon } from '@/app/translation-path-icon';
 import { VerifyPathIcon } from '@/app/verify-path-icon';
 
-import { AnalyticIcon, BoxIcon, ChartIcon, CmdIcon, CommentIcon, CrownIcon, DocumentIcon, FileIcon, HomeIcon, LogIcon, MapIcon, MindustryGptIcon, PluginIcon, PostIcon, RatioIcon, SchematicIcon, ServerIcon } from '@/components/common/icons';
+import { AnalyticIcon, BoxIcon, ChartIcon, CmdIcon, CommentIcon, CrownIcon, DocsIcon, DocumentIcon, FileIcon, HomeIcon, LogIcon, MapIcon, MindustryGptIcon, PluginIcon, PostIcon, RatioIcon, SchematicIcon, ServerIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
 import { locales } from '@/i18n/config';
@@ -93,6 +93,13 @@ export const groups: readonly PathGroup[] = [
         name: <Tran asChild text="post" />,
         icon: <PostIcon />,
         regex: [`^${localesRegex}/posts`],
+      },
+      {
+        id: 'docs',
+        path: '/docs',
+        name: <Tran asChild text="docs" />,
+        icon: <DocsIcon />,
+        regex: [`^${localesRegex}/docs`],
       },
       {
         id: 'chat',
