@@ -11,7 +11,7 @@ const routes = ['schematics', 'maps', 'posts', 'servers', 'upload/schematic', 'u
 
 async function schematicSitemap(): Promise<MetadataRoute.Sitemap> {
   const axios = await getServerApi();
-  const data = await getSchematics(axios, { page: 0, size: 100 });
+  const data = await getSchematics(axios, { page: 0, size: 1000 });
 
   return data.map(({ id }) => ({
     url: `${env.url.base}/schematics/${id}`,
@@ -26,7 +26,7 @@ async function schematicSitemap(): Promise<MetadataRoute.Sitemap> {
 }
 async function mapSitemap(): Promise<MetadataRoute.Sitemap> {
   const axios = await getServerApi();
-  const data = await getMaps(axios, { page: 0, size: 100 });
+  const data = await getMaps(axios, { page: 0, size: 1000 });
 
   return data.map(({ id }) => ({
     url: `${env.url.base}/maps/${id}`,
@@ -42,7 +42,7 @@ async function mapSitemap(): Promise<MetadataRoute.Sitemap> {
 
 async function postSitemap(): Promise<MetadataRoute.Sitemap> {
   const axios = await getServerApi();
-  const data = await getPosts(axios, { page: 0, size: 100 });
+  const data = await getPosts(axios, { page: 0, size: 1000 });
 
   return data.map(({ id }) => ({
     url: `${env.url.base}/posts/${id}`,
