@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const filePath = p.join(process.cwd(), 'docs', p.normalize(locale), p.normalize(category), p.normalize(docs) + '.mdx');
   const content = fs.readFileSync(filePath).toString();
   const index = content.indexOf('\n');
-  const header =   content.slice(0, index === -1 ? content.length : index).replace("#", "");
+  const header = content.slice(0, index === -1 ? content.length : index).replace('#', '');
 
   return {
     title: formatTitle(header),
@@ -45,12 +45,12 @@ export function generateStaticParams() {
       const docsPath = p.join(docsFolderPath, folder);
       const docs = fs.readdirSync(docsPath).filter((file) => file.endsWith('.mdx'));
 
-      return {
+      const paths = docs.map((file) => file.replace('.mdx', ''));
+
+      return paths.map((path) => ({
+        path,
         locale,
-        paths: docs.map((docFile) => ({
-          params: { path: docFile.replace('.mdx', '') },
-        })),
-      };
+      }));
     });
   });
 }
