@@ -82,8 +82,6 @@ type RootProps = {
   }>;
 };
 
-export const dynamicParams = false;
-
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
