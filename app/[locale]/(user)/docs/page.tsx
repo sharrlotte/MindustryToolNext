@@ -36,7 +36,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         <div key={cat}>
           <h2>{meta.title}</h2>
           {titles.map(({ title, docs }) => (
-            <InternalLink href={`/${locale}/docs/${cat}/${docs}`} className="text-lg px-4 py-2 rounded-md hover:bg-muted/50 text-muted-foreground">
+            <InternalLink key={docs} href={`/${locale}/docs/${cat}/${docs}`} className="text-lg px-4 py-2 rounded-md hover:bg-muted/50 text-muted-foreground">
               {title}
             </InternalLink>
           ))}
