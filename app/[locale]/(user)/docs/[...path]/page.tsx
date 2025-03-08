@@ -7,7 +7,7 @@ import { formatTitle } from '@/lib/utils';
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
 export const dynamicParams = false;
-export const revalidate = 72000;
+export const revalidate = false;
 
 export default async function Page({ params }: Props) {
   const { path, locale } = await params;
