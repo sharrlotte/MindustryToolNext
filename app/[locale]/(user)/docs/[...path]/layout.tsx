@@ -45,15 +45,17 @@ export default async function Layout({ children, params }: { children: ReactNode
               <AccordionTrigger className="text-xl py-0 justify-start text-start text-nowrap">{meta.title}</AccordionTrigger>
               <AccordionContent>
                 {titles.map((value) => (
-                  <InternalLink
-                    key={value.docs}
-                    href={`/${locale}/docs/${category}/${value.docs}`}
-                    className={cn('text-lg px-4 py-2 rounded-md hover:bg-muted/50', {
-                      'text-brand': value.docs === docs,
-                    })}
-                  >
-                    {value.title}
-                  </InternalLink>
+                  <div key={value.docs}>
+                    <div className="border-l"></div>
+                    <InternalLink
+                      href={`/${locale}/docs/${category}/${value.docs}`}
+                      className={cn('text-lg px-4 py-2 rounded-md hover:bg-muted/50 text-muted-foreground', {
+                        'text-brand': value.docs === docs,
+                      })}
+                    >
+                      {value.title}
+                    </InternalLink>
+                  </div>
                 ))}
               </AccordionContent>
             </AccordionItem>
