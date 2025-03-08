@@ -2,12 +2,16 @@ import fs from 'fs';
 import { Metadata } from 'next';
 import p from 'path';
 
+
+
 import { formatTitle } from '@/lib/utils';
+
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
 export const dynamicParams = false;
 export const revalidate = false;
+export const dynamic = 'force-static';
 
 export default async function Page({ params }: Props) {
   const { path, locale } = await params;
