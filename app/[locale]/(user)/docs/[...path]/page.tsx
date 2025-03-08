@@ -37,11 +37,11 @@ export function generateStaticParams() {
   const localeFolders = p.join(process.cwd(), 'docs');
   const locales = fs.readdirSync(localeFolders);
 
-  return locales.map((locale) => {
+  return locales.flatMap((locale) => {
     const docsFolderPath = p.join(localeFolders, locale);
     const docsFolders = fs.readdirSync(docsFolderPath);
 
-    return docsFolders.map((folder) => {
+    return docsFolders.flatMap((folder) => {
       const docsPath = p.join(docsFolderPath, folder);
       const docs = fs.readdirSync(docsPath).filter((file) => file.endsWith('.mdx'));
 
