@@ -1,5 +1,5 @@
 const value = {
-  title: 'Home',
+  title: 'Welcome to MindustryTool',
 };
 
 export default value;
