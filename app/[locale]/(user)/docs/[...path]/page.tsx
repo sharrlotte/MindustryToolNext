@@ -48,7 +48,7 @@ export function generateStaticParams() {
       const paths = docs.map((file) => file.replace('.mdx', ''));
 
       return paths.map((path) => ({
-        path,
+        path: [folder, path],
         locale,
       }));
     });
