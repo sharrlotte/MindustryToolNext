@@ -10,6 +10,10 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const { locale } = await params;
   const categoryFolder = p.join(process.cwd(), 'docs', p.normalize(locale));
 
+  if (!fs.existsSync(categoryFolder)) {
+    return <div>No content</div>;
+  }
+
   const data = await Promise.all(
     fs.readdirSync(categoryFolder).map(async (cat) => {
       const docsFolder = p.join(process.cwd(), 'docs', p.normalize(locale), p.normalize(cat));
