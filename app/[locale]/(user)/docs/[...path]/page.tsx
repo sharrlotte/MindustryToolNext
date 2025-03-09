@@ -2,17 +2,12 @@ import fs from 'fs';
 import { Metadata } from 'next';
 import p from 'path';
 
-
-
 import { formatTitle } from '@/lib/utils';
-
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
 export const dynamicParams = false;
 export const revalidate = false;
-export const dynamic = 'force-static';
-
 export default async function Page({ params }: Props) {
   const { path, locale } = await params;
 
@@ -38,26 +33,4 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: content,
     },
   };
-}
-
-export function generateStaticParams() {
-  const localeFolders = p.join(process.cwd(), 'docs');
-  const locales = fs.readdirSync(localeFolders);
-
-  return locales.flatMap((locale) => {
-    const docsFolderPath = p.join(localeFolders, locale);
-    const docsFolders = fs.readdirSync(docsFolderPath);
-
-    return docsFolders.flatMap((folder) => {
-      const docsPath = p.join(docsFolderPath, folder);
-      const docs = fs.readdirSync(docsPath).filter((file) => file.endsWith('.mdx'));
-
-      const paths = docs.map((file) => file.replace('.mdx', ''));
-
-      return paths.map((path) => ({
-        path: [folder, path],
-        locale,
-      }));
-    });
-  });
 }
