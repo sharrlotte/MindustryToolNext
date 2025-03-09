@@ -6,6 +6,8 @@ import { DocMeta } from '@/app/[locale]/(user)/docs/docmeta';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 
+export const dynamicParams = false;
+export const revalidate = false;
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const categoryFolder = p.join(process.cwd(), 'docs', p.normalize(locale));
