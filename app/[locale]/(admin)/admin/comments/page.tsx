@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import PageClient from '@/app/[locale]/(admin)/admin/comments/page.client';
 
-export const experimental_ppr = true;
-
 export default function Page() {
-  return <PageClient />;
+  return (
+    <Suspense>
+      <PageClient />;
+    </Suspense>
+  );
 }

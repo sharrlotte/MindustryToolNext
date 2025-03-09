@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import { Locale, cookieName } from '@/i18n/config';
 
 export default function useLocaleStore() {

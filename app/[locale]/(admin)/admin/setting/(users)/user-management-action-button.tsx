@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { toast } from '@/components/ui/sonner';
 
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import ProtectedElement from '@/layout/protected-element';

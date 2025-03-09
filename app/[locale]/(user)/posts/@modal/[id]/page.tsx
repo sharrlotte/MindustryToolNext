@@ -15,7 +15,6 @@ type Props = {
 };
 
 const getCachedPost = cache((id: string) => serverApi((axios) => getPost(axios, { id })));
-export const experimental_ppr = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;

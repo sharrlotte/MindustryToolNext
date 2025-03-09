@@ -16,12 +16,11 @@ type Props = {
   searchParams: Promise<ItemPaginationQueryType>;
   params: Promise<{ locale: Locale }>;
 };
-export const experimental_ppr = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);
-  const title = await t('plugin');
+  const title = t('plugin');
 
   return {
     title: formatTitle(title),

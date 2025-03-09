@@ -7,8 +7,6 @@ import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getMyServerManager } from '@/query/server';
 
-export const experimental_ppr = true;
-
 export default async function Page() {
   const managers = await serverApi((axios) => getMyServerManager(axios));
 

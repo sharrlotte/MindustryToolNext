@@ -17,7 +17,7 @@ import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import ProtectedElement from '@/layout/protected-element';

@@ -5,7 +5,7 @@ import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
 import { LikeAction } from '@/constant/enum';
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import { postLike } from '@/query/like';
 import { LikeData } from '@/types/data/LikeData';

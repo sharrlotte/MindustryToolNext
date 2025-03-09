@@ -1,3 +1,5 @@
+'use client';
+
 import { UserActions } from '@/app/[locale]/user-sheet';
 
 import LoginButton from '@/components/button/login-button';
@@ -9,7 +11,7 @@ import Divider from '@/components/ui/divider';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
 
-import { getSession } from '@/action/action';
+import { useSession } from '@/context/session-context';
 import { isError } from '@/lib/utils';
 
 export function UserDisplay() {
@@ -21,8 +23,8 @@ export function UserDisplay() {
     </div>
   );
 }
-export async function Internal() {
-  const session = await getSession();
+export function Internal() {
+  const { session } = useSession();
 
   if (isError(session)) {
     return undefined;

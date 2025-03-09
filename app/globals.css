@@ -47,7 +47,7 @@
 
   .dark {
     --background: 240 10% 4%;
-    --foreground: 0 0% 100%;
+    --foreground: 0 0% 90%;
 
     --card: 0 0% 10%;
     --card-foreground: 60 9.1% 97.8%;
@@ -89,15 +89,15 @@
   }
 
   h1 {
-    @apply text-3xl;
+    @apply py-4 text-3xl;
   }
 
   h2 {
-    @apply text-2xl;
+    @apply py-2 text-2xl;
   }
 
   h3 {
-    @apply text-xl;
+    @apply py-1 text-xl;
   }
 
   h4 {

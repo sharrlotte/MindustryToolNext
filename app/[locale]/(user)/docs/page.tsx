@@ -6,6 +6,14 @@ import { DocMeta } from '@/app/[locale]/(user)/docs/docmeta';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 
+import { locales } from '@/i18n/config';
+
+export const dynamicParams = false;
+export const revalidate = false;
+
+export async function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const categoryFolder = p.join(process.cwd(), 'docs', p.normalize(locale));

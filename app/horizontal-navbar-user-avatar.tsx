@@ -6,7 +6,7 @@ import LoginButton from '@/components/button/login-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 
 export default function HorizontalNavbarUserAvatar() {
   const { session, state } = useSession();

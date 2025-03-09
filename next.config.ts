@@ -59,6 +59,7 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
   // Add markdown plugins here, as desired
+  
 });
 
 const analyze = process.env.ANALYZE === 'true';

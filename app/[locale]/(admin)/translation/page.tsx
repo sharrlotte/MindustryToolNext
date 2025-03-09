@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import TranslationPage from '@/app/[locale]/(admin)/translation/page.client';
 
@@ -11,12 +12,11 @@ type Props = {
     locale: Locale;
   }>;
 };
-export const experimental_ppr = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);
-  const title = await t('translation');
+  const title = t('translation');
 
   return {
     title: formatTitle(title),
@@ -24,5 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function Page() {
-  return <TranslationPage />;
+  return (
+    <Suspense>
+      <TranslationPage />;
+    </Suspense>
+  );
 }

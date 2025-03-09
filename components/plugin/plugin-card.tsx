@@ -9,7 +9,7 @@ import Tran from '@/components/common/tran';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { toast } from '@/components/ui/sonner';
 
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import ProtectedElement from '@/layout/protected-element';

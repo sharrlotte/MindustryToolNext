@@ -16,7 +16,7 @@ import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 import ProtectedElement from '@/layout/protected-element';

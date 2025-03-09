@@ -1,44 +1,94 @@
-import { cookies } from 'next/headers';
-import { ReactNode } from 'react';
+'use client';
 
-import { getSession } from '@/action/action';
-import ClientSessionProvider from '@/context/session-context.client';
-import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, paginationTypes } from '@/context/session-context.type';
-import { isError } from '@/lib/utils';
-import { cookieName, defaultLocale, Locale } from '@/i18n/config';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
-export async function SessionProvider({ children }: { children: ReactNode }) {
-  const cookie = await cookies();
-  let session = await getSession();
+import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, SESSION_ID_PERSISTENT_KEY, SessionContextType } from '@/context/session-context.type';
+import { cookieName, defaultLocale } from '@/i18n/config';
+import axiosInstance from '@/query/config/config';
 
-  if (isError(session)) {
-    session = null;
+const defaultContextValue: SessionContextType = {
+  session: null,
+  state: 'loading',
+  createdAt: 0,
+  config: {
+    paginationType: DEFAULT_PAGINATION_TYPE,
+    paginationSize: DEFAULT_PAGINATION_SIZE,
+    Locale: defaultLocale,
+  },
+  setConfig: () => {},
+};
+
+export const SessionContext = React.createContext<SessionContextType>(defaultContextValue);
+
+export function useSession(): SessionContextType {
+  const context = React.useContext(SessionContext);
+
+  if (!context) {
+    throw new Error('Can not use out side of context');
+  }
+  // TEST
+  // const session = context.session;
+
+  // if (session) {
+  //   context.session = { ...session, roles: [] };
+  // }
+
+  return context;
+}
+
+export function useMe() {
+  const { session } = useSession();
+
+  if (!session) {
+    return { highestRole: 0 };
   }
 
-  const paginationSizeString = cookie.get(PAGINATION_SIZE_PERSISTENT_KEY)?.value;
-  const paginationType = cookie.get(PAGINATION_TYPE_PERSISTENT_KEY)?.value as any;
-  const Locale = cookie.get(cookieName)?.value as Locale ?? defaultLocale;
+  const highestRole = session?.roles.sort((r1, r2) => r2?.position - r1?.position)[0]?.position || 0;
 
-  const config: Config = {
-    paginationType: paginationTypes.includes(paginationType) ? paginationType : DEFAULT_PAGINATION_TYPE,
-    paginationSize: paginationSizeString ? Number(paginationSizeString) : DEFAULT_PAGINATION_SIZE,
-    Locale
-  };
+  return { highestRole };
+}
 
-  return (
-    <ClientSessionProvider
-      session={
-        session
-          ? {
-              session,
-              state: 'authenticated',
-              config,
-              createdAt: Date.now(),
-            }
-          : { state: 'unauthenticated', session: null, createdAt: Date.now(), config }
+export function SessionProvider({ children }: { children: ReactNode }) {
+  const [{ Locale, paginationSize, paginationType }, _setConfig] = useCookies([PAGINATION_TYPE_PERSISTENT_KEY, PAGINATION_SIZE_PERSISTENT_KEY, SESSION_ID_PERSISTENT_KEY, cookieName]);
+
+  const setConfig = useCallback(<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }), [_setConfig]);
+  const [session, setSession] = useState<SessionContextType>(() => ({
+    session: null,
+    state: 'loading',
+    createdAt: Date.now(),
+    config: {
+      paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
+      paginationSize: paginationSize ? Number(paginationSize) : DEFAULT_PAGINATION_SIZE,
+      Locale: Locale ?? defaultLocale,
+    },
+    setConfig: setConfig,
+  }));
+
+  useEffect(() => {
+    setSession((prev) => {
+      const config = {
+        paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
+        paginationSize: paginationSize ? Number(paginationSize) : DEFAULT_PAGINATION_SIZE,
+        Locale: Locale ?? defaultLocale,
+      };
+
+      if (prev.config.paginationSize === config.paginationSize && prev.config.paginationType === config.paginationType && prev.config.Locale === config.Locale) {
+        return prev;
       }
-    >
-      {children}
-    </ClientSessionProvider>
-  );
+
+      return { ...prev, config };
+    });
+  }, [paginationType, paginationSize, Locale]);
+
+  useEffect(() => {
+    axiosInstance
+      .get('/auth/session')
+      .then((r) => r.data)
+      .then((data) => data ?? null)
+      .catch(() => null)
+      .then((data) => setSession((prev) => (data ? { ...prev, session: data, state: 'authenticated' } : { ...prev, session: null, state: 'unauthenticated' })));
+  }, []);
+
+  return <SessionContext.Provider value={session}>{children}</SessionContext.Provider>;
 }

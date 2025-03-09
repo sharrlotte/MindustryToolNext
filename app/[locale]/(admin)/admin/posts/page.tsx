@@ -12,12 +12,11 @@ import { getPostUploads } from '@/query/post';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 export const revalidate = 3600;
-export const experimental_ppr = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);
-  const title = await t('post');
+  const title = t('post');
 
   return {
     title: formatTitle(title),

@@ -1,5 +1,8 @@
-const value = {
+import { DocMeta } from '@/app/[locale]/(user)/docs/docmeta';
+
+const value: DocMeta = {
   title: 'Welcome to MindustryTool 2',
+  docs: ['welcome'],
 };
 
 export default value;

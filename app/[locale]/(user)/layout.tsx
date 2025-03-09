@@ -1,16 +1,9 @@
-import React, { ReactNode } from 'react';
-
-import Ads from '@/components/common/ads';
+import { ReactNode } from 'react';
 
 type Props = {
   children: ReactNode;
 };
 
 export default function Layout({ children }: Props) {
-  return (
-    <>
-      {children}
-      <Ads />
-    </>
-  );
+  return children;
 }

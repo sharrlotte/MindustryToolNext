@@ -17,7 +17,7 @@ import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
 import { MapDetail } from '@/types/response/MapDetail';
 

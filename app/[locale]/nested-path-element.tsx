@@ -9,7 +9,7 @@ import NavbarVisible from '@/app/navbar-visible';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 import { useNavBar } from '@/context/navbar-context';
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter, cn } from '@/lib/utils';
 
@@ -41,7 +41,7 @@ export default function NestedPathElement({ segment }: NestedPathElementProps) {
   const { id, name, icon, path, regex } = segment;
 
   return (
-    <Accordion type="single" collapsible value={regex.some((r) => currentPath.match(r)) || value ? id : undefined} onValueChange={value => setValue(value === id)} className={cn('w-full', { 'w-10': !visible })}>
+    <Accordion type="single" collapsible value={regex.some((r) => currentPath.match(r)) || value ? id : undefined} onValueChange={(value) => setValue(value === id)} className={cn('w-full', { 'w-10': !visible })}>
       <AccordionItem className="w-full" value={id}>
         <AccordionTrigger
           className={cn('flex h-10 items-center justify-center text-base gap-0 rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {

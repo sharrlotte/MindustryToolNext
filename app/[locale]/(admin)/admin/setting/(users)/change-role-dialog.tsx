@@ -1,7 +1,5 @@
 import { Fragment, Suspense, useMemo, useState } from 'react';
 
-
-
 import { Hidden } from '@/components/common/hidden';
 import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -11,9 +9,7 @@ import Divider from '@/components/ui/divider';
 import { toast } from '@/components/ui/sonner';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
-
-
-import { useMe, useSession } from '@/context/session-context.client';
+import { useMe, useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { groupBy } from '@/lib/utils';
@@ -23,10 +19,7 @@ import { changeAuthorities } from '@/query/user';
 import { Authority, Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
 
-
-
 import { useMutation, useQuery } from '@tanstack/react-query';
-
 
 type DialogProps = {
   user: User;
