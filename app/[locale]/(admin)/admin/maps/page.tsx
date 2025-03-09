@@ -1,4 +1,5 @@
 import { Metadata } from 'next/dist/types';
+import { Suspense } from 'react';
 
 import Client from '@/app/[locale]/(admin)/admin/maps/page.client';
 
@@ -16,7 +17,7 @@ export const revalidate = 3600;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);
-  const title = await t('map');
+  const title = t('map');
 
   return {
     title: formatTitle(title),
@@ -43,5 +44,9 @@ export default async function Page({ searchParams }: Props) {
     return <ErrorScreen error={maps} />;
   }
 
-  return <Client maps={maps} params={data} />;
+  return (
+    <Suspense>
+      <Client maps={maps} params={data} />
+    </Suspense>
+  );
 }

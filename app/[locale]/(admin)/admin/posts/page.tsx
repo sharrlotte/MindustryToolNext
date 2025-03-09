@@ -16,7 +16,7 @@ export const revalidate = 3600;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);
-  const title = await t('post');
+  const title = t('post');
 
   return {
     title: formatTitle(title),

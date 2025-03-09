@@ -26,7 +26,7 @@ import { getOnline, getUsers } from '@/query/user';
 
 export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 list-none">
+    <ul className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-8 list-none">
       <Suspense>
         <InternalSchematicRowView queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0 h-full border-2 rounded-lg border-border">
@@ -42,7 +42,7 @@ export async function HomeSchematicPreview({ queryParam }: { queryParam: ItemPag
 }
 export async function HomeMapPreview({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <ul className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2 list-none">
+    <ul className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-8 list-none">
       <Suspense>
         <InternalHomeMapPreview queryParam={queryParam} />
         <li key="more" className="m-0 snap-center text-nowrap p-0 h-full border-2 rounded-lg border-border">
