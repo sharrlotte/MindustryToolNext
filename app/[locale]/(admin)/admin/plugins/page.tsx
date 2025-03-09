@@ -12,7 +12,6 @@ import { getPluginUploads } from '@/query/plugin';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 export const revalidate = 3600;
-export const experimental_ppr = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

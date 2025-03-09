@@ -15,8 +15,6 @@ type Props = {
   }>;
 };
 
-export const experimental_ppr = true;
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import LogPage from '@/app/[locale]/(admin)/logs/page.client';
 
@@ -11,7 +12,6 @@ type Props = {
     locale: Locale;
   }>;
 };
-export const experimental_ppr = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -24,5 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function Page() {
-  return <LogPage />;
+  return (
+    <Suspense>
+      <LogPage />
+    </Suspense>
+  );
 }

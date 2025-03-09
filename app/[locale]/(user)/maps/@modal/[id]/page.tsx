@@ -14,8 +14,6 @@ type Props = {
   params: Promise<{ id: string; locale: Locale }>;
 };
 
-export const experimental_ppr = true;
-
 const getCachedMap = cache((id: string) => serverApi((axios) => getMap(axios, { id })));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

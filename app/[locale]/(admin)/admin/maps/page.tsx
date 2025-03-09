@@ -12,7 +12,6 @@ import { getMapUploads } from '@/query/map';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
 export const revalidate = 3600;
-export const experimental_ppr = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -44,5 +43,5 @@ export default async function Page({ searchParams }: Props) {
     return <ErrorScreen error={maps} />;
   }
 
-  return <Client maps={maps} params={data}/>;
+  return <Client maps={maps} params={data} />;
 }

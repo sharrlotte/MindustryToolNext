@@ -15,7 +15,6 @@ type Props = {
   searchParams: Promise<ItemPaginationQueryType>;
   params: Promise<{ locale: Locale }>;
 };
-export const experimental_ppr = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

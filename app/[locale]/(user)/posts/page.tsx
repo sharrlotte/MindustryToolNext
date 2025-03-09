@@ -10,7 +10,6 @@ import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-que
 type Props = {
   searchParams: Promise<ItemPaginationQueryType>;
 };
-export const experimental_ppr = true;
 
 export default async function Page({ searchParams }: Props) {
   const { data, success, error } = ItemPaginationQuery.safeParse(await searchParams);
