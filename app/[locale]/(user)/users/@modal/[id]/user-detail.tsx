@@ -10,7 +10,7 @@ import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
 
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
 import { User } from '@/types/response/User';
 

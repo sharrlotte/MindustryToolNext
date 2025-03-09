@@ -10,7 +10,7 @@ import Divider from '@/components/ui/divider';
 import UserAvatar from '@/components/user/user-avatar';
 
 import { useNavBar } from '@/context/navbar-context';
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import { cn } from '@/lib/utils';
 
 export default function MediumNavFooter() {

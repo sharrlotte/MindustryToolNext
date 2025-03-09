@@ -10,7 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import UserCard from '@/components/user/user-card';
 
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import ProtectedElement from '@/layout/protected-element';

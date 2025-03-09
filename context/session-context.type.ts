@@ -8,6 +8,7 @@ export type PaginationType = (typeof paginationTypes)[number];
 
 export const PAGINATION_TYPE_PERSISTENT_KEY = 'paginationType';
 export const PAGINATION_SIZE_PERSISTENT_KEY = 'paginationSize';
+export const SESSION_ID_PERSISTENT_KEY = 'SESSION_ID';
 
 export const DEFAULT_PAGINATION_TYPE = 'grid';
 export const DEFAULT_PAGINATION_SIZE = 10;
@@ -18,7 +19,7 @@ export type Config = {
   Locale: Locale;
 };
 
-export type ServerSessionContextType = (
+export type SessionContextType = (
   | {
       session: null;
       state: 'loading' | 'unauthenticated';
@@ -30,8 +31,5 @@ export type ServerSessionContextType = (
 ) & {
   createdAt: number;
   config: Config;
-};
-
-export type SessionContextType = ServerSessionContextType & {
   setConfig: <T extends keyof Config>(config: T, value: Config[T]) => void;
 };

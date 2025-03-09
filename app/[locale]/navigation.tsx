@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode } from 'react';
 
 import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
@@ -6,15 +8,15 @@ import { groups } from '@/app/routes';
 
 import ErrorScreen from '@/components/common/error-screen';
 
-import { getSession } from '@/action/action';
 import { NavBarProvider } from '@/context/navbar-context';
+import { useSession } from '@/context/session-context';
 import IsSmall from '@/layout/is-small';
 import { hasAccess, isError } from '@/lib/utils';
 
 // const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
 
-export default async function NavigationBar({ children }: { children: ReactNode }) {
-  const session = await getSession();
+export default function NavigationBar({ children }: { children: ReactNode }) {
+  const { session } = useSession();
 
   if (isError(session)) {
     return <ErrorScreen error={session} />;

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode } from 'react';
 
 import { ChangeLanguageDialog } from '@/app/[locale]/change-language-dialog';
@@ -8,7 +10,7 @@ import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 
-import { getSession } from '@/action/action';
+import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
 
@@ -43,8 +45,8 @@ const tabs: Tab = [
   },
 ];
 
-export async function UserActions() {
-  const session = await getSession();
+export function UserActions() {
+  const { session } = useSession();
 
   return tabs.map(({ action, icon, filter }, index) => (
     <ProtectedElement session={session} filter={filter} key={index}>

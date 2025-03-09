@@ -14,7 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import UserAvatar from '@/components/user/user-avatar';
 
 import env from '@/constant/env';
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import useMindustryGpt from '@/hooks/use-mindustry-gpt';
 import ProtectedElement from '@/layout/protected-element';
 import { isReachedEnd } from '@/lib/utils';

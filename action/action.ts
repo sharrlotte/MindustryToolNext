@@ -126,8 +126,3 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
 
   return axiosInstance;
 };
-
-export async function getLocaleFromCookie() {
-  const cookie = await cookies();
-  return cookie.get('Locale')?.value || 'en';
-}

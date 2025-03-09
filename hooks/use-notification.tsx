@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import InternalLink from '@/components/common/internal-link';
 import { toast } from '@/components/ui/sonner';
 
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 
 export default function useNotification() {
   const { session } = useSession();

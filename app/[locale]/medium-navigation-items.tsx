@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode } from 'react';
 
 import MediumNavFooter from '@/app/[locale]/medium-nav-footer';
@@ -12,8 +14,8 @@ import { PathGroup } from '@/app/routes';
 import ErrorScreen from '@/components/common/error-screen';
 import Divider from '@/components/ui/divider';
 
-import { getSession } from '@/action/action';
 import env from '@/constant/env';
+import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter, isError } from '@/lib/utils';
 
@@ -65,8 +67,8 @@ type PathGroupElementProps = {
   group: PathGroup;
 };
 
-async function PathGroupElement({ group }: PathGroupElementProps) {
-  const session = await getSession();
+function PathGroupElement({ group }: PathGroupElementProps) {
+  const { session } = useSession();
 
   if (isError(session)) {
     return <ErrorScreen error={session} />;
@@ -104,8 +106,8 @@ type PathElementProps = {
     regex: string[];
   };
 };
-async function PathElement({ segment }: PathElementProps) {
-  const session = await getSession();
+function PathElement({ segment }: PathElementProps) {
+  const { session } = useSession();
 
   if (isError(session)) {
     return <ErrorScreen error={session} />;

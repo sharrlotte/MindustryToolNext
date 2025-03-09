@@ -10,7 +10,7 @@ import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 import { useNavBar } from '@/context/navbar-context';
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import { useSocket } from '@/context/socket-context';
 import useClientQuery from '@/hooks/use-client-query';
 import useNotification from '@/hooks/use-notification';

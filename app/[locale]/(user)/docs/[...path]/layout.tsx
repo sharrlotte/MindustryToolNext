@@ -63,7 +63,7 @@ export default async function Layout({ children, params }: { children: ReactNode
 
   return (
     <div className="p-4 grid grid-cols-[20rem_auto] divide-x h-full">
-      <div className="pr-4 space-y-4">
+      <ScrollContainer className="pr-4 space-y-4">
         <Accordion className="space-y-4" type="single" collapsible defaultValue={category}>
           {data.map(({ meta, titles, cat }) => (
             <AccordionItem key={cat} value={cat}>
@@ -90,7 +90,7 @@ export default async function Layout({ children, params }: { children: ReactNode
             </AccordionItem>
           ))}
         </Accordion>
-      </div>
+      </ScrollContainer>
       <ScrollContainer className="px-4">{children}</ScrollContainer>
     </div>
   );

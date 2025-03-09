@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 
 import { LayoutGridIcon, LayoutListIcon } from '@/components/common/icons';
 
-import { useSession } from '@/context/session-context.client';
+import { useSession } from '@/context/session-context';
 import { cn } from '@/lib/utils';
 
 type Props = {
