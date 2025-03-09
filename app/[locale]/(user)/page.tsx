@@ -1,17 +1,19 @@
 import { Book, Cpu, DownloadIcon, FileCode, Flame, Gamepad2, Github, Globe, MapIcon, MessageSquareIcon, MessagesSquare, Milestone, PlayIcon, RocketIcon, Server, ServerIcon, Swords, YoutubeIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import React from 'react';
+import React, { Suspense } from 'react';
 import 'server-only';
 
+import Counter from '@/app/[locale]/counter';
 import { HomeMapPreview, HomeSchematicPreview, HomeServerPreview, OnlineDisplay } from '@/app/[locale]/home';
+import StatisticCard from '@/app/[locale]/statistic-card';
 
 import CopyButton from '@/components/button/copy-button';
 import { CopyIcon, DiscordIcon, FacebookIcon, GithubIcon, PostIcon, SchematicIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
 
-import { getServerApi } from '@/action/action';
+import { getServerApi, getSession } from '@/action/action';
 import env from '@/constant/env';
 import type { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
@@ -21,8 +23,6 @@ import { getSchematicCount } from '@/query/schematic';
 
 import { YouTubeEmbed } from '@next/third-parties/google';
 
-import Counter from './counter';
-import StatisticCard from './statistic-card';
 import './style.css';
 
 export const experimental_ppr = true;
@@ -144,13 +144,17 @@ export default async function Page({ params }: Props) {
     <main className="h-screen no-scrollbar overflow-auto bg-gradient dark">
       <div className="container p-4 mx-auto flex h-full flex-col bg-center text-foreground gap-16 min-h-screen">
         <Header locale={locale} />
-        <Statistic locale={locale} />
+        <Suspense>
+          <Statistic locale={locale} />
+        </Suspense>
         <About locale={locale} />
         <Features locale={locale} />
         <Design locale={locale} />
         <Hosting locale={locale} />
         <Community locale={locale} />
-        <Action locale={locale} />
+        <Suspense>
+          <Action locale={locale} />
+        </Suspense>
         <Footer locale={locale} />
       </div>
     </main>
@@ -220,7 +224,13 @@ function Footer({ locale }: { locale: Locale }) {
     </footer>
   );
 }
-function Action({ locale }: { locale: Locale }) {
+async function Action({ locale }: { locale: Locale }) {
+  const session = await getSession();
+
+  if (session) {
+    return undefined;
+  }
+
   return (
     <section>
       <div className="mx-auto">

@@ -8,6 +8,7 @@ import {
   ArrowLeftCircle,
   ArrowUpDown,
   BellIcon,
+  Book,
   BookOpenIcon,
   BotIcon,
   Box,
@@ -74,9 +75,10 @@ import {
   Users,
   X,
   XCircle,
-  Book
 } from 'lucide-react';
 import Image from 'next/image';
+
+import mindustryToolIcon from '@/app/favicon.ico';
 
 import { cn } from '@/lib/utils';
 import googleIcon from '@/public/icons/google.svg';
@@ -87,6 +89,7 @@ type Props = {
   className?: string;
 };
 
+export const MindustryToolIcon = ({ className }: Props) => <Image className={className} width={32} height={32} src={mindustryToolIcon} alt="MindustryToolIcon" />;
 export const DocsIcon = ({ className }: Props) => <Book className={className ?? 'lucide'} />;
 export const KeyRoundIcon = ({ className }: Props) => <KeyRound className={className ?? 'lucide'} />;
 export const ShareIcon = ({ className }: Props) => <Share2 className={className ?? 'lucide'} />;

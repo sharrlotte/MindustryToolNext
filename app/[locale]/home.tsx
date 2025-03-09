@@ -79,7 +79,7 @@ async function InternalSchematicRowView({ queryParam }: { queryParam: ItemPagina
     return <ErrorScreen error={result} />;
   }
 
-  return result.slice(0, 7).map((schematic, index) => (
+  return result.slice(0, 3).map((schematic, index) => (
     <li key={schematic.id} className="m-0 snap-center p-0 border-2 rounded-lg border-border">
       <FadeIn delay={index}>
         <SchematicPreviewCard schematic={schematic} />
@@ -95,7 +95,7 @@ async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginati
     return <ErrorScreen error={result} />;
   }
 
-  return result.slice(0, 7).map((map, index) => (
+  return result.slice(0, 3).map((map, index) => (
     <li key={map.id} className="m-0 snap-center p-0 border-2 rounded-lg border-border">
       <FadeIn delay={index}>
         <MapPreviewCard map={map} />
@@ -111,7 +111,7 @@ async function InternalHomeServerPreview() {
     return <ErrorScreen error={result} />;
   }
 
-  return result.slice(0, 7).map((server, index) => (
+  return result.slice(0, 3).map((server, index) => (
     <li key={server.id} className="m-0 snap-center p-0 h-full w-[320px] min-w-[320px]">
       <FadeIn delay={index}>
         <ServerCard server={server} />
