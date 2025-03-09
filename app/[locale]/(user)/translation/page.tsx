@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import TranslationPage from '@/app/[locale]/(admin)/translation/page.client';
+import TranslationPage from '@/app/[locale]/(user)/translation/page.client';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
