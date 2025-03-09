@@ -6,12 +6,13 @@ import { cn } from '@/lib/utils';
 
 type AdditionalPadding = `pr-${number}`;
 type Props = {
+  id?: string;
   className?: string;
   additionalPadding?: AdditionalPadding;
   children: ReactNode;
 };
 
-const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, additionalPadding = 'pr-2', children }, forwardedRef) => {
+const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id, additionalPadding = 'pr-2', children }, forwardedRef) => {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const lastScrollTop = React.useRef(0);
   const [hasGapForScrollbar, setHasGapForScrollbar] = useState(false);
@@ -41,6 +42,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, ad
 
   return (
     <div
+      id={id}
       className={cn('h-full scroll-container overflow-y-auto w-full', className, {
         [additionalPadding]: hasGapForScrollbar,
       })}
