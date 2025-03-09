@@ -23,8 +23,6 @@ export function useActiveHeading() {
 
     const headings = container.querySelectorAll('h2, h3, h4, h5, h6');
 
-    console.log({ headings });
-
     headings.forEach((heading) => observer.observe(heading));
 
     return () => observer.disconnect();
