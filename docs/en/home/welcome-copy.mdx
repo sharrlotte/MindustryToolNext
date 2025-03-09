@@ -1,24 +1,232 @@
-# Test markdown 2
+# GFM
 
-Welcome to **Mindustry Tool Web**, your comprehensive online resource for enhancing your Mindustry gameplay experience. Our platform offers a suite of tools designed to assist both new and seasoned players in mastering the complexities of Mindustry.
+## Autolink literals
 
-## Features
+www.example.com, https://example.com, and contact@example.com.
 
-- **Interactive Schematics Editor**: Design and share your own schematics with our user-friendly editor.
-- **Logic Simulator**: Test your Mindustry logic scripts in a safe environment before deploying them in-game.
-- **Resource Calculator**: Plan your resource management efficiently with our detailed calculators.
-- **Community Contributions**: Access a library of user-generated content, including schematics, scripts, and tutorials.
+## Footnote
 
-## Getting Started
+A note[^1]
 
-To begin, explore our [Interactive Schematics Editor](#) or visit the [Logic Simulator](#) to test your scripts. For guidance on using Markdown within our tools, refer to the [Markdown Guide](https://www.markdownguide.org/).
+[^1]: Big note.
 
-## Community and Support
+## Strikethrough
 
-Join our community forums to share your creations, seek advice, and collaborate with other Mindustry enthusiasts. If you encounter any issues or have suggestions, please visit our [GitHub repository](#) to report them.
+~one~ or ~~two~~ tildes.
 
-Thank you for choosing Mindustry Tool Web. We look forward to supporting your journey in the world of Mindustry!
+## Table
 
-_Note: This page is written in Markdown. For more information on Markdown syntax, visit the [Markdown Guide](https://www.markdownguide.org/)._
+| a | b  |  c |  d  |
+| - | :- | -: | :-: |
 
-![](https://images7.alphacoders.com/130/1304034.jpeg)
+## Tasklist
+
+* [ ] to do
+* [x] done
+
+export const name = 'World'
+export const title = 'Hi, ' + name + '!'
+
+# {title}
+---
+title: Hi, World!
+---
+
+# Hi, World!
+---
+title: Hi, World!
+---
+
+# {title}
+
+# $$\sqrt{a^2 + b^2}$$
+
+```js filename="index.js"
+console.log(1)
+```
+
+import {CodePen} from 'mdx-embed'
+
+Here’s a codepen, and some other blog post text.
+
+<CodePen codePenId="PNaGbb" />
+
+Here’s a codepen, and some other blog post text.
+
+<CodePen codePenId="PNaGbb" />
+
+# Hello *<Planet />*
+
+# Hello, world!
+
+Below is an example of markdown in JSX.
+
+<div style={{backgroundColor: 'violet', padding: '1rem'}}>
+  Try and change the background color to `tomato`.
+</div>
+
+> A blockquote with *some* emphasis.
+
+# Heading (rank 1)
+## Heading 2
+### 3
+#### 4
+##### 5
+###### 6
+
+> Block quote
+
+* Unordered
+* List
+
+1. Ordered
+2. List
+
+A paragraph, introducing a thematic break:
+
+---
+
+```js
+some.code()
+```
+
+a [link](https://example.com), an ![image](./image.png), some *emphasis*,
+something **strong**, and finally a little `code()`.
+
+    console.log(1) // this is a paragraph in MDX!
+
+<main>
+  <article>
+    # Hello!
+  </article>
+</main>
+
+<Welcome name="Venus" />
+<Welcome name="Mars" />
+
+<h1>Heading!</h1>
+
+<abbr title="HyperText Markup Language">HTML</abbr> is a lovely language.
+
+<section>
+  And here is *markdown* in **JSX**!
+</section>
+
+<MyComponent id="123" />
+
+You can also use objects with components, such as the `thisOne` component on
+the `myComponents` object: <myComponents.thisOne />
+
+<Component
+  open
+  x={1}
+  label={'this is a string, *not* markdown!'}
+  icon={<Icon />}
+/>
+
+Two 🍰 is: {Math.PI * 2}
+
+{(function () {
+  const guess = Math.random()
+
+  if (guess > 0.66) {
+    return <span style={{color: 'tomato'}}>Look at us.</span>
+  }
+
+  if (guess > 0.33) {
+    return <span style={{color: 'violet'}}>Who would have guessed?!</span>
+  }
+
+  return <span style={{color: 'goldenrod'}}>Not me.</span>
+})()}
+
+{/* A comment! */}
+
+import {External} from './some/place.js'
+
+export const Local = properties => <span style={{color: 'red'}} {...properties} />
+
+An <External>external</External> component and a <Local>local one</Local>.
+
+import {Chart} from './chart.js'
+import population from './population.js'
+export const pi = 3.14
+
+<Chart data={population} label={'Something with ' + pi} />
+
+<div># this is not a heading but *this* is emphasis</div>
+
+<div>
+  This is a `p`.
+</div>
+
+<h1 className="main">
+  Don’t do this: it’s a `p` in an `h1`
+</h1>
+
+<h1 className="main">Do this: an `h1` with `code`</h1>
+
+export function Thing() {
+  return <>World</>
+}
+
+# Hello <Thing />
+
+export function Thing() {
+  return <>World</>
+}
+
+# Hello <Thing />
+
+import {year} from './data.js'
+export const name = 'world'
+
+# Hello {name.toUpperCase()}
+
+The current year is {year}
+
+# Hello {props.name.toUpperCase()}
+
+The current year is {props.year}
+
+import {Box, Heading} from 'rebass'
+
+MDX using imported components!
+
+<Box>
+  <Heading>Here’s a heading</Heading>
+</Box>
+
+import License from './license.md' // Assumes an integration is used to compile markdown -> JS.
+import Contributing from './docs/contributing.mdx'
+
+# Hello world
+
+<License />
+
+---
+
+<Contributing />
+
+* [markdown syntax](#alpha)
+* <a href="#bravo">JSX with a lowercase name</a>
+* <Link to="#charlie">JSX with a capitalized name</Link>
+
+export default function Layout({children}) {
+  return <main>{children}</main>;
+}
+
+All the things.
+
+export {Layout as default} from './components.js'
+
+import License from './license.md' // Assumes an integration is used to compile markdown -> JS.
+import Contributing from './docs/contributing.mdx'
+
+# Hello world
+
+<License components={props.components} />
+
+---
+
+<Contributing components={props.components} />
