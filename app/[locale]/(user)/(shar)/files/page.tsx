@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 
-import FileList from '@/app/[locale]/(shar)/files/file-list';
+import FileList from '@/app/[locale]/(user)/(shar)/files/file-list';
 
 import { ArrowLeftCircleIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 
 import useQueryState from '@/hooks/use-query-state';
 
-const AddFileDialog = dynamic(() => import('@/app/[locale]/(shar)/files/add-file-dialog'));
+const AddFileDialog = dynamic(() => import('@/app/[locale]/(user)/(shar)/files/add-file-dialog'));
 
 const defaultState = {
   path: '/',
