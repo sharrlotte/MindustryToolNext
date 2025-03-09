@@ -12,6 +12,7 @@ import NavbarVisible from '@/app/navbar-visible';
 import { PathGroup } from '@/app/routes';
 
 import ErrorScreen from '@/components/common/error-screen';
+import { MindustryToolIcon } from '@/components/common/icons';
 import Divider from '@/components/ui/divider';
 
 import env from '@/constant/env';
@@ -44,6 +45,7 @@ function NavHeader() {
     <div className="flex justify-between h-fit">
       <NavbarVisible>
         <div className="flex flex-col">
+          <MindustryToolIcon />
           <h1 className="text-xl font-medium">MindustryTool</h1>
           <span className="overflow-hidden whitespace-nowrap text-xs">{env.webVersion}</span>
         </div>

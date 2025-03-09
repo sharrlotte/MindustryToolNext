@@ -1,4 +1,4 @@
-import { DocMeta } from '@/app/[locale]/(user)/docs/docmeta';
+import { DocMeta } from '@/app/[locale]/docs/docmeta';
 
 const value: DocMeta = {
   title: 'Welcome to MindustryTool 2',
