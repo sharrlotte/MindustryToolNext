@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
-import Script from 'next/script';
 import NextTopLoader from 'nextjs-toploader';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -18,8 +17,6 @@ import { SocketProvider } from '@/context/socket-context';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
-
-import { GoogleAnalytics } from '@next/third-parties/google';
 
 import './../globals.css';
 
@@ -102,13 +99,6 @@ export default async function Root({ children, params }: RootProps) {
       suppressHydrationWarning
     >
       <body className="h-full w-full overflow-hidden">
-        {process.env.NODE_ENV === 'production' ? (
-          <>
-            <GoogleAnalytics gaId="G-1R9S5SV72C" />
-          </>
-        ) : (
-          <>{/* {<Script src="https://unpkg.com/react-scan/dist/auto.global.js" async />} // */}</>
-        )}
         <QueryProvider>
           <ClientInit />
           <ThemeProvider>
