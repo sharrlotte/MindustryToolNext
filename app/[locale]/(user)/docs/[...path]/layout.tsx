@@ -61,8 +61,6 @@ export default async function Layout({ children, params }: { children: ReactNode
     }),
   );
 
-  console.log(category);
-
   return (
     <div className="p-4 grid grid-cols-[20rem_auto] divide-x h-full">
       <div className="pr-4 space-y-4">
@@ -72,12 +70,16 @@ export default async function Layout({ children, params }: { children: ReactNode
               <AccordionTrigger className="text-xl py-0 justify-start text-start text-nowrap">{meta.title}</AccordionTrigger>
               <AccordionContent>
                 {titles.map((value) => (
-                  <div key={value.docs}>
-                    <div className="border-l"></div>
+                  <div
+                    className={cn('border-l', {
+                      'border-brand': value.docs === docs && cat === category,
+                    })}
+                    key={value.docs}
+                  >
                     <InternalLink
                       href={`/${locale}/docs/${cat}/${value.docs}`}
                       className={cn('text-lg px-4 py-2 rounded-md hover:bg-muted/50 text-muted-foreground', {
-                        'text-brand': value.docs === docs,
+                        'text-brand': value.docs === docs && cat === category,
                       })}
                     >
                       {value.title}
