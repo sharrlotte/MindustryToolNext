@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
 
+import NavigationBar from '@/app/[locale]/navigation';
+
 type Props = {
   children: ReactNode;
 };
 
 export default function Layout({ children }: Props) {
-  return children;
+  return <NavigationBar>{children}</NavigationBar>;
 }

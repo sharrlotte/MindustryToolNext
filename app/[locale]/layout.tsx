@@ -6,8 +6,6 @@ import NextTopLoader from 'nextjs-toploader';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import NavigationBar from '@/app/[locale]/navigation';
-
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -106,7 +104,7 @@ export default async function Root({ children, params }: RootProps) {
               <SocketProvider>
                 <Toaster />
                 <NextTopLoader />
-                <NavigationBar>{children}</NavigationBar>
+                {children}
               </SocketProvider>
             </SessionProvider>
           </ThemeProvider>
