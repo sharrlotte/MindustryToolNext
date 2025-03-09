@@ -71,14 +71,14 @@ export default async function Layout({ children, params }: { children: ReactNode
               <AccordionContent>
                 {titles.map((value) => (
                   <div
-                    className={cn('border-l', {
+                    className={cn('border-l hover:border-brand', {
                       'border-brand': value.docs === docs && cat === category,
                     })}
                     key={value.docs}
                   >
                     <InternalLink
                       href={`/${locale}/docs/${cat}/${value.docs}`}
-                      className={cn('text-lg px-4 py-2 rounded-md hover:bg-muted/50 text-muted-foreground', {
+                      className={cn('text-lg px-4 py-2 rounded-r-md hover:bg-muted/80 text-muted-foreground hover:text-brand', {
                         'text-brand': value.docs === docs && cat === category,
                       })}
                     >
