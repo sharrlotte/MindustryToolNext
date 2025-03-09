@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { Metadata } from 'next';
 import p from 'path';
+import removeMd from 'remove-markdown';
 
 import { formatTitle } from '@/lib/utils';
 
@@ -23,14 +24,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const filePath = p.join(process.cwd(), 'docs', p.normalize(locale), p.normalize(category), p.normalize(docs) + '.mdx');
   const content = fs.readFileSync(filePath).toString();
   const index = content.indexOf('\n');
-  const header = content.slice(0, index === -1 ? content.length : index).replace('#', '');
+  const title = removeMd(content.slice(0, index === -1 ? content.length : index));
+  const description = removeMd(content).slice(0, Math.min(500, content.length));
 
   return {
-    title: formatTitle(header),
-    description: content,
+    title: formatTitle(title),
+    description,
     openGraph: {
-      title: header,
-      description: content,
+      title,
+      description,
     },
   };
 }
