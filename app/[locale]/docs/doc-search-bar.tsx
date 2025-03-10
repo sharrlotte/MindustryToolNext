@@ -33,7 +33,7 @@ export default function DocSearchBar() {
 
   return (
     <motion.div
-      className="flex justify-center bg-transparent inset-0 items-center backdrop-blur-md"
+      className="flex justify-center bg-transparent inset-0 items-center backdrop-blur-md z-10"
       variants={{
         focus: {
           position: 'absolute',
