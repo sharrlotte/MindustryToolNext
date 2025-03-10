@@ -46,7 +46,7 @@ export default function DocSearchBar() {
     >
       <div className={cn('w-[min(500px,50vw)] relative', { 'border rounded-xl p-8 bg-background/50': focus })}>
         <button
-          className="absolute right-2 top-2"
+          className={cn('absolute right-2 top-2 hidden', { flex: focus })}
           type="button"
           onClick={() => {
             setFocus(false);
