@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
-import { SearchIcon } from '@/components/common/icons';
+import { SearchIcon, XIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Input } from '@/components/ui/input';
 
@@ -44,7 +44,17 @@ export default function DocSearchBar() {
       }}
       animate={focus ? 'focus' : 'unfocus'}
     >
-      <div className={cn('w-[min(500px,50vw)]', { 'border rounded-xl p-6 bg-background/50': focus })}>
+      <div className={cn('w-[min(500px,50vw)] relative', { 'border rounded-xl p-8 bg-background/50': focus })}>
+        <button
+          className="absolute right-2 top-2"
+          type="button"
+          onClick={() => {
+            setFocus(false);
+            setQuery('');
+          }}
+        >
+          <XIcon />
+        </button>
         <div className="border h-10 rounded-lg px-2 py-0.5 flex items-center w-full">
           <SearchIcon />
           <Input className="w-full border-none" type="text" value={query} onChange={(event) => setQuery(event.currentTarget.value)} onFocus={() => setFocus(true)} />
