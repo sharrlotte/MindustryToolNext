@@ -48,7 +48,7 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
   const heading = extractHeadings(markdown);
 
   return (
-    <ScrollContainer className="pl-4 flex flex-col">
+    <ScrollContainer className="pl-4 flex-col md:flex hidden">
       <h3>
         <Tran text="docs.table-of-content" asChild />
       </h3>

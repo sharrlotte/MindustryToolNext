@@ -53,8 +53,8 @@ export default async function Layout({ children, params }: { children: ReactNode
   const data = await getNavData(locale);
 
   return (
-    <div className="p-4 grid grid-cols-[20rem_auto_20rem] divide-x h-full">
-      <ScrollContainer className="pr-4 space-y-4">
+    <div className="p-4 grid md:grid-cols-[20rem_auto_20rem] md:divide-x h-full relative">
+      <ScrollContainer className="pr-4 space-y-4 absolute md:relative hidden md:flex">
         <Accordion className="space-y-4" type="single" collapsible defaultValue={currentCategory}>
           {data.map(({ meta, titles, category }) => (
             <AccordionItem key={category} value={category}>

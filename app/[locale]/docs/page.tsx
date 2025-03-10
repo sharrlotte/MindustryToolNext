@@ -25,18 +25,15 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const data = await Promise.all(
     fs.readdirSync(categoryFolder).map(async (cat) => {
       const docsFolder = p.join(process.cwd(), 'docs', p.normalize(locale), p.normalize(cat));
-
-      const titles = fs
-        .readdirSync(docsFolder)
-        .filter((file) => file.endsWith('.mdx'))
-        .map((file) => {
-          const content = fs.readFileSync(p.join(docsFolder, file)).toString();
-          const index = content.indexOf('\n');
-          const header = content.slice(0, index === -1 ? content.length : index).replace('#', '');
-          return { title: header, docs: file.replace('.mdx', '') };
-        });
-
       const meta: DocMeta = (await import(`@/docs/${locale}/${cat}/index.ts`)).default;
+
+      const titles = meta.docs.map((file) => {
+        const content = fs.readFileSync(p.join(docsFolder, file + '.mdx')).toString();
+        const index = content.indexOf('\n');
+        const header = content.slice(0, index === -1 ? content.length : index).replace('#', '');
+
+        return { title: header, docs: file.replace('.mdx', '') };
+      });
 
       return { titles, meta, cat };
     }),
