@@ -28,7 +28,7 @@ function getSnippet(content: string, matches: readonly FuseResultMatch[] | undef
   const start = Math.max(0, match.indices[0][0] - snippetWindow);
   const end = Math.min(content.length, match.indices[0][1] + snippetWindow);
 
-  return '...' + content.slice(start, end) + '...'; // Return snippet with ellipses
+  return content.slice(start, end); // Return snippet with ellipses
 }
 
 export async function GET(req: NextRequest) {
