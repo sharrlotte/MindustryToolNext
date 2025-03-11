@@ -1,12 +1,12 @@
 import { useSocket } from '@/context/socket-context';
+import useClientApi from '@/hooks/use-client';
 import { MessageQuery } from '@/query/search-query';
 import { Message } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
 export default function useMessageQuery<P extends MessageQuery>(room: string, params: P, queryKey: QueryKey, onNewData?: (data: Message[]) => void) {
-  const { socket, state } = useSocket();
-
+  const axios = useClientApi();
   const getNextPageParam = (lastPage: Message[], allPages: Message[][], lastPageParams: P) => {
     if (!lastPage || lastPage.length === 0 || lastPage.length < params.size || !allPages || allPages.length === 0) {
       return undefined;
@@ -37,12 +37,15 @@ export default function useMessageQuery<P extends MessageQuery>(room: string, pa
     queryKey,
     initialPageParam: params,
     queryFn: async (context) => {
-      const result = await socket.onRoom(room).await({
-        method: 'GET_MESSAGE',
-        // @ts-expect-error idk
-        cursor: context.pageParam.cursor,
-        size,
-      });
+      const result = await axios
+        .get(`/rooms/${room}/messages`, {
+          params: {
+            // @ts-expect-error idk
+            cursor: context.pageParam.cursor,
+            size,
+          },
+        })
+        .then((r) => r.data);
 
       if (result && 'error' in result) {
         throw result;
@@ -56,7 +59,6 @@ export default function useMessageQuery<P extends MessageQuery>(room: string, pa
     },
     getNextPageParam,
     getPreviousPageParam,
-    enabled: state === 'connected',
     refetchOnMount: 'always',
     refetchOnWindowFocus: 'always',
   });
