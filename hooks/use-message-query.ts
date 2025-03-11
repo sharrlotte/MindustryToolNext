@@ -43,6 +43,7 @@ export default function useMessageQuery<P extends MessageQuery>(room: string, pa
             // @ts-expect-error idk
             cursor: context.pageParam.cursor,
             size,
+            autoSize: false,
           },
         })
         .then((r) => r.data);

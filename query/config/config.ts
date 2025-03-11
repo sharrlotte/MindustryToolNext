@@ -36,7 +36,7 @@ function getCookie(name: string): string | null {
 
 axiosInstance.interceptors.request.use(async (config) => {
   const params = config.params;
-  if (!params || !('size' in params)) {
+  if (!params || !('size' in params) || 'autoSize' in params) {
     return config;
   }
 
