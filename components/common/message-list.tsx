@@ -30,7 +30,7 @@ type MessageListProps = {
   children: (data: MessageGroup, index?: number, endIndex?: number) => ReactNode;
 };
 
-export default function MessageList({ queryKey, params, loader, noResult = <NoResult className="flex w-full items-center justify-center" />, end, threshold = 1000, room, showNotification = true, children }: MessageListProps) {
+export default function MessageList({ queryKey, params, loader, noResult = <NoResult className="flex w-full items-center justify-center" />, end, threshold = 100, room, showNotification = true, children }: MessageListProps) {
   const container = useRef<HTMLDivElement>(null);
   const renderCause = useRef<'fetch' | 'event'>('fetch');
   const [_, setLastMessage] = useLocalStorage(`LAST_MESSAGE_${room}`, '');

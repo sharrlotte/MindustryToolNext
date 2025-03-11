@@ -17,6 +17,13 @@ export const dynamicParams = false;
 export const revalidate = false;
 export default async function Page({ params }: Props) {
   const { path, locale } = await params;
+
+  
+
+    if (path.length === 1){
+
+    }
+
   const [category, docs] = path;
 
   const [Post, { next, previous }] = await Promise.all([import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => result.default), getNextPrevDoc(locale, category, docs)]);
