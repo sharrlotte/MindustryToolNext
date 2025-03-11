@@ -60,7 +60,7 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
 
 function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: string | null; level: number }) {
   return (
-    <Accordion className="flex flex-col gap-2" type="single" collapsible defaultValue={data[0].title}>
+    <Accordion className="flex flex-col gap-2" type="single" collapsible defaultValue={data[0]?.title}>
       {data.map((heading) =>
         heading.children.length === 0 ? (
           <Link

@@ -19,6 +19,15 @@ type DocCategory = {
 };
 
 function extractDocHeading(content: string) {
+  const lines = content.split('\n');
+
+  for (const line of lines) {
+    const match = line.match(/^(#{2,6})\s+(.*)/);
+    if (!match) continue;
+
+    return removeMd(line);
+  }
+
   const index = content.indexOf('\n');
   return removeMd(content.slice(0, index === -1 ? content.length : index));
 }
@@ -32,6 +41,10 @@ export async function getDocs(locale: string) {
   const data = await Promise.all(
     fs.readdirSync(categoryFolders).map(async (category) => {
       const docsFolderPath = p.join(categoryFolders, p.normalize(category));
+
+      if (!fs.existsSync(p.join(docsFolderPath, 'index.ts'))) {
+        return { locale, category, title: category, docs: [] };
+      }
 
       const meta: DocMeta = (await import(`@/docs/${locale}/${category}/index.ts`)).default;
 

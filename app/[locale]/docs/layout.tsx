@@ -15,10 +15,10 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Link>
         </div>
         <div className="flex items-center gap-4">
-          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/">
+          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/wiki/getting-started">
             Wiki
           </Link>
-          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/">
+          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/api/getting-started">
             Api
           </Link>
         </div>
