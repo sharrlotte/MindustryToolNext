@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { Inter, Noto_Sans_KR } from 'next/font/google';
+import { Arimo, Noto_Sans_KR } from 'next/font/google';
 import localFont from 'next/font/local';
-import NextTopLoader from 'nextjs-toploader';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -20,7 +19,7 @@ import './../globals.css';
 
 const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
-const inter = Inter({
+const inter = Arimo({
   variable: '--font-inter',
   subsets: ['vietnamese'],
   weight: '500',
@@ -103,7 +102,6 @@ export default async function Root({ children, params }: RootProps) {
             <SessionProvider>
               <SocketProvider>
                 <Toaster />
-                <NextTopLoader />
                 {children}
               </SocketProvider>
             </SessionProvider>

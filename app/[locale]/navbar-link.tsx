@@ -25,6 +25,7 @@ export default function NavbarLink({ children, path, regex }: Props) {
         'w-10': !visible,
       })}
       href={path}
+      aria-label={path}
       onClick={() => setVisible(false)}
     >
       {children}

@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 
 import { useActiveHeading } from '@/hooks/use-active-heading';
 import { cn } from '@/lib/utils';
+import { ID_REPlACE_REGEX } from '@/mdx-components';
 
 interface Heading {
   level: number;
@@ -49,36 +50,38 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
 
   return (
     <ScrollContainer className="pl-4 flex-col md:flex hidden">
-      <h3>
+      <h3 className="text-base font-semibold">
         <Tran text="docs.table-of-content" asChild />
       </h3>
-      <HeadingCard data={heading} activeId={activeId} />
+      <HeadingCard data={heading} activeId={activeId} level={0} />
     </ScrollContainer>
   );
 }
 
-function HeadingCard({ data, activeId }: { data: Heading[]; activeId: string | null }) {
+function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: string | null; level: number }) {
   return (
     <Accordion className="flex flex-col gap-2" type="single" collapsible defaultValue={data[0].title}>
       {data.map((heading) =>
         heading.children.length === 0 ? (
           <Link
             key={heading.title}
-            className={cn('hover:text-brand', {
+            className={cn('hover:text-brand text-sm text-muted-foreground', {
               'text-brand': activeId === heading.title.toLowerCase().replace(/\s+/g, '-'),
             })}
-            href={`#${heading.title.toLowerCase().replace(/\s+/g, '-')}`}
+            href={`#${heading.title.toLowerCase().replace(ID_REPlACE_REGEX, '-')}`}
           >
             {heading.title}
           </Link>
         ) : (
           <AccordionItem key={heading.title} value={heading.title}>
-            <AccordionTrigger className="text-xl py-0 justify-start text-start text-nowrap hover:text-brand">
-              <Link href={`#${heading.title}`}>{heading.title}</Link>
+            <AccordionTrigger className={cn('text-sm p-0 justify-start text-start text-nowrap hover:text-brand text-muted-foreground', { 'text-brand': activeId === heading.title.toLowerCase().replace(/\s+/g, '-') })}>
+              <Link href={`#${heading.title}`} shallow>
+                {heading.title}
+              </Link>
             </AccordionTrigger>
-            <AccordionContent className="mt-2">
+            <AccordionContent className={cn('mt-2 pt-0', { 'pl-2': heading.children.length !== 0 })}>
               {heading.children.map((child) => (
-                <HeadingCard key={child.title} data={[child]} activeId={activeId} />
+                <HeadingCard key={child.title} data={[child]} level={++level} activeId={activeId} />
               ))}
             </AccordionContent>
           </AccordionItem>

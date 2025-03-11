@@ -4,29 +4,28 @@ export function useActiveHeading() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntries = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.boundingClientRect.top - a.boundingClientRect.top);
-
-        if (visibleEntries.length > 0) {
-          setActiveId(visibleEntries[0].target.id);
-        }
-      },
-      { threshold: 0.1 },
-    );
-
     const container = document.getElementById('docs-markdown');
+    if (!container) return;
 
-    if (!container) {
-      throw new Error("Couldn't find container");
-    }
+    const c = container;
+    const headings = Array.from(document.querySelectorAll('h2, h3, h4, h5, h6'));
 
-    const headings = container.querySelectorAll('h2, h3, h4, h5, h6');
+    const updateActiveHeading = () => {
+      const sorted = headings.filter((i) => i.getBoundingClientRect().top >= 0 && i.id && i.getBoundingClientRect().top < window.innerHeight).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
 
-    headings.forEach((heading) => observer.observe(heading));
+      if (sorted.length > 0 && sorted[0].id !== activeId) {
+        setActiveId(sorted[0].id);
+      }
+    };
 
-    return () => observer.disconnect();
-  }, []);
+    const handleScroll = () => requestAnimationFrame(updateActiveHeading);
+
+    updateActiveHeading();
+
+    c.addEventListener('scroll', handleScroll);
+
+    return () => c.removeEventListener('scroll', handleScroll);
+  }, [activeId]);
 
   return activeId;
 }

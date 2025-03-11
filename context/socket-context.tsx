@@ -30,7 +30,7 @@ export function useSocket(): UseSocket {
 }
 export function SocketProvider({ children }: { children: ReactNode }) {
   const [socket] = useState<SocketClient>(defaultContextValue.socket);
-  const [state, setState] = useState<SocketState>('disconnected');
+  const [state, setState] = useState<SocketState>(defaultContextValue.socket.getState());
 
   useEffect(() => {
     socket.connect();

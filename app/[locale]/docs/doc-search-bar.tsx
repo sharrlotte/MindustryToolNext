@@ -33,7 +33,7 @@ export default function DocSearchBar() {
 
   return (
     <motion.div
-      className="flex justify-center bg-transparent inset-0 items-center backdrop-blur-md z-10"
+      className="flex justify-center bg-transparent inset-0 items-center backdrop-blur-sm z-10 ml-auto"
       variants={{
         focus: {
           position: 'absolute',
@@ -44,7 +44,7 @@ export default function DocSearchBar() {
       }}
       animate={focus ? 'focus' : 'unfocus'}
     >
-      <div className={cn('w-[min(500px,50vw)] relative', { 'border rounded-xl p-8 bg-background/50': focus })}>
+      <div className={cn('w-[min(500px,50vw)] relative', { 'border rounded-xl p-8 bg-card/80': focus })}>
         <button
           className={cn('absolute right-2 top-2 hidden', { flex: focus })}
           type="button"
@@ -55,12 +55,12 @@ export default function DocSearchBar() {
         >
           <XIcon />
         </button>
-        <div className="border h-10 rounded-lg px-2 py-0.5 flex items-center w-full">
+        <div className="border h-8 rounded-lg px-2 py-0.5 flex items-center w-full">
           <SearchIcon />
-          <Input className="w-full border-none" type="text" value={query} onChange={(event) => setQuery(event.currentTarget.value)} onFocus={() => setFocus(true)} />
+          <Input className="w-full border-none focus:border-brand" type="text" value={query} onChange={(event) => setQuery(event.currentTarget.value)} onFocus={() => setFocus(true)} />
         </div>
         {data && focus && (
-          <div className="grid gap-2 mt-2">
+          <div className="grid gap-2 mt-2 max-h-dvh overflow-y-auto">
             {data?.map((data) => (
               <InternalLink
                 className="hover:bg-brand border-border border p-2 rounded-md hover:border-brand bg-muted/50 cursor-pointer"
