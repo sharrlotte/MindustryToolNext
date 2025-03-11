@@ -144,7 +144,7 @@ export default async function Page({ params }: Props) {
     <main className="h-screen no-scrollbar overflow-auto bg-gradient dark">
       <div className="container p-4 mx-auto flex h-full flex-col bg-center text-foreground gap-16 min-h-screen">
         <Header locale={locale} />
-        <Suspense>
+        <Suspense fallback={<div className="w-full h-[144px]"></div>}>
           <Statistic locale={locale} />
         </Suspense>
         <About locale={locale} />
