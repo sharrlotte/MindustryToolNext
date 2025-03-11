@@ -45,9 +45,9 @@ export default async function Page({ params }: Props) {
   const [Post, { next, previous }] = await Promise.all([import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => result.default), getNextPrevDoc(locale, category, docs)]);
 
   return (
-    <div className="space-y-2">
+    <div className="gap-2 min-h-full flex flex-col h-full">
       <Post />
-      <Divider />
+      {(previous || next) && <Divider className="mt-auto" />}
       <div className="w-full flex justify-between items-center">
         {previous && (
           <Link className="mr-auto underline flex gap-0.5 items-center" href={`/docs/${category}/${previous.filename}`}>

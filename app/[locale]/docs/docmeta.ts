@@ -19,6 +19,15 @@ type DocCategory = {
 };
 
 function extractDocHeading(content: string) {
+  const lines = content.split('\n');
+
+  for (const line of lines) {
+    const match = line.match(/^(#{2,6})\s+(.*)/);
+    if (!match) continue;
+
+    return removeMd(line);
+  }
+
   const index = content.indexOf('\n');
   return removeMd(content.slice(0, index === -1 ? content.length : index));
 }
@@ -42,7 +51,7 @@ export async function getDocs(locale: string) {
       const data = meta.docs.map((filename) => {
         const docPath = p.join(docsFolderPath, filename + '.mdx');
         const content = fs.readFileSync(docPath).toString();
-        const header = content ? extractDocHeading(content) : filename;
+        const header = extractDocHeading(content);
 
         return { header, filename, path: docPath };
       }) as DocCategory['docs'];
