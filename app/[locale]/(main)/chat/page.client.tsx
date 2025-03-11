@@ -23,8 +23,6 @@ import ProtectedElement from '@/layout/protected-element';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 export default function ChatPage() {
-  const { session } = useSession();
-
   const isSmall = useMediaQuery('(max-width: 640px)');
 
   return (
@@ -44,19 +42,7 @@ export default function ChatPage() {
               {isSmall && <MemberPanel room="GLOBAL" />}
             </div>
           </div>
-          <ProtectedElement
-            session={session}
-            filter={true}
-            alt={
-              <div className="h-full w-full whitespace-nowrap border-t p-2 text-center">
-                <LoginButton className="justify-center">
-                  <Tran text="chat.require-login" />
-                </LoginButton>
-              </div>
-            }
-          >
-            <ChatInput />
-          </ProtectedElement>
+          <ChatInput />
         </div>
         {!isSmall && <MemberPanel room="GLOBAL" />}
       </div>
@@ -81,6 +67,7 @@ function MessageContainer() {
 
 function ChatInput() {
   const [message, setMessage] = useState<string>('');
+  const { session } = useSession();
   const { state } = useSocket();
 
   const { sendMessage } = useMessage({
@@ -96,26 +83,38 @@ function ChatInput() {
   const { theme } = useTheme();
 
   return (
-    <form className="flex h-14 flex-1 gap-2 border-t px-2 py-2" name="text" onSubmit={handleFormSubmit}>
-      <div className="flex w-full items-center gap-2 rounded-md border bg-background px-2">
-        <input className="h-full w-full bg-transparent outline-none" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
-        <Popover>
-          <PopoverTrigger>
-            <SmileIcon />
-          </PopoverTrigger>
-          <PopoverContent className="border-none bg-transparent">
-            <EmojiPicker
-              theme={theme === 'light' ? Theme.LIGHT : Theme.DARK}
-              onEmojiClick={(emoji) => {
-                setMessage(message + emoji.emoji);
-              }}
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-      <Button className="h-full" variant="outline" type="submit" title="send" disabled={state !== 'connected' || !message}>
-        <SendIcon />
-      </Button>
-    </form>
+    <ProtectedElement
+      session={session}
+      filter={true}
+      alt={
+        <div className="h-full w-full whitespace-nowrap border-t p-2 text-center">
+          <LoginButton className="justify-center">
+            <Tran text="chat.require-login" />
+          </LoginButton>
+        </div>
+      }
+    >
+      <form className="flex h-14 flex-1 gap-2 border-t px-2 py-2" name="text" onSubmit={handleFormSubmit}>
+        <div className="flex w-full items-center gap-2 rounded-md border bg-background px-2">
+          <input className="h-full w-full bg-transparent outline-none" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
+          <Popover>
+            <PopoverTrigger>
+              <SmileIcon />
+            </PopoverTrigger>
+            <PopoverContent className="border-none bg-transparent">
+              <EmojiPicker
+                theme={theme === 'light' ? Theme.LIGHT : Theme.DARK}
+                onEmojiClick={(emoji) => {
+                  setMessage(message + emoji.emoji);
+                }}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        <Button className="h-full" variant="outline" type="submit" title="send" disabled={state !== 'connected' || !message}>
+          <SendIcon />
+        </Button>
+      </form>
+    </ProtectedElement>
   );
 }
