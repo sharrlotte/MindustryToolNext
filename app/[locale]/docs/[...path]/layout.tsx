@@ -4,7 +4,7 @@ import p from 'path';
 import { ReactNode } from 'react';
 
 import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
-import { DocMeta } from '@/app/[locale]/docs/docmeta';
+import { getDocs } from '@/app/[locale]/docs/docmeta';
 
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -38,30 +38,6 @@ export default async function Layout({ children, params }: { children: ReactNode
   );
 }
 
-async function getNavData(locale: string) {
-  const categoryFolder = p.join(process.cwd(), 'docs', p.normalize(locale));
-
-  const data = await Promise.all(
-    fs.readdirSync(categoryFolder).map(async (category) => {
-      const docsFolder = p.join(categoryFolder, p.normalize(category));
-
-      const meta: DocMeta = (await import(`@/docs/${locale}/${category}/index.ts`)).default;
-
-      const titles = meta.docs.map((file) => {
-        const content = fs.readFileSync(p.join(docsFolder, file + '.mdx')).toString();
-        const index = content.indexOf('\n');
-        const header = content.slice(0, index === -1 ? content.length : index).replace('#', '');
-
-        return { title: header, docs: file.replace('.mdx', '') };
-      });
-
-      return { titles, meta, category };
-    }),
-  );
-
-  return data;
-}
-
 type NavBarProps = {
   locale: string;
   currentCategory: string;
@@ -69,29 +45,29 @@ type NavBarProps = {
 };
 
 async function NavBar({ locale, currentCategory, currentDocs }: NavBarProps) {
-  const data = await getNavData(locale);
+  const data = await getDocs(locale);
 
   return (
     <ScrollContainer className="pr-4 space-y-2 hidden lg:flex">
       <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={currentCategory}>
-        {data.map(({ meta, titles, category }) => (
+        {data.map(({ title, docs, category }) => (
           <AccordionItem key={category} value={category}>
-            <AccordionTrigger className="text-base font-semibold py-0 justify-start text-start text-nowrap w-full">{meta.title}</AccordionTrigger>
+            <AccordionTrigger className="text-base font-semibold py-0 justify-start text-start text-nowrap w-full">{title}</AccordionTrigger>
             <AccordionContent>
-              {titles.map((title) => (
+              {docs.map((doc) => (
                 <div
                   className={cn('border-l hover:border-brand', {
-                    'border-brand': title.docs === currentDocs && category === currentCategory,
+                    'border-brand': doc.filename === currentDocs && category === currentCategory,
                   })}
-                  key={title.docs}
+                  key={doc.filename}
                 >
                   <InternalLink
-                    href={`/${locale}/docs/${category}/${title.docs}`}
+                    href={`/${locale}/docs/${category}/${doc.filename}`}
                     className={cn('text-sm pl-2 py-2 rounded-r-md hover:bg-muted/80 text-muted-foreground hover:text-brand', {
-                      'text-brand': title.docs === currentDocs && category === currentCategory,
+                      'text-brand': doc.filename === currentDocs && category === currentCategory,
                     })}
                   >
-                    {title.title}
+                    {doc.header}
                   </InternalLink>
                 </div>
               ))}

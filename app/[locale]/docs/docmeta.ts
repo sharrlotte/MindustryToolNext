@@ -33,12 +33,16 @@ export async function getDocs(locale: string) {
     fs.readdirSync(categoryFolders).map(async (category) => {
       const docsFolderPath = p.join(categoryFolders, p.normalize(category));
 
+      if (!fs.existsSync(p.join(docsFolderPath, 'index.ts'))) {
+        return { locale, category, title: category, docs: [] };
+      }
+
       const meta: DocMeta = (await import(`@/docs/${locale}/${category}/index.ts`)).default;
 
       const data = meta.docs.map((filename) => {
         const docPath = p.join(docsFolderPath, filename + '.mdx');
         const content = fs.readFileSync(docPath).toString();
-        const header = extractDocHeading(content);
+        const header = content ? extractDocHeading(content) : filename;
 
         return { header, filename, path: docPath };
       }) as DocCategory['docs'];
