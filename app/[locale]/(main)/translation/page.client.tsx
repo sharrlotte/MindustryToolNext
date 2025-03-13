@@ -259,7 +259,7 @@ function SearchTable({ language, tKey: key, isTranslated }: SearchTableProps) {
         </TableBody>
       </Table>
       <div className="mt-auto flex justify-end">
-        <PaginationNavigator numberOfItems={(axios) => getTranslationSearchCount(axios, { language, key: key })} queryKey={['translations', 'search', 'total', language, key]} />
+        <PaginationNavigator numberOfItems={(axios) => getTranslationSearchCount(axios, { language, key: key, isTranslated })} queryKey={['translations', 'search', 'total', language, key, isTranslated]} />
       </div>
     </Fragment>
   );

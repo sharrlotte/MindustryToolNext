@@ -38,7 +38,7 @@ export async function getTranslationSearch(axios: AxiosInstance, params: Paginat
   return result.data;
 }
 
-export async function getTranslationSearchCount(axios: AxiosInstance, params: { language: Locale; key?: string }) {
+export async function getTranslationSearchCount(axios: AxiosInstance, params: { language: Locale; key?: string; isTranslated?: boolean | null }) {
   const result = await axios.get('/translations/search/count', {
     params,
   });
