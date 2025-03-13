@@ -22,7 +22,6 @@ import UserCard from '@/components/user/user-card';
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
-import { useI18n } from '@/i18n/client';
 import { createSchematic, getSchematicPreview } from '@/query/schematic';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
@@ -31,6 +30,8 @@ import { CreateSchematicRequest, CreateSchematicSchema } from '@/types/schema/zo
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+/* eslint-disable @next/next/no-img-element */
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -159,11 +160,10 @@ type UploadFormData = {
 function Upload({ data, preview, setData, setPreview }: UploadProps) {
   const { session } = useSession();
 
-  const { t } = useI18n();
   const axios = useClientApi();
 
   const form = useForm<UploadFormData>({
-    resolver: zodResolver(CreateSchematicSchema(t)),
+    resolver: zodResolver(CreateSchematicSchema),
     defaultValues: {
       name: preview.name,
       description: preview.description,
