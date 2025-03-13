@@ -11,7 +11,9 @@ export function useActiveHeading() {
     const headings = Array.from(document.querySelectorAll('h2, h3, h4, h5, h6'));
 
     const updateActiveHeading = () => {
-      const sorted = headings.filter((i) => i.getBoundingClientRect().top >= 0 && i.id && i.getBoundingClientRect().top < window.innerHeight).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+      const sorted = headings
+        .filter((i) => i.getBoundingClientRect().top >= container.getBoundingClientRect().top && i.id && i.getBoundingClientRect().top <= container.getBoundingClientRect().bottom)
+        .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
 
       if (sorted.length > 0 && sorted[0].id !== activeId) {
         setActiveId(sorted[0].id);
