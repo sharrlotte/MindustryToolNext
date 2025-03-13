@@ -36,6 +36,7 @@ import {
   HistoryIcon,
   Home,
   KeyRound,
+  Languages,
   LayoutDashboard,
   LayoutGrid,
   LineChart,
@@ -89,6 +90,7 @@ type Props = {
   className?: string;
 };
 
+export const LanguagesIcon = ({ className }: Props) => <Languages className={className ?? 'lucide'} />;
 export const MindustryToolIcon = ({ className }: Props) => <Image className={className} width={32} height={32} src={mindustryToolIcon} alt="MindustryToolIcon" />;
 export const DocsIcon = ({ className }: Props) => <Book className={className ?? 'lucide'} />;
 export const KeyRoundIcon = ({ className }: Props) => <KeyRound className={className ?? 'lucide'} />;
