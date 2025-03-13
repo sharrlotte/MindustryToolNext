@@ -10,6 +10,7 @@ import DeleteButton from '@/components/button/delete-button';
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
+import { LanguagesIcon } from '@/components/common/icons';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
@@ -436,7 +437,7 @@ type SearchCardProps = {
   language: Locale;
 };
 
-function SearchCard({ translation: { key, id, value, keyGroup }, language }: SearchCardProps) {
+function SearchCard({ translation: { key, id, value, keyGroup, isTranslated }, language }: SearchCardProps) {
   const axios = useClientApi();
   const [isEdit, setEdit] = useState(false);
   const { invalidateByKey } = useQueriesData();
@@ -476,6 +477,7 @@ function SearchCard({ translation: { key, id, value, keyGroup }, language }: Sea
               </div>
             )}
             <div className="text-muted-foreground">
+              {!isTranslated && <LanguagesIcon />}
               {keyGroup}.{key}
             </div>
           </div>

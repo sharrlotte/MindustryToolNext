@@ -19,4 +19,5 @@ export type Translation = {
   key: string;
   value: string;
   keyGroup: string;
+  isTranslated?: boolean;
 };
