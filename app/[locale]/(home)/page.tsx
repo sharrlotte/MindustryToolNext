@@ -395,7 +395,7 @@ async function LoginAction({ locale }: { locale: Locale }) {
   );
 }
 
-export async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryType }) {
+async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
     <section id="new-schematics" className="py-16 bg-black">
       <div className="container mx-auto px-4">
@@ -416,7 +416,7 @@ export async function NewSchematics({ queryParam }: { queryParam: ItemPagination
     </section>
   );
 }
-export async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) {
+async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
     <section id="new-maps" className="py-16 bg-gray-900">
       <div className="container mx-auto px-4">
@@ -475,7 +475,7 @@ function Footer({ locale }: { locale: Locale }) {
   );
 }
 
-export async function HomeServerPreview() {
+async function HomeServerPreview() {
   return (
     <Suspense>
       <InternalHomeServerPreview />
