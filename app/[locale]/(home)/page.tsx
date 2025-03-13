@@ -185,7 +185,7 @@ async function HeaderLogin({ locale }: { locale: Locale }) {
 
 async function Hero({ locale }: { locale: Locale }) {
   return (
-    <section className="relative bg-gradient bg-gradient-to-t min-h-dvh">
+    <section className="relative bg-gradient bg-gradient-to- min-h-dvh">
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">Mindustry Tool</h1>
         <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
@@ -243,7 +243,7 @@ async function AboutMindustrySection({ locale }: { locale: Locale }) {
 
 async function AboutMindustryToolSection({ locale }: { locale: Locale }) {
   return (
-    <section className="py-16 bg-gray-900">
+    <section className="py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8 text-center">
           <T locale={locale} text="home.about-mindustry-tool" />
@@ -404,7 +404,7 @@ async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryTy
             <Tran text="home.new-schematics" asChild />
           </h2>
           <InternalLink href="/schematics" className="cursor-pointer">
-            <Tran className="text-brand text-base" text="see-all" /> {'->'}
+            <Tran className="text-base" text="see-all" /> {'->'}
           </InternalLink>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -418,14 +418,14 @@ async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryTy
 }
 async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <section id="new-maps" className="py-16 bg-gray-900">
+    <section id="new-maps" className="py-16">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8 w-full">
           <h2 className="text-3xl font-bold text-nowrap">
             <Tran text="home.new-maps" asChild />
           </h2>
           <InternalLink href="/maps" className="cursor-pointer">
-            <Tran className="text-brand text-base" text="see-all" /> {'->'}
+            <Tran className="text-base" text="see-all" /> {'->'}
           </InternalLink>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -528,5 +528,5 @@ async function InternalHomeServerPreview() {
     return <ErrorScreen error={result} />;
   }
 
-  return result.slice(0, 3).map((server, index) => <ServerCard key={index} server={server} />);
+  return result.slice(0, 1).map((server, index) => <ServerCard key={index} server={server} />);
 }
