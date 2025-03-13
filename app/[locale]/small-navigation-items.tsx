@@ -18,7 +18,7 @@ type NavigationBarProps = {
 
 export default function SmallScreenNavigationBar({ pathGroups }: NavigationBarProps) {
   return (
-    <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg">
+    <nav className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg">
       <SmallNavbarToggle />
       <SmallNavbarCollapse>
         <div className="flex h-full flex-col justify-between overflow-hidden p-2">
@@ -36,7 +36,7 @@ export default function SmallScreenNavigationBar({ pathGroups }: NavigationBarPr
         </div>
       </SmallNavbarCollapse>
       <HorizontalNavbarUserAvatar />
-    </div>
+    </nav>
   );
 }
 

@@ -122,5 +122,5 @@ export type CommentSort = (typeof commentSorts)[number];
 
 export const CommentPaginationQuerySchema = z.object({
   ...PaginationParam,
-  sort: z.enum(commentSorts).default('newest'),
+  sort: z.enum(commentSorts).default('newest').catch('newest'),
 });
