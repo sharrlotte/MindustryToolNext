@@ -2,12 +2,12 @@
 
 import React, { ReactNode } from 'react';
 
-import MediumNavFooter from '@/app/[locale]/medium-nav-footer';
-import MediumNavbarCollapse from '@/app/[locale]/medium-navbar-collapse';
-import MediumNavbarToggle from '@/app/[locale]/medium-navbar-toggle';
-import NavbarLink from '@/app/[locale]/navbar-link';
-import NestedPathElement from '@/app/[locale]/nested-path-element';
-import { UserDisplay } from '@/app/[locale]/user-display';
+import MediumNavFooter from '@/app/[locale]/(main)/medium-nav-footer';
+import MediumNavbarCollapse from '@/app/[locale]/(main)/medium-navbar-collapse';
+import MediumNavbarToggle from '@/app/[locale]/(main)/medium-navbar-toggle';
+import NavbarLink from '@/app/[locale]/(main)/navbar-link';
+import NestedPathElement from '@/app/[locale]/(main)/nested-path-element';
+import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 import NavbarVisible from '@/app/navbar-visible';
 import { PathGroup } from '@/app/routes';
 

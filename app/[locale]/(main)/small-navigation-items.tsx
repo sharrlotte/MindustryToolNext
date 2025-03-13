@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { MediumNavItems } from '@/app/[locale]/medium-navigation-items';
-import SmallNavbarCollapse from '@/app/[locale]/small-navbar-collapse';
-import SmallNavbarInsideToggle from '@/app/[locale]/small-navbar-inside-toggle';
-import { UserDisplay } from '@/app/[locale]/user-display';
+import { MediumNavItems } from '@/app/[locale]/(main)/medium-navigation-items';
+import SmallNavbarCollapse from '@/app/[locale]/(main)/small-navbar-collapse';
+import SmallNavbarInsideToggle from '@/app/[locale]/(main)/small-navbar-inside-toggle';
+import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 import HorizontalNavbarUserAvatar from '@/app/horizontal-navbar-user-avatar';
 import { PathGroup } from '@/app/routes';
 import SmallNavbarToggle from '@/app/small-navbar-toggle';

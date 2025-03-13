@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
-const ChangeLocaleForm = dynamic(() => import('@/app/[locale]/change-locale-form'));
+const ChangeLocaleForm = dynamic(() => import('@/app/[locale]/(main)/change-locale-form'));
 
 export function ChangeLanguageDialog() {
   return (
