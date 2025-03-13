@@ -2,8 +2,8 @@
 
 import { ReactNode } from 'react';
 
-import MediumScreenNavigationBar from '@/app/[locale]/medium-navigation-items';
-import SmallScreenNavigationBar from '@/app/[locale]/small-navigation-items';
+import MediumScreenNavigationBar from '@/app/[locale]/(main)/medium-navigation-items';
+import SmallScreenNavigationBar from '@/app/[locale]/(main)/small-navigation-items';
 import { groups } from '@/app/routes';
 
 import ErrorScreen from '@/components/common/error-screen';

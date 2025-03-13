@@ -2,8 +2,8 @@
 
 import React, { ReactNode } from 'react';
 
-import { ChangeLanguageDialog } from '@/app/[locale]/change-language-dialog';
-import NotificationDialog from '@/app/[locale]/notification-dialog';
+import { ChangeLanguageDialog } from '@/app/[locale]/(main)/change-language-dialog';
+import NotificationDialog from '@/app/[locale]/(main)/notification-dialog';
 
 import { GlobIcon, SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';

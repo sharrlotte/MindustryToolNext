@@ -1,6 +1,6 @@
 'use client';
 
-import { UserActions } from '@/app/[locale]/user-sheet';
+import { UserActions } from '@/app/[locale]/(main)/user-sheet';
 
 import LoginButton from '@/components/button/login-button';
 import LogoutButton from '@/components/button/logout-button';
