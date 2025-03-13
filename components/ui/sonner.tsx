@@ -51,7 +51,7 @@ function toast(title: ReactNode, options?: ToastOptions) {
         <div className="text-muted-foreground text-sm">{options.description}</div>
       </div>,
       {
-        duration: 100000,
+        duration: 1000,
       },
     );
 
