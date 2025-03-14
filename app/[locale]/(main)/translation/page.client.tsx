@@ -476,8 +476,8 @@ function SearchCard({ translation: { key, id, value, keyGroup, isTranslated }, l
                 <HighLightTranslation text={value} />
               </div>
             )}
-            <div className="text-muted-foreground">
-              {!isTranslated && <LanguagesIcon />}
+            <div className="text-muted-foreground flex">
+              <span>{!isTranslated && <LanguagesIcon />}</span>
               {keyGroup}.{key}
             </div>
           </div>
