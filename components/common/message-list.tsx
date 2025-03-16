@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useInterval, useLocalStorage } from 'usehooks-ts';
+import { useLocalStorage } from 'usehooks-ts';
 
 import { LoaderIcon } from '@/components/common/icons';
 import NoResult from '@/components/common/no-result';
@@ -167,8 +167,6 @@ export default function MessageList({ queryKey, params, loader, noResult = <NoRe
       list?.removeEventListener('scroll', checkIfNeedFetchMore);
     };
   }, [checkIfNeedFetchMore, list, scrollTopRef]);
-
-  useInterval(checkIfNeedFetchMore, 1000);
 
   if (!loader) {
     loader = <LoaderIcon key="loading" className="col-span-full m-auto flex h-full w-full items-center justify-center animate-spin size-6 max-w-6 max-h-6" />;
