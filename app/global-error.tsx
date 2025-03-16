@@ -9,6 +9,8 @@ import useClientApi from '@/hooks/use-client';
 import { TError, getErrorMessage, getLoggedErrorMessage } from '@/lib/utils';
 import { reportError } from '@/query/api';
 
+import * as Sentry from '@sentry/nextjs';
+
 import './globals.css';
 
 export default function Error({ error }: { error: TError }) {
@@ -17,6 +19,10 @@ export default function Error({ error }: { error: TError }) {
 
   const path = usePathname();
   const axios = useClientApi();
+
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
 
   useEffect(() => {
     reportError(axios, `${path} > ${loggedMessage}`);
