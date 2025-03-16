@@ -38,7 +38,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     socket.onConnect(() => setState('connected'));
   }, [socket]);
 
-  useInterval(() => setState(socket.getState()), 10);
+  useInterval(() => setState(socket.getState()), 1000);
 
   return (
     <SocketContext.Provider
