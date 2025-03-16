@@ -5,18 +5,16 @@ import SmallNavbarCollapse from '@/app/[locale]/(main)/small-navbar-collapse';
 import SmallNavbarInsideToggle from '@/app/[locale]/(main)/small-navbar-inside-toggle';
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 import HorizontalNavbarUserAvatar from '@/app/horizontal-navbar-user-avatar';
-import { PathGroup } from '@/app/routes';
 import SmallNavbarToggle from '@/app/small-navbar-toggle';
 
 import Divider from '@/components/ui/divider';
 
 import env from '@/constant/env';
+import useRoutes from '@/hooks/use-routes';
 
-type NavigationBarProps = {
-  pathGroups: PathGroup[];
-};
+export default function SmallScreenNavigationBar() {
+  const pathGroups = useRoutes();
 
-export default function SmallScreenNavigationBar({ pathGroups }: NavigationBarProps) {
   return (
     <nav className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg">
       <SmallNavbarToggle />

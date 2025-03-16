@@ -17,14 +17,13 @@ import Divider from '@/components/ui/divider';
 
 import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
+import useRoutes from '@/hooks/use-routes';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter, isError } from '@/lib/utils';
 
-type NavigationBarProps = {
-  pathGroups: PathGroup[];
-};
+export default function MediumScreenNavigationBar() {
+  const pathGroups = useRoutes();
 
-export default function MediumScreenNavigationBar({ pathGroups }: NavigationBarProps) {
   return (
     <MediumNavbarCollapse>
       <NavHeader />
