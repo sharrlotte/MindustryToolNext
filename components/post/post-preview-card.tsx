@@ -4,8 +4,6 @@ import React, { HTMLAttributes } from 'react';
 import CopyButton from '@/components/button/copy-button';
 import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
-import AloneDislikeCount from '@/components/like/alone-dislike-count';
-import AloneLikeCount from '@/components/like/alone-like-count';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import IdUserCard from '@/components/user/id-user-card';
 
@@ -33,13 +31,13 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, disli
           <div className="flex flex-col gap-2">
             <div>
               <IdUserCard id={userId} />
+              <LikeAndDislike like={likes} dislike={dislikes} />
               <span className="text-muted-foreground">{new Date(createdAt).toLocaleString()}</span>
             </div>
             <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
               <CopyButton position="absolute-right" variant="ghost" data={link} content={link}>
                 <ShareIcon />
               </CopyButton>
-              <LikeAndDislike like={likes} dislike={dislikes} />
             </div>
           </div>
         </div>

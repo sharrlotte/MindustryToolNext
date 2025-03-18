@@ -39,10 +39,10 @@ function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, download
       <PreviewDescription>
         <PreviewHeader>
           <ColorText text={name} />
+          {isVerified && <LikeAndDislike like={likes} dislike={dislikes} />}
         </PreviewHeader>
         <PreviewActions>
           <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
-          {isVerified && <LikeAndDislike like={likes} dislike={dislikes} />}
         </PreviewActions>
       </PreviewDescription>
     </Preview>
