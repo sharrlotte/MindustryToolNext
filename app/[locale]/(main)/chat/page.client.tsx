@@ -19,12 +19,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { useSession } from '@/context/session-context';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
+import IsSmall from '@/layout/is-small';
 import ProtectedElement from '@/layout/protected-element';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 export default function ChatPage() {
-  const isSmall = useMediaQuery('(max-width: 640px)');
-
   return (
     <MemberPanelProvider>
       <div className="flex h-full overflow-hidden">
@@ -39,12 +38,12 @@ export default function ChatPage() {
           <div className="relative grid h-full w-full overflow-hidden">
             <div className="relative flex h-full flex-col gap-1 overflow-hidden">
               <MessageContainer />
-              {isSmall && <MemberPanel room="GLOBAL" />}
+              <IsSmall small={<MemberPanel room="GLOBAL" />} />
             </div>
           </div>
           <ChatInput />
         </div>
-        {!isSmall && <MemberPanel room="GLOBAL" />}
+        <IsSmall notSmall={<MemberPanel room="GLOBAL" />} />
       </div>
     </MemberPanelProvider>
   );
