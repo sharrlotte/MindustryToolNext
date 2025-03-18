@@ -9,7 +9,6 @@ import { formatTitle } from '@/lib/utils';
 
 type Props = {
   params: Promise<{
-    id: string;
     locale: Locale;
   }>;
 };
@@ -23,17 +22,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: Props) {
-  const { id } = await params;
-
+export default async function Page() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_2.5rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden">
         <div className="flex h-full flex-col gap-1 overflow-x-hidden bg-background">
-          <ServerConsolePage id={id} />
+          <ServerConsolePage />
         </div>
       </div>
-      <ConsoleInput id={id} />
+      <ConsoleInput />
     </div>
   );
 }
