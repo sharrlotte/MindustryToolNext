@@ -157,7 +157,7 @@ async function Header({ locale }: { locale: Locale }) {
               <MindustryToolIcon />
             </span>
           </div>
-          <span className="text-xl font-bold">Mindustry Tool</span>
+          <span className="text-xl font-bold text-brand-foreground">Mindustry Tool</span>
         </div>
         <Suspense>
           <HeaderLogin locale={locale} />
@@ -185,10 +185,10 @@ async function HeaderLogin({ locale }: { locale: Locale }) {
 
 async function Hero({ locale }: { locale: Locale }) {
   return (
-    <section className="relative bg-gradient bg-gradient-to- min-h-dvh">
+    <section className="relative bg-gradient bg-gradient-to-t text-brand-foreground min-h-dvh">
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">Mindustry Tool</h1>
-        <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
+        <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8 text-brand-foreground">
           <T locale={locale} text="home.hero-title" />
           {/* Your comprehensive platform for Mindustry schematics, maps, servers, and community resources */}
         </p>
@@ -210,7 +210,7 @@ async function Hero({ locale }: { locale: Locale }) {
 
 async function AboutMindustrySection({ locale }: { locale: Locale }) {
   return (
-    <section className="py-16 bg-black">
+    <section className="py-16 bg-black text-white">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8 text-center">
           <T locale={locale} text="home.about-mindustry" />
@@ -221,16 +221,16 @@ async function AboutMindustrySection({ locale }: { locale: Locale }) {
             <YouTubeEmbed videoid="gUu3AhqpyHo" />
           </div>
           <div className="md:w-1/2">
-            <p className="text-muted-foreground mb-4">
+            <p className="mb-4">
               <T locale={locale} text="home.about-mindustry-description-1" />
               {/* Mindustry is a sandbox tower defense game that blends real-time strategy and resource management. Developed by Anuken, it challenges players to gather resources, build factories, and automate production chains for both defense and
               offense. */}
             </p>
-            <p className="text-muted-foreground mb-4">
+            <p className="mb-4">
               <T locale={locale} text="home.about-mindustry-description-2" />
               {/* The game focuses on creating complex production lines to gather and process resources, building defensive structures, and launching attacks against enemies. */}
             </p>
-            <p className="text-muted-foreground">
+            <p>
               <T locale={locale} text="home.about-mindustry-description-3" />
               {/* Available on multiple platforms including Windows, Linux, macOS, Android, and iOS, Mindustry offers both single-player and multiplayer experiences for strategy enthusiasts. */}
             </p>
@@ -254,15 +254,15 @@ async function AboutMindustryToolSection({ locale }: { locale: Locale }) {
             <Image src="/placeholder.svg?height=400&width=600" alt="Mindustry Tool Platform" width={600} height={400} className="rounded-lg shadow-lg" />
           </div>
           <div className="md:w-1/2">
-            <p className="text-muted-foreground mb-4">
+            <p className="mb-4">
               <T locale={locale} text="home.about-mindustry-tool-description-1" />
               {/* Mindustry Tool is a comprehensive platform dedicated to enhancing your Mindustry gaming experience. We offer an extensive collection of schematics, maps, and servers, along with helpful posts and an active community. */}
             </p>
-            <p className="text-muted-foreground mb-4">
+            <p className="mb-4">
               <T locale={locale} text="home.about-mindustry-description-2" />
               {/* Our platform provides free server hosting that supports mods, plugins, map downloading HUD, Docker environment, anti-DDoS protection, and powerful hardware. Players can claim their free server to enjoy a customized gaming experience. */}
             </p>
-            <p className="text-muted-foreground">
+            <p>
               <T locale={locale} text="home.about-mindustry-description-3" />
               {/* Additionally, we feature MindustryGpt, which offers further resources and tools related to the game, and maintain an active community with official Discord servers, a Mindustry Wiki, and GitHub repositories. */}
             </p>
@@ -285,7 +285,7 @@ const serverFeatures = ['home.server-mod-support', 'home.server-plugin-support',
 
 async function ServerSection({ locale }: { locale: Locale }) {
   return (
-    <section className="py-16 bg-black">
+    <section className="py-16 bg-black text-white">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8 text-center">
           <T locale={locale} text="home.create-server-for-free" />
@@ -300,7 +300,7 @@ async function ServerSection({ locale }: { locale: Locale }) {
               <T locale={locale} text="home.host-title" asChild />
               {/* Powerful Server Hosting at No Cost */}
             </h3>
-            <p className="text-muted-foreground mb-4">
+            <p className="mb-4">
               <T locale={locale} text="home.host-description" asChild />
               {/* Launch your own Mindustry server completely free with our powerful hosting platform. Whether you want to play with friends or build a community, we've got you covered. */}
             </p>
@@ -310,7 +310,7 @@ async function ServerSection({ locale }: { locale: Locale }) {
                   <div className="mr-2 mt-1 bg-brand p-1 rounded-full">
                     <CheckCircleIcon />
                   </div>
-                  <span className="text-muted-foreground">{item}</span>
+                  <span>{item}</span>
                 </div>
               ))}
             </div>
@@ -330,7 +330,7 @@ async function Statistic({ locale }: { locale: Locale }) {
     <div className="my-auto">
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-12 text-center">
+          <h2 className="text-3xl font-bold mb-12 text-center text-brand-foreground">
             <T locale={locale} text="home.explore-our-collection" />
           </h2>
           <Suspense fallback={<div className="h-[300px]"></div>}>
@@ -354,7 +354,7 @@ async function StatisticSection({ locale }: { locale: Locale }) {
         { icon: ServerIcon, text: 'home.free-servers-count', count: 3, color: 'text-purple-400', link: '#server' },
       ].map((item, index) => (
         <FlyIn key={index} className="h-full">
-          <Link href={item.link} shallow className={`text-center p-6 bg-gray-900/50 backdrop-blur-sm h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}>
+          <Link href={item.link} shallow className={`text-center p-6 text-brand-foreground bg-gray-900/50 backdrop-blur-sm h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}>
             <div className={`flex justify-center items-center flex-col gap-2 ${item.color}`}>
               <item.icon className="size-12" />
             </div>
@@ -380,7 +380,7 @@ async function LoginAction({ locale }: { locale: Locale }) {
         <h2 className="text-3xl text-center font-bold text-card-foreground">
           <T locale={locale} text="home.ready-to-start" asChild />
         </h2>
-        <p className="text-muted-foreground text-center mb-4">
+        <p className="text-center mb-4">
           <T locale={locale} text="home.register-and-join" asChild />
         </p>
         <div className="flex flex-col md:flex-row justify-center gap-4">
@@ -397,7 +397,7 @@ async function LoginAction({ locale }: { locale: Locale }) {
 
 async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryType }) {
   return (
-    <section id="new-schematics" className="py-16 bg-black">
+    <section id="new-schematics" className="py-16 bg-black text-white">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8 w-full">
           <h2 className="text-3xl font-bold text-nowrap">
@@ -440,7 +440,7 @@ async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) 
 
 function Footer({ locale }: { locale: Locale }) {
   return (
-    <footer className="bg-black border-t border-border py-12">
+    <footer className="bg-black border-t border-border py-12 text-white">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -467,7 +467,7 @@ function Footer({ locale }: { locale: Locale }) {
             </div>
           ))}
         </div>
-        <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
+        <div className="border-t border-border mt-8 pt-8 text-center ">
           <p>© {new Date().getFullYear()} Mindustry Tool. All rights reserved.</p>
         </div>
       </div>

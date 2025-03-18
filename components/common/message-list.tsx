@@ -34,7 +34,7 @@ export default function MessageList({ queryKey, params, loader, noResult = <NoRe
   const container = useRef<HTMLDivElement>(null);
   const renderCause = useRef<'fetch' | 'event'>('fetch');
   const [_, setLastMessage] = useLocalStorage(`LAST_MESSAGE_${room}`, '');
-  const [list, setList] = useState<HTMLDivElement | null>(null);
+  const [list, setList] = useState<HTMLOListElement | null>(null);
 
   const scrollTopRef = useRef(0);
   const lastHeightRef = useRef(0);
@@ -184,12 +184,12 @@ export default function MessageList({ queryKey, params, loader, noResult = <NoRe
 
   return (
     <ScrollContainer className="flex h-full w-full overflow-x-hidden" ref={container}>
-      <div className="h-fit w-full" ref={(ref) => setList(ref)}>
+      <ol className="h-fit w-full" ref={(ref) => setList(ref)}>
         {!hasNextPage && end}
         {isFetching && loader}
         {pages}
         {isError && <ErrorMessage error={error} />}
-      </div>
+      </ol>
     </ScrollContainer>
   );
 }

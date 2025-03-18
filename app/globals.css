@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --background: 233, 43%, 90%;
-    --foreground: 0, 0%, 22%;
+    --foreground: 0, 0%, 12%;
 
     --card: 240 10% 100%;
     --card-foreground: 60 9.1% 3%;
@@ -167,6 +167,10 @@
   g path {
     @apply focus:border-none focus:outline-none;
   }
+
+  * {
+    @apply border-border;
+  }
 }
 
 @layer utilities {
@@ -189,7 +193,7 @@
   }
 
   .lucide {
-    @apply size-5 min-h-5 min-w-5 stroke-[2.5px];
+    @apply size-5 min-h-5 min-w-5 stroke-[2.5px] text-foreground;
   }
 
   .static {

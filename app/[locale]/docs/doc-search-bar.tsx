@@ -1,11 +1,13 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
-import { SearchIcon, XIcon } from '@/components/common/icons';
+import { Hidden } from '@/components/common/hidden';
+import { SearchIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import Tran from '@/components/common/tran';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
 import { cn } from '@/lib/utils';
@@ -32,38 +34,25 @@ export default function DocSearchBar() {
   });
 
   return (
-    <motion.div
-      className="flex justify-center bg-transparent inset-0 items-center backdrop-blur-sm z-10 ml-auto"
-      variants={{
-        focus: {
-          position: 'absolute',
-        },
-        unfocus: {
-          position: 'relative',
-        },
-      }}
-      animate={focus ? 'focus' : 'unfocus'}
-    >
-      <div className={cn('w-[min(500px,50vw)] relative', { 'border rounded-xl p-8 bg-card/80': focus })}>
-        <button
-          className={cn('absolute right-2 top-2 hidden', { flex: focus })}
-          type="button"
-          onClick={() => {
-            setFocus(false);
-            setQuery('');
-          }}
-        >
-          <XIcon />
-        </button>
+    <Dialog>
+      <DialogTrigger className="ml-auto flex text-base items-center gap-0.5 px-2 py-1 border rounded-md">
+        <SearchIcon />
+        <Tran text="search" />
+      </DialogTrigger>
+      <DialogContent className="p-8 h-full w-full flex flex-col">
+        <Hidden>
+          <DialogTitle />
+          <DialogDescription />
+        </Hidden>
         <div className="border h-8 rounded-lg px-2 py-0.5 flex items-center w-full">
           <SearchIcon />
-          <Input className="w-full border-none focus:border-brand" type="text" value={query} onChange={(event) => setQuery(event.currentTarget.value)} onFocus={() => setFocus(true)} />
+          <Input className={cn('w-0 border-none focus:border-brand', { 'w-full': focus })} type="text" value={query} onChange={(event) => setQuery(event.currentTarget.value)} onFocus={() => setFocus(true)} />
         </div>
         {data && focus && (
           <div className="grid gap-2 mt-2 max-h-dvh overflow-y-auto">
             {data?.map((data) => (
               <InternalLink
-                className="hover:bg-brand border-border border p-2 rounded-md hover:border-brand bg-muted/50 cursor-pointer"
+                className="hover:bg-brand border-border border p-2 rounded-md hover:border-brand bg-muted/50 cursor-pointer animate-appear"
                 key={data.path}
                 href={`/docs/${data.path}`}
                 onClick={() => {
@@ -76,7 +65,7 @@ export default function DocSearchBar() {
             ))}
           </div>
         )}
-      </div>
-    </motion.div>
+      </DialogContent>
+    </Dialog>
   );
 }

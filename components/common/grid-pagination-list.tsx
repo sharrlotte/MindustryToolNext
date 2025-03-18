@@ -63,11 +63,11 @@ export default function GridPaginationList<T, P extends QuerySchema>({ className
 
   return (
     <div className="scroll-container h-full">
-      <div className={cn('grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2', className)}>
+      <ol className={cn('grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2', className)}>
         <Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult}>
           {children}
         </Render>
-      </div>
+      </ol>
     </div>
   );
 }

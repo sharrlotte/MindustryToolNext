@@ -91,7 +91,14 @@ type Props = {
 };
 
 export const LanguagesIcon = ({ className }: Props) => <Languages className={className ?? 'lucide'} />;
-export const MindustryToolIcon = ({ className }: Props) => <Image className={className} width={32} height={32} src={mindustryToolIcon} alt="MindustryToolIcon" />;
+export const MindustryToolIcon = ({
+  className,
+  width,
+  height,
+}: Props & {
+  width?: number;
+  height?: number;
+}) => <Image className={className} width={width ?? 32} height={height ?? 32} src={mindustryToolIcon} alt="MindustryToolIcon" />;
 export const DocsIcon = ({ className }: Props) => <Book className={className ?? 'lucide'} />;
 export const KeyRoundIcon = ({ className }: Props) => <KeyRound className={className ?? 'lucide'} />;
 export const ShareIcon = ({ className }: Props) => <Share2 className={className ?? 'lucide'} />;
@@ -152,7 +159,7 @@ export const GithubIcon = ({ className }: Props) => <Github className={className
 export const FacebookIcon = ({ className }: Props) => <Facebook className={className ?? 'lucide'} />;
 export const DiscordIcon = ({ className }: Props) => <DiscordLogoIcon className={className ?? 'lucide'} />;
 export const ArrowDownIcon = ({ className }: Props) => <ArrowDown className={className ?? 'lucide'} />;
-export const MenuIcon = ({ className }: { className?: string }) => <Menu className={cn('size-10 lucide text-white', className)} />;
+export const MenuIcon = ({ className }: { className?: string }) => <Menu className={className ?? 'lucide'} />;
 export const UploadIcon = ({ className }: Props) => <Upload className={className ?? 'lucide'} />;
 export const ExpandIcon = ({ className }: Props) => <Expand className={className ?? 'lucide'} />;
 export const ShrinkIcon = ({ className }: Props) => <Shrink className={className ?? 'lucide'} />;
