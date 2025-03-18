@@ -77,7 +77,7 @@ function clearTranslationCache() {
 
 export default function TranslationPage() {
   const [{ language, target, mode, key, isTranslated }, _setState] = useState(defaultState);
-  const { t } = useI18n();
+  const { t } = useI18n(['translation']);
 
   const setState = useCallback((value: Partial<typeof defaultState>) => _setState((prev) => ({ ...prev, ...value })), []);
 
@@ -147,7 +147,7 @@ export default function TranslationPage() {
             </>
           )}
           <SearchBar>
-            <SearchInput placeholder={t('translation.search-by-key')} value={key} onChange={(event) => setState({ key: event.currentTarget.value })} />
+            <SearchInput placeholder={t('search-by-key')} value={key} onChange={(event) => setState({ key: event.currentTarget.value })} />
           </SearchBar>
           <RefreshButton />
           <AddNewKeyDialog />

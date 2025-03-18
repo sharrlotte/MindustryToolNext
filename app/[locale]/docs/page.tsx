@@ -29,10 +29,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: formatTitle(title),
-    description: t('meta-docs-description'),
+    description: t('docs-description'),
     openGraph: {
       title: formatTitle(title),
-      description: t('meta-docs-description'),
+      description: t('docs-description'),
     },
   };
 }
