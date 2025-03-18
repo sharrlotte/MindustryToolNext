@@ -14,13 +14,8 @@ import NameTagSearch from '@/components/search/name-tag-search';
 
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
-import { Plugin } from '@/types/response/Plugin';
 
-type Props = {
-  plugins: Plugin[];
-};
-
-export default function Client({ plugins }: Props) {
+export default function Client() {
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
       <NameTagSearch type="plugin" useSort={false} />
@@ -33,7 +28,6 @@ export default function Client({ plugins }: Props) {
           queryKey={['plugins']}
           queryFn={getPlugins}
           paramSchema={ItemPaginationQuery}
-          initialData={plugins}
           skeleton={{
             amount: 20,
             item: <PluginCardSkeleton />,

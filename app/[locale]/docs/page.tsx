@@ -1,10 +1,14 @@
+import { Metadata } from 'next';
+
 import { getDocs } from '@/app/[locale]/docs/docmeta';
 
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
-import { locales } from '@/i18n/config';
+import { Locale, locales } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
+import { formatTitle } from '@/lib/utils';
 
 export const dynamicParams = false;
 export const revalidate = false;
@@ -12,6 +16,26 @@ export const revalidate = false;
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
+
+type Props = {
+  params: Promise<{ locale: Locale }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const { t } = await getTranslation(locale, ['common', 'meta']);
+  const title = t('docs');
+
+  return {
+    title: formatTitle(title),
+    description: t('meta-docs-description'),
+    openGraph: {
+      title: formatTitle(title),
+      description: t('meta-docs-description'),
+    },
+  };
+}
+
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
 

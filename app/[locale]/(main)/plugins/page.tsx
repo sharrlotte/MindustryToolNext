@@ -3,14 +3,11 @@ import React from 'react';
 
 import Client from '@/app/[locale]/(main)/plugins/page.client';
 
-import ErrorScreen from '@/components/common/error-screen';
 
-import { serverApi } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, isError } from '@/lib/utils';
-import { getPlugins } from '@/query/plugin';
-import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
+import { formatTitle } from '@/lib/utils';
+import { ItemPaginationQueryType } from '@/query/search-query';
 
 type Props = {
   searchParams: Promise<ItemPaginationQueryType>;
@@ -27,18 +24,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ searchParams }: Props) {
-  const { data, success, error } = ItemPaginationQuery.safeParse(await searchParams);
-
-  if (!success || !data) {
-    return <ErrorScreen error={error} />;
-  }
-
-  const plugins = await serverApi((axios) => getPlugins(axios, data));
-
-  if (isError(plugins)) {
-    return <ErrorScreen error={plugins} />;
-  }
-
-  return <Client plugins={plugins} />;
+export default async function Page() {
+  return <Client />;
 }

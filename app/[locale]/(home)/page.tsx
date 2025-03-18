@@ -157,7 +157,7 @@ async function Header({ locale }: { locale: Locale }) {
               <MindustryToolIcon />
             </span>
           </div>
-          <h1 className="text-xl font-bold">Mindustry Tool</h1>
+          <span className="text-xl font-bold">Mindustry Tool</span>
         </div>
         <Suspense>
           <HeaderLogin locale={locale} />

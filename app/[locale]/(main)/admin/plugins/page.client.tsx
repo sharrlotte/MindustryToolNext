@@ -10,13 +10,8 @@ import NameTagSearch from '@/components/search/name-tag-search';
 
 import { getPluginUploads } from '@/query/plugin';
 import { ItemPaginationQuery } from '@/query/search-query';
-import { Plugin } from '@/types/response/Plugin';
 
-type Props = {
-  plugins: Plugin[];
-};
-
-export default function Client({ plugins }: Props) {
+export default function Client() {
   return (
     <div className="relative flex h-full flex-col gap-2 p-2">
       <NameTagSearch type="plugin" />
@@ -24,7 +19,7 @@ export default function Client({ plugins }: Props) {
         <PaginationLayoutSwitcher />
       </div>
       <ScrollContainer className="relative flex h-full flex-col gap-2">
-        <InfinitePage queryKey={['plugins', 'upload']} queryFn={getPluginUploads} paramSchema={ItemPaginationQuery} initialData={plugins}>
+        <InfinitePage queryKey={['plugins', 'upload']} queryFn={getPluginUploads} paramSchema={ItemPaginationQuery}>
           {(data) => <UploadPluginCard key={data.id} plugin={data} />}
         </InfinitePage>
       </ScrollContainer>
