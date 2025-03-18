@@ -457,11 +457,11 @@ function Footer({ locale }: { locale: Locale }) {
               </h4>
               <ul className="space-y-2 text-gray-400">
                 {group.value.map((value, index) => (
-                  <li key={index}>
+                  <div key={index}>
                     <Link href={value.href} className="hover:text-blue-400">
                       <T locale={locale} text={value.text} />
                     </Link>
-                  </li>
+                  </div>
                 ))}
               </ul>
             </div>
@@ -497,11 +497,11 @@ async function InternalHomeSchematicPreview({ queryParam }: { queryParam: ItemPa
   }
 
   return result.slice(0, 3).map((schematic, index) => (
-    <li key={schematic.id} className="m-0 snap-center p-0 list-none">
+    <div key={schematic.id} className="m-0 snap-center p-0 list-none">
       <FadeIn delay={index}>
         <SchematicPreviewCard schematic={schematic} />
       </FadeIn>
-    </li>
+    </div>
   ));
 }
 
@@ -513,11 +513,11 @@ async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginati
   }
 
   return result.slice(0, 3).map((map, index) => (
-    <li key={map.id} className="m-0 snap-center p-0 list-none">
+    <div key={map.id} className="m-0 snap-center p-0 list-none">
       <FadeIn delay={index}>
         <MapPreviewCard map={map} />
       </FadeIn>
-    </li>
+    </div>
   ));
 }
 
