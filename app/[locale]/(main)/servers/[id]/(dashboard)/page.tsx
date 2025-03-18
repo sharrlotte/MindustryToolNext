@@ -3,7 +3,6 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import React, { Fragment, Suspense, cache } from 'react';
 
-import CheckServerMaps from '@/app/[locale]/(main)/servers/[id]/(dashboard)/check-server-maps';
 import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/player-card';
 import HostServerButton from '@/app/[locale]/(main)/servers/[id]/host-server-button';
 import InitServerButton from '@/app/[locale]/(main)/servers/[id]/init-server-button';
@@ -79,7 +78,6 @@ export default async function Page({ params }: Props) {
 
   return (
     <ScrollContainer className="flex flex-col gap-2 h-full">
-      <CheckServerMaps id={id} />
       <div className="h-full">
         <div
           className={cn('grid min-h-full w-full grid-cols-1 grid-rows-[auto_auto_60px] flex-col gap-2 md:grid-cols-[auto_300px] md:grid-rows-[auto_auto_60px]', {
@@ -167,7 +165,7 @@ export default async function Page({ params }: Props) {
             <div className={cn('col-start-1 row-start-4 flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg md:row-start-3', { 'row-start-3': !showPlayer })}>
               {status !== 'HOST' && <RemoveServerButton id={id} />}
               {status !== 'DOWN' && <ShutdownServerButton id={id} />}
-              {status === 'HOST' ? <StopServerButton id={id} /> : status === 'UP' ? <HostServerButton id={id} /> : <InitServerButton id={id} />}
+              {status === 'HOST' ? <StopServerButton id={id} /> : status === 'DOWN' ? <HostServerButton id={id} /> : <InitServerButton id={id} />}
             </div>
           </ProtectedElement>
         </div>
