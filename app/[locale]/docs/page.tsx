@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import path from 'path';
 
 import { Doc, readDocsByLocale } from '@/app/[locale]/docs/docmeta';
 
@@ -9,7 +10,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Locale, locales } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { cn, formatTitle } from '@/lib/utils';
-import path from 'path';
 
 export const dynamicParams = false;
 export const revalidate = false;
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
 
-  const docs = await readDocsByLocale(locale);
+  const docs = readDocsByLocale(locale);
 
   if (docs.length === 0) {
     return <div>No content</div>;

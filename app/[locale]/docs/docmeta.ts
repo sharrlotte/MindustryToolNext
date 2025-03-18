@@ -8,7 +8,7 @@ export type Doc = {
   children: Doc[];
 };
 
-function extractDocHeading(content: string) {
+export function extractDocHeading(content: string) {
   const lines = content.split('\n');
 
   for (const line of lines) {
@@ -56,11 +56,16 @@ function readDocs(localeFolder: string): Doc[] {
           ? extractDocHeading(fs.readFileSync(indexPath).toString())
           : indexPath;
 
-        return { segment: child, title: header, children: readDocs(path) };
+        const children = readDocs(path);
+
+        if (children.length === 0) return null;
+
+        return { segment: child, title: header, children };
       }
 
       return readDocFile(path, child);
     })
+    .filter(Boolean) //
     .reduce<Doc[]>((prev, curr) => (Array.isArray(curr) ? [...prev, ...curr] : [...prev, curr]), []);
 }
 
@@ -92,7 +97,7 @@ export async function getNextPrevDoc(locale: string, segments: string[]) {
   const docs = await readDocsByLocale(locale);
 
   let level = 0;
-  let docTree: Doc[] = [];
+  const docTree: Doc[] = [];
   let curr = docs.find((doc) => doc.segment === segments[level]);
 
   let next: NextPrev | null = null,

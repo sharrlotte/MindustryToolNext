@@ -21,9 +21,8 @@ export const revalidate = false;
 
 export default async function Layout({ children, params }: { children: ReactNode; params: Promise<{ path: string[]; locale: string }> }) {
   const { locale, path } = await params;
-  const [currentCategory, currentDocs] = path;
 
-  const markdownFilePath = p.join(process.cwd(), 'docs', p.normalize(locale), p.normalize(currentCategory), p.normalize(currentDocs) + '.mdx');
+  const markdownFilePath = p.join(process.cwd(), 'docs', p.normalize(locale), path.map((segment) => p.normalize(segment)).join('/') + '.mdx');
 
   if (!fs.existsSync(markdownFilePath)) {
     return notFound();
@@ -72,44 +71,72 @@ async function NavBarDialog({ locale, selectedSegments }: NavBarProps) {
 }
 
 async function NavBar({ locale, selectedSegments }: NavBarProps) {
-  const data = await readDocsByLocale(locale);
+  const data = readDocsByLocale(locale);
 
   return (
     <ScrollContainer className="pr-4 space-y-2 w-full">
       <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
         {data.map((doc) => (
-          <NavBarDoc key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={[]} />
+          <NavBarDoc key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={[]} level={0} />
         ))}
       </Accordion>
     </ScrollContainer>
   );
 }
 
-function NavBarDoc({ doc, segments, selectedSegments }: { doc: Doc; segments: string[]; selectedSegments: string[] }) {
+function NavBarDoc({ doc, segments, level, selectedSegments }: { doc: Doc; segments: string[]; selectedSegments: string[]; level: number }) {
   const currentSegments = [...segments, doc.segment];
 
   if (doc.children.length === 0) {
     return (
       <InternalLink
         href={`/docs/${path.join(...currentSegments)}`}
-        className={cn('text-sm pl-2 py-2 rounded-r-md hover:bg-muted/80 text-muted-foreground hover:text-brand', {
+        className={cn('text-sm py-2 rounded-r-md hover:bg-muted/80 text-muted-foreground hover:text-brand', {
           'text-brand': currentSegments.map((segment, index) => segment === selectedSegments[index]).every((v) => v),
         })}
       >
-        {doc.title}
+        <span
+          className={cn({
+            'pl-2': level === 0,
+            'pl-4': level === 1, //
+            'pl-6': level === 2,
+            'pl-8': level === 3,
+            'pl-10': level === 4,
+            'pl-12': level === 5,
+            'pl-14': level === 6,
+          })}
+        >
+          {doc.title}
+        </span>
       </InternalLink>
     );
   }
 
   return (
-    <AccordionItem value={currentSegments.map((segment, index) => segment === selectedSegments[index]).every((v) => v) ? selectedSegments.join('/') : doc.segment}>
-      <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">{doc.title}</AccordionTrigger>
-      <AccordionContent>
-        {doc.children.map((doc) => (
-          <NavBarDoc key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} />
-        ))}
-      </AccordionContent>
-    </AccordionItem>
+    <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
+      <AccordionItem value={selectedSegments.map((segment, index) => index > currentSegments.length - 1 || segment === currentSegments[index]).every((v) => v) ? selectedSegments.join('/') : doc.segment}>
+        <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
+          <span
+            className={cn({
+              'pl-2': level === 0,
+              'pl-4': level === 1, //
+              'pl-6': level === 2,
+              'pl-8': level === 3,
+              'pl-10': level === 4,
+              'pl-12': level === 5,
+              'pl-14': level === 6,
+            })}
+          >
+            {doc.title}
+          </span>
+        </AccordionTrigger>
+        <AccordionContent>
+          {doc.children.map((doc) => (
+            <NavBarDoc key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} level={level + 1} />
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
 
