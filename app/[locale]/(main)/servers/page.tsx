@@ -58,7 +58,7 @@ export default async function Page({ searchParams }: Props) {
   return (
     <div className="flex h-full flex-col overflow-hidden space-y-2 p-2">
       <ServerTabs className="flex h-full w-full flex-col overflow-hidden" name="tab" value="official-server" values={['official-server', 'community-server', 'my-server']}>
-        <ServerTabsList className="w-full justify-start h-14">
+        <ServerTabsList className="w-full justify-start h-14 min-h-14">
           <ServerTabsTrigger value="official-server">
             <Tran text="server.official-server" />
           </ServerTabsTrigger>
