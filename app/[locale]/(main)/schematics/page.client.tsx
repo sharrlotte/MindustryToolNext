@@ -8,49 +8,37 @@ import SchematicPreviewCard from '@/components/schematic/schematic-preview-card'
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import { getSchematics } from '@/query/schematic';
-import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
-import { Schematic } from '@/types/response/Schematic';
+import { ItemPaginationQuery } from '@/query/search-query';
 
-type Props = {
-  schematics: Schematic[];
-  params: ItemPaginationQueryType;
-};
-
-export default function Client({ schematics, params }: Props) {
-
+export default function Client() {
   return (
-   
-      <ScrollContainer className="relative flex h-full flex-col">
-        <ListLayout>
-          <InfinitePage
-            paramSchema={ItemPaginationQuery}
-            initialParams={params}
-            queryKey={['schematics']}
-            queryFn={getSchematics}
-            initialData={schematics}
-            skeleton={{
-              amount: 20,
-              item: <PreviewSkeleton />,
-            }}
-          >
-            {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
-          </InfinitePage>
-        </ListLayout>
-        <GridLayout>
-          <GridPaginationList
-            paramSchema={ItemPaginationQuery}
-            initialParams={params}
-            queryKey={['schematics']}
-            queryFn={getSchematics}
-            initialData={schematics}
-            skeleton={{
-              amount: 20,
-              item: <PreviewSkeleton />,
-            }}
-          >
-            {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
-          </GridPaginationList>
-        </GridLayout>
-      </ScrollContainer>
+    <ScrollContainer className="relative flex h-full flex-col">
+      <ListLayout>
+        <InfinitePage
+          paramSchema={ItemPaginationQuery}
+          queryKey={['schematics']}
+          queryFn={getSchematics}
+          skeleton={{
+            amount: 20,
+            item: <PreviewSkeleton />,
+          }}
+        >
+          {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+        </InfinitePage>
+      </ListLayout>
+      <GridLayout>
+        <GridPaginationList
+          paramSchema={ItemPaginationQuery}
+          queryKey={['schematics']}
+          queryFn={getSchematics}
+          skeleton={{
+            amount: 20,
+            item: <PreviewSkeleton />,
+          }}
+        >
+          {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+        </GridPaginationList>
+      </GridLayout>
+    </ScrollContainer>
   );
 }

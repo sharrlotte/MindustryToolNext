@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
 import { CommunityServer } from '@/app/[locale]/(main)/servers/community-server';
@@ -14,9 +15,31 @@ import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from
 import Skeletons from '@/components/ui/skeletons';
 
 import { getSession } from '@/action/action';
+import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import ProtectedElement from '@/layout/protected-element';
+import { formatTitle } from '@/lib/utils';
 
 export const experimental_ppr = true;
+
+type Props = {
+  params: Promise<{ locale: Locale }>;
+  searchParams: Promise<{ create?: boolean }>;
+};
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const { t } = await getTranslation(locale, ['common', 'meta']);
+  const title = t('server');
+
+  return {
+    title: formatTitle(title),
+    description: t('meta-server-description'),
+    openGraph: {
+      title: formatTitle(title),
+      description: t('meta-server-description'),
+    },
+  };
+}
 
 function LoginToCreateServer() {
   return (
@@ -27,9 +50,6 @@ function LoginToCreateServer() {
   );
 }
 
-type Props = {
-  searchParams: Promise<{ create?: boolean }>;
-};
 
 export default async function Page({ searchParams }: Props) {
   const { create } = await searchParams;

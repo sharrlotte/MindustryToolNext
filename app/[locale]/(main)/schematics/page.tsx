@@ -2,7 +2,6 @@ import { Metadata } from 'next/dist/types';
 
 import Client from '@/app/[locale]/(main)/schematics/page.client';
 
-import ErrorScreen from '@/components/common/error-screen';
 import { UploadIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { GridLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
@@ -10,44 +9,33 @@ import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
 import NameTagSearch from '@/components/search/name-tag-search';
 
-import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, isError } from '@/lib/utils';
-import { getSchematics } from '@/query/schematic';
-import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
+import { formatTitle } from '@/lib/utils';
 
 export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const { t } = await getTranslation(locale);
+  const { t } = await getTranslation(locale, ['common', 'meta']);
   const title = t('schematic');
 
   return {
     title: formatTitle(title),
+    description: t('meta-schematic-description'),
+    openGraph: {
+      title: formatTitle(title),
+      description: t('meta-schematic-description'),
+    },
   };
 }
 
 type Props = {
-  searchParams: Promise<ItemPaginationQueryType>;
   params: Promise<{ locale: Locale }>;
 };
 
-export default async function Page({ searchParams }: Props) {
-  const { data, success, error } = ItemPaginationQuery.safeParse(await searchParams);
-
-  if (!success || !data) {
-    return <ErrorScreen error={error} />;
-  }
-
-  const schematics = await serverApi((axios) => getSchematics(axios, data));
-
-  if (isError(schematics)) {
-    return <ErrorScreen error={schematics} />;
-  }
-
+export default async function Page() {
   const uploadLink = `${env.url.base}/upload/schematic`;
 
   return (
@@ -56,7 +44,7 @@ export default async function Page({ searchParams }: Props) {
       <div className="flex justify-end items-center">
         <PaginationLayoutSwitcher />
       </div>
-      <Client schematics={schematics} params={data} />
+      <Client />
       <div className="flex flex-wrap items-center gap-2 justify-between">
         <InternalLink variant="button-secondary" href={uploadLink}>
           <UploadIcon />

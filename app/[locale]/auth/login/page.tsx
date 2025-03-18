@@ -1,5 +1,6 @@
 import { DiscordIcon, GoogleIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
+
 import env from '@/constant/env';
 
 export default function Page() {
