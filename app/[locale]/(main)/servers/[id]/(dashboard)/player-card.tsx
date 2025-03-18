@@ -17,6 +17,7 @@ type PlayersCardProps = {
 };
 
 const localeToFlag: Record<string, string> = {
+  EN: '🇬🇧',
   AD: '🇦🇩',
   AE: '🇦🇪',
   AF: '🇦🇫',
