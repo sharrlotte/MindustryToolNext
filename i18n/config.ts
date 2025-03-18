@@ -42,11 +42,6 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
         {
           loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
           addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
-          requestOptions: {
-            next: {
-              revalidate: 600,
-            },
-          },
         } as HttpBackendOptions,
       ],
     },
@@ -76,9 +71,9 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
           addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
 
           request(options, url, payload, callback) {
-            if (url.endsWith('/create-missing')) {
+            if (url.endsWith('create-missing')) {
               axiosInstance
-                .post(url, payload)
+                .post(url, payload, { data: payload })
                 .then((result) => callback(undefined, { status: 200, data: result }))
                 .catch((error) => callback(error, undefined));
             } else {
@@ -86,11 +81,6 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
                 .then((result) => callback(undefined, { status: 200, data: result }))
                 .catch((error) => callback(error, undefined));
             }
-          },
-          requestOptions: {
-            next: {
-              revalidate: 600,
-            },
           },
         } as HttpBackendOptions,
       ],
