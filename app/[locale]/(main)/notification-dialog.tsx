@@ -31,7 +31,7 @@ export default function NotificationDialog() {
   return (
     <ProtectedElement session={session} filter>
       <Dialog>
-        <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
+        <DialogTrigger className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand hover:text-brand-foreground rounded-md', { 'justify-start': expand, 'aspect-square': !expand })}>
           <NotificationDialogButton expand={expand} />
         </DialogTrigger>
         <Suspense>

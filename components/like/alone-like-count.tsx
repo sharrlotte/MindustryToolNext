@@ -8,9 +8,9 @@ type Props = {
 
 export default function AloneLikeCount({ like }: Props) {
   return (
-    <div className={cn('flex h-9 min-w-9 gap-2 transition-colors items-center justify-center rounded-md border border-border bg-secondary text-lg')} title="like-count">
-      <LikeIcon className="size-[1.25rem]" />
+    <span className={cn('flex gap-1 transition-colors items-center text-base')} title="like-count">
+      <LikeIcon className="size-4" />
       {like}
-    </div>
+    </span>
   );
 }

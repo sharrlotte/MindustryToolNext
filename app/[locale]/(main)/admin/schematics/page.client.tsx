@@ -45,12 +45,6 @@ export default function Client() {
     <BulkActionContainer variant="destructive" onActionPerform={handleBulkDelete}>
       <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
         <NameTagSearch type="schematic" />
-        <div className="flex items-center justify-end">
-          <div className="flex items-center gap-2">
-            <BulkDeleteToggle />
-            <PaginationLayoutSwitcher />
-          </div>
-        </div>
         <ScrollContainer className="relative flex h-full flex-col">
           <ListLayout>
             <InfinitePage
@@ -80,9 +74,13 @@ export default function Client() {
           </GridLayout>
         </ScrollContainer>
         <div className="flex flex-wrap items-center gap-2 justify-between">
-          <GridLayout>
-            <PaginationNavigator numberOfItems={getSchematicUploadCount} queryKey={['schematics', 'total', 'upload']} />
-          </GridLayout>
+          <BulkDeleteToggle />
+          <div className="flex items-center gap-2">
+            <PaginationLayoutSwitcher />
+            <GridLayout>
+              <PaginationNavigator numberOfItems={getSchematicUploadCount} queryKey={['schematics', 'total', 'upload']} />
+            </GridLayout>
+          </div>
         </div>
       </div>
     </BulkActionContainer>

@@ -32,7 +32,6 @@ export default function PageClient({ id }: Props) {
               <Tran text="server.building-destroy-log" />
             </ServerTabsTrigger>
           </ServerTabsList>
-          <PaginationLayoutSwitcher />
         </div>
         <ScrollContainer>
           <ServerTabsContent className="space-y-2" value="login-log">
@@ -54,7 +53,8 @@ export default function PageClient({ id }: Props) {
             </GridLayout>
           </ServerTabsContent>
         </ScrollContainer>
-        <div className="ml-auto mt-auto">
+        <div className="ml-auto mt-auto space-x-2">
+          <PaginationLayoutSwitcher />
           <GridLayout>
             <PaginationNavigator />
           </GridLayout>

@@ -39,20 +39,21 @@ export default async function Page() {
   const uploadLink = `${env.url.base}/upload/schematic`;
 
   return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
+    <div className="flex h-full flex-col gap-4 overflow-hidden p-2">
       <NameTagSearch type="schematic" />
-      <div className="flex justify-end items-center">
-        <PaginationLayoutSwitcher />
-      </div>
+
       <Client />
-      <div className="flex flex-wrap items-center gap-2 justify-between">
+      <div className="flex flex-wrap items-center gap-4 justify-between">
         <InternalLink variant="button-secondary" href={uploadLink}>
           <UploadIcon />
           <Tran text="upload-schematic" />
         </InternalLink>
-        <GridLayout>
-          <PaginationNavigator numberOfItems="/schematics/total" queryKey={['schematics', 'total']} />
-        </GridLayout>
+        <div className="flex justify-end items-center gap-2">
+          <PaginationLayoutSwitcher />
+          <GridLayout>
+            <PaginationNavigator numberOfItems="/schematics/total" queryKey={['schematics', 'total']} />
+          </GridLayout>
+        </div>
       </div>
     </div>
   );

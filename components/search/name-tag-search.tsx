@@ -40,7 +40,6 @@ type NameTagSearchProps = {
 
 export default function NameTagSearch({ className, type, useSort = true, useTag = true }: NameTagSearchProps) {
   const [filter, setFilter] = useState('');
-
   const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
 
   const params = useSearchQuery(ItemPaginationQuery);
@@ -181,16 +180,16 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex justify-center gap-1.5 overflow-hidden rounded-sm">
-        <SearchBar className="border-none bg-card rounded-none overflow-auto">
+        <SearchBar className="border-none bg-card overflow-hidden">
           <SearchIcon className="size-5 shrink-0" />
           <TagBadgeContainer tagGroups={filterBy} handleDeleteTag={handleDeleteTag} />
           <SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
+          {useTag && (
+            <Button className="h-10 shadow-md bg-card rounded-none" title="filter" variant="ghost" onClick={handleShowFilterDialog}>
+              <FilterIcon className="size-5" />
+            </Button>
+          )}
         </SearchBar>
-        {useTag && (
-          <Button className="h-10 shadow-md bg-card rounded-none" title="filter" variant="ghost" onClick={handleShowFilterDialog}>
-            <FilterIcon className="size-5" />
-          </Button>
-        )}
       </div>
       <Suspense>
         {useTag && showFilterDialog && (

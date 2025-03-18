@@ -15,14 +15,14 @@ export default function Client() {
   return (
     <div className="relative flex h-full flex-col gap-2 p-2">
       <NameTagSearch type="plugin" />
-      <div className="flex justify-end items-center">
-        <PaginationLayoutSwitcher />
-      </div>
       <ScrollContainer className="relative flex h-full flex-col gap-2">
         <InfinitePage queryKey={['plugins', 'upload']} queryFn={getPluginUploads} paramSchema={ItemPaginationQuery}>
           {(data) => <UploadPluginCard key={data.id} plugin={data} />}
         </InfinitePage>
       </ScrollContainer>
+      <div className="flex justify-end items-center">
+        <PaginationLayoutSwitcher />
+      </div>
     </div>
   );
 }

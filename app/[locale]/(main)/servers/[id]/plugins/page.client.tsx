@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import AddPluginDialog from '@/app/[locale]/(main)/servers/[id]/plugins/add-plugin-dialog';
+
 import InfinitePage from '@/components/common/infinite-page';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -32,8 +34,9 @@ export default function ServerPluginPage({ id }: Props) {
           {(data) => <ServerPluginCard key={data.id} plugin={data} />}
         </InfinitePage>
       </ScrollContainer>
-      <div className="flex justify-end">
-        <div className="flex justify-end">
+      <div className="flex justify-between gap-2 items-center">
+        <AddPluginDialog serverId={id} />
+        <div className="flex gap-2">
           <PaginationNavigator numberOfItems={(axios, params) => getServerPluginCount(axios, id, params)} queryKey={['servers', id, 'plugins', 'total']} />
         </div>
       </div>

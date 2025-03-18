@@ -20,10 +20,12 @@ export default function useClientApi(): AxiosInstance {
   axiosInstance.defaults.timeout = 60000;
 
   axiosInstance.interceptors.request.clear();
-  axiosInstance.interceptors.request.use(async (config) => {
-    console.log(`CLIENT ${config.method?.toUpperCase()} ${config.baseURL}/${config.url}`);
-    return config;
-  });
+  if (process.env.NODE_ENV !== 'production') {
+    axiosInstance.interceptors.request.use(async (config) => {
+      console.log(`CLIENT ${config.method?.toUpperCase()} ${config.baseURL}/${config.url}`);
+      return config;
+    });
+  }
 
   axiosInstance.interceptors.request.use(async (config) => {
     const params = config.params;

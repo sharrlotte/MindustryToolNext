@@ -25,9 +25,6 @@ export default function Client({ posts }: Props) {
   return (
     <div className="flex h-full w-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="post" />
-      <div className="flex justify-end items-center">
-        <PaginationLayoutSwitcher />
-      </div>
       <ScrollContainer>
         <InfinitePage className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(450px,100%),1fr))] justify-center gap-2" paramSchema={ItemPaginationQuery} queryKey={['posts']} queryFn={getPosts} initialData={posts}>
           {(data) => <PostPreviewCard key={data.id} post={data} />}
@@ -38,9 +35,12 @@ export default function Client({ posts }: Props) {
           <UploadIcon />
           <Tran text="upload-post" />
         </InternalLink>
-        <GridLayout>
-          <PaginationNavigator numberOfItems={getPostCount} queryKey={['posts', 'total']} />
-        </GridLayout>
+        <div className="flex justify-end items-center gap-2">
+          <PaginationLayoutSwitcher />
+          <GridLayout>
+            <PaginationNavigator numberOfItems={getPostCount} queryKey={['posts', 'total']} />
+          </GridLayout>
+        </div>
       </div>
     </div>
   );
