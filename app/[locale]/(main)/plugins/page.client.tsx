@@ -19,9 +19,6 @@ export default function Client() {
   return (
     <div className="flex h-full flex-col justify-between gap-2 p-2">
       <NameTagSearch type="plugin" useSort={false} />
-      <div className="flex justify-end items-center">
-        <PaginationLayoutSwitcher />
-      </div>
       <ScrollContainer className="relative flex h-full flex-col">
         <InfinitePage
           className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
@@ -38,7 +35,10 @@ export default function Client() {
       </ScrollContainer>
       <div className="flex justify-between">
         <AddPluginDialog />
-        <PaginationNavigator numberOfItems={getPluginCount} queryKey={['plugin', 'total']} />
+        <div className="flex justify-end items-center gap-2">
+          <PaginationLayoutSwitcher />
+          <PaginationNavigator numberOfItems={getPluginCount} queryKey={['plugin', 'total']} />
+        </div>
       </div>
     </div>
   );

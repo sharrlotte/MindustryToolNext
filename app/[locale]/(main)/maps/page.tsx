@@ -34,18 +34,18 @@ export default async function Page() {
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="map" />
-      <div className="flex justify-end">
-        <PaginationLayoutSwitcher />
-      </div>
       <Client />
       <div className="flex flex-wrap items-center gap-2 justify-between">
         <InternalLink variant="button-secondary" href={`${env.url.base}/upload/map`}>
           <UploadIcon className="size-5" />
           <Tran text="map.upload" />
         </InternalLink>
-        <GridLayout>
-          <PaginationNavigator numberOfItems="/maps/total" queryKey={['maps', 'total']} />
-        </GridLayout>
+        <div className="flex justify-end items-center gap-2">
+          <PaginationLayoutSwitcher />
+          <GridLayout>
+            <PaginationNavigator numberOfItems="/maps/total" queryKey={['maps', 'total']} />
+          </GridLayout>
+        </div>
       </div>
     </div>
   );

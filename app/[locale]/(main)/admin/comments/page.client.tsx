@@ -31,9 +31,6 @@ import { useMutation } from '@tanstack/react-query';
 export default function Client() {
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
-      <div className="flex justify-end">
-        <PaginationLayoutSwitcher />
-      </div>
       <ScrollContainer className="relative flex h-full flex-col">
         <ListLayout>
           <InfinitePage className="flex flex-col gap-2" paramSchema={ItemPaginationQuery} queryKey={['comments']} queryFn={getAllComments} loader={<LoadingSpinner className="p-0 m-auto" />}>
@@ -47,9 +44,12 @@ export default function Client() {
         </GridLayout>
       </ScrollContainer>
       <div className="flex flex-wrap items-center gap-2 justify-end">
-        <GridLayout>
-          <PaginationNavigator numberOfItems={getAllCommentCount} queryKey={['comments']} />
-        </GridLayout>
+        <div className="flex justify-end items-center gap-2">
+          <PaginationLayoutSwitcher />
+          <GridLayout>
+            <PaginationNavigator numberOfItems={getAllCommentCount} queryKey={['comments']} />
+          </GridLayout>
+        </div>
       </div>
     </div>
   );

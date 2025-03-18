@@ -121,10 +121,12 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
 
     return config;
   });
-  axiosInstance.interceptors.request.use(async (config) => {
-    console.log(`SERVER ${config.method?.toUpperCase()} ${config.baseURL}/${config.url}`);
-    return config;
-  });
+  if (process.env.NODE_ENV !== 'production') {
+    axiosInstance.interceptors.request.use(async (config) => {
+      console.log(`SERVER ${config.method?.toUpperCase()} ${config.baseURL}/${config.url}`);
+      return config;
+    });
+  }
 
   axiosInstance.defaults.headers['Server'] = true;
 

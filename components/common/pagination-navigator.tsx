@@ -1,10 +1,10 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import { useRouter, useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
 
-import ComboBox from '@/components/common/combo-box';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -17,6 +17,8 @@ import useClientQuery from '@/hooks/use-client-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn, groupParamsByKey, omit } from '@/lib/utils';
 import { PaginationQuerySchema } from '@/query/search-query';
+
+const SizeSelector = dynamic(import('@/components/common/size-selector'), { ssr: false });
 
 type Props = {
   sizes?: number[];
@@ -175,42 +177,5 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
         </PaginationItem>
       </PaginationContent>
     </Pagination>
-  );
-}
-
-type SizeSelectorProps = {
-  sizes: number[];
-};
-function SizeSelector({ sizes }: SizeSelectorProps) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const {
-    config: { paginationSize: size },
-    setConfig,
-  } = useSession();
-
-  const handleSizeChange = useCallback(
-    (size: number | undefined) => {
-      setConfig('paginationSize', size ?? 10);
-
-      const path = new URLSearchParams(searchParams);
-      path.set('size', (size ?? 10).toString());
-      router.replace(`?${path.toString()}`);
-    },
-    [router, searchParams, setConfig],
-  );
-
-  return (
-    <ComboBox
-      className="w-auto rounded border-none h-10"
-      searchBar={false}
-      value={{ label: size.toString(), value: size }}
-      values={sizes.map((size) => ({
-        label: size.toString(),
-        value: size,
-      }))}
-      onChange={handleSizeChange}
-    />
   );
 }

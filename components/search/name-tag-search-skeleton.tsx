@@ -3,7 +3,6 @@
 import React from 'react';
 
 import { FilterIcon, SearchIcon } from '@/components/common/icons';
-import { PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 
 import { useI18n } from '@/i18n/client';
 
@@ -17,9 +16,6 @@ export default function NameTagSearchSkeleton() {
           <input className="h-full w-full bg-card hover:outline-none focus:outline-none" placeholder={t('search-by-name')} />
           <FilterIcon className="size-5" />
         </div>
-      </div>
-      <div className="flex justify-end w-full h-9">
-        <PaginationLayoutSwitcher />
       </div>
     </>
   );

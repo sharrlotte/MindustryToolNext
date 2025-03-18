@@ -66,9 +66,6 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
         {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch type="map" />
-          <div className="flex justify-end">
-            <PaginationLayoutSwitcher />
-          </div>
           <ScrollContainer className="flex h-full w-full flex-col gap-2">
             <ListLayout>
               <InfinitePage
@@ -97,7 +94,8 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
               </GridPaginationList>
             </GridLayout>
           </ScrollContainer>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            <PaginationLayoutSwitcher />
             <GridLayout>
               <PaginationNavigator numberOfItems={getMapCount} queryKey={['maps', 'total']} />
             </GridLayout>

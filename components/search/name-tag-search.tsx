@@ -40,7 +40,6 @@ type NameTagSearchProps = {
 
 export default function NameTagSearch({ className, type, useSort = true, useTag = true }: NameTagSearchProps) {
   const [filter, setFilter] = useState('');
-
   const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
 
   const params = useSearchQuery(ItemPaginationQuery);

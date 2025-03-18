@@ -63,9 +63,6 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
         {isPending && <LoadingScreen />}
         <div className="flex h-full flex-col justify-start gap-2 overflow-hidden">
           <NameTagSearch type="plugin" />
-          <div className="flex justify-end">
-            <PaginationLayoutSwitcher />
-          </div>
           <ScrollContainer className="flex h-full w-full flex-col gap-2">
             <ListLayout>
               <InfinitePage
@@ -94,7 +91,8 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
               </GridPaginationList>
             </GridLayout>
           </ScrollContainer>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            <PaginationLayoutSwitcher />
             <GridLayout>
               <PaginationNavigator numberOfItems={getPluginCount} queryKey={['plugins', 'total']} />
             </GridLayout>
