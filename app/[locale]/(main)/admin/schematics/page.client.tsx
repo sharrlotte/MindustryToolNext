@@ -17,17 +17,11 @@ import { toast } from '@/components/ui/sonner';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { deleteSchematic, getSchematicUploadCount, getSchematicUploads } from '@/query/schematic';
-import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
-import { Schematic } from '@/types/response/Schematic';
+import { ItemPaginationQuery } from '@/query/search-query';
 
 import { useMutation } from '@tanstack/react-query';
 
-type Props = {
-  schematics: Schematic[];
-  params: ItemPaginationQueryType;
-};
-
-export default function Client({ schematics, params }: Props) {
+export default function Client() {
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
   const { mutate } = useMutation({
@@ -63,8 +57,6 @@ export default function Client({ schematics, params }: Props) {
               paramSchema={ItemPaginationQuery}
               queryKey={['schematics', 'upload']}
               queryFn={getSchematicUploads}
-              initialData={schematics}
-              initialParams={params}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -78,8 +70,6 @@ export default function Client({ schematics, params }: Props) {
               paramSchema={ItemPaginationQuery}
               queryKey={['schematics', 'upload']}
               queryFn={getSchematicUploads}
-              initialData={schematics}
-              initialParams={params}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,

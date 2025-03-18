@@ -17,17 +17,11 @@ import { toast } from '@/components/ui/sonner';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { deleteMap, getMapUploadCount, getMapUploads } from '@/query/map';
-import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
-import { Map } from '@/types/response/Map';
+import { ItemPaginationQuery } from '@/query/search-query';
 
 import { useMutation } from '@tanstack/react-query';
 
-type Props = {
-  maps: Map[];
-  params: ItemPaginationQueryType;
-};
-
-export default function Client({ maps, params }: Props) {
+export default function Client() {
   const { invalidateByKey } = useQueriesData();
   const axios = useClientApi();
 
@@ -64,8 +58,6 @@ export default function Client({ maps, params }: Props) {
               paramSchema={ItemPaginationQuery}
               queryKey={['maps', 'upload']}
               queryFn={getMapUploads}
-              initialData={maps}
-              initialParams={params}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
@@ -79,8 +71,6 @@ export default function Client({ maps, params }: Props) {
               paramSchema={ItemPaginationQuery}
               queryKey={['maps', 'upload']}
               queryFn={getMapUploads}
-              initialData={maps}
-              initialParams={params}
               skeleton={{
                 amount: 20,
                 item: <PreviewSkeleton />,
