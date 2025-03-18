@@ -27,12 +27,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  return (
-    <div className="flex flex-col gap-2 overflow-hidden h-full">
-      <div className=" flex h-14 items-center justify-end bg-card rounded-md p-2">
-        <AddPluginDialog serverId={id} />
-      </div>
-      <ServerPluginPage id={id} />
-    </div>
-  );
+  return <ServerPluginPage id={id} />;
 }

@@ -52,7 +52,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="ml-auto" title="Add plugin" variant="secondary">
+        <Button title="Add plugin" variant="secondary">
           <Tran text="internal-server.add-plugin" />
         </Button>
       </DialogTrigger>

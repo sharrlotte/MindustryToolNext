@@ -51,5 +51,5 @@ export function PreviewActions({ className, children }: ActionsProps) {
 type DescriptionProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function PreviewDescription({ className, children }: DescriptionProps) {
-  return <section className={cn('h-28 w-full flex justify-between flex-col pt-2', className)}>{children}</section>;
+  return <section className={cn('h-28 w-full flex justify-between flex-col', className)}>{children}</section>;
 }
