@@ -18,7 +18,7 @@ import { getSession } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ProtectedElement from '@/layout/protected-element';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, hasAccess } from '@/lib/utils';
 
 export const experimental_ppr = true;
 
@@ -50,14 +50,15 @@ function LoginToCreateServer() {
   );
 }
 
-
 export default async function Page({ searchParams }: Props) {
   const { create } = await searchParams;
+  const session = await getSession();
+  const valid = !hasAccess(session, { authority: 'UPDATE_SERVER' });
 
   return (
     <div className="flex h-full flex-col overflow-hidden space-y-2 p-2">
       <ServerTabs className="flex h-full w-full flex-col overflow-hidden" name="tab" value="official-server" values={['official-server', 'community-server', 'my-server']}>
-        <ServerTabsList className="w-full justify-start h-14">
+        <ServerTabsList className="w-full justify-start h-14 min-h-14">
           <ServerTabsTrigger value="official-server">
             <Tran text="server.official-server" />
           </ServerTabsTrigger>
@@ -71,14 +72,14 @@ export default async function Page({ searchParams }: Props) {
         <ServerTabsContent className="overflow-hidden" value="official-server">
           <Suspense fallback={<ServersSkeleton />}>
             <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
-              <OfficialServer />
+              <OfficialServer valid={valid} />
             </ScrollContainer>
           </Suspense>
         </ServerTabsContent>
         <ServerTabsContent className="overflow-hidden" value="community-server">
           <Suspense fallback={<ServersSkeleton />}>
             <ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
-              <CommunityServer />
+              <CommunityServer valid={valid} />
             </ScrollContainer>
           </Suspense>
         </ServerTabsContent>

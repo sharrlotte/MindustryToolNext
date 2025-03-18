@@ -115,17 +115,12 @@ export async function getServerSetting(axios: AxiosInstance, { id }: IdSearchPar
   return result.data;
 }
 
-export async function getServers(axios: AxiosInstance, params: { official?: boolean } & PaginationQuery): Promise<ServerDto[]> {
+export async function getServers(axios: AxiosInstance, params: { official?: boolean, valid?: boolean } & PaginationQuery): Promise<ServerDto[]> {
   const result = await axios.get(`/servers`, { params });
 
   return result.data;
 }
 
-export async function getServersByAdmin(axios: AxiosInstance, params: { official?: boolean } & PaginationQuery): Promise<ServerDto[]> {
-  const result = await axios.get(`/servers/admin`, { params });
-
-  return result.data;
-}
 
 export async function getMyServerManager(axios: AxiosInstance): Promise<ServerManager[]> {
   const result = await axios.get(`/users/@me/server-managers`);

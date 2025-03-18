@@ -409,12 +409,16 @@ export type Filter =
   | { authorId: string | null | undefined }
   | undefined;
 
-export function hasAccess(session: Session | undefined | null, filter: Filter): boolean {
+export function hasAccess(session: Session | ApiError | undefined | null, filter: Filter): boolean {
   if (filter === undefined) {
     return true;
   }
 
   if (!session) {
+    return false;
+  }
+
+  if (isError(session)) {
     return false;
   }
 
