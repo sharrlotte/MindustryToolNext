@@ -10,10 +10,9 @@ import { Hidden } from '@/components/common/hidden';
 import { MenuIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
-import { Accordion, AccordionConDialogTitle, AccordionItem, AccordionTrigger, tent } from '@/components/ui/accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-import IsSmall from '@/layout/is-small';
 import { cn } from '@/lib/utils';
 
 export const dynamicParams = false;
