@@ -91,7 +91,14 @@ type Props = {
 };
 
 export const LanguagesIcon = ({ className }: Props) => <Languages className={className ?? 'lucide'} />;
-export const MindustryToolIcon = ({ className }: Props) => <Image className={className} width={32} height={32} src={mindustryToolIcon} alt="MindustryToolIcon" />;
+export const MindustryToolIcon = ({
+  className,
+  width,
+  height,
+}: Props & {
+  width?: number;
+  height?: number;
+}) => <Image className={className} width={width ?? 32} height={height ?? 32} src={mindustryToolIcon} alt="MindustryToolIcon" />;
 export const DocsIcon = ({ className }: Props) => <Book className={className ?? 'lucide'} />;
 export const KeyRoundIcon = ({ className }: Props) => <KeyRound className={className ?? 'lucide'} />;
 export const ShareIcon = ({ className }: Props) => <Share2 className={className ?? 'lucide'} />;

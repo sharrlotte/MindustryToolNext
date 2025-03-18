@@ -7,6 +7,7 @@ import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 import HorizontalNavbarUserAvatar from '@/app/horizontal-navbar-user-avatar';
 import SmallNavbarToggle from '@/app/small-navbar-toggle';
 
+import { MindustryToolIcon } from '@/components/common/icons';
 import Divider from '@/components/ui/divider';
 
 import env from '@/constant/env';
@@ -22,7 +23,7 @@ export default function SmallScreenNavigationBar() {
         <div className="flex h-full flex-col justify-between overflow-hidden p-2">
           <div className="flex h-full flex-col overflow-hidden">
             <span className="flex flex-col gap-2">
-              <span className="flex justify-between items-start rounded-sm p-2">
+              <span className="flex justify-between items-start rounded-sm p-1">
                 <NavHeader />
                 <SmallNavbarInsideToggle />
               </span>
@@ -40,9 +41,12 @@ export default function SmallScreenNavigationBar() {
 
 function NavHeader() {
   return (
-    <div className="flex flex-col gap-2">
-      <h1 className="text-xl font-medium">MindustryTool</h1>
-      <span className="text-xs">{env.webVersion}</span>
-    </div>
+    <h1 className="text-xl font-medium flex gap-2 items-center p-0">
+      <MindustryToolIcon className="size-9" height={36} width={36} />
+      <div className="flex flex-col">
+        <span>MindustryTool</span>
+        <span className="overflow-hidden whitespace-nowrap text-xs">{env.webVersion}</span>
+      </div>
+    </h1>
   );
 }

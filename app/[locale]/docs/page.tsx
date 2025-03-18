@@ -50,7 +50,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       <Accordion type="single" collapsible>
         {docs.map(({ category, title, docs }) => (
           <AccordionItem key={category} value={category}>
-            <AccordionTrigger className="py-1 px-3 bg-card rounded-sm text-lg">{title}</AccordionTrigger>
+            <AccordionTrigger className="py-1 px-3 rounded-sm text-lg">{title}</AccordionTrigger>
             <AccordionContent className="p-0" asChild>
               <nav>
                 {docs.map(({ header, filename }) => (
