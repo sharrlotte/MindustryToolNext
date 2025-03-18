@@ -71,7 +71,6 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
           addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
 
           request(options, url, payload, callback) {
-            console.log({ payload });
             if (url.endsWith('create-missing')) {
               axiosInstance
                 .post(url, payload, { data: payload })
