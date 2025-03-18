@@ -51,12 +51,14 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         {docs.map(({ category, title, docs }) => (
           <AccordionItem key={category} value={category}>
             <AccordionTrigger className="py-1 px-3 bg-card rounded-sm text-lg">{title}</AccordionTrigger>
-            <AccordionContent className="p-0">
-              {docs.map(({ header, filename }) => (
-                <InternalLink key={filename} href={`/${locale}/docs/${category}/${filename}`} className="text-sm px-4 hover:text-brand py-2 rounded-sm hover:bg-muted/50 text-muted-foreground">
-                  {header}
-                </InternalLink>
-              ))}
+            <AccordionContent className="p-0" asChild>
+              <nav>
+                {docs.map(({ header, filename }) => (
+                  <InternalLink key={filename} href={`/${locale}/docs/${category}/${filename}`} className="text-sm px-4 hover:text-brand py-2 rounded-sm hover:bg-muted/50 text-muted-foreground">
+                    {header}
+                  </InternalLink>
+                ))}
+              </nav>
             </AccordionContent>
           </AccordionItem>
         ))}

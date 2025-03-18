@@ -50,7 +50,7 @@ export default function SchematicPreviewCard({ schematic: { id, name, likes, dis
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>
-          <ColorText text={name} />
+          <ColorText className="line-clamp-1" text={name} />
           <LikeAndDislike like={likes} dislike={dislikes} />
         </PreviewHeader>
         <PreviewActions>

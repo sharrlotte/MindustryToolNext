@@ -38,7 +38,7 @@ function MapPreviewCard({ map: { id, name, likes, dislikes, downloadCount } }: M
       </InternalLink>
       <PreviewDescription>
         <PreviewHeader>
-          <ColorText text={name} />
+          <ColorText className="line-clamp-1" text={name} />
           <LikeAndDislike like={likes} dislike={dislikes} />
         </PreviewHeader>
         <PreviewActions>

@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <MindustryToolIcon /> MindustryTool
           </Link>
         </div>
-        <div className="flex items-center gap-4">
+        <nav className="flex items-center gap-4">
           <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs">
             Docs
           </Link>
@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/api/getting-started">
             Api
           </Link>
-        </div>
+        </nav>
         <DocSearchBar />
       </div>
       <div className="h-full w-full overflow-hidden">{children}</div>
