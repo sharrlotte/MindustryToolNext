@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { getDocs } from '@/app/[locale]/docs/docmeta';
+import { Doc, readDocsByLocale } from '@/app/[locale]/docs/docmeta';
 
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -8,7 +8,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 
 import { Locale, locales } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle } from '@/lib/utils';
+import { cn, formatTitle } from '@/lib/utils';
+import path from 'path';
 
 export const dynamicParams = false;
 export const revalidate = false;
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
 
-  const docs = await getDocs(locale);
+  const docs = await readDocsByLocale(locale);
 
   if (docs.length === 0) {
     return <div>No content</div>;
@@ -47,22 +48,38 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
 
   return (
     <ScrollContainer className="p-2">
-      <Accordion type="single" collapsible>
-        {docs.map(({ category, title, docs }) => (
-          <AccordionItem key={category} value={category}>
-            <AccordionTrigger className="py-1 px-3 rounded-sm text-lg">{title}</AccordionTrigger>
-            <AccordionContent className="p-0" asChild>
-              <nav>
-                {docs.map(({ header, filename }) => (
-                  <InternalLink key={filename} href={`/${locale}/docs/${category}/${filename}`} className="text-sm px-4 hover:text-brand py-2 rounded-sm hover:bg-muted/50 text-muted-foreground">
-                    {header}
-                  </InternalLink>
-                ))}
-              </nav>
-            </AccordionContent>
-          </AccordionItem>
+      <Accordion className="space-y-2 w-full" type="single" collapsible>
+        {docs.map((doc) => (
+          <DocCard key={doc.segment} doc={doc} selectedSegments={[]} segments={[]} />
         ))}
       </Accordion>
     </ScrollContainer>
+  );
+}
+function DocCard({ doc, segments, selectedSegments }: { doc: Doc; segments: string[]; selectedSegments: string[] }) {
+  const currentSegments = [...segments, doc.segment];
+
+  if (doc.children.length === 0) {
+    return (
+      <InternalLink
+        href={`/docs/${path.join(...currentSegments)}`}
+        className={cn('text-sm pl-2 py-2 rounded-r-md hover:bg-muted/80 text-muted-foreground hover:text-brand', {
+          'text-brand': currentSegments.map((segment, index) => segment === selectedSegments[index]).every((v) => v),
+        })}
+      >
+        {doc.title}
+      </InternalLink>
+    );
+  }
+
+  return (
+    <AccordionItem value={doc.segment}>
+      <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">{doc.title}</AccordionTrigger>
+      <AccordionContent>
+        {doc.children.map((doc) => (
+          <DocCard key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} />
+        ))}
+      </AccordionContent>
+    </AccordionItem>
   );
 }
