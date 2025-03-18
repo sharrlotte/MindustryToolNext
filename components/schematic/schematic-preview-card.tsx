@@ -10,8 +10,7 @@ import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
-import AloneDislikeCount from '@/components/like/alone-dislike-count';
-import AloneLikeCount from '@/components/like/alone-like-count';
+import LikeAndDislike from '@/components/like/like-and-dislike';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
@@ -52,12 +51,11 @@ export default function SchematicPreviewCard({ schematic: { id, name, likes, dis
       <PreviewDescription>
         <PreviewHeader>
           <ColorText text={name} />
+          <LikeAndDislike like={likes} dislike={dislikes} />
         </PreviewHeader>
         <PreviewActions>
           <CopyButton content={copyContent} data={getData} />
           <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
-          <AloneLikeCount like={likes} />
-          <AloneDislikeCount dislike={dislikes} />
         </PreviewActions>
       </PreviewDescription>
     </Preview>

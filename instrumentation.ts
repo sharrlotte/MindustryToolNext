@@ -34,17 +34,19 @@ export function onRequestError(
 }
 
 export async function register() {
-  if (process.env.NEXT_RUNTIME === 'nodejs') {
-    Sentry.init({
-      dsn: env.DSN,
-      tracesSampleRate: 1.0,
-    });
-  }
+  if (process.env.NODE_ENV === 'production') {
+    if (process.env.NEXT_RUNTIME === 'nodejs') {
+      Sentry.init({
+        dsn: env.DSN,
+        tracesSampleRate: 1.0,
+      });
+    }
 
-  if (process.env.NEXT_RUNTIME === 'edge') {
-    Sentry.init({
-      dsn: env.DSN,
-      tracesSampleRate: 1.0,
-    });
+    if (process.env.NEXT_RUNTIME === 'edge') {
+      Sentry.init({
+        dsn: env.DSN,
+        tracesSampleRate: 1.0,
+      });
+    }
   }
 }

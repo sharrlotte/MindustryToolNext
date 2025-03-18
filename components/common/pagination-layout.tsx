@@ -18,22 +18,22 @@ export function PaginationLayoutSwitcher() {
   } = useSession();
 
   return (
-    <div className="bg-card rounded overflow-hidden">
+    <div className="bg-card rounded-md overflow-hidden">
       <button
-        className={cn('p-2', {
-          'bg-secondary hover:bg-secondary bg-opacity-80': paginationType === 'grid',
+        className={cn('p-2 h-full', {
+          'bg-secondary hover:bg-secondary bg-opacity-80 text-secondary-foreground': paginationType === 'grid',
         })}
         onClick={() => setConfig('paginationType', 'grid')}
       >
-        <LayoutGridIcon className="size-6" />
+        <LayoutGridIcon className="h-full" />
       </button>
       <button
-        className={cn('p-2', {
-          'bg-secondary hover:bg-secondary bg-opacity-80': paginationType === 'infinite-scroll',
+        className={cn('p-2 h-full', {
+          'bg-secondary hover:bg-secondary text-secondary-foreground bg-opacity-80': paginationType === 'infinite-scroll',
         })}
         onClick={() => setConfig('paginationType', 'infinite-scroll')}
       >
-        <LayoutListIcon className="size-6" />
+        <LayoutListIcon className="h-full" />
       </button>
     </div>
   );

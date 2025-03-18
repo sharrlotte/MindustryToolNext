@@ -6,6 +6,7 @@ import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import AloneDislikeCount from '@/components/like/alone-dislike-count';
 import AloneLikeCount from '@/components/like/alone-like-count';
+import LikeAndDislike from '@/components/like/like-and-dislike';
 import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
@@ -38,8 +39,7 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, disli
               <CopyButton position="absolute-right" variant="ghost" data={link} content={link}>
                 <ShareIcon />
               </CopyButton>
-              <AloneLikeCount like={likes} />
-              <AloneDislikeCount dislike={dislikes} />
+              <LikeAndDislike like={likes} dislike={dislikes} />
             </div>
           </div>
         </div>

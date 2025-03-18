@@ -113,7 +113,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
   }, [handlePageChange, lastPage, selectedPage]);
 
   return (
-    <Pagination className="h-10 bg-card rounded">
+    <Pagination className="h-10 bg-card rounded-md">
       <PaginationContent>
         <SizeSelector sizes={sizes} />
         <PaginationItem>
