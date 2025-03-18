@@ -1,10 +1,11 @@
 import fs from 'fs';
 import { notFound } from 'next/navigation';
 import p from 'path';
+import path from 'path';
 import { ReactNode } from 'react';
 
 import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
-import { getDocs } from '@/app/[locale]/docs/docmeta';
+import { Doc, readDocsByLocale } from '@/app/[locale]/docs/docmeta';
 
 import { Hidden } from '@/components/common/hidden';
 import { MenuIcon } from '@/components/common/icons';
@@ -20,9 +21,8 @@ export const revalidate = false;
 
 export default async function Layout({ children, params }: { children: ReactNode; params: Promise<{ path: string[]; locale: string }> }) {
   const { locale, path } = await params;
-  const [currentCategory, currentDocs] = path;
 
-  const markdownFilePath = p.join(process.cwd(), 'docs', p.normalize(locale), p.normalize(currentCategory), p.normalize(currentDocs) + '.mdx');
+  const markdownFilePath = p.join(process.cwd(), 'docs', p.normalize(locale), path.map((segment) => p.normalize(segment)).join('/') + '.mdx');
 
   if (!fs.existsSync(markdownFilePath)) {
     return notFound();
@@ -34,10 +34,10 @@ export default async function Layout({ children, params }: { children: ReactNode
     <div className="p-4 grid lg:grid-cols-[18rem_auto_18rem] lg:divide-x h-full relative">
       <div className="flex w-full">
         <div className="block lg:hidden ml-auto">
-          <NavBarDialog locale={locale} currentCategory={currentCategory} currentDocs={currentDocs} />
+          <NavBarDialog locale={locale} selectedSegments={path} />
         </div>
         <div className="hidden lg:flex w-full">
-          <NavBar locale={locale} currentCategory={currentCategory} currentDocs={currentDocs} />
+          <NavBar locale={locale} selectedSegments={path} />
         </div>
       </div>
       <ScrollContainer id="docs-markdown" className="px-4 gap-2">
@@ -50,11 +50,10 @@ export default async function Layout({ children, params }: { children: ReactNode
 
 type NavBarProps = {
   locale: string;
-  currentCategory: string;
-  currentDocs: string;
+  selectedSegments: string[];
 };
 
-async function NavBarDialog({ locale, currentCategory, currentDocs }: NavBarProps) {
+async function NavBarDialog({ locale, selectedSegments }: NavBarProps) {
   return (
     <Dialog>
       <DialogTrigger>
@@ -65,44 +64,79 @@ async function NavBarDialog({ locale, currentCategory, currentDocs }: NavBarProp
           <DialogTitle />
           <DialogDescription />
         </Hidden>
-        <NavBar locale={locale} currentCategory={currentCategory} currentDocs={currentDocs} />
+        <NavBar locale={locale} selectedSegments={selectedSegments} />
       </DialogContent>
     </Dialog>
   );
 }
 
-async function NavBar({ locale, currentCategory, currentDocs }: NavBarProps) {
-  const data = await getDocs(locale);
+async function NavBar({ locale, selectedSegments }: NavBarProps) {
+  const data = readDocsByLocale(locale);
 
   return (
     <ScrollContainer className="pr-4 space-y-2 w-full">
-      <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={currentCategory}>
-        {data.map(({ title, docs, category }) => (
-          <AccordionItem key={category} value={category}>
-            <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">{title}</AccordionTrigger>
-            <AccordionContent>
-              {docs.map((doc) => (
-                <div
-                  className={cn('border-l hover:border-brand', {
-                    'border-brand': doc.filename === currentDocs && category === currentCategory,
-                  })}
-                  key={doc.filename}
-                >
-                  <InternalLink
-                    href={`/${locale}/docs/${category}/${doc.filename}`}
-                    className={cn('text-sm pl-2 py-2 rounded-r-md hover:bg-muted/80 text-muted-foreground hover:text-brand', {
-                      'text-brand': doc.filename === currentDocs && category === currentCategory,
-                    })}
-                  >
-                    {doc.header}
-                  </InternalLink>
-                </div>
-              ))}
-            </AccordionContent>
-          </AccordionItem>
+      <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
+        {data.map((doc) => (
+          <NavBarDoc key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={[]} level={0} />
         ))}
       </Accordion>
     </ScrollContainer>
+  );
+}
+
+function NavBarDoc({ doc, segments, level, selectedSegments }: { doc: Doc; segments: string[]; selectedSegments: string[]; level: number }) {
+  const currentSegments = [...segments, doc.segment];
+
+  if (doc.children.length === 0) {
+    return (
+      <InternalLink
+        href={`/docs/${path.join(...currentSegments)}`}
+        className={cn('text-sm py-2 rounded-r-md hover:bg-muted/80 text-muted-foreground hover:text-brand', {
+          'text-brand': currentSegments.map((segment, index) => segment === selectedSegments[index]).every((v) => v),
+        })}
+      >
+        <span
+          className={cn({
+            'pl-2': level === 0,
+            'pl-4': level === 1, //
+            'pl-6': level === 2,
+            'pl-8': level === 3,
+            'pl-10': level === 4,
+            'pl-12': level === 5,
+            'pl-14': level === 6,
+          })}
+        >
+          {doc.title}
+        </span>
+      </InternalLink>
+    );
+  }
+
+  return (
+    <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
+      <AccordionItem value={selectedSegments.map((segment, index) => index > currentSegments.length - 1 || segment === currentSegments[index]).every((v) => v) ? selectedSegments.join('/') : doc.segment}>
+        <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
+          <span
+            className={cn({
+              'pl-2': level === 0,
+              'pl-4': level === 1, //
+              'pl-6': level === 2,
+              'pl-8': level === 3,
+              'pl-10': level === 4,
+              'pl-12': level === 5,
+              'pl-14': level === 6,
+            })}
+          >
+            {doc.title}
+          </span>
+        </AccordionTrigger>
+        <AccordionContent>
+          {doc.children.map((doc) => (
+            <NavBarDoc key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} level={level + 1} />
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
 
@@ -111,19 +145,21 @@ export function generateStaticParams() {
   const locales = fs.readdirSync(localeFolders);
 
   return locales.flatMap((locale) => {
-    const docsFolderPath = p.join(localeFolders, locale);
-    const docsFolders = fs.readdirSync(docsFolderPath);
+    const docs = readDocsByLocale(locale);
 
-    return docsFolders.flatMap((folder) => {
-      const docsPath = p.join(docsFolderPath, folder);
-      const docs = fs.readdirSync(docsPath).filter((file) => file.endsWith('.mdx'));
-
-      const paths = docs.map((file) => file.replace('.mdx', ''));
-
-      return paths.map((path) => ({
-        path: [folder, path],
+    return docs
+      .flatMap((doc) => reduceDocs([], doc))
+      .map((segments) => ({
+        path: segments,
         locale,
       }));
-    });
   });
+}
+
+function reduceDocs(segments: string[], doc: Doc): string[][] {
+  if (doc.children.length === 0) {
+    return [[...segments, doc.segment]];
+  }
+
+  return doc.children.flatMap((child) => reduceDocs([...segments, doc.segment], child));
 }

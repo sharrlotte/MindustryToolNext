@@ -2,23 +2,13 @@ import fs from 'fs';
 import p from 'path';
 import removeMd from 'remove-markdown';
 
-export type DocMeta = {
+export type Doc = {
+  segment: string;
   title: string;
-  docs: string[];
+  children: Doc[];
 };
 
-type DocCategory = {
-  locale: string;
-  title: string;
-  category: string;
-  docs: {
-    header: string;
-    filename: string;
-    path: string;
-  }[];
-};
-
-function extractDocHeading(content: string) {
+export function extractDocHeading(content: string) {
   const lines = content.split('\n');
 
   for (const line of lines) {
@@ -29,85 +19,208 @@ function extractDocHeading(content: string) {
   }
 
   const index = content.indexOf('\n');
+
   return removeMd(content.slice(0, index === -1 ? content.length : index));
 }
-export async function getDocs(locale: string) {
-  const categoryFolders = p.join(process.cwd(), 'docs', p.normalize(locale));
 
-  if (!fs.existsSync(categoryFolders)) {
+export function readDocsByLocale(locale: string) {
+  const localeFolder = p.join(process.cwd(), 'docs', p.normalize(locale));
+
+  if (!fs.existsSync(localeFolder)) {
     return [];
   }
 
-  const data = await Promise.all(
-    fs.readdirSync(categoryFolders).map(async (category) => {
-      const docsFolderPath = p.join(categoryFolders, p.normalize(category));
+  return readDocs(localeFolder);
+}
 
-      if (!fs.existsSync(p.join(docsFolderPath, 'index.ts'))) {
-        return { locale, category, title: category, docs: [] };
+function readDocs(localeFolder: string): Doc[] {
+  return fs
+    .readdirSync(localeFolder)
+    .filter((child) => {
+      const path = p.join(localeFolder, child);
+      const isFolder = fs.statSync(path).isDirectory();
+
+      if (isFolder) {
+        return true;
+      } else {
+        return !child.startsWith('index.mdx') && child.endsWith('.mdx');
+      }
+    })
+    .flatMap((child) => {
+      const path = p.join(localeFolder, child);
+      const isFolder = fs.statSync(path).isDirectory();
+
+      if (isFolder) {
+        const indexPath = p.join(path, 'index.mdx');
+        const header = fs.existsSync(indexPath) //
+          ? extractDocHeading(fs.readFileSync(indexPath).toString())
+          : indexPath;
+
+        const children = readDocs(path);
+
+        if (children.length === 0) return null;
+
+        return { segment: child, title: header, children };
       }
 
-      const meta: DocMeta = (await import(`@/docs/${locale}/${category}/index.ts`)).default;
-
-      const data = meta.docs.map((filename) => {
-        const docPath = p.join(docsFolderPath, filename + '.mdx');
-        const content = fs.readFileSync(docPath).toString();
-        const header = extractDocHeading(content);
-
-        return { header, filename, path: docPath };
-      }) as DocCategory['docs'];
-
-      return { locale, category, title: meta.title, docs: data } as DocCategory;
-    }),
-  );
-
-  return data;
+      return readDocFile(path, child);
+    })
+    .filter(Boolean) //
+    .reduce<Doc[]>((prev, curr) => (Array.isArray(curr) ? [...prev, ...curr] : [...prev, curr]), []);
 }
 
-function getDocContent(locale: string, currentCategory: string, currentDocs: string) {
-  const path = p.join(process.cwd(), 'docs', p.normalize(locale), p.normalize(currentCategory), p.normalize(currentDocs) + '.mdx');
-
-  return fs.readFileSync(path).toString();
-}
-async function getCurrentDoc(locale: string, currentCategory: string, currentDocs: string) {
-  const meta: DocMeta = (await import(`@/docs/${locale}/${currentCategory}/index.ts`)).default;
+function readDocFile(path: string, filename: string): Doc {
+  const content = fs.readFileSync(path).toString();
+  const header = extractDocHeading(content);
 
   return {
-    index: meta.docs.indexOf(currentDocs),
-    docs: meta.docs,
+    segment: filename.replace(/\.mdx$/, ''),
+    title: header,
+    children: [],
   };
 }
 
+// Segments include mdx file segment
+export function readDocContent(locale: string, segments: string[]) {
+  const path = p.join(process.cwd(), 'docs', p.normalize(locale), ...segments.map((segment) => p.normalize(segment))) + '.mdx';
+
+  return fs.readFileSync(path).toString();
+}
+
 type NextPrev = {
-  filename: string;
+  segments: string[];
   header: string;
 };
 
-export async function getNextPrevDoc(locale: string, currentCategory: string, currentDocs: string) {
-  const { index, docs } = await getCurrentDoc(locale, currentCategory, currentDocs);
+// Segments include mdx file segment
+export async function getNextPrevDoc(locale: string, segments: string[]) {
+  const docs = await readDocsByLocale(locale);
+
+  let level = 0;
+  const docTree: Doc[] = [];
+  let curr = docs.find((doc) => doc.segment === segments[level]);
 
   let next: NextPrev | null = null,
     previous: NextPrev | null = null;
 
-  if (index < docs.length - 1) {
-    const nextDoc = docs[index + 1];
-    const content = getDocContent(locale, currentCategory, nextDoc);
-    const header = extractDocHeading(content);
+  while (curr && level < segments.length - 1) {
+    curr = docs.find((doc) => doc.segment === segments[level++]);
 
-    next = {
-      filename: nextDoc,
-      header,
-    };
+    if (level === segments.length - 2 && curr) {
+      const currIndex = curr.children.map((v) => v.segment).indexOf(segments[segments.length - 1]);
+
+      // Not last one
+      if (currIndex < curr.children.length - 2) {
+        const nextSegment = curr.children[currIndex + 1].segment;
+        const nextSegments = [...segments.slice(0, -1), nextSegment];
+        const content = readDocContent(locale, nextSegments);
+        const header = extractDocHeading(content);
+
+        next = {
+          segments: nextSegments,
+          header,
+        };
+        break;
+      } else {
+        if (docTree.length === 0) {
+          break;
+        }
+
+        let treeIndex = docTree.length - 1;
+        while (curr && treeIndex >= 0) {
+          const parent = docTree[treeIndex];
+          const parentIndex = parent.children.map((v) => v.segment).indexOf(curr.segment);
+
+          if (parentIndex >= parent.children.length - 1) {
+            treeIndex--;
+            docTree.pop();
+            continue;
+          } else {
+            let expectNext = parent.children[parentIndex + 1];
+            docTree.push(expectNext);
+
+            while (expectNext.children.length > 0) {
+              expectNext = parent.children[0];
+              docTree.push(expectNext);
+            }
+
+            const nextSegments = docTree.map((doc) => doc.segment);
+            const content = readDocContent(locale, nextSegments);
+            const header = extractDocHeading(content);
+
+            next = {
+              segments: nextSegments,
+              header,
+            };
+            break;
+          }
+        }
+      }
+    }
+
+    if (curr) {
+      docTree.push(curr);
+    }
   }
 
-  if (index > 0) {
-    const prevDoc = docs[index - 1];
-    const content = getDocContent(locale, currentCategory, prevDoc);
-    const header = extractDocHeading(content);
+  while (curr && level < segments.length - 1) {
+    curr = docs.find((doc) => doc.segment === segments[level++]);
 
-    previous = {
-      filename: prevDoc,
-      header,
-    };
+    if (level === segments.length - 2 && curr) {
+      const currIndex = curr.children.map((v) => v.segment).indexOf(segments[segments.length - 1]);
+
+      // Not last one
+      if (currIndex >= 1) {
+        const nextSegment = curr.children[currIndex - 1].segment;
+        const nextSegments = [...segments.slice(0, -1), nextSegment];
+        const content = readDocContent(locale, nextSegments);
+        const header = extractDocHeading(content);
+
+        previous = {
+          segments: nextSegments,
+          header,
+        };
+        break;
+      } else {
+        if (docTree.length === 0) {
+          break;
+        }
+
+        let treeIndex = docTree.length - 1;
+        while (curr && treeIndex >= 0) {
+          const parent = docTree[treeIndex];
+          const parentIndex = parent.children.map((v) => v.segment).indexOf(curr.segment);
+
+          if (parentIndex < 1) {
+            treeIndex--;
+            docTree.pop();
+            continue;
+          } else {
+            let expectNext = parent.children[parentIndex - 1];
+            docTree.push(expectNext);
+
+            while (expectNext.children.length > 0) {
+              expectNext = parent.children[0];
+              docTree.push(expectNext);
+            }
+
+            const nextSegments = docTree.map((doc) => doc.segment);
+            const content = readDocContent(locale, nextSegments);
+            const header = extractDocHeading(content);
+
+            previous = {
+              segments: nextSegments,
+              header,
+            };
+            break;
+          }
+        }
+      }
+    }
+
+    if (curr) {
+      docTree.push(curr);
+    }
   }
 
   return {
