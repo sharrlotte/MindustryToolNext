@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
@@ -13,11 +14,36 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } fr
 
 import { revalidate } from '@/action/action';
 import env from '@/constant/env';
+import useClientApi from '@/hooks/use-client';
 import useHttpStream from '@/hooks/use-http-stream';
+import { getServerMaps } from '@/query/server';
+
+import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   id: string;
 };
+
+function HasServerMap({ id, children }: { id: string; children: ReactNode }) {
+  const axios = useClientApi();
+  const { data, isError } = useQuery({
+    queryFn: () => getServerMaps(axios, id, { size: 1, page: 0 }),
+    queryKey: ['server', id, 'maps-check'],
+  });
+
+  if (isError || !data || data.length === 0) {
+    return (
+      <div className="rounded-md px-2 py-1 h-9 space-x-2">
+        <Tran className="text-warning" text="server.no-map-warning" />
+        <Link className="text-brand underline" href={`${id}/maps`}>
+          <Tran text="internal-server.add-map" />
+        </Link>
+      </div>
+    );
+  }
+
+  return children;
+}
 
 export default function HostServerButton({ id }: Props) {
   const [visible, setVisible] = useState(false);
@@ -52,7 +78,7 @@ export default function HostServerButton({ id }: Props) {
   }
 
   return (
-    <>
+    <HasServerMap id={id}>
       <Button
         className="w-20"
         title="Start"
@@ -86,6 +112,6 @@ export default function HostServerButton({ id }: Props) {
           )}
         </DialogContent>
       </Dialog>
-    </>
+    </HasServerMap>
   );
 }

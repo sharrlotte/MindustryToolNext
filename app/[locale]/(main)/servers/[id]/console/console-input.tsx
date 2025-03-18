@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import { FormEvent, KeyboardEvent, useState } from 'react';
 
 import Tran from '@/components/common/tran';
@@ -9,11 +10,8 @@ import { Input } from '@/components/ui/input';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
 
-type ConsoleInputProps = {
-  id: string;
-};
-
-export default function ConsoleInput({ id }: ConsoleInputProps) {
+export default function ConsoleInput() {
+  const { id } = useParams();
   const { state } = useSocket();
 
   const [message, setMessage] = useState<string>('');

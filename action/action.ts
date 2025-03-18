@@ -110,9 +110,7 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
   const cookie = await cookies();
 
   axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie.toString());
-  axiosInstance.defaults.headers['Server'] = true;
 
-  axiosInstance.interceptors.request.clear();
   axiosInstance.interceptors.request.use(async (config) => {
     const params = config.params;
     if (!params || !('size' in params) || 'autoSize' in params) {
@@ -123,6 +121,12 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
 
     return config;
   });
+  axiosInstance.interceptors.request.use(async (config) => {
+    console.log(`SERVER ${config.method?.toUpperCase()} ${config.baseURL}/${config.url}`);
+    return config;
+  });
+
+  axiosInstance.defaults.headers['Server'] = true;
 
   return axiosInstance;
 };
