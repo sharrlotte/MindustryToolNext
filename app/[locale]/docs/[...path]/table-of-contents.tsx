@@ -51,8 +51,8 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
 
   return (
     <AnimatePresence>
-      <ScrollContainer className="pl-4 flex-col md:flex hidden">
-        <h3 className="text-base font-semibold">
+      <ScrollContainer className="pl-4 flex-col lg:flex hidden">
+        <h3 className="text-base">
           <Tran text="docs.table-of-content" asChild />
         </h3>
         <HeadingCard data={heading} activeId={activeId} level={0} />

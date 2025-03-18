@@ -6,10 +6,14 @@ import { ReactNode } from 'react';
 import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
 import { getDocs } from '@/app/[locale]/docs/docmeta';
 
+import { Hidden } from '@/components/common/hidden';
+import { MenuIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Accordion, AccordionConDialogTitle, AccordionItem, AccordionTrigger, tent } from '@/components/ui/accordion';
+import { Dialog, DialogContent, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 
+import IsSmall from '@/layout/is-small';
 import { cn } from '@/lib/utils';
 
 export const dynamicParams = false;
@@ -29,9 +33,16 @@ export default async function Layout({ children, params }: { children: ReactNode
 
   return (
     <div className="p-4 grid lg:grid-cols-[18rem_auto_18rem] lg:divide-x h-full relative">
-      <NavBar locale={locale} currentCategory={currentCategory} currentDocs={currentDocs} />
+      <div className="flex w-full">
+        <div className="block lg:hidden ml-auto">
+          <NavBarDialog locale={locale} currentCategory={currentCategory} currentDocs={currentDocs} />
+        </div>
+        <div className="hidden lg:flex w-full">
+          <NavBar locale={locale} currentCategory={currentCategory} currentDocs={currentDocs} />
+        </div>
+      </div>
       <ScrollContainer id="docs-markdown" className="px-4 gap-2">
-        {children}
+        <div className="overflow-hidden mx-auto container">{children}</div>
       </ScrollContainer>
       <TableOfContents markdown={markdown} />
     </div>
@@ -44,15 +55,32 @@ type NavBarProps = {
   currentDocs: string;
 };
 
+async function NavBarDialog({ locale, currentCategory, currentDocs }: NavBarProps) {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <MenuIcon className="size-6" />
+      </DialogTrigger>
+      <DialogContent className="p-8 h-full">
+        <Hidden>
+          <DialogTitle />
+          <DialogDescription />
+        </Hidden>
+        <NavBar locale={locale} currentCategory={currentCategory} currentDocs={currentDocs} />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 async function NavBar({ locale, currentCategory, currentDocs }: NavBarProps) {
   const data = await getDocs(locale);
 
   return (
-    <ScrollContainer className="pr-4 space-y-2 hidden lg:flex">
+    <ScrollContainer className="pr-4 space-y-2 w-full">
       <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={currentCategory}>
         {data.map(({ title, docs, category }) => (
           <AccordionItem key={category} value={category}>
-            <AccordionTrigger className="text-base font-semibold py-0 justify-start text-start text-nowrap w-full">{title}</AccordionTrigger>
+            <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">{title}</AccordionTrigger>
             <AccordionContent>
               {docs.map((doc) => (
                 <div

@@ -6,6 +6,7 @@ import { useDebounceValue } from 'usehooks-ts';
 import { Hidden } from '@/components/common/hidden';
 import { SearchIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
@@ -34,8 +35,9 @@ export default function DocSearchBar() {
 
   return (
     <Dialog>
-      <DialogTrigger className="ml-auto">
+      <DialogTrigger className="ml-auto flex text-base items-center gap-0.5 px-2 py-1 border rounded-md">
         <SearchIcon />
+        <Tran text="search" />
       </DialogTrigger>
       <DialogContent className="p-8 h-full w-full flex flex-col">
         <Hidden>

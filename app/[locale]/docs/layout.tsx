@@ -5,16 +5,14 @@ import DocSearchBar from '@/app/[locale]/docs/doc-search-bar';
 
 import { MindustryToolIcon } from '@/components/common/icons';
 
-import IsSmall from '@/layout/is-small';
-
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="h-full relative w-full grid grid-rows-[auto_1fr] overflow-hidden">
-      <div className="flex border-b p-2 items-center overflow-hidden h-16 gap-4 bg-card/80">
+      <div className="flex border-b p-2 items-center overflow-hidden h-16 gap-4">
         <div className="flex items-center gap-2">
-          <Link className="flex gap-2 items-center text-xl font-semibold" href="/">
-            <MindustryToolIcon className="size-6" />
-            <IsSmall notSmall={'MindustryTool'} />
+          <Link className="flex gap-2 items-center text-2xl font-semibold" href="/">
+            <MindustryToolIcon className="size-8" />
+            <span className="hidden lg:block">MindustryTool</span>
           </Link>
         </div>
         <nav className="flex items-center gap-4">
