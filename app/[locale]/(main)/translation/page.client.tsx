@@ -63,7 +63,7 @@ const defaultState: {
   language: 'en',
   mode: 'search',
   key: '',
-  isTranslated: null,
+  isTranslated: false,
 };
 
 function clearTranslationCache() {
