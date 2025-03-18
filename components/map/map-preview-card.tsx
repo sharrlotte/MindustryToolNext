@@ -18,7 +18,7 @@ type MapPreviewCardProps = {
   map: Map;
 };
 
-function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, downloadCount } }: MapPreviewCardProps) {
+function MapPreviewCard({ map: { id, name, likes, dislikes, downloadCount } }: MapPreviewCardProps) {
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/maps/${id}`;
@@ -39,7 +39,7 @@ function MapPreviewCard({ map: { id, name, isVerified, likes, dislikes, download
       <PreviewDescription>
         <PreviewHeader>
           <ColorText text={name} />
-          {isVerified && <LikeAndDislike like={likes} dislike={dislikes} />}
+          <LikeAndDislike like={likes} dislike={dislikes} />
         </PreviewHeader>
         <PreviewActions>
           <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
