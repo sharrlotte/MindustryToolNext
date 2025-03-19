@@ -7,8 +7,10 @@ import useLocaleStore from '@/hooks/use-current-locale';
 import { useChangeLocale, useI18n } from '@/i18n/client';
 import { locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
 export default function LanguageSwitcher() {
+  const [hydrated, setHydrated] = useState(false);
   const { currentLocale } = useLocaleStore();
   const setCurrentLocale = useChangeLocale();
 
@@ -16,6 +18,14 @@ export default function LanguageSwitcher() {
 
   function onLanguageChange(value: any) {
     setCurrentLocale(value ?? 'en');
+  }
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  if (!hydrated) {
+    return undefined;
   }
 
   return (

@@ -17,9 +17,6 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Link>
         </div>
         <div className="flex items-center gap-4">
-          <Suspense>
-            <LanguageSwitcher />
-          </Suspense>
           <nav className="items-center gap-4 hidden sm:flex">
             <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs">
               Docs
@@ -31,6 +28,9 @@ export default function Layout({ children }: { children: ReactNode }) {
               Api
             </Link>
           </nav>
+          <Suspense>
+            <LanguageSwitcher />
+          </Suspense>
         </div>
         <DocSearchBar />
       </div>
