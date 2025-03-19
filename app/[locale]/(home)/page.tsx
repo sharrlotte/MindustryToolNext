@@ -136,8 +136,8 @@ export default async function Page({ params }: Props) {
       <Hero locale={locale} />
       <AboutMindustrySection locale={locale} />
       <AboutMindustryToolSection locale={locale} />
-      <NewSchematics queryParam={{ page: 0, size: 10 }} />
-      <NewMaps queryParam={{ page: 0, size: 10 }} />
+      <NewSchematics queryParam={{ page: 0, size: 10, autoSize: false }} />
+      <NewMaps queryParam={{ page: 0, size: 10, autoSize: false }} />
       <ServerSection locale={locale} />
       <Suspense>
         <LoginAction locale={locale} />
