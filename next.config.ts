@@ -1,4 +1,5 @@
 import { NextConfig } from 'next';
+import rehypeStarryNight from 'rehype-starry-night';
 import frontmatter from 'remark-frontmatter';
 
 import createMDX from '@next/mdx';
@@ -61,7 +62,7 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [[frontmatter, { type: 'ymal', marker: '-' }]],
+    remarkPlugins: [[frontmatter, { type: 'ymal', marker: '-' }], [rehypeStarryNight]],
   },
 });
 

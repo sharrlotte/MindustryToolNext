@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import removeMd from 'remove-markdown';
 
-import { extractDocHeading, getNextPrevDoc, readDocContent } from '@/app/[locale]/docs/doc-type';
+import { extractDocHeading, getNextPrevDoc, isDocExists, readDocContent } from '@/app/[locale]/docs/doc-type';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import Divider from '@/components/ui/divider';
@@ -11,11 +12,14 @@ import { formatTitle } from '@/lib/utils';
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
-export const dynamicParams = false;
 export const revalidate = false;
 export default async function Page({ params }: Props) {
   const { path, locale } = await params;
   const { next, previous } = getNextPrevDoc(locale, path);
+
+  if (!isDocExists(locale, path)) {
+    return notFound();
+  }
 
   const { Post, metadata } = await import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({ Post: result.default, metadata: result.metadata }));
 
@@ -43,6 +47,10 @@ export default async function Page({ params }: Props) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, path } = await params;
+
+  if (!isDocExists(locale, path)) {
+    return notFound();
+  }
 
   const content = readDocContent(locale, path);
   const title = extractDocHeading(content);
