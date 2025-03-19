@@ -16,20 +16,22 @@ export default function Layout({ children }: { children: ReactNode }) {
             <span className="hidden lg:block">MindustryTool</span>
           </Link>
         </div>
-        <nav className="flex items-center gap-4">
+        <div className="flex items-center gap-4">
           <Suspense>
             <LanguageSwitcher />
           </Suspense>
-          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs">
-            Docs
-          </Link>
-          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/wiki/getting-started">
-            Wiki
-          </Link>
-          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/api/getting-started">
-            Api
-          </Link>
-        </nav>
+          <nav className="items-center gap-4 hidden sm:flex">
+            <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs">
+              Docs
+            </Link>
+            <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/wiki/getting-started">
+              Wiki
+            </Link>
+            <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/api/getting-started">
+              Api
+            </Link>
+          </nav>
+        </div>
         <DocSearchBar />
       </div>
       <div className="h-full w-full overflow-hidden">{children}</div>

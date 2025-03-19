@@ -10,6 +10,8 @@ import Divider from '@/components/ui/divider';
 
 import { formatTitle } from '@/lib/utils';
 
+import './stackoverflow-dark.css';
+
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
 export const revalidate = false;

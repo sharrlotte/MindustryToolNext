@@ -40,7 +40,7 @@ export default async function Layout({ children, params }: { children: ReactNode
         </div>
       </div>
       <ScrollContainer id="docs-markdown" className="px-4 gap-2">
-        <div className="overflow-hidden mx-auto container relative">{children}</div>
+        <div className="overflow-hidden mx-auto max-w-[100ch] relative">{children}</div>
       </ScrollContainer>
       <TableOfContents markdown={markdown} />
     </div>

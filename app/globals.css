@@ -46,10 +46,10 @@
   }
 
   .dark {
-    --background: 240 10% 5%;
+    --background: 240, 10%, 4%;
     --foreground: 0 0% 100%;
 
-    --card: 0 0% 10%;
+    --card: 240, 3%, 6%;
     --card-foreground: 60 9.1% 97.8%;
 
     --popover: 20 14.3% 4.1%;
@@ -58,7 +58,7 @@
     --primary: 60 9.1% 97.8%;
     --primary-foreground: 360 100% 100%;
 
-    --secondary: 222 0% 15%;
+    --secondary: 240, 1%, 16%;
     --secondary-foreground: 0 9.1% 80.8%;
 
     --muted: 12 6.5% 15.1%;
@@ -81,9 +81,7 @@
   body {
     @apply h-full w-full;
   }
-  body {
-    @apply dark:bg-gradient-background;
-  }
+
   div {
     @apply box-border border-border;
   }
