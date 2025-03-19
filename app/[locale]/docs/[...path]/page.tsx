@@ -17,12 +17,12 @@ type Props = { params: Promise<{ path: string[]; locale: string }> };
 export const revalidate = false;
 export default async function Page({ params }: Props) {
   const { path, locale } = await params;
-  const { next, previous } = getNextPrevDoc(locale, path);
 
   if (!isDocExists(locale, path)) {
     return notFound();
   }
 
+  const { next, previous } = getNextPrevDoc(locale, path);
   const { Post } = await import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({ Post: result.default, metadata: result.metadata }));
 
   return (
