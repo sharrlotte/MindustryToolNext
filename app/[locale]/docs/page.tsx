@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import path from 'path';
 
-import { Doc, readDocsByLocale } from '@/app/[locale]/docs/docmeta';
+import { Doc, readDocsByLocale } from '@/app/[locale]/docs/doc-type';
 
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
