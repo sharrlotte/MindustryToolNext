@@ -76,20 +76,20 @@ async function NavBar({ locale, selectedSegments }: NavBarProps) {
     <ScrollContainer className="pr-4 space-y-2 w-full">
       <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
         {data.map((doc) => (
-          <NavBarDoc key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={[]} level={0} />
+          <NavBarDoc locale={locale} key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={[]} level={0} />
         ))}
       </Accordion>
     </ScrollContainer>
   );
 }
 
-function NavBarDoc({ doc, segments, level, selectedSegments }: { doc: Doc; segments: string[]; selectedSegments: string[]; level: number }) {
+function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale: string; doc: Doc; segments: string[]; selectedSegments: string[]; level: number }) {
   const currentSegments = [...segments, doc.segment];
 
   if (doc.children.length === 0) {
     return (
       <InternalLink
-        href={`/docs/${path.join(...currentSegments)}`}
+        href={`/${locale}/docs/${path.join(...currentSegments)}`}
         className={cn('text-sm py-2 rounded-md hover:bg-brand/30 text-muted-foreground hover:text-brand', {
           'text-brand': currentSegments.map((segment, index) => segment === selectedSegments[index]).every((v) => v),
         })}
@@ -131,7 +131,7 @@ function NavBarDoc({ doc, segments, level, selectedSegments }: { doc: Doc; segme
         </AccordionTrigger>
         <AccordionContent>
           {doc.children.map((doc) => (
-            <NavBarDoc key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} level={level + 1} />
+            <NavBarDoc locale={locale} key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} level={level + 1} />
           ))}
         </AccordionContent>
       </AccordionItem>

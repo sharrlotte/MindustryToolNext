@@ -13,5 +13,5 @@
     "@typescript-eslint/unified-signatures": "warn",
     "@typescript-eslint/no-explicit-any": "off"
   },
-  "ignorePatterns": ["*.js"]
+  "ignorePatterns": ["*.js", "node_modules"]
 }
