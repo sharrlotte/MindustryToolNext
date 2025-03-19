@@ -68,7 +68,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
         heading.children.length <= 1 ? (
           <Link
             key={heading.title}
-            className={cn('hover:text-brand text-muted-foreground relative', {
+            className={cn('hover:text-brand text-secondary-foreground relative', {
               'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'),
             })}
             href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`}
@@ -92,7 +92,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
         ) : (
           <AccordionItem key={heading.title} value={heading.title}>
             <AccordionTrigger
-              className={cn('p-0 justify-start text-start text-nowrap hover:text-brand text-muted-foreground', {
+              className={cn('p-0 justify-start text-start text-nowrap hover:text-brand text-secondary-foreground', {
                 'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'), //
               })}
             >

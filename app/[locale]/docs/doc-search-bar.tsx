@@ -41,7 +41,7 @@ export default function DocSearchBar() {
         <SearchIcon />
         <Tran text="search" />
       </DialogTrigger>
-      <DialogContent className="p-8 h-full w-full flex flex-col">
+      <DialogContent className="p-8 min-h-full lg:min-h-[50dvh] w-full flex flex-col">
         <Hidden>
           <DialogTitle />
           <DialogDescription />

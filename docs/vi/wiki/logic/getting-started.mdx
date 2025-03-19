@@ -40,13 +40,15 @@ Một số lệnh quan trọng bao gồm:
 - `label myLabel` → Định nghĩa một điểm trong tập lệnh để nhảy đến.
 
 ### Ví Dụ: Vòng Lặp Cơ Bản
-```plaintext
+
+```py
 set counter 0
 label loop
     print counter
     op add counter counter 1
     jump loop lessThan counter 10
 ```
+
 Vòng lặp này in ra các số từ 0 đến 9 và dừng lại khi `counter` đạt 10.
 
 ## Tương Tác Với Công Trình
@@ -58,11 +60,13 @@ Bộ xử lý có thể tương tác với công trình bằng cảm biến và 
 - `getlink index var` → Lấy công trình đã liên kết.
 
 ### Ví Dụ: Kiểm Tra Máu Lõi
-```plaintext
+
+```py
 sensor coreHealth core health
 print coreHealth
 jump loop
 ```
+
 Tập lệnh này in ra máu của lõi trong một vòng lặp liên tục.
 
 ## Tương Tác Với Đơn Vị
@@ -73,7 +77,8 @@ Bộ xử lý có thể điều khiển đơn vị di chuyển, tấn công và 
 - `ucontrol command` → Ra lệnh cho đơn vị (ví dụ: `move x y`, `mine x y`).
 
 ### Ví Dụ: Di Chuyển Một Đơn Vị Đến (100, 200)
-```plaintext
+
+```py
 ucontrol move 100 200
 ```
 
@@ -87,4 +92,3 @@ Mindustry Logic rất hữu ích cho nhiều nhiệm vụ, bao gồm:
 - **Giám sát tài nguyên**: Kiểm tra và phân phối tài nguyên một cách tự động.
 
 Bằng cách làm chủ Mindustry Logic, người chơi có thể nâng cao đáng kể hiệu quả của căn cứ và tự động hóa hệ thống phòng thủ. Hãy bắt đầu thử nghiệm với bộ xử lý ngay hôm nay để xây dựng các chiến lược dựa trên logic tiên tiến!
-

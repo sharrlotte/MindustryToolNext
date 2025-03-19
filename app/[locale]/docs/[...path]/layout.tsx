@@ -16,7 +16,6 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 
 import { cn } from '@/lib/utils';
 
-export const dynamicParams = false;
 export const revalidate = false;
 
 export default async function Layout({ children, params }: { children: ReactNode; params: Promise<{ path: string[]; locale: string }> }) {
@@ -41,7 +40,7 @@ export default async function Layout({ children, params }: { children: ReactNode
         </div>
       </div>
       <ScrollContainer id="docs-markdown" className="px-4 gap-2">
-        <div className="overflow-hidden mx-auto container">{children}</div>
+        <div className="overflow-hidden mx-auto max-w-[100ch] relative">{children}</div>
       </ScrollContainer>
       <TableOfContents markdown={markdown} />
     </div>

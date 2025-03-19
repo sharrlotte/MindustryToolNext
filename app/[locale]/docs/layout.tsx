@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 import DocSearchBar from '@/app/[locale]/docs/doc-search-bar';
+import LanguageSwitcher from '@/app/[locale]/docs/language-switcher';
 
 import { MindustryToolIcon } from '@/components/common/icons';
 
@@ -15,17 +16,22 @@ export default function Layout({ children }: { children: ReactNode }) {
             <span className="hidden lg:block">MindustryTool</span>
           </Link>
         </div>
-        <nav className="flex items-center gap-4">
-          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs">
-            Docs
-          </Link>
-          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/wiki/getting-started">
-            Wiki
-          </Link>
-          <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/api/getting-started">
-            Api
-          </Link>
-        </nav>
+        <div className="flex items-center gap-4">
+          <Suspense>
+            <LanguageSwitcher />
+          </Suspense>
+          <nav className="items-center gap-4 hidden sm:flex">
+            <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs">
+              Docs
+            </Link>
+            <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/wiki/getting-started">
+              Wiki
+            </Link>
+            <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/api/getting-started">
+              Api
+            </Link>
+          </nav>
+        </div>
         <DocSearchBar />
       </div>
       <div className="h-full w-full overflow-hidden">{children}</div>

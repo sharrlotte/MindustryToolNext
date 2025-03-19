@@ -11,7 +11,6 @@ import { Locale, locales } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { cn, formatTitle } from '@/lib/utils';
 
-export const dynamicParams = false;
 export const revalidate = false;
 
 export async function generateStaticParams() {

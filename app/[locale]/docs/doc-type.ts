@@ -120,6 +120,12 @@ export function readDocContent(locale: string, segments: string[]) {
   return fs.readFileSync(path).toString();
 }
 
+export function isDocExists(locale: string, segments: string[]) {
+  const path = p.join(process.cwd(), 'docs', p.normalize(locale), ...segments.map((segment) => p.normalize(segment))) + '.mdx';
+
+  return fs.existsSync(path);
+}
+
 type NextPrev = {
   segments: string[];
   header: string;
