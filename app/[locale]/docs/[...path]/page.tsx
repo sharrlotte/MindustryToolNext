@@ -15,7 +15,9 @@ export const dynamicParams = false;
 export const revalidate = false;
 export default async function Page({ params }: Props) {
   const { path, locale } = await params;
-  const [Post, { next, previous }] = await Promise.all([import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => result.default), getNextPrevDoc(locale, path)]);
+  const { next, previous } = getNextPrevDoc(locale, path);
+
+  const { Post, metadata } = await import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({ Post: result.default, metadata: result.metadata }));
 
   return (
     <div className="gap-2 min-h-full flex flex-col h-full">
