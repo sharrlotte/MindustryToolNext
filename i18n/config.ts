@@ -82,6 +82,11 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
                 .catch((error) => callback(error, undefined));
             }
           },
+          requestOptions: {
+            next: {
+              revalidate: 3600,
+            },
+          },
         } as HttpBackendOptions,
       ],
     },
