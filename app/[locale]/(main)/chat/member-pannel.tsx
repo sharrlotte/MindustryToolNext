@@ -1,16 +1,18 @@
+import { AxiosInstance } from 'axios';
 import { motion } from 'framer-motion';
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { UsersIcon } from '@/components/common/icons';
+import InfinitePage from '@/components/common/infinite-page';
+import Tran from '@/components/common/tran';
 import { MemberCard } from '@/components/messages/member-card';
 import { Button } from '@/components/ui/button';
 
-import { useSocket } from '@/context/socket-context';
 import { cn } from '@/lib/utils';
-
-import { useQuery } from '@tanstack/react-query';
+import { getMembers } from '@/query/message';
+import { PaginationQuerySchema } from '@/query/search-query';
 
 type MemberPanelState = 'open' | 'closed';
 
@@ -20,22 +22,11 @@ type MemberPanelProps = {
 };
 
 export function MemberPanel({ className, room }: MemberPanelProps) {
-  const { socket } = useSocket();
   const { state, isSmall } = useMemberPanel();
-
-  const { data } = useQuery({
-    queryKey: ['member-count', room],
-    queryFn: () =>
-      socket
-        .onRoom(room) //
-        .await({ method: 'GET_MEMBER', page: 0, size: 10 }),
-  });
-
-  const members = useMemo(() => (data && 'error' in data ? [] : data?.filter((item, index) => data.findIndex((v) => v.id === item.id) === index) || []), [data]);
 
   return (
     <motion.div
-      className={cn('absolute right-0 top-0 flex h-full flex-shrink-0 flex-col items-start no-scrollbar overflow-x-hidden border-l bg-background md:relative', className)}
+      className={cn('absolute right-0 top-0 flex h-full flex-shrink-0 flex-col items-start no-scrollbar overflow-hidden border-l bg-background md:relative', className)}
       animate={state}
       variants={{
         open: {
@@ -46,9 +37,19 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
         },
       }}
     >
-      {members.map((user) => (
-        <MemberCard key={user.id} user={user} />
-      ))}
+      <h4 className="p-2">
+        <Tran text="member" asChild />
+      </h4>
+      <InfinitePage
+        className="px-2 grid gap-1 w-full"
+        queryKey={['room', room, 'members']}
+        paramSchema={PaginationQuerySchema} //
+        queryFn={(axios: AxiosInstance, params: { page: number; size: number }) => getMembers(axios, room, params)}
+        noResult={<div></div>}
+        end={<div></div>}
+      >
+        {(user) => <MemberCard key={user.id} user={user} />}
+      </InfinitePage>
     </motion.div>
   );
 }

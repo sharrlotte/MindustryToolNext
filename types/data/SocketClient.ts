@@ -3,7 +3,6 @@ import { ErrorEvent } from 'partysocket/ws';
 
 import { Message } from '@/types/response/Message';
 import { Notification } from '@/types/response/Notification';
-import { User } from '@/types/response/User';
 
 export type SocketState = 'connecting' | 'connected' | 'disconnecting' | 'disconnected';
 export type SocketRoom = 'SERVER' | 'LOG' | string;
@@ -14,32 +13,15 @@ type BaseSocketEvent = { id: string };
 
 type SocketEvent = BaseSocketEvent &
   (
-    | { method: 'NOTIFICATION'; room: string; data: Notification }
-    | { method: 'GET_MESSAGE'; room: string; data: Message[] }
+    | { method: 'NOTIFICATION'; room: string; data: Notification } //
     | { method: 'MESSAGE'; room: string; data: Message }
-    | { method: 'ROOM_MESSAGE'; room: string; data: Message }
-    | { method: 'GET_MEMBER'; room: string; data: User[] }
-    | { method: 'LAST_MESSAGE'; room: string; data: Message }
   );
 
-type MessagePayload =
-  | { method: 'MESSAGE'; data: string }
-  | { method: 'GET_MESSAGE'; cursor: string | null; size: number }
-  | { method: 'LEAVE_ROOM'; data: string }
-  | { method: 'GET_MEMBER'; page: number; size: number }
-  | { method: 'CLOSE' }
-  | { method: 'LAST_MESSAGE' };
+type MessagePayload = { method: 'MESSAGE'; data: string };
 
 export type MessageMethod = MessagePayload['method'];
 
 type PromiseReceiver = { timeout: any; resolve: (value: unknown) => void; reject: (reason: any) => void };
-
-let count = 0;
-
-function genId() {
-  count = (count + 1) % Number.MAX_SAFE_INTEGER;
-  return count.toString();
-}
 
 type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
 
@@ -157,39 +139,6 @@ export default class SocketClient {
     return json;
   }
 
-  public async await<T extends MessagePayload>(payload: T): Promise<SocketResult<T['method']>> {
-    const id = genId();
-    try {
-      const promise = new Promise<any>((resolve, reject) => {
-        const timeout = setTimeout(() => {
-          delete this.requests[id];
-
-          reject(`Await request timeout: ${json}`);
-        }, this.requestTimeout);
-
-        this.requests[id] = { timeout, resolve, reject };
-
-        const json = JSON.stringify({ id, ...payload, room: this.room, acknowledge: true });
-
-        if (!this.socket) {
-          throw new Error('WebSocket is not connected');
-        }
-
-        this.socket.send(json);
-
-        this.room = '';
-      });
-
-      return await promise;
-    } catch (error) {
-      return {
-        error: {
-          message: JSON.stringify(error),
-        },
-      };
-    }
-  }
-
   public onConnect(handler: (event: Event) => void) {
     this.connects.push(handler);
   }
@@ -207,7 +156,6 @@ export default class SocketClient {
     this.disconnects = [];
 
     if (this.socket && this.getState() === 'connected') {
-      await this.await({ method: 'CLOSE' });
       this.socket.close();
     } else {
       this.onConnect(() => {

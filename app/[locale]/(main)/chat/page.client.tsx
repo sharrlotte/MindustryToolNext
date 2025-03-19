@@ -4,7 +4,6 @@ import { Theme } from 'emoji-picker-react';
 import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
 import React, { FormEvent, useState } from 'react';
-import { useMediaQuery } from 'usehooks-ts';
 
 import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/app/[locale]/(main)/chat/member-pannel';
 
@@ -29,7 +28,7 @@ export default function ChatPage() {
       <div className="flex h-full overflow-hidden">
         <div className="grid h-full w-full grid-rows-[auto_1fr_auto] overflow-hidden">
           <div className="flex items-center justify-between border-b px-4 py-1">
-            <div className="flex gap-4">
+            <div className="flex gap-2 items-center">
               <SearchIcon />
               #Global
             </div>

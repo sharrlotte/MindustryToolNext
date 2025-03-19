@@ -6,20 +6,21 @@ import { useLocalStorage } from 'usehooks-ts';
 import { ChatIcon } from '@/components/common/icons';
 
 import { useSocket } from '@/context/socket-context';
+import useClientApi from '@/hooks/use-client';
 import useNotification from '@/hooks/use-notification';
 import { cn, isError } from '@/lib/utils';
+import { getLastMessage } from '@/query/message';
 
 export function ChatIconPath() {
   const { socket } = useSocket();
+  const axios = useClientApi();
   const { postNotification } = useNotification();
   const [hasNewMessage, setHasNewMessage] = useState(false);
   const [lastMessage] = useLocalStorage('LAST_MESSAGE_GLOBAL', '');
 
   useEffect(() => {
     try {
-      socket
-        .onRoom('GLOBAL')
-        .await({ method: 'LAST_MESSAGE' })
+      getLastMessage(axios, 'GLOBAL') //
         .then((newestMessage) => {
           if (isError(newestMessage)) {
             return;
@@ -38,7 +39,7 @@ export function ChatIconPath() {
 
       postNotification(message.content, message.userId);
     });
-  }, [socket, postNotification, lastMessage]);
+  }, [socket, postNotification, lastMessage, axios]);
 
   return (
     <div className="relative">
