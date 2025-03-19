@@ -30,7 +30,7 @@
     --ring: 24 5.7% 20%;
 
     --brand: 240 50% 60%;
-    --brand-foreground: 240, 10%, 100%;
+    --brand-foreground: 0 0% 100%;
 
     --radius: 0.5rem;
 
@@ -193,7 +193,7 @@
   }
 
   .lucide {
-    @apply size-5 min-h-5 min-w-5 stroke-[2.5px] text-foreground;
+    @apply size-5 min-h-5 min-w-5 stroke-[2.5px];
   }
 
   .static {
