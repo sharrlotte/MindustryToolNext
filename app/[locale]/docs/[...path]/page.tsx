@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import removeMd from 'remove-markdown';
 
-import { extractDocHeading, getNextPrevDoc, readDocContent } from '@/app/[locale]/docs/docmeta';
+import { extractDocHeading, getNextPrevDoc, readDocContent } from '@/app/[locale]/docs/doc-type';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import Divider from '@/components/ui/divider';

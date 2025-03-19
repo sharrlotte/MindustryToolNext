@@ -5,7 +5,7 @@ import path from 'path';
 import { ReactNode } from 'react';
 
 import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
-import { Doc, readDocsByLocale } from '@/app/[locale]/docs/docmeta';
+import { Doc, readDocsByLocale, reduceDocs } from '@/app/[locale]/docs/doc-type';
 
 import { Hidden } from '@/components/common/hidden';
 import { MenuIcon } from '@/components/common/icons';
@@ -154,12 +154,4 @@ export function generateStaticParams() {
         locale,
       }));
   });
-}
-
-function reduceDocs(segments: string[], doc: Doc): string[][] {
-  if (doc.children.length === 0) {
-    return [[...segments, doc.segment]];
-  }
-
-  return doc.children.flatMap((child) => reduceDocs([...segments, doc.segment], child));
 }
