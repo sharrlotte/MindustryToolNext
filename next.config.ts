@@ -2,11 +2,8 @@ import { NextConfig } from 'next';
 import rehypeHighlight from 'rehype-highlight';
 import frontmatter from 'remark-frontmatter';
 
-
-
 import createMDX from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
-
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -79,18 +76,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withSentryConfig(withMDX(withBundleAnalyzer(nextConfig)), {
   org: 'mindustrytool',
   project: 'mindustry-tool',
-
   silent: !process.env.CI,
-
   widenClientFileUpload: true,
-
   reactComponentAnnotation: {
     enabled: true,
   },
-
   tunnelRoute: '/monitoring',
-
   disableLogger: true,
-
-  automaticVercelMonitors: true,
+  automaticVercelMonitors: false,
+  telemetry: false,
 });
