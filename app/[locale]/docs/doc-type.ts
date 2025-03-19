@@ -6,13 +6,43 @@ export type Doc = {
   segment: string;
   title: string;
   children: Doc[];
+  metadata: DocMetadata;
 };
 
+export type DocMetadata = {
+  position?: number;
+};
+
+export function extractDocMeta(content: string): DocMetadata {
+  const startIndex = content.indexOf('---');
+  if (startIndex === -1) {
+    return {};
+  }
+
+  const endIndex = content.indexOf('---', startIndex + 3);
+
+  if (endIndex === -1) {
+    return {};
+  }
+
+  const yamlString = content.slice(startIndex + 3, endIndex).trim();
+  const yaml = Object.fromEntries(
+    yamlString.split('\n').map((line) => {
+      const colon = line.indexOf(':');
+      const key = line.slice(0, colon);
+      const value = line.slice(colon + 1);
+
+      return [key, value];
+    }),
+  );
+
+  return yaml ?? {};
+}
 export function extractDocHeading(content: string) {
   const lines = content.split('\n');
 
   for (const line of lines) {
-    const match = line.match(/^(#{2,6})\s+(.*)/);
+    const match = line.match(/^(#{1,6})\s+(.*)/);
     if (!match) continue;
 
     return removeMd(line);
@@ -52,21 +82,23 @@ function readDocs(localeFolder: string): Doc[] {
 
       if (isFolder) {
         const indexPath = p.join(path, 'index.mdx');
+        const content = fs.readFileSync(indexPath).toString();
         const header = fs.existsSync(indexPath) //
-          ? extractDocHeading(fs.readFileSync(indexPath).toString())
+          ? extractDocHeading(content)
           : indexPath;
 
-        const children = readDocs(path);
+        const children = readDocs(path).sort((a, b) => (a.metadata.position ?? 0) - (b.metadata.position ?? 0));
 
         if (children.length === 0) return null;
 
-        return { segment: child, title: header, children };
+        return { segment: child, title: header, children, metadata: extractDocMeta(content) };
       }
 
       return readDocFile(path, child);
     })
     .filter(Boolean) //
-    .reduce<Doc[]>((prev, curr) => (Array.isArray(curr) ? [...prev, ...curr] : [...prev, curr]), []);
+    .reduce<Doc[]>((prev, curr) => (Array.isArray(curr) ? [...prev, ...curr] : [...prev, curr]), [])
+    .sort((a, b) => (a.metadata.position ?? 0) - (b.metadata.position ?? 0));
 }
 
 function readDocFile(path: string, filename: string): Doc {
@@ -77,6 +109,7 @@ function readDocFile(path: string, filename: string): Doc {
     segment: filename.replace(/\.mdx$/, ''),
     title: header,
     children: [],
+    metadata: extractDocMeta(content),
   };
 }
 
@@ -93,7 +126,7 @@ type NextPrev = {
 };
 
 // Segments include mdx file segment
-export async function getNextPrevDoc(locale: string, segments: string[]) {
+export function getNextPrevDoc(locale: string, segments: string[]) {
   const docs = readDocsByLocale(locale);
 
   const currentSeg = segments.join('/');
