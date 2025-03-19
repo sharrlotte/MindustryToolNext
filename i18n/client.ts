@@ -1,14 +1,48 @@
 'use client';
 
-import i18next from 'i18next';
+import i18next, { InitOptions } from 'i18next';
 import LanguageDetector, { DetectorOptions } from 'i18next-browser-languagedetector';
-import Backend from 'i18next-chained-backend';
+import Backend, { ChainedBackendOptions } from 'i18next-chained-backend';
+import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
+import LocalStorageBackend from 'i18next-localstorage-backend';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
-import { Locale, cookieName, defaultLocale, getClientOptions, locales } from '@/i18n/config';
+import env from '@/constant/env';
+import { Locale, cookieName, defaultLocale, defaultNamespace, i18nCachePrefix, locales } from '@/i18n/config';
+
+export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
+  const options: InitOptions<ChainedBackendOptions> = {
+    // debug: process.env.NODE_ENV === 'development',
+    supportedLngs: locales,
+    lng,
+    interpolation: {
+      escapeValue: false,
+    },
+    saveMissing: true,
+    fallbackLng: defaultLocale,
+    fallbackNS: defaultNamespace,
+    defaultNS: defaultNamespace,
+    ns,
+    backend: {
+      backends: [LocalStorageBackend, HttpApi],
+      backendOptions: [
+        {
+          expirationTime: 24 * 60 * 60 * 1000, // 7 days
+          prefix: i18nCachePrefix,
+        },
+        {
+          loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
+          addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
+        } as HttpBackendOptions,
+      ],
+    },
+  };
+
+  return options;
+}
 
 const runsOnServerSide = typeof window === 'undefined';
 
