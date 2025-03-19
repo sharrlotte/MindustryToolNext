@@ -132,20 +132,14 @@ export default async function Page({ params }: Props) {
               </div>
             </div>
           </div>
-          <div className="col-span-1 flex flex-col gap-2 bg-card rounded-md md:col-start-1 md:row-start-2">
+          <div className="col-span-1 flex flex-wrap gap-2 bg-card rounded-md md:col-start-1 md:row-start-2">
             <div className="flex h-full flex-col items-start justify-start gap-1 p-4 shadow-lg">
               <h3 className="text-xl">
                 <Tran text="server.system-status" />
               </h3>
-              {status === 'HOST' ? (
-                <>
-                  <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
-                  <Image key={status} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/servers/${id}/image`} alt={name} width={500} height={500} />
-                </>
-              ) : (
-                <Tran text="server.server-is-not-running" />
-              )}
+              {status === 'HOST' ? <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} /> : <Tran text="server.server-is-not-running" />}
             </div>
+            {status === 'HOST' && <Image key={status} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/servers/${id}/image`} alt={name} width={500} height={500} />}
           </div>
           <ProtectedElement session={session} filter={showPlayer}>
             <div className="col-start-1 row-start-3 flex min-w-40 flex-col gap-1 bg-card rounded-md shadow-lg md:col-start-2 md:row-span-3 md:row-start-1">
