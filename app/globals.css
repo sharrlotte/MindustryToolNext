@@ -155,6 +155,11 @@
     font-weight: bold;
   }
 
+  ol li {
+    margin-left: 1rem;
+    padding: 0.5rem;
+  }
+
   ul li {
     list-style-position: outside;
     margin-left: 1rem;
