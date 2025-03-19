@@ -91,19 +91,19 @@ function NavBarDoc({ doc, segments, level, selectedSegments }: { doc: Doc; segme
     return (
       <InternalLink
         href={`/docs/${path.join(...currentSegments)}`}
-        className={cn('text-sm py-2 rounded-r-md hover:bg-muted/80 text-muted-foreground hover:text-brand', {
+        className={cn('text-sm py-2 rounded-md hover:bg-brand/30 text-muted-foreground hover:text-brand', {
           'text-brand': currentSegments.map((segment, index) => segment === selectedSegments[index]).every((v) => v),
         })}
       >
         <span
           className={cn({
-            'pl-2': level === 0,
-            'pl-4': level === 1, //
-            'pl-6': level === 2,
-            'pl-8': level === 3,
-            'pl-10': level === 4,
-            'pl-12': level === 5,
-            'pl-14': level === 6,
+            'pl-2': level === 1,
+            'pl-4': level === 2, //
+            'pl-6': level === 3,
+            'pl-8': level === 4,
+            'pl-10': level === 5,
+            'pl-12': level === 6,
+            'pl-14': level === 7,
           })}
         >
           {doc.title}
@@ -118,13 +118,13 @@ function NavBarDoc({ doc, segments, level, selectedSegments }: { doc: Doc; segme
         <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
           <span
             className={cn({
-              'pl-2': level === 0,
-              'pl-4': level === 1, //
-              'pl-6': level === 2,
-              'pl-8': level === 3,
-              'pl-10': level === 4,
-              'pl-12': level === 5,
-              'pl-14': level === 6,
+              'pl-2': level === 1,
+              'pl-4': level === 2, //
+              'pl-6': level === 3,
+              'pl-8': level === 4,
+              'pl-10': level === 5,
+              'pl-12': level === 6,
+              'pl-14': level === 7,
             })}
           >
             {doc.title}

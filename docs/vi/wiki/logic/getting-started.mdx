@@ -1,0 +1,90 @@
+# Mindustry Logic: Hướng Dẫn Cơ Bản
+
+## Giới Thiệu
+
+Mindustry Logic (ML) là một hệ thống lập trình tích hợp cho phép người chơi tự động hóa các nhiệm vụ bằng cách sử dụng bộ xử lý, ô nhớ và các liên kết. Nó hoạt động như một ngôn ngữ kiểu assembly, giúp tự động hóa việc điều khiển đơn vị, quản lý nhà máy, hệ thống phòng thủ và phân phối tài nguyên.
+
+## Thành Phần Cơ Bản
+
+Mindustry Logic hoạt động dựa trên các thành phần chính sau:
+
+- **Bộ xử lý (Processors)**: Đơn vị thực thi chạy các tập lệnh logic.
+- **Ô nhớ (Memory Cells)**: Dùng để lưu trữ và truy xuất dữ liệu lâu dài.
+- **Liên kết (Links)**: Cho phép bộ xử lý tương tác với công trình, đơn vị và tài nguyên.
+- **Biến (Variables)**: Lưu trữ dữ liệu tạm thời để tính toán và điều khiển logic.
+
+## Luồng Thực Thi
+
+Mindustry Logic thực thi các lệnh tuần tự, từng dòng một. Nó hỗ trợ vòng lặp và điều kiện nhảy để tạo ra các hành vi phức tạp. Luồng thực thi chung như sau:
+
+1. **Đọc dữ liệu**: Cảm biến lấy thông tin từ các công trình hoặc đơn vị được liên kết.
+2. **Xử lý dữ liệu**: Các phép toán số học và điều kiện kiểm tra quyết định bước tiếp theo.
+3. **Điều khiển khối/đơn vị**: Lệnh được gửi đến khối hoặc đơn vị dựa trên dữ liệu đã xử lý.
+4. **Lặp lại hoặc kết thúc thực thi**: Tiến trình lặp lại cho đến khi điều kiện được đáp ứng hoặc tập lệnh dừng lại.
+
+## Lệnh Cơ Bản
+
+Một số lệnh quan trọng bao gồm:
+
+- `set var value` → Gán giá trị cho một biến.
+- `op operation result a b` → Thực hiện các phép toán số học (`add`, `sub`, `mul`, `div`, v.v.).
+- `print "text"` → Hiển thị văn bản trên bảng điều khiển của bộ xử lý.
+- `end` → Kết thúc thực thi tập lệnh.
+
+## Điều Khiển Luồng
+
+Điều khiển luồng xác định cách tập lệnh tiếp tục dựa trên điều kiện. Các lệnh quan trọng:
+
+- `jump label` → Nhảy đến một nhãn được định nghĩa trước.
+- `jump label condition a b` → Nhảy có điều kiện nếu `a` và `b` thỏa mãn điều kiện (`==`, `!=`, `<`, `>`, `<=`, `>=`).
+- `label myLabel` → Định nghĩa một điểm trong tập lệnh để nhảy đến.
+
+### Ví Dụ: Vòng Lặp Cơ Bản
+```plaintext
+set counter 0
+label loop
+    print counter
+    op add counter counter 1
+    jump loop lessThan counter 10
+```
+Vòng lặp này in ra các số từ 0 đến 9 và dừng lại khi `counter` đạt 10.
+
+## Tương Tác Với Công Trình
+
+Bộ xử lý có thể tương tác với công trình bằng cảm biến và lệnh.
+
+- `sensor var block property` → Đọc dữ liệu từ công trình (ví dụ: `sensor power storage powerNetStored`).
+- `setblock x y type` → Đặt một khối tại tọa độ chỉ định.
+- `getlink index var` → Lấy công trình đã liên kết.
+
+### Ví Dụ: Kiểm Tra Máu Lõi
+```plaintext
+sensor coreHealth core health
+print coreHealth
+jump loop
+```
+Tập lệnh này in ra máu của lõi trong một vòng lặp liên tục.
+
+## Tương Tác Với Đơn Vị
+
+Bộ xử lý có thể điều khiển đơn vị di chuyển, tấn công và khai thác tài nguyên.
+
+- `ulocate mode x y var` → Tìm đơn vị gần nhất trong chế độ được chỉ định (`enemy`, `ally`, `ore`).
+- `ucontrol command` → Ra lệnh cho đơn vị (ví dụ: `move x y`, `mine x y`).
+
+### Ví Dụ: Di Chuyển Một Đơn Vị Đến (100, 200)
+```plaintext
+ucontrol move 100 200
+```
+
+## Ứng Dụng Thực Tiễn
+
+Mindustry Logic rất hữu ích cho nhiều nhiệm vụ, bao gồm:
+
+- **Tự động hóa nhà máy**: Quản lý chuỗi cung ứng bằng cách điều khiển băng tải và nhà máy.
+- **Điều khiển tháp pháo**: Tối ưu hóa hệ thống phòng thủ để ưu tiên mục tiêu cụ thể.
+- **AI cho đơn vị**: Ra lệnh cho đơn vị khai thác, phòng thủ hoặc tấn công.
+- **Giám sát tài nguyên**: Kiểm tra và phân phối tài nguyên một cách tự động.
+
+Bằng cách làm chủ Mindustry Logic, người chơi có thể nâng cao đáng kể hiệu quả của căn cứ và tự động hóa hệ thống phòng thủ. Hãy bắt đầu thử nghiệm với bộ xử lý ngay hôm nay để xây dựng các chiến lược dựa trên logic tiên tiến!
+
