@@ -1,3 +1,94 @@
-# Basic about logic
+# Mindustry Logic: A Beginner's Guide
 
-## Concept
+## Introduction
+
+Mindustry Logic (ML) is a built-in programming system that allows players to automate tasks using processors, memory cells, and linked structures. It functions like an assembly-style language, enabling automation of unit control, factory management, defense mechanisms, and resource distribution.
+
+## Basic Components
+
+Mindustry Logic operates using several key components:
+
+- **Processors**: The core execution units that run logic scripts.
+- **Memory Cells**: Used to store and retrieve data persistently.
+- **Links**: Allow processors to interact with buildings, units, and resources.
+- **Variables**: Temporary data storage for calculations and control logic.
+
+## Flow of Execution
+
+Mindustry Logic executes commands sequentially, line by line. It supports loops and conditional jumps to create complex behaviors. The general flow follows:
+
+1. **Reading Data**: Sensors retrieve information from linked buildings or units.
+2. **Processing Data**: Arithmetic operations and conditional checks determine the next steps.
+3. **Controlling Blocks/Units**: Commands are issued to blocks or units based on processed data.
+4. **Repeating or Ending Execution**: Execution loops until conditions are met or the script stops.
+
+## Basic Commands
+
+Some fundamental commands include:
+
+- `set var value` → Assigns a value to a variable.
+- `op operation result a b` → Performs arithmetic operations (`add`, `sub`, `mul`, `div`, etc.).
+- `print "text"` → Displays text in the processor’s console.
+- `end` → Terminates script execution.
+
+## Control Flow
+
+Control flow determines how a script proceeds based on conditions. Key commands:
+
+- `jump label` → Jumps to a predefined label.
+- `jump label condition a b` → Conditional jump if `a` and `b` satisfy the condition (`==`, `!=`, `<`, `>`, `<=`, `>=`).
+- `label myLabel` → Defines a point in the script for jumps.
+
+### Example: Basic Loop
+
+```plaintext
+set counter 0
+label loop
+    print counter
+    op add counter counter 1
+    jump loop lessThan counter 10
+```
+
+This loop prints numbers from 0 to 9 and stops when `counter` reaches 10.
+
+## Interacting with Blocks
+
+Processors can interact with blocks using sensors and commands.
+
+- `sensor var block property` → Reads block data (e.g., `sensor power storage powerNetStored`).
+- `setblock x y type` → Places a block at the specified coordinates.
+- `getlink index var` → Retrieves a linked block.
+
+### Example: Checking Core Health
+
+```plaintext
+sensor coreHealth core health
+print coreHealth
+jump loop
+```
+
+This script prints the core’s health in a continuous loop.
+
+## Interacting with Units
+
+Processors can control units to move, attack, and gather resources.
+
+- `ulocate mode x y var` → Finds the nearest unit in a specified mode (`enemy`, `ally`, `ore`).
+- `ucontrol command` → Issues a command to a unit (e.g., `move x y`, `mine x y`).
+
+### Example: Moving a Unit to (100, 200)
+
+```plaintext
+ucontrol move 100 200
+```
+
+## Practical Applications
+
+Mindustry Logic is useful for various tasks, including:
+
+- **Factory Automation**: Automate supply chains by managing conveyor belts and factories.
+- **Turret Targeting**: Optimize turret control to prioritize specific enemies.
+- **Unit AI**: Command units for mining, defending, or attacking.
+- **Resource Monitoring**: Automatically check and redistribute resources.
+
+By mastering Mindustry Logic, players can significantly enhance their base efficiency and defense automation. Start experimenting with processors today to build advanced logic-driven strategies!

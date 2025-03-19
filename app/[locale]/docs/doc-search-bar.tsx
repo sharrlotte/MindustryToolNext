@@ -10,6 +10,7 @@ import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
+import { useI18n } from '@/i18n/client';
 import { cn } from '@/lib/utils';
 
 import { useQuery } from '@tanstack/react-query';
@@ -17,6 +18,7 @@ import { useQuery } from '@tanstack/react-query';
 export default function DocSearchBar() {
   const [focus, setFocus] = useState(false);
   const [query, setQuery] = useState('');
+  const { t } = useI18n();
 
   const [value] = useDebounceValue(query, 100);
 
@@ -35,7 +37,7 @@ export default function DocSearchBar() {
 
   return (
     <Dialog>
-      <DialogTrigger className="ml-auto flex text-base items-center gap-0.5 px-2 py-1 border rounded-md">
+      <DialogTrigger className="ml-auto flex text-base items-center gap-0.5 px-2 py-1 border rounded-md lg:w-80">
         <SearchIcon />
         <Tran text="search" />
       </DialogTrigger>
@@ -46,7 +48,7 @@ export default function DocSearchBar() {
         </Hidden>
         <div className="border h-8 rounded-lg px-2 py-0.5 flex items-center w-full">
           <SearchIcon />
-          <Input className={cn('w-0 border-none focus:border-brand', { 'w-full': focus })} type="text" value={query} onChange={(event) => setQuery(event.currentTarget.value)} onFocus={() => setFocus(true)} />
+          <Input className={cn('w-0 border-none focus:border-brand', { 'w-full': focus })} placeholder={t('search')} type="text" value={query} onChange={(event) => setQuery(event.currentTarget.value)} onFocus={() => setFocus(true)} />
         </div>
         {data && focus && (
           <div className="grid gap-2 mt-2 max-h-dvh overflow-y-auto">
