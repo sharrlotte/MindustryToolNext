@@ -52,7 +52,7 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
   return (
     <AnimatePresence>
       <ScrollContainer className="pl-4 flex-col lg:flex hidden">
-        <h3 className="text-base">
+        <h3 className="text-lg">
           <Tran text="docs.table-of-content" asChild />
         </h3>
         <HeadingCard data={heading} activeId={activeId} level={0} />
@@ -65,10 +65,10 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
   return (
     <Accordion className="flex flex-col gap-2 relative" type="single" collapsible defaultValue={data[0]?.title}>
       {data.map((heading) =>
-        heading.children.length === 0 ? (
+        heading.children.length <= 1 ? (
           <Link
             key={heading.title}
-            className={cn('hover:text-brand text-sm text-muted-foreground relative', {
+            className={cn('hover:text-brand text-muted-foreground relative', {
               'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'),
             })}
             href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`}
@@ -92,7 +92,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
         ) : (
           <AccordionItem key={heading.title} value={heading.title}>
             <AccordionTrigger
-              className={cn('text-sm p-0 justify-start text-start text-nowrap hover:text-brand text-muted-foreground', {
+              className={cn('p-0 justify-start text-start text-nowrap hover:text-brand text-muted-foreground', {
                 'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'), //
               })}
             >
