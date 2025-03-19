@@ -30,6 +30,7 @@ export const languageSchema = z.enum(locales).default('en').catch('en');
 export const targetLanguageSchema = z.enum(locales).default('vi').catch('vi');
 export const languageKeySchema = z.string().optional();
 export const isTranslatedSchema = z.boolean().optional().nullable();
+export const autoSizeSchema = z.boolean().optional().nullable();
 
 export type QuerySchema = typeof PaginationQuerySchema;
 
@@ -59,6 +60,7 @@ export const PaginationQuerySchema = z.object({
 export const ItemPaginationQuery = z.object({
   ...PaginationParam,
   ...ItemSearchParam,
+  autoSize: autoSizeSchema,
 });
 
 export type ItemPaginationQueryType = z.infer<typeof ItemPaginationQuery>;
