@@ -1,9 +1,12 @@
 import { NextConfig } from 'next';
-import rehypeStarryNight from 'rehype-starry-night';
+import rehypeHighlight from 'rehype-highlight';
 import frontmatter from 'remark-frontmatter';
+
+
 
 import createMDX from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
+
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -63,7 +66,7 @@ const nextConfig: NextConfig = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: [[frontmatter, { type: 'ymal', marker: '-' }]],
-    rehypePlugins: [rehypeStarryNight],
+    rehypePlugins: [rehypeHighlight],
   },
 });
 
