@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: formatTitle(title),
     description,
     openGraph: {
-      title,
+      title: formatTitle(title),
       description,
     },
   };
