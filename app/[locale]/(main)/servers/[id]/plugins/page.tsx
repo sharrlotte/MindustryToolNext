@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 
-import AddPluginDialog from '@/app/[locale]/(main)/servers/[id]/plugins/add-plugin-dialog';
 import ServerPluginPage from '@/app/[locale]/(main)/servers/[id]/plugins/page.client';
 
 import { Locale } from '@/i18n/config';

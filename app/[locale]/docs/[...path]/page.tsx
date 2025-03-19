@@ -23,7 +23,7 @@ export default async function Page({ params }: Props) {
     return notFound();
   }
 
-  const { Post, metadata } = await import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({ Post: result.default, metadata: result.metadata }));
+  const { Post } = await import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({ Post: result.default, metadata: result.metadata }));
 
   return (
     <div className="gap-2 flex flex-col h-full">
