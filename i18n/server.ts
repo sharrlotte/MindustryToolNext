@@ -3,13 +3,13 @@ import { InitOptions } from 'i18next';
 import Backend from 'i18next-chained-backend';
 import { ChainedBackendOptions } from 'i18next-chained-backend';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
-import { unstable_cache, unstable_expireTag } from 'next/cache';
+import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
+import env from '@/constant/env';
 import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
-import env from '@/constant/env';
 
 const getTranslationFn = unstable_cache(async (url: string) => await axiosInstance.get(url).then((res) => res.data), ['server-translations'], { revalidate: 3600, tags: ['server-translations'] });
 
@@ -39,8 +39,6 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
                 .post(url, payload, { data: payload })
                 .then((result) => callback(undefined, { status: 200, data: result }))
                 .catch((error) => callback(error, undefined));
-
-              unstable_expireTag('server-translations');
             } else {
               getTranslationFn(url)
                 .then((result) => callback(undefined, { status: 200, data: result }))
