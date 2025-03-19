@@ -1,9 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-
 import { LanguagesIcon } from '@/components/common/icons';
-import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import useLocaleStore from '@/hooks/use-current-locale';

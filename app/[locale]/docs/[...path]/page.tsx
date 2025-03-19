@@ -24,9 +24,9 @@ export default async function Page({ params }: Props) {
   const { Post, metadata } = await import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({ Post: result.default, metadata: result.metadata }));
 
   return (
-    <div className="gap-2 min-h-full flex flex-col h-full">
+    <div className="gap-2 flex flex-col h-full">
       <Post />
-      {(previous || next) && <Divider className="mt-auto" />}
+      {(previous || next) && <Divider className="mt-6" />}
       <div className="w-full flex justify-between items-center">
         {previous && (
           <Link className="mr-auto underline flex gap-0.5 items-center" href={`/docs/${previous.segments.join('/')}`}>
