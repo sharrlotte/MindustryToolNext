@@ -50,7 +50,7 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
 
   return (
     <AnimatePresence>
-      <ScrollContainer className="pl-4 flex-col lg:flex hidden">
+      <ScrollContainer className="p-4 flex-col lg:flex hidden">
         <h3 className="text-lg py-0">
           <Tran text="docs.table-of-content" asChild />
         </h3>
@@ -73,7 +73,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
             href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`}
             shallow
           >
-            <span
+            <p
               className={cn({
                 'pl-2': level === 0,
                 'pl-4': level === 1, //
@@ -85,7 +85,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
               })}
             >
               {heading.title}
-            </span>
+            </p>
             <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
             {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
           </Link>
@@ -97,7 +97,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
               })}
             >
               <Link className="relative py-1 text-base" href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`} shallow>
-                <span
+                <p
                   className={cn({
                     'pl-2': level === 0,
                     'pl-4': level === 1, //
@@ -109,7 +109,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
                   })}
                 >
                   {heading.title}
-                </span>
+                </p>
                 <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
                 {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
               </Link>

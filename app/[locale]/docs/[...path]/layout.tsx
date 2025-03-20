@@ -37,7 +37,7 @@ export default async function Layout({ children, params }: { children: ReactNode
   const availableLanguages = locales.filter((locale) => isDocExists(locale, path));
 
   return (
-    <div className="h-full relative w-full grid grid-rows-[auto_1fr] overflow-hidden">
+    <div className="h-full relative w-full grid grid-rows-[auto_1fr] overflow-hidden bg-card">
       <div className="flex border-b py-2 px-4 items-center overflow-hidden h-16 gap-4">
         <div className="flex items-center gap-2">
           <Link className="flex gap-2 items-center text-2xl font-semibold" href="/">
@@ -68,8 +68,8 @@ export default async function Layout({ children, params }: { children: ReactNode
           <DocSearchBar />
         </div>
       </div>
-      <div className="grid lg:grid-cols-[18rem_auto_18rem] h-full relative overflow-hidden">
-        <div className="flex w-full border-r p-4 bg-card">
+      <div className="grid lg:grid-cols-[20rem_auto_20rem] h-full relative overflow-hidden">
+        <div className="flex w-full border-r p-4">
           <div className="block lg:hidden ml-auto">
             <NavBarDialog locale={locale} selectedSegments={path} />
           </div>

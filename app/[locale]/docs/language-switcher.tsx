@@ -23,7 +23,7 @@ export default function LanguageSwitcher({ availableLanguages, currentLocale }: 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1 cursor-pointer">
           <LanguagesIcon />
           {t(currentLocale)}
         </span>
@@ -34,7 +34,7 @@ export default function LanguageSwitcher({ availableLanguages, currentLocale }: 
             <button
               className={cn('px-2 text-muted-foreground py-1 inline-flex rounded-md min-w-32 h-9 justify-start items-center capitalize border-none focus:border-none', {
                 'bg-brand text-brand-foreground': locale === currentLocale,
-                'hover:bg-brand text-foreground hover:text-brand-foreground': availableLanguages.includes(locale),
+                'hover:bg-brand hover:text-brand-foreground': availableLanguages.includes(locale),
               })}
               key={locale}
               onClick={() => onLanguageChange(locale)}
