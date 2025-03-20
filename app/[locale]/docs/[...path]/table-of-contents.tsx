@@ -52,7 +52,7 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
   return (
     <AnimatePresence>
       <ScrollContainer className="pl-4 flex-col lg:flex hidden">
-        <h3 className="text-lg">
+        <h3 className="text-lg py-0">
           <Tran text="docs.table-of-content" asChild />
         </h3>
         <HeadingCard data={heading} activeId={activeId} level={0} />
@@ -68,7 +68,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
         heading.children.length <= 1 ? (
           <Link
             key={heading.title}
-            className={cn('hover:text-brand text-secondary-foreground relative py-1', {
+            className={cn('text-base hover:text-brand text-secondary-foreground relative py-1', {
               'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'),
             })}
             href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`}
@@ -91,13 +91,13 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
             {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
           </Link>
         ) : (
-          <AccordionItem key={heading.title} value={heading.title}>
+          <AccordionItem key={heading.title} value={heading.title} className="py-0">
             <AccordionTrigger
-              className={cn('px-0 py-1 justify-start text-start text-nowrap hover:text-brand text-secondary-foreground', {
+              className={cn('px-0 py-0 justify-start text-start text-nowrap hover:text-brand text-secondary-foreground', {
                 'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'), //
               })}
             >
-              <Link className="relative" href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`} shallow>
+              <Link className="relative py-1 text-base" href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`} shallow>
                 <span
                   className={cn({
                     'pl-2': level === 0,
@@ -115,7 +115,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
                 {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
               </Link>
             </AccordionTrigger>
-            <AccordionContent className="mt-2 pt-0">
+            <AccordionContent className="pt-0">
               {heading.children.map((child) => (
                 <HeadingCard key={child.title} data={[child]} level={level + (child.children.length === 0 ? 2 : 1)} activeId={activeId} />
               ))}
