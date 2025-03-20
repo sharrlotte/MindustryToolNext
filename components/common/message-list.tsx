@@ -9,7 +9,7 @@ import Tran from '@/components/common/tran';
 import { useSocket } from '@/context/socket-context';
 import useMessageQuery from '@/hooks/use-message-query';
 import useNotification from '@/hooks/use-notification';
-import { isReachedEnd, mergeNestArray } from '@/lib/utils';
+import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
 import { MessageQuery } from '@/query/search-query';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
@@ -30,7 +30,7 @@ type MessageListProps = {
   children: (data: MessageGroup, index?: number, endIndex?: number) => ReactNode;
 };
 
-export default function MessageList({ queryKey, params, loader, noResult = <NoResult className="flex w-full items-center justify-center" />, end, threshold = 100, room, showNotification = true, children }: MessageListProps) {
+export default function MessageList({ className, queryKey, params, loader, noResult = <NoResult className="flex w-full items-center justify-center" />, end, threshold = 100, room, showNotification = true, children }: MessageListProps) {
   const container = useRef<HTMLDivElement>(null);
   const renderCause = useRef<'fetch' | 'event'>('fetch');
   const [_, setLastMessage] = useLocalStorage(`LAST_MESSAGE_${room}`, '');
@@ -176,14 +176,14 @@ export default function MessageList({ queryKey, params, loader, noResult = <NoRe
 
   if (state !== 'connected' || !data) {
     return undefined;
-  }
+  } 
 
   if (pages.length === 0) {
     return noResult;
   }
 
   return (
-    <ScrollContainer className="flex h-full w-full overflow-x-hidden" ref={container}>
+    <ScrollContainer className={cn('flex h-full w-full overflow-x-hidden', className)} ref={container}>
       <ol className="h-fit w-full" ref={(ref) => setList(ref)}>
         {!hasNextPage && end}
         {isFetching && loader}

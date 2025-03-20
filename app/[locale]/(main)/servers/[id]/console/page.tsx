@@ -26,7 +26,7 @@ export default async function Page() {
   return (
     <div className="grid h-full w-full grid-rows-[1fr_2.5rem] gap-2 overflow-hidden">
       <div className="grid h-full w-full overflow-hidden">
-        <div className="flex h-full flex-col gap-1 overflow-x-hidden bg-background">
+        <div className="flex h-full flex-col gap-1 overflow-x-hidden bg-card rounded-lg">
           <ServerConsolePage />
         </div>
       </div>
