@@ -127,7 +127,7 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
         })}
       >
         <span
-          className={cn({
+          className={cn('pr-2', {
             'pl-2': level === 1,
             'pl-4': level === 2, //
             'pl-6': level === 3,
@@ -161,7 +161,7 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
       <AccordionItem value={selectedSegments.map((segment, index) => index > currentSegments.length - 1 || segment === currentSegments[index]).every((v) => v) ? selectedSegments.join('/') : doc.segment}>
         <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
           <span
-            className={cn('text-base font-normal text-secondary-foreground', {
+            className={cn('text-base font-normal text-secondary-foreground pr-2', {
               'pl-2': level === 1,
               'pl-4': level === 2, //
               'pl-6': level === 3,
