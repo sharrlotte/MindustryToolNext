@@ -17,7 +17,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-import { locales } from '@/i18n/config';
+import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
 export const revalidate = false;
@@ -55,7 +55,7 @@ export default async function Layout({ children, params }: { children: ReactNode
               Api
             </Link>
           </nav>
-          <LanguageSwitcher availableLanguages={availableLanguages} />
+          <LanguageSwitcher availableLanguages={availableLanguages} currentLocale={locale as Locale} />
         </div>
         <DocSearchBar />
       </div>

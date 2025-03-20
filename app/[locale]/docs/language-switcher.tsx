@@ -1,35 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import { LanguagesIcon } from '@/components/common/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-import useLocaleStore from '@/hooks/use-current-locale';
 import { useChangeLocale, useI18n } from '@/i18n/client';
-import { locales } from '@/i18n/config';
+import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
 type LanguageSwitcherProps = {
+  currentLocale: Locale;
   availableLanguages: string[];
 };
-export default function LanguageSwitcher({ availableLanguages }: LanguageSwitcherProps) {
-  const [hydrated, setHydrated] = useState(false);
-  const { currentLocale } = useLocaleStore();
+export default function LanguageSwitcher({ availableLanguages, currentLocale }: LanguageSwitcherProps) {
   const setCurrentLocale = useChangeLocale();
 
   const { t } = useI18n();
 
   function onLanguageChange(value: any) {
     setCurrentLocale(value ?? 'en');
-  }
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
-
-  if (!hydrated) {
-    return undefined;
   }
 
   return (
