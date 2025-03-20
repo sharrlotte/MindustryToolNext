@@ -63,12 +63,12 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
 
 function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: string | null; level: number }) {
   return (
-    <Accordion className="flex flex-col gap-2 relative" type="single" collapsible defaultValue={data[0]?.title}>
+    <Accordion className="flex flex-col relative" type="single" collapsible defaultValue={data[0]?.title}>
       {data.map((heading) =>
         heading.children.length <= 1 ? (
           <Link
             key={heading.title}
-            className={cn('hover:text-brand text-secondary-foreground relative', {
+            className={cn('hover:text-brand text-secondary-foreground relative py-1', {
               'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'),
             })}
             href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`}
@@ -87,12 +87,13 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
             >
               {heading.title}
             </span>
+            <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
             {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
           </Link>
         ) : (
           <AccordionItem key={heading.title} value={heading.title}>
             <AccordionTrigger
-              className={cn('p-0 justify-start text-start text-nowrap hover:text-brand text-secondary-foreground', {
+              className={cn('px-0 py-1 justify-start text-start text-nowrap hover:text-brand text-secondary-foreground', {
                 'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'), //
               })}
             >
@@ -110,6 +111,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
                 >
                   {heading.title}
                 </span>
+                <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
                 {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
               </Link>
             </AccordionTrigger>
@@ -126,5 +128,5 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
 }
 
 function Anchor() {
-  return <motion.div className="absolute left-0 border-l-2 top-0 bottom-0 border-brand" layout layoutId="anchor" />;
+  return <motion.div className="absolute left-0 border-l-2 top-0 bottom-0 border-brand z-50" layout layoutId="anchor" />;
 }
