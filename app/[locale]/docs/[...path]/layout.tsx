@@ -115,7 +115,7 @@ async function NavBar({ locale, selectedSegments }: NavBarProps) {
 
   return (
     <ScrollContainer className="space-y-2 w-full">
-      <nav className="space-y-4 w-full">
+      <nav className="space-y-8 w-full">
         {data.map((doc) => (
           <NavBarDoc locale={locale} key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={[]} level={0} />
         ))}
