@@ -1,0 +1,100 @@
+---
+title: "Mindustry Logic - Hướng Dẫn Nhập Xuất Dữ Liệu"
+description: "Giải thích chi tiết về các lệnh nhập xuất trong Mindustry Logic: read, write, draw, và print."
+position: 4
+---
+
+# Hướng Dẫn Nhập Xuất Dữ Liệu
+
+Mindustry Logic cung cấp nhiều lệnh nhập xuất giúp script có thể đọc dữ liệu, sửa đổi bộ nhớ, vẽ đồ họa và hiển thị văn bản. Trang này sẽ giải thích chi tiết về `read`, `write`, `draw`, và `print`, kèm theo ví dụ minh họa.
+
+## `read`
+
+Lệnh `read` dùng để lấy giá trị từ một ô nhớ.
+
+### Cú pháp:
+
+```plaintext
+read [biến] [ô nhớ] [chỉ mục]
+```
+
+### Ví dụ:
+
+```plaintext
+read data memory1 0
+print data
+print flush
+```
+
+**Giải thích:** Script này đọc giá trị tại chỉ mục `0` của `memory1` và in ra màn hình.
+
+## `write`
+
+Lệnh `write` dùng để lưu giá trị vào một ô nhớ tại một chỉ mục nhất định.
+
+### Cú pháp:
+
+```plaintext
+write [giá trị] [ô nhớ] [chỉ mục]
+```
+
+### Ví dụ:
+
+```plaintext
+write 42 memory1 0
+read data memory1 0
+print data
+print flush
+```
+
+**Giải thích:** Script này lưu giá trị `42` vào chỉ mục `0` của `memory1`, sau đó đọc và in ra giá trị đó.
+
+## `draw`
+
+Lệnh `draw` dùng để vẽ hình và hiển thị văn bản trên màn hình.
+
+### Cú pháp:
+
+```plaintext
+draw [lệnh] [tham số1] [tham số2] [tham số3] [tham số4]
+draw flush
+```
+
+### Ví dụ (Vẽ hình chữ nhật):
+
+```plaintext
+draw color 255 0 0 255
+draw rect 10 10 50 50
+draw flush
+```
+
+**Giải thích:** Script này đặt màu vẽ thành đỏ, vẽ một hình chữ nhật tại (10,10) với kích thước 50x50, sau đó thực thi `draw flush` để hiển thị hình vẽ.
+
+## `print`
+
+Lệnh `print` dùng để hiển thị văn bản trên màn hình hoặc bảng điều khiển.
+
+### Cú pháp:
+
+```plaintext
+print [văn bản]
+print flush
+```
+
+### Ví dụ:
+
+```plaintext
+print "Xin chào, Thế giới!"
+print flush
+```
+
+**Giải thích:** Script này in `"Xin chào, Thế giới!"` ra màn hình hoặc bảng điều khiển.
+
+## Kết luận
+
+- Dùng `read` để lấy dữ liệu từ ô nhớ.
+- Dùng `write` để lưu dữ liệu vào ô nhớ.
+- Dùng `draw` để tạo các phần tử đồ họa trên màn hình.
+- Dùng `print` để hiển thị văn bản.
+
+Nắm vững các lệnh này sẽ giúp bạn viết script Mindustry Logic hiệu quả cho các hệ thống tự động hóa và trực quan hóa.

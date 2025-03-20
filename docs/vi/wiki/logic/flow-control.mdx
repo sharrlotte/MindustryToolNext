@@ -1,0 +1,88 @@
+---
+title: 'Mindustry Logic - Hướng Dẫn Điều Khiển Luồng'
+description: 'Giải thích chi tiết về các lệnh điều khiển luồng trong Mindustry Logic: end, stop, wait, và jump.'
+position: 3
+---
+
+# Hướng Dẫn Điều Khiển Luồng
+
+Mindustry Logic cung cấp nhiều lệnh điều khiển luồng giúp quản lý quá trình thực thi của script một cách hiệu quả. Trang này sẽ giải thích chi tiết về `end`, `stop`, `wait`, và `jump`, kèm theo ví dụ minh họa.
+
+## `end`
+
+Lệnh `end` dừng ngay lập tức quá trình thực thi của script. Thường được sử dụng để kết thúc chương trình một cách rõ ràng.
+
+### Ví dụ:
+
+```plaintext
+print "Bắt đầu"
+end
+print "Dòng này sẽ không được thực thi"
+```
+
+**Giải thích:** Script in ra `"Bắt đầu"`, nhưng sau khi `end` được thực thi, tất cả các lệnh tiếp theo sẽ bị bỏ qua.
+
+## `stop`
+
+Lệnh `stop` tạm dừng thực thi nhưng cho phép script khởi động lại ở tick logic tiếp theo. Nó hữu ích cho các script lặp lại mà không tiêu tốn quá nhiều tài nguyên xử lý.
+
+### Ví dụ:
+
+```plaintext
+print "Đang chạy"
+stop
+print "Dòng này sẽ được thực thi ở tick tiếp theo"
+```
+
+**Giải thích:** Script in ra `"Đang chạy"`, sau đó dừng tại `stop`. Ở tick logic tiếp theo, quá trình thực thi tiếp tục với lệnh tiếp theo.
+
+## `wait`
+
+Lệnh `wait` tạm dừng thực thi trong một số tick logic nhất định trước khi tiếp tục. Dùng để tạo độ trễ giữa các thao tác.
+
+### Cú pháp:
+
+```plaintext
+wait [số tick]
+```
+
+### Ví dụ:
+
+```plaintext
+print "Bắt đầu"
+wait 60
+print "Dòng này in ra sau 60 tick"
+```
+
+**Giải thích:** Script in ra `"Bắt đầu"`, sau đó tạm dừng 60 tick logic trước khi thực thi lệnh tiếp theo.
+
+## `jump`
+
+Lệnh `jump` chuyển quá trình thực thi đến một dòng cụ thể trong script dựa trên điều kiện. Hữu ích để tạo vòng lặp và điều kiện rẽ nhánh.
+
+### Cú pháp:
+
+```plaintext
+jump [dòng] [điều kiện]
+```
+
+### Ví dụ (Vòng lặp đếm):
+
+```plaintext
+set counter 0
+:loop
+print counter
+op add counter counter 1
+jump loop lessThan counter 5
+```
+
+**Giải thích:** Script này khởi tạo `counter` bằng 0, in ra giá trị, tăng nó lên 1, và quay lại nhãn `loop` cho đến khi `counter` đạt 5.
+
+## Kết luận
+
+- Dùng `end` để kết thúc script ngay lập tức.
+- Dùng `stop` để tạm dừng thực thi cho đến tick logic tiếp theo.
+- Dùng `wait` để tạo độ trễ giữa các lệnh.
+- Dùng `jump` để kiểm soát luồng thực thi theo điều kiện hoặc tạo vòng lặp.
+
+Nắm vững các lệnh này sẽ giúp bạn viết script Mindustry Logic hiệu quả cho các hệ thống tự động hóa và điều khiển.

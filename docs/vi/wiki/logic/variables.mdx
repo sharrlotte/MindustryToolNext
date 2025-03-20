@@ -1,0 +1,93 @@
+---
+position: 1
+---
+
+# Hiểu về Biến trong Mindustry Logic
+
+## Tổng Quan về Biến
+
+Biến trong Mindustry Logic được sử dụng để lưu trữ và thao tác dữ liệu trong quá trình thực thi kịch bản. Chúng giúp kiểm soát động các hệ thống tự động hóa bằng logic, như theo dõi giá trị, thực hiện tính toán và kiểm soát luồng chương trình.
+
+### Đặc Điểm Chính:
+
+- Biến được lưu trong bộ nhớ của bộ xử lý (processor).
+- Chúng có thể chứa số, trạng thái khối hoặc thuộc tính của đơn vị.
+- Giá trị được cập nhật động trong quá trình chạy kịch bản.
+- Biến có thể được sử dụng trong các điều kiện, vòng lặp và phép toán.
+
+## Cách Sử Dụng Biến
+
+Bạn có thể tạo và gán giá trị cho biến bằng lệnh `set`:
+
+```plaintext
+set myVar 10
+```
+
+Lệnh này gán giá trị `10` cho `myVar`.
+
+Biến cũng có thể lưu trữ dữ liệu cảm biến:
+
+```plaintext
+sensor coreHealth core health
+```
+
+Lệnh này lưu trữ máu của lõi (`core`) vào biến `coreHealth`.
+
+## Biến Đặc Biệt
+
+Mindustry Logic có một số biến đặc biệt chứa dữ liệu quan trọng trong trò chơi:
+
+- **`@counter`** → Lưu số lần lặp hiện tại, có thể đặt để nhảy đến dòng cụ thể.
+- **`@tick`** → Lưu số tick đã trôi qua kể từ khi bộ xử lý bắt đầu.
+- **`@time`** → Lưu tổng thời gian đã trôi qua trong game theo epoch.
+- **`@unit`** → Lưu đơn vị hiện đang được điều khiển.
+- **`@this`** → Tham chiếu đến bộ xử lý hiện tại.
+- **`@mapw`** → Lưu chiều rộng của bản đồ.
+- **`@maph`** → Lưu chiều cao của bản đồ.
+
+## Ứng Dụng
+
+Biến rất quan trọng trong:
+
+- **Theo dõi tài nguyên**: Lưu giá trị về điện, vật phẩm hoặc chất lỏng.
+- **Điều khiển đơn vị**: Lưu tọa độ và trạng thái của đơn vị.
+- **Tự động hóa**: Lưu kết quả tính toán để tối ưu hóa sản xuất.
+- **Điều kiện logic**: So sánh giá trị và thực thi hành động phù hợp.
+
+## Ví Dụ
+
+### Ví dụ 1: Đếm Vòng Lặp
+
+```plaintext
+set counter 0
+label loop
+    print counter
+    op add counter counter 1
+    jump loop lessThan counter 5
+```
+
+Kịch bản này in ra các số từ 0 đến 4 rồi dừng.
+
+### Ví dụ 2: Kiểm Tra Máu Của Lõi
+
+```plaintext
+sensor health core health
+print health
+```
+
+Kịch bản này liên tục theo dõi và in ra lượng máu của lõi.
+
+### Ví dụ 3: Điều Khiển Đơn Vị
+
+```plaintext
+sensor x @unit x
+sensor y @unit y
+op add x x 10
+ucontrol move x y
+```
+
+Kịch bản này di chuyển đơn vị sang phải 10 ô.
+
+---
+
+Nắm vững cách sử dụng biến sẽ giúp bạn tạo ra các kịch bản tự động hóa mạnh mẽ để tối ưu hóa căn cứ và hệ thống phòng thủ của mình!

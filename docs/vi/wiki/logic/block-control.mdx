@@ -1,0 +1,124 @@
+---
+title: 'Mindustry Logic - Hướng Dẫn Điều Khiển Khối'
+description: 'Giải thích chi tiết về các lệnh điều khiển khối trong Mindustry Logic: draw flush, print flush, get link, sensor, control, và radar.'
+position: 5
+---
+
+# Hướng Dẫn Điều Khiển Khối
+
+Mindustry Logic cung cấp nhiều lệnh điều khiển khối giúp script tương tác hiệu quả với thế giới trong game. Trang này sẽ giải thích chi tiết về `draw flush`, `print flush`, `get link`, `sensor`, `control`, và `radar`, kèm theo ví dụ minh họa.
+
+## `draw flush`
+
+Lệnh `draw flush` xác nhận tất cả các thao tác vẽ trước đó lên màn hình. Nếu không có lệnh này, các lệnh vẽ sẽ không được hiển thị cho đến khi script dừng hoặc đến điểm flush.
+
+### Ví dụ:
+
+```plaintext
+draw color 255 0 0 255
+draw rect 10 10 50 50
+draw flush
+```
+
+**Giải thích:** Script này đặt màu vẽ thành đỏ, vẽ một hình chữ nhật tại tọa độ (10,10) với kích thước 50x50, sau đó flush để hiển thị lên màn hình.
+
+## `print flush`
+
+Lệnh `print flush` xác nhận tất cả các lệnh `print` để hiển thị trên màn hình tin nhắn hoặc khối terminal được liên kết.
+
+### Ví dụ:
+
+```plaintext
+print "Hello, World!"
+print flush
+```
+
+**Giải thích:** Script này xếp hàng hiển thị chuỗi `"Hello, World!"` và flush để đảm bảo nó xuất hiện trên màn hình hoặc khối tin nhắn.
+
+## `get link`
+
+Lệnh `get link` liên kết một khối cụ thể vào một biến để có thể tương tác với nó.
+
+### Cú pháp:
+
+```plaintext
+get link [biến] [chỉ mục]
+```
+
+### Ví dụ:
+
+```plaintext
+get link core 1
+print core
+```
+
+**Giải thích:** Script này liên kết khối có chỉ mục 1 vào biến `core` và in ra thông tin về nó.
+
+## `sensor`
+
+Lệnh `sensor` lấy dữ liệu từ một khối hoặc đơn vị.
+
+### Cú pháp:
+
+```plaintext
+sensor [biến] [mục tiêu] [thuộc tính]
+```
+
+### Ví dụ:
+
+```plaintext
+sensor health core1 @health
+print health
+print flush
+```
+
+**Giải thích:** Script này lấy giá trị `health` (máu) của khối được lưu trong `core1` và in ra.
+
+## `control`
+
+Lệnh `control` gửi lệnh điều khiển đến các khối như tháp pháo hoặc đơn vị.
+
+### Cú pháp:
+
+```plaintext
+control [khối] [lệnh] [tham số 1] [tham số 2] [tham số 3]
+```
+
+### Ví dụ:
+
+```plaintext
+control turret shoot 100 100 1
+```
+
+**Giải thích:** Script này ra lệnh cho tháp pháo bắn vào tọa độ (100,100) với sức mạnh bắn là 1.
+
+## `radar`
+
+Lệnh `radar` quét tìm đơn vị địch dựa trên các tiêu chí nhất định.
+
+### Cú pháp:
+
+```plaintext
+radar [sắp xếp] [mục tiêu] [bộ lọc] [biến đầu ra]
+```
+
+### Ví dụ:
+
+```plaintext
+radar closest enemy any target
+print target
+print flush
+```
+
+**Giải thích:** Script này quét tìm đơn vị địch gần nhất, lưu kết quả vào `target`, rồi in ra.
+
+## Kết luận
+
+- Dùng `draw flush` để xác nhận các lệnh vẽ.
+- Dùng `print flush` để hiển thị nội dung in ra.
+- Dùng `get link` để tương tác với các khối cụ thể.
+- Dùng `sensor` để lấy dữ liệu từ khối hoặc đơn vị.
+- Dùng `control` để gửi lệnh đến đơn vị hoặc tháp pháo.
+- Dùng `radar` để quét tìm đơn vị địch.
+
+Nắm vững các lệnh này sẽ giúp bạn tạo script tự động hóa hiệu quả trong Mindustry Logic.
