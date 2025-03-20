@@ -78,7 +78,7 @@ export default async function Layout({ children, params }: { children: ReactNode
           </div>
         </div>
         <ScrollContainer id="docs-markdown-scroll" className="px-4 gap-2 relative h-full grid lg:grid-cols-[auto_20rem]" additionalPadding="pr-4">
-          <div id="docs-markdown" className="mx-auto max-w-[100ch] relative w-full">
+          <div id="docs-markdown" className="mx-auto max-w-[80ch] relative w-full">
             {children}
           </div>
           <TableOfContents markdown={markdown} />
