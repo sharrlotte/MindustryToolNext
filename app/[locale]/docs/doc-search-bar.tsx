@@ -37,7 +37,7 @@ export default function DocSearchBar() {
 
   return (
     <Dialog>
-      <DialogTrigger className="ml-auto flex text-base items-center gap-0.5 px-2 h-9 py-1 border rounded-md lg:w-80">
+      <DialogTrigger className="ml-auto flex text-base items-center gap-0.5 px-2 h-9 py-1 border rounded-md md:w-80">
         <SearchIcon />
         <Tran text="search" />
       </DialogTrigger>

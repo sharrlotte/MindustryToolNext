@@ -26,6 +26,7 @@ export default function MediumNavFooter() {
           'justify-start gap-2 py-2': visible,
         })}
         href="/users/@me/setting"
+        aria-label='Setting'
       >
         <SettingIcon />
       </InternalLink>

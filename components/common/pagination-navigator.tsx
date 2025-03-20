@@ -120,7 +120,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
       <Pagination className="h-10 bg-card rounded-md shadow-md">
         <PaginationContent>
           <PaginationItem>
-            <Button className="px-2 size-10 py-1 flex" variant="ghost" disabled={!hasPrevPage} onClick={() => handlePageChange(previousPage)}>
+            <Button className="px-2 size-10 py-1 flex" title="Previous" variant="ghost" disabled={!hasPrevPage} onClick={() => handlePageChange(previousPage)}>
               <ChevronLeftIcon className="size-5" />
             </Button>
           </PaginationItem>
@@ -172,7 +172,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
             </PaginationItem>
           )}
           <PaginationItem>
-            <Button className="px-2 size-10  py-1 flex" variant="ghost" disabled={!hasNextPage} onClick={() => handlePageChange(nextPage)}>
+            <Button className="px-2 size-10  py-1 flex" title="Next" variant="ghost" disabled={!hasNextPage} onClick={() => handlePageChange(nextPage)}>
               <ChevronRightIcon className="size-5" />
             </Button>
           </PaginationItem>
