@@ -45,7 +45,7 @@ function extractHeadings(markdown: string): Heading[] {
   return headings;
 }
 export default function TableOfContents({ markdown }: { markdown: string }) {
-  const activeId = useActiveHeading();
+  const [activeId] = useActiveHeading();
   const heading = extractHeadings(markdown);
 
   return (
