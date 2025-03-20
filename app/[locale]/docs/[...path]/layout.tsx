@@ -9,8 +9,10 @@ import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
 import DocSearchBar from '@/app/[locale]/docs/doc-search-bar';
 import { Doc, isDocExists, readDocsByLocale, reduceDocs } from '@/app/[locale]/docs/doc-type';
 import LanguageSwitcher from '@/app/[locale]/docs/language-switcher';
+import ThemeSwitcher from '@/app/[locale]/docs/theme-swicther';
 
 import { Hidden } from '@/components/common/hidden';
+import Hydrated from '@/components/common/hydrated';
 import { MenuIcon, MindustryToolIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -59,7 +61,12 @@ export default async function Layout({ children, params }: { children: ReactNode
             <LanguageSwitcher availableLanguages={availableLanguages} currentLocale={locale as Locale} />
           </Suspense>
         </div>
-        <DocSearchBar />
+        <div className="flex items-center gap-2 ml-auto">
+          <Hydrated>
+            <ThemeSwitcher />
+          </Hydrated>
+          <DocSearchBar />
+        </div>
       </div>
       <div className="grid lg:grid-cols-[18rem_auto_18rem] h-full relative overflow-hidden">
         <div className="flex w-full border-r p-4 bg-card">
