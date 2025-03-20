@@ -68,7 +68,7 @@ export default async function Layout({ children, params }: { children: ReactNode
           <DocSearchBar />
         </div>
       </div>
-      <div className="grid lg:grid-cols-[20rem_auto] h-full relative overflow-hidden">
+      <div className="flex flex-col lg:grid lg:grid-cols-[20rem_auto] h-full relative overflow-hidden">
         <div className="flex w-full lg:border-r p-4">
           <div className="block lg:hidden ml-auto">
             <NavBarDialog locale={locale} selectedSegments={path} />
@@ -78,7 +78,7 @@ export default async function Layout({ children, params }: { children: ReactNode
           </div>
         </div>
         <ScrollContainer id="docs-markdown-scroll" className="px-4 gap-2 relative h-full grid lg:grid-cols-[auto_20rem]" additionalPadding="pr-4">
-          <div id="docs-markdown" className="mx-auto max-w-[100ch] relative">
+          <div id="docs-markdown" className="mx-auto max-w-[100ch] relative w-full">
             {children}
           </div>
           <TableOfContents markdown={markdown} />

@@ -129,6 +129,7 @@ export function isDocExists(locale: string, segments: string[]) {
 type NextPrev = {
   segments: string[];
   header: string;
+  parent: string;
 };
 
 // Segments include mdx file segment
@@ -146,12 +147,17 @@ export function getNextPrevDoc(locale: string, segments: string[]) {
   if (index < paths.length - 1) {
     const nextPath = paths[index + 1];
     const nextSegments = nextPath.split('/');
+
+    const parentContent = p.join(process.cwd(), 'docs', p.normalize(locale), ...nextSegments.slice(0, -1), 'index.mdx');
+    const parent = extractDocHeading(fs.readFileSync(parentContent).toString());
+
     const content = readDocContent(locale, nextSegments);
     const header = extractDocHeading(content);
 
     next = {
       segments: nextSegments,
       header,
+      parent,
     };
   }
 
@@ -161,9 +167,13 @@ export function getNextPrevDoc(locale: string, segments: string[]) {
     const content = readDocContent(locale, previousSegments);
     const header = extractDocHeading(content);
 
+    const parentContent = p.join(process.cwd(), 'docs', p.normalize(locale), ...previousSegments.slice(0, -1), 'index.mdx');
+    const parent = extractDocHeading(fs.readFileSync(parentContent).toString());
+
     previous = {
       segments: previousSegments,
-      header,
+      header: header,
+      parent,
     };
   }
 
