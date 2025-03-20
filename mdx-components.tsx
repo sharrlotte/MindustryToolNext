@@ -1,5 +1,9 @@
 import type { MDXComponents } from 'mdx/types';
 
+import CopyButton from '@/components/button/copy-button';
+
+import { cn } from '@/lib/utils';
+
 export const ID_REPlACE_REGEX = /[\s\\/]+/g;
 
 const Heading = ({ as: Tag, children, ...props }: { as: any; children: React.ReactNode }) => {
@@ -20,5 +24,14 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h4: (props: any) => <Heading as="h4" {...props} />,
     h5: (props: any) => <Heading as="h5" {...props} />,
     h6: (props: any) => <Heading as="h6" {...props} />,
+    pre: ({ className, ...props }: any) => <pre className={cn('relative group', className)} {...props} />,
+    code: ({ className, children, ...props }: any) => (
+      <>
+        <code className={cn(className)} {...props}>
+          {children}
+        </code>
+        <CopyButton className="top-1 right-1 absolute" data={children} content={children} variant="ghost" />
+      </>
+    ),
   };
 }

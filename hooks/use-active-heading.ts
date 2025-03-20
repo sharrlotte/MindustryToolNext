@@ -6,9 +6,14 @@ export function useActiveHeading() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
+    const scrollContainer = document.getElementById('docs-markdown-scroll');
     const container = document.getElementById('docs-markdown');
-    if (!container) return;
 
+    if (!container || !scrollContainer) {
+      throw new Error("Should have a container with id 'docs-markdown'");
+    }
+
+    const sc = scrollContainer;
     const c = container;
     const headings = Array.from(c.querySelectorAll('h2, h3, h4, h5, h6'));
 
@@ -18,7 +23,7 @@ export function useActiveHeading() {
         .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
 
       if (sorted.length > 0) {
-        const index = Math.round((sorted.length - 1) * percent);
+        const index = Math.min(Math.floor((sorted.length - 1) * percent), sorted.length - 1);
         setActiveId(sorted[index].id);
       }
     };
@@ -37,9 +42,9 @@ export function useActiveHeading() {
 
     updateActiveHeading(0);
 
-    c.addEventListener('scroll', handleScroll);
+    sc.addEventListener('scroll', handleScroll);
 
-    return () => c.removeEventListener('scroll', handleScroll);
+    return () => sc.removeEventListener('scroll', handleScroll);
   }, []);
 
   return activeId;

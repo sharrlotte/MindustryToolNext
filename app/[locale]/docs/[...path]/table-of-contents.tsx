@@ -22,7 +22,7 @@ function extractHeadings(markdown: string): Heading[] {
   const stack: Heading[] = [];
 
   for (const line of lines) {
-    const match = line.match(/^(#{2,6})\s+(.*)/);
+    const match = line.match(/^(#{2,3})\s+(.*)/);
     if (!match) continue;
 
     const level = match[1].length;
@@ -50,7 +50,7 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
 
   return (
     <AnimatePresence>
-      <ScrollContainer className="p-4 flex-col lg:flex hidden">
+      <ScrollContainer className="p-4 flex-col lg:flex hidden sticky top-0 h-fit">
         <h3 className="text-lg py-0">
           <Tran text="docs.table-of-content" asChild />
         </h3>
@@ -64,7 +64,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
   return (
     <div className="flex flex-col relative">
       {data.map((heading) =>
-        heading.children.length <= 1 ? (
+        heading.children.length === 0 ? (
           <Link
             key={heading.title}
             className={cn('text-base hover:text-brand text-secondary-foreground relative py-1', {
@@ -73,7 +73,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
             href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`}
             shallow
           >
-            <p
+            <div
               className={cn({
                 'pl-2': level === 0,
                 'pl-4': level === 1, //
@@ -85,7 +85,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
               })}
             >
               {heading.title}
-            </p>
+            </div>
             <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
             {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
           </Link>
@@ -96,9 +96,9 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
                 'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'), //
               })}
             >
-              <Link className="relative py-1 text-base" href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`} shallow>
-                <p
-                  className={cn({
+              <Link className="relative text-base" href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`} shallow>
+                <div
+                  className={cn('relative py-1', {
                     'pl-2': level === 0,
                     'pl-4': level === 1, //
                     'pl-6': level === 2,
@@ -109,9 +109,9 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
                   })}
                 >
                   {heading.title}
-                </p>
-                <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
-                {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
+                  {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
+                  <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
+                </div>
               </Link>
             </div>
             <div className="pt-0">

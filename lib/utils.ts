@@ -188,12 +188,12 @@ const colours: Record<string, string> = {
   turquoise: '#40e0d0',
   violet: '#ee82ee',
   wheat: '#f5deb3',
-  white: '#ffffff',
+  white: 'var(--foreground)',
   whitesmoke: '#f5f5f5',
   yellow: '#ffe900',
   yellowgreen: '#9acd32',
   accent: 'yellow',
-  '': 'white',
+  '': 'var(--foreground)',
 };
 
 export function getColor(color: string) {

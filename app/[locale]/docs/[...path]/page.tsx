@@ -31,14 +31,20 @@ export default async function Page({ params }: Props) {
       {(previous || next) && <Divider className="mt-6" />}
       <div className="w-full flex justify-between items-center pb-4">
         {previous && (
-          <Link className="mr-auto underline flex gap-0.5 items-center" href={`/docs/${previous.segments.join('/')}`}>
+          <Link className="mr-auto flex gap-0.5 items-end justify-end" href={`/docs/${previous.segments.join('/')}`}>
             <ChevronLeftIcon />
-            {previous.header}
+            <div className="grid grid-rows-2 items-end">
+              <span>{previous.parent}</span>
+              <span className="underline text-sm">{previous.header}</span>
+            </div>
           </Link>
         )}
         {next && (
-          <Link className="ml-auto underline flex gap-0.5 items-center" href={`/docs/${next.segments.join('/')}`}>
-            {next.header}
+          <Link className="ml-auto flex gap-0.5 items-end justify-end" href={`/docs/${next.segments.join('/')}`}>
+            <div className="grid grid-rows-2 items-end text-end">
+              <span>{next.parent}</span>
+              <span className="underline text-sm">{next.header}</span>
+            </div>
             <ChevronRightIcon />
           </Link>
         )}
