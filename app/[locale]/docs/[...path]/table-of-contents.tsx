@@ -22,7 +22,7 @@ function extractHeadings(markdown: string): Heading[] {
   const stack: Heading[] = [];
 
   for (const line of lines) {
-    const match = line.match(/^(#{2,6})\s+(.*)/);
+    const match = line.match(/^(#{2,3})\s+(.*)/);
     if (!match) continue;
 
     const level = match[1].length;
@@ -64,7 +64,7 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
   return (
     <div className="flex flex-col relative">
       {data.map((heading) =>
-        heading.children.length <= 1 ? (
+        heading.children.length === 0 ? (
           <Link
             key={heading.title}
             className={cn('text-base hover:text-brand text-secondary-foreground relative py-1', {
@@ -96,9 +96,9 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
                 'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'), //
               })}
             >
-              <Link className="relative py-1 text-base" href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`} shallow>
+              <Link className="relative text-base" href={`#${heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-')}`} shallow>
                 <div
-                  className={cn({
+                  className={cn('relative py-1', {
                     'pl-2': level === 0,
                     'pl-4': level === 1, //
                     'pl-6': level === 2,
@@ -109,9 +109,9 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
                   })}
                 >
                   {heading.title}
+                  {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
+                  <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
                 </div>
-                <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
-                {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
               </Link>
             </div>
             <div className="pt-0">
