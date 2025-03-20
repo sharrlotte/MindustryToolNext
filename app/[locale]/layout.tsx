@@ -46,7 +46,7 @@ const icon = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
   title: 'MindustryTool',
-  description: 'A website about mindustry',
+  description: 'A website about mindustry, providing schematics, maps, server hosting, wiki, tutorials and more',
   generator: 'Next.js',
   applicationName: 'MindustryTool',
   keywords: ['Mindustry', 'Schematic', 'Map', 'Mod', 'Post'],
@@ -60,6 +60,7 @@ export const metadata: Metadata = {
     description: 'MindustryTool',
   },
   alternates: {
+    canonical: './',
     languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}`])),
   },
   robots: {

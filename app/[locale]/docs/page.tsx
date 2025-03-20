@@ -1,15 +1,11 @@
 import { Metadata } from 'next';
-import path from 'path';
+import { redirect } from 'next/navigation';
 
-import { Doc, readDocsByLocale } from '@/app/[locale]/docs/doc-type';
-
-import InternalLink from '@/components/common/internal-link';
-import ScrollContainer from '@/components/common/scroll-container';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { readDocsByLocale, reduceDocs } from '@/app/[locale]/docs/doc-type';
 
 import { Locale, locales } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { cn, formatTitle } from '@/lib/utils';
+import { formatTitle } from '@/lib/utils';
 
 export const revalidate = false;
 
@@ -40,73 +36,11 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   const { locale } = await params;
 
   const docs = readDocsByLocale(locale);
+  const paths = docs.flatMap((doc) => reduceDocs([], doc)).map((seg) => seg.join('/'));
 
-  if (docs.length === 0) {
+  if (paths.length === 0) {
     return <div>No content</div>;
   }
 
-  return (
-    <ScrollContainer className="p-4">
-      <Accordion className="space-y-2 w-full" type="single" collapsible>
-        {docs.map((doc) => (
-          <DocCard key={doc.segment} doc={doc} selectedSegments={[]} segments={[]} level={0} />
-        ))}
-      </Accordion>
-    </ScrollContainer>
-  );
-}
-function DocCard({ doc, segments, selectedSegments, level }: { doc: Doc; segments: string[]; selectedSegments: string[]; level: number }) {
-  const currentSegments = [...segments, doc.segment];
-
-  if (doc.children.length === 0) {
-    return (
-      <InternalLink
-        href={`/docs/${path.join(...currentSegments)}`}
-        className={cn('text-sm py-2 rounded-md hover:bg-brand/30 text-muted-foreground hover:text-brand', {
-          'text-brand': currentSegments.map((segment, index) => segment === selectedSegments[index]).every((v) => v),
-        })}
-      >
-        <span
-          className={cn({
-            'pl-2': level === 0,
-            'pl-4': level === 1, //
-            'pl-6': level === 2,
-            'pl-8': level === 3,
-            'pl-10': level === 4,
-            'pl-12': level === 5,
-            'pl-14': level === 6,
-          })}
-        >
-          {doc.title}
-        </span>
-      </InternalLink>
-    );
-  }
-
-  return (
-    <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
-      <AccordionItem value={doc.segment}>
-        <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
-          <span
-            className={cn({
-              'pl-2': level === 0,
-              'pl-4': level === 1, //
-              'pl-6': level === 2,
-              'pl-8': level === 3,
-              'pl-10': level === 4,
-              'pl-12': level === 5,
-              'pl-14': level === 6,
-            })}
-          >
-            {doc.title}
-          </span>
-        </AccordionTrigger>
-        <AccordionContent>
-          {doc.children.map((doc) => (
-            <DocCard key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} level={level + 1} />
-          ))}
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
+  redirect(`/docs/${paths[0]}`);
 }

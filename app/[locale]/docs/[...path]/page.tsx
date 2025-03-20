@@ -29,7 +29,7 @@ export default async function Page({ params }: Props) {
     <div className="gap-2 flex flex-col h-full">
       <Post />
       {(previous || next) && <Divider className="mt-6" />}
-      <div className="w-full flex justify-between items-center">
+      <div className="w-full flex justify-between items-center pb-4">
         {previous && (
           <Link className="mr-auto underline flex gap-0.5 items-center" href={`/docs/${previous.segments.join('/')}`}>
             <ChevronLeftIcon />
