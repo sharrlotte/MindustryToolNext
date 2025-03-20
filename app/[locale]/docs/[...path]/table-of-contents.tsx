@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 import { useActiveHeading } from '@/hooks/use-active-heading';
 import { cn } from '@/lib/utils';
@@ -63,7 +62,7 @@ export default function TableOfContents({ markdown }: { markdown: string }) {
 
 function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: string | null; level: number }) {
   return (
-    <Accordion className="flex flex-col relative" type="single" collapsible defaultValue={data[0]?.title}>
+    <div className="flex flex-col relative">
       {data.map((heading) =>
         heading.children.length <= 1 ? (
           <Link
@@ -91,8 +90,8 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
             {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
           </Link>
         ) : (
-          <AccordionItem key={heading.title} value={heading.title} className="py-0">
-            <AccordionTrigger
+          <div key={heading.title} className="py-0">
+            <div
               className={cn('px-0 py-0 justify-start text-start text-nowrap hover:text-brand text-secondary-foreground', {
                 'text-brand': activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-'), //
               })}
@@ -114,16 +113,16 @@ function HeadingCard({ data, activeId, level }: { data: Heading[]; activeId: str
                 <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
                 {activeId && activeId === heading.title.toLowerCase().replaceAll(ID_REPlACE_REGEX, '-') && <Anchor />}
               </Link>
-            </AccordionTrigger>
-            <AccordionContent className="pt-0">
+            </div>
+            <div className="pt-0">
               {heading.children.map((child) => (
                 <HeadingCard key={child.title} data={[child]} level={level + (child.children.length === 0 ? 2 : 1)} activeId={activeId} />
               ))}
-            </AccordionContent>
-          </AccordionItem>
+            </div>
+          </div>
         ),
       )}
-    </Accordion>
+    </div>
   );
 }
 
