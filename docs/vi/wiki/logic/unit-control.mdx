@@ -1,0 +1,106 @@
+---
+title: 'Mindustry Logic - Hướng Dẫn Điều Khiển Đơn Vị'
+description: 'Giải thích chi tiết về các lệnh điều khiển đơn vị trong Mindustry Logic: unit bind, unit control, unit radar, và unit locate.'
+position: 6
+---
+
+# Hướng Dẫn Điều Khiển Đơn Vị
+
+Mindustry Logic cung cấp nhiều lệnh điều khiển đơn vị giúp kịch bản có thể ra lệnh và quản lý đơn vị hiệu quả. Trang này sẽ hướng dẫn về `unit bind`, `unit control`, `unit radar`, và `unit locate`, kèm theo giải thích và ví dụ minh họa.
+
+## `unit bind`
+
+Lệnh `unit bind` gán một đơn vị vào kịch bản, cho phép nó được điều khiển.
+
+### Cú pháp:
+
+```plaintext
+unit bind [đơn_vị]
+```
+
+### Ví dụ:
+
+```plaintext
+unit bind @flare
+print "Đơn vị đã được gán!"
+print flush
+```
+
+**Giải thích:** Kịch bản này gán một đơn vị `flare` vào kịch bản, cho phép nó được điều khiển.
+
+## `unit control`
+
+Lệnh `unit control` ra lệnh cho đơn vị đã được gán, bao gồm di chuyển, tấn công hoặc tăng tốc.
+
+### Cú pháp:
+
+```plaintext
+unit control [lệnh] [tham_số1] [tham_số2] [tham_số3] [tham_số4]
+```
+
+### Ví dụ (Di chuyển đến vị trí):
+
+```plaintext
+unit control move 100 100 0 0
+```
+
+**Giải thích:** Kịch bản ra lệnh cho đơn vị đã gán di chuyển đến tọa độ (100,100).
+
+### Ví dụ (Tấn công kẻ địch):
+
+```plaintext
+unit control attack 200 200 1 0
+```
+
+**Giải thích:** Kịch bản ra lệnh cho đơn vị tấn công tại tọa độ (200,200) với ưu tiên bật.
+
+## `unit radar`
+
+Lệnh `unit radar` quét tìm đơn vị dựa trên tiêu chí như đội và khoảng cách.
+
+### Cú pháp:
+
+```plaintext
+unit radar [sắp_xếp] [đội] [loại] [biến_kết_quả]
+```
+
+### Ví dụ:
+
+```plaintext
+unit radar closest enemy any target
+print target
+print flush
+```
+
+**Giải thích:** Kịch bản quét tìm đơn vị kẻ địch gần nhất và lưu kết quả vào biến `target`, sau đó in ra.
+
+## `unit locate`
+
+Lệnh `unit locate` tìm lõi, điểm sinh đơn vị hoặc kẻ địch gần nhất.
+
+### Cú pháp:
+
+```plaintext
+unit locate [mục_tiêu] [tọa_độX] [tọa_độY] [biến_kết_quả]
+```
+
+### Ví dụ (Tìm lõi gần nhất):
+
+```plaintext
+unit locate core coreX coreY found
+print coreX
+print coreY
+print found
+print flush
+```
+
+**Giải thích:** Kịch bản tìm lõi gần nhất, lưu tọa độ của nó vào `coreX` và `coreY`. Biến `found` cho biết có tìm thấy lõi hay không.
+
+## Kết Luận
+
+- Dùng `unit bind` để gán một đơn vị để điều khiển.
+- Dùng `unit control` để ra lệnh cho đơn vị đã gán.
+- Dùng `unit radar` để quét tìm đơn vị xung quanh theo tiêu chí.
+- Dùng `unit locate` để tìm các vị trí chiến lược như lõi và kẻ địch.
+
+Nắm vững các lệnh này sẽ giúp bạn tạo các kịch bản tự động hóa đơn vị hiệu quả trong Mindustry Logic.

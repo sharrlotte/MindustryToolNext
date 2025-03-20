@@ -1,0 +1,88 @@
+---
+title: 'Mindustry Logic - Control Flow Instructions'
+description: 'In-depth explanation of Mindustry Logic control flow instructions: end, stop, wait, and jump.'
+position: 3
+---
+
+# Control Flow Instructions
+
+Mindustry Logic provides various control flow instructions that allow scripts to manage execution flow efficiently. This page covers `end`, `stop`, `wait`, and `jump`, explaining their purpose and providing examples.
+
+## `end`
+
+The `end` instruction immediately stops script execution. It is typically used to terminate the program explicitly.
+
+### Example:
+
+```plaintext
+print "Start"
+end
+print "This will not be executed"
+```
+
+**Explanation:** The script prints "Start", but after `end` is executed, all further instructions are ignored.
+
+## `stop`
+
+The `stop` instruction halts execution but allows the script to restart in the next logic tick. It is useful for looping scripts that need periodic execution without consuming excessive processing power.
+
+### Example:
+
+```plaintext
+print "Running"
+stop
+print "This will execute in the next tick"
+```
+
+**Explanation:** The script prints "Running", then halts at `stop`. On the next logic tick, execution resumes at the next instruction.
+
+## `wait`
+
+The `wait` instruction pauses execution for a specified number of logic ticks before continuing. This is useful for timing operations.
+
+### Syntax:
+
+```plaintext
+wait [ticks]
+```
+
+### Example:
+
+```plaintext
+print "Start"
+wait 60
+print "This prints after 60 ticks"
+```
+
+**Explanation:** The script prints "Start", then pauses for 60 logic ticks before executing the next instruction.
+
+## `jump`
+
+The `jump` instruction moves execution to a specific line in the script based on a condition. It is useful for creating loops and conditional execution.
+
+### Syntax:
+
+```plaintext
+jump [line] [condition]
+```
+
+### Example (Looping Counter):
+
+```plaintext
+set counter 0
+:loop
+print counter
+op add counter counter 1
+jump loop lessThan counter 5
+```
+
+**Explanation:** This script initializes `counter` to 0, prints it, increments it, and jumps back to the `loop` label until `counter` reaches 5.
+
+## Conclusion
+
+- Use `end` to terminate scripts immediately.
+- Use `stop` to pause execution until the next logic tick.
+- Use `wait` to introduce delays between instructions.
+- Use `jump` to control execution flow conditionally or create loops.
+
+By mastering these instructions, you can write efficient Mindustry Logic scripts for automation and control systems.

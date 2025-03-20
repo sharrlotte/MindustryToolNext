@@ -1,0 +1,170 @@
+---
+position: 2
+---
+
+# `Set`, Operations, `Lookup`, and `PackColor`
+
+Mindustry Logic (ML) is a powerful scripting system that allows for complex automation and control in the game. This guide covers fundamental ML commands, including `set`, various operations, `lookup`, and `packcolor`, with detailed explanations and examples.
+
+## Set
+
+The `set` command assigns a value to a variable.
+
+### Syntax
+
+```plaintext
+set variable value
+```
+
+- `variable`: The name of the variable to store the value.
+- `value`: The value to assign.
+
+### Example
+
+```plaintext
+set myNumber 42
+print myNumber  # Output: 42
+```
+
+This is useful for storing constants, intermediates result, or flags in logic scripts.
+
+## Operations
+
+Operations in Mindustry Logic allow for mathematical and logical computations. These operations can be classified into several types:
+
+### Arithmetic Operations
+
+```plaintext
+op add result value1 value2  # Addition
+op sub result value1 value2  # Subtraction
+op mul result value1 value2  # Multiplication
+op div result value1 value2  # Division
+op mod result value1 value2  # Modulus (remainder)
+```
+
+**Example:**
+
+```plaintext
+op sum add 10 5
+print sum  # Output: 15
+```
+
+### Comparison Operations
+
+```plaintext
+op equal result value1 value2   # Equals (==)
+op notEqual result value1 value2   # Not equals (!=)
+op lessThan result value1 value2   # Less than (<)
+op lessThanEq result value1 value2   # Less than or equal (<=)
+op greaterThan result value1 value2   # Greater than (>)
+op greaterThanEq result value1 value2   # Greater than or equal (>=)
+```
+
+**Example:**
+
+```plaintext
+op isGreater greaterThan 10 5
+print isGreater  # Output: 1 (true)
+```
+
+### Bitwise Operations
+
+```plaintext
+op bitAnd result value1 value2  # Bitwise AND
+op bitOr result value1 value2  # Bitwise OR
+op bitXor result value1 value2  # Bitwise XOR
+op bitNot result value  # Bitwise NOT
+```
+
+**Example:**
+
+```plaintext
+op andResult bitAnd 6 3
+print andResult  # Output: 2 (0110 & 0011 = 0010)
+```
+
+### Logical Operations
+
+```plaintext
+op land result value1 value2  # Logical AND
+op lor result value1 value2  # Logical OR
+op lnot result value  # Logical NOT
+```
+
+**Example:**
+
+```plaintext
+op logicResult land 1 0
+print logicResult  # Output: 0 (false)
+```
+
+## Lookup
+
+The `lookup` command retrieves information about an entity in the game. It can be used to inspect various properties of units, blocks, and items.
+
+### Syntax
+
+```plaintext
+lookup property result target
+```
+
+- `: result The variable to store the retrieved value.
+- `property`: The attribute to look up.
+- `target`: The entity or block to inspect.
+
+### Supported Properties
+
+- **General:** `id`, `type`
+- **Positioning:** `x`, `y`
+- **Health & Stats:** `health`, `maxHealth`
+- **Items & Ammo:** `ammo`, `itemCapacity`
+- **Units & Control:** `team`, `flag`, `dead`
+
+### Example
+
+```plaintext
+lookup unitHealth health @unit
+print unitHealth  # Prints the health of the current unit
+```
+
+### Example for Block Lookup
+
+```plaintext
+lookup coreItems itemCapacity @core
+print coreItems  # Prints the storage capacity of the core
+```
+
+## PackColor
+
+The `packcolor` command encodes RGB(A) values into a single integer, useful for display and color manipulation.
+
+### Syntax
+
+```plaintext
+packcolor red result green blue alpha
+```
+
+- `: result The variable to store the packed color.
+- `red`, `green`, `blue`: RGB values (0–255).
+- `alpha`: Optional transparency (0–255).
+
+### Example
+
+```plaintext
+packcolor myColor 255 0 0 255  # Red color with full opacity
+print myColor  # Outputs packed color value
+```
+
+### Example with Dynamic Color
+
+```plaintext
+set red 100
+set green 200
+set blue 50
+packcolor dynamicColor red green blue 255
+print dynamicColor
+```
+
+## Conclusion
+
+Understanding `set`, operations, `lookup`, and `packcolor` enables efficient logic scripting in Mindustry. These commands allow you to manipulate data, interact with game entities, and create visually dynamic effects.

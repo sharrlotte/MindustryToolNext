@@ -1,0 +1,124 @@
+---
+title: 'Mindustry Logic - Block Control Instructions'
+description: 'In-depth explanation of Mindustry Logic block control instructions: draw flush, print flush, get link, sensor, control, and radar.'
+position: 5
+---
+
+# Block Control Instructions
+
+Mindustry Logic provides various block control instructions that allow scripts to interact with the game world efficiently. This page covers `draw flush`, `print flush`, `get link`, `sensor`, `control`, and `radar`, explaining their purpose and providing examples.
+
+## `draw flush`
+
+The `draw flush` instruction commits all previously issued draw operations to the screen. Without this, drawing commands will not be rendered until the script stops or reaches a flush point.
+
+### Example:
+
+```plaintext
+draw color 255 0 0 255
+draw rect 10 10 50 50
+draw flush
+```
+
+**Explanation:** This script sets the draw color to red, draws a rectangle at (10,10) with a size of 50x50, and then flushes the drawing commands to render them on the display.
+
+## `print flush`
+
+The `print flush` instruction commits all `print` commands to the message display or linked terminal block.
+
+### Example:
+
+```plaintext
+print "Hello, World!"
+print flush
+```
+
+**Explanation:** The script queues "Hello, World!" and then flushes it, ensuring it is displayed on the linked display or message block.
+
+## `get link`
+
+The `get link` instruction assigns a linked block to a variable for interaction.
+
+### Syntax:
+
+```plaintext
+get link [variable] [index]
+```
+
+### Example:
+
+```plaintext
+get link core 1
+print core
+```
+
+**Explanation:** The script links the block at index 1 to the variable `core` and prints its reference.
+
+## `sensor`
+
+The `sensor` instruction retrieves data from a block or unit.
+
+### Syntax:
+
+```plaintext
+sensor [variable] [target] [property]
+```
+
+### Example:
+
+```plaintext
+sensor health core1 @health
+print health
+print flush
+```
+
+**Explanation:** The script retrieves the `health` of the block stored in `core1` and prints the value.
+
+## `control`
+
+The `control` instruction sends commands to blocks such as turrets or units.
+
+### Syntax:
+
+```plaintext
+control [block] [command] [param1] [param2] [param3]
+```
+
+### Example:
+
+```plaintext
+control turret shoot 100 100 1
+```
+
+**Explanation:** The script commands a turret to shoot at coordinates (100,100) with a shooting power of 1.
+
+## `radar`
+
+The `radar` instruction scans for enemy units based on given parameters.
+
+### Syntax:
+
+```plaintext
+radar [sort] [target] [filter] [outputVariable]
+```
+
+### Example:
+
+```plaintext
+radar closest enemy any target
+print target
+print flush
+```
+
+**Explanation:** The script scans for the closest enemy unit and stores the result in `target`, which is then printed.
+
+## Conclusion
+
+- Use `draw flush` to finalize drawing commands.
+- Use `print flush` to finalize print operations.
+- Use `get link` to interact with specific blocks.
+- Use `sensor` to retrieve block or unit data.
+- Use `control` to send commands to units or turrets.
+- Use `radar` to detect enemy units.
+
+By mastering these instructions, you can create efficient automation scripts in Mindustry Logic.

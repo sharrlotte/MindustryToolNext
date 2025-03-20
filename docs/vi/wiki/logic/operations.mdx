@@ -1,0 +1,170 @@
+---
+position: 2
+---
+
+# `Set`, `Op`, `Lookup`, và `PackColor`
+
+Mindustry Logic (ML) là một hệ thống lập trình mạnh mẽ cho phép tự động hóa và điều khiển phức tạp trong trò chơi. Hướng dẫn này sẽ trình bày chi tiết các lệnh cơ bản trong ML, bao gồm `set`, các toán tử, `lookup`, và `packcolor`, kèm theo ví dụ minh họa.
+
+## Set
+
+Lệnh `set` dùng để gán giá trị cho một biến.
+
+### Cú pháp
+
+```plaintext
+set biến giá_trị
+```
+
+- `biến`: Tên biến sẽ lưu giá trị.
+- `giá_trị`: Giá trị cần gán.
+
+### Ví dụ
+
+```plaintext
+set myNumber 42
+print myNumber  # Kết quả: 42
+```
+
+Lệnh này hữu ích để lưu trữ hằng số, kết quả trung gian hoặc cờ trạng thái trong script logic.
+
+## Toán Tử
+
+Toán tử trong Mindustry Logic cho phép thực hiện các phép toán số học và logic. Chúng được phân thành nhiều loại khác nhau:
+
+### Toán Tử Số Học
+
+```plaintext
+op add kết_quả giá_trị1 giá_trị2  # Cộng
+op sub kết_quả giá_trị1 giá_trị2  # Trừ
+op mul kết_quả giá_trị1 giá_trị2  # Nhân
+op div kết_quả giá_trị1 giá_trị2  # Chia
+op mod kết_quả giá_trị1 giá_trị2  # Chia lấy dư
+```
+
+**Ví dụ:**
+
+```plaintext
+op sum add 10 5
+print sum  # Kết quả: 15
+```
+
+### Toán Tử So Sánh
+
+```plaintext
+op equal kết_quả giá_trị1 giá_trị2   # Bằng (==)
+op notEqual kết_quả giá_trị1 giá_trị2   # Khác (!=)
+op lessThan kết_quả giá_trị1 giá_trị2   # Nhỏ hơn (<)
+op lessThanEq kết_quả giá_trị1 giá_trị2   # Nhỏ hơn hoặc bằng (<=)
+op greaterThan kết_quả giá_trị1 giá_trị2   # Lớn hơn (>)
+op greaterThanEq kết_quả giá_trị1 giá_trị2   # Lớn hơn hoặc bằng (>=)
+```
+
+**Ví dụ:**
+
+```plaintext
+op isGreater greaterThan 10 5
+print isGreater  # Kết quả: 1 (true)
+```
+
+### Toán Tử Bitwise
+
+```plaintext
+op bitAnd kết_quả giá_trị1 giá_trị2  # AND bit
+op bitOr kết_quả giá_trị1 giá_trị2  # OR bit
+op bitXor kết_quả giá_trị1 giá_trị2  # XOR bit
+op bitNot kết_quả giá_trị  # NOT bit
+```
+
+**Ví dụ:**
+
+```plaintext
+op andResult bitAnd 6 3
+print andResult  # Kết quả: 2 (0110 & 0011 = 0010)
+```
+
+### Toán Tử Logic
+
+```plaintext
+op land kết_quả giá_trị1 giá_trị2  # AND logic
+op lor kết_quả giá_trị1 giá_trị2  # OR logic
+op lnot kết_quả giá_trị  # NOT logic
+```
+
+**Ví dụ:**
+
+```plaintext
+op logicResult land 1 0
+print logicResult  # Kết quả: 0 (false)
+```
+
+## Lookup
+
+Lệnh `lookup` dùng để lấy thông tin về một thực thể trong trò chơi. Nó có thể được sử dụng để kiểm tra các thuộc tính của đơn vị, khối, và vật phẩm.
+
+### Cú pháp
+
+```plaintext
+lookup thuộc_tính kết_quả mục_tiêu
+```
+
+- `kết_quả`: Biến dùng để lưu giá trị lấy được.
+- `thuộc_tính`: Thuộc tính cần truy vấn.
+- `mục_tiêu`: Đối tượng hoặc khối cần kiểm tra.
+
+### Các Thuộc Tính Hỗ Trợ
+
+- **Chung:** `id`, `type`
+- **Vị trí:** `x`, `y`
+- **Chỉ số sinh tồn:** `health`, `maxHealth`
+- **Vật phẩm & Đạn dược:** `ammo`, `itemCapacity`
+- **Đơn vị & Điều khiển:** `team`, `flag`, `dead`
+
+### Ví dụ
+
+```plaintext
+lookup unitHealth health @unit
+print unitHealth  # In ra máu của đơn vị hiện tại
+```
+
+### Ví dụ Kiểm Tra Khối
+
+```plaintext
+lookup coreItems itemCapacity @core
+print coreItems  # In ra sức chứa vật phẩm của lõi
+```
+
+## PackColor
+
+Lệnh `packcolor` dùng để mã hóa giá trị RGB(A) thành một số nguyên duy nhất, hữu ích để hiển thị màu sắc trong trò chơi.
+
+### Cú pháp
+
+```plaintext
+packcolor đỏ kết_quả xanh_lá xanh_dương alpha
+```
+
+- `kết_quả`: Biến dùng để lưu giá trị màu.
+- `đỏ`, `xanh_lá`, `xanh_dương`: Giá trị RGB (0–255).
+- `alpha`: Độ trong suốt (0–255, tùy chọn).
+
+### Ví dụ
+
+```plaintext
+packcolor myColor 255 0 0 255  # Màu đỏ với độ trong suốt tối đa
+print myColor  # Xuất giá trị màu đã đóng gói
+```
+
+### Ví dụ với Màu Động
+
+```plaintext
+set red 100
+set green 200
+set blue 50
+packcolor dynamicColor red green blue 255
+print dynamicColor
+```
+
+## Kết Luận
+
+Hiểu rõ cách sử dụng `set`, các toán tử, `lookup`, và `packcolor` sẽ giúp bạn lập trình logic hiệu quả trong Mindustry. Những lệnh này cho phép bạn thao tác dữ liệu, tương tác với thực thể trong trò chơi và tạo hiệu ứng màu sắc trực quan.

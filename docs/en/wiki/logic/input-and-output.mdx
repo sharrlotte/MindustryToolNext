@@ -1,0 +1,100 @@
+---
+title: "Mindustry Logic - Input and Output Instructions"
+description: "In-depth explanation of Mindustry Logic input and output instructions: read, write, draw, and print."
+position: 4
+---
+
+# Input and Output Instructions
+
+Mindustry Logic provides various input and output instructions that allow scripts to read data, modify memory, draw graphics, and display text. This page covers `read`, `write`, `draw`, and `print`, explaining their purpose and providing examples.
+
+## `read`
+
+The `read` instruction retrieves a value from a memory cell.
+
+### Syntax:
+
+```plaintext
+read [variable] [memoryCell] [index]
+```
+
+### Example:
+
+```plaintext
+read data memory1 0
+print data
+print flush
+```
+
+**Explanation:** This script reads the value stored at index `0` of `memory1` and prints it.
+
+## `write`
+
+The `write` instruction stores a value in a memory cell at a specific index.
+
+### Syntax:
+
+```plaintext
+write [value] [memoryCell] [index]
+```
+
+### Example:
+
+```plaintext
+write 42 memory1 0
+read data memory1 0
+print data
+print flush
+```
+
+**Explanation:** This script stores `42` at index `0` in `memory1`, then reads and prints the value.
+
+## `draw`
+
+The `draw` instruction is used to render shapes and text onto a display.
+
+### Syntax:
+
+```plaintext
+draw [command] [param1] [param2] [param3] [param4]
+draw flush
+```
+
+### Example (Drawing a Rectangle):
+
+```plaintext
+draw color 255 0 0 255
+draw rect 10 10 50 50
+draw flush
+```
+
+**Explanation:** This script sets the draw color to red, draws a rectangle at (10,10) with a size of 50x50, and flushes the drawing commands to render them on the display.
+
+## `print`
+
+The `print` instruction outputs text to the display or console.
+
+### Syntax:
+
+```plaintext
+print [text]
+print flush
+```
+
+### Example:
+
+```plaintext
+print "Hello, World!"
+print flush
+```
+
+**Explanation:** The script prints "Hello, World!" to the console or linked display.
+
+## Conclusion
+
+- Use `read` to retrieve data from memory cells.
+- Use `write` to store data in memory cells.
+- Use `draw` to create visual elements on a display.
+- Use `print` to output text information.
+
+By mastering these instructions, you can create efficient Mindustry Logic scripts for automation and visualization.

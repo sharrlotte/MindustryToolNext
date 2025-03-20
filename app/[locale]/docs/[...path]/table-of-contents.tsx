@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
+import removeMd from 'remove-markdown';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -27,7 +28,8 @@ function extractHeadings(markdown: string): Heading[] {
 
     const level = match[1].length;
     const title = match[2].trim();
-    const heading: Heading = { level, title, children: [] };
+    const noMd = removeMd(title).trim();
+    const heading: Heading = { level, title: noMd[0].toUpperCase() + noMd.slice(1), children: [] };
 
     while (stack.length > 0 && stack[stack.length - 1].level >= level) {
       stack.pop();

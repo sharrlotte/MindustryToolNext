@@ -107,7 +107,7 @@
   }
 
   p > code {
-    @apply my-4 rounded-md border bg-background bg-opacity-60 p-2 text-foreground;
+    @apply my-4 rounded-md border bg-background bg-opacity-60 px-2 py-1 text-foreground;
   }
 
   pre {

@@ -2,6 +2,7 @@ import { NextConfig } from 'next';
 import rehypeHighlight from 'rehype-highlight';
 import frontmatter from 'remark-frontmatter';
 
+import bundleAnalyzer from '@next/bundle-analyzer';
 import createMDX from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
 
@@ -62,14 +63,13 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [[frontmatter, { type: 'ymal', marker: '-' }]],
+    remarkPlugins: [[frontmatter, { type: 'yaml', marker: '-' }]],
     rehypePlugins: [rehypeHighlight],
   },
 });
 
 const analyze = process.env.ANALYZE === 'true';
-
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+const withBundleAnalyzer = bundleAnalyzer({
   enabled: analyze,
 });
 
