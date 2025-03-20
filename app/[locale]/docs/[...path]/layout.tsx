@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import p from 'path';
 import path from 'path';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
 import DocSearchBar from '@/app/[locale]/docs/doc-search-bar';
@@ -55,7 +55,9 @@ export default async function Layout({ children, params }: { children: ReactNode
               Api
             </Link>
           </nav>
-          <LanguageSwitcher availableLanguages={availableLanguages} currentLocale={locale as Locale} />
+          <Suspense>
+            <LanguageSwitcher availableLanguages={availableLanguages} currentLocale={locale as Locale} />
+          </Suspense>
         </div>
         <DocSearchBar />
       </div>
