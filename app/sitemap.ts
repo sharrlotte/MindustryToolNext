@@ -59,17 +59,21 @@ async function postSitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 }
 
-function docsSitemap(): MetadataRoute.Sitemap {
-  const params = locales.flatMap((locale) => {
-    const docs = readDocsByLocale(locale);
+async function docsSitemap(): Promise<MetadataRoute.Sitemap> {
+  const params = (
+    await Promise.all(
+      locales.flatMap(async (locale) => {
+        const docs = await readDocsByLocale(locale);
 
-    return docs
-      .flatMap((doc) => reduceDocs([], doc))
-      .map((segments) => ({
-        path: segments,
-        locale,
-      }));
-  });
+        return docs
+          .flatMap((doc) => reduceDocs([], doc))
+          .map((segments) => ({
+            path: segments,
+            locale,
+          }));
+      }),
+    )
+  ).flatMap((v) => v);
 
   return params.map(({ locale, path }) => ({
     url: `${env.url.base}/${locale}/docs/${path.join('/')}`,
@@ -79,8 +83,7 @@ function docsSitemap(): MetadataRoute.Sitemap {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [maps, schematics, posts] = await Promise.all([mapSitemap(), schematicSitemap(), postSitemap()]);
-  const docs = docsSitemap();
+  const [maps, schematics, posts, docs] = await Promise.all([mapSitemap(), schematicSitemap(), postSitemap(), docsSitemap()]);
 
   const defaultSitemap: MetadataRoute.Sitemap = routes.map((route) => ({
     url: `${env.url.base}/en/${route}`,

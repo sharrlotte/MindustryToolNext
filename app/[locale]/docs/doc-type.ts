@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { unstable_cache } from 'next/cache';
 import p from 'path';
 import removeMd from 'remove-markdown';
 
@@ -53,15 +54,19 @@ export function extractDocHeading(content: string) {
   return removeMd(content.slice(0, index === -1 ? content.length : index));
 }
 
-export function readDocsByLocale(locale: string) {
-  const localeFolder = p.join(process.cwd(), 'docs', p.normalize(locale));
+export const readDocsByLocale = unstable_cache(
+  async (locale: string) => {
+    const localeFolder = p.join(process.cwd(), 'docs', p.normalize(locale));
 
-  if (!fs.existsSync(localeFolder)) {
-    return [];
-  }
+    if (!fs.existsSync(localeFolder)) {
+      return [];
+    }
 
-  return readDocs(localeFolder);
-}
+    return readDocs(localeFolder);
+  },
+  ['doc-by-locale'],
+  { revalidate: 3600 },
+);
 
 function readDocs(localeFolder: string): Doc[] {
   return fs
@@ -132,8 +137,8 @@ type NextPrev = {
 };
 
 // Segments include mdx file segment
-export function getNextPrevDoc(locale: string, segments: string[]) {
-  const docs = readDocsByLocale(locale);
+export async function getNextPrevDoc(locale: string, segments: string[]) {
+  const docs = await readDocsByLocale(locale);
 
   const currentSeg = segments.join('/');
   const paths = docs.flatMap((doc) => reduceDocs([], doc)).map((seg) => seg.join('/'));
