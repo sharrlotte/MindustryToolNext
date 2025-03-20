@@ -42,7 +42,7 @@ export default async function Layout({ children, params }: { children: ReactNode
         <div className="flex items-center gap-2">
           <Link className="flex gap-2 items-center text-2xl font-semibold" href="/">
             <MindustryToolIcon className="size-8" />
-            <span className="hidden lg:block">MindustryTool</span>
+            <span className="hidden lg:block text-brand">MindustryTool</span>
           </Link>
         </div>
         <div className="flex items-center gap-4">
@@ -68,8 +68,8 @@ export default async function Layout({ children, params }: { children: ReactNode
           <DocSearchBar />
         </div>
       </div>
-      <div className="grid lg:grid-cols-[20rem_auto_20rem] h-full relative overflow-hidden">
-        <div className="flex w-full border-r p-4">
+      <div className="grid lg:grid-cols-[20rem_auto] h-full relative overflow-hidden">
+        <div className="flex w-full lg:border-r p-4">
           <div className="block lg:hidden ml-auto">
             <NavBarDialog locale={locale} selectedSegments={path} />
           </div>
@@ -77,10 +77,12 @@ export default async function Layout({ children, params }: { children: ReactNode
             <NavBar locale={locale} selectedSegments={path} />
           </div>
         </div>
-        <ScrollContainer id="docs-markdown" className="px-4 gap-2">
-          <div className="overflow-hidden mx-auto max-w-[100ch] relative">{children}</div>
+        <ScrollContainer id="docs-markdown-scroll" className="px-4 gap-2 relative h-full grid lg:grid-cols-[auto_20rem]" additionalPadding="pr-4">
+          <div id="docs-markdown" className="mx-auto max-w-[100ch] relative">
+            {children}
+          </div>
+          <TableOfContents markdown={markdown} />
         </ScrollContainer>
-        <TableOfContents markdown={markdown} />
       </div>
     </div>
   );
