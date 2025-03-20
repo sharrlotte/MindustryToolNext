@@ -68,12 +68,12 @@ export default async function Layout({ children, params }: { children: ReactNode
           <DocSearchBar />
         </div>
       </div>
-      <div className="flex flex-col lg:grid lg:grid-cols-[20rem_auto] h-full relative overflow-hidden">
+      <div className="flex flex-col md:grid md:grid-cols-[20rem_auto] h-full relative overflow-hidden">
         <div className="flex w-full lg:border-r p-4">
-          <div className="block lg:hidden ml-auto">
+          <div className="block md:hidden ml-auto">
             <NavBarDialog locale={locale} selectedSegments={path} />
           </div>
-          <div className="hidden lg:flex w-full">
+          <div className="hidden md:flex w-full">
             <NavBar locale={locale} selectedSegments={path} />
           </div>
         </div>
