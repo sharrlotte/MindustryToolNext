@@ -102,7 +102,7 @@ async function NavBarDialog({ locale, selectedSegments }: NavBarProps) {
 }
 
 async function NavBar({ locale, selectedSegments }: NavBarProps) {
-  const data = await readDocsByLocale(locale);
+  const data = readDocsByLocale(locale);
 
   return (
     <ScrollContainer className="space-y-2 w-full">
@@ -184,12 +184,12 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
   );
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   const localeFolders = p.join(process.cwd(), 'docs');
   const locales = fs.readdirSync(localeFolders);
 
-  return locales.flatMap(async (locale) => {
-    const docs = await readDocsByLocale(locale);
+  return locales.flatMap((locale) => {
+    const docs = readDocsByLocale(locale);
 
     return docs
       .flatMap((doc) => reduceDocs([], doc))

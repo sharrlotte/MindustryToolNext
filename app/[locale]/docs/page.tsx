@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
 
-  const docs = await readDocsByLocale(locale);
+  const docs = readDocsByLocale(locale);
   const paths = docs.flatMap((doc) => reduceDocs([], doc)).map((seg) => seg.join('/'));
 
   if (paths.length === 0) {

@@ -22,10 +22,8 @@ export default async function Page({ params }: Props) {
     return notFound();
   }
 
-  const getNextPrev = getNextPrevDoc(locale, path);
-  const getPost = import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({ Post: result.default, metadata: result.metadata }));
-  
-  const [{ next, previous }, { Post }] = await Promise.all([getNextPrev, getPost]);
+  const { next, previous } = getNextPrevDoc(locale, path);
+  const { Post } = await import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({ Post: result.default, metadata: result.metadata }));
 
   return (
     <div className="gap-2 flex flex-col h-full">
