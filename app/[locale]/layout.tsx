@@ -43,6 +43,16 @@ const icon = localFont({
   display: 'swap',
 });
 
+const hrefLangs: Record<Locale, string> = {
+  en: 'en',
+  kr: 'ko',
+  cn: 'zh',
+  jp: 'ja',
+  ru: 'ru',
+  uk: 'uk',
+  vi: 'vi',
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
   title: 'MindustryTool',
@@ -61,7 +71,7 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: './',
-    languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}`])),
+    languages: Object.fromEntries(env.locales.map((lang) => [hrefLangs[lang], `${env.url.base}/${lang}`])),
   },
   robots: {
     index: true,

@@ -87,7 +87,7 @@ type NavBarProps = {
 async function NavBarDialog({ locale, selectedSegments }: NavBarProps) {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger title="Navbar">
         <MenuIcon className="size-6" />
       </DialogTrigger>
       <DialogContent className="p-8 h-full">
