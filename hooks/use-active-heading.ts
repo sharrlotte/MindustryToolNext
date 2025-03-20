@@ -47,5 +47,5 @@ export function useActiveHeading() {
     return () => sc.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return activeId;
+  return [activeId, setActiveId] as const;
 }

@@ -45,15 +45,17 @@ function extractHeadings(markdown: string): Heading[] {
   return headings;
 }
 export default function TableOfContents({ markdown }: { markdown: string }) {
-  const activeId = useActiveHeading();
+  const [activeId] = useActiveHeading();
   const heading = extractHeadings(markdown);
 
   return (
     <AnimatePresence>
       <ScrollContainer className="p-4 flex-col lg:flex hidden sticky top-0 h-fit">
-        <h3 className="text-lg py-0">
-          <Tran text="docs.table-of-content" asChild />
-        </h3>
+        {heading.length > 0 && (
+          <h3 className="text-lg py-0">
+            <Tran text="docs.table-of-content" asChild />
+          </h3>
+        )}
         <HeadingCard data={heading} activeId={activeId} level={0} />
       </ScrollContainer>
     </AnimatePresence>

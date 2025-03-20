@@ -24,7 +24,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h4: (props: any) => <Heading as="h4" {...props} />,
     h5: (props: any) => <Heading as="h5" {...props} />,
     h6: (props: any) => <Heading as="h6" {...props} />,
-    pre: ({ className, ...props }: any) => <pre className={cn('relative group', className)} {...props} />,
+    pre: ({ className, children, ...props }: any) => (
+      <pre className={cn('relative group', className)} {...props}>
+        {children}
+      </pre>
+    ),
     code: ({ className, children, ...props }: any) => (
       <>
         <code className={cn(className)} {...props}>

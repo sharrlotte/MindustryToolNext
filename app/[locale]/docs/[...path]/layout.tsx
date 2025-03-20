@@ -68,12 +68,12 @@ export default async function Layout({ children, params }: { children: ReactNode
           <DocSearchBar />
         </div>
       </div>
-      <div className="flex flex-col lg:grid lg:grid-cols-[20rem_auto] h-full relative overflow-hidden">
+      <div className="flex flex-col md:grid md:grid-cols-[20rem_auto] h-full relative overflow-hidden">
         <div className="flex w-full lg:border-r p-4">
-          <div className="block lg:hidden ml-auto">
+          <div className="block md:hidden ml-auto">
             <NavBarDialog locale={locale} selectedSegments={path} />
           </div>
-          <div className="hidden lg:flex w-full">
+          <div className="hidden md:flex w-full">
             <NavBar locale={locale} selectedSegments={path} />
           </div>
         </div>
@@ -114,8 +114,8 @@ async function NavBar({ locale, selectedSegments }: NavBarProps) {
   const data = readDocsByLocale(locale);
 
   return (
-    <ScrollContainer className="space-y-2 w-full">
-      <nav className="space-y-4 w-full">
+    <ScrollContainer className="w-full">
+      <nav className="space-y-6 w-full">
         {data.map((doc) => (
           <NavBarDoc locale={locale} key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={[]} level={0} />
         ))}
@@ -155,7 +155,7 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
   if (level === 0) {
     return (
       <div className="space-y-1">
-        <h2 className="text-base py-0 pl-2">{doc.title}</h2>
+        <h2 className="text-base py-0 pl-2 font-semibold">{doc.title}</h2>
         <section>
           {doc.children.map((doc) => (
             <NavBarDoc locale={locale} key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} level={level + 1} />
@@ -166,7 +166,7 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
   }
 
   return (
-    <Accordion className="space-y-2 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
+    <Accordion className="space-y-1 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
       <AccordionItem value={selectedSegments.map((segment, index) => index > currentSegments.length - 1 || segment === currentSegments[index]).every((v) => v) ? selectedSegments.join('/') : doc.segment}>
         <AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
           <span
