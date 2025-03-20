@@ -13,7 +13,7 @@ export default function SmallNavbarToggle() {
   const showSidebar = useCallback(() => setVisible(true), [setVisible]);
 
   return (
-    <Button title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
+    <Button className="text-brand-foreground" title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
       <MenuIcon />
     </Button>
   );
