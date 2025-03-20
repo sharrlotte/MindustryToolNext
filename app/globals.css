@@ -111,8 +111,9 @@
   }
 
   pre {
-    @apply my-4 min-h-[46px] rounded-md border bg-background bg-opacity-60 p-2 text-foreground;
+    @apply my-4 min-h-[46px] max-w-[90dw] overflow-hidden text-wrap rounded-md border bg-background bg-opacity-60 p-2 text-foreground;
   }
+
   .markdown-image {
     @apply my-4;
   }
