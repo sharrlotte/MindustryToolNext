@@ -106,13 +106,11 @@ function SearchCard({ translation: { key, id, value, keyGroup, isTranslated }, l
     <TableRow>
       <TableCell>
         <div className="flex items-center gap-2">
-          <div className="w-full">
+          <div className="w-full" onClick={() => setEdit(true)}>
             {isEdit ? ( //
               <Textarea className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" autoFocus defaultValue={value ?? key} onChange={handleChange} onBlur={() => setEdit(false)} />
             ) : (
-              <div onClick={() => setEdit(true)}>
-                <HighLightTranslation text={value ?? key} />
-              </div>
+              <HighLightTranslation text={value ?? key} />
             )}
             <div className="text-muted-foreground flex">
               <span>{!isTranslated && <LanguagesIcon />}</span>

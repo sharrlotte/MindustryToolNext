@@ -110,13 +110,11 @@ function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardP
         </div>
       </TableCell>
       <TableCell>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" onClick={() => setEdit(true)}>
           {isEdit ? ( //
             <Textarea className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" placeholder={value ?? key} onChange={handleChange} onBlur={() => setEdit(false)} />
           ) : (
-            <div onClick={() => setEdit(true)}>
-              <HighLightTranslation text={value ?? key} />
-            </div>
+            <HighLightTranslation text={value ?? key} />
           )}
           <TranslationStatus status={status} />
         </div>

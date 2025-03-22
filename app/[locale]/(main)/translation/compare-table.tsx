@@ -117,13 +117,11 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
         </div>
       </TableCell>
       <TableCell>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" onClick={() => setEdit(true)}>
           {isEdit ? ( //
             <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value[target] ?? key} onChange={handleChange} onBlur={() => setEdit(false)} />
           ) : (
-            <div onClick={() => setEdit(true)}>
               <HighLightTranslation text={value[target] ?? key} />
-            </div>
           )}
           <TranslationStatus status={status} />
         </div>
