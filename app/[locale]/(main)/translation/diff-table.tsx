@@ -115,7 +115,7 @@ function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardP
             <Textarea className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" placeholder={value ?? key} onChange={handleChange} onBlur={() => setEdit(false)} />
           ) : (
             <div onClick={() => setEdit(true)}>
-              <HighLightTranslation text={value} />
+              <HighLightTranslation text={value ?? key} />
             </div>
           )}
           <TranslationStatus status={status} />

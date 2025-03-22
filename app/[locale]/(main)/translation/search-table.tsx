@@ -111,7 +111,7 @@ function SearchCard({ translation: { key, id, value, keyGroup, isTranslated }, l
               <Textarea className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" autoFocus defaultValue={value ?? key} onChange={handleChange} onBlur={() => setEdit(false)} />
             ) : (
               <div onClick={() => setEdit(true)}>
-                <HighLightTranslation text={value} />
+                <HighLightTranslation text={value ?? key} />
               </div>
             )}
             <div className="text-muted-foreground flex">
