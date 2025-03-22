@@ -1,4 +1,5 @@
 import type { MDXComponents } from 'mdx/types';
+import { ReactNode } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 
@@ -6,11 +7,23 @@ import { cn } from '@/lib/utils';
 
 export const ID_REPlACE_REGEX = /[\s\\/]+/g;
 
+const idMaps: Record<string, number | undefined> = {};
+
+function toId(children: ReactNode): string {
+  if (typeof children === 'string') {
+    return children;
+  }
+
+  return children?.toString() + '';
+}
+
 const Heading = ({ as: Tag, children, ...props }: { as: any; children: React.ReactNode }) => {
-  const id = children?.toString().toLowerCase().replaceAll(ID_REPlACE_REGEX, '-');
+  const id = toId(children).toLowerCase().replaceAll(ID_REPlACE_REGEX, '-');
+  const count = idMaps[id] ?? 0;
+  idMaps[id] = count + 1;
 
   return (
-    <Tag id={id} {...props} className="scroll-mt-20">
+    <Tag id={id + '-' + count} {...props} className="scroll-mt-20">
       {children}
     </Tag>
   );
