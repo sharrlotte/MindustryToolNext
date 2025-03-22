@@ -5,11 +5,17 @@ import p from 'path';
 import path from 'path';
 import { ReactNode, Suspense } from 'react';
 
+import { MediumNavItems } from '@/app/[locale]/(main)/medium-navigation-items';
+import NavHeader from '@/app/[locale]/(main)/small-nav-header';
+import SmallNavbarCollapse from '@/app/[locale]/(main)/small-navbar-collapse';
+import SmallNavbarInsideToggle from '@/app/[locale]/(main)/small-navbar-inside-toggle';
+import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
 import DocSearchBar from '@/app/[locale]/docs/doc-search-bar';
 import { Doc, isDocExists, readDocsByLocale, reduceDocs } from '@/app/[locale]/docs/doc-type';
 import LanguageSwitcher from '@/app/[locale]/docs/language-switcher';
 import ThemeSwitcher from '@/app/[locale]/docs/theme-swicther';
+import SmallNavbarToggle from '@/app/small-navbar-toggle';
 
 import { Hidden } from '@/components/common/hidden';
 import Hydrated from '@/components/common/hydrated';
@@ -18,7 +24,9 @@ import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import Divider from '@/components/ui/divider';
 
+import { NavBarProvider } from '@/context/navbar-context';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
@@ -38,38 +46,55 @@ export default async function Layout({ children, params }: { children: ReactNode
 
   return (
     <div className="h-full relative w-full grid grid-rows-[auto_1fr] overflow-hidden bg-card">
-      <div className="flex border-b py-2 px-4 items-center overflow-hidden h-16 gap-4">
-        <div className="flex items-center gap-2">
-          <Link className="flex gap-2 items-center text-2xl font-semibold" href="/">
-            <MindustryToolIcon className="size-8" />
-            <span className="hidden lg:block text-brand">MindustryTool</span>
-          </Link>
+      <NavBarProvider>
+        <div className="flex border-b py-2 px-4 items-center overflow-hidden h-16 gap-4">
+          <div className="flex items-center gap-2">
+            <SmallNavbarToggle className="gap-1 px-0">
+              <MindustryToolIcon className="size-8" />
+              <span className="hidden lg:block text-brand text-xl">MindustryTool</span>
+            </SmallNavbarToggle>
+          </div>
+          <div className="flex items-center gap-4">
+            <nav className="items-center gap-4 hidden sm:flex">
+              <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs">
+                Docs
+              </Link>
+              <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/wiki/getting-started">
+                Wiki
+              </Link>
+              <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/api/getting-started">
+                Api
+              </Link>
+            </nav>
+            <Suspense>
+              <LanguageSwitcher availableLanguages={availableLanguages} currentLocale={locale as Locale} />
+            </Suspense>
+          </div>
+          <div className="flex items-center gap-2 ml-auto">
+            <Hydrated>
+              <ThemeSwitcher />
+            </Hydrated>
+            <DocSearchBar />
+          </div>
         </div>
-        <div className="flex items-center gap-4">
-          <nav className="items-center gap-4 hidden sm:flex">
-            <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs">
-              Docs
-            </Link>
-            <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/wiki/getting-started">
-              Wiki
-            </Link>
-            <Link className="flex gap-2 items-center text-base hover:text-brand" href="/docs/api/getting-started">
-              Api
-            </Link>
-          </nav>
-          <Suspense>
-            <LanguageSwitcher availableLanguages={availableLanguages} currentLocale={locale as Locale} />
-          </Suspense>
-        </div>
-        <div className="flex items-center gap-2 ml-auto">
-          <Hydrated>
-            <ThemeSwitcher />
-          </Hydrated>
-          <DocSearchBar />
-        </div>
-      </div>
+        <SmallNavbarCollapse>
+          <div className="flex h-full flex-col justify-between overflow-hidden p-2">
+            <div className="flex h-full flex-col overflow-hidden">
+              <span className="flex flex-col gap-2">
+                <span className="flex justify-between items-start rounded-sm p-1">
+                  <NavHeader />
+                  <SmallNavbarInsideToggle />
+                </span>
+              </span>
+              <MediumNavItems />
+            </div>
+            <Divider />
+            <UserDisplay />
+          </div>
+        </SmallNavbarCollapse>
+      </NavBarProvider>
       <div className="flex flex-col md:grid md:grid-cols-[20rem_auto] h-full relative overflow-hidden">
-        <div className="flex w-full lg:border-r p-4">
+        <div className="flex w-full md:border-r p-4">
           <div className="block md:hidden ml-auto">
             <NavBarDialog locale={locale} selectedSegments={path} />
           </div>

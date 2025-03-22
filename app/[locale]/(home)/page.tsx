@@ -9,6 +9,12 @@ import 'server-only';
 import Counter from '@/app/[locale]/(main)/counter';
 import FadeIn from '@/app/[locale]/(main)/fade-in';
 import FlyIn from '@/app/[locale]/(main)/fly-in';
+import { MediumNavItems } from '@/app/[locale]/(main)/medium-navigation-items';
+import NavHeader from '@/app/[locale]/(main)/small-nav-header';
+import SmallNavbarCollapse from '@/app/[locale]/(main)/small-navbar-collapse';
+import SmallNavbarInsideToggle from '@/app/[locale]/(main)/small-navbar-inside-toggle';
+import { UserDisplay } from '@/app/[locale]/(main)/user-display';
+import SmallNavbarToggle from '@/app/small-navbar-toggle';
 
 import LoginButton from '@/components/button/login-button';
 import ErrorScreen from '@/components/common/error-screen';
@@ -19,10 +25,12 @@ import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import ServerCard from '@/components/server/server-card';
+import Divider from '@/components/ui/divider';
 
 import { getServerApi, getSession } from '@/action/action';
 import { serverApi } from '@/action/action';
 import env from '@/constant/env';
+import { NavBarProvider } from '@/context/navbar-context';
 import type { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';
@@ -149,21 +157,40 @@ export default async function Page({ params }: Props) {
 
 async function Header({ locale }: { locale: Locale }) {
   return (
-    <header className="sticky top-0 z-50 bg-black border-b border-border">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <div className="w-10 h-10 text-brand rounded-md flex items-center justify-center">
-            <span className="font-bold text-xl">
-              <MindustryToolIcon />
-            </span>
+    <NavBarProvider>
+      <header className="sticky top-0 z-50 bg-black border-b border-border">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <div className="w-10 h-10 text-brand rounded-md flex items-center justify-center">
+              <span className="font-bold text-xl">
+                <SmallNavbarToggle>
+                  <MindustryToolIcon />
+                </SmallNavbarToggle>
+              </span>
+            </div>
+            <span className="text-xl font-bold text-brand-foreground">Mindustry Tool</span>
           </div>
-          <span className="text-xl font-bold text-brand-foreground">Mindustry Tool</span>
+          <SmallNavbarCollapse>
+            <div className="flex h-full flex-col justify-between overflow-hidden p-2">
+              <div className="flex h-full flex-col overflow-hidden">
+                <span className="flex flex-col gap-2">
+                  <span className="flex justify-between items-start rounded-sm p-1">
+                    <NavHeader />
+                    <SmallNavbarInsideToggle />
+                  </span>
+                </span>
+                <MediumNavItems />
+              </div>
+              <Divider />
+              <UserDisplay />
+            </div>
+          </SmallNavbarCollapse>
+          <Suspense>
+            <HeaderLogin locale={locale} />
+          </Suspense>
         </div>
-        <Suspense>
-          <HeaderLogin locale={locale} />
-        </Suspense>
-      </div>
-    </header>
+      </header>
+    </NavBarProvider>
   );
 }
 

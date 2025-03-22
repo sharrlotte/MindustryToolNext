@@ -1,20 +1,25 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 
 import { MenuIcon } from '@/components/common/icons';
 import { Button } from '@/components/ui/button';
 
 import { useNavBar } from '@/context/navbar-context';
+import { cn } from '@/lib/utils';
 
-export default function SmallNavbarToggle() {
+type SmallNavbarToggleProps = {
+  className?: string;
+  children?: ReactNode;
+};
+export default function SmallNavbarToggle({ className, children }: SmallNavbarToggleProps) {
   const { setVisible } = useNavBar();
 
   const showSidebar = useCallback(() => setVisible(true), [setVisible]);
 
   return (
-    <Button className="text-brand-foreground" title="Navbar" type="button" variant="link" size="icon" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
-      <MenuIcon />
+    <Button className={cn('text-brand-foreground', className)} title="Navbar" type="button" variant="link" onFocus={showSidebar} onClick={showSidebar} onMouseEnter={showSidebar}>
+      {children ?? <MenuIcon />}
     </Button>
   );
 }

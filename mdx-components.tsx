@@ -14,7 +14,7 @@ function toId(children: ReactNode): string {
     return children;
   }
 
-  return children?.toString() + '';
+  throw new Error('Invalid heading: ' + children);
 }
 
 const Heading = ({ as: Tag, children, ...props }: { as: any; children: React.ReactNode }) => {

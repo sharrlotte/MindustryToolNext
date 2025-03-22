@@ -12,22 +12,18 @@ import NavbarVisible from '@/app/navbar-visible';
 import { PathGroup } from '@/app/routes';
 
 import ErrorScreen from '@/components/common/error-screen';
-import { MindustryToolIcon } from '@/components/common/icons';
 import Divider from '@/components/ui/divider';
 
-import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
 import useRoutes from '@/hooks/use-routes';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter, isError } from '@/lib/utils';
 
 export default function MediumScreenNavigationBar() {
-  const pathGroups = useRoutes();
-
   return (
     <MediumNavbarCollapse>
       <NavHeader />
-      <MediumNavItems pathGroups={pathGroups} />
+      <MediumNavItems />
       <NavbarVisible alt={<MediumNavFooter />}>
         <UserDisplay />
       </NavbarVisible>
@@ -35,28 +31,20 @@ export default function MediumScreenNavigationBar() {
   );
 }
 
-type NavItemsProps = {
-  pathGroups: PathGroup[];
-};
-
 function NavHeader() {
   return (
     <div className="flex justify-between h-fit">
       <NavbarVisible>
-        <h1 className="text-xl font-medium flex gap-2 items-center p-0">
-          <MindustryToolIcon className="size-9" height={36} width={36} />
-          <div className="flex flex-col">
-            <span>MindustryTool</span>
-            <span className="overflow-hidden whitespace-nowrap text-xs">{env.webVersion}</span>
-          </div>
-        </h1>
+        <NavHeader />
       </NavbarVisible>
       <MediumNavbarToggle />
     </div>
   );
 }
 
-export function MediumNavItems({ pathGroups }: NavItemsProps) {
+export function MediumNavItems() {
+  const pathGroups = useRoutes();
+
   return (
     <section className="no-scrollbar space-y-2 overflow-hidden">
       {pathGroups.map((group) => (

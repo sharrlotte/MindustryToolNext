@@ -1,5 +1,3 @@
-'use client';
-
 import { ReactNode } from 'react';
 
 import MediumScreenNavigationBar from '@/app/[locale]/(main)/medium-navigation-items';
@@ -7,8 +5,6 @@ import SmallScreenNavigationBar from '@/app/[locale]/(main)/small-navigation-ite
 
 import { NavBarProvider } from '@/context/navbar-context';
 import IsSmall from '@/layout/is-small';
-
-// const PATH_PATTERN = /[a-zA-Z0-9-]+\/([a-zA-Z0-9/-]+)/;
 
 export default function NavigationBar({ children }: { children: ReactNode }) {
   return (

@@ -1,12 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
 import { ChangeLanguageDialog } from '@/app/[locale]/(main)/change-language-dialog';
 import NotificationDialog from '@/app/[locale]/(main)/notification-dialog';
 
 import { GlobIcon, SettingIcon } from '@/components/common/icons';
-import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 
@@ -37,9 +37,9 @@ const tabs: Tab = [
   {
     icon: <SettingIcon />,
     action: (
-      <InternalLink className="w-full" href="/users/@me/setting">
+      <Link className="w-full" href="/users/@me/setting">
         <Tran text="setting" />
-      </InternalLink>
+      </Link>
     ),
     filter: true,
   },
