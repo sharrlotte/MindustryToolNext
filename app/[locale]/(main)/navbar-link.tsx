@@ -1,9 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
-
-import InternalLink from '@/components/common/internal-link';
 
 import { useNavBar } from '@/context/navbar-context';
 import { cn } from '@/lib/utils';
@@ -18,7 +17,7 @@ export default function NavbarLink({ children, path, regex }: Props) {
   const currentPath = usePathname();
 
   return (
-    <InternalLink
+    <Link
       className={cn('flex h-10 items-center capitalize justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
         'bg-brand text-brand-foreground': regex.some((r) => currentPath.match(r)),
         'justify-start gap-2 py-2': visible,
@@ -29,6 +28,6 @@ export default function NavbarLink({ children, path, regex }: Props) {
       onClick={() => setVisible(false)}
     >
       {children}
-    </InternalLink>
+    </Link>
   );
 }

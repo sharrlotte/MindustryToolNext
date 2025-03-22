@@ -5,8 +5,6 @@ import Link from 'next/link';
 import React from 'react';
 
 import env from '@/constant/env';
-import useLocaleStore from '@/hooks/use-current-locale';
-import { locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
 const linkVariants = cva('flex gap-2', {
@@ -34,17 +32,6 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
   };
 
 export default function InternalLink({ className, variant, title, href, children, ...props }: InternalLinkProps) {
-  const { currentLocale } = useLocaleStore();
-
-  let stripBase = href.replace(env.url.base, '');
-  stripBase = stripBase.startsWith('/') ? stripBase.substring(1) : stripBase;
-  const parts = stripBase.split('/');
-  let hrefWithLocale = href;
-
-  if (parts.length > 0 && !locales.includes(parts[0] as any)) {
-    hrefWithLocale = env.url.base + '/' + currentLocale + '/' + stripBase;
-  }
-
   if (href.startsWith('http') && !href.startsWith(env.url.base)) {
     return (
       <a className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title} target="_blank">
@@ -54,7 +41,7 @@ export default function InternalLink({ className, variant, title, href, children
   }
 
   return (
-    <Link className={cn(linkVariants({ variant, className }))} {...props} href={hrefWithLocale} title={title}>
+    <Link className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title}>
       {children}
     </Link>
   );

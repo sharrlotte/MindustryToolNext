@@ -8,7 +8,7 @@ position: 3
 
 Mindustry Logic provides various control flow instructions that allow scripts to manage execution flow efficiently. This page covers `end`, `stop`, `wait`, and `jump`, explaining their purpose and providing examples.
 
-## `end`
+## end
 
 The `end` instruction immediately stops script execution. It is typically used to terminate the program explicitly.
 
@@ -22,7 +22,7 @@ print "This will not be executed"
 
 **Explanation:** The script prints "Start", but after `end` is executed, all further instructions are ignored.
 
-## `stop`
+## stop
 
 The `stop` instruction halts execution but allows the script to restart in the next logic tick. It is useful for looping scripts that need periodic execution without consuming excessive processing power.
 
@@ -36,7 +36,7 @@ print "This will execute in the next tick"
 
 **Explanation:** The script prints "Running", then halts at `stop`. On the next logic tick, execution resumes at the next instruction.
 
-## `wait`
+## wait
 
 The `wait` instruction pauses execution for a specified number of logic ticks before continuing. This is useful for timing operations.
 
@@ -56,7 +56,7 @@ print "This prints after 60 ticks"
 
 **Explanation:** The script prints "Start", then pauses for 60 logic ticks before executing the next instruction.
 
-## `jump`
+## jump
 
 The `jump` instruction moves execution to a specific line in the script based on a condition. It is useful for creating loops and conditional execution.
 

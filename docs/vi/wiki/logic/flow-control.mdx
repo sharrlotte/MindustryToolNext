@@ -8,7 +8,7 @@ position: 3
 
 Mindustry Logic cung cấp nhiều lệnh điều khiển luồng giúp quản lý quá trình thực thi của script một cách hiệu quả. Trang này sẽ giải thích chi tiết về `end`, `stop`, `wait`, và `jump`, kèm theo ví dụ minh họa.
 
-## `end`
+## end
 
 Lệnh `end` dừng ngay lập tức quá trình thực thi của script. Thường được sử dụng để kết thúc chương trình một cách rõ ràng.
 
@@ -22,7 +22,7 @@ print "Dòng này sẽ không được thực thi"
 
 **Giải thích:** Script in ra `"Bắt đầu"`, nhưng sau khi `end` được thực thi, tất cả các lệnh tiếp theo sẽ bị bỏ qua.
 
-## `stop`
+## stop
 
 Lệnh `stop` tạm dừng thực thi nhưng cho phép script khởi động lại ở tick logic tiếp theo. Nó hữu ích cho các script lặp lại mà không tiêu tốn quá nhiều tài nguyên xử lý.
 
@@ -36,7 +36,7 @@ print "Dòng này sẽ được thực thi ở tick tiếp theo"
 
 **Giải thích:** Script in ra `"Đang chạy"`, sau đó dừng tại `stop`. Ở tick logic tiếp theo, quá trình thực thi tiếp tục với lệnh tiếp theo.
 
-## `wait`
+## wait
 
 Lệnh `wait` tạm dừng thực thi trong một số tick logic nhất định trước khi tiếp tục. Dùng để tạo độ trễ giữa các thao tác.
 
@@ -56,7 +56,7 @@ print "Dòng này in ra sau 60 tick"
 
 **Giải thích:** Script in ra `"Bắt đầu"`, sau đó tạm dừng 60 tick logic trước khi thực thi lệnh tiếp theo.
 
-## `jump`
+## jump
 
 Lệnh `jump` chuyển quá trình thực thi đến một dòng cụ thể trong script dựa trên điều kiện. Hữu ích để tạo vòng lặp và điều kiện rẽ nhánh.
 

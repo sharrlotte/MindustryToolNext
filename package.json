@@ -115,6 +115,7 @@
         "@types/react-lazyload-youtube": "^1.0.0",
         "@types/react-window": "^1.8.8",
         "@types/react-window-infinite-loader": "^1.0.9",
+        "@types/remark-heading-id": "^1.0.0",
         "@types/throttle-debounce": "^5.0.2",
         "autoprefixer": "^10.4.20",
         "eslint": "^8.57.1",
