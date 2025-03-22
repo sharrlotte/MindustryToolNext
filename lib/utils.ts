@@ -13,6 +13,7 @@ import { Session } from '@/types/response/Session';
 import TagGroup from '@/types/response/TagGroup';
 
 import * as Sentry from '@sentry/nextjs';
+import { i18nCachePrefix } from '@/i18n/config';
 
 export function uuid() {
   return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) => (+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16));
@@ -195,6 +196,15 @@ const colours: Record<string, string> = {
   accent: 'yellow',
   '': 'var(--foreground)',
 };
+
+export function clearTranslationCache() {
+  for (let i = localStorage.length - 1; i >= 0; i--) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith(i18nCachePrefix)) {
+      localStorage.removeItem(key);
+    }
+  }
+}
 
 export function getColor(color: string) {
   return colours[color];
