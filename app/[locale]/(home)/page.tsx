@@ -163,7 +163,7 @@ async function Header({ locale }: { locale: Locale }) {
           <div className="flex items-center space-x-2">
             <div className="w-10 h-10 text-brand rounded-md flex items-center justify-center">
               <span className="font-bold text-xl">
-                <SmallNavbarToggle>
+                <SmallNavbarToggle className="px-0 py-0">
                   <MindustryToolIcon />
                 </SmallNavbarToggle>
               </span>

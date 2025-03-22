@@ -49,7 +49,7 @@ export default async function Layout({ children, params }: { children: ReactNode
       <NavBarProvider>
         <div className="flex border-b py-2 px-4 items-center overflow-hidden h-16 gap-4">
           <div className="flex items-center gap-2">
-            <SmallNavbarToggle className="gap-1 px-0">
+            <SmallNavbarToggle className="gap-1 px-0 py-0">
               <MindustryToolIcon className="size-8" />
               <span className="hidden lg:block text-brand text-xl">MindustryTool</span>
             </SmallNavbarToggle>
