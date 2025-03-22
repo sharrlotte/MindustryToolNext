@@ -88,7 +88,6 @@
         "rehype-highlight": "^7.0.2",
         "rehype-sanitize": "^6.0.0",
         "remark-frontmatter": "^5.0.0",
-        "remark-heading-id": "^1.0.1",
         "remove-markdown": "^0.5.5",
         "server-only": "^0.0.1",
         "sonner": "^1.7.1",
