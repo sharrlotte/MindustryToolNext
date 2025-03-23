@@ -5,14 +5,34 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 
 import { useNavBar } from '@/context/navbar-context';
-import { cn } from '@/lib/utils';
+import { useSession } from '@/context/session-context';
+import { Filter, cn, hasAccess } from '@/lib/utils';
 
 type Props = {
   children: React.ReactNode;
   path: string;
   regex: string[];
+  filter?: Filter;
 };
-export default function NavbarLink({ children, path, regex }: Props) {
+export default function NavbarLink({ children, path, regex, filter }: Props) {
+  const { session } = useSession();
+
+  if (filter) {
+    return hasAccess(session, filter) ? (
+      <NavbarLinkInternal path={path} regex={regex} filter={filter}>
+        {children}
+      </NavbarLinkInternal>
+    ) : undefined;
+  }
+
+  return (
+    <NavbarLinkInternal path={path} regex={regex} filter={filter}>
+      {children}
+    </NavbarLinkInternal>
+  );
+}
+
+function NavbarLinkInternal({ children, path, regex }: Props) {
   const { visible, setVisible } = useNavBar();
   const currentPath = usePathname();
 
