@@ -18,7 +18,6 @@ import { Textarea } from '@/components/ui/textarea';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { Locale } from '@/i18n/config';
-import { clearTranslationCache } from '@/lib/utils';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import { CreateTranslationRequest, createTranslation, getTranslationCompare, getTranslationCompareCount } from '@/query/translation';
 import { TranslationCompare } from '@/types/response/Translation';
@@ -82,14 +81,9 @@ type CompareCardProps = {
 function CompareCard({ translation: { key, id, value, keyGroup }, language, target }: CompareCardProps) {
   const [isEdit, setEdit] = useState(false);
   const axios = useClientApi();
-  const { invalidateByKey } = useQueriesData();
   const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
     onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
-    onSettled: () => {
-      invalidateByKey(['translations']);
-      clearTranslationCache();
-    },
   });
 
   const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -121,7 +115,7 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
           {isEdit ? ( //
             <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value[target] ?? key} onChange={handleChange} onBlur={() => setEdit(false)} />
           ) : (
-              <HighLightTranslation text={value[target] ?? key} />
+            <HighLightTranslation text={value[target] ?? key} />
           )}
           <TranslationStatus status={status} />
         </div>
