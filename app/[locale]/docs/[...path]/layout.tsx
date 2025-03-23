@@ -147,7 +147,7 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
     return (
       <InternalLink
         href={`/${locale}/docs/${path.join(...currentSegments)}`}
-        className={cn('text-base py-1 rounded-md hover:bg-secondary text-secondary-foreground hover:text-foreground', {
+        className={cn('text-base py-2 rounded-md hover:bg-secondary text-secondary-foreground hover:text-foreground', {
           'text-foreground bg-secondary': currentSegments.map((segment, index) => segment === selectedSegments[index]).every((v) => v),
         })}
       >
@@ -199,7 +199,7 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
             {doc.title}
           </span>
         </AccordionTrigger>
-        <AccordionContent className="space-y-1">
+        <AccordionContent className="space-y-1 mt-1">
           {doc.children.map((doc) => (
             <NavBarDoc locale={locale} key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} level={level + 1} />
           ))}
