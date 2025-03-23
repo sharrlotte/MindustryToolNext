@@ -6,6 +6,7 @@ import React, { ReactNode } from 'react';
 import { ChangeLanguageDialog } from '@/app/[locale]/(main)/change-language-dialog';
 import NotificationDialog from '@/app/[locale]/(main)/notification-dialog';
 
+import Hydrated from '@/components/common/hydrated';
 import { GlobIcon, SettingIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
@@ -27,7 +28,11 @@ const tabs: Tab = [
   },
   {
     icon: <GlobIcon />,
-    action: <ChangeLanguageDialog />,
+    action: (
+      <Hydrated>
+        <ChangeLanguageDialog />
+      </Hydrated>
+    ),
   },
   {
     icon: undefined,
