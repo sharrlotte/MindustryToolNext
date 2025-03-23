@@ -138,7 +138,7 @@ export default async function Page({ params }: Props) {
               {status === 'HOST' && <Image key={status} className="flex p-4 max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/servers/${id}/image`} alt={name} width={500} height={500} />}
             </div>
             <ProtectedElement session={session} filter={showPlayer}>
-              <div className="flex min-w-40 flex-col gap-1 bg-card rounded-md shadow-lg">
+              <div className="flex min-w-40 flex-col gap-1">
                 <div className="flex flex-col gap-2">
                   <h3 className="p-4 text-xl">
                     <Tran text="server.players" /> {players}
