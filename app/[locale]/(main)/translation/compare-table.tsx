@@ -77,7 +77,9 @@ type CompareCardProps = {
   target: Locale;
 };
 
-function CompareCard({ translation: { key, id, value, keyGroup }, language, target }: CompareCardProps) {
+function CompareCard({ translation, language, target }: CompareCardProps) {
+  const { key, id, value, keyGroup } = translation;
+
   const [isEdit, setEdit] = useState(false);
   const axios = useClientApi();
   const { mutate, status } = useMutation({
@@ -86,12 +88,17 @@ function CompareCard({ translation: { key, id, value, keyGroup }, language, targ
   });
 
   const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    mutate({
-      key,
-      keyGroup,
-      language: target,
-      value: event.target.value,
-    });
+    mutate(
+      {
+        key,
+        keyGroup,
+        language: target,
+        value: event.target.value,
+      },
+      {
+        onSuccess: () => (translation.value[language] = event.target.value),
+      },
+    );
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChange = useCallback(

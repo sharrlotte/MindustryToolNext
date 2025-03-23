@@ -70,7 +70,9 @@ type SearchCardProps = {
   language: Locale;
 };
 
-function SearchCard({ translation: { key, id, value, keyGroup, isTranslated, language: translationLanguage } }: SearchCardProps) {
+function SearchCard({ translation }: SearchCardProps) {
+  const { key, id, value, keyGroup, isTranslated, language: translationLanguage } = translation;
+
   const axios = useClientApi();
   const [isEdit, setEdit] = useState(false);
   const { mutate, status } = useMutation({
@@ -79,12 +81,17 @@ function SearchCard({ translation: { key, id, value, keyGroup, isTranslated, lan
   });
 
   const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    mutate({
-      key,
-      keyGroup,
-      language: translationLanguage,
-      value: event.target.value,
-    });
+    mutate(
+      {
+        key,
+        keyGroup,
+        language: translationLanguage,
+        value: event.target.value,
+      },
+      {
+        onSuccess: () => (translation.value = event.target.value),
+      },
+    );
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChange = useCallback(

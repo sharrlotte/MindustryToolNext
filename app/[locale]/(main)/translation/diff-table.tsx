@@ -70,7 +70,8 @@ type DiffCardProps = {
   language: Locale;
 };
 
-function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardProps) {
+function DiffCard({ translation, language }: DiffCardProps) {
+  const { key, value, keyGroup } = translation;
   const axios = useClientApi();
   const [isEdit, setEdit] = useState(false);
   const { mutate, status } = useMutation({
@@ -79,12 +80,17 @@ function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardP
   });
 
   const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    mutate({
-      key,
-      keyGroup,
-      language,
-      value: event.target.value,
-    });
+    mutate(
+      {
+        key,
+        keyGroup,
+        language,
+        value: event.target.value,
+      },
+      {
+        onSuccess: () => (translation.value = event.target.value),
+      },
+    );
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChange = useCallback(
