@@ -127,7 +127,7 @@ export default async function Page({ params }: Props) {
               </div>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2 bg-card rounded-md">
+          <div className="flex flex-wrap gap-2 bg-card rounded-md justify-between">
             <div className="flex h-full flex-col items-start justify-start gap-1 p-4 shadow-lg">
               <div className="flex h-full flex-col items-start justify-start gap-1">
                 <h3 className="text-xl">
