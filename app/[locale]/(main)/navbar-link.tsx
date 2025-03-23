@@ -45,7 +45,7 @@ function NavbarLinkInternal({ children, path, regex }: Props) {
       })}
       href={path}
       aria-label={path}
-      onClick={() => setVisible(false)}
+      onClick={() => setTimeout(() => setVisible(false), 100)}
     >
       {children}
     </Link>
