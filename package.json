@@ -72,6 +72,7 @@
         "lucide-react": "^0.292.0",
         "next": "15.3.0-canary.19",
         "next-themes": "^0.2.1",
+        "ogl": "^1.0.11",
         "partysocket": "^1.0.3",
         "react": "19.0.0",
         "react-chartjs-2": "^5.2.0",
