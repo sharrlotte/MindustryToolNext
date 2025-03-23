@@ -33,7 +33,7 @@ const defaultState: {
   language: 'en',
   mode: 'search',
   key: '',
-  isTranslated: false,
+  isTranslated: null,
 };
 
 export default function TranslationPage() {
