@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { Suspense } from 'react';
+import React, { Suspense, cache } from 'react';
 import 'server-only';
 
 import Counter from '@/app/[locale]/(main)/counter';
@@ -369,9 +369,12 @@ async function Statistic({ locale }: { locale: Locale }) {
   );
 }
 
+const getCachedSchematicCount = cache(unstable_cache((axios) => getSchematicCount(axios, {})));
+const getCachedMapCount = cache(unstable_cache((axios) => getMapCount(axios, {})));
+
 async function StatisticSection({ locale }: { locale: Locale }) {
   const axios = await getServerApi();
-  const [schematics, maps] = await Promise.all([getSchematicCount(axios, {}), getMapCount(axios, {})]);
+  const [schematics, maps] = await Promise.all([getCachedSchematicCount(axios), getCachedMapCount(axios)]);
 
   return (
     <FlyIn className="grid grid-cols-1 md:grid-cols-3 gap-8 h-[300px]">
@@ -402,21 +405,19 @@ async function LoginAction({ locale }: { locale: Locale }) {
   }
 
   return (
-    <section>
-      <div className="mx-auto">
-        <h2 className="text-3xl text-center font-bold text-card-foreground">
-          <T locale={locale} text="home.ready-to-start" asChild />
-        </h2>
-        <p className="text-center mb-4">
-          <T locale={locale} text="home.register-and-join" asChild />
-        </p>
-        <div className="flex flex-col md:flex-row justify-center gap-4">
-          <a className=" rounded-md bg-[rgb(88,101,242)] p-2 transition-colors hover:bg-[rgb(76,87,214)]" href={`${env.url.api}/oauth2/discord`}>
-            <div className="flex items-center justify-center gap-1">
-              <DiscordIcon /> <T locale={locale} text="home.login-with-discord" />
-            </div>
-          </a>
-        </div>
+    <section className="mx-auto p-4">
+      <h2 className="text-3xl text-center font-bold text-card-foreground">
+        <T locale={locale} text="home.ready-to-start" asChild />
+      </h2>
+      <p className="text-center mb-4">
+        <T locale={locale} text="home.register-and-join" asChild />
+      </p>
+      <div className="flex flex-col md:flex-row justify-center gap-4">
+        <a className=" rounded-md bg-[rgb(88,101,242)] p-2 transition-colors hover:bg-[rgb(76,87,214)]" href={`${env.url.api}/oauth2/discord`}>
+          <div className="flex items-center justify-center gap-1">
+            <DiscordIcon /> <T locale={locale} text="home.login-with-discord" />
+          </div>
+        </a>
       </div>
     </section>
   );
