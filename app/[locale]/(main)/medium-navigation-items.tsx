@@ -78,7 +78,6 @@ export function PathGroupElement({ group }: PathGroupElementProps) {
 
   return (
     <nav className="space-y-1 uppercase" key={key}>
-      <NavbarVisible>{name}</NavbarVisible>
       {name && <Divider />}
       {paths.map((p) => {
         const { path, ...rest } = p;
