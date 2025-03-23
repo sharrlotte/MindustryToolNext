@@ -45,6 +45,8 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   const axios = useClientApi();
   const [file, setFile] = useState<File>();
@@ -237,7 +239,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
             )}
           />
         </ScrollContainer>
-        <div className="mt-auto flex justify-end gap-2 p-2">
+        <div className="mt-auto flex justify-end space-x-2 gap-2 p-2">
           <Button variant="outline" onClick={() => setPreview(undefined)}>
             <Tran text="close" />
           </Button>
