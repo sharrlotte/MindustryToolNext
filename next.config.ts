@@ -13,9 +13,8 @@ const nextConfig: NextConfig = {
     staleTimes: {
       static: 600,
     },
-    optimizePackageImports: ['lucide-react'],
   },
-  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  pageExtensions: ['md', 'mdx', 'ts', 'tsx'],
   logging: {
     fetches: {
       fullUrl: true,

@@ -2,10 +2,7 @@
 
 import React, { ReactNode, useCallback } from 'react';
 
-import OutsideWrapper from '@/components/common/outside-wrapper';
-
 import { useNavBar } from '@/context/navbar-context';
-import IsSmall from '@/layout/is-small';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -34,13 +31,7 @@ export default function SmallNavbarCollapse({ children }: Props) {
             onMouseLeave={hideSidebar} //
             onMouseEnter={showSidebar}
           >
-            <IsSmall
-              small={
-                <OutsideWrapper className="h-full w-full overflow-hidden" onClickOutside={hideSidebar}>
-                  {children}
-                </OutsideWrapper>
-              }
-            />
+            {children}
           </div>
         </div>
       </div>

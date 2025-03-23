@@ -14,7 +14,7 @@ export default function ThemeSwitcher() {
     <div className="flex items-center border rounded-lg h-9 overflow-hidden">
       <Button
         className={cn('size-9 overflow-hidden', {
-          'bg-secondary': theme === 'light',
+          'bg-secondary/50 backdrop-blur-sm': theme === 'light',
         })}
         onClick={() => setTheme('light')}
         variant="ghost"
@@ -24,7 +24,7 @@ export default function ThemeSwitcher() {
       </Button>
       <Button
         className={cn('size-9 overflow-hidden', {
-          'bg-secondary': theme === 'dark',
+          'bg-secondary/50 backdrop-blur-sm': theme === 'dark',
         })}
         onClick={() => setTheme('dark')}
         variant="ghost"
