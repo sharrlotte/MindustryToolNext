@@ -1,8 +1,7 @@
-'use client';
-
 import React from 'react';
 
 import { MediumNavItems } from '@/app/[locale]/(main)/medium-navigation-items';
+import NavHeader from '@/app/[locale]/(main)/small-nav-header';
 import SmallNavbarCollapse from '@/app/[locale]/(main)/small-navbar-collapse';
 import SmallNavbarInsideToggle from '@/app/[locale]/(main)/small-navbar-inside-toggle';
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
@@ -11,11 +10,9 @@ import SmallNavbarToggle from '@/app/small-navbar-toggle';
 
 import Divider from '@/components/ui/divider';
 
-import NavHeader from '@/app/[locale]/(main)/small-nav-header';
-
 export default function SmallScreenNavigationBar() {
   return (
-    <nav className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg">
+    <nav className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg sm:hidden">
       <SmallNavbarToggle />
       <SmallNavbarCollapse>
         <div className="flex h-full flex-col justify-between overflow-hidden p-2">
@@ -36,4 +33,3 @@ export default function SmallScreenNavigationBar() {
     </nav>
   );
 }
-
