@@ -1,10 +1,10 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { useEffect } from 'react';
 
 import Tran from '@/components/common/tran';
-import BackButton from '@/components/ui/back-button';
 import { Button } from '@/components/ui/button';
 
 import useClientApi from '@/hooks/use-client';
@@ -28,7 +28,7 @@ export default function ErrorScreen({ error }: { error: TError }) {
     reportError(axios, `${path} > ${loggedMessage}`);
   }, [axios, message, path, loggedMessage]);
 
-  if (typeof error === 'object' && 'error' in error && 'status' in error.error && error.error.status === 404) return <NotFound />;
+  if (typeof error === 'object' && 'error' in error && 'status' in error.error && error.error.status === 404) return notFound();
 
   return (
     <div className="error col-span-full flex h-full w-full flex-col items-center justify-center gap-2 bg-background p-2">
@@ -41,20 +41,6 @@ export default function ErrorScreen({ error }: { error: TError }) {
           <Tran text="refresh" />
         </Button>
       </div>
-    </div>
-  );
-}
-
-function NotFound() {
-  return (
-    <div className="col-span-full flex h-full w-full flex-col items-center justify-center gap-2 bg-background p-2">
-      <h2 className="text-base font-bold">
-        <Tran text="not-found" />
-      </h2>
-      <p>
-        <Tran text="not-found-description" />
-      </p>
-      <BackButton />
     </div>
   );
 }
