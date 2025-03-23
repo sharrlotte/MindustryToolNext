@@ -18,6 +18,7 @@ import SmallNavbarToggle from '@/app/small-navbar-toggle';
 
 import LoginButton from '@/components/button/login-button';
 import ErrorScreen from '@/components/common/error-screen';
+import Hydrated from '@/components/common/hydrated';
 import { DiscordIcon, MindustryToolIcon, SchematicIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
@@ -182,7 +183,9 @@ async function Header({ locale }: { locale: Locale }) {
                 <MediumNavItems />
               </div>
               <Divider />
-              <UserDisplay />
+              <Hydrated>
+                <UserDisplay />
+              </Hydrated>
             </div>
           </SmallNavbarCollapse>
           <Suspense>

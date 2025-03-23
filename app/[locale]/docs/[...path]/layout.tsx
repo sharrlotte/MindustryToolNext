@@ -89,7 +89,9 @@ export default async function Layout({ children, params }: { children: ReactNode
               <MediumNavItems />
             </div>
             <Divider />
-            <UserDisplay />
+            <Hydrated>
+              <UserDisplay />
+            </Hydrated>
           </div>
         </SmallNavbarCollapse>
       </NavBarProvider>
