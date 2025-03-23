@@ -44,7 +44,7 @@ function HeadingCard({ data, level }: { data: Heading[]; level: number }) {
             >
               {heading.title}
             </div>
-            <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
+            <div className="absolute left-0 border-l top-0 bottom-0"></div>
             {activeId && activeId === heading.id && <Anchor />}
           </Link>
         ) : (
@@ -68,7 +68,7 @@ function HeadingCard({ data, level }: { data: Heading[]; level: number }) {
                 >
                   {heading.title}
                   {activeId && activeId === heading.id && <Anchor />}
-                  <div className="absolute left-0 border-l-2 top-0 bottom-0"></div>
+                  <div className="absolute left-0 border-l top-0 bottom-0"></div>
                 </div>
               </Link>
             </div>
@@ -85,5 +85,5 @@ function HeadingCard({ data, level }: { data: Heading[]; level: number }) {
 }
 
 function Anchor() {
-  return <motion.div className="absolute left-0 border-l-2 top-0 bottom-0 border-brand z-50" layout layoutId="anchor" />;
+  return <motion.div className="absolute left-0 border-l top-0 bottom-0 border-brand z-50" layout layoutId="anchor" />;
 }

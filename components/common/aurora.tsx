@@ -1,5 +1,9 @@
+'use client';
+
 import { Color, Mesh, Program, Renderer, Triangle } from 'ogl';
 import { useEffect, useRef } from 'react';
+
+import { cn } from '@/lib/utils';
 
 const VERT = `#version 300 es
 in vec2 position;
@@ -113,6 +117,7 @@ interface AuroraProps {
   blend?: number;
   time?: number;
   speed?: number;
+  className?: string;
 }
 
 export default function Aurora(props: AuroraProps) {
@@ -136,8 +141,9 @@ export default function Aurora(props: AuroraProps) {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.canvas.style.backgroundColor = 'transparent';
+    gl.canvas.className = 'w-full h-full';
 
-    let program: Program | undefined;
+    let program: Program | undefined = undefined;
 
     function resize() {
       if (!ctn) return;
@@ -204,8 +210,8 @@ export default function Aurora(props: AuroraProps) {
       }
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amplitude]);
 
-  return <div ref={ctnDom} className="w-full h-full" />;
+  return <div ref={ctnDom} className={cn('w-full h-full', props.className)} />;
 }

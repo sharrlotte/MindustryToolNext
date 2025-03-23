@@ -33,8 +33,8 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <div className="max-w-[80ch] px-4 mb-4">
-    <main id="docs-markdown">
+      <div className="max-w-[80ch] px-4 mb-4 mx-auto">
+        <main id="docs-markdown">
           <Post />
         </main>
         {(previous || next) && <Divider className="mt-6" />}

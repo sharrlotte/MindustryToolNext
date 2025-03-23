@@ -15,6 +15,7 @@ import LanguageSwitcher from '@/app/[locale]/docs/language-switcher';
 import ThemeSwitcher from '@/app/[locale]/docs/theme-swicther';
 import SmallNavbarToggle from '@/app/small-navbar-toggle';
 
+import Aurora from '@/components/common/aurora';
 import { Hidden } from '@/components/common/hidden';
 import Hydrated from '@/components/common/hydrated';
 import { MenuIcon, MindustryToolIcon } from '@/components/common/icons';
@@ -35,14 +36,17 @@ export default async function Layout({ children, params }: { children: ReactNode
   const availableLanguages = locales.filter((locale) => isDocExists(locale, path));
 
   return (
-    <div className="h-full relative w-full grid grid-rows-[auto_1fr] overflow-hidden bg-card">
+    <div className="h-full relative w-full grid grid-rows-[auto_1fr] overflow-hidden">
       <NavBarProvider>
-        <div className="flex border-b py-2 px-4 items-center overflow-hidden h-16 gap-4">
+        <div className="flex border-b py-2 px-4 items-center overflow-hidden h-16 gap-4 relative bg-card dark:bg-transparent">
+          <Aurora className="absolute inset-0 -z-10 hidden dark:flex" colorStops={['#3A29FF', '#FF94B4', '#FF3232']} blend={0.5} amplitude={1.0} speed={0.5} />
           <div className="flex items-center gap-2">
             <SmallNavbarToggle className="gap-1 px-0 py-0">
               <MindustryToolIcon className="size-8" />
             </SmallNavbarToggle>
-            <span className="hidden lg:block text-brand text-xl">MindustryTool</span>
+            <span className="hidden lg:block text-xl">
+              <strong>M</strong>industry<strong>T</strong>ool
+            </span>
           </div>
           <div className="flex items-center gap-4">
             <nav className="items-center gap-4 hidden sm:flex">
@@ -85,15 +89,15 @@ export default async function Layout({ children, params }: { children: ReactNode
           </div>
         </SmallNavbarCollapse>
       </NavBarProvider>
-      <ScrollContainer id="markdown-scroll-container" className="gap-2 flex-col md:flex-row relative h-full flex" additionalPadding="pr-4">
-        <div className="block md:hidden ml-auto mt-4">
+      <ScrollContainer id="markdown-scroll-container" className="gap-2 flex-col md:grid md:grid-cols-[1fr_auto_1fr] relative h-full flex bg-card dark:bg-background md:justify-center" additionalPadding="pr-4">
+        <aside className="block md:hidden ml-auto mt-4">
           <NavBarDialog locale={locale} selectedSegments={path} />
-        </div>
-        <div className="hidden md:flex w-full p-4 sticky top-0 h-fit">
-          <ScrollContainer>
+        </aside>
+        <aside className="hidden md:flex w-full h-full sm:border-r bg-card max-w-[25rem] min-w-[20rem]">
+          <ScrollContainer className="max-w-[20rem] p-4 ml-auto sticky top-0 h-fit">
             <NavBar locale={locale} selectedSegments={path} />
           </ScrollContainer>
-        </div>
+        </aside>
         {children}
       </ScrollContainer>
     </div>
