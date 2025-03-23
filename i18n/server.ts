@@ -11,7 +11,7 @@ import env from '@/constant/env';
 import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
 
-const getTranslationFn = unstable_cache(async (url: string) => await axiosInstance.get(url).then((res) => res.data), ['server-translations'], { revalidate: 3600, tags: ['server-translations'] });
+const getTranslationFn = cache(unstable_cache(async (url: string) => await axiosInstance.get(url).then((res) => res.data), ['server-translations'], { revalidate: 3600, tags: ['server-translations'] }));
 
 export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
   const options: InitOptions<ChainedBackendOptions> = {

@@ -1,10 +1,9 @@
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import React, { Suspense } from 'react';
 
 import { CommunityServer } from '@/app/[locale]/(main)/servers/community-server';
 import CreateServerDialog from '@/app/[locale]/(main)/servers/create-server-dialog';
-import { MeServer } from '@/app/[locale]/(main)/servers/my-server';
-import { OfficialServer } from '@/app/[locale]/(main)/servers/official-server';
 
 import InternalLink from '@/components/common/internal-link';
 import RequireLogin from '@/components/common/require-login';
@@ -19,6 +18,9 @@ import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ProtectedElement from '@/layout/protected-element';
 import { formatTitle, hasAccess } from '@/lib/utils';
+
+const MeServer = dynamic(() => import('@/app/[locale]/(main)/servers/my-server'));
+const OfficialServer = dynamic(() => import('@/app/[locale]/(main)/servers/official-server'));
 
 export const experimental_ppr = true;
 

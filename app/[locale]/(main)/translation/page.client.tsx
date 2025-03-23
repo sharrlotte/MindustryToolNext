@@ -25,7 +25,7 @@ type TranslateMode = (typeof translateModes)[number];
 const defaultState: {
   isTranslated: boolean | null;
   target: Locale;
-  language: Locale;
+  language: Locale | undefined;
   mode: TranslateMode;
   key: string;
 } = {
@@ -72,22 +72,23 @@ export default function TranslationPage() {
             />
           )}
           {mode === 'search' ? (
-            <ComboBox<Locale>
+            <ComboBox<Locale | undefined>
               className="h-10"
               searchBar={false}
-              value={{ label: t(language), value: language as Locale }}
-              values={locales.map((locale) => ({
+              value={{ label: t(language ?? 'none'), value: language }}
+              values={[...locales].map((locale) => ({
                 label: t(locale),
                 value: locale,
               }))}
-              onChange={(language) => setState({ language: language ?? 'en' })}
+              nullable
+              onChange={(language) => setState({ language })}
             />
           ) : (
             <>
               <ComboBox<Locale>
                 className="h-10"
                 searchBar={false}
-                value={{ label: t(language), value: language as Locale }}
+                value={{ label: t(language ?? 'en'), value: language ?? ('en' as Locale) }}
                 values={locales.map((locale) => ({
                   label: t(locale),
                   value: locale,

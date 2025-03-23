@@ -37,10 +37,7 @@ export default function SearchTable({ language, tKey: key, isTranslated }: Searc
       <Table className="table-fixed">
         <TableHeader>
           <TableRow>
-            <TableHead>
-              <Tran text={language} />
-            </TableHead>
-
+            <TableHead>{language && <Tran text={language} />}</TableHead>
             <TableHead className="w-20"></TableHead>
           </TableRow>
         </TableHeader>
@@ -61,7 +58,7 @@ export default function SearchTable({ language, tKey: key, isTranslated }: Searc
           </GridPaginationList>
         </TableBody>
       </Table>
-      <div className="mt-auto flex justify-end">
+      <div className="mt-auto flex justify-end space-x-2">
         <PaginationNavigator numberOfItems={(axios) => getTranslationSearchCount(axios, { language, key: key, isTranslated })} queryKey={['translations', 'search', 'total', language, key, isTranslated]} />
       </div>
     </Fragment>
@@ -73,7 +70,7 @@ type SearchCardProps = {
   language: Locale;
 };
 
-function SearchCard({ translation: { key, id, value, keyGroup, isTranslated }, language }: SearchCardProps) {
+function SearchCard({ translation: { key, id, value, keyGroup, isTranslated, language: translationLanguage }, language }: SearchCardProps) {
   const axios = useClientApi();
   const [isEdit, setEdit] = useState(false);
   const { mutate, status } = useMutation({
@@ -105,8 +102,9 @@ function SearchCard({ translation: { key, id, value, keyGroup, isTranslated }, l
             ) : (
               <HighLightTranslation text={value ?? key} />
             )}
-            <div className="text-muted-foreground flex">
+            <div className="text-muted-foreground text-xs flex items-center gap-2">
               <span>{!isTranslated && <LanguagesIcon />}</span>
+              <Tran className="text-nowrap" text={translationLanguage} />
               {keyGroup}.{key}
             </div>
           </div>

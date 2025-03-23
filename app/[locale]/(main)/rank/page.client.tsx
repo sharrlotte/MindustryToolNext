@@ -156,7 +156,7 @@ function MyRankCard() {
 
 export function RankPaginationNavigator() {
   return (
-    <div className="mt-auto flex justify-end">
+    <div className="mt-auto flex justify-end space-x-2">
       <GridLayout>
         <PaginationNavigator numberOfItems={(axios) => getUsersCount(axios)} queryKey={['rank', 'total']} />
       </GridLayout>

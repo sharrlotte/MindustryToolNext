@@ -89,11 +89,11 @@ export default function MessageList({ className, queryKey, params, loader, noRes
     };
 
     if (container.current) {
-      if (container.current.scrollTop <= threshold) {
+      if (container.current.scrollTop <= 500) {
         handleEndReach();
       }
     }
-  }, [fetchNextPage, hasNextPage, isFetching, threshold]);
+  }, [fetchNextPage, hasNextPage, isFetching]);
 
   useEffect(() => {
     if (container.current && isEndReached) {
@@ -176,7 +176,7 @@ export default function MessageList({ className, queryKey, params, loader, noRes
 
   if (state !== 'connected' || !data) {
     return undefined;
-  } 
+  }
 
   if (pages.length === 0) {
     return noResult;

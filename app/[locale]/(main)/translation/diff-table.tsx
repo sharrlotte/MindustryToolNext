@@ -58,7 +58,7 @@ export default function DiffTable({ language, target, tKey: key }: DiffTableProp
           </GridPaginationList>
         </TableBody>
       </Table>
-      <div className="mt-auto flex justify-end">
+      <div className="mt-auto flex justify-end space-x-2">
         <PaginationNavigator numberOfItems={(axios) => getTranslationDiffCount(axios, { language, target, key: key })} queryKey={['translations', 'diff', 'total', language, target, key]} />
       </div>
     </Fragment>

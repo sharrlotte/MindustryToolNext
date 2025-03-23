@@ -5,7 +5,7 @@ import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getServers } from '@/query/server';
 
-export async function OfficialServer({ valid }: { valid: boolean }) {
+export default async function OfficialServer({ valid }: { valid: boolean }) {
   const servers = await serverApi((axios) => getServers(axios, { valid, official: true, page: 0, size: 50 }));
 
   if (isError(servers)) {

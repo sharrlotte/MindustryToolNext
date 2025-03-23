@@ -64,7 +64,7 @@ export default function CompareTable({ language, target, tKey: key }: CompareTab
           </GridPaginationList>
         </TableBody>
       </Table>
-      <div className="mt-auto flex justify-end">
+      <div className="mt-auto flex justify-end space-x-2">
         <PaginationNavigator numberOfItems={(axios) => getTranslationCompareCount(axios, { language, target, key: key })} queryKey={['translations', 'compare', 'total', language, target, key]} />
       </div>
     </Fragment>

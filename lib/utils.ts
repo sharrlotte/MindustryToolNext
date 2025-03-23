@@ -6,6 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import { ApiError } from '@/action/action';
 import { AuthorityEnum, UserRole } from '@/constant/enum';
 import env from '@/constant/env';
+import { i18nCachePrefix } from '@/i18n/config';
 import { reportError } from '@/query/api';
 import axiosInstance from '@/query/config/config';
 import { ChartData, Metric } from '@/types/response/Metric';
@@ -13,7 +14,6 @@ import { Session } from '@/types/response/Session';
 import TagGroup from '@/types/response/TagGroup';
 
 import * as Sentry from '@sentry/nextjs';
-import { i18nCachePrefix } from '@/i18n/config';
 
 export function uuid() {
   return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) => (+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16));
@@ -545,7 +545,7 @@ export function formatTitle(title: string) {
 
 export function extractTranslationKey(text: string) {
   if (!text) {
-    throw new Error('Bad key');
+    throw new Error('Bad key: key is empty');
   }
 
   text = text.toLowerCase();
@@ -553,7 +553,7 @@ export function extractTranslationKey(text: string) {
   const parts = text.split('.');
 
   if (parts.length === 0) {
-    throw new Error('Bad key');
+    throw new Error('Bad key: ' + text);
   }
 
   const group = (parts.length === 1 ? 'common' : parts[0]).toLowerCase();

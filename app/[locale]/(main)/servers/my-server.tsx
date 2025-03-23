@@ -5,7 +5,7 @@ import { serverApi } from '@/action/action';
 import { isError } from '@/lib/utils';
 import { getMeServers } from '@/query/user';
 
-export async function MeServer() {
+export default async function MeServer() {
   const servers = await serverApi((axios) => getMeServers(axios));
 
   if (isError(servers)) {
