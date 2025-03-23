@@ -545,9 +545,7 @@ export function formatTitle(title: string) {
 
 export function extractTranslationKey(text: string) {
   if (!text) {
-    console.error('Bad key: key is empty');
-
-    return 'Empty key';
+    throw new Error('Bad key: key is empty');
   }
 
   text = text.toLowerCase();
@@ -555,8 +553,7 @@ export function extractTranslationKey(text: string) {
   const parts = text.split('.');
 
   if (parts.length === 0) {
-    console.error('Bad key: ' + text);
-    return 'Key has no parts';
+    throw new Error('Bad key: ' + text);
   }
 
   const group = (parts.length === 1 ? 'common' : parts[0]).toLowerCase();
