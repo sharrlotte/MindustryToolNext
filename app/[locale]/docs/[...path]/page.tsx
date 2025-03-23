@@ -33,7 +33,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <div className="max-w-[80ch] px-4 mb-4 mx-auto">
+      <div className="max-w-[80ch] px-4 mb-4 mx-auto w-full flex flex-col">
         <main id="docs-markdown">
           <Post />
         </main>
