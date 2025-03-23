@@ -16,7 +16,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
 import { Locale } from '@/i18n/config';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import { CreateTranslationRequest, createTranslation, getTranslationCompare, getTranslationCompareCount } from '@/query/translation';
