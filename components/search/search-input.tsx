@@ -32,7 +32,7 @@ export function SearchInput({ className, placeholder, value, onChange, onClear, 
     <>
       <input className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)} suppressHydrationWarning placeholder={t(key)} value={value} onChange={onChange} {...props} />
       {value && (
-        <Button className="p-0" variant="icon" onClick={onClear}>
+        <Button className="p-0 pr-2" variant="icon" onClick={onClear}>
           <XIcon className="size-4" />
         </Button>
       )}
