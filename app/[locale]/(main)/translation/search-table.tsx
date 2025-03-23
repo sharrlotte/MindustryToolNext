@@ -3,9 +3,13 @@ import dynamic from 'next/dynamic';
 import { ChangeEvent, Fragment, Suspense, useCallback, useState } from 'react';
 import { debounce } from 'throttle-debounce';
 
+
+
 import HighLightTranslation from '@/app/[locale]/(main)/translation/highlight-translation';
 import { TranslationCardSkeleton } from '@/app/[locale]/(main)/translation/translation-card-skeleton';
 import TranslationStatus from '@/app/[locale]/(main)/translation/translation-status';
+
+
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import PaginationNavigator from '@/components/common/pagination-navigator';
@@ -15,13 +19,18 @@ import { toast } from '@/components/ui/sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 
+
+
 import useClientApi from '@/hooks/use-client';
 import { Locale } from '@/i18n/config';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import { CreateTranslationRequest, createTranslation, getTranslationSearch, getTranslationSearchCount } from '@/query/translation';
 import { Translation } from '@/types/response/Translation';
 
+
+
 import { useMutation } from '@tanstack/react-query';
+
 
 const DeleteTranslationDialog = dynamic(() => import('@/app/[locale]/(main)/translation/delete-translation-dialog'));
 
@@ -82,7 +91,7 @@ function SearchCard({ translation: { key, id, value, keyGroup, isTranslated, lan
     mutate({
       key,
       keyGroup,
-      language: language,
+      language: translationLanguage,
       value: event.target.value,
     });
   };
