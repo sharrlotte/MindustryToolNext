@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { Fragment, useCallback, useState } from 'react';
 
+import SearchTable from '@/app/[locale]/(main)/translation/search-table';
 
 import ComboBox from '@/components/common/combo-box';
 import Tran from '@/components/common/tran';
@@ -12,9 +13,7 @@ import { Button } from '@/components/ui/button';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
-
-
-import SearchTable from '@/app/[locale]/(main)/translation/search-table';
+import { clearTranslationCache } from '@/lib/utils';
 
 const DiffTable = dynamic(() => import('@/app/[locale]/(main)/translation/diff-table'));
 const CompareTable = dynamic(() => import('@/app/[locale]/(main)/translation/compare-table'));
@@ -133,7 +132,14 @@ function RefreshButton() {
   const { invalidateByKey } = useQueriesData();
 
   return (
-    <Button className="ml-auto h-10" variant="secondary" onClick={() => invalidateByKey(['translations'])}>
+    <Button
+      className="ml-auto h-10"
+      variant="secondary"
+      onClick={() => {
+        invalidateByKey(['translations']);
+        clearTranslationCache();
+      }}
+    >
       <Tran text="translation.refresh" />
     </Button>
   );

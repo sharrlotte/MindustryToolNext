@@ -14,9 +14,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
 import { Locale } from '@/i18n/config';
-import { clearTranslationCache } from '@/lib/utils';
 import { TranslationPaginationQuery } from '@/query/search-query';
 import { CreateTranslationRequest, createTranslation, getTranslationDiff, getTranslationDiffCount } from '@/query/translation';
 import { TranslationDiff } from '@/types/response/Translation';
@@ -75,14 +73,9 @@ type DiffCardProps = {
 function DiffCard({ translation: { key, value, keyGroup }, language }: DiffCardProps) {
   const axios = useClientApi();
   const [isEdit, setEdit] = useState(false);
-  const { invalidateByKey } = useQueriesData();
   const { mutate, status } = useMutation({
     mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
     onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
-    onSettled: () => {
-      invalidateByKey(['translations']);
-      clearTranslationCache();
-    },
   });
 
   const create = (event: ChangeEvent<HTMLTextAreaElement>) => {

@@ -11,7 +11,7 @@ type Props = {
 };
 export default function StarScene({ message, children }: Props) {
   return (
-    <>
+    <div className="bg-black h-full w-full absolute inset-0">
       <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
         <MovingStars />
         {message && (
@@ -21,6 +21,6 @@ export default function StarScene({ message, children }: Props) {
         )}
       </Canvas>
       {children}
-    </>
+    </div>
   );
 }

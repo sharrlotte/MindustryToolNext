@@ -20,7 +20,7 @@ export function useActiveHeading() {
           setActiveId(firstVisible.target.id);
         }
       },
-      { root: document.getElementById('docs-markdown-scroll'), threshold: 0.1 },
+      { root: document.getElementById('docs-markdown'), threshold: 0.1 },
     );
 
     headings.forEach((heading) => observer.observe(heading));

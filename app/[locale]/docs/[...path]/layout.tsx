@@ -1,6 +1,5 @@
 import fs from 'fs';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import p from 'path';
 import path from 'path';
 import { ReactNode, Suspense } from 'react';
@@ -10,7 +9,6 @@ import NavHeader from '@/app/[locale]/(main)/small-nav-header';
 import SmallNavbarCollapse from '@/app/[locale]/(main)/small-navbar-collapse';
 import SmallNavbarInsideToggle from '@/app/[locale]/(main)/small-navbar-inside-toggle';
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
-import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
 import DocSearchBar from '@/app/[locale]/docs/doc-search-bar';
 import { Doc, isDocExists, readDocsByLocale, reduceDocs } from '@/app/[locale]/docs/doc-type';
 import LanguageSwitcher from '@/app/[locale]/docs/language-switcher';
@@ -34,14 +32,6 @@ export const revalidate = false;
 
 export default async function Layout({ children, params }: { children: ReactNode; params: Promise<{ path: string[]; locale: string }> }) {
   const { locale, path } = await params;
-
-  const markdownFilePath = p.join(process.cwd(), 'docs', p.normalize(locale), path.map((segment) => p.normalize(segment)).join('/') + '.mdx');
-
-  if (!fs.existsSync(markdownFilePath)) {
-    return notFound();
-  }
-
-  const markdown = fs.readFileSync(markdownFilePath).toString();
   const availableLanguages = locales.filter((locale) => isDocExists(locale, path));
 
   return (
@@ -89,24 +79,23 @@ export default async function Layout({ children, params }: { children: ReactNode
               <MediumNavItems />
             </div>
             <Divider />
-            <UserDisplay />
+            <Hydrated>
+              <UserDisplay />
+            </Hydrated>
           </div>
         </SmallNavbarCollapse>
       </NavBarProvider>
-      <div className="flex flex-col md:grid md:grid-cols-[20rem_auto] h-full relative overflow-hidden">
-        <div className="hidden md:flex w-full md:border-r p-4">
-          <NavBar locale={locale} selectedSegments={path} />
+      <ScrollContainer className="gap-2 flex-col md:flex-row relative h-full flex" additionalPadding="pr-4">
+        <div className="block md:hidden ml-auto mt-4">
+          <NavBarDialog locale={locale} selectedSegments={path} />
         </div>
-        <ScrollContainer id="docs-markdown-scroll" className="px-4 gap-2 relative h-full grid lg:grid-cols-[auto_20rem]" additionalPadding="pr-4">
-          <div className="block md:hidden ml-auto mt-4">
-            <NavBarDialog locale={locale} selectedSegments={path} />
-          </div>
-          <div id="docs-markdown" className="mx-auto max-w-[80ch] relative w-full">
-            {children}
-          </div>
-          <TableOfContents markdown={markdown} />
-        </ScrollContainer>
-      </div>
+        <div className="hidden md:flex w-full p-4 sticky top-0 h-fit">
+          <ScrollContainer>
+            <NavBar locale={locale} selectedSegments={path} />
+          </ScrollContainer>
+        </div>
+        {children}
+      </ScrollContainer>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 import HorizontalNavbarUserAvatar from '@/app/horizontal-navbar-user-avatar';
 import SmallNavbarToggle from '@/app/small-navbar-toggle';
 
+import Hydrated from '@/components/common/hydrated';
 import Divider from '@/components/ui/divider';
 
 export default function SmallScreenNavigationBar() {
@@ -26,7 +27,9 @@ export default function SmallScreenNavigationBar() {
             <MediumNavItems />
           </div>
           <Divider />
-          <UserDisplay />
+          <Hydrated>
+            <UserDisplay />
+          </Hydrated>
         </div>
       </SmallNavbarCollapse>
       <HorizontalNavbarUserAvatar />

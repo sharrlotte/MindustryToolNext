@@ -128,28 +128,30 @@ export default async function Page({ params }: Props) {
             </div>
           </div>
           <div className="flex flex-wrap gap-2 bg-card rounded-md">
-            <div className="flex h-full flex-col items-start justify-start gap-1 p-4 shadow-lg">
-              <h3 className="text-xl">
-                <Tran text="server.system-status" />
-              </h3>
-              {status === 'HOST' ? <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} /> : <Tran text="server.server-is-not-running" />}
-            </div>
-            {status === 'HOST' && <Image key={status} className="flex max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/servers/${id}/image`} alt={name} width={500} height={500} />}
-          </div>
-          <ProtectedElement session={session} filter={showPlayer}>
-            <div className="flex min-w-40 flex-col gap-1 bg-card rounded-md shadow-lg">
-              <div className="flex flex-col gap-2">
-                <h3 className="p-4 text-xl">
-                  <Tran text="server.players" /> {players}
+            <div>
+              <div className="flex h-full flex-col items-start justify-start gap-1 p-4 shadow-lg">
+                <h3 className="text-xl">
+                  <Tran text="server.system-status" />
                 </h3>
-                {status === 'HOST' && (
-                  <Suspense fallback={<PlayersCardSkeleton players={players} />}>
-                    <PlayersCard id={id} />
-                  </Suspense>
-                )}
+                {status === 'HOST' ? <RamUsageChart ramUsage={ramUsage} totalRam={totalRam} /> : <Tran text="server.server-is-not-running" />}
               </div>
+              {status === 'HOST' && <Image key={status} className="flex p-4 max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none" src={`${env.url.api}/servers/${id}/image`} alt={name} width={500} height={500} />}
             </div>
-          </ProtectedElement>
+            <ProtectedElement session={session} filter={showPlayer}>
+              <div className="flex min-w-40 flex-col gap-1">
+                <div className="flex flex-col gap-2">
+                  <h3 className="p-4 text-xl">
+                    <Tran text="server.players" /> {players}
+                  </h3>
+                  {status === 'HOST' && (
+                    <Suspense fallback={<PlayersCardSkeleton players={players} />}>
+                      <PlayersCard id={id} />
+                    </Suspense>
+                  )}
+                </div>
+              </div>
+            </ProtectedElement>
+          </div>
           <ProtectedElement session={session} filter={canAccess}>
             <div className={cn('flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg mt-auto')}>
               {status !== 'HOST' && <RemoveServerButton id={id} />}

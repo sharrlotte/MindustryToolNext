@@ -12,6 +12,7 @@ import NavbarVisible from '@/app/navbar-visible';
 import { PathGroup, groups } from '@/app/routes';
 
 import ErrorScreen from '@/components/common/error-screen';
+import Hydrated from '@/components/common/hydrated';
 import Divider from '@/components/ui/divider';
 
 import { useSession } from '@/context/session-context';
@@ -24,7 +25,9 @@ export default function MediumScreenNavigationBar() {
       <MediumNavHeader />
       <MediumNavItems />
       <NavbarVisible alt={<MediumNavFooter />}>
-        <UserDisplay />
+        <Hydrated>
+          <UserDisplay />
+        </Hydrated>
       </NavbarVisible>
     </MediumNavbarCollapse>
   );
@@ -78,7 +81,6 @@ export function PathGroupElement({ group }: PathGroupElementProps) {
 
   return (
     <nav className="space-y-1 uppercase" key={key}>
-      <NavbarVisible>{name}</NavbarVisible>
       {name && <Divider />}
       {paths.map((p) => {
         const { path, ...rest } = p;
