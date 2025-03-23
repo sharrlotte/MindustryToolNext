@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+
+
 import { ChatIconPath } from '@/app/chat-icon-path';
 import { MapPath } from '@/app/map-path';
 import { PluginPath } from '@/app/plugin-path';
@@ -8,11 +10,16 @@ import { SchematicPath } from '@/app/schematic-path';
 import { TranslationPathIcon } from '@/app/translation-path-icon';
 import { VerifyPathIcon } from '@/app/verify-path-icon';
 
+
+
 import { AnalyticIcon, BoxIcon, ChartIcon, CmdIcon, CommentIcon, CrownIcon, DocsIcon, DocumentIcon, FileIcon, HomeIcon, LogIcon, MapIcon, MindustryGptIcon, PluginIcon, PostIcon, RatioIcon, SchematicIcon, ServerIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
+
+
 import { locales } from '@/i18n/config';
 import { Filter } from '@/lib/utils';
+
 
 const localesRegex = `/(${locales.join('|')})`;
 
@@ -124,7 +131,7 @@ export const groups: readonly PathGroup[] = [
       },
       {
         id: 'ratio',
-        path: '/ratio',
+        path: 'https://mindustry-calculator.vercel.app/',
         name: <Tran asChild text="ratio" />,
         icon: <RatioIcon />,
         regex: [`^${localesRegex}/ratio`],

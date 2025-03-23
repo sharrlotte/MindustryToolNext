@@ -5,13 +5,13 @@ import FallbackImage from '@/components/common/fallback-image';
 
 import { cn } from '@/lib/utils';
 
-type CardProps = React.HTMLAttributes<HTMLLIElement>;
+type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function Preview({ className, children, ...props }: CardProps) {
   return (
-    <li className={cn('list-none group overflow-hidden relative flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] bg-card/90 max-w-[calc(var(--preview-size)*2)] flex-col rounded-lg shadow-md animate-appear', className)} {...props}>
+    <div className={cn('list-none group overflow-hidden relative flex min-h-preview-height min-w-[min(100vw,var(--preview-size))] bg-card/90 max-w-[calc(var(--preview-size)*2)] flex-col rounded-lg shadow-md animate-appear', className)} {...props}>
       {children}
-    </li>
+    </div>
   );
 }
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
