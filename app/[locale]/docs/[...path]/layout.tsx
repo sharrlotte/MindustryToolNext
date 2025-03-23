@@ -41,8 +41,8 @@ export default async function Layout({ children, params }: { children: ReactNode
           <div className="flex items-center gap-2">
             <SmallNavbarToggle className="gap-1 px-0 py-0">
               <MindustryToolIcon className="size-8" />
-              <span className="hidden lg:block text-brand text-xl">MindustryTool</span>
             </SmallNavbarToggle>
+            <span className="hidden lg:block text-brand text-xl">MindustryTool</span>
           </div>
           <div className="flex items-center gap-4">
             <nav className="items-center gap-4 hidden sm:flex">
@@ -85,7 +85,7 @@ export default async function Layout({ children, params }: { children: ReactNode
           </div>
         </SmallNavbarCollapse>
       </NavBarProvider>
-      <ScrollContainer className="gap-2 flex-col md:flex-row relative h-full flex" additionalPadding="pr-4">
+      <ScrollContainer id="markdown-scroll-container" className="gap-2 flex-col md:flex-row relative h-full flex" additionalPadding="pr-4">
         <div className="block md:hidden ml-auto mt-4">
           <NavBarDialog locale={locale} selectedSegments={path} />
         </div>

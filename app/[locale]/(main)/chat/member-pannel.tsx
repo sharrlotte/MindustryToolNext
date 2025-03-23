@@ -44,7 +44,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
         className="px-2 grid gap-1 w-full"
         queryKey={['room', room, 'members']}
         paramSchema={PaginationQuerySchema} //
-        queryFn={(axios: AxiosInstance, params: { page: number; size: number }) => getMembers(axios, room, params)}
+        queryFn={(axios: AxiosInstance, params: { page: number; size: number }) => getMembers(axios, room, params).then((result) => result.filter((v, i, a) => a.findIndex((v2) => v.id === v2.id) === i))}
         noResult={<div></div>}
         end={<div></div>}
       >

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+
 export function useActiveHeading() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -20,7 +21,7 @@ export function useActiveHeading() {
           setActiveId(firstVisible.target.id);
         }
       },
-      { root: document.getElementById('docs-markdown'), threshold: 0.1 },
+      { root: document.getElementById('markdown-scroll-container'), threshold: 0.1 },
     );
 
     headings.forEach((heading) => observer.observe(heading));
