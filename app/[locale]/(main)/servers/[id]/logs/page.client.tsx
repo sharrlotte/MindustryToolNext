@@ -53,7 +53,7 @@ export default function PageClient({ id }: Props) {
             </GridLayout>
           </ServerTabsContent>
         </ScrollContainer>
-        <div className="ml-auto mt-auto space-x-2">
+        <div className="ml-auto mt-auto space-x-2 flex">
           <PaginationLayoutSwitcher />
           <GridLayout>
             <PaginationNavigator />
