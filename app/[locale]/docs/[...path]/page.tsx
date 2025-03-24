@@ -17,7 +17,6 @@ import './stackoverflow-dark.css';
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
-export const revalidate = false;
 export default async function Page({ params }: Props) {
   const { path, locale } = await params;
 

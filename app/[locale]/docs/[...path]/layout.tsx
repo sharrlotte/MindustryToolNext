@@ -29,8 +29,6 @@ import { NavBarProvider } from '@/context/navbar-context';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
-export const revalidate = false;
-
 export default async function Layout({ children, params }: { children: ReactNode; params: Promise<{ path: string[]; locale: string }> }) {
   const { locale, path } = await params;
   const availableLanguages = locales.filter((locale) => isDocExists(locale, path));

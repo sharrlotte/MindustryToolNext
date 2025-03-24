@@ -7,7 +7,6 @@ import { Locale, locales } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';
 
-export const revalidate = false;
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
