@@ -92,7 +92,7 @@ export default async function Layout({ children, params }: { children: ReactNode
           <NavBarDialog locale={locale} selectedSegments={path} />
         </aside>
         <aside className="hidden md:flex w-full h-full sm:border-r bg-card max-w-[25rem] min-w-[20rem]">
-          <ScrollContainer className="max-w-[20rem] p-4 ml-auto sticky top-0 h-fit" additionalPadding='P-0'>
+          <ScrollContainer className="max-w-[20rem] p-4 ml-auto sticky top-0 h-fit" additionalPadding='pr-0'>
             <NavBar locale={locale} selectedSegments={path} />
           </ScrollContainer>
         </aside>
