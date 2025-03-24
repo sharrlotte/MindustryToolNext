@@ -12,6 +12,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import Divider from '@/components/ui/divider';
 
 import { formatTitle } from '@/lib/utils';
+import { shared } from '@/mdx-components';
 
 import './stackoverflow-dark.css';
 
@@ -19,6 +20,8 @@ type Props = { params: Promise<{ path: string[]; locale: string }> };
 
 export default async function Page({ params }: Props) {
   const { path, locale } = await params;
+
+  shared['idMaps'] = {};
 
   if (!isDocExists(locale, path)) {
     return notFound();
