@@ -88,11 +88,11 @@ export default async function Layout({ children, params }: { children: ReactNode
         </SmallNavbarCollapse>
       </NavBarProvider>
       <ScrollContainer id="markdown-scroll-container" className="gap-2 flex-col md:grid md:grid-cols-[auto_1fr_auto] relative h-full flex bg-card dark:bg-background md:justify-center" additionalPadding="pr-4">
-        <aside className="block md:hidden ml-auto mt-4">
+        <aside className="block md:hidden ml-auto mt-4 px-4">
           <NavBarDialog locale={locale} selectedSegments={path} />
         </aside>
         <aside className="hidden md:flex w-full h-full sm:border-r bg-card max-w-[25rem] min-w-[20rem]">
-          <ScrollContainer className="max-w-[20rem] p-4 ml-auto sticky top-0 h-fit">
+          <ScrollContainer className="max-w-[20rem] p-4 ml-auto sticky top-0 h-fit" additionalPadding='pr-0'>
             <NavBar locale={locale} selectedSegments={path} />
           </ScrollContainer>
         </aside>

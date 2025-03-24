@@ -10,9 +10,6 @@ const nextConfig: NextConfig = {
   experimental: {
     ppr: 'incremental',
     reactCompiler: true,
-    staleTimes: {
-      static: 600,
-    },
   },
   pageExtensions: ['md', 'mdx', 'ts', 'tsx'],
   logging: {

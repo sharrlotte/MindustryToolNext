@@ -289,11 +289,11 @@ async function AboutMindustryToolSection({ locale }: { locale: Locale }) {
               {/* Mindustry Tool is a comprehensive platform dedicated to enhancing your Mindustry gaming experience. We offer an extensive collection of schematics, maps, and servers, along with helpful posts and an active community. */}
             </p>
             <p className="mb-4">
-              <T locale={locale} text="home.about-mindustry-description-2" />
+              <T locale={locale} text="home.about-mindustry-tool-description-2" />
               {/* Our platform provides free server hosting that supports mods, plugins, map downloading HUD, Docker environment, anti-DDoS protection, and powerful hardware. Players can claim their free server to enjoy a customized gaming experience. */}
             </p>
             <p>
-              <T locale={locale} text="home.about-mindustry-description-3" />
+              <T locale={locale} text="home.about-mindustry-tool-description-3" />
               {/* Additionally, we feature MindustryGpt, which offers further resources and tools related to the game, and maintain an active community with official Discord servers, a Mindustry Wiki, and GitHub repositories. */}
             </p>
           </div>
