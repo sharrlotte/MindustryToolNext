@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-
 export function useActiveHeading() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -13,16 +12,13 @@ export function useActiveHeading() {
     const headings = Array.from(container.querySelectorAll('h2, h3, h4, h5, h6'));
     if (headings.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
-        if (visibleEntries.length > 0) {
-          const firstVisible = visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-          setActiveId(firstVisible.target.id);
-        }
-      },
-      { root: document.getElementById('markdown-scroll-container'), threshold: 0.1 },
-    );
+    const observer = new IntersectionObserver((entries) => {
+      const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+      if (visibleEntries.length > 0) {
+        const firstVisible = visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        setActiveId(firstVisible.target.id);
+      }
+    });
 
     headings.forEach((heading) => observer.observe(heading));
 
