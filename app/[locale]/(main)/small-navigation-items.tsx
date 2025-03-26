@@ -13,7 +13,7 @@ import Divider from '@/components/ui/divider';
 
 export default function SmallScreenNavigationBar() {
   return (
-    <nav className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg sm:hidden">
+    <>
       <SmallNavbarToggle />
       <SmallNavbarCollapse>
         <div className="flex h-full flex-col justify-between overflow-hidden p-2">
@@ -33,6 +33,6 @@ export default function SmallScreenNavigationBar() {
         </div>
       </SmallNavbarCollapse>
       <HorizontalNavbarUserAvatar />
-    </nav>
+    </>
   );
 }

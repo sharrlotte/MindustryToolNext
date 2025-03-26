@@ -25,7 +25,6 @@ export default function MediumNavbarCollapse({ children }: Props) {
   const { visible } = useNavBar();
 
   return (
-    <div className="hidden sm:flex h-full">
       <motion.div
         className={cn('relative gap-2 h-full overflow-hidden bg-card min-w-nav w-full flex-col p-1 flex', { 'p-2': visible })}
         variants={sidebarVariants}
@@ -34,6 +33,5 @@ export default function MediumNavbarCollapse({ children }: Props) {
       >
         {children}
       </motion.div>
-    </div>
   );
 }
