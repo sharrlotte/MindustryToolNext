@@ -20,9 +20,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
             </div>
           }
           notSmall={
-            <div className="hidden sm:flex h-full">
               <MediumScreenNavigationBar />
-            </div>
           }
         />
         <div className="relative h-full w-full overflow-hidden">{children}</div>
