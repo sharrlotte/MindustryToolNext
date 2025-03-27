@@ -51,7 +51,7 @@ export default function ChatPage() {
 function MessageContainer() {
   return (
     <MessageList
-      showNotification
+      showNotification={false}
       className="flex h-full flex-col gap-1"
       queryKey={['global']}
       room="GLOBAL"

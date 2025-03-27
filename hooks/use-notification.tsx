@@ -4,22 +4,25 @@ import InternalLink from '@/components/common/internal-link';
 import { toast } from '@/components/ui/sonner';
 
 import { useSession } from '@/context/session-context';
+import useClientApi from '@/hooks/use-client';
+import { getUser } from '@/query/user';
 
 export default function useNotification() {
   const { session } = useSession();
   const userId = session?.id;
+  const axios = useClientApi();
 
   const processNotification = useCallback(
     (message: string, sender: string, isGranted: boolean) => {
       if (sender === userId) return;
 
       if (isGranted) {
-        new Notification(message, { body: message, icon: '/favicon.ico' });
+        getUser(axios, { id: sender }).then((user) => new Notification(user.name, { body: message, icon: '/favicon.ico' }));
       } else {
         toast(<InternalLink href="/chat">{message}</InternalLink>);
       }
     },
-    [userId],
+    [axios, userId],
   );
 
   const postNotification = useCallback(
