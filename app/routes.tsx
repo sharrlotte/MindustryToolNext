@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
 
-
-
 import { ChatIconPath } from '@/app/chat-icon-path';
 import { MapPath } from '@/app/map-path';
 import { PluginPath } from '@/app/plugin-path';
@@ -10,16 +8,32 @@ import { SchematicPath } from '@/app/schematic-path';
 import { TranslationPathIcon } from '@/app/translation-path-icon';
 import { VerifyPathIcon } from '@/app/verify-path-icon';
 
-
-
-import { AnalyticIcon, BoxIcon, ChartIcon, CmdIcon, CommentIcon, CrownIcon, DocsIcon, DocumentIcon, FileIcon, HomeIcon, LogIcon, MapIcon, MindustryGptIcon, PluginIcon, PostIcon, RatioIcon, SchematicIcon, ServerIcon } from '@/components/common/icons';
+import {
+  AnalyticIcon,
+  BoxIcon,
+  ChartIcon,
+  CmdIcon,
+  CommentIcon,
+  CrownIcon,
+  DocsIcon,
+  DocumentIcon,
+  FileIcon,
+  HomeIcon,
+  ImageIcon,
+  LogIcon,
+  LoginIcon,
+  MapIcon,
+  MindustryGptIcon,
+  PluginIcon,
+  PostIcon,
+  RatioIcon,
+  SchematicIcon,
+  ServerIcon,
+} from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-
-
 
 import { locales } from '@/i18n/config';
 import { Filter } from '@/lib/utils';
-
 
 const localesRegex = `/(${locales.join('|')})`;
 
@@ -142,6 +156,35 @@ export const groups: readonly PathGroup[] = [
         name: <Tran asChild text="logic" />,
         icon: <CmdIcon />,
         regex: [`^${localesRegex}/logic`],
+      },
+      {
+        id: '/image-generator',
+        name: <Tran asChild text="image-generator" />,
+        icon: <ImageIcon className="size-4" />,
+        regex: [`^${localesRegex}/image-generator`],
+        path: [
+          {
+            id: 'logic',
+            path: '/image-generator/logic',
+            name: <Tran asChild text="image-logic-generator" />,
+            icon: <LoginIcon />,
+            regex: [`^${localesRegex}/image-generator/logic$`],
+          },
+          {
+            id: 'display',
+            path: '/image-generator/display',
+            name: <Tran asChild text="display-logic-generator" />,
+            icon: <LoginIcon />,
+            regex: [`^${localesRegex}/image-generator/display$`],
+          },
+          {
+            id: 'canvas',
+            path: '/image-generator/canvas',
+            name: <Tran asChild text="image-canvas-generator" />,
+            icon: <LoginIcon />,
+            regex: [`^${localesRegex}/image-generator/canvas$`],
+          },
+        ],
       },
     ],
   },

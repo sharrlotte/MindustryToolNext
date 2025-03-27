@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     ppr: 'incremental',
     reactCompiler: true,
   },
-  pageExtensions: ['md', 'mdx', 'ts', 'tsx'],
+  pageExtensions: ['ts', 'tsx'],
   logging: {
     fetches: {
       fullUrl: true,

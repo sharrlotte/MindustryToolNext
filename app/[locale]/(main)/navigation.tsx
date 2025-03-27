@@ -7,7 +7,7 @@ import { NavBarProvider } from '@/context/navbar-context';
 import IsSmall from '@/layout/is-small';
 
 const SmallScreenNavigationBar = dynamic(() => import('@/app/[locale]/(main)/small-navigation-items'), { ssr: false, loading: () => <div className="h-nav min-h-nav bg-brand" /> });
-const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/(main)/medium-navigation-items'), { ssr: false, loading: () => <div className="w-nav" /> });
+const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/(main)/medium-navigation-items'), { ssr: false, loading: () => <div className="w-nav bg-card border-r" /> });
 
 export default function NavigationBar({ children }: { children: ReactNode }) {
   return (
@@ -19,9 +19,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
               <SmallScreenNavigationBar />
             </div>
           }
-          notSmall={
-              <MediumScreenNavigationBar />
-          }
+          notSmall={<MediumScreenNavigationBar />}
         />
         <div className="relative h-full w-full overflow-hidden">{children}</div>
       </div>
