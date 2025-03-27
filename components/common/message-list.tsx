@@ -1,10 +1,14 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
+
+
 import { LoaderIcon } from '@/components/common/icons';
 import NoResult from '@/components/common/no-result';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+
+
 
 import { useSocket } from '@/context/socket-context';
 import useMessageQuery from '@/hooks/use-message-query';
@@ -13,9 +17,14 @@ import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
 import { MessageQuery } from '@/query/search-query';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
+
+
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
 
+
+
 import ErrorMessage from './error-message';
+
 
 type MessageListProps = {
   className?: string;
@@ -34,7 +43,7 @@ export default function MessageList({ className, queryKey, params, loader, noRes
   const container = useRef<HTMLDivElement>(null);
   const renderCause = useRef<'fetch' | 'event'>('fetch');
   const [_, setLastMessage] = useLocalStorage(`LAST_MESSAGE_${room}`, '');
-  const [list, setList] = useState<HTMLOListElement | null>(null);
+  const [list, setList] = useState<HTMLElement | null>(null);
 
   const scrollTopRef = useRef(0);
   const lastHeightRef = useRef(0);
@@ -184,12 +193,12 @@ export default function MessageList({ className, queryKey, params, loader, noRes
 
   return (
     <ScrollContainer className={cn('flex h-full w-full overflow-x-hidden', className)} ref={container}>
-      <ol className="h-fit w-full" ref={(ref) => setList(ref)}>
+      <section className="h-fit w-full" ref={(ref) => setList(ref)}>
         {!hasNextPage && end}
         {isFetching && loader}
         {pages}
         {isError && <ErrorMessage error={error} />}
-      </ol>
+      </section>
     </ScrollContainer>
   );
 }
