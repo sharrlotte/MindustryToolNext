@@ -147,8 +147,6 @@ export async function POST(req: NextRequest) {
       blocks,
     );
 
-    console.log(Math.floor(width / blockSize), Math.floor(height / blockSize));
-
     console.log(schematic);
 
     // Convert processed data to an image

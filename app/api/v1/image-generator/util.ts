@@ -37,9 +37,9 @@ export function createSchematic(width: number, height: number, metadata: Record<
   blockBuffer.writeInt32BE(blocks.length, 0);
 
   for (const block of blocks) {
-    let index = blockPalette.indexOf(block.block);
-    let pos = (block.y << 7) | block.x;
-    let configBuffer = block.config ? Buffer.from(block.config, 'utf-8') : Buffer.alloc(1);
+    const index = blockPalette.indexOf(block.block);
+    const pos = (block.y << 7) | block.x;
+    const configBuffer = block.config ? Buffer.from(block.config, 'utf-8') : Buffer.alloc(1);
 
     blockBuffer = Buffer.concat([blockBuffer, Buffer.from([index]), Buffer.alloc(4).fill(pos), Buffer.alloc(1).fill(configBuffer.length), configBuffer, Buffer.from([block.rotation])]);
   }
