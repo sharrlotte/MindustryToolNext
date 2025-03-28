@@ -105,7 +105,7 @@ export default async function ServerLayout({ params, children }: LayoutProps) {
   ];
 
   return (
-    <div className="grid h-full grid-flow-row grid-rows-[48px_1fr] gap-2 overflow-hidden">
+    <div className="grid h-full grid-flow-row grid-rows-[48px_1fr] overflow-hidden">
       <NavLinkProvider>
         <NavLinkContainer>
           {links.map((item) => (

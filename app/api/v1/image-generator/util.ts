@@ -44,7 +44,11 @@ export function createSchematic(width: number, height: number, metadata: Record<
     blockBuffer = Buffer.concat([blockBuffer, Buffer.from([index]), Buffer.alloc(4).fill(pos), Buffer.alloc(1).fill(configBuffer.length), configBuffer, Buffer.from([block.rotation])]);
   }
 
-  const schematicData = Buffer.concat([Buffer.from([width, height]), metaBuffer, paletteBuffer, blockBuffer]);
+  const sizeBuffer = Buffer.alloc(4);
+  sizeBuffer.writeUInt16BE(width, 0);
+  sizeBuffer.writeUInt16BE(height, 2);
+
+  const schematicData = Buffer.concat([sizeBuffer, metaBuffer, paletteBuffer, blockBuffer]);
 
   const compressedData = pako.deflate(schematicData);
 
