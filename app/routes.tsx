@@ -171,11 +171,11 @@ export const groups: readonly PathGroup[] = [
             regex: [`^${localesRegex}/image-generator/logic$`],
           },
           {
-            id: 'display',
-            path: '/image-generator/display',
-            name: <Tran asChild text="display-logic-generator" />,
+            id: 'router',
+            path: '/image-generator/router',
+            name: <Tran asChild text="router-logic-generator" />,
             icon: <LoginIcon />,
-            regex: [`^${localesRegex}/image-generator/display$`],
+            regex: [`^${localesRegex}/image-generator/router$`],
           },
           {
             id: 'canvas',
