@@ -1,7 +1,6 @@
 import { MapIcon, ServerIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { Suspense, cache } from 'react';
 import 'server-only';
@@ -280,8 +279,8 @@ async function AboutMindustryToolSection({ locale }: { locale: Locale }) {
           {/* About Mindustry Tool */}
         </h2>
         <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
-          <div className="md:w-1/2 overflow-hidden rounded-lg">
-            <Image src="/placeholder.svg?height=400&width=600" alt="Mindustry Tool Platform" width={600} height={400} className="rounded-lg shadow-lg" />
+          <div className="md:w-1/2 aspect-video overflow-hidden rounded-lg">
+            <YouTubeEmbed videoid="gUu3AhqpyHo" />
           </div>
           <div className="md:w-1/2">
             <p className="mb-4">
