@@ -12,7 +12,9 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
         <div className="flex h-nav w-full items-center justify-between bg-brand px-2 py-2 shadow-lg sm:hidden">
           <SmallScreenNavigationBar />
         </div>
-        <MediumScreenNavigationBar />
+        <div className="flex-col h-full hidden sm:flex">
+          <MediumScreenNavigationBar />
+        </div>
         <div className="relative h-full w-full overflow-hidden">{children}</div>
       </div>
     </NavBarProvider>
