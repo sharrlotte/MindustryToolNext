@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { ChangeEvent, Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { debounce } from 'throttle-debounce';
 
 import HighLightTranslation from '@/app/[locale]/(main)/translation/highlight-translation';
@@ -87,24 +87,16 @@ function CompareCard({ translation, language, target }: CompareCardProps) {
     onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
   });
 
-  const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    mutate(
-      {
-        key,
-        keyGroup,
-        language: target,
-        value: event.target.value,
-      },
-      {
-        onSuccess: () => (translation.value[language] = event.target.value),
-      },
-    );
+  const create = () => {
+    mutate({
+      key,
+      keyGroup,
+      language: target,
+      value: value[target],
+    });
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleChange = useCallback(
-    debounce(1000, (event: ChangeEvent<HTMLTextAreaElement>) => create(event)),
-    [],
-  );
+  const handleChange = useCallback(debounce(1000, create), []);
 
   return (
     <TableRow>
@@ -119,7 +111,15 @@ function CompareCard({ translation, language, target }: CompareCardProps) {
       <TableCell>
         <div className="flex items-center gap-2" onClick={() => setEdit(true)}>
           {isEdit ? ( //
-            <Textarea className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" defaultValue={value[target] ?? key} onChange={handleChange} onBlur={() => setEdit(false)} />
+            <Textarea
+              className="min-h-full border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
+              defaultValue={value[target] ?? key}
+              onChange={(event) => (value[target] = event.target.value)}
+              onBlur={() => {
+                setEdit(false);
+                handleChange();
+              }}
+            />
           ) : (
             <HighLightTranslation text={value[target] ?? key} />
           )}

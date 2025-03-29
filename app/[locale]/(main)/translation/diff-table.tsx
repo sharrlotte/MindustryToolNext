@@ -1,4 +1,4 @@
-import { ChangeEvent, Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { debounce } from 'throttle-debounce';
 
 import HighLightTranslation from '@/app/[locale]/(main)/translation/highlight-translation';
@@ -79,24 +79,16 @@ function DiffCard({ translation, language }: DiffCardProps) {
     onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
   });
 
-  const create = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    mutate(
-      {
-        key,
-        keyGroup,
-        language,
-        value: event.target.value,
-      },
-      {
-        onSuccess: () => (translation.value = event.target.value),
-      },
-    );
+  const create = () => {
+    mutate({
+      key,
+      keyGroup,
+      language,
+      value: translation.value,
+    });
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleChange = useCallback(
-    debounce(1000, (event: ChangeEvent<HTMLTextAreaElement>) => create(event)),
-    [],
-  );
+  const handleChange = useCallback(debounce(1000, create), []);
 
   return (
     <TableRow>
@@ -111,7 +103,15 @@ function DiffCard({ translation, language }: DiffCardProps) {
       <TableCell>
         <div className="flex items-center gap-2" onClick={() => setEdit(true)}>
           {isEdit ? ( //
-            <Textarea className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0" placeholder={value ?? key} onChange={handleChange} onBlur={() => setEdit(false)} />
+            <Textarea
+              className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
+              placeholder={value ?? key}
+              onChange={(event) => (translation.value = event.target.value)}
+              onBlur={() => {
+                setEdit(false);
+                handleChange();
+              }}
+            />
           ) : (
             <HighLightTranslation text={value ?? key} />
           )}
