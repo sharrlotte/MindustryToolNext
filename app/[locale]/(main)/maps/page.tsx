@@ -40,7 +40,7 @@ export default async function Page() {
           <UploadIcon className="size-5" />
           <Tran text="map.upload" />
         </InternalLink>
-        <div className="flex justify-end items-center gap-2">
+        <div className="flex justify-end items-center gap-2 flex-wrap">
           <PaginationLayoutSwitcher />
           <GridLayout>
             <PaginationNavigator numberOfItems="/maps/total" queryKey={['maps', 'total']} />
