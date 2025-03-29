@@ -21,8 +21,8 @@ const links: Record<string, { href: string; title: string; description: string }
   },
 };
 
-export async function generateMetadata({ params }: { params: Promise<{ name: string }> }): Promise<Metadata> {
-  const { name } = await params;
+export async function generateMetadata({ params }: { params: { name: string } }): Promise<Metadata> {
+  const { name } = params;
 
   const item = links[name];
 
@@ -42,8 +42,8 @@ export async function generateMetadata({ params }: { params: Promise<{ name: str
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ name: string }> }) {
-  const { name } = await params;
+export default async function Page({ params }: { params: { name: string } }) {
+  const { name } = params;
 
   const item = links[name];
 
