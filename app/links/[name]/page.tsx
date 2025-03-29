@@ -12,8 +12,7 @@ const links: Record<string, { href: string; title: string; description: string }
   'mindustry-tool': {
     href: 'https://discord.gg/YGuBQ3g9fQ',
     title: 'Mindustry Tool',
-    description:
-      'Join our active Mindustry community to connect with fellow players, share experiences, get support, and collaborate on exciting development projects. Let’s grow together!',
+    description: 'Join our active Mindustry community to connect with fellow players, share experiences, get support, and collaborate on exciting development projects. Let’s grow together!',
   },
   'new-horizon': {
     href: 'https://discord.gg/aRRwAMDeEs',
