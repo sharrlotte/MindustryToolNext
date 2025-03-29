@@ -1,7 +1,7 @@
 import React from 'react';
 
-import UpdateThumbnail from '@/app/[locale]/(main)/users/@modal/[id]/setting/update-thumbnail';
-import UserSettings from '@/app/[locale]/(main)/users/@modal/[id]/setting/user-settings';
+import UpdateThumbnail from '@/app/[locale]/(main)/users/[id]/setting/update-thumbnail';
+import UserSettings from '@/app/[locale]/(main)/users/[id]/setting/user-settings';
 
 import ErrorScreen from '@/components/common/error-screen';
 import RequireLogin from '@/components/common/require-login';

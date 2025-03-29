@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import { cache } from 'react';
 
-import Me from '@/app/[locale]/(main)/users/@modal/[id]/me';
-import Other from '@/app/[locale]/(main)/users/@modal/[id]/other';
+import Me from '@/app/[locale]/(main)/users/[id]/me';
+import Other from '@/app/[locale]/(main)/users/[id]/other';
 
 import ErrorScreen from '@/components/common/error-screen';
 
