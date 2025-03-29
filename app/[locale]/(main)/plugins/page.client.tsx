@@ -35,7 +35,7 @@ export default function Client() {
       </ScrollContainer>
       <div className="flex justify-between">
         <AddPluginDialog />
-        <div className="flex justify-end items-center gap-2">
+        <div className="flex justify-end items-center gap-2 flex-wrap">
           <PaginationLayoutSwitcher />
           <PaginationNavigator numberOfItems={getPluginCount} queryKey={['plugin', 'total']} />
         </div>
