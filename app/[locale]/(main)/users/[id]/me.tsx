@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import UserDetail from '@/app/[locale]/(main)/users/@modal/[id]/user-detail';
+import UserDetail from '@/app/[locale]/(main)/users/[id]/user-detail';
 
 import InfinitePage from '@/components/common/infinite-page';
 import Tran from '@/components/common/tran';
