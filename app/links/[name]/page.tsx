@@ -18,7 +18,7 @@ const links: Record<string, { href: string; title: string; description: string }
   'new-horizon': {
     href: 'https://discord.gg/aRRwAMDeEs',
     title: 'New Horizon Mod',
-    description: 'Tham gia máy chủ hỗ trợ và phát triển New Horizon Mod của chúng tôi',
+    description: 'Join our New Horizon Mod support and development server',
   },
 };
 
