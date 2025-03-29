@@ -10,7 +10,7 @@ const links: Record<string, { href: string; title: string; description: string }
     description: 'Tham gia vào máy chủ của Mindustry Việt Nam',
   },
   'mindustry-tool': {
-    href: 'https://discord.gg/uúDTKtdzsZ',
+    href: 'https://discord.gg/YGuBQ3g9fQ',
     title: 'Mindustry Tool',
     description:
       'Join our active Mindustry community to connect with fellow players, share experiences, get support, and collaborate on exciting development projects. Let’s grow together!',
