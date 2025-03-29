@@ -47,7 +47,7 @@ export default async function Page() {
           <UploadIcon />
           <Tran text="upload-schematic" />
         </InternalLink>
-        <div className="flex justify-end items-center gap-2">
+        <div className="flex justify-end items-center gap-2 flex-wrap">
           <PaginationLayoutSwitcher />
           <GridLayout>
             <PaginationNavigator numberOfItems="/schematics/total" queryKey={['schematics', 'total']} />

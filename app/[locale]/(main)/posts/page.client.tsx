@@ -35,7 +35,7 @@ export default function Client({ posts }: Props) {
           <UploadIcon />
           <Tran text="upload-post" />
         </InternalLink>
-        <div className="flex justify-end items-center gap-2">
+        <div className="flex justify-end items-center gap-2 flex-wrap">
           <PaginationLayoutSwitcher />
           <GridLayout>
             <PaginationNavigator numberOfItems={getPostCount} queryKey={['posts', 'total']} />
