@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   experimental: {
     ppr: 'incremental',
     reactCompiler: true,
+    scrollRestoration: true,
   },
   pageExtensions: ['ts', 'tsx'],
   logging: {
