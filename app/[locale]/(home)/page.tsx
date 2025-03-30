@@ -1,7 +1,6 @@
 import { MapIcon, ServerIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
-import Link from 'next/link';
 import React, { Suspense, cache } from 'react';
 import 'server-only';
 
@@ -19,6 +18,7 @@ import LoginButton from '@/components/button/login-button';
 import ErrorScreen from '@/components/common/error-screen';
 import Hydrated from '@/components/common/hydrated';
 import { DiscordIcon, MindustryToolIcon, SchematicIcon } from '@/components/common/icons';
+import InternalInternalLink from '@/components/common/internal-link';
 import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
 import Tran from '@/components/common/tran';
@@ -222,14 +222,14 @@ async function Hero({ locale }: { locale: Locale }) {
           {/* Your comprehensive platform for Mindustry schematics, maps, servers, and community resources */}
         </p>
         <div className="grid grid-cols-2 w-fit mx-auto justify-center gap-4">
-          <Link className="bg-brand/90 hover:bg-brand p-4 py-2 rounded-md" href="/schematics">
+          <InternalLink className="bg-brand/90 hover:bg-brand p-4 py-2 rounded-md" href="/schematics">
             <T locale={locale} text="home.explore-schematics" />
             {/* Explore Schematics */}
-          </Link>
-          <Link className="border border-brand text-brand p-4 py-2 rounded-md" href="/maps">
+          </InternalLink>
+          <InternalLink className="border border-brand text-brand p-4 py-2 rounded-md" href="/maps">
             <T locale={locale} text="home.browse-map" />
             {/* Browse Maps */}
-          </Link>
+          </InternalLink>
         </div>
       </div>
       <Statistic locale={locale} />
@@ -343,10 +343,10 @@ async function ServerSection({ locale }: { locale: Locale }) {
                 </div>
               ))}
             </div>
-            <Link href="/servers?create=true" className="bg-brand/90 hover:bg-brand w-full md:w-auto px-4 py-2 rounded-md">
+            <InternalLink href="/servers?create=true" className="bg-brand/90 hover:bg-brand w-full md:w-auto px-4 py-2 rounded-md">
               <T locale={locale} text="home.create-free-server" asChild />
               {/* Create Your Free Server */}
-            </Link>
+            </InternalLink>
           </div>
         </div>
       </div>
@@ -386,13 +386,13 @@ async function StatisticSection({ locale }: { locale: Locale }) {
         { icon: ServerIcon, text: 'home.free-servers-count', count: 3, color: 'text-purple-400', link: '#server' },
       ].map((item, index) => (
         <FlyIn key={index} className="h-full">
-          <Link href={item.link} shallow className={`text-center p-6 text-brand-foreground bg-gray-900/50 backdrop-blur-sm h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}>
+          <InternalLink href={item.link} shallow className={`text-center p-6 text-brand-foreground bg-gray-900/50 backdrop-blur-sm h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}>
             <div className={`flex justify-center items-center flex-col gap-2 ${item.color}`}>
               <item.icon className="size-12" />
             </div>
             <Counter from={0} to={item.count} />
             <T className="text-xl" locale={locale} text={item.text} />
-          </Link>
+          </InternalLink>
         </FlyIn>
       ))}
     </FlyIn>
@@ -433,9 +433,9 @@ async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryTy
           <h2 className="text-3xl font-bold text-nowrap">
             <Tran text="home.new-schematics" asChild />
           </h2>
-          <InternalLink href="/schematics" className="cursor-pointer">
+          <InternalInternalLink href="/schematics" className="cursor-pointer">
             <Tran className="text-base" text="see-all" /> {'->'}
-          </InternalLink>
+          </InternalInternalLink>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <Suspense>
@@ -454,9 +454,9 @@ async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) 
           <h2 className="text-3xl font-bold text-nowrap">
             <Tran text="home.new-maps" asChild />
           </h2>
-          <InternalLink href="/maps" className="cursor-pointer">
+          <InternalInternalLink href="/maps" className="cursor-pointer">
             <Tran className="text-base" text="see-all" /> {'->'}
-          </InternalLink>
+          </InternalInternalLink>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <Suspense>
@@ -488,9 +488,9 @@ function Footer({ locale }: { locale: Locale }) {
               <ul className="space-y-2 text-gray-400">
                 {group.value.map((value, index) => (
                   <div key={index}>
-                    <Link href={value.href} className="hover:text-blue-400">
+                    <InternalLink href={value.href} className="hover:text-blue-400">
                       <T locale={locale} text={value.text} />
-                    </Link>
+                    </InternalLink>
                   </div>
                 ))}
               </ul>

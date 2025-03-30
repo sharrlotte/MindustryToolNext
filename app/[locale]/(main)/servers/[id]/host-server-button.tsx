@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import React, { ReactNode, useEffect, useState } from 'react';
 
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
 import { CheckCircleIcon } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -35,9 +35,9 @@ function HasServerMap({ id, children }: { id: string; children: ReactNode }) {
     return (
       <div className="rounded-md px-2 py-1 h-9 space-x-2">
         <Tran className="text-warning" text="server.no-map-warning" />
-        <Link className="text-brand underline" href={`${id}/maps`}>
+        <InternalLink className="text-brand underline" href={`/servers/${id}/maps`}>
           <Tran text="internal-server.add-map" />
-        </Link>
+        </InternalLink>
       </div>
     );
   }

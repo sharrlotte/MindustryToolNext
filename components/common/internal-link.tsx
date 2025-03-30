@@ -28,11 +28,12 @@ export type InternalLinkVariants = VariantProps<typeof linkVariants>;
 export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
   VariantProps<typeof linkVariants> & {
     asChild?: boolean;
+    shallow?: boolean;
   } & {
     href: string;
   };
 
-export default function InternalLink({ className, variant, title, href, children, ...props }: InternalLinkProps) {
+export default function InternalLink({ className, variant, title, href, shallow, children, ...props }: InternalLinkProps) {
   const { currentLocale } = useLocaleStore();
   href = href.replace(env.url.base, '');
 
@@ -55,7 +56,7 @@ export default function InternalLink({ className, variant, title, href, children
   }
 
   return (
-    <Link className={cn(linkVariants({ variant, className }))} {...props} href={localizedHref} title={title}>
+    <Link className={cn(linkVariants({ variant, className }))} {...props} href={localizedHref} shallow={shallow} title={title}>
       {children}
     </Link>
   );
