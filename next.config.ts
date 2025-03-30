@@ -2,8 +2,6 @@ import { NextConfig } from 'next';
 import rehypeHighlight from 'rehype-highlight';
 import frontmatter from 'remark-frontmatter';
 
-import env from '@/constant/env';
-
 import bundleAnalyzer from '@next/bundle-analyzer';
 import createMDX from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
@@ -21,11 +19,6 @@ const nextConfig: NextConfig = {
       fullUrl: true,
       hmrRefreshes: true,
     },
-  },
-  i18n: {
-    locales: env.locales,
-    defaultLocale: env.defaultLocale,
-    localeDetection: false,
   },
   productionBrowserSourceMaps: true,
   crossOrigin: 'anonymous',
