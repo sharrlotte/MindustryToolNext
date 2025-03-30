@@ -35,6 +35,16 @@ export type InternalLinkProps = React.ButtonHTMLAttributes<HTMLAnchorElement> &
 export default function InternalLink({ className, variant, title, href, children, ...props }: InternalLinkProps) {
   const { currentLocale } = useLocaleStore();
 
+  const hrefWithoutLocale = (() => {
+    const parts = href.split('/');
+    if (env.locales.includes(parts[1] as any)) {
+      return '/' + parts.slice(2).join('/');
+    }
+    return href;
+  })();
+
+  const localizedHref = `/${currentLocale}${hrefWithoutLocale.startsWith('/') ? '' : '/'}${hrefWithoutLocale}`;
+
   if (href.startsWith('http') && !href.startsWith(env.url.base)) {
     return (
       <a className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title} target="_blank">
@@ -43,12 +53,8 @@ export default function InternalLink({ className, variant, title, href, children
     );
   }
 
-  if (!href.startsWith(`/${currentLocale}`)) {
-    href = `/${currentLocale}${href.startsWith('/') ? '' : '/'}${href}`;
-  }
-
   return (
-    <Link className={cn(linkVariants({ variant, className }))} {...props} href={href} title={title}>
+    <Link className={cn(linkVariants({ variant, className }))} {...props} href={localizedHref} title={title}>
       {children}
     </Link>
   );
