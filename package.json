@@ -71,7 +71,7 @@
         "i18next-http-backend": "^3.0.1",
         "i18next-localstorage-backend": "^4.2.0",
         "lucide-react": "^0.292.0",
-        "next": "15.3.0-canary.24",
+        "next": "15.3.0-canary.25",
         "next-themes": "^0.2.1",
         "ogl": "^1.0.11",
         "pako": "^2.1.0",
