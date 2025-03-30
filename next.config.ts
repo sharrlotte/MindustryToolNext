@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
   i18n: {
     locales: env.locales,
     defaultLocale: env.defaultLocale,
+    localeDetection: false,
   },
   productionBrowserSourceMaps: true,
   crossOrigin: 'anonymous',
