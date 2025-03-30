@@ -3,12 +3,12 @@
 }
 
 .bg-gradient {
-    @apply bg-gradient-to-b from-black to-gray-900;
+  @apply bg-gradient-to-b from-black to-gray-900;
 }
 
 .rainbow-border {
   --angle: 0deg;
-  
+
   border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
   border-image-slice: 1;
 

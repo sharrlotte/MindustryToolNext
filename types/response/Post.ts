@@ -1,7 +1,6 @@
 import { Status } from '@/types/response/Status';
 import { DetailTagDto } from '@/types/response/Tag';
 
-
 export type Post = {
   id: string;
   userId: string;

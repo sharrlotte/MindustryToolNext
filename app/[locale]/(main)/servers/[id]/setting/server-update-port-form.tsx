@@ -42,10 +42,11 @@ export default function ServerUpdatePortForm({ server }: Props) {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['servers'],
-    mutationFn: (data: PutServerPortRequest) => toast.promise( updateServerPort(axios, id, data), {
-      'error': (error) => ({'title': <Tran text="update.fail" />, description: error.message }),
-      'success': <Tran text="update.success" />
-    }),
+    mutationFn: (data: PutServerPortRequest) =>
+      toast.promise(updateServerPort(axios, id, data), {
+        error: (error) => ({ title: <Tran text="update.fail" />, description: error.message }),
+        success: <Tran text="update.success" />,
+      }),
     onSettled: () => {
       invalidateByKey(['servers']);
       revalidate({ path: '/servers' });

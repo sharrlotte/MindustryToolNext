@@ -3,7 +3,6 @@ import React from 'react';
 
 import Client from '@/app/[locale]/(main)/plugins/page.client';
 
-
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle } from '@/lib/utils';

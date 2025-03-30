@@ -1,6 +1,7 @@
-import { ContextMenu, ContextMenuTrigger, ContextMenuContent } from "@/components/ui/context-menu";
-import dynamic from "next/dynamic";
-import { ReactNode, Suspense } from "react";
+import dynamic from 'next/dynamic';
+import { ReactNode, Suspense } from 'react';
+
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 
 const UserContextMenu = dynamic(() => import('@/components/user/user-context-menu'));
 

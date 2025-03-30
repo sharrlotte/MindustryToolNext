@@ -3,8 +3,6 @@
 import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
 
-
-
 import { SearchIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -18,14 +16,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
-
-
 import useTags from '@/hooks/use-tags';
 import { PresetType, cn } from '@/lib/utils';
 import { Mod } from '@/types/response/Mod';
 import Tag from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
-
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 

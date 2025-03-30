@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { z } from 'zod';
 
 import { toForm } from '@/lib/utils';
 import { PaginationQuery } from '@/query/search-query';
@@ -12,13 +13,12 @@ import { PostServerResponse } from '@/types/response/PostServerResponse';
 import Server from '@/types/response/Server';
 import ServerAdmin from '@/types/response/ServerAdmin';
 import { ServerDto } from '@/types/response/ServerDto';
+import ServerEnv from '@/types/response/ServerEnv';
 import { ServerFile } from '@/types/response/ServerFile';
 import ServerLoginLog from '@/types/response/ServerLoginLog';
 import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManager';
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
-import ServerEnv from '@/types/response/ServerEnv';
-import { z } from 'zod';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
   const result = await axios.delete(`/servers/${id}/files`, {
@@ -115,12 +115,11 @@ export async function getServerSetting(axios: AxiosInstance, { id }: IdSearchPar
   return result.data;
 }
 
-export async function getServers(axios: AxiosInstance, params: { official?: boolean, valid?: boolean } & PaginationQuery): Promise<ServerDto[]> {
+export async function getServers(axios: AxiosInstance, params: { official?: boolean; valid?: boolean } & PaginationQuery): Promise<ServerDto[]> {
   const result = await axios.get(`/servers`, { params });
 
   return result.data;
 }
-
 
 export async function getMyServerManager(axios: AxiosInstance): Promise<ServerManager[]> {
   const result = await axios.get(`/users/@me/server-managers`);

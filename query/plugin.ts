@@ -1,9 +1,9 @@
 import { AxiosInstance } from 'axios';
 
+import { ItemPaginationQueryType, PluginPaginationQuery } from '@/query/search-query';
 import { CreatePluginRequest } from '@/types/request/CreatePluginRequest';
 import VerifyPluginRequest from '@/types/request/VerifyPluginRequest';
 import { Plugin } from '@/types/response/Plugin';
-import { ItemPaginationQueryType, PluginPaginationQuery } from '@/query/search-query';
 
 export async function getPluginUploadCount(axios: AxiosInstance, params: Omit<ItemPaginationQueryType, 'page' | 'size'>): Promise<number> {
   const result = await axios.get('/plugins/upload/total', {

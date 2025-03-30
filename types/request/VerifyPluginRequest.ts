@@ -1,5 +1,6 @@
-import { TAG_GROUP_SCHEMA } from '@/types/schema/zod-schema';
 import { z } from 'zod';
+
+import { TAG_GROUP_SCHEMA } from '@/types/schema/zod-schema';
 
 export const VerifyPluginSchema = z.object({
   tags: TAG_GROUP_SCHEMA,

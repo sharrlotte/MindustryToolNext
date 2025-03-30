@@ -1,10 +1,12 @@
+import React from 'react';
+
 import ComboBox from '@/components/common/combo-box';
 import { Hidden } from '@/components/common/hidden';
-import { DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
+
 import useLocaleStore from '@/hooks/use-current-locale';
 import { useChangeLocale, useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
-import React from 'react';
 
 export default function ChangeLocaleForm() {
   const { currentLocale } = useLocaleStore();

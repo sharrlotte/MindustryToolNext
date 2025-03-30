@@ -1,7 +1,5 @@
 import { AxiosInstance } from 'axios';
 
-
-
 import { CountItemPaginationQueryType, ItemPaginationQueryType } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
@@ -11,7 +9,6 @@ import { SchematicDetail } from '@/types/response/SchematicDetail';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import { TagGroups } from '@/types/response/TagGroup';
 import { CreateSchematicRequest } from '@/types/schema/zod-schema';
-
 
 export async function getSchematicCount(axios: AxiosInstance, params: CountItemPaginationQueryType): Promise<number> {
   const result = await axios.get('/schematics/total', { params });

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 
 import NotificationDialog from '@/app/[locale]/(main)/notification-dialog';
@@ -11,7 +12,6 @@ import UserAvatar from '@/components/user/user-avatar';
 import { useNavBar } from '@/context/navbar-context';
 import { useSession } from '@/context/session-context';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
 
 export default function MediumNavFooter() {
   const { session } = useSession();
@@ -26,7 +26,7 @@ export default function MediumNavFooter() {
           'justify-start gap-2 py-2': visible,
         })}
         href="/users/@me/setting"
-        aria-label='Setting'
+        aria-label="Setting"
       >
         <SettingIcon />
       </Link>

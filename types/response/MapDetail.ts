@@ -1,10 +1,7 @@
 import { Status } from '@/types/response/Status';
-
-
-
-import { Like } from './Like';
 import { DetailTagDto } from '@/types/response/Tag';
 
+import { Like } from './Like';
 
 export type MapDetail = {
   id: string;

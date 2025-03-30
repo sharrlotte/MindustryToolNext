@@ -13,6 +13,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
+import { acceptedImageFormats } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { UpdateModRequest, UpdateModSchema, createMod } from '@/query/mod';
@@ -20,7 +21,6 @@ import { Mod } from '@/types/response/Mod';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { acceptedImageFormats } from '@/constant/constant';
 
 type Props = {
   mod: Mod;

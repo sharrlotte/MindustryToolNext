@@ -1,11 +1,8 @@
 import { Status } from '@/types/response/Status';
-
-
+import { DetailTagDto } from '@/types/response/Tag';
 
 import { ItemRequirement } from './ItemRequirement';
 import { Like } from './Like';
-import { DetailTagDto } from '@/types/response/Tag';
-
 
 export type SchematicDetail = {
   id: string;

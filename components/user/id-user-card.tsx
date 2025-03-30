@@ -7,11 +7,11 @@ import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import UserCard from '@/components/user/user-card';
 
 import useClientApi from '@/hooks/use-client';
+import { persister } from '@/query/config/query-config';
 import { getUser } from '@/query/user';
 import { User } from '@/types/response/User';
 
 import { useQuery } from '@tanstack/react-query';
-import { persister } from '@/query/config/query-config';
 
 type IdUserCardProps = {
   id: string | 'community';
@@ -31,7 +31,7 @@ function FletchUserCard({ id }: IdUserCardProps) {
     queryKey: ['users', id],
     queryFn: () => getUser(axios, { id }),
     retry: false,
-    persister
+    persister,
   });
 
   if (isError || error) {

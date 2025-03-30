@@ -2,6 +2,7 @@ import React from 'react';
 
 import DeleteButton from '@/components/button/delete-button';
 import Tran from '@/components/common/tran';
+import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -9,7 +10,6 @@ import { deleteTag } from '@/query/tag';
 import { TagDto } from '@/types/response/Tag';
 
 import { useMutation } from '@tanstack/react-query';
-import { toast } from '@/components/ui/sonner';
 
 type Props = {
   tag: TagDto;
