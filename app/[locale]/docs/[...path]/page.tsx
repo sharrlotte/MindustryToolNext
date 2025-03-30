@@ -1,6 +1,5 @@
 import fs from 'fs';
 import { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import p from 'path';
 import removeMd from 'remove-markdown';
@@ -9,6 +8,7 @@ import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
 import { extractDocHeading, getNextPrevDoc, isDocExists, readDocContent } from '@/app/[locale]/docs/doc-type';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
+import InternalLink from '@/components/common/internal-link';
 import Divider from '@/components/ui/divider';
 
 import { formatTitle } from '@/lib/utils';
@@ -42,22 +42,22 @@ export default async function Page({ params }: Props) {
         {(previous || next) && <Divider className="mt-6" />}
         <nav className="flex flex-wrap gap-2 justify-between items-center py-4 overflow-hidden flex-col md:flex-row">
           {previous && (
-            <Link className="mr-auto flex gap-0.5 items-end justify-end" href={`/docs/${previous.segments.join('/')}`}>
+            <InternalLink className="mr-auto flex gap-0.5 items-end justify-end" href={`/docs/${previous.segments.join('/')}`}>
               <ChevronLeftIcon />
               <div className="grid grid-rows-2 items-end">
                 <span>{previous.parent}</span>
                 <span className="underline text-sm">{previous.header}</span>
               </div>
-            </Link>
-          )}
+            </InternalLink>
+          )}w
           {next && (
-            <Link className="ml-auto flex gap-0.5 items-end justify-end" href={`/docs/${next.segments.join('/')}`}>
+            <InternalLink className="ml-auto flex gap-0.5 items-end justify-end" href={`/docs/${next.segments.join('/')}`}>
               <div className="grid grid-rows-2 items-end text-end">
                 <span>{next.parent}</span>
                 <span className="underline text-sm">{next.header}</span>
               </div>
               <ChevronRightIcon />
-            </Link>
+            </InternalLink>
           )}
         </nav>
       </div>
