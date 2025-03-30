@@ -40,5 +40,5 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
     return <div>No content</div>;
   }
 
-  redirect(`/docs/${paths[0]}`);
+  redirect(`/${locale}/docs/${paths[0]}`);
 }
