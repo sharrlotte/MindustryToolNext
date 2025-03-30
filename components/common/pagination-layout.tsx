@@ -24,7 +24,7 @@ export function PaginationLayoutSwitcher() {
           'bg-secondary hover:bg-secondary bg-opacity-80 text-secondary-foreground': paginationType === 'grid',
         })}
         onClick={() => setConfig('paginationType', 'grid')}
-        title='Grid'
+        title="Grid"
       >
         <LayoutGridIcon className="h-full" />
       </button>
@@ -33,7 +33,7 @@ export function PaginationLayoutSwitcher() {
           'bg-secondary hover:bg-secondary text-secondary-foreground bg-opacity-80': paginationType === 'infinite-scroll',
         })}
         onClick={() => setConfig('paginationType', 'infinite-scroll')}
-        title='List'
+        title="List"
       >
         <LayoutListIcon className="h-full" />
       </button>

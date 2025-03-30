@@ -1,6 +1,5 @@
 'use client';
 
-
 import useClientApi from '@/hooks/use-client';
 
 import { useQuery } from '@tanstack/react-query';

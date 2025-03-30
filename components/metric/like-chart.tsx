@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import LikeChartClient from '@/components/metric/like-chart.client';
+
+import { serverApi } from '@/action/action';
 import { fillMetric } from '@/lib/utils';
 import { isError } from '@/lib/utils';
 import { getMetric } from '@/query/metric';

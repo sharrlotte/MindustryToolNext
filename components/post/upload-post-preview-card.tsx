@@ -31,5 +31,4 @@ function UploadPostPreviewCard({ className, post, ...rest }: UploadPostPreviewCa
   );
 }
 
-
 export default UploadPostPreviewCard;

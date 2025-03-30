@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
 
+import { DocumentPaginationQuery } from '@/query/search-query';
 import { CreateDocumentRequest } from '@/types/request/CreateDocumentRequest';
 import { Document } from '@/types/response/Document';
-import { DocumentPaginationQuery } from '@/query/search-query';
 
 export async function deleteDocument(axios: AxiosInstance, id: string): Promise<void> {
   const result = await axios.delete(`/mindustry-gpt/${id}`);
@@ -23,4 +23,3 @@ export default async function createDocument(axios: AxiosInstance, data: CreateD
     data,
   });
 }
-

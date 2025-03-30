@@ -1,6 +1,7 @@
-import { serverApi } from '@/action/action';
 import ErrorScreen from '@/components/common/error-screen';
 import ClientChartClient from '@/components/metric/client-chart.client';
+
+import { serverApi } from '@/action/action';
 import { fillMetric } from '@/lib/utils';
 import { isError } from '@/lib/utils';
 import { getMetric } from '@/query/metric';

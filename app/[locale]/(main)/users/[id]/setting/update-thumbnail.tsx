@@ -7,12 +7,12 @@ import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/sonner';
 
+import { acceptedImageFormats } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { getUser, updateThumbnail } from '@/query/user';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { acceptedImageFormats } from '@/constant/constant';
 
 type UpdateThumbnailProps = {
   id: string;

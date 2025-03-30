@@ -44,13 +44,13 @@ function RouterLink({ href, children }: any) {
 
 function MarkdownImage({ src, alt }: any) {
   const [isError, setError] = useState(false);
-  
+
   if (src && src.includes(env.url.base)) {
     src = src && 'blob:' + src.substring(0, src.lastIndexOf('.'));
   }
-  
+
   src = src.replace('image.mindustry-tool.app', 'image.mindustry-tool.com');
-  
+
   if (isError) {
     return alt;
   }

@@ -1,6 +1,7 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { TableCell, TableRow } from "@/components/ui/table";
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
+
+import { Skeleton } from '@/components/ui/skeleton';
+import { TableCell, TableRow } from '@/components/ui/table';
 
 function ITranslationCardSkeleton() {
   const width = 100 + Math.random() * 100;

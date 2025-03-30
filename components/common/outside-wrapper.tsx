@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { HTMLAttributes, ReactNode, useEffect, useRef } from 'react';
 

@@ -1,4 +1,4 @@
-import { ServerMode } from "@/types/request/UpdateServerRequest";
+import { ServerMode } from '@/types/request/UpdateServerRequest';
 
 export default interface Server {
   id: string;
@@ -11,7 +11,7 @@ export default interface Server {
   gamemode: string | null;
   isOfficial: boolean;
   hostCommand: string | null;
-  address: string
+  address: string;
   webhook: string | null;
   isAutoTurnOff: boolean;
   isHub: boolean;

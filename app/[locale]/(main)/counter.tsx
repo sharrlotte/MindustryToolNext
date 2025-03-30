@@ -12,7 +12,7 @@ const Counter = ({ from, to, duration = 2 }: { from: number; to: number; duratio
     const controls = animate(count, to, { duration });
 
     return () => controls.stop();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to, duration]);
 
   return <motion.p>{rounded}</motion.p>;

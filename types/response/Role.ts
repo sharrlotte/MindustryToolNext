@@ -1,5 +1,4 @@
-import { UserRole } from "@/constant/enum";
-
+import { UserRole } from '@/constant/enum';
 
 export type Role = {
   id: number;

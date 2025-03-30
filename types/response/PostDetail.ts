@@ -2,7 +2,6 @@ import { Like } from '@/types/response/Like';
 import { Status } from '@/types/response/Status';
 import { DetailTagDto } from '@/types/response/Tag';
 
-
 export type PostDetail = {
   id: string;
   userId: string;
