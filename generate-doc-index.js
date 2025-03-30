@@ -1,6 +1,6 @@
-import fs from 'fs';
-import p from 'path';
-import removeMd from 'remove-markdown';
+const fs = require('fs');
+const p = require('path');
+const removeMd = require('remove-markdown');
 
 function readDocsByLocale(locale) {
   const localeFolder = p.join(process.cwd(), 'docs', p.normalize(locale));
