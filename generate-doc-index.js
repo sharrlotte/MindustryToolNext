@@ -65,7 +65,7 @@ function readDocFile(path, filename) {
   };
 }
 
-export function extractDocMeta(content) {
+function extractDocMeta(content) {
   const startIndex = content.indexOf('---');
   if (startIndex === -1) {
     return {};
@@ -91,7 +91,7 @@ export function extractDocMeta(content) {
   return yaml ?? {};
 }
 
-export function extractDocHeading(content) {
+function extractDocHeading(content) {
   const lines = content.split('\n');
 
   for (const line of lines) {
@@ -106,7 +106,7 @@ export function extractDocHeading(content) {
   return removeMd(content.slice(0, index === -1 ? content.length : index));
 }
 
-export function reduceDocs(segments, doc) {
+function reduceDocs(segments, doc) {
   if (doc.children.length === 0) {
     return [[...segments, doc.segment]];
   }
