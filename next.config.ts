@@ -8,7 +8,6 @@ import { withSentryConfig } from '@sentry/nextjs';
 
 const nextConfig: NextConfig = {
   experimental: {
-    ppr: true,
     reactCompiler: true,
     scrollRestoration: true,
   },
