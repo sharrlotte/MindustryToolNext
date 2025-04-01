@@ -70,10 +70,12 @@ type ActionsProps = React.HTMLAttributes<HTMLDivElement> & {
 };
 export function DetailActions({ className, children, back = true }: ActionsProps) {
   return (
-    <section className={cn('flex items-end justify-between gap-1', className)}>
-      <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">{children}</div>
-      {back && <BackButton />}
-    </section>
+    <Suspense>
+      <section className={cn('flex items-end justify-between gap-1', className)}>
+        <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">{children}</div>
+        {back && <BackButton />}
+      </section>
+    </Suspense>
   );
 }
 

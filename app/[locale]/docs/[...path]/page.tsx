@@ -49,7 +49,7 @@ export default async function Page({ params }: Props) {
                 <span className="underline text-sm">{previous.header}</span>
               </div>
             </InternalLink>
-          )}w
+          )}
           {next && (
             <InternalLink className="ml-auto flex gap-0.5 items-end justify-end" href={`/docs/${next.segments.join('/')}`}>
               <div className="grid grid-rows-2 items-end text-end">

@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
     scrollRestoration: true,
   },
-  swcMinify: true,
   pageExtensions: ['ts', 'tsx'],
   logging: {
     fetches: {
