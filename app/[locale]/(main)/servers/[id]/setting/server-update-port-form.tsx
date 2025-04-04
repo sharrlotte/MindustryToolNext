@@ -83,7 +83,7 @@ export default function ServerUpdatePortForm({ server }: Props) {
             name="isOfficial"
             render={({ field }) => (
               <FormItem>
-                <div className="flex gap-1">
+                <div className="flex gap-1 items-center">
                   <FormControl>
                     <Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
                   </FormControl>
@@ -100,7 +100,7 @@ export default function ServerUpdatePortForm({ server }: Props) {
             name="isHub"
             render={({ field }) => (
               <FormItem>
-                <div className="flex gap-1">
+                <div className="flex gap-1 items-center">
                   <FormControl>
                     <Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
                   </FormControl>
@@ -117,7 +117,7 @@ export default function ServerUpdatePortForm({ server }: Props) {
             name="isAutoTurnOff"
             render={({ field }) => (
               <FormItem>
-                <div className="flex gap-1">
+                <div className="flex gap-1 items-center">
                   <FormControl>
                     <Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
                   </FormControl>

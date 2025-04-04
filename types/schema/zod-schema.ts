@@ -10,7 +10,6 @@ export const TAG_GROUP_SCHEMA = z
       position: z.number(),
     }),
   )
-  .min(1, { message: 'tag.min-tags-size' })
   .max(20, { message: 'tag.max-tags-size' });
 
 export const CreateSchematicSchema = z.object({

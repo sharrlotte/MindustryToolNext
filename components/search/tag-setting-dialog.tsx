@@ -29,11 +29,11 @@ export default function TagSettingDialog() {
       <DialogContent className="p-6">
         <DialogTitle />
         <DialogDescription />
-        <div className="flex gap-1">
+        <div className="flex gap-1 items-center">
           <Switch checked={showTagName} onCheckedChange={(value) => setConfig('showTagName', value, { path: '/' })} />
           <Tran className="text-sm" text="setting.show-tag-name" />
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1 items-center">
           <Switch checked={showTagNumber} onCheckedChange={(value) => setConfig('showTagNumber', value, { path: '/' })} />
           <Tran className="text-sm" text="setting.show-tag-number" />
         </div>

@@ -49,6 +49,10 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   const axios = useClientApi();
   const [file, setFile] = useState<File>();
@@ -152,7 +156,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
     <Form {...form}>
       <form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
         <ScrollContainer className="flex flex-col gap-2">
-          <img className="max-w-[60vw]" src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
+          <img className="max-w-[60vw] max-h-[60vh]" src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
           <UserCard user={session} />
           <FormField
             control={form.control}
@@ -161,7 +165,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
               <FormItem>
                 <EditComponent>
                   <EditOff>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 items-center">
                       <DetailTitle>{field.value}</DetailTitle>
                       <EditTrigger />
                     </div>
@@ -171,7 +175,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
                       <Tran text="name" />
                     </FormLabel>
                     <FormControl>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 items-center">
                         <Input {...field} />
                         <EditClose />
                       </div>
@@ -189,7 +193,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
               <FormItem>
                 <EditComponent>
                   <EditOff>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 items-center">
                       <DetailDescription>{field.value}</DetailDescription>
                       <EditTrigger />
                     </div>
@@ -199,7 +203,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
                       <Tran text="description" />
                     </FormLabel>
                     <FormControl>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 items-center">
                         <Textarea className="min-h-20 w-full" {...field} />
                         <EditClose />
                       </div>
@@ -230,12 +234,12 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
             name="isPrivate"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  <Tran text="is-private" />
-                </FormLabel>
                 <FormControl>
                   <Switch checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
+                <FormLabel>
+                  <Tran text="is-private" />
+                </FormLabel>
                 <FormMessage />
               </FormItem>
             )}

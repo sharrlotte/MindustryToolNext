@@ -1,7 +1,6 @@
 import { LanguagesIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { Fragment, Suspense, useCallback, useState } from 'react';
-import { debounce } from 'throttle-debounce';
+import { Fragment, Suspense, useState } from 'react';
 
 import HighLightTranslation from '@/app/[locale]/(main)/translation/highlight-translation';
 import { TranslationCardSkeleton } from '@/app/[locale]/(main)/translation/translation-card-skeleton';
@@ -72,6 +71,7 @@ type SearchCardProps = {
 
 function SearchCard({ translation }: SearchCardProps) {
   const { key, id, value, keyGroup, isTranslated, language: translationLanguage } = translation;
+  const [currentValue, setCurrentValue] = useState(value);
 
   const axios = useClientApi();
   const [isEdit, setEdit] = useState(false);
@@ -85,11 +85,9 @@ function SearchCard({ translation }: SearchCardProps) {
       key,
       keyGroup,
       language: translationLanguage,
-      value: translation.value,
+      value: currentValue,
     });
   };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleChange = useCallback(debounce(1000, create), []);
 
   return (
     <TableRow>
@@ -100,15 +98,15 @@ function SearchCard({ translation }: SearchCardProps) {
               <Textarea
                 className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
                 autoFocus
-                defaultValue={value ?? key}
-                onChange={(event) => (translation.value = event.target.value)}
+                defaultValue={currentValue ?? key}
+                onChange={(event) => setCurrentValue(event.target.value)}
                 onBlur={() => {
                   setEdit(false);
-                  handleChange();
+                  create();
                 }}
               />
             ) : (
-              <HighLightTranslation text={value ?? key} />
+              <HighLightTranslation text={currentValue ?? key} />
             )}
             <div className="text-muted-foreground text-xs flex items-center gap-2">
               {!isTranslated && <LanguagesIcon />}

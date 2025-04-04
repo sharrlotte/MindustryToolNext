@@ -1,5 +1,4 @@
-import { Fragment, useCallback, useState } from 'react';
-import { debounce } from 'throttle-debounce';
+import { Fragment, useState } from 'react';
 
 import HighLightTranslation from '@/app/[locale]/(main)/translation/highlight-translation';
 import { TranslationCardSkeleton } from '@/app/[locale]/(main)/translation/translation-card-skeleton';
@@ -72,6 +71,8 @@ type DiffCardProps = {
 
 function DiffCard({ translation, language }: DiffCardProps) {
   const { key, value, keyGroup } = translation;
+  const [currentValue, setCurrentValue] = useState(value);
+
   const axios = useClientApi();
   const [isEdit, setEdit] = useState(false);
   const { mutate, status } = useMutation({
@@ -84,11 +85,10 @@ function DiffCard({ translation, language }: DiffCardProps) {
       key,
       keyGroup,
       language,
-      value: translation.value,
+      value: currentValue,
     });
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleChange = useCallback(debounce(1000, create), []);
 
   return (
     <TableRow>
@@ -105,15 +105,16 @@ function DiffCard({ translation, language }: DiffCardProps) {
           {isEdit ? ( //
             <Textarea
               className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
-              placeholder={value ?? key}
-              onChange={(event) => (translation.value = event.target.value)}
+              placeholder={currentValue ?? key}
+              defaultValue={currentValue ?? key}
+              onChange={(event) => setCurrentValue(event.target.value)}
               onBlur={() => {
                 setEdit(false);
-                handleChange();
+                create();
               }}
             />
           ) : (
-            <HighLightTranslation text={value ?? key} />
+            <HighLightTranslation text={currentValue ?? key} />
           )}
           <TranslationStatus status={status} />
         </div>

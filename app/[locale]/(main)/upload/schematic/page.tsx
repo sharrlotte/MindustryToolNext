@@ -49,6 +49,10 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   return <Preview />;
 }
@@ -200,7 +204,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
       <form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
         <ScrollContainer className="flex flex-col gap-2">
           <div className="max-h-[min(100dvh,100dvw)] w-auto">
-            <img src={IMAGE_PREFIX + preview.image.trim()} alt="Schematic" />
+            <img className="max-w-[60vw] max-h-[60vh]" src={IMAGE_PREFIX + preview.image.trim()} alt="Schematic" />
           </div>
           <UserCard user={session} />
           <FormField
@@ -210,7 +214,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
               <FormItem>
                 <EditComponent>
                   <EditOff>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 items-center">
                       <DetailTitle>{field.value}</DetailTitle>
                       <EditTrigger />
                     </div>
@@ -220,7 +224,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                       <Tran text="name" />
                     </FormLabel>
                     <FormControl>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 items-center">
                         <Input {...field} />
                         <EditClose />
                       </div>
@@ -238,7 +242,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
               <FormItem>
                 <EditComponent>
                   <EditOff>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 items-center">
                       <DetailDescription>{field.value}</DetailDescription>
                       <EditTrigger />
                     </div>
@@ -248,7 +252,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                       <Tran text="description" />
                     </FormLabel>
                     <FormControl>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 items-center">
                         <Textarea className="min-h-20 w-full" {...field} />
                         <EditClose />
                       </div>
