@@ -158,12 +158,12 @@ function AddPluginForm() {
                 name="isPrivate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      <Tran text="is-private" />
-                    </FormLabel>
                     <FormControl>
                       <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
+                    <FormLabel>
+                      <Tran text="is-private" />
+                    </FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}

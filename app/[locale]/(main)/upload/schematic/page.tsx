@@ -49,6 +49,8 @@ import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
+/* eslint-disable @next/next/no-img-element */
+
 export default function Page() {
   return <Preview />;
 }
@@ -210,7 +212,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
               <FormItem>
                 <EditComponent>
                   <EditOff>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 items-center">
                       <DetailTitle>{field.value}</DetailTitle>
                       <EditTrigger />
                     </div>
@@ -220,7 +222,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                       <Tran text="name" />
                     </FormLabel>
                     <FormControl>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 items-center">
                         <Input {...field} />
                         <EditClose />
                       </div>
@@ -238,7 +240,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
               <FormItem>
                 <EditComponent>
                   <EditOff>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 items-center">
                       <DetailDescription>{field.value}</DetailDescription>
                       <EditTrigger />
                     </div>
@@ -248,7 +250,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
                       <Tran text="description" />
                     </FormLabel>
                     <FormControl>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 items-center">
                         <Textarea className="min-h-20 w-full" {...field} />
                         <EditClose />
                       </div>

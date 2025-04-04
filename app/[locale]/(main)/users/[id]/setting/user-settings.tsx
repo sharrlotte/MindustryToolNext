@@ -13,7 +13,7 @@ export default function UserSettings() {
 
   return (
     <div>
-      <div className="flex gap-1">
+      <div className="flex gap-1 items-center">
         <Switch checked={showTagName} onCheckedChange={(value) => setConfig('showTagName', value, { path: '/' })} />
         <Tran text="setting.show-tag-name" />
       </div>
