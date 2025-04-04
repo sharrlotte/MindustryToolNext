@@ -42,18 +42,18 @@ export async function POST(req: NextRequest) {
         const [r, g, b, a] = [data[i], data[i + 1], data[i + 2], data[i + 3]];
 
         // Find closest color and block
-        const [nr, ng, nb, na, blockName] = findClosestColor(r, g, b, a);
+        const [nr, ng, nb, na, sorterConfig] = findClosestColor(r, g, b, a);
 
-        // Store processed color
         processedData[i] = nr;
         processedData[i + 1] = ng;
         processedData[i + 2] = nb;
         processedData[i + 3] = na;
+        // Store processed color
 
         // Add block if we have a valid block type
-        if (blockName) {
+        if (sorterConfig) {
           blocks.push({
-            block: blockName,
+            block: 'sorter',
             x: x,
             y: y,
             config: null,
