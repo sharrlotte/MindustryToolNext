@@ -33,7 +33,7 @@ export default function Page() {
         });
 
         if (res.ok) {
-          return (await res.json()) as string;
+          return await res.text();
         }
       }
       return null;
