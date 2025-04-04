@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
@@ -12,6 +11,8 @@ import useClientApi from '@/hooks/use-client';
 import { getSchematicPreview } from '@/query/schematic';
 
 import { useQuery } from '@tanstack/react-query';
+
+/* eslint-disable @next/next/no-img-element */
 
 export default function Page() {
   const [image, setImage] = useState<File | null>(null);
@@ -59,7 +60,7 @@ export default function Page() {
         !!preview && (
           <div>
             Preview
-            <Image className="w-[50vw]" fill src={IMAGE_PREFIX + preview} loader={({ src }) => src} alt="Processed" />
+            <img className="w-[50vw]" src={IMAGE_PREFIX + preview} alt="Processed" />
             <CopyButton data={data} />
           </div>
         )

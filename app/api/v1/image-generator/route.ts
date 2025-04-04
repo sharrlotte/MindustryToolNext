@@ -33,7 +33,6 @@ export async function POST(req: NextRequest) {
     const { data, info } = await sharp(buffer).resize(targetWidth, targetHeight, { kernel: 'nearest' }).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 
     const blocks: BlockData[] = [];
-    const processedData = Buffer.alloc(data.length);
 
     // Process each pixel in the scaled-down image
     for (let y = 0; y < info.height; y++) {
@@ -42,12 +41,7 @@ export async function POST(req: NextRequest) {
         const [r, g, b, a] = [data[i], data[i + 1], data[i + 2], data[i + 3]];
 
         // Find closest color and block
-        const [nr, ng, nb, na, sorterConfig] = findClosestColor(r, g, b, a);
-
-        processedData[i] = nr;
-        processedData[i + 1] = ng;
-        processedData[i + 2] = nb;
-        processedData[i + 3] = na;
+        const sorterConfig = findClosestColor(r, g, b, a);
         // Store processed color
 
         // Add block if we have a valid block type
@@ -77,7 +71,6 @@ export async function POST(req: NextRequest) {
       [...new Set(blocks.map(({ block }) => block))],
       blocks,
     );
-
 
     return new NextResponse(schematic);
   } catch (error) {

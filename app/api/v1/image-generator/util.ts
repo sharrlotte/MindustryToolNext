@@ -106,5 +106,5 @@ export function findClosestColor(r: number, g: number, b: number, a: number) {
       closestColor = [cr, cg, cb, ca, bc];
     }
   }
-  return closestColor;
+  return closestColor[4];
 }
