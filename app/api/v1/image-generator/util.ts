@@ -34,7 +34,6 @@ export function createSchematic(width: number, height: number, metadata: Record<
   writeShort(width);
   writeShort(height);
 
-  metadata['labels'] = JSON.stringify(Object.values(metadata));
   writeByte(Object.keys(metadata).length);
   for (const [key, value] of Object.entries(metadata)) {
     writeUTF(key);
