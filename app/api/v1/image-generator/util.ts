@@ -9,10 +9,6 @@ export interface BlockData {
 }
 
 export function createSchematic(width: number, height: number, metadata: Record<string, string>, blockPalette: string[], blocks: BlockData[]): string {
-  if (width > 128 || height > 128) {
-    throw new Error('Invalid schematic: Max size is 128x128.');
-  }
-
   const HEADER = Buffer.from('msch', 'utf-8');
   const VERSION = Buffer.from([1]);
 

@@ -44,7 +44,7 @@ export default function Page() {
     <div className="space-y-4">
       <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
       <div>
-        Block size: {blockSize} <Slider value={blockSize} onValueChange={setBlockSize} min={2} max={20} step={1} />
+        Block size: {blockSize} <Slider value={blockSize} onValueChange={setBlockSize} min={1} max={20} step={1} />
       </div>
       {isPending ? (
         <div className="flex w-full items-center justify-center">
