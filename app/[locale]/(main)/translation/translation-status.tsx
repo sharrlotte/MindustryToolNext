@@ -1,7 +1,7 @@
-import { CheckCircleIcon, XCircleIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/router-spinner';
 
 import { useMutation } from '@tanstack/react-query';
+import { CheckIcon, XIcon } from '@/components/common/icons';
 
 type TranslationStatusProps = {
   status: ReturnType<typeof useMutation>['status'];
@@ -14,8 +14,8 @@ export default function TranslationStatus({ status }: TranslationStatusProps) {
   }
 
   if (status === 'success') {
-    return <CheckCircleIcon className="text-success" />;
+    return <CheckIcon className="text-success" />;
   }
 
-  return <XCircleIcon className="text-destructive" />;
+  return <XIcon className="text-destructive" />;
 }
