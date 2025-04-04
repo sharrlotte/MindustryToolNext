@@ -8,11 +8,12 @@ export interface BlockData {
   rotation: number;
 }
 
-export function createSchematic(width: number, height: number, metadata: Record<string, string>, blockPalette: string[], blocks: BlockData[]): string {
-  if (width > 128 || height > 128) {
-    throw new Error('Invalid schematic: Max size is 128x128.');
-  }
+const metadata = {
+  author: 'MindustryTool',
+  description: 'Generate it at https://mindustry-tool.com/en/image-generator/router',
+};
 
+export function createSchematic(width: number, height: number, blockPalette: string[], blocks: BlockData[]): string {
   const HEADER = Buffer.from('msch', 'utf-8');
   const VERSION = Buffer.from([1]);
 
@@ -34,7 +35,6 @@ export function createSchematic(width: number, height: number, metadata: Record<
   writeShort(width);
   writeShort(height);
 
-  metadata['labels'] = JSON.stringify(Object.values(metadata));
   writeByte(Object.keys(metadata).length);
   for (const [key, value] of Object.entries(metadata)) {
     writeUTF(key);
