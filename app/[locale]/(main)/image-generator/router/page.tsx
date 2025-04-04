@@ -4,13 +4,14 @@ import { useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
 import LoadingSpinner from '@/components/common/router-spinner';
+import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 
 import { IMAGE_PREFIX } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import { getSchematicPreview } from '@/query/schematic';
 
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -19,9 +20,9 @@ export default function Page() {
   const [blockSize, setBlockSize] = useState([8]);
   const axios = useClientApi();
 
-  const { data, isPending } = useQuery({
-    queryKey: ['image-generator', image],
-    queryFn: async () => {
+  const { data, isPending, mutate } = useMutation({
+    mutationKey: ['image-generator'],
+    mutationFn: async () => {
       if (image) {
         const formData = new FormData();
         formData.append('image', image);
@@ -38,10 +39,9 @@ export default function Page() {
       }
       return null;
     },
-    enabled: !!image,
   });
 
-  const { data: preview, isPending: isGeneratingPreview } = useQuery({
+  const { data: preview, isLoading: isGeneratingPreview } = useQuery({
     queryKey: ['image-preview', data],
     queryFn: () => (data ? getSchematicPreview(axios, { data }) : null),
     enabled: !!data,
@@ -50,6 +50,7 @@ export default function Page() {
   return (
     <div className="space-y-4">
       <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
+      {image && <Button onClick={() => mutate()}>Process</Button>}
       <div>
         Block size: {blockSize} <Slider value={blockSize} onValueChange={setBlockSize} min={2} max={20} step={1} />
       </div>
