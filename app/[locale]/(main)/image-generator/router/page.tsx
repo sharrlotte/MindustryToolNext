@@ -1,70 +1,66 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 
+import CopyButton from '@/components/button/copy-button';
 import LoadingSpinner from '@/components/common/router-spinner';
-import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 
-import { useMutation } from '@tanstack/react-query';
+import { IMAGE_PREFIX } from '@/constant/constant';
+import useClientApi from '@/hooks/use-client';
+import { getSchematicPreview } from '@/query/schematic';
 
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
-
-/* eslint-disable @next/next/no-img-element */
+import { useQuery } from '@tanstack/react-query';
 
 export default function Page() {
   const [image, setImage] = useState<File | null>(null);
   const [blockSize, setBlockSize] = useState([8]);
+  const axios = useClientApi();
 
-  const handleUpload = async () => {
-    if (!image) return;
+  const { data, isPending } = useQuery({
+    queryKey: ['image-generator', image],
+    queryFn: async () => {
+      if (image) {
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('blockSize', blockSize[0].toString());
 
-    const formData = new FormData();
-    formData.append('image', image);
-    formData.append('blockSize', blockSize[0].toString());
+        const res = await fetch('/api/v1/image-generator', {
+          method: 'POST',
+          body: formData,
+        });
 
-    const res = await fetch('/api/v1/image-generator', {
-      method: 'POST',
-      body: formData,
-    });
+        if (res.ok) {
+          return (await res.json()) as string;
+        }
+      }
+      return null;
+    },
+    enabled: !!image,
+  });
 
-    if (res.ok) {
-      const blob = await res.blob();
-      return URL.createObjectURL(blob);
-    }
-  };
-
-  const { data, isPending, mutate } = useMutation({ mutationFn: () => handleUpload() });
+  const { data: preview, isPending: isGeneratingPreview } = useQuery({
+    queryKey: ['image-preview', data],
+    queryFn: () => (data ? getSchematicPreview(axios, { data }) : null),
+    enabled: !!data,
+  });
 
   return (
     <div className="space-y-4">
       <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
-      {image && <Button onClick={() => mutate()}>Process Image</Button>}
       <div>
         Block size: {blockSize} <Slider value={blockSize} onValueChange={setBlockSize} min={2} max={20} step={1} />
       </div>
-      {isPending ? (
+      {isPending || isGeneratingPreview ? (
         <LoadingSpinner />
       ) : (
-        data && (
+        !!data &&
+        !!preview && (
           <div>
             Preview
-            <img className="w-[50vw]" src={data} alt="Processed" />
+            <Image className="w-[50vw]" fill src={IMAGE_PREFIX + preview} loader={({ src }) => src} alt="Processed" />
+            <CopyButton data={data} />
           </div>
         )
       )}

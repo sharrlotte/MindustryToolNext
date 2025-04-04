@@ -56,7 +56,11 @@ export async function POST(req: NextRequest) {
             block: 'sorter',
             x: x,
             y: y,
-            config: null,
+            config: {
+              type: 'item',
+              id: sorterConfig.id,
+              typeId: 0,
+            },
             rotation: 0,
           });
         }
@@ -74,19 +78,8 @@ export async function POST(req: NextRequest) {
       blocks,
     );
 
-    console.log(schematic);
 
-    // Create preview image
-    const outputBuffer = await sharp(processedData, {
-      raw: { width: info.width, height: info.height, channels: 4 },
-    })
-      .resize(width, height, { kernel: 'nearest' })
-      .toFormat('png')
-      .toBuffer();
-
-    return new NextResponse(outputBuffer, {
-      headers: { 'Content-Type': 'image/png' },
-    });
+    return new NextResponse(schematic);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Image processing failed' }, { status: 500 });
