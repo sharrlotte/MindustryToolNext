@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
           blocks.push({
             block: 'sorter',
             x: x,
-            y: y,
+            y: info.height - y,
             config: {
               type: 'item',
               id: sorterConfig.id,
