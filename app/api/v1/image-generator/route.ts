@@ -64,10 +64,6 @@ export async function POST(req: NextRequest) {
     const schematic = createSchematic(
       targetWidth,
       targetHeight,
-      {
-        author: 'Image',
-        description: 'Image',
-      },
       [...new Set(blocks.map(({ block }) => block))],
       blocks,
     );

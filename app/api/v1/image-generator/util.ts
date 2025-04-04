@@ -8,7 +8,12 @@ export interface BlockData {
   rotation: number;
 }
 
-export function createSchematic(width: number, height: number, metadata: Record<string, string>, blockPalette: string[], blocks: BlockData[]): string {
+const metadata = {
+  author: 'MindustryTool',
+  description: 'Generate it at https://mindustry-tool.com/en/image-generator/router',
+};
+
+export function createSchematic(width: number, height: number, blockPalette: string[], blocks: BlockData[]): string {
   const HEADER = Buffer.from('msch', 'utf-8');
   const VERSION = Buffer.from([1]);
 
