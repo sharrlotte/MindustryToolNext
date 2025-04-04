@@ -18,7 +18,6 @@ const nextConfig: NextConfig = {
       hmrRefreshes: true,
     },
   },
-  productionBrowserSourceMaps: true,
   crossOrigin: 'anonymous',
   reactStrictMode: true,
   images: {
