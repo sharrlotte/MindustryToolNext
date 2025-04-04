@@ -43,11 +43,9 @@ export default function Page() {
   return (
     <div className="space-y-4">
       <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files?.[0] || null)} />
-      {image && <Button onClick={() => mutate()}>Process</Button>}
       <div>
         Block size: {blockSize} <Slider value={blockSize} onValueChange={setBlockSize} min={2} max={20} step={1} />
       </div>
-      Data{data}
       {isPending ? (
         <div className="flex w-full items-center justify-center">
           <LoadingSpinner className="m-0" />
@@ -60,6 +58,11 @@ export default function Page() {
             <CopyButton data={data} />
           </>
         )
+      )}
+      {image && (
+        <Button onClick={() => mutate()} disabled={isPending}>
+          Process
+        </Button>
       )}
     </div>
   );
@@ -81,5 +84,5 @@ function Preview({ data }: { data: string }) {
       </div>
     );
   }
-  return <div>{preview && <img className="w-[50vw]" src={IMAGE_PREFIX + preview} alt="Processed" />}</div>;
+  return <div>{preview && <img className="w-[50vw]" src={IMAGE_PREFIX + preview.image} alt="Processed" />}</div>;
 }
