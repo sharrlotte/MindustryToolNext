@@ -18,10 +18,9 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 export default function Page() {
   const [image, setImage] = useState<File | null>(null);
   const [blockSize, setBlockSize] = useState([8]);
-  const axios = useClientApi();
 
   const { data, isPending, mutate } = useMutation({
-    mutationKey: ['image-generator'],
+    mutationKey: ['image-generator', image],
     mutationFn: async () => {
       if (image) {
         const formData = new FormData();
@@ -34,17 +33,11 @@ export default function Page() {
         });
 
         if (res.ok) {
-          return (await res.json()) as string;
+          return await res.text();
         }
       }
       return null;
     },
-  });
-
-  const { data: preview, isLoading: isGeneratingPreview } = useQuery({
-    queryKey: ['image-preview', data],
-    queryFn: () => (data ? getSchematicPreview(axios, { data }) : null),
-    enabled: !!data,
   });
 
   return (
@@ -54,18 +47,39 @@ export default function Page() {
       <div>
         Block size: {blockSize} <Slider value={blockSize} onValueChange={setBlockSize} min={2} max={20} step={1} />
       </div>
-      {isPending || isGeneratingPreview ? (
-        <LoadingSpinner />
+      Data{data}
+      {isPending ? (
+        <div className="flex w-full items-center justify-center">
+          <LoadingSpinner className="m-0" />
+          <span>Generating schematic</span>
+        </div>
       ) : (
-        !!data &&
-        !!preview && (
-          <div>
-            Preview
-            <img className="w-[50vw]" src={IMAGE_PREFIX + preview} alt="Processed" />
+        data && (
+          <>
+            <Preview data={data} />
             <CopyButton data={data} />
-          </div>
+          </>
         )
       )}
     </div>
   );
+}
+
+function Preview({ data }: { data: string }) {
+  const axios = useClientApi();
+
+  const { data: preview, isLoading } = useQuery({
+    queryKey: ['image-preview', data],
+    queryFn: () => (data ? getSchematicPreview(axios, { data }) : null),
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex w-full items-center justify-center">
+        <LoadingSpinner className="m-0" />
+        <span>Generating preview</span>
+      </div>
+    );
+  }
+  return <div>{preview && <img className="w-[50vw]" src={IMAGE_PREFIX + preview} alt="Processed" />}</div>;
 }
