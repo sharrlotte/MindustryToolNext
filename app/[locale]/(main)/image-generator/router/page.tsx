@@ -16,6 +16,8 @@ import useClientApi from '@/hooks/use-client';
 import { getSchematicPreview } from '@/query/schematic';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { toast } from '@/components/ui/sonner';
+import ErrorMessage from '@/components/common/error-message';
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -62,6 +64,9 @@ export default function Page() {
       }
       return null;
     },
+    onError: (e) => {
+      toast.error(<Tran text="error" />, { description: e?.message });
+    },
   });
 
   return (
@@ -98,12 +103,12 @@ export default function Page() {
         </div>
       </div>
       {isPending ? (
-        <div className="flex w-full items-center justify-center gap-1">
+        <div className="flex w-full items-center justify-center gap-1 p-2 rounded-lg border">
           <LoadingSpinner className="m-0" />
           <Tran text="image-generator.generating-schematic" />
         </div>
       ) : (
-        <section className="flex flex-wrap gap-2">
+        <section className="flex flex-col gap-2">
           {data?.map((item, index) => (
             <div key={index} className="border rounded-lg p-2 relative space-y-2">
               <span className="font-bold align-text-top">{index}</span>
@@ -131,7 +136,7 @@ export default function Page() {
 function Preview({ data }: { data: string }) {
   const axios = useClientApi();
 
-  const { data: preview, isLoading } = useQuery({
+  const { data: preview, isLoading, isError, error } = useQuery({
     queryKey: ['image-preview', data],
     queryFn: () => (data ? getSchematicPreview(axios, { data }) : null),
     retry: false,
@@ -144,6 +149,10 @@ function Preview({ data }: { data: string }) {
         <Tran text="image-generator.generating-preview" />
       </div>
     );
+  }
+
+  if (isError) {
+    return <ErrorMessage error={error} />
   }
   return <div>{preview && <img className="max-w-[50vw] max-h-[50vh] rounded-md" src={IMAGE_PREFIX + preview.image} alt="Processed" />}</div>;
 }
