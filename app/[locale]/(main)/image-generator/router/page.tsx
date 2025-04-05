@@ -145,7 +145,7 @@ function Preview({ data }: { data: string }) {
       </div>
     );
   }
-  return <div>{preview && <img className="max-w-[50vw] max-h-[50vh]" src={IMAGE_PREFIX + preview.image} alt="Processed" />}</div>;
+  return <div>{preview && <img className="max-w-[50vw] max-h-[50vh] rounded-md" src={IMAGE_PREFIX + preview.image} alt="Processed" />}</div>;
 }
 
 function DownloadButton({ data }: { data: string }) {
