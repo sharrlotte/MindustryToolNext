@@ -325,7 +325,7 @@ function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
         </DialogTitle>
         <div className="flex flex-col gap-2">
           <SearchBar>
-            <SearchInput placeholder="upload.post-name" value={name} onChange={(event) => setName(event.currentTarget.value)} onClear={() => setName('')} />
+            <SearchInput placeholder="upload.post-name" value={name} onChange={(value) => setName(value)} onClear={() => setName('')} />
             <SearchIcon />
           </SearchBar>
           <div className="flex w-full flex-col gap-1">{render()}</div>

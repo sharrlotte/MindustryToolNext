@@ -109,7 +109,7 @@ export default function TranslationPage() {
             </>
           )}
           <SearchBar>
-            <SearchInput placeholder={t('search-by-key')} value={key} onChange={(event) => setState({ key: event.currentTarget.value })} />
+            <SearchInput placeholder={t('search-by-key')} value={key} onChange={(value) => setState({ key: value })} />
           </SearchBar>
           <RefreshButton />
           <AddNewKeyDialog />
