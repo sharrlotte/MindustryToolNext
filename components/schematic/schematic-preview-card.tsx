@@ -22,7 +22,7 @@ type SchematicPreviewCardProps = {
   schematic: Schematic;
 };
 
-export default function SchematicPreviewCard({ schematic: { id, name, likes, dislikes, downloadCount } }: SchematicPreviewCardProps) {
+export default function SchematicPreviewCard({ schematic: { id, name, likes, dislikes, downloadCount, itemId } }: SchematicPreviewCardProps) {
   const axios = useClientApi();
   const { locale } = useParams();
 
@@ -51,9 +51,9 @@ export default function SchematicPreviewCard({ schematic: { id, name, likes, dis
       <PreviewDescription>
         <PreviewHeader>
           <ColorText className="line-clamp-1" text={name} />
-          <LikeAndDislike like={likes} dislike={dislikes} />
         </PreviewHeader>
         <PreviewActions>
+          <LikeAndDislike like={likes} dislike={dislikes} itemId={itemId} />
           <CopyButton content={copyContent} data={getData} />
           <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
         </PreviewActions>

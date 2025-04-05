@@ -1,23 +1,27 @@
-import { DislikeIcon, LikeIcon } from '@/components/common/icons';
+'use client'
 
-import { cn } from '@/lib/utils';
+import DislikeButton from '@/components/like/dislike-button';
+import LikeButton from '@/components/like/like-button';
+import LikeComponent from '@/components/like/like-component';
+import { Batcher } from '@/lib/batcher';
+
+import { useQuery } from '@tanstack/react-query';
 
 type Props = {
+  itemId: string
   like: number;
   dislike: number;
 };
-export default function LikeAndDislike({ like, dislike }: Props) {
+export default function LikeAndDislike({ itemId, like, dislike }: Props) {
+  const { data } = useQuery({
+    queryKey: ['like', itemId],
+    queryFn: () => Batcher.like.get(itemId),
+  })
+
   return (
-    <div className="flex gap-2 text-muted-foreground items-center font-thin">
-      <span className={cn('flex gap-2 transition-colors items-center text-lg')} title="like-count">
-        <LikeIcon className="size-5 text-success" />
-        {like}
-      </span>
-      |
-      <span className={cn('flex gap-2 transition-colors items-center text-lg')} title="dislike-count">
-        <DislikeIcon className="size-[19px] text-destructive" />
-        {dislike}
-      </span>
-    </div>
+    <LikeComponent initialLikeCount={like} initialDislikeCount={dislike} itemId={itemId} initialLikeData={data} >
+      <LikeButton />
+      <DislikeButton />
+    </LikeComponent>
   );
 }
