@@ -9,13 +9,11 @@ import { withSentryConfig } from '@sentry/nextjs';
 const nextConfig: NextConfig = {
   experimental: {
     reactCompiler: true,
-    scrollRestoration: true,
   },
-  pageExtensions: ['ts', 'tsx'],
+  pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
   logging: {
     fetches: {
       fullUrl: true,
-      hmrRefreshes: true,
     },
   },
   crossOrigin: 'anonymous',

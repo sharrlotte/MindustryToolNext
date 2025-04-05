@@ -213,7 +213,7 @@ export function MlogNode({ data }: InstructionNode) {
   data.node = type;
 
   return (
-    <div className="custom-node p-1.5 rounded-sm text-white min-w-40 max-w-[440px]" style={{ backgroundColor: color }}>
+    <div className="custom-node p-1.5 rounded-sm text-white min-w-40 max-w-[440px]" style={{ backgroundColor: color }} data-xy-minimap-node-background-color={color}>
       {Array(inputs)
         .fill(1)
         .map((_, i) => (
