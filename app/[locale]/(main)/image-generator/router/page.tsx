@@ -142,7 +142,6 @@ function Preview({ data }: { data: string }) {
   const { data: preview, isLoading, isError, error } = useQuery({
     queryKey: ['image-preview', data],
     queryFn: () => (data ? getSchematicPreview(axios, { data }) : null),
-    retry: false,
   });
 
   if (isLoading) {
