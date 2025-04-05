@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { ReactNode, createContext, useCallback, useContext, useState } from 'react';
 import React from 'react';
 
 import Tran from '@/components/common/tran';
@@ -8,18 +8,9 @@ import { LikeAction } from '@/constant/enum';
 import { useSession } from '@/context/session-context';
 import useClientApi from '@/hooks/use-client';
 import { postLike } from '@/query/like';
-import { LikeData } from '@/types/data/LikeData';
 import { Like } from '@/types/response/Like';
 
-import { useMutation } from '@tanstack/react-query';
-
-export const FakeLike: LikeData = {
-  userId: '',
-  itemId: '',
-  state: 0,
-  like: 0,
-  dislike: 0,
-};
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const DISLIKE = -1;
 const LIKE = 1;
@@ -28,7 +19,7 @@ const UNSET = 0;
 type LikeComponentContextType = {
   like: number;
   dislike: number;
-  likeData: Like & { like: number; dislike: number };
+  likeData: Like;
   isLoading: boolean;
   handleAction: (action: 'LIKE' | 'DISLIKE') => void;
 };
@@ -52,20 +43,18 @@ type LikeComponentProps = {
 };
 
 export default function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialLikeData, children, itemId }: LikeComponentProps) {
-
+  const queryClient = useQueryClient();
   const { session } = useSession();
   const axios = useClientApi();
-  const [cache, setCache] = useState<Record<string, Like & { like: number; dislike: number }>>({});
-  const likeData = useMemo(
-    () => ({
-      ...(cache[itemId] ?? {
-        ...(initialLikeData ?? FakeLike),
-        like: initialLikeCount,
-        dislike: initialDislikeCount,
-      }),
-    }),
-    [cache, initialLikeCount, initialDislikeCount, initialLikeData, itemId],
-  );
+  const [likeData, setLikeData] = useState({
+    data: initialLikeData ?? {
+      userId: '',
+      itemId,
+      state: 0,
+    },
+    like: initialLikeCount,
+    dislike: initialDislikeCount,
+  });
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (action: LikeAction) =>
@@ -73,7 +62,10 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
         action,
         itemId,
       }),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['like', itemId] }),
   });
+
+  console.log(likeData);
 
   const handleAction = useCallback(
     (action: 'LIKE' | 'DISLIKE') => {
@@ -90,10 +82,10 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
       let state: 0 | 1 | -1;
 
       if (action === 'LIKE') {
-        if (likeData.state === LIKE) {
+        if (likeData.data.state === LIKE) {
           likeChange = -1;
           state = UNSET;
-        } else if (likeData.state === DISLIKE) {
+        } else if (likeData.data.state === DISLIKE) {
           likeChange = 1;
           dislikeChange = -1;
           state = LIKE;
@@ -102,10 +94,10 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
           state = LIKE;
         }
       } else {
-        if (likeData.state === DISLIKE) {
+        if (likeData.data.state === DISLIKE) {
           dislikeChange = -1;
           state = UNSET;
-        } else if (likeData.state === LIKE) {
+        } else if (likeData.data.state === LIKE) {
           dislikeChange = 1;
           likeChange = -1;
           state = DISLIKE;
@@ -115,41 +107,34 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
         }
       }
 
-      likeData.state = state;
+      likeData.data.state = state;
 
-      setCache((prev) => ({
-        ...prev,
-        [itemId]: {
-          ...likeData,
-          state,
-          like: likeData.like + likeChange,
-          dislike: likeData.dislike + dislikeChange,
-        },
-      }));
+      setLikeData({
+        data: { ...likeData.data, state },
+        like: likeData.like + likeChange,
+        dislike: likeData.dislike + dislikeChange,
+      });
 
       return mutate(action, {
         onError: () => {
-          setCache((prev) => ({ ...prev, [itemId]: likeData }));
+          setLikeData({ ...likeData });
         },
-        onSuccess: (result) => {
-          setCache((prev) => ({
-            ...prev,
-            [itemId]: {
-              like: likeData.like + result.amountLike,
-              dislike: likeData.dislike + result.amountDislike,
-              ...result.like,
-            },
-          }));
+        onSuccess: () => {
+          setLikeData({
+            data: { ...likeData.data, state },
+            like: likeData.like + likeChange,
+            dislike: likeData.dislike + dislikeChange,
+          });
         },
       });
     },
-    [isPending, itemId, likeData, mutate, session],
+    [isPending, likeData, mutate, session],
   );
 
   const contextValue = {
-    like: cache[itemId]?.like ?? initialLikeCount,
-    dislike: cache[itemId]?.dislike ?? initialDislikeCount,
-    likeData,
+    like: likeData.like,
+    dislike: likeData.dislike,
+    likeData: likeData.data,
     isLoading: isPending,
     handleAction,
   };
