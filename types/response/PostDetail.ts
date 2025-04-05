@@ -1,4 +1,3 @@
-import { Like } from '@/types/response/Like';
 import { Status } from '@/types/response/Status';
 import { DetailTagDto } from '@/types/response/Tag';
 
@@ -20,7 +19,6 @@ export type PostDetail = {
       content: string;
     }
   >;
-  userLike: Like;
   createdAt: number;
   itemId: string;
   isVerified: boolean;

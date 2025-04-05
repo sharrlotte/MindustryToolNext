@@ -9,9 +9,6 @@ import CommentSection from '@/components/common/comment-section';
 import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
 import { ShareIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import DislikeButton from '@/components/like/dislike-button';
-import LikeButton from '@/components/like/like-button';
-import LikeComponent from '@/components/like/like-component';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
@@ -23,6 +20,7 @@ import useToastAction from '@/hooks/use-toast-action';
 import ProtectedElement from '@/layout/protected-element';
 import { getSchematicData } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
+import LikeAndDislike from '@/components/like/like-and-dislike';
 
 const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic-button'));
 const TakeDownSchematicButton = dynamic(() => import('@/components/schematic/take-down-schematic-button'));
@@ -42,7 +40,6 @@ export default function SchematicDetailCard({
     itemId,
     likes,
     dislikes,
-    userLike,
     userId,
     isVerified,
     width,
@@ -90,10 +87,7 @@ export default function SchematicDetailCard({
         <DetailActions>
           <CopyButton title={copyContent} data={getData} />
           <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
-          <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes} initialLikeData={userLike}>
-            <LikeButton />
-            <DislikeButton />
-          </LikeComponent>
+          <LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
           <EllipsisButton>
             <ProtectedElement
               session={session}

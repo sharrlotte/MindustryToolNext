@@ -5,10 +5,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 
-import useClientApi from '@/hooks/use-client';
+import { Batcher } from '@/lib/batcher';
 import { cn } from '@/lib/utils';
 import { persister } from '@/query/config/query-config';
-import { getUser } from '@/query/user';
 import { MessageGroup } from '@/types/response/Message';
 
 import { useQuery } from '@tanstack/react-query';
@@ -20,11 +19,10 @@ type Props = {
 
 export function MessageCard({ className, message }: Props) {
   const { userId, contents, createdAt } = message;
-  const axios = useClientApi();
 
   const { data } = useQuery({
     queryKey: ['users', userId],
-    queryFn: () => getUser(axios, { id: userId }),
+    queryFn: () => Batcher.user.get(userId),
     persister,
   });
 

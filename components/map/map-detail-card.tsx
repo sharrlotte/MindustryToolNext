@@ -8,9 +8,6 @@ import CommentSection from '@/components/common/comment-section';
 import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
 import { ShareIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import DislikeButton from '@/components/like/dislike-button';
-import LikeButton from '@/components/like/like-button';
-import LikeComponent from '@/components/like/like-component';
 import { DeleteMapButton } from '@/components/map/delete-map-button';
 import { TakeDownMapButton } from '@/components/map/take-down-map-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
@@ -20,12 +17,13 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
 import { MapDetail } from '@/types/response/MapDetail';
+import LikeAndDislike from '@/components/like/like-and-dislike';
 
 type MapDetailCardProps = {
   map: MapDetail;
 };
 
-export default function MapDetailCard({ map: { id, name, description, tags, verifierId, itemId, likes, dislikes, userLike, userId, isVerified, width, height, downloadCount } }: MapDetailCardProps) {
+export default function MapDetailCard({ map: { id, name, description, tags, verifierId, itemId, likes, dislikes, userId, isVerified, width, height, downloadCount } }: MapDetailCardProps) {
   const { session } = useSession();
   const { locale } = useParams();
 
@@ -56,10 +54,7 @@ export default function MapDetailCard({ map: { id, name, description, tags, veri
         </DetailInfo>
         <DetailActions>
           <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
-          <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes} initialLikeData={userLike}>
-            <LikeButton />
-            <DislikeButton />
-          </LikeComponent>
+          <LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
           <EllipsisButton>
             <ProtectedElement
               session={session}

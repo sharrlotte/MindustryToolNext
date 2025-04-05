@@ -23,10 +23,10 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { deleteCommentById, getAllCommentCount, getAllComments } from '@/query/comment';
 import { persister } from '@/query/config/query-config';
 import { ItemPaginationQuery } from '@/query/search-query';
-import { getUser } from '@/query/user';
 import { Comment } from '@/types/response/Comment';
 
 import { useMutation } from '@tanstack/react-query';
+import { Batcher } from '@/lib/batcher';
 
 export default function Client() {
   return (
@@ -64,7 +64,7 @@ function CommentCard({ comment }: CommentCardProps) {
 
   const { data } = useClientQuery({
     queryKey: ['users', userId],
-    queryFn: (axios) => getUser(axios, { id: userId }),
+    queryFn: () => Batcher.user.get(userId),
     persister,
   });
 

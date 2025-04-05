@@ -116,8 +116,8 @@ export default function Page() {
           gridTemplateRows: `repeat(${splitVertical}, minmax(0, 1fr))`,
         }}>
           {data?.map((item, index) => (
-            <div key={index} className="border rounded-lg p-2 relative space-y-2">
-              <span className="font-bold align-text-top">{index}</span>
+            <div key={index} className="border rounded-lg p-2 space-y-2 relative">
+              <span className="font-bold align-text-top absolute top-1 left-2">{index}</span>
               <Preview data={item} />
               <div className="flex items-center gap-1 flex-wrap">
                 <CopyButton className="gap-1 flex" data={item}>
