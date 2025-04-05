@@ -52,6 +52,7 @@ type LikeComponentProps = {
 };
 
 export default function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialLikeData, children, itemId }: LikeComponentProps) {
+
   const { session } = useSession();
   const axios = useClientApi();
   const [cache, setCache] = useState<Record<string, Like & { like: number; dislike: number }>>({});

@@ -15,7 +15,7 @@ type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
   post: Post;
 };
 
-function PostPreviewCard({ className, post: { id, imageUrls, title, likes, dislikes, createdAt, userId }, ...rest }: PostPreviewCardProps) {
+function PostPreviewCard({ className, post: { id, imageUrls, title, likes, dislikes, itemId, createdAt, userId }, ...rest }: PostPreviewCardProps) {
   const { locale } = useParams();
 
   const link = `${env.url.base}/${locale}/posts/${id}`;
@@ -31,10 +31,10 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, disli
           <div className="flex flex-col gap-2">
             <div>
               <IdUserCard id={userId} />
-              <LikeAndDislike like={likes} dislike={dislikes} />
               <span className="text-muted-foreground">{new Date(createdAt).toLocaleString()}</span>
             </div>
             <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
+              <LikeAndDislike like={likes} dislike={dislikes} itemId={itemId} />
               <CopyButton position="absolute-right" variant="ghost" data={link} content={link}>
                 <ShareIcon />
               </CopyButton>
