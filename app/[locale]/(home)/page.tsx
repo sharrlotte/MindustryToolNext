@@ -222,12 +222,12 @@ async function Hero({ locale }: { locale: Locale }) {
           {/* Your comprehensive platform for Mindustry schematics, maps, servers, and community resources */}
         </p>
         <div className="grid grid-cols-2 w-fit mx-auto justify-center gap-4">
-          <InternalLink className="bg-brand/90 hover:bg-brand p-4 py-2 rounded-md" href="/schematics">
-            <T locale={locale} text="home.explore-schematics" />
+          <InternalLink className="bg-brand/90 hover:bg-brand p-4 py-2 rounded-md text-center" href="/schematics">
+            <T locale={locale} text="home.explore-schematics" asChild />
             {/* Explore Schematics */}
           </InternalLink>
-          <InternalLink className="border border-brand text-brand p-4 py-2 rounded-md" href="/maps">
-            <T locale={locale} text="home.browse-map" />
+          <InternalLink className="border border-brand text-brand p-4 py-2 rounded-md text-center" href="/maps">
+            <T locale={locale} text="home.browse-map" asChild />
             {/* Browse Maps */}
           </InternalLink>
         </div>
@@ -339,7 +339,7 @@ async function ServerSection({ locale }: { locale: Locale }) {
                   <div className="mr-2 mt-1 bg-brand p-1 rounded-full">
                     <CheckCircleIcon />
                   </div>
-                  <span>{item}</span>
+                  <T locale={locale} text={item} />
                 </div>
               ))}
             </div>

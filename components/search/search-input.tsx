@@ -18,10 +18,11 @@ export function SearchBar({ className, children, ...props }: SearchProps) {
   );
 }
 
-type InputProps = HTMLAttributes<HTMLInputElement> & {
+type InputProps = Omit<HTMLAttributes<HTMLInputElement>, 'onChange'> & {
   value: string;
   placeholder: string;
   onClear?: () => void;
+  onChange: (value: string) => void;
 };
 
 export function SearchInput({ className, placeholder, value, onChange, onClear, ...props }: InputProps) {
@@ -30,9 +31,27 @@ export function SearchInput({ className, placeholder, value, onChange, onClear, 
 
   return (
     <>
-      <input className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)} suppressHydrationWarning placeholder={t(key)} value={value} onChange={onChange} {...props} />
+      <input
+        className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)}
+        suppressHydrationWarning
+        placeholder={t(key)} //
+        value={value}
+        onChange={(event) => onChange(event.currentTarget.value)}
+        {...props}
+      />
       {value && (
-        <Button className="p-0 pr-2" variant="icon" onClick={onClear}>
+        <Button
+          className="p-0 pr-2"
+          variant="icon"
+          onClick={() => {
+            if (onChange) {
+              onChange('');
+            }
+            if (onClear) {
+              onClear();
+            }
+          }}
+        >
           <XIcon className="size-4" />
         </Button>
       )}

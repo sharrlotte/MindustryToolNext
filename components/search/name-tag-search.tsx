@@ -147,8 +147,8 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
   }, []);
 
   const handleEditName = useCallback(
-    (event: any) => {
-      handleNameChange(event.currentTarget.value);
+    (value: any) => {
+      handleNameChange(value);
     },
     [handleNameChange],
   );
@@ -202,7 +202,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
               <div className="flex gap-1 w-full">
                 <SearchBar className="w-full p-1">
                   <SearchIcon className="p-1" />
-                  <SearchInput placeholder="filter" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} onClear={() => setFilter('')} />
+                  <SearchInput placeholder="filter" value={filter} onChange={(value) => setFilter(value)} onClear={() => setFilter('')} />
                 </SearchBar>
                 {useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
               </div>
