@@ -222,11 +222,11 @@ async function Hero({ locale }: { locale: Locale }) {
           {/* Your comprehensive platform for Mindustry schematics, maps, servers, and community resources */}
         </p>
         <div className="grid grid-cols-2 w-fit mx-auto justify-center gap-4">
-          <InternalLink className="bg-brand/90 hover:bg-brand p-4 py-2 rounded-md text-center" href="/schematics">
+          <InternalLink className="bg-brand/90 hover:bg-brand p-4 py-2 rounded-md text-center justify-center" href="/schematics">
             <T locale={locale} text="home.explore-schematics" asChild />
             {/* Explore Schematics */}
           </InternalLink>
-          <InternalLink className="border border-brand text-brand p-4 py-2 rounded-md text-center" href="/maps">
+          <InternalLink className="border border-brand text-brand p-4 py-2 rounded-md text-center justify-center" href="/maps">
             <T locale={locale} text="home.browse-map" asChild />
             {/* Browse Maps */}
           </InternalLink>
