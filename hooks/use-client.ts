@@ -30,7 +30,6 @@ export default function useClientApi(): AxiosInstance {
   axiosInstance.interceptors.request.use(async (config) => {
     const params = config.params;
     if (!params || !('size' in params) || 'autoSize' in params) {
-      delete params['autoSize'];
       return config;
     }
 
