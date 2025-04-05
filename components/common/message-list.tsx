@@ -41,7 +41,7 @@ export default function MessageList({ className, queryKey, params, loader, noRes
 
   const queryClient = useQueryClient();
   const isEndReached = isReachedEnd(container.current, threshold);
-  const { socket, state } = useSocket();
+  const { socket } = useSocket();
 
   const clientHeight = list?.clientHeight || 0;
   const lastHeight = lastHeightRef.current || 0;
@@ -174,7 +174,7 @@ export default function MessageList({ className, queryKey, params, loader, noRes
 
   end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
 
-  if (state !== 'connected' || !data) {
+  if (!data) {
     return undefined;
   }
 
