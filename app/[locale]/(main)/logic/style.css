@@ -1,3 +1,7 @@
+.react-flow__panel {
+  @apply bg-white text-black;
+}
+
 .react-flow__handle {
   @apply size-3;
 }
@@ -10,7 +14,7 @@
 }
 
 .react-flow__minimap {
-  @apply border border-border;
+  @apply border border-border text-black;
 }
 
 .react-flow__handle-bottom {

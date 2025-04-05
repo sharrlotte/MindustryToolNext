@@ -64,7 +64,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
       })}
       onScroll={(event) => {
         lastScrollTop.current = event.currentTarget.scrollTop;
-        localStorage.setItem(`scroll-top-${pathname}`, event.currentTarget.scrollTop.toString());
+        localStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());
       }}
       ref={(current) => {
         if (typeof forwardedRef === 'function') {

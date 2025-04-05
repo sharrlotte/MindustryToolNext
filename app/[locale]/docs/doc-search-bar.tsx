@@ -33,6 +33,7 @@ export default function DocSearchBar() {
       });
       return (await response.json()) as { path: string; content: string }[];
     },
+    enabled: !!value,
   });
 
   return (
