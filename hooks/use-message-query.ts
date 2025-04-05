@@ -1,4 +1,3 @@
-import { useSocket } from '@/context/socket-context';
 import useClientApi from '@/hooks/use-client';
 import { MessageQuery } from '@/query/search-query';
 import { Message } from '@/types/response/Message';
