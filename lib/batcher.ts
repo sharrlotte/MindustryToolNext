@@ -1,12 +1,18 @@
 import axiosInstance from '@/query/config/config';
 import { Like } from '@/types/response/Like';
+import { User } from '@/types/response/User';
 
 export class Batcher<T, R> {
   private static batchers: Batcher<any, any>[] = [];
 
   static like = new Batcher<string, Like>(
-    async (ids) => axiosInstance.post('likes/batch', ids, { withCredentials: true }).then((res) => res.data as Like[]),
+    async (ids) => axiosInstance.post('likes/batch', ids, { withCredentials: true }).then((res) => res.data),
     (results, id) => results.find((result) => result.itemId === id),
+  );
+
+  static user = new Batcher<string, User>(
+    async (ids) => axiosInstance.post('users/batch', ids, { withCredentials: true }).then((res) => res.data),
+    (results, id) => results.find((result) => result.id === id),
   );
 
   static async process() {

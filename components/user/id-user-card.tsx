@@ -6,12 +6,11 @@ import Tran from '@/components/common/tran';
 import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
 import UserCard from '@/components/user/user-card';
 
-import useClientApi from '@/hooks/use-client';
 import { persister } from '@/query/config/query-config';
-import { getUser } from '@/query/user';
 import { User } from '@/types/response/User';
 
 import { useQuery } from '@tanstack/react-query';
+import { Batcher } from '@/lib/batcher';
 
 type IdUserCardProps = {
   id: string | 'community';
@@ -26,10 +25,9 @@ export default function IdUserCard({ id }: IdUserCardProps) {
 }
 
 function FletchUserCard({ id }: IdUserCardProps) {
-  const axios = useClientApi();
   const { data, isLoading, isError, error } = useQuery<User>({
     queryKey: ['users', id],
-    queryFn: () => getUser(axios, { id }),
+    queryFn: () => Batcher.user.get(id),
     retry: false,
     persister,
   });

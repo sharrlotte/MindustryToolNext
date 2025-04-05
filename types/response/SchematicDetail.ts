@@ -2,7 +2,6 @@ import { Status } from '@/types/response/Status';
 import { DetailTagDto } from '@/types/response/Tag';
 
 import { ItemRequirement } from './ItemRequirement';
-import { Like } from './Like';
 
 export type SchematicDetail = {
   id: string;
@@ -17,7 +16,6 @@ export type SchematicDetail = {
   width: number;
   status: Status;
   verifierId?: string;
-  userLike?: Like;
   itemId: string;
   isVerified: boolean;
   downloadCount: number;

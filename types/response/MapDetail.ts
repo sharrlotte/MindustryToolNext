@@ -1,8 +1,6 @@
 import { Status } from '@/types/response/Status';
 import { DetailTagDto } from '@/types/response/Tag';
 
-import { Like } from './Like';
-
 export type MapDetail = {
   id: string;
   name: string;
@@ -15,7 +13,6 @@ export type MapDetail = {
   width: number;
   status: Status;
   verifierId: string;
-  userLike: Like;
   itemId: string;
   isVerified: boolean;
   downloadCount: number;

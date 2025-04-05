@@ -8,9 +8,6 @@ import TakeDownButton from '@/components/button/take-down-button';
 import CommentSection from '@/components/common/comment-section';
 import { Detail, DetailContent, DetailTagsCard } from '@/components/common/detail';
 import Tran from '@/components/common/tran';
-import DislikeButton from '@/components/like/dislike-button';
-import LikeButton from '@/components/like/like-button';
-import LikeComponent from '@/components/like/like-component';
 import Markdown from '@/components/markdown/markdown';
 import BackButton from '@/components/ui/back-button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
@@ -25,12 +22,13 @@ import { deletePost, unverifyPost } from '@/query/post';
 import { PostDetail } from '@/types/response/PostDetail';
 
 import { useMutation } from '@tanstack/react-query';
+import LikeAndDislike from '@/components/like/like-and-dislike';
 
 type PostDetailCardProps = {
   post: PostDetail;
 };
 
-export default function PostDetailCard({ post: { title, content, tags, id, userId, userLike, likes, dislikes, isVerified, itemId, createdAt } }: PostDetailCardProps) {
+export default function PostDetailCard({ post: { title, content, tags, id, userId, likes, dislikes, isVerified, itemId, createdAt } }: PostDetailCardProps) {
   const axios = useClientApi();
   const { invalidateByKey } = useQueriesData();
   const { back } = useRouter();
@@ -83,10 +81,7 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
         </header>
         <footer className="flex justify-between rounded-md p-2">
           <div className="grid grid-flow-col w-fit gap-2">
-            <LikeComponent itemId={itemId} initialLikeCount={likes} initialDislikeCount={dislikes} initialLikeData={userLike}>
-              <LikeButton />
-              <DislikeButton />
-            </LikeComponent>
+            <LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
             <EllipsisButton size="default">
               <ProtectedElement
                 session={session}
