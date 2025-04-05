@@ -93,7 +93,7 @@ export default function Page() {
           <Slider value={[splitVertical]} onValueChange={(value) => setSplitVertical(value[0])} min={1} max={4} step={1} />
         </div>
         <div className="space-y-2 w-full">
-          <Tran text="image-generator.split-horizontal" /> : {splitVertical}
+          <Tran text="image-generator.split-horizontal" /> : {splitHorizontal}
           <Slider value={[splitHorizontal]} onValueChange={(value) => setSplitHorizontal(value[0])} min={1} max={4} step={1} />
         </div>
       </div>
