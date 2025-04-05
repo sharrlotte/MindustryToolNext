@@ -92,15 +92,16 @@ export default function Page() {
           <Tran text="image-generator.split-vertical" /> : {splitVertical}
           <Slider value={[splitVertical]} onValueChange={(value) => setSplitVertical(value[0])} min={1} max={4} step={1} />
         </div>
+        w
         <div className="space-y-2 w-full">
-          <Tran text="image-generator.split-horizontal" /> : {splitVertical}
+          <Tran text="image-generator.split-horizontal" /> : {splitHorizontal}
           <Slider value={[splitHorizontal]} onValueChange={(value) => setSplitHorizontal(value[0])} min={1} max={4} step={1} />
         </div>
       </div>
       {isPending ? (
         <div className="flex w-full items-center justify-center gap-1">
           <LoadingSpinner className="m-0" />
-          <span>Generating schematic</span>
+          <Tran text="image-generator.generating-schematic" />
         </div>
       ) : (
         <section className="flex flex-col gap-2">
@@ -121,7 +122,7 @@ export default function Page() {
       )}
       {image && (
         <Button variant="primary" onClick={() => mutate()} disabled={isPending}>
-          Process
+          <Tran text="image-generator.generate" asChild />
         </Button>
       )}
     </div>
@@ -141,7 +142,7 @@ function Preview({ data }: { data: string }) {
     return (
       <div className="flex w-full items-center justify-center gap-1">
         <LoadingSpinner className="m-0" />
-        <span>Generating preview</span>
+        <Tran text="image-generator.generating-preview" />
       </div>
     );
   }

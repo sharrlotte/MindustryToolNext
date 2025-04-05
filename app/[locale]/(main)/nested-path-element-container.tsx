@@ -29,6 +29,7 @@ export function NestedPathElementContainer({ children, segment }: NestedPathElem
           <AccordionTrigger
             className={cn('flex h-10 items-center justify-center text-base gap-0 rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
               'justify-start gap-2 py-2': visible,
+              'bg-brand text-brand-foreground': regex.some((r) => currentPath.match(r)) && !visible,
             })}
             showChevron={visible}
             onClick={() => setVisible(true)}

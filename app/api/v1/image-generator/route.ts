@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        const schematic = createSchematic(targetWidth, targetHeight, [...new Set(blocks.map(({ block }) => block))], blocks);
+        const schematic = createSchematic(endX - startX, endY - startY, [...new Set(blocks.map(({ block }) => block))], blocks);
         schematics.push(schematic);
       }
     }
