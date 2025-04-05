@@ -87,7 +87,7 @@ export default function Page() {
             <Tran text="image-generator.total-blocks" /> {splitHorizontal * splitVertical} blocks
           </div>
           <div>
-            {splitHorizontal * splitVertical > 500 * 500 && <Tran className='text-destructive' text="image-generator.too-big-may-fail" />}
+            {resultDimensions.width * resultDimensions.height > 500 * 500 && <Tran className='text-destructive' text="image-generator.too-big-may-fail" />}
           </div>
         </div>
       )}
