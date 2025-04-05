@@ -28,11 +28,11 @@ import { isNumeric } from '@/lib/utils';
 import { CreateCommentRequest, CreateCommentSchema, createComment, getComments } from '@/query/comment';
 import { persister } from '@/query/config/query-config';
 import { CommentPaginationQuerySchema, CommentSort, commentSorts } from '@/query/search-query';
-import { getUser } from '@/query/user';
 import { Comment } from '@/types/response/Comment';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { Batcher } from '@/lib/batcher';
 
 type CommentSectionProps = {
   itemId: string;
@@ -100,22 +100,22 @@ function Comments({ itemId, sort }: CommentsProps) {
           item: <CommentLoadingCard />,
         }}
       >
-        {(comment) => <CommandCard key={comment.id} comment={comment} />}
+        {(comment) => <CommentCard key={comment.id} comment={comment} />}
       </InfinitePage>
     </ScrollContainer>
   );
 }
 
-type CommandCardProps = {
+type CommentCardProps = {
   comment: Comment;
 };
 
-export function CommandCard({ comment }: CommandCardProps) {
+export function CommentCard({ comment }: CommentCardProps) {
   const { userId, content, createdAt } = comment;
 
   const { data } = useClientQuery({
     queryKey: ['users', userId],
-    queryFn: (axios) => getUser(axios, { id: userId }),
+    queryFn: () => Batcher.user.get(userId),
     persister,
   });
 
