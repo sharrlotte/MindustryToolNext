@@ -95,7 +95,7 @@ export function BulkDeleteToggle() {
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button className="border-none" variant="secondary">
+          <Button className="border-transparent" variant="secondary">
             <Tran text="selected" args={{ number: value.length }} />
           </Button>
         </AlertDialogTrigger>
@@ -124,7 +124,7 @@ export function BulkDeleteToggle() {
   }
 
   return (
-    <Button className="border-none" variant="secondary" onClick={() => setShow(!show)}>
+    <Button className="border-transparent" variant="secondary" onClick={() => setShow(!show)}>
       {value.length === 0 && show ? <Tran text="cancel" /> : <Tran text="bulk-delete" />}
     </Button>
   );

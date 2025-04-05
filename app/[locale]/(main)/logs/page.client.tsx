@@ -208,7 +208,7 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="border-none bg-secondary shadow-md" variant="outline" title="Filter">
+        <Button className="border-transparent bg-secondary shadow-md" variant="outline" title="Filter">
           <IconNotification number={number}>
             <FilterIcon />
           </IconNotification>

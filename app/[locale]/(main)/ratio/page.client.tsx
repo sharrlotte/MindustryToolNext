@@ -36,7 +36,7 @@ export default function RatioPage() {
       </Link>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button className="h-12 min-w-[200px] justify-between border-none bg-secondary p-2 capitalize shadow-md" title="" role="combobox" variant="outline">
+          <Button className="h-12 min-w-[200px] justify-between border-transparent bg-secondary p-2 capitalize shadow-md" title="" role="combobox" variant="outline">
             {value ? (
               <div className="flex items-center justify-start gap-2">
                 <Image className="h-8 w-8" src={`/assets/sprite/${value.factory.name}.png`} height={32} width={32} alt={value.factory.name} />
@@ -54,7 +54,7 @@ export default function RatioPage() {
               <div>
                 <MagnifyingGlassIcon className="size-5" />
               </div>
-              <input className="border-none bg-transparent font-thin outline-none" value={filter} placeholder="Search" onChange={(event) => setFilter(event.currentTarget.value)} />
+              <input className="border-transparent bg-transparent font-thin outline-none" value={filter} placeholder="Search" onChange={(event) => setFilter(event.currentTarget.value)} />
             </div>
             <div className="flex flex-col gap-2 p-1">
               {blocks.map((item) => (
@@ -118,7 +118,7 @@ function RequirementCard({ input }: RequirementCardProps) {
               <div>
                 <MagnifyingGlassIcon className="size-5" />
               </div>
-              <input className="border-none bg-transparent font-thin outline-none" value={filter} placeholder="Search" onChange={(event) => setFilter(event.currentTarget.value)} />
+              <input className="border-transparent bg-transparent font-thin outline-none" value={filter} placeholder="Search" onChange={(event) => setFilter(event.currentTarget.value)} />
             </div>
             <div className="grid gap-2 p-1">
               {filtered.map((item) => (

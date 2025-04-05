@@ -48,7 +48,7 @@ export default function DocSearchBar() {
         </Hidden>
         <div className="border h-8 rounded-lg px-2 py-0.5 flex items-center w-full">
           <SearchIcon />
-          <Input className={cn('w-0 border-none focus:border-brand', { 'w-full': focus })} placeholder={t('search')} type="text" value={query} onChange={(event) => setQuery(event.currentTarget.value)} onFocus={() => setFocus(true)} />
+          <Input className={cn('w-0 border-transparent focus:border-brand', { 'w-full': focus })} placeholder={t('search')} type="text" value={query} onChange={(event) => setQuery(event.currentTarget.value)} onFocus={() => setFocus(true)} />
         </div>
         {data && focus && (
           <div className="grid gap-2 mt-2 max-h-dvh overflow-y-auto">

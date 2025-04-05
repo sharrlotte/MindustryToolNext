@@ -99,7 +99,7 @@ function ChatInput() {
             <PopoverTrigger>
               <SmileIcon />
             </PopoverTrigger>
-            <PopoverContent className="border-none bg-transparent">
+            <PopoverContent className="border-transparent bg-transparent">
               <EmojiPicker
                 theme={theme === 'light' ? Theme.LIGHT : Theme.DARK}
                 onEmojiClick={(emoji) => {

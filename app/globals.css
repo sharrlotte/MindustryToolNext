@@ -173,7 +173,7 @@
   }
 
   g path {
-    @apply focus:border-none focus:outline-none;
+    @apply focus:border-transparent focus:outline-none;
   }
 
   * {

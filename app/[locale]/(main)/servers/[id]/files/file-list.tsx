@@ -74,7 +74,7 @@ export default function FileList({ id, path, filter, setFilePath }: FileListProp
       <ContextMenuItem variant="destructive" onClick={() => deleteFile(`${path}/${file.name}`)}>
         <Tran text="delete" />
       </ContextMenuItem>
-      <DownloadButton className="justify-start rounded-sm border-none px-2 py-1.5 text-sm hover:bg-brand" href={`${env.url.api}/files/download?path=${path}/${file.name}`} fileName={`file.zip`} secure>
+      <DownloadButton className="justify-start rounded-sm border-transparent px-2 py-1.5 text-sm hover:bg-brand" href={`${env.url.api}/files/download?path=${path}/${file.name}`} fileName={`file.zip`} secure>
         <Tran text="download" />
       </DownloadButton>
     </FileCard>

@@ -202,7 +202,7 @@ function CommentInput({ itemId }: CommentInputProps) {
               <FormItem className="w-full">
                 <FormControl>
                   <AutosizeTextarea
-                    className="focus-visible:outline-none border-transparent focus-visible:ring-transparent border-none focus-visible:border-none resize-none"
+                    className="focus-visible:outline-none border-transparent focus-visible:ring-transparent border-transparent focus-visible:border-transparent resize-none"
                     placeholder={t('add-comment')}
                     ref={inputRef}
                     value={field.value}
