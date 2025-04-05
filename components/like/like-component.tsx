@@ -65,8 +65,6 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
     onSettled: () => queryClient.invalidateQueries({ queryKey: ['like', itemId] }),
   });
 
-  console.log(likeData);
-
   const handleAction = useCallback(
     (action: 'LIKE' | 'DISLIKE') => {
       if (isPending) {
