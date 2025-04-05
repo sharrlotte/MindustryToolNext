@@ -87,7 +87,7 @@ export default function Page() {
             <Tran text="image-generator.total-blocks" /> {splitHorizontal * splitVertical} blocks
           </div>
           <div>
-            {splitHorizontal * splitVertical > 500 * 500 && <Tran className='text-destructive' text="image-generator.too-big-may-fail" />}
+            {resultDimensions.width * resultDimensions.height > 500 * 500 && <Tran className='text-destructive' text="image-generator.too-big-may-fail" />}
           </div>
         </div>
       )}
@@ -112,14 +112,14 @@ export default function Page() {
         </div>
       ) : (
         <section className="grid gap-2" style={{
-          gridColumn: splitHorizontal,
-          gridRow: splitVertical,
+          gridTemplateColumns: `repeat(${splitHorizontal}, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(${splitVertical}, minmax(0, 1fr))`,
         }}>
           {data?.map((item, index) => (
             <div key={index} className="border rounded-lg p-2 relative space-y-2">
               <span className="font-bold align-text-top">{index}</span>
               <Preview data={item} />
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 flex-wrap">
                 <CopyButton className="gap-1 flex" data={item}>
                   <CopyIcon className="size-5" />
                   <Tran text="copy" />
@@ -159,7 +159,7 @@ function Preview({ data }: { data: string }) {
   if (isError) {
     return <ErrorMessage error={error} />
   }
-  return <div>{preview && <img className="max-w-[50vw] max-h-[50vh] rounded-md" src={IMAGE_PREFIX + preview.image} alt="Processed" />}</div>;
+  return <div className='object-cover w-full'>{preview && <img className="max-w-[50vw] object-cover w-full max-h-[50vh] rounded-md" src={IMAGE_PREFIX + preview.image} alt="Processed" />}</div>;
 }
 
 function DownloadButton({ data }: { data: string }) {
@@ -169,7 +169,7 @@ function DownloadButton({ data }: { data: string }) {
   }
 
   return (
-    <Button onClick={download}>
+    <Button className="px-2" onClick={download}>
       <DownloadIcon className="size-5" />
       <Tran text="download" />
     </Button>

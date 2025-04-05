@@ -48,17 +48,14 @@ export async function POST(req: NextRequest) {
 
     const schematics: string[] = [];
 
-    for (let v = 0; v < splitVertical; v++) {
-      for (let h = 0; h < splitHorizontal; h++) {
+    for (let h = 0; h < splitHorizontal; h++) {
+      for (let v = 0; v < splitVertical; v++) {
         const startX = Math.floor((targetWidth / splitVertical) * v);
         const startY = Math.floor((targetHeight / splitHorizontal) * h);
         const endX = Math.floor((targetWidth / splitVertical) * (v + 1));
         const endY = Math.floor((targetHeight / splitHorizontal) * (h + 1));
         // Crop the image
-        const { data, info } = await scaledImage
-          .clone()
-          .extract({ left: startX, top: startY, width: endX - startX, height: endY - startY })
-          .toBuffer({ resolveWithObject: true });
+        const { data, info } = await scaledImage.extract({ left: startX, top: startY, width: endX - startX, height: endY - startY }).toBuffer({ resolveWithObject: true });
 
         const blocks: BlockData[] = [];
 
