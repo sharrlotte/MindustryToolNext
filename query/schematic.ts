@@ -29,6 +29,7 @@ export async function getSchematicPreview(axios: AxiosInstance, { data }: Schema
 
   const result = await axios.post('/schematics/preview', form, {
     data: form,
+    timeout: 300000
   });
 
   return result.data;
