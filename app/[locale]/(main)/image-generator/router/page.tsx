@@ -112,8 +112,8 @@ export default function Page() {
         </div>
       ) : (
         <section className="grid gap-2" style={{
-          gridColumn: splitHorizontal,
-          gridRow: splitVertical,
+          gridTemplateColumns: splitHorizontal,
+          gridTemplateRows: splitVertical,
         }}>
           {data?.map((item, index) => (
             <div key={index} className="border rounded-lg p-2 relative space-y-2">
