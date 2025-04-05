@@ -38,34 +38,23 @@ type ToastOptions = {
 } & Record<string, any>;
 
 function toast(title: ReactNode, options?: ToastOptions) {
-  if (options?.description) {
-    const id = defaultToast(
-      <div className={cn('grid text-base border-transparent w-full rounded-lg relative p-4', options.className)}>
-        <div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
-          <XIcon className="size-4" />
-        </div>
-        <div className="flex gap-1 items-center">
-          {options.icon}
-          {title ?? 'Unexpected error'}
-        </div>
-        <div className="text-muted-foreground text-sm">{options.description}</div>
-      </div>,
-      {
-        duration: 1000,
-      },
-    );
-
-    return id;
-  }
-
   const id = defaultToast(
-    <div className={cn('relative grid text-sm border-transparent w-full rounded-lg p-4', options?.className)}>
+    <div className={cn('grid text-base border-transparent w-full rounded-lg relative p-4 bg-card text-card-foreground', options?.className)}>
       <div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
         <XIcon className="size-4" />
       </div>
-      {title ?? 'Unexpected error'}
+      <div className="flex gap-1 items-center">
+        {options?.icon && options.icon}
+        {title ?? 'Unexpected error'}
+      </div>
+      {
+        options?.description && <div className="text-muted-foreground text-sm">{options.description}</div>
+      }
     </div>,
-    options,
+    {
+      ...options,
+      duration: 1000,
+    },
   );
 
   return id;
