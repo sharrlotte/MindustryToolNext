@@ -32,7 +32,7 @@ export default function LanguageSwitcher({ availableLanguages, currentLocale }: 
         <div className="grid gap-1 p-1 max-h-[50dvh] overflow-y-auto">
           {locales.map((locale) => (
             <button
-              className={cn('px-2 text-muted-foreground py-1 inline-flex rounded-md min-w-32 h-9 justify-start items-center capitalize border-none focus:border-none', {
+              className={cn('px-2 text-muted-foreground py-1 inline-flex rounded-md min-w-32 h-9 justify-start items-center capitalize border-transparent focus:border-transparent', {
                 'bg-brand text-brand-foreground': locale === currentLocale,
                 'hover:bg-brand hover:text-brand-foreground text-brand-foreground': availableLanguages.includes(locale),
               })}

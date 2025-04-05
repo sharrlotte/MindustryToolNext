@@ -35,7 +35,7 @@ export default function DeleteGroupInfoDialog({ group, category }: Props) {
 
   return (
     <DeleteButton
-      className="relative transition-all bg-transparent p-0 border-none w-0 group-hover:w-fit overflow-hidden"
+      className="relative transition-all bg-transparent p-0 border-transparent w-0 group-hover:w-fit overflow-hidden"
       variant="ghost"
       isLoading={isPending}
       description={<Tran text="delete-alert" args={{ name: category.name }} />}

@@ -257,7 +257,7 @@ export function NodeItem({ color, data, state, setState }: { color: string; stat
     return (
       <div className="bg-transparent border-b-[3px] flex items-end" style={{ borderColor: color }}>
         <ComboBox
-          className="bg-transparent px-2 py-0 text-center w-fit font-bold border-none items-end justify-end"
+          className="bg-transparent px-2 py-0 text-center w-fit font-bold border-transparent items-end justify-end"
           value={{ value: state[data.name], label: state[data.name].toString() }}
           values={data.options.map((option) => ({ value: option, label: option.toString() }))}
           onChange={(value) => {

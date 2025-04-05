@@ -104,7 +104,7 @@ export default function Page() {
           <Tran text="image-generator.generating-schematic" />
         </div>
       ) : (
-        <section className="flex flex-col gap-2">
+        <section className="flex flex-wrap gap-2">
           {data?.map((item, index) => (
             <div key={index} className="border rounded-lg p-2 relative space-y-2">
               <span className="font-bold align-text-top">{index}</span>

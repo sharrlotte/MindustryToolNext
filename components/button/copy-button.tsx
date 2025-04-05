@@ -14,7 +14,7 @@ import { useMutation } from '@tanstack/react-query';
 const copyButtonVariants = cva('p-2 bg-transparent group/copy-button', {
   variants: {
     variant: {
-      default: 'bg-secondary border border-border hover:bg-brand hover:border-none',
+      default: 'bg-secondary border border-border hover:bg-brand hover:border-transparent',
       ghost: 'bg-none bg-card/70 backdrop-blur-sm backdrop-brightness-50 hidden group-hover:flex hidden group-focus:flex',
       none: '',
     },

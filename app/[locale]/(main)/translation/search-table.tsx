@@ -96,7 +96,7 @@ function SearchCard({ translation }: SearchCardProps) {
           <div className="w-full" onClick={() => setEdit(true)}>
             {isEdit ? ( //
               <Textarea
-                className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
+                className="border-transparent p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
                 autoFocus
                 defaultValue={currentValue ?? key}
                 onChange={(event) => setCurrentValue(event.target.value)}

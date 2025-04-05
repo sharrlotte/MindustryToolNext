@@ -104,7 +104,7 @@ function DiffCard({ translation, language }: DiffCardProps) {
         <div className="flex items-center gap-2" onClick={() => setEdit(true)}>
           {isEdit ? ( //
             <Textarea
-              className="border-none p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
+              className="border-transparent p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
               placeholder={currentValue ?? key}
               defaultValue={currentValue ?? key}
               onChange={(event) => setCurrentValue(event.target.value)}

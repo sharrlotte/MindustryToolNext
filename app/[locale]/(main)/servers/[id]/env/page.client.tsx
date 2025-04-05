@@ -116,7 +116,7 @@ function ServerEnvCard({ id, env }: ServerEnvCardProps) {
               <FormItem className="w-full">
                 <FormControl>
                   <div className="border-border border rounded-md flex items-center gap-2 h-9">
-                    {show ? <Input className="w-full border-none" key="input" placeholder="ghp_awdguyagwdygawdagwiy" {...field} /> : <Input readOnly className="w-full border-none" defaultValue={'*'.repeat(field.value.length)} />}
+                    {show ? <Input className="w-full border-transparent" key="input" placeholder="ghp_awdguyagwdygawdagwiy" {...field} /> : <Input readOnly className="w-full border-transparent" defaultValue={'*'.repeat(field.value.length)} />}
                     <Button className="px-2" variant="ghost" onClick={() => setShow((prev) => !prev)}>
                       {show ? <EyeOffIcon /> : <EyeIcon />}
                     </Button>

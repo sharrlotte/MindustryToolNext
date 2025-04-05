@@ -30,7 +30,7 @@ export default function DownloadButton({ className, href, fileName, secure, chil
 
   return (
     <a
-      className={cn('flex gap-1 px-2 min-h-8 items-center hover:border-none transition-colors text-lg justify-center rounded-md bg-secondary border-border border hover:bg-brand hover:text-brand-foreground', className)}
+      className={cn('flex gap-1 px-2 min-h-8 items-center hover:border-transparent transition-colors text-lg justify-center rounded-md bg-secondary border-border border hover:bg-brand hover:text-brand-foreground', className)}
       {...props}
       href={href}
       download={fileName ?? true}
