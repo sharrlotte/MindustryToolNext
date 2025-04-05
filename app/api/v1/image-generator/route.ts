@@ -48,8 +48,8 @@ export async function POST(req: NextRequest) {
 
     const schematics: string[] = [];
 
-    for (let v = 0; v < splitVertical; v++) {
-      for (let h = 0; h < splitHorizontal; h++) {
+    for (let h = 0; h < splitHorizontal; h++) {
+      for (let v = 0; v < splitVertical; v++) {
         const startX = Math.floor((targetWidth / splitVertical) * v);
         const startY = Math.floor((targetHeight / splitHorizontal) * h);
         const endX = Math.floor((targetWidth / splitVertical) * (v + 1));
