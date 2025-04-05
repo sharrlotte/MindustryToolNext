@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import React from 'react';
 
-import { CommandCard, CommentLoadingCard } from '@/components/common/comment-section';
+import { CommentCard, CommentLoadingCard } from '@/components/common/comment-section';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 
@@ -27,7 +27,7 @@ export default function PageClient() {
           item: <CommentLoadingCard />,
         }}
       >
-        {(comment) => <CommandCard key={comment.id} comment={comment} />}
+        {(comment) => <CommentCard key={comment.id} comment={comment} />}
       </InfinitePage>
     </ScrollContainer>
   );
