@@ -17,10 +17,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps['theme']}
-      className="toaster group border-transparent p-4 m-1"
+      className="toaster group p-4 m-1"
       toastOptions={{
         classNames: {
-          toast: 'group p-0 border-transparent group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:shadow-lg',
+          toast: 'group p-0 group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:shadow-lg',
           description: 'group-[.toast]:text-muted-foreground',
           actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
           cancelButton: 'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground',
@@ -39,7 +39,7 @@ type ToastOptions = {
 
 function toast(title: ReactNode, options?: ToastOptions) {
   const id = defaultToast(
-    <div className={cn('grid text-base border-transparent w-full rounded-lg relative p-4 bg-card text-card-foreground', options?.className)}>
+    <div className={cn('grid text-base border-transparent w-full rounded-lg relative p-4 bg-card text-card-foreground border', options?.className)}>
       <div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
         <XIcon className="size-4" />
       </div>
