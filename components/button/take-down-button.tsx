@@ -1,6 +1,6 @@
 'use client';
 
-import { cva, VariantProps } from 'class-variance-authority';
+import { VariantProps, cva } from 'class-variance-authority';
 import React, { ReactNode } from 'react';
 
 import { TakeDownIcon } from '@/components/common/icons';
@@ -24,6 +24,7 @@ const buttonVariants = cva('hover:bg-destructive/80', {
 });
 
 type TakeDownButtonProps = {
+  className?: string;
   isLoading: boolean;
   onClick: () => void;
   description: ReactNode;
