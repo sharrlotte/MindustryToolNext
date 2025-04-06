@@ -71,6 +71,7 @@ export default async function Page() {
           </Suspense>
         </div>
       </div>
+      <iframe className="h-dvh min-h-dvh" src="https://analytic.mindustry-tool.com/public-dashboards/190fdc3cadd341d69076c1902a9ca7a9"></iframe>
     </ScrollContainer>
   );
 }
