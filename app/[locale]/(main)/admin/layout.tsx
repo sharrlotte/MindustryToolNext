@@ -1,14 +1,16 @@
+'use client';
+
 import React, { ReactNode } from 'react';
 
-import { getSession } from '@/action/action';
+import { useSession } from '@/context/session-context';
 import ProtectedRoute from '@/layout/protected-route';
 
 type PageProps = {
   children: ReactNode;
 };
 
-export default async function Layout({ children }: PageProps) {
-  const session = await getSession();
+export default function Layout({ children }: PageProps) {
+  const { session } = useSession();
 
   return (
     <ProtectedRoute session={session} filter={true}>
