@@ -435,7 +435,7 @@ export function hasAccess(session: Session | ApiError | undefined | null, filter
     return false;
   }
 
-  if (session.roles.map((r) => r.name).includes('SHAR')) {
+  if (session?.roles.map((r) => r.name).includes('SHAR')) {
     return true;
   }
 
