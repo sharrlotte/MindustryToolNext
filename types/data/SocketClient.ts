@@ -156,12 +156,14 @@ export default class SocketClient {
     this.connects = [];
     this.disconnects = [];
 
-    if (this.socket && this.getState() === 'connected') {
-      this.socket.close();
-    } else {
-      this.onConnect(() => {
-        this.socket?.close();
-      });
+    if (this.socket) {
+      if (this.getState() === 'connected') {
+        this.socket.close();
+      } else {
+        this.socket.onopen = () => {
+          this.socket?.close();
+        };
+      }
     }
   }
 

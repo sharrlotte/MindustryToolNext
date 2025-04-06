@@ -1,5 +1,6 @@
 'use client';
 
+import { VariantProps, cva } from 'class-variance-authority';
 import React, { ReactNode } from 'react';
 
 import { TakeDownIcon } from '@/components/common/icons';
@@ -7,19 +8,35 @@ import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
+import { cn } from '@/lib/utils';
+
+const buttonVariants = cva('hover:bg-destructive/80', {
+  variants: {
+    variant: {
+      command: '',
+      default: 'border border-border bg-transparent bg-secondary hover:border-destructive',
+      ghost: 'border-transparent absolute w-fit backdrop-brightness-50 hover:border-transparent',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
 type TakeDownButtonProps = {
+  className?: string;
   isLoading: boolean;
   onClick: () => void;
   description: ReactNode;
-};
+} & VariantProps<typeof buttonVariants>;
 
-export default function TakeDownButton({ isLoading, description, onClick }: TakeDownButtonProps) {
+export default function TakeDownButton({ className, variant, isLoading, description, onClick }: TakeDownButtonProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild disabled={isLoading}>
-        <Button className="hover:bg-destructive/80" variant="command" size="command" disabled={isLoading}>
+        <Button className={cn(buttonVariants({ className, variant }))} variant={variant} size="command" disabled={isLoading}>
           <TakeDownIcon className="size-5" />
-          <Tran text="take-down" />
+          {variant === 'command' && <Tran text="take-down" />}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

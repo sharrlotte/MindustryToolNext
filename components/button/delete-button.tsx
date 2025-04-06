@@ -30,6 +30,7 @@ export type DeleteButtonProps = {
   children?: ReactNode;
   onClick: () => void;
 } & VariantProps<typeof buttonVariants>;
+
 export default function DeleteButton({ className, isLoading, variant, description, children, onClick }: DeleteButtonProps) {
   return (
     <AlertDialog>
