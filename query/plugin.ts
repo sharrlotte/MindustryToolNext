@@ -1,9 +1,12 @@
 import { AxiosInstance } from 'axios';
 
+
+
 import { ItemPaginationQueryType, PluginPaginationQuery } from '@/query/search-query';
 import { CreatePluginRequest } from '@/types/request/CreatePluginRequest';
 import VerifyPluginRequest from '@/types/request/VerifyPluginRequest';
 import { Plugin } from '@/types/response/Plugin';
+
 
 export async function getPluginUploadCount(axios: AxiosInstance, params: Omit<ItemPaginationQueryType, 'page' | 'size'>): Promise<number> {
   const result = await axios.get('/plugins/upload/total', {
@@ -23,6 +26,12 @@ export async function getPluginCount(axios: AxiosInstance, params: Omit<ItemPagi
 
 export async function deletePlugin(axios: AxiosInstance, id: string): Promise<void> {
   const result = await axios.delete(`/plugins/${id}`);
+
+  return result.data;
+}
+
+export async function unverifyPlugin(axios: AxiosInstance, id: string): Promise<string> {
+  const result = await axios.put(`/plugins/${id}`);
 
   return result.data;
 }
