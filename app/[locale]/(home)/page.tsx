@@ -18,7 +18,6 @@ import LoginButton from '@/components/button/login-button';
 import ErrorScreen from '@/components/common/error-screen';
 import Hydrated from '@/components/common/hydrated';
 import { DiscordIcon, MindustryToolIcon, SchematicIcon } from '@/components/common/icons';
-import InternalInternalLink from '@/components/common/internal-link';
 import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
 import Tran from '@/components/common/tran';
@@ -33,7 +32,7 @@ import env from '@/constant/env';
 import { NavBarProvider } from '@/context/navbar-context';
 import type { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 import { isError } from '@/lib/utils';
 import { getMapCount } from '@/query/map';
 import { getMaps } from '@/query/map';
@@ -132,6 +131,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: formatTitle(title),
+    alternates: generateAlternate('/'),
   };
 }
 
@@ -379,7 +379,7 @@ async function StatisticSection({ locale }: { locale: Locale }) {
   const [schematics, maps] = await Promise.all([getCachedSchematicCount(axios), getCachedMapCount(axios)]);
 
   return (
-    <FlyIn className="grid grid-cols-1 md:grid-cols-3 gap-8 h-[300px]">
+    <FlyIn className="grid grid-cols-1 md:grid-cols-3 gap-8">
       {[
         { icon: SchematicIcon, text: 'home.schematics-count', count: schematics, color: 'text-brand', link: '#new-schematics' },
         { icon: MapIcon, text: 'home.maps-count', count: maps, color: 'text-cyan-400', link: '#new-maps' },
@@ -433,9 +433,9 @@ async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryTy
           <h2 className="text-3xl font-bold text-nowrap">
             <Tran text="home.new-schematics" asChild />
           </h2>
-          <InternalInternalLink href="/schematics" className="cursor-pointer">
+          <InternalLink href="/schematics" className="cursor-pointer">
             <Tran className="text-base" text="see-all" /> {'->'}
-          </InternalInternalLink>
+          </InternalLink>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <Suspense>
@@ -454,9 +454,9 @@ async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) 
           <h2 className="text-3xl font-bold text-nowrap">
             <Tran text="home.new-maps" asChild />
           </h2>
-          <InternalInternalLink href="/maps" className="cursor-pointer">
+          <InternalLink href="/maps" className="cursor-pointer">
             <Tran className="text-base" text="see-all" /> {'->'}
-          </InternalInternalLink>
+          </InternalLink>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <Suspense>

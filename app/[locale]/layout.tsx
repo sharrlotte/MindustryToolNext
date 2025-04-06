@@ -12,7 +12,7 @@ import env from '@/constant/env';
 import { SessionProvider } from '@/context/session-context';
 import { SocketProvider } from '@/context/socket-context';
 import { Locale, locales } from '@/i18n/config';
-import { cn } from '@/lib/utils';
+import { cn, generateAlternate } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 
 import './../globals.css';
@@ -43,16 +43,6 @@ const icon = localFont({
   display: 'swap',
 });
 
-const hrefLangs: Record<Locale, string> = {
-  en: 'en',
-  kr: 'ko',
-  cn: 'zh',
-  jp: 'ja',
-  ru: 'ru',
-  uk: 'uk',
-  vi: 'vi',
-};
-
 export const metadata: Metadata = {
   metadataBase: new URL(env.url.base),
   title: 'MindustryTool',
@@ -69,10 +59,7 @@ export const metadata: Metadata = {
     title: 'Mindustry',
     description: 'MindustryTool',
   },
-  alternates: {
-    canonical: './',
-    languages: Object.fromEntries(env.locales.map((lang) => [hrefLangs[lang], `${env.url.base}/${lang}`])),
-  },
+  alternates: generateAlternate('/'),
   robots: {
     index: true,
     follow: true,

@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import { ApiError } from '@/action/action';
 import { AuthorityEnum, UserRole } from '@/constant/enum';
 import env from '@/constant/env';
-import { i18nCachePrefix } from '@/i18n/config';
+import { Locale, i18nCachePrefix } from '@/i18n/config';
 import { reportError } from '@/query/api';
 import axiosInstance from '@/query/config/config';
 import { ChartData, Metric } from '@/types/response/Metric';
@@ -630,3 +630,20 @@ export const groupParamsByKey = (params: URLSearchParams) =>
 
     return acc;
   }, {});
+
+const hrefLangs: Record<Locale, string> = {
+  en: 'en',
+  kr: 'ko',
+  cn: 'zh',
+  jp: 'ja',
+  ru: 'ru',
+  uk: 'uk',
+  vi: 'vi',
+};
+
+export function generateAlternate(path: string) {
+  return {
+    canonical: './',
+    languages: Object.fromEntries(env.locales.map((lang) => [hrefLangs[lang], env.url.base + `/${lang}/${path}`.replaceAll("//","/")])),
+  };
+}
