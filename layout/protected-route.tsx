@@ -1,16 +1,17 @@
+'use client';
+
 import React, { ReactNode } from 'react';
 
 import ErrorScreen from '@/components/common/error-screen';
+import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 
-import { ApiError } from '@/action/action';
+import { useSession } from '@/context/session-context';
 import { Filter, hasAccess, isError } from '@/lib/utils';
-import { Session } from '@/types/response/Session';
 
 type Props = {
   filter: Filter;
   children: ReactNode;
-  session: Session | null | ApiError;
 };
 
 function NoPermission() {
@@ -21,7 +22,13 @@ function NoPermission() {
   );
 }
 
-export default function ProtectedRoute({ filter, children, session }: Props) {
+export default function ProtectedRoute({ filter, children }: Props) {
+  const { session, state } = useSession();
+
+  if (state === 'loading') {
+    return <LoadingScreen />;
+  }
+
   if (isError(session)) {
     return <ErrorScreen error={session} />;
   }

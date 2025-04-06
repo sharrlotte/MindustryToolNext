@@ -1,8 +1,5 @@
-'use client';
-
 import React, { ReactNode } from 'react';
 
-import { useSession } from '@/context/session-context';
 import ProtectedRoute from '@/layout/protected-route';
 
 type PageProps = {
@@ -10,11 +7,5 @@ type PageProps = {
 };
 
 export default function Layout({ children }: PageProps) {
-  const { session } = useSession();
-
-  return (
-    <ProtectedRoute session={session} filter={true}>
-      {children}
-    </ProtectedRoute>
-  );
+  return <ProtectedRoute filter>{children}</ProtectedRoute>;
 }
