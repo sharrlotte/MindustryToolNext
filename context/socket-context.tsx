@@ -55,6 +55,10 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     socket.onError(() => {
       setState(socket.getState());
     });
+
+    return () => {
+      socket.close();
+    };
   }, [socket, state]);
 
   return (
