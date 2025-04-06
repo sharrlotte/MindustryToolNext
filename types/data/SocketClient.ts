@@ -17,16 +17,15 @@ type SocketEvent = BaseSocketEvent &
     | { method: 'MESSAGE'; room: string; data: Message }
   );
 
-type MessagePayload = { method: 'MESSAGE'; data: string };
+type MessagePayload = { method: 'MESSAGE'; data: string } | { method: 'JOIN' };
 
 export type MessageMethod = MessagePayload['method'];
 
 type PromiseReceiver = { timeout: any; resolve: (value: unknown) => void; reject: (reason: any) => void };
 
-type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
+export type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
 
 export default class SocketClient {
-  private requestTimeout = 5000;
   private socket: WebSocket | null = null;
   private handlers: Record<string, EventHandler[]> = {};
   private errors: ((event: ErrorEvent) => void)[] = [];
@@ -101,7 +100,8 @@ export default class SocketClient {
   }
 
   public onMessage<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
-    const room = this.room;
+    const room = `${this.room}`;
+    this.room = '';
 
     const handlers = this.handlers[method + room];
 
@@ -111,9 +111,9 @@ export default class SocketClient {
       this.handlers[method + room] = [handler];
     }
 
-    this.room = '';
-
-    return () => this.onRoom(room).remove(method, handler);
+    return () => {
+      this.onRoom(room).remove(method, handler);
+    };
   }
 
   public remove<T extends SocketEvent['method']>(method: T, handler: (data: SocketResult<T>) => void) {
@@ -122,6 +122,7 @@ export default class SocketClient {
     if (handlers) {
       this.handlers[method + this.room] = handlers.filter((h) => h !== handler);
     }
+    this.room = '';
   }
 
   public onRoom(room: SocketRoom) {

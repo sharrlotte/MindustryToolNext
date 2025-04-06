@@ -10,6 +10,7 @@ import useClientApi from '@/hooks/use-client';
 import useNotification from '@/hooks/use-notification';
 import { cn, isError } from '@/lib/utils';
 import { getLastMessage } from '@/query/message';
+import { SocketResult } from '@/types/data/SocketClient';
 
 export function ChatIconPath() {
   const { socket } = useSocket();
@@ -32,13 +33,19 @@ export function ChatIconPath() {
       console.error(e);
     }
 
-    return socket.onRoom('GLOBAL').onMessage('MESSAGE', (message) => {
+    const globalMessageHandler = (message: SocketResult<'MESSAGE'>) => {
       if ('error' in message) {
         return;
       }
 
       postNotification(message.content, message.userId);
-    });
+    };
+
+    socket.onRoom('GLOBAL').onMessage('MESSAGE', globalMessageHandler);
+
+    return () => {
+      socket.onRoom('GLOBAL').remove('MESSAGE', globalMessageHandler);
+    };
   }, [socket, postNotification, lastMessage, axios]);
 
   return (

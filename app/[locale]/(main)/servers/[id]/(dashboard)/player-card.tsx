@@ -270,14 +270,16 @@ const localeToFlag: Record<string, string> = {
   ZW: '🇿🇼',
 };
 export default localeToFlag;
+
 export async function PlayersCard({ id }: PlayersCardProps) {
   const players = await serverApi((axios) => getServerPlayers(axios, id));
+
   if (isError(players)) {
     return <ErrorScreen error={players} />;
   }
 
   return (
-    <div className="grid gap-1">
+    <div className="grid gap-1 min-w-[300px]">
       {players
         .sort((a, b) => a.team.name.localeCompare(b.team.name))
         .map((player) => (

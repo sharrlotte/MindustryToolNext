@@ -11,6 +11,7 @@ import useMessageQuery from '@/hooks/use-message-query';
 import useNotification from '@/hooks/use-notification';
 import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
 import { MessageQuery } from '@/query/search-query';
+import { SocketResult } from '@/types/data/SocketClient';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
@@ -104,45 +105,57 @@ export default function MessageList({ className, queryKey, params, loader, noRes
     }
   }, [pages, isEndReached]);
 
-  useEffect(
-    () =>
+  useEffect(() => {
+    socket.onRoom(room).send({
+      method: 'JOIN',
+    });
+  }, [room, socket]);
+
+  useEffect(() => {
+    const messageHandler = (message: SocketResult<'MESSAGE'>) => {
+      renderCause.current = 'event';
+
+      queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
+        if (message && 'error' in message) {
+          return;
+        }
+
+        if (showNotification) {
+          postNotification(message.content, message.userId);
+        }
+
+        if (!query || !query.pages) {
+          return undefined;
+        }
+
+        const [first, ...rest] = query.pages;
+
+        const newFirst = [message, ...first];
+
+        return {
+          ...query,
+          pages: [newFirst, ...rest],
+        } satisfies InfiniteData<Message[], unknown>;
+      });
+
+      if (container.current && isEndReached) {
+        container.current.scrollTo({
+          top: container.current.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    };
+
+    socket
+      .onRoom(room) //
+      .onMessage('MESSAGE', messageHandler);
+
+    return () => {
       socket
         .onRoom(room) //
-        .onMessage('MESSAGE', (message) => {
-          renderCause.current = 'event';
-
-          queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
-            if (message && 'error' in message) {
-              return;
-            }
-
-            if (showNotification) {
-              postNotification(message.content, message.userId);
-            }
-
-            if (!query || !query.pages) {
-              return undefined;
-            }
-
-            const [first, ...rest] = query.pages;
-
-            const newFirst = [message, ...first];
-
-            return {
-              ...query,
-              pages: [newFirst, ...rest],
-            } satisfies InfiniteData<Message[], unknown>;
-          });
-
-          if (container.current && isEndReached) {
-            container.current.scrollTo({
-              top: container.current.scrollHeight,
-              behavior: 'smooth',
-            });
-          }
-        }),
-    [room, queryKey, socket, queryClient, isEndReached, showNotification, postNotification],
-  );
+        .remove('MESSAGE', messageHandler);
+    };
+  }, [room, queryKey, socket, queryClient, isEndReached, showNotification, postNotification]);
 
   useEffect(() => {
     function onScroll() {
