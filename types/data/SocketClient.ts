@@ -17,7 +17,7 @@ type SocketEvent = BaseSocketEvent &
     | { method: 'MESSAGE'; room: string; data: Message }
   );
 
-type MessagePayload = { method: 'MESSAGE'; data: string };
+type MessagePayload = { method: 'MESSAGE'; data: string } | { method: 'JOIN' };
 
 export type MessageMethod = MessagePayload['method'];
 
@@ -26,7 +26,6 @@ type PromiseReceiver = { timeout: any; resolve: (value: unknown) => void; reject
 export type SocketResult<T> = Extract<SocketEvent, { method: T }>['data'] | SocketError;
 
 export default class SocketClient {
-  private requestTimeout = 5000;
   private socket: WebSocket | null = null;
   private handlers: Record<string, EventHandler[]> = {};
   private errors: ((event: ErrorEvent) => void)[] = [];

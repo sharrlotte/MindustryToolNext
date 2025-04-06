@@ -1,31 +1,22 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
-
-
 import { LoaderIcon } from '@/components/common/icons';
 import NoResult from '@/components/common/no-result';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-
-
 
 import { useSocket } from '@/context/socket-context';
 import useMessageQuery from '@/hooks/use-message-query';
 import useNotification from '@/hooks/use-notification';
 import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
 import { MessageQuery } from '@/query/search-query';
+import { SocketResult } from '@/types/data/SocketClient';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
-
-
 
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
 
-
-
 import ErrorMessage from './error-message';
-import { SocketResult } from '@/types/data/SocketClient';
-
 
 type MessageListProps = {
   className?: string;
@@ -115,6 +106,12 @@ export default function MessageList({ className, queryKey, params, loader, noRes
   }, [pages, isEndReached]);
 
   useEffect(() => {
+    socket.onRoom(room).send({
+      method: 'JOIN',
+    });
+  }, [room, socket]);
+
+  useEffect(() => {
     const messageHandler = (message: SocketResult<'MESSAGE'>) => {
       renderCause.current = 'event';
 
@@ -152,6 +149,7 @@ export default function MessageList({ className, queryKey, params, loader, noRes
     socket
       .onRoom(room) //
       .onMessage('MESSAGE', messageHandler);
+
     return () => {
       socket
         .onRoom(room) //
