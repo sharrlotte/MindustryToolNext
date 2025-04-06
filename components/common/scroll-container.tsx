@@ -54,7 +54,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
     } catch (error) {
       console.error(error);
     }
-  }, [container, pathname]);
+  }, [container, pathname, id]);
 
   return (
     <div
