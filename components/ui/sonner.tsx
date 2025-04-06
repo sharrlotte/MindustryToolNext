@@ -47,13 +47,11 @@ function toast(title: ReactNode, options?: ToastOptions) {
         {options?.icon && options.icon}
         {title ?? 'Unexpected error'}
       </div>
-      {
-        options?.description && <div className="text-muted-foreground text-sm">{options.description}</div>
-      }
+      {options?.description && <div className="text-muted-foreground text-sm">{options.description}</div>}
     </div>,
     {
       ...options,
-      duration: 1000,
+      duration: 5000,
     },
   );
 
