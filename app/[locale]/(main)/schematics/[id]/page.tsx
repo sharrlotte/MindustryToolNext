@@ -7,7 +7,7 @@ import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
-import { formatTitle, isError } from '@/lib/utils';
+import { formatTitle, generateAlternate, isError } from '@/lib/utils';
 import { getSchematic } from '@/query/schematic';
 
 type Props = {
@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: description,
       images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
     },
+    alternates: generateAlternate(`/schematics/${id}`),
   };
 }
 

@@ -11,7 +11,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Divider from '@/components/ui/divider';
 
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 import { shared } from '@/mdx-components';
 
 import './stackoverflow-dark.css';
@@ -84,5 +84,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: formatTitle(title),
       description,
     },
+    alternates: generateAlternate(`/docs/${path.join('/')}`),
   };
 }

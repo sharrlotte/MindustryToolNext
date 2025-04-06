@@ -5,7 +5,7 @@ import Client from '@/app/[locale]/(main)/admin/maps/page.client';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 export const revalidate = 3600;
 
@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: formatTitle(title),
+    alternates: generateAlternate('/admin/maps'),
   };
 }
 

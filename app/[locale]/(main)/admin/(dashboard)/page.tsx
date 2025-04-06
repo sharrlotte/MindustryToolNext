@@ -13,7 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { cn, formatTitle } from '@/lib/utils';
+import { cn, formatTitle, generateAlternate } from '@/lib/utils';
 
 export const experimental_ppr = true;
 
@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: formatTitle(title),
+    alternates: generateAlternate('/admin'),
   };
 }
 

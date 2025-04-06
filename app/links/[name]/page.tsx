@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 const links: Record<string, { href: string; title: string; description: string }> = {
   'mindustry-vietnam': {
@@ -39,7 +39,12 @@ export async function generateMetadata({ params }: { params: Promise<{ name: str
       title: formatTitle(title),
       description,
     },
+    alternates: generateAlternate(`/links/${name}`),
   };
+}
+
+export function generateStaticParams() {
+  return Object.keys(links).map((name) => ({ name }));
 }
 
 export default async function Page({ params }: { params: Promise<{ name: string }> }) {

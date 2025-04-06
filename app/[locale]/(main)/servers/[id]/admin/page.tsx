@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 import env from '@/constant/env';
-import { formatTitle, isError } from '@/lib/utils';
+import { formatTitle, generateAlternate, isError } from '@/lib/utils';
 
 import { getCachedServer } from '../(dashboard)/page';
 import AddAdminDialog from './add-admin-dialog';
@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       images: `${env.url.api}/servers/${id}/image`,
     },
+    alternates: generateAlternate(`/servers/${id}/admin`),
   };
 }
 

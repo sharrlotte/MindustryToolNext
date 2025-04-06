@@ -5,7 +5,7 @@ import { readDocsByLocale, reduceDocs } from '@/app/[locale]/docs/doc-type';
 
 import { Locale, locales } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: formatTitle(title),
       description: t('docs-description'),
     },
+    alternates: generateAlternate(`/docs`),
   };
 }
 

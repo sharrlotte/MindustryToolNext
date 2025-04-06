@@ -9,7 +9,7 @@ import BackButton from '@/components/ui/back-button';
 import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
-import { formatTitle, isError } from '@/lib/utils';
+import { formatTitle, generateAlternate, isError } from '@/lib/utils';
 import { getMapUpload } from '@/query/map';
 
 type Props = {
@@ -37,6 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: description,
       images: `${env.url.image}/maps/${id}${env.imageFormat}`,
     },
+    alternates: generateAlternate(`/admin/maps/${id}`),
   };
 }
 

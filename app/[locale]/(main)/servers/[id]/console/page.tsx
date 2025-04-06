@@ -5,20 +5,22 @@ import ServerConsolePage from '@/app/[locale]/(main)/servers/[id]/console/page.c
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 type Props = {
   params: Promise<{
     locale: Locale;
+    id: string;
   }>;
 };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
+  const { id, locale } = await params;
   const { t } = await getTranslation(locale);
   const title = t('console');
 
   return {
     title: formatTitle(title),
+    alternates: generateAlternate(`/servers/${id}/console`),
   };
 }
 

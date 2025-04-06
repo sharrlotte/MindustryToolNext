@@ -7,7 +7,7 @@ import ErrorScreen from '@/components/common/error-screen';
 import { serverApi } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, isError } from '@/lib/utils';
+import { formatTitle, generateAlternate, isError } from '@/lib/utils';
 import { getPosts } from '@/query/post';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 
@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: formatTitle(title),
       description: t('server-description'),
     },
+    alternates: generateAlternate('/posts'),
   };
 }
 

@@ -7,7 +7,7 @@ import { getSession } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ProtectedRoute from '@/layout/protected-route';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 type Props = {
   params: Promise<{
@@ -18,10 +18,11 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);
-  const title = t('user');
+  const title = t('roles');
 
   return {
     title: formatTitle(title),
+    alternates: generateAlternate('/admin/setting/roles'),
   };
 }
 

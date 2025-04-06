@@ -13,7 +13,7 @@ import { getSession, serverApi } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ProtectedElement from '@/layout/protected-element';
-import { formatTitle, isError } from '@/lib/utils';
+import { formatTitle, generateAlternate, isError } from '@/lib/utils';
 import { getServerSetting } from '@/query/server';
 
 type Props = {
@@ -21,12 +21,13 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
+  const { id, locale } = await params;
   const { t } = await getTranslation(locale);
   const title = t('setting');
 
   return {
     title: formatTitle(title),
+    alternates: generateAlternate(`/servers/${id}/setting`),
   };
 }
 

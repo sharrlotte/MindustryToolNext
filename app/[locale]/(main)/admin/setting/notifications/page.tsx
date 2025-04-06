@@ -5,7 +5,7 @@ import PageClient from '@/app/[locale]/(main)/admin/setting/notifications/page.c
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 type Props = {
   params: Promise<{ locale: Locale }>;
@@ -14,15 +14,16 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale, ['common', 'meta']);
-  const title = t('logic');
+  const title = t('notification');
 
   return {
     title: formatTitle(title),
-    description: t('logic-description'),
+    description: t('notification-description'),
     openGraph: {
       title: formatTitle(title),
-      description: t('logic-description'),
+      description: t('notification-description'),
     },
+    alternates: generateAlternate('/admin/setting/notifications'),
   };
 }
 
