@@ -4,7 +4,7 @@ import ServerPluginPage from '@/app/[locale]/(main)/servers/[id]/plugins/page.cl
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 type Props = {
   params: Promise<{
@@ -14,12 +14,13 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
+  const { id, locale } = await params;
   const { t } = await getTranslation(locale);
   const title = t('plugin');
 
   return {
     title: formatTitle(title),
+    alternates: generateAlternate(`/servers/${id}/plugins`),
   };
 }
 

@@ -4,7 +4,7 @@ import RulePage from '@/app/[locale]/(main)/rules/page.client';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 type Props = {
   params: Promise<{
@@ -15,10 +15,11 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await getTranslation(locale);
-  const title = t('schematic');
+  const title = t('rule');
 
   return {
     title: formatTitle(title),
+    alternates: generateAlternate('/rules'),
   };
 }
 

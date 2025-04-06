@@ -7,7 +7,7 @@ import MapDetailCard from '@/components/map/map-detail-card';
 import { serverApi } from '@/action/action';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
-import { formatTitle, isError } from '@/lib/utils';
+import { formatTitle, generateAlternate, isError } from '@/lib/utils';
 import { getMap } from '@/query/map';
 
 type Props = {
@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: description,
       images: `${env.url.image}/maps/${id}${env.imageFormat}`,
     },
+    alternates: generateAlternate(`/maps/${id}`),
   };
 }
 

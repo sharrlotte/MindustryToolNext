@@ -5,7 +5,7 @@ import TranslationPage from '@/app/[locale]/(main)/translation/page.client';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle } from '@/lib/utils';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 type Props = {
   params: Promise<{
@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: formatTitle(title),
+    alternates: generateAlternate(`/translation`),
   };
 }
 

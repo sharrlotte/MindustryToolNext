@@ -8,7 +8,7 @@ import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
 import BackButton from '@/components/ui/back-button';
 
 import { serverApi } from '@/action/action';
-import { YOUTUBE_VIDEO_REGEX, formatTitle, isError } from '@/lib/utils';
+import { YOUTUBE_VIDEO_REGEX, formatTitle, generateAlternate, isError } from '@/lib/utils';
 import { getPostUpload } from '@/query/post';
 
 type Props = {
@@ -37,6 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: [title, removeMd(content)].join('|'),
       images: imageUrls.concat([...urls]),
     },
+    alternates: generateAlternate(`/admin/posts/${id}`),
   };
 }
 

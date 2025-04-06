@@ -7,7 +7,7 @@ import Other from '@/app/[locale]/(main)/users/[id]/other';
 import ErrorScreen from '@/components/common/error-screen';
 
 import { serverApi } from '@/action/action';
-import { formatTitle, isError } from '@/lib/utils';
+import { formatTitle, generateAlternate, isError } from '@/lib/utils';
 import { getMe, getUser } from '@/query/user';
 
 type Props = {
@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: roles.map((role) => role.name).join(', '),
       images: imageUrl ?? '',
     },
+    alternates: generateAlternate(`/users/${id}`),
   };
 }
 

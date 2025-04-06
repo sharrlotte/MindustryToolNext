@@ -17,7 +17,7 @@ import { getSession } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ProtectedElement from '@/layout/protected-element';
-import { formatTitle, hasAccess } from '@/lib/utils';
+import { formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
 
 const MeServer = dynamic(() => import('@/app/[locale]/(main)/servers/my-server'));
 const OfficialServer = dynamic(() => import('@/app/[locale]/(main)/servers/official-server'));
@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: formatTitle(title),
       description: t('server-description'),
     },
+    alternates: generateAlternate('/servers'),
   };
 }
 
