@@ -3,7 +3,6 @@ import React from 'react';
 
 import { RoleTable } from '@/app/[locale]/(main)/admin/setting/roles/role-table';
 
-import { getSession } from '@/action/action';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ProtectedRoute from '@/layout/protected-route';
@@ -27,10 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const session = await getSession();
-
   return (
-    <ProtectedRoute session={session} filter={{ authority: 'EDIT_ROLE_AUTHORITY' }}>
+    <ProtectedRoute filter={{ authority: 'EDIT_ROLE_AUTHORITY' }}>
       <RoleTable />
     </ProtectedRoute>
   );
