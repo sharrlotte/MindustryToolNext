@@ -3,6 +3,7 @@
 import { AxiosInstance } from 'axios';
 import { useEffect } from 'react';
 
+import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
 import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/context/session-context.type';
@@ -63,10 +64,21 @@ export default function useClientApi(): AxiosInstance {
       async (response) => {
         return response;
       },
-
       (error) => {
         if ('status' in error) {
-          toast.error(error.message);
+          const status = error.status;
+
+          if (status === 401) {
+            toast.error(<Tran text="unauthorized" />);
+          } else if (status === 403) {
+            toast.error(<Tran text="forbidden" />);
+          } else if (status === 404) {
+            toast.error(<Tran text="not-found" />);
+          } else if (status === 409) {
+            toast.error(<Tran text="conflict" />);
+          } else if (status === 500) {
+            toast.error(<Tran text="internal-server-error" />);
+          }
         }
       },
     );

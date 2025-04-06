@@ -34,10 +34,9 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<SocketState>(defaultContextValue.socket.getState());
 
   useEffect(() => {
-    if (state === 'disconnected') {
+    if (socket.getState() === 'disconnected') {
       socket.connect();
     }
-
     socket.onDisconnect(() => {
       setState('disconnected');
       toast('Disconnected', {
@@ -59,7 +58,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     return () => {
       socket.close();
     };
-  }, [socket, state]);
+  }, [socket]);
 
   return (
     <SocketContext.Provider
