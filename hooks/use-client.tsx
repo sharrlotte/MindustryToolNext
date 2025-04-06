@@ -80,8 +80,11 @@ export default function useClientApi(): AxiosInstance {
             toast.error(<Tran text="internal-server-error" />);
           }
         }
+
+        return Promise.reject(error);
       },
     );
+    
 
     return () => {
       axiosInstance.interceptors.response.eject(id);
