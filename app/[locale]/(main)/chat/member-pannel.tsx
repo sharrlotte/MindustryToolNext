@@ -30,7 +30,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
       animate={state}
       variants={{
         open: {
-          width: isSmall ? '100%' : 300,
+          width: isSmall ? 'min(100%,300px)' : 300,
         },
         closed: {
           width: 0,

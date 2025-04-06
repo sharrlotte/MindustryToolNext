@@ -46,17 +46,6 @@ export default async function Layout({ children, params }: { children: ReactNode
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <nav className="items-center gap-4 hidden sm:flex">
-              <InternalLink className="flex gap-2 items-center text-base hover:text-brand" href="/docs">
-                Docs
-              </InternalLink>
-              <InternalLink className="flex gap-2 items-center text-base hover:text-brand" href="/docs/wiki/getting-started">
-                Wiki
-              </InternalLink>
-              <InternalLink className="flex gap-2 items-center text-base hover:text-brand" href="/docs/api/getting-started">
-                Api
-              </InternalLink>
-            </nav>
             <Suspense>
               <LanguageSwitcher availableLanguages={availableLanguages} currentLocale={locale as Locale} />
             </Suspense>

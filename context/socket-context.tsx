@@ -1,7 +1,8 @@
 'use client';
 
 import React, { ReactNode, useEffect, useState } from 'react';
-import { useInterval } from 'usehooks-ts';
+
+import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
@@ -33,12 +34,28 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<SocketState>(defaultContextValue.socket.getState());
 
   useEffect(() => {
-    socket.connect();
-    socket.onDisconnect(() => setState('disconnected'));
-    socket.onConnect(() => setState('connected'));
-  }, [socket]);
+    if (state === 'disconnected') {
+      socket.connect();
+    }
 
-  useInterval(() => setState(socket.getState()), 1000);
+    socket.onDisconnect(() => {
+      setState('disconnected');
+      toast('Disconnected', {
+        description: 'You are disconnected from the server',
+      });
+    });
+
+    socket.onConnect(() => {
+      setState('connected');
+      toast('Connected', {
+        description: 'You are connected to the server',
+      });
+    });
+
+    socket.onError(() => {
+      setState(socket.getState());
+    });
+  }, [socket, state]);
 
   return (
     <SocketContext.Provider

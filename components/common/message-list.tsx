@@ -1,10 +1,14 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
+
+
 import { LoaderIcon } from '@/components/common/icons';
 import NoResult from '@/components/common/no-result';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+
+
 
 import { useSocket } from '@/context/socket-context';
 import useMessageQuery from '@/hooks/use-message-query';
@@ -13,9 +17,15 @@ import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';
 import { MessageQuery } from '@/query/search-query';
 import { Message, MessageGroup, groupMessage } from '@/types/response/Message';
 
+
+
 import { InfiniteData, QueryKey, useQueryClient } from '@tanstack/react-query';
 
+
+
 import ErrorMessage from './error-message';
+import { SocketResult } from '@/types/data/SocketClient';
+
 
 type MessageListProps = {
   className?: string;
@@ -104,45 +114,50 @@ export default function MessageList({ className, queryKey, params, loader, noRes
     }
   }, [pages, isEndReached]);
 
-  useEffect(
-    () =>
+  useEffect(() => {
+    const messageHandler = (message: SocketResult<'MESSAGE'>) => {
+      renderCause.current = 'event';
+
+      queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
+        if (message && 'error' in message) {
+          return;
+        }
+
+        if (showNotification) {
+          postNotification(message.content, message.userId);
+        }
+
+        if (!query || !query.pages) {
+          return undefined;
+        }
+
+        const [first, ...rest] = query.pages;
+
+        const newFirst = [message, ...first];
+
+        return {
+          ...query,
+          pages: [newFirst, ...rest],
+        } satisfies InfiniteData<Message[], unknown>;
+      });
+
+      if (container.current && isEndReached) {
+        container.current.scrollTo({
+          top: container.current.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    };
+
+    socket
+      .onRoom(room) //
+      .onMessage('MESSAGE', messageHandler);
+    return () => {
       socket
         .onRoom(room) //
-        .onMessage('MESSAGE', (message) => {
-          renderCause.current = 'event';
-
-          queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
-            if (message && 'error' in message) {
-              return;
-            }
-
-            if (showNotification) {
-              postNotification(message.content, message.userId);
-            }
-
-            if (!query || !query.pages) {
-              return undefined;
-            }
-
-            const [first, ...rest] = query.pages;
-
-            const newFirst = [message, ...first];
-
-            return {
-              ...query,
-              pages: [newFirst, ...rest],
-            } satisfies InfiniteData<Message[], unknown>;
-          });
-
-          if (container.current && isEndReached) {
-            container.current.scrollTo({
-              top: container.current.scrollHeight,
-              behavior: 'smooth',
-            });
-          }
-        }),
-    [room, queryKey, socket, queryClient, isEndReached, showNotification, postNotification],
-  );
+        .remove('MESSAGE', messageHandler);
+    };
+  }, [room, queryKey, socket, queryClient, isEndReached, showNotification, postNotification]);
 
   useEffect(() => {
     function onScroll() {
