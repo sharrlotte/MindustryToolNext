@@ -74,7 +74,7 @@ export default function Client() {
             </GridPaginationList>
           </GridLayout>
         </ScrollContainer>
-        <div className="flex flex-wrap items-center gap-2 justify-between">
+        <div className="flex items-center gap-2 justify-between">
           <BulkDeleteToggle />
           <div className="flex items-center gap-2">
             <PaginationLayoutSwitcher />
