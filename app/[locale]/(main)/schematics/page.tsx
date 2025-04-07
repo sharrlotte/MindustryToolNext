@@ -43,7 +43,7 @@ export default async function Page() {
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="schematic" />
       <Client />
-      <div className="flex flex-wrap items-center gap-2 justify-between">
+      <div className="flex items-center gap-2 justify-between">
         <InternalLink variant="button-secondary" href={uploadLink}>
           <UploadIcon />
           <Tran text="upload-schematic" />

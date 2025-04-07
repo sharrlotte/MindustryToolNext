@@ -36,7 +36,7 @@ export default async function Page() {
     <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
       <NameTagSearch type="map" />
       <Client />
-      <div className="flex flex-wrap items-center gap-2 justify-between">
+      <div className="flex items-center gap-2 justify-between">
         <InternalLink variant="button-secondary" href={`${env.url.base}/upload/map`}>
           <UploadIcon className="size-5" />
           <Tran text="map.upload" />
