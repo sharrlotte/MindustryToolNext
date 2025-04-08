@@ -1,10 +1,11 @@
 'use client';
 
+import { useInterval } from 'usehooks-ts';
+
 import useClientApi from '@/hooks/use-client';
 import { Batcher } from '@/lib/batcher';
 
 import { useQuery } from '@tanstack/react-query';
-import { useInterval } from 'usehooks-ts';
 
 export default function ClientInit() {
   const axios = useClientApi();
@@ -16,7 +17,7 @@ export default function ClientInit() {
 
   useInterval(async () => {
     await Batcher.process();
-  }, 100)
+  }, 50);
 
   return undefined;
 }

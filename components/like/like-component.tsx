@@ -1,7 +1,8 @@
-import { ReactNode, createContext, useCallback, useContext, useState } from 'react';
+import { ReactNode, createContext, useCallback, useContext } from 'react';
 import React from 'react';
 
 import Tran from '@/components/common/tran';
+import { LikeData } from '@/components/like/like-and-dislike';
 import { toast } from '@/components/ui/sonner';
 
 import { LikeAction } from '@/constant/enum';
@@ -19,7 +20,7 @@ const UNSET = 0;
 type LikeComponentContextType = {
   like: number;
   dislike: number;
-  likeData: Like;
+  data: Like;
   isLoading: boolean;
   handleAction: (action: 'LIKE' | 'DISLIKE') => void;
 };
@@ -36,25 +37,14 @@ export function useLike() {
 
 type LikeComponentProps = {
   children: ReactNode;
-  initialLikeCount: number;
-  initialDislikeCount: number;
-  initialLikeData?: Like;
   itemId: string;
+  data: LikeData;
 };
 
-export default function LikeComponent({ initialLikeCount = 0, initialDislikeCount = 0, initialLikeData, children, itemId }: LikeComponentProps) {
+export default function LikeComponent({ data, children, itemId }: LikeComponentProps) {
   const queryClient = useQueryClient();
   const { session } = useSession();
   const axios = useClientApi();
-  const [likeData, setLikeData] = useState({
-    data: initialLikeData ?? {
-      userId: '',
-      itemId,
-      state: 0,
-    },
-    like: initialLikeCount,
-    dislike: initialDislikeCount,
-  });
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (action: LikeAction) =>
@@ -64,6 +54,15 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
       }),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ['like', itemId] }),
   });
+
+  const setData = useCallback(
+    (newData: LikeData) => {
+      queryClient.setQueriesData({ queryKey: ['like', itemId] }, () => {
+        return newData;
+      });
+    },
+    [itemId, queryClient],
+  );
 
   const handleAction = useCallback(
     (action: 'LIKE' | 'DISLIKE') => {
@@ -80,10 +79,10 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
       let state: 0 | 1 | -1;
 
       if (action === 'LIKE') {
-        if (likeData.data.state === LIKE) {
+        if (data.data.state === LIKE) {
           likeChange = -1;
           state = UNSET;
-        } else if (likeData.data.state === DISLIKE) {
+        } else if (data.data.state === DISLIKE) {
           likeChange = 1;
           dislikeChange = -1;
           state = LIKE;
@@ -92,10 +91,10 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
           state = LIKE;
         }
       } else {
-        if (likeData.data.state === DISLIKE) {
+        if (data.data.state === DISLIKE) {
           dislikeChange = -1;
           state = UNSET;
-        } else if (likeData.data.state === LIKE) {
+        } else if (data.data.state === LIKE) {
           dislikeChange = 1;
           likeChange = -1;
           state = DISLIKE;
@@ -105,34 +104,34 @@ export default function LikeComponent({ initialLikeCount = 0, initialDislikeCoun
         }
       }
 
-      likeData.data.state = state;
+      data.data.state = state;
 
-      setLikeData({
-        data: { ...likeData.data, state },
-        like: likeData.like + likeChange,
-        dislike: likeData.dislike + dislikeChange,
+      setData({
+        data: { ...data.data, state },
+        like: data.like + likeChange,
+        dislike: data.dislike + dislikeChange,
       });
 
       return mutate(action, {
         onError: () => {
-          setLikeData({ ...likeData });
+          setData({ ...data });
         },
         onSuccess: () => {
-          setLikeData({
-            data: { ...likeData.data, state },
-            like: likeData.like + likeChange,
-            dislike: likeData.dislike + dislikeChange,
+          setData({
+            data: { ...data.data, state },
+            like: data.like + likeChange,
+            dislike: data.dislike + dislikeChange,
           });
         },
       });
     },
-    [isPending, likeData, mutate, session],
+    [isPending, session, data, setData, mutate],
   );
 
   const contextValue = {
-    like: likeData.like,
-    dislike: likeData.dislike,
-    likeData: likeData.data,
+    like: data.like,
+    dislike: data.dislike,
+    data: data.data,
     isLoading: isPending,
     handleAction,
   };
