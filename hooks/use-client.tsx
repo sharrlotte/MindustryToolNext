@@ -23,8 +23,6 @@ function getCookie(name: string): string | null {
 export default function useClientApi(): AxiosInstance {
   axiosInstance.defaults.timeout = 60000;
 
-  axiosInstance.interceptors.request.clear();
-
   useEffect(() => {
     const id = axiosInstance.interceptors.request.use(async (config) => {
       const params = config.params;
@@ -84,7 +82,6 @@ export default function useClientApi(): AxiosInstance {
         return Promise.reject(error);
       },
     );
-    
 
     return () => {
       axiosInstance.interceptors.response.eject(id);
