@@ -1,255 +1,79 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@import 'tw-animate-css';
-@plugin '@tailwindcss/typography';
-
-@custom-variant dark (&:is(.dark *));
-:root {
-  --background: 233 43% 90%;
-  --foreground: 0 0% 2%;
-
-  --card: 240 10% 100%;
-  --card-foreground: 60 9.1% 3%;
-
-  --popover: 213 43% 96%;
-  --popover-foreground: 60 9.1% 3%;
-
-  --primary: 60 9.1% 3%;
-  --primary-foreground: 360 100% 0%;
-
-  --secondary: 240 50% 85%;
-  --secondary-foreground: 240 10% 40%;
-
-  --muted: 240 16.5% 85%;
-  --muted-foreground: 24 5.4% 40%;
-
-  --accent: 12 6.5% 85.1%;
-  --accent-foreground: 240 0% 50%;
-
-  --border: 140 3% 77%;
-  --input: 12 6.5% 85%;
-  --ring: 24 5.7% 20%;
-
-  --brand: 240 50% 60%;
-  --brand-foreground: 0 0% 100%;
-
-  --radius: 0.5rem;
-
-  --preview-size: 20rem;
-  --preview-card-height: 27rem;
-  --nav: 3.1rem;
-
-  --destructive: 0 100% 50%;
-  --destructive-foreground: 210 40% 98%;
-
-  --success: 150 73% 55%;
-  --warning: 60 100% 35%;
-}
-
-.dark {
-  --background: 240 10% 3%;
-  --foreground: 0 0% 100%;
-
-  --card: 240 3% 6%;
-  --card-foreground: 60 19.1% 97.8%;
-
-  --popover: 20 14.3% 4.1%;
-  --popover-foreground: 60 9.1% 97.8%;
-
-  --primary: 60 9.1% 97.8%;
-  --primary-foreground: 360 100% 100%;
-
-  --secondary: 240 1% 14%;
-  --secondary-foreground: 0 9.1% 70.8%;
-
-  --muted: 12 6.5% 15.1%;
-  --muted-foreground: 24 5.4% 63.9%;
-
-  --accent: 12 6.5% 15.1%;
-  --accent-foreground: 60 9.1% 97.8%;
-
-  --border: 240 2% 13%;
-  --input: 12 6.5% 15.1%;
-  --ring: 24 5.7% 82.9%;
-
-  --brand: 160 84.1% 39.4%;
-  --brand-foreground: 240 10% 100%;
-}
-
-@theme {
-  --background-image-gradient-background: linear-gradient(10deg, #000000 0%, #000000 70%, #121212 100%);
-
-  --height-screen: 100vh /* fallback for Opera, IE and etc. */, 100dvh;
-
-  --font-icon: var(--font-icon);
-  --font-noto: var(--font-noto), var(--font-icon);
-  --font-inter: var(--font-inter), var(--font-icon);
-
-  --min-height-preview: var(--preview-size);
-  --min-height-preview-height: var(--preview-card-height);
-  --min-height-nav: var(--nav);
-  --min-height: 0.25rem;
-
-  --spacing-preview: var(--preview-size);
-  --spacing-preview-height: var(--preview-card-height);
-  --spacing-nav: var(--nav);
-
-  --color-success: hsl(var(--success));
-  --color-warning: hsl(var(--warning));
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-
-  --color-brand: hsl(var(--brand));
-  --color-brand-foreground: hsl(var(--brand-foreground));
-
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-  --animate-slide-in: slide-in 0.5s forwards;
-  --animate-popup: popup 0.2s forwards;
-  --animate-spin: spin 1s linear infinite;
-  --animate-appear: appear 0.5s linear;
-  --animate-expand: expand 1s linear forwards;
-  --animate-collapse: collapse 1s linear forwards;
-
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
-  @keyframes slide-in {
-    0% {
-      transform: translateX(100%);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-  @keyframes popup {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes appear {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  @keyframes expand {
-    0% {
-      transform: scaleY(0);
-    }
-    100% {
-      transform: scaleY(1);
-    }
-  }
-  @keyframes collapse {
-    0% {
-      transform: scaleY(1);
-    }
-    100% {
-      transform: scaleY(0);
-    }
-  }
-}
-
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+  :root {
+    --background: 233 43% 90%;
+    --foreground: 0 0% 2%;
+
+    --card: 240 10% 100%;
+    --card-foreground: 60 9.1% 3%;
+
+    --popover: 213 43% 96%;
+    --popover-foreground: 60 9.1% 3%;
+
+    --primary: 60 9.1% 3%;
+    --primary-foreground: 360 100% 0%;
+
+    --secondary: 240 50% 85%;
+    --secondary-foreground: 240 10% 40%;
+
+    --muted: 240 16.5% 85%;
+    --muted-foreground: 24 5.4% 40%;
+
+    --accent: 12 6.5% 85.1%;
+    --accent-foreground: 240 0% 50%;
+
+    --border: 140 3% 77%;
+    --input: 12 6.5% 85%;
+    --ring: 24 5.7% 20%;
+
+    --brand: 240 50% 60%;
+    --brand-foreground: 0 0% 100%;
+
+    --radius: 0.5rem;
+
+    --preview-size: 20rem;
+    --preview-card-height: 27rem;
+    --nav: 3.1rem;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 150 73% 55%;
+    --warning: 60 100% 35%;
   }
-}
 
-@utility no-scrollbar {
-  &::-webkit-scrollbar {
-    display: none;
+  .dark {
+    --background: 240 10% 3%;
+    --foreground: 0 0% 100%;
+
+    --card: 240 3% 6%;
+    --card-foreground: 60 19.1% 97.8%;
+
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+
+    --primary: 60 9.1% 97.8%;
+    --primary-foreground: 360 100% 100%;
+
+    --secondary: 240 1% 14%;
+    --secondary-foreground: 0 9.1% 70.8%;
+
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+
+    --border: 240 2% 13%;
+    --input: 12 6.5% 15.1%;
+    --ring: 24 5.7% 82.9%;
+
+    --brand: 160 84.1% 39.4%;
+    --brand-foreground: 240 10% 100%;
   }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  overflow-y: auto;
-}
-
-@utility layout {
-  & > .error {
-    @apply absolute inset-0;
-  }
-}
-
-@utility error {
-  .layout > & {
-    @apply absolute inset-0;
-  }
-}
-
-@utility lucide {
-  @apply size-5 min-h-5 min-w-5 stroke-[2.5px];
-}
-
-@utility static {
-  position: static !important;
 }
 
 @layer base {
@@ -259,7 +83,7 @@
   }
 
   div {
-    @apply border-border box-border;
+    @apply box-border border-border;
   }
 
   h1 {
@@ -283,11 +107,11 @@
   }
 
   p > code {
-    @apply bg-background bg-opacity-60 text-foreground my-4 rounded-md border px-2 py-1;
+    @apply my-4 rounded-md border bg-background bg-opacity-60 px-2 py-1 text-foreground;
   }
 
   pre {
-    @apply bg-background bg-opacity-60 text-foreground my-4 min-h-[46px] max-w-[90dw] overflow-hidden rounded-md border p-2 text-wrap;
+    @apply my-4 min-h-[46px] max-w-[90dw] overflow-hidden text-wrap rounded-md border bg-background bg-opacity-60 p-2 text-foreground;
   }
 
   .markdown-image {
@@ -298,7 +122,7 @@
   }
 
   .scroll-container::-webkit-scrollbar-track {
-    @apply bg-opacity-20 bg-white bg-clip-padding;
+    @apply bg-white bg-opacity-20 bg-clip-padding;
   }
 
   .scroll-container::-webkit-scrollbar {
@@ -349,7 +173,7 @@
   }
 
   g path {
-    @apply focus:border-transparent focus:outline-hidden;
+    @apply focus:border-transparent focus:outline-none;
   }
 
   * {
@@ -358,8 +182,29 @@
 }
 
 @layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: auto;
+  }
+
+  .layout > .error {
+    @apply absolute inset-0;
+  }
+
   [contenteditable='true']:empty:not(:focus):before {
     content: attr(data-placeholder);
     @apply text-muted-foreground;
+  }
+
+  .lucide {
+    @apply size-5 min-h-5 min-w-5 stroke-[2.5px];
+  }
+
+  .static {
+    position: static !important;
   }
 }

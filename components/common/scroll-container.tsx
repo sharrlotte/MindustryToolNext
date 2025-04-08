@@ -13,17 +13,7 @@ type Props = {
   children: ReactNode;
 };
 
-const ScrollContainer = (
-  {
-    ref: forwardedRef,
-    className,
-    id,
-    additionalPadding = 'pr-2',
-    children
-  }: Props & {
-    ref: React.RefObject<HTMLDivElement>;
-  }
-) => {
+const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id, additionalPadding = 'pr-2', children }, forwardedRef) => {
   const pathname = usePathname();
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const lastScrollTop = React.useRef(0);
@@ -90,7 +80,7 @@ const ScrollContainer = (
       {children}
     </div>
   );
-};
+});
 
 ScrollContainer.displayName = 'ScrollContainer';
 

@@ -32,7 +32,7 @@ export function SearchInput({ className, placeholder, value, onChange, onClear, 
   return (
     <>
       <input
-        className={cn('h-full w-full bg-transparent hover:outline-hidden focus:outline-hidden', className)}
+        className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)}
         suppressHydrationWarning
         placeholder={t(key)} //
         value={value}

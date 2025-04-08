@@ -156,7 +156,7 @@ function TranslatePage({
     <div className="flex h-full overflow-hidden rounded-md">
       <div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
         <div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
-          <Input className="w-full rounded-sm outline-hidden hover:outline-hidden" placeholder="Title" value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
+          <Input className="w-full rounded-sm outline-none hover:outline-none" placeholder="Title" value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
           <MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
         </div>
         <div className="flex items-center justify-start gap-2 rounded-md ">
@@ -227,7 +227,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
     <div className="flex h-full flex-col overflow-hidden rounded-md">
       <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
         <div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
-          <Input className="w-full rounded-sm  outline-hidden hover:outline-hidden" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
+          <Input className="w-full rounded-sm  outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
           <MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
         </div>
         <div className="flex items-center justify-start gap-2 overflow-hidden rounded-md ">

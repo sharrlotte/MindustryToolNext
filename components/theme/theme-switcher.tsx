@@ -19,7 +19,7 @@ function IThemeSwitcher() {
         {theme === 'light' ? <SunIcon className="w-5" /> : <MoonIcon className="w-5" />}
         <Tran asChild text={theme + '-mode'} />
       </span>
-      <Switch className="data-[state=checked]:bg-white dark:data-[state=checked]:bg-primary" checked={theme === 'light'} onCheckedChange={(value) => setTheme(value ? 'light' : 'dark')} />
+      <Switch className="data-[state=checked]:bg-white data-[state=checked]:dark:bg-primary" checked={theme === 'light'} onCheckedChange={(value) => setTheme(value ? 'light' : 'dark')} />
     </div>
   );
 }

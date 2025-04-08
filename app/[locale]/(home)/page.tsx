@@ -214,7 +214,7 @@ async function HeaderLogin({ locale }: { locale: Locale }) {
 
 async function Hero({ locale }: { locale: Locale }) {
   return (
-    <section className="relative bg-gradient bg-linear-to-t text-brand-foreground">
+    <section className="relative bg-gradient bg-gradient-to-t text-brand-foreground">
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">Mindustry Tool</h1>
         <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8 text-brand-foreground">
@@ -386,7 +386,7 @@ async function StatisticSection({ locale }: { locale: Locale }) {
         { icon: ServerIcon, text: 'home.free-servers-count', count: 3, color: 'text-purple-400', link: '#server' },
       ].map((item, index) => (
         <FlyIn key={index} className="h-full">
-          <InternalLink href={item.link} shallow className={`text-center p-6 text-brand-foreground bg-gray-900/50 backdrop-blur-xs h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}>
+          <InternalLink href={item.link} shallow className={`text-center p-6 text-brand-foreground bg-gray-900/50 backdrop-blur-sm h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}>
             <div className={`flex justify-center items-center flex-col gap-2 ${item.color}`}>
               <item.icon className="size-12" />
             </div>

@@ -94,7 +94,7 @@ function ChatInput() {
     >
       <form className="flex h-14 flex-1 gap-2 border-t px-2 py-2" name="text" onSubmit={handleFormSubmit}>
         <div className="flex w-full items-center gap-2 rounded-md border bg-background px-2">
-          <input className="h-full w-full bg-transparent outline-hidden" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
+          <input className="h-full w-full bg-transparent outline-none" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
           <Popover>
             <PopoverTrigger>
               <SmileIcon />

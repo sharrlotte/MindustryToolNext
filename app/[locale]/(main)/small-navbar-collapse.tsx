@@ -17,7 +17,7 @@ export default function SmallNavbarCollapse({ children }: Props) {
   return (
     <div
       className={cn('pointer-events-none fixed inset-0 z-50 h-screen bg-transparent text-foreground', {
-        'backdrop-blur-xs backdrop-brightness-50': visible,
+        'backdrop-blur-sm backdrop-brightness-50': visible,
       })}
     >
       <div>

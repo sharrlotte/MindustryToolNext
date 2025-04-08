@@ -55,7 +55,7 @@ export default function GptPage() {
   }
 
   return (
-    <div className="grid h-full grid-rows-[1fr_auto_auto] gap-2 overflow-hidden p-2">
+    <div className="grid h-full grid-rows-[1fr,auto,auto] gap-2 overflow-hidden p-2">
       <ScrollContainer className="flex h-full flex-col space-y-4 p-2">
         {data.length === 0 ? (
           <div className="flex h-full items-center justify-center text-center font-bold">

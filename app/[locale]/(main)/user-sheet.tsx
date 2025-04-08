@@ -55,7 +55,7 @@ export function UserActions() {
 
   return tabs.map(({ action, icon, filter }, index) => (
     <ProtectedElement session={session} filter={filter} key={index}>
-      <div className="grid w-full min-w-52 cursor-pointer grid-cols-[20px_1fr] items-center gap-2 rounded-sm px-1 py-2 hover:bg-brand hover:text-white" key={index}>
+      <div className="grid w-full min-w-52 cursor-pointer grid-cols-[20px,1fr] items-center gap-2 rounded-sm px-1 py-2 hover:bg-brand hover:text-white" key={index}>
         {icon}
         {action}
       </div>
