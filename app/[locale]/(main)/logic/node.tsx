@@ -243,7 +243,7 @@ export function NodeItem({ color, data, state, setState }: { color: string; stat
       <div className="flex gap-1 w-40">
         {data.label && <span className="border-transparent border-b-[3px]">{data.label}</span>}
         <input
-          className="bg-transparent border-b-[3px] px-2 hover min-w-20 max-w-40 sm:max-w-80 focus:outline-none" //
+          className="bg-transparent border-b-[3px] px-2 hover min-w-20 max-w-40 sm:max-w-80 focus:outline-hidden" //
           style={{ borderColor: color }}
           type="text"
           value={state[data.input] ?? data.defaultValue ?? ''}

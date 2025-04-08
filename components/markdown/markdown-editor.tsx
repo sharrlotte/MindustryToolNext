@@ -126,7 +126,7 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
       >
         {(mode === 'edit' || mode === 'live') && (
           <textarea
-            className="h-full w-full resize-none overflow-y-auto border-transparent bg-transparent p-2 outline-none"
+            className="h-full w-full resize-none overflow-y-auto border-transparent bg-transparent p-2 outline-hidden"
             ref={inputRef}
             title={'content'}
             value={value.text}

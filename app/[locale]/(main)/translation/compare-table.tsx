@@ -110,7 +110,7 @@ function CompareCard({ translation, language, target }: CompareCardProps) {
         <div className="flex items-center gap-2" onClick={() => setEdit(true)}>
           {isEdit ? ( //
             <Textarea
-              className="min-h-full border-transparent p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
+              className="min-h-full border-transparent p-0 outline-hidden ring-0 focus-visible:outline-hidden focus-visible:ring-0"
               defaultValue={currentValue ?? key}
               onChange={(event) => setCurrentValue(event.target.value)}
               onBlur={() => {

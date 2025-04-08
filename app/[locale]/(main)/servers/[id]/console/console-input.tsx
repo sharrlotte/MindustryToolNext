@@ -70,7 +70,7 @@ export default function ConsoleInput() {
   }
   return (
     <form className="flex h-full flex-1 gap-1" name="text" onSubmit={handleFormSubmit}>
-      <Input className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none" value={message} placeholder="/help" onKeyDown={handleKeyPress} onChange={(event) => setMessage(event.currentTarget.value)} />
+      <Input className="h-full w-full rounded-sm border border-border bg-background px-2 outline-hidden" value={message} placeholder="/help" onKeyDown={handleKeyPress} onChange={(event) => setMessage(event.currentTarget.value)} />
       <Button className="h-full" variant="primary" type="submit" title="send" disabled={state !== 'connected' || !message}>
         <Tran text="send" />
       </Button>

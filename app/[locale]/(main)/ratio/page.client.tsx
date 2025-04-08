@@ -54,7 +54,7 @@ export default function RatioPage() {
               <div>
                 <MagnifyingGlassIcon className="size-5" />
               </div>
-              <input className="border-transparent bg-transparent font-thin outline-none" value={filter} placeholder="Search" onChange={(event) => setFilter(event.currentTarget.value)} />
+              <input className="border-transparent bg-transparent font-thin outline-hidden" value={filter} placeholder="Search" onChange={(event) => setFilter(event.currentTarget.value)} />
             </div>
             <div className="flex flex-col gap-2 p-1">
               {blocks.map((item) => (
@@ -118,7 +118,7 @@ function RequirementCard({ input }: RequirementCardProps) {
               <div>
                 <MagnifyingGlassIcon className="size-5" />
               </div>
-              <input className="border-transparent bg-transparent font-thin outline-none" value={filter} placeholder="Search" onChange={(event) => setFilter(event.currentTarget.value)} />
+              <input className="border-transparent bg-transparent font-thin outline-hidden" value={filter} placeholder="Search" onChange={(event) => setFilter(event.currentTarget.value)} />
             </div>
             <div className="grid gap-2 p-1">
               {filtered.map((item) => (

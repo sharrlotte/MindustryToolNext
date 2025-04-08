@@ -18,7 +18,7 @@ export default function Collapse({ message, children }: Props) {
       <div
         className={cn('grid overflow-hidden transition-all', {
           'grid-rows-[0]': !open,
-          'grid-rows-[1]': open,
+          'grid-rows-1': open,
         })}
       >
         {children}

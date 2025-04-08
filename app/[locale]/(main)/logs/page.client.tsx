@@ -82,7 +82,7 @@ function SendMessageButton() {
 
   return (
     <form className="flex h-10 flex-1 gap-2" name="text" onSubmit={handleFormSubmit}>
-      <Input className="h-full w-full border border-border bg-background px-2 outline-none" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
+      <Input className="h-full w-full border border-border bg-background px-2 outline-hidden" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
       <Button className="h-full" variant="primary" type="submit" title="send" disabled={state !== 'connected' || !message}>
         <Tran text="send" />
       </Button>

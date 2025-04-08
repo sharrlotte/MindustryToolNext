@@ -194,7 +194,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
       <Suspense>
         {useTag && showFilterDialog && (
           <div
-            className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {
+            className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-xs', {
               flex: showFilterDialog,
             })}
           >
