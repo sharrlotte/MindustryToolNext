@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { toast } from '@/components/ui/sonner';
 
@@ -32,6 +32,7 @@ export function useSocket(): UseSocket {
 export function SocketProvider({ children }: { children: ReactNode }) {
   const [socket] = useState<SocketClient>(defaultContextValue.socket);
   const [state, setState] = useState<SocketState>(defaultContextValue.socket.getState());
+  const isShowDisconnected = useRef(false);
 
   useEffect(() => {
     if (socket.getState() === 'disconnected') {
@@ -39,9 +40,13 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     }
     socket.onDisconnect(() => {
       setState('disconnected');
-      toast('Disconnected', {
-        description: 'You are disconnected from the server',
-      });
+
+      if (!isShowDisconnected.current) {
+        isShowDisconnected.current = true;
+        toast('Disconnected', {
+          description: 'You are disconnected from the server',
+        });
+      }
     });
 
     socket.onConnect(() => {
@@ -49,6 +54,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       toast('Connected', {
         description: 'You are connected to the server',
       });
+      isShowDisconnected.current = false;
     });
 
     socket.onError(() => {
