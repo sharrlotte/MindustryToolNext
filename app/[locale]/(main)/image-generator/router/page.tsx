@@ -105,7 +105,7 @@ export default function Page() {
         </div>
       </div>
       {isPending ? (
-        <div className="flex w-full items-center justify-center gap-1 p-2 rounded-lg border">
+        <div className="flex w-full items-center justify-center flex-col gap-1 p-2 rounded-lg border">
           <LoadingSpinner className="m-0" />
           <Tran text="image-generator.generating-schematic" />
         </div>
@@ -156,7 +156,7 @@ function Preview({ data }: { data: string }) {
 
   if (isLoading) {
     return (
-      <div className="flex w-full items-center justify-center gap-1">
+      <div className="flex w-full items-center justify-center flex-col gap-1">
         <LoadingSpinner className="m-0" />
         <Tran text="image-generator.generating-preview" />
       </div>
