@@ -111,12 +111,5 @@ export type PathElementProps = {
   };
 };
 export function PathElement({ segment }: PathElementProps) {
-  const { icon, name } = segment;
-
-  return (
-    <NavbarLink {...segment}>
-      {icon}
-      <NavbarVisible>{name}</NavbarVisible>
-    </NavbarLink>
-  );
+  return <NavbarLink {...segment} />;
 }
