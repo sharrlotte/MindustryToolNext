@@ -2,6 +2,8 @@
 
 import React, { ReactNode, createContext, useContext, useState } from 'react';
 
+import { TooltipProvider } from '@/components/ui/tooltip';
+
 interface NavBarContextType {
   visible: boolean;
   setVisible: (data: boolean) => void;
@@ -21,7 +23,11 @@ export const NavBarProvider: React.FC<NavBarProviderProps> = ({ children }) => {
     setVisible,
   };
 
-  return <NavBarContext.Provider value={value}>{children}</NavBarContext.Provider>;
+  return (
+    <TooltipProvider>
+      <NavBarContext.Provider value={value}>{children}</NavBarContext.Provider>
+    </TooltipProvider>
+  );
 };
 
 export const useNavBar = (): NavBarContextType => {
