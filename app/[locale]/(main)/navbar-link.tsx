@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
+import NavbarVisible from '@/app/navbar-visible';
+
 import InternalLink from '@/components/common/internal-link';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -11,34 +13,18 @@ import { useSession } from '@/context/session-context';
 import { Filter, cn, hasAccess } from '@/lib/utils';
 
 type Props = {
-  children: React.ReactNode;
+  icon: React.ReactNode;
+  name: React.ReactNode;
   path: string;
   regex: string[];
   filter?: Filter;
 };
-export default function NavbarLink({ children, path, regex, filter }: Props) {
+export default function NavbarLink({ name, icon, path, regex, filter }: Props) {
   const { session } = useSession();
-
-  if (filter) {
-    return hasAccess(session, filter) ? (
-      <NavbarLinkInternal path={path} regex={regex} filter={filter}>
-        {children}
-      </NavbarLinkInternal>
-    ) : undefined;
-  }
-
-  return (
-    <NavbarLinkInternal path={path} regex={regex} filter={filter}>
-      {children}
-    </NavbarLinkInternal>
-  );
-}
-
-function NavbarLinkInternal({ children, path, regex }: Props) {
   const { visible, setVisible } = useNavBar();
   const currentPath = usePathname();
 
-  return (
+  return hasAccess(session, filter) ? (
     <Tooltip>
       <TooltipTrigger>
         <InternalLink
@@ -51,10 +37,11 @@ function NavbarLinkInternal({ children, path, regex }: Props) {
           aria-label={path}
           onClick={() => setVisible(false)}
         >
-          {children}
+          {icon}
+          <NavbarVisible>{name}</NavbarVisible>
         </InternalLink>
       </TooltipTrigger>
-      {!visible && <TooltipContent>{children}</TooltipContent>}
+      {!visible && <TooltipContent>{name}</TooltipContent>}
     </Tooltip>
-  );
+  ) : undefined;
 }

@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 
 import NavbarLink from '@/app/[locale]/(main)/navbar-link';
 import { NestedPathElementContainer } from '@/app/[locale]/(main)/nested-path-element-container';
-import NavbarVisible from '@/app/navbar-visible';
 
 import { Filter } from '@/lib/utils';
 
@@ -32,10 +31,7 @@ export default function NestedPathElement({ segment }: NestedPathElementProps) {
   return (
     <NestedPathElementContainer segment={segment}>
       {path.map((item) => (
-        <NavbarLink key={item.id} {...item}>
-          {item.icon}
-          <NavbarVisible>{item.name}</NavbarVisible>
-        </NavbarLink>
+        <NavbarLink key={item.id} {...item} />
       ))}
     </NestedPathElementContainer>
   );
