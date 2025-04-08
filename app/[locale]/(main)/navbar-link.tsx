@@ -26,7 +26,7 @@ export default function NavbarLink({ name, icon, path, regex, filter }: Props) {
 
   return hasAccess(session, filter) ? (
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <InternalLink
           className={cn('flex h-10 items-center capitalize justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
             'bg-brand text-brand-foreground': regex.some((r) => currentPath.match(r)),
