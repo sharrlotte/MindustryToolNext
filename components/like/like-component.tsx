@@ -131,7 +131,7 @@ export default function LikeComponent({ data, children, itemId }: LikeComponentP
   const contextValue = {
     like: data.like,
     dislike: data.dislike,
-    data: data.data,
+    data: { ...data.data },
     isLoading: isPending,
     handleAction,
   };

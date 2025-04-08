@@ -23,7 +23,7 @@ export type LikeData = {
 };
 
 export default function LikeAndDislike({ itemId, like, dislike }: Props) {
-  const { state } = useSession();
+  const { state, session } = useSession();
   const { data } = useQuery({
     queryKey: ['like', itemId],
     queryFn: () =>
@@ -40,7 +40,20 @@ export default function LikeAndDislike({ itemId, like, dislike }: Props) {
   });
 
   return (
-    <LikeComponent itemId={itemId} data={data}>
+    <LikeComponent
+      itemId={itemId}
+      data={
+        data ?? {
+          data: {
+            userId: session?.id ?? '',
+            itemId,
+            state: 0,
+          },
+          like: like,
+          dislike: dislike,
+        }
+      }
+    >
       <LikeButton />
       <DislikeButton />
     </LikeComponent>
