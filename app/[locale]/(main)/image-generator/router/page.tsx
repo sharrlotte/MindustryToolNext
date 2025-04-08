@@ -1,23 +1,22 @@
 'use client';
 
-import axios from 'axios';
 import saveAs from 'file-saver';
 import { useState } from 'react';
 
 import CopyButton from '@/components/button/copy-button';
+import ErrorMessage from '@/components/common/error-message';
 import { CopyIcon, DownloadIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
+import { toast } from '@/components/ui/sonner';
 
 import { IMAGE_PREFIX } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import { getSchematicPreview } from '@/query/schematic';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { toast } from '@/components/ui/sonner';
-import ErrorMessage from '@/components/common/error-message';
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -40,6 +39,8 @@ export default function Page() {
     }
     setImage(file);
   };
+
+  const axios = useClientApi();
 
   const [blockSize, setBlockSize] = useState([8]);
   const [splitHorizontal, setSplitHorizontal] = useState(1);
@@ -86,9 +87,7 @@ export default function Page() {
           <div>
             <Tran text="image-generator.total-blocks" /> {splitHorizontal * splitVertical} blocks
           </div>
-          <div>
-            {resultDimensions.width * resultDimensions.height > 500 * 500 && <Tran className='text-destructive' text="image-generator.too-big-may-fail" />}
-          </div>
+          <div>{resultDimensions.width * resultDimensions.height > 500 * 500 && <Tran className="text-destructive" text="image-generator.too-big-may-fail" />}</div>
         </div>
       )}
       <div className="space-y-2">
@@ -111,10 +110,13 @@ export default function Page() {
           <Tran text="image-generator.generating-schematic" />
         </div>
       ) : (
-        <section className="grid gap-2" style={{
-          gridTemplateColumns: `repeat(${splitHorizontal}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${splitVertical}, minmax(0, 1fr))`,
-        }}>
+        <section
+          className="grid gap-2"
+          style={{
+            gridTemplateColumns: `repeat(${splitHorizontal}, minmax(0, 1fr))`,
+            gridTemplateRows: `repeat(${splitVertical}, minmax(0, 1fr))`,
+          }}
+        >
           {data?.map((item, index) => (
             <div key={index} className="border rounded-lg p-2 space-y-2 relative">
               <span className="font-bold align-text-top absolute top-1 left-2">{index}</span>
@@ -142,7 +144,12 @@ export default function Page() {
 function Preview({ data }: { data: string }) {
   const axios = useClientApi();
 
-  const { data: preview, isLoading, isError, error } = useQuery({
+  const {
+    data: preview,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['image-preview', data],
     queryFn: () => (data ? getSchematicPreview(axios, { data }) : null),
   });
@@ -157,9 +164,9 @@ function Preview({ data }: { data: string }) {
   }
 
   if (isError) {
-    return <ErrorMessage error={error} />
+    return <ErrorMessage error={error} />;
   }
-  return <div className='object-cover w-full'>{preview && <img className="max-w-[50vw] object-cover w-full max-h-[50vh] rounded-md" src={IMAGE_PREFIX + preview.image} alt="Processed" />}</div>;
+  return <div className="object-cover w-full">{preview && <img className="max-w-[50vw] object-cover w-full max-h-[50vh] rounded-md" src={IMAGE_PREFIX + preview.image} alt="Processed" />}</div>;
 }
 
 function DownloadButton({ data }: { data: string }) {
