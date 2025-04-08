@@ -1,4 +1,4 @@
-// Compile -> Turn node to mlog
+// Compile -> Turn node to instruction
 // Drag and drop
 // Undo, Redo changes
 // If else node
@@ -11,35 +11,33 @@
 // Save nodes as function
 // Validate nodes
 // Autocomplete
-import { useMemo, useState } from 'react';
+import { groupBy, uuid } from '@/lib/utils';
 
-import { useLogicEditor } from '@/app/[locale]/(main)/logic/logic-editor-context';
+export type ItemsType = Readonly<NodeItem[]>;
 
-import ComboBox from '@/components/common/combo-box';
-
-import { uuid } from '@/lib/utils';
-
-import { Connection, Handle, Position, useNodeConnections } from '@xyflow/react';
-import { type Node } from '@xyflow/react';
-
-type LabelItem = {
-  label: string;
-  condition?: (state: Record<string, string | number>) => boolean;
+export type ConditionFn<T extends ItemsType> = {
+  [K in Extract<T[number], { name: string }>['name']]?: (state: InferStateType<T>) => boolean;
 };
 
-type InputItem = {
+type LabelItem<T extends string = string> = {
+  type: 'label';
+  value: T;
+};
+
+type InputItem<T extends string = string, N extends string = string> = {
+  type: 'input';
   label?: string;
-  input: string;
-  defaultValue?: string;
-  condition?: (state: Record<string, string | number>) => boolean;
+  name: N;
+  value: T;
 };
 
-type OptionItem = {
-  name: string;
-  options: string[];
+type OptionItem<T extends string = string, N extends string = string> = {
+  type: 'option';
+  name: N;
+  options: T[];
 };
 
-type NodeItem = LabelItem | InputItem | OptionItem;
+export type NodeItem = LabelItem | InputItem | OptionItem;
 
 type Output = {
   type: string;
@@ -47,45 +45,73 @@ type Output = {
   value: any;
 };
 
-type CompileFn = (state: Record<string, string | number>) => string;
+export type InferStateType<T extends ItemsType> = {
+  [K in Extract<T[number], { name: string }>['name']]: Extract<T[number], { name: K; value: any }>['value'];
+};
 
-export class NodeData {
+type CompileFn<T extends ItemsType> = (state: InferStateType<T>) => string;
+
+export class NodeData<T extends ItemsType = ItemsType> {
   id = uuid();
   name: string;
+  category: string;
   label: string;
   color: string;
-  items: NodeItem[];
+  items: Readonly<T>;
   inputs: number;
   outputs: Output[];
-  compile: CompileFn;
+  compile: CompileFn<T>;
+  condition?: ConditionFn<T>;
 
-  constructor({ name, label, color, items, inputs, outputs, compile }: { name: string; label: string; color: string; items: NodeItem[]; inputs: number; outputs: Output[]; compile: CompileFn }) {
+  constructor({
+    name,
+    label,
+    condition,
+    category,
+    color,
+    items,
+    inputs,
+    outputs,
+    compile,
+  }: {
+    name: string;
+    category: string;
+    label: string;
+    color: string;
+    items: T;
+    inputs: number;
+    outputs: Output[];
+    compile: CompileFn<T>;
+    condition?: ConditionFn<T>;
+  }) {
     this.name = name;
     this.label = label;
+    this.category = category;
     this.color = color;
     this.items = items;
     this.inputs = inputs;
     this.outputs = outputs;
     this.compile = compile;
+    this.condition = condition;
   }
 
-  getDefaultState() {
+  getDefaultState(): InferStateType<typeof this.items> {
     let state = {};
 
     for (const item of this.items) {
-      if ('options' in item) {
+      if (item.type === 'option') {
         state = { ...state, [item.name]: item.options[0] };
-      } else if ('input' in item) {
-        state = { ...state, [item.input]: item.defaultValue ?? '' };
+      } else if (item.type === 'input') {
+        state = { ...state, [item.name]: item.value ?? '' };
       }
     }
 
-    return state;
+    return state as any;
   }
 }
 
-export type InstructionNode = {
-  data: { type: keyof typeof nodes; index?: number; state: Record<string, any>; node: NodeData };
+export type InstructionNodeData<T extends (keyof typeof nodes)[number] = (keyof typeof nodes)[number]> = {
+  data: { type: T; index?: number; node: NodeData; state: InferStateType<(typeof nodes)[T]['items']> };
   isConnectable?: boolean;
 };
 
@@ -94,6 +120,7 @@ export const nodes: Record<string, NodeData> = {
     name: 'start',
     label: 'Start',
     color: 'green',
+    category: 'Special',
     items: [],
     inputs: 0,
     outputs: [{ type: 'boolean', label: '', value: true }],
@@ -104,6 +131,7 @@ export const nodes: Record<string, NodeData> = {
     name: 'end',
     label: 'End',
     color: 'blue',
+    category: 'Special',
     items: [],
     inputs: 1,
     outputs: [],
@@ -112,237 +140,77 @@ export const nodes: Record<string, NodeData> = {
   if: new NodeData({
     name: 'if',
     label: 'Jump',
+    category: 'Flow Control',
     color: '#6BB2B2',
     items: [
       {
-        label: 'If',
+        type: 'label',
+        value: 'If',
       },
       {
-        input: 'a',
-        defaultValue: 'a',
-        condition: (state) => state['condition'] !== 'always',
+        type: 'input',
+        name: 'a',
+        value: 'a',
       },
       {
+        type: 'option',
         name: 'condition',
         options: ['>', '>=', '<', '<=', '==', '===', 'not', 'always'],
       },
       {
-        input: 'b',
-        defaultValue: 'b',
-        condition: (state) => state['condition'] !== 'always',
+        type: 'input',
+        name: 'b',
+        value: 'b',
       },
-    ],
+    ] as const,
     inputs: 1,
     outputs: [
       { type: 'boolean', label: 'True', value: null },
       { type: 'boolean', label: 'False', value: null },
     ],
     compile: (state) => `jump ${1} ${state.condition} ${state.a} ${state.b}`,
+    condition: {
+      a: (state) => state.condition !== 'always',
+      b: (state) => state.condition !== 'always',
+    },
   }),
   read: new NodeData({
     name: 'read',
     label: 'read',
+    category: 'Input/Output',
     color: '#A08A8A',
     items: [
       {
+        type: 'input',
         label: 'Read',
+        name: 'result',
         defaultValue: 'result',
-        input: 'result',
+        value: 'result',
       },
       {
+        type: 'input',
         label: '=',
+        value: 'cell1',
         defaultValue: 'cell1',
-        input: 'cell',
+        name: 'cell',
       },
       {
         label: 'at',
         defaultValue: '0',
-        input: 'position',
+        value: '0',
+        name: 'position',
+        type: 'input',
       },
     ],
     inputs: 1,
     outputs: [{ type: 'boolean', label: 'Next', value: true }],
     compile: () => 'if (condition) { return b; }',
   }),
-  write: new NodeData({
-    name: 'write',
-    label: 'write',
-    color: '#A08A8A',
-    items: [
-      {
-        label: 'Write',
-        defaultValue: 'result',
-        input: 'result',
-      },
-      {
-        label: 'to',
-        defaultValue: 'cell1',
-        input: 'cell',
-      },
-      {
-        label: 'at',
-        defaultValue: '0',
-        input: 'position',
-      },
-    ],
-    inputs: 1,
-    outputs: [{ type: 'boolean', label: 'Next', value: null }],
-    compile: () => 'if (condition) { return b; }',
-  }),
 };
 
-function OutputHandle(props: Parameters<typeof Handle>[0] & { label: string }) {
-  const { setEdges } = useLogicEditor();
-  const connections = useNodeConnections({
-    handleType: props.type,
-    handleId: props.id ?? '',
-    onConnect(connections: Connection[]) {
-      setEdges((prevEdges) => prevEdges.map((edge) => (edge.id === (connections[0] as unknown as any).edgeId ? { ...edge, label: props.label } : edge)));
-    },
-  });
-
-  return <Handle {...props} id={props.id} isConnectable={connections.length < 1} />;
-}
-
-export function MlogNode({ data }: InstructionNode) {
-  const type = useMemo(() => new NodeData(nodes[data.type]), [data]);
-  const [state, setState] = useState(type.getDefaultState());
-  const { id, label, color, inputs, outputs, items } = type;
-
-  data.state = state;
-  data.node = type;
-
-  return (
-    <div className="custom-node p-1.5 rounded-sm text-white min-w-40 max-w-[440px]" style={{ backgroundColor: color }} data-xy-minimap-node-background-color={color}>
-      {Array(inputs)
-        .fill(1)
-        .map((_, i) => (
-          <Handle style={{ marginLeft: 20 * i - ((inputs - 1) / 2) * 20 + 'px' }} key={i} type={'target'} position={Position.Top} isConnectable={true} />
-        ))}
-      {outputs.map((output, i) => (
-        <OutputHandle id={`${id}-source-handle-${i}`} style={{ marginLeft: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }} label={output.label} key={i} type={'source'} position={Position.Bottom} />
-      ))}
-      <div className="flex justify-between text-sm font-bold">
-        <span>{label}</span>
-        <span>{data.index}</span>
-      </div>
-      {items.length > 0 && (
-        <div className="bg-black p-2 rounded-sm flex gap-1 items-end jus flex-wrap">
-          {items.map((item, i) => (
-            <NodeItem key={i} color={color} data={item} state={state} setState={setState} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-export function NodeItem({ color, data, state, setState }: { color: string; state: Record<string, string | number>; setState: (data: Record<string, string | number>) => void; data: NodeItem }) {
-  if ('input' in data && (data.condition ? data.condition(state) : true)) {
-    return (
-      <div className="flex gap-1 w-40">
-        {data.label && <span className="border-transparent border-b-[3px]">{data.label}</span>}
-        <input
-          className="bg-transparent border-b-[3px] px-2 hover min-w-20 max-w-40 sm:max-w-80 focus:outline-none" //
-          style={{ borderColor: color }}
-          type="text"
-          value={state[data.input] ?? data.defaultValue ?? ''}
-          onChange={(e) => setState({ ...state, [data.input]: e.target.value })}
-        />
-      </div>
-    );
-  }
-
-  if ('options' in data) {
-    return (
-      <div className="bg-transparent border-b-[3px] flex items-end" style={{ borderColor: color }}>
-        <ComboBox
-          className="bg-transparent px-2 py-0 text-center w-fit font-bold border-transparent items-end justify-end"
-          value={{ value: state[data.name], label: state[data.name].toString() }}
-          values={data.options.map((option) => ({ value: option, label: option.toString() }))}
-          onChange={(value) => {
-            if (value) setState({ ...state, [data.name]: value });
-          }}
-          searchBar={false}
-          chevron={false}
-        />
-      </div>
-    );
-  }
-
-  if ('label' in data && (data.condition ? data.condition(state) : true)) {
-    return <span className="border-transparent border-b-[3px]">{data.label}</span>;
-  }
-}
-
-export const nodeOptions = [
-  {
-    label: 'Special',
-    items: [
-      {
-        type: 'start',
-        label: 'Start',
-      },
-      {
-        type: 'end',
-        label: 'End',
-      },
-    ],
-  },
-  {
-    label: 'Input/Output',
-    items: [
-      { type: 'read', label: 'Read' },
-      { type: 'write', label: 'Write' },
-      { type: 'draw', label: 'Draw' },
-      { type: 'print', label: 'Print' },
-    ],
-  },
-  {
-    label: 'Block Control',
-    items: [
-      { type: 'draw-flush', label: 'Draw flush' },
-      { type: 'print-flush', label: 'Print flush' },
-      { type: 'get-link', label: 'Get link' },
-      { type: 'control', label: 'Control' },
-      { type: 'radar', label: 'Radar' },
-      { type: 'sensor', label: 'Sensor' },
-    ],
-  },
-  {
-    label: 'Operation',
-    items: [
-      { type: 'set', label: 'Set' },
-      { type: 'operation', label: 'Operation' },
-      { type: 'look-up', label: 'Look up' },
-      { type: 'pack-color', label: 'Pack color' },
-    ],
-  },
-  {
-    label: 'Flow Control',
-    items: [
-      { type: 'wait', label: 'Wait' },
-      { type: 'stop', label: 'Stop' },
-      { type: 'end', label: 'End' },
-      { type: 'jump', label: 'Jump' },
-    ],
-  },
-  {
-    label: 'Unit Control',
-    items: [
-      { type: 'unit-bind', label: 'Unit bind' },
-      { type: 'unit-control', label: 'Unit control' },
-      { type: 'unit-radar', label: 'Unit radar' },
-      { type: 'unit-locate', label: 'Unit locate' },
-    ],
-  },
-];
-
-export const initialNodes: Node[] = [
-  {
-    id: '7',
-    data: { type: 'start' },
-    type: 'mlog',
-    position: { x: 450, y: 500 },
-  },
-];
+export const nodeOptions = groupBy(Object.values(nodes), (p) => p.category).map(({ key, value }) => {
+  return {
+    label: key,
+    items: value.map((p) => ({ type: p.name, label: p.label })),
+  };
+});
