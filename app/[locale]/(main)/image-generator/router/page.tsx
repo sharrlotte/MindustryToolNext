@@ -61,7 +61,7 @@ export default function Page() {
         formData.append('splitHorizontal', splitHorizontal.toString());
         formData.append('splitVertical', splitVertical.toString());
 
-        return await axios.post('/api/v1/image-generator', formData, { data: formData }).then((result) => result.data as string[]);
+        return await axios.post('/image-generator/router', formData, { data: formData }).then((result) => result.data as string[]);
       }
       return null;
     },
