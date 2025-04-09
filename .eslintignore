@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+.next/
+out/
+*.min.js
+*.min.css
+*.log
+.DS_Store
+.env
+.env.local
+.vscode/
+.idea/
+coverage/
