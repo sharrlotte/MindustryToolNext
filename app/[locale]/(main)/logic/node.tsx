@@ -11,9 +11,11 @@
 // Save nodes as function
 // Validate nodes
 // Autocomplete
-import { groupBy, uuid } from '@/lib/utils';
+import { InstructionNode } from '@/app/[locale]/(main)/logic/instruction.node';
+
 
 export type ItemsType = Readonly<NodeItem[]>;
+export type OutputsType = Readonly<Output[]>;
 
 export type ConditionFn<T extends ItemsType> = {
   [K in Extract<T[number], { name: string }>['name']]?: (state: InferStateType<T>) => boolean;
@@ -39,28 +41,31 @@ type OptionItem<T extends string = string, N extends string = string> = {
 
 export type NodeItem = LabelItem | InputItem | OptionItem;
 
-type Output = {
-  type: string;
-  label: string;
-  value: any;
+export type Output<T extends string = string> = {
+  label: T;
 };
 
 export type InferStateType<T extends ItemsType> = {
   [K in Extract<T[number], { name: string }>['name']]: Extract<T[number], { name: K; value: any }>['value'];
 };
 
-type CompileFn<T extends ItemsType> = (state: InferStateType<T>) => string;
+export type InferNextProps<T extends OutputsType> = {
+  [K in T[number]['label']]?: InstructionNode;
+};
 
-export class NodeData<T extends ItemsType = ItemsType> {
-  id = uuid();
+
+
+type CompileFn<T extends ItemsType, O extends OutputsType> = (data: { state: InferStateType<T>; next: InferNextProps<O> }) => string;
+
+export class NodeData<T extends ItemsType = ItemsType, O extends OutputsType = OutputsType> {
   name: string;
   category: string;
   label: string;
   color: string;
   items: Readonly<T>;
   inputs: number;
-  outputs: Output[];
-  compile: CompileFn<T>;
+  outputs: Readonly<O>;
+  compile: CompileFn<T, O>;
   condition?: ConditionFn<T>;
 
   constructor({
@@ -80,8 +85,8 @@ export class NodeData<T extends ItemsType = ItemsType> {
     color: string;
     items: T;
     inputs: number;
-    outputs: Output[];
-    compile: CompileFn<T>;
+    outputs?: O;
+    compile: CompileFn<T, O>;
     condition?: ConditionFn<T>;
   }) {
     this.name = name;
@@ -90,7 +95,9 @@ export class NodeData<T extends ItemsType = ItemsType> {
     this.color = color;
     this.items = items;
     this.inputs = inputs;
-    this.outputs = outputs;
+    this.outputs = outputs ?? [{
+      label: '',
+    }] as unknown as O;
     this.compile = compile;
     this.condition = condition;
   }
@@ -109,108 +116,3 @@ export class NodeData<T extends ItemsType = ItemsType> {
     return state as any;
   }
 }
-
-export type InstructionNodeData<T extends (keyof typeof nodes)[number] = (keyof typeof nodes)[number]> = {
-  data: { type: T; index?: number; node: NodeData; state: InferStateType<(typeof nodes)[T]['items']> };
-  isConnectable?: boolean;
-};
-
-export const nodes: Record<string, NodeData> = {
-  start: new NodeData({
-    name: 'start',
-    label: 'Start',
-    color: 'green',
-    category: 'Special',
-    items: [],
-    inputs: 0,
-    outputs: [{ type: 'boolean', label: '', value: true }],
-    compile: () => '',
-  }),
-
-  end: new NodeData({
-    name: 'end',
-    label: 'End',
-    color: 'blue',
-    category: 'Special',
-    items: [],
-    inputs: 1,
-    outputs: [],
-    compile: () => '',
-  }),
-  if: new NodeData({
-    name: 'if',
-    label: 'Jump',
-    category: 'Flow Control',
-    color: '#6BB2B2',
-    items: [
-      {
-        type: 'label',
-        value: 'If',
-      },
-      {
-        type: 'input',
-        name: 'a',
-        value: 'a',
-      },
-      {
-        type: 'option',
-        name: 'condition',
-        options: ['>', '>=', '<', '<=', '==', '===', 'not', 'always'],
-      },
-      {
-        type: 'input',
-        name: 'b',
-        value: 'b',
-      },
-    ] as const,
-    inputs: 1,
-    outputs: [
-      { type: 'boolean', label: 'True', value: null },
-      { type: 'boolean', label: 'False', value: null },
-    ],
-    compile: (state) => `jump ${1} ${state.condition} ${state.a} ${state.b}`,
-    condition: {
-      a: (state) => state.condition !== 'always',
-      b: (state) => state.condition !== 'always',
-    },
-  }),
-  read: new NodeData({
-    name: 'read',
-    label: 'read',
-    category: 'Input/Output',
-    color: '#A08A8A',
-    items: [
-      {
-        type: 'input',
-        label: 'Read',
-        name: 'result',
-        defaultValue: 'result',
-        value: 'result',
-      },
-      {
-        type: 'input',
-        label: '=',
-        value: 'cell1',
-        defaultValue: 'cell1',
-        name: 'cell',
-      },
-      {
-        label: 'at',
-        defaultValue: '0',
-        value: '0',
-        name: 'position',
-        type: 'input',
-      },
-    ],
-    inputs: 1,
-    outputs: [{ type: 'boolean', label: 'Next', value: true }],
-    compile: () => 'if (condition) { return b; }',
-  }),
-};
-
-export const nodeOptions = groupBy(Object.values(nodes), (p) => p.category).map(({ key, value }) => {
-  return {
-    label: key,
-    items: value.map((p) => ({ type: p.name, label: p.label })),
-  };
-});

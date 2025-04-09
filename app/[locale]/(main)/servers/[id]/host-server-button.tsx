@@ -26,10 +26,14 @@ type Props = {
 
 function HasServerMap({ id, children }: { id: string; children: ReactNode }) {
   const axios = useClientApi();
-  const { data, isError } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryFn: () => getServerMaps(axios, id, { size: 1, page: 0 }),
     queryKey: ['server', id, 'maps-check'],
   });
+
+  if (isLoading) {
+    return <></>;
+  }
 
   if (isError || !data || data.length === 0) {
     return (

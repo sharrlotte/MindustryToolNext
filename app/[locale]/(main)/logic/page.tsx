@@ -5,16 +5,17 @@ import { Eraser, HelpCircle, Pencil, Redo2, Undo2 } from 'lucide-react';
 import { ReactNode, useMemo, useState } from 'react';
 import React from 'react';
 
-import { LogicEditorProvider, useLogicEditor } from '@/app/[locale]/(main)/logic/logic-editor-context';
-import { nodeOptions } from '@/app/[locale]/(main)/logic/node';
+import { LogicEditorProvider, nodeOptions, useLogicEditor } from '@/app/[locale]/(main)/logic/logic-editor-context';
+import { Output } from '@/app/[locale]/(main)/logic/node';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-import { Background, Controls, MiniMap, Node, ReactFlowProvider } from '@xyflow/react';
+import { Background, Controls, MiniMap, ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
 import './style.css';
+import { InstructionNode } from '@/app/[locale]/(main)/logic/instruction.node';
 
 export default function Page() {
   return (
@@ -56,29 +57,77 @@ function LiveCodePanel() {
       return lines;
     }
 
-    let nextNode = nodes.find((node) => node.type === 'instruction' && node.id === startEdge.target);
+    let nextNode: undefined | InstructionNode = nodes.find((node) => node.type === 'instruction' && node.id === startEdge.target);
 
     if (!nextNode) {
       return lines;
     }
 
-    function findNextNode(node: Node) {
-      const edge = edges.find((edge) => edge.source === node.id);
-      if (!edge) return undefined;
-      const nextNode = nodes.find((node) => node.type === 'instruction' && node.id === edge.target);
-      return nextNode;
+    const queue = [nextNode];
+
+    function findNextNodes(node: InstructionNode): Record<string, InstructionNode> {
+      const edge = edges.filter((edge) => edge.source === node.id);
+      const edgeId = edge.map(e => e.target)
+
+      if (!edge) return {};
+
+      const nextNode = nodes.filter((node) => node.type === 'instruction' && edgeId.includes(node.id));
+
+      function getEdgeIndex(target: InstructionNode) {
+        const result = edge.find((e) => e.target === target.id);
+
+        if (!result) throw new Error('Edge not found');
+
+        if (node.data.node === undefined) {
+          throw new Error('Node not found');
+        }
+
+        const index = node.data.node.outputs.findIndex(o => o.label === result.label);
+
+        if (index === -1) {
+          return undefined;
+        }
+
+        const output = node.data.node.outputs[index];
+
+        return { index, output, target };
+      }
+
+      const sorted = nextNode.reduce<{
+        index: number;
+        output: Output;
+        target: InstructionNode;
+      }[]>((prev, curr) => {
+        const r = getEdgeIndex(curr)
+
+        if (r) {
+          prev.push(r);
+        }
+
+        return prev;
+      }, []).sort((a, b) => (b.index) - (a.index))
+
+      const initial: Record<string, InstructionNode> = {}
+
+      return sorted.reduce<Record<string, InstructionNode>>((prev, curr) => {
+        prev[curr.output.label] = curr.target;
+
+        return prev;
+      }, initial);
     }
 
     while (nextNode) {
+      nextNode = queue.pop()
+
+      if (!nextNode) break;
+
       if (visited.includes(nextNode.id)) {
-        lines.push(`${index} ${(nextNode.data.node as any).compile(nextNode.data.state)}`);
-        nextNode.data.index = index;
-        break;
+        continue;
       }
       visited.push(nextNode.id);
-      lines.push(`${index} ${(nextNode.data.node as any).compile(nextNode.data.state)}`);
+      lines.push(`${index} ${(nextNode.data.node as any).compile({ state: nextNode.data.state, next: findNextNodes(nextNode) })}`);
       nextNode.data.index = index;
-      nextNode = findNextNode(nextNode);
+      queue.push(...Object.values(findNextNodes(nextNode)));
       index++;
     }
 
@@ -157,7 +206,7 @@ function AddNodeDialog() {
             <p className="text-lg">{option.label}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {option.items.map((item: { type: string; label: string }) => (
-                <DialogClose key={item.type} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(item.type, item.label)}>
+                <DialogClose key={item.type} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(item.type)}>
                   {item.label}
                 </DialogClose>
               ))}

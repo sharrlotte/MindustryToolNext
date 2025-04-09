@@ -30,7 +30,6 @@ export function ChatIconPath() {
           setHasNewMessage(newestMessage && newestMessage.id !== lastMessage);
         });
     } catch (e) {
-      console.error(e);
     }
 
     const globalMessageHandler = (message: SocketResult<'MESSAGE'>) => {

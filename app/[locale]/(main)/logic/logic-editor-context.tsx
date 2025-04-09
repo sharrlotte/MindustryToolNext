@@ -1,26 +1,131 @@
 import { createContext, useCallback, useContext, useState } from 'react';
 
 import HelperLines from '@/app/[locale]/(main)/logic/helper-lines';
-import InstructionNode from '@/app/[locale]/(main)/logic/instruction.node';
+import InstructionNodeComponent, { InstructionNode } from '@/app/[locale]/(main)/logic/instruction.node';
 import { getHelperLines } from '@/app/[locale]/(main)/logic/utils';
 
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
-import { Edge, EdgeChange, Node, NodeChange, ProOptions, ReactFlow, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+import { Edge, EdgeChange, NodeChange, ProOptions, ReactFlow, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+import { InferStateType, ItemsType, NodeData } from '@/app/[locale]/(main)/logic/node';
+import { groupBy } from '@/lib/utils';
+
 
 export const nodeTypes = {
-  instruction: InstructionNode,
+  instruction: InstructionNodeComponent,
 } as const;
 
 export type NodeType = keyof typeof nodeTypes;
+export type Node = InstructionNode
 
- const LogicEditorContext = createContext<LogicEditorContextType | null>(null);
+const LogicEditorContext = createContext<LogicEditorContextType | null>(null);
+
+
+export const instructionNodes: Record<string, NodeData> = {
+  start: new NodeData({
+    name: 'start',
+    label: 'Start',
+    color: '#6BB2B2',
+    category: 'Special',
+    items: [],
+    inputs: 0,
+    compile: () => '',
+  }),
+
+  end: new NodeData({
+    name: 'end',
+    label: 'End',
+    color: '#6BB2B2',
+    category: 'Special',
+    items: [],
+    inputs: 1,
+    outputs: [],
+    compile: () => '',
+  }),
+  if: new NodeData({
+    name: 'if',
+    label: 'Jump',
+    category: 'Flow Control',
+    color: '#6BB2B2',
+    items: [
+      {
+        type: 'label',
+        value: 'If',
+      },
+      {
+        type: 'input',
+        name: 'a',
+        value: 'a',
+      },
+      {
+        type: 'option',
+        name: 'condition',
+        options: ['>', '>=', '<', '<=', '==', '===', 'not', 'always'],
+      },
+      {
+        type: 'input',
+        name: 'b',
+        value: 'b',
+      },
+    ] as const,
+    inputs: 1,
+    outputs: [
+      { label: 'True', },
+      { label: 'False', },
+    ] as const,
+    compile: ({ state, next }) => `jump ${next.True?.data.index ?? 0} ${state.condition} ${state.a} ${state.b}`,
+    condition: {
+      a: (state) => state.condition !== 'always',
+      b: (state) => state.condition !== 'always',
+    },
+  }),
+  read: new NodeData({
+    name: 'read',
+    label: 'read',
+    category: 'Input/Output',
+    color: '#A08A8A',
+    items: [
+      {
+        type: 'input',
+        label: 'Read',
+        name: 'result',
+        value: 'result',
+      },
+      {
+        type: 'input',
+        label: '=',
+        value: 'cell1',
+        name: 'cell',
+      },
+      {
+        label: 'at',
+        value: '0',
+        name: 'position',
+        type: 'input',
+      },
+    ] as const,
+    inputs: 1,
+    compile: ({ state }) => `read ${state.result} ${state.cell} ${state.position}`,
+  }),
+} as const;
+
+export const nodeOptions = groupBy(Object.values(instructionNodes), (p) => p.category).map(({ key, value }) => {
+  return {
+    label: key,
+    items: value.map((p) => ({ type: p.name, label: p.label })),
+  };
+});
+
 
 const initialNodes: Node[] = [
   {
     id: '7',
-    data: { type: 'start' },
+    data: {
+      type: 'start',
+      node: instructionNodes.start,
+      state: instructionNodes.start.getDefaultState()
+    },
     type: 'instruction',
     position: { x: 450, y: 500 },
   },
@@ -34,10 +139,12 @@ type LogicEditorContextType = {
   setNodes: React.Dispatch<React.SetStateAction<Node[]>>;
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
 
+  setNodeState: (id: string, fn: (prev: InferStateType<ItemsType>) => InferStateType<ItemsType>) => void
+
   actions: {
     undo: () => void;
     redo: () => void;
-    addNode: (type: string, label: string) => void;
+    addNode: (type: string) => void;
     toggleDeleteOnClick: () => void;
   };
 };
@@ -80,8 +187,19 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 
   const findNode = useCallback((type: string) => nodes.find((node) => node.type === 'instruction' && node.data.type === type), [nodes]);
 
+  const setNodeState = useCallback((id: string, fn: (prev: InferStateType<ItemsType>) => InferStateType<ItemsType>) => {
+    const node = nodes.find((node) => node.id === id);
+
+    if (node) {
+      const newNode = { ...node, data: { ...node.data, state: fn(node.data.state) } };
+      const newNodes = nodes.map((n) => (n.id === id ? newNode : n));
+      setNodes(newNodes);
+    }
+  }, [nodes, setNodes])
+
+
   const addNode = useCallback(
-    (type: string, label: string) => {
+    (type: string) => {
       const position = screenToFlowPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
       if (type === 'start') {
         const target = findNode('start');
@@ -93,7 +211,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
       const newNode: Node = {
         id: `${nodeIdCounter}`,
         type: 'instruction',
-        data: { label, id: nodeIdCounter, type },
+        data: { type, node: instructionNodes[type], state: instructionNodes[type].getDefaultState() },
         position,
       };
       const newNodes = [...nodes, newNode];
@@ -118,7 +236,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
       setHelperLineVertical(helperLines.vertical);
     }
 
-    return applyNodeChanges(changes, nodes);
+    return applyNodeChanges(changes, nodes) as unknown as any;
   }, []);
 
   const onNodeChange = useCallback(
@@ -245,7 +363,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
     }
   };
   return (
-    <LogicEditorContext.Provider value={{ edges, nodes, setEdges, setNodes, isDeleteOnClick, actions: { redo, undo, addNode, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev) } }}>
+    <LogicEditorContext.Provider value={{ edges, nodes, setEdges, setNodes, setNodeState, isDeleteOnClick, actions: { redo, undo, addNode, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev) } }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
