@@ -10,7 +10,6 @@
         "lint": "next lint",
         "preinstall": "npx only-allow pnpm",
         "postinstall": "node ./generate-doc-index.js",
-        "prettier": "npx prettier . --write",
         "analyze": "set ANALYZE=true & pnpm build"
     },
     "dependencies": {

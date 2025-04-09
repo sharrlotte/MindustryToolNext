@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { InferStateType, InstructionNodeData, ItemsType, NodeData, NodeItem, nodes } from '@/app/[locale]/(main)/logic/node';
+import { InferStateType, ItemsType, NodeData, NodeItem, nodes } from '@/app/[locale]/(main)/logic/node';
 import { OutputHandle } from '@/app/[locale]/(main)/logic/output-handle';
 
 import ComboBox from '@/components/common/combo-box';
@@ -8,6 +8,13 @@ import ComboBox from '@/components/common/combo-box';
 import { cn } from '@/lib/utils';
 
 import { Handle, Position } from '@xyflow/react';
+import { Node } from '@xyflow/react';
+
+export type InstructionNodeData<T extends (keyof typeof nodes)[number] = (keyof typeof nodes)[number]> = {
+  data: { type: T; index?: number; node: NodeData; state: InferStateType<(typeof nodes)[T]['items']> };
+  isConnectable?: boolean;
+  type: 'instruction';
+} & Omit<Node, 'data' | 'type'>;
 
 export default function InstructionNode({ data }: InstructionNodeData) {
   const type = useMemo(() => new NodeData(nodes[data.type]), [data]);
@@ -18,7 +25,12 @@ export default function InstructionNode({ data }: InstructionNodeData) {
   data.node = type;
 
   return (
-    <div className="custom-node p-1.5 rounded-sm text-white w-[220px] min-h-[80px] sm:w-[330px] md:w-[440px] lg:[w-550px]" style={{ backgroundColor: color }}>
+    <div
+      className={cn('custom-node p-1.5 rounded-sm text-white w-[220px] min-h-[80px] sm:w-[330px] md:w-[440px] lg:[w-550px]', {
+        'w-fit min-h-0 sm:w-fit md:w-fit lg:w-fit px-6': items.length === 0,
+      })}
+      style={{ backgroundColor: color }}
+    >
       {Array(inputs)
         .fill(1)
         .map((_, i) => (
@@ -29,7 +41,7 @@ export default function InstructionNode({ data }: InstructionNodeData) {
       ))}
       <div
         className={cn('flex justify-between text-sm font-bold', {
-          'w-full h-full items-center justify-center': items.length === 0,
+          'w-full h-full items-center justify-center m-auto text-xl align-middle': items.length === 0,
         })}
       >
         <span>{label}</span>

@@ -6,12 +6,12 @@ import { ReactNode, useMemo, useState } from 'react';
 import React from 'react';
 
 import { LogicEditorProvider, useLogicEditor } from '@/app/[locale]/(main)/logic/logic-editor-context';
-import { nodeOptions } from '@/app/[locale]/(main)/logic/node';
+import { InstructionNodeData, nodeOptions } from '@/app/[locale]/(main)/logic/node';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-import { Background, Controls, MiniMap, Node, ReactFlowProvider } from '@xyflow/react';
+import { Background, Controls, MiniMap,  ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
 import './style.css';
@@ -56,27 +56,28 @@ function LiveCodePanel() {
       return lines;
     }
 
-    let nextNode = nodes.find((node) => node.type === 'instruction' && node.id === startEdge.target);
+    let nextNode: undefined | InstructionNodeData = nodes.find((node) => node.type === 'instruction' && node.id === startEdge.target);
 
     if (!nextNode) {
       return lines;
     }
 
-    function findNextNode(node: Node) {
+    function findNextNode(node: InstructionNodeData): undefined | InstructionNodeData {
       const edge = edges.find((edge) => edge.source === node.id);
       if (!edge) return undefined;
       const nextNode = nodes.find((node) => node.type === 'instruction' && node.id === edge.target);
+
       return nextNode;
     }
 
     while (nextNode) {
       if (visited.includes(nextNode.id)) {
-        lines.push(`${index} ${(nextNode.data.node as any).compile(nextNode.data.state)}`);
+        lines.push(`${index} ${(nextNode.data.node as any).compile({ state: nextNode.data.state, next: findNextNode(nextNode) })}`);
         nextNode.data.index = index;
         break;
       }
       visited.push(nextNode.id);
-      lines.push(`${index} ${(nextNode.data.node as any).compile(nextNode.data.state)}`);
+      lines.push(`${index} ${(nextNode.data.node as any).compile({ state: nextNode.data.state, next: findNextNode(nextNode) })}`);
       nextNode.data.index = index;
       nextNode = findNextNode(nextNode);
       index++;

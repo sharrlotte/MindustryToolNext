@@ -13,6 +13,7 @@
 // Autocomplete
 import { groupBy, uuid } from '@/lib/utils';
 
+
 export type ItemsType = Readonly<NodeItem[]>;
 
 export type ConditionFn<T extends ItemsType> = {
@@ -49,7 +50,7 @@ export type InferStateType<T extends ItemsType> = {
   [K in Extract<T[number], { name: string }>['name']]: Extract<T[number], { name: K; value: any }>['value'];
 };
 
-type CompileFn<T extends ItemsType> = (state: InferStateType<T>) => string;
+type CompileFn<T extends ItemsType> = (data: { state: InferStateType<T>; next?: NodeData }) => string;
 
 export class NodeData<T extends ItemsType = ItemsType> {
   id = uuid();
@@ -110,16 +111,11 @@ export class NodeData<T extends ItemsType = ItemsType> {
   }
 }
 
-export type InstructionNodeData<T extends (keyof typeof nodes)[number] = (keyof typeof nodes)[number]> = {
-  data: { type: T; index?: number; node: NodeData; state: InferStateType<(typeof nodes)[T]['items']> };
-  isConnectable?: boolean;
-};
-
 export const nodes: Record<string, NodeData> = {
   start: new NodeData({
     name: 'start',
     label: 'Start',
-    color: 'green',
+    color: '#6BB2B2',
     category: 'Special',
     items: [],
     inputs: 0,
@@ -130,7 +126,7 @@ export const nodes: Record<string, NodeData> = {
   end: new NodeData({
     name: 'end',
     label: 'End',
-    color: 'blue',
+    color: '#6BB2B2',
     category: 'Special',
     items: [],
     inputs: 1,
@@ -168,7 +164,7 @@ export const nodes: Record<string, NodeData> = {
       { type: 'boolean', label: 'True', value: null },
       { type: 'boolean', label: 'False', value: null },
     ],
-    compile: (state) => `jump ${1} ${state.condition} ${state.a} ${state.b}`,
+    compile: ({ state }) => `jump ${1} ${state.condition} ${state.a} ${state.b}`,
     condition: {
       a: (state) => state.condition !== 'always',
       b: (state) => state.condition !== 'always',
