@@ -1,32 +1,33 @@
-import { useMemo, useState } from 'react';
 
-import { InferStateType, ItemsType, NodeData, NodeItem, nodes } from '@/app/[locale]/(main)/logic/node';
+import { InferStateType, ItemsType, NodeData, NodeItem } from '@/app/[locale]/(main)/logic/node';
 import { OutputHandle } from '@/app/[locale]/(main)/logic/output-handle';
 
 import ComboBox from '@/components/common/combo-box';
 
 import { cn } from '@/lib/utils';
 
-import { Handle, Position } from '@xyflow/react';
-import { Node } from '@xyflow/react';
+import { Handle, Node, Position } from '@xyflow/react';
+import { instructionNodes, useLogicEditor } from '@/app/[locale]/(main)/logic/logic-editor-context';
 
-export type InstructionNodeData<T extends (keyof typeof nodes)[number] = (keyof typeof nodes)[number]> = {
-  data: { type: T; index?: number; node: NodeData; state: InferStateType<(typeof nodes)[T]['items']> };
+
+export type InstructionNodeData<T extends (keyof typeof instructionNodes)[number] = (keyof typeof instructionNodes)[number]> = {
+  data: { type: T; index?: number; node: NodeData; state: InferStateType<(typeof instructionNodes)[T]['items']> };
   isConnectable?: boolean;
   type: 'instruction';
-} & Omit<Node, 'data' | 'type'>;
+  id: string
+};
 
-export default function InstructionNode({ data }: InstructionNodeData) {
-  const type = useMemo(() => new NodeData(nodes[data.type]), [data]);
-  const [state, setState] = useState(type.getDefaultState());
-  const { id, label, color, inputs, outputs, items, condition } = type;
+export type InstructionNode = Omit<Node, 'data' | 'type'> & InstructionNodeData;
 
-  data.state = state;
-  data.node = type;
+export default function InstructionNodeComponent({ id, data }: InstructionNodeData) {
+  const { state, node } = data
+  const { label, color, inputs, outputs, items, condition } = node;
+
+  const { setNodeState } = useLogicEditor()
 
   return (
     <div
-      className={cn('custom-node p-1.5 rounded-sm text-white w-[220px] min-h-[80px] sm:w-[330px] md:w-[440px] lg:[w-550px]', {
+      className={cn('p-1.5 rounded-sm text-white w-[220px] min-h-[80px] sm:w-[330px] md:w-[440px] lg:[w-550px]', {
         'w-fit min-h-0 sm:w-fit md:w-fit lg:w-fit px-6': items.length === 0,
       })}
       style={{ backgroundColor: color }}
@@ -50,7 +51,7 @@ export default function InstructionNode({ data }: InstructionNodeData) {
       {items.length > 0 && (
         <div className="bg-black p-2 rounded-sm flex gap-1 items-end jus flex-wrap">
           {items.map((item, i) => (
-            <NodeItemComponent key={i} color={color} data={item} state={state} setState={setState as any} condition={'name' in item ? condition?.[item.name] : undefined} />
+            <NodeItemComponent key={i} color={color} data={item} state={state} setState={(state) => setNodeState(id, (prev) => ({ ...prev, ...state }))} condition={'name' in item ? condition?.[item.name] : undefined} />
           ))}
         </div>
       )}
