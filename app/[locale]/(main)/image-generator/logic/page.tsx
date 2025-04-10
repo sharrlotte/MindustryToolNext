@@ -13,7 +13,7 @@ export default function Page() {
 
   const { invalidateByKey } = useQueriesData()
 
-  const { data: preview, isFetching, isError, error } = useQuery({
+  const { data: preview, isFetching } = useQuery({
     queryKey: ['image-preview'],
     queryFn: async () => {
       if (!file) return null;
