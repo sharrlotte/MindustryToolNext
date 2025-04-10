@@ -1,14 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Eraser, HelpCircle, Pencil, Redo2, Undo2 } from 'lucide-react';
+import { Eraser, HelpCircle, PlusCircleIcon, Redo2, Undo2 } from 'lucide-react';
 import { ReactNode, useMemo, useState } from 'react';
 import React from 'react';
 
 import { LogicEditorProvider, nodeOptions, useLogicEditor } from '@/app/[locale]/(main)/logic/logic-editor-context';
 import { Output } from '@/app/[locale]/(main)/logic/node';
 
-import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
+import { ChevronLeftIcon, ChevronRightIcon, PlusIcon } from '@/components/common/icons';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 import { Background, Controls, MiniMap, ReactFlowProvider } from '@xyflow/react';
@@ -205,7 +205,7 @@ function AddNodeDialog() {
         <Dialog>
             <DialogTrigger asChild>
                 <MlogEditorButton>
-                    <Pencil className="h-4 w-4" strokeWidth={1.5} />
+                    <PlusCircleIcon className="h-4 w-4" strokeWidth={1.5} />
                 </MlogEditorButton>
             </DialogTrigger>
             <DialogContent className="p-6 rounded-lg">
