@@ -220,7 +220,7 @@ function AddNodeDialog() {
                             {option.value.map(([key, item]: any) => (
                                 ('category' in item && 'children' in item) ?
                                     (
-                                        <Popover>
+                                        <Popover key={key}>
                                             <PopoverTrigger>
                                                 {item.label}
                                             </PopoverTrigger>
