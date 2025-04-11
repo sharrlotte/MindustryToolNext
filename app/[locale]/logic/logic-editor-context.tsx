@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -5,6 +7,7 @@ import HelperLines from '@/app/[locale]/logic/helper-lines';
 import InstructionNodeComponent, { InstructionNode } from '@/app/[locale]/logic/instruction.node';
 import LiveCodePanel from '@/app/[locale]/logic/live-code-panel';
 import { InferStateType, InputItem, ItemsType, NodeData } from '@/app/[locale]/logic/node';
+import SideBar from '@/app/[locale]/logic/sidebar';
 import ToolBar from '@/app/[locale]/logic/toolbar';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
 
@@ -906,33 +909,36 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 				actions,
 			}}
 		>
-			<ToolBar />
-			<CatchError>
-				<ReactFlow
-					nodes={nodes}
-					edges={edges}
-					onNodesChange={onNodeChange}
-					onEdgesChange={onEdgeChange}
-					onConnect={onEdgeConnect}
-					onNodesDelete={onNodesDelete}
-					onEdgesDelete={onEdgesDelete}
-					nodeTypes={nodeTypes}
-					onNodeClick={onNodeClick}
-					onEdgeClick={onEdgeClick}
-					onNodeContextMenu={onNodeContextMenu}
-					onEdgeContextMenu={onEdgeContextMenu}
-					onNodeDragStop={onNodeDragStop}
-					proOptions={proOptions}
-					fitView
-				>
-					{children}
-					<Hydrated>
-						{showLiveCode && <LiveCodePanel />}
-						{showMiniMap && <MiniMap />}
-					</Hydrated>
-					<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
-				</ReactFlow>
-			</CatchError>
+			<SideBar />
+			<div className="grid grid-rows-[auto_1fr]">
+				<ToolBar />
+				<CatchError>
+					<ReactFlow
+						nodes={nodes}
+						edges={edges}
+						onNodesChange={onNodeChange}
+						onEdgesChange={onEdgeChange}
+						onConnect={onEdgeConnect}
+						onNodesDelete={onNodesDelete}
+						onEdgesDelete={onEdgesDelete}
+						nodeTypes={nodeTypes}
+						onNodeClick={onNodeClick}
+						onEdgeClick={onEdgeClick}
+						onNodeContextMenu={onNodeContextMenu}
+						onEdgeContextMenu={onEdgeContextMenu}
+						onNodeDragStop={onNodeDragStop}
+						proOptions={proOptions}
+						fitView
+					>
+						{children}
+						<Hydrated>
+							{showLiveCode && <LiveCodePanel />}
+							{showMiniMap && <MiniMap />}
+						</Hydrated>
+						<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
+					</ReactFlow>
+				</CatchError>
+			</div>
 		</LogicEditorContext.Provider>
 	);
 }

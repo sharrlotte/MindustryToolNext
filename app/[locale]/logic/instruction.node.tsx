@@ -21,7 +21,7 @@ export default function InstructionNodeComponent({ id, data }: InstructionNodeDa
 	const { state, node } = data;
 	const { label, color, inputs, outputs, items, condition } = node;
 
-	const filterdItems = items.filter((item) => 'name' in item && condition?.[item.name]?.(state));
+	const filterdItems = items.filter((item) => 'name' in item && (!condition || !condition?.[item.name] || condition?.[item.name]?.(state)));
 
 	return (
 		<div
