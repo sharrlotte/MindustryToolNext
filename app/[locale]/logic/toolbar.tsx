@@ -28,11 +28,11 @@ type TabType = {
 const tabs: TabType[] = [
 	{
 		label: 'logic.edit',
-		items: [<EraseButton />, <AddNodeButton />, <RedoButton />, <UndoButton />],
+		items: [<EraseButton key={0} />, <AddNodeButton key={1} />, <RedoButton key={2} />, <UndoButton key={3} />],
 	},
 	{
 		label: 'logic.view',
-		items: [<ZoomIn />, <ZoomInOut />],
+		items: [<ZoomIn key={0} />, <ZoomInOut key={1} />],
 	},
 	{
 		label: 'logic.help',
