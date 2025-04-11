@@ -1,0 +1,44 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/common/icons";
+import useCode from "@/hooks/use-code";
+import { motion } from "framer-motion";
+import { useState } from "react";
+
+export default function LiveCodePanel() {
+  const code = useCode();
+  const [show, setShow] = useState(false);
+
+  return (
+    <div className="top-0 right-0 absolute z-10 flex items-start gap-2 m-4">
+      <button className="bg-white p-2 rounded-md text-black" onClick={() => setShow((prev) => !prev)}>
+        {show ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+      </button>
+      <motion.div
+        animate={show ? 'open' : 'close'}
+        variants={{
+          open: {
+            width: 'min(100vw,600px)',
+          },
+          close: {
+            width: 0,
+          },
+        }}
+        className="p-2 text-lg rounded-md flex-col flex text-black bg-white h-[calc(100dvh-400px)]"
+      >
+        {show && (
+          <div className="space-y-1 overflow-y-auto h-full">
+            {code.map((line, index) => (
+              <div className="space-x-1" key={index}>
+                <span className='font-semibold'>
+                  {index}
+                </span>
+                <span >
+                  {line}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </motion.div>
+    </div>
+  );
+}

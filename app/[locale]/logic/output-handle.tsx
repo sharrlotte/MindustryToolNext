@@ -1,4 +1,4 @@
-import { useLogicEditor } from '@/app/[locale]/(main)/logic/logic-editor-context';
+import { useLogicEditor } from '@/app/[locale]/logic/logic-editor-context';
 
 import { Connection, Handle, useNodeConnections } from '@xyflow/react';
 

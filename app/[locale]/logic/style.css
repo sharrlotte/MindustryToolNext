@@ -1,34 +1,38 @@
+.react_flow {
+	@apply h-full;
+}
+
 .react-flow__panel {
-  @apply bg-white text-black;
+	@apply bg-white text-black;
 }
 
 .react-flow__handle {
-  @apply size-3;
+	@apply size-3;
 }
 
 .react-flow__handle.source {
 }
 
 .react-flow__handle.target {
-  @apply bg-white;
+	@apply bg-white;
 }
 
 .react-flow__minimap {
-  @apply border border-border text-black;
+	@apply border border-border text-black;
 }
 
 .react-flow__handle-bottom {
-  @apply -bottom-2;
+	@apply -bottom-2;
 }
 
 .react-flow__handle-top {
-  @apply -top-2;
+	@apply -top-2;
 }
 
 .react-flow__handle-right {
-  @apply -right-2;
+	@apply -right-2;
 }
 
 .react-flow__handle-left {
-  @apply -left-2;
+	@apply -left-2;
 }

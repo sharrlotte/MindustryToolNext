@@ -1,8 +1,18 @@
 {
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "singleQuote": true,
-  "importOrder": ["^@/app/(.*)$", "^@/components/(.*)$", "^@/(.*)$", "^@(.*)$", "^[./]"],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true,
-  "printWidth": 250
+    "plugins": [
+        "@trivago/prettier-plugin-sort-imports"
+    ],
+    "singleQuote": true,
+    "importOrder": [
+        "^@/app/(.*)$",
+        "^@/components/(.*)$",
+        "^@/(.*)$",
+        "^@(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "printWidth": 250,
+    "tabWidth": 2,
+    "useTabs": true,
 }
