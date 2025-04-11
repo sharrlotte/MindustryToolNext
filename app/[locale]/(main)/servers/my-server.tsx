@@ -1,16 +1,22 @@
-import ErrorScreen from '@/components/common/error-screen';
+'use client'
+
 import ServerCard from '@/components/server/server-card';
 
-import { serverApi } from '@/action/action';
-import { isError } from '@/lib/utils';
 import { getMeServers } from '@/query/user';
+import useClientQuery from '@/hooks/use-client-query';
+import ServersSkeleton from '@/app/[locale]/(main)/servers/servers-skeleton';
+import ErrorMessage from '@/components/common/error-message';
 
-export default async function MeServer() {
-  const servers = await serverApi((axios) => getMeServers(axios));
+export default function MeServer() {
+    const { data, isLoading, isError, error } = useClientQuery({ queryKey: ['me-server'], queryFn: (axios) => getMeServers(axios) });
 
-  if (isError(servers)) {
-    return <ErrorScreen error={servers} />;
-  }
+    if (isLoading) {
+        return <ServersSkeleton />
+    }
 
-  return servers.map((server) => <ServerCard server={server} key={server.port} />);
+    if (isError) {
+        return <ErrorMessage error={error} />
+    }
+
+    return data?.map((server) => <ServerCard server={server} key={server.port} />);
 }

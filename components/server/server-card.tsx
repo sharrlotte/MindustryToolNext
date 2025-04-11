@@ -14,7 +14,7 @@ type MyServerInstancesCardProps = {
   server: ServerDto;
 };
 
-export default async function ServerCard({ server: { id, name, players, port, status, mapName, mode, address } }: MyServerInstancesCardProps) {
+export default function ServerCard({ server: { id, name, players, port, status, mapName, mode, address } }: MyServerInstancesCardProps) {
   return (
     <InternalLink className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-4 h-60 relative" href={`/servers/${id}`}>
       <Suspense>
