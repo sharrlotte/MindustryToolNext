@@ -4,7 +4,6 @@ import { Eraser, MapIcon, PlusCircleIcon, RedoIcon, UndoIcon, ZoomInIcon, ZoomOu
 import { ReactNode } from 'react';
 
 import { nodeOptions, useLogicEditor } from '@/app/[locale]/logic/logic-editor-context';
-import LogicEditorNavBar from '@/app/[locale]/logic/logic-editor-nav-bar';
 
 import { CatchError } from '@/components/common/catch-error';
 import { Hidden } from '@/components/common/hidden';
@@ -40,6 +39,74 @@ const tabs: TabType[] = [
 		items: [],
 	},
 ];
+
+export default function ToolBar() {
+	return (
+		<div className="min-h-nav bg-card border-b overflow-x-auto p-1 flex items-center w-full">
+			<CatchError>
+				<ShortcutHandler />
+				{tabs.map((tab, index) => (
+					<Popover key={index}>
+						<PopoverTrigger className="hover:bg-card text-muted-foreground hover:text-foreground p-2 py-1 rounded-sm capitalize">
+							<Tran asChild text={tab.label} />
+						</PopoverTrigger>
+						<PopoverContent className="p-1 mx-2 my-4 bg-card grid capitalize space-y-1">
+							{tab.items.map((item, index) => (
+								<PopoverClose key={index} asChild>
+									{item}
+								</PopoverClose>
+							))}
+						</PopoverContent>
+					</Popover>
+				))}
+				<AddNodeDialog />
+			</CatchError>
+		</div>
+	);
+}
+
+function AddNodeDialog() {
+	const {
+		showAddNodeDialog,
+		actions: { addNode, setShowAddNodeDialog },
+	} = useLogicEditor();
+
+	return (
+		<Dialog open={showAddNodeDialog} onOpenChange={setShowAddNodeDialog}>
+			<DialogContent className="p-6 rounded-lg">
+				<Hidden>
+					<DialogTitle />
+					<DialogDescription />
+				</Hidden>
+				{nodeOptions.map((option, index) => (
+					<div className="flex flex-col border-b py-2 gap-2" key={index}>
+						<p className="text-lg">{option.key}</p>
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+							{option.value.map(([key, item]: any) =>
+								'category' in item && 'children' in item ? (
+									<Popover key={key}>
+										<PopoverTrigger>{item.label}</PopoverTrigger>
+										<PopoverContent className="grid grid-cols-2 gap-2">
+											{Object.entries(item.children).map(([key, value]: [any, any]) => (
+												<DialogClose key={key} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key)}>
+													{value.label}
+												</DialogClose>
+											))}
+										</PopoverContent>
+									</Popover>
+								) : (
+									<DialogClose key={key as any} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key as unknown as any)}>
+										{item.label}
+									</DialogClose>
+								),
+							)}
+						</div>
+					</div>
+				))}
+			</DialogContent>
+		</Dialog>
+	);
+}
 
 function ZoomIn() {
 	const { zoomIn } = useReactFlow();
@@ -192,73 +259,4 @@ function ShortcutHandler() {
 	});
 
 	return <></>;
-}
-
-export default function ToolBar() {
-	return (
-		<div className="min-h-nav border-b overflow-x-auto p-1 flex items-center w-full">
-			<CatchError>
-				<ShortcutHandler />
-				<LogicEditorNavBar />
-				{tabs.map((tab, index) => (
-					<Popover key={index}>
-						<PopoverTrigger className="hover:bg-card text-muted-foreground hover:text-foreground p-2 py-1 rounded-sm capitalize">
-							<Tran asChild text={tab.label} />
-						</PopoverTrigger>
-						<PopoverContent className="p-1 mx-2 my-4 bg-card grid capitalize space-y-1">
-							{tab.items.map((item, index) => (
-								<PopoverClose key={index} asChild>
-									{item}
-								</PopoverClose>
-							))}
-						</PopoverContent>
-					</Popover>
-				))}
-				<AddNodeDialog />
-			</CatchError>
-		</div>
-	);
-}
-
-function AddNodeDialog() {
-	const {
-		showAddNodeDialog,
-		actions: { addNode, setShowAddNodeDialog },
-	} = useLogicEditor();
-
-	return (
-		<Dialog open={showAddNodeDialog} onOpenChange={setShowAddNodeDialog}>
-			<DialogContent className="p-6 rounded-lg">
-				<Hidden>
-					<DialogTitle />
-					<DialogDescription />
-				</Hidden>
-				{nodeOptions.map((option, index) => (
-					<div className="flex flex-col border-b py-2 gap-2" key={index}>
-						<p className="text-lg">{option.key}</p>
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-							{option.value.map(([key, item]: any) =>
-								'category' in item && 'children' in item ? (
-									<Popover key={key}>
-										<PopoverTrigger>{item.label}</PopoverTrigger>
-										<PopoverContent className="grid grid-cols-2 gap-2">
-											{Object.entries(item.children).map(([key, value]: [any, any]) => (
-												<DialogClose key={key} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key)}>
-													{value.label}
-												</DialogClose>
-											))}
-										</PopoverContent>
-									</Popover>
-								) : (
-									<DialogClose key={key as any} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key as unknown as any)}>
-										{item.label}
-									</DialogClose>
-								),
-							)}
-						</div>
-					</div>
-				))}
-			</DialogContent>
-		</Dialog>
-	);
 }
