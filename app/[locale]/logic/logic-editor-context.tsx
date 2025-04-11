@@ -1,18 +1,21 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 import HelperLines from '@/app/[locale]/logic/helper-lines';
 import InstructionNodeComponent, { InstructionNode } from '@/app/[locale]/logic/instruction.node';
-import { InferStateType, ItemsType, NodeData } from '@/app/[locale]/logic/node';
+import LiveCodePanel from '@/app/[locale]/logic/live-code-panel';
+import { InferStateType, InputItem, ItemsType, NodeData } from '@/app/[locale]/logic/node';
 import ToolBar from '@/app/[locale]/logic/toolbar';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
 
 import { CatchError } from '@/components/common/catch-error';
+import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
 import { groupBy, uuid } from '@/lib/utils';
 
-import { Edge, EdgeChange, NodeChange, ProOptions, ReactFlow, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+import { Edge, EdgeChange, MiniMap, NodeChange, ProOptions, ReactFlow, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
 
 export const nodeTypes = {
 	instruction: InstructionNodeComponent,
@@ -606,8 +609,12 @@ const initialNodes: Node[] = [
 type LogicEditorContextType = {
 	isDeleteOnClick: boolean;
 	showAddNodeDialog: boolean;
+	showMiniMap: boolean;
+	showLiveCode: boolean;
 	canUndo: boolean;
 	canRedo: boolean;
+
+	variables: Record<string, string>;
 
 	nodes: Node[];
 	edges: Edge[];
@@ -623,6 +630,8 @@ type LogicEditorContextType = {
 		addNode: (type: string) => void;
 		toggleDeleteOnClick: () => void;
 		setShowAddNodeDialog: (show: boolean) => void;
+		setShowMiniMap: (show: boolean) => void;
+		setShowLiveCode: (show: boolean) => void;
 	};
 };
 
@@ -649,6 +658,19 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const [historyIndex, setHistoryIndex] = useState(0);
 	const [isDeleteOnClick, setDeleteOnClick] = useState(false);
 	const [showAddNodeDialog, setShowAddNodeDialog] = useState(false);
+	const [showMiniMap, setShowMiniMap] = useLocalStorage('logic.editor.showMiniMap', false);
+	const [showLiveCode, setShowLiveCode] = useLocalStorage('logic.editor.showLiveCode', false);
+
+	const variables = useMemo(
+		() =>
+			nodes
+				.filter((node) => node.type === 'instruction' && node.data.node.items.some((input) => input.type === 'input' && input.produce)) //
+				.reduce((prev, node) => {
+					const entry = (node.data.node.items.filter((input) => input.type === 'input' && !!input.produce) as InputItem<string, string>[]).map((input) => [input.name, node.data.state[input.name]]);
+					return { ...prev, ...Object.fromEntries(entry) };
+				}, {}),
+		[nodes],
+	);
 
 	const { screenToFlowPosition } = useReactFlow();
 
@@ -842,28 +864,48 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 		[nodes, updateHistory, edges],
 	);
 
-	const undo = () => {
+	const undo = useCallback(() => {
 		if (historyIndex > 0) {
 			const newHistoryIndex = historyIndex - 1;
 			setNodes(nodeHistory[newHistoryIndex]);
 			setEdges(edgeHistory[newHistoryIndex]);
 			setHistoryIndex(newHistoryIndex);
 		}
-	};
+	}, [historyIndex, nodeHistory, edgeHistory]);
 
-	const redo = () => {
+	const redo = useCallback(() => {
 		if (historyIndex < nodeHistory.length - 1) {
 			const newHistoryIndex = historyIndex + 1;
 			setNodes(nodeHistory[newHistoryIndex]);
 			setEdges(edgeHistory[newHistoryIndex]);
 			setHistoryIndex(newHistoryIndex);
 		}
-	};
+	}, [historyIndex, nodeHistory, edgeHistory]);
 
-	const actions = useMemo(() => ({ redo, undo, addNode, setShowAddNodeDialog, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev) }), [redo, undo, addNode, setShowAddNodeDialog, setDeleteOnClick]);
+	const actions = useMemo(
+		() => ({ redo, undo, addNode, setShowAddNodeDialog, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev), setShowMiniMap, setShowLiveCode }),
+		[redo, undo, addNode, setShowAddNodeDialog, setDeleteOnClick, setShowMiniMap, setShowLiveCode],
+	);
 
 	return (
-		<LogicEditorContext.Provider value={{ edges, nodes, showAddNodeDialog, canUndo: historyIndex > 0, canRedo: historyIndex < nodeHistory.length - 1, setEdges, setNodes, setNodeState, setNode, isDeleteOnClick, actions }}>
+		<LogicEditorContext.Provider
+			value={{
+				variables,
+				edges,
+				nodes,
+				showAddNodeDialog,
+				showMiniMap,
+				showLiveCode,
+				canUndo: historyIndex > 0,
+				canRedo: historyIndex < nodeHistory.length - 1,
+				setEdges,
+				setNodes,
+				setNodeState,
+				setNode,
+				isDeleteOnClick,
+				actions,
+			}}
+		>
 			<ToolBar />
 			<CatchError>
 				<ReactFlow
@@ -884,6 +926,10 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 					fitView
 				>
 					{children}
+					<Hydrated>
+						{showLiveCode && <LiveCodePanel />}
+						{showMiniMap && <MiniMap />}
+					</Hydrated>
 					<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
 				</ReactFlow>
 			</CatchError>
