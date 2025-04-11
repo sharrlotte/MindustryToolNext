@@ -51,7 +51,7 @@ function Flow() {
 					</LogicEditorProvider>
 				</ReactFlowProvider>
 			</div>
-			<span className="sm:hidden">
+			<span className="sm:hidden flex h-full w-full items-center justify-center font-bold m-auto">
 				<Tran text="logic.require-bigger-device-screen" />
 			</span>
 		</>
