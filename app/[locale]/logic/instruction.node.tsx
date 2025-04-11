@@ -1,13 +1,13 @@
 
-import { InferStateType, ItemsType, NodeData, NodeItem } from '@/app/[locale]/(main)/logic/node';
-import { OutputHandle } from '@/app/[locale]/(main)/logic/output-handle';
+import { InferStateType, ItemsType, NodeData, NodeItem } from '@/app/[locale]/logic/node';
+import { OutputHandle } from '@/app/[locale]/logic/output-handle';
 
 import ComboBox from '@/components/common/combo-box';
 
 import { cn } from '@/lib/utils';
 
 import { Handle, Node, Position } from '@xyflow/react';
-import { instructionNodes, useLogicEditor } from '@/app/[locale]/(main)/logic/logic-editor-context';
+import { instructionNodes, useLogicEditor } from '@/app/[locale]/logic/logic-editor-context';
 
 
 export type InstructionNodeData<T extends (keyof typeof instructionNodes)[number] = (keyof typeof instructionNodes)[number]> = {
