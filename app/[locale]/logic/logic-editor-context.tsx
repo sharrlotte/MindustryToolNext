@@ -9,13 +9,13 @@ import ToolBar from '@/app/[locale]/logic/toolbar';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
 
 import { CatchError } from '@/components/common/catch-error';
-import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
 import { groupBy, uuid } from '@/lib/utils';
 
 import { Edge, EdgeChange, MiniMap, NodeChange, ProOptions, ReactFlow, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+import Hydrated from '@/components/common/hydrated';
 
 export const nodeTypes = {
 	instruction: InstructionNodeComponent,
@@ -927,8 +927,9 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 				>
 					{children}
 					<Hydrated>
-						{showLiveCode && <LiveCodePanel />}
-						{showMiniMap && <MiniMap />}
+
+					{showLiveCode && <LiveCodePanel />}
+					{showMiniMap && <MiniMap />}
 					</Hydrated>
 					<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
 				</ReactFlow>
