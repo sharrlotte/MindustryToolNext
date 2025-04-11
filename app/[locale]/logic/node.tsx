@@ -27,7 +27,7 @@ type LabelItem<T extends string = string> = {
 
 type InputItemAccept = 'number' | 'string' | 'boolean' | 'variable';
 
-type InputItem<T extends string = string, N extends string = string> = {
+export type InputItem<T extends string = string, N extends string = string> = {
 	type: 'input';
 	label?: string;
 	name: N;
@@ -36,7 +36,7 @@ type InputItem<T extends string = string, N extends string = string> = {
 	produce?: boolean;
 };
 
-type OptionItem<T extends string = string, N extends string = string> = {
+export type OptionItem<T extends string = string, N extends string = string> = {
 	type: 'option';
 	name: N;
 	options: T[];

@@ -1,5 +1,11 @@
 {
-  "extends": ["next", "next/core-web-vitals", "eslint:recommended", "plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "rules": {
     "@typescript-eslint/no-unused-expressions": "error",
     "@typescript-eslint/no-unused-vars": [
@@ -11,7 +17,12 @@
       }
     ],
     "@typescript-eslint/unified-signatures": "warn",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-mixed-spaces-and-tabs": "off"
   },
-  "ignorePatterns": ["*.js", "node_modules", ".next"]
+  "ignorePatterns": [
+    "*.js",
+    "node_modules",
+    ".next"
+  ]
 }

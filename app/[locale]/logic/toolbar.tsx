@@ -1,6 +1,6 @@
 'use client';
 
-import { Eraser, PlusCircleIcon, RedoIcon, UndoIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
+import { Eraser, MapIcon, PlusCircleIcon, RedoIcon, UndoIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 import { ReactNode } from 'react';
 
 import { nodeOptions, useLogicEditor } from '@/app/[locale]/logic/logic-editor-context';
@@ -8,6 +8,7 @@ import LogicEditorNavBar from '@/app/[locale]/logic/logic-editor-nav-bar';
 
 import { CatchError } from '@/components/common/catch-error';
 import { Hidden } from '@/components/common/hidden';
+import { LivePanelIcon } from '@/components/common/icons';
 import Shortcut from '@/components/common/shortcut';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -32,7 +33,7 @@ const tabs: TabType[] = [
 	},
 	{
 		label: 'logic.view',
-		items: [<ZoomIn key={0} />, <ZoomInOut key={1} />],
+		items: [<ZoomIn key={0} />, <ZoomInOut key={1} />, <MiniMapButton key={2} />, <LiveCodeButton key={3} />],
 	},
 	{
 		label: 'logic.help',
@@ -57,6 +58,36 @@ function ZoomInOut() {
 		<Button onClick={() => zoomOut({ duration: 300 })} variant={'toogle'}>
 			<ZoomOutIcon className="size-4" />
 			<Tran asChild text="logic.zoom-out" />
+		</Button>
+	);
+}
+
+function MiniMapButton() {
+	const {
+		showMiniMap,
+		actions: { setShowMiniMap },
+	} = useLogicEditor();
+
+	return (
+		<Button onClick={() => setShowMiniMap(!showMiniMap)} variant={showMiniMap ? 'toogled' : 'toogle'}>
+			<MapIcon className="size-4" />
+			<Tran asChild text="logic.show-minimap" />
+			<Shortcut shortcut={['ctrl', 'm']} />
+		</Button>
+	);
+}
+
+function LiveCodeButton() {
+	const {
+		showLiveCode,
+		actions: { setShowLiveCode },
+	} = useLogicEditor();
+
+	return (
+		<Button onClick={() => setShowLiveCode(!showLiveCode)} variant={showLiveCode ? 'toogled' : 'toogle'}>
+			<LivePanelIcon className="size-4" />
+			<Tran asChild text="logic.show-live-code" />
+			<Shortcut shortcut={['ctrl', 'l']} />
 		</Button>
 	);
 }
@@ -122,7 +153,9 @@ function UndoButton() {
 function ShortcutHandler() {
 	const {
 		isDeleteOnClick,
-		actions: { undo, redo, toggleDeleteOnClick, setShowAddNodeDialog },
+		showLiveCode,
+		showMiniMap,
+		actions: { undo, redo, toggleDeleteOnClick, setShowAddNodeDialog, setShowMiniMap, setShowLiveCode },
 	} = useLogicEditor();
 
 	useShortcut(['ctrl', 'e'], () => {
@@ -150,6 +183,14 @@ function ShortcutHandler() {
 		toast(<Tran text="saved" />);
 	});
 
+	useShortcut(['ctrl', 'l'], () => {
+		setShowLiveCode(!showLiveCode);
+	});
+
+	useShortcut(['ctrl', 'm'], () => {
+		setShowMiniMap(!showMiniMap);
+	});
+
 	return <></>;
 }
 
@@ -164,7 +205,7 @@ export default function ToolBar() {
 						<PopoverTrigger className="hover:bg-card text-muted-foreground hover:text-foreground p-2 py-1 rounded-sm capitalize">
 							<Tran asChild text={tab.label} />
 						</PopoverTrigger>
-						<PopoverContent className="p-2 m-2 bg-card grid capitalize">
+						<PopoverContent className="p-1 mx-2 my-4 bg-card grid capitalize space-y-1">
 							{tab.items.map((item, index) => (
 								<PopoverClose key={index} asChild>
 									{item}
