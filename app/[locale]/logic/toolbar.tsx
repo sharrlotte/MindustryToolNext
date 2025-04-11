@@ -47,7 +47,7 @@ export default function ToolBar() {
 				<ShortcutHandler />
 				{tabs.map((tab, index) => (
 					<Popover key={index}>
-						<PopoverTrigger className="hover:bg-card text-muted-foreground hover:text-foreground p-2 py-1 rounded-sm capitalize">
+						<PopoverTrigger className="hover:bg-secondary text-muted-foreground hover:text-foreground p-2 py-1 rounded-sm capitalize">
 							<Tran asChild text={tab.label} />
 						</PopoverTrigger>
 						<PopoverContent className="p-1 mx-2 my-4 bg-card grid capitalize space-y-1">
