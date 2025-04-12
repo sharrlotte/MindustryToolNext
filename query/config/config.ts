@@ -28,6 +28,10 @@ axiosInstance.interceptors.response.use(
     return res;
   },
   (error) => {
+    if (error?.response?.data?.message) {
+            throw new Error(error.response.data.message);
+    }
+
     if (error?.response?.data) {
       throw new StatusError(error.response.data.status, error.response.data.message, error);
     }
