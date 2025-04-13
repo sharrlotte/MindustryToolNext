@@ -8,9 +8,9 @@ import { PaginationQuerySchema } from '@/query/search-query';
 
 export default function Page() {
 	return (
-		<div className="p-4">
+		<div className="p-4 h-full overflow-hidden">
 			<ScrollContainer>
-				<InfinitePage queryKey={['images']} paramSchema={PaginationQuerySchema} queryFn={getImages}>
+				<InfinitePage className="flex flex-col" queryKey={['images']} paramSchema={PaginationQuerySchema} queryFn={getImages}>
 					{(data) => <div key={data.path}>{data.name}</div>}
 				</InfinitePage>
 			</ScrollContainer>
