@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight, Plus } from 'lucide-react';
 import { Fragment, useRef, useState } from 'react';
 
+import CopyButton from '@/components/button/copy-button';
 import RemoveButton from '@/components/button/remove-button';
 import { Hidden } from '@/components/common/hidden';
 import { FileIcon, FolderIcon, HomeIcon } from '@/components/common/icons';
@@ -100,6 +101,7 @@ export default function Page() {
 										</DialogTrigger>
 									</ContextMenuTrigger>
 									<ContextMenuContent>
+										<CopyButton variant="command" data={`${env.url.image}/${data.path}`} />
 										<RemoveButton
 											variant="command"
 											isLoading={false}
