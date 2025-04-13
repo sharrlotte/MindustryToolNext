@@ -24,12 +24,12 @@ export async function uploadImage(axios: AxiosInstance, { file, folder, id, form
 	});
 }
 
-export async function deleteImage(axios: AxiosInstance, id: string): Promise<void> {
-	const result = await axios.delete(`/images/${id}`);
+export async function deleteImage(axios: AxiosInstance, path: string): Promise<void> {
+	const result = await axios.delete(`/images`, { params: { path } });
 	return result.data;
 }
 
-export async function getImages(axios: AxiosInstance, params: PaginationQuery): Promise<ImageMetadata[]> {
+export async function getImages(axios: AxiosInstance, params: PaginationQuery & { path?: string }): Promise<ImageMetadata[]> {
 	const result = await axios.get('/images', {
 		params,
 	});

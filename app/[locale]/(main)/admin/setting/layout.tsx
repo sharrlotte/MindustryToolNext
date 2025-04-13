@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import React from 'react';
 
+import { CatchError } from '@/components/common/catch-error';
 import { GanttChartIcon, ImageIcon, ModIcon, NotificationIcon, SettingIcon, TagIcon, UsersIcon } from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
@@ -87,9 +88,11 @@ export default async function ServerLayout({ children }: LayoutProps) {
 					))}
 				</NavLinkContainer>
 			</NavLinkProvider>
-			<div className="h-full w-full overflow-hidden flex flex-col p-2" key="child">
-				{children}
-			</div>
+			<CatchError>
+				<div className="h-full w-full overflow-hidden flex flex-col p-2" key="child">
+					{children}
+				</div>
+			</CatchError>
 		</div>
 	);
 }
