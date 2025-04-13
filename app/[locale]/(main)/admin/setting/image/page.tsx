@@ -9,6 +9,7 @@ import { Hidden } from '@/components/common/hidden';
 import { FileIcon, FolderIcon, HomeIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -59,9 +60,9 @@ export default function Page() {
 
 	return (
 		<div className="p-2 h-full overflow-hidden flex flex-col gap-2">
-			<section className="px-2 h-10 border rounded-lg flex w-full gap-1 items-center justify-between">
+			<section className="p-2 h-fit border rounded-lg flex w-full gap-1 items-center justify-between">
 				<div className="flex items-center gap-1">
-					<span className="cursor-pointer" onClick={() => setPath('')}>
+					<span className="cursor-pointer pl-2" onClick={() => setPath('')}>
 						<HomeIcon />
 					</span>
 					{path.split('/').map((path, index, arr) => (
@@ -74,8 +75,9 @@ export default function Page() {
 					))}
 				</div>
 				<input type="file" ref={fileInputRef} className="hidden" accept={env.supportedImageFormat.map((ext) => `.${ext}`).join(',')} onChange={handleFileChange} />
-				<Button variant="outline" size="icon" disabled={isPending} onClick={() => fileInputRef.current?.click()}>
+				<Button variant="secondary" disabled={isPending} onClick={() => fileInputRef.current?.click()}>
 					<Plus className="size-4" />
+					<Tran text="add" />
 				</Button>
 			</section>
 			<ScrollContainer>
