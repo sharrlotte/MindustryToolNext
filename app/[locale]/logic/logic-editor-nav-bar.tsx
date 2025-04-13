@@ -1,7 +1,6 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-
+import { MediumNavItems } from '@/app/[locale]/(main)/medium-navigation-items';
 import NavHeader from '@/app/[locale]/(main)/small-nav-header';
 import SmallNavbarCollapse from '@/app/[locale]/(main)/small-navbar-collapse';
 import SmallNavbarInsideToggle from '@/app/[locale]/(main)/small-navbar-inside-toggle';
@@ -12,8 +11,6 @@ import Hydrated from '@/components/common/hydrated';
 import { MindustryToolIcon } from '@/components/common/icons';
 
 import { NavBarProvider } from '@/context/navbar-context';
-
-const MediumNavItems = dynamic(() => import('@/app/[locale]/(main)/medium-navigation-items').then((c) => c.MediumNavItems), { ssr: false });
 
 export default function LogicEditorNavBar() {
 	return (
