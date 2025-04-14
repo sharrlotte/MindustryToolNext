@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode } from 'react';
 import React from 'react';
 
@@ -7,8 +9,8 @@ import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
 import Tran from '@/components/common/tran';
 
-import { getSession } from '@/action/action';
 import { NavLinkProvider } from '@/context/nav-link-context';
+import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
 
@@ -74,8 +76,8 @@ type LayoutProps = {
 	children: ReactNode;
 };
 
-export default async function ServerLayout({ children }: LayoutProps) {
-	const session = await getSession();
+export default function ServerLayout({ children }: LayoutProps) {
+	const { session } = useSession();
 
 	return (
 		<div className="grid h-full grid-flow-row grid-rows-[48px_1fr] overflow-hidden">
