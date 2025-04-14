@@ -12,6 +12,7 @@ export type ServerDto = {
   mode: ServerMode;
   status: ServerStatus;
   ramUsage: number;
+  cpuUsage: number;
   totalRam: number;
   players: number;
   mapName: string;
