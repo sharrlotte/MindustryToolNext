@@ -1,7 +1,7 @@
 'use client';
 
 import { Eraser, MapIcon, PlusCircleIcon, RedoIcon, UndoIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 
 import { nodeOptions, useLogicEditor } from '@/app/[locale]/logic/logic-editor-context';
 
@@ -12,9 +12,11 @@ import Shortcut from '@/components/common/shortcut';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from '@/components/ui/sonner';
 
+import useLogicFile from '@/hooks/use-logic-file';
 import useShortcut from '@/hooks/use-shortcut';
 
 import { PopoverClose } from '@radix-ui/react-popover';
@@ -40,28 +42,54 @@ const tabs: TabType[] = [
 	},
 ];
 
+function FilenameInput() {
+	const { name, setName } = useLogicEditor();
+	const { saved, renameLogic } = useLogicFile();
+
+	function validateName() {
+		if (name.trim().length === 0) {
+			if (saved.currentFile) setName(saved.currentFile);
+		} else {
+			renameLogic(name);
+		}
+	}
+
+	return (
+		<Input
+			className="text-lg border-none w-fit min-w-0 bg-secondary/50 rounded-md"
+			type="text"
+			value={name.trim()}
+			onChange={(event) => setName(event.currentTarget.value.trim())}
+			onBlur={() => validateName()}
+		/>
+	);
+}
+
 export default function ToolBar() {
 	return (
-		<div className="min-h-nav bg-card border-b overflow-x-auto p-1 flex items-center w-full">
-			<CatchError>
+		<CatchError>
+			<div className="min-h-nav bg-card border-b overflow-x-auto p-1 flex items-center w-full justify-between">
 				<ShortcutHandler />
-				{tabs.map((tab, index) => (
-					<Popover key={index}>
-						<PopoverTrigger className="hover:bg-secondary text-muted-foreground hover:text-foreground p-2 py-1 rounded-sm capitalize">
-							<Tran asChild text={tab.label} />
-						</PopoverTrigger>
-						<PopoverContent className="p-1 mx-2 my-4 bg-card grid capitalize space-y-1">
-							{tab.items.map((item, index) => (
-								<PopoverClose key={index} asChild>
-									{item}
-								</PopoverClose>
-							))}
-						</PopoverContent>
-					</Popover>
-				))}
+				<div className="flex items-center gap-2">
+					<FilenameInput />
+					{tabs.map((tab, index) => (
+						<Popover key={index}>
+							<PopoverTrigger className="hover:bg-secondary text-muted-foreground hover:text-foreground p-2 py-1 rounded-sm capitalize">
+								<Tran asChild text={tab.label} />
+							</PopoverTrigger>
+							<PopoverContent className="p-1 mx-2 my-4 bg-card grid capitalize space-y-1">
+								{tab.items.map((item, index) => (
+									<PopoverClose key={index} asChild>
+										{item}
+									</PopoverClose>
+								))}
+							</PopoverContent>
+						</Popover>
+					))}
+				</div>
 				<AddNodeDialog />
-			</CatchError>
-		</div>
+			</div>
+		</CatchError>
 	);
 }
 

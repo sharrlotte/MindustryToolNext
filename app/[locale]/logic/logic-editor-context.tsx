@@ -1,12 +1,12 @@
 'use client';
 
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useInterval, useLocalStorage } from 'usehooks-ts';
 
 import HelperLines from '@/app/[locale]/logic/helper-lines';
 import InstructionNodeComponent, { InstructionNode } from '@/app/[locale]/logic/instruction.node';
 import LiveCodePanel from '@/app/[locale]/logic/live-code-panel';
-import { InferStateType, InputItem, ItemsType, NodeData } from '@/app/[locale]/logic/node';
+import { InferStateType, InputItem, ItemsType, NodeData, instructionNodesGraph } from '@/app/[locale]/logic/node';
 import SideBar from '@/app/[locale]/logic/sidebar';
 import ToolBar from '@/app/[locale]/logic/toolbar';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
@@ -16,9 +16,10 @@ import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
+import useLogicFile from '@/hooks/use-logic-file';
 import { groupBy, uuid } from '@/lib/utils';
 
-import { Edge, EdgeChange, MiniMap, NodeChange, ProOptions, ReactFlow, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+import { Edge, EdgeChange, MiniMap, NodeChange, ProOptions, ReactFlow, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
 
 export const nodeTypes = {
 	instruction: InstructionNodeComponent,
@@ -28,556 +29,6 @@ export type NodeType = keyof typeof nodeTypes;
 export type Node = InstructionNode;
 
 const LogicEditorContext = createContext<LogicEditorContextType | null>(null);
-
-export const instructionNodesGraph: Record<string, NodeData | { category: string; label: string; children: Record<string, NodeData> }> = {
-	start: new NodeData({
-		name: 'start',
-		label: 'Start',
-		color: '#6BB2B2',
-		category: 'Special',
-		items: [],
-		inputs: 0,
-		compile: () => '',
-	}),
-
-	end: new NodeData({
-		name: 'end',
-		label: 'End',
-		color: '#6BB2B2',
-		category: 'Special',
-		items: [],
-		inputs: 1,
-		outputs: [],
-		compile: () => '',
-	}),
-	if: new NodeData({
-		name: 'if',
-		label: 'Jump',
-		category: 'Flow Control',
-		color: '#6BB2B2',
-		items: [
-			{
-				type: 'label',
-				value: 'If',
-			},
-			{
-				type: 'input',
-				name: 'a',
-				value: 'a',
-				accept: ['number', 'string', 'boolean', 'variable'],
-			},
-			{
-				type: 'option',
-				name: 'condition',
-				options: ['>', '>=', '<', '<=', '==', '===', 'not', 'always'],
-			},
-			{
-				type: 'input',
-				name: 'b',
-				value: 'b',
-				accept: ['number', 'string', 'boolean', 'variable'],
-			},
-		] as const,
-		inputs: 1,
-		outputs: [{ label: 'False' }, { label: 'True' }] as const,
-		compile: ({ state: { condition, a, b }, next }) => `jump ${next.True?.data.index ?? 0} ${condition} ${a} ${b}`,
-		condition: {
-			a: (state) => state.condition !== 'always',
-			b: (state) => state.condition !== 'always',
-		},
-	}),
-	read: new NodeData({
-		name: 'read',
-		label: 'Read',
-		category: 'Input/Output',
-		color: '#A08A8A',
-		items: [
-			{
-				type: 'input',
-				label: 'Read',
-				name: 'result',
-				value: 'result',
-				accept: ['string'],
-				produce: true,
-			},
-			{
-				type: 'input',
-				label: '=',
-				value: 'cell1',
-				name: 'cell',
-				accept: ['variable', 'string'],
-			},
-			{
-				label: 'at',
-				value: '0',
-				name: 'position',
-				type: 'input',
-				accept: ['number', 'variable'],
-			},
-		] as const,
-		inputs: 1,
-		compile: ({ state: { result, cell, position } }) => `read ${result} ${cell} ${position}`,
-	}),
-	write: new NodeData({
-		name: 'write',
-		label: 'Write',
-		category: 'Input/Output',
-		color: '#A08A8A',
-		items: [
-			{
-				type: 'input',
-				label: 'Write',
-				name: 'result',
-				value: 'result',
-				accept: ['string'],
-				produce: true,
-			},
-			{
-				type: 'input',
-				label: '=',
-				value: 'cell1',
-				name: 'cell',
-				accept: ['variable', 'string'],
-			},
-			{
-				label: 'at',
-				value: '0',
-				name: 'position',
-				type: 'input',
-				accept: ['number', 'variable'],
-			},
-		] as const,
-		inputs: 1,
-		compile: ({ state: { result, cell, position } }) => `write ${result} ${cell} ${position}`,
-	}),
-	print: new NodeData({
-		name: 'print',
-		label: 'Print',
-		category: 'Input/Output',
-		color: '#A08A8A',
-		items: [
-			{
-				type: 'input',
-				label: 'Print',
-				name: 'text',
-				value: 'result',
-				accept: ['string', 'variable'],
-			},
-		] as const,
-		inputs: 1,
-		compile: ({ state }) => `print ${state.text}`,
-	}),
-	draw: {
-		category: 'Input/Output',
-		label: 'Draw',
-		children: {
-			clear: new NodeData({
-				name: 'clear',
-				label: 'Clear',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'r',
-						name: 'r',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'g',
-						name: 'g',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'b',
-						name: 'b',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state }) => `draw clear ${state.r} ${state.g} ${state.b} 0 0 0`,
-			}),
-			color: new NodeData({
-				name: 'color',
-				label: 'Color',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'r',
-						name: 'r',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'g',
-						name: 'g',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'b',
-						name: 'b',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'a',
-						name: 'a',
-						value: '255',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { r, g, b, a } }) => `draw color ${r} ${g} ${b} ${a} 0 0`,
-			}),
-			col: new NodeData({
-				name: 'col',
-				label: 'Col',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'color',
-						name: 'color',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { color } }) => `draw col ${color} 0 0 0 0 0`,
-			}),
-			stroke: new NodeData({
-				name: 'stroke',
-				label: 'Stroke',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'stroke',
-						name: 'stroke',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { stroke } }) => `draw stroke ${stroke} 0 0 0 0 0`,
-			}),
-			line: new NodeData({
-				name: 'line',
-				label: 'Line',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'x',
-						name: 'x',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y',
-						name: 'y',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'x2',
-						name: 'x2',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y2',
-						name: 'y2',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { x, y, x2, y2 } }) => `draw line ${x} ${y} ${x2} ${y2} 0 0`,
-			}),
-			rect: new NodeData({
-				name: 'rect',
-				label: 'Rect',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'x',
-						name: 'x',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y',
-						name: 'y',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'width',
-						name: 'width',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'height',
-						name: 'height',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { x, y, width, height } }) => `draw rect ${x} ${y} ${width} ${height} 0 0`,
-			}),
-			lineRect: new NodeData({
-				name: 'lineRect',
-				label: 'LineRect',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'x',
-						name: 'x',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y',
-						name: 'y',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'width',
-						name: 'width',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'height',
-						name: 'height',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { x, y, width, height } }) => `draw lineRect ${x} ${y} ${width} ${height} 0 0`,
-			}),
-			poly: new NodeData({
-				name: 'poly',
-				label: 'Poly',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'x',
-						name: 'x',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y',
-						name: 'y',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'sides',
-						name: 'sides',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'radius',
-						name: 'radius',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'rotation',
-						name: 'rotation',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { x, y, sides, radius, rotation } }) => `draw poly ${x} ${y} ${sides} ${radius} ${rotation} 0`,
-			}),
-			linePoly: new NodeData({
-				name: 'linePoly',
-				label: 'LinePoly',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'x',
-						name: 'x',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y',
-						name: 'y',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'sides',
-						name: 'sides',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'radius',
-						name: 'radius',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'rotation',
-						name: 'rotation',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { x, y, sides, radius, rotation } }) => `draw linePoly ${x} ${y} ${sides} ${radius} ${rotation} 0`,
-			}),
-			triangle: new NodeData({
-				name: 'triangle',
-				label: 'Triangle',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'x',
-						name: 'x',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y',
-						name: 'y',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'x2',
-						name: 'x2',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y2',
-						name: 'y2',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'x3',
-						name: 'x3',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y3',
-						name: 'y3',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { x, y, x2, y2, x3, y3 } }) => `draw triangle ${x} ${y} ${x2} ${y2} ${x3} ${y3}`,
-			}),
-			image: new NodeData({
-				name: 'image',
-				label: 'Image',
-				category: 'Input/Output',
-				color: '#A08A8A',
-				items: [
-					{
-						type: 'input',
-						label: 'x',
-						name: 'x',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'y',
-						name: 'y',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'image',
-						name: 'image',
-						value: '@copper',
-						accept: ['variable'],
-					},
-					{
-						type: 'input',
-						label: 'size',
-						name: 'size',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-					{
-						type: 'input',
-						label: 'rotation',
-						name: 'rotation',
-						value: '0',
-						accept: ['number', 'variable'],
-					},
-				] as const,
-				inputs: 1,
-				compile: ({ state: { x, y, image, size, rotation } }) => `draw image ${x} ${y} ${image} ${size} ${rotation} 0`,
-			}),
-		},
-	},
-} as const;
 
 export const instructionNodes: Record<string, NodeData> = Object.entries(instructionNodesGraph).reduce(
 	(acc, [key, value]) => {
@@ -598,7 +49,7 @@ export const nodeOptions = groupBy(Object.entries(instructionNodesGraph), (p) =>
 
 const initialNodes: Node[] = [
 	{
-		id: '7',
+		id: '1',
 		data: {
 			type: 'start',
 			node: instructionNodes.start,
@@ -616,6 +67,7 @@ type LogicEditorContextType = {
 	showLiveCode: boolean;
 	canUndo: boolean;
 	canRedo: boolean;
+	name: string;
 
 	variables: Record<string, string>;
 
@@ -623,11 +75,13 @@ type LogicEditorContextType = {
 	edges: Edge[];
 	setNodes: React.Dispatch<React.SetStateAction<Node[]>>;
 	setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
-
+	setName: (name: string) => void;
 	setNodeState: (id: string, fn: (prev: InferStateType<ItemsType>) => InferStateType<ItemsType>) => void;
 	setNode: (id: string, fn: (prev: InstructionNode) => InstructionNode) => void;
 
 	actions: {
+		save: () => void;
+		load: (name: string) => boolean;
 		undo: () => void;
 		redo: () => void;
 		addNode: (type: string) => void;
@@ -651,11 +105,12 @@ export const useLogicEditor = () => {
 const proOptions: ProOptions = { hideAttribution: true };
 
 export function LogicEditorProvider({ children }: { children: React.ReactNode }) {
+	const [name, setName] = useState('');
 	const [nodes, setNodes] = useState<Node[]>(initialNodes);
 	const [edges, setEdges] = useState<Edge[]>([]);
 	const [helperLineHorizontal, setHelperLineHorizontal] = useState<number | undefined>(undefined);
 	const [helperLineVertical, setHelperLineVertical] = useState<number | undefined>(undefined);
-
+	const [rfInstance, setRfInstance] = useState<ReactFlowInstance<InstructionNode, Edge> | null>(null);
 	const [nodeHistory, setNodeHistory] = useState<Node[][]>([initialNodes]);
 	const [edgeHistory, setEdgeHistory] = useState<Edge[][]>([[]]);
 	const [historyIndex, setHistoryIndex] = useState(0);
@@ -663,6 +118,9 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const [showAddNodeDialog, setShowAddNodeDialog] = useState(false);
 	const [showMiniMap, setShowMiniMap] = useLocalStorage('logic.editor.showMiniMap', false);
 	const [showLiveCode, setShowLiveCode] = useLocalStorage('logic.editor.showLiveCode', false);
+	const { setViewport } = useReactFlow();
+
+	const { generateRandomName, saved, readLogicFromLocalStorageByName, writeLogicToLocalStorage } = useLogicFile();
 
 	const variables = useMemo(
 		() =>
@@ -673,6 +131,43 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 					return { ...prev, ...Object.fromEntries(entry) };
 				}, {}),
 		[nodes],
+	);
+
+	const save = useCallback(() => {
+		if (!rfInstance) {
+			return;
+		}
+
+		if (!name) {
+			toast.error(<Tran text="logic.file-name-is-required" />);
+			return;
+		}
+
+		const data = rfInstance.toObject();
+		writeLogicToLocalStorage(name, data);
+	}, [rfInstance, name]);
+
+	useInterval(save, 60000);
+
+	const load = useCallback(
+		(name: string) => {
+			save();
+			const data = readLogicFromLocalStorageByName(name);
+
+			if (!data) {
+				toast.error(<Tran text="logic.file-not-found" />);
+				return false;
+			}
+
+			const { x = 0, y = 0, zoom = 1 } = data.viewport;
+			setNodes(data.nodes || []);
+			setEdges(data.edges || []);
+			setViewport({ x, y, zoom });
+			setName(name);
+
+			return true;
+		},
+		[setViewport, save],
 	);
 
 	const { screenToFlowPosition } = useReactFlow();
@@ -886,13 +381,38 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	}, [historyIndex, nodeHistory, edgeHistory]);
 
 	const actions = useMemo(
-		() => ({ redo, undo, addNode, setShowAddNodeDialog, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev), setShowMiniMap, setShowLiveCode }),
-		[redo, undo, addNode, setShowAddNodeDialog, setDeleteOnClick, setShowMiniMap, setShowLiveCode],
+		() => ({ save, load, redo, undo, addNode, setShowAddNodeDialog, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev), setShowMiniMap, setShowLiveCode }),
+		[save, load, redo, undo, addNode, setShowMiniMap, setShowLiveCode],
 	);
+
+	useEffect(() => {
+		function generateNewFile() {
+			const newName = generateRandomName();
+
+			if (!newName) {
+				toast.error(<Tran text="logic.could-not-generate-random-name" />);
+			} else {
+				setName(newName);
+			}
+		}
+
+		if (saved && saved.currentFile) {
+			const result = load(saved.currentFile);
+
+			if (!result) {
+				toast.error(<Tran text="logic.load-file-fail" args={{ name: saved.currentFile }} />);
+				generateNewFile();
+			}
+		} else {
+			generateNewFile();
+		}
+	}, []);
 
 	return (
 		<LogicEditorContext.Provider
 			value={{
+				name,
+				setName,
 				variables,
 				edges,
 				nodes,
@@ -916,6 +436,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 					<ReactFlow
 						nodes={nodes}
 						edges={edges}
+						onInit={setRfInstance}
 						onNodesChange={onNodeChange}
 						onEdgesChange={onEdgeChange}
 						onConnect={onEdgeConnect}

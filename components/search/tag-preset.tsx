@@ -18,7 +18,7 @@ import TagGroup from '@/types/response/TagGroup';
 import { useQuery } from '@tanstack/react-query';
 import { PresetType } from '@/constant/constant';
 import { getTagPreset, deleteTagPreset } from '@/lib/tag';
-import { TagPreset } from '@/types/type';
+import { TagPreset } from '@/types/index';
 
 type TagPresetListProps = {
   type: PresetType;
