@@ -1,6 +1,5 @@
 import { AxiosInstance } from 'axios';
 
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
 import { Schematic } from '@/types/response/Schematic';
@@ -47,7 +46,7 @@ export async function getSchematicData(axios: AxiosInstance, id: string): Promis
 	return result.data;
 }
 
-export async function getSchematicUpload(axios: AxiosInstance, { id }: IdSearchParams): Promise<SchematicDetail> {
+export async function getSchematicUpload(axios: AxiosInstance, { id }: { id: string }): Promise<SchematicDetail> {
 	const result = await axios.get(`/schematics/upload/${id}`);
 	return result.data;
 }
@@ -60,7 +59,7 @@ export async function getSchematicUploads(axios: AxiosInstance, params: ItemPagi
 	return result.data;
 }
 
-export async function getSchematic(axios: AxiosInstance, { id }: IdSearchParams): Promise<SchematicDetail> {
+export async function getSchematic(axios: AxiosInstance, { id }: { id: string }): Promise<SchematicDetail> {
 	const result = await axios.get(`/schematics/${id}`);
 	return result.data;
 }

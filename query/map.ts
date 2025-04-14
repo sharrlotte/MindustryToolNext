@@ -1,7 +1,6 @@
 import { AxiosInstance } from 'axios';
 
 import { toForm } from '@/lib/utils';
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
 import { Map } from '@/types/response/Map';
@@ -29,7 +28,7 @@ export async function getMapData(axios: AxiosInstance, id: string): Promise<stri
 	return result.data;
 }
 
-export async function getMapUpload(axios: AxiosInstance, { id }: IdSearchParams): Promise<MapDetail> {
+export async function getMapUpload(axios: AxiosInstance, { id }: { id: string }): Promise<MapDetail> {
 	const result = await axios.get(`/maps/upload/${id}`);
 	return result.data;
 }
@@ -42,7 +41,7 @@ export async function getMapUploads(axios: AxiosInstance, params: ItemPagination
 	return result.data;
 }
 
-export async function getMap(axios: AxiosInstance, { id }: IdSearchParams): Promise<MapDetail> {
+export async function getMap(axios: AxiosInstance, { id }: { id: string }): Promise<MapDetail> {
 	const result = await axios.get(`/maps/${id}`);
 	return result.data;
 }

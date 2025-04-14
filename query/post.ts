@@ -1,7 +1,6 @@
 import { AxiosInstance } from 'axios';
 
 import { toForm } from '@/lib/utils';
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import CreatePostRequest from '@/types/request/CreatePostRequest';
 import TranslatePostRequest from '@/types/request/TranslatePostRequest';
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
@@ -14,7 +13,7 @@ export async function deletePost(axios: AxiosInstance, id: string): Promise<void
 
 	return result.data;
 }
-export async function getPostUpload(axios: AxiosInstance, { id }: IdSearchParams): Promise<PostDetail> {
+export async function getPostUpload(axios: AxiosInstance, { id }: { id: string }): Promise<PostDetail> {
 	const result = await axios.get(`/posts/upload/${id}`);
 	return result.data;
 }
@@ -31,7 +30,7 @@ export async function getPostUploads(axios: AxiosInstance, params: ItemPaginatio
 	return result.data;
 }
 
-export async function getPost(axios: AxiosInstance, { id }: IdSearchParams): Promise<PostDetail> {
+export async function getPost(axios: AxiosInstance, { id }: { id: string }): Promise<PostDetail> {
 	const result = await axios.get(`/posts/${id}`);
 	return result.data;
 }

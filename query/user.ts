@@ -2,7 +2,6 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
 import { UserRole } from '@/constant/constant';
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import { Map } from '@/types/response/Map';
 import { Post } from '@/types/response/Post';
 import { Schematic } from '@/types/response/Schematic';
@@ -88,7 +87,7 @@ export async function getUserSchematics(axios: AxiosInstance, userId: string, pa
 	return result.data;
 }
 
-export async function getUser(axios: AxiosInstance, { id }: IdSearchParams): Promise<User> {
+export async function getUser(axios: AxiosInstance, { id }: { id: string }): Promise<User> {
 	const result = await axios.get(`/users/${id}`);
 
 	return result.data;

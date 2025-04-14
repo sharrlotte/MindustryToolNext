@@ -2,7 +2,6 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
 import { toForm } from '@/lib/utils';
-import { IdSearchParams } from '@/types/data/id-search-schema';
 import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
 import { CreateServerManagerRequest, CreateServerRequest } from '@/types/request/CreateServerRequest';
@@ -103,13 +102,13 @@ export async function getServerPluginCount(axios: AxiosInstance, id: string, par
 	return result.data;
 }
 
-export async function getServer(axios: AxiosInstance, { id }: IdSearchParams): Promise<ServerDto> {
+export async function getServer(axios: AxiosInstance, { id }: { id: string }): Promise<ServerDto> {
 	const result = await axios.get(`/servers/${id}`);
 
 	return result.data;
 }
 
-export async function getServerSetting(axios: AxiosInstance, { id }: IdSearchParams): Promise<Server> {
+export async function getServerSetting(axios: AxiosInstance, { id }: { id: string }): Promise<Server> {
 	const result = await axios.get(`/servers/${id}/setting`);
 
 	return result.data;
