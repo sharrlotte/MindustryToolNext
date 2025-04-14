@@ -1,10 +1,8 @@
-import { Suspense } from 'react';
-
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import { BanButton } from '@/components/server/ban-button';
 import { KickButton } from '@/components/server/kick-button';
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
+import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 
@@ -61,27 +59,19 @@ async function PlayerCard({ serverId, player: { locale, userId, name, team, ip, 
 	locale = getCountryCode(locale ?? 'EN');
 
 	return (
-		<ContextMenu>
-			<ContextMenuTrigger>
-				<div className="flex flex-col justify-between gap-1 px-4 py-1 hover:bg-secondary">
-					<div className="flex text-lg justify-between gap-1">
-						<ColorText className="font-semibold" text={name} />
-						{locale && (localeToFlag[locale] ?? locale)}
-						{userId && <IdUserCard id={userId} />}
-					</div>
-					<div className="border-b-4" style={{ borderColor: `#${team.color}` }} />
-				</div>
-			</ContextMenuTrigger>
-			<ContextMenuContent>
-				<Suspense>
-					<ContextMenuItem asChild>
+		<div className="flex flex-col justify-between gap-1 px-4 py-1 hover:bg-secondary">
+			<div className="flex text-lg justify-between gap-1">
+				<ColorText className="font-semibold" text={name} />
+				<div className="flex gap-1">
+					{locale && (localeToFlag[locale] ?? locale)}
+					{userId && <IdUserCard id={userId} />}
+					<EllipsisButton variant="ghost">
 						<BanButton id={serverId} uuid={uuid} username={name} ip={ip} />
-					</ContextMenuItem>
-					<ContextMenuItem asChild>
 						<KickButton id={serverId} username={name} />
-					</ContextMenuItem>
-				</Suspense>
-			</ContextMenuContent>
-		</ContextMenu>
+					</EllipsisButton>
+				</div>
+			</div>
+			<div className="border-b-4" style={{ borderColor: `#${team.color}` }} />
+		</div>
 	);
 }

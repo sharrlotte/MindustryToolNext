@@ -45,8 +45,8 @@ export default function Page() {
 					<UploadButton path={path} />
 				</div>
 			</section>
-			<ScrollContainer>
-				<InfinitePage className="flex flex-col gap-2 p-2 border rounded-lg h-full" queryKey={['images']} end paramSchema={PaginationQuerySchema} params={{ path }} queryFn={getImages}>
+			<ScrollContainer className="border rounded-lg">
+				<InfinitePage className="flex flex-col gap-2 p-2 h-full" queryKey={['images']} end paramSchema={PaginationQuerySchema} params={{ path }} queryFn={getImages}>
 					{(data) =>
 						data.isDir ? (
 							<DirCard key={data.path} data={data} setPath={setPath} />
