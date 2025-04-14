@@ -312,6 +312,7 @@ const localeToFlag: Record<string, string> = {
 	JE: '🇯🇪',
 	JM: '🇯🇲',
 	JO: '🇯🇴',
+	JA: '🇯🇵',
 	JP: '🇯🇵',
 	KE: '🇰🇪',
 	KG: '🇰🇬',
