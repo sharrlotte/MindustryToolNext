@@ -18,7 +18,7 @@ export default function LogicEditorNavBar() {
 			<div className="flex p-1 items-center overflow-hidden gap-4 relative bg-card dark:bg-transparent">
 				<div className="flex items-center gap-2">
 					<SmallNavbarToggle className="gap-1 px-0 py-0">
-						<MindustryToolIcon className="size-6" />
+						<MindustryToolIcon className="size-8" />
 					</SmallNavbarToggle>
 				</div>
 			</div>

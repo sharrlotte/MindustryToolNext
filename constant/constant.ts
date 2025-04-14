@@ -34,6 +34,8 @@ export const PAGINATION_TYPE_PERSISTENT_KEY = 'paginationType';
 export const PAGINATION_SIZE_PERSISTENT_KEY = 'paginationSize';
 export const SESSION_ID_PERSISTENT_KEY = 'SESSION_ID';
 
+export const LOGIC_PERSISTENT_KEY = 'LOGIC_DATA';
+
 export const DEFAULT_PAGINATION_TYPE = 'grid';
 export const DEFAULT_PAGINATION_SIZE = 10;
 

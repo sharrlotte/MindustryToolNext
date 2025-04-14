@@ -23,9 +23,3 @@ declare global {
 
 	type TQueryKey = QueryKey;
 }
-
-export type TagPreset = {
-	name: string;
-	type: PresetType;
-	tags: TagGroup[];
-};

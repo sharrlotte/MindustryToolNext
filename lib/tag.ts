@@ -1,5 +1,5 @@
 import { PRESET_LOCAL_STORAGE_NAME, PresetType } from '@/constant/constant';
-import { TagPreset } from '@/types/type';
+import { TagPreset } from '@/types/index';
 
 export function getTagPreset(type?: PresetType): TagPreset[] {
 	const str = localStorage.getItem(PRESET_LOCAL_STORAGE_NAME);
