@@ -38,7 +38,7 @@ export default function ServerLoginLogCard({ serverId, data: { name, uuid, ip, c
 				</button>
 			</div>
 			<RelativeTime date={new Date(createdAt)} />
-			<EllipsisButton>
+			<EllipsisButton variant='ghost'>
 				<KickButton id={serverId} username={name} />
 				<BanButton id={serverId} ip={ip} username={name} uuid={uuid} />
 			</EllipsisButton>

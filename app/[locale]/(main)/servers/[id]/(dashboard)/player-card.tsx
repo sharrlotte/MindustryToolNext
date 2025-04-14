@@ -74,10 +74,10 @@ async function PlayerCard({ serverId, player: { locale, userId, name, team, ip, 
 			</ContextMenuTrigger>
 			<ContextMenuContent>
 				<Suspense>
-					<ContextMenuItem>
+					<ContextMenuItem asChild>
 						<BanButton id={serverId} uuid={uuid} username={name} ip={ip} />
 					</ContextMenuItem>
-					<ContextMenuItem variant="destructive">
+					<ContextMenuItem asChild>
 						<KickButton id={serverId} username={name} />
 					</ContextMenuItem>
 				</Suspense>
