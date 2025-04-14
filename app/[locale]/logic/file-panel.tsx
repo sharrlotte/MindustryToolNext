@@ -3,11 +3,10 @@ import { useLogicEditor } from '@/app/[locale]/logic/logic-editor-context';
 import { FileIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
-
-import { readLogicFromLocalStorage } from '@/lib/logic';
+import useLogicFile from '@/hooks/use-logic-file';
 
 export default function FilePanel() {
-	const saved = readLogicFromLocalStorage();
+	const { saved } = useLogicFile();
 	const {
 		actions: { load },
 	} = useLogicEditor();

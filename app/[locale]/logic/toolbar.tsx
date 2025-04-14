@@ -16,8 +16,8 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from '@/components/ui/sonner';
 
+import useLogicFile from '@/hooks/use-logic-file';
 import useShortcut from '@/hooks/use-shortcut';
-import { generateRandomName, readLogicFromLocalStorage, renameLogic } from '@/lib/logic';
 
 import { PopoverClose } from '@radix-ui/react-popover';
 import { useReactFlow } from '@xyflow/react';
@@ -44,10 +44,10 @@ const tabs: TabType[] = [
 
 function FilenameInput() {
 	const { name, setName } = useLogicEditor();
+	const { saved, renameLogic } = useLogicFile();
 
 	function validateName() {
 		if (name.trim().length === 0) {
-			const saved = readLogicFromLocalStorage();
 			if (saved.currentFile) setName(saved.currentFile);
 		} else {
 			renameLogic(name);

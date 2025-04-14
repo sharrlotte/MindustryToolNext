@@ -16,7 +16,7 @@ import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
-import { generateRandomName, readLogicFromLocalStorage, readLogicFromLocalStorageByName, writeLogicToLocalStorage } from '@/lib/logic';
+import useLogicFile from '@/hooks/use-logic-file';
 import { groupBy, uuid } from '@/lib/utils';
 
 import { Edge, EdgeChange, MiniMap, NodeChange, ProOptions, ReactFlow, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
@@ -119,6 +119,8 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const [showMiniMap, setShowMiniMap] = useLocalStorage('logic.editor.showMiniMap', false);
 	const [showLiveCode, setShowLiveCode] = useLocalStorage('logic.editor.showLiveCode', false);
 	const { setViewport } = useReactFlow();
+
+	const { generateRandomName, saved, readLogicFromLocalStorageByName, writeLogicToLocalStorage } = useLogicFile();
 
 	const variables = useMemo(
 		() =>
@@ -384,8 +386,6 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	);
 
 	useEffect(() => {
-		const save = readLogicFromLocalStorage();
-
 		function generateNewFile() {
 			const newName = generateRandomName();
 
@@ -396,11 +396,11 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			}
 		}
 
-		if (save && save.currentFile) {
-			const result = load(save.currentFile);
+		if (saved && saved.currentFile) {
+			const result = load(saved.currentFile);
 
 			if (!result) {
-				toast.error(<Tran text="logic.load-file-fail" args={{ name: save.currentFile }} />);
+				toast.error(<Tran text="logic.load-file-fail" args={{ name: saved.currentFile }} />);
 				generateNewFile();
 			}
 		} else {
