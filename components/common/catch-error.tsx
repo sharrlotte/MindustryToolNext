@@ -2,11 +2,7 @@
 
 import React from 'react';
 
-import { getLoggedErrorMessage } from '@/lib/utils';
-import { reportError } from '@/query/api';
-import axiosInstance from '@/query/config/config';
-
-import * as Sentry from '@sentry/nextjs';
+import { reportError } from '@/lib/error';
 
 import ErrorMessage from './error-message';
 
@@ -34,12 +30,9 @@ export class CatchError extends React.Component<Props, State> {
 		return { hasError: true, error };
 	}
 
-	componwentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-		console.log(error);
-		console.log(errorInfo);
+	componwentDidCatch(error: Error, _errorInfo: React.ErrorInfo): void {
 		this.setState({ error });
-		reportError(axiosInstance, getLoggedErrorMessage(error as any));
-		Sentry.captureException(error);
+		reportError(error);
 	}
 
 	render() {

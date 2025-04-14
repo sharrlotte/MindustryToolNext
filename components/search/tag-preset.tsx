@@ -13,10 +13,12 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 import useQueriesData from '@/hooks/use-queries-data';
-import { PresetType, TagPreset, deleteTagPreset, getTagPreset } from '@/lib/utils';
 import TagGroup from '@/types/response/TagGroup';
 
 import { useQuery } from '@tanstack/react-query';
+import { PresetType } from '@/constant/constant';
+import { getTagPreset, deleteTagPreset } from '@/lib/tag';
+import { TagPreset } from '@/types/type';
 
 type TagPresetListProps = {
   type: PresetType;

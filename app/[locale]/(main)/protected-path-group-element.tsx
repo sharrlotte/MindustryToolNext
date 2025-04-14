@@ -6,19 +6,19 @@ import ErrorScreen from '@/components/common/error-screen';
 
 import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
-import { isError } from '@/lib/utils';
+import { isError } from '@/lib/error';
 
 export function ProtectedPathGroupElement({ group }: PathGroupElementProps) {
-  const { session } = useSession();
-  const { filter } = group;
+	const { session } = useSession();
+	const { filter } = group;
 
-  if (isError(session)) {
-    return <ErrorScreen error={session} />;
-  }
+	if (isError(session)) {
+		return <ErrorScreen error={session} />;
+	}
 
-  return (
-    <ProtectedElement session={session} filter={filter}>
-      <PathGroupElement group={group} />
-    </ProtectedElement>
-  );
+	return (
+		<ProtectedElement session={session} filter={filter}>
+			<PathGroupElement group={group} />
+		</ProtectedElement>
+	);
 }

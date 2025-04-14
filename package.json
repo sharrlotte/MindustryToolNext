@@ -99,6 +99,7 @@
         "throttle-debounce": "^5.0.2",
         "universal-cookie": "^7.2.2",
         "usehooks-ts": "^2.16.0",
+        "web-push": "^3.6.7",
         "zod": "^3.24.1",
         "zod-form-data": "^2.0.4"
     },
@@ -121,6 +122,7 @@
         "@types/react-window-infinite-loader": "^1.0.9",
         "@types/remark-heading-id": "^1.0.0",
         "@types/throttle-debounce": "^5.0.2",
+        "@types/web-push": "^3.6.4",
         "autoprefixer": "^10.4.20",
         "babel-plugin-react-compiler": "19.0.0-beta-e993439-20250328",
         "eslint": "^8.57.1",
