@@ -1,3 +1,5 @@
+'use client';
+
 import { BanIcon } from 'lucide-react';
 
 import Tran from '@/components/common/tran';
