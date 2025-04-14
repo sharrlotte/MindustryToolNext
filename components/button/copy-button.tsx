@@ -16,7 +16,7 @@ const copyButtonVariants = cva('flex p-2 bg-transparent group/copy-button rounde
 	variants: {
 		variant: {
 			default: 'bg-secondary border border-border hover:bg-brand hover:border-transparent',
-			ghost: 'bg-white/20 backdrop-blur-sm flex md:hidden group-hover:flex group-focus:flex',
+			ghost: 'bg-white/20 backdrop-blur-sm flex md:hidden md:group-hover:flex md:group-focus:flex',
 			none: '',
 			command: 'hover:bg-secondary w-full justify-start gap-1 px-2 py-1',
 		},
