@@ -25,8 +25,8 @@ import { toast } from '@/components/ui/sonner';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import { deleteImage, getImages, uploadImage } from '@/query/image';
-import { PaginationQuerySchema } from '@/query/search-query';
 import { ImageMetadata } from '@/types/response/FileMetadata';
+import { PaginationQuerySchema } from '@/types/schema/search-query';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

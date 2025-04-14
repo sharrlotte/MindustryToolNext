@@ -10,37 +10,37 @@ import MapPreviewCard from '@/components/map/map-preview-card';
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import { getMaps } from '@/query/map';
-import { ItemPaginationQuery } from '@/query/search-query';
+import { ItemPaginationQuery } from '@/types/schema/search-query';
 
 export default function Client() {
-  return (
-    <ScrollContainer>
-      <ListLayout>
-        <InfinitePage
-          paramSchema={ItemPaginationQuery}
-          queryKey={['maps']}
-          queryFn={getMaps}
-          skeleton={{
-            amount: 20,
-            item: <PreviewSkeleton />,
-          }}
-        >
-          {(data) => <MapPreviewCard key={data.id} map={data} />}
-        </InfinitePage>
-      </ListLayout>
-      <GridLayout>
-        <GridPaginationList
-          paramSchema={ItemPaginationQuery}
-          queryKey={['maps']}
-          queryFn={getMaps}
-          skeleton={{
-            amount: 20,
-            item: <PreviewSkeleton />,
-          }}
-        >
-          {(data) => <MapPreviewCard key={data.id} map={data} />}
-        </GridPaginationList>
-      </GridLayout>
-    </ScrollContainer>
-  );
+	return (
+		<ScrollContainer>
+			<ListLayout>
+				<InfinitePage
+					paramSchema={ItemPaginationQuery}
+					queryKey={['maps']}
+					queryFn={getMaps}
+					skeleton={{
+						amount: 20,
+						item: <PreviewSkeleton />,
+					}}
+				>
+					{(data) => <MapPreviewCard key={data.id} map={data} />}
+				</InfinitePage>
+			</ListLayout>
+			<GridLayout>
+				<GridPaginationList
+					paramSchema={ItemPaginationQuery}
+					queryKey={['maps']}
+					queryFn={getMaps}
+					skeleton={{
+						amount: 20,
+						item: <PreviewSkeleton />,
+					}}
+				>
+					{(data) => <MapPreviewCard key={data.id} map={data} />}
+				</GridPaginationList>
+			</GridLayout>
+		</ScrollContainer>
+	);
 }

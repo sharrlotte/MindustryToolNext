@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 import { userRoles } from '@/constant/constant';
+import { DEFAULT_PAGINATION_SIZE } from '@/constant/constant';
 import { defaultSortTag } from '@/constant/env';
-import { DEFAULT_PAGINATION_SIZE } from '@/context/session-context.type';
 import { locales } from '@/i18n/config';
 import { sortTag } from '@/types/response/SortTag';
 import { verifyStatus } from '@/types/response/Status';

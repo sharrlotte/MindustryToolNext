@@ -2,13 +2,13 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
 import { UserRole } from '@/constant/constant';
-import { ItemPaginationQueryType, PaginationQuery, StatusPaginationSearchQuery } from '@/query/search-query';
 import { IdSearchParams } from '@/types/data/id-search-schema';
 import { Map } from '@/types/response/Map';
 import { Post } from '@/types/response/Post';
 import { Schematic } from '@/types/response/Schematic';
 import { ServerDto } from '@/types/response/ServerDto';
 import { User } from '@/types/response/User';
+import { ItemPaginationQueryType, PaginationQuery, StatusPaginationSearchQuery } from '@/types/schema/search-query';
 
 export async function getMeServers(axios: AxiosInstance): Promise<ServerDto[]> {
 	const result = await axios.get(`/users/@me/servers`);

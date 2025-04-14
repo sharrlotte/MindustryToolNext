@@ -9,8 +9,8 @@ import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { isError } from '@/lib/error';
 import { formatTitle, generateAlternate } from '@/lib/utils';
-import { ItemPaginationQuery, ItemPaginationQueryType } from '@/query/search-query';
 import { getRank } from '@/query/user';
+import { ItemPaginationQuery, ItemPaginationQueryType } from '@/types/schema/search-query';
 
 type Props = {
 	searchParams: Promise<ItemPaginationQueryType>;

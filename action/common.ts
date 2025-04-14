@@ -7,11 +7,11 @@ import { cache } from 'react';
 import 'server-only';
 import { z } from 'zod';
 
-import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/context/session-context.type';
-import axiosInstance from '@/query/config/config';
-import { QuerySchema } from '@/query/search-query';
-import { Session } from '@/types/response/Session';
+import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/constant/constant';
 import { ApiError } from '@/lib/error';
+import axiosInstance from '@/query/config/config';
+import { Session } from '@/types/response/Session';
+import { QuerySchema } from '@/types/schema/search-query';
 
 export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
 	if (path) {
@@ -36,7 +36,6 @@ type ServerApi<T> =
 			queryFn: QueryFn<T>;
 	  }
 	| QueryFn<T>;
-
 
 export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>): Promise<T | ApiError> {
 	try {

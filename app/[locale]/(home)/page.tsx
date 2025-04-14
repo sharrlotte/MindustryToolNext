@@ -38,8 +38,8 @@ import { getMapCount } from '@/query/map';
 import { getMaps } from '@/query/map';
 import { getSchematicCount } from '@/query/schematic';
 import { getSchematics } from '@/query/schematic';
-import { ItemPaginationQueryType } from '@/query/search-query';
 import { getServers } from '@/query/server';
+import { ItemPaginationQueryType } from '@/types/schema/search-query';
 
 import { YouTubeEmbed } from '@next/third-parties/google';
 

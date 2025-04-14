@@ -28,8 +28,8 @@ import useClientQuery from '@/hooks/use-client-query';
 import useMessage from '@/hooks/use-message';
 import { cn } from '@/lib/utils';
 import { getLogCollections, getLogCount, getLogs } from '@/query/log';
-import { LogEnvironment, LogPaginationQuerySchema, LogPaginationQueryType } from '@/query/search-query';
 import { Log } from '@/types/Log';
+import { LogEnvironment, LogPaginationQuerySchema, LogPaginationQueryType } from '@/types/schema/search-query';
 
 export default function LogPage() {
 	return (

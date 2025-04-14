@@ -8,8 +8,8 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
-import { PaginationQuerySchema } from '@/query/search-query';
 import { getServerLogins } from '@/query/server';
+import { PaginationQuerySchema } from '@/types/schema/search-query';
 
 import ServerLoginLogCard from './server-login-log-card';
 

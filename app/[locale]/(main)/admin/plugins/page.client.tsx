@@ -9,20 +9,20 @@ import UploadPluginCard from '@/components/plugin/upload-plugin-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
 
 import { getPluginUploads } from '@/query/plugin';
-import { ItemPaginationQuery } from '@/query/search-query';
+import { ItemPaginationQuery } from '@/types/schema/search-query';
 
 export default function Client() {
-  return (
-    <div className="relative flex h-full flex-col gap-2 p-2">
-      <NameTagSearch type="plugin" />
-      <ScrollContainer className="relative flex h-full flex-col gap-2">
-        <InfinitePage queryKey={['plugins', 'upload']} queryFn={getPluginUploads} paramSchema={ItemPaginationQuery}>
-          {(data) => <UploadPluginCard key={data.id} plugin={data} />}
-        </InfinitePage>
-      </ScrollContainer>
-      <div className="flex justify-end items-center">
-        <PaginationLayoutSwitcher />
-      </div>
-    </div>
-  );
+	return (
+		<div className="relative flex h-full flex-col gap-2 p-2">
+			<NameTagSearch type="plugin" />
+			<ScrollContainer className="relative flex h-full flex-col gap-2">
+				<InfinitePage queryKey={['plugins', 'upload']} queryFn={getPluginUploads} paramSchema={ItemPaginationQuery}>
+					{(data) => <UploadPluginCard key={data.id} plugin={data} />}
+				</InfinitePage>
+			</ScrollContainer>
+			<div className="flex justify-end items-center">
+				<PaginationLayoutSwitcher />
+			</div>
+		</div>
+	);
 }

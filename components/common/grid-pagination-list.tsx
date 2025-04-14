@@ -11,7 +11,7 @@ import RouterSpinner from '@/components/common/router-spinner';
 import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
-import { QuerySchema } from '@/query/search-query';
+import { QuerySchema } from '@/types/schema/search-query';
 
 import { QueryKey, useQuery } from '@tanstack/react-query';
 

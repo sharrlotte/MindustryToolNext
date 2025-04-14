@@ -1,9 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { useCookies } from 'react-cookie';
 
-import { PAGINATION_SIZE_PERSISTENT_KEY } from '@/context/session-context.type';
+import { PAGINATION_SIZE_PERSISTENT_KEY } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
-import { PaginationQuery } from '@/query/search-query';
+import { PaginationQuery } from '@/types/schema/search-query';
 
 import { InfiniteData, QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
