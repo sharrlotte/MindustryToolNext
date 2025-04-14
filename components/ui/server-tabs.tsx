@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -59,9 +59,7 @@ export function ServerTabs<T extends string>({ className, value, name, values, c
 
 	return (
 		<div className={cn('flex h-full flex-col gap-2 overflow-hidden', className)}>
-			<AnimatePresence>
-				<Context.Provider value={{ value: current || value, setValue, hovered, setHovered }}>{children}</Context.Provider>
-			</AnimatePresence>
+			<Context.Provider value={{ value: current || value, setValue, hovered, setHovered }}>{children}</Context.Provider>
 		</div>
 	);
 }

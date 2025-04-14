@@ -1,6 +1,5 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
 import { ReactNode } from 'react';
 
 import { useNavLink } from '@/context/nav-link-context';
@@ -13,7 +12,7 @@ export default function NavLinkContainer({ children }: Props) {
 
 	return (
 		<div className="no-scrollbar border-b flex h-full gap-3 overflow-x-auto bg-card px-2" onMouseLeave={() => setHovered(null)} onTouchCancel={() => setHovered(null)}>
-			<AnimatePresence>{children}</AnimatePresence>
+			{children}
 		</div>
 	);
 }
