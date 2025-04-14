@@ -3,9 +3,8 @@
 import { BanIcon } from 'lucide-react';
 
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { DialogTitle } from '@/components/ui/dialog';
 
 import { revalidate } from '@/action/action';
 import { useSocket } from '@/context/socket-context';
@@ -58,9 +57,9 @@ export function BanButton({ id, ip, uuid, username }: BanButtonProps) {
 				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
-				<DialogTitle>
+				<AlertDialogTitle>
 					<Tran text="ban" />
-				</DialogTitle>
+				</AlertDialogTitle>
 				<AlertDialogCancel>
 					<Tran text="cancel" />
 				</AlertDialogCancel>

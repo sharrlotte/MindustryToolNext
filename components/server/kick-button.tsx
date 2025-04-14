@@ -3,12 +3,12 @@
 import { BanIcon } from 'lucide-react';
 
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
+import { revalidate } from '@/action/action';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
-import { revalidate } from '@/action/action';
 
 type BanButtonProps = {
 	id: string;
@@ -45,6 +45,9 @@ export function KickButton({ id, username }: BanButtonProps) {
 				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
+				<AlertDialogTitle>
+					<Tran text="kick" />
+				</AlertDialogTitle>
 				<AlertDialogCancel>
 					<Tran text="cancel" />
 				</AlertDialogCancel>
