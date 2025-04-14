@@ -1,3 +1,4 @@
+import { Locale } from '@/i18n/config';
 import { AllTagGroup } from '@/types/response/TagGroup';
 
 export const dateFormat = 'dd-MM-yyyy hh:mm:ss';
@@ -23,6 +24,79 @@ export const PRESET_LOCAL_STORAGE_NAME = 'TAG_PRESET';
 export const presetTypes = ['schematic', 'map', 'plugin', 'post'] as const;
 
 export type PresetType = (typeof presetTypes)[number];
+
+export const paginationTypes = ['grid', 'infinite-scroll'] as const;
+
+export type SessionState = 'loading' | 'authenticated' | 'unauthenticated';
+export type PaginationType = (typeof paginationTypes)[number];
+
+export const PAGINATION_TYPE_PERSISTENT_KEY = 'paginationType';
+export const PAGINATION_SIZE_PERSISTENT_KEY = 'paginationSize';
+export const SESSION_ID_PERSISTENT_KEY = 'SESSION_ID';
+
+export const DEFAULT_PAGINATION_TYPE = 'grid';
+export const DEFAULT_PAGINATION_SIZE = 10;
+
+export type Config = {
+	paginationType: PaginationType;
+	paginationSize: number;
+	Locale: Locale;
+};
+
+export type LogType = 'SYSTEM' | 'DATABASE' | 'API' | 'DISCORD_MESSAGE' | 'REQUEST' | 'USER_LOGIN';
+
+export type MetricType = 'DAILY_LIKE' | 'DAILY_USER' | 'LOGGED_DAILY_USER' | 'DAILY_MOD_USER' | 'DAILY_WEB_USER' | 'DAILY_SERVER_USER';
+
+export const userRoles = ['ADMIN', 'USER', 'SHAR', 'CONTRIBUTOR'] as const;
+
+export type UserRole = (typeof userRoles)[number];
+
+export type AuthorityEnum =
+	| 'CREATE_NOTIFICATION' //
+	| 'VIEW_DASH_BOARD' //
+	| 'VIEW_USER_ROLE'
+	| 'EDIT_USER_ROLE' //
+	| 'VIEW_USER_AUTHORITY'
+	| 'EDIT_USER_AUTHORITY' //
+	| 'VIEW_ROLE_AUTHORITY'
+	| 'EDIT_ROLE_AUTHORITY' //
+	| 'MANAGE_ROLE' //
+	| 'VIEW_LOG'
+	| 'DELETE_LOG' //
+	| 'VIEW_ADMIN_SERVER'
+	| 'EDIT_ADMIN_SERVER'
+	| 'DELETE_ADMIN_SERVER'
+	| 'SHUTDOWN_SERVER'
+	| 'RELOAD_SERVER'
+	| 'START_SERVER'
+	| 'UPDATE_SERVER' //
+	| 'VERIFY_SCHEMATIC'
+	| 'DELETE_SCHEMATIC' //
+	| 'VERIFY_MAP'
+	| 'DELETE_MAP' //
+	| 'VERIFY_POST'
+	| 'DELETE_POST' //
+	| 'VERIFY_PLUGIN'
+	| 'DELETE_PLUGIN' //
+	| 'VIEW_SETTING'
+	| 'EDIT_SETTING' //
+	| 'VIEW_TRANSLATION'
+	| 'CREATE_TRANSLATION'
+	| 'EDIT_TRANSLATION'
+	| 'DELETE_TRANSLATION' //
+	| 'VIEW_FILE'
+	| 'CREATE_FILE'
+	| 'EDIT_FILE'
+	| 'DELETE_FILE' //
+	| 'VIEW_DOCUMENT'
+	| 'CREATE_DOCUMENT'
+	| 'EDIT_DOCUMENT'
+	| 'DELETE_DOCUMENT' //
+	| 'EDIT_USER' //
+	| 'MANAGE_TAG' //
+	| 'MANAGE_COMMENT';
+
+export type LikeAction = 'LIKE' | 'DISLIKE';
 
 export const colours: Record<string, string> = {
 	aliceblue: '#f0f8ff',

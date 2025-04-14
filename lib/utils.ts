@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 import { colours } from '@/constant/constant';
-import { AuthorityEnum, UserRole } from '@/constant/enum';
+import { AuthorityEnum, UserRole } from '@/constant/constant';
 import env from '@/constant/env';
 import { Locale, i18nCachePrefix } from '@/i18n/config';
 import { ApiError, isError } from '@/lib/error';
