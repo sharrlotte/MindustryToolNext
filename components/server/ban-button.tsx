@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
+import { DialogTitle } from '@/components/ui/dialog';
 
 type BanButtonProps = {
 	id: string;
@@ -49,6 +50,9 @@ export function BanButton({ id, ip, uuid, username }: BanButtonProps) {
 				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
+				<DialogTitle>
+					<Tran text="ban" />
+				</DialogTitle>
 				<AlertDialogCancel>
 					<Tran text="cancel" />
 				</AlertDialogCancel>
