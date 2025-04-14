@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 
-export async function reportError(axios: AxiosInstance, message: string) {
+export async function reportErrorToBackend(axios: AxiosInstance, message: string) {
+  
   try {
     const result = await axios.post('/error', { message });
 

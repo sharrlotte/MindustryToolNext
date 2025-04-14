@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
-import { PaginationQuery } from '@/query/search-query';
 import { ImageMetadata } from '@/types/response/FileMetadata';
+import { PaginationQuery } from '@/types/schema/search-query';
 
 export interface ImageUploadRequest {
 	file: File;

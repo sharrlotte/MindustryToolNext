@@ -19,11 +19,12 @@ import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import IdUserCard from '@/components/user/id-user-card';
 
-import { getSession, serverApi } from '@/action/action';
+import { getSession, serverApi } from '@/action/common';
 import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
-import { cn, formatTitle, generateAlternate, hasAccess, isError } from '@/lib/utils';
+import { cn, formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
 import { getServer } from '@/query/server';
+import { isError } from '@/lib/error';
 
 const RamUsageChart = dynamic(() => import('@/components/metric/ram-usage-chart'));
 

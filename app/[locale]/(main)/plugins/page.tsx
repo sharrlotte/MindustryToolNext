@@ -6,24 +6,24 @@ import Client from '@/app/[locale]/(main)/plugins/page.client';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle, generateAlternate } from '@/lib/utils';
-import { ItemPaginationQueryType } from '@/query/search-query';
+import { ItemPaginationQueryType } from '@/types/schema/search-query';
 
 type Props = {
-  searchParams: Promise<ItemPaginationQueryType>;
-  params: Promise<{ locale: Locale }>;
+	searchParams: Promise<ItemPaginationQueryType>;
+	params: Promise<{ locale: Locale }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const { t } = await getTranslation(locale);
-  const title = t('plugin');
+	const { locale } = await params;
+	const { t } = await getTranslation(locale);
+	const title = t('plugin');
 
-  return {
-    title: formatTitle(title),
-    alternates: generateAlternate('/plugins'),
-  };
+	return {
+		title: formatTitle(title),
+		alternates: generateAlternate('/plugins'),
+	};
 }
 
 export default async function Page() {
-  return <Client />;
+	return <Client />;
 }

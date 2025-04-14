@@ -6,10 +6,11 @@ import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 
-import { serverApi } from '@/action/action';
-import localeToFlag, { isError } from '@/lib/utils';
+import { serverApi } from '@/action/common';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
+import { isError } from '@/lib/error';
+import localeToFlag from '@/constant/constant';
 
 type PlayersCardProps = {
 	id: string;

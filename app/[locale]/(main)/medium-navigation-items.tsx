@@ -17,99 +17,100 @@ import Divider from '@/components/ui/divider';
 
 import { useSession } from '@/context/session-context';
 import ProtectedElement from '@/layout/protected-element';
-import { Filter, isError } from '@/lib/utils';
+import { Filter } from '@/lib/utils';
+import { isError } from '@/lib/error';
 
 export default function MediumScreenNavigationBar() {
-  return (
-    <MediumNavbarCollapse>
-      <MediumNavHeader />
-      <MediumNavItems />
-      <NavbarVisible alt={<MediumNavFooter />}>
-        <Hydrated>
-          <UserDisplay />
-        </Hydrated>
-      </NavbarVisible>
-    </MediumNavbarCollapse>
-  );
+	return (
+		<MediumNavbarCollapse>
+			<MediumNavHeader />
+			<MediumNavItems />
+			<NavbarVisible alt={<MediumNavFooter />}>
+				<Hydrated>
+					<UserDisplay />
+				</Hydrated>
+			</NavbarVisible>
+		</MediumNavbarCollapse>
+	);
 }
 
 function MediumNavHeader() {
-  return (
-    <div className="flex justify-between h-fit">
-      <NavbarVisible>
-        <NavHeader />
-      </NavbarVisible>
-      <MediumNavbarToggle />
-    </div>
-  );
+	return (
+		<div className="flex justify-between h-fit">
+			<NavbarVisible>
+				<NavHeader />
+			</NavbarVisible>
+			<MediumNavbarToggle />
+		</div>
+	);
 }
 
 export function MediumNavItems() {
-  return (
-    <section className="no-scrollbar space-y-2 overflow-hidden">
-      {groups.map((group) =>
-        group.filter ? ( //
-          <ProtectedPathGroupElement key={group.key} group={group} />
-        ) : (
-          <PathGroupElement key={group.key} group={group} />
-        ),
-      )}
-    </section>
-  );
+	return (
+		<section className="no-scrollbar space-y-2 overflow-hidden">
+			{groups.map((group) =>
+				group.filter ? ( //
+					<ProtectedPathGroupElement key={group.key} group={group} />
+				) : (
+					<PathGroupElement key={group.key} group={group} />
+				),
+			)}
+		</section>
+	);
 }
 
 export type PathGroupElementProps = {
-  group: PathGroup;
+	group: PathGroup;
 };
 
 function ProtectedPathGroupElement({ group }: PathGroupElementProps) {
-  const { session } = useSession();
-  const { filter } = group;
+	const { session } = useSession();
+	const { filter } = group;
 
-  if (isError(session)) {
-    return <ErrorScreen error={session} />;
-  }
+	if (isError(session)) {
+		return <ErrorScreen error={session} />;
+	}
 
-  return (
-    <ProtectedElement session={session} filter={filter}>
-      <PathGroupElement group={group} />
-    </ProtectedElement>
-  );
+	return (
+		<ProtectedElement session={session} filter={filter}>
+			<PathGroupElement group={group} />
+		</ProtectedElement>
+	);
 }
 export function PathGroupElement({ group }: PathGroupElementProps) {
-  const { key, name, paths } = group;
+	const { key, name, paths } = group;
 
-  return (
-    <nav className="space-y-1 uppercase" key={key}>
-      {name && <Divider />}
-      {paths.map((p) => {
-        const { path, ...rest } = p;
+	return (
+		<nav className="space-y-1 uppercase" key={key}>
+			{name && <Divider />}
+			{paths.map((p) => {
+				const { path, ...rest } = p;
 
-        return typeof path === 'string' ? ( //
-          rest.filter ? (
-            <ProtectedPathElement key={rest.id} segment={{ ...rest, path }} />
-          ) : (
-            <PathElement key={rest.id} segment={{ ...rest, path }} />
-          ) //
-        ) : (
-          <NestedPathElement key={rest.id} segment={{ ...rest, path }} />
-        );
-      })}
-    </nav>
-  );
+				return typeof path === 'string' ? ( //
+					rest.filter ? (
+						<ProtectedPathElement key={rest.id} segment={{ ...rest, path }} />
+					) : (
+						<PathElement key={rest.id} segment={{ ...rest, path }} />
+					) //
+				) : (
+					<NestedPathElement key={rest.id} segment={{ ...rest, path }} />
+				);
+			})}
+		</nav>
+	);
 }
 
 export type PathElementProps = {
-  segment: {
-    id: string;
-    path: string;
-    name: ReactNode;
-    icon: ReactNode;
-    enabled?: boolean;
-    filter?: Filter;
-    regex: string[];
-  };
+	segment: {
+		id: string;
+		path: string;
+		name: ReactNode;
+		icon: ReactNode;
+		enabled?: boolean;
+		filter?: Filter;
+		regex: string[];
+	};
 };
 export function PathElement({ segment }: PathElementProps) {
-  return <NavbarLink {...segment} />;
+	return <NavbarLink {...segment} />;
 }

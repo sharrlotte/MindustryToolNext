@@ -17,72 +17,72 @@ import { toast } from '@/components/ui/sonner';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { deleteSchematic, getSchematicUploadCount, getSchematicUploads } from '@/query/schematic';
-import { ItemPaginationQuery } from '@/query/search-query';
+import { ItemPaginationQuery } from '@/types/schema/search-query';
 
 import { useMutation } from '@tanstack/react-query';
 
 export default function Client() {
-  const { invalidateByKey } = useQueriesData();
-  const axios = useClientApi();
-  const { mutate } = useMutation({
-    mutationFn: (ids: string[]) => Promise.all(ids.map((id) => deleteSchematic(axios, id))),
-    onSuccess: () => {
-      toast.success(<Tran text="delete-success" />);
-    },
-    onError: (error) => {
-      toast.error(<Tran text="delete-fail" />, { description: error.message });
-    },
-    onSettled: () => {
-      invalidateByKey(['schematics']);
-    },
-  });
+	const { invalidateByKey } = useQueriesData();
+	const axios = useClientApi();
+	const { mutate } = useMutation({
+		mutationFn: (ids: string[]) => Promise.all(ids.map((id) => deleteSchematic(axios, id))),
+		onSuccess: () => {
+			toast.success(<Tran text="delete-success" />);
+		},
+		onError: (error) => {
+			toast.error(<Tran text="delete-fail" />, { description: error.message });
+		},
+		onSettled: () => {
+			invalidateByKey(['schematics']);
+		},
+	});
 
-  async function handleBulkDelete(value: string[]) {
-    mutate(value);
-  }
+	async function handleBulkDelete(value: string[]) {
+		mutate(value);
+	}
 
-  return (
-    <BulkActionContainer variant="destructive" onActionPerform={handleBulkDelete}>
-      <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
-        <NameTagSearch type="schematic" />
-        <ScrollContainer className="relative flex h-full flex-col">
-          <ListLayout>
-            <InfinitePage
-              paramSchema={ItemPaginationQuery}
-              queryKey={['schematics', 'upload']}
-              queryFn={getSchematicUploads}
-              skeleton={{
-                amount: 20,
-                item: <PreviewSkeleton />,
-              }}
-            >
-              {(data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
-            </InfinitePage>
-          </ListLayout>
-          <GridLayout>
-            <GridPaginationList
-              paramSchema={ItemPaginationQuery}
-              queryKey={['schematics', 'upload']}
-              queryFn={getSchematicUploads}
-              skeleton={{
-                amount: 20,
-                item: <PreviewSkeleton />,
-              }}
-            >
-              {(data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
-            </GridPaginationList>
-          </GridLayout>
-        </ScrollContainer>
-        <div className="flex items-center gap-2 justify-between">
-          <BulkDeleteToggle />
-          <div className="flex items-center gap-2">
-            <PaginationLayoutSwitcher />
-            <GridLayout>
-              <PaginationNavigator numberOfItems={getSchematicUploadCount} queryKey={['schematics', 'total', 'upload']} />
-            </GridLayout>
-          </div>
-        </div>
-      </div>
-    </BulkActionContainer>
-  );
+	return (
+		<BulkActionContainer variant="destructive" onActionPerform={handleBulkDelete}>
+			<div className="flex h-full flex-col gap-2 overflow-hidden p-2">
+				<NameTagSearch type="schematic" />
+				<ScrollContainer className="relative flex h-full flex-col">
+					<ListLayout>
+						<InfinitePage
+							paramSchema={ItemPaginationQuery}
+							queryKey={['schematics', 'upload']}
+							queryFn={getSchematicUploads}
+							skeleton={{
+								amount: 20,
+								item: <PreviewSkeleton />,
+							}}
+						>
+							{(data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
+						</InfinitePage>
+					</ListLayout>
+					<GridLayout>
+						<GridPaginationList
+							paramSchema={ItemPaginationQuery}
+							queryKey={['schematics', 'upload']}
+							queryFn={getSchematicUploads}
+							skeleton={{
+								amount: 20,
+								item: <PreviewSkeleton />,
+							}}
+						>
+							{(data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
+						</GridPaginationList>
+					</GridLayout>
+				</ScrollContainer>
+				<div className="flex items-center gap-2 justify-between">
+					<BulkDeleteToggle />
+					<div className="flex items-center gap-2">
+						<PaginationLayoutSwitcher />
+						<GridLayout>
+							<PaginationNavigator numberOfItems={getSchematicUploadCount} queryKey={['schematics', 'total', 'upload']} />
+						</GridLayout>
+					</div>
+				</div>
+			</div>
+		</BulkActionContainer>
+	);
 }

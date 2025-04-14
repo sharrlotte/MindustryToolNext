@@ -1,12 +1,12 @@
 import { AxiosInstance } from 'axios';
 
-import { PaginationQuery } from '@/query/search-query';
 import { UserLoginHistory } from '@/types/response/UserLoginHistory';
+import { PaginationQuery } from '@/types/schema/search-query';
 
 export async function getLoginHistories(axios: AxiosInstance, params: PaginationQuery): Promise<UserLoginHistory[]> {
-  const result = await axios.get('/user-login-histories', {
-    params,
-  });
+	const result = await axios.get('/user-login-histories', {
+		params,
+	});
 
-  return result.data;
+	return result.data;
 }

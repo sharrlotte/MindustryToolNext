@@ -12,99 +12,120 @@ import Tran from '@/components/common/tran';
 
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import useSearchQuery from '@/hooks/use-search-query';
-import { QuerySchema } from '@/query/search-query';
+import { QuerySchema } from '@/types/schema/search-query';
 
 import { QueryKey } from '@tanstack/react-query';
 
 type InfinitePageProps<T, P extends QuerySchema> = {
-  className?: string;
-  queryKey: QueryKey;
-  paramSchema: P;
-  params?: Omit<z.infer<P>, 'page' | 'size'>;
-  loader?: ReactElement<any, string | JSXElementConstructor<any>>;
-  noResult?: ReactNode;
-  end?: ReactNode;
-  skeleton?: {
-    amount: number;
-    item: ReactNode;
-  };
-  reversed?: boolean;
-  enabled?: boolean;
-  initialData?: T[];
-  initialParams?: z.infer<P>;
-  queryFn: (axios: AxiosInstance, params: z.infer<P>) => Promise<T[]>;
-  children: (data: T, index: number) => ReactNode;
+	className?: string;
+	queryKey: QueryKey;
+	paramSchema: P;
+	params?: Omit<z.infer<P>, 'page' | 'size'>;
+	loader?: ReactElement<any, string | JSXElementConstructor<any>>;
+	noResult?: ReactNode;
+	end?: ReactNode;
+	skeleton?: {
+		amount: number;
+		item: ReactNode;
+	};
+	reversed?: boolean;
+	enabled?: boolean;
+	initialData?: T[];
+	initialParams?: z.infer<P>;
+	queryFn: (axios: AxiosInstance, params: z.infer<P>) => Promise<T[]>;
+	children: (data: T, index: number) => ReactNode;
 };
 
-export default function InfinitePage<T, P extends QuerySchema>({ className, queryKey, paramSchema, loader, noResult, end, skeleton, reversed, initialData, initialParams, enabled, params, queryFn, children }: InfinitePageProps<T, P>) {
-  const p = useSearchQuery(paramSchema, params);
+export default function InfinitePage<T, P extends QuerySchema>({
+	className,
+	queryKey,
+	paramSchema,
+	loader,
+	noResult,
+	end,
+	skeleton,
+	reversed,
+	initialData,
+	initialParams,
+	enabled,
+	params,
+	queryFn,
+	children,
+}: InfinitePageProps<T, P>) {
+	const p = useSearchQuery(paramSchema, params);
 
-  const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(queryFn, p, queryKey, JSON.stringify(p) === JSON.stringify(initialParams) ? initialData : undefined, enabled);
+	const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(
+		queryFn,
+		p,
+		queryKey,
+		JSON.stringify(p) === JSON.stringify(initialParams) ? initialData : undefined,
+		enabled,
+	);
 
-  const loadMore = useCallback(
-    (_: number) => {
-      fetchNextPage();
-    },
-    [fetchNextPage],
-  );
+	const loadMore = useCallback(
+		(_: number) => {
+			fetchNextPage();
+		},
+		[fetchNextPage],
+	);
 
-  noResult = useMemo(() => noResult ?? <NoResult className="flex w-full items-center justify-center" />, [noResult]);
+	noResult = useMemo(() => noResult ?? <NoResult className="flex w-full items-center justify-center" />, [noResult]);
 
-  loader = useMemo(() => (!loader && !skeleton ? <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" /> : undefined), [loader, skeleton]);
+	loader = useMemo(() => (!loader && !skeleton ? <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" /> : undefined), [loader, skeleton]);
 
-  const loadingSkeleton = useMemo(
-    () =>
-      skeleton
-        ? Array(skeleton.amount)
-            .fill(1)
-            .map((_, index) => <React.Fragment key={index}>{skeleton.item}</React.Fragment>)
-        : undefined,
-    [skeleton],
-  );
+	const loadingSkeleton = useMemo(
+		() =>
+			skeleton
+				? Array(skeleton.amount)
+						.fill(1)
+						.map((_, index) => <React.Fragment key={index}>{skeleton.item}</React.Fragment>)
+				: undefined,
+		[skeleton],
+	);
 
-  end = useMemo(() => end ?? <EndOfPage />, [end]);
+	end = useMemo(() => end ?? <EndOfPage />, [end]);
 
-  if (isError) {
-    return (
-      <div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
-        <Tran className="font-semibold" text="error" />
-        <p className="text-muted-foreground">{JSON.stringify(error)}</p>
-      </div>
-    );
-  }
+	if (isError) {
+		return (
+			<div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
+				<Tran className="font-semibold" text="error" />
+				<p className="text-muted-foreground">{JSON.stringify(error)}</p>
+			</div>
+		);
+	}
 
-  if (isLoading || !data) {
-    return <div className={className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'}>{loader ? loader : loadingSkeleton}</div>;
-  }
+	if (isLoading || !data) {
+		return <div className={className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'}>{loader ? loader : loadingSkeleton}</div>;
+	}
 
-  if (!data.pages || data.pages[0].length === 0) {
-    return noResult;
-  }
+	if (!data.pages || data.pages[0].length === 0) {
+		return noResult;
+	}
 
-  return (
-    <InfiniteScroll
-      className={className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'}
-      loadMore={loadMore}
-      hasMore={hasNextPage}
-      loader={loader}
-      useWindow={false}
-      threshold={400}
-      getScrollParent={() => {
-        {
-          const containers = document.getElementsByClassName('scroll-container');
+	return (
+		<InfiniteScroll
+			className={className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'}
+			loadMore={loadMore}
+			hasMore={hasNextPage}
+			loader={loader}
+			useWindow={false}
+			threshold={400}
+			getScrollParent={() => {
+				{
+					const containers = document.getElementsByClassName('scroll-container');
 
-          if (containers) {
-            return containers[0] as HTMLElement;
-          }
+					if (containers) {
+						return containers[0] as HTMLElement;
+					}
 
-          return null;
-        }
-      }}
-      isReverse={reversed}
-    >
-      {data.pages.map((page) => page.map((data, index) => children(data, index)))}
-      {isFetching && skeleton && loadingSkeleton}
-      {!hasNextPage && end}
-    </InfiniteScroll>
-  );
+					return null;
+				}
+			}}
+			isReverse={reversed}
+		>
+			{data.pages.map((page) => page.map((data, index) => children(data, index)))}
+			{isFetching && skeleton && loadingSkeleton}
+			{!hasNextPage && end}
+		</InfiniteScroll>
+	);
 }

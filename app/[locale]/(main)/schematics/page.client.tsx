@@ -8,37 +8,37 @@ import SchematicPreviewCard from '@/components/schematic/schematic-preview-card'
 import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
 
 import { getSchematics } from '@/query/schematic';
-import { ItemPaginationQuery } from '@/query/search-query';
+import { ItemPaginationQuery } from '@/types/schema/search-query';
 
 export default function Client() {
-  return (
-    <ScrollContainer className="relative flex h-full flex-col">
-      <ListLayout>
-        <InfinitePage
-          paramSchema={ItemPaginationQuery}
-          queryKey={['schematics']}
-          queryFn={getSchematics}
-          skeleton={{
-            amount: 20,
-            item: <PreviewSkeleton />,
-          }}
-        >
-          {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
-        </InfinitePage>
-      </ListLayout>
-      <GridLayout>
-        <GridPaginationList
-          paramSchema={ItemPaginationQuery}
-          queryKey={['schematics']}
-          queryFn={getSchematics}
-          skeleton={{
-            amount: 20,
-            item: <PreviewSkeleton />,
-          }}
-        >
-          {(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
-        </GridPaginationList>
-      </GridLayout>
-    </ScrollContainer>
-  );
+	return (
+		<ScrollContainer className="relative flex h-full flex-col">
+			<ListLayout>
+				<InfinitePage
+					paramSchema={ItemPaginationQuery}
+					queryKey={['schematics']}
+					queryFn={getSchematics}
+					skeleton={{
+						amount: 20,
+						item: <PreviewSkeleton />,
+					}}
+				>
+					{(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+				</InfinitePage>
+			</ListLayout>
+			<GridLayout>
+				<GridPaginationList
+					paramSchema={ItemPaginationQuery}
+					queryKey={['schematics']}
+					queryFn={getSchematics}
+					skeleton={{
+						amount: 20,
+						item: <PreviewSkeleton />,
+					}}
+				>
+					{(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+				</GridPaginationList>
+			</GridLayout>
+		</ScrollContainer>
+	);
 }

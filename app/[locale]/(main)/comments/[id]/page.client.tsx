@@ -8,27 +8,27 @@ import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 
 import { getCommentsById } from '@/query/comment';
-import { PaginationQuerySchema } from '@/query/search-query';
+import { PaginationQuerySchema } from '@/types/schema/search-query';
 
 export default function PageClient() {
-  const { id: commentId } = useParams();
+	const { id: commentId } = useParams();
 
-  return (
-    <ScrollContainer className="py-2 p-2">
-      <InfinitePage
-        className="flex gap-6 flex-col" //
-        queryKey={[`comments-${commentId}`]}
-        queryFn={(axios, params) => getCommentsById(axios, commentId as string, params)}
-        paramSchema={PaginationQuerySchema}
-        noResult
-        end
-        skeleton={{
-          amount: 10,
-          item: <CommentLoadingCard />,
-        }}
-      >
-        {(comment) => <CommentCard key={comment.id} comment={comment} />}
-      </InfinitePage>
-    </ScrollContainer>
-  );
+	return (
+		<ScrollContainer className="py-2 p-2">
+			<InfinitePage
+				className="flex gap-6 flex-col" //
+				queryKey={[`comments-${commentId}`]}
+				queryFn={(axios, params) => getCommentsById(axios, commentId as string, params)}
+				paramSchema={PaginationQuerySchema}
+				noResult
+				end
+				skeleton={{
+					amount: 10,
+					item: <CommentLoadingCard />,
+				}}
+			>
+				{(comment) => <CommentCard key={comment.id} comment={comment} />}
+			</InfinitePage>
+		</ScrollContainer>
+	);
 }

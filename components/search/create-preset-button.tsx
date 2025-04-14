@@ -14,10 +14,11 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
 import useQueriesData from '@/hooks/use-queries-data';
-import { PresetType, addTagPreset } from '@/lib/utils';
 import TagGroup from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { PresetType } from '@/constant/constant';
+import { addTagPreset } from '@/lib/tag';
 
 type CreatePresetButtonProps = {
   tags: TagGroup[];

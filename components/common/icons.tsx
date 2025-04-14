@@ -82,7 +82,6 @@ import Image from 'next/image';
 import mindustryToolIcon from '@/app/favicon.ico';
 
 import { cn } from '@/lib/utils';
-import googleIcon from '@/public/icons/google.svg';
 
 import { DiscordLogoIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
 
@@ -177,7 +176,6 @@ export const LayoutDashboardIcon = ({ className }: Props) => <LayoutDashboard cl
 export const DownloadIcon = ({ className }: Props) => <ArrowDownToLine className={className ?? 'lucide'} />;
 export const LoginIcon = ({ className }: Props) => <LogIn className={className ?? 'lucide'} />;
 export const TrashIcon = ({ className }: Props) => <Trash2 className={className ?? 'lucide'} />;
-export const GoogleIcon = ({ className }: Props) => <Image className={className ?? 'lucide'} src={googleIcon} alt="google" />;
 export const TakeDownIcon = ({ className }: Props) => <ArrowDownFromLine className={className ?? 'lucide'} />;
 export const CopyIcon = ({ className }: Props) => <Copy id="copy" className={className ?? 'lucide'} />;
 

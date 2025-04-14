@@ -4,47 +4,48 @@ import React, { cache } from 'react';
 import ErrorScreen from '@/components/common/error-screen';
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 
-import { serverApi } from '@/action/action';
+import { serverApi } from '@/action/common';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
-import { formatTitle, generateAlternate, isError } from '@/lib/utils';
+import { isError } from '@/lib/error';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 import { getSchematic } from '@/query/schematic';
 
 type Props = {
-  params: Promise<{ id: string; locale: Locale }>;
+	params: Promise<{ id: string; locale: Locale }>;
 };
 
 const getCachedSchematic = cache((id: string) => serverApi((axios) => getSchematic(axios, { id })));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-  const schematic = await getCachedSchematic(id);
+	const { id } = await params;
+	const schematic = await getCachedSchematic(id);
 
-  if (isError(schematic)) {
-    return { title: 'Error' };
-  }
+	if (isError(schematic)) {
+		return { title: 'Error' };
+	}
 
-  const { name, description } = schematic;
+	const { name, description } = schematic;
 
-  return {
-    title: formatTitle(name),
-    description: [name, description].join('|'),
-    openGraph: {
-      title: name,
-      description: description,
-      images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
-    },
-    alternates: generateAlternate(`/schematics/${id}`),
-  };
+	return {
+		title: formatTitle(name),
+		description: [name, description].join('|'),
+		openGraph: {
+			title: name,
+			description: description,
+			images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
+		},
+		alternates: generateAlternate(`/schematics/${id}`),
+	};
 }
 
 export default async function Page({ params }: Props) {
-  const { id } = await params;
-  const schematic = await getCachedSchematic(id);
+	const { id } = await params;
+	const schematic = await getCachedSchematic(id);
 
-  if (isError(schematic)) {
-    return <ErrorScreen error={schematic} />;
-  }
+	if (isError(schematic)) {
+		return <ErrorScreen error={schematic} />;
+	}
 
-  return <SchematicDetailCard schematic={schematic} />;
+	return <SchematicDetailCard schematic={schematic} />;
 }
