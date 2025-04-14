@@ -1,14 +1,9 @@
 import { type VariantProps, cva } from 'class-variance-authority';
 import * as React from 'react';
 
-
-
 import { cn } from '@/lib/utils';
 
-
-
 import { Slot } from '@radix-ui/react-slot';
-
 
 const buttonVariants = cva(
 	'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 text-nowrap',
@@ -27,7 +22,7 @@ const buttonVariants = cva(
 				link: 'text-primary underline-offset-4 hover:underline',
 				icon: 'p-0',
 				command: 'hover:bg-accent justify-start gap-1 rounded-sm p-0 w-full',
-				'command-destructive': 'justify-start gap-1 hover:bg-accent rounded-sm p-0 text-destructive shadow-sm hover:bg-opacity-90 w-full',
+				'command-destructive': 'justify-start gap-1 hover:bg-accent rounded-sm p-0 text-destructive-foreground bg-destructive shadow-sm hover:bg-opacity-90 w-full',
 			},
 			size: {
 				default: 'h-9 px-4 py-2',
