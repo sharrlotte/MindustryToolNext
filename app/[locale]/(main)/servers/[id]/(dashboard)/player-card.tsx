@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
-import Tran from '@/components/common/tran';
 import { BanButton } from '@/components/server/ban-button';
 import { KickButton } from '@/components/server/kick-button';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
@@ -80,9 +79,6 @@ async function PlayerCard({ serverId, player: { locale, userId, name, team, ip, 
 					</ContextMenuItem>
 					<ContextMenuItem variant="destructive">
 						<KickButton id={serverId} username={name} />
-					</ContextMenuItem>
-					<ContextMenuItem variant="destructive">
-						<Tran text="player.ban" />
 					</ContextMenuItem>
 				</Suspense>
 			</ContextMenuContent>
