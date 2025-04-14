@@ -1,11 +1,10 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
 import React, { ReactNode, createContext, useContext, useState } from 'react';
 
 interface NavLinkContextType {
-	hovered: string;
-	setHovered: (value: string) => void;
+	hovered: string | null;
+	setHovered: (value: string | null) => void;
 }
 
 const NavLinkContext = createContext<NavLinkContextType | null>(null);
@@ -15,13 +14,9 @@ interface NavLinkProviderProps {
 }
 
 export const NavLinkProvider: React.FC<NavLinkProviderProps> = ({ children }) => {
-	const [hovered, setHovered] = useState<string>('Yes this is empty');
+	const [hovered, setHovered] = useState<string | null>(null);
 
-	return (
-		<AnimatePresence>
-			<NavLinkContext.Provider value={{ hovered, setHovered }}>{children}</NavLinkContext.Provider>;
-		</AnimatePresence>
-	);
+	return <NavLinkContext.Provider value={{ hovered, setHovered }}>{children}</NavLinkContext.Provider>;
 };
 
 export const useNavLink = (): NavLinkContextType => {

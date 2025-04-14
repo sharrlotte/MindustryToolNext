@@ -1,15 +1,12 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
-import dynamic from 'next/dynamic';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
-
-const MotionDiv = dynamic(() => import('framer-motion').then((result) => result.motion.div));
 
 type ContextType = {
 	value: string;
@@ -92,7 +89,7 @@ export function ServerTabsTrigger({ className, value, animate = true, children }
 			onClick={() => setValue(value)}
 			onMouseEnter={() => setHovered(value)}
 		>
-			{animate && isHovered && <MotionDiv layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-secondary" />}
+			{animate && isHovered && <motion.div layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-secondary" />}
 			<div className="relative">
 				<div
 					className={cn('relative z-10 h-9 bg-transparent p-2 text-foreground/70 hover:text-foreground', {
@@ -102,7 +99,7 @@ export function ServerTabsTrigger({ className, value, animate = true, children }
 					{children}
 				</div>
 			</div>
-			{animate && isSelected && <MotionDiv layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
+			{animate && isSelected && <motion.div layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
 		</Button>
 	);
 }
