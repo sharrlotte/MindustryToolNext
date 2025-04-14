@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 
 import { useMutation } from '@tanstack/react-query';
 
-const copyButtonVariants = cva('flex p-2 bg-transparent group/copy-button rounded-md', {
+const copyButtonVariants = cva('flex p-2 bg-transparent group/copy-button rounded-md items-center justify-center', {
 	variants: {
 		variant: {
 			default: 'bg-secondary border border-border hover:bg-brand hover:border-transparent',
