@@ -1,13 +1,15 @@
 'use client';
+
 import { BanIcon } from 'lucide-react';
 
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { DialogTitle } from '@/components/ui/dialog';
 
+import { revalidate } from '@/action/action';
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
-import { DialogTitle } from '@/components/ui/dialog';
 
 type BanButtonProps = {
 	id: string;
@@ -35,6 +37,12 @@ export function BanButton({ id, ip, uuid, username }: BanButtonProps) {
 		if (username) {
 			sendMessage(`/ban name ${username}`);
 		}
+
+		setTimeout(() => {
+			revalidate({
+				path: '/[locale]/(main)/servers/[id]/(dashboard)',
+			});
+		}, 1000);
 	}
 
 	if (state !== 'connected') {

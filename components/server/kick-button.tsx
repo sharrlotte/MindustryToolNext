@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 
 import { useSocket } from '@/context/socket-context';
 import useMessage from '@/hooks/use-message';
+import { revalidate } from '@/action/action';
 
 type BanButtonProps = {
 	id: string;
@@ -23,6 +24,12 @@ export function KickButton({ id, username }: BanButtonProps) {
 
 	function handleKick() {
 		sendMessage(`/kick ${username}`);
+
+		setTimeout(() => {
+			revalidate({
+				path: '/[locale]/(main)/servers/[id]/(dashboard)',
+			});
+		}, 1000);
 	}
 
 	if (state !== 'connected') {
