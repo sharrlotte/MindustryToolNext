@@ -22,7 +22,7 @@ import { TranslationPaginationQuery } from '@/types/schema/search-query';
 
 import { useMutation } from '@tanstack/react-query';
 
-const DeleteTranslationDialog = dynamic(() => import('@/app/[locale]/(main)/translation/delete-translation-dialog'));
+const DeleteTranslationDialog = dynamic(() => import('@/app/[locale]/(main)/translation/delete-translation.dialog'));
 
 type CompareTableProps = {
 	language: Locale;
