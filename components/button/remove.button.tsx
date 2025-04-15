@@ -44,7 +44,7 @@ export default function RemoveButton({ className, variant, isLoading, descriptio
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger className={cn(buttonVariants({ className, variant }))} disabled={isLoading}>
-				<TrashIcon />
+				<TrashIcon className="size-5" />
 				{variant === 'command' && <Tran text="remove" />}
 			</AlertDialogTrigger>
 			<AlertDialogContent>

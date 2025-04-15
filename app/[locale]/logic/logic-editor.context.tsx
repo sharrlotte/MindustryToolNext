@@ -1,6 +1,7 @@
 'use client';
 
 import { Identifier } from 'dnd-core';
+import dynamic from 'next/dynamic';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useInterval, useLocalStorage } from 'usehooks-ts';
@@ -8,7 +9,7 @@ import { useInterval, useLocalStorage } from 'usehooks-ts';
 import HelperLines from '@/app/[locale]/logic/helper-lines';
 import InstructionNodeComponent, { InstructionNode } from '@/app/[locale]/logic/instruction.node';
 import LiveCodePanel from '@/app/[locale]/logic/live-code-panel';
-import { InferStateType, InputItem, ItemsType, instructionNodes } from '@/app/[locale]/logic/node';
+import { InferStateType, InputItem, ItemsType, initialNodes, instructionNodes } from '@/app/[locale]/logic/node';
 import SideBar from '@/app/[locale]/logic/sidebar';
 import ToolBar from '@/app/[locale]/logic/toolbar';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
@@ -21,7 +22,9 @@ import { toast } from '@/components/ui/sonner';
 import useLogicFile from '@/hooks/use-logic-file';
 import { uuid } from '@/lib/utils';
 
-import { Edge, EdgeChange, MiniMap, NodeChange, Position, ProOptions, ReactFlow, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+import { Edge, EdgeChange, MiniMap, NodeChange, ProOptions, ReactFlow, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+
+const NoFileOpenScreen = dynamic(() => import('@/app/[locale]/logic/no-file-open-screen'));
 
 export const nodeTypes = {
 	instruction: InstructionNodeComponent,
@@ -31,19 +34,6 @@ export type NodeType = keyof typeof nodeTypes;
 export type Node = InstructionNode;
 
 const LogicEditorContext = createContext<LogicEditorContextType | null>(null);
-
-const initialNodes: Node[] = [
-	{
-		id: '1',
-		data: {
-			type: 'start',
-			node: instructionNodes.start,
-			state: instructionNodes.start.getDefaultState(),
-		},
-		type: 'instruction',
-		position: { x: 450, y: 500 },
-	},
-];
 
 type LogicEditorContextType = {
 	isDeleteOnClick: boolean;
@@ -106,7 +96,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const { setViewport } = useReactFlow();
 	const ref = useRef<HTMLDivElement>(null);
 
-	const { generateRandomName, saved, readLogicFromLocalStorageByName, writeLogicToLocalStorage } = useLogicFile();
+	const { generateRandomName, saved, readLogicFromLocalStorageByName, writeLogicToLocalStorage, addNewFile } = useLogicFile();
 
 	const variables = useMemo(
 		() =>
@@ -141,7 +131,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			const data = readLogicFromLocalStorageByName(name);
 
 			if (!data) {
-				toast.error(<Tran text="logic.file-not-found" />);
+				toast.error(<Tran text="logic.file-not-found" />, { description: name });
 				return false;
 			}
 
@@ -379,6 +369,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			if (!newName) {
 				toast.error(<Tran text="logic.could-not-generate-random-name" />);
 			} else {
+				addNewFile(newName);
 				setName(newName);
 			}
 		}
@@ -389,13 +380,11 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			const result = load(saved.currentFile);
 
 			if (!result) {
-				toast.error(<Tran text="logic.load-file-fail" args={{ name: saved.currentFile }} />);
+				toast.error(<Tran text="logic.load-file-fail" defaultValue="Fail to load file" />, { description: saved.currentFile });
 				generateNewFile();
 			}
-		} else {
-			generateNewFile();
 		}
-	}, [name, saved.currentFile, generateRandomName, load]);
+	}, [name, saved.currentFile, generateRandomName, load, addNewFile]);
 
 	const [{ handlerId }, drop] = useDrop<any, void, { handlerId: Identifier | null }>({
 		accept: 'instruction',
@@ -437,33 +426,37 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			<div className="grid grid-rows-[auto_1fr]">
 				<ToolBar />
 				<CatchError>
-					<ReactFlow
-						ref={ref}
-						nodes={nodes}
-						edges={edges}
-						onInit={setRfInstance}
-						onNodesChange={onNodeChange}
-						onEdgesChange={onEdgeChange}
-						onConnect={onEdgeConnect}
-						onNodesDelete={onNodesDelete}
-						onEdgesDelete={onEdgesDelete}
-						nodeTypes={nodeTypes}
-						onNodeClick={onNodeClick}
-						onEdgeClick={onEdgeClick}
-						onNodeContextMenu={onNodeContextMenu}
-						onEdgeContextMenu={onEdgeContextMenu}
-						onNodeDragStop={onNodeDragStop}
-						proOptions={proOptions}
-						fitView
-						data-handler-id={handlerId}
-					>
-						{children}
-						<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
-						<Hydrated>
-							{showLiveCode && <LiveCodePanel />}
-							{showMiniMap && <MiniMap />}
-						</Hydrated>
-					</ReactFlow>
+					{name === '' ? (
+						<NoFileOpenScreen />
+					) : (
+						<ReactFlow
+							ref={ref}
+							nodes={nodes}
+							edges={edges}
+							onInit={setRfInstance}
+							onNodesChange={onNodeChange}
+							onEdgesChange={onEdgeChange}
+							onConnect={onEdgeConnect}
+							onNodesDelete={onNodesDelete}
+							onEdgesDelete={onEdgesDelete}
+							nodeTypes={nodeTypes}
+							onNodeClick={onNodeClick}
+							onEdgeClick={onEdgeClick}
+							onNodeContextMenu={onNodeContextMenu}
+							onEdgeContextMenu={onEdgeContextMenu}
+							onNodeDragStop={onNodeDragStop}
+							proOptions={proOptions}
+							fitView
+							data-handler-id={handlerId}
+						>
+							{children}
+							<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
+							<Hydrated>
+								{showLiveCode && <LiveCodePanel />}
+								{showMiniMap && <MiniMap />}
+							</Hydrated>
+						</ReactFlow>
+					)}
 				</CatchError>
 			</div>
 		</LogicEditorContext.Provider>

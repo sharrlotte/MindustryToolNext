@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
+import { initialNodes } from '@/app/[locale]/logic/node';
+
 import { LOGIC_PERSISTENT_KEY } from '@/constant/constant';
 import { LogicSave, LogicSaveData } from '@/types/index';
 
@@ -14,6 +16,36 @@ export default function useLogicFile() {
 			setSaved((prev) => ({ ...prev, currentFile: name }));
 		},
 		[setSaved],
+	);
+
+	const addNewFile = useCallback(
+		(name: string) => {
+			if (saved.files.find((file) => name === file.name)) {
+				return false;
+			}
+
+			setSaved((prev) => ({
+				...prev,
+				currentFile: name,
+				files: [
+					...prev.files,
+					{
+						name,
+						data: {
+							nodes: initialNodes,
+							edges: [],
+							viewport: {
+								x: 0,
+								y: 0,
+								zoom: 1,
+							},
+						},
+					},
+				],
+			}));
+			return true;
+		},
+		[saved, setSaved],
 	);
 
 	const readLogicFromLocalStorageByName = useCallback(
@@ -82,6 +114,7 @@ export default function useLogicFile() {
 
 	return {
 		saved,
+		addNewFile,
 		setCurrentLogicFile,
 		readLogicFromLocalStorageByName,
 		writeLogicToLocalStorage,

@@ -13,7 +13,10 @@
 // Autocomplete
 import { InstructionNode } from '@/app/[locale]/logic/instruction.node';
 
+
+
 import { groupBy } from '@/lib/utils';
+
 
 export type ItemsType = Readonly<NodeItem[]>;
 export type OutputsType = Readonly<Output[]>;
@@ -123,6 +126,7 @@ export class NodeData<T extends ItemsType = ItemsType, O extends OutputsType = O
 		return state as any;
 	}
 }
+
 
 export const instructionNodesGraph: Record<string, NodeData | { category: string; label: string; children: Record<string, NodeData> }> = {
 	start: new NodeData({
@@ -690,3 +694,16 @@ export const instructionNodes: Record<string, NodeData> = Object.entries(instruc
 );
 
 export const nodeOptions = groupBy(Object.entries(instructionNodesGraph), (p) => p[1].category);
+
+export const initialNodes: InstructionNode[] = [
+	{
+		id: '1',
+		data: {
+			type: 'start',
+			node: instructionNodes.start,
+			state: instructionNodes.start.getDefaultState(),
+		},
+		type: 'instruction',
+		position: { x: 450, y: 500 },
+	},
+];
