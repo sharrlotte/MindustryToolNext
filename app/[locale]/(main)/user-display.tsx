@@ -2,8 +2,8 @@
 
 import { UserActions } from '@/app/[locale]/(main)/user-sheet';
 
-import LoginButton from '@/components/button/login-button';
-import LogoutButton from '@/components/button/logout-button';
+import LoginButton from '@/components/button/login.button';
+import LogoutButton from '@/components/button/logout.button';
 import { LogoutIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -11,7 +11,7 @@ import Divider from '@/components/ui/divider';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
 
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session.context';
 import { isError } from '@/lib/error';
 
 export function UserDisplay() {

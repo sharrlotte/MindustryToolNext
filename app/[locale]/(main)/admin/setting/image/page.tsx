@@ -6,8 +6,8 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import CopyButton from '@/components/button/copy-button';
-import RemoveButton from '@/components/button/remove-button';
+import CopyButton from '@/components/button/copy.button';
+import RemoveButton from '@/components/button/remove.button';
 import { Hidden } from '@/components/common/hidden';
 import { FileIcon, FolderIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';

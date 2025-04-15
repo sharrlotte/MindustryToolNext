@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 
 import useQueryState from '@/hooks/use-query-state';
 
-const AddFileDialog = dynamic(() => import('@/app/[locale]/(main)/(shar)/files/add-file-dialog'));
+const AddFileDialog = dynamic(() => import('@/app/[locale]/(main)/(shar)/files/add-file.dialog'));
 
 const defaultState = {
   path: '/',

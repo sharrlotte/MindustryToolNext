@@ -2,7 +2,7 @@
 
 import React, { ReactNode, useCallback } from 'react';
 
-import { useNavBar } from '@/context/navbar-context';
+import { useNavBar } from '@/context/navbar.context';
 import { cn } from '@/lib/utils';
 
 type Props = {

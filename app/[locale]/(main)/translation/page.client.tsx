@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { Fragment, useCallback, useState } from 'react';
 
-import SearchTable from '@/app/[locale]/(main)/translation/search-table';
+import SearchTable from '@/app/[locale]/(main)/translation/search.table';
 
 import ComboBox from '@/components/common/combo-box';
 import Tran from '@/components/common/tran';
@@ -16,8 +16,8 @@ import { Locale, locales } from '@/i18n/config';
 import { clearTranslationCache } from '@/lib/utils';
 
 const DiffTable = dynamic(() => import('@/app/[locale]/(main)/translation/diff-table'));
-const CompareTable = dynamic(() => import('@/app/[locale]/(main)/translation/compare-table'));
-const AddNewKeyDialog = dynamic(() => import('@/app/[locale]/(main)/translation/add-key-dialog'));
+const CompareTable = dynamic(() => import('@/app/[locale]/(main)/translation/compare.table'));
+const AddNewKeyDialog = dynamic(() => import('@/app/[locale]/(main)/translation/add-key.dialog'));
 
 const translateModes = ['search', 'diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];

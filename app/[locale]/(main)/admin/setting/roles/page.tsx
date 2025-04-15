@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { RoleTable } from '@/app/[locale]/(main)/admin/setting/roles/role-table';
+import { RoleTable } from '@/app/[locale]/(main)/admin/setting/roles/role.table';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';

@@ -5,12 +5,12 @@ import { CrownIcon } from '@/components/common/icons';
 import { GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
-import UserCardSkeleton from '@/components/skeleton/user-card-skeleton';
+import UserCardSkeleton from '@/components/skeleton/user-card.skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import UserCard from '@/components/user/user-card';
 
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import ProtectedElement from '@/layout/protected-element';

@@ -4,7 +4,7 @@ import { PathElement, PathElementProps } from '@/app/[locale]/(main)/medium-navi
 
 import ErrorScreen from '@/components/common/error-screen';
 
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
 

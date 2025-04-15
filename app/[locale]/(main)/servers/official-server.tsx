@@ -2,7 +2,7 @@
 
 import InfinitePage from '@/components/common/infinite-page';
 import ServerCard from '@/components/server/server-card';
-import ServerCardSkeleton from '@/components/server/server-card-skeleton';
+import ServerCardSkeleton from '@/components/server/server-card.skeleton';
 
 import { getServers } from '@/query/server';
 import { PaginationQuerySchema } from '@/types/schema/search-query';

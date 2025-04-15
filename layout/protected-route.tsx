@@ -6,7 +6,7 @@ import ErrorScreen from '@/components/common/error-screen';
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session.context';
 import { isError } from '@/lib/error';
 import { Filter, hasAccess } from '@/lib/utils';
 

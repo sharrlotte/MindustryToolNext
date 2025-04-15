@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { LogicEditorProvider } from '@/app/[locale]/logic/logic-editor-context';
+import { LogicEditorProvider } from '@/app/[locale]/logic/logic-editor.context';
 
 import Tran from '@/components/common/tran';
 

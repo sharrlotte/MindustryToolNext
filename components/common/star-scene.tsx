@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { MovingStars } from '@/app/universe-scene';
+import { MovingStars } from '@/components/common/universe-scene';
 
 import { Text } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';

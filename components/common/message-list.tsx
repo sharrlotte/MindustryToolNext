@@ -6,7 +6,7 @@ import NoResult from '@/components/common/no-result';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 
-import { useSocket } from '@/context/socket-context';
+import { useSocket } from '@/context/socket.context';
 import useMessageQuery from '@/hooks/use-message-query';
 import useNotification from '@/hooks/use-notification';
 import { cn, isReachedEnd, mergeNestArray } from '@/lib/utils';

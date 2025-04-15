@@ -6,7 +6,7 @@ import React, { ReactNode } from 'react';
 
 import InternalLink from '@/components/common/internal-link';
 
-import { useNavLink } from '@/context/nav-link-context';
+import { useNavLink } from '@/context/nav-link.context';
 import { cn } from '@/lib/utils';
 
 type Props = {

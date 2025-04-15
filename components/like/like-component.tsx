@@ -6,7 +6,7 @@ import { LikeData } from '@/components/like/like-and-dislike';
 import { toast } from '@/components/ui/sonner';
 
 import { LikeAction } from '@/constant/constant';
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import { postLike } from '@/query/like';
 import { Like } from '@/types/response/Like';

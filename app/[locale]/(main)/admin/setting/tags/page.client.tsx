@@ -7,10 +7,10 @@ import React, { useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import CreateGroupInfoDialog from '@/app/[locale]/(main)/admin/setting/tags/create-group-info-dialog';
-import CreateTagCategoryDialog from '@/app/[locale]/(main)/admin/setting/tags/create-tag-category-dialog';
-import CreateTagDialog from '@/app/[locale]/(main)/admin/setting/tags/create-tag-dialog';
-import DeleteGroupInfoDialog from '@/app/[locale]/(main)/admin/setting/tags/delete-group-info-dialog';
+import CreateGroupInfoDialog from '@/app/[locale]/(main)/admin/setting/tags/create-group-info.dialog';
+import CreateTagCategoryDialog from '@/app/[locale]/(main)/admin/setting/tags/create-tag-category.dialog';
+import CreateTagDialog from '@/app/[locale]/(main)/admin/setting/tags/create-tag.dialog';
+import DeleteGroupInfoDialog from '@/app/[locale]/(main)/admin/setting/tags/delete-group-info.dialog';
 
 import RouterSpinner from '@/components/common/router-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -29,11 +29,11 @@ import { TagDetailDto, TagGroupCategoryDto, TagGroupDto } from '@/types/response
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-const DeleteTagDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/tags/delete-tag-dialog'));
-const UpdateTagDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/tags/update-tag-dialog'));
+const DeleteTagDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/tags/delete-tag.dialog'));
+const UpdateTagDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/tags/update-tag.dialog'));
 
-const DeleteTagCategoryDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/tags/delete-tag-category-dialog'));
-const UpdateTagCategoryDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/tags/update-tag-category-dialog'));
+const DeleteTagCategoryDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/tags/delete-tag-category.dialog'));
+const UpdateTagCategoryDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/tags/update-tag-category.dialog'));
 
 export default function PageClient() {
   const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);

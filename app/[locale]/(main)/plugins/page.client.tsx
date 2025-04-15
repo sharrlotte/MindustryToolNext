@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import AddPluginDialog from '@/app/[locale]/(main)/plugins/add-plugin-dialog';
+import AddPluginDialog from '@/app/[locale]/(main)/plugins/add-plugin.dialog';
 
 import InfinitePage from '@/components/common/infinite-page';
 import { PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import PluginCard from '@/components/plugin/plugin-card';
-import PluginCardSkeleton from '@/components/plugin/plugin-card-skeleton';
+import PluginCardSkeleton from '@/components/plugin/plugin-card.skeleton';
 import NameTagSearch from '@/components/search/name-tag-search';
 
 import { getPluginCount, getPlugins } from '@/query/plugin';

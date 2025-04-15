@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
-import CreateModDialog from '@/app/[locale]/(main)/admin/setting/mods/create-mod-dialog';
+import CreateModDialog from '@/app/[locale]/(main)/admin/setting/mods/create-mod.dialog';
 
 import LoadingSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
@@ -15,8 +15,8 @@ import { Mod } from '@/types/response/Mod';
 
 import { useQuery } from '@tanstack/react-query';
 
-const DeleteModDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/mods/delete-mod-dialog'));
-const UpdateModDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/mods/update-mod-dialog'));
+const DeleteModDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/mods/delete-mod.dialog'));
+const UpdateModDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/mods/update-mod.dialog'));
 
 export default function Page() {
   return (

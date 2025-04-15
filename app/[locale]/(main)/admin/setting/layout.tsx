@@ -9,8 +9,8 @@ import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
 import Tran from '@/components/common/tran';
 
-import { NavLinkProvider } from '@/context/nav-link-context';
-import { useSession } from '@/context/session-context';
+import { NavLinkProvider } from '@/context/nav-link.context';
+import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
 

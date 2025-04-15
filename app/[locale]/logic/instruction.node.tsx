@@ -1,4 +1,4 @@
-import { instructionNodes, useLogicEditor } from '@/app/[locale]/logic/logic-editor-context';
+import { instructionNodes, useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
 import { InferStateType, ItemsType, NodeData, NodeItem } from '@/app/[locale]/logic/node';
 import { OutputHandle } from '@/app/[locale]/logic/output-handle';
 
