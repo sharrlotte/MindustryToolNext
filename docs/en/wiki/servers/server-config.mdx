@@ -1,0 +1,90 @@
+---
+position: 4
+---
+
+import Table from '@/components/mdx/table';
+
+# Dedicated Server Configuration
+
+Settings can be defined in a `config.properties` file or passed via startup arguments.
+<br />
+---
+<br />
+## Server Identity
+
+<Table
+  header={['Property', 'Description']}
+  data={[
+    ['name', 'Server name shown in the list'],
+    ['desc', 'Short description (max 100 characters)'],
+    ['port', 'Listening port (default: 6567)'],
+  ]}
+/>
+<br />
+---
+<br />
+## Automation & Autosave
+
+<Table
+  header={['Property', 'Description']}
+  data={[
+    ['autoUpdate', 'Automatically update when new version is available'],
+    ['startCommands', 'Comma-separated startup commands'],
+    ['autosave', 'Enable autosave'],
+    ['autosaveAmount', 'Max number of autosaves'],
+    ['autosaveSpacing', 'Interval between autosaves (in seconds)'],
+    ['autoPause', 'Pause when no players are connected'],
+  ]}
+/>
+<br />
+---
+<br />
+## Moderation & Anti-Spam
+
+<Table
+  header={['Property', 'Description']}
+  data={[
+    ['enableVotekick', 'Allow votekick'],
+    ['whitelist', 'Only allow whitelisted players'],
+    ['messageRateLimit', 'Time (s) between allowed messages'],
+    ['messageSpamKick', 'Kick threshold for spam messages'],
+    ['packetSpamLimit', 'Max packets per 3s before action'],
+    ['chatSpamLimit', 'Max chat packets in 2s'],
+    ['interactRateWindow', 'Time window to track player actions'],
+    ['interactRateLimit', 'Action count threshold'],
+    ['interactRateKick', 'Kick after reaching action limit'],
+    ['subnet-ban add/remove [address]', 'Ban or unban subnet ranges'],
+  ]}
+/>
+<br />
+---
+<br />
+## Debug & Logging
+
+<Table
+  header={['Property', 'Description']}
+  data={[
+    ['logging', 'Enable log writing to file'],
+    ['logCommands', 'Log commands issued by players'],
+    ['debug', 'Enable debug output'],
+    ['snapshotInterval', 'Sync frequency in milliseconds'],
+    ['maxLogLength', 'Max log file size in bytes'],
+  ]}
+/>
+<br />
+---
+<br />
+## Network
+
+<Table
+  header={['Property', 'Description']}
+  data={[
+    ['showConnectMessages', 'Display join/leave messages'],
+    ['strict', 'Disallow duplicate UUIDs and fix desyncs'],
+    ['allowCustomClients', 'Allow modified clients'],
+    ['socketInput', 'Enable external socket control'],
+    ['socketInputPort', 'Port for socket control'],
+    ['socketInputAddress', 'Bind address for socket'],
+    ['motd', 'Message of the day shown on connect'],
+  ]}
+/>
