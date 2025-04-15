@@ -1,5 +1,5 @@
-import { instructionNodes, useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
-import { InferStateType, ItemsType, NodeData, NodeItem } from '@/app/[locale]/logic/node';
+import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
+import { InferStateType, instructionNodes, ItemsType, NodeData, NodeItem } from '@/app/[locale]/logic/node';
 import { OutputHandle } from '@/app/[locale]/logic/output-handle';
 
 import ComboBox from '@/components/common/combo-box';
