@@ -13,10 +13,7 @@
 // Autocomplete
 import { InstructionNode } from '@/app/[locale]/logic/instruction.node';
 
-
-
 import { groupBy } from '@/lib/utils';
-
 
 export type ItemsType = Readonly<NodeItem[]>;
 export type OutputsType = Readonly<Output[]>;
@@ -127,8 +124,9 @@ export class NodeData<T extends ItemsType = ItemsType, O extends OutputsType = O
 	}
 }
 
+type InstructionCategory = 'Special' | 'Input/Output' | 'Flow Control' | 'Block Control' | 'Unit Control' | 'Operations';
 
-export const instructionNodesGraph: Record<string, NodeData | { category: string; label: string; children: Record<string, NodeData> }> = {
+export const instructionNodesGraph: Record<string, NodeData | { category: InstructionCategory; label: string; children: Record<string, NodeData> }> = {
 	start: new NodeData({
 		name: 'start',
 		label: 'Start',
@@ -148,42 +146,6 @@ export const instructionNodesGraph: Record<string, NodeData | { category: string
 		inputs: 1,
 		outputs: [],
 		compile: () => '',
-	}),
-	if: new NodeData({
-		name: 'if',
-		label: 'Jump',
-		category: 'Flow Control',
-		color: '#6BB2B2',
-		items: [
-			{
-				type: 'label',
-				value: 'If',
-			},
-			{
-				type: 'input',
-				name: 'a',
-				value: 'a',
-				accept: ['number', 'string', 'boolean', 'variable'],
-			},
-			{
-				type: 'option',
-				name: 'condition',
-				options: ['>', '>=', '<', '<=', '==', '===', 'not', 'always'],
-			},
-			{
-				type: 'input',
-				name: 'b',
-				value: 'b',
-				accept: ['number', 'string', 'boolean', 'variable'],
-			},
-		] as const,
-		inputs: 1,
-		outputs: [{ label: 'False' }, { label: 'True' }] as const,
-		compile: ({ state: { condition, a, b }, next }) => `jump ${next.True?.data.index ?? 0} ${condition} ${a} ${b}`,
-		condition: {
-			a: (state) => state.condition !== 'always',
-			b: (state) => state.condition !== 'always',
-		},
 	}),
 	read: new NodeData({
 		name: 'read',
@@ -676,6 +638,91 @@ export const instructionNodesGraph: Record<string, NodeData | { category: string
 			}),
 		},
 	},
+	if: new NodeData({
+		name: 'if',
+		label: 'Jump',
+		category: 'Flow Control',
+		color: '#6BB2B2',
+		items: [
+			{
+				type: 'label',
+				value: 'If',
+			},
+			{
+				type: 'input',
+				name: 'a',
+				value: 'a',
+				accept: ['number', 'string', 'boolean', 'variable'],
+			},
+			{
+				type: 'option',
+				name: 'condition',
+				options: ['>', '>=', '<', '<=', '==', '===', 'not', 'always'],
+			},
+			{
+				type: 'input',
+				name: 'b',
+				value: 'b',
+				accept: ['number', 'string', 'boolean', 'variable'],
+			},
+		] as const,
+		inputs: 1,
+		outputs: [{ label: 'False' }, { label: 'True' }] as const,
+		compile: ({ state: { condition, a, b }, next }) => `jump ${next.True?.data.index ?? 0} ${condition} ${a} ${b}`,
+		condition: {
+			a: (state) => state.condition !== 'always',
+			b: (state) => state.condition !== 'always',
+		},
+	}),
+	wait: new NodeData({
+		name: 'wait',
+		label: 'Wait',
+		category: 'Flow Control',
+		color: '#6BB2B2',
+		items: [
+			{
+				type: 'input',
+				name: 'time',
+				value: '0.5',
+				accept: ['number', 'variable'],
+			},
+			{
+				type: 'label',
+				value: 'sec',
+			},
+		] as const,
+		inputs: 1,
+		compile: ({ state: { time } }) => `wait ${time}`,
+	}),
+	stop: new NodeData({
+		name: 'stop',
+		label: 'Stop',
+		category: 'Flow Control',
+		color: '#6BB2B2',
+		items: [] as const,
+		inputs: 1,
+		compile: () => `stop`,
+	}),
+	drawFlush: new NodeData({
+		name: 'drawFlush',
+		label: 'Draw Flush',
+		category: 'Block Control',
+		color: '#D4816B',
+		items: [
+			{
+				type: 'label',
+				value: 'to',
+			},
+			{
+				type: 'input',
+				name: 'display',
+				value: 'display1',
+				accept: ['string'],
+			},
+		] as const,
+		inputs: 1,
+		compile: ({ state: { display } }) => `drawflush ${display}`,
+	}),
 } as const;
 
 export const instructionNodes: Record<string, NodeData> = Object.entries(instructionNodesGraph).reduce(
