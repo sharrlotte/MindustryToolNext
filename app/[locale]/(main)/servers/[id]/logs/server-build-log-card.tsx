@@ -18,32 +18,39 @@ type ServerBuildLogCardProps = {
 	serverId: string;
 };
 
-export default function ServerBuildLogCard({ serverId, data: { createdAt, player, building }, index }: ServerBuildLogCardProps) {
+export default function ServerBuildLogCard({ serverId, data: { message, createdAt, player, building }, index }: ServerBuildLogCardProps) {
 	const [showUuid, setShowUuid] = useState(false);
 
 	const { name, uuid } = player;
 
 	return (
-		<div className={cn('p-4 rounded-lg transition-colors', index % 2 === 0 ? 'bg-card/50' : 'bg-card')}>
-			<div className="flex flex-col md:flex-row gap-4">
-				<div className="flex-1 space-y-2">
-					<div className="flex items-center gap-2">
-						<ColorText text={name} className="text-lg font-medium" />
-						<RelativeTime date={new Date(createdAt)} className="text-sm text-muted-foreground" />
-					</div>
+		<div className={cn('p-4 grid-cols-1 grid md:grid-cols-5 gap-2 rounded-lg transition-colors', index % 2 === 0 ? 'bg-card/50' : 'bg-card')}>
+			<div className="flex-1 space-y-2">
+				<span>{message}</span>
 
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-						<div className="flex items-center gap-2 group">
-							<span className="text-muted-foreground">UUID:</span>
-							<span className="font-mono">{showUuid ? uuid : '*'.repeat(27)}</span>
-							<button className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setShowUuid((prev) => !prev)}>
-								{showUuid ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
-							</button>
+				<div className="grid gap-1">
+					<div className="flex items-center gap-2 group">
+						<div className="flex gap-1">
+							<ColorText text={player.name} />
+							<span>{player.team.name}</span>
 						</div>
-						<div className="flex items-center gap-2 group">
-							<span className="text-muted-foreground">IP:</span>
-						</div>
+						<span className="text-muted-foreground">UUID:</span>
+						<span className="font-mono">{showUuid ? uuid : '*'.repeat(27)}</span>
+						<button className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setShowUuid((prev) => !prev)}>
+							{showUuid ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
+						</button>
 					</div>
+				</div>
+
+				<div className="grid gap-1">
+					<div>{building.name}</div>
+					<span>x: {building.x}</span>
+					<span>y: {building.y}</span>
+					<span>y: {building.lastAccess}</span>
+				</div>
+
+				<div className="flex items-center gap-2">
+					<RelativeTime date={new Date(createdAt)} className="text-sm text-muted-foreground" />
 				</div>
 
 				<div className="flex items-start">

@@ -39,7 +39,7 @@ export default function PageClient({ id }: Props) {
 				</div>
 				<ScrollContainer>
 					<ServerTabsContent className="space-y-2" value="login-log">
-						<div className="md:grid hidden md:grid-cols-4 gap-2 bg-card p-4">
+						<div className="md:grid hidden md:grid-cols-5 gap-2 bg-card p-4">
 							<Tran text="username" />
 							<Tran text="uuid" />
 							<Tran text="ip" />
@@ -57,10 +57,10 @@ export default function PageClient({ id }: Props) {
 						</GridLayout>
 					</ServerTabsContent>
 					<ServerTabsContent className="space-y-2" value="building-destroy-log">
-						<div className="md:grid hidden md:grid-cols-4 gap-2 bg-card p-4">
-							<Tran text="username" />
-							<Tran text="uuid" />
-							<Tran text="ip" />
+						<div className="md:grid hidden md:grid-cols-5 gap-2 bg-card p-4">
+							<Tran text="message" />
+							<Tran text="player" />
+							<Tran text="building" />
 							<Tran text="time" />
 						</div>
 						<ListLayout>
@@ -89,10 +89,14 @@ export default function PageClient({ id }: Props) {
 					<PaginationLayoutSwitcher />
 					<GridLayout>
 						<ServerTabsContent className="space-y-2" value="login-log">
-							<PaginationNavigator queryKey={['server', id, 'login']} numberOfItems={(axios) => getServerLoginCount(axios, id)} />
-						</ServerTabsContent>z
+							<div className="flex">
+								<PaginationNavigator queryKey={['server', id, 'login']} numberOfItems={(axios) => getServerLoginCount(axios, id)} />
+							</div>
+						</ServerTabsContent>
 						<ServerTabsContent className="space-y-2" value="building-destroy-log">
-							<PaginationNavigator queryKey={['server', id, 'building-destroy-log']} numberOfItems={(axios) => getServerBuildLogCount(axios, id)} />
+							<div className="flex">
+								<PaginationNavigator queryKey={['server', id, 'building-destroy-log']} numberOfItems={(axios) => getServerBuildLogCount(axios, id)} />
+							</div>
 						</ServerTabsContent>
 					</GridLayout>
 				</div>
