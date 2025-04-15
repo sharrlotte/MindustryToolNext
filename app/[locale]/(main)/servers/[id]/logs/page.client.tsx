@@ -1,5 +1,9 @@
 'use client';
 
+import axios from 'axios';
+
+import ServerBuildLogCard from '@/app/[locale]/(main)/servers/[id]/logs/server-build-log-card';
+
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
@@ -8,7 +12,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
-import { getServerLogins } from '@/query/server';
+import { getServerBuildLog, getServerBuildLogCount, getServerLoginCount, getServerLogins } from '@/query/server';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
 
 import ServerLoginLogCard from './server-login-log-card';
@@ -35,7 +39,7 @@ export default function PageClient({ id }: Props) {
 				</div>
 				<ScrollContainer>
 					<ServerTabsContent className="space-y-2" value="login-log">
-						<div className="md:grid hidden md:grid-cols-4 gap-2 bg-card p-4">
+						<div className="md:grid hidden md:grid-cols-5 gap-2 bg-card p-4">
 							<Tran text="username" />
 							<Tran text="uuid" />
 							<Tran text="ip" />
@@ -52,11 +56,48 @@ export default function PageClient({ id }: Props) {
 							</GridPaginationList>
 						</GridLayout>
 					</ServerTabsContent>
+					<ServerTabsContent className="space-y-2" value="building-destroy-log">
+						<div className="md:grid hidden md:grid-cols-5 gap-2 bg-card p-4">
+							<Tran text="message" />
+							<Tran text="player" />
+							<Tran text="building" />
+							<Tran text="time" />
+						</div>
+						<ListLayout>
+							<InfinitePage
+								className="grid grid-cols-1"
+								paramSchema={PaginationQuerySchema}
+								queryKey={['server', id, 'building-destroy-log']}
+								queryFn={(axios, params) => getServerBuildLog(axios, id, params)}
+							>
+								{(data, index) => <ServerBuildLogCard serverId={id} key={data.id} index={index} data={data} />}
+							</InfinitePage>
+						</ListLayout>
+						<GridLayout>
+							<GridPaginationList
+								className="grid grid-cols-1"
+								paramSchema={PaginationQuerySchema}
+								queryKey={['server', id, 'building-destroy-log']}
+								queryFn={(axios, params) => getServerBuildLog(axios, id, params)}
+							>
+								{(data, index) => <ServerBuildLogCard serverId={id} key={data.id} index={index} data={data} />}
+							</GridPaginationList>
+						</GridLayout>
+					</ServerTabsContent>
 				</ScrollContainer>
 				<div className="ml-auto mt-auto space-x-2 flex">
 					<PaginationLayoutSwitcher />
 					<GridLayout>
-						<PaginationNavigator />
+						<ServerTabsContent className="space-y-2" value="login-log">
+							<div className="flex">
+								<PaginationNavigator queryKey={['server', id, 'login']} numberOfItems={(axios) => getServerLoginCount(axios, id)} />
+							</div>
+						</ServerTabsContent>
+						<ServerTabsContent className="space-y-2" value="building-destroy-log">
+							<div className="flex">
+								<PaginationNavigator queryKey={['server', id, 'building-destroy-log']} numberOfItems={(axios) => getServerBuildLogCount(axios, id)} />
+							</div>
+						</ServerTabsContent>
 					</GridLayout>
 				</div>
 			</ServerTabs>

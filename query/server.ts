@@ -18,6 +18,7 @@ import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManag
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { PaginationQuery } from '@/types/schema/search-query';
+import { ServerBuildLog } from '@/types/response/ServerBuildLog';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
 	const result = await axios.delete(`/servers/${id}/files`, {
@@ -68,6 +69,18 @@ export async function getServerLogins(axios: AxiosInstance, id: string, params: 
 }
 export async function getServerLoginCount(axios: AxiosInstance, id: string): Promise<number> {
 	const result = await axios.get(`/servers/${id}/logins/count`);
+
+	return result.data;
+}
+export async function getServerBuildLog(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<ServerBuildLog[]> {
+	const result = await axios.get(`/servers/${id}/build-log`, {
+		params: params,
+	});
+
+	return result.data;
+}
+export async function getServerBuildLogCount(axios: AxiosInstance, id: string): Promise<number> {
+	const result = await axios.get(`/servers/${id}/build-log/count`);
 
 	return result.data;
 }
