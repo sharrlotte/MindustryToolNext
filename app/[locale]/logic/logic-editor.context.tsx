@@ -1,6 +1,8 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Identifier } from 'dnd-core';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useDrop } from 'react-dnd';
 import { useInterval, useLocalStorage } from 'usehooks-ts';
 
 import HelperLines from '@/app/[locale]/logic/helper-lines';
@@ -19,7 +21,7 @@ import { toast } from '@/components/ui/sonner';
 import useLogicFile from '@/hooks/use-logic-file';
 import { uuid } from '@/lib/utils';
 
-import { Edge, EdgeChange, MiniMap, NodeChange, ProOptions, ReactFlow, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+import { Edge, EdgeChange, MiniMap, NodeChange, Position, ProOptions, ReactFlow, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
 
 export const nodeTypes = {
 	instruction: InstructionNodeComponent,
@@ -102,6 +104,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const [showMiniMap, setShowMiniMap] = useLocalStorage('logic.editor.showMiniMap', false);
 	const [showLiveCode, setShowLiveCode] = useLocalStorage('logic.editor.showLiveCode', false);
 	const { setViewport } = useReactFlow();
+	const ref = useRef<HTMLDivElement>(null);
 
 	const { generateRandomName, saved, readLogicFromLocalStorageByName, writeLogicToLocalStorage } = useLogicFile();
 
@@ -194,8 +197,9 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	);
 
 	const addNode = useCallback(
-		(type: string) => {
-			const position = screenToFlowPosition({ x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200 });
+		(type: string, p?: { x: number; y: number } | undefined | null) => {
+			const position = screenToFlowPosition({ x: p?.x ?? window.innerWidth / 2 - 200, y: p?.y ?? window.innerHeight / 2 - 200 });
+
 			if (type === 'start') {
 				const target = findNode('start');
 				if (target) {
@@ -379,7 +383,9 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			}
 		}
 
-		if (saved && saved.currentFile) {
+		if (name === saved.currentFile) return;
+
+		if (saved.currentFile) {
 			const result = load(saved.currentFile);
 
 			if (!result) {
@@ -389,8 +395,22 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 		} else {
 			generateNewFile();
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [name, saved.currentFile, generateRandomName, load]);
+
+	const [{ handlerId }, drop] = useDrop<any, void, { handlerId: Identifier | null }>({
+		accept: 'instruction',
+		collect(monitor) {
+			return {
+				handlerId: monitor.getHandlerId(),
+			};
+		},
+		drop: (item, monitor) => {
+			const position = monitor.getClientOffset();
+			addNode(item.id, position);
+		},
+	});
+
+	drop(ref);
 
 	return (
 		<LogicEditorContext.Provider
@@ -418,6 +438,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 				<ToolBar />
 				<CatchError>
 					<ReactFlow
+						ref={ref}
 						nodes={nodes}
 						edges={edges}
 						onInit={setRfInstance}
@@ -434,13 +455,14 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 						onNodeDragStop={onNodeDragStop}
 						proOptions={proOptions}
 						fitView
+						data-handler-id={handlerId}
 					>
 						{children}
+						<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
 						<Hydrated>
 							{showLiveCode && <LiveCodePanel />}
 							{showMiniMap && <MiniMap />}
 						</Hydrated>
-						<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
 					</ReactFlow>
 				</CatchError>
 			</div>

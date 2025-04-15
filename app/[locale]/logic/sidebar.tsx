@@ -53,7 +53,7 @@ export default function SideBar() {
 	const [currentTab, setCurrentTab] = useState<string | null>(null);
 
 	return (
-		<div className="h-full flex items-start">
+		<div className="h-full flex items-start overflow-hidden">
 			<div className="flex min-w-nav gap-2 flex-col bg-card border-r p-1 h-full">
 				<LogicEditorNavBar />
 				{tabs.map(({ id, icon }) => (
@@ -72,8 +72,8 @@ export default function SideBar() {
 				{tabs
 					.filter(({ id }) => id === currentTab)
 					.map(({ id, item }) => (
-						<div key={id} className="p-2 border-r h-full overflow-hidden min-w-60 bg-card">
-							<motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
+						<div key={id} className="p-2 border-r h-full overflow-hidden min-w-72 bg-card">
+							<motion.div className="h-full overflow-hidden" initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
 								<CatchError>{item}</CatchError>
 							</motion.div>
 						</div>
