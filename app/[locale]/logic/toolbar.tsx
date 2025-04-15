@@ -1,7 +1,7 @@
 'use client';
 
 import { Eraser, MapIcon, PlusCircleIcon, RedoIcon, UndoIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
 import { nodeOptions } from '@/app/[locale]/logic/node';
@@ -45,22 +45,29 @@ const tabs: TabType[] = [
 
 function FilenameInput() {
 	const { name, setName } = useLogicEditor();
+	const [currentName, setCurrentName] = useState(name);
 	const { saved, renameLogic } = useLogicFile();
 
 	function validateName() {
-		if (name.trim().length === 0) {
-			if (saved.currentFile) setName(saved.currentFile);
+		if (currentName.trim().length === 0) {
+			if (saved.currentFile) {
+				setCurrentName(saved.currentFile);
+				setName(saved.currentFile);
+			}
 		} else {
-			renameLogic(name);
+			renameLogic(currentName);
+			setName(currentName);
 		}
 	}
+
+	useEffect(() => setCurrentName(name), [name]);
 
 	return (
 		<Input
 			className="text-lg border-none w-fit min-w-0 bg-secondary/50 rounded-md"
 			type="text"
-			value={name.trim()}
-			onChange={(event) => setName(event.currentTarget.value.trim())}
+			value={currentName.trim()}
+			onChange={(event) => setCurrentName(event.currentTarget.value.trim())}
 			onBlur={() => validateName()}
 		/>
 	);
