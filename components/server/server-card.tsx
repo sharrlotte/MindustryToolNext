@@ -1,6 +1,6 @@
 import React, { Fragment, Suspense } from 'react';
 
-import CopyButton from '@/components/button/copy-button';
+import CopyButton from '@/components/button/copy.button';
 import ColorText from '@/components/common/color-text';
 import { ServerIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';

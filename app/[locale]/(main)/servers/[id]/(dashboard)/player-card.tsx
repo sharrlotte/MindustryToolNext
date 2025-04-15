@@ -1,16 +1,16 @@
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
-import { BanButton } from '@/components/server/ban-button';
-import { KickButton } from '@/components/server/kick-button';
+import { BanButton } from '@/components/server/ban.button';
+import { KickButton } from '@/components/server/kick.button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 
 import { serverApi } from '@/action/common';
+import localeToFlag from '@/constant/constant';
+import { isError } from '@/lib/error';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
-import { isError } from '@/lib/error';
-import localeToFlag from '@/constant/constant';
 
 type PlayersCardProps = {
 	id: string;

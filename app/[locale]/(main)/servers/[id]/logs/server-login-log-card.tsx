@@ -5,8 +5,8 @@ import { useState } from 'react';
 import ColorText from '@/components/common/color-text';
 import { EyeIcon, EyeOffIcon } from '@/components/common/icons';
 import { RelativeTime } from '@/components/common/relative-time';
-import { BanButton } from '@/components/server/ban-button';
-import { KickButton } from '@/components/server/kick-button';
+import { BanButton } from '@/components/server/ban.button';
+import { KickButton } from '@/components/server/kick.button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
 import { cn } from '@/lib/utils';
@@ -38,7 +38,7 @@ export default function ServerLoginLogCard({ serverId, data: { name, uuid, ip, c
 				</button>
 			</div>
 			<RelativeTime date={new Date(createdAt)} />
-			<EllipsisButton variant='ghost'>
+			<EllipsisButton variant="ghost">
 				<KickButton id={serverId} username={name} />
 				<BanButton id={serverId} ip={ip} username={name} uuid={uuid} />
 			</EllipsisButton>

@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { LogicEditorProvider } from '@/app/[locale]/logic/logic-editor-context';
+import LogicDndContext from '@/app/[locale]/logic/logic-dnd.context';
+import { LogicEditorProvider } from '@/app/[locale]/logic/logic-editor.context';
 
 import Tran from '@/components/common/tran';
 
@@ -46,9 +47,11 @@ function Flow() {
 		<>
 			<div className="hidden grid-cols-[auto_1fr] h-full sm:grid">
 				<ReactFlowProvider>
-					<LogicEditorProvider>
-						<Background />
-					</LogicEditorProvider>
+					<LogicDndContext>
+						<LogicEditorProvider>
+							<Background />
+						</LogicEditorProvider>
+					</LogicDndContext>
 				</ReactFlowProvider>
 			</div>
 			<span className="sm:hidden flex h-full w-full items-center justify-center font-bold m-auto">

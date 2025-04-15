@@ -4,13 +4,13 @@ import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
-import CopyButton from '@/components/button/copy-button';
-import DownloadButton from '@/components/button/download-button';
+import CopyButton from '@/components/button/copy.button';
+import DownloadButton from '@/components/button/download.button';
 import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
 import { ShareIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
-import VerifySchematicButton from '@/components/schematic/verify-schematic-button';
+import VerifySchematicButton from '@/components/schematic/verify-schematic.button';
 import TagSelector from '@/components/search/tag-selector';
 import IdUserCard from '@/components/user/id-user-card';
 
@@ -21,69 +21,69 @@ import { getSchematicData } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 
-const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic-button'));
+const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic.button'));
 
 type UploadSchematicDetailCardProps = {
-  schematic: SchematicDetail;
+	schematic: SchematicDetail;
 };
 
 export default function UploadSchematicDetailCard({
-  schematic: {
-    id,
-    name,
-    tags,
-    metadata: { requirements },
-    description,
-    userId,
-    width,
-    height,
-  },
+	schematic: {
+		id,
+		name,
+		tags,
+		metadata: { requirements },
+		description,
+		userId,
+		width,
+		height,
+	},
 }: UploadSchematicDetailCardProps) {
-  const axios = useClientApi();
+	const axios = useClientApi();
 
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>(TagGroups.parsTagDto(tags));
+	const [selectedTags, setSelectedTags] = useState<TagGroup[]>(TagGroups.parsTagDto(tags));
 
-  const { locale } = useParams();
+	const { locale } = useParams();
 
-  const link = `${env.url.base}/${locale}/schematics/${id}`;
-  const imageUrl = `${env.url.image}/schematics/${id}${env.imageFormat}`;
-  const errorImageUrl = `${env.url.api}/schematics/${id}/image`;
-  const copyMessage = `Copied schematic ${name}`;
-  const downloadUrl = `${env.url.api}/schematics/${id}/download`;
-  const downloadName = `{${name}}.msch`;
+	const link = `${env.url.base}/${locale}/schematics/${id}`;
+	const imageUrl = `${env.url.image}/schematics/${id}${env.imageFormat}`;
+	const errorImageUrl = `${env.url.api}/schematics/${id}/image`;
+	const copyMessage = `Copied schematic ${name}`;
+	const downloadUrl = `${env.url.api}/schematics/${id}/download`;
+	const downloadName = `{${name}}.msch`;
 
-  const getData = useToastAction({
-    title: <Tran text="copying" />,
-    content: <Tran text="downloading-data" />,
-    action: async () => await getSchematicData(axios, id),
-  });
+	const getData = useToastAction({
+		title: <Tran text="copying" />,
+		content: <Tran text="downloading-data" />,
+		action: async () => await getSchematicData(axios, id),
+	});
 
-  return (
-    <Detail>
-      <DetailContent>
-        <DetailInfo>
-          <CopyButton position="absolute" variant="ghost" data={link} content={link}>
-            <ShareIcon />
-          </CopyButton>
-          <DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-          <DetailHeader>
-            <DetailTitle>{name}</DetailTitle>
-            <IdUserCard id={userId} />
-            <span>
-              <Tran text="size" /> {width}x{height}
-            </span>
-            <DetailDescription>{description}</DetailDescription>
-            <ItemRequirementCard requirements={requirements} />
-            <TagSelector type="schematic" value={selectedTags} onChange={setSelectedTags} />
-          </DetailHeader>
-        </DetailInfo>
-        <DetailActions>
-          <CopyButton content={copyMessage} data={getData} />
-          <DownloadButton href={downloadUrl} fileName={downloadName} />
-          <DeleteSchematicButton id={id} name={name} />
-          <VerifySchematicButton id={id} name={name} selectedTags={selectedTags} />
-        </DetailActions>
-      </DetailContent>
-    </Detail>
-  );
+	return (
+		<Detail>
+			<DetailContent>
+				<DetailInfo>
+					<CopyButton position="absolute" variant="ghost" data={link} content={link}>
+						<ShareIcon />
+					</CopyButton>
+					<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
+					<DetailHeader>
+						<DetailTitle>{name}</DetailTitle>
+						<IdUserCard id={userId} />
+						<span>
+							<Tran text="size" /> {width}x{height}
+						</span>
+						<DetailDescription>{description}</DetailDescription>
+						<ItemRequirementCard requirements={requirements} />
+						<TagSelector type="schematic" value={selectedTags} onChange={setSelectedTags} />
+					</DetailHeader>
+				</DetailInfo>
+				<DetailActions>
+					<CopyButton content={copyMessage} data={getData} />
+					<DownloadButton href={downloadUrl} fileName={downloadName} />
+					<DeleteSchematicButton id={id} name={name} />
+					<VerifySchematicButton id={id} name={name} selectedTags={selectedTags} />
+				</DetailActions>
+			</DetailContent>
+		</Detail>
+	);
 }

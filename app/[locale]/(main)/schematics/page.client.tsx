@@ -5,7 +5,7 @@ import InfinitePage from '@/components/common/infinite-page';
 import { GridLayout, ListLayout } from '@/components/common/pagination-layout';
 import ScrollContainer from '@/components/common/scroll-container';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import PreviewSkeleton from '@/components/skeleton/preview.skeleton';
 
 import { getSchematics } from '@/query/schematic';
 import { ItemPaginationQuery } from '@/types/schema/search-query';

@@ -1,10 +1,10 @@
 import { Fragment, useState } from 'react';
 
 import HighLightTranslation from '@/app/[locale]/(main)/translation/highlight-translation';
-import { TranslationCardSkeleton } from '@/app/[locale]/(main)/translation/translation-card-skeleton';
+import { TranslationCardSkeleton } from '@/app/[locale]/(main)/translation/translation-card.skeleton';
 import TranslationStatus from '@/app/[locale]/(main)/translation/translation-status';
 
-import CopyButton from '@/components/button/copy-button';
+import CopyButton from '@/components/button/copy.button';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';

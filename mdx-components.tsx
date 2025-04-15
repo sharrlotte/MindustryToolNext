@@ -1,7 +1,7 @@
 import type { MDXComponents } from 'mdx/types';
 import { ReactNode } from 'react';
 
-import CopyButton from '@/components/button/copy-button';
+import CopyButton from '@/components/button/copy.button';
 import InternalLink from '@/components/common/internal-link';
 
 import { cn } from '@/lib/utils';

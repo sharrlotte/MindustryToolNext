@@ -23,7 +23,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
 import { LogType } from '@/constant/constant';
-import { useSocket } from '@/context/socket-context';
+import { useSocket } from '@/context/socket.context';
 import useClientQuery from '@/hooks/use-client-query';
 import useMessage from '@/hooks/use-message';
 import { cn } from '@/lib/utils';

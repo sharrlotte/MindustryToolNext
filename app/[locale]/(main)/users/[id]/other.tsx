@@ -14,7 +14,7 @@ import UploadPostPreviewCard from '@/components/post/upload-post-preview-card';
 import SchematicPreviewCard from '@/components/schematic/schematic-preview-card';
 import UploadSchematicPreviewCard from '@/components/schematic/upload-schematic-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import PreviewSkeleton from '@/components/skeleton/preview.skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { getUserMaps, getUserPosts, getUserSchematics } from '@/query/user';

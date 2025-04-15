@@ -10,7 +10,7 @@ import RemoveServerButton from '@/app/[locale]/(main)/servers/[id]/remove-server
 import ShutdownServerButton from '@/app/[locale]/(main)/servers/[id]/shutdown-server-button';
 import StopServerButton from '@/app/[locale]/(main)/servers/[id]/stop-server-button';
 
-import CopyButton from '@/components/button/copy-button';
+import CopyButton from '@/components/button/copy.button';
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import { ServerIcon } from '@/components/common/icons';
@@ -22,9 +22,9 @@ import IdUserCard from '@/components/user/id-user-card';
 import { getSession, serverApi } from '@/action/common';
 import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
+import { isError } from '@/lib/error';
 import { cn, formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
 import { getServer } from '@/query/server';
-import { isError } from '@/lib/error';
 
 const RamUsageChart = dynamic(() => import('@/components/metric/ram-usage-chart'));
 

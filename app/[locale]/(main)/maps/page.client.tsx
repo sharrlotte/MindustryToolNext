@@ -7,7 +7,7 @@ import InfinitePage from '@/components/common/infinite-page';
 import { GridLayout, ListLayout } from '@/components/common/pagination-layout';
 import ScrollContainer from '@/components/common/scroll-container';
 import MapPreviewCard from '@/components/map/map-preview-card';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import PreviewSkeleton from '@/components/skeleton/preview.skeleton';
 
 import { getMaps } from '@/query/map';
 import { ItemPaginationQuery } from '@/types/schema/search-query';

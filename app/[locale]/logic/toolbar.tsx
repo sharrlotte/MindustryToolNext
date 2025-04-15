@@ -1,9 +1,10 @@
 'use client';
 
 import { Eraser, MapIcon, PlusCircleIcon, RedoIcon, UndoIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
-import { ReactNode, useRef } from 'react';
+import { ReactNode } from 'react';
 
-import { nodeOptions, useLogicEditor } from '@/app/[locale]/logic/logic-editor-context';
+import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
+import { nodeOptions } from '@/app/[locale]/logic/node';
 
 import { CatchError } from '@/components/common/catch-error';
 import { Hidden } from '@/components/common/hidden';
@@ -108,27 +109,29 @@ function AddNodeDialog() {
 				</Hidden>
 				{nodeOptions.map((option, index) => (
 					<div className="flex flex-col border-b py-2 gap-2" key={index}>
-						<p className="text-lg">{option.key}</p>
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-							{option.value.map(([key, item]: any) =>
-								'category' in item && 'children' in item ? (
-									<Popover key={key}>
-										<PopoverTrigger>{item.label}</PopoverTrigger>
-										<PopoverContent className="grid grid-cols-2 gap-2">
-											{Object.entries(item.children).map(([key, value]: [any, any]) => (
-												<DialogClose key={key} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key)}>
-													{value.label}
-												</DialogClose>
-											))}
-										</PopoverContent>
-									</Popover>
-								) : (
-									<DialogClose key={key as any} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key as unknown as any)}>
-										{item.label}
-									</DialogClose>
-								),
-							)}
-						</div>
+						<CatchError>
+							<p className="text-lg">{option.key}</p>
+							<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+								{option.value.map(([key, item]: any) =>
+									'category' in item && 'children' in item ? (
+										<Popover key={key}>
+											<PopoverTrigger>{item.label}</PopoverTrigger>
+											<PopoverContent className="grid grid-cols-2 gap-2">
+												{Object.entries(item.children).map(([key, value]: [any, any]) => (
+													<DialogClose key={key} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key)}>
+														{value.label}
+													</DialogClose>
+												))}
+											</PopoverContent>
+										</Popover>
+									) : (
+										<DialogClose key={key as any} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key as unknown as any)}>
+											{item.label}
+										</DialogClose>
+									),
+								)}
+							</div>
+						</CatchError>
 					</div>
 				))}
 			</DialogContent>

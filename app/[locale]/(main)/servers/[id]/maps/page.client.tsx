@@ -8,7 +8,7 @@ import InfinitePage from '@/components/common/infinite-page';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import ServerMapCard from '@/components/server/server-map-card';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import PreviewSkeleton from '@/components/skeleton/preview.skeleton';
 
 import { getServerMapCount, getServerMaps } from '@/query/server';
 import { PaginationQuerySchema } from '@/types/schema/search-query';

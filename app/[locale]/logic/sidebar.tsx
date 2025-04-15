@@ -6,8 +6,10 @@ import dynamic from 'next/dynamic';
 import { ReactNode, useState } from 'react';
 
 import LogicEditorNavBar from '@/app/[locale]/logic/navbar';
+import PlusPanel from '@/app/[locale]/logic/plus.panel';
 
-import { SearchIcon } from '@/components/common/icons';
+import { CatchError } from '@/components/common/catch-error';
+import { PlusIcon, SearchIcon } from '@/components/common/icons';
 
 import { cn } from '@/lib/utils';
 
@@ -17,9 +19,14 @@ type TabType = {
 	item: ReactNode;
 };
 
-const FilePanel = dynamic(() => import('@/app/[locale]/logic/file-panel'));
+const FilePanel = dynamic(() => import('@/app/[locale]/logic/file.panel'));
 
 const tabs: TabType[] = [
+	{
+		id: 'add',
+		icon: <PlusIcon />,
+		item: <PlusPanel />,
+	},
 	{
 		id: 'file',
 		icon: <FileIcon />,
@@ -46,7 +53,7 @@ export default function SideBar() {
 	const [currentTab, setCurrentTab] = useState<string | null>(null);
 
 	return (
-		<div className="h-full flex items-start">
+		<div className="h-full flex items-start overflow-hidden">
 			<div className="flex min-w-nav gap-2 flex-col bg-card border-r p-1 h-full">
 				<LogicEditorNavBar />
 				{tabs.map(({ id, icon }) => (
@@ -65,9 +72,9 @@ export default function SideBar() {
 				{tabs
 					.filter(({ id }) => id === currentTab)
 					.map(({ id, item }) => (
-						<div key={id} className="p-2 border-r h-full overflow-hidden min-w-60">
-							<motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
-								{item}
+						<div key={id} className="p-2 border-r h-full overflow-hidden min-w-72 bg-card">
+							<motion.div className="h-full overflow-hidden" initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
+								<CatchError>{item}</CatchError>
 							</motion.div>
 						</div>
 					))}

@@ -2,6 +2,9 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import React, { Suspense } from 'react';
 
+import OfficialServer from '@/app/[locale]/(main)/servers/official-server';
+import ServerFooter from '@/app/[locale]/(main)/servers/page.footer';
+import ServersSkeleton from '@/app/[locale]/(main)/servers/servers.skeleton';
 
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -10,11 +13,8 @@ import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, generateAlternate } from '@/lib/utils';
-import ServerFooter from '@/app/[locale]/(main)/servers/page.footer';
 import ClientProtectedElement from '@/layout/client-protected-element';
-import ServersSkeleton from '@/app/[locale]/(main)/servers/servers-skeleton';
-import OfficialServer from '@/app/[locale]/(main)/servers/official-server';
+import { formatTitle, generateAlternate } from '@/lib/utils';
 
 const MeServer = dynamic(() => import('@/app/[locale]/(main)/servers/my-server'));
 const CommunityServer = dynamic(() => import('@/app/[locale]/(main)/servers/community-server'));
@@ -68,7 +68,7 @@ export default async function Page({ searchParams }: Props) {
 					</ServerTabsTrigger>
 				</ServerTabsList>
 				<ServerTabsContent className="overflow-hidden" value="official-server">
-					<ScrollContainer >
+					<ScrollContainer>
 						<Suspense fallback={<ServersSkeleton />}>
 							<OfficialServer />
 						</Suspense>

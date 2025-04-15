@@ -19,7 +19,7 @@ import { toast } from '@/components/ui/sonner';
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';

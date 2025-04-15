@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 
-import { useNavLink } from '@/context/nav-link-context';
+import { useNavLink } from '@/context/nav-link.context';
 
 type Props = {
 	children: ReactNode;

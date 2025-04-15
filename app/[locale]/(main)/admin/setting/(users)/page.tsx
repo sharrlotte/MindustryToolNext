@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import { UserTable } from '@/app/[locale]/(main)/admin/setting/(users)/user-table';
+import { UserTable } from '@/app/[locale]/(main)/admin/setting/(users)/user.table';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';

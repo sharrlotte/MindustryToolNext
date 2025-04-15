@@ -11,7 +11,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import UploadMapPreviewCard from '@/components/map/upload-map-preview-card';
 import NameTagSearch from '@/components/search/name-tag-search';
-import PreviewSkeleton from '@/components/skeleton/preview-skeleton';
+import PreviewSkeleton from '@/components/skeleton/preview.skeleton';
 import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';

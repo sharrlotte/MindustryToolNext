@@ -4,7 +4,7 @@ import { PathGroupElement, PathGroupElementProps } from '@/app/[locale]/(main)/m
 
 import ErrorScreen from '@/components/common/error-screen';
 
-import { useSession } from '@/context/session-context';
+import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
 

@@ -20,9 +20,9 @@ import { Role, RoleWithAuthorities } from '@/types/response/Role';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-const ChangeRoleAuthorityDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/roles/change-role-authority-dialog'));
-const DeleteRoleButton = dynamic(() => import('@/app/[locale]/(main)/admin/setting/roles/delete-role-button'));
-const UpdateRoleDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/roles/update-role-dialog'));
+const ChangeRoleAuthorityDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/roles/change-role-authority.dialog'));
+const DeleteRoleButton = dynamic(() => import('@/app/[locale]/(main)/admin/setting/roles/delete-role.button'));
+const UpdateRoleDialog = dynamic(() => import('@/app/[locale]/(main)/admin/setting/roles/update-role.dialog'));
 
 type Props = {
   roles: RoleWithAuthorities[];
