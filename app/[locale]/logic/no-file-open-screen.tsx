@@ -15,7 +15,7 @@ export default function NoFileOpenScreen() {
 	return (
 		<div className="h-full w-full flex justify-center items-center flex-col gap-2">
 			<Tran className="text-lg" text="logic.no-file-open" defaultValue="You have no file open" />
-			<div className="grid grid-cols-2 gap-2">
+			<div className="grid grid-rows-2 gap-2 items-center justify-center">
 				<AddFileDialog className="justify-center" />
 				<OpenFileDialog />
 			</div>
@@ -32,7 +32,7 @@ function OpenFileDialog() {
 
 	return (
 		<Dialog>
-			<DialogTrigger>
+			<DialogTrigger asChild>
 				<button className="flex gap-2 bg-secondary/50 text-secondary-foreground rounded-md p-2 w-full">
 					<FileIcon />
 					<Tran text="logic.open-file" defaultValue="Open file" />
@@ -57,7 +57,11 @@ function OpenFileDialog() {
 						{saved.files
 							.filter(({ name }) => name.includes(filter))
 							.map(({ name }) => (
-								<button className="flex gap-2 bg-secondary/50 text-secondary-foreground rounded-md p-2 w-full" key={name} onClick={() => load(name)}>
+								<button
+									className="flex gap-2 bg-secondary/50 text-secondary-foreground rounded-md p-2 w-full"
+									key={name}
+									onClick={() => load(name)}
+								>
 									<FileIcon />
 									<span>{name}</span>
 								</button>
