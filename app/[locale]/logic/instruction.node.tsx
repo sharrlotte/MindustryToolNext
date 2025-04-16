@@ -1,5 +1,15 @@
+import { useState } from 'react';
+
 import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
-import { InferStateType, instructionNodes, ItemsType, NodeData, NodeItem } from '@/app/[locale]/logic/node';
+import {
+	InferStateType,
+	InputItem,
+	ItemsType,
+	NodeData,
+	NodeItem,
+	OptionItem,
+	instructionNodes,
+} from '@/app/[locale]/logic/node';
 import { OutputHandle } from '@/app/[locale]/logic/output-handle';
 
 import ComboBox from '@/components/common/combo-box';
@@ -21,11 +31,13 @@ export default function InstructionNodeComponent({ id, data }: InstructionNodeDa
 	const { state, node } = data;
 	const { label, color, inputs, outputs, items, condition } = node;
 
-	const filterdItems = items.filter((item) => 'name' in item && (!condition || !condition?.[item.name] || condition?.[item.name]?.(state)));
+	const filterdItems = items.filter(
+		(item) => 'name' in item && (!condition || !condition?.[item.name] || condition?.[item.name]?.(state)),
+	);
 
 	return (
 		<div
-			className={cn('p-1.5 rounded-sm text-white w-[220px] min-h-[80px] sm:w-[330px] md:w-[440px] lg:[w-550px]', {
+			className={cn('p-1.5 rounded-sm text-white w-[220px] min-h-[80px] sm:w-[330px] md:w-[540px] lg:[w-650px]', {
 				'w-fit min-h-0 sm:w-fit md:w-fit lg:w-fit px-6': items.length === 0,
 			})}
 			style={{ backgroundColor: color }}
@@ -33,10 +45,23 @@ export default function InstructionNodeComponent({ id, data }: InstructionNodeDa
 			{Array(inputs)
 				.fill(1)
 				.map((_, i) => (
-					<Handle style={{ marginLeft: 20 * i - ((inputs - 1) / 2) * 20 + 'px' }} key={i} type={'target'} position={Position.Top} isConnectable={true} />
+					<Handle
+						style={{ marginLeft: 20 * i - ((inputs - 1) / 2) * 20 + 'px' }}
+						key={i}
+						type={'target'}
+						position={Position.Top}
+						isConnectable={true}
+					/>
 				))}
 			{outputs.map((output, i) => (
-				<OutputHandle id={`${id}-source-handle-${i}`} style={{ marginLeft: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }} label={output.label} key={i} type={'source'} position={Position.Bottom} />
+				<OutputHandle
+					id={`${id}-source-handle-${i}`}
+					style={{ marginLeft: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }}
+					label={output.label}
+					key={i}
+					type={'source'}
+					position={Position.Bottom}
+				/>
 			))}
 			<div
 				className={cn('flex justify-between text-sm font-bold', {
@@ -56,43 +81,72 @@ export default function InstructionNodeComponent({ id, data }: InstructionNodeDa
 		</div>
 	);
 }
+type NodeItemComponentProps<T> = { nodeId: string; color: string; state: InferStateType<ItemsType>; data: T };
 
-function NodeItemComponent({ nodeId, color, data, state }: { nodeId: string; color: string; state: InferStateType<ItemsType>; data: NodeItem }) {
-	const { setNodeState } = useLogicEditor();
+function NodeItemComponent(props: NodeItemComponentProps<NodeItem>) {
+	if (props.data.type === 'input') {
+		return <InputNodeComponent {...(props as NodeItemComponentProps<InputItem>)} />;
+	}
 
-	if (data.type === 'input') {
-		return (
-			<div className="flex gap-1 w-40">
-				{data.label && <span className="border-transparent border-b-[3px]">{data.label}</span>}
+	if (props.data.type === 'option') {
+		return <OptionNodeComponent {...(props as NodeItemComponentProps<OptionItem>)} />;
+	}
+
+	if (props.data.type === 'label') {
+		return <span className="border-transparent border-b-[3px]">{props.data.value}</span>;
+	}
+}
+
+function InputNodeComponent({ data, color, state, nodeId }: NodeItemComponentProps<InputItem>) {
+	const { variables, setNodeState } = useLogicEditor();
+	const [focus, setFocus] = useState(false);
+	const value = state[data.name];
+
+	const matchedVariable = Object.values(variables).filter((variable) => variable.includes(value));
+	const showSugesstion = focus && data.accept.includes('variable') && matchedVariable.length > 0;
+
+	return (
+		<div className="flex gap-1">
+			{data.label && <span className="border-transparent border-b-[3px]">{data.label}</span>}
+			<div className="relative">
 				<input
-					className="bg-transparent border-b-[3px] px-2 hover min-w-20 max-w-40 sm:max-w-80 focus:outline-none" //
+					className="bg-transparent border-b-[3px] px-2 hover min-w-10 max-w-20 sm:max-w-40 md:max-w-60 focus:outline-none" //
 					style={{ borderColor: color }}
 					type="text"
-					value={state[data.name] ?? data.value ?? ''}
+					value={value ?? data.value ?? ''}
 					onChange={(e) => setNodeState(nodeId, (prev) => ({ ...prev, [data.name]: e.target.value }))}
+					onFocus={() => setFocus(true)}
+					onBlur={() => setTimeout(() => setFocus(false), 100)}
 				/>
+				<div className={cn('absolute -bottom-1 translate-y-[100%] z-50 hidden', { block: showSugesstion })}>
+					<div className="p-4 border rounded-md bg-card min-w-60">
+						{matchedVariable.map((variable) => (
+							<div key={variable} onClick={() => setNodeState(nodeId, (prev) => ({ ...prev, [data.name]: variable }))}>
+								{variable}
+							</div>
+						))}
+					</div>
+				</div>
 			</div>
-		);
-	}
+		</div>
+	);
+}
 
-	if (data.type === 'option') {
-		return (
-			<div className="bg-transparent border-b-[3px] flex items-end" style={{ borderColor: color }}>
-				<ComboBox
-					className="bg-transparent px-2 py-0 text-center w-fit font-bold border-transparent items-end justify-end"
-					value={{ value: state[data.name], label: state[data.name].toString() }}
-					values={data.options.map((option) => ({ value: option, label: option.toString() }))}
-					onChange={(value) => {
-						if (value) setNodeState(nodeId, (prev) => ({ ...prev, [data.name]: value }));
-					}}
-					searchBar={false}
-					chevron={false}
-				/>
-			</div>
-		);
-	}
+function OptionNodeComponent({ data, color, state, nodeId }: NodeItemComponentProps<OptionItem>) {
+	const { setNodeState } = useLogicEditor();
 
-	if (data.type === 'label') {
-		return <span className="border-transparent border-b-[3px]">{data.value}</span>;
-	}
+	return (
+		<div className="bg-transparent border-b-[3px] flex items-end" style={{ borderColor: color }}>
+			<ComboBox
+				className="bg-transparent px-2 py-0 text-center w-fit font-bold border-transparent items-end justify-end"
+				value={{ value: state[data.name], label: state[data.name].toString() }}
+				values={data.options.map((option) => ({ value: option, label: option.toString() }))}
+				onChange={(value) => {
+					if (value) setNodeState(nodeId, (prev) => ({ ...prev, [data.name]: value }));
+				}}
+				searchBar={false}
+				chevron={false}
+			/>
+		</div>
+	);
 }

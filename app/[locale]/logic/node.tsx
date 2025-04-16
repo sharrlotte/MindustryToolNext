@@ -190,8 +190,7 @@ export const instructionNodesGraph: Record<string, NodeData | { category: Instru
 				label: 'Write',
 				name: 'result',
 				value: 'result',
-				accept: ['string'],
-				produce: true,
+				accept: ['string', 'variable'],
 			},
 			{
 				type: 'input',

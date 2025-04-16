@@ -22,7 +22,19 @@ import { toast } from '@/components/ui/sonner';
 import useLogicFile from '@/hooks/use-logic-file';
 import { uuid } from '@/lib/utils';
 
-import { Edge, EdgeChange, MiniMap, NodeChange, ProOptions, ReactFlow, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow } from '@xyflow/react';
+import {
+	Edge,
+	EdgeChange,
+	MiniMap,
+	NodeChange,
+	ProOptions,
+	ReactFlow,
+	ReactFlowInstance,
+	addEdge,
+	applyEdgeChanges,
+	applyNodeChanges,
+	useReactFlow,
+} from '@xyflow/react';
 
 const NoFileOpenScreen = dynamic(() => import('@/app/[locale]/logic/no-file-open-screen'));
 
@@ -101,9 +113,16 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const variables = useMemo(
 		() =>
 			nodes
-				.filter((node) => node.type === 'instruction' && node.data.node.items.some((input) => input.type === 'input' && input.produce)) //
+				.filter(
+					(node) => node.type === 'instruction' && node.data.node.items.some((input) => input.type === 'input' && input.produce),
+				) //
 				.reduce((prev, node) => {
-					const entry = (node.data.node.items.filter((input) => input.type === 'input' && !!input.produce) as InputItem<string, string>[]).map((input) => [input.name, node.data.state[input.name]]);
+					const entry = (
+						node.data.node.items.filter((input) => input.type === 'input' && input.produce === true) as InputItem<
+							string,
+							string
+						>[]
+					).map((input) => [input.name + node.id, node.data.state[input.name]]);
 					return { ...prev, ...Object.fromEntries(entry) };
 				}, {}),
 		[nodes],
@@ -158,7 +177,10 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 		[historyIndex],
 	);
 
-	const findNode = useCallback((type: string) => nodes.find((node) => node.type === 'instruction' && node.data.type === type), [nodes]);
+	const findNode = useCallback(
+		(type: string) => nodes.find((node) => node.type === 'instruction' && node.data.type === type),
+		[nodes],
+	);
 
 	const setNodeState = useCallback(
 		(id: string, fn: (prev: InferStateType<ItemsType>) => InferStateType<ItemsType>) => {
@@ -188,7 +210,10 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 
 	const addNode = useCallback(
 		(type: string, p?: { x: number; y: number } | undefined | null) => {
-			const position = screenToFlowPosition({ x: p?.x ?? window.innerWidth / 2 - 200, y: p?.y ?? window.innerHeight / 2 - 200 });
+			const position = screenToFlowPosition({
+				x: p?.x ?? window.innerWidth / 2 - 200,
+				y: p?.y ?? window.innerHeight / 2 - 200,
+			});
 
 			if (type === 'start') {
 				const target = findNode('start');
@@ -206,7 +231,11 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			const newNode: Node = {
 				id: uuid(),
 				type: 'instruction',
-				data: { type, node: instructionNodes[type], state: instructionNodes[type].getDefaultState() },
+				data: {
+					type,
+					node: instructionNodes[type],
+					state: instructionNodes[type].getDefaultState(),
+				},
 				position,
 			};
 			const newNodes = [...nodes, newNode];
@@ -358,7 +387,17 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	}, [historyIndex, nodeHistory, edgeHistory]);
 
 	const actions = useMemo(
-		() => ({ save, load, redo, undo, addNode, setShowAddNodeDialog, toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev), setShowMiniMap, setShowLiveCode }),
+		() => ({
+			save,
+			load,
+			redo,
+			undo,
+			addNode,
+			setShowAddNodeDialog,
+			toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev),
+			setShowMiniMap,
+			setShowLiveCode,
+		}),
 		[save, load, redo, undo, addNode, setShowMiniMap, setShowLiveCode],
 	);
 
@@ -380,7 +419,9 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			const result = load(saved.currentFile);
 
 			if (!result) {
-				toast.error(<Tran text="logic.load-file-fail" defaultValue="Fail to load file" />, { description: saved.currentFile });
+				toast.error(<Tran text="logic.load-file-fail" defaultValue="Fail to load file" />, {
+					description: saved.currentFile,
+				});
 				generateNewFile();
 			}
 		}
