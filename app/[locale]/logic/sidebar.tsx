@@ -3,14 +3,16 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FileIcon, FolderIcon, LayoutGrid } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { ReactNode, useState } from 'react';
+import { ReactNode, Suspense, useState } from 'react';
 
 import LogicEditorNavBar from '@/app/[locale]/logic/navbar';
 import PlusPanel from '@/app/[locale]/logic/plus.panel';
+import SearchPanel from '@/app/[locale]/logic/search.panel';
 
 import { CatchError } from '@/components/common/catch-error';
 import { PlusIcon, SearchIcon } from '@/components/common/icons';
 
+import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';
 
 type TabType = {
@@ -35,7 +37,7 @@ const tabs: TabType[] = [
 	{
 		id: 'search',
 		icon: <SearchIcon />,
-		item: <div></div>,
+		item: <SearchPanel />,
 	},
 	{
 		id: 'folder',
@@ -50,7 +52,15 @@ const tabs: TabType[] = [
 ];
 
 export default function SideBar() {
-	const [currentTab, setCurrentTab] = useState<string | null>(null);
+	const [{ tab: currentTab }, setState] = useQueryState<{
+		tab: string | null;
+	}>({
+		tab: '',
+	});
+
+	const setCurrentTab = (fn: (tab: string | null) => string | null) => {
+		setState({ tab: fn(currentTab) });
+	};
 
 	return (
 		<div className="h-full flex items-start overflow-hidden">
@@ -73,8 +83,15 @@ export default function SideBar() {
 					.filter(({ id }) => id === currentTab)
 					.map(({ id, item }) => (
 						<div key={id} className="p-2 border-r h-full overflow-hidden min-w-72 bg-card">
-							<motion.div className="h-full overflow-hidden" initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
-								<CatchError>{item}</CatchError>
+							<motion.div
+								className="h-full overflow-hidden"
+								initial={{ y: -10, opacity: 0 }}
+								animate={{ y: 0, opacity: 1 }}
+								transition={{ delay: 0.1 }}
+							>
+								<CatchError>
+									<Suspense>{item}</Suspense>
+								</CatchError>
 							</motion.div>
 						</div>
 					))}

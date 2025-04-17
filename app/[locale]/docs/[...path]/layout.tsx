@@ -166,7 +166,7 @@ function NavBarDoc({
 		return (
 			<InternalLink
 				href={`/${locale}/docs/${path.join(...currentSegments)}`}
-				className={cn('text-base py-2 rounded-md hover:bg-secondary text-secondary-foreground hover:text-foreground', {
+				className={cn('text-base w-full py-2 rounded-md hover:bg-secondary text-secondary-foreground hover:text-foreground', {
 					'text-foreground bg-secondary': currentSegments
 						.map((segment, index) => segment === selectedSegments[index])
 						.every((v) => v),

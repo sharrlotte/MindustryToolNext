@@ -58,7 +58,10 @@ export type InferNextProps<T extends OutputsType> = {
 	[K in T[number]['label']]?: InstructionNode;
 };
 
-type CompileFn<T extends ItemsType, O extends OutputsType> = (data: { state: InferStateType<T>; next: InferNextProps<O> }) => string;
+type CompileFn<T extends ItemsType, O extends OutputsType> = (data: {
+	state: InferStateType<T>;
+	next: InferNextProps<O>;
+}) => string;
 
 export class NodeData<T extends ItemsType = ItemsType, O extends OutputsType = OutputsType> {
 	name: string;
@@ -68,8 +71,8 @@ export class NodeData<T extends ItemsType = ItemsType, O extends OutputsType = O
 	items: Readonly<T>;
 	inputs: number;
 	outputs: Readonly<O>;
-	compile: CompileFn<T, O>;
 	condition?: ConditionFn<T>;
+	compile: CompileFn<T, O>;
 
 	constructor({
 		name,
@@ -126,7 +129,10 @@ export class NodeData<T extends ItemsType = ItemsType, O extends OutputsType = O
 
 type InstructionCategory = 'Special' | 'Input/Output' | 'Flow Control' | 'Block Control' | 'Unit Control' | 'Operations';
 
-export const instructionNodesGraph: Record<string, NodeData | { category: InstructionCategory; label: string; children: Record<string, NodeData> }> = {
+export const instructionNodesGraph: Record<
+	string,
+	NodeData | { category: InstructionCategory; label: string; children: Record<string, NodeData> }
+> = {
 	start: new NodeData({
 		name: 'start',
 		label: 'Start',
@@ -746,7 +752,6 @@ export const initialNodes: InstructionNode[] = [
 		id: '1',
 		data: {
 			type: 'start',
-			node: instructionNodes.start,
 			state: instructionNodes.start.getDefaultState(),
 		},
 		type: 'instruction',

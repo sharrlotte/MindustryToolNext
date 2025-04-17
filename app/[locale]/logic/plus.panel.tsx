@@ -5,9 +5,8 @@ import { useDrag } from 'react-dnd';
 
 import { NodeData, instructionNodes } from '@/app/[locale]/logic/node';
 
-import { SearchIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import { SearchBar, SearchInput } from '@/components/search/search-input';
+import { Input } from '@/components/ui/input';
 
 import { groupBy } from '@/lib/utils';
 
@@ -33,10 +32,7 @@ function InstructionList() {
 				<h2 className="text-base">
 					<Tran text="logic.instruction-list" />
 				</h2>
-				<SearchBar className="h-9">
-					<SearchIcon />
-					<SearchInput className="h-10" value={filter} onChange={setFilter} placeholder="search-by-name" />
-				</SearchBar>
+				<Input placeholder="Search" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} />
 			</div>
 			<section className="h-full overflow-y-auto pr-2">
 				{nodeGroups.map((group) => (

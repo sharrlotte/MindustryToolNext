@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 
 import { InstructionNode } from '@/app/[locale]/logic/instruction.node';
 import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
-import { Output } from '@/app/[locale]/logic/node';
+import { Output, instructionNodes } from '@/app/[locale]/logic/node';
 
 export default function useCode() {
-	const { nodes, edges } = useLogicEditor();
+	const { debouncedNodes: nodes, debouncedEdges: edges } = useLogicEditor();
 
 	return useMemo(() => {
 		const visited: string[] = [];
@@ -44,17 +44,14 @@ export default function useCode() {
 
 				if (!result) throw new Error('Edge not found');
 
-				if (node.data.node === undefined) {
-					throw new Error('Node not found');
-				}
-
-				const index = node.data.node.outputs.findIndex((o) => o.label === result.label);
+				const nodeData = instructionNodes[node.data.type];
+				const index = nodeData.outputs.findIndex((o) => o.label === result.label);
 
 				if (index === -1) {
 					return undefined;
 				}
 
-				const output = node.data.node.outputs[index];
+				const output = nodeData.outputs[index];
 
 				return { index, output, target };
 			}
@@ -95,7 +92,7 @@ export default function useCode() {
 				lines.push(`jump ${nextNode.data.index} always a b`);
 			} else {
 				visited.push(nextNode.id);
-				lines.push(nextNode.data.node.compile({ state: nextNode.data.state, next: findNextNodes(nextNode) }));
+				lines.push(instructionNodes[nextNode.data.type].compile({ state: nextNode.data.state, next: findNextNodes(nextNode) }));
 				nextNode.data.index = index;
 				index++;
 				queue.push(...Object.values(findNextNodes(nextNode)));

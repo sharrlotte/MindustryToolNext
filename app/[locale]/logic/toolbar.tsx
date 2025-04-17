@@ -1,7 +1,7 @@
 'use client';
 
 import { Eraser, MapIcon, PlusCircleIcon, RedoIcon, UndoIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, Suspense, useEffect, useState } from 'react';
 
 import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
 import { nodeOptions } from '@/app/[locale]/logic/node';
@@ -88,7 +88,7 @@ export default function ToolBar() {
 							<PopoverContent className="p-1 mx-2 my-4 bg-card grid capitalize space-y-1">
 								{tab.items.map((item, index) => (
 									<PopoverClose key={index} asChild>
-										{item}
+										<Suspense>{item}</Suspense>
 									</PopoverClose>
 								))}
 							</PopoverContent>
@@ -125,14 +125,22 @@ function AddNodeDialog() {
 											<PopoverTrigger>{item.label}</PopoverTrigger>
 											<PopoverContent className="grid grid-cols-2 gap-2">
 												{Object.entries(item.children).map(([key, value]: [any, any]) => (
-													<DialogClose key={key} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key)}>
+													<DialogClose
+														key={key}
+														className="cursor-pointer hover:text-slate-500 transition-colors"
+														onClick={() => addNode(key)}
+													>
 														{value.label}
 													</DialogClose>
 												))}
 											</PopoverContent>
 										</Popover>
 									) : (
-										<DialogClose key={key as any} className="cursor-pointer hover:text-slate-500 transition-colors" onClick={() => addNode(key as unknown as any)}>
+										<DialogClose
+											key={key as any}
+											className="cursor-pointer hover:text-slate-500 transition-colors"
+											onClick={() => addNode(key as unknown as any)}
+										>
 											{item.label}
 										</DialogClose>
 									),

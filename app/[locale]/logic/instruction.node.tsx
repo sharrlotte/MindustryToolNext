@@ -1,15 +1,7 @@
 import { useState } from 'react';
 
 import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
-import {
-	InferStateType,
-	InputItem,
-	ItemsType,
-	NodeData,
-	NodeItem,
-	OptionItem,
-	instructionNodes,
-} from '@/app/[locale]/logic/node';
+import { InferStateType, InputItem, ItemsType, NodeItem, OptionItem, instructionNodes } from '@/app/[locale]/logic/node';
 import { OutputHandle } from '@/app/[locale]/logic/output-handle';
 
 import ComboBox from '@/components/common/combo-box';
@@ -19,7 +11,7 @@ import { cn } from '@/lib/utils';
 import { Handle, Node, Position } from '@xyflow/react';
 
 export type InstructionNodeData<T extends (keyof typeof instructionNodes)[number] = (keyof typeof instructionNodes)[number]> = {
-	data: { type: T; index?: number; node: NodeData; state: InferStateType<(typeof instructionNodes)[T]['items']> };
+	data: { type: T; index?: number; state: InferStateType<(typeof instructionNodes)[T]['items']> };
 	isConnectable?: boolean;
 	type: 'instruction';
 	id: string;
@@ -28,7 +20,8 @@ export type InstructionNodeData<T extends (keyof typeof instructionNodes)[number
 export type InstructionNode = Omit<Node, 'data' | 'type'> & InstructionNodeData;
 
 export default function InstructionNodeComponent({ id, data }: InstructionNodeData) {
-	const { state, node } = data;
+	const { state, type } = data;
+	const node = instructionNodes[type];
 	const { label, color, inputs, outputs, items, condition } = node;
 
 	const filterdItems = items.filter(

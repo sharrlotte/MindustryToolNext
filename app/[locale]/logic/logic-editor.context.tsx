@@ -2,9 +2,9 @@
 
 import { Identifier } from 'dnd-core';
 import dynamic from 'next/dynamic';
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { useInterval, useLocalStorage } from 'usehooks-ts';
+import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
 import HelperLines from '@/app/[locale]/logic/helper-lines';
 import InstructionNodeComponent, { InstructionNode } from '@/app/[locale]/logic/instruction.node';
@@ -16,6 +16,7 @@ import { getHelperLines } from '@/app/[locale]/logic/utils';
 
 import { CatchError } from '@/components/common/catch-error';
 import Hydrated from '@/components/common/hydrated';
+import LoadingSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
@@ -34,6 +35,7 @@ import {
 	applyEdgeChanges,
 	applyNodeChanges,
 	useReactFlow,
+	useViewport,
 } from '@xyflow/react';
 
 const NoFileOpenScreen = dynamic(() => import('@/app/[locale]/logic/no-file-open-screen'));
@@ -60,6 +62,8 @@ type LogicEditorContextType = {
 
 	nodes: Node[];
 	edges: Edge[];
+	debouncedNodes: Node[];
+	debouncedEdges: Edge[];
 	setNodes: React.Dispatch<React.SetStateAction<Node[]>>;
 	setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
 	setName: (name: string) => void;
@@ -92,6 +96,7 @@ export const useLogicEditor = () => {
 const proOptions: ProOptions = { hideAttribution: true };
 
 export function LogicEditorProvider({ children }: { children: React.ReactNode }) {
+	const [loading, setLoading] = useState(true);
 	const [name, setName] = useState('');
 	const [nodes, setNodes] = useState<Node[]>(initialNodes);
 	const [edges, setEdges] = useState<Edge[]>([]);
@@ -107,25 +112,30 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const [showLiveCode, setShowLiveCode] = useLocalStorage('logic.editor.showLiveCode', false);
 	const { setViewport } = useReactFlow();
 	const ref = useRef<HTMLDivElement>(null);
+	const viewport = useViewport();
 
 	const { generateRandomName, saved, readLogicFromLocalStorageByName, writeLogicToLocalStorage, addNewFile } = useLogicFile();
 
+	const [debouncedNodes] = useDebounceValue(nodes, 1000);
+	const [debouncedEdges] = useDebounceValue(edges, 1000);
+
 	const variables = useMemo(
 		() =>
-			nodes
-				.filter(
-					(node) => node.type === 'instruction' && node.data.node.items.some((input) => input.type === 'input' && input.produce),
-				) //
+			debouncedNodes
+				.filter((node) => {
+					if (node.type !== 'instruction') return false;
+
+					const nodeData = instructionNodes[node.data.type];
+					return nodeData.items.some((input) => input.type === 'input' && input.produce);
+				}) //
 				.reduce((prev, node) => {
+					const nodeData = instructionNodes[node.data.type];
 					const entry = (
-						node.data.node.items.filter((input) => input.type === 'input' && input.produce === true) as InputItem<
-							string,
-							string
-						>[]
+						nodeData.items.filter((input) => input.type === 'input' && input.produce === true) as InputItem<string, string>[]
 					).map((input) => [input.name + node.id, node.data.state[input.name]]);
 					return { ...prev, ...Object.fromEntries(entry) };
 				}, {}),
-		[nodes],
+		[debouncedNodes],
 	);
 
 	const save = useCallback(() => {
@@ -142,27 +152,35 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 		writeLogicToLocalStorage(name, data);
 	}, [rfInstance, name, writeLogicToLocalStorage]);
 
-	useInterval(save, 60000);
+	useEffect(() => {
+		save();
+	}, [debouncedEdges, debouncedNodes, save]);
 
 	const load = useCallback(
 		(name: string) => {
-			save();
-			const data = readLogicFromLocalStorageByName(name);
+			try {
+				setLoading(true);
+				const data = readLogicFromLocalStorageByName(name);
 
-			if (!data) {
-				toast.error(<Tran text="logic.file-not-found" />, { description: name });
+				if (!data) {
+					toast.error(<Tran text="logic.file-not-found" />, { description: name });
+					return false;
+				}
+
+				const { x = 0, y = 0, zoom = 1 } = data.viewport;
+				setNodes(data.nodes || []);
+				setEdges(data.edges || []);
+				setViewport({ x, y, zoom });
+				setName(name);
+
+				return true;
+			} catch (e) {
 				return false;
+			} finally {
+				setLoading(false);
 			}
-
-			const { x = 0, y = 0, zoom = 1 } = data.viewport;
-			setNodes(data.nodes || []);
-			setEdges(data.edges || []);
-			setViewport({ x, y, zoom });
-			setName(name);
-
-			return true;
 		},
-		[save, readLogicFromLocalStorageByName, setViewport],
+		[readLogicFromLocalStorageByName, setViewport],
 	);
 
 	const { screenToFlowPosition } = useReactFlow();
@@ -233,7 +251,6 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 				type: 'instruction',
 				data: {
 					type,
-					node: instructionNodes[type],
 					state: instructionNodes[type].getDefaultState(),
 				},
 				position,
@@ -450,6 +467,8 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 				variables,
 				edges,
 				nodes,
+				debouncedNodes,
+				debouncedEdges,
 				showAddNodeDialog,
 				showMiniMap,
 				showLiveCode,
@@ -463,11 +482,21 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 				actions,
 			}}
 		>
-			<SideBar />
+			<CatchError>
+				<Suspense>
+					<SideBar />
+				</Suspense>
+			</CatchError>
 			<div className="grid grid-rows-[auto_1fr]">
-				<ToolBar />
+				<Suspense>
+					<CatchError>
+						<ToolBar />
+					</CatchError>
+				</Suspense>
 				<CatchError>
-					{name === '' ? (
+					{loading ? (
+						<LoadingSpinner />
+					) : name === '' ? (
 						<NoFileOpenScreen />
 					) : (
 						<ReactFlow
@@ -490,12 +519,18 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 							fitView
 							data-handler-id={handlerId}
 						>
-							{children}
-							<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
-							<Hydrated>
-								{showLiveCode && <LiveCodePanel />}
-								{showMiniMap && <MiniMap />}
-							</Hydrated>
+							<Suspense>
+								{children}
+								<div className="absolute z-50 top-1 left-1 space-x-0.5 text-xs text-muted-foreground">
+									<span>x: {Math.round(viewport.x)}</span>
+									<span>y: {Math.round(viewport.y)}</span>
+								</div>
+								<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
+								<Hydrated>
+									{showLiveCode && <LiveCodePanel />}
+									{showMiniMap && <MiniMap />}
+								</Hydrated>
+							</Suspense>
 						</ReactFlow>
 					)}
 				</CatchError>
