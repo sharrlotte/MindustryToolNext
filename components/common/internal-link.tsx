@@ -8,7 +8,7 @@ import env from '@/constant/env';
 import useLocaleStore from '@/hooks/use-current-locale';
 import { cn } from '@/lib/utils';
 
-const linkVariants = cva('flex gap-2', {
+const linkVariants = cva('inline-flex gap-2', {
 	variants: {
 		variant: {
 			default: '',
