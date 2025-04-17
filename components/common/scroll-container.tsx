@@ -44,7 +44,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
   useEffect(() => {
     if (container === null) return;
 
-    const scrollTop = localStorage.getItem(`scroll-top-${pathname}-${id}`);
+    const scrollTop = sessionStorage.getItem(`scroll-top-${pathname}-${id}`);
     try {
       if (scrollTop) {
         container.scrollTop = parseInt(scrollTop);
@@ -64,7 +64,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
       })}
       onScroll={(event) => {
         lastScrollTop.current = event.currentTarget.scrollTop;
-        localStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());
+        sessionStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());
       }}
       ref={(current) => {
         if (typeof forwardedRef === 'function') {
