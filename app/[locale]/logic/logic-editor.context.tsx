@@ -2,7 +2,7 @@
 
 import { Identifier } from 'dnd-core';
 import dynamic from 'next/dynamic';
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
@@ -483,12 +483,16 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			}}
 		>
 			<CatchError>
-				<SideBar />
+				<Suspense>
+					<SideBar />
+				</Suspense>
 			</CatchError>
 			<div className="grid grid-rows-[auto_1fr]">
-				<CatchError>
-					<ToolBar />
-				</CatchError>
+				<Suspense>
+					<CatchError>
+						<ToolBar />
+					</CatchError>
+				</Suspense>
 				<CatchError>
 					{loading ? (
 						<LoadingSpinner />
@@ -515,16 +519,18 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 							fitView
 							data-handler-id={handlerId}
 						>
-							{children}
-							<div className="absolute z-50 top-1 left-1 space-x-0.5 text-xs text-muted-foreground">
-								<span>x: {Math.round(viewport.x)}</span>
-								<span>y: {Math.round(viewport.y)}</span>
-							</div>
-							<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
-							<Hydrated>
-								{showLiveCode && <LiveCodePanel />}
-								{showMiniMap && <MiniMap />}
-							</Hydrated>
+							<Suspense>
+								{children}
+								<div className="absolute z-50 top-1 left-1 space-x-0.5 text-xs text-muted-foreground">
+									<span>x: {Math.round(viewport.x)}</span>
+									<span>y: {Math.round(viewport.y)}</span>
+								</div>
+								<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
+								<Hydrated>
+									{showLiveCode && <LiveCodePanel />}
+									{showMiniMap && <MiniMap />}
+								</Hydrated>
+							</Suspense>
 						</ReactFlow>
 					)}
 				</CatchError>

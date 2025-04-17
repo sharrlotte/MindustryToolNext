@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import React, { Suspense } from 'react';
+import React from 'react';
 
 import LogicDndContext from '@/app/[locale]/logic/logic-dnd.context';
 import { LogicEditorProvider } from '@/app/[locale]/logic/logic-editor.context';
@@ -44,7 +44,7 @@ export default function Page() {
 
 function Flow() {
 	return (
-		<Suspense>
+		<>
 			<div className="hidden grid-cols-[auto_1fr] h-full sm:grid">
 				<ReactFlowProvider>
 					<LogicDndContext>
@@ -57,6 +57,6 @@ function Flow() {
 			<span className="sm:hidden flex h-full w-full items-center justify-center font-bold m-auto">
 				<Tran text="logic.require-bigger-device-screen" />
 			</span>
-		</Suspense>
+		</>
 	);
 }

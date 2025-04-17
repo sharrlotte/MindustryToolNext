@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FileIcon, FolderIcon, LayoutGrid } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { ReactNode, useState } from 'react';
+import { ReactNode, Suspense, useState } from 'react';
 
 import LogicEditorNavBar from '@/app/[locale]/logic/navbar';
 import PlusPanel from '@/app/[locale]/logic/plus.panel';
@@ -89,7 +89,9 @@ export default function SideBar() {
 								animate={{ y: 0, opacity: 1 }}
 								transition={{ delay: 0.1 }}
 							>
-								<CatchError>{item}</CatchError>
+								<CatchError>
+									<Suspense>{item}</Suspense>
+								</CatchError>
 							</motion.div>
 						</div>
 					))}

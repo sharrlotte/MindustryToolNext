@@ -55,6 +55,10 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.response.use(
 	(res) => res,
 	(error) => {
+		if (error.message) {
+			return Promise.reject(error.message);
+		}
+
 		let statusError: StatusError;
 
 		if (error?.response?.data) {
