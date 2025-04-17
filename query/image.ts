@@ -8,9 +8,10 @@ export interface ImageUploadRequest {
 	folder: string;
 	id: string;
 	format: string;
+	onUploadProgress: (AxiosProgressEvent: any) => void;
 }
 
-export async function uploadImage(axios: AxiosInstance, { file, folder, id, format }: ImageUploadRequest): Promise<void> {
+export async function uploadImage(axios: AxiosInstance, { file, folder, id, format, onUploadProgress }: ImageUploadRequest): Promise<void> {
 	const form = new FormData();
 	form.append('file', file);
 
@@ -21,6 +22,7 @@ export async function uploadImage(axios: AxiosInstance, { file, folder, id, form
 			id,
 			format,
 		},
+		onUploadProgress,
 	});
 }
 

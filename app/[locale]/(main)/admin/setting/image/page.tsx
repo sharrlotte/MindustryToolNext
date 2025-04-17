@@ -20,6 +20,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
 import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
@@ -46,7 +47,14 @@ export default function Page() {
 				</div>
 			</section>
 			<ScrollContainer className="border rounded-lg">
-				<InfinitePage className="flex flex-col gap-2 p-2 h-full" queryKey={['images']} end paramSchema={PaginationQuerySchema} params={{ path }} queryFn={getImages}>
+				<InfinitePage
+					className="flex flex-col gap-2 p-2 h-full"
+					queryKey={['images']}
+					end
+					paramSchema={PaginationQuerySchema}
+					params={{ path }}
+					queryFn={getImages}
+				>
 					{(data) =>
 						data.isDir ? (
 							<DirCard key={data.path} data={data} setPath={setPath} />
@@ -66,7 +74,11 @@ function DirCard({ data, setPath }: { data: ImageMetadata; setPath: (path: strin
 	return (
 		<ContextMenu>
 			<ContextMenuTrigger>
-				<div className="p-2 border border-md rounded-md flex gap-1 items-center cursor-pointer" key={data.path} onClick={() => setPath(data.path)}>
+				<div
+					className="p-2 border border-md rounded-md flex gap-1 items-center cursor-pointer"
+					key={data.path}
+					onClick={() => setPath(data.path)}
+				>
 					<FolderIcon />
 					{data.name}
 				</div>
@@ -82,7 +94,10 @@ function FileCard({ data }: { data: ImageMetadata }) {
 	return (
 		<ContextMenu>
 			<ContextMenuTrigger>
-				<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer" key={data.path}>
+				<div
+					className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer"
+					key={data.path}
+				>
 					<FileIcon />
 					{data.name}
 				</div>
@@ -100,8 +115,20 @@ function ImageCard({ data }: { data: ImageMetadata }) {
 			<ContextMenu>
 				<ContextMenuTrigger>
 					<DialogTrigger asChild>
-						<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer" key={data.path}>
-							<motion.img id={data.path} layout layoutId={data.path} src={`${env.url.image}/${data.path}`} className="size-5 object-cover" height={20} width={20} alt={data.path} />
+						<div
+							className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer"
+							key={data.path}
+						>
+							<motion.img
+								id={data.path}
+								layout
+								layoutId={data.path}
+								src={`${env.url.image}/${data.path}`}
+								className="size-5 object-cover"
+								height={20}
+								width={20}
+								alt={data.path}
+							/>
 							<span>{data.name}</span>
 						</div>
 					</DialogTrigger>
@@ -116,7 +143,14 @@ function ImageCard({ data }: { data: ImageMetadata }) {
 					<DialogTitle />
 					<DialogDescription />
 				</Hidden>
-				<motion.img id={data.path} layout layoutId={data.path} src={`${env.url.image}/${data.path}`} className="max-w-full max-h-[90vh] object-contain" alt={data.path} />
+				<motion.img
+					id={data.path}
+					layout
+					layoutId={data.path}
+					src={`${env.url.image}/${data.path}`}
+					className="max-w-full max-h-[90vh] object-contain"
+					alt={data.path}
+				/>
 			</DialogContent>
 		</Dialog>
 	);
@@ -224,43 +258,78 @@ function UploadButton({ path }: { path: string }) {
 	const queryClient = useQueryClient();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	const { mutate: upload, isPending } = useMutation({
+	const [progressMap, setProgressMap] = useState<Record<string, number>>({});
+
+	const uploadMutation = useMutation({
 		mutationFn: async (file: File) => {
 			const format = file.name.split('.').pop() || '';
-
 			await uploadImage(axios, {
 				file,
 				folder: path,
 				id: file.name.slice(0, file.name.length - format.length + 1),
-				format: file.name.split('.').pop() || '',
+				format,
+				onUploadProgress: (progressEvent: ProgressEvent) => {
+					const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
+					setProgressMap((prev) => ({ ...prev, [file.name]: percent }));
+				},
 			});
 		},
-		onSuccess: () => {
+		onSuccess: (_data, file) => {
+			setProgressMap((prev) => {
+				const updated = { ...prev };
+				delete updated[file.name];
+				return updated;
+			});
 			queryClient.invalidateQueries({ queryKey: ['images'] });
-			toast.success('Image uploaded successfully');
+			toast.success(`Image "${file.name}" uploaded successfully`);
 		},
-		onError: (error) => {
-			toast.error('Failed to upload image', { description: error.message });
+		onError: (error: any, file) => {
+			setProgressMap((prev) => {
+				const updated = { ...prev };
+				delete updated[file.name];
+				return updated;
+			});
+			toast.error(`Failed to upload "${file.name}"`, { description: error.message });
 		},
 	});
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		if (file && env.supportedImageFormat.some((ext) => file.name.toLowerCase().endsWith(ext))) {
-			upload(file);
-		} else {
+		const files = Array.from(event.target.files ?? []);
+		const validFiles = files.filter((file) => env.supportedImageFormat.some((ext) => file.name.toLowerCase().endsWith(ext)));
+
+		if (validFiles.length === 0) {
 			toast.error('Invalid file format', { description: `Supported formats: ${env.supportedImageFormat.join(', ')}` });
+		} else {
+			validFiles.forEach((file) => {
+				setProgressMap((prev) => ({ ...prev, [file.name]: 0 }));
+				uploadMutation.mutate(file);
+			});
 		}
 		event.target.value = '';
 	};
 
 	return (
-		<div>
-			<input type="file" ref={fileInputRef} className="hidden" accept={env.supportedImageFormat.map((ext) => `.${ext}`).join(',')} onChange={handleFileChange} />
-			<Button variant="secondary" disabled={isPending} onClick={() => fileInputRef.current?.click()}>
+		<div className="flex flex-col gap-2">
+			<input
+				type="file"
+				ref={fileInputRef}
+				className="hidden"
+				accept={env.supportedImageFormat.map((ext) => `.${ext}`).join(',')}
+				onChange={handleFileChange}
+				multiple
+			/>
+			<Button variant="secondary" disabled={uploadMutation.isPending} onClick={() => fileInputRef.current?.click()}>
 				<Plus className="size-4" />
 				<Tran text="add" />
 			</Button>
+			{/* Progress bars for each uploading file */}
+			{Object.entries(progressMap).map(([fileName, percent]) => (
+				<div key={fileName} className="flex items-center gap-2 mt-1">
+					<span className="truncate max-w-[120px] text-xs">{fileName}</span>
+					<Progress value={percent} className="flex-1 min-w-[100px] max-w-[200px]" />
+					<span className="text-xs w-8 text-right">{percent}%</span>
+				</div>
+			))}
 		</div>
 	);
 }
