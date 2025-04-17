@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -25,6 +25,7 @@ import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
+import useQueryState from '@/hooks/use-query-state';
 import { deleteImage, getImages, uploadImage } from '@/query/image';
 import { ImageMetadata } from '@/types/response/FileMetadata';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
@@ -33,7 +34,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function Page() {
-	const [path, setPath] = useState('');
+	const [{ path }, setState] = useQueryState({
+		path: '',
+	});
+
+	const setPath = (path: string) => setState({ path });
 
 	return (
 		<div className="h-full overflow-hidden flex flex-col gap-2">
@@ -259,6 +264,7 @@ function UploadButton({ path }: { path: string }) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const [progressMap, setProgressMap] = useState<Record<string, number>>({});
+	const [open, setOpen] = useState(false);
 
 	const uploadMutation = useMutation({
 		mutationFn: async (file: File) => {
@@ -304,32 +310,50 @@ function UploadButton({ path }: { path: string }) {
 				setProgressMap((prev) => ({ ...prev, [file.name]: 0 }));
 				uploadMutation.mutate(file);
 			});
+			setOpen(true);
 		}
 		event.target.value = '';
 	};
 
+	useEffect(() => {
+		if (open && Object.keys(progressMap).length === 0) {
+			setOpen(false);
+		}
+	}, [progressMap, open]);
+
 	return (
-		<div className="flex flex-col gap-2">
-			<input
-				type="file"
-				ref={fileInputRef}
-				className="hidden"
-				accept={env.supportedImageFormat.map((ext) => `.${ext}`).join(',')}
-				onChange={handleFileChange}
-				multiple
-			/>
-			<Button variant="secondary" disabled={uploadMutation.isPending} onClick={() => fileInputRef.current?.click()}>
-				<Plus className="size-4" />
-				<Tran text="add" />
-			</Button>
-			{/* Progress bars for each uploading file */}
-			{Object.entries(progressMap).map(([fileName, percent]) => (
-				<div key={fileName} className="flex items-center gap-2 mt-1">
-					<span className="truncate max-w-[120px] text-xs">{fileName}</span>
-					<Progress value={percent} className="flex-1 min-w-[100px] max-w-[200px]" />
-					<span className="text-xs w-8 text-right">{percent}%</span>
+		<Dialog open={open} onOpenChange={setOpen}>
+			<DialogTrigger asChild>
+				<Button variant="secondary" disabled={uploadMutation.isPending} onClick={() => fileInputRef.current?.click()}>
+					<Plus className="size-4" />
+					<Tran text="add" />
+				</Button>
+			</DialogTrigger>
+			<DialogContent className="p-6 min-w-[320px]">
+				<div className="flex flex-col gap-2">
+					<input
+						type="file"
+						ref={fileInputRef}
+						className="hidden"
+						accept={env.supportedImageFormat.map((ext) => `.${ext}`).join(',')}
+						onChange={handleFileChange}
+						multiple
+					/>
+					{Object.entries(progressMap).length === 0 ? (
+						<span className="text-center text-muted-foreground text-sm">
+							<Tran text="upload.no-active" />
+						</span>
+					) : (
+						Object.entries(progressMap).map(([fileName, percent]) => (
+							<div key={fileName} className="flex items-center gap-2 mt-1">
+								<span className="truncate max-w-[120px] text-xs">{fileName}</span>
+								<Progress value={percent} className="flex-1 min-w-[100px] max-w-[200px]" />
+								<span className="text-xs w-8 text-right">{percent}%</span>
+							</div>
+						))
+					)}
 				</div>
-			))}
-		</div>
+			</DialogContent>
+		</Dialog>
 	);
 }
