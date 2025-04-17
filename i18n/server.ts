@@ -3,22 +3,12 @@ import { InitOptions } from 'i18next';
 import Backend from 'i18next-chained-backend';
 import { ChainedBackendOptions } from 'i18next-chained-backend';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
-import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
 import env from '@/constant/env';
 import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
-
-const getTranslationFn = unstable_cache(
-	async (url: string) => await axiosInstance.get(url).then((res) => res.data),
-	['server-translations'],
-	{
-		revalidate: 3600,
-		tags: ['server-translations'],
-	},
-);
 
 export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 	const options: InitOptions<ChainedBackendOptions> = {
@@ -47,8 +37,16 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 								.then((result) => callback(undefined, { status: 200, data: result }))
 								.catch((error) => callback(error, undefined));
 						} else {
-							getTranslationFn(url)
-								.then((result) => callback(undefined, { status: 200, data: result }))
+							fetch(url, {
+								next: {
+									tags: ['server-translations'],
+									revalidate: 3600,
+								},
+							})
+								.then(async (result) => {
+									if (result.ok) callback(undefined, { status: 200, data: await result.json() });
+									else callback(result.statusText, undefined);
+								})
 								.catch((error) => callback(error, undefined));
 						}
 					},
