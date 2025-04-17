@@ -127,6 +127,26 @@ function readDocFile(path: string, filename: string): Doc {
 	};
 }
 
+export function readDocFolder(path: string) {
+	if (!fs.existsSync(path)) {
+		throw new Error(`Doc folder does not exist: ${path}`);
+	}
+
+	return fs
+		.readdirSync(path)
+		.map((child) => p.join(path, child))
+		.filter((child) => child.endsWith('.mdx'))
+		.map((child) => {
+			const content = fs.readFileSync(child).toString();
+			const header = extractDocHeading(content);
+
+			return {
+				header,
+				path: child,
+			};
+		});
+}
+
 // Segments include mdx file segment
 export function readDocContent(locale: string, segments: string[]) {
 	const path = p.join(process.cwd(), 'docs', p.normalize(locale), ...segments.map((segment) => p.normalize(segment))) + '.mdx';
@@ -140,6 +160,10 @@ export function readDocContent(locale: string, segments: string[]) {
 
 export function getDocPath(locale: string, segments: string[]) {
 	return p.join(process.cwd(), 'docs', p.normalize(locale), ...segments.map((segment) => p.normalize(segment))) + '.mdx';
+}
+
+export function getDocFolderPath(locale: string, segments: string[]) {
+	return p.join(process.cwd(), 'docs', p.normalize(locale), ...segments.map((segment) => p.normalize(segment)));
 }
 
 export function isDocExists(locale: string, segments: string[]) {

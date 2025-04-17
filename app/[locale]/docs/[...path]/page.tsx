@@ -4,11 +4,20 @@ import { notFound } from 'next/navigation';
 import removeMd from 'remove-markdown';
 
 import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
-import { extractDocHeading, getDocPath, getNextPrevDoc, isDocExists, readDocContent } from '@/app/[locale]/docs/doc-type';
+import {
+	extractDocHeading,
+	getDocFolderPath,
+	getDocPath,
+	getNextPrevDoc,
+	isDocExists,
+	readDocContent,
+	readDocFolder,
+} from '@/app/[locale]/docs/doc-type';
 
 import { CatchError } from '@/components/common/catch-error';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import ScrollContainer from '@/components/common/scroll-container';
 import Divider from '@/components/ui/divider';
 
 import { formatTitle, generateAlternate } from '@/lib/utils';
@@ -24,7 +33,23 @@ export default async function Page({ params }: Props) {
 	shared['idMaps'] = {};
 
 	if (!isDocExists(locale, path)) {
-		return notFound();
+		const folderPath = getDocFolderPath(locale, path);
+
+		if (!fs.existsSync(folderPath)) {
+			return notFound();
+		}
+
+		const folderContents = readDocFolder(folderPath);
+
+		return (
+			<ScrollContainer className="p-4 space-y-2">
+				{folderContents.map((content, index) => (
+					<h2 key={index} className="text-lg">
+						<InternalLink href={content.path}>{content.header}</InternalLink>
+					</h2>
+				))}
+			</ScrollContainer>
+		);
 	}
 
 	const markdownFilePath = getDocPath(locale, path);
