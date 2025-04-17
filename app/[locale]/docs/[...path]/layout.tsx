@@ -210,7 +210,7 @@ function NavBarDoc({
 	}
 
 	return (
-		<Accordion className="space-y-1 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
+		<Accordion className="space-y-1 w-full h-10" type="single" collapsible defaultValue={selectedSegments.join('/')}>
 			<AccordionItem
 				value={
 					selectedSegments
