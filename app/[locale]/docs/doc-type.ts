@@ -141,11 +141,7 @@ export function readDocContent(locale: string, segments: string[]) {
 export function isDocExists(locale: string, segments: string[]) {
 	const path = p.join(process.cwd(), 'docs', p.normalize(locale), ...segments.map((segment) => p.normalize(segment))) + '.mdx';
 
-	if (!fs.existsSync(path)) {
-		throw new Error(`Doc file does not exist: ${path}`);
-	}
-
-	return true;
+	return !fs.existsSync(path);
 }
 
 type NextPrev = {
