@@ -211,7 +211,6 @@ function CreateFolderDialog({ path }: { path: string }) {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['images'] });
-			toast.success('Folder created successfully');
 		},
 		onError: (error: any) => {
 			toast.error('Failed to create folder', { description: error.message });

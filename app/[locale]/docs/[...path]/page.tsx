@@ -15,6 +15,7 @@ import { formatTitle, generateAlternate } from '@/lib/utils';
 import { shared } from '@/mdx-components';
 
 import './stackoverflow-dark.css';
+import { CatchError } from '@/components/common/catch-error';
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
@@ -28,13 +29,14 @@ export default async function Page({ params }: Props) {
   }
 
   const markdownFilePath = p.join(process.cwd(), 'docs', p.normalize(locale), path.map((segment) => p.normalize(segment)).join('/') + '.mdx');
+  
   const markdown = fs.readFileSync(markdownFilePath).toString();
 
   const { next, previous } = getNextPrevDoc(locale, path);
   const { Post } = await import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({ Post: result.default, metadata: result.metadata }));
 
   return (
-    <>
+    <CatchError>
       <div className="max-w-[80ch] px-4 mb-4 mx-auto w-full flex flex-col">
         <main id="docs-markdown">
           <Post />
@@ -62,7 +64,7 @@ export default async function Page({ params }: Props) {
         </nav>
       </div>
       <TableOfContents markdown={markdown} />
-    </>
+    </CatchError>
   );
 }
 

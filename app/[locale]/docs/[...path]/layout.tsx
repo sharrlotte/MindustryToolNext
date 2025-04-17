@@ -15,6 +15,7 @@ import LanguageSwitcher from '@/app/[locale]/docs/language-switcher';
 import ThemeSwitcher from '@/app/[locale]/docs/theme-swicther';
 
 import Aurora from '@/components/common/aurora';
+import { CatchError } from '@/components/common/catch-error';
 import { Hidden } from '@/components/common/hidden';
 import Hydrated from '@/components/common/hydrated';
 import { MenuIcon, MindustryToolIcon } from '@/components/common/icons';
@@ -28,7 +29,13 @@ import { NavBarProvider } from '@/context/navbar.context';
 import { Locale, locales } from '@/i18n/config';
 import { cn } from '@/lib/utils';
 
-export default async function Layout({ children, params }: { children: ReactNode; params: Promise<{ path: string[]; locale: string }> }) {
+export default async function Layout({
+	children,
+	params,
+}: {
+	children: ReactNode;
+	params: Promise<{ path: string[]; locale: string }>;
+}) {
 	const { locale, path } = await params;
 	const availableLanguages = locales.filter((locale) => isDocExists(locale, path));
 
@@ -36,7 +43,13 @@ export default async function Layout({ children, params }: { children: ReactNode
 		<div className="h-full relative w-full grid grid-rows-[auto_1fr] overflow-hidden">
 			<NavBarProvider>
 				<div className="flex border-b py-2 px-4 items-center overflow-hidden h-16 gap-4 relative bg-card dark:bg-transparent">
-					<Aurora className="absolute inset-0 -z-10 hidden dark:flex" colorStops={['#3A29FF', '#FF94B4', '#FF3232']} blend={0.5} amplitude={1.0} speed={0.5} />
+					<Aurora
+						className="absolute inset-0 -z-10 hidden dark:flex"
+						colorStops={['#3A29FF', '#FF94B4', '#FF3232']}
+						blend={0.5}
+						amplitude={1.0}
+						speed={0.5}
+					/>
 					<div className="flex items-center gap-2">
 						<SmallNavbarToggle className="gap-1 px-0 py-0">
 							<MindustryToolIcon className="size-8" />
@@ -81,11 +94,15 @@ export default async function Layout({ children, params }: { children: ReactNode
 				additionalPadding="pr-4"
 			>
 				<aside className="block md:hidden ml-auto mt-4 px-4">
-					<NavBarDialog locale={locale} selectedSegments={path} />
+					<CatchError>
+						<NavBarDialog locale={locale} selectedSegments={path} />
+					</CatchError>
 				</aside>
 				<aside className="hidden md:flex w-full h-full sm:border-r bg-card max-w-[25rem] min-w-[20rem]">
 					<ScrollContainer id="nav-bar" className="max-w-[20rem] p-4 ml-auto sticky top-0 h-fit" additionalPadding="pr-0">
-						<NavBar locale={locale} selectedSegments={path} />
+						<CatchError>
+							<NavBar locale={locale} selectedSegments={path} />
+						</CatchError>
 					</ScrollContainer>
 				</aside>
 				{children}
@@ -130,7 +147,19 @@ async function NavBar({ locale, selectedSegments }: NavBarProps) {
 	);
 }
 
-function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale: string; doc: Doc; segments: string[]; selectedSegments: string[]; level: number }) {
+function NavBarDoc({
+	doc,
+	segments,
+	level,
+	selectedSegments,
+	locale,
+}: {
+	locale: string;
+	doc: Doc;
+	segments: string[];
+	selectedSegments: string[];
+	level: number;
+}) {
 	const currentSegments = [...segments, doc.segment];
 
 	if (doc.children.length === 0) {
@@ -138,7 +167,9 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
 			<InternalLink
 				href={`/${locale}/docs/${path.join(...currentSegments)}`}
 				className={cn('text-base py-2 rounded-md hover:bg-secondary text-secondary-foreground hover:text-foreground', {
-					'text-foreground bg-secondary': currentSegments.map((segment, index) => segment === selectedSegments[index]).every((v) => v),
+					'text-foreground bg-secondary': currentSegments
+						.map((segment, index) => segment === selectedSegments[index])
+						.every((v) => v),
 				})}
 			>
 				<span
@@ -164,7 +195,14 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
 				<h2 className="text-base py-0 pl-2 font-semibold">{doc.title}</h2>
 				<section className="space-y-1">
 					{doc.children.map((doc) => (
-						<NavBarDoc locale={locale} key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} level={level + 1} />
+						<NavBarDoc
+							locale={locale}
+							key={doc.segment}
+							doc={doc}
+							selectedSegments={selectedSegments}
+							segments={currentSegments}
+							level={level + 1}
+						/>
 					))}
 				</section>
 			</div>
@@ -174,7 +212,13 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
 	return (
 		<Accordion className="space-y-1 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
 			<AccordionItem
-				value={selectedSegments.map((segment, index) => index > currentSegments.length - 1 || segment === currentSegments[index]).every((v) => v) ? selectedSegments.join('/') : doc.segment}
+				value={
+					selectedSegments
+						.map((segment, index) => index > currentSegments.length - 1 || segment === currentSegments[index])
+						.every((v) => v)
+						? selectedSegments.join('/')
+						: doc.segment
+				}
 			>
 				<AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
 					<span
@@ -193,7 +237,14 @@ function NavBarDoc({ doc, segments, level, selectedSegments, locale }: { locale:
 				</AccordionTrigger>
 				<AccordionContent className="space-y-1 mt-1">
 					{doc.children.map((doc) => (
-						<NavBarDoc locale={locale} key={doc.segment} doc={doc} selectedSegments={selectedSegments} segments={currentSegments} level={level + 1} />
+						<NavBarDoc
+							locale={locale}
+							key={doc.segment}
+							doc={doc}
+							selectedSegments={selectedSegments}
+							segments={currentSegments}
+							level={level + 1}
+						/>
 					))}
 				</AccordionContent>
 			</AccordionItem>
