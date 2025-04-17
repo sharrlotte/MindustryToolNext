@@ -65,7 +65,7 @@ export function readDocsByLocale(locale: string) {
 
 function readDocs(localeFolder: string): Doc[] {
 	if (!fs.existsSync(localeFolder)) {
-		throw new Error(`Docs folder does not exist: ${localeFolder}`);
+		return [];
 	}
 
 	return fs
