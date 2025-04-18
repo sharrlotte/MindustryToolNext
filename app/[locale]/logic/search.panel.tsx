@@ -69,6 +69,10 @@ export default function SearchPanel() {
 						matches.push({ label: 'variable', value: item.value });
 					}
 
+					if (node.data.state[item.name]?.toLowerCase().includes(debouncedFilter.toLowerCase())) {
+						matches.push({ label: 'variable', value: node.data.state[item.name] });
+					}
+
 					if (item.label?.toLowerCase().includes(debouncedFilter.toLowerCase())) {
 						matches.push({ label: 'label', value: item.label });
 					}
