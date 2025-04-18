@@ -17,44 +17,44 @@ import { formatTitle, generateAlternate } from '@/lib/utils';
 export const revalidate = 3600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const { t } = await getTranslation(locale, ['common', 'meta']);
-  const title = t('schematic');
+	const { locale } = await params;
+	const { t } = await getTranslation(locale, ['common', 'meta']);
+	const title = t('schematic');
 
-  return {
-    title: formatTitle(title),
-    description: t('schematic-description'),
-    openGraph: {
-      title: formatTitle(title),
-      description: t('schematic-description'),
-    },
-    alternates: generateAlternate('/schematics'),
-  };
+	return {
+		title: formatTitle(title),
+		description: t('schematic-description'),
+		openGraph: {
+			title: formatTitle(title),
+			description: t('schematic-description'),
+		},
+		alternates: generateAlternate('/schematics'),
+	};
 }
 
 type Props = {
-  params: Promise<{ locale: Locale }>;
+	params: Promise<{ locale: Locale }>;
 };
 
 export default async function Page() {
-  const uploadLink = `${env.url.base}/upload/schematic`;
+	const uploadLink = `${env.url.base}/upload/schematic`;
 
-  return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden p-2">
-      <NameTagSearch type="schematic" />
-      <Client />
-      <div className="flex items-center gap-2 justify-between">
-        <InternalLink variant="button-secondary" href={uploadLink}>
-          <UploadIcon />
-          <Tran text="upload-schematic" />
-        </InternalLink>
-        <div className="flex justify-end items-center gap-2 flex-wrap">
-          <PaginationLayoutSwitcher />
-          <GridLayout>
-            <PaginationNavigator numberOfItems="/schematics/total" queryKey={['schematics', 'total']} />
-          </GridLayout>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className="flex h-full flex-col gap-2 overflow-hidden p-2">
+			<NameTagSearch type="schematic" />
+			<Client />
+			<div className="flex items-center gap-2 justify-between">
+				<InternalLink variant="button-secondary" href={uploadLink}>
+					<UploadIcon />
+					<Tran text="upload-schematic" />
+				</InternalLink>
+				<div className="flex justify-end items-center gap-2 flex-wrap">
+					<PaginationLayoutSwitcher />
+					<GridLayout>
+						<PaginationNavigator numberOfItems="/schematics/total" queryKey={['schematics', 'total']} />
+					</GridLayout>
+				</div>
+			</div>
+		</div>
+	);
 }

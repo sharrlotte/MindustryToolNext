@@ -1,4 +1,3 @@
-import { match } from 'assert';
 import { useMemo, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
@@ -67,6 +66,10 @@ export default function SearchPanel() {
 				} else if (item.type === 'input') {
 					if (item.value.toLowerCase().includes(debouncedFilter.toLowerCase())) {
 						matches.push({ label: 'variable', value: item.value });
+					}
+
+					if (node.data.state[item.name]?.toLowerCase().includes(debouncedFilter.toLowerCase())) {
+						matches.push({ label: 'variable', value: node.data.state[item.name] });
 					}
 
 					if (item.label?.toLowerCase().includes(debouncedFilter.toLowerCase())) {
