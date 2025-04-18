@@ -210,14 +210,21 @@ function NavBarDoc({
 	}
 
 	return (
-		<Accordion className="space-y-1 w-full" type="single" collapsible defaultValue={selectedSegments.join('/')}>
+		<Accordion
+			className="space-y-1 w-full"
+			type="single"
+			collapsible
+			defaultValue={level === 1 ? 'open' : selectedSegments.join('/')}
+		>
 			<AccordionItem
 				value={
-					selectedSegments
-						.map((segment, index) => index > currentSegments.length - 1 || segment === currentSegments[index])
-						.every((v) => v)
-						? selectedSegments.join('/')
-						: doc.segment
+					level === 1
+						? 'open'
+						: selectedSegments
+									.map((segment, index) => index > currentSegments.length - 1 || segment === currentSegments[index])
+									.every((v) => v)
+							? selectedSegments.join('/')
+							: doc.segment
 				}
 			>
 				<AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
