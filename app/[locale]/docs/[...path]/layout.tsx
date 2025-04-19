@@ -166,7 +166,7 @@ function NavBarDoc({
 		return (
 			<InternalLink
 				href={`/${locale}/docs/${path.join(...currentSegments)}`}
-				className={cn('text-base w-full py-2 rounded-md hover:bg-secondary text-secondary-foreground hover:text-foreground', {
+				className={cn('text-base capitalize w-full py-2 rounded-md hover:bg-secondary text-secondary-foreground hover:text-foreground', {
 					'text-foreground bg-secondary': currentSegments
 						.map((segment, index) => segment === selectedSegments[index])
 						.every((v) => v),
@@ -192,7 +192,7 @@ function NavBarDoc({
 	if (level === 0) {
 		return (
 			<div className="space-y-1">
-				<h2 className="text-base py-0 pl-2 font-semibold">{doc.title}</h2>
+				<h2 className="text-base py-0 pl-2 font-semibold uppercase">{doc.title}</h2>
 				<section className="space-y-1">
 					{doc.children.map((doc) => (
 						<NavBarDoc
@@ -229,7 +229,7 @@ function NavBarDoc({
 			>
 				<AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
 					<span
-						className={cn('text-base font-normal text-secondary-foreground pr-2', {
+						className={cn('text-base font-normal text-secondary-foreground pr-2 capitalize', {
 							'pl-2': level === 1,
 							'pl-4': level === 2, //
 							'pl-6': level === 3,
