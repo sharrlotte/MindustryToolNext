@@ -3,12 +3,21 @@
 import { BanIcon } from 'lucide-react';
 
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
 import { revalidate } from '@/action/common';
 import { useSocket } from '@/context/socket.context';
 import useMessage from '@/hooks/use-message';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 type BanButtonProps = {
 	id: string;
@@ -24,22 +33,27 @@ export function BanButton({ id, ip, uuid, username }: BanButtonProps) {
 		method: 'MESSAGE',
 	});
 
+	const queryClient = useQueryClient();
+
 	function handleBan() {
 		if (ip) {
-			sendMessage(`/ban ip ${ip}`);
+			sendMessage(`ban ip ${ip}`);
 		}
 
 		if (uuid) {
-			sendMessage(`/ban id ${uuid}`);
+			sendMessage(`ban id ${uuid}`);
 		}
 
 		if (username) {
-			sendMessage(`/ban name ${username}`);
+			sendMessage(`ban name ${username}`);
 		}
 
 		setTimeout(() => {
 			revalidate({
 				path: '/[locale]/(main)/servers/[id]/(dashboard)',
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['server', id, 'player'],
 			});
 		}, 1000);
 	}

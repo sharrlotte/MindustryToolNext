@@ -3,12 +3,21 @@
 import { BanIcon } from 'lucide-react';
 
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
 import { revalidate } from '@/action/common';
 import { useSocket } from '@/context/socket.context';
 import useMessage from '@/hooks/use-message';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 type BanButtonProps = {
 	id: string;
@@ -22,12 +31,17 @@ export function KickButton({ id, username }: BanButtonProps) {
 		method: 'MESSAGE',
 	});
 
+	const queryClient = useQueryClient();
+
 	function handleKick() {
-		sendMessage(`/kick ${username}`);
+		sendMessage(`kick ${username}`);
 
 		setTimeout(() => {
 			revalidate({
 				path: '/[locale]/(main)/servers/[id]/(dashboard)',
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['server', id, 'player'],
 			});
 		}, 1000);
 	}
