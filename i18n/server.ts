@@ -38,6 +38,9 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 								.catch((error) => callback(error, undefined));
 						} else {
 							fetch(url, {
+								headers: {
+									Server: 'true',
+								},
 								next: {
 									tags: ['server-translations'],
 									revalidate: 3600,
@@ -60,7 +63,10 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 
 const initI18next = async (language: Locale, namespace?: string | string[]) => {
 	const i18nInstance = createInstance();
-	await i18nInstance.use(initReactI18next).use(Backend).init<ChainedBackendOptions>(getServerOptions(language, namespace));
+	await i18nInstance
+		.use(initReactI18next) //
+		.use(Backend)
+		.init<ChainedBackendOptions>(getServerOptions(language, namespace));
 
 	return i18nInstance;
 };
