@@ -1,6 +1,9 @@
+import { ReactNode } from "react";
+
+
 type TableProps = {
-	header: string[];
-	data: string[][];
+	header: ReactNode[];
+	data: ReactNode[][];
 };
 
 export default function Table({ header, data }: TableProps) {
