@@ -166,14 +166,14 @@ function NavBarDoc({
 		return (
 			<InternalLink
 				href={`/${locale}/docs/${path.join(...currentSegments)}`}
-				className={cn('text-base capitalize w-full py-2 rounded-md hover:bg-secondary text-secondary-foreground hover:text-foreground', {
+				className={cn('text-base w-full py-2 rounded-md hover:bg-secondary text-secondary-foreground hover:text-foreground', {
 					'text-foreground bg-secondary': currentSegments
 						.map((segment, index) => segment === selectedSegments[index])
 						.every((v) => v),
 				})}
 			>
 				<span
-					className={cn('pr-2', {
+					className={cn('pr-2 capitalize', {
 						'pl-2': level === 1,
 						'pl-4': level === 2, //
 						'pl-6': level === 3,
@@ -183,7 +183,7 @@ function NavBarDoc({
 						'pl-14': level === 7,
 					})}
 				>
-					{doc.title}
+					{doc.title.toLowerCase()}
 				</span>
 			</InternalLink>
 		);
@@ -239,7 +239,7 @@ function NavBarDoc({
 							'pl-14': level === 7,
 						})}
 					>
-						{doc.title}
+						{doc.title.toLowerCase()}
 					</span>
 				</AccordionTrigger>
 				<AccordionContent className="space-y-1 mt-1">
