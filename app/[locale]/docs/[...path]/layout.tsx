@@ -173,7 +173,7 @@ function NavBarDoc({
 				})}
 			>
 				<span
-					className={cn('pr-2', {
+					className={cn('pr-2 capitalize', {
 						'pl-2': level === 1,
 						'pl-4': level === 2, //
 						'pl-6': level === 3,
@@ -183,7 +183,7 @@ function NavBarDoc({
 						'pl-14': level === 7,
 					})}
 				>
-					{doc.title}
+					{doc.title.toLowerCase()}
 				</span>
 			</InternalLink>
 		);
@@ -192,7 +192,7 @@ function NavBarDoc({
 	if (level === 0) {
 		return (
 			<div className="space-y-1">
-				<h2 className="text-base py-0 pl-2 font-semibold">{doc.title}</h2>
+				<h2 className="text-base py-0 pl-2 font-semibold uppercase">{doc.title}</h2>
 				<section className="space-y-1">
 					{doc.children.map((doc) => (
 						<NavBarDoc
@@ -229,7 +229,7 @@ function NavBarDoc({
 			>
 				<AccordionTrigger className="text-base py-0 justify-start text-start text-nowrap w-full">
 					<span
-						className={cn('text-base font-normal text-secondary-foreground pr-2', {
+						className={cn('text-base font-normal text-secondary-foreground pr-2 capitalize', {
 							'pl-2': level === 1,
 							'pl-4': level === 2, //
 							'pl-6': level === 3,
@@ -239,7 +239,7 @@ function NavBarDoc({
 							'pl-14': level === 7,
 						})}
 					>
-						{doc.title}
+						{doc.title.toLowerCase()}
 					</span>
 				</AccordionTrigger>
 				<AccordionContent className="space-y-1 mt-1">

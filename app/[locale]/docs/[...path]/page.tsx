@@ -72,16 +72,16 @@ export default async function Page({ params }: Props) {
 					{previous && (
 						<InternalLink className="mr-auto flex gap-0.5 items-end justify-end" href={`/docs/${previous.segments.join('/')}`}>
 							<ChevronLeftIcon />
-							<div className="grid grid-rows-2 items-end">
-								<span>{previous.parent}</span>
+							<div className="grid grid-rows-2 items-end capitalize">
+								<span>{previous.parent.toLowerCase()}</span>
 								<span className="underline text-sm">{previous.header}</span>
 							</div>
 						</InternalLink>
 					)}
 					{next && (
 						<InternalLink className="ml-auto flex gap-0.5 items-end justify-end" href={`/docs/${next.segments.join('/')}`}>
-							<div className="grid grid-rows-2 items-end text-end">
-								<span>{next.parent}</span>
+							<div className="grid grid-rows-2 items-end text-end capitalize">
+								<span>{next.parent.toLowerCase()}</span>
 								<span className="underline text-sm">{next.header}</span>
 							</div>
 							<ChevronRightIcon />
