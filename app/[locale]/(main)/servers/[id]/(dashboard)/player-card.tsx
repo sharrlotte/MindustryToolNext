@@ -1,35 +1,40 @@
+'use client';
+
 import ColorText from '@/components/common/color-text';
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import { BanButton } from '@/components/server/ban.button';
 import { KickButton } from '@/components/server/kick.button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
 
-import { serverApi } from '@/action/common';
 import localeToFlag from '@/constant/constant';
-import { isError } from '@/lib/error';
+import useClientApi from '@/hooks/use-client';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
+
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 type PlayersCardProps = {
 	id: string;
 };
 
-export async function PlayersCard({ id }: PlayersCardProps) {
-	const players = await serverApi((axios) => getServerPlayers(axios, id));
+export function PlayersCard({ id }: PlayersCardProps) {
+	const axios = useClientApi();
+	const { data, isError, error } = useSuspenseQuery({
+		queryKey: ['server', id, 'players'],
+		queryFn: () => getServerPlayers(axios, id),
+	});
 
-	if (isError(players)) {
-		return <ErrorScreen error={players} />;
+	if (isError) {
+		return <ErrorMessage error={error} />;
 	}
 
 	return (
 		<div className="grid gap-1 min-w-[300px]">
-			{players
-				.sort((a, b) => a.team.name.localeCompare(b.team.name))
-				.map((player) => (
-					<PlayerCard key={player.uuid} serverId={id} player={player} />
-				))}
+			{data
+				?.sort((a, b) => a.team.name.localeCompare(b.team.name))
+				.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
 		</div>
 	);
 }
