@@ -21,7 +21,7 @@ import { PutServerRequest, PutServerSchema, ServerModes } from '@/types/request/
 import Server from '@/types/response/Server';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 type Props = {
 	server: Server;
@@ -51,12 +51,20 @@ export default function ServerUpdateForm({ server }: Props) {
 		},
 	});
 
+	const { data: images } = useQuery({
+		queryKey: ['server-images'],
+		queryFn: () => axios.get('/servers/images').then((res) => res.data as string[]),
+	});
+
 	const isChanged = form.formState.isDirty;
 
 	return (
 		<div className="relative flex h-full flex-col justify-between gap-2">
 			<Form {...form}>
-				<form className="flex flex-1 flex-col justify-between bg-card rounded-md p-6 h-full" onSubmit={form.handleSubmit((value) => mutate(value))}>
+				<form
+					className="flex flex-1 flex-col justify-between bg-card rounded-md p-6 h-full"
+					onSubmit={form.handleSubmit((value) => mutate(value))}
+				>
 					<FormField
 						control={form.control}
 						name="name"
@@ -68,7 +76,9 @@ export default function ServerUpdateForm({ server }: Props) {
 								<FormControl>
 									<Input placeholder="Test" {...field} />
 								</FormControl>
-								<FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.name-description" />}</FormDescription>
+								<FormDescription>
+									{field.value ? <ColorText text={field.value} /> : <Tran text="server.name-description" />}
+								</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}
@@ -82,7 +92,9 @@ export default function ServerUpdateForm({ server }: Props) {
 								<FormControl>
 									<Input placeholder="Some cool stuff" {...field} />
 								</FormControl>
-								<FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.description-description" />}</FormDescription>
+								<FormDescription>
+									{field.value ? <ColorText text={field.value} /> : <Tran text="server.description-description" />}
+								</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}
@@ -109,6 +121,34 @@ export default function ServerUpdateForm({ server }: Props) {
 								</FormControl>
 								<FormDescription>
 									<Tran text="server.game-mode-description" />
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="image"
+						render={({ field }) => (
+							<FormItem className="grid">
+								<FormLabel>
+									<Tran text="server.image" />
+								</FormLabel>
+								<FormControl>
+									<ComboBox
+										searchBar={false}
+										value={{ label: field.value, value: field.value }}
+										values={
+											images?.map((value) => ({
+												label: value,
+												value,
+											})) ?? []
+										}
+										onChange={(value) => field.onChange(value)}
+									/>
+								</FormControl>
+								<FormDescription>
+									<Tran text="server.image-description" />
 								</FormDescription>
 								<FormMessage />
 							</FormItem>
@@ -155,10 +195,22 @@ export default function ServerUpdateForm({ server }: Props) {
 							'opacity-100 translate-y-0': isChanged,
 						})}
 					>
-						<Button className="flex justify-end" variant="secondary" title="reset" onClick={() => form.reset()} disabled={!isChanged || isPending}>
+						<Button
+							className="flex justify-end"
+							variant="secondary"
+							title="reset"
+							onClick={() => form.reset()}
+							disabled={!isChanged || isPending}
+						>
 							<Tran text="reset" />
 						</Button>
-						<Button className="flex justify-end" variant="primary" type="submit" title="update" disabled={!isChanged || isPending}>
+						<Button
+							className="flex justify-end"
+							variant="primary"
+							type="submit"
+							title="update"
+							disabled={!isChanged || isPending}
+						>
 							<Tran text="update" />
 						</Button>
 					</div>
