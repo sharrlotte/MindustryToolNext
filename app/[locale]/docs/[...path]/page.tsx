@@ -4,15 +4,7 @@ import { notFound } from 'next/navigation';
 import removeMd from 'remove-markdown';
 
 import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
-import {
-	extractDocHeading,
-	getDocFolderPath,
-	getDocPath,
-	getNextPrevDoc,
-	isDocExists,
-	readDocContent,
-	readDocFolder,
-} from '@/app/[locale]/docs/doc-type';
+import { getDocFolderPath, getDocPath, getNextPrevDoc, isDocExists, readDoc, readDocFolder } from '@/app/[locale]/docs/doc-type';
 
 import { CatchError } from '@/components/common/catch-error';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
@@ -101,9 +93,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		return notFound();
 	}
 
-	const content = readDocContent(locale, path);
-	const title = extractDocHeading(content);
+	const { header, content } = readDoc(locale, path);
+
+	const title = removeMd(header);
 	const description = removeMd(content).slice(0, Math.min(500, content.length));
+
+	const images = content.match(/!\[.*?\]\((.*?)\)/g)?.map((match) => match.replace(/!\[(.*?)\]\((.*?)\)/, '$2')) || [];
 
 	return {
 		title: formatTitle(title),
@@ -111,6 +106,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		openGraph: {
 			title: formatTitle(title),
 			description,
+			images,
 		},
 		alternates: generateAlternate(`/docs/${path.join('/')}`),
 	};

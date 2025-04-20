@@ -1,13 +1,11 @@
 import { NextConfig } from 'next';
 import rehypeHighlight from 'rehype-highlight';
 import frontmatter from 'remark-frontmatter';
-
-
+import remarkGfm from 'remark-gfm';
 
 import bundleAnalyzer from '@next/bundle-analyzer';
 import createMDX from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
-
 
 const nextConfig: NextConfig = {
 	experimental: {
@@ -96,27 +94,27 @@ const nextConfig: NextConfig = {
 };
 
 const withMDX = createMDX({
-  options: {
-    remarkPlugins: [[frontmatter, { type: 'yaml', marker: '-' }]],
-    rehypePlugins: [rehypeHighlight],
-  },
+	options: {
+		remarkPlugins: [[frontmatter, { type: 'yaml', marker: '-' }], [remarkGfm]],
+		rehypePlugins: [rehypeHighlight],
+	},
 });
 
 const analyze = process.env.ANALYZE === 'true';
 const withBundleAnalyzer = bundleAnalyzer({
-  enabled: analyze,
+	enabled: analyze,
 });
 
 module.exports = withSentryConfig(withMDX(withBundleAnalyzer(nextConfig)), {
-  org: 'mindustrytool',
-  project: 'mindustry-tool',
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  reactComponentAnnotation: {
-    enabled: true,
-  },
-  tunnelRoute: '/monitoring',
-  disableLogger: true,
-  automaticVercelMonitors: false,
-  telemetry: false,
+	org: 'mindustrytool',
+	project: 'mindustry-tool',
+	silent: !process.env.CI,
+	widenClientFileUpload: true,
+	reactComponentAnnotation: {
+		enabled: true,
+	},
+	tunnelRoute: '/monitoring',
+	disableLogger: true,
+	automaticVercelMonitors: false,
+	telemetry: false,
 });
