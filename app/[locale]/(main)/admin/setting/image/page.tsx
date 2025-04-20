@@ -9,7 +9,7 @@ import * as z from 'zod';
 import CopyButton from '@/components/button/copy.button';
 import RemoveButton from '@/components/button/remove.button';
 import { Hidden } from '@/components/common/hidden';
-import { FileIcon, FolderIcon, UploadIcon } from '@/components/common/icons';
+import { FileIcon, FolderIcon, LinkIcon, UploadIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -76,8 +76,8 @@ export default function Page() {
 
 function DirCard({ data, setPath }: { data: ImageMetadata; setPath: (path: string) => void }) {
 	return (
-		<div className="p-2 border border-md rounded-md flex gap-1 items-center cursor-pointer" onClick={() => setPath(data.path)}>
-			<div className="flex items-center gap-1">
+		<div className="p-2 border border-md rounded-md flex gap-1 items-center cursor-pointer">
+			<div className="flex items-center gap-1 w-full justify-start" onClick={() => setPath(data.path)}>
 				<FolderIcon />
 				{data.name}
 			</div>
@@ -107,9 +107,9 @@ function FileCard({ data }: { data: ImageMetadata }) {
 function ImageCard({ data }: { data: ImageMetadata }) {
 	return (
 		<Dialog>
-			<DialogTrigger asChild>
-				<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
-					<div className="flex items-center gap-1">
+			<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
+				<DialogTrigger asChild>
+					<div className="flex items-center justify-start gap-1 w-full">
 						<motion.img
 							id={data.path}
 							layout
@@ -122,13 +122,15 @@ function ImageCard({ data }: { data: ImageMetadata }) {
 						/>
 						<span>{data.name}</span>
 					</div>
-					<div className="flex items-center gap-1 ml-auto">
-						<CopyButton data={data.name} />
-						<CopyButton data={`${env.url.image}/${data.path}`} />
-						<DeleteFileAndFolderButton path={data.path} />
-					</div>
+				</DialogTrigger>
+				<div className="flex items-center gap-1 ml-auto">
+					<CopyButton data={data.name} />
+					<CopyButton data={`${env.url.image}/${data.path}`}>
+						<LinkIcon />
+					</CopyButton>
+					<DeleteFileAndFolderButton path={data.path} />
 				</div>
-			</DialogTrigger>
+			</div>
 			<DialogContent className="w-fit h-fit overflow-hidden flex items-center justify-center p-0">
 				<Hidden>
 					<DialogTitle />
