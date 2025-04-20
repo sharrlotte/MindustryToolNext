@@ -35,7 +35,9 @@ export default function Page() {
 				const formData = new FormData();
 				formData.append('image', image);
 
-				return axios.post('/image-generator/map', formData, { data: formData }).then((result) => result.data as string);
+				return axios
+					.post('/image-generator/map', formData, { data: formData, responseType: 'blob' })
+					.then((result) => result.data as Blob);
 			}
 			return Promise.reject(new Error('No image selected'));
 		},
@@ -76,7 +78,7 @@ export default function Page() {
 	);
 }
 
-function Preview({ data }: { data: string }) {
+function Preview({ data }: { data: Blob }) {
 	const axios = useClientApi();
 
 	const {
@@ -86,7 +88,7 @@ function Preview({ data }: { data: string }) {
 		error,
 	} = useQuery({
 		queryKey: ['map-preview', data],
-		queryFn: () => (data ? getMapPreview(axios, { file: data }) : null),
+		queryFn: () => (data ? getMapPreview(axios, { file: new File([data], 'map.msav') }) : null),
 	});
 
 	if (isLoading) {
@@ -114,10 +116,9 @@ function Preview({ data }: { data: string }) {
 	);
 }
 
-function DownloadButton({ data }: { data: string }) {
+function DownloadButton({ data }: { data: Blob }) {
 	function download() {
-		const blob = new Blob([data], { type: 'text/plain;charset=utf-8;' });
-		saveAs(blob, 'image.msav');
+		saveAs(data, 'image.msav');
 	}
 
 	return (
