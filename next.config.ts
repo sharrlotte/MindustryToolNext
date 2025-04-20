@@ -7,7 +7,7 @@ import bundleAnalyzer from '@next/bundle-analyzer';
 import createMDX from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
 
-const nextConfig: NextConfig = {
+let nextConfig: NextConfig = {
 	experimental: {
 		reactCompiler: true,
 	},
@@ -101,20 +101,27 @@ const withMDX = createMDX({
 });
 
 const analyze = process.env.ANALYZE === 'true';
+
 const withBundleAnalyzer = bundleAnalyzer({
 	enabled: analyze,
 });
 
-module.exports = withSentryConfig(withMDX(withBundleAnalyzer(nextConfig)), {
-	org: 'mindustrytool',
-	project: 'mindustry-tool',
-	silent: !process.env.CI,
-	widenClientFileUpload: true,
-	reactComponentAnnotation: {
-		enabled: true,
-	},
-	tunnelRoute: '/monitoring',
-	disableLogger: true,
-	automaticVercelMonitors: false,
-	telemetry: false,
-});
+nextConfig = withMDX(withBundleAnalyzer(nextConfig));
+
+if (process.env.NODE_ENV === 'production') {
+	nextConfig = withSentryConfig(nextConfig, {
+		org: 'mindustrytool',
+		project: 'mindustry-tool',
+		silent: !process.env.CI,
+		widenClientFileUpload: true,
+		reactComponentAnnotation: {
+			enabled: true,
+		},
+		tunnelRoute: '/monitoring',
+		disableLogger: true,
+		automaticVercelMonitors: false,
+		telemetry: false,
+	});
+}
+
+module.exports = nextConfig;
