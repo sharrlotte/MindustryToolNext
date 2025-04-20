@@ -46,7 +46,7 @@ export default function Page() {
 					<FileHierarchy path={path} onClick={setPath} />
 				</div>
 			</section>
-			<ScrollContainer className="border rounded-lg">
+			<ScrollContainer>
 				<InfinitePage
 					className="flex flex-col gap-2 p-2 h-full"
 					queryKey={['images']}
