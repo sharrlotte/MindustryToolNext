@@ -285,7 +285,6 @@ function UploadButton({ path }: { path: string }) {
 				return updated;
 			});
 			queryClient.invalidateQueries({ queryKey: ['images'] });
-			toast.success(`Image "${file.name}" uploaded successfully`);
 		},
 		onError: (error: any, file) => {
 			setProgressMap((prev) => {
@@ -322,7 +321,7 @@ function UploadButton({ path }: { path: string }) {
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="p-6 min-w-[320px]">
-				<div className="flex flex-col gap-2">
+				<div className="flex flex-col gap-2 mx-auto">
 					<input
 						id="file-upload"
 						type="file"
@@ -331,7 +330,7 @@ function UploadButton({ path }: { path: string }) {
 						onChange={handleFileChange}
 						multiple
 					/>
-					<label htmlFor="file-upload" className="flex items-center gap-2 cursor-pointer">
+					<label htmlFor="file-upload" className="flex items-center gap-2 cursor-pointer border rounded-md px-2 py-1">
 						<Tran text="upload" />
 						<UploadIcon className="size-4" />
 					</label>

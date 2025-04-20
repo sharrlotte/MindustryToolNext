@@ -63,7 +63,9 @@ export default function useClientApi(): AxiosInstance {
 				return response;
 			},
 			(error) => {
-				if ('status' in error) {
+				if (typeof error === 'string') {
+					toast.error(error);
+				} else if (typeof error === 'object' && 'status' in error) {
 					const status = error.status;
 
 					if (status === 401) {
@@ -77,9 +79,7 @@ export default function useClientApi(): AxiosInstance {
 					} else if (status === 500) {
 						toast.error(<Tran text="internal-server-error" />);
 					}
-				}
-
-				return Promise.reject(error);
+				} else return Promise.reject(error);
 			},
 		);
 
