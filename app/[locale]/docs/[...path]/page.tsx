@@ -15,7 +15,7 @@ import Divider from '@/components/ui/divider';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 import { shared } from '@/mdx-components';
 
-import './stackoverflow-dark.css';
+import './style.css';
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 

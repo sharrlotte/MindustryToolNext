@@ -98,7 +98,7 @@ export default async function Layout({
 						<NavBarDialog locale={locale} selectedSegments={path} />
 					</CatchError>
 				</aside>
-				<aside className="hidden md:flex w-full h-full sm:border-r max-w-[25rem] min-w-[20rem]">
+				<aside className="hidden md:flex w-full h-full sm:border-r border-border max-w-[25rem] min-w-[20rem]">
 					<ScrollContainer id="nav-bar" className="max-w-[20rem] p-4 ml-auto sticky top-0 h-fit" additionalPadding="pr-0">
 						<CatchError>
 							<NavBar locale={locale} selectedSegments={path} />
