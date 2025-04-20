@@ -9,7 +9,11 @@ import { withSentryConfig } from '@sentry/nextjs';
 
 const config: NextConfig =
 	process.env.NODE_ENV === 'development'
-		? {}
+		? {
+				experimental: {
+					optimizePackageImports: ['lucide-react', 'usehooks-ts', 'three', 'framer-motion', 'axios'],
+				},
+			}
 		: {
 				logging: {
 					fetches: {
