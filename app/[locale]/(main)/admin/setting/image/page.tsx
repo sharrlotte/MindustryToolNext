@@ -122,11 +122,11 @@ function ImageCard({ data }: { data: ImageMetadata }) {
 						/>
 						<span>{data.name}</span>
 					</div>
-				</div>
-				<div className="flex items-center gap-1 ml-auto">
-					<CopyButton data={data.name} />
-					<CopyButton data={`${env.url.image}/${data.path}`} />
-					<DeleteFileAndFolderButton path={data.path} />
+					<div className="flex items-center gap-1 ml-auto">
+						<CopyButton data={data.name} />
+						<CopyButton data={`${env.url.image}/${data.path}`} />
+						<DeleteFileAndFolderButton path={data.path} />
+					</div>
 				</div>
 			</DialogTrigger>
 			<DialogContent className="w-fit h-fit overflow-hidden flex items-center justify-center p-0">
