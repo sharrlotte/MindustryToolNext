@@ -42,7 +42,7 @@ export default async function Layout({
 	return (
 		<div className="h-full relative w-full grid grid-rows-[auto_1fr] overflow-hidden">
 			<NavBarProvider>
-				<div className="flex border-b py-2 px-4 items-center overflow-hidden h-16 gap-4 relative bg-card dark:bg-transparent">
+				<div className="flex border-b py-2 px-4 items-center overflow-hidden h-16 gap-4 relative dark:bg-transparent">
 					<Aurora
 						className="absolute inset-0 -z-10 hidden dark:flex"
 						colorStops={['#3A29FF', '#FF94B4', '#FF3232']}
@@ -90,7 +90,7 @@ export default async function Layout({
 			</NavBarProvider>
 			<ScrollContainer
 				id="markdown-scroll-container"
-				className="gap-2 flex-col md:grid md:grid-cols-[auto_1fr_auto] relative h-full flex bg-card dark:bg-background md:justify-center"
+				className="gap-2 flex-col md:grid md:grid-cols-[auto_1fr_auto] relative h-full flex dark:bg-background md:justify-center"
 				additionalPadding="pr-4"
 			>
 				<aside className="block md:hidden ml-auto mt-4 px-4">
@@ -105,7 +105,7 @@ export default async function Layout({
 						</CatchError>
 					</ScrollContainer>
 				</aside>
-				{children}
+				<div className="w-full h-full flex relative">{children}</div>
 			</ScrollContainer>
 		</div>
 	);

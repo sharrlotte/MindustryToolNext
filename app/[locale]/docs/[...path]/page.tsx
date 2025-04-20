@@ -1,6 +1,5 @@
 import fs from 'fs';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import removeMd from 'remove-markdown';
 
 import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
@@ -16,6 +15,9 @@ import { formatTitle, generateAlternate } from '@/lib/utils';
 import { shared } from '@/mdx-components';
 
 import './style.css';
+import Tran from '@/components/common/tran';
+import Link from 'next/link';
+import BackButton from '@/components/ui/back-button';
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
@@ -28,7 +30,24 @@ export default async function Page({ params }: Props) {
 		const folderPath = getDocFolderPath(locale, path);
 
 		if (!fs.existsSync(folderPath)) {
-			return notFound();
+			return (
+				<div className="flex pointer-events-none h-full flex-1 flex-col items-center justify-center gap-4 z-50 absolute inset-0">
+					<div className="pointer-events-auto">
+						<h2 className="text-bold text-3xl">
+							<Tran text="not-found" />
+						</h2>
+						<p>
+							<Tran text="not-found-description" />
+						</p>
+						<div className="grid grid-cols-2 gap-2">
+							<Link className="rounded-md text-center bg-brand p-2 text-sm text-brand-foreground" href="/">
+								<Tran text="home" />
+							</Link>
+							<BackButton variant="primary" />
+						</div>
+					</div>
+				</div>
+			);
 		}
 
 		const folderContents = readDocFolder(folderPath);
@@ -90,7 +109,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale, path } = await params;
 
 	if (!isDocExists(locale, path)) {
-		return notFound();
+		return {
+			title: 'Not found',
+		};
 	}
 
 	const { header, content } = readDoc(locale, path);
