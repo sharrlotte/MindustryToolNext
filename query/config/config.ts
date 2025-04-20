@@ -55,7 +55,9 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.response.use(
 	(res) => res,
 	(error) => {
-		if (error.message) {
+		logError(error);
+
+		if (error?.message) {
 			return Promise.reject(error.message);
 		}
 
@@ -73,7 +75,6 @@ axiosInstance.interceptors.response.use(
 			statusError = createUnknownError(error);
 		}
 
-		logError(error);
 		return Promise.reject(statusError);
 	},
 );

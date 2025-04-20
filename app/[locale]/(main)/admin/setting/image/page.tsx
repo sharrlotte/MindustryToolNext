@@ -46,7 +46,7 @@ export default function Page() {
 					<FileHierarchy path={path} onClick={setPath} />
 				</div>
 			</section>
-			<ScrollContainer className="border rounded-lg">
+			<ScrollContainer>
 				<InfinitePage
 					className="flex flex-col gap-2 p-2 h-full"
 					queryKey={['images']}
@@ -77,7 +77,7 @@ export default function Page() {
 function DirCard({ data, setPath }: { data: ImageMetadata; setPath: (path: string) => void }) {
 	return (
 		<div className="p-2 border border-md rounded-md flex gap-1 items-center cursor-pointer" onClick={() => setPath(data.path)}>
-			<div className="flex items-center">
+			<div className="flex items-center gap-1">
 				<FolderIcon />
 				{data.name}
 			</div>
@@ -92,7 +92,7 @@ function DirCard({ data, setPath }: { data: ImageMetadata; setPath: (path: strin
 function FileCard({ data }: { data: ImageMetadata }) {
 	return (
 		<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
-			<div className="flex items-center">
+			<div className="flex items-center gap-1">
 				<FileIcon />
 				{data.name}
 			</div>
@@ -109,7 +109,7 @@ function ImageCard({ data }: { data: ImageMetadata }) {
 		<Dialog>
 			<DialogTrigger asChild>
 				<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
-					<div className="flex items-center">
+					<div className="flex items-center gap-1">
 						<motion.img
 							id={data.path}
 							layout
