@@ -2,14 +2,14 @@
 
 import { motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import CopyButton from '@/components/button/copy.button';
 import RemoveButton from '@/components/button/remove.button';
 import { Hidden } from '@/components/common/hidden';
-import { FileIcon, FolderIcon } from '@/components/common/icons';
+import { FileIcon, FolderIcon, UploadIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -260,7 +260,6 @@ function CreateFolderDialog({ path }: { path: string }) {
 function UploadButton({ path }: { path: string }) {
 	const axios = useClientApi();
 	const queryClient = useQueryClient();
-	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const [progressMap, setProgressMap] = useState<Record<string, number>>({});
 	const [open, setOpen] = useState(false);
@@ -314,12 +313,6 @@ function UploadButton({ path }: { path: string }) {
 		event.target.value = '';
 	};
 
-	useEffect(() => {
-		if (open && Object.keys(progressMap).length === 0) {
-			setOpen(false);
-		}
-	}, [progressMap, open]);
-
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
@@ -331,13 +324,17 @@ function UploadButton({ path }: { path: string }) {
 			<DialogContent className="p-6 min-w-[320px]">
 				<div className="flex flex-col gap-2">
 					<input
+						id="file-upload"
 						type="file"
-						ref={fileInputRef}
 						className="hidden"
 						accept={env.supportedImageFormat.map((ext) => `.${ext}`).join(',')}
 						onChange={handleFileChange}
 						multiple
 					/>
+					<label htmlFor="file-upload" className="flex items-center gap-2 cursor-pointer">
+						<Tran text="upload" />
+						<UploadIcon className="size-4" />
+					</label>
 					{Object.entries(progressMap).length === 0 ? (
 						<span className="text-center text-muted-foreground text-sm">
 							<Tran text="upload.no-active" />
