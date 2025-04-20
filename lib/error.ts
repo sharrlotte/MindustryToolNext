@@ -4,11 +4,11 @@ import { notFound } from 'next/navigation';
 import { reportErrorToBackend } from '@/query/api';
 import axiosInstance from '@/query/config/config';
 
-import * as Sentry from '@sentry/nextjs';
+import { captureException } from '@sentry/nextjs';
 
 export function reportError(error: any) {
 	reportErrorToBackend(axiosInstance, getLoggedErrorMessage(error));
-	Sentry.captureException(error);
+	captureException(error);
 }
 export type TError = Error | { error: { message: string; name?: string } | Error } | string | { message: string; name?: string };
 export type ApiError = {
@@ -87,7 +87,15 @@ export function getLoggedErrorMessage(error: TError) {
 }
 
 export function isError<T extends Record<string, any> | number>(req: T | ApiError | null): req is ApiError {
-	if (req && typeof req === 'object' && 'error' in req && typeof req.error === 'object' && 'status' in req.error && req.error.status === 404) notFound();
+	if (
+		req &&
+		typeof req === 'object' &&
+		'error' in req &&
+		typeof req.error === 'object' &&
+		'status' in req.error &&
+		req.error.status === 404
+	)
+		notFound();
 
 	const isError = !!req && typeof req === 'object' && 'error' in req;
 

@@ -8,16 +8,16 @@ import { Batcher } from '@/lib/batcher';
 import { useQuery } from '@tanstack/react-query';
 
 export default function ClientInit() {
-  const axios = useClientApi();
+	const axios = useClientApi();
 
-  useQuery({
-    queryKey: ['ping'],
-    queryFn: () => axios.get('/ping?client=web'),
-  });
+	useQuery({
+		queryKey: ['ping'],
+		queryFn: () => axios.get('/ping?client=web').then((res) => res.data),
+	});
 
-  useInterval(async () => {
-    await Batcher.process();
-  }, 50);
+	useInterval(async () => {
+		await Batcher.process();
+	}, 50);
 
-  return undefined;
+	return undefined;
 }
