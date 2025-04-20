@@ -10,7 +10,6 @@ import { withSentryConfig } from '@sentry/nextjs';
 const nextConfig: NextConfig = {
 	experimental: {
 		reactCompiler: true,
-		
 	},
 	pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
 	logging: {
@@ -112,8 +111,8 @@ module.exports = withSentryConfig(withMDX(withBundleAnalyzer(nextConfig)), {
 	project: 'mindustry-tool',
 	silent: !process.env.CI,
 	widenClientFileUpload: true,
-	reactComponentAnnotation: {
-		enabled: true,
+	sourcemaps: {
+		disable: !process.env.SENTRY,
 	},
 	tunnelRoute: '/monitoring',
 	disableLogger: true,
