@@ -88,6 +88,7 @@
         "rehype-highlight": "^7.0.2",
         "rehype-sanitize": "^6.0.0",
         "remark-frontmatter": "^5.0.0",
+        "remark-gfm": "^4.0.1",
         "remove-markdown": "^0.5.5",
         "rgbquant": "^1.1.2",
         "server-only": "^0.0.1",

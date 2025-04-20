@@ -271,7 +271,7 @@ function UploadButton({ path }: { path: string }) {
 			await uploadImage(axios, {
 				file,
 				folder: path,
-				id: file.name.slice(0, file.name.length - format.length + 1),
+				id: file.name.slice(0, file.name.length - format.length - 1),
 				format,
 				onUploadProgress: (progressEvent: ProgressEvent) => {
 					const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
@@ -323,7 +323,7 @@ function UploadButton({ path }: { path: string }) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="secondary" disabled={uploadMutation.isPending} onClick={() => fileInputRef.current?.click()}>
+				<Button variant="secondary" disabled={uploadMutation.isPending}>
 					<Plus className="size-4" />
 					<Tran text="add" />
 				</Button>

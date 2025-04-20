@@ -12,18 +12,26 @@ export type Doc = {
 
 export type DocMetadata = {
 	position?: number;
+	startIndex: number;
+	endIndex: number;
 };
 
 export function extractDocMeta(content: string): DocMetadata {
 	const startIndex = content.indexOf('---');
 	if (startIndex === -1) {
-		return {};
+		return {
+			startIndex: -1,
+			endIndex: -1,
+		};
 	}
 
 	const endIndex = content.indexOf('---', startIndex + 3);
 
 	if (endIndex === -1) {
-		return {};
+		return {
+			startIndex: -1,
+			endIndex: -1,
+		};
 	}
 
 	const yamlString = content.slice(startIndex + 3, endIndex).trim();
@@ -37,7 +45,7 @@ export function extractDocMeta(content: string): DocMetadata {
 		}),
 	);
 
-	return yaml ?? {};
+	return { ...yaml, startIndex, endIndex };
 }
 export function extractDocHeading(content: string) {
 	const lines = content.split('\n');
@@ -157,6 +165,26 @@ export function readDocContent(locale: string, segments: string[]) {
 	}
 
 	return fs.readFileSync(path).toString();
+}
+
+export function readDoc(locale: string, segments: string[]) {
+	const path = getDocPath(locale, segments);
+
+	if (!fs.existsSync(path)) {
+		throw new Error(`Doc content file does not exist: ${path}`);
+	}
+
+	const data = fs.readFileSync(path).toString();
+	const metadata = extractDocMeta(data);
+
+	const content = data.slice(metadata.endIndex + 3);
+	const header = extractDocHeading(content);
+
+	return {
+		content,
+		header,
+		metadata,
+	};
 }
 
 export function getDocPath(locale: string, segments: string[]) {

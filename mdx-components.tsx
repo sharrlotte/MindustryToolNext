@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { MDXComponents } from 'mdx/types';
 import { ReactNode } from 'react';
 
@@ -55,5 +56,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 			</>
 		),
 		a: (props: any) => <InternalLink {...props} className="text-brand" />,
+		img: ({ src, ...props }: any) => {
+			if (src) {
+				const width = new URL(src).searchParams.get('w');
+				const height = new URL(src).searchParams.get('h');
+
+				return <img alt="" width={width} height={height} {...props} className="rounded-md" />;
+			}
+		},
 	};
 }
