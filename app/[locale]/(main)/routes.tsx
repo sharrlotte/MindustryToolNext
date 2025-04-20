@@ -184,6 +184,13 @@ export const groups: readonly PathGroup[] = [
             icon: <LoginIcon />,
             regex: [`^${localesRegex}/image-generator/canvas$`],
           },
+          {
+            id: 'map',
+            path: '/image-generator/map',
+            name: <Tran asChild text="image-map-generator" />,
+            icon: <LoginIcon />,
+            regex: [`^${localesRegex}/image-generator/map$`],
+          },
         ],
       },
     ],

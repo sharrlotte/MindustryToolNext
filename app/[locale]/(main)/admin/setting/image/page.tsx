@@ -15,7 +15,6 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import FileHierarchy from '@/components/file/file-hierarchy';
 import { Button } from '@/components/ui/button';
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
@@ -46,10 +45,6 @@ export default function Page() {
 				<div className="flex items-center gap-1">
 					<FileHierarchy path={path} onClick={setPath} />
 				</div>
-				<div className="flex gap-2 items-center">
-					<CreateFolderDialog path={path} />
-					<UploadButton path={path} />
-				</div>
 			</section>
 			<ScrollContainer className="border rounded-lg">
 				<InfinitePage
@@ -71,78 +66,69 @@ export default function Page() {
 					}
 				</InfinitePage>
 			</ScrollContainer>
+			<div className="flex gap-2 items-center justify-end">
+				<CreateFolderDialog path={path} />
+				<UploadButton path={path} />
+			</div>
 		</div>
 	);
 }
 
 function DirCard({ data, setPath }: { data: ImageMetadata; setPath: (path: string) => void }) {
 	return (
-		<ContextMenu>
-			<ContextMenuTrigger>
-				<div
-					className="p-2 border border-md rounded-md flex gap-1 items-center cursor-pointer"
-					key={data.path}
-					onClick={() => setPath(data.path)}
-				>
-					<FolderIcon />
-					{data.name}
-				</div>
-			</ContextMenuTrigger>
-			<ContextMenuContent>
+		<div className="p-2 border border-md rounded-md flex gap-1 items-center cursor-pointer" onClick={() => setPath(data.path)}>
+			<div className="flex items-center">
+				<FolderIcon />
+				{data.name}
+			</div>
+			<div className="flex items-center gap-1 ml-auto">
+				<CopyButton data={data.name} />
 				<DeleteFileAndFolderButton path={data.path} />
-			</ContextMenuContent>
-		</ContextMenu>
+			</div>
+		</div>
 	);
 }
 
 function FileCard({ data }: { data: ImageMetadata }) {
 	return (
-		<ContextMenu>
-			<ContextMenuTrigger>
-				<div
-					className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer"
-					key={data.path}
-				>
-					<FileIcon />
-					{data.name}
-				</div>
-			</ContextMenuTrigger>
-			<ContextMenuContent>
+		<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
+			<div className="flex items-center">
+				<FileIcon />
+				{data.name}
+			</div>
+			<div className="flex items-center gap-1 ml-auto">
+				<CopyButton data={data.name} />
 				<DeleteFileAndFolderButton path={data.path} />
-			</ContextMenuContent>
-		</ContextMenu>
+			</div>
+		</div>
 	);
 }
 
 function ImageCard({ data }: { data: ImageMetadata }) {
 	return (
 		<Dialog>
-			<ContextMenu>
-				<ContextMenuTrigger>
-					<DialogTrigger asChild>
-						<div
-							className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer"
-							key={data.path}
-						>
-							<motion.img
-								id={data.path}
-								layout
-								layoutId={data.path}
-								src={`${env.url.image}/${data.path}`}
-								className="size-5 object-cover"
-								height={20}
-								width={20}
-								alt={data.path}
-							/>
-							<span>{data.name}</span>
-						</div>
-					</DialogTrigger>
-				</ContextMenuTrigger>
-				<ContextMenuContent>
-					<CopyButton variant="command" data={`${env.url.image}/${data.path}`} />
+			<DialogTrigger asChild>
+				<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
+					<div className="flex items-center">
+						<motion.img
+							id={data.path}
+							layout
+							layoutId={data.path}
+							src={`${env.url.image}/${data.path}`}
+							className="size-5 object-cover"
+							height={20}
+							width={20}
+							alt={data.path}
+						/>
+						<span>{data.name}</span>
+					</div>
+				</div>
+				<div className="flex items-center gap-1 ml-auto">
+					<CopyButton data={data.name} />
+					<CopyButton data={`${env.url.image}/${data.path}`} />
 					<DeleteFileAndFolderButton path={data.path} />
-				</ContextMenuContent>
-			</ContextMenu>
+				</div>
+			</DialogTrigger>
 			<DialogContent className="w-fit h-fit overflow-hidden flex items-center justify-center p-0">
 				<Hidden>
 					<DialogTitle />
@@ -167,7 +153,6 @@ function DeleteFileAndFolderButton({ path }: { path: string }) {
 
 	return (
 		<RemoveButton
-			variant="command"
 			isLoading={false}
 			description={`Are you sure you want to delete ${path}?`}
 			onClick={async () => {
