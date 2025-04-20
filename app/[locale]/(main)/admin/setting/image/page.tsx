@@ -15,7 +15,6 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import FileHierarchy from '@/components/file/file-hierarchy';
 import { Button } from '@/components/ui/button';
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
@@ -83,6 +82,7 @@ function DirCard({ data, setPath }: { data: ImageMetadata; setPath: (path: strin
 				{data.name}
 			</div>
 			<div className="flex items-center gap-1 ml-auto">
+				<CopyButton data={data.name} />
 				<DeleteFileAndFolderButton path={data.path} />
 			</div>
 		</div>
@@ -97,6 +97,7 @@ function FileCard({ data }: { data: ImageMetadata }) {
 				{data.name}
 			</div>
 			<div className="flex items-center gap-1 ml-auto">
+				<CopyButton data={data.name} />
 				<DeleteFileAndFolderButton path={data.path} />
 			</div>
 		</div>
@@ -123,8 +124,8 @@ function ImageCard({ data }: { data: ImageMetadata }) {
 					</div>
 				</div>
 				<div className="flex items-center gap-1 ml-auto">
-					<CopyButton variant="command" data={data.name} />
-					<CopyButton variant="command" data={`${env.url.image}/${data.path}`} />
+					<CopyButton data={data.name} />
+					<CopyButton data={`${env.url.image}/${data.path}`} />
 					<DeleteFileAndFolderButton path={data.path} />
 				</div>
 			</DialogTrigger>
@@ -152,7 +153,6 @@ function DeleteFileAndFolderButton({ path }: { path: string }) {
 
 	return (
 		<RemoveButton
-			variant="command"
 			isLoading={false}
 			description={`Are you sure you want to delete ${path}?`}
 			onClick={async () => {
