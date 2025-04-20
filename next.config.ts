@@ -7,7 +7,7 @@ import bundleAnalyzer from '@next/bundle-analyzer';
 import createMDX from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
 
-let nextConfig: NextConfig = {
+const nextConfig: NextConfig = {
 	experimental: {
 		reactCompiler: true,
 	},
@@ -106,22 +106,16 @@ const withBundleAnalyzer = bundleAnalyzer({
 	enabled: analyze,
 });
 
-nextConfig = withMDX(withBundleAnalyzer(nextConfig));
-
-if (process.env.SENTRY) {
-	nextConfig = withSentryConfig(nextConfig, {
-		org: 'mindustrytool',
-		project: 'mindustry-tool',
-		silent: !process.env.CI,
-		widenClientFileUpload: true,
-		reactComponentAnnotation: {
-			enabled: true,
-		},
-		tunnelRoute: '/monitoring',
-		disableLogger: true,
-		automaticVercelMonitors: false,
-		telemetry: false,
-	});
-}
-
-module.exports = nextConfig;
+module.exports = withSentryConfig(withMDX(withBundleAnalyzer(nextConfig)), {
+	org: 'mindustrytool',
+	project: 'mindustry-tool',
+	silent: !process.env.CI,
+	widenClientFileUpload: true,
+	sourcemaps: {
+		disable: !process.env.SENTRY,
+	},
+	tunnelRoute: '/monitoring',
+	disableLogger: true,
+	automaticVercelMonitors: false,
+	telemetry: false,
+});
