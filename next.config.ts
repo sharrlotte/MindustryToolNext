@@ -108,7 +108,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 nextConfig = withMDX(withBundleAnalyzer(nextConfig));
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.SENTRY) {
 	nextConfig = withSentryConfig(nextConfig, {
 		org: 'mindustrytool',
 		project: 'mindustry-tool',
