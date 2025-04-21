@@ -43,8 +43,9 @@ export default function MessageList({
 	showNotification = true,
 	children,
 }: MessageListProps) {
-	const container = useRef<HTMLDivElement>(null);
+	const timeout = useRef<any>(null);
 	const renderCause = useRef<'fetch' | 'event'>('fetch');
+	const container = useRef<HTMLDivElement>(null);
 	const [_, setLastMessage] = useLocalStorage(`LAST_MESSAGE_${room}`, '');
 	const [list, setList] = useState<HTMLElement | null>(null);
 
@@ -59,18 +60,31 @@ export default function MessageList({
 	const lastHeight = lastHeightRef.current || 0;
 	const scrollTop = scrollTopRef.current || 0;
 
+	const currentContainer = container.current;
+
 	// Only preserve scroll position when user scroll up
-	if (clientHeight != lastHeight && container.current && list && !isEndReached && renderCause.current === 'fetch') {
+	if (clientHeight != lastHeight && currentContainer && list && !isEndReached && renderCause.current === 'fetch') {
 		const diff = clientHeight - lastHeight + scrollTop;
 
-		container.current.scrollTo({
-			top: diff,
-		});
+		if (timeout.current) {
+			clearTimeout(timeout.current);
+		}
+
+		timeout.current = setTimeout(() => {
+			currentContainer.scrollTo({
+				top: diff,
+			});
+		}, 100);
 	}
 
 	lastHeightRef.current = clientHeight;
 
-	const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, queryKey, () => (renderCause.current = 'fetch'));
+	const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(
+		room,
+		params,
+		queryKey,
+		() => (renderCause.current = 'fetch'),
+	);
 
 	const { postNotification } = useNotification();
 
@@ -82,7 +96,9 @@ export default function MessageList({
 		const array = mergeNestArray(data.pages);
 		const group = groupMessage(array);
 
-		return group.map((item: MessageGroup, index: number, array: MessageGroup[]) => children(item, index, array.length - params.size));
+		return group.map((item: MessageGroup, index: number, array: MessageGroup[]) =>
+			children(item, index, array.length - params.size),
+		);
 	}, [children, data, params.size]);
 
 	useEffect(() => {
@@ -193,7 +209,12 @@ export default function MessageList({
 	}, [checkIfNeedFetchMore, list, scrollTopRef]);
 
 	if (!loader) {
-		loader = <LoaderIcon key="loading" className="col-span-full m-auto flex h-full w-full items-center justify-center animate-spin size-6 max-w-6 max-h-6" />;
+		loader = (
+			<LoaderIcon
+				key="loading"
+				className="col-span-full m-auto flex h-full w-full items-center justify-center animate-spin size-6 max-w-6 max-h-6"
+			/>
+		);
 	}
 
 	end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
