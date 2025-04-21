@@ -11,7 +11,7 @@ import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config'
 import axiosInstance from '@/query/config/config';
 
 export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
-	const options: InitOptions<ChainedBackendOptions> = {
+	const options: InitOptions<HttpBackendOptions> = {
 		// debug: process.env.NODE_ENV === 'development',
 		supportedLngs: locales,
 		lng,
@@ -24,37 +24,31 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 		defaultNS: defaultNamespace,
 		ns,
 		backend: {
-			backends: [HttpApi],
-			backendOptions: [
-				{
-					loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
-					addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
-
-					request(options, url, payload, callback) {
-						if (url.includes('create-missing')) {
-							axiosInstance
-								.post(url, payload, { data: payload })
-								.then((result) => callback(undefined, { status: 200, data: result }))
-								.catch((error) => callback(error, undefined));
-						} else {
-							fetch(url, {
-								headers: {
-									Server: 'true',
-								},
-								next: {
-									tags: ['server-translations'],
-									revalidate: 3600,
-								},
-							})
-								.then(async (result) => {
-									if (result.ok) callback(undefined, { status: 200, data: await result.json() });
-									else callback(result.statusText, undefined);
-								})
-								.catch((error) => callback(error, undefined));
-						}
-					},
-				} as HttpBackendOptions,
-			],
+			loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
+			addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
+			request(options, url, payload, callback) {
+				if (url.includes('create-missing')) {
+					axiosInstance
+						.post(url, payload, { data: payload })
+						.then((result) => callback(undefined, { status: 200, data: result }))
+						.catch((error) => callback(error, undefined));
+				} else {
+					fetch(url, {
+						headers: {
+							Server: 'true',
+						},
+						next: {
+							tags: ['server-translations'],
+							revalidate: 3600,
+						},
+					})
+						.then(async (result) => {
+							if (result.ok) callback(undefined, { status: 200, data: await result.json() });
+							else callback(result.statusText, undefined);
+						})
+						.catch((error) => callback(error, undefined));
+				}
+			},
 		},
 	};
 
