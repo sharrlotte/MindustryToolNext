@@ -122,14 +122,14 @@ export default function MessageList({
 			clearTimeout(timeout.current);
 		}
 
-		timeout.current = setTimeout(() => {
-			if (currentContainer && isEndReached && renderCause.current === 'event') {
+		if (currentContainer && isEndReached && renderCause.current === 'event') {
+			timeout.current = setTimeout(() => {
 				currentContainer.scrollTo({
 					top: currentContainer.scrollHeight,
 					behavior: 'smooth',
 				});
-			}
-		}, 100);
+			}, 100);
+		}
 	}, [pages, isEndReached, currentContainer]);
 
 	useEffect(() => {
