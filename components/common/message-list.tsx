@@ -66,15 +66,9 @@ export default function MessageList({
 	if (clientHeight != lastHeight && currentContainer && list && !isEndReached && renderCause.current === 'fetch') {
 		const diff = clientHeight - lastHeight + scrollTop;
 
-		if (timeout.current) {
-			clearTimeout(timeout.current);
-		}
-
-		timeout.current = setTimeout(() => {
-			currentContainer.scrollTo({
-				top: diff,
-			});
-		}, 100);
+		currentContainer.scrollTo({
+			top: diff,
+		});
 	}
 
 	lastHeightRef.current = clientHeight;
@@ -124,13 +118,19 @@ export default function MessageList({
 	}, [fetchNextPage, hasNextPage, isFetching]);
 
 	useEffect(() => {
-		if (container.current && isEndReached) {
-			container.current.scrollTo({
-				top: container.current.scrollHeight,
-				behavior: 'smooth',
-			});
+		if (timeout.current) {
+			clearTimeout(timeout.current);
 		}
-	}, [pages, isEndReached]);
+
+		timeout.current = setTimeout(() => {
+			if (currentContainer && isEndReached && renderCause.current === 'event') {
+				currentContainer.scrollTo({
+					top: currentContainer.scrollHeight,
+					behavior: 'smooth',
+				});
+			}
+		}, 100);
+	}, [pages, isEndReached, currentContainer]);
 
 	useEffect(() => {
 		socket.onRoom(room).send({
