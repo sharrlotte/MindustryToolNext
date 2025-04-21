@@ -1,232 +1,230 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 
 import { getColor } from '@/lib/utils';
 
 const COLOR_REGEX = /(\[[#a-zA-Z0-9]*\]|\\u001b\[[0-9;]*[0-9]+m[0-9]*)/gim;
 
 const ANSI: Record<string, Format> = {
-  //ANSI color codes
-  '0': {},
-  '1': { bold: true },
-  '2': { dim: true },
-  '3': { italic: true },
-  '4': { underline: true },
-  '9': { strike: true },
-  '22': { bold: true },
-  '23': { dim: true },
-  '24': { italic: true },
-  '25': { underline: true },
-  '29': { strike: true },
-  '30': { foreground: 'black' },
-  '31': { foreground: 'red' },
-  '32': { foreground: 'green' },
-  '33': { foreground: 'yellow' },
-  '34': { foreground: 'blue' },
-  '35': { foreground: 'magenta' },
-  '36': { foreground: 'cyan' },
-  '37': { foreground: 'white' },
-  '40': { background: 'black' },
-  '41': { background: 'red' },
-  '42': { background: 'green' },
-  '43': { background: 'yellow' },
-  '44': { background: 'blue' },
-  '45': { background: 'magenta' },
-  '46': { background: 'cyan' },
-  '47': { background: 'white' },
+	//ANSI color codes
+	'0': {},
+	'1': { bold: true },
+	'2': { dim: true },
+	'3': { italic: true },
+	'4': { underline: true },
+	'9': { strike: true },
+	'22': { bold: true },
+	'23': { dim: true },
+	'24': { italic: true },
+	'25': { underline: true },
+	'29': { strike: true },
+	'30': { foreground: 'black' },
+	'31': { foreground: 'red' },
+	'32': { foreground: 'green' },
+	'33': { foreground: 'yellow' },
+	'34': { foreground: 'blue' },
+	'35': { foreground: 'magenta' },
+	'36': { foreground: 'cyan' },
+	'37': { foreground: 'white' },
+	'40': { background: 'black' },
+	'41': { background: 'red' },
+	'42': { background: 'green' },
+	'43': { background: 'yellow' },
+	'44': { background: 'blue' },
+	'45': { background: 'magenta' },
+	'46': { background: 'cyan' },
+	'47': { background: 'white' },
 };
 
 type ColorTextProps = {
-  text?: string;
-  className?: string;
+	text?: string;
+	className?: string;
 };
 
 type Format = {
-  background?: string;
-  foreground?: string;
-  bold?: boolean;
-  italic?: boolean;
-  underline?: boolean;
-  strike?: boolean;
-  dim?: boolean; // light color
+	background?: string;
+	foreground?: string;
+	bold?: boolean;
+	italic?: boolean;
+	underline?: boolean;
+	strike?: boolean;
+	dim?: boolean; // light color
 };
 
 export default function ColorText({ text, className }: ColorTextProps) {
-  return (
-    <span className={className}>
-      <Render text={text} />
-    </span>
-  );
+	const component = useMemo(() => render({ text }), [text]);
+  
+	return <span className={className}>{component}</span>;
 }
 
 function addFormat(keys: string[]) {
-  let format = {};
+	let format = {};
 
-  for (const key of keys) {
-    const v = ANSI[key];
+	for (const key of keys) {
+		const v = ANSI[key];
 
-    if (v && Object.keys(v).length !== 0) {
-      format = {
-        ...format,
-        ...v,
-      };
-    } else {
-      format = {};
-    }
-  }
+		if (v && Object.keys(v).length !== 0) {
+			format = {
+				...format,
+				...v,
+			};
+		} else {
+			format = {};
+		}
+	}
 
-  return format;
+	return format;
 }
 
-function Render({ text }: { text?: string }) {
-  if (!text) return <></>;
+function render({ text }: { text?: string }) {
+	if (!text) return <></>;
 
-  const index = text.search(COLOR_REGEX);
-  let key = 0;
+	const index = text.search(COLOR_REGEX);
+	let key = 0;
 
-  if (index < 0) return text;
+	if (index < 0) return text;
 
-  const result: ReactNode[] = [];
+	const result: ReactNode[] = [];
 
-  if (index !== 0) {
-    key = add(result, text.substring(0, index), {}, key);
-    text = text.substring(index);
-  }
+	if (index !== 0) {
+		key = add(result, text.substring(0, index), {}, key);
+		text = text.substring(index);
+	}
 
-  const arr = text.match(COLOR_REGEX);
+	const arr = text.match(COLOR_REGEX);
 
-  if (!arr) return text;
+	if (!arr) return text;
 
-  while (arr.length > 0) {
-    const rawColor = arr[0].toLocaleLowerCase();
+	while (arr.length > 0) {
+		const rawColor = arr[0].toLocaleLowerCase();
 
-    const { color, format } = getColorAndFormat(rawColor);
+		const { color, format } = getColorAndFormat(rawColor);
 
-    if (arr.length === 1) {
-      if (color) {
-        key = add(result, text.substring(arr[0].length), format, key);
-      } else {
-        key = add(result, text, format, key);
-      }
-      break;
-    }
+		if (arr.length === 1) {
+			if (color) {
+				key = add(result, text.substring(arr[0].length), format, key);
+			} else {
+				key = add(result, text, format, key);
+			}
+			break;
+		}
 
-    let nextIndex = text.length;
+		let nextIndex = text.length;
 
-    for (let i = 1; i < arr.length; i++) {
-      const test = getColorAndFormat(arr[i]);
-      if (test.color) {
-        nextIndex = text.indexOf(arr[i], arr[0].length);
-        break;
-      }
-    }
+		for (let i = 1; i < arr.length; i++) {
+			const test = getColorAndFormat(arr[i]);
+			if (test.color) {
+				nextIndex = text.indexOf(arr[i], arr[0].length);
+				break;
+			}
+		}
 
-    if (color) {
-      key = add(result, text.substring(arr[0].length, nextIndex), format, key);
-    } else {
-      key = add(result, text.substring(0, nextIndex), format, key);
-    }
-    text = text.substring(nextIndex);
-    arr.shift();
-  }
+		if (color) {
+			key = add(result, text.substring(arr[0].length, nextIndex), format, key);
+		} else {
+			key = add(result, text.substring(0, nextIndex), format, key);
+		}
+		text = text.substring(nextIndex);
+		arr.shift();
+	}
 
-  return result;
+	return result;
 }
 
 function getColorAndFormat(color: string) {
-  if (color.startsWith('[')) {
-    color = color.substring(1, color.length - 1);
-    color = color.startsWith('#') ? color.padEnd(7, '0') : getColor(color.toLowerCase().trim());
+	if (color.startsWith('[')) {
+		color = color.substring(1, color.length - 1);
+		color = color.startsWith('#') ? color.padEnd(7, '0') : getColor(color.toLowerCase().trim());
 
-    return {
-      format: {
-        foreground: color,
-      },
-      color,
-    };
-  } else {
-    color = color.substring('\\u001b['.length);
+		return {
+			format: {
+				foreground: color,
+			},
+			color,
+		};
+	} else {
+		color = color.substring('\\u001b['.length);
 
-    const keys = color.substring(0, color.indexOf('m')).split(';').filter(Boolean);
+		const keys = color.substring(0, color.indexOf('m')).split(';').filter(Boolean);
 
-    return {
-      color,
-      format: addFormat(keys),
-    };
-  }
+		return {
+			color,
+			format: addFormat(keys),
+		};
+	}
 }
 
 function add(result: ReactNode[], text: string, format: Format, key: number) {
-  if (!text) {
-    return key + 1;
-  }
-  const r = breakdown(text, format, key);
-  result.push(...r.result);
-  key = r.key;
-  return key;
+	if (!text) {
+		return key + 1;
+	}
+	const r = breakdown(text, format, key);
+	result.push(...r.result);
+	key = r.key;
+	return key;
 }
 
 function breakdown(text: string, format: Format, key: number) {
-  if (text === '[]') {
-    return { result: [], key };
-  }
+	if (text === '[]') {
+		return { result: [], key };
+	}
 
-  const style = {
-    color: format.foreground,
-    backgroundColor: format.background,
-    fontStyle: format.italic ? 'italic' : 'normal',
-    fontWeight: format.bold ? 'bold' : 'normal',
-    textDecoration: format.underline ? 'underline' : 'none',
-    textDecorationLine: format.strike ? 'line-through' : 'none',
-    opacity: format.dim ? 0.5 : 1,
-  };
+	const style = {
+		color: format.foreground,
+		backgroundColor: format.background,
+		fontStyle: format.italic ? 'italic' : 'normal',
+		fontWeight: format.bold ? 'bold' : 'normal',
+		textDecoration: format.underline ? 'underline' : 'none',
+		textDecorationLine: format.strike ? 'line-through' : 'none',
+		opacity: format.dim ? 0.5 : 1,
+	};
 
-  const s = text.split('\n');
-  const r = [];
-  key += 1;
+	const s = text.split('\n');
+	const r = [];
+	key += 1;
 
-  if (s.length === 1) {
-    if (!style) {
-      return {
-        result: [text],
-        key,
-      };
-    }
-    return {
-      result: [
-        <span key={key} style={style}>
-          {text}
-        </span>,
-      ],
-      key,
-    };
-  }
+	if (s.length === 1) {
+		if (!style) {
+			return {
+				result: [text],
+				key,
+			};
+		}
+		return {
+			result: [
+				<span key={key} style={style}>
+					{text}
+				</span>,
+			],
+			key,
+		};
+	}
 
-  if (!style) {
-    r.push(s[0]);
-  } else {
-    r.push(
-      <span key={key} style={style}>
-        {s[0]}
-      </span>,
-    );
-  }
+	if (!style) {
+		r.push(s[0]);
+	} else {
+		r.push(
+			<span key={key} style={style}>
+				{s[0]}
+			</span>,
+		);
+	}
 
-  for (let i = 1; i < s.length; i++) {
-    key += 1;
+	for (let i = 1; i < s.length; i++) {
+		key += 1;
 
-    r.push(<br key={key} />);
+		r.push(<br key={key} />);
 
-    key += 1;
+		key += 1;
 
-    if (!style) {
-      r.push(s[i]);
-    } else {
-      r.push(
-        <span key={key} style={style}>
-          {s[i]}
-        </span>,
-      );
-    }
-  }
-  return { result: r, key };
+		if (!style) {
+			r.push(s[i]);
+		} else {
+			r.push(
+				<span key={key} style={style}>
+					{s[i]}
+				</span>,
+			);
+		}
+	}
+	return { result: r, key };
 }
