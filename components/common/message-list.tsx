@@ -53,7 +53,7 @@ export default function MessageList({
 	const lastHeightRef = useRef(0);
 
 	const queryClient = useQueryClient();
-	const isEndReached = isReachedEnd(container.current, threshold);
+	const isEndReached = isReachedEnd(container.current, 500);
 	const { socket } = useSocket();
 
 	const clientHeight = list?.clientHeight || 0;
