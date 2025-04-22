@@ -7,7 +7,7 @@ import ServerCardSkeleton from '@/components/server/server-card.skeleton';
 import { getServers } from '@/query/server';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
 
-export default function OfficialServer() {
+export default function ServerList() {
 	return (
 		<InfinitePage
 			className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2"

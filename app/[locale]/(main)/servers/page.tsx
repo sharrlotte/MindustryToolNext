@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import React, { Suspense } from 'react';
 
-import OfficialServer from '@/app/[locale]/(main)/servers/official-server';
+import ServerList from '@/app/[locale]/(main)/servers/official-server';
 import ServerFooter from '@/app/[locale]/(main)/servers/page.footer';
 import ServersSkeleton from '@/app/[locale]/(main)/servers/servers.skeleton';
 
@@ -71,7 +71,7 @@ export default async function Page({ searchParams }: Props) {
 				<ServerTabsContent className="overflow-hidden" value="server-list">
 					<ScrollContainer>
 						<Suspense fallback={<ServersSkeleton />}>
-							<OfficialServer />
+							<ServerList />
 						</Suspense>
 					</ScrollContainer>
 				</ServerTabsContent>
