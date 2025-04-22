@@ -6,7 +6,7 @@ import { useState } from 'react';
 import CopyButton from '@/components/button/copy.button';
 import ErrorMessage from '@/components/common/error-message';
 import { CopyIcon, DownloadIcon } from '@/components/common/icons';
-import LoadingSpinner from '@/components/common/router-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
@@ -61,7 +61,9 @@ export default function Page() {
 				formData.append('splitHorizontal', splitHorizontal.toString());
 				formData.append('splitVertical', splitVertical.toString());
 
-				return await axios.post('/image-generator/sorter', formData, { data: formData }).then((result) => result.data as string[]);
+				return await axios
+					.post('/image-generator/sorter', formData, { data: formData })
+					.then((result) => result.data as string[]);
 			}
 			return null;
 		},
@@ -87,7 +89,11 @@ export default function Page() {
 					<div>
 						<Tran text="image-generator.total-blocks" /> {splitHorizontal * splitVertical} blocks
 					</div>
-					<div>{resultDimensions.width * resultDimensions.height > 500 * 500 && <Tran className="text-destructive" text="image-generator.too-big-may-fail" />}</div>
+					<div>
+						{resultDimensions.width * resultDimensions.height > 500 * 500 && (
+							<Tran className="text-destructive" text="image-generator.too-big-may-fail" />
+						)}
+					</div>
 				</div>
 			)}
 			<div className="space-y-2">
@@ -166,7 +172,17 @@ function Preview({ data }: { data: string }) {
 	if (isError) {
 		return <ErrorMessage error={error} />;
 	}
-	return <div className="object-cover w-full">{preview && <img className="max-w-[50vw] object-cover w-full max-h-[50vh] rounded-md" src={IMAGE_PREFIX + preview.image} alt="Processed" />}</div>;
+	return (
+		<div className="object-cover w-full">
+			{preview && (
+				<img
+					className="max-w-[50vw] object-cover w-full max-h-[50vh] rounded-md"
+					src={IMAGE_PREFIX + preview.image}
+					alt="Processed"
+				/>
+			)}
+		</div>
+	);
 }
 
 function DownloadButton({ data }: { data: string }) {

@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { Toaster as Sonner, toast as defaultToast } from 'sonner';
 
 import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon, XIcon } from '@/components/common/icons';
-import LoadingSpinner from '@/components/common/router-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 
 import { cn } from '@/lib/utils';
 

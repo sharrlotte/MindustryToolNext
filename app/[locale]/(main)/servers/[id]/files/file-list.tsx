@@ -15,6 +15,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { deleteServerFile, getServerFiles } from '@/query/server';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import ErrorMessage from '@/components/common/error-message';
 
 type FileListProps = {
 	id: string;
@@ -46,13 +47,9 @@ export default function FileList({ id, path, filter, setFilePath }: FileListProp
 	});
 
 	if (error) {
-		return (
-			<div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
-				<Tran className="font-semibold" text="error" />
-				<p className="text-muted-foreground">{JSON.stringify(error)}</p>
-			</div>
-		);
+		return <ErrorMessage error={error} />;
 	}
+
 	if (isLoading) {
 		return (
 			<Skeletons number={10}>

@@ -3,13 +3,13 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 
-import RouterSpinner from '@/components/common/router-spinner';
 import Tran from '@/components/common/tran';
 
 import useClientApi from '@/hooks/use-client';
 import { verifyPlayer } from '@/query/auth';
 
 import { useMutation } from '@tanstack/react-query';
+import LoadingSpinner from '@/components/common/loading-spinner';
 
 export default function Page() {
   const params = useSearchParams();
@@ -49,14 +49,14 @@ function Verify({ token }: { token: string }) {
   if (status === 'idle') {
     return (
       <div className="flex h-full items-center justify-center text-3xl font-bold text-gray-500">
-        <RouterSpinner />
+        <LoadingSpinner />
       </div>
     );
   } else if (status === 'pending') {
     return (
       <div className="flex h-full flex-col items-center justify-center text-3xl font-bold text-gray-500">
         <Tran text="token.verifying" />
-        <RouterSpinner />
+        <LoadingSpinner />
       </div>
     );
   }

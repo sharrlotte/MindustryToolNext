@@ -7,9 +7,9 @@ import { UserManagementCard } from '@/app/[locale]/(main)/admin/setting/(users)/
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import { GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
-import LoadingSpinner from '@/components/common/router-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import { Input } from '@/components/ui/input';
 
@@ -54,7 +54,12 @@ export function UserTable() {
 		<div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
 			<div>
 				<div className="flex h-14 gap-2 p-2 bg-card rounded-md">
-					<Input className="h-full" value={name} onChange={(event) => setQueryState({ name: event.target.value })} placeholder="Search using username" />
+					<Input
+						className="h-full"
+						value={name}
+						onChange={(event) => setQueryState({ name: event.target.value })}
+						placeholder="Search using username"
+					/>
 					<ComboBox
 						className="h-full"
 						nullable

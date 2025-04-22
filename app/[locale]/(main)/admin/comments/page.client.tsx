@@ -8,7 +8,7 @@ import InfinitePage from '@/components/common/infinite-page';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import { RelativeTime } from '@/components/common/relative-time';
-import LoadingSpinner from '@/components/common/router-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import Markdown from '@/components/markdown/markdown';
