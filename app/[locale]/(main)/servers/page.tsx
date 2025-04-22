@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import React, { Suspense } from 'react';
 
-import ServerList from '@/app/[locale]/(main)/servers/official-server';
+import ServerList from '@/app/[locale]/(main)/servers/server-list';
 import ServerFooter from '@/app/[locale]/(main)/servers/page.footer';
 import ServersSkeleton from '@/app/[locale]/(main)/servers/servers.skeleton';
 
