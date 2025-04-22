@@ -2,7 +2,17 @@
 
 import React, { ReactNode, use } from 'react';
 
-import { CmdIcon, FileIcon, KeyRoundIcon, LayoutDashboardIcon, LogIcon, MapIcon, PluginIcon, SettingIcon, UsersIcon } from '@/components/common/icons';
+import {
+	CmdIcon,
+	FileIcon,
+	KeyRoundIcon,
+	LayoutDashboardIcon,
+	LogIcon,
+	MapIcon,
+	PluginIcon,
+	SettingIcon,
+	UsersIcon,
+} from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
 import Tran from '@/components/common/tran';
@@ -112,7 +122,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			<NavLinkProvider>
 				<NavLinkContainer>
 					{links.map((item) => (
-						<ProtectedElement key={item.id} session={session} filter={item.filter ?? true}>
+						<ProtectedElement key={item.id} session={session} filter={item.filter}>
 							<NavLink {...item} root={`servers/${id}`} />
 						</ProtectedElement>
 					))}
