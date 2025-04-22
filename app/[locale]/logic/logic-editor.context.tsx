@@ -16,7 +16,7 @@ import { getHelperLines } from '@/app/[locale]/logic/utils';
 
 import { CatchError } from '@/components/common/catch-error';
 import Hydrated from '@/components/common/hydrated';
-import LoadingSpinner from '@/components/common/router-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 

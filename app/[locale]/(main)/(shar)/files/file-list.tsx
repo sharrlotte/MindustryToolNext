@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DownloadButton from '@/components/button/download.button';
+import ErrorMessage from '@/components/common/error-message';
 import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
 import FileCard from '@/components/file/file-card';
@@ -45,12 +46,7 @@ export default function FileList({ path, filter, setFilePath }: FileListProps) {
 	});
 
 	if (error) {
-		return (
-			<div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
-				<Tran className="font-semibold" text="error" />
-				<p className="text-muted-foreground">{JSON.stringify(error)}</p>
-			</div>
-		);
+		return <ErrorMessage error={error} />;
 	}
 
 	if (isLoading) {

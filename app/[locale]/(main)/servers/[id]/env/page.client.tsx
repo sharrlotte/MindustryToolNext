@@ -8,7 +8,7 @@ import { z } from 'zod';
 import DeleteButton from '@/components/button/delete.button';
 import ErrorMessage from '@/components/common/error-message';
 import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from '@/components/common/icons';
-import LoadingSpinner from '@/components/common/router-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -94,7 +94,13 @@ function ServerEnvCard({ id, env }: ServerEnvCardProps) {
 	});
 
 	return (
-		<motion.div key={env.id} className="group h-fit cursor-pointer flex justify-between items-center gap-2" initial={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 500 }} transition={{ duration: 0.5 }}>
+		<motion.div
+			key={env.id}
+			className="group h-fit cursor-pointer flex justify-between items-center gap-2"
+			initial={{ opacity: 1, x: 0 }}
+			exit={{ opacity: 0, x: 500 }}
+			transition={{ duration: 0.5 }}
+		>
 			<Form {...form}>
 				<form className="flex gap-2 sm:items-center flex-col sm:flex-row items-start w-full">
 					<FormField
@@ -117,7 +123,12 @@ function ServerEnvCard({ id, env }: ServerEnvCardProps) {
 								<FormControl>
 									<div className="border-border border rounded-md flex items-center gap-2 h-9">
 										{show ? (
-											<Input className="w-full border-transparent" key="input" placeholder="ghp_awdguyagwdygawdagwiy" {...field} />
+											<Input
+												className="w-full border-transparent"
+												key="input"
+												placeholder="ghp_awdguyagwdygawdagwiy"
+												{...field}
+											/>
 										) : (
 											<Input readOnly className="w-full border-transparent" defaultValue={'*'.repeat(field.value.length)} />
 										)}
@@ -132,7 +143,12 @@ function ServerEnvCard({ id, env }: ServerEnvCardProps) {
 					/>
 				</form>
 			</Form>
-			<DeleteButton className="w-fit size-9" description={<Tran text="confirm-delete" />} isLoading={isPending} onClick={() => mutate()}>
+			<DeleteButton
+				className="w-fit size-9"
+				description={<Tran text="confirm-delete" />}
+				isLoading={isPending}
+				onClick={() => mutate()}
+			>
 				{isPending ? <LoadingSpinner className="m-0" /> : <XIcon />}
 			</DeleteButton>
 		</motion.div>
@@ -166,7 +182,10 @@ function AddEnvCard({ id }: AddEnvCardProps) {
 
 	return (
 		<Form {...form}>
-			<form className="flex gap-2 sm:items-center flex-col sm:flex-row items-start w-full" onSubmit={form.handleSubmit((value) => mutate(value))}>
+			<form
+				className="flex gap-2 sm:items-center flex-col sm:flex-row items-start w-full"
+				onSubmit={form.handleSubmit((value) => mutate(value))}
+			>
 				<FormField
 					control={form.control}
 					name="name"

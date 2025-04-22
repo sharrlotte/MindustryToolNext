@@ -4,12 +4,22 @@ import { useForm } from 'react-hook-form';
 
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import { RelativeTime } from '@/components/common/relative-time';
-import LoadingSpinner from '@/components/common/router-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import Markdown from '@/components/markdown/markdown';
-import { BoldButton, CodeBlockButton, HRButton, ImageDialog, ItalicButton, LinkDialog, QuoteButton, StrikethroughButton, TitleButton } from '@/components/markdown/markdown-buttons';
+import {
+	BoldButton,
+	CodeBlockButton,
+	HRButton,
+	ImageDialog,
+	ItalicButton,
+	LinkDialog,
+	QuoteButton,
+	StrikethroughButton,
+	TitleButton,
+} from '@/components/markdown/markdown-buttons';
 import { AutosizeTextAreaRef, AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
@@ -122,7 +132,11 @@ export function CommentCard({ comment }: CommentCardProps) {
 	return (
 		<div className="flex flex-col gap-2">
 			<div className="flex w-full gap-2 text-wrap items-center text-xs">
-				{data ? <UserAvatar user={data} url /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
+				{data ? (
+					<UserAvatar user={data} url />
+				) : (
+					<Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />
+				)}
 				<div className="overflow-hidden">
 					<div className="flex gap-2 items-baseline">
 						{data ? (
@@ -169,7 +183,14 @@ function CommentInput({ itemId }: CommentInputProps) {
 		mutationFn: (payload: CreateCommentRequest) => createComment(axios, itemId, payload),
 		mutationKey: ['create-comment'],
 		onMutate: (data) => {
-			pushByKey<Comment>([`comments-${itemId}`], { ...data, attachments: [], id: genId(), path: '', userId: session?.id || '', createdAt: new Date().toISOString() });
+			pushByKey<Comment>([`comments-${itemId}`], {
+				...data,
+				attachments: [],
+				id: genId(),
+				path: '',
+				userId: session?.id || '',
+				createdAt: new Date().toISOString(),
+			});
 		},
 		onSuccess: () => {
 			invalidateByKey([`comments-${itemId}`]);
@@ -217,21 +238,40 @@ function CommentInput({ itemId }: CommentInputProps) {
 					/>
 					<div className="flex gap-2 w-full overflow-hidden">
 						<div className="flex justify-start items-center p-1 gap-1 w-full overflow-x-auto">
-							<BoldButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-							<ItalicButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-							<StrikethroughButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-							<HRButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-							<TitleButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+							<BoldButton
+								callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))}
+							/>
+							<ItalicButton
+								callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))}
+							/>
+							<StrikethroughButton
+								callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))}
+							/>
+							<HRButton
+								callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))}
+							/>
+							<TitleButton
+								callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))}
+							/>
 							<Divider className="border-r h-full w-0" />
-							<LinkDialog callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-							<QuoteButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
-							<CodeBlockButton callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))} />
+							<LinkDialog
+								callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))}
+							/>
+							<QuoteButton
+								callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))}
+							/>
+							<CodeBlockButton
+								callback={(fn) => form.setValue('content', fn(inputRef.current?.textArea ?? null, form.getValues('content')))}
+							/>
 							<ImageDialog
 								callback={(fn) => {
 									const result = fn(inputRef.current?.textArea ?? null, form.getValues('content'));
 
 									if (result.file) {
-										form.setValue('attachments', [...form.getValues('attachments'), { file: result.file.file, url: result.file.url }]);
+										form.setValue('attachments', [
+											...form.getValues('attachments'),
+											{ file: result.file.file, url: result.file.url },
+										]);
 										form.setValue('content', result.text);
 										return;
 									}

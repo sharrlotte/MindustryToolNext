@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import ErrorMessage from '@/components/common/error-message';
 import { DownloadIcon } from '@/components/common/icons';
-import LoadingSpinner from '@/components/common/router-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/sonner';
