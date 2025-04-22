@@ -1,7 +1,5 @@
 import { createInstance } from 'i18next';
 import { InitOptions } from 'i18next';
-import Backend from 'i18next-chained-backend';
-import { ChainedBackendOptions } from 'i18next-chained-backend';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
 import { cache } from 'react';
 import { initReactI18next } from 'react-i18next/initReactI18next';
@@ -59,8 +57,8 @@ const initI18next = async (language: Locale, namespace?: string | string[]) => {
 	const i18nInstance = createInstance();
 	await i18nInstance
 		.use(initReactI18next) //
-		.use(Backend)
-		.init<ChainedBackendOptions>(getServerOptions(language, namespace));
+		.use(HttpApi)
+		.init<HttpBackendOptions>(getServerOptions(language, namespace));
 
 	return i18nInstance;
 };
