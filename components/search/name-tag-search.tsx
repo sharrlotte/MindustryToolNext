@@ -184,12 +184,12 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 					<SearchIcon className="size-5 shrink-0" />
 					<TagBadgeContainer tagGroups={filterBy} handleDeleteTag={handleDeleteTag} />
 					<SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
-					{useTag && (
-						<Button className="h-10 shadow-md bg-card rounded-none" title="filter" variant="ghost" onClick={handleShowFilterDialog}>
-							<FilterIcon className="size-5" />
-						</Button>
-					)}
 				</SearchBar>
+				{useTag && (
+					<Button className="h-10 shadow-md bg-card ml-auto" title="filter" variant="outline" onClick={handleShowFilterDialog}>
+						<FilterIcon className="size-5" />
+					</Button>
+				)}
 			</div>
 			<Suspense>
 				{useTag && showFilterDialog && (
@@ -202,7 +202,12 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 							<div className="flex gap-1 w-full">
 								<SearchBar className="w-full p-1">
 									<SearchIcon className="p-1" />
-									<SearchInput placeholder="filter" value={filter} onChange={(value) => setFilter(value)} onClear={() => setFilter('')} />
+									<SearchInput
+										placeholder="filter"
+										value={filter}
+										onChange={(value) => setFilter(value)}
+										onClear={() => setFilter('')}
+									/>
 								</SearchBar>
 								{useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
 							</div>
