@@ -17,7 +17,6 @@ import ClientProtectedElement from '@/layout/client-protected-element';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 
 const MeServer = dynamic(() => import('@/app/[locale]/(main)/servers/my-server'));
-const CommunityServer = dynamic(() => import('@/app/[locale]/(main)/servers/community-server'));
 
 export const experimental_ppr = true;
 
@@ -55,29 +54,24 @@ export default async function Page({ searchParams }: Props) {
 
 	return (
 		<div className="flex h-full flex-col overflow-hidden space-y-2 p-2">
-			<ServerTabs className="flex h-full w-full flex-col overflow-hidden" name="tab" value="official-server" values={['official-server', 'community-server', 'my-server']}>
+			<ServerTabs
+				className="flex h-full w-full flex-col overflow-hidden"
+				name="tab"
+				value="server-list"
+				values={['server-list', 'my-server']}
+			>
 				<ServerTabsList className="w-full justify-start h-14 min-h-14">
-					<ServerTabsTrigger value="official-server">
-						<Tran text="server.official-server" />
-					</ServerTabsTrigger>
-					<ServerTabsTrigger value="community-server">
-						<Tran text="server.community-server" />
+					<ServerTabsTrigger value="server-list">
+						<Tran text="server.server-list" />
 					</ServerTabsTrigger>
 					<ServerTabsTrigger value="my-server">
 						<Tran text="server.my-server" />
 					</ServerTabsTrigger>
 				</ServerTabsList>
-				<ServerTabsContent className="overflow-hidden" value="official-server">
+				<ServerTabsContent className="overflow-hidden" value="server-list">
 					<ScrollContainer>
 						<Suspense fallback={<ServersSkeleton />}>
 							<OfficialServer />
-						</Suspense>
-					</ScrollContainer>
-				</ServerTabsContent>
-				<ServerTabsContent className="overflow-hidden" value="community-server">
-					<ScrollContainer>
-						<Suspense fallback={<ServersSkeleton />}>
-							<CommunityServer />
 						</Suspense>
 					</ScrollContainer>
 				</ServerTabsContent>
