@@ -136,6 +136,7 @@ export default function ServerUpdateForm({ server }: Props) {
 								</FormLabel>
 								<FormControl>
 									<ComboBox
+										className="w-full lowercase"
 										searchBar={false}
 										value={{ label: field.value, value: field.value }}
 										values={
