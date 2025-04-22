@@ -1,12 +1,30 @@
 import { createInstance } from 'i18next';
 import { InitOptions } from 'i18next';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
+import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
 import env from '@/constant/env';
 import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
+
+const getTranslationCached = cache(
+	unstable_cache(
+		(url: string) =>
+			axiosInstance
+				.get(url, {
+					headers: {
+						Server: 'true',
+					},
+				})
+				.then((res) => res.data),
+		['translations'],
+		{
+			revalidate: 3600,
+		},
+	),
+);
 
 export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 	const options: InitOptions<HttpBackendOptions> = {
@@ -31,19 +49,8 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 						.then((result) => callback(undefined, { status: 200, data: result }))
 						.catch((error) => callback(error, undefined));
 				} else {
-					fetch(url, {
-						headers: {
-							Server: 'true',
-						},
-						next: {
-							tags: ['server-translations'],
-							revalidate: 3600,
-						},
-					})
-						.then(async (result) => {
-							if (result.ok) callback(undefined, { status: 200, data: await result.json() });
-							else callback(result.statusText, undefined);
-						})
+					getTranslationCached(url)
+						.then((result) => callback(undefined, { status: 200, data: result }))
 						.catch((error) => callback(error, undefined));
 				}
 			},
