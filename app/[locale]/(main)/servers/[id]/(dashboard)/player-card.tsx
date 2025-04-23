@@ -22,7 +22,7 @@ type PlayersCardProps = {
 export function PlayersCard({ id }: PlayersCardProps) {
 	const axios = useClientApi();
 	const { data, isError, error } = useSuspenseQuery({
-		queryKey: ['server', id, 'players'],
+		queryKey: ['server', id, 'player'],
 		queryFn: () => getServerPlayers(axios, id),
 	});
 
