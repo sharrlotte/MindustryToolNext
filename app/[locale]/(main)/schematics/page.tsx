@@ -4,7 +4,7 @@ import Client from '@/app/[locale]/(main)/schematics/page.client';
 
 import { UploadIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
-import { GridLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
+import { GridLayout, PaginationFooter, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
 import NameTagSearch from '@/components/search/name-tag-search';
@@ -43,7 +43,7 @@ export default async function Page() {
 		<div className="flex h-full flex-col gap-2 overflow-hidden p-2">
 			<NameTagSearch type="schematic" />
 			<Client />
-			<div className="flex items-center gap-2 justify-between">
+			<PaginationFooter>
 				<InternalLink variant="button-secondary" href={uploadLink}>
 					<UploadIcon />
 					<Tran text="upload-schematic" />
@@ -54,7 +54,7 @@ export default async function Page() {
 						<PaginationNavigator numberOfItems="/schematics/total" queryKey={['schematics', 'total']} />
 					</GridLayout>
 				</div>
-			</div>
+			</PaginationFooter>
 		</div>
 	);
 }

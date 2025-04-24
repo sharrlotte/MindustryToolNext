@@ -115,7 +115,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
 	}, [handlePageChange, lastPage, selectedPage]);
 
 	return (
-		<>
+		<div className="flex gap-2">
 			<SizeSelector sizes={sizes} />
 			<Pagination className="h-10 bg-card rounded-md shadow-md">
 				<PaginationContent>
@@ -183,6 +183,6 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
 					</PaginationItem>
 				</PaginationContent>
 			</Pagination>
-		</>
+		</div>
 	);
 }
