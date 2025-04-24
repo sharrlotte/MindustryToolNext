@@ -26,12 +26,19 @@ export default function DeleteTagCategoryDialog({ category }: Props) {
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['tags-detail']);
 		},
 	});
 
-	return <DeleteButton isLoading={isPending} description={<Tran text="tags.delete-confirm" args={{ name }} />} onClick={mutate} variant="command" />;
+	return (
+		<DeleteButton
+			isLoading={isPending}
+			description={<Tran text="tags.delete-confirm" args={{ name }} />}
+			onClick={mutate}
+			variant="command"
+		/>
+	);
 }

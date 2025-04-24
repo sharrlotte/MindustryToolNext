@@ -30,7 +30,7 @@ export default function DeleteRoleButton({ role }: Props) {
 		onSuccess: () => {
 			toast.success(<Tran text="upload.success" />);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
 		onSettled: () => {
 			invalidateByKey(['roles']);
 			revalidate({ path: '/roles' });
@@ -39,5 +39,12 @@ export default function DeleteRoleButton({ role }: Props) {
 
 	const { t } = useI18n();
 
-	return <DeleteButton variant="command" isLoading={isPending} description={<Tran text="role.delete" args={{ name: t(name) }} />} onClick={mutate} />;
+	return (
+		<DeleteButton
+			variant="command"
+			isLoading={isPending}
+			description={<Tran text="role.delete" args={{ name: t(name) }} />}
+			onClick={mutate}
+		/>
+	);
 }

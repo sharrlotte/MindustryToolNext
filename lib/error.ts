@@ -34,11 +34,11 @@ export function getErrorMessage(error: TError) {
 	}
 
 	if ('message' in error) {
-		if (error.message === DEFAULT_NEXTJS_ERROR_MESSAGE) return '500 Internal server error';
+		if (error?.message === DEFAULT_NEXTJS_ERROR_MESSAGE) return '500 Internal server error';
 
-		if (error.message === INTERNAL_ERROR_MESSAGE) return '500 Internal server error';
+		if (error?.message === INTERNAL_ERROR_MESSAGE) return '500 Internal server error';
 
-		return error.message;
+		return error?.message;
 	}
 
 	return 'Something is wrong';
@@ -59,7 +59,7 @@ export function getLoggedErrorMessage(error: TError) {
 		}
 
 		if (typeof window !== 'undefined') {
-			if (/Loading chunk [\d]+ failed/.test(error.message) || error.name === 'ChunkLoadError') {
+			if (/Loading chunk [\d]+ failed/.test(error?.message) || error.name === 'ChunkLoadError') {
 				const reloadAttemps = localStorage.getItem('RELOAD_ATTEMPTS');
 
 				if (reloadAttemps && parseInt(reloadAttemps) < 3) {
@@ -76,7 +76,7 @@ export function getLoggedErrorMessage(error: TError) {
 				config: JSON.stringify(error.config, Object.keys(error.config ?? {})),
 				url: error.config?.url,
 				stacktrace: error.stack,
-				message: error.message,
+				message: error?.message,
 			});
 		}
 

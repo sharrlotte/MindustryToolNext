@@ -28,7 +28,9 @@ type PostDetailCardProps = {
 	post: PostDetail;
 };
 
-export default function PostDetailCard({ post: { title, content, tags, id, userId, likes, dislikes, isVerified, itemId, createdAt } }: PostDetailCardProps) {
+export default function PostDetailCard({
+	post: { title, content, tags, id, userId, likes, dislikes, isVerified, itemId, createdAt },
+}: PostDetailCardProps) {
 	const axios = useClientApi();
 	const { invalidateByKey } = useQueriesData();
 	const { back } = useRouter();
@@ -42,7 +44,7 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
 			toast(<Tran text="take-down-success" />);
 		},
 		onError: (error) => {
-			toast(<Tran text="take-down-fail" />, { description: error.message });
+			toast(<Tran text="take-down-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['posts']);
@@ -56,7 +58,7 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['posts']);
@@ -94,10 +96,19 @@ export default function PostDetailCard({ post: { title, content, tags, id, userI
 									],
 								}}
 							>
-								<TakeDownButton isLoading={isLoading} description={<Tran text="take-down-alert" args={{ name: title }} />} onClick={() => removePost(id)} />
+								<TakeDownButton
+									isLoading={isLoading}
+									description={<Tran text="take-down-alert" args={{ name: title }} />}
+									onClick={() => removePost(id)}
+								/>
 							</ProtectedElement>
 							<ProtectedElement session={session} filter={{ authorId: userId }}>
-								<DeleteButton variant="command" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
+								<DeleteButton
+									variant="command"
+									description={<Tran text="delete-alert" args={{ name: title }} />}
+									isLoading={isLoading}
+									onClick={() => deletePostById(id)}
+								/>
 							</ProtectedElement>
 						</EllipsisButton>
 					</div>

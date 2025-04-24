@@ -109,7 +109,7 @@ function ResetTokenButton({ id }: ResetTokenButtonProps) {
 		mutationFn: async () =>
 			toast.promise(resetTokenServerManager(axios, id), {
 				success: <Tran text="server.reset-token-success" />,
-				error: (error) => <Tran text="error" args={{ message: error.message }} />,
+				error: (error) => <Tran text="error" args={{ message: error?.message }} />,
 			}),
 		onSettled: () => {
 			invalidateByKey(['server-manager']);

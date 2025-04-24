@@ -27,7 +27,7 @@ function createServiceError(error: unknown) {
 }
 
 function createAxiosError(error: AxiosError) {
-	return new StatusError(error.status ?? 500, `Axios error: ${error.message}`, error);
+	return new StatusError(error.status ?? 500, `Axios error: ${error?.message}`, error);
 }
 
 function createUnknownError(error: unknown) {
@@ -58,7 +58,7 @@ axiosInstance.interceptors.response.use(
 		logError(error);
 
 		if (error?.message) {
-			return Promise.reject(error.message);
+			return Promise.reject(error?.message);
 		}
 
 		let statusError: StatusError;

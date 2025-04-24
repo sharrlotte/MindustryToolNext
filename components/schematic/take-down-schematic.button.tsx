@@ -32,12 +32,18 @@ export default function TakeDownSchematicButton({ id, name }: TakeDownSchematicB
 			toast(<Tran text="take-down-success" />);
 		},
 		onError: (error) => {
-			toast(<Tran text="take-down-fail" />, { description: error.message });
+			toast(<Tran text="take-down-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['schematics']);
 		},
 	});
 
-	return <TakeDownButton isLoading={isPending} description={<Tran text="take-down-alert" args={{ name }} />} onClick={() => mutate(id)} />;
+	return (
+		<TakeDownButton
+			isLoading={isPending}
+			description={<Tran text="take-down-alert" args={{ name }} />}
+			onClick={() => mutate(id)}
+		/>
+	);
 }

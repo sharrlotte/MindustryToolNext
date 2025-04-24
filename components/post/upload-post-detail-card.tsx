@@ -44,7 +44,7 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
 			toast(<Tran text="verify-success" />);
 		},
 		onError: (error) => {
-			toast(<Tran text="verify-fail" />, { description: error.message });
+			toast(<Tran text="verify-fail" />, { description: error?.message });
 		},
 	});
 
@@ -55,7 +55,7 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['posts']);
@@ -80,7 +80,13 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
 				</header>
 				<footer className="flex justify-start gap-1 rounded-md bg-card p-2">
 					<TagSelector type="post" value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
-					<DeleteButton variant="default" className="w-fit" description={<Tran text="delete-alert" args={{ name: title }} />} isLoading={isLoading} onClick={() => deletePostById(id)} />
+					<DeleteButton
+						variant="default"
+						className="w-fit"
+						description={<Tran text="delete-alert" args={{ name: title }} />}
+						isLoading={isLoading}
+						onClick={() => deletePostById(id)}
+					/>
 					<VerifyButton
 						description={<Tran text="verify-alert" args={{ name: title }} />}
 						isLoading={isLoading}

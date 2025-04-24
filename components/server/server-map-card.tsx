@@ -31,7 +31,7 @@ export default function ServerMapCard({ map: { name, mapId, serverId } }: Server
 			toast(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['servers', serverId, 'maps']);
@@ -41,13 +41,23 @@ export default function ServerMapCard({ map: { name, mapId, serverId } }: Server
 	return (
 		<Preview className="group relative flex flex-col justify-between">
 			<InternalLink href={`/maps/${mapId}`}>
-				<PreviewImage src={`${env.url.image}/map-previews/${mapId}${env.imageFormat}`} errorSrc={`${env.url.api}/maps/${mapId}/image`} alt={name ?? 'internal server map'} />
+				<PreviewImage
+					src={`${env.url.image}/map-previews/${mapId}${env.imageFormat}`}
+					errorSrc={`${env.url.api}/maps/${mapId}/image`}
+					alt={name ?? 'internal server map'}
+				/>
 			</InternalLink>
 			<PreviewDescription>
 				<PreviewHeader className="h-12">
 					<ColorText text={name} />
 				</PreviewHeader>
-				<DeleteButton className="right-1 top-1" variant="ghost" isLoading={isPending} onClick={() => mutate()} description="delete" />
+				<DeleteButton
+					className="right-1 top-1"
+					variant="ghost"
+					isLoading={isPending}
+					onClick={() => mutate()}
+					description="delete"
+				/>
 			</PreviewDescription>
 		</Preview>
 	);

@@ -34,9 +34,16 @@ export default function DeleteSchematicButton({ id, name, variant }: DeleteSchem
 			back();
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 	});
 
-	return <DeleteButton variant={variant} description={<Tran text="delete-alert" args={{ name }} />} isLoading={isPending} onClick={() => mutate(id)} />;
+	return (
+		<DeleteButton
+			variant={variant}
+			description={<Tran text="delete-alert" args={{ name }} />}
+			isLoading={isPending}
+			onClick={() => mutate(id)}
+		/>
+	);
 }
