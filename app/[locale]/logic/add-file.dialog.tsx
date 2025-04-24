@@ -6,7 +6,15 @@ import { Hidden } from '@/components/common/hidden';
 import { PlusIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
 import useLogicFile from '@/hooks/use-logic-file';
@@ -28,7 +36,9 @@ export default function AddFileDialog({ className }: { className?: string }) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<button className={cn('flex items-center gap-2 bg-secondary/50 text-secondary-foreground rounded-md p-2 w-full', className)}>
+				<button
+					className={cn('flex items-center gap-2 bg-secondary/70 text-secondary/70-foreground rounded-md p-2 w-full', className)}
+				>
 					<PlusIcon />
 					<Tran text="logic.add-file" defaultValue="Add file" />
 				</button>

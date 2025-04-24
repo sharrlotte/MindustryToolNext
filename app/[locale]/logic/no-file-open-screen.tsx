@@ -33,7 +33,7 @@ function OpenFileDialog() {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<button className="flex gap-2 bg-secondary/50 text-secondary-foreground rounded-md p-2 w-full">
+				<button className="flex gap-2 bg-secondary/70 text-secondary/70-foreground rounded-md p-2 w-full">
 					<FileIcon />
 					<Tran text="logic.open-file" defaultValue="Open file" />
 				</button>
@@ -58,7 +58,7 @@ function OpenFileDialog() {
 							.filter(({ name }) => name.includes(filter))
 							.map(({ name }) => (
 								<button
-									className="flex gap-2 bg-secondary/50 text-secondary-foreground rounded-md p-2 w-full"
+									className="flex gap-2 bg-secondary/70 text-secondary/70-foreground rounded-md p-2 w-full"
 									key={name}
 									onClick={() => load(name)}
 								>

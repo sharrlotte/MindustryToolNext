@@ -61,7 +61,7 @@ export default function InstructionNodeComponent({ id, data }: InstructionNodeDa
 					'w-full h-full items-center justify-center m-auto text-xl align-middle': items.length === 0,
 				})}
 			>
-				<span>{label}</span>
+				<span className="font-outline-2">{label}</span>
 				<span>{data.index}</span>
 			</div>
 			{items.length > 0 && (

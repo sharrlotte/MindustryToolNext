@@ -39,8 +39,13 @@ type ToastOptions = {
 
 function toast(title: ReactNode, options?: ToastOptions) {
 	const id = defaultToast(
-		<div className={cn('grid text-base border-transparent w-full rounded-lg relative p-4 bg-card text-card-foreground border', options?.className)}>
-			<div className="size-4 absolute top-2 right-2 text-white cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
+		<div
+			className={cn(
+				'grid text-base text-foreground border-transparent w-full rounded-lg relative p-4 bg-card text-card-foreground border',
+				options?.className,
+			)}
+		>
+			<div className="size-4 absolute top-2 right-2 cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
 				<XIcon className="size-4" />
 			</div>
 			<div className="flex gap-1 items-center">
@@ -59,15 +64,27 @@ function toast(title: ReactNode, options?: ToastOptions) {
 }
 
 toast.success = (title: ReactNode, options?: ToastOptions) => {
-	return toast(title, { icon: <CheckCircleIcon className="size-4" />, className: 'text-success bg-success/50', ...options });
+	return toast(title, {
+		icon: <CheckCircleIcon className="size-4" />,
+		className: 'text-success-foreground bg-success',
+		...options,
+	});
 };
 
 toast.error = (title: ReactNode, options?: ToastOptions) => {
-	return toast(title, { icon: <XCircleIcon className="size-4" />, className: 'text-destructive-foreground bg-destructive/50', ...options });
+	return toast(title, {
+		icon: <XCircleIcon className="size-4" />,
+		className: 'text-destructive-foreground bg-destructive',
+		...options,
+	});
 };
 
 toast.warning = (title: ReactNode, options?: ToastOptions) => {
-	return toast(title, { icon: <AlertTriangleIcon className="size-4" />, className: 'text-warning bg-warning/30', ...options });
+	return toast(title, {
+		icon: <AlertTriangleIcon className="size-4" />,
+		className: 'text-warning-foreground bg-warning',
+		...options,
+	});
 };
 
 toast.loading = (title: ReactNode, options?: ToastOptions) => {
