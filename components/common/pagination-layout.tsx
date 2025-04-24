@@ -56,3 +56,7 @@ export function GridLayout({ children }: Props) {
 
 	return paginationType === 'grid' ? children : undefined;
 }
+
+export function PaginationFooter({ children }: { children: ReactNode }) {
+	return <div className="flex justify-between gap-2 items-center">{children}</div>;
+}
