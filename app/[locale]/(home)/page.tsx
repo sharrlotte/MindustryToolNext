@@ -108,17 +108,17 @@ const groups = [
 			{
 				href: '/',
 				text: 'home.terms-of-service',
-				class: 'min-w-8 h-8 text-white',
+				class: 'min-w-8 h-8 text-foreground',
 			},
 			{
 				href: '',
 				text: 'home.privacy-policy',
-				class: 'min-w-8 h-8 text-white',
+				class: 'min-w-8 h-8 text-foreground',
 			},
 			{
 				href: '/credit',
 				text: 'home.credit',
-				class: 'min-w-8 h-8 text-white',
+				class: 'min-w-8 h-8 text-foreground',
 			},
 		],
 	},
@@ -139,7 +139,7 @@ export default async function Page({ params }: Props) {
 	const { locale } = await params;
 
 	return (
-		<div className="h-full w-full overflow-y-auto no-scrollbar flex flex-col">
+		<div className="h-full w-full overflow-y-auto no-scrollbar flex flex-col text-foreground">
 			<Header locale={locale} />
 			<Hero locale={locale} />
 			<AboutMindustrySection locale={locale} />
@@ -158,7 +158,7 @@ export default async function Page({ params }: Props) {
 async function Header({ locale }: { locale: Locale }) {
 	return (
 		<NavBarProvider>
-			<header className="sticky top-0 z-50 bg-black border-b border-border">
+			<header className="sticky top-0 z-50 bg-background border-b border-border">
 				<div className="container mx-auto px-4 py-4 flex justify-between items-center">
 					<div className="flex items-center space-x-2">
 						<div className="w-10 h-10 text-brand rounded-md flex items-center justify-center">
@@ -168,7 +168,7 @@ async function Header({ locale }: { locale: Locale }) {
 								</SmallNavbarToggle>
 							</span>
 						</div>
-						<span className="text-xl font-bold text-brand-foreground">Mindustry Tool</span>
+						<span className="text-xl font-bold">Mindustry Tool</span>
 					</div>
 					<SmallNavbarCollapse>
 						<div className="flex h-full flex-col justify-between overflow-hidden p-2">
@@ -214,15 +214,15 @@ async function HeaderLogin({ locale }: { locale: Locale }) {
 
 async function Hero({ locale }: { locale: Locale }) {
 	return (
-		<section className="relative bg-gradient bg-gradient-to-t text-brand-foreground">
+		<section className="bg-background text-foreground">
 			<div className="container mx-auto px-4 text-center">
 				<h1 className="text-4xl md:text-6xl font-bold mb-6">Mindustry Tool</h1>
-				<p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8 text-brand-foreground">
+				<p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8">
 					<T locale={locale} text="home.hero-title" />
 					{/* Your comprehensive platform for Mindustry schematics, maps, servers, and community resources */}
 				</p>
 				<div className="grid grid-cols-2 w-fit mx-auto justify-center gap-4">
-					<InternalLink className="bg-brand/90 hover:bg-brand p-4 py-2 rounded-md text-center justify-center" href="/schematics">
+					<InternalLink className="bg-brand/90 text-brand-foreground hover:bg-brand p-4 py-2 rounded-md text-center justify-center" href="/schematics">
 						<T locale={locale} text="home.explore-schematics" asChild />
 						{/* Explore Schematics */}
 					</InternalLink>
@@ -239,7 +239,7 @@ async function Hero({ locale }: { locale: Locale }) {
 
 async function AboutMindustrySection({ locale }: { locale: Locale }) {
 	return (
-		<section className="py-16 bg-black text-white">
+		<section className="py-16 bg-background text-foreground">
 			<div className="container mx-auto px-4">
 				<h2 className="text-3xl font-bold mb-8 text-center">
 					<T locale={locale} text="home.about-mindustry" />
@@ -305,16 +305,26 @@ async function AboutMindustryToolSection({ locale }: { locale: Locale }) {
 function CheckCircleIcon() {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-			<path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+			<path
+				fillRule="evenodd"
+				d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+				clipRule="evenodd"
+			/>
 		</svg>
 	);
 }
 
-const serverFeatures = ['home.server-mod-support', 'home.server-plugin-support', 'home.server-download-map', 'home.server-console-control', 'home.server-web-ui'];
+const serverFeatures = [
+	'home.server-mod-support',
+	'home.server-plugin-support',
+	'home.server-download-map',
+	'home.server-console-control',
+	'home.server-web-ui',
+];
 
 async function ServerSection({ locale }: { locale: Locale }) {
 	return (
-		<section className="py-16 bg-black text-white">
+		<section className="py-16 bg-background text-foreground">
 			<div className="container mx-auto px-4">
 				<h2 className="text-3xl font-bold mb-8 text-center">
 					<T locale={locale} text="home.create-server-for-free" />
@@ -336,14 +346,17 @@ async function ServerSection({ locale }: { locale: Locale }) {
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
 							{serverFeatures.map((item, index) => (
 								<div className="flex items-start" key={index}>
-									<div className="mr-2 mt-1 bg-brand p-1 rounded-full">
+									<div className="mr-2 mt-1 bg-brand text-brand-foreground p-1 rounded-full">
 										<CheckCircleIcon />
 									</div>
 									<T locale={locale} text={item} />
 								</div>
 							))}
 						</div>
-						<InternalLink href="/servers?create=true" className="bg-brand/90 hover:bg-brand w-full md:w-auto px-4 py-2 rounded-md">
+						<InternalLink
+							href="/servers?create=true"
+							className="bg-brand/90 text-brand-foreground hover:bg-brand w-full md:w-auto px-4 py-2 rounded-md"
+						>
 							<T locale={locale} text="home.create-free-server" asChild />
 							{/* Create Your Free Server */}
 						</InternalLink>
@@ -356,18 +369,16 @@ async function ServerSection({ locale }: { locale: Locale }) {
 
 async function Statistic({ locale }: { locale: Locale }) {
 	return (
-		<div className="my-auto">
-			<section className="py-16">
-				<div className="container mx-auto px-4">
-					<h2 className="text-3xl font-bold mb-12 text-center text-brand-foreground">
-						<T locale={locale} text="home.explore-our-collection" />
-					</h2>
-					<Suspense fallback={<div className="h-[300px]"></div>}>
-						<StatisticSection locale={locale} />
-					</Suspense>
-				</div>
-			</section>
-		</div>
+		<section className="py-16">
+			<div className="container mx-auto px-4">
+				<h2 className="text-3xl font-bold mb-12 text-center text-brand-foreground">
+					<T locale={locale} text="home.explore-our-collection" />
+				</h2>
+				<Suspense fallback={<div className="h-[300px]"></div>}>
+					<StatisticSection locale={locale} />
+				</Suspense>
+			</div>
+		</section>
 	);
 }
 
@@ -389,13 +400,13 @@ async function StatisticSection({ locale }: { locale: Locale }) {
 					<InternalLink
 						href={item.link}
 						shallow
-						className={`text-center p-6 text-brand-foreground bg-gray-900/50 backdrop-blur-sm h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}
+						className={`text-center p-6 text-brand-foreground bg-secondary/50 backdrop-blur-sm h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}
 					>
 						<div className={`flex justify-center items-center flex-col gap-2 ${item.color}`}>
 							<item.icon className="size-12" />
 						</div>
 						<Counter from={0} to={item.count} />
-						<T className="text-xl" locale={locale} text={item.text} />
+						<T className="text-xl text-secondary-foreground" locale={locale} text={item.text} />
 					</InternalLink>
 				</FlyIn>
 			))}
@@ -419,7 +430,10 @@ async function LoginAction({ locale }: { locale: Locale }) {
 				<T locale={locale} text="home.register-and-join" asChild />
 			</p>
 			<div className="flex flex-col md:flex-row justify-center gap-4">
-				<a className=" rounded-md bg-[rgb(88,101,242)] p-2 transition-colors hover:bg-[rgb(76,87,214)]" href={`${env.url.api}/oauth2/discord`}>
+				<a
+					className=" rounded-md bg-[rgb(88,101,242)] text-white p-2 transition-colors hover:bg-[rgb(76,87,214)]"
+					href={`${env.url.api}/oauth2/discord`}
+				>
 					<div className="flex items-center justify-center gap-1">
 						<DiscordIcon /> <T locale={locale} text="home.login-with-discord" />
 					</div>
@@ -431,7 +445,7 @@ async function LoginAction({ locale }: { locale: Locale }) {
 
 async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryType }) {
 	return (
-		<section id="new-schematics" className="py-16 bg-black text-white">
+		<section id="new-schematics" className="py-16 bg-background text-foreground">
 			<div className="container mx-auto px-4">
 				<div className="flex justify-between items-center mb-8 w-full">
 					<h2 className="text-3xl font-bold text-nowrap">
@@ -474,7 +488,7 @@ async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) 
 
 function Footer({ locale }: { locale: Locale }) {
 	return (
-		<footer className="bg-black border-t border-border py-12 text-white">
+		<footer className="bg-background border-t border-border py-12 text-foreground">
 			<div className="container mx-auto px-4">
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 					<div>
@@ -492,7 +506,7 @@ function Footer({ locale }: { locale: Locale }) {
 							<ul className="space-y-2 text-gray-400">
 								{group.value.map((value, index) => (
 									<div key={index}>
-										<InternalLink href={value.href} className="hover:text-blue-400">
+										<InternalLink href={value.href} className="hover:text-brand">
 											<T locale={locale} text={value.text} />
 										</InternalLink>
 									</div>
@@ -517,7 +531,9 @@ async function HomeServerPreview() {
 	);
 }
 
-const findSchematics = unstable_cache((axios, queryParams) => getSchematics(axios, queryParams), ['home-schematics'], { revalidate: 60 * 60 });
+const findSchematics = unstable_cache((axios, queryParams) => getSchematics(axios, queryParams), ['home-schematics'], {
+	revalidate: 60 * 60,
+});
 
 const findMaps = unstable_cache((axios, queryParams) => getMaps(axios, queryParams), ['home-maps'], { revalidate: 60 * 60 });
 

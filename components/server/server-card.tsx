@@ -24,7 +24,7 @@ export default function ServerCard({
 				<div className="flex items-start gap-2 flex-nowrap w-full overflow-hidden text-ellipsis justify-between">
 					<ColorText className="text-2xl font-bold" text={name} />
 					{isOfficial && (
-						<span className="rounded-xl text-nowrap bg-brand text-brand-foreground text-xs px-2 py-1">
+						<span className="rounded-xl text-nowrap bg-purple-500 text-white text-xs px-2 py-1">
 							<Tran text="server.official" />
 						</span>
 					)}

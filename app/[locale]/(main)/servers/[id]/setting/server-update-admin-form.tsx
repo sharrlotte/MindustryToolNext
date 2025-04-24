@@ -25,7 +25,7 @@ type Props = {
 	server: Server;
 };
 
-export default function ServerUpdatePortForm({ server }: Props) {
+export default function ServerUpdateAdminForm({ server }: Props) {
 	const { id, port, isOfficial, isAutoTurnOff, isHub } = server;
 
 	const form = useForm<PutServerPortRequest>({
@@ -49,7 +49,7 @@ export default function ServerUpdatePortForm({ server }: Props) {
 			}),
 		onSettled: () => {
 			invalidateByKey(['servers']);
-			revalidate({ path: '/servers' });
+			revalidate({ path: '/[locale]/(main)/servers' });
 		},
 	});
 
@@ -57,7 +57,10 @@ export default function ServerUpdatePortForm({ server }: Props) {
 
 	return (
 		<Form {...form}>
-			<form className="relative flex flex-1 flex-col justify-between gap-4 bg-card rounded-md p-4" onSubmit={form.handleSubmit((value) => mutate(value))}>
+			<form
+				className="relative flex flex-1 flex-col justify-between gap-4 bg-card rounded-md p-4"
+				onSubmit={form.handleSubmit((value) => mutate(value))}
+			>
 				<FormMessage />
 				<div className="space-y-6">
 					<FormField
@@ -135,7 +138,13 @@ export default function ServerUpdatePortForm({ server }: Props) {
 						'opacity-100 translate-y-0': isChanged,
 					})}
 				>
-					<Button className="flex justify-end" variant="secondary" title="reset" onClick={() => form.reset()} disabled={!isChanged || isPending}>
+					<Button
+						className="flex justify-end"
+						variant="secondary"
+						title="reset"
+						onClick={() => form.reset()}
+						disabled={!isChanged || isPending}
+					>
 						<Tran text="reset" />
 					</Button>
 					<Button variant="primary" type="submit" title="update" disabled={!isChanged || isPending}>
