@@ -245,8 +245,8 @@ async function AboutMindustrySection({ locale }: { locale: Locale }) {
 					<T locale={locale} text="home.about-mindustry" />
 					{/* About Mindustry */}
 				</h2>
-				<div className="flex flex-col md:flex-row gap-8 items-center">
-					<div className="md:w-1/2 aspect-video overflow-hidden rounded-lg">
+				<div className="flex flex-col md:flex-row gap-8">
+					<div className="w-full md:w-1/2 aspect-video overflow-hidden rounded-lg">
 						<YouTubeEmbed videoid="gUu3AhqpyHo" />
 					</div>
 					<div className="md:w-1/2">
@@ -278,8 +278,8 @@ async function AboutMindustryToolSection({ locale }: { locale: Locale }) {
 					<T locale={locale} text="home.about-mindustry-tool" />
 					{/* About Mindustry Tool */}
 				</h2>
-				<div className="flex flex-col md:flex-row-reverse gap-8 items-center">
-					<div className="md:w-1/2 aspect-video overflow-hidden rounded-lg">
+				<div className="flex flex-col md:flex-row-reverse gap-8">
+					<div className="w-full md:w-1/2 aspect-video overflow-hidden rounded-lg">
 						<YouTubeEmbed videoid="gUu3AhqpyHo" />
 					</div>
 					<div className="md:w-1/2">
