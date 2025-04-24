@@ -44,7 +44,7 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 		mutationKey: ['servers'],
 		mutationFn: (data: PutServerPortRequest) =>
 			toast.promise(updateServerPort(axios, id, data), {
-				error: (error) => ({ title: <Tran text="update.fail" />, description: error.message }),
+				error: (error) => ({ title: <Tran text="update.fail" />, description: error?.message }),
 				success: <Tran text="update.success" />,
 			}),
 		onSettled: () => {

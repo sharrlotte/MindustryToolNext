@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DownloadButton from '@/components/button/download.button';
+import ErrorMessage from '@/components/common/error-message';
 import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
 import FileCard from '@/components/file/file-card';
@@ -15,7 +16,6 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { deleteServerFile, getServerFiles } from '@/query/server';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import ErrorMessage from '@/components/common/error-message';
 
 type FileListProps = {
 	id: string;
@@ -39,7 +39,7 @@ export default function FileList({ id, path, filter, setFilePath }: FileListProp
 		mutationKey: ['delete-file'],
 		mutationFn: async (path: string) => deleteServerFile(axios, id, path),
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['server', id, 'server-files', path]);

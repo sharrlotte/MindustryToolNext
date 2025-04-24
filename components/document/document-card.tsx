@@ -25,7 +25,7 @@ export default function DocumentCard({ document: { id, text, metadata } }: Props
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['documents']);

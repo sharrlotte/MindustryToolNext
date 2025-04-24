@@ -44,7 +44,7 @@ export default function Page() {
 		},
 		onError: (error) => {
 			setFile(undefined);
-			toast.error(<Tran text="upload.get-preview-fail" />, { description: error.message });
+			toast.error(<Tran text="upload.get-preview-fail" />, { description: error?.message });
 		},
 	});
 

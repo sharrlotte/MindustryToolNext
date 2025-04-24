@@ -196,7 +196,7 @@ function CommentInput({ itemId }: CommentInputProps) {
 			invalidateByKey([`comments-${itemId}`]);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="error" />, { description: error.message });
+			toast.error(<Tran text="error" />, { description: error?.message });
 		},
 		onSettled: () => {
 			filterByKey<Comment>([`comments-${itemId}`], (comment) => !isNumeric(comment.id));

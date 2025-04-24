@@ -45,7 +45,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
 			setAdded((prev) => [...prev, mapId]);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="interval-server.add-map-fail" />, { description: error.message });
+			toast.error(<Tran text="interval-server.add-map-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['servers', serverId, 'maps']);
@@ -116,16 +116,23 @@ type ServerMapCardProps = {
 function ServerMapCard({ id, name, isAdded, mutate }: ServerMapCardProps) {
 	return (
 		<Button
-			className={cn('hover:zoom-in-110 relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start', {
-				'border border-success': isAdded,
-			})}
+			className={cn(
+				'hover:zoom-in-110 relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start',
+				{
+					'border border-success': isAdded,
+				},
+			)}
 			variant="icon"
 			title={name}
 			onClick={() => mutate(id)}
 		>
 			<h3 className="absolute top-0 w-full overflow-hidden p-2 text-center backdrop-brightness-[20%]">{name}</h3>
 			<footer className="absolute bottom-0 w-full overflow-hidden p-2 text-center backdrop-brightness-[20%]"></footer>
-			<PreviewImage src={`${env.url.image}/map-previews/${id}${env.imageFormat}`} errorSrc={`${env.url.api}/maps/${id}/image`} alt={name} />
+			<PreviewImage
+				src={`${env.url.image}/map-previews/${id}${env.imageFormat}`}
+				errorSrc={`${env.url.api}/maps/${id}/image`}
+				alt={name}
+			/>
 		</Button>
 	);
 }

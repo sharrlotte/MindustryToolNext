@@ -33,12 +33,19 @@ export function DeleteMapButton({ id, name, variant }: DeleteMapButtonProps) {
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['maps']);
 		},
 	});
 
-	return <DeleteButton variant={variant} description={<Tran text="delete-alert" args={{ name }} />} isLoading={isPending} onClick={() => mutate(id)} />;
+	return (
+		<DeleteButton
+			variant={variant}
+			description={<Tran text="delete-alert" args={{ name }} />}
+			isLoading={isPending}
+			onClick={() => mutate(id)}
+		/>
+	);
 }

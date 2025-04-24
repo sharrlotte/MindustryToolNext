@@ -19,123 +19,126 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 export default function AddNewKeyDialog() {
-  const form = useForm<CreateTranslationRequest>({
-    resolver: zodResolver(CreateTranslationSchema),
-    defaultValues: {
-      language: 'en',
-    },
-  });
+	const form = useForm<CreateTranslationRequest>({
+		resolver: zodResolver(CreateTranslationSchema),
+		defaultValues: {
+			language: 'en',
+		},
+	});
 
-  const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(false);
 
-  const { invalidateByKey } = useQueriesData();
-  const axios = useClientApi();
+	const { invalidateByKey } = useQueriesData();
+	const axios = useClientApi();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: CreateTranslationRequest) => createTranslation(axios, data),
-    onSuccess: () => {
-      toast.success(<Tran text="upload.success" />);
+	const { mutate, isPending } = useMutation({
+		mutationFn: (data: CreateTranslationRequest) => createTranslation(axios, data),
+		onSuccess: () => {
+			toast.success(<Tran text="upload.success" />);
 
-      form.reset();
-      setOpen(false);
-    },
-    onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
-    onSettled: () => {
-      invalidateByKey(['translations']);
-      clearTranslationCache();
-    },
-  });
+			form.reset();
+			setOpen(false);
+		},
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onSettled: () => {
+			invalidateByKey(['translations']);
+			clearTranslationCache();
+		},
+	});
 
-  function handleKeyGroupChange(event: ChangeEvent<HTMLInputElement>) {
-    const value = event.currentTarget.value;
+	function handleKeyGroupChange(event: ChangeEvent<HTMLInputElement>) {
+		const value = event.currentTarget.value;
 
-    if (!value.includes('.')) {
-      return form.setValue('keyGroup', value);
-    }
+		if (!value.includes('.')) {
+			return form.setValue('keyGroup', value);
+		}
 
-    const parts = value.split('.');
+		const parts = value.split('.');
 
-    if (parts.length !== 2) {
-      return form.setValue('keyGroup', value);
-    }
+		if (parts.length !== 2) {
+			return form.setValue('keyGroup', value);
+		}
 
-    const keyGroup = parts[0];
-    const key = parts[1];
+		const keyGroup = parts[0];
+		const key = parts[1];
 
-    form.setValue('keyGroup', keyGroup);
-    form.setValue('key', key);
-  }
+		form.setValue('keyGroup', keyGroup);
+		form.setValue('key', key);
+	}
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="h-10" variant="primary" title="translation add">
-          <Tran text="translation.add" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <Form {...form}>
-          <Hidden>
-            <DialogTitle />
-            <DialogDescription />
-          </Hidden>
-          <form className="flex flex-1 flex-col justify-between space-y-4 rounded-md bg-card p-2" onSubmit={form.handleSubmit((value) => mutate(value))}>
-            <FormField
-              control={form.control}
-              name="keyGroup"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    <Tran text="translation.key-group" />
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="Translation" {...field} onChange={handleKeyGroupChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="key"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    <Tran text="translation.key" />
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="Some cool stuff" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem className="grid">
-                  <FormLabel>
-                    <Tran text="translation.value" />
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-end gap-1">
-              <Button variant="secondary" title="reset" onClick={() => form.reset()}>
-                <Tran text="reset" />
-              </Button>
-              <Button variant="primary" type="submit" title="save" disabled={isPending}>
-                <Tran text="save" />
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
-  );
+	return (
+		<Dialog open={open} onOpenChange={setOpen}>
+			<DialogTrigger asChild>
+				<Button className="h-10" variant="primary" title="translation add">
+					<Tran text="translation.add" />
+				</Button>
+			</DialogTrigger>
+			<DialogContent>
+				<Form {...form}>
+					<Hidden>
+						<DialogTitle />
+						<DialogDescription />
+					</Hidden>
+					<form
+						className="flex flex-1 flex-col justify-between space-y-4 rounded-md bg-card p-2"
+						onSubmit={form.handleSubmit((value) => mutate(value))}
+					>
+						<FormField
+							control={form.control}
+							name="keyGroup"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										<Tran text="translation.key-group" />
+									</FormLabel>
+									<FormControl>
+										<Input placeholder="Translation" {...field} onChange={handleKeyGroupChange} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="key"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										<Tran text="translation.key" />
+									</FormLabel>
+									<FormControl>
+										<Input placeholder="Some cool stuff" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="value"
+							render={({ field }) => (
+								<FormItem className="grid">
+									<FormLabel>
+										<Tran text="translation.value" />
+									</FormLabel>
+									<FormControl>
+										<Textarea {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<div className="flex justify-end gap-1">
+							<Button variant="secondary" title="reset" onClick={() => form.reset()}>
+								<Tran text="reset" />
+							</Button>
+							<Button variant="primary" type="submit" title="save" disabled={isPending}>
+								<Tran text="save" />
+							</Button>
+						</div>
+					</form>
+				</Form>
+			</DialogContent>
+		</Dialog>
+	);
 }

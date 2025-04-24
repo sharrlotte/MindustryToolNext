@@ -44,7 +44,7 @@ export default function ServerUpdateForm({ server }: Props) {
 			toast.success(<Tran text="update.success" />);
 			revalidate({ path: '/servers' });
 		},
-		onError: (error) => toast.error(<Tran text="update.fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="update.fail" />, { description: error?.message }),
 		onSettled: () => {
 			invalidateByKey(['servers']);
 			revalidate({ path: '/[locale]/(main)/servers' });

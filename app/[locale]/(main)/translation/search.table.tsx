@@ -16,7 +16,12 @@ import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
 import { Locale } from '@/i18n/config';
-import { CreateTranslationRequest, createTranslation, getTranslationSearch, getTranslationSearchCount } from '@/query/translation';
+import {
+	CreateTranslationRequest,
+	createTranslation,
+	getTranslationSearch,
+	getTranslationSearchCount,
+} from '@/query/translation';
 import { Translation } from '@/types/response/Translation';
 import { TranslationPaginationQuery } from '@/types/schema/search-query';
 
@@ -80,7 +85,7 @@ function SearchCard({ translation }: SearchCardProps) {
 	const [isEdit, setEdit] = useState(false);
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
 	});
 
 	const create = () => {

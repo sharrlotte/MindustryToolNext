@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React, { Fragment, Suspense, cache } from 'react';
+import React, { Fragment } from 'react';
 
-import { PlayersCard, PlayersCardSkeleton } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/player-card';
+import { PlayerList } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/player-list';
 import HostServerButton from '@/app/[locale]/(main)/servers/[id]/host-server-button';
 import InitServerButton from '@/app/[locale]/(main)/servers/[id]/init-server-button';
 import RemoveServerButton from '@/app/[locale]/(main)/servers/[id]/remove-server-button';
@@ -19,12 +19,12 @@ import Tran from '@/components/common/tran';
 import ServerStatus from '@/components/server/server-status';
 import IdUserCard from '@/components/user/id-user-card';
 
-import { getSession, serverApi } from '@/action/common';
+import { getSession } from '@/action/common';
 import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
 import { cn, formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
-import { getServer } from '@/query/server';
+import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 
 const RamUsageChart = dynamic(() => import('@/components/metric/ram-usage-chart'));
 
@@ -33,8 +33,6 @@ export const experimental_ppr = true;
 type Props = {
 	params: Promise<{ id: string; locale: string }>;
 };
-
-export const getCachedServer = cache((id: string) => serverApi(async (axios) => await getServer(axios, { id })));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id } = await params;
@@ -130,8 +128,8 @@ export default async function Page({ params }: Props) {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-wrap gap-2 bg-card rounded-md justify-between">
-						<div className="flex h-full flex-wrap items-start justify-start gap-1 p-4 shadow-lg">
+					<div className="flex flex-wrap gap-2 justify-between">
+						<div className="flex h-full flex-wrap items-start justify-start gap-1 p-4 shadow-lg flex-1 bg-card rounded-md">
 							<div className="flex h-full flex-col items-start justify-start gap-1">
 								<h3 className="text-xl">
 									<Tran text="server.system-status" />
@@ -160,16 +158,12 @@ export default async function Page({ params }: Props) {
 							)}
 						</div>
 						<ProtectedElement session={session} filter={showPlayer}>
-							<div className="flex min-w-40 flex-col gap-1">
+							<div className="flex min-w-[300px] flex-col gap-1 bg-card rounded-md">
 								<div className="flex flex-col gap-2">
 									<h3 className="p-4 text-xl">
 										<Tran text="server.players" /> {players}
 									</h3>
-									{status === 'HOST' && (
-										<Suspense fallback={<PlayersCardSkeleton players={players} />}>
-											<PlayersCard id={id} />
-										</Suspense>
-									)}
+									{status === 'HOST' && <PlayerList id={id} />}
 								</div>
 							</div>
 						</ProtectedElement>
@@ -178,7 +172,13 @@ export default async function Page({ params }: Props) {
 						<div className={cn('flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg mt-auto')}>
 							{status !== 'DELETED' && <RemoveServerButton id={id} />}
 							{status !== 'DOWN' && <ShutdownServerButton id={id} />}
-							{status === 'HOST' ? <StopServerButton id={id} /> : status === 'UP' ? <HostServerButton id={id} /> : <InitServerButton id={id} />}
+							{status === 'HOST' ? (
+								<StopServerButton id={id} />
+							) : status === 'UP' ? (
+								<HostServerButton id={id} />
+							) : (
+								<InitServerButton id={id} />
+							)}
 						</div>
 					</ProtectedElement>
 				</div>

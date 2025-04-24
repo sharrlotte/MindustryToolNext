@@ -239,7 +239,7 @@ async function Hero({ locale }: { locale: Locale }) {
 
 async function AboutMindustrySection({ locale }: { locale: Locale }) {
 	return (
-		<section className="py-16 bg-background text-foreground">
+		<section className="py-16 text-foreground bg-card">
 			<div className="container mx-auto px-4">
 				<h2 className="text-3xl font-bold mb-8 text-center">
 					<T locale={locale} text="home.about-mindustry" />

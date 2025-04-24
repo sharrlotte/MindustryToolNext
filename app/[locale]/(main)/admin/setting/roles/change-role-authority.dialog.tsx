@@ -39,7 +39,10 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 		placeholderData: [],
 	});
 
-	const filteredAuthority = useMemo(() => data?.filter((a) => (a.authorityGroup === 'Shar' ? session?.roles.map((r) => r.name).includes('SHAR') : true)) || [], [data, session?.roles]);
+	const filteredAuthority = useMemo(
+		() => data?.filter((a) => (a.authorityGroup === 'Shar' ? session?.roles.map((r) => r.name).includes('SHAR') : true)) || [],
+		[data, session?.roles],
+	);
 	const { mutate } = useMutation({
 		mutationFn: async (authorityIds: string[]) => changeAuthorities(axios, { roleId, authorityIds }),
 		onSuccess: () => {
@@ -47,7 +50,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 			revalidate({ path: '/users' });
 		},
 		onError: (error) => {
-			toast.error('Error', { description: error.message });
+			toast.error('Error', { description: error?.message });
 			setSelectedAuthorities(authorities);
 		},
 		mutationKey: ['update-role-authority', roleId],
@@ -67,7 +70,11 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 		setOpen(value);
 	}
 
-	const groups = useMemo(() => groupBy(filteredAuthority?.sort((a, b) => a.authorityGroup.localeCompare(b.authorityGroup)) || [], (v) => v.authorityGroup), [filteredAuthority]);
+	const groups = useMemo(
+		() =>
+			groupBy(filteredAuthority?.sort((a, b) => a.authorityGroup.localeCompare(b.authorityGroup)) || [], (v) => v.authorityGroup),
+		[filteredAuthority],
+	);
 
 	return (
 		<Dialog open={open} onOpenChange={handleOpenChange}>
@@ -88,12 +95,21 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 				<ScrollContainer className="h-full p-6">
 					<DialogTitle>Change authority for {name}</DialogTitle>
 					<DialogDescription />
-					<ToggleGroup className="flex flex-col items-start justify-start gap-4" type={'multiple'} onValueChange={handleAuthorityChange} defaultValue={authorities.map((r) => r.name)}>
+					<ToggleGroup
+						className="flex flex-col items-start justify-start gap-4"
+						type={'multiple'}
+						onValueChange={handleAuthorityChange}
+						defaultValue={authorities.map((r) => r.name)}
+					>
 						{groups.map(({ key, value }) => (
 							<Fragment key={key}>
 								<span className="font-bold">{key}</span>
 								{value.map(({ id, name, description }) => (
-									<ToggleGroupItem key={id} className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent" value={name}>
+									<ToggleGroupItem
+										key={id}
+										className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent"
+										value={name}
+									>
 										<div className="w-full space-y-1">
 											<div className="flex w-full justify-between gap-1">
 												<span className="text-sm lowercase">{name}</span>
