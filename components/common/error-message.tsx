@@ -6,7 +6,7 @@ type Props = {
 	error: any;
 };
 export default function ErrorMessage({ error }: Props) {
-	if (typeof error === 'object' && typeof error.message === 'string') {
+	if (error && typeof error === 'object' && typeof error.message === 'string') {
 		return <span className="text-destructive p-2">{error.message}</span>;
 	}
 
