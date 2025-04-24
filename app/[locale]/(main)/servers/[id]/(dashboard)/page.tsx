@@ -128,8 +128,8 @@ export default async function Page({ params }: Props) {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-wrap gap-2 bg-card rounded-md justify-between">
-						<div className="flex h-full flex-wrap items-start justify-start gap-1 p-4 shadow-lg">
+					<div className="flex flex-wrap gap-2 justify-between">
+						<div className="flex h-full flex-wrap items-start justify-start gap-1 p-4 shadow-lg flex-1 bg-card rounded-md">
 							<div className="flex h-full flex-col items-start justify-start gap-1">
 								<h3 className="text-xl">
 									<Tran text="server.system-status" />
@@ -158,7 +158,7 @@ export default async function Page({ params }: Props) {
 							)}
 						</div>
 						<ProtectedElement session={session} filter={showPlayer}>
-							<div className="flex min-w-[300px] flex-col gap-1">
+							<div className="flex min-w-[300px] flex-col gap-1 bg-card rounded-md">
 								<div className="flex flex-col gap-2">
 									<h3 className="p-4 text-xl">
 										<Tran text="server.players" /> {players}
