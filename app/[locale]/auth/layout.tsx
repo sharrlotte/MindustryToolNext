@@ -17,7 +17,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 	return (
 		<div className="flex flex-col w-full h-full">
 			<NavBarProvider>
-				<header className="sticky top-0 z-50 bg-black border-b border-border">
+				<header className="sticky top-0 z-50 bg-background border-b border-border">
 					<div className="container mx-auto px-4 py-4 flex justify-between items-center">
 						<div className="flex items-center space-x-2">
 							<div className="w-10 h-10 text-brand rounded-md flex items-center justify-center">
