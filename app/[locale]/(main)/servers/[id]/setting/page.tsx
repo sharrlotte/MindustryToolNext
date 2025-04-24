@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import React from 'react';
 
 import { ServerSettingButton } from '@/app/[locale]/(main)/servers/[id]/setting/delete-setting-button';
+import ServerUpdateAdminForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-admin-form';
 import ServerUpdateForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-form';
-import ServerUpdatePortForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-port-form';
 
 import ErrorScreen from '@/components/common/error-screen';
 import RequireLogin from '@/components/common/require-login';
@@ -53,7 +53,7 @@ export default async function Page({ params }: Props) {
 		<ScrollContainer className="flex h-full flex-col gap-2">
 			<ServerUpdateForm server={server} />
 			<ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
-				<ServerUpdatePortForm server={server} />
+				<ServerUpdateAdminForm server={server} />
 			</ProtectedElement>
 			<ProtectedElement session={session} filter={{ any: [{ authority: 'EDIT_ADMIN_SERVER' }, { authorId: server.userId }] }}>
 				<ServerSettingButton id={id} />
