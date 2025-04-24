@@ -13,7 +13,10 @@
 // Autocomplete
 import { InstructionNode } from '@/app/[locale]/logic/instruction.node';
 
+
+
 import { groupBy } from '@/lib/utils';
+
 
 export type ItemsType = Readonly<NodeItem[]>;
 export type OutputsType = Readonly<Output[]>;
@@ -735,8 +738,9 @@ export const instructionNodes: Record<string, NodeData> = Object.entries(instruc
 		if (value instanceof NodeData) {
 			acc[key] = value;
 		} else {
-			Object.entries(value.children).forEach(([key, value]) => {
-				acc[key] = value;
+			Object.entries(value.children).forEach(([key, child]) => {
+				child.label = value.label + ' ' + child.label;
+				acc[key] = child;
 			});
 		}
 
