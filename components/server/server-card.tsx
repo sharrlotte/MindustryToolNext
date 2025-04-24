@@ -1,6 +1,5 @@
 import React, { Fragment, Suspense } from 'react';
 
-import CopyButton from '@/components/button/copy.button';
 import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
@@ -14,7 +13,7 @@ type MyServerInstancesCardProps = {
 };
 
 export default function ServerCard({
-	server: { id, name, players, port, status, mapName, mode, address, isOfficial },
+	server: { id, name, players, port, status, mapName, mode, isOfficial },
 }: MyServerInstancesCardProps) {
 	return (
 		<InternalLink
@@ -22,7 +21,6 @@ export default function ServerCard({
 			href={`/servers/${id}`}
 		>
 			<Suspense>
-				<CopyButton data={address} variant="ghost" position="absolute-right" />
 				<div className="flex items-start gap-2 flex-nowrap w-full overflow-hidden text-ellipsis justify-between">
 					<ColorText className="text-2xl font-bold" text={name} />
 					{isOfficial && (
