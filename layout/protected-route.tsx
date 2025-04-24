@@ -2,6 +2,7 @@
 
 import React, { ReactNode } from 'react';
 
+import LoginButton from '@/components/button/login.button';
 import ErrorScreen from '@/components/common/error-screen';
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
@@ -32,6 +33,14 @@ export default function ProtectedRoute({ filter, children }: Props) {
 
 	if (isError(session)) {
 		return <ErrorScreen error={session} />;
+	}
+
+	if (!session) {
+		return (
+			<div className="flex h-full w-full justify-center items-center">
+				<LoginButton />
+			</div>
+		);
 	}
 
 	const canAccess = hasAccess(session, filter);
