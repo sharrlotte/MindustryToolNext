@@ -430,7 +430,10 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			}
 		}
 
-		if (name === saved.currentFile) return;
+		if (name === saved.currentFile) {
+			setLoading(false)
+			return;
+		}
 
 		if (saved.currentFile) {
 			const result = load(saved.currentFile);

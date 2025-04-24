@@ -15,7 +15,7 @@ import { NavBarProvider } from '@/context/navbar.context';
 export default function LogicEditorNavBar() {
 	return (
 		<NavBarProvider>
-			<div className="flex p-1 items-center overflow-hidden gap-4 relative bg-card dark:bg-transparent">
+			<div className="flex p-1 items-center overflow-hidden gap-4 relative dark:bg-transparent">
 				<div className="flex items-center gap-2">
 					<SmallNavbarToggle className="gap-1 px-0 py-0">
 						<MindustryToolIcon className="size-8" />

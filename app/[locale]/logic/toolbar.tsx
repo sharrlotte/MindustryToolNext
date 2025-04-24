@@ -64,7 +64,7 @@ function FilenameInput() {
 
 	return (
 		<Input
-			className="text-lg border-none w-fit min-w-0 bg-secondary/50 rounded-md"
+			className="text-lg border-none w-fit min-w-0 bg-card text-card-foreground rounded-md"
 			type="text"
 			value={currentName.trim()}
 			onChange={(event) => setCurrentName(event.currentTarget.value.trim())}
@@ -76,16 +76,16 @@ function FilenameInput() {
 export default function ToolBar() {
 	return (
 		<CatchError>
-			<div className="min-h-nav bg-card border-b overflow-x-auto p-1 flex items-center w-full justify-between">
+			<div className="min-h-nav border-b overflow-x-auto p-1 flex items-center w-full justify-between">
 				<ShortcutHandler />
 				<div className="flex items-center gap-2">
 					<FilenameInput />
 					{tabs.map((tab, index) => (
 						<Popover key={index}>
-							<PopoverTrigger className="hover:bg-secondary text-muted-foreground hover:text-foreground p-2 py-1 rounded-sm capitalize">
+							<PopoverTrigger className="hover:bg-card text-muted-foreground hover:text-card-foreground p-2 py-1 rounded-sm capitalize">
 								<Tran asChild text={tab.label} />
 							</PopoverTrigger>
-							<PopoverContent className="p-1 mx-2 my-4 bg-card grid capitalize space-y-1">
+							<PopoverContent className="p-1 mx-2 my-4 grid capitalize space-y-1">
 								{tab.items.map((item, index) => (
 									<PopoverClose key={index} asChild>
 										<Suspense>{item}</Suspense>

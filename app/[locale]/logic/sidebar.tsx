@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FileIcon, FolderIcon, LayoutGrid } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { ReactNode, Suspense, useState } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 import LogicEditorNavBar from '@/app/[locale]/logic/navbar';
 import PlusPanel from '@/app/[locale]/logic/plus.panel';
@@ -64,13 +64,13 @@ export default function SideBar() {
 
 	return (
 		<div className="h-full flex items-start overflow-hidden">
-			<div className="flex min-w-nav gap-2 flex-col bg-card border-r p-1 h-full">
+			<div className="flex min-w-nav gap-2 flex-col border-r p-1 h-full">
 				<LogicEditorNavBar />
 				{tabs.map(({ id, icon }) => (
 					<button
 						key={id}
-						className={cn('cursor-pointer p-2 rounded-md hover:bg-secondary flex items-center justify-center aspect-square', {
-							'bg-secondary': id === currentTab,
+						className={cn('cursor-pointer p-2 rounded-md hover:bg-secondary/70 flex items-center justify-center aspect-square', {
+							'bg-secondary/70': id === currentTab,
 						})}
 						onClick={() => setCurrentTab((prev) => (prev === id ? null : id))}
 					>
@@ -82,7 +82,7 @@ export default function SideBar() {
 				{tabs
 					.filter(({ id }) => id === currentTab)
 					.map(({ id, item }) => (
-						<div key={id} className="p-2 border-r h-full overflow-hidden min-w-72 bg-card">
+						<div key={id} className="p-2 border-r h-full overflow-hidden min-w-72">
 							<motion.div
 								className="h-full overflow-hidden"
 								initial={{ y: -10, opacity: 0 }}
