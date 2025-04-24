@@ -15,11 +15,11 @@ import { Player } from '@/types/response/Player';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-type PlayersCardProps = {
+type PlayerListProps = {
 	id: string;
 };
 
-export function PlayersCard({ id }: PlayersCardProps) {
+export function PlayerList({ id }: PlayerListProps) {
 	const axios = useClientApi();
 	const { data, isError, error } = useSuspenseQuery({
 		queryKey: ['server', id, 'player'],
@@ -39,17 +39,17 @@ export function PlayersCard({ id }: PlayersCardProps) {
 	);
 }
 
-type PlayersCardSkeletonProps = {
+type PlayerListSkeletonProps = {
 	players: number;
 };
-export function PlayersCardSkeleton({ players }: PlayersCardSkeletonProps) {
+export function PlayerListSkeleton({ players }: PlayerListSkeletonProps) {
 	if (players === 0) {
 		return undefined;
 	}
 
 	return Array(players)
 		.fill(1)
-		.map((_, index) => <Skeleton className="h-10 w-24" key={index} />);
+		.map((_, index) => <Skeleton className="h-10 w-full" key={index} />);
 }
 
 type PlayerCardProps = {
