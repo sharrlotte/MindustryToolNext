@@ -8,7 +8,6 @@ import InfinitePage from '@/components/common/infinite-page';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import ServerPluginCard from '@/components/server/server-plugin-card';
-import { Skeleton } from '@/components/ui/skeleton';
 
 import { getServerPluginCount, getServerPlugins } from '@/query/server';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
@@ -26,10 +25,6 @@ export default function ServerPluginPage({ id }: Props) {
 					paramSchema={PaginationQuerySchema}
 					queryKey={['servers', id, 'plugins']}
 					queryFn={(axios, params) => getServerPlugins(axios, id, params)}
-					skeleton={{
-						amount: 20,
-						item: <Skeleton className="h-32 w-full" />,
-					}}
 				>
 					{(data) => <ServerPluginCard key={data.id} plugin={data} />}
 				</InfinitePage>
@@ -37,7 +32,10 @@ export default function ServerPluginPage({ id }: Props) {
 			<div className="flex justify-between gap-2 items-center">
 				<AddPluginDialog serverId={id} />
 				<div className="flex gap-2">
-					<PaginationNavigator numberOfItems={(axios, params) => getServerPluginCount(axios, id, params)} queryKey={['servers', id, 'plugins', 'total']} />
+					<PaginationNavigator
+						numberOfItems={(axios, params) => getServerPluginCount(axios, id, params)}
+						queryKey={['servers', id, 'plugins', 'total']}
+					/>
 				</div>
 			</div>
 		</>
