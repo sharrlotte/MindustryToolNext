@@ -3,8 +3,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-
-
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import Tran from '@/components/common/tran';
@@ -14,8 +12,6 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 
-
-
 import { revalidate } from '@/action/common';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -24,11 +20,8 @@ import { updateServer } from '@/query/server';
 import { PutServerRequest, PutServerSchema, ServerModes } from '@/types/request/UpdateServerRequest';
 import Server from '@/types/response/Server';
 
-
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
-
 
 type Props = {
 	server: Server;
