@@ -42,6 +42,7 @@ export function PlayerList({ id }: PlayerListProps) {
 type PlayerListSkeletonProps = {
 	players: number;
 };
+
 export function PlayerListSkeleton({ players }: PlayerListSkeletonProps) {
 	if (players === 0) {
 		return undefined;
@@ -61,7 +62,8 @@ function getCountryCode(locale: string): string {
 	const parts = locale.split('_');
 	return parts.length > 1 ? parts[1].toUpperCase() : parts[0].toUpperCase();
 }
-async function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid } }: PlayerCardProps) {
+
+function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid } }: PlayerCardProps) {
 	locale = getCountryCode(locale ?? 'EN');
 
 	return (
