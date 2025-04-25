@@ -28,7 +28,6 @@ type AddAdminDialogProps = {
 
 export default function AddAdminDialog({ id }: AddAdminDialogProps) {
 	const [name, setName] = useState('');
-
 	const [debouncedName] = useDebounceValue(name, 300);
 
 	const axios = useClientApi();
