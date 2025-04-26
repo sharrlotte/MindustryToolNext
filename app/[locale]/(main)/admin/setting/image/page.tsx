@@ -67,8 +67,8 @@ export default function Page() {
 				</InfinitePage>
 			</ScrollContainer>
 			<div className="flex gap-2 items-center justify-end">
-				<CreateFolderDialog path={path} />
-				<UploadButton path={path} />
+				{(path === '' || path === '/') && <CreateFolderDialog path={path} />}
+				{path !== '' && path !== '/' && <UploadButton path={path} />}
 			</div>
 		</div>
 	);
