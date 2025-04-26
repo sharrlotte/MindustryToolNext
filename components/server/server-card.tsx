@@ -54,7 +54,7 @@ export default function ServerCard({
 							</Fragment>
 						)}
 					</div>
-					<div className="flex flex-col gap-0.5">
+					<div className="flex flex-col gap-0.5 text-nowrap">
 						{mapName && (
 							<Fragment>
 								<Tran asChild text="server.map" />
