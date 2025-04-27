@@ -9,6 +9,7 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
 import { UploadState } from '@/constant/constant';
@@ -60,13 +61,15 @@ export default function Page() {
 		},
 	});
 
-	const onSubmit = ({ file }: { file: File }) => {
+	const onSubmit = ({ file }: { file: File | null | undefined }) => {
 		if (!file) return;
+
 		const allowed = ['.msch', '.msav', '.zip'];
 		if (!allowed.some((ext) => file.name.endsWith(ext))) {
 			form.setError('file', { message: 'Only .msch, .msav, .zip files allowed' });
 			return;
 		}
+		
 		mutation.mutate(file);
 		form.reset();
 	};
@@ -83,7 +86,12 @@ export default function Page() {
 							<FormItem>
 								<FormLabel>File</FormLabel>
 								<FormControl>
-									<input type="file" accept=".msch,.msav,.zip" onChange={(e) => field.onChange(e.target.files)} className="" />
+									<Input
+										type="file"
+										accept=".msch,.msav,.zip"
+										onChange={(e) => field.onChange(e.target.files?.[0])}
+										className=""
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -112,7 +120,13 @@ function List({ state }: { state: UploadState }) {
 	return (
 		<div className="mt-6 space-y-1 w-full">
 			<h3 className="font-semibold mb-2">{state}</h3>
-			<ul className="rouned-md border p-1 bg-card w-full">{data?.map((file) => <li key={file}>{file}</li>)}</ul>
+			<ul className="w-full">
+				{data?.map((file) => (
+					<li className="rouned-md border p-1 bg-card" key={file}>
+						{file}
+					</li>
+				))}
+			</ul>
 		</div>
 	);
 }
