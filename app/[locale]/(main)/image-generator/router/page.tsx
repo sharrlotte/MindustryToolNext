@@ -172,6 +172,7 @@ function Preview({ data }: { data: string }) {
 	if (isError) {
 		return <ErrorMessage error={error} />;
 	}
+	
 	return (
 		<div className="object-cover w-full">
 			{preview && (
