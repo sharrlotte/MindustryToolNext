@@ -35,12 +35,17 @@ function createUnknownError(error: unknown) {
 }
 
 function logError(error: unknown) {
-	console.log(
-		JSON.stringify(
-			error,
-			Object.getOwnPropertyNames(error as object).filter((field) => field !== 'stack'),
-		),
-	);
+	try {
+		console.log(
+			JSON.stringify(
+				error,
+				Object.getOwnPropertyNames(error as object).filter((field) => field !== 'stack'),
+			),
+		);
+	} catch (e) {
+		console.error(error);
+		console.error(e);
+	}
 }
 
 const axiosInstance = Axios.create({
