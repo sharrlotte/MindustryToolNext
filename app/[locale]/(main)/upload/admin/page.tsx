@@ -52,6 +52,7 @@ function useUpload(state: UploadState) {
 	return useQuery({
 		queryKey: ['admin-upload', state],
 		queryFn: () => fetchFiles(axios, state),
+		refetchInterval: state === 'PROCESSING' ? 1000 * 3 : undefined,
 	});
 }
 
