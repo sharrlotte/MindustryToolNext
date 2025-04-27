@@ -51,7 +51,7 @@ export default function ServerStatus({ status }: Props) {
 			);
 		}
 
-		return <div>Unknown</div>;
+		return <Badge variant="destructive">{status}</Badge>
 	}
 
 	return <div>{render()}</div>;
