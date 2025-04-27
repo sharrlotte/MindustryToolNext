@@ -17,14 +17,15 @@ import useClientApi from '@/hooks/use-client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const fetchFiles = async (axios: AxiosInstance, state: UploadState) => {
-	const { data } = await axios.get('/api/v3/upload', { params: { state } });
+	const { data } = await axios.get('/upload', { params: { state } });
 	return data as string[];
 };
 
 const uploadFile = async (axios: AxiosInstance, file: File) => {
 	const formData = new FormData();
 	formData.append('file', file);
-	const { data } = await axios.post('/api/upload/admin/upload', formData, {
+	const { data } = await axios.post('/upload', formData, {
+		data: formData,
 		headers: { 'Content-Type': 'multipart/form-data' },
 	});
 
