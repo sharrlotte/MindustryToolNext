@@ -134,6 +134,8 @@ function List({ state }: { state: UploadState }) {
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <ErrorMessage error={error} />;
 
+	if (!data?.length) return undefined;
+
 	return (
 		<div className="mt-6 space-y-1 w-full">
 			<h3 className="font-semibold mb-2">{state}</h3>
