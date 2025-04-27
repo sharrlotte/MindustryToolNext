@@ -69,7 +69,7 @@ export default function Page() {
 			form.setError('file', { message: 'Only .msch, .msav, .zip files allowed' });
 			return;
 		}
-		
+
 		mutation.mutate(file);
 		form.reset();
 	};
@@ -122,7 +122,7 @@ function List({ state }: { state: UploadState }) {
 			<h3 className="font-semibold mb-2">{state}</h3>
 			<ul className="w-full">
 				{data?.map((file) => (
-					<li className="rouned-md border p-1 bg-card" key={file}>
+					<li className="rounded-md border p-1 bg-card" key={file}>
 						{file}
 					</li>
 				))}
