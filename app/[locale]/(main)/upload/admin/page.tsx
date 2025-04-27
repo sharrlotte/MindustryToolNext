@@ -10,6 +10,7 @@ import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
 import { toast } from '@/components/ui/sonner';
 
 import { UploadState } from '@/constant/constant';
@@ -22,12 +23,18 @@ const fetchFiles = async (axios: AxiosInstance, state: UploadState) => {
 	return data as string[];
 };
 
-const uploadFile = async (axios: AxiosInstance, file: File) => {
+const uploadFile = async (axios: AxiosInstance, file: File, onProgress?: (percent: number) => void) => {
 	const formData = new FormData();
 	formData.append('file', file);
 	const { data } = await axios.post('/upload', formData, {
 		data: formData,
+		timeout: 60000 * 60,
 		headers: { 'Content-Type': 'multipart/form-data' },
+		onUploadProgress: (progressEvent) => {
+			if (onProgress && progressEvent.total) {
+				onProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+			}
+		},
 	});
 
 	return data;
@@ -45,6 +52,8 @@ export default function Page() {
 	const queryClient = useQueryClient();
 	const axios = useClientApi();
 
+	const [progress, setProgress] = React.useState<number | null>(null);
+
 	const form = useForm<{ file: File }>({
 		defaultValues: {
 			file: undefined,
@@ -52,12 +61,14 @@ export default function Page() {
 	});
 
 	const mutation = useMutation({
-		mutationFn: (file: File) => uploadFile(axios, file),
+		mutationFn: (file: File) => uploadFile(axios, file, setProgress),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['admin-upload'] });
+			setProgress(null);
 		},
 		onError: (error) => {
 			toast.error(error?.message);
+			setProgress(null);
 		},
 	});
 
@@ -101,6 +112,12 @@ export default function Page() {
 						<Tran text="upload" />
 					</Button>
 				</form>
+				{progress !== null && (
+					<div className="w-full mt-2">
+						<Progress value={progress} />
+						<div className="text-xs text-gray-600 mt-1 text-right">{progress}%</div>
+					</div>
+				)}
 			</Form>
 			<div className="mt-6 space-y-2 w-full">
 				<List state="PROCESSING" />
