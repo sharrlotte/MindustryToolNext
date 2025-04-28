@@ -157,6 +157,7 @@ export default function Page() {
 			</div>
 			<div className="mt-6 space-y-2 w-full mx-auto max-w-xl">
 				<List state="PROCESSING" />
+				<List state="RETRY" />
 				<List state="ERROR" />
 				<List state="QUEUING" />
 			</div>
