@@ -173,10 +173,10 @@ function List({ state }: { state: UploadState }) {
 
 	return (
 		<div className="mt-6 space-y-1 w-full">
-			<h3 className="font-semibold mb-2 space-x-2">
+			<h3 className="font-semibold mb-2 space-x-2 flex">
 				<span>{state}</span>
 				<span className="text-muted-foreground">{data?.length}</span>
-                {isFetching && <LoadingSpinner/>}
+				{isFetching && <LoadingSpinner className="m-0" />}
 			</h3>
 			<div className="w-full space-y-1">
 				{data?.map((file) => (
