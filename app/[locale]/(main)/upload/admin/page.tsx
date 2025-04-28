@@ -152,6 +152,9 @@ export default function Page() {
 					</div>
 				)}
 			</Form>
+			<div className="mt-6 space-y-2 w-full mx-auto max-w-xl flex justify-end">
+				<RetryButton />
+			</div>
 			<div className="mt-6 space-y-2 w-full mx-auto max-w-xl">
 				<List state="PROCESSING" />
 				<List state="ERROR" />
@@ -180,5 +183,24 @@ function List({ state }: { state: UploadState }) {
 				))}
 			</div>
 		</div>
+	);
+}
+
+function RetryButton() {
+	const axios = useClientApi();
+	const { mutate, isPending } = useMutation({
+		mutationFn: () => axios.post('/upload/retry'),
+		onSuccess: () => {
+			toast.success('Retry upload queue');
+		},
+		onError: (error) => {
+			toast.error(error?.message);
+		},
+	});
+
+	return (
+		<Button onClick={() => mutate()} disabled={isPending}>
+			Retry
+		</Button>
 	);
 }
