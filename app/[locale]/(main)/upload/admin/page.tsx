@@ -173,7 +173,10 @@ function List({ state }: { state: UploadState }) {
 
 	return (
 		<div className="mt-6 space-y-1 w-full">
-			<h3 className="font-semibold mb-2">{state}</h3>
+			<h3 className="font-semibold mb-2 space-x-2">
+				<span>{state}</span>
+				<span className="text-muted-foreground">{data?.length}</span>
+			</h3>
 			<div className="w-full space-y-1">
 				{data?.map((file) => (
 					<div className="rounded-md border p-2 bg-card" key={file}>
