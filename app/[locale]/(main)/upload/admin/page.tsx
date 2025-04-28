@@ -164,7 +164,7 @@ export default function Page() {
 }
 
 function List({ state }: { state: UploadState }) {
-	const { data, isLoading, isError, error } = useUpload(state);
+	const { data, isLoading, isError, error, isFetching } = useUpload(state);
 
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <ErrorMessage error={error} />;
@@ -176,6 +176,7 @@ function List({ state }: { state: UploadState }) {
 			<h3 className="font-semibold mb-2 space-x-2">
 				<span>{state}</span>
 				<span className="text-muted-foreground">{data?.length}</span>
+                {isFetching && <LoadingSpinner/>}
 			</h3>
 			<div className="w-full space-y-1">
 				{data?.map((file) => (
