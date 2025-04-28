@@ -109,7 +109,7 @@ export default function Page() {
 	};
 
 	return (
-		<ScrollContainer className="p-4 max-w-2xl mx-auto">
+		<ScrollContainer className="p-2 w-full items-center flex flex-col">
 			<h2 className="text-xl font-bold mb-4">Upload Admin Panel</h2>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="mb-4 space-y-2">
