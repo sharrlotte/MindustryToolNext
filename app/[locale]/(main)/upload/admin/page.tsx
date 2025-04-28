@@ -5,6 +5,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import ErrorMessage from '@/components/common/error-message';
+import { TrashIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -165,6 +166,14 @@ export default function Page() {
 
 function List({ state }: { state: UploadState }) {
 	const { data, isLoading, isError, error, isFetching } = useUpload(state);
+	const axios = useClientApi();
+
+	const { mutate, isPending } = useMutation({
+		mutationFn: (filename: string) => axios.delete(`/upload/${filename}`),
+		onError: (error) => {
+			toast.error(error?.message);
+		},
+	});
 
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <ErrorMessage error={error} />;
@@ -179,9 +188,23 @@ function List({ state }: { state: UploadState }) {
 				{isFetching && <LoadingSpinner className="m-0" />}
 			</h3>
 			<div className="w-full space-y-1">
-				{data?.map((file) => (
-					<div className="rounded-md border p-2 bg-card" key={file}>
-						{file}
+				{data?.map((path) => (
+					<div className="rounded-md border p-2 bg-card flex justify-between items-center" key={path}>
+						<span>{path}</span>
+						<Button
+							variant="destructive"
+							onClick={() => {
+								const filename = path.split('/').pop();
+								if (!filename) {
+									toast.error('Invalid filename');
+								} else {
+									mutate(filename);
+								}
+							}}
+							disabled={isPending}
+						>
+							<TrashIcon className="w-5 h-5" />
+						</Button>
 					</div>
 				))}
 			</div>
