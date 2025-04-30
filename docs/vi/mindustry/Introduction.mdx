@@ -1,0 +1,120 @@
+---
+title: 'Giới thiệu Mindustry'
+description: 'Phân tích chuyên sâu về kiến trúc trò chơi Mindustry, tiến trình phát triển và khả năng mở rộng mã nguồn'
+position: 2
+---
+
+# Giới Thiệu Mindustry
+![Logo](https://image.mindustry-tool.com//docs/mindustry/assets-raw/logo.png)
+
+[![Build Status](https://github.com/Anuken/Mindustry/workflows/Tests/badge.svg?event=push)](https://github.com/Anuken/Mindustry/actions)
+[![Discord](https://img.shields.io/discord/391020510269669376.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=7289DA&label=Discord&color=17cf48)](https://discord.gg/mindustry)
+
+**Mindustry** là một nền tảng mô phỏng chiến lược thời gian thực tích hợp các yếu tố về hệ thống dây chuyền công nghiệp, lập trình logic vi mô và thuật toán phòng thủ mô-đun. Được kiến thiết bởi nhà phát triển độc lập [Anuken](https://github.com/Anuken), trò chơi phản ánh một hệ sinh thái sản xuất tự động hóa, nơi người chơi thao túng các chuỗi cung ứng đa tầng và tối ưu hóa chiến lược phòng thủ trước các mối đe dọa nội sinh và ngoại sinh.
+
+## Đặc trưng trò chơi
+
+Mindustry không đơn thuần là một trò chơi, mà là một môi trường mô phỏng sandbox giàu tính tùy biến:
+
+- 🧩 Cấu trúc chiến dịch dạng mạng sector kết nối, cho phép người chơi khai triển chuỗi hiệu ứng chiến lược liên hoàn giữa các bản đồ.
+- 🧠 Bộ công cụ logic nội tại (Logic Processor) dựa trên ngôn ngữ lập trình đặc thù, cho phép mô hình hóa quy trình điều khiển tự động như PLC công nghiệp.
+- 🧭 Trình tạo bản đồ hướng mô-đun với khả năng mở rộng không giới hạn qua API biên tập viên.
+- 🌐 Hạ tầng đa người chơi hỗ trợ mô hình máy chủ phi tập trung, với khả năng cài cắm plugin động thời gian thực.
+- 🛠 Hệ thống mở rộng (modding) cấp cao hỗ trợ hot-reload và tài nguyên phân lớp.
+
+## Hệ quy chiếu phát triển nội dung
+
+- 📌 [Trello – Bảng quản trị phát triển](https://trello.com/b/aE2tcUwF/mindustry-40-plans)
+- 📖 [Wiki chính thức](https://mindustrygame.github.io/wiki)
+- 📚 [Javadoc API](https://mindustrygame.github.io/docs/)
+
+## Phân tích tuyến gameplay
+
+Theo kiến trúc chiến dịch, trò chơi triển khai hai thiên thể độc lập về logic gameplay và hệ thống năng lượng:
+
+- **Serpulo**: Cấu trúc mở, cho phép phân nhánh khai thác tài nguyên với tính tự do cao nhưng thiếu sự kiểm soát cân bằng về cường độ đối kháng. Phù hợp với nghiên cứu các chiến thuật phân tán tài nguyên.
+- **Erekir**: Thiết kế tuyến tính, xoay quanh sự phân phối năng lượng điện và giao tranh quân sự. Được khuyến nghị cho thử nghiệm các thuật toán tối ưu hóa luồng tài nguyên.
+
+## Tiến trình phát triển phiên bản
+
+- **2017**: Xuất phát từ [GDL Jam](https://itch.io/jam/gdl---metal-monstrosity-jam), Mindustry hình thành như một thử nghiệm cơ chế tự động hóa trong môi trường tower defense. Phiên bản đầu tên là *Moment*.
+- **Version 3.x**: Thiết lập các định hướng cốt lõi về block, resource và mô hình phòng thủ vòng lặp.
+- **Version 4.x**: Mở rộng mạnh mẽ về giao diện người dùng và tích hợp hệ thống lập trình điều khiển.
+- **Version 5.0–7.0**: Chuỗi cải tổ toàn diện với sự ra đời của hành tinh mới, cơ chế quân đội hóa và hệ thống xử lý song song tác vụ trong logic game loop.
+
+## Hệ nền và phân phối
+
+Mindustry hiện có mặt trên nhiều nền tảng và được triển khai qua nhiều kênh phân phối phi tập trung và tập trung:
+
+| [![](https://static.itch.io/images/badge.svg)](https://anuke.itch.io/mindustry)    |    [![](https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png)](https://play.google.com/store/apps/details?id=io.anuke.mindustry)   |    [![](https://fdroid.gitlab.io/artwork/badge/get-it-on.png)](https://f-droid.org/packages/io.anuke.mindustry)	| [![](https://flathub.org/assets/badges/flathub-badge-en.svg)](https://flathub.org/apps/details/com.github.Anuken.Mindustry)  
+|---	|---	|---	|---	|
+
+## Bản cổ điển (Classic)
+
+Mindustry Classic lưu giữ các đặc điểm nguyên bản từ thời kỳ tiền hiện đại (v3.x), phù hợp với việc nghiên cứu sự tiến hóa thiết kế game và hiệu suất hệ thống ban đầu
+
+## Tham chiếu cộng đồng
+
+- 💻 [GitHub](https://github.com/Anuken/Mindustry) – mã nguồn và quản lý dự án
+- 📋 [Trello](https://trello.com/b/aE2tcUwF/mindustry-trello)
+- 💬 [Discord](https://discord.gg/mindustry) – thảo luận chuyên sâu
+- 📰 [Reddit](https://www.reddit.com/r/Mindustry) – chia sẻ nghiên cứu và sáng tạo
+
+## Ghi chú kỹ thuật
+
+- ⏱ Tick = đơn vị thời gian xử lý logic, tương đương 1/60 giây
+- 🔤 Font hệ thống: [Audiowide](https://fonts.google.com/specimen/Audiowide), [Darktech LDR](https://fontstruct.com/fontstructions/show/715809/darktech_ldr)
+
+## Biên dịch & tích hợp mã nguồn
+
+Để đảm bảo tái cấu trúc hoặc đóng góp hiệu quả, người phát triển nên sử dụng quy trình biên dịch chuẩn:
+
+### Yêu cầu nền tảng
+- ☕ [JDK 17](https://adoptium.net/archive.html?variant=openjdk17&jvmVariant=hotspot) – tối thiểu bắt buộc
+- 🧰 Gradle CLI hoặc tích hợp IDE
+
+### Cấu hình biên dịch
+
+**Windows:**
+- `gradlew desktop:run`
+- `gradlew desktop:dist`
+- `gradlew tools:pack`
+
+**Linux/macOS:**
+- `./gradlew desktop:run`
+- `./gradlew desktop:dist`
+- `./gradlew tools:pack`
+
+**Android:**
+1. SDK Android CLI → cấu hình theo `cmdline-tools/latest/`
+2. Thiết lập `ANDROID_HOME`
+3. Chạy `gradlew android:assembleDebug`
+
+**Server:**
+- `gradlew server:dist`
+
+**Đầu ra:**
+- `/desktop/build/libs/Mindustry.jar`
+- `/server/build/libs/server-release.jar`
+- `/android/build/outputs/apk/`
+
+## Đóng góp học thuật và kỹ thuật
+
+Đọc kỹ [CONTRIBUTING.md](https://github.com/Anuken/Mindustry/blob/master/CONTRIBUTING.md) để đồng bộ với tiêu chuẩn cộng đồng:
+
+- Fork & tạo nhánh feature
+- Commit, push & tạo pull request
+- Ghi rõ mô tả, test kèm nếu có
+
+✅ Ưu tiên PR có tài liệu, kiểm thử và tương thích với hệ thống build hiện hành.
+
+## Quản trị tài sản đồ họa (sprite)
+
+🎨 Các thay đổi về tài nguyên đồ họa cần xử lý bằng lệnh `tools:pack` trước khi build để đảm bảo đồng bộ hóa atlas nội bộ.
+
+## Hệ sinh thái phát triển
+
+- 🧠 [IntelliJ IDEA](https://www.jetbrains.com/idea/)
+- 🔧 [VS Code](https://code.visualstudio.com/) + Java Pack
+- 📦 [SDKMAN / JDKMon](https://sdkman.io/)
+
