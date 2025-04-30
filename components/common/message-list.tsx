@@ -38,13 +38,13 @@ export default function MessageList({
 	loader,
 	noResult = <NoResult className="flex w-full items-center justify-center" />,
 	end,
-	threshold = 100,
 	room,
 	showNotification = true,
 	children,
 }: MessageListProps) {
-	const container = useRef<HTMLDivElement>(null);
+	const timeout = useRef<any>(null);
 	const renderCause = useRef<'fetch' | 'event'>('fetch');
+	const container = useRef<HTMLDivElement>(null);
 	const [_, setLastMessage] = useLocalStorage(`LAST_MESSAGE_${room}`, '');
 	const [list, setList] = useState<HTMLElement | null>(null);
 
@@ -52,25 +52,32 @@ export default function MessageList({
 	const lastHeightRef = useRef(0);
 
 	const queryClient = useQueryClient();
-	const isEndReached = isReachedEnd(container.current, threshold);
+	const isEndReached = isReachedEnd(container.current, 500);
 	const { socket } = useSocket();
 
 	const clientHeight = list?.clientHeight || 0;
 	const lastHeight = lastHeightRef.current || 0;
 	const scrollTop = scrollTopRef.current || 0;
 
+	const currentContainer = container.current;
+
 	// Only preserve scroll position when user scroll up
-	if (clientHeight != lastHeight && container.current && list && !isEndReached && renderCause.current === 'fetch') {
+	if (clientHeight != lastHeight && currentContainer && list && !isEndReached && renderCause.current === 'fetch') {
 		const diff = clientHeight - lastHeight + scrollTop;
 
-		container.current.scrollTo({
+		currentContainer.scrollTo({
 			top: diff,
 		});
 	}
 
 	lastHeightRef.current = clientHeight;
 
-	const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(room, params, queryKey, () => (renderCause.current = 'fetch'));
+	const { data, isFetching, error, isError, hasNextPage, fetchNextPage } = useMessageQuery(
+		room,
+		params,
+		queryKey,
+		() => (renderCause.current = 'fetch'),
+	);
 
 	const { postNotification } = useNotification();
 
@@ -82,7 +89,9 @@ export default function MessageList({
 		const array = mergeNestArray(data.pages);
 		const group = groupMessage(array);
 
-		return group.map((item: MessageGroup, index: number, array: MessageGroup[]) => children(item, index, array.length - params.size));
+		return group.map((item: MessageGroup, index: number, array: MessageGroup[]) =>
+			children(item, index, array.length - params.size),
+		);
 	}, [children, data, params.size]);
 
 	useEffect(() => {
@@ -108,13 +117,19 @@ export default function MessageList({
 	}, [fetchNextPage, hasNextPage, isFetching]);
 
 	useEffect(() => {
-		if (container.current && isEndReached) {
-			container.current.scrollTo({
-				top: container.current.scrollHeight,
-				behavior: 'smooth',
-			});
+		if (timeout.current) {
+			clearTimeout(timeout.current);
 		}
-	}, [pages, isEndReached]);
+
+		if (currentContainer && isEndReached && renderCause.current === 'event') {
+			timeout.current = setTimeout(() => {
+				currentContainer.scrollTo({
+					top: currentContainer.scrollHeight,
+					behavior: 'smooth',
+				});
+			}, 100);
+		}
+	}, [pages, isEndReached, currentContainer]);
 
 	useEffect(() => {
 		socket.onRoom(room).send({
@@ -193,7 +208,12 @@ export default function MessageList({
 	}, [checkIfNeedFetchMore, list, scrollTopRef]);
 
 	if (!loader) {
-		loader = <LoaderIcon key="loading" className="col-span-full m-auto flex h-full w-full items-center justify-center animate-spin size-6 max-w-6 max-h-6" />;
+		loader = (
+			<LoaderIcon
+				key="loading"
+				className="col-span-full m-auto flex h-full w-full items-center justify-center animate-spin size-6 max-w-6 max-h-6"
+			/>
+		);
 	}
 
 	end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;

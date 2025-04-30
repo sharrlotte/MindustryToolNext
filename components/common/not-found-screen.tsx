@@ -10,7 +10,7 @@ import StarScene from './star-scene';
 export default function NotFoundScreen() {
   return (
     <StarScene>
-      <div className="flex pointer-events-none h-full flex-1 flex-col items-center justify-center gap-4 z-50 absolute inset-0">
+      <div className="flex text-white pointer-events-none h-full flex-1 flex-col items-center justify-center gap-4 z-50 absolute inset-0">
         <div className="pointer-events-auto">
           <h2 className="text-bold text-3xl">
             <Tran text="not-found" />

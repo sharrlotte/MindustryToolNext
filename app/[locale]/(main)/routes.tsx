@@ -29,6 +29,7 @@ import {
   RatioIcon,
   SchematicIcon,
   ServerIcon,
+  UploadIcon,
 } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 
@@ -184,6 +185,13 @@ export const groups: readonly PathGroup[] = [
             icon: <LoginIcon />,
             regex: [`^${localesRegex}/image-generator/canvas$`],
           },
+          {
+            id: 'map',
+            path: '/image-generator/map',
+            name: <Tran asChild text="image-map-generator" />,
+            icon: <LoginIcon />,
+            regex: [`^${localesRegex}/image-generator/map$`],
+          },
         ],
       },
     ],
@@ -279,6 +287,14 @@ export const groups: readonly PathGroup[] = [
         icon: <FileIcon />,
         filter: { authority: 'VIEW_FILE' },
         regex: [`^${localesRegex}/files$`],
+      },
+      {
+        id: 'upload-admin',
+        path: '/upload/admin',
+        name: <Tran asChild text="upload" />,
+        icon: <UploadIcon />,
+        filter: { authority: 'VIEW_FILE' },
+        regex: [`^${localesRegex}/upload/admin$`],
       },
       {
         id: 'analytic',

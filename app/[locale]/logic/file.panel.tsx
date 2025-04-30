@@ -40,7 +40,11 @@ export default function FilePanel() {
 					.map(({ name }) => (
 						<ContextMenu key={name}>
 							<ContextMenuTrigger asChild>
-								<button className="flex gap-2 bg-secondary/50 text-secondary-foreground rounded-md p-2 w-full" key={name} onClick={() => load(name)}>
+								<button
+									className="flex gap-2 bg-secondary/70 text-secondary/70-foreground rounded-md p-2 w-full"
+									key={name}
+									onClick={() => load(name)}
+								>
 									<FileIcon />
 									<span>{name}</span>
 								</button>

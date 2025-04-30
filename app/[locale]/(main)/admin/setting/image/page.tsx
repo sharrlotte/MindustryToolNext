@@ -9,13 +9,12 @@ import * as z from 'zod';
 import CopyButton from '@/components/button/copy.button';
 import RemoveButton from '@/components/button/remove.button';
 import { Hidden } from '@/components/common/hidden';
-import { FileIcon, FolderIcon, UploadIcon } from '@/components/common/icons';
+import { FileIcon, FolderIcon, LinkIcon, UploadIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import FileHierarchy from '@/components/file/file-hierarchy';
 import { Button } from '@/components/ui/button';
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
@@ -46,12 +45,8 @@ export default function Page() {
 				<div className="flex items-center gap-1">
 					<FileHierarchy path={path} onClick={setPath} />
 				</div>
-				<div className="flex gap-2 items-center">
-					<CreateFolderDialog path={path} />
-					<UploadButton path={path} />
-				</div>
 			</section>
-			<ScrollContainer className="border rounded-lg">
+			<ScrollContainer>
 				<InfinitePage
 					className="flex flex-col gap-2 p-2 h-full"
 					queryKey={['images']}
@@ -71,78 +66,71 @@ export default function Page() {
 					}
 				</InfinitePage>
 			</ScrollContainer>
+			<div className="flex gap-2 items-center justify-end">
+				{(path === '' || path === '/') && <CreateFolderDialog path={path} />}
+				{path !== '' && path !== '/' && <UploadButton path={path} />}
+			</div>
 		</div>
 	);
 }
 
 function DirCard({ data, setPath }: { data: ImageMetadata; setPath: (path: string) => void }) {
 	return (
-		<ContextMenu>
-			<ContextMenuTrigger>
-				<div
-					className="p-2 border border-md rounded-md flex gap-1 items-center cursor-pointer"
-					key={data.path}
-					onClick={() => setPath(data.path)}
-				>
-					<FolderIcon />
-					{data.name}
-				</div>
-			</ContextMenuTrigger>
-			<ContextMenuContent>
+		<div className="p-2 border border-md rounded-md flex gap-1 items-center cursor-pointer">
+			<div className="flex items-center gap-1 w-full justify-start" onClick={() => setPath(data.path)}>
+				<FolderIcon />
+				{data.name}
+			</div>
+			<div className="flex items-center gap-1 ml-auto">
+				<CopyButton data={data.name} />
 				<DeleteFileAndFolderButton path={data.path} />
-			</ContextMenuContent>
-		</ContextMenu>
+			</div>
+		</div>
 	);
 }
 
 function FileCard({ data }: { data: ImageMetadata }) {
 	return (
-		<ContextMenu>
-			<ContextMenuTrigger>
-				<div
-					className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer"
-					key={data.path}
-				>
-					<FileIcon />
-					{data.name}
-				</div>
-			</ContextMenuTrigger>
-			<ContextMenuContent>
+		<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
+			<div className="flex items-center gap-1">
+				<FileIcon />
+				{data.name}
+			</div>
+			<div className="flex items-center gap-1 ml-auto">
+				<CopyButton data={data.name} />
 				<DeleteFileAndFolderButton path={data.path} />
-			</ContextMenuContent>
-		</ContextMenu>
+			</div>
+		</div>
 	);
 }
 
 function ImageCard({ data }: { data: ImageMetadata }) {
 	return (
 		<Dialog>
-			<ContextMenu>
-				<ContextMenuTrigger>
-					<DialogTrigger asChild>
-						<div
-							className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer"
-							key={data.path}
-						>
-							<motion.img
-								id={data.path}
-								layout
-								layoutId={data.path}
-								src={`${env.url.image}/${data.path}`}
-								className="size-5 object-cover"
-								height={20}
-								width={20}
-								alt={data.path}
-							/>
-							<span>{data.name}</span>
-						</div>
-					</DialogTrigger>
-				</ContextMenuTrigger>
-				<ContextMenuContent>
-					<CopyButton variant="command" data={`${env.url.image}/${data.path}`} />
+			<div className="p-2 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
+				<DialogTrigger asChild>
+					<div className="flex items-center justify-start gap-1 w-full">
+						<motion.img
+							id={data.path}
+							layout
+							layoutId={data.path}
+							src={`${env.url.image}/${data.path}`}
+							className="size-5 object-cover"
+							height={20}
+							width={20}
+							alt={data.path}
+						/>
+						<span>{data.name}</span>
+					</div>
+				</DialogTrigger>
+				<div className="flex items-center gap-1 ml-auto">
+					<CopyButton data={data.name} />
+					<CopyButton data={`${env.url.image}/${data.path}`}>
+						<LinkIcon />
+					</CopyButton>
 					<DeleteFileAndFolderButton path={data.path} />
-				</ContextMenuContent>
-			</ContextMenu>
+				</div>
+			</div>
 			<DialogContent className="w-fit h-fit overflow-hidden flex items-center justify-center p-0">
 				<Hidden>
 					<DialogTitle />
@@ -167,7 +155,6 @@ function DeleteFileAndFolderButton({ path }: { path: string }) {
 
 	return (
 		<RemoveButton
-			variant="command"
 			isLoading={false}
 			description={`Are you sure you want to delete ${path}?`}
 			onClick={async () => {
@@ -176,7 +163,7 @@ function DeleteFileAndFolderButton({ path }: { path: string }) {
 					queryClient.invalidateQueries({ queryKey: ['images'] });
 					toast.success('Image deleted successfully');
 				} catch (error: any) {
-					toast.error('Failed to delete image', { description: error.message });
+					toast.error('Failed to delete image', { description: error?.message });
 				}
 			}}
 		/>
@@ -213,7 +200,7 @@ function CreateFolderDialog({ path }: { path: string }) {
 			queryClient.invalidateQueries({ queryKey: ['images'] });
 		},
 		onError: (error: any) => {
-			toast.error('Failed to create folder', { description: error.message });
+			toast.error('Failed to create folder', { description: error?.message });
 		},
 	});
 
@@ -292,7 +279,7 @@ function UploadButton({ path }: { path: string }) {
 				delete updated[file.name];
 				return updated;
 			});
-			toast.error(`Failed to upload "${file.name}"`, { description: error.message });
+			toast.error(`Failed to upload "${file.name}"`, { description: error?.message });
 		},
 	});
 

@@ -42,7 +42,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
 			setAdded((prev) => [...prev, pluginId]);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="interval-server.add-plugin-fail" />, { description: error.message });
+			toast.error(<Tran text="interval-server.add-plugin-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['servers', serverId, 'plugins']);
@@ -74,7 +74,16 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
 									item: <Skeleton className="h-20" />,
 								}}
 							>
-								{({ id, name, description }) => <ServerPluginCard key={id} id={id} name={name} description={description} isAdded={added.includes(id)} mutate={mutate} />}
+								{({ id, name, description }) => (
+									<ServerPluginCard
+										key={id}
+										id={id}
+										name={name}
+										description={description}
+										isAdded={added.includes(id)}
+										mutate={mutate}
+									/>
+								)}
 							</InfinitePage>
 						</ListLayout>
 						<GridLayout>
@@ -87,7 +96,16 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
 									item: <Skeleton className="h-20" />,
 								}}
 							>
-								{({ id, name, description }) => <ServerPluginCard key={id} id={id} name={name} description={description} isAdded={added.includes(id)} mutate={mutate} />}
+								{({ id, name, description }) => (
+									<ServerPluginCard
+										key={id}
+										id={id}
+										name={name}
+										description={description}
+										isAdded={added.includes(id)}
+										mutate={mutate}
+									/>
+								)}
 							</GridPaginationList>
 						</GridLayout>
 					</ScrollContainer>
@@ -114,9 +132,12 @@ type ServerPluginCardProps = {
 function ServerPluginCard({ id, name, description, isAdded, mutate }: ServerPluginCardProps) {
 	return (
 		<div
-			className={cn('relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:bg-brand/70 cursor-pointer', {
-				'border-success': isAdded,
-			})}
+			className={cn(
+				'relative flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:bg-brand/70 cursor-pointer',
+				{
+					'border-success': isAdded,
+				},
+			)}
 			key={id}
 			onClick={() => mutate(id)}
 		>

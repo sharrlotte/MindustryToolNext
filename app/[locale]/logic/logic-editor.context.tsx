@@ -16,7 +16,7 @@ import { getHelperLines } from '@/app/[locale]/logic/utils';
 
 import { CatchError } from '@/components/common/catch-error';
 import Hydrated from '@/components/common/hydrated';
-import LoadingSpinner from '@/components/common/router-spinner';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
@@ -430,7 +430,10 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 			}
 		}
 
-		if (name === saved.currentFile) return;
+		if (name === saved.currentFile) {
+			setLoading(false)
+			return;
+		}
 
 		if (saved.currentFile) {
 			const result = load(saved.currentFile);

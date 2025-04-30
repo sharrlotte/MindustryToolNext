@@ -26,7 +26,7 @@ export default function DeleteGroupInfoDialog({ group, category }: Props) {
 		onSuccess: () => {
 			toast.success(<Tran text="delete.success" />);
 		},
-		onError: (error) => toast.error(<Tran text="delete.fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="delete.fail" />, { description: error?.message }),
 		onSettled: () => {
 			invalidateByKey(['tag-category']);
 			invalidateByKey(['tag-group']);

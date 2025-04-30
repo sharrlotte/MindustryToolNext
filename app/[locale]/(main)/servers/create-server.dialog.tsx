@@ -66,7 +66,7 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 
 			router.push(`/servers/${data.id}`);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
 
 		onSettled: () => {
 			invalidateByKey(['servers']);
@@ -154,7 +154,9 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 									<FormControl>
 										<Input placeholder="Test" {...field} />
 									</FormControl>
-									<FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.name-description" />}</FormDescription>
+									<FormDescription>
+										{field.value ? <ColorText text={field.value} /> : <Tran text="server.name-description" />}
+									</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -170,7 +172,9 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 									<FormControl>
 										<Input placeholder="Some cool stuff" {...field} />
 									</FormControl>
-									<FormDescription>{field.value ? <ColorText text={field.value} /> : <Tran text="server.description-description" />}</FormDescription>
+									<FormDescription>
+										{field.value ? <ColorText text={field.value} /> : <Tran text="server.description-description" />}
+									</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}

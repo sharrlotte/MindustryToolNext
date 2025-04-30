@@ -128,7 +128,7 @@ function MarkAsReadButton({ notification }: MarkAsReadButtonProps) {
 			updateById<Notification>(['notifications'], id, (prev) => ({ ...prev, read: true }));
 		},
 		onError: (error) => {
-			toast.error(<Tran text="notification.mark-as-read-failed" />, { description: error.message });
+			toast.error(<Tran text="notification.mark-as-read-failed" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['notifications']);
@@ -157,7 +157,7 @@ function DeleteButton({ notification }: MarkAsReadButtonProps) {
 		},
 
 		onError: (error) => {
-			toast.error(<Tran text="notification.delete-failed" />, { description: error.message });
+			toast.error(<Tran text="notification.delete-failed" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['notifications']);
@@ -183,7 +183,7 @@ function DeleteAllButton() {
 			toast.success(<Tran text="notification.delete-all-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="notification.delete-all-failed" />, { description: error.message });
+			toast.error(<Tran text="notification.delete-all-failed" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['notifications']);
@@ -231,7 +231,7 @@ function MarkAsReadAllButton() {
 			toast.success(<Tran text="notification.mark-as-read-all-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="notification.mark-as-read-all-failed" />, { description: error.message });
+			toast.error(<Tran text="notification.mark-as-read-all-failed" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['notifications']);

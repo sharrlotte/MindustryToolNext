@@ -16,7 +16,12 @@ import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
 import { Locale } from '@/i18n/config';
-import { CreateTranslationRequest, createTranslation, getTranslationCompare, getTranslationCompareCount } from '@/query/translation';
+import {
+	CreateTranslationRequest,
+	createTranslation,
+	getTranslationCompare,
+	getTranslationCompareCount,
+} from '@/query/translation';
 import { TranslationCompare } from '@/types/response/Translation';
 import { TranslationPaginationQuery } from '@/types/schema/search-query';
 
@@ -64,7 +69,10 @@ export default function CompareTable({ language, target, tKey: key }: CompareTab
 				</TableBody>
 			</Table>
 			<div className="mt-auto flex justify-end space-x-2">
-				<PaginationNavigator numberOfItems={(axios) => getTranslationCompareCount(axios, { language, target, key: key })} queryKey={['translations', 'compare', 'total', language, target, key]} />
+				<PaginationNavigator
+					numberOfItems={(axios) => getTranslationCompareCount(axios, { language, target, key: key })}
+					queryKey={['translations', 'compare', 'total', language, target, key]}
+				/>
 			</div>
 		</Fragment>
 	);
@@ -84,7 +92,7 @@ function CompareCard({ translation, language, target }: CompareCardProps) {
 	const axios = useClientApi();
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
 	});
 
 	const create = () => {
@@ -99,7 +107,12 @@ function CompareCard({ translation, language, target }: CompareCardProps) {
 	return (
 		<TableRow>
 			<TableCell className="align-top">
-				<CopyButton className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent" variant="none" data={value[language]} content={value[language]}>
+				<CopyButton
+					className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent"
+					variant="none"
+					data={value[language]}
+					content={value[language]}
+				>
 					<HighLightTranslation text={value[language]} />
 				</CopyButton>
 				<div className="text-muted-foreground">

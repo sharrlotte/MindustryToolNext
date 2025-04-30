@@ -52,20 +52,27 @@ export function ChangeRoleDialog({ user }: DialogProps) {
 	});
 
 	const bestRole = selectedRole?.sort((o1, o2) => o2.position - o1.position).at(0);
-	const filteredRole = allRoles?.filter((r) => r.position < highestRole || session?.roles.map((r) => r.name).includes('SHAR')) || [];
+	const filteredRole =
+		allRoles?.filter((r) => r.position < highestRole || session?.roles.map((r) => r.name).includes('SHAR')) || [];
 
 	const filteredAuthority = useMemo(
-		() => allAuthorities?.filter((a) => (a.authorityGroup === 'Shar' ? session?.roles.map((r) => r.name).includes('SHAR') : true)) || [],
+		() =>
+			allAuthorities?.filter((a) => (a.authorityGroup === 'Shar' ? session?.roles.map((r) => r.name).includes('SHAR') : true)) ||
+			[],
 		[allAuthorities, session?.roles],
 	);
 
-	const groups = useMemo(() => groupBy(filteredAuthority?.sort((a, b) => a.authorityGroup.localeCompare(b.authorityGroup)) || [], (v) => v.authorityGroup), [filteredAuthority]);
+	const groups = useMemo(
+		() =>
+			groupBy(filteredAuthority?.sort((a, b) => a.authorityGroup.localeCompare(b.authorityGroup)) || [], (v) => v.authorityGroup),
+		[filteredAuthority],
+	);
 
 	const { mutate: updateRole } = useMutation({
 		mutationKey: ['update-user-role', id],
 		mutationFn: async (roleIds: number[]) => changeRoles(axios, { userId: id, roleIds }),
 		onError: (error) => {
-			toast.error(<Tran text="error" />, { description: error.message });
+			toast.error(<Tran text="error" />, { description: error?.message });
 			setSelectedRoles(roles);
 		},
 		onSettled: () => {
@@ -77,7 +84,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
 		mutationFn: async (authorityIds: string[]) => changeAuthorities(axios, { userId: id, authorityIds }),
 		mutationKey: ['update-user-authority', id],
 		onError: (error) => {
-			toast.error(<Tran text="error" />, { description: error.message });
+			toast.error(<Tran text="error" />, { description: error?.message });
 
 			setSelectedAuthorities(authorities);
 		},
@@ -131,9 +138,18 @@ export function ChangeRoleDialog({ user }: DialogProps) {
 							</Hidden>
 							<Divider />
 						</div>
-						<ToggleGroup className="grid grid-cols-2" type={'multiple'} onValueChange={handleRoleChange} defaultValue={roles.map((r) => r.name)}>
+						<ToggleGroup
+							className="grid grid-cols-2"
+							type={'multiple'}
+							onValueChange={handleRoleChange}
+							defaultValue={roles.map((r) => r.name)}
+						>
 							{filteredRole.map(({ id, name, color }) => (
-								<ToggleGroupItem className="justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent" key={id} value={name}>
+								<ToggleGroupItem
+									className="justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent"
+									key={id}
+									value={name}
+								>
 									<span key={id} style={{ color }}>
 										{name}
 									</span>
@@ -145,12 +161,21 @@ export function ChangeRoleDialog({ user }: DialogProps) {
 							<span className="font-bold">Authority</span>
 							<Divider />
 						</div>
-						<ToggleGroup className="flex flex-col items-start justify-start gap-4" type={'multiple'} onValueChange={handleAuthorityChange} defaultValue={authorities.map((r) => r.name)}>
+						<ToggleGroup
+							className="flex flex-col items-start justify-start gap-4"
+							type={'multiple'}
+							onValueChange={handleAuthorityChange}
+							defaultValue={authorities.map((r) => r.name)}
+						>
 							{groups.map(({ key, value }) => (
 								<Fragment key={key}>
 									<span className="font-bold">{key}</span>
 									{value.map(({ id, name, description }) => (
-										<ToggleGroupItem key={id} className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent" value={name}>
+										<ToggleGroupItem
+											key={id}
+											className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent"
+											value={name}
+										>
 											<div className="w-full space-y-1">
 												<div className="flex w-full justify-between gap-1">
 													<span className="text-sm lowercase">{name}</span>

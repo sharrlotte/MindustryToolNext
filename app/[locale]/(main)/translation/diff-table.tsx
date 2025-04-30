@@ -58,7 +58,10 @@ export default function DiffTable({ language, target, tKey: key }: DiffTableProp
 				</TableBody>
 			</Table>
 			<div className="mt-auto flex justify-end space-x-2">
-				<PaginationNavigator numberOfItems={(axios) => getTranslationDiffCount(axios, { language, target, key: key })} queryKey={['translations', 'diff', 'total', language, target, key]} />
+				<PaginationNavigator
+					numberOfItems={(axios) => getTranslationDiffCount(axios, { language, target, key: key })}
+					queryKey={['translations', 'diff', 'total', language, target, key]}
+				/>
 			</div>
 		</Fragment>
 	);
@@ -77,7 +80,7 @@ function DiffCard({ translation, language }: DiffCardProps) {
 	const [isEdit, setEdit] = useState(false);
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
 	});
 
 	const create = () => {
@@ -93,7 +96,12 @@ function DiffCard({ translation, language }: DiffCardProps) {
 	return (
 		<TableRow>
 			<TableCell className="align-top">
-				<CopyButton className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent" variant="none" data={value} content={value}>
+				<CopyButton
+					className="h-full w-full items-start justify-start overflow-hidden text-wrap p-0 hover:bg-transparent"
+					variant="none"
+					data={value}
+					content={value}
+				>
 					<HighLightTranslation text={value} />
 				</CopyButton>
 				<div className="text-muted-foreground">

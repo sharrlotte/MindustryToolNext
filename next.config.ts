@@ -7,16 +7,65 @@ import bundleAnalyzer from '@next/bundle-analyzer';
 import createMDX from '@next/mdx';
 import { withSentryConfig } from '@sentry/nextjs';
 
+const config: NextConfig =
+	process.env.NODE_ENV === 'development'
+		? {
+				experimental: {
+					optimizePackageImports: ['lucide-react', 'usehooks-ts', 'three', 'framer-motion', 'axios'],
+				},
+			}
+		: {
+				logging: {
+					fetches: {
+						fullUrl: true,
+					},
+				},
+				async headers() {
+					return [
+						{
+							source: '/(.*)',
+							headers: [
+								{
+									key: 'X-Content-Type-Options',
+									value: 'nosniff',
+								},
+								{
+									key: 'X-Frame-Options',
+									value: 'DENY',
+								},
+								{
+									key: 'Referrer-Policy',
+									value: 'strict-origin-when-cross-origin',
+								},
+							],
+						},
+						{
+							source: '/sw.js',
+							headers: [
+								{
+									key: 'Content-Type',
+									value: 'application/javascript; charset=utf-8',
+								},
+								{
+									key: 'Cache-Control',
+									value: 'no-cache, no-store, must-revalidate',
+								},
+								{
+									key: 'Content-Security-Policy',
+									value: "default-src 'self'; script-src 'self'",
+								},
+							],
+						},
+					];
+				},
+			};
+
 const nextConfig: NextConfig = {
+	...config,
 	experimental: {
 		reactCompiler: true,
 	},
 	pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
-	logging: {
-		fetches: {
-			fullUrl: true,
-		},
-	},
 	crossOrigin: 'anonymous',
 	reactStrictMode: true,
 	images: {
@@ -52,44 +101,6 @@ const nextConfig: NextConfig = {
 				pathname: '/**',
 			},
 		],
-	},
-	async headers() {
-		return [
-			{
-				source: '/(.*)',
-				headers: [
-					{
-						key: 'X-Content-Type-Options',
-						value: 'nosniff',
-					},
-					{
-						key: 'X-Frame-Options',
-						value: 'DENY',
-					},
-					{
-						key: 'Referrer-Policy',
-						value: 'strict-origin-when-cross-origin',
-					},
-				],
-			},
-			{
-				source: '/sw.js',
-				headers: [
-					{
-						key: 'Content-Type',
-						value: 'application/javascript; charset=utf-8',
-					},
-					{
-						key: 'Cache-Control',
-						value: 'no-cache, no-store, must-revalidate',
-					},
-					{
-						key: 'Content-Security-Policy',
-						value: "default-src 'self'; script-src 'self'",
-					},
-				],
-			},
-		];
 	},
 };
 

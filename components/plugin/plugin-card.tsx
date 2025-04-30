@@ -37,7 +37,7 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['plugins']);
@@ -49,7 +49,7 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['plugins']);
@@ -77,15 +77,27 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
 						/>
 						<h2 className="line-clamp-1 w-full overflow-hidden text-ellipsis whitespace-normal text-nowrap">{name}</h2>
 					</Link>
-					<span className="line-clamp-2 h-full w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>
+					<span className="line-clamp-2 h-full w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
+						{description}
+					</span>
 					{isPrivate && <span className="top-1 right-1 font-semibold text-sm absolute px-1">PRIVATE</span>}
 				</div>
 			</ContextMenuTrigger>
 			<ProtectedElement session={session} filter={{ any: [{ authorId: userId }, { authority: 'DELETE_PLUGIN' }] }}>
 				<ContextMenuContent>
 					<ContextMenuItem asChild>
-						<TakeDownButton variant="command" description={<Tran text="take-down-alert" args={{ name }} />} isLoading={isTakingDown} onClick={() => takeDownPluginById(id)} />
-						<DeleteButton variant="command" description={<Tran text="delete-alert" args={{ name }} />} isLoading={isDeleting} onClick={() => deletePluginById(id)} />
+						<TakeDownButton
+							variant="command"
+							description={<Tran text="take-down-alert" args={{ name }} />}
+							isLoading={isTakingDown}
+							onClick={() => takeDownPluginById(id)}
+						/>
+						<DeleteButton
+							variant="command"
+							description={<Tran text="delete-alert" args={{ name }} />}
+							isLoading={isDeleting}
+							onClick={() => deletePluginById(id)}
+						/>
 					</ContextMenuItem>
 				</ContextMenuContent>
 			</ProtectedElement>

@@ -6,9 +6,9 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { z } from 'zod';
 
 import EndOfPage from '@/components/common/end-of-page';
+import ErrorMessage from '@/components/common/error-message';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
-import Tran from '@/components/common/tran';
 
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import useSearchQuery from '@/hooks/use-search-query';
@@ -36,7 +36,7 @@ type InfinitePageProps<T, P extends QuerySchema> = {
 	children: (data: T, index: number) => ReactNode;
 };
 
-export default function InfinitePage<T, P extends QuerySchema>({
+const InfinitePage = <T, P extends QuerySchema>({
 	className,
 	queryKey,
 	paramSchema,
@@ -51,7 +51,7 @@ export default function InfinitePage<T, P extends QuerySchema>({
 	params,
 	queryFn,
 	children,
-}: InfinitePageProps<T, P>) {
+}: InfinitePageProps<T, P>) => {
 	const p = useSearchQuery(paramSchema, params);
 
 	const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(
@@ -71,7 +71,13 @@ export default function InfinitePage<T, P extends QuerySchema>({
 
 	noResult = useMemo(() => noResult ?? <NoResult className="flex w-full items-center justify-center" />, [noResult]);
 
-	loader = useMemo(() => (!loader && !skeleton ? <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" /> : undefined), [loader, skeleton]);
+	loader = useMemo(
+		() =>
+			!loader && !skeleton ? (
+				<LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" />
+			) : undefined,
+		[loader, skeleton],
+	);
 
 	const loadingSkeleton = useMemo(
 		() =>
@@ -86,16 +92,19 @@ export default function InfinitePage<T, P extends QuerySchema>({
 	end = useMemo(() => end ?? <EndOfPage />, [end]);
 
 	if (isError) {
-		return (
-			<div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
-				<Tran className="font-semibold" text="error" />
-				<p className="text-muted-foreground">{JSON.stringify(error)}</p>
-			</div>
-		);
+		return <ErrorMessage error={error} />;
 	}
 
 	if (isLoading || !data) {
-		return <div className={className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'}>{loader ? loader : loadingSkeleton}</div>;
+		return (
+			<div
+				className={
+					className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
+				}
+			>
+				{loader ? loader : loadingSkeleton}
+			</div>
+		);
 	}
 
 	if (!data.pages || data.pages[0].length === 0) {
@@ -104,7 +113,9 @@ export default function InfinitePage<T, P extends QuerySchema>({
 
 	return (
 		<InfiniteScroll
-			className={className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'}
+			className={
+				className ?? 'grid w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
+			}
 			loadMore={loadMore}
 			hasMore={hasNextPage}
 			loader={loader}
@@ -128,4 +139,6 @@ export default function InfinitePage<T, P extends QuerySchema>({
 			{!hasNextPage && end}
 		</InfiniteScroll>
 	);
-}
+};
+
+export default InfinitePage;

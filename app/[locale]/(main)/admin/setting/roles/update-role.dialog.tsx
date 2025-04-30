@@ -46,7 +46,7 @@ export default function UpdateRoleDialog({ role }: Props) {
 			form.reset();
 			setOpen(false);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
 		onSettled: () => {
 			invalidateByKey(['roles']);
 			revalidate({ path: '/' });

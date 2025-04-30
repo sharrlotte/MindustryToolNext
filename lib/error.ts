@@ -4,11 +4,11 @@ import { notFound } from 'next/navigation';
 import { reportErrorToBackend } from '@/query/api';
 import axiosInstance from '@/query/config/config';
 
-import * as Sentry from '@sentry/nextjs';
+import { captureException } from '@sentry/nextjs';
 
 export function reportError(error: any) {
 	reportErrorToBackend(axiosInstance, getLoggedErrorMessage(error));
-	Sentry.captureException(error);
+	captureException(error);
 }
 export type TError = Error | { error: { message: string; name?: string } | Error } | string | { message: string; name?: string };
 export type ApiError = {
@@ -34,11 +34,11 @@ export function getErrorMessage(error: TError) {
 	}
 
 	if ('message' in error) {
-		if (error.message === DEFAULT_NEXTJS_ERROR_MESSAGE) return '500 Internal server error';
+		if (error?.message === DEFAULT_NEXTJS_ERROR_MESSAGE) return '500 Internal server error';
 
-		if (error.message === INTERNAL_ERROR_MESSAGE) return '500 Internal server error';
+		if (error?.message === INTERNAL_ERROR_MESSAGE) return '500 Internal server error';
 
-		return error.message;
+		return error?.message;
 	}
 
 	return 'Something is wrong';
@@ -59,7 +59,7 @@ export function getLoggedErrorMessage(error: TError) {
 		}
 
 		if (typeof window !== 'undefined') {
-			if (/Loading chunk [\d]+ failed/.test(error.message) || error.name === 'ChunkLoadError') {
+			if (/Loading chunk [\d]+ failed/.test(error?.message) || error.name === 'ChunkLoadError') {
 				const reloadAttemps = localStorage.getItem('RELOAD_ATTEMPTS');
 
 				if (reloadAttemps && parseInt(reloadAttemps) < 3) {
@@ -76,7 +76,7 @@ export function getLoggedErrorMessage(error: TError) {
 				config: JSON.stringify(error.config, Object.keys(error.config ?? {})),
 				url: error.config?.url,
 				stacktrace: error.stack,
-				message: error.message,
+				message: error?.message,
 			});
 		}
 
@@ -87,7 +87,15 @@ export function getLoggedErrorMessage(error: TError) {
 }
 
 export function isError<T extends Record<string, any> | number>(req: T | ApiError | null): req is ApiError {
-	if (req && typeof req === 'object' && 'error' in req && typeof req.error === 'object' && 'status' in req.error && req.error.status === 404) notFound();
+	if (
+		req &&
+		typeof req === 'object' &&
+		'error' in req &&
+		typeof req.error === 'object' &&
+		'status' in req.error &&
+		req.error.status === 404
+	)
+		notFound();
 
 	const isError = !!req && typeof req === 'object' && 'error' in req;
 

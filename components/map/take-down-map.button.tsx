@@ -32,12 +32,18 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
 			toast(<Tran text="take-down-success" />);
 		},
 		onError: (error) => {
-			toast(<Tran text="take-down-fail" />, { description: error.message });
+			toast(<Tran text="take-down-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['maps']);
 		},
 	});
 
-	return <TakeDownButton isLoading={isPending} description={<Tran text="take-down-alert" args={{ name: name }} />} onClick={() => mutate(id)} />;
+	return (
+		<TakeDownButton
+			isLoading={isPending}
+			description={<Tran text="take-down-alert" args={{ name: name }} />}
+			onClick={() => mutate(id)}
+		/>
+	);
 }

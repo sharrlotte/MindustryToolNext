@@ -48,7 +48,7 @@ function Preview() {
 		},
 		onError: (error) => {
 			setData(undefined);
-			toast.error(<Tran text="upload.get-preview-fail" />, { description: error.message });
+			toast.error(<Tran text="upload.get-preview-fail" />, { description: error?.message });
 		},
 	});
 

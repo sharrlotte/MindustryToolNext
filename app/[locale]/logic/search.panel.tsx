@@ -98,7 +98,7 @@ export default function SearchPanel() {
 				{matchedNodes.map(({ node, matches }) => {
 					const nodeData = instructionNodes[node.data.type];
 					return (
-						<div className="cursor-pointer p-2 rounded-md border bg-secondary" key={node.id} onClick={() => handleClick(node)}>
+						<div className="cursor-pointer p-2 rounded-md border bg-secondary/70" key={node.id} onClick={() => handleClick(node)}>
 							<h3 className="space-x-1 p-0">
 								<span
 									className="font-semibold"

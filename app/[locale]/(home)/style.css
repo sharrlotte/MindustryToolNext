@@ -2,10 +2,6 @@
   @apply bg-gradient-to-r from-brand to-cyan-400 bg-clip-text text-transparent;
 }
 
-.bg-gradient {
-  @apply bg-gradient-to-b from-black to-gray-900;
-}
-
 .rainbow-border {
   --angle: 0deg;
 

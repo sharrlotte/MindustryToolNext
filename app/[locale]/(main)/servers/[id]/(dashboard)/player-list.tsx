@@ -15,14 +15,14 @@ import { Player } from '@/types/response/Player';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-type PlayersCardProps = {
+type PlayerListProps = {
 	id: string;
 };
 
-export function PlayersCard({ id }: PlayersCardProps) {
+export function PlayerList({ id }: PlayerListProps) {
 	const axios = useClientApi();
 	const { data, isError, error } = useSuspenseQuery({
-		queryKey: ['server', id, 'players'],
+		queryKey: ['server', id, 'player'],
 		queryFn: () => getServerPlayers(axios, id),
 	});
 
@@ -31,7 +31,7 @@ export function PlayersCard({ id }: PlayersCardProps) {
 	}
 
 	return (
-		<div className="grid gap-1 min-w-[300px]">
+		<div className="grid gap-4 min-w-[300px]">
 			{data
 				?.sort((a, b) => a.team.name.localeCompare(b.team.name))
 				.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
@@ -39,17 +39,18 @@ export function PlayersCard({ id }: PlayersCardProps) {
 	);
 }
 
-type PlayersCardSkeletonProps = {
+type PlayerListSkeletonProps = {
 	players: number;
 };
-export function PlayersCardSkeleton({ players }: PlayersCardSkeletonProps) {
+
+export function PlayerListSkeleton({ players }: PlayerListSkeletonProps) {
 	if (players === 0) {
 		return undefined;
 	}
 
 	return Array(players)
 		.fill(1)
-		.map((_, index) => <Skeleton className="h-10 w-24" key={index} />);
+		.map((_, index) => <Skeleton className="h-10 w-full" key={index} />);
 }
 
 type PlayerCardProps = {
@@ -61,7 +62,8 @@ function getCountryCode(locale: string): string {
 	const parts = locale.split('_');
 	return parts.length > 1 ? parts[1].toUpperCase() : parts[0].toUpperCase();
 }
-async function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid } }: PlayerCardProps) {
+
+function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid } }: PlayerCardProps) {
 	locale = getCountryCode(locale ?? 'EN');
 
 	return (

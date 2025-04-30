@@ -1,0 +1,12 @@
+#docs-markdown table {
+	@apply border-collapse border rounded-md;
+}
+
+#docs-markdown tr {
+	@apply border-b;
+}
+
+#docs-markdown th,
+td {
+	@apply p-2;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DownloadButton from '@/components/button/download.button';
+import ErrorMessage from '@/components/common/error-message';
 import NoResult from '@/components/common/no-result';
 import Tran from '@/components/common/tran';
 import FileCard from '@/components/file/file-card';
@@ -38,7 +39,7 @@ export default function FileList({ id, path, filter, setFilePath }: FileListProp
 		mutationKey: ['delete-file'],
 		mutationFn: async (path: string) => deleteServerFile(axios, id, path),
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['server', id, 'server-files', path]);
@@ -46,13 +47,9 @@ export default function FileList({ id, path, filter, setFilePath }: FileListProp
 	});
 
 	if (error) {
-		return (
-			<div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
-				<Tran className="font-semibold" text="error" />
-				<p className="text-muted-foreground">{JSON.stringify(error)}</p>
-			</div>
-		);
+		return <ErrorMessage error={error} />;
 	}
+
 	if (isLoading) {
 		return (
 			<Skeletons number={10}>

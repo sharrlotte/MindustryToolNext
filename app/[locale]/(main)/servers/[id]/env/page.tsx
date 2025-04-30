@@ -4,8 +4,8 @@ import env from '@/constant/env';
 import { isError } from '@/lib/error';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 
-import { getCachedServer } from '../(dashboard)/page';
 import PageClient from './page.client';
+import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 
 type Props = {
 	params: Promise<{ id: string; locale: string }>;

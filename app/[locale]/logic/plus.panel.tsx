@@ -30,7 +30,7 @@ function InstructionList() {
 		<div className="space-y-4 flex flex-col h-full overflow-hiden">
 			<div>
 				<h2 className="text-base">
-					<Tran text="logic.instruction-list" />
+					<Tran text="logic.instruction-list" defaultValue="Instruction list" />
 				</h2>
 				<Input placeholder="Search" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} />
 			</div>

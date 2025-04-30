@@ -47,7 +47,7 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
 				error: {
 					status: error.response?.status,
 					data: error.response?.data,
-					message: error.message + error.response?.config.url,
+					message: error?.message + error.response?.config.url,
 				},
 			};
 		}

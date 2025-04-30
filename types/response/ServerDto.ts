@@ -1,6 +1,5 @@
+import { ServerStatus } from '@/constant/constant';
 import { ServerMode } from '@/types/request/UpdateServerRequest';
-
-export type ServerStatus = 'DOWN' | 'UP' | 'HOST' | 'DELETED';
 
 export type ServerDto = {
 	id: string;

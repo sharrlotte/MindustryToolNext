@@ -15,7 +15,7 @@ export type ItemType = (typeof itemTypes)[number];
 
 export type TagType = keyof AllTagGroup;
 
-export const acceptedImageFormats = '.png, .jpg, .jpeg, .webp';
+export const acceptedImageFormats = '.png, .jpg, .jpeg, .webp, .gif';
 
 export const SHOW_TAG_NAME_PERSISTENT_KEY = 'showTagName';
 export const SHOW_TAG_NUMBER_PERSISTENT_KEY = 'showTagNumber';
@@ -47,11 +47,23 @@ export type Config = {
 
 export type LogType = 'SYSTEM' | 'DATABASE' | 'API' | 'DISCORD_MESSAGE' | 'REQUEST' | 'USER_LOGIN';
 
-export type MetricType = 'DAILY_LIKE' | 'DAILY_USER' | 'LOGGED_DAILY_USER' | 'DAILY_MOD_USER' | 'DAILY_WEB_USER' | 'DAILY_SERVER_USER';
+export type MetricType =
+	| 'DAILY_LIKE'
+	| 'DAILY_USER'
+	| 'LOGGED_DAILY_USER'
+	| 'DAILY_MOD_USER'
+	| 'DAILY_WEB_USER'
+	| 'DAILY_SERVER_USER';
 
 export const userRoles = ['ADMIN', 'USER', 'SHAR', 'CONTRIBUTOR'] as const;
 
 export type UserRole = (typeof userRoles)[number];
+
+export const serverStatus = ['DOWN', 'UP', 'HOST', 'DELETED', 'NOT_RESPONSE'] as const;
+export type ServerStatus = (typeof serverStatus)[number];
+
+export const uploadStates = ['QUEUING', 'PROCESSING', 'ERROR', "RETRY"] as const;
+export type UploadState = (typeof uploadStates)[number];
 
 export type AuthorityEnum =
 	| 'CREATE_NOTIFICATION' //

@@ -19,6 +19,7 @@ export default function useQueryState<T extends Record<string, string | null>>(i
 		}
 
 		setCurrentValue(result as T);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const setter = useCallback(
@@ -60,7 +61,7 @@ export default function useQueryState<T extends Record<string, string | null>>(i
 		}
 
 		if (!isTheSame) {
-			router.replace(`${pathname}?${queryParams.toString()}`);
+			router.push(`${pathname}?${queryParams.toString()}`);
 		}
 	}
 

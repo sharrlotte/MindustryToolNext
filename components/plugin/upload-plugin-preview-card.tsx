@@ -44,7 +44,7 @@ function UploadPluginCard({ plugin }: Props) {
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error.message });
+			toast.error(<Tran text="delete-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['plugins']);
@@ -102,7 +102,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
 			toast(<Tran text="verify-success" />);
 		},
 		onError: (error) => {
-			toast(<Tran text="verify-fail" />, { description: error.message });
+			toast(<Tran text="verify-fail" />, { description: error?.message });
 		},
 		onSettled: () => {
 			invalidateByKey(['plugins']);
@@ -117,7 +117,11 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button className="flex h-9 w-full items-center justify-center rounded-md border p-0 hover:bg-success" variant="outline" title="verify">
+				<Button
+					className="flex h-9 w-full items-center justify-center rounded-md border p-0 hover:bg-success"
+					variant="outline"
+					title="verify"
+				>
 					<CheckIcon />
 				</Button>
 			</DialogTrigger>

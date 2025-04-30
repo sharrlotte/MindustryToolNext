@@ -4,16 +4,22 @@ import { AxiosInstance } from 'axios';
 import React, { ReactNode, useMemo } from 'react';
 import { z } from 'zod';
 
+
+
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
-import RouterSpinner from '@/components/common/router-spinner';
+
+
 
 import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { QuerySchema } from '@/types/schema/search-query';
 
+
+
 import { QueryKey, useQuery } from '@tanstack/react-query';
+
 
 type Props<T, P extends QuerySchema> = {
 	className?: string;
@@ -33,7 +39,7 @@ type Props<T, P extends QuerySchema> = {
 	children: (data: T, index: number) => ReactNode;
 };
 
-export default function GridPaginationList<T, P extends QuerySchema>({
+const GridPaginationList = <T, P extends QuerySchema>({
 	className,
 	queryKey,
 	paramSchema,
@@ -46,7 +52,7 @@ export default function GridPaginationList<T, P extends QuerySchema>({
 	params,
 	queryFn,
 	children,
-}: Props<T, P>) {
+}: Props<T, P>) => {
 	const p = useSearchQuery(paramSchema, params);
 
 	const axios = useClientApi();
@@ -102,7 +108,7 @@ function Render<T>({ isLoading, loader, skeletonElements, error, data, noResult,
 	if (error) {
 		return (
 			<div className="col-span-full flex h-full w-full justify-center">
-				<RouterSpinner message={error?.message} />
+				<LoadingSpinner message={error?.message} />
 			</div>
 		);
 	}
@@ -113,3 +119,5 @@ function Render<T>({ isLoading, loader, skeletonElements, error, data, noResult,
 
 	return data.map((item, index) => children(item, index));
 }
+
+export default GridPaginationList;

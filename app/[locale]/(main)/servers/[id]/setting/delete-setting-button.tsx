@@ -3,7 +3,14 @@
 import { useRouter } from 'next/navigation';
 
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogFooter,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/sonner';
 
@@ -40,7 +47,7 @@ function DeleteServerButton({ id }: ServerSettingButtonProps) {
 
 			router.push('/servers');
 		},
-		onError: (error) => toast.error(<Tran text="delete-fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="delete-fail" />, { description: error?.message }),
 		onSettled: () => {
 			revalidate({ path: '/servers' });
 			invalidateByKey(['servers']);
@@ -88,7 +95,7 @@ function TransferServerButton({ id }: ServerSettingButtonProps) {
 
 			router.push('/servers');
 		},
-		onError: (error) => toast.error(<Tran text="transfer-fail" />, { description: error.message }),
+		onError: (error) => toast.error(<Tran text="transfer-fail" />, { description: error?.message }),
 		onSettled: () => {
 			revalidate({ path: '/servers' });
 			invalidateByKey(['servers']);
@@ -108,7 +115,12 @@ function TransferServerButton({ id }: ServerSettingButtonProps) {
 						<Tran text="cancel" />
 					</AlertDialogCancel>
 					<AlertDialogAction asChild>
-						<Button className="bg-destructive hover:bg-destructive" title="transfer" onClick={() => mutate()} disabled={isPending}>
+						<Button
+							className="bg-destructive hover:bg-destructive"
+							title="transfer"
+							onClick={() => mutate()}
+							disabled={isPending}
+						>
 							<Tran text="transfer" />
 						</Button>
 					</AlertDialogAction>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Tran from '@/components/common/tran';
+import ErrorMessage from '@/components/common/error-message';
 import UserCardSkeleton from '@/components/skeleton/user-card.skeleton';
 import UserCard from '@/components/user/user-card';
 
@@ -37,12 +37,7 @@ function FletchUserCard({ id }: IdUserCardProps) {
 			return undefined;
 		}
 
-		return (
-			<div className="col-span-full flex h-full flex-col w-full items-center text-center justify-center">
-				<Tran className="font-semibold" text="error" />
-				<p className="text-muted-foreground">{JSON.stringify(error)}</p>
-			</div>
-		);
+		return <ErrorMessage error={error} />;
 	}
 
 	if (isLoading || !data) {

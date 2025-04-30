@@ -1,5 +1,5 @@
 type MapPreviewRequest = {
-  file: File;
+	file: File;
 };
 
 export default MapPreviewRequest;
