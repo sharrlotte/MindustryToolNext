@@ -7,79 +7,54 @@ import { cn } from '@/lib/utils';
 
 type AdditionalPadding = `pr-${number}`;
 type Props = {
-  id?: string;
-  className?: string;
-  additionalPadding?: AdditionalPadding;
-  children: ReactNode;
+	id?: string;
+	className?: string;
+	additionalPadding?: AdditionalPadding;
+	children: ReactNode;
 };
 
-const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id, additionalPadding = 'pr-2', children }, forwardedRef) => {
-  const pathname = usePathname();
-  const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const lastScrollTop = React.useRef(0);
-  const [hasGapForScrollbar, setHasGapForScrollbar] = useState(false);
+const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id, children }, forwardedRef) => {
+	const pathname = usePathname();
+	const [container, setContainer] = useState<HTMLDivElement | null>(null);
+	const lastScrollTop = React.useRef(0);
 
-  useEffect(() => {
-    if (container === null) return;
+	useEffect(() => {
+		if (container === null) return;
 
-    setHasGapForScrollbar(container.scrollHeight > container.clientHeight);
+		const scrollTop = sessionStorage.getItem(`scroll-top-${pathname}-${id}`);
+		try {
+			if (scrollTop) {
+				container.scrollTop = parseInt(scrollTop);
+			} else {
+				container.scrollTop = lastScrollTop.current;
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}, [container, pathname, id]);
 
-    function handleScroll() {
-      if (container) {
-        setHasGapForScrollbar(container.scrollHeight > container.clientHeight);
-      }
-    }
-
-    const observer = new ResizeObserver(() => {
-      handleScroll();
-    });
-
-    observer.observe(container);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [container, pathname]);
-
-  useEffect(() => {
-    if (container === null) return;
-
-    const scrollTop = sessionStorage.getItem(`scroll-top-${pathname}-${id}`);
-    try {
-      if (scrollTop) {
-        container.scrollTop = parseInt(scrollTop);
-      } else {
-        container.scrollTop = lastScrollTop.current;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [container, pathname, id]);
-
-  return (
-    <div
-      id={id}
-      className={cn('h-full scroll-container overflow-y-auto w-full', className, {
-        [additionalPadding]: hasGapForScrollbar,
-      })}
-      onScroll={(event) => {
-        lastScrollTop.current = event.currentTarget.scrollTop;
-        sessionStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());
-      }}
-      ref={(current) => {
-        if (typeof forwardedRef === 'function') {
-          forwardedRef(current);
-          setContainer(current);
-        } else if (forwardedRef !== null) {
-          forwardedRef.current = current;
-        } else {
-          setContainer(current);
-        }
-      }}
-    >
-      {children}
-    </div>
-  );
+	return (
+		<div
+			id={id}
+			className={cn('h-full scroll-container overflow-y-auto w-full', className)}
+			onScroll={(event) => {
+				lastScrollTop.current = event.currentTarget.scrollTop;
+				sessionStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());
+			}}
+			ref={(current) => {
+				if (typeof forwardedRef === 'function') {
+					forwardedRef(current);
+					setContainer(current);
+				} else if (forwardedRef !== null) {
+					forwardedRef.current = current;
+				} else {
+					setContainer(current);
+				}
+			}}
+		>
+			{children}
+		</div>
+	);
 });
 
 ScrollContainer.displayName = 'ScrollContainer';
