@@ -418,35 +418,6 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 		[save, load, redo, undo, addNode, setShowMiniMap, setShowLiveCode],
 	);
 
-	useEffect(() => {
-		function generateNewFile() {
-			const newName = generateRandomName();
-
-			if (!newName) {
-				toast.error(<Tran text="logic.could-not-generate-random-name" />);
-			} else {
-				addNewFile(newName);
-				setName(newName);
-			}
-		}
-
-		if (name === saved.currentFile) {
-			setLoading(false)
-			return;
-		}
-
-		if (saved.currentFile) {
-			const result = load(saved.currentFile);
-
-			if (!result) {
-				toast.error(<Tran text="logic.load-file-fail" defaultValue="Fail to load file" />, {
-					description: saved.currentFile,
-				});
-				generateNewFile();
-			}
-		}
-	}, [name, saved.currentFile, generateRandomName, load, addNewFile]);
-
 	const [{ handlerId }, drop] = useDrop<any, void, { handlerId: Identifier | null }>({
 		accept: 'instruction',
 		collect(monitor) {
