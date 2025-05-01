@@ -4,22 +4,15 @@ import { AxiosInstance } from 'axios';
 import React, { ReactNode, useMemo } from 'react';
 import { z } from 'zod';
 
-
-
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
-
-
 
 import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn } from '@/lib/utils';
 import { QuerySchema } from '@/types/schema/search-query';
 
-
-
 import { QueryKey, useQuery } from '@tanstack/react-query';
-
 
 type Props<T, P extends QuerySchema> = {
 	className?: string;
@@ -66,15 +59,32 @@ const GridPaginationList = <T, P extends QuerySchema>({
 		if (skeleton)
 			return Array(skeleton.amount)
 				.fill(1)
-				.map((_, index) => <React.Fragment key={index}>{typeof skeleton.item === 'function' ? skeleton.item(index) : skeleton.item}</React.Fragment>);
+				.map((_, index) => (
+					<React.Fragment key={index}>
+						{typeof skeleton.item === 'function' ? skeleton.item(index) : skeleton.item}
+					</React.Fragment>
+				));
 	}, [skeleton]);
 
 	noResult = useMemo(() => noResult ?? <NoResult className="flex w-full items-center justify-center" />, [noResult]);
-	loader = useMemo(() => (!loader && !skeleton ? <LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" /> : undefined), [loader, skeleton]);
+	loader = useMemo(
+		() =>
+			!loader && !skeleton ? (
+				<LoadingSpinner key="loading" className="col-span-full flex h-full w-full items-center justify-center" />
+			) : undefined,
+		[loader, skeleton],
+	);
 
 	if (asChild) {
 		return (
-			<Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult}>
+			<Render
+				isLoading={isLoading}
+				loader={loader}
+				skeletonElements={skeletonElements}
+				error={error}
+				data={data}
+				noResult={noResult}
+			>
 				{children}
 			</Render>
 		);
@@ -82,14 +92,26 @@ const GridPaginationList = <T, P extends QuerySchema>({
 
 	return (
 		<div className="scroll-container h-full">
-			<section className={cn('grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2', className)}>
-				<Render isLoading={isLoading} loader={loader} skeletonElements={skeletonElements} error={error} data={data} noResult={noResult}>
+			<section
+				className={cn(
+					'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2',
+					className,
+				)}
+			>
+				<Render
+					isLoading={isLoading}
+					loader={loader}
+					skeletonElements={skeletonElements}
+					error={error}
+					data={data}
+					noResult={noResult}
+				>
 					{children}
 				</Render>
 			</section>
 		</div>
 	);
-}
+};
 
 type RenderProps<T> = {
 	isLoading: boolean;
