@@ -6,7 +6,7 @@ import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
 import RemoveButton from '@/components/button/remove.button';
 import { FileIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Input } from '@/components/ui/input';
 
 import useLogicFile from '@/hooks/use-logic-file';
@@ -50,7 +50,9 @@ export default function FilePanel() {
 								</button>
 							</ContextMenuTrigger>
 							<ContextMenuContent>
-								<RemoveButton variant="command" isLoading={false} onClick={() => handleDeleteFile(name)} description={''} />
+								<ContextMenuItem asChild>
+									<RemoveButton variant="command" isLoading={false} onClick={() => handleDeleteFile(name)} description={''} />
+								</ContextMenuItem>
 							</ContextMenuContent>
 						</ContextMenu>
 					))}

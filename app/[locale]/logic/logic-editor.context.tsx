@@ -96,7 +96,7 @@ export const useLogicEditor = () => {
 const proOptions: ProOptions = { hideAttribution: true };
 
 export function LogicEditorProvider({ children }: { children: React.ReactNode }) {
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [name, setName] = useState('');
 	const [nodes, setNodes] = useState<Node[]>(initialNodes);
 	const [edges, setEdges] = useState<Edge[]>([]);
@@ -114,7 +114,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const ref = useRef<HTMLDivElement>(null);
 	const viewport = useViewport();
 
-	const { generateRandomName, saved, readLogicFromLocalStorageByName, writeLogicToLocalStorage, addNewFile } = useLogicFile();
+	const { readLogicFromLocalStorageByName, writeLogicToLocalStorage } = useLogicFile();
 
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
@@ -417,35 +417,6 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 		}),
 		[save, load, redo, undo, addNode, setShowMiniMap, setShowLiveCode],
 	);
-
-	useEffect(() => {
-		function generateNewFile() {
-			const newName = generateRandomName();
-
-			if (!newName) {
-				toast.error(<Tran text="logic.could-not-generate-random-name" />);
-			} else {
-				addNewFile(newName);
-				setName(newName);
-			}
-		}
-
-		if (name === saved.currentFile) {
-			setLoading(false)
-			return;
-		}
-
-		if (saved.currentFile) {
-			const result = load(saved.currentFile);
-
-			if (!result) {
-				toast.error(<Tran text="logic.load-file-fail" defaultValue="Fail to load file" />, {
-					description: saved.currentFile,
-				});
-				generateNewFile();
-			}
-		}
-	}, [name, saved.currentFile, generateRandomName, load, addNewFile]);
 
 	const [{ handlerId }, drop] = useDrop<any, void, { handlerId: Identifier | null }>({
 		accept: 'instruction',

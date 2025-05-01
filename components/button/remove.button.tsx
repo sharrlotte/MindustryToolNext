@@ -1,5 +1,3 @@
-'use client';
-
 import { VariantProps, cva } from 'class-variance-authority';
 import React from 'react';
 
@@ -12,7 +10,6 @@ import {
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
-	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
@@ -48,12 +45,10 @@ export default function RemoveButton({ className, variant, isLoading, descriptio
 				{variant === 'command' && <Tran text="remove" />}
 			</AlertDialogTrigger>
 			<AlertDialogContent>
-				<AlertDialogHeader>
-					<AlertDialogTitle>
-						<Tran text="remove.confirm" />
-					</AlertDialogTitle>
-					<AlertDialogDescription>{description}</AlertDialogDescription>
-				</AlertDialogHeader>
+				<AlertDialogTitle>
+					<Tran text="remove.confirm" />
+				</AlertDialogTitle>
+				<AlertDialogDescription>{description}</AlertDialogDescription>
 				<AlertDialogFooter>
 					<AlertDialogCancel>
 						<Tran text="cancel" />
