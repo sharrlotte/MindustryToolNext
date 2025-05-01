@@ -96,7 +96,7 @@ export const useLogicEditor = () => {
 const proOptions: ProOptions = { hideAttribution: true };
 
 export function LogicEditorProvider({ children }: { children: React.ReactNode }) {
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [name, setName] = useState('');
 	const [nodes, setNodes] = useState<Node[]>(initialNodes);
 	const [edges, setEdges] = useState<Edge[]>([]);
@@ -114,7 +114,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const ref = useRef<HTMLDivElement>(null);
 	const viewport = useViewport();
 
-	const { generateRandomName, saved, readLogicFromLocalStorageByName, writeLogicToLocalStorage, addNewFile } = useLogicFile();
+	const { readLogicFromLocalStorageByName, writeLogicToLocalStorage } = useLogicFile();
 
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
