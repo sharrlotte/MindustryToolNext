@@ -117,7 +117,7 @@ export default function SearchPanel() {
 									<div key={index}>
 										<span className="text-foreground">{label}: </span>
 										{value.substring(0, value.indexOf(debouncedFilter))}
-										<span className="underline">{debouncedFilter}</span>
+										<span className="underline bg-brand/50">{debouncedFilter}</span>
 										{value.substring(value.indexOf(debouncedFilter) + debouncedFilter.length)}
 									</div>
 								))}
