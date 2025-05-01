@@ -35,7 +35,7 @@ const uploadFile = async (
 	const startTime = Date.now();
 	const { data } = await axios.post('/upload', formData, {
 		data: formData,
-		timeout: 60000 * 60,
+		timeout: 1000 * 60 * 60,
 		headers: { 'Content-Type': 'multipart/form-data' },
 		onUploadProgress: (progressEvent) => {
 			if (onProgress && progressEvent.total) {
