@@ -254,10 +254,19 @@ function UploadButton({ path }: { path: string }) {
 	const uploadMutation = useMutation({
 		mutationFn: async (file: File) => {
 			const format = file.name.split('.').pop() || '';
+			// Sanitize the filename to be a valid Ubuntu filename
+			const sanitizedId = file.name
+				.slice(0, file.name.length - format.length - 1)
+				.toLowerCase()
+				.replace(/[^a-z0-9._-]/g, '_')
+				.replace(/^[._-]+/, '')
+				.replace(/[._-]+$/, '')
+				.replace(/[._-]{2,}/g, '_');
+
 			await uploadImage(axios, {
 				file,
 				folder: path,
-				id: file.name.slice(0, file.name.length - format.length - 1),
+				id: sanitizedId,
 				format,
 				onUploadProgress: (progressEvent: ProgressEvent) => {
 					const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
