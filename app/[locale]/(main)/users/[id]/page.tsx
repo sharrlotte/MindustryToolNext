@@ -26,12 +26,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		return { title: 'Error' };
 	}
 
-	const { name, imageUrl, roles, stats } = user;
+	const { name, imageUrl, roles, stats, thumbnail } = user;
 
 	const description = {
 		roles: roles.map((role) => role.name).join(', '),
 		stats,
 	};
+
+	const images = [];
+
+	if (thumbnail) {
+		images.push(thumbnail);
+	}
+
+	if (imageUrl) {
+		images.push(imageUrl);
+	}
 
 	return {
 		title: formatTitle(name),
@@ -39,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		openGraph: {
 			title: name,
 			description: roles.map((role) => role.name).join(', '),
-			images: imageUrl ?? '',
+			images,
 		},
 		alternates: generateAlternate(`/users/${id}`),
 	};
