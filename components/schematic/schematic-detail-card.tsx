@@ -34,6 +34,7 @@ import ProtectedElement from '@/layout/protected-element';
 import { getSchematicData, getSchematics } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
+import SizeCard from '@/components/common/size-card';
 
 const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic.button'));
 const TakeDownSchematicButton = dynamic(() => import('@/components/schematic/take-down-schematic.button'));
@@ -90,9 +91,7 @@ export default function SchematicDetailCard({
 							<DetailTitle>{name}</DetailTitle>
 							<IdUserCard id={userId} />
 							<Verifier verifierId={verifierId} />
-							<span>
-								<Tran text="size" /> {width}x{height}
-							</span>
+							<SizeCard size={{ width, height }} />
 							<DetailDescription>{description}</DetailDescription>
 							<ItemRequirementCard requirements={requirements} />
 							<DetailTagsCard tags={tags} type="schematic" />

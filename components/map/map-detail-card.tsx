@@ -19,7 +19,7 @@ import {
 } from '@/components/common/detail';
 import DetailSwipeToNavigate from '@/components/common/detail-swipe-to-navigate';
 import { ShareIcon } from '@/components/common/icons';
-import Tran from '@/components/common/tran';
+import SizeCard from '@/components/common/size-card';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import { DeleteMapButton } from '@/components/map/delete-map.button';
 import { TakeDownMapButton } from '@/components/map/take-down-map.button';
@@ -29,9 +29,9 @@ import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
+import { getMaps } from '@/query/map';
 import { MapDetail } from '@/types/response/MapDetail';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
-import { getMaps } from '@/query/map';
 
 type MapDetailCardProps = {
 	map: MapDetail;
@@ -62,9 +62,7 @@ export default function MapDetailCard({
 							<DetailTitle>{name}</DetailTitle>
 							<IdUserCard id={userId} />
 							<Verifier verifierId={verifierId} />
-							<span>
-								<Tran text="size" /> {width}x{height}
-							</span>
+							<SizeCard size={{ width, height }} />
 							<DetailDescription>{description}</DetailDescription>
 							<DetailTagsCard tags={tags} type="map" />
 						</DetailHeader>
