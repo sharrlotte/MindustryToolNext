@@ -22,7 +22,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const fetchFiles = async (axios: AxiosInstance, state: UploadState) => {
 	const { data } = await axios.get('/upload', { params: { state } });
-	return data as string[];
+	return data as {
+		path: string;
+		message: string;
+	}[];
 };
 
 const uploadFile = async (
@@ -189,9 +192,12 @@ function List({ state }: { state: UploadState }) {
 				{isFetching && <LoadingSpinner className="m-0" />}
 			</h3>
 			<div className="w-full space-y-1">
-				{data?.map((path) => (
+				{data?.map(({ path, message }) => (
 					<div className="rounded-md border p-2 bg-card flex justify-between items-center" key={path}>
-						<span>{path}</span>
+						<div className="grid">
+							<span>{path}</span>
+							<span className="text-muted-foreground text-xs">{message}</span>
+						</div>
 						<Button
 							variant="destructive"
 							onClick={() => {
