@@ -91,12 +91,12 @@ function GridDetailSwipeToNavigate<T extends { id: any }, P extends QuerySchema>
 		if (page > 1) {
 			setPage(page - 1);
 		}
-	}, [p, queryClient, queryKey, queryFn, axios]);
+	}, [isFetching, page]);
 
 	const fetchNextPage = useCallback(() => {
 		if (isFetching) return;
 		setPage(page + 1);
-	}, [axios, p, queryClient, queryFn, queryKey]);
+	}, [isFetching, page]);
 
 	const state = useSwipeToNavigate({
 		fetchNextPage,
