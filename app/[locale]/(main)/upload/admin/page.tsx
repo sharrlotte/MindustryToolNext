@@ -171,11 +171,15 @@ export default function Page() {
 function List({ state }: { state: UploadState }) {
 	const { data, isLoading, isError, error, isFetching } = useUpload(state);
 	const axios = useClientApi();
+	const queryClient = useQueryClient();
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: (filename: string) => axios.delete(`/upload/${filename}`),
 		onError: (error) => {
 			toast.error(error?.message);
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ['admin-upload'], exact: false });
 		},
 	});
 
