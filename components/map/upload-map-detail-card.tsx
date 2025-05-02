@@ -5,9 +5,17 @@ import React, { useState } from 'react';
 
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
-import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
+import {
+	Detail,
+	DetailActions,
+	DetailContent,
+	DetailDescription,
+	DetailHeader,
+	DetailImage,
+	DetailInfo,
+	DetailTitle,
+} from '@/components/common/detail';
 import { ShareIcon } from '@/components/common/icons';
-import Tran from '@/components/common/tran';
 import { DeleteMapButton } from '@/components/map/delete-map.button';
 import VerifyMapButton from '@/components/map/verify-map.button';
 import TagSelector from '@/components/search/tag-selector';
@@ -16,12 +24,15 @@ import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { MapDetail } from '@/types/response/MapDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import SizeCard from '@/components/common/size-card';
 
 type UploadMapDetailCardProps = {
 	map: MapDetail;
 };
 
-export default function UploadMapDetailCard({ map: { id, name, tags, description, userId, width, height } }: UploadMapDetailCardProps) {
+export default function UploadMapDetailCard({
+	map: { id, name, tags, description, userId, width, height },
+}: UploadMapDetailCardProps) {
 	const [selectedTags, setSelectedTags] = useState<TagGroup[]>(TagGroups.parsTagDto(tags));
 
 	const { locale } = useParams();
@@ -43,9 +54,7 @@ export default function UploadMapDetailCard({ map: { id, name, tags, description
 					<DetailHeader>
 						<DetailTitle>{name}</DetailTitle>
 						<IdUserCard id={userId} />
-						<span>
-							<Tran text="size" /> {width}x{height}
-						</span>
+						<SizeCard size={{ width, height }} />
 						<DetailDescription>{description}</DetailDescription>
 						<TagSelector type="map" value={selectedTags} onChange={setSelectedTags} />
 					</DetailHeader>
