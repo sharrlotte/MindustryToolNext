@@ -41,7 +41,13 @@ export default function PaginationNavigator({ numberOfItems, sizes = [10, 20, 30
 	}
 
 	if (typeof numberOfItems === 'string') {
-		return <PaginationNavigator numberOfItems={(axios, params) => axios.get(numberOfItems, { params }).then((r) => r.data)} sizes={sizes} queryKey={(rest as any).queryKey} />;
+		return (
+			<PaginationNavigator
+				numberOfItems={(axios, params) => axios.get(numberOfItems, { params }).then((r) => r.data)}
+				sizes={sizes}
+				queryKey={(rest as any).queryKey}
+			/>
+		);
 	}
 
 	return <PaginationNavigatorInternal numberOfItems={numberOfItems ?? 0} sizes={sizes} />;
@@ -115,12 +121,18 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
 	}, [handlePageChange, lastPage, selectedPage]);
 
 	return (
-		<div className="flex gap-2">
+		<>
 			<SizeSelector sizes={sizes} />
 			<Pagination className="h-10 bg-card rounded-md shadow-md">
 				<PaginationContent>
 					<PaginationItem>
-						<Button className="px-2 size-10 py-1 flex" title="Previous" variant="ghost" disabled={!hasPrevPage} onClick={() => handlePageChange(previousPage)}>
+						<Button
+							className="px-2 size-10 py-1 flex"
+							title="Previous"
+							variant="ghost"
+							disabled={!hasPrevPage}
+							onClick={() => handlePageChange(previousPage)}
+						>
 							<ChevronLeftIcon className="size-5" />
 						</Button>
 					</PaginationItem>
@@ -148,7 +160,11 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
 									<Tran text="select-page" />
 								</DialogTitle>
 								<DialogDescription />
-								<Input type="number" value={selectedPage} onChange={(event) => setSelectedPage(event.currentTarget.valueAsNumber)} />
+								<Input
+									type="number"
+									value={selectedPage}
+									onChange={(event) => setSelectedPage(event.currentTarget.valueAsNumber)}
+								/>
 								{(selectedPage < 0 || selectedPage > lastPage) && (
 									<span className="text-sm text-destructive">
 										<Tran text="page-constrain" args={{ max: lastPage }} />
@@ -177,12 +193,18 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
 						</PaginationItem>
 					)}
 					<PaginationItem>
-						<Button className="px-2 size-10  py-1 flex" title="Next" variant="ghost" disabled={!hasNextPage} onClick={() => handlePageChange(nextPage)}>
+						<Button
+							className="px-2 size-10  py-1 flex"
+							title="Next"
+							variant="ghost"
+							disabled={!hasNextPage}
+							onClick={() => handlePageChange(nextPage)}
+						>
 							<ChevronRightIcon className="size-5" />
 						</Button>
 					</PaginationItem>
 				</PaginationContent>
 			</Pagination>
-		</div>
+		</>
 	);
 }
