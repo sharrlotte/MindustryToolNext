@@ -92,6 +92,8 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
 							isLoading={isTakingDown}
 							onClick={() => takeDownPluginById(id)}
 						/>
+					</ContextMenuItem>
+					<ContextMenuItem asChild>
 						<DeleteButton
 							variant="command"
 							description={<Tran text="delete-alert" args={{ name }} />}
