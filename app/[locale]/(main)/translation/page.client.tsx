@@ -23,125 +23,137 @@ const translateModes = ['search', 'diff', 'compare'] as const;
 type TranslateMode = (typeof translateModes)[number];
 
 const defaultState: {
-  isTranslated: boolean | null;
-  target: Locale;
-  language: Locale | undefined;
-  mode: TranslateMode;
-  key: string;
+	isTranslated: boolean | null;
+	target: Locale;
+	language: Locale | undefined;
+	mode: TranslateMode;
+	key: string;
 } = {
-  target: 'vi',
-  language: 'en',
-  mode: 'search',
-  key: '',
-  isTranslated: null,
+	target: 'vi',
+	language: 'en',
+	mode: 'search',
+	key: '',
+	isTranslated: null,
 };
 
+function format(key: null | boolean) {
+	if (key === null) {
+		return 'translation.all';
+	}
+
+	if (key === true) {
+		return 'translation.translated';
+	}
+
+	return 'translation.untranslated';
+}
+
 export default function TranslationPage() {
-  const [{ language, target, mode, key, isTranslated }, _setState] = useState(defaultState);
-  const { t } = useI18n(['translation']);
+	const [{ language, target, mode, key, isTranslated }, _setState] = useState(defaultState);
+	const { t } = useI18n(['translation']);
 
-  const setState = useCallback((value: Partial<typeof defaultState>) => _setState((prev) => ({ ...prev, ...value })), []);
+	const setState = useCallback((value: Partial<typeof defaultState>) => _setState((prev) => ({ ...prev, ...value })), []);
 
-  return (
-    <Fragment>
-      <div className="hidden h-full flex-col gap-2 p-2 landscape:flex overflow-y-auto">
-        <div className="flex items-center gap-2">
-          <ComboBox<TranslateMode>
-            className="h-10"
-            searchBar={false}
-            value={{
-              label: t(mode),
-              value: mode as TranslateMode,
-            }}
-            values={translateModes.map((value) => ({
-              label: t(value),
-              value,
-            }))}
-            onChange={(mode) => setState({ mode: mode ?? 'compare' })}
-          />
-          {mode === 'search' && (
-            <ComboBox
-              className="h-10"
-              searchBar={false}
-              value={{ label: isTranslated + '', value: isTranslated }}
-              values={[null, true, false].map((value) => ({
-                label: value + '',
-                value: value,
-              }))}
-              onChange={(value) => setState({ isTranslated: value })}
-            />
-          )}
-          {mode === 'search' ? (
-            <ComboBox<Locale | undefined>
-              className="h-10"
-              searchBar={false}
-              value={{ label: t(language ?? 'none'), value: language }}
-              values={[...locales].map((locale) => ({
-                label: t(locale),
-                value: locale,
-              }))}
-              nullable
-              onChange={(language) => setState({ language })}
-            />
-          ) : (
-            <>
-              <ComboBox<Locale>
-                className="h-10"
-                searchBar={false}
-                value={{ label: t(language ?? 'en'), value: language ?? ('en' as Locale) }}
-                values={locales.map((locale) => ({
-                  label: t(locale),
-                  value: locale,
-                }))}
-                onChange={(language) => setState({ language: language ?? 'en' })}
-              />
-              {'=>'}
-              <ComboBox<Locale>
-                className="h-10"
-                searchBar={false}
-                value={{ label: t(target), value: target as Locale }}
-                values={locales.map((locale) => ({
-                  label: t(locale),
-                  value: locale,
-                }))}
-                onChange={(target) => setState({ target: target ?? 'en' })}
-              />
-            </>
-          )}
-          <SearchBar>
-            <SearchInput placeholder={t('search-by-key')} value={key} onChange={(value) => setState({ key: value })} />
-          </SearchBar>
-          <RefreshButton />
-          <AddNewKeyDialog />
-        </div>
-        {mode === 'compare' ? (
-          <CompareTable language={language as Locale} target={target as Locale} tKey={key} />
-        ) : mode === 'search' ? (
-          <SearchTable language={language as Locale} tKey={key} isTranslated={isTranslated} />
-        ) : (
-          <DiffTable language={language as Locale} target={target as Locale} tKey={key} />
-        )}
-      </div>
-      <div className="flex h-full w-full items-center justify-center landscape:hidden">
-        <Tran text="translation.only-work-on-landscape" />
-      </div>
-    </Fragment>
-  );
+	return (
+		<Fragment>
+			<div className="hidden h-full flex-col gap-2 p-2 landscape:flex overflow-y-auto">
+				<div className="flex items-center gap-2">
+					<ComboBox<TranslateMode>
+						className="h-10"
+						searchBar={false}
+						value={{
+							label: t(mode),
+							value: mode as TranslateMode,
+						}}
+						values={translateModes.map((value) => ({
+							label: t(value),
+							value,
+						}))}
+						onChange={(mode) => setState({ mode: mode ?? 'compare' })}
+					/>
+					{mode === 'search' && (
+						<ComboBox
+							className="h-10"
+							searchBar={false}
+							value={{ label: t(format(isTranslated)), value: isTranslated }}
+							values={[null, true, false].map((value) => ({
+								label: t(format(value)),
+								value: value,
+							}))}
+							onChange={(value) => setState({ isTranslated: value })}
+						/>
+					)}
+					{mode === 'search' ? (
+						<ComboBox<Locale | undefined>
+							className="h-10"
+							searchBar={false}
+							value={{ label: t(language ?? 'none'), value: language }}
+							values={[...locales].map((locale) => ({
+								label: t(locale),
+								value: locale,
+							}))}
+							nullable
+							onChange={(language) => setState({ language })}
+						/>
+					) : (
+						<>
+							<ComboBox<Locale>
+								className="h-10"
+								searchBar={false}
+								value={{ label: t(language ?? 'en'), value: language ?? ('en' as Locale) }}
+								values={locales.map((locale) => ({
+									label: t(locale),
+									value: locale,
+								}))}
+								onChange={(language) => setState({ language: language ?? 'en' })}
+							/>
+							{'=>'}
+							<ComboBox<Locale>
+								className="h-10"
+								searchBar={false}
+								value={{ label: t(target), value: target as Locale }}
+								values={locales.map((locale) => ({
+									label: t(locale),
+									value: locale,
+								}))}
+								onChange={(target) => setState({ target: target ?? 'en' })}
+							/>
+						</>
+					)}
+					<SearchBar>
+						<SearchInput placeholder={t('search-by-key')} value={key} onChange={(value) => setState({ key: value })} />
+					</SearchBar>
+					<RefreshButton />
+					<AddNewKeyDialog />
+				</div>
+				{mode === 'compare' ? (
+					<CompareTable language={language as Locale} target={target as Locale} tKey={key} />
+				) : mode === 'search' ? (
+					<SearchTable language={language as Locale} tKey={key} isTranslated={isTranslated} />
+				) : (
+					<DiffTable language={language as Locale} target={target as Locale} tKey={key} />
+				)}
+			</div>
+			<div className="flex h-full w-full items-center justify-center landscape:hidden">
+				<Tran text="translation.only-work-on-landscape" />
+			</div>
+		</Fragment>
+	);
 }
 
 function RefreshButton() {
-  const { invalidateByKey } = useQueriesData();
+	const { invalidateByKey } = useQueriesData();
 
-  return (
-    <Button
-      className="ml-auto h-10"
-      variant="secondary"
-      onClick={() => {
-        invalidateByKey(['translations']);
-        clearTranslationCache();
-      }}
-    >
-      <Tran text="translation.refresh" />
-    </Button>
-  );
+	return (
+		<Button
+			className="ml-auto h-10"
+			variant="secondary"
+			onClick={() => {
+				invalidateByKey(['translations']);
+				clearTranslationCache();
+			}}
+		>
+			<Tran text="translation.refresh" />
+		</Button>
+	);
 }
