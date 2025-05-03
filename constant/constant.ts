@@ -62,7 +62,7 @@ export type UserRole = (typeof userRoles)[number];
 export const serverStatus = ['DOWN', 'UP', 'HOST', 'DELETED', 'NOT_RESPONSE'] as const;
 export type ServerStatus = (typeof serverStatus)[number];
 
-export const uploadStates = ['QUEUING', 'PROCESSING', 'ERROR', "RETRY"] as const;
+export const uploadStates = ['QUEUING', 'PROCESSING', 'ERROR', 'RETRY'] as const;
 export type UploadState = (typeof uploadStates)[number];
 
 export type AuthorityEnum =
@@ -256,6 +256,7 @@ export const colours: Record<string, string> = {
 	yellowgreen: '#9acd32',
 	accent: 'yellow',
 	'': 'var(--foreground)',
+	scarlet: '#FBD400',
 };
 
 const localeToFlag: Record<string, string> = {
