@@ -35,7 +35,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 export function PreviewImage({ className, src, errorSrc, alt, ...props }: ImageProps) {
 	return (
 		<FallbackImage
-			className={cn('aspect-square object-contain w-full rounded-t-md bg-zinc-950', className)}
+			className={cn('aspect-square object-cover w-full rounded-t-md bg-zinc-950', className)}
 			loading="eager"
 			src={src}
 			errorSrc={errorSrc}
