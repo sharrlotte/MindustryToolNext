@@ -1,7 +1,5 @@
 'use client';
 
-import axios from 'axios';
-
 import ServerBuildLogCard from '@/app/[locale]/(main)/servers/[id]/logs/server-build-log-card';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -46,13 +44,27 @@ export default function PageClient({ id }: Props) {
 							<Tran text="time" />
 						</div>
 						<ListLayout>
-							<InfinitePage className="grid grid-cols-1" paramSchema={PaginationQuerySchema} queryKey={['server', id, 'login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
-								{(data, index) => <ServerLoginLogCard serverId={id} key={data.id} index={index} data={data} />}
+							<InfinitePage
+								className="grid grid-cols-1"
+								paramSchema={PaginationQuerySchema}
+								queryKey={['server', id, 'login']}
+								queryFn={(axios, params) => getServerLogins(axios, id, params)}
+							>
+								{(data) =>
+									data.map((item, index) => <ServerLoginLogCard serverId={id} key={item.id} index={index} data={item} />)
+								}
 							</InfinitePage>
 						</ListLayout>
 						<GridLayout>
-							<GridPaginationList className="grid grid-cols-1" paramSchema={PaginationQuerySchema} queryKey={['server', id, 'login']} queryFn={(axios, params) => getServerLogins(axios, id, params)}>
-								{(data, index) => <ServerLoginLogCard serverId={id} key={data.id} index={index} data={data} />}
+							<GridPaginationList
+								className="grid grid-cols-1"
+								paramSchema={PaginationQuerySchema}
+								queryKey={['server', id, 'login']}
+								queryFn={(axios, params) => getServerLogins(axios, id, params)}
+							>
+								{(data) =>
+									data.map((item, index) => <ServerLoginLogCard serverId={id} key={item.id} index={index} data={item} />)
+								}
 							</GridPaginationList>
 						</GridLayout>
 					</ServerTabsContent>
@@ -70,7 +82,9 @@ export default function PageClient({ id }: Props) {
 								queryKey={['server', id, 'building-destroy-log']}
 								queryFn={(axios, params) => getServerBuildLog(axios, id, params)}
 							>
-								{(data, index) => <ServerBuildLogCard serverId={id} key={data.id} index={index} data={data} />}
+								{(data) =>
+									data.map((item, index) => <ServerBuildLogCard serverId={id} key={item.id} index={index} data={item} />)
+								}
 							</InfinitePage>
 						</ListLayout>
 						<GridLayout>
@@ -80,7 +94,9 @@ export default function PageClient({ id }: Props) {
 								queryKey={['server', id, 'building-destroy-log']}
 								queryFn={(axios, params) => getServerBuildLog(axios, id, params)}
 							>
-								{(data, index) => <ServerBuildLogCard serverId={id} key={data.id} index={index} data={data} />}
+								{(data) =>
+									data.map((item, index) => <ServerBuildLogCard serverId={id} key={item.id} index={index} data={item} />)
+								}
 							</GridPaginationList>
 						</GridLayout>
 					</ServerTabsContent>
@@ -90,12 +106,18 @@ export default function PageClient({ id }: Props) {
 					<GridLayout>
 						<ServerTabsContent className="space-y-2" value="login-log">
 							<div className="flex">
-								<PaginationNavigator queryKey={['server', id, 'login']} numberOfItems={(axios) => getServerLoginCount(axios, id)} />
+								<PaginationNavigator
+									queryKey={['server', id, 'login']}
+									numberOfItems={(axios) => getServerLoginCount(axios, id)}
+								/>
 							</div>
 						</ServerTabsContent>
 						<ServerTabsContent className="space-y-2" value="building-destroy-log">
 							<div className="flex">
-								<PaginationNavigator queryKey={['server', id, 'building-destroy-log']} numberOfItems={(axios) => getServerBuildLogCount(axios, id)} />
+								<PaginationNavigator
+									queryKey={['server', id, 'building-destroy-log']}
+									numberOfItems={(axios) => getServerBuildLogCount(axios, id)}
+								/>
 							</div>
 						</ServerTabsContent>
 					</GridLayout>

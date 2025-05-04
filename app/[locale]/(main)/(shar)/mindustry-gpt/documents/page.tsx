@@ -32,7 +32,7 @@ export default function Page() {
 					queryFn={getDocuments}
 					paramSchema={ItemPaginationQuery}
 				>
-					{(data) => <DocumentCard key={data.id} document={data} />}
+					{(page) => page.map((data) => <DocumentCard key={data.id} document={data} />)}
 				</InfinitePage>
 			</ScrollContainer>
 			<div className="flex justify-end">

@@ -26,7 +26,10 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 
 	return (
 		<motion.div
-			className={cn('absolute right-0 top-0 flex h-full flex-shrink-0 flex-col items-start no-scrollbar overflow-hidden border-l bg-background md:relative', className)}
+			className={cn(
+				'absolute right-0 top-0 flex h-full flex-shrink-0 flex-col items-start no-scrollbar overflow-hidden border-l bg-background md:relative',
+				className,
+			)}
 			animate={state}
 			variants={{
 				open: {
@@ -50,7 +53,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				noResult={<div></div>}
 				end={<div></div>}
 			>
-				{(user) => <MemberCard key={user.id} user={user} />}
+				{(page) => page.map((user) => <MemberCard key={user.id} user={user} />)}
 			</InfinitePage>
 		</motion.div>
 	);

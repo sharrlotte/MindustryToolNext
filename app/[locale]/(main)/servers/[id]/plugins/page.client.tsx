@@ -27,7 +27,7 @@ export default function ServerPluginPage({ id }: Props) {
 					queryKey={['servers', id, 'plugins']}
 					queryFn={(axios, params) => getServerPlugins(axios, id, params)}
 				>
-					{(data) => <ServerPluginCard key={data.id} plugin={data} />}
+					{(page) => page.map((data) => <ServerPluginCard key={data.id} plugin={data} />)}
 				</InfinitePage>
 			</ScrollContainer>
 			<PaginationFooter>

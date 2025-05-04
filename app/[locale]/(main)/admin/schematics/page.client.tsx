@@ -56,7 +56,7 @@ export default function Client() {
 								item: <PreviewSkeleton />,
 							}}
 						>
-							{(data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
+							{(page) => page.map((data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />)}
 						</InfinitePage>
 					</ListLayout>
 					<GridLayout>
@@ -69,7 +69,7 @@ export default function Client() {
 								item: <PreviewSkeleton />,
 							}}
 						>
-							{(data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />}
+							{(page) => page.map((data) => <UploadSchematicPreviewCard key={data.id} schematic={data} />)}
 						</GridPaginationList>
 					</GridLayout>
 				</ScrollContainer>

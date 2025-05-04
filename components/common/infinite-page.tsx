@@ -33,7 +33,7 @@ type InfinitePageProps<T, P extends QuerySchema> = {
 	initialData?: T[];
 	initialParams?: z.infer<P>;
 	queryFn: (axios: AxiosInstance, params: z.infer<P>) => Promise<T[]>;
-	children: (data: T, index: number) => ReactNode;
+	children: (data: T[]) => ReactNode;
 };
 
 const InfinitePage = <T, P extends QuerySchema>({
@@ -134,7 +134,7 @@ const InfinitePage = <T, P extends QuerySchema>({
 			}}
 			isReverse={reversed}
 		>
-			{data.pages.map((page) => page.map((data, index) => children(data, index)))}
+			{children(data.pages.flatMap((page) => page))}
 			{isFetching && skeleton && loadingSkeleton}
 			{!hasNextPage && end}
 		</InfiniteScroll>

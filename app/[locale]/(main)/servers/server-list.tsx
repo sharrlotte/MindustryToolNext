@@ -16,7 +16,7 @@ export default function ServerList() {
 			paramSchema={PaginationQuerySchema}
 			queryFn={(axios, { size, page }) => getServers(axios, { page, size })}
 		>
-			{(server) => <ServerCard server={server} key={server.port} />}
+			{page =>  page.map((server) => <ServerCard server={server} key={server.port} />)}
 		</InfinitePage>
 	);
 }

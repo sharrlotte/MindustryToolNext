@@ -77,7 +77,11 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
 									item: <Skeleton className="h-preview-height" />,
 								}}
 							>
-								{({ id, name }) => <ServerMapCard key={id} id={id} name={name} isAdded={added.includes(id)} mutate={mutate} />}
+								{(page) =>
+									page.map(({ id, name }) => (
+										<ServerMapCard key={id} id={id} name={name} isAdded={added.includes(id)} mutate={mutate} />
+									))
+								}
 							</InfinitePage>
 						</ListLayout>
 						<GridLayout>
@@ -90,7 +94,11 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
 									item: <Skeleton className="h-preview-height" />,
 								}}
 							>
-								{({ id, name }) => <ServerMapCard key={id} id={id} name={name} isAdded={added.includes(id)} mutate={mutate} />}
+								{(page) =>
+									page.map(({ id, name }) => (
+										<ServerMapCard key={id} id={id} name={name} isAdded={added.includes(id)} mutate={mutate} />
+									))
+								}
 							</GridPaginationList>
 						</GridLayout>
 					</ScrollContainer>

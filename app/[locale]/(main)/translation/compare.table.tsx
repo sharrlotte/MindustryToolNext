@@ -64,7 +64,7 @@ export default function CompareTable({ language, target, tKey: key }: CompareTab
 						}}
 						asChild
 					>
-						{(data) => <CompareCard key={data.id} translation={data} language={language} target={target} />}
+						{(page) => page.map((data) => <CompareCard key={data.id} translation={data} language={language} target={target} />)}
 					</GridPaginationList>
 				</TableBody>
 			</Table>

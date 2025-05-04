@@ -25,7 +25,7 @@ export default function Client() {
 						item: <PreviewSkeleton />,
 					}}
 				>
-					{(data) => <MapPreviewCard key={data.id} map={data} />}
+					{(page) => page.map((data) => <MapPreviewCard key={data.id} map={data} />)}
 				</InfinitePage>
 			</ListLayout>
 			<GridLayout>
@@ -38,7 +38,7 @@ export default function Client() {
 						item: <PreviewSkeleton />,
 					}}
 				>
-					{(data) => <MapPreviewCard key={data.id} map={data} />}
+					{(page) => page.map((data) => <MapPreviewCard key={data.id} map={data} />)}
 				</GridPaginationList>
 			</GridLayout>
 		</ScrollContainer>

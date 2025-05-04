@@ -23,7 +23,7 @@ export default function Client() {
 						item: <PreviewSkeleton />,
 					}}
 				>
-					{(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+					{(page) => page.map((data) => <SchematicPreviewCard key={data.id} schematic={data} />)}
 				</InfinitePage>
 			</ListLayout>
 			<GridLayout>
@@ -36,7 +36,7 @@ export default function Client() {
 						item: <PreviewSkeleton />,
 					}}
 				>
-					{(data) => <SchematicPreviewCard key={data.id} schematic={data} />}
+					{(page) => page.map((data) => <SchematicPreviewCard key={data.id} schematic={data} />)}
 				</GridPaginationList>
 			</GridLayout>
 		</ScrollContainer>

@@ -110,7 +110,7 @@ function Comments({ itemId, sort }: CommentsProps) {
 					item: <CommentLoadingCard />,
 				}}
 			>
-				{(comment) => <CommentCard key={comment.id} comment={comment} />}
+				{(page) => page.map((comment) => <CommentCard key={comment.id} comment={comment} />)}
 			</InfinitePage>
 		</ScrollContainer>
 	);
@@ -223,7 +223,7 @@ function CommentInput({ itemId }: CommentInputProps) {
 							<FormItem className="w-full">
 								<FormControl>
 									<AutosizeTextarea
-										className="focus-visible:outline-none border-transparent focus-visible:ring-transparent border-transparent focus-visible:border-transparent resize-none"
+										className="focus-visible:outline-none focus-visible:ring-transparent border-transparent focus-visible:border-transparent resize-none"
 										placeholder={t('add-comment')}
 										ref={inputRef}
 										value={field.value}

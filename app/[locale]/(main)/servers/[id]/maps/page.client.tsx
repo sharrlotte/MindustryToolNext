@@ -26,7 +26,7 @@ export default function ServerMaps({ id }: Props) {
 					queryKey={['servers', id, 'maps']}
 					queryFn={(axios, params) => getServerMaps(axios, id, params)}
 				>
-					{(data) => <ServerMapCard key={data.id} map={data} />}
+					{(page) => page.map((data) => <ServerMapCard key={data.id} map={data} />)}
 				</InfinitePage>
 			</ScrollContainer>
 			<PaginationFooter>

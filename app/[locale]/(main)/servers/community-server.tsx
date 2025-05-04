@@ -16,7 +16,7 @@ export default function CommunityServer() {
 			paramSchema={PaginationQuerySchema}
 			queryFn={(axios, { size, page }) => getServers(axios, { official: false, page, size })}
 		>
-			{(server) => <ServerCard server={server} key={server.port} />}
+			{(page) => page.map((server) => <ServerCard server={server} key={server.port} />)}
 		</InfinitePage>
 	);
 }

@@ -52,7 +52,7 @@ export default function NotificationForm() {
 					queryFn={getMyNotifications}
 					noResult={<Tran text="notification.no-notification" />}
 				>
-					{(notification) => <NotificationCard key={notification.id} notification={notification} />}
+					{(data) => data.map((notification) => <NotificationCard key={notification.id} notification={notification} />)}
 				</InfinitePage>
 			</ScrollContainer>
 			<DialogClose asChild>

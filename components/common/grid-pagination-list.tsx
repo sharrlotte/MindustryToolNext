@@ -29,7 +29,7 @@ type Props<T, P extends QuerySchema> = {
 	initialData?: T[];
 	initialParams?: z.infer<P>;
 	queryFn: (axios: AxiosInstance, params: z.infer<P>) => Promise<T[]>;
-	children: (data: T, index: number) => ReactNode;
+	children: (data: T[]) => ReactNode;
 };
 
 const GridPaginationList = <T, P extends QuerySchema>({
@@ -120,7 +120,7 @@ type RenderProps<T> = {
 	error: any;
 	data?: T[];
 	noResult: ReactNode;
-	children: (data: T, index: number) => ReactNode;
+	children: (data: T[]) => ReactNode;
 };
 function Render<T>({ isLoading, loader, skeletonElements, error, data, noResult, children }: RenderProps<T>) {
 	if (isLoading) {
@@ -139,7 +139,7 @@ function Render<T>({ isLoading, loader, skeletonElements, error, data, noResult,
 		return noResult;
 	}
 
-	return data.map((item, index) => children(item, index));
+	return children(data);
 }
 
 export default GridPaginationList;

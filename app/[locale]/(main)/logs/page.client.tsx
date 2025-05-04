@@ -57,7 +57,13 @@ function LiveLog() {
 		<div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
 			<div className="flex h-full w-full overflow-hidden rounded-md bg-card">
 				<div className="flex h-full w-full overflow-hidden">
-					<MessageList className="flex h-full w-full flex-col gap-2" queryKey={['live-log']} room="LOG" params={{ size: 50 }} showNotification={false}>
+					<MessageList
+						className="flex h-full w-full flex-col gap-2"
+						queryKey={['live-log']}
+						room="LOG"
+						params={{ size: 50 }}
+						showNotification={false}
+					>
 						{(data) => <MessageCard key={data.id} message={data} />}
 					</MessageList>
 				</div>
@@ -82,7 +88,11 @@ function SendMessageButton() {
 
 	return (
 		<form className="flex h-10 flex-1 gap-2" name="text" onSubmit={handleFormSubmit}>
-			<Input className="h-full w-full border border-border bg-background px-2 outline-none" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
+			<Input
+				className="h-full w-full border border-border bg-background px-2 outline-none"
+				value={message}
+				onChange={(event) => setMessage(event.currentTarget.value)}
+			/>
 			<Button className="h-full" variant="primary" type="submit" title="send" disabled={state !== 'connected' || !message}>
 				<Tran text="send" />
 			</Button>
@@ -107,7 +117,10 @@ function StaticLog() {
 
 	const container = useRef<HTMLDivElement | null>(null);
 
-	const setFilter = useCallback((value: Partial<Omit<LogPaginationQueryType, 'page' | 'size'>>) => _setFilter((prev) => ({ ...prev, ...value })), []);
+	const setFilter = useCallback(
+		(value: Partial<Omit<LogPaginationQueryType, 'page' | 'size'>>) => _setFilter((prev) => ({ ...prev, ...value })),
+		[],
+	);
 
 	const { data: total } = useClientQuery({
 		queryKey: ['log', 'total', collection, filter],
@@ -162,7 +175,7 @@ function StaticLog() {
 						queryKey={['logs']}
 						queryFn={getLogs}
 					>
-						{(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
+						{(page) => page.map((data) => <LogCard key={data.id} log={data} onClick={setFilter} />)}
 					</InfinitePage>
 				</ListLayout>
 				<GridLayout>
@@ -182,7 +195,7 @@ function StaticLog() {
 						queryKey={['logs']}
 						queryFn={getLogs}
 					>
-						{(data) => <LogCard key={data.id} log={data} onClick={setFilter} />}
+						{(page) => page.map((data) => <LogCard key={data.id} log={data} onClick={setFilter} />)}
 					</GridPaginationList>
 				</GridLayout>
 			</ScrollContainer>
@@ -222,7 +235,11 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
 				<div>
 					<label>Content</label>
 					<div className="flex gap-2">
-						<Input placeholder="Content" value={content} onChange={(event) => setFilter({ content: event.currentTarget.value })} />
+						<Input
+							placeholder="Content"
+							value={content}
+							onChange={(event) => setFilter({ content: event.currentTarget.value })}
+						/>
 						<Button title="Remove" variant="outline" disabled={!content} onClick={() => setFilter({ content: '' })}>
 							<XIcon />
 						</Button>
@@ -260,7 +277,11 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
 						<label className="block">Before day</label>
 						<Popover>
 							<PopoverTrigger asChild>
-								<Button className={cn('w-[240px] pl-3 text-left font-normal', !before && 'text-muted-foreground')} title="Pick" variant="outline">
+								<Button
+									className={cn('w-[240px] pl-3 text-left font-normal', !before && 'text-muted-foreground')}
+									title="Pick"
+									variant="outline"
+								>
 									{before ? `${new Date(before).toLocaleDateString()}` : 'Pick a day'}
 								</Button>
 							</PopoverTrigger>
@@ -279,7 +300,11 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
 						<label className="block">After day</label>
 						<Popover>
 							<PopoverTrigger asChild>
-								<Button className={cn('w-[240px] pl-3 text-left font-normal', !after && 'text-muted-foreground')} title="Pick" variant="outline">
+								<Button
+									className={cn('w-[240px] pl-3 text-left font-normal', !after && 'text-muted-foreground')}
+									title="Pick"
+									variant="outline"
+								>
 									{after ? `${new Date(after).toLocaleDateString()}` : 'Pick a day'}
 								</Button>
 							</PopoverTrigger>

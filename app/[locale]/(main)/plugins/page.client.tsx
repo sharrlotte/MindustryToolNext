@@ -30,7 +30,7 @@ export default function Client() {
 						item: <PluginCardSkeleton />,
 					}}
 				>
-					{(data) => <PluginCard key={data.id} plugin={data} />}
+					{(page) => page.map((data) => <PluginCard key={data.id} plugin={data} />)}
 				</InfinitePage>
 			</ScrollContainer>
 			<PaginationFooter>

@@ -53,7 +53,7 @@ export default function DiffTable({ language, target, tKey: key }: DiffTableProp
 						}}
 						asChild
 					>
-						{(data) => <DiffCard key={data.id} translation={data} language={target} />}
+						{page =>  page.map((data) => <DiffCard key={data.id} translation={data} language={target} />)}
 					</GridPaginationList>
 				</TableBody>
 			</Table>
