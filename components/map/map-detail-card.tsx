@@ -80,8 +80,8 @@ export default function MapDetailCard({
 							<Verifier verifierId={verifierId} />
 							<SizeCard size={{ width, height }} />
 							<DetailDescription>{description}</DetailDescription>
-							<DetailTagsCard tags={tags} type="map" />
 							<CreatedAt createdAt={createdAt} />
+							<DetailTagsCard tags={tags} type="map" />
 						</DetailHeader>
 					</DetailInfo>
 					<DetailActions>
