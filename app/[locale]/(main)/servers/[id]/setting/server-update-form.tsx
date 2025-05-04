@@ -102,13 +102,16 @@ export default function ServerUpdateForm({ server }: Props) {
 					<FormField
 						control={form.control}
 						name="mode"
-						render={({ field }) => (
+						render={({ field, fieldState }) => (
 							<FormItem className="grid">
 								<FormLabel>
 									<Tran text="server.game-mode" />
 								</FormLabel>
 								<FormControl>
 									<ComboBox
+										className={cn('lowercase', {
+											'border-destructive': fieldState.invalid,
+										})}
 										searchBar={false}
 										placeholder={ServerModes[0]}
 										value={{ label: field.value, value: field.value }}
@@ -129,14 +132,16 @@ export default function ServerUpdateForm({ server }: Props) {
 					<FormField
 						control={form.control}
 						name="image"
-						render={({ field }) => (
+						render={({ field, fieldState }) => (
 							<FormItem className="grid">
 								<FormLabel>
 									<Tran text="server.image" />
 								</FormLabel>
 								<FormControl>
 									<ComboBox
-										className="w-full lowercase"
+										className={cn('w-full lowercase', {
+											'border-destructive': fieldState.invalid,
+										})}
 										searchBar={false}
 										value={{ label: field.value, value: field.value }}
 										values={
