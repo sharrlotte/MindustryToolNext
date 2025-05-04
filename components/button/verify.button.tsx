@@ -23,14 +23,14 @@ type VerifyButtonProps = {
 
 export default function VerifyButton({ isLoading, description, onClick }: VerifyButtonProps) {
 	return (
-		<Suspense>
-			<AlertDialog>
-				<AlertDialogTrigger
-					className="flex items-center justify-center rounded-md border p-2 hover:bg-success hover:border-transparent border-border bg-secondary"
-					disabled={isLoading}
-				>
-					<CheckIcon className="size-5" />
-				</AlertDialogTrigger>
+		<AlertDialog>
+			<AlertDialogTrigger
+				className="flex items-center justify-center rounded-md border p-2 hover:bg-success hover:border-transparent border-border bg-secondary"
+				disabled={isLoading}
+			>
+				<CheckIcon className="size-5" />
+			</AlertDialogTrigger>
+			<Suspense>
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>
@@ -49,7 +49,7 @@ export default function VerifyButton({ isLoading, description, onClick }: Verify
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
-			</AlertDialog>
-		</Suspense>
+			</Suspense>
+		</AlertDialog>
 	);
 }
