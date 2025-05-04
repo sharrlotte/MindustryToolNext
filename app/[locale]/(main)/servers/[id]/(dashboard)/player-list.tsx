@@ -67,8 +67,9 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid }
 	locale = getCountryCode(locale ?? 'EN');
 
 	return (
-		<div className="flex flex-col justify-between gap-1 bg-secondary rounded-md">
-			<div className="flex text-lg justify-between gap-1 items-center">
+		<div className="flex items-center gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1">
+			<div className="rounded-full size-2" style={{ backgroundColor: `#${team.color}` }} />
+			<div className="flex text-lg justify-between gap-1 items-center w-full">
 				<ColorText className="font-semibold" text={name} />
 				<div className="flex gap-1 items-center">
 					{locale && (localeToFlag[locale] ?? locale)}
@@ -79,7 +80,6 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid }
 					</EllipsisButton>
 				</div>
 			</div>
-			<div className="border-b-4" style={{ borderColor: `#${team.color}` }} />
 		</div>
 	);
 }
