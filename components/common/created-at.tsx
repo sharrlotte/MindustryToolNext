@@ -6,9 +6,9 @@ export default function CreatedAt({ createdAt }: { createdAt: string }) {
 	const isSameDay =
 		created.getFullYear() === now.getFullYear() && created.getMonth() === now.getMonth() && created.getDate() === now.getDate();
 	return (
-		<span className="text-muted-foreground">
+		<span className="text-muted-foreground space-x-2">
 			<Tran text="created-at" />
-			{isSameDay ? created.toLocaleTimeString() : created.toLocaleDateString()}
+			<span>{isSameDay ? created.toLocaleTimeString() : created.toLocaleDateString()}</span>
 		</span>
 	);
 }

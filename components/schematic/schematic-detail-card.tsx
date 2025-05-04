@@ -90,8 +90,8 @@ export default function SchematicDetailCard({
 							<SizeCard size={{ width, height }} />
 							<DetailDescription>{description}</DetailDescription>
 							<ItemRequirementCard requirements={requirements} />
-							<DetailTagsCard tags={tags} type="schematic" />
 							<CreatedAt createdAt={createdAt} />
+							<DetailTagsCard tags={tags} type="schematic" />
 						</DetailHeader>
 					</DetailInfo>
 					<DetailActions>
