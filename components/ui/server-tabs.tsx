@@ -79,7 +79,7 @@ export function ServerTabsTrigger({ className, value, animate = true, children }
 
 	return (
 		<Button
-			className={cn('text-foreground relative h-9 min-w-fit py-0 px-0 opacity-70', className, {
+			className={cn('text-foreground relative h-9 min-w-fit py-0 px-0 opacity-50', className, {
 				'opacity-100': isSelected,
 			})}
 			data-selected={isSelected}
