@@ -59,7 +59,7 @@ export function PageClient({ users, params }: Props) {
 					}}
 					asChild
 				>
-					{(data, index) => <UserRankCard key={data.id} user={data} rank={page * size + index + 1} />}
+					{(items) => items.map((data, index) => <UserRankCard key={data.id} user={data} rank={page * size + index + 1} />)}
 				</GridPaginationList>
 				<ProtectedElement session={session} filter={true}>
 					<MyRankCard />

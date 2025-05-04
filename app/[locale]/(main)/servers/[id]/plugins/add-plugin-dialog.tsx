@@ -74,16 +74,18 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
 									item: <Skeleton className="h-20" />,
 								}}
 							>
-								{({ id, name, description }) => (
-									<ServerPluginCard
-										key={id}
-										id={id}
-										name={name}
-										description={description}
-										isAdded={added.includes(id)}
-										mutate={mutate}
-									/>
-								)}
+								{(page) =>
+									page.map(({ id, name, description }) => (
+										<ServerPluginCard
+											key={id}
+											id={id}
+											name={name}
+											description={description}
+											isAdded={added.includes(id)}
+											mutate={mutate}
+										/>
+									))
+								}
 							</InfinitePage>
 						</ListLayout>
 						<GridLayout>
@@ -96,16 +98,18 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
 									item: <Skeleton className="h-20" />,
 								}}
 							>
-								{({ id, name, description }) => (
-									<ServerPluginCard
-										key={id}
-										id={id}
-										name={name}
-										description={description}
-										isAdded={added.includes(id)}
-										mutate={mutate}
-									/>
-								)}
+								{(page) =>
+									page.map(({ id, name, description }) => (
+										<ServerPluginCard
+											key={id}
+											id={id}
+											name={name}
+											description={description}
+											isAdded={added.includes(id)}
+											mutate={mutate}
+										/>
+									))
+								}
 							</GridPaginationList>
 						</GridLayout>
 					</ScrollContainer>

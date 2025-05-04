@@ -5,10 +5,10 @@ import React from 'react';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { TrashIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import { RelativeTime } from '@/components/common/relative-time';
-import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import Markdown from '@/components/markdown/markdown';
@@ -33,13 +33,25 @@ export default function Client() {
 		<div className="flex h-full flex-col gap-2 overflow-hidden p-2">
 			<ScrollContainer className="relative flex h-full flex-col">
 				<ListLayout>
-					<InfinitePage className="flex flex-col gap-2" paramSchema={ItemPaginationQuery} queryKey={['comments']} queryFn={getAllComments} loader={<LoadingSpinner className="p-0 m-auto" />}>
-						{(data) => <CommentCard key={data.id} comment={data} />}
+					<InfinitePage
+						className="flex flex-col gap-2"
+						paramSchema={ItemPaginationQuery}
+						queryKey={['comments']}
+						queryFn={getAllComments}
+						loader={<LoadingSpinner className="p-0 m-auto" />}
+					>
+						{(page) => page.map((data) => <CommentCard key={data.id} comment={data} />)}
 					</InfinitePage>
 				</ListLayout>
 				<GridLayout>
-					<GridPaginationList className="flex flex-col gap-2" paramSchema={ItemPaginationQuery} queryKey={['comments']} queryFn={getAllComments} loader={<LoadingSpinner className="p-0 m-auto" />}>
-						{(data) => <CommentCard key={data.id} comment={data} />}
+					<GridPaginationList
+						className="flex flex-col gap-2"
+						paramSchema={ItemPaginationQuery}
+						queryKey={['comments']}
+						queryFn={getAllComments}
+						loader={<LoadingSpinner className="p-0 m-auto" />}
+					>
+						{(page) => page.map((data) => <CommentCard key={data.id} comment={data} />)}
 					</GridPaginationList>
 				</GridLayout>
 			</ScrollContainer>
@@ -71,7 +83,11 @@ function CommentCard({ comment }: CommentCardProps) {
 	return (
 		<div className="flex flex-col gap-2 p-2 border rounded-md">
 			<div className="flex w-full gap-2 text-wrap items-center text-xs">
-				{data ? <UserAvatar user={data} url /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
+				{data ? (
+					<UserAvatar user={data} url />
+				) : (
+					<Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />
+				)}
 				<div className="overflow-hidden">
 					<div className="flex gap-2 items-baseline">
 						{data ? (

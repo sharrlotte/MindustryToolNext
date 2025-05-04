@@ -51,7 +51,15 @@ export default function Me({ me }: TabProps) {
 								item: <PreviewSkeleton />,
 							}}
 						>
-							{(data) => (data.isVerified ? <SchematicPreviewCard key={data.id} schematic={data} /> : <UploadSchematicPreviewCard key={data.id} schematic={data} />)}
+							{(page) =>
+								page.map((data) =>
+									data.isVerified ? (
+										<SchematicPreviewCard key={data.id} schematic={data} />
+									) : (
+										<UploadSchematicPreviewCard key={data.id} schematic={data} />
+									),
+								)
+							}
 						</InfinitePage>
 					</div>
 				</TabsContent>
@@ -67,7 +75,11 @@ export default function Me({ me }: TabProps) {
 								item: <PreviewSkeleton />,
 							}}
 						>
-							{(data) => (data.isVerified ? <MapPreviewCard key={data.id} map={data} /> : <UploadMapPreview key={data.id} map={data} />)}
+							{(page) =>
+								page.map((data) =>
+									data.isVerified ? <MapPreviewCard key={data.id} map={data} /> : <UploadMapPreview key={data.id} map={data} />,
+								)
+							}
 						</InfinitePage>
 					</div>
 				</TabsContent>
@@ -80,7 +92,15 @@ export default function Me({ me }: TabProps) {
 							queryKey={['me', 'posts']}
 							queryFn={getMePosts}
 						>
-							{(data) => (data.isVerified ? <PostPreviewCard key={data.id} post={data} /> : <UploadPostPreviewCard key={data.id} post={data} />)}
+							{(page) =>
+								page.map((data) =>
+									data.isVerified ? (
+										<PostPreviewCard key={data.id} post={data} />
+									) : (
+										<UploadPostPreviewCard key={data.id} post={data} />
+									),
+								)
+							}
 						</InfinitePage>
 					</div>
 				</TabsContent>

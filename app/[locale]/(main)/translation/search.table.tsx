@@ -58,7 +58,7 @@ export default function SearchTable({ language, tKey: key, isTranslated }: Searc
 						}}
 						asChild
 					>
-						{(data) => <SearchCard key={data.id} translation={data} language={language} />}
+						{page =>  page.map((data) => <SearchCard key={data.id} translation={data} language={language} />)}
 					</GridPaginationList>
 				</TableBody>
 			</Table>

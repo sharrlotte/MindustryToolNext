@@ -55,13 +55,15 @@ export default function Page() {
 					params={{ path }}
 					queryFn={getImages}
 				>
-					{(data) =>
-						data.isDir ? (
-							<DirCard key={data.path} data={data} setPath={setPath} />
-						) : env.supportedImageFormat.some((ext) => data.path.endsWith(ext)) ? (
-							<ImageCard key={data.path} data={data} />
-						) : (
-							<FileCard key={data.path} data={data} />
+					{(page) =>
+						page.map((data) =>
+							data.isDir ? (
+								<DirCard key={data.path} data={data} setPath={setPath} />
+							) : env.supportedImageFormat.some((ext) => data.path.endsWith(ext)) ? (
+								<ImageCard key={data.path} data={data} />
+							) : (
+								<FileCard key={data.path} data={data} />
+							),
 						)
 					}
 				</InfinitePage>

@@ -31,7 +31,7 @@ export default function SizeSelector({ sizes }: SizeSelectorProps) {
 
 	return (
 		<ComboBox
-			className="w-20 rounded-md border-transparent h-10 bg-card"
+			className="w-20 rounded-md border-transparent h-9 bg-card"
 			searchBar={false}
 			value={{ label: size.toString(), value: size }}
 			values={sizes.map((size) => ({

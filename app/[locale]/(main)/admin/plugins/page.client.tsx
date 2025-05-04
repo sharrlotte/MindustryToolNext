@@ -17,7 +17,7 @@ export default function Client() {
 			<NameTagSearch type="plugin" />
 			<ScrollContainer className="relative flex h-full flex-col gap-2">
 				<InfinitePage queryKey={['plugins', 'upload']} queryFn={getPluginUploads} paramSchema={ItemPaginationQuery}>
-					{(data) => <UploadPluginCard key={data.id} plugin={data} />}
+					{(page) => page.map((data) => <UploadPluginCard key={data.id} plugin={data} />)}
 				</InfinitePage>
 			</ScrollContainer>
 			<div className="flex justify-end items-center">

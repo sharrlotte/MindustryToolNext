@@ -90,7 +90,7 @@ export function UserTable() {
 						queryFn={getUsers}
 						loader={<LoadingSpinner className="p-0 m-auto" />}
 					>
-						{(data) => <UserManagementCard key={data.id} user={data} />}
+						{(page) => page.map((data) => <UserManagementCard key={data.id} user={data} />)}
 					</GridPaginationList>
 				</GridLayout>
 			</ScrollContainer>

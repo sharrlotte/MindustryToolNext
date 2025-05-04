@@ -27,7 +27,7 @@ export default function PageClient() {
 					item: <CommentLoadingCard />,
 				}}
 			>
-				{(comment) => <CommentCard key={comment.id} comment={comment} />}
+				{(page) => page.map((comment) => <CommentCard key={comment.id} comment={comment} />)}
 			</InfinitePage>
 		</ScrollContainer>
 	);

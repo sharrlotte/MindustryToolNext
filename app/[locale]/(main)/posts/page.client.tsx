@@ -33,7 +33,7 @@ export default function Client({ posts }: Props) {
 					queryFn={getPosts}
 					initialData={posts}
 				>
-					{(data) => <PostPreviewCard key={data.id} post={data} />}
+					{(page) => page.map((data) => <PostPreviewCard key={data.id} post={data} />)}
 				</InfinitePage>
 			</ScrollContainer>
 			<div className="flex gap-2 justify-between">
