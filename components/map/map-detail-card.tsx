@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
 import CommentSection from '@/components/common/comment-section';
+import CreatedAt from '@/components/common/created-at';
 import {
 	Detail,
 	DetailActions,
@@ -38,7 +39,22 @@ type MapDetailCardProps = {
 };
 
 export default function MapDetailCard({
-	map: { id, name, description, tags, verifierId, itemId, likes, dislikes, userId, isVerified, width, height, downloadCount },
+	map: {
+		id,
+		name,
+		description,
+		tags,
+		verifierId,
+		itemId,
+		likes,
+		dislikes,
+		userId,
+		isVerified,
+		width,
+		height,
+		downloadCount,
+		createdAt,
+	},
 }: MapDetailCardProps) {
 	const { session } = useSession();
 	const { locale } = useParams();
@@ -65,6 +81,7 @@ export default function MapDetailCard({
 							<SizeCard size={{ width, height }} />
 							<DetailDescription>{description}</DetailDescription>
 							<DetailTagsCard tags={tags} type="map" />
+							<CreatedAt createdAt={createdAt} />
 						</DetailHeader>
 					</DetailInfo>
 					<DetailActions>

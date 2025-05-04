@@ -9,4 +9,5 @@ export type Schematic = {
   itemId: string;
   isVerified: boolean;
   downloadCount: number;
+  createdAt: string;
 };

@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
+import CreatedAt from '@/components/common/created-at';
 import {
 	Detail,
 	DetailActions,
@@ -17,6 +18,7 @@ import {
 	DetailTitle,
 } from '@/components/common/detail';
 import { ShareIcon } from '@/components/common/icons';
+import SizeCard from '@/components/common/size-card';
 import Tran from '@/components/common/tran';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import VerifySchematicButton from '@/components/schematic/verify-schematic.button';
@@ -29,7 +31,6 @@ import useToastAction from '@/hooks/use-toast-action';
 import { getSchematicData } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import SizeCard from '@/components/common/size-card';
 
 const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic.button'));
 
@@ -47,6 +48,7 @@ export default function UploadSchematicDetailCard({
 		userId,
 		width,
 		height,
+		createdAt,
 	},
 }: UploadSchematicDetailCardProps) {
 	const axios = useClientApi();
@@ -82,6 +84,7 @@ export default function UploadSchematicDetailCard({
 						<SizeCard size={{ width, height }} />
 						<DetailDescription>{description}</DetailDescription>
 						<ItemRequirementCard requirements={requirements} />
+						<CreatedAt createdAt={createdAt} />
 						<TagSelector type="schematic" value={selectedTags} onChange={setSelectedTags} />
 					</DetailHeader>
 				</DetailInfo>

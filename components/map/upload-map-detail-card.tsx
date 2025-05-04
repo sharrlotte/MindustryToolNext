@@ -16,6 +16,7 @@ import {
 	DetailTitle,
 } from '@/components/common/detail';
 import { ShareIcon } from '@/components/common/icons';
+import SizeCard from '@/components/common/size-card';
 import { DeleteMapButton } from '@/components/map/delete-map.button';
 import VerifyMapButton from '@/components/map/verify-map.button';
 import TagSelector from '@/components/search/tag-selector';
@@ -24,14 +25,14 @@ import IdUserCard from '@/components/user/id-user-card';
 import env from '@/constant/env';
 import { MapDetail } from '@/types/response/MapDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
-import SizeCard from '@/components/common/size-card';
+import CreatedAt from '@/components/common/created-at';
 
 type UploadMapDetailCardProps = {
 	map: MapDetail;
 };
 
 export default function UploadMapDetailCard({
-	map: { id, name, tags, description, userId, width, height },
+	map: { id, name, tags, description, userId, width, height, createdAt },
 }: UploadMapDetailCardProps) {
 	const [selectedTags, setSelectedTags] = useState<TagGroup[]>(TagGroups.parsTagDto(tags));
 
@@ -56,6 +57,7 @@ export default function UploadMapDetailCard({
 						<IdUserCard id={userId} />
 						<SizeCard size={{ width, height }} />
 						<DetailDescription>{description}</DetailDescription>
+						<CreatedAt createdAt={createdAt} />
 						<TagSelector type="map" value={selectedTags} onChange={setSelectedTags} />
 					</DetailHeader>
 				</DetailInfo>
