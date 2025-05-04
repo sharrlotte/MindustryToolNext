@@ -3,28 +3,23 @@
 import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 
+
+
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
 import CommentSection from '@/components/common/comment-section';
-import {
-	Detail,
-	DetailActions,
-	DetailContent,
-	DetailDescription,
-	DetailHeader,
-	DetailImage,
-	DetailInfo,
-	DetailTagsCard,
-	DetailTitle,
-	Verifier,
-} from '@/components/common/detail';
+import CreatedAt from '@/components/common/created-at';
+import { Detail, DetailActions, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTagsCard, DetailTitle, Verifier } from '@/components/common/detail';
 import DetailSwipeToNavigate from '@/components/common/detail-swipe-to-navigate';
 import { ShareIcon } from '@/components/common/icons';
+import SizeCard from '@/components/common/size-card';
 import Tran from '@/components/common/tran';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import IdUserCard from '@/components/user/id-user-card';
+
+
 
 import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
@@ -34,7 +29,7 @@ import ProtectedElement from '@/layout/protected-element';
 import { getSchematicData, getSchematics } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
-import SizeCard from '@/components/common/size-card';
+
 
 const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic.button'));
 const TakeDownSchematicButton = dynamic(() => import('@/components/schematic/take-down-schematic.button'));
@@ -59,6 +54,7 @@ export default function SchematicDetailCard({
 		width,
 		height,
 		downloadCount,
+		createdAt,
 	},
 }: SchematicDetailCardProps) {
 	const axios = useClientApi();
@@ -95,6 +91,7 @@ export default function SchematicDetailCard({
 							<DetailDescription>{description}</DetailDescription>
 							<ItemRequirementCard requirements={requirements} />
 							<DetailTagsCard tags={tags} type="schematic" />
+							<CreatedAt createdAt={createdAt} />
 						</DetailHeader>
 					</DetailInfo>
 					<DetailActions>

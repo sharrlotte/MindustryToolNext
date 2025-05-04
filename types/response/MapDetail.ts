@@ -16,4 +16,5 @@ export type MapDetail = {
   itemId: string;
   isVerified: boolean;
   downloadCount: number;
+  createdAt: string;
 };
