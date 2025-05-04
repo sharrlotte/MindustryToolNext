@@ -501,7 +501,7 @@ const localeToFlag: Record<string, string> = {
 	VC: '🇻🇨',
 	VE: '🇻🇪',
 	VG: '🇻🇬',
-	VI: '🇻🇮',
+	VI: '🇻🇳',
 	VN: '🇻🇳',
 	VU: '🇻🇺',
 	WF: '🇼🇫',
