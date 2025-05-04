@@ -121,90 +121,90 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
 	}, [handlePageChange, lastPage, selectedPage]);
 
 	return (
-		<>
-			<SizeSelector sizes={sizes} />
-			<Pagination className="h-10 bg-card rounded-md shadow-md">
-				<PaginationContent>
-					<PaginationItem>
-						<Button
-							className="px-2 size-10 py-1 flex"
-							title="Previous"
-							variant="ghost"
-							disabled={!hasPrevPage}
-							onClick={() => handlePageChange(previousPage)}
-						>
-							<ChevronLeftIcon className="size-5" />
-						</Button>
-					</PaginationItem>
-					<PaginationItem>
-						<Button
-							className={cn(' size-10 w-full min-w-10 h-10 rounded p-0 px-2 py-1 bg-secondary dark:text-foreground', {})}
-							title="prev"
-							onClick={() => handlePageChange(currentPage)}
-							variant="icon"
-						>
-							{currentPage}
-						</Button>
-					</PaginationItem>
-					<PaginationItem>
-						<Dialog open={open} onOpenChange={setOpen}>
-							{lastPage > 1 && (
-								<DialogTrigger asChild>
-									<Button className="p-0 size-10 rounded-none" variant="icon" title="choose">
-										<PaginationEllipsis />
-									</Button>
-								</DialogTrigger>
-							)}
-							<DialogContent className="p-6">
-								<DialogTitle>
-									<Tran text="select-page" />
-								</DialogTitle>
-								<DialogDescription />
+		<Pagination className="h-10 bg-card rounded-md shadow-md">
+			<PaginationContent>
+				<PaginationItem>
+					<Button
+						className="px-2 size-10 py-1 flex"
+						title="Previous"
+						variant="ghost"
+						disabled={!hasPrevPage}
+						onClick={() => handlePageChange(previousPage)}
+					>
+						<ChevronLeftIcon className="size-5" />
+					</Button>
+				</PaginationItem>
+				<PaginationItem>
+					<Button
+						className={cn(' size-10 w-full min-w-10 h-10 rounded p-0 px-2 py-1 bg-secondary dark:text-foreground', {})}
+						title="prev"
+						onClick={() => handlePageChange(currentPage)}
+						variant="icon"
+					>
+						{currentPage}
+					</Button>
+				</PaginationItem>
+				<PaginationItem>
+					<Dialog open={open} onOpenChange={setOpen}>
+						{lastPage > 1 && (
+							<DialogTrigger asChild>
+								<Button className="p-0 size-10 rounded-none" variant="icon" title="choose">
+									<PaginationEllipsis />
+								</Button>
+							</DialogTrigger>
+						)}
+						<DialogContent className="p-6">
+							<DialogTitle>
+								<Tran text="select-page" />
+							</DialogTitle>
+							<DialogDescription />
+							<div className="flex gap-2">
 								<Input
 									type="number"
 									value={selectedPage}
 									onChange={(event) => setSelectedPage(event.currentTarget.valueAsNumber)}
 								/>
-								{(selectedPage < 0 || selectedPage > lastPage) && (
-									<span className="text-sm text-destructive">
-										<Tran text="page-constrain" args={{ max: lastPage }} />
-									</span>
-								)}
-								<div className="flex justify-end">
-									<Button className="flex size-10" onClick={handleSelectPage} title="Go to page" variant="primary">
-										Go
-									</Button>
-								</div>
-							</DialogContent>
-						</Dialog>
-					</PaginationItem>
-					{lastPage > 1 && (
-						<PaginationItem>
-							<Button
-								className={cn('w-full min-w-10 h-10 rounded p-0 px-2 py-1', {
-									'bg-secondary text-brand-foreground': lastPage === currentPage,
-								})}
-								title="prev"
-								onClick={() => handlePageChange(lastPage)}
-								variant="icon"
-							>
-								{lastPage}
-							</Button>
-						</PaginationItem>
-					)}
+								<SizeSelector sizes={sizes} />
+							</div>
+							{(selectedPage < 0 || selectedPage > lastPage) && (
+								<span className="text-sm text-destructive">
+									<Tran text="page-constrain" args={{ max: lastPage }} />
+								</span>
+							)}
+							<div className="flex justify-end">
+								<Button className="flex size-10" onClick={handleSelectPage} title="Go to page" variant="primary">
+									Go
+								</Button>
+							</div>
+						</DialogContent>
+					</Dialog>
+				</PaginationItem>
+				{lastPage > 1 && (
 					<PaginationItem>
 						<Button
-							className="px-2 size-10  py-1 flex"
-							title="Next"
-							variant="ghost"
-							disabled={!hasNextPage}
-							onClick={() => handlePageChange(nextPage)}
+							className={cn('w-full min-w-10 h-10 rounded p-0 px-2 py-1', {
+								'bg-secondary text-brand-foreground': lastPage === currentPage,
+							})}
+							title="prev"
+							onClick={() => handlePageChange(lastPage)}
+							variant="icon"
 						>
-							<ChevronRightIcon className="size-5" />
+							{lastPage}
 						</Button>
 					</PaginationItem>
-				</PaginationContent>
-			</Pagination>
-		</>
+				)}
+				<PaginationItem>
+					<Button
+						className="px-2 size-10  py-1 flex"
+						title="Next"
+						variant="ghost"
+						disabled={!hasNextPage}
+						onClick={() => handlePageChange(nextPage)}
+					>
+						<ChevronRightIcon className="size-5" />
+					</Button>
+				</PaginationItem>
+			</PaginationContent>
+		</Pagination>
 	);
 }

@@ -90,7 +90,7 @@ export function ServerTabsTrigger({ className, value, animate = true, children }
 			{animate && isHovered && <motion.div layoutId="hovered" className="absolute inset-0 z-0 rounded-sm bg-secondary" />}
 			<div className="relative">
 				<div
-					className={cn('relative z-10 h-9 bg-transparent p-2 text-foreground/70 hover:text-foreground', {
+					className={cn('relative z-10 h-9 bg-transparent px-2 py-1 flex items-center text-foreground/70 hover:text-foreground', {
 						'text-foreground': isSelected,
 					})}
 				>
