@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
 
-
-
 import { ChatIconPath } from '@/app/[locale]/(main)/chat-icon-path';
 import { MapPath } from '@/app/[locale]/(main)/map-path';
 import { PluginPath } from '@/app/[locale]/(main)/plugin-path';
@@ -10,48 +8,65 @@ import { SchematicPath } from '@/app/[locale]/(main)/schematic-path';
 import { TranslationPathIcon } from '@/app/[locale]/(main)/translation-path-icon';
 import { VerifyPathIcon } from '@/app/[locale]/(main)/verify-path-icon';
 
-
-
-import { AnalyticIcon, BoxIcon, ChartIcon, CmdIcon, CommentIcon, CrownIcon, DocsIcon, DocumentIcon, FileIcon, HomeIcon, ImageIcon, LogIcon, LoginIcon, MapIcon, MindustryGptIcon, PluginIcon, PostIcon, RatioIcon, SchematicIcon, ServerIcon, UploadIcon } from '@/components/common/icons';
+import {
+	AnalyticIcon,
+	BoxIcon,
+	ChartIcon,
+	CmdIcon,
+	CommentIcon,
+	CrownIcon,
+	DocsIcon,
+	DocumentIcon,
+	FileIcon,
+	HomeIcon,
+	ImageIcon,
+	LogIcon,
+	LoginIcon,
+	MapIcon,
+	MindustryGptIcon,
+	PluginIcon,
+	PostIcon,
+	RatioIcon,
+	SchematicIcon,
+	ServerIcon,
+	UploadIcon,
+} from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-
-
 
 import { locales } from '@/i18n/config';
 import { Filter } from '@/lib/utils';
 
-
 const localesRegex = `/(${locales.join('|')})`;
 
 export type PathGroup = {
-  key: string;
-  name: ReactNode;
-  paths: Path[];
-  filter?: Filter;
+	key: string;
+	name: ReactNode;
+	paths: Path[];
+	filter?: Filter;
 };
 
 export type Path = {
-  id: string;
-  name: ReactNode;
-  icon: ReactNode;
-  enabled?: boolean;
-  filter?: Filter;
-  regex: string[];
+	id: string;
+	name: ReactNode;
+	icon: ReactNode;
+	enabled?: boolean;
+	filter?: Filter;
+	regex: string[];
 } & (
-  | {
-      path: string;
-    }
-  | {
-      path: Array<{
-        id: string;
-        path: string;
-        name: ReactNode;
-        icon: ReactNode;
-        enabled?: boolean;
-        filter?: Filter;
-        regex: string[];
-      }>;
-    }
+	| {
+			path: string;
+	  }
+	| {
+			path: Array<{
+				id: string;
+				path: string;
+				name: ReactNode;
+				icon: ReactNode;
+				enabled?: boolean;
+				filter?: Filter;
+				regex: string[];
+			}>;
+	  }
 );
 
 export const groups: readonly PathGroup[] = [
@@ -303,12 +318,13 @@ export const groups: readonly PathGroup[] = [
 				filter: { authority: 'VIEW_DASH_BOARD' },
 				regex: [`^${localesRegex}/analytic`],
 			},
-      
+
 			{
 				id: 'admin-documents',
 				path: '/admin/documents',
 				name: <Tran asChild text="documents" />,
 				icon: <DocsIcon />,
+				filter: { role: 'ADMIN' },
 				regex: [`^${localesRegex}/admin/documents`],
 			},
 			{

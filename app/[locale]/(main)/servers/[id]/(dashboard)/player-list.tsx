@@ -31,7 +31,7 @@ export function PlayerList({ id }: PlayerListProps) {
 	}
 
 	return (
-		<div className="grid gap-4 min-w-[300px]">
+		<div className="grid gap-2 px-4 min-w-[300px]">
 			{data
 				?.sort((a, b) => a.team.name.localeCompare(b.team.name))
 				.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
@@ -67,10 +67,10 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid }
 	locale = getCountryCode(locale ?? 'EN');
 
 	return (
-		<div className="flex flex-col justify-between gap-1 px-4 py-1 hover:bg-secondary">
-			<div className="flex text-lg justify-between gap-1">
+		<div className="flex flex-col justify-between gap-1 bg-secondary rounded-md">
+			<div className="flex text-lg justify-between gap-1 items-center">
 				<ColorText className="font-semibold" text={name} />
-				<div className="flex gap-1">
+				<div className="flex gap-1 items-center">
 					{locale && (localeToFlag[locale] ?? locale)}
 					{userId && <IdUserCard id={userId} />}
 					<EllipsisButton variant="ghost">
