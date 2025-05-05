@@ -221,7 +221,7 @@ async function Hero({ locale }: { locale: Locale }) {
 					<T locale={locale} text="home.hero-title" />
 					{/* Your comprehensive platform for Mindustry schematics, maps, servers, and community resources */}
 				</p>
-				<div className="grid grid-cols-2 w-fit mx-auto justify-center gap-4">
+				<div className="grid grid-cols-2 w-fit mx-auto justify-center gap-4 text-sm">
 					<InternalLink className="bg-brand/90 text-brand-foreground hover:bg-brand p-4 py-2 rounded-md text-center justify-center" href="/schematics">
 						<T locale={locale} text="home.explore-schematics" asChild />
 						{/* Explore Schematics */}
