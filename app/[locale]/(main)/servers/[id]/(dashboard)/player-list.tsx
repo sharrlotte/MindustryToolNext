@@ -31,7 +31,7 @@ export function PlayerList({ id }: PlayerListProps) {
 	}
 
 	return (
-		<div className="grid gap-2 px-4 min-w-[300px]">
+		<div className="grid gap-2 p-4 min-w-[300px]">
 			{data
 				?.sort((a, b) => a.team.name.localeCompare(b.team.name))
 				.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
