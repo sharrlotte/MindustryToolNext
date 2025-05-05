@@ -55,11 +55,11 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				{(page) =>
 					groupUserByRole(page).map(([name, group]) => (
 						<div key={name} className="grid gap-2">
-							<h4>
+							<h3 className="font-semibold">
 								<ColorAsRole roles={[group.role]}>
 									<Tran text={name} asChild />
 								</ColorAsRole>
-							</h4>
+							</h3>
 							{group.users.map((user) => (
 								<MemberCard key={user.id} user={user} />
 							))}
@@ -129,10 +129,10 @@ function groupUserByRole(users: User[]) {
 		if (!user.roles || user.roles.length === 0) {
 			add({ id: 0, name: 'USER', position: 0, description: '', color: '' }, user);
 		} else {
-			const bestRole = user.roles.sort((a, b) => a.position - b.position)[0];
+			const bestRole = user.roles.sort((a, b) => b.position - a.position)[0];
 			add(bestRole, user);
 		}
 	}
 
-	return Object.entries(result).sort((a, b) => a[1].role.position - b[1].role.position);
+	return Object.entries(result).sort((a, b) => b[1].role.position - a[1].role.position);
 }
