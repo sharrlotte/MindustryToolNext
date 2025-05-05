@@ -1,3 +1,5 @@
+![yeah](https://image.mindustry-tool.com//readme/image.png)
+
 Mindustry Tool giúp người chơi và quản trị viên dễ dàng chia sẻ, tìm kiếm và quản lý toàn bộ tài nguyên của trò chơi Mindustry – từ các sơ đồ xây dựng phức tạp, bản đồ chơi đa dạng, đến việc vận hành máy chủ một cách hiệu quả và thuận tiện.
 
 **[Mindustry Tool](https://mindustry-tool.com)** là một nền tảng mã nguồn mở đa chức năng, được xây dựng với mục tiêu phục vụ cộng đồng người chơi Mindustry toàn cầu. Nền tảng không chỉ cung cấp kho lưu trữ sơ đồ và bản đồ do cộng đồng đóng góp mà còn tích hợp các công cụ quản lý máy chủ mạnh mẽ, tài liệu hướng dẫn chi tiết, hệ thống tìm kiếm thông minh và cả trợ lý AI hỗ trợ trong game. Tất cả được gói gọn trong một giao diện web hiện đại, thân thiện với người dùng, dễ sử dụng và liên tục được cập nhật để đáp ứng nhu cầu phát triển không ngừng của cộng đồng.
