@@ -78,7 +78,7 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid }
 					{userId && <IdUserCard id={userId} />}
 					<EllipsisButton variant="ghost">
 						<BanButton id={serverId} uuid={uuid} username={name} ip={ip} />
-						<KickButton id={serverId} username={name} />
+						<KickButton id={serverId} uuid={uuid} />
 					</EllipsisButton>
 				</div>
 			</div>
