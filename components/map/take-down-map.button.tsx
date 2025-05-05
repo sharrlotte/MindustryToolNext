@@ -41,6 +41,7 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
 
 	return (
 		<TakeDownButton
+			variant="command"
 			isLoading={isPending}
 			description={<Tran text="take-down-alert" args={{ name: name }} />}
 			onClick={() => mutate(id)}

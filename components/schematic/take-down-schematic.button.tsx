@@ -41,6 +41,7 @@ export default function TakeDownSchematicButton({ id, name }: TakeDownSchematicB
 
 	return (
 		<TakeDownButton
+			variant="command"
 			isLoading={isPending}
 			description={<Tran text="take-down-alert" args={{ name }} />}
 			onClick={() => mutate(id)}
