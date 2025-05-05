@@ -75,7 +75,7 @@ export default async function Page({ searchParams }: Props) {
 				</ServerTabsContent>
 				<ServerTabsContent className="overflow-hidden" value="my-server">
 					<ClientProtectedElement filter alt={<LoginToCreateServer />}>
-						<ScrollContainer className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
+						<ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
 							<Suspense fallback={<ServersSkeleton />}>
 								<MeServer />
 							</Suspense>
