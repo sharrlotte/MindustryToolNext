@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import React, { Fragment } from 'react';
 
+import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 import { PlayerList } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/player-list';
 import HostServerButton from '@/app/[locale]/(main)/servers/[id]/host-server-button';
 import InitServerButton from '@/app/[locale]/(main)/servers/[id]/init-server-button';
@@ -24,7 +25,6 @@ import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
 import { cn, formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
-import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 
 const RamUsageChart = dynamic(() => import('@/components/metric/ram-usage-chart'));
 
@@ -158,14 +158,11 @@ export default async function Page({ params }: Props) {
 							)}
 						</div>
 						<ProtectedElement session={session} filter={showPlayer}>
-							<div className="flex min-w-[300px] flex-col gap-1 bg-card rounded-md w-full md:w-fit">
-								<div className="flex flex-col gap-2">
-									<h3 className="p-4 text-xl">
-										<Tran text="server.players" /> {players}
-									</h3>
-									{status === 'HOST' && <PlayerList id={id} />}
+							{status === 'HOST' && players && (
+								<div className="flex min-w-[300px] flex-col gap-1 bg-card rounded-md w-full md:w-fit">
+									<PlayerList id={id} />
 								</div>
-							</div>
+							)}
 						</ProtectedElement>
 					</div>
 					<ProtectedElement session={session} filter={canAccess}>
