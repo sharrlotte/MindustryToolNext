@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { Role } from '@/types/response/Role';
 
 type ColorAsRoleProps = {
-  className: string;
+  className?: string;
   children: ReactNode;
   roles: Role[] | undefined;
 };
