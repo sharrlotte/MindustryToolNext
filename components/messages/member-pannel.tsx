@@ -129,10 +129,10 @@ function groupUserByRole(users: User[]) {
 		if (!user.roles || user.roles.length === 0) {
 			add({ id: 0, name: 'USER', position: 0, description: '', color: '' }, user);
 		} else {
-			const bestRole = user.roles.sort((a, b) => a.position - b.position)[0];
+			const bestRole = user.roles.sort((a, b) => b.position - a.position)[0];
 			add(bestRole, user);
 		}
 	}
 
-	return Object.entries(result).sort((a, b) => a[1].role.position - b[1].role.position);
+	return Object.entries(result).sort((a, b) => b[1].role.position - a[1].role.position);
 }
