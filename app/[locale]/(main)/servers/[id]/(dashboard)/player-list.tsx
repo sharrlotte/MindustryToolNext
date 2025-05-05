@@ -33,6 +33,8 @@ export function PlayerList({ id }: PlayerListProps) {
 	return (
 		<div className="grid gap-2 p-4 min-w-[300px]">
 			{data
+				?.sort((a, b) => a.name.localeCompare(b.name))
+				?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
 				?.sort((a, b) => a.team.name.localeCompare(b.team.name))
 				.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
 		</div>
