@@ -44,7 +44,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				<Tran text="member" asChild />
 			</h4>
 			<InfinitePage
-				className="px-2 grid gap-1 w-full"
+				className="px-2 grid gap-2 w-full"
 				queryKey={['room', room, 'members']}
 				paramSchema={PaginationQuerySchema} //
 				queryFn={(axios: AxiosInstance, params: { page: number; size: number }) =>

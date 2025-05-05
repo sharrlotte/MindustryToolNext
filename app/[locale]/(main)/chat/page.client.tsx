@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
 import React, { FormEvent, useState } from 'react';
 
-import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/app/[locale]/(main)/chat/member-pannel';
+import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/components/messages/member-pannel';
 
 import LoginButton from '@/components/button/login.button';
 import { SearchIcon, SendIcon, SmileIcon } from '@/components/common/icons';
