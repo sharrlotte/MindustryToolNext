@@ -131,5 +131,5 @@ function groupUserByRole(users: User[]) {
 		}
 	}
 
-	return Object.entries(result);
+	return Object.entries(result).sort((a, b) => a[1].role.position - b[1].role.position);
 }
