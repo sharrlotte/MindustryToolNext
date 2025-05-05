@@ -1,12 +1,15 @@
 import { Metadata } from 'next';
 
+import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
+
+import Tran from '@/components/common/tran';
+import Divider from '@/components/ui/divider';
+
 import env from '@/constant/env';
 import { isError } from '@/lib/error';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 
-import AddAdminDialog from './add-admin-dialog';
-import PageClient from './page.client';
-import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
+import ServerAdminList from './server-admin-list';
 
 type Props = {
 	params: Promise<{ id: string; locale: string }>;
@@ -38,9 +41,17 @@ export default async function Page({ params }: Props) {
 	const { id } = await params;
 
 	return (
-		<div className="flex h-full justify-between flex-col gap-2">
-			<PageClient id={id} />
-			<AddAdminDialog id={id} />
+		<div className="bg-card rounded-md p-4 space-y-2 h-full overflow-hidden flex flex-col">
+			<div className="flex gap-2 justify-between items-center">
+				<h1 className="text-xl">
+					<Tran asChild text="admin" />
+				</h1>
+				<p className="text-muted-foreground text-sm">
+					<Tran asChild text="server.admin-description" />
+				</p>
+			</div>
+			<Divider />
+			<ServerAdminList id={id} />
 		</div>
 	);
 }

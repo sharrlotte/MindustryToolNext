@@ -12,7 +12,7 @@ type Props = {
 export default function FileHierarchy({ path, onClick }: Props) {
 	return (
 		<div className="space-x-1 whitespace-nowrap min-h-8 flex items-center text-muted-foreground">
-			<span className="cursor-pointer pl-2" onClick={() => onClick('')}>
+			<span className="cursor-pointer" onClick={() => onClick('')}>
 				<HomeIcon />
 			</span>
 			{path

@@ -36,7 +36,7 @@ export default function NavLink({ root, href, label, icon }: Props) {
 		>
 			<div className="relative w-full">
 				{isHovered && <motion.div layout layoutId="nav-link-hovered" className="absolute inset-0 z-0 rounded-sm bg-secondary" />}
-				{isSelected && <motion.div layout layoutId="nav-link-indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[2px] border-foreground" />}
+				{isSelected && <motion.div layout layoutId="nav-link-indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
 				<div
 					className={cn('relative z-10 h-9 bg-transparent px-2 py-1 flex items-center text-foreground/70 hover:text-foreground', {
 						'text-foreground': isSelected,

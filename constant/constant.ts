@@ -384,6 +384,7 @@ const localeToFlag: Record<string, string> = {
 	KN: '🇰🇳',
 	KP: '🇰🇵',
 	KR: '🇰🇷',
+	KO: '🇰🇷',
 	KW: '🇰🇼',
 	KY: '🇰🇾',
 	KZ: '🇰🇿',
