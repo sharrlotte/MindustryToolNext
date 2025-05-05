@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
-import AddAdminDialog from '@/app/[locale]/(main)/servers/[id]/admin/add-admin-dialog';
 
 import Tran from '@/components/common/tran';
 import Divider from '@/components/ui/divider';
@@ -46,8 +45,10 @@ export default async function Page({ params }: Props) {
 			<div className="flex gap-2 justify-between items-center">
 				<h1 className="text-xl">
 					<Tran asChild text="admin" />
-					<AddAdminDialog id={id} />
 				</h1>
+				<p className="text-muted-foreground text-sm">
+					<Tran asChild text="server.admin-description" />
+				</p>
 			</div>
 			<Divider />
 			<ServerAdminList id={id} />

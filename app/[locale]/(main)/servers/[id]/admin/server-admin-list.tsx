@@ -2,6 +2,7 @@
 
 import { AnimatePresence } from 'framer-motion';
 
+import AddAdminDialog from '@/app/[locale]/(main)/servers/[id]/admin/add-admin-dialog';
 import ServerAdminCard from '@/app/[locale]/(main)/servers/[id]/admin/server-admin-card';
 
 import ErrorMessage from '@/components/common/error-message';
@@ -36,6 +37,7 @@ export default function ServerAdminList({ id }: ServerAdminListProps) {
 		<AnimatePresence>
 			<ScrollContainer className="flex flex-wrap gap-2">
 				{data?.map((admin) => <ServerAdminCard key={admin.id} id={id} admin={admin} />)}
+				<AddAdminDialog id={id} />
 			</ScrollContainer>
 		</AnimatePresence>
 	);

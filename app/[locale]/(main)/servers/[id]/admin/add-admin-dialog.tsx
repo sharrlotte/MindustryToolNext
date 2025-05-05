@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
 import ErrorMessage from '@/components/common/error-message';
+import { PlusIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -46,6 +47,7 @@ export default function AddAdminDialog({ id }: AddAdminDialogProps) {
 			<div className="flex justify-end bg-card p-4">
 				<DialogTrigger asChild>
 					<Button variant="secondary">
+						<PlusIcon />
 						<Tran text="server.add-admin" />
 					</Button>
 				</DialogTrigger>

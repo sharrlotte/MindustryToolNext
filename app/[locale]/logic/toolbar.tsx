@@ -158,7 +158,7 @@ function ZoomIn() {
 	const { zoomIn } = useReactFlow();
 
 	return (
-		<Button onClick={() => zoomIn({ duration: 300 })} variant={'toogle'}>
+		<Button onClick={() => zoomIn({ duration: 300 })} variant={'toggle'}>
 			<ZoomInIcon className="size-4" />
 			<Tran asChild text="logic.zoom-in" />
 		</Button>
@@ -168,7 +168,7 @@ function ZoomInOut() {
 	const { zoomOut } = useReactFlow();
 
 	return (
-		<Button onClick={() => zoomOut({ duration: 300 })} variant={'toogle'}>
+		<Button onClick={() => zoomOut({ duration: 300 })} variant={'toggle'}>
 			<ZoomOutIcon className="size-4" />
 			<Tran asChild text="logic.zoom-out" />
 		</Button>
@@ -182,7 +182,7 @@ function MiniMapButton() {
 	} = useLogicEditor();
 
 	return (
-		<Button onClick={() => setShowMiniMap(!showMiniMap)} variant={showMiniMap ? 'toogled' : 'toogle'}>
+		<Button onClick={() => setShowMiniMap(!showMiniMap)} variant={showMiniMap ? 'toggled' : 'toggle'}>
 			<MapIcon className="size-4" />
 			<Tran asChild text="logic.show-minimap" />
 			<Shortcut shortcut={['ctrl', 'm']} />
@@ -197,7 +197,7 @@ function LiveCodeButton() {
 	} = useLogicEditor();
 
 	return (
-		<Button onClick={() => setShowLiveCode(!showLiveCode)} variant={showLiveCode ? 'toogled' : 'toogle'}>
+		<Button onClick={() => setShowLiveCode(!showLiveCode)} variant={showLiveCode ? 'toggled' : 'toggle'}>
 			<LivePanelIcon className="size-4" />
 			<Tran asChild text="logic.show-live-code" />
 			<Shortcut shortcut={['ctrl', 'l']} />
@@ -212,7 +212,7 @@ function EraseButton() {
 	} = useLogicEditor();
 
 	return (
-		<Button onClick={toggleDeleteOnClick} variant={isDeleteOnClick ? 'toogled' : 'toogle'}>
+		<Button onClick={toggleDeleteOnClick} variant={isDeleteOnClick ? 'toggled' : 'toggle'}>
 			<Eraser className="size-4" />
 			<Tran asChild text="logic.erase" />
 			<Shortcut shortcut={['ctrl', 'e']} />
@@ -226,7 +226,7 @@ function AddNodeButton() {
 	} = useLogicEditor();
 
 	return (
-		<Button variant="toogle" onClick={() => setShowAddNodeDialog(true)}>
+		<Button variant="toggle" onClick={() => setShowAddNodeDialog(true)}>
 			<PlusCircleIcon className="h-4 w-4" />
 			<Tran text="logic.add-node" />
 			<Shortcut shortcut={['alt', 'n']} />
@@ -241,7 +241,7 @@ function RedoButton() {
 	} = useLogicEditor();
 
 	return (
-		<Button disabled={!canRedo} onClick={redo} variant="toogle">
+		<Button disabled={!canRedo} onClick={redo} variant="toggle">
 			<RedoIcon className="size-4" />
 			<Tran asChild text="logic.redo" />
 			<Shortcut shortcut={['ctrl', 'y']} />
@@ -255,7 +255,7 @@ function UndoButton() {
 	} = useLogicEditor();
 
 	return (
-		<Button disabled={!canUndo} onClick={undo} variant="toogle">
+		<Button disabled={!canUndo} onClick={undo} variant="toggle">
 			<UndoIcon className="size-4" />
 			<Tran asChild text="logic.undo" />
 			<Shortcut shortcut={['ctrl', 'z']} />
