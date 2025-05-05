@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 
 import { cn } from '@/lib/utils';
 import { getMembers } from '@/query/message';
+import { User } from '@/types/response/User';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
 
 type MemberPanelState = 'open' | 'closed';
@@ -40,9 +41,6 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				},
 			}}
 		>
-			<h4 className="p-2">
-				<Tran text="member" asChild />
-			</h4>
 			<InfinitePage
 				className="px-2 grid gap-2 w-full"
 				queryKey={['room', room, 'members']}
@@ -53,7 +51,18 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				noResult={<div></div>}
 				end={<div></div>}
 			>
-				{(page) => page.map((user) => <MemberCard key={user.id} user={user} />)}
+				{(page) =>
+					groupUserByRole(page).map(([name, group]) => (
+						<div key={name} className="grid gap-2">
+							<h4>
+								<Tran text={name} asChild />
+							</h4>
+							{group.users.map((user) => (
+								<MemberCard key={user.id} user={user} />
+							))}
+						</div>
+					))
+				}
 			</InfinitePage>
 		</motion.div>
 	);
@@ -91,4 +100,36 @@ export function MemberPanelTrigger() {
 			<UsersIcon />
 		</Button>
 	);
+}
+
+function groupUserByRole(users: User[]) {
+	const result: Record<
+		string,
+		{
+			role: User['roles'][number];
+			users: User[];
+		}
+	> = {};
+
+	const add = (role: User['roles'][number], user: User) => {
+		if (!result[role.name]) {
+			result[role.name] = {
+				role,
+				users: [],
+			};
+		} else {
+			result[role.name].users.push(user);
+		}
+	};
+
+	for (const user of users) {
+		if (!user.roles || user.roles.length === 0) {
+			add({ id: 0, name: 'USER', position: 0, description: '', color: '' }, user);
+		} else {
+			const bestRole = user.roles.sort((a, b) => a.position - b.position)[0];
+			add(bestRole, user);
+		}
+	}
+
+	return Object.entries(result);
 }
