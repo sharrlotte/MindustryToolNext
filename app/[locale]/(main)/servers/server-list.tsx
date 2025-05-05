@@ -20,13 +20,13 @@ export default function ServerList() {
 
 	return (
 		<div className="flex h-full w-full gap-2 flex-col">
-			<SearchBar className="max-w-xl bg-card">
+			<SearchBar className="bg-card">
 				<SearchIcon />
 				<SearchInput value={name} onChange={setName} />
 			</SearchBar>
 			<ScrollContainer>
 				<InfinitePage
-					className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2"
+					className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2"
 					queryKey={['server', debounced]}
 					skeleton={{ item: <ServerCardSkeleton />, amount: 20 }}
 					paramSchema={PaginationQuerySchema}
