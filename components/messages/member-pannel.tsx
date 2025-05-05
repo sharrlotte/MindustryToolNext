@@ -55,11 +55,11 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				{(page) =>
 					groupUserByRole(page).map(([name, group]) => (
 						<div key={name} className="grid gap-2">
-							<h4>
+							<h3 className="font-semibold">
 								<ColorAsRole roles={[group.role]}>
 									<Tran text={name} asChild />
 								</ColorAsRole>
-							</h4>
+							</h3>
 							{group.users.map((user) => (
 								<MemberCard key={user.id} user={user} />
 							))}
