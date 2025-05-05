@@ -158,7 +158,7 @@ export default async function Page({ params }: Props) {
 							)}
 						</div>
 						<ProtectedElement session={session} filter={showPlayer}>
-							{status === 'HOST' && players && (
+							{status === 'HOST' && players > 0 && (
 								<div className="flex min-w-[300px] flex-col gap-1 bg-card rounded-md w-full md:w-fit">
 									<PlayerList id={id} />
 								</div>

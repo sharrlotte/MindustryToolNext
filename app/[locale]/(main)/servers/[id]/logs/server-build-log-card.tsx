@@ -54,7 +54,7 @@ export default function ServerBuildLogCard({ serverId, data: { player, events },
 				</div>
 				<div className="flex items-start">
 					<EllipsisButton variant="ghost">
-						<KickButton id={serverId} username={name} />
+						<KickButton id={serverId} uuid={uuid} />
 						<BanButton id={serverId} username={name} uuid={uuid} />
 					</EllipsisButton>
 				</div>
