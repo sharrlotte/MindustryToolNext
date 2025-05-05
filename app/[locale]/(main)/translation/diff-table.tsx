@@ -19,6 +19,7 @@ import { TranslationDiff } from '@/types/response/Translation';
 import { TranslationPaginationQuery } from '@/types/schema/search-query';
 
 import { useMutation } from '@tanstack/react-query';
+import { clearTranslationCache } from '@/lib/utils';
 
 type DiffTableProps = {
 	language: Locale;
@@ -53,7 +54,7 @@ export default function DiffTable({ language, target, tKey: key }: DiffTableProp
 						}}
 						asChild
 					>
-						{page =>  page.map((data) => <DiffCard key={data.id} translation={data} language={target} />)}
+						{(page) => page.map((data) => <DiffCard key={data.id} translation={data} language={target} />)}
 					</GridPaginationList>
 				</TableBody>
 			</Table>
@@ -81,6 +82,7 @@ function DiffCard({ translation, language }: DiffCardProps) {
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
 		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onSuccess: () => clearTranslationCache(),
 	});
 
 	const create = () => {

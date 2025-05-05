@@ -16,6 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
 import { Locale } from '@/i18n/config';
+import { clearTranslationCache } from '@/lib/utils';
 import {
 	CreateTranslationRequest,
 	createTranslation,
@@ -58,7 +59,7 @@ export default function SearchTable({ language, tKey: key, isTranslated }: Searc
 						}}
 						asChild
 					>
-						{page =>  page.map((data) => <SearchCard key={data.id} translation={data} language={language} />)}
+						{(page) => page.map((data) => <SearchCard key={data.id} translation={data} language={language} />)}
 					</GridPaginationList>
 				</TableBody>
 			</Table>
@@ -86,6 +87,7 @@ function SearchCard({ translation }: SearchCardProps) {
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
 		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onSuccess: () => clearTranslationCache(),
 	});
 
 	const create = () => {

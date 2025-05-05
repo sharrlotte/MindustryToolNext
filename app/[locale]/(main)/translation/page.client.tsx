@@ -20,6 +20,7 @@ const CompareTable = dynamic(() => import('@/app/[locale]/(main)/translation/com
 const AddNewKeyDialog = dynamic(() => import('@/app/[locale]/(main)/translation/add-key.dialog'));
 
 const translateModes = ['search', 'diff', 'compare'] as const;
+
 type TranslateMode = (typeof translateModes)[number];
 
 const defaultState: {
@@ -33,7 +34,7 @@ const defaultState: {
 	language: 'en',
 	mode: 'search',
 	key: '',
-	isTranslated: null,
+	isTranslated: false,
 };
 
 function format(key: null | boolean) {
