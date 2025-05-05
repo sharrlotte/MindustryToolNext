@@ -144,7 +144,7 @@ export function CommentCard({ comment }: CommentCardProps) {
 								{data.name}
 							</ColorAsRole>
 						) : (
-							<Skeleton className="h-4 max-h-1 w-24" />
+							<Skeleton className="h-4 max-h-4 w-24" />
 						)}
 						<RelativeTime className="text-muted-foreground" date={new Date(createdAt)} />
 					</div>

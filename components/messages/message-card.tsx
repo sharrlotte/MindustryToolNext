@@ -36,7 +36,7 @@ export function MessageCard({ className, message }: Props) {
               {data.name}
             </ColorAsRole>
           ) : (
-            <Skeleton className="h-4 max-h-1 w-24" />
+            <Skeleton className="h-4 max-h-4 w-24" />
           )}
           <RelativeTime date={new Date(createdAt)} />
         </div>
@@ -63,7 +63,7 @@ export function MessageCardSkeleton() {
       <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />
       <div className="overflow-hidden">
         <div className="flex gap-2">
-          <Skeleton className="h-4 max-h-1 w-24" />
+          <Skeleton className="h-4 max-h-4 w-24" />
         </div>
         <div className="no-scrollbar grid w-full gap-1 overflow-hidden">
           <Skeleton className="h-6 w-full rounded-md" />
