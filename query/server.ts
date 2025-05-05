@@ -10,6 +10,7 @@ import { Player } from '@/types/response/Player';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
 import Server from '@/types/response/Server';
 import ServerAdmin from '@/types/response/ServerAdmin';
+import { ServerBuildLog } from '@/types/response/ServerBuildLog';
 import { ServerDto } from '@/types/response/ServerDto';
 import ServerEnv from '@/types/response/ServerEnv';
 import { ServerFile } from '@/types/response/ServerFile';
@@ -18,7 +19,6 @@ import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManag
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { PaginationQuery } from '@/types/schema/search-query';
-import { ServerBuildLog } from '@/types/response/ServerBuildLog';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
 	const result = await axios.delete(`/servers/${id}/files`, {
@@ -127,7 +127,10 @@ export async function getServerSetting(axios: AxiosInstance, { id }: { id: strin
 	return result.data;
 }
 
-export async function getServers(axios: AxiosInstance, params: { official?: boolean } & PaginationQuery): Promise<ServerDto[]> {
+export async function getServers(
+	axios: AxiosInstance,
+	params: { official?: boolean; name?: string } & PaginationQuery,
+): Promise<ServerDto[]> {
 	const result = await axios.get(`/servers`, { params });
 
 	return result.data;
@@ -272,12 +275,20 @@ export const UpdateServerEnvSchema = z.object({
 	name: z.string().min(1).max(128),
 	value: z.string().min(1).max(1024),
 });
-export async function createServerEnv(axios: AxiosInstance, serverId: string, payload: z.infer<typeof CreateServerEnvSchema>): Promise<ServerAdmin> {
+export async function createServerEnv(
+	axios: AxiosInstance,
+	serverId: string,
+	payload: z.infer<typeof CreateServerEnvSchema>,
+): Promise<ServerAdmin> {
 	const result = await axios.post(`/servers/${serverId}/env`, payload, { headers: { 'Content-Type': 'application/json' } });
 
 	return result.data;
 }
-export async function updateServerEnv(axios: AxiosInstance, serverId: string, payload: z.infer<typeof UpdateServerEnvSchema>): Promise<ServerAdmin> {
+export async function updateServerEnv(
+	axios: AxiosInstance,
+	serverId: string,
+	payload: z.infer<typeof UpdateServerEnvSchema>,
+): Promise<ServerAdmin> {
 	const result = await axios.post(`/servers/${serverId}/env`, payload, { headers: { 'Content-Type': 'application/json' } });
 
 	return result.data;

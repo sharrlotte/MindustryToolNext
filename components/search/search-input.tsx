@@ -1,5 +1,3 @@
-'use client';
-
 import React, { HTMLAttributes } from 'react';
 
 import { XIcon } from '@/components/common/icons';
@@ -12,7 +10,10 @@ type SearchProps = HTMLAttributes<HTMLDivElement>;
 
 export function SearchBar({ className, children, ...props }: SearchProps) {
 	return (
-		<div className={cn('relative flex h-10 w-full items-center justify-center gap-2 rounded-md border pl-2 shadow-md', className)} {...props}>
+		<div
+			className={cn('relative flex h-10 w-full items-center justify-center gap-2 rounded-md border pl-2 shadow-md', className)}
+			{...props}
+		>
 			{children}
 		</div>
 	);
@@ -20,12 +21,12 @@ export function SearchBar({ className, children, ...props }: SearchProps) {
 
 type InputProps = Omit<HTMLAttributes<HTMLInputElement>, 'onChange'> & {
 	value: string;
-	placeholder: string;
+	placeholder?: string;
 	onClear?: () => void;
 	onChange: (value: string) => void;
 };
 
-export function SearchInput({ className, placeholder, value, onChange, onClear, ...props }: InputProps) {
+export function SearchInput({ className, placeholder = 'search-by-name', value, onChange, onClear, ...props }: InputProps) {
 	const { key, group } = extractTranslationKey(placeholder);
 	const { t } = useI18n(group);
 

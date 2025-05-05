@@ -9,7 +9,6 @@ import { PlusIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
@@ -44,14 +43,12 @@ export default function AddAdminDialog({ id }: AddAdminDialogProps) {
 
 	return (
 		<Dialog>
-			<div className="flex justify-end bg-card p-4">
-				<DialogTrigger asChild>
-					<Button variant="secondary">
-						<PlusIcon />
-						<Tran text="server.add-admin" />
-					</Button>
-				</DialogTrigger>
-			</div>
+			<DialogTrigger asChild>
+				<div className="group h-fit cursor-pointer bg-secondary rounded-md p-2 gap-4 flex justify-between items-center border">
+					<PlusIcon />
+					<Tran text="server.add-admin" />
+				</div>
+			</DialogTrigger>
 			<DialogContent className="p-6 h-full md:h-[80dvh] overflow-hidden justify-start flex-col flex">
 				<DialogTitle>
 					<Tran text="server.add-admin" />
