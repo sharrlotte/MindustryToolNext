@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import React, { Suspense } from 'react';
 
-import ServerList from '@/app/[locale]/(main)/servers/server-list';
 import ServerFooter from '@/app/[locale]/(main)/servers/page.footer';
+import ServerList from '@/app/[locale]/(main)/servers/server-list';
 import ServersSkeleton from '@/app/[locale]/(main)/servers/servers.skeleton';
 
 import RequireLogin from '@/components/common/require-login';
@@ -69,11 +69,9 @@ export default async function Page({ searchParams }: Props) {
 					</ServerTabsTrigger>
 				</ServerTabsList>
 				<ServerTabsContent className="overflow-hidden" value="server-list">
-					<ScrollContainer>
-						<Suspense fallback={<ServersSkeleton />}>
-							<ServerList />
-						</Suspense>
-					</ScrollContainer>
+					<Suspense fallback={<ServersSkeleton />}>
+						<ServerList />
+					</Suspense>
 				</ServerTabsContent>
 				<ServerTabsContent className="overflow-hidden" value="my-server">
 					<ClientProtectedElement filter alt={<LoginToCreateServer />}>

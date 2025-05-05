@@ -11,7 +11,7 @@ type SearchProps = HTMLAttributes<HTMLDivElement>;
 export function SearchBar({ className, children, ...props }: SearchProps) {
 	return (
 		<div
-			className={cn('relative flex h-10 w-full items-center justify-center gap-2 rounded-md border pl-2 shadow-md', className)}
+			className={cn('relative flex min-h-10 h-10 w-full items-center justify-center gap-2 rounded-md border pl-2 shadow-md', className)}
 			{...props}
 		>
 			{children}
