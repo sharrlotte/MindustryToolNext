@@ -308,7 +308,7 @@ function AuthorFilter({
 					{isLoading ? (
 						<LoadingSpinner />
 					) : (
-						<ScrollContainer className="space-y-2">
+						<ScrollContainer className="space-y-2 max-h-[50dvh]">
 							{data?.map((user) => (
 								<div
 									className={cn('cursor-pointer p-2 rounded-md bg-secondary', {
