@@ -40,7 +40,7 @@ export default function UserDetail({ user }: Props) {
 	const [hasThumbnail, setHasThumbnail] = React.useState(thumbnail !== undefined);
 
 	return (
-		<div className="relative flex flex-col gap-2 rounded-md bg-card bg-cover bg-center p-2" style={style}>
+		<div className="relative flex flex-col gap-2 rounded-md bg-card bg-cover bg-center p-2 group" style={style}>
 			{thumbnail && (
 				<Dialog>
 					<DialogTrigger>
@@ -62,7 +62,7 @@ export default function UserDetail({ user }: Props) {
 					</DialogContent>
 				</Dialog>
 			)}
-			<CopyButton data={`${env.url}/users/${id}`} variant="ghost">
+			<CopyButton data={`${env.url}/users/${id}`} variant="ghost" position="absolute">
 				<ShareIcon />
 			</CopyButton>
 			<div className="relative flex gap-2 bg-card bg-cover bg-center p-2">

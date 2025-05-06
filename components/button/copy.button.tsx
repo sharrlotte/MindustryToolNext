@@ -16,14 +16,14 @@ const copyButtonVariants = cva('flex h-9 p-2 bg-transparent group/copy-button ro
 	variants: {
 		variant: {
 			default: 'bg-secondary border border-border hover:bg-brand hover:border-transparent',
-			ghost: 'bg-white/20 backdrop-blur-sm flex md:hidden md:group-hover:flex md:group-focus:flex',
+			ghost: 'bg-white/20 backdrop-blur-sm flex md:hidden md:group-hover:flex md:group-focus:flex w-fit',
 			none: 'justify-start px-0 py-0',
 			command: 'hover:bg-secondary w-full justify-start gap-1 px-2 py-1',
 		},
 		position: {
 			relative: '',
-			absolute: 'absolute left-2 top-2',
-			'absolute-right': 'absolute right-2 top-2',
+			absolute: 'absolute left-2 top-2 z-10',
+			'absolute-right': 'absolute right-2 top-2 z-10',
 		},
 	},
 	defaultVariants: {
