@@ -2,8 +2,12 @@
 
 import dynamic from 'next/dynamic';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
+import { useDebounceValue } from 'usehooks-ts';
 
-import { FilterIcon, SearchIcon } from '@/components/common/icons';
+import ErrorMessage from '@/components/common/error-message';
+import { Hidden } from '@/components/common/hidden';
+import { FilterIcon, SearchIcon, XIcon } from '@/components/common/icons';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ModFilter from '@/components/search/mod-filter';
@@ -14,20 +18,28 @@ import { FilterTag } from '@/components/tag/filter-tags';
 import TagBadgeContainer from '@/components/tag/tag-badge-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
 import { Separator } from '@/components/ui/separator';
+import ColorAsRole from '@/components/user/color-as-role';
+import IdUserCard from '@/components/user/id-user-card';
+import UserAvatar from '@/components/user/user-avatar';
 
 import { TagType } from '@/constant/constant';
 import { defaultSortTag } from '@/constant/env';
+import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import useTags from '@/hooks/use-tags';
 import { cn } from '@/lib/utils';
 import { QueryParams } from '@/query/config/search-query-params';
+import { getUsers } from '@/query/user';
 import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
+
+import { useQuery } from '@tanstack/react-query';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
 
@@ -48,6 +60,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 	const [name, setName] = useState('');
 	const [sortBy, setSortBy] = useState<SortTag>(defaultSortTag);
 	const [filterBy, setFilterBy] = useState<TagGroup[]>([]);
+	const [authorId, setAuthorId] = useState<string | null>(null);
 	const [isChanged, setChanged] = useState(false);
 	const [showFilterDialog, setShowFilterDialog] = useState(false);
 
@@ -58,10 +71,11 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
 	useEffect(() => {
 		if (tags.length > 0) {
-			const { sort: sortString, name: nameString, tags: tagsString, page } = params;
+			const { sort: sortString, name: nameString, tags: tagsString, page, authorId } = params;
 
 			const tagGroup = tagsString ? TagGroups.parseString(tagsString, tags) : [];
 
+			setAuthorId(authorId ?? null);
 			setPage(page);
 			setSortBy(sortString ?? defaultSortTag);
 			setFilterBy(tagGroup);
@@ -90,6 +104,10 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 				params.set(QueryParams.name, name);
 			}
 
+			if (authorId) {
+				params.set(QueryParams.authorId, authorId);
+			}
+
 			if (tags.length != 0 && isChanged) {
 				setChanged(false);
 			}
@@ -100,7 +118,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 		if (!showFilterDialog && isChanged) {
 			handleSearch();
 		}
-	}, [name, showFilterDialog, filterBy, sortBy, useTag, page, useSort, tags.length, isChanged]);
+	}, [name, showFilterDialog, filterBy, sortBy, useTag, page, useSort, tags.length, isChanged, authorId]);
 
 	const handleTagGroupChange = useCallback(
 		(name: string, values: FilterTag[]) => {
@@ -146,6 +164,11 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 		setChanged(true);
 	}, []);
 
+	const handleAuthorChange = useCallback((value: string | null) => {
+		setAuthorId(value);
+		setChanged(true);
+	}, []);
+
 	const handleEditName = useCallback(
 		(value: any) => {
 			handleNameChange(value);
@@ -178,7 +201,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 	}, []);
 
 	return (
-		<div className={cn('flex flex-col gap-2', className)}>
+		<div className={cn('flex flex-col gap-2 text-sm', className)}>
 			<div className="flex justify-center gap-1.5 overflow-hidden rounded-sm">
 				<SearchBar className="bg-card overflow-hidden">
 					<SearchIcon className="size-5 shrink-0" />
@@ -212,7 +235,9 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 								{useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
 							</div>
 							<Separator className="border" orientation="horizontal" />
-							<ScrollContainer className="overscroll-none">
+							<ScrollContainer className="overscroll-none space-y-2">
+								<AuthorFilter authorId={authorId} handleAuthorChange={handleAuthorChange} />
+								<Separator className="border" orientation="horizontal" />
 								<ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
 								<FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
 							</ScrollContainer>
@@ -227,6 +252,83 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 					</div>
 				)}
 			</Suspense>
+		</div>
+	);
+}
+
+function AuthorFilter({
+	authorId,
+	handleAuthorChange,
+}: {
+	authorId: string | null;
+	handleAuthorChange: (value: string | null) => void;
+}) {
+	const [name, setName] = useState('');
+	const [debounced] = useDebounceValue(name, 100);
+	const axios = useClientApi();
+	const { data, isLoading, isError, error } = useQuery({
+		queryKey: ['users', name],
+		queryFn: () =>
+			getUsers(axios, {
+				page: 0,
+				size: 20,
+				name: debounced,
+			}),
+	});
+
+	if (isError) {
+		return <ErrorMessage error={error} />;
+	}
+
+	return (
+		<div className="flex gap-2 items-center">
+			<Dialog>
+				<DialogTrigger asChild>
+					<div className="flex gap-2 items-center">
+						<Tran className="text-base" text="author" defaultValue="Author" />
+						<Button variant="outline">
+							{authorId ? <IdUserCard id={authorId} /> : <Tran text="select" defaultValue="Select" />}
+						</Button>
+					</div>
+				</DialogTrigger>
+				{authorId && (
+					<Button variant="outline" onClick={() => handleAuthorChange(null)}>
+						<XIcon />
+					</Button>
+				)}
+				<DialogContent className="p-6">
+					<Hidden>
+						<DialogTitle />
+						<DialogDescription />
+					</Hidden>
+					<SearchBar className="mt-4">
+						<SearchIcon />
+						<SearchInput value={name} onChange={setName} />
+					</SearchBar>
+					{isLoading ? (
+						<LoadingSpinner />
+					) : (
+						<ScrollContainer className="space-y-2">
+							{data?.map((user) => (
+								<div
+									className={cn('cursor-pointer p-2 rounded-md bg-secondary', {
+										'bg-brand': user.id === authorId,
+									})}
+									key={user.id}
+									onClick={() => handleAuthorChange(user.id === authorId ? null : user.id)}
+								>
+									<div className="flex h-8 min-h-8 items-end gap-2 overflow-hidden">
+										<UserAvatar user={user} />
+										<ColorAsRole className="font-semibold capitalize" roles={user.roles}>
+											{user.name}
+										</ColorAsRole>
+									</div>
+								</div>
+							))}
+						</ScrollContainer>
+					)}
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }
