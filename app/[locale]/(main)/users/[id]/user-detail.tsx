@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { EditIcon } from '@/components/common/icons';
+import CopyButton from '@/components/button/copy.button';
+import { EditIcon, ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -10,6 +11,7 @@ import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
 
+import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
 import { User } from '@/types/response/User';
@@ -20,7 +22,7 @@ type Props = {
 
 export default function UserDetail({ user }: Props) {
 	const { session } = useSession();
-	const { name, roles, stats, thumbnail } = user;
+	const { id, name, roles, stats, thumbnail } = user;
 	const exp = stats?.EXP ?? 0;
 	const downloadCount = stats?.DOWNLOAD_COUNT ?? 0;
 	const level = Math.floor(Math.sqrt(exp));
@@ -42,7 +44,16 @@ export default function UserDetail({ user }: Props) {
 			{thumbnail && (
 				<Dialog>
 					<DialogTrigger>
-						{hasThumbnail && <Image className="max-h-[80vh] w-full object-cover" src={`${thumbnail}`} width={1920} height={1080} alt={name} onError={() => setHasThumbnail(false)} />}
+						{hasThumbnail && (
+							<Image
+								className="max-h-[80vh] w-full object-cover"
+								src={`${thumbnail}`}
+								width={1920}
+								height={1080}
+								alt={name}
+								onError={() => setHasThumbnail(false)}
+							/>
+						)}
 					</DialogTrigger>
 					<DialogContent className="h-full w-full">
 						<ScrollContainer>
@@ -51,6 +62,9 @@ export default function UserDetail({ user }: Props) {
 					</DialogContent>
 				</Dialog>
 			)}
+			<CopyButton data={`${env.url}/users/${id}`} variant="ghost">
+				<ShareIcon />
+			</CopyButton>
 			<div className="relative flex gap-2 bg-card bg-cover bg-center p-2">
 				<UserAvatar className="h-20 w-20 min-w-20 min-h-20" user={user} />
 				<EllipsisButton className="absolute right-2 top-2 aspect-square border-transparent bg-transparent" variant="ghost">
