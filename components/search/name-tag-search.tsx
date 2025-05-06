@@ -6,7 +6,7 @@ import { useDebounceValue } from 'usehooks-ts';
 
 import ErrorMessage from '@/components/common/error-message';
 import { Hidden } from '@/components/common/hidden';
-import { FilterIcon, SearchIcon } from '@/components/common/icons';
+import { FilterIcon, SearchIcon, XIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -281,47 +281,54 @@ function AuthorFilter({
 	}
 
 	return (
-		<Dialog>
-			<DialogTrigger asChild>
-				<div className="flex gap-2 items-center">
-					<Tran className="text-base" text="author" defaultValue="Author" />
-					<Button variant="outline">
-						{authorId ? <IdUserCard id={authorId} /> : <Tran text="select" defaultValue="Select" />}
+		<div className="flex gap-2 items-center">
+			<Dialog>
+				<DialogTrigger asChild>
+					<div className="flex gap-2 items-center">
+						<Tran className="text-base" text="author" defaultValue="Author" />
+						<Button variant="outline">
+							{authorId ? <IdUserCard id={authorId} /> : <Tran text="select" defaultValue="Select" />}
+						</Button>
+					</div>
+				</DialogTrigger>
+				{authorId && (
+					<Button variant="outline" onClick={() => handleAuthorChange(null)}>
+						<XIcon />
 					</Button>
-				</div>
-			</DialogTrigger>
-			<DialogContent className="p-6">
-				<Hidden>
-					<DialogTitle />
-					<DialogDescription />
-				</Hidden>
-				<SearchBar className="mt-4">
-					<SearchIcon />
-					<SearchInput value={name} onChange={setName} />
-				</SearchBar>
-				{isLoading ? (
-					<LoadingSpinner />
-				) : (
-					<ScrollContainer className="space-y-2">
-						{data?.map((user) => (
-							<div
-								className={cn('cursor-pointer p-2 rounded-md bg-secondary', {
-									'bg-brand': user.id === authorId,
-								})}
-								key={user.id}
-								onClick={() => handleAuthorChange(user.id === authorId ? null : user.id)}
-							>
-								<div className="flex h-8 min-h-8 items-end gap-2 overflow-hidden">
-									<UserAvatar user={user} />
-									<ColorAsRole className="font-semibold capitalize" roles={user.roles}>
-										{user.name}
-									</ColorAsRole>
-								</div>
-							</div>
-						))}
-					</ScrollContainer>
 				)}
-			</DialogContent>
-		</Dialog>
+				<DialogContent className="p-6">
+					<Hidden>
+						<DialogTitle />
+						<DialogDescription />
+					</Hidden>
+					<SearchBar className="mt-4">
+						<SearchIcon />
+						<SearchInput value={name} onChange={setName} />
+					</SearchBar>
+					{isLoading ? (
+						<LoadingSpinner />
+					) : (
+						<ScrollContainer className="space-y-2">
+							{data?.map((user) => (
+								<div
+									className={cn('cursor-pointer p-2 rounded-md bg-secondary', {
+										'bg-brand': user.id === authorId,
+									})}
+									key={user.id}
+									onClick={() => handleAuthorChange(user.id === authorId ? null : user.id)}
+								>
+									<div className="flex h-8 min-h-8 items-end gap-2 overflow-hidden">
+										<UserAvatar user={user} />
+										<ColorAsRole className="font-semibold capitalize" roles={user.roles}>
+											{user.name}
+										</ColorAsRole>
+									</div>
+								</div>
+							))}
+						</ScrollContainer>
+					)}
+				</DialogContent>
+			</Dialog>
+		</div>
 	);
 }
