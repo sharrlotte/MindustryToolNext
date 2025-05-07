@@ -32,7 +32,7 @@ function UploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCardProps) 
 				<ShareIcon />
 			</CopyButton>
 			<BulkActionSelector value={id}>
-				<InternalLink href={detailLink}>
+				<InternalLink className="flex" href={detailLink}>
 					<PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
 				</InternalLink>
 			</BulkActionSelector>
