@@ -62,7 +62,7 @@ export default function UserDetail({ user }: Props) {
 					</DialogContent>
 				</Dialog>
 			)}
-			<CopyButton data={`${env.url}/users/${id}`} variant="ghost" position="absolute">
+			<CopyButton data={`${env.url.base}/users/${id}`} variant="ghost" position="absolute">
 				<ShareIcon />
 			</CopyButton>
 			<div className="relative flex gap-2 bg-card bg-cover bg-center p-2">
