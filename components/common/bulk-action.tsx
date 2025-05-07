@@ -167,7 +167,7 @@ export function BulkActionSelector({ className, value, children }: BulkActionSel
 					{children}
 				</div>
 				<div className={cn('absolute right-1 top-1 size-6 p-0', className, { 'pointer-events-none': show })}>
-					{isSelected ? <SquareCheckedIcon className="size-6" /> : <SquareIcon className="size-10" />}
+					{isSelected ? <SquareCheckedIcon className="size-6" /> : <SquareIcon className="size-6" />}
 				</div>
 			</div>
 		);
