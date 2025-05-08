@@ -75,6 +75,11 @@ export const TranslationPaginationQuery = z.object({
 	isTranslated: isTranslatedSchema,
 });
 
+export const AllTranslationPaginationQuery = z.object({
+	...PaginationParam,
+	key: languageKeySchema,
+});
+
 export type PaginationQuery = {
 	page: number;
 	size: number;

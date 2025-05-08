@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { Fragment, useCallback, useState } from 'react';
 
+import AllTable from '@/app/[locale]/(main)/translation/all.table';
 import SearchTable from '@/app/[locale]/(main)/translation/search.table';
 
 import ComboBox from '@/components/common/combo-box';
@@ -19,7 +20,7 @@ const DiffTable = dynamic(() => import('@/app/[locale]/(main)/translation/diff-t
 const CompareTable = dynamic(() => import('@/app/[locale]/(main)/translation/compare.table'));
 const AddNewKeyDialog = dynamic(() => import('@/app/[locale]/(main)/translation/add-key.dialog'));
 
-const translateModes = ['search', 'diff', 'compare'] as const;
+const translateModes = ['search', 'diff', 'compare', 'all'] as const;
 
 type TranslateMode = (typeof translateModes)[number];
 
@@ -97,29 +98,31 @@ export default function TranslationPage() {
 							onChange={(language) => setState({ language })}
 						/>
 					) : (
-						<>
-							<ComboBox<Locale>
-								className="h-10"
-								searchBar={false}
-								value={{ label: t(language ?? 'en'), value: language ?? ('en' as Locale) }}
-								values={locales.map((locale) => ({
-									label: t(locale),
-									value: locale,
-								}))}
-								onChange={(language) => setState({ language: language ?? 'en' })}
-							/>
-							{'=>'}
-							<ComboBox<Locale>
-								className="h-10"
-								searchBar={false}
-								value={{ label: t(target), value: target as Locale }}
-								values={locales.map((locale) => ({
-									label: t(locale),
-									value: locale,
-								}))}
-								onChange={(target) => setState({ target: target ?? 'en' })}
-							/>
-						</>
+						(mode === 'compare' || mode === 'diff') && (
+							<>
+								<ComboBox<Locale>
+									className="h-10"
+									searchBar={false}
+									value={{ label: t(language ?? 'en'), value: language ?? ('en' as Locale) }}
+									values={locales.map((locale) => ({
+										label: t(locale),
+										value: locale,
+									}))}
+									onChange={(language) => setState({ language: language ?? 'en' })}
+								/>
+								{'=>'}
+								<ComboBox<Locale>
+									className="h-10"
+									searchBar={false}
+									value={{ label: t(target), value: target as Locale }}
+									values={locales.map((locale) => ({
+										label: t(locale),
+										value: locale,
+									}))}
+									onChange={(target) => setState({ target: target ?? 'en' })}
+								/>
+							</>
+						)
 					)}
 					<SearchBar>
 						<SearchInput placeholder={t('search-by-key')} value={key} onChange={(value) => setState({ key: value })} />
@@ -131,8 +134,10 @@ export default function TranslationPage() {
 					<CompareTable language={language as Locale} target={target as Locale} tKey={key} />
 				) : mode === 'search' ? (
 					<SearchTable language={language as Locale} tKey={key} isTranslated={isTranslated} />
-				) : (
+				) : mode === 'diff' ? (
 					<DiffTable language={language as Locale} target={target as Locale} tKey={key} />
+				) : (
+					<AllTable tKey={key} />
 				)}
 			</div>
 			<div className="flex h-full w-full items-center justify-center landscape:hidden">
