@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
 import { Locale } from '@/i18n/config';
-import { Translation, TranslationCompare, TranslationDiff } from '@/types/response/Translation';
+import { Translation, TranslationAll, TranslationCompare, TranslationDiff } from '@/types/response/Translation';
 import { PaginationQuery } from '@/types/schema/search-query';
 
 export async function getTranslationDiff(axios: AxiosInstance, params: PaginationQuery & { language: Locale; target: Locale; key?: string }): Promise<TranslationDiff[]> {
@@ -13,6 +13,19 @@ export async function getTranslationDiff(axios: AxiosInstance, params: Paginatio
 
 export async function getTranslationDiffCount(axios: AxiosInstance, params: { language: Locale; target: Locale; key?: string }) {
 	const result = await axios.get('/translations/diff/count', {
+		params,
+	});
+
+	return result.data;
+}
+export async function getTranslationAll(axios: AxiosInstance, params: PaginationQuery & { key?: string }): Promise<TranslationAll[]> {
+	const result = await axios.get('/translations/all', { params });
+
+	return result.data;
+}
+
+export async function getTranslationAllCount(axios: AxiosInstance, params: { key?: string }) {
+	const result = await axios.get('/translations/all/count', {
 		params,
 	});
 
