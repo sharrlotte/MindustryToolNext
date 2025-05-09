@@ -58,6 +58,7 @@ export const metadata: Metadata = {
 		images: 'https://mindustrygame.github.io/1.d25af17a.webp',
 		title: 'Mindustry',
 		description: 'MindustryTool',
+		siteName: 'MindustryTool',
 	},
 	alternates: generateAlternate('/'),
 	robots: {
