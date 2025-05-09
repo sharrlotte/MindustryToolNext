@@ -31,8 +31,7 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.response.use(
 	(res) => res,
 	(error) => {
-		try {
-			logError(error);
+				logError(error);
 
 			if (typeof window !== 'undefined') {
 				if (typeof error === 'string') {
@@ -54,10 +53,10 @@ axiosInstance.interceptors.response.use(
 				}
 			}
 
-			return Promise.reject(error.message);
-		} catch (_) {
+			if (error?.response?.message){
+				return Promise.reject(error.response.message);
+			}
 			return Promise.reject(error);
-		}
 	},
 );
 
