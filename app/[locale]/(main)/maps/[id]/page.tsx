@@ -25,14 +25,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		return { title: 'Error' };
 	}
 
-	const { name, description } = map;
+	const { name, description, downloadCount, likes, dislikes } = map;
 
 	return {
 		title: formatTitle(name),
 		description: [name, description].join('|'),
 		openGraph: {
 			title: name,
-			description: description,
+			description: `⬇️${downloadCount} 👍${likes} 👎${dislikes}\n${description}`,
 			images: `${env.url.image}/maps/${id}${env.imageFormat}`,
 		},
 		alternates: generateAlternate(`/maps/${id}`),

@@ -25,14 +25,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		return { title: 'Error' };
 	}
 
-	const { name, description } = schematic;
+	const { name, description, downloadCount, likes, dislikes } = schematic;
 
 	return {
 		title: formatTitle(name),
 		description: [name, description].join('|'),
 		openGraph: {
 			title: name,
-			description: description,
+			description: `⬇️${downloadCount} 👍${likes} 👎${dislikes}\n${description}`,
 			images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
 		},
 		alternates: generateAlternate(`/schematics/${id}`),
