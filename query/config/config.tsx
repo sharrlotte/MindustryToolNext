@@ -31,32 +31,34 @@ const axiosInstance = Axios.create({
 axiosInstance.interceptors.response.use(
 	(res) => res,
 	(error) => {
-				logError(error);
+		logError(error);
 
-			if (typeof window !== 'undefined') {
-				if (typeof error === 'string') {
-					toast.error(error);
-				} else if (typeof error === 'object' && 'status' in error) {
-					const status = error.status;
+		if (typeof window !== 'undefined') {
+			if (typeof error === 'string') {
+				toast.error(error);
+			} else if (typeof error === 'object' && 'status' in error) {
+				const status = error.status;
 
-					if (status === 401) {
-						toast.error(<Tran text="unauthorized" />);
-					} else if (status === 403) {
-						toast.error(<Tran text="forbidden" />);
-					} else if (status === 404) {
-						toast.error(<Tran text="not-found" />);
-					} else if (status === 409) {
-						toast.error(<Tran text="conflict" />);
-					} else if (status === 500) {
-						toast.error(<Tran text="internal-server-error" />);
-					}
+				if (status === 401) {
+					toast.error(<Tran text="unauthorized" />);
+				} else if (status === 403) {
+					toast.error(<Tran text="forbidden" />);
+				} else if (status === 404) {
+					toast.error(<Tran text="not-found" />);
+				} else if (status === 409) {
+					toast.error(<Tran text="conflict" />);
+				} else if (status === 500) {
+					toast.error(<Tran text="internal-server-error" />);
 				}
 			}
+		}
 
-			if (error?.response?.message){
-				return Promise.reject(error.response.message);
-			}
-			return Promise.reject(error);
+		console.log(error);
+
+		if (error?.response?.data?.message) {
+			return Promise.reject(error.response.data.message);
+		}
+		return Promise.reject(error);
 	},
 );
 
