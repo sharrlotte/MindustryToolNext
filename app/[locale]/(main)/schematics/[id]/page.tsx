@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		return { title: 'Error' };
 	}
 
-	const { name, description, downloadCount, likes, dislikes } = schematic;
+	const { name, description, downloadCount, likes, dislikes, userId, tags, createdAt } = schematic;
 
 	return {
 		title: formatTitle(name),
@@ -34,6 +34,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			title: name,
 			description: `⬇️${downloadCount} 👍${likes} 👎${dislikes}\n${description}`,
 			images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
+			authors: [`${env.url.image}/users/${userId}`],
+			tags: tags.map((tag) => tag.name),
+			publishedTime: new Date(createdAt).toISOString(),
 		},
 		alternates: generateAlternate(`/schematics/${id}`),
 	};
