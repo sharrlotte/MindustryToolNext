@@ -52,7 +52,7 @@ type NameTagSearchProps = {
 
 export default function NameTagSearch({ className, type, useSort = true, useTag = true }: NameTagSearchProps) {
 	const [filter, setFilter] = useState('');
-	const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
+	const [selectedMod, setSelectedMod] = useState<Mod[]>([]);
 
 	const params = useSearchQuery(ItemPaginationQuery);
 
@@ -238,7 +238,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 							<ScrollContainer className="overscroll-none space-y-2">
 								<AuthorFilter authorId={authorId} handleAuthorChange={handleAuthorChange} />
 								<Separator className="border" orientation="horizontal" />
-								<ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
+								<ModFilter multiple value={selectedMod} onValueSelected={setSelectedMod} />
 								<FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
 							</ScrollContainer>
 							<Divider />

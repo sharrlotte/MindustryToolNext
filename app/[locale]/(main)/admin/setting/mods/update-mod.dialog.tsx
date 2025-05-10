@@ -97,7 +97,25 @@ export default function UpdateModDialog({ mod }: Props) {
 									<FormMessage />
 								</FormItem>
 							)}
-						/>{' '}
+						/>
+						<FormField
+							control={form.control}
+							name="position"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										<Tran text="mod.position" />
+									</FormLabel>
+									<FormControl>
+										<Input type="number" {...field} onChange={(e) => field.onChange(e.currentTarget.valueAsNumber)} />
+									</FormControl>
+									<FormDescription>
+										<Tran text="mod.position" />
+									</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormField
 							control={form.control}
 							name="icon"

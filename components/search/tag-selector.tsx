@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
 
@@ -16,12 +14,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+import { PresetType } from '@/constant/constant';
 import useTags from '@/hooks/use-tags';
 import { cn } from '@/lib/utils';
 import { Mod } from '@/types/response/Mod';
 import Tag from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
-import { PresetType } from '@/constant/constant';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 
@@ -34,7 +32,7 @@ type TagSelectorProps = {
 };
 
 export default function TagSelector({ type, value, onChange, disabled = false, hideSelectedTag }: TagSelectorProps) {
-	const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
+	const [selectedMod, setSelectedMod] = useState<Mod[]>([]);
 	const [filter, setFilter] = useState('');
 
 	const [showFilterDialog, setShowFilterDialog] = useState(false);
@@ -101,7 +99,13 @@ export default function TagSelector({ type, value, onChange, disabled = false, h
 		>
 			<div className="flex flex-col gap-2">
 				<div className="flex gap-2">
-					<Button className="w-fit text-nowrap" variant="primary" title="add-tag" disabled={disabled} onClick={handleShowFilterDialog}>
+					<Button
+						className="w-fit text-nowrap"
+						variant="primary"
+						title="add-tag"
+						disabled={disabled}
+						onClick={handleShowFilterDialog}
+					>
 						<Tran text="add-tag" />
 					</Button>
 					<TagPreset type={type} onPresetChoose={(value) => onChange(() => value)} />
@@ -113,10 +117,15 @@ export default function TagSelector({ type, value, onChange, disabled = false, h
 					<Card className="grid grid-rows-[auto_1fr_auto] h-full w-full gap-2 rounded-none p-4 md:rounded-lg ">
 						<SearchBar className="w-full p-1">
 							<SearchIcon className="p-1" />
-							<SearchInput value={filter} placeholder="filter" onChange={(value) => setFilter(value)} onClear={() => setFilter('')} />
+							<SearchInput
+								value={filter}
+								placeholder="filter"
+								onChange={(value) => setFilter(value)}
+								onClear={() => setFilter('')}
+							/>
 						</SearchBar>
 						<ScrollContainer className="overscroll-none h-full">
-							<ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
+							<ModFilter multiple value={selectedMod} onValueSelected={setSelectedMod} />
 							<Separator className="border" orientation="horizontal" />
 							<CardContent className="flex h-full w-full flex-col p-0 ">
 								<FilterTags filter={filter} filterBy={value} tags={tags} handleTagGroupChange={handleTagGroupChange} />
