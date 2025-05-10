@@ -1,12 +1,13 @@
 import { TagType } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
+import { groupBy } from '@/lib/utils';
 import { getTags } from '@/query/tag';
 import { Mod } from '@/types/response/Mod';
 import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
 
 import { useQueries } from '@tanstack/react-query';
 
-export default function useTags(type: TagType, mod: Mod[]) {
+export default function useTags(type: TagType, mod: Mod[]): TagGroup[]  {
 	const axios = useClientApi();
 
 	const queries = useQueries({
@@ -24,7 +25,10 @@ export default function useTags(type: TagType, mod: Mod[]) {
 		],
 	});
 
-	return queries.flatMap((query) => validateTags(query.data, type));
+	return groupBy(
+		queries.flatMap((query) => validateTags(query.data, type)),
+		(v) => v.name,
+	).flatMap(({ value }) => ({ ...value[0], values: value.flatMap((v) => v.values) }));
 }
 
 function validateTags(data: AllTagGroup | undefined, type: TagType): TagGroup[] {
