@@ -118,7 +118,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
 		<Dialog>
 			<DialogTrigger asChild>
 				<Button
-					className="flex h-9 w-full items-center justify-center rounded-md border p-0 hover:bg-success"
+					className="flex h-9 w-full items-center justify-center rounded-md border p-0 hover:bg-success-foreground"
 					variant="outline"
 					title="verify"
 				>
