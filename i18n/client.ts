@@ -6,7 +6,7 @@ import Backend, { ChainedBackendOptions } from 'i18next-chained-backend';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
 import LocalStorageBackend from 'i18next-localstorage-backend';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
@@ -66,6 +66,7 @@ export default i18next;
 
 export function useI18n(namespace: string | string[] = 'common', options?: any) {
 	const { locale } = useParams();
+	namespace = Array.isArray(namespace) ? namespace.map((n) => n.toLowerCase()) : namespace.toLowerCase();
 
 	let language = String(locale);
 
@@ -74,7 +75,7 @@ export function useI18n(namespace: string | string[] = 'common', options?: any) 
 	const [cookies, setCookie] = useCookies([cookieName]);
 	const ret = useTranslationOrg(namespace, options);
 
-	const { i18n } = ret;
+	const { i18n, t } = ret;
 	if (runsOnServerSide && language && i18n.resolvedLanguage !== language) {
 		i18n.changeLanguage(language);
 	} else {
@@ -103,7 +104,12 @@ export function useI18n(namespace: string | string[] = 'common', options?: any) 
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [language, cookies[cookieName]]);
 	}
-	return ret;
+
+	const retT = useCallback((key: string, options?: any) => t(key, options) as string, [t]);
+	return {
+		...ret,
+		t: retT,
+	};
 }
 
 export function useChangeLocale() {

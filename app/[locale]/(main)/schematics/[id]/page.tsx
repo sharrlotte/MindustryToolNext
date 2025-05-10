@@ -7,6 +7,7 @@ import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 import { serverApi } from '@/action/common';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { isError } from '@/lib/error';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 import { getSchematic } from '@/query/schematic';
@@ -19,7 +20,8 @@ type Props = {
 const getCachedSchematic = cache((id: string) => serverApi((axios) => getSchematic(axios, { id })));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-	const { id } = await params;
+	const { id, locale } = await params;
+	const { t } = await getTranslation(locale, ['tags']);
 	const schematic = await getCachedSchematic(id);
 
 	if (isError(schematic)) {
@@ -40,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		openGraph: {
 			type: 'article',
 			title: name,
-			description: `Author: ${user.name}\n\n⬇️${downloadCount} 👍${likes} 👎${dislikes} \n\nTags: ${tags.map((tag) => tag.name)} \n\n${description}`,
+			description: `Author: ${user.name}\n\n⬇️${downloadCount} 👍${likes} 👎${dislikes} \n\nTags: ${tags.map((tag) => t(tag.name))} \n\n${description}`,
 			images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
 			authors: [`${env.url.image}/users/${userId}`],
 			tags: tags.map((tag) => tag.name),

@@ -7,6 +7,7 @@ import MapDetailCard from '@/components/map/map-detail-card';
 import { serverApi } from '@/action/common';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
+import { getTranslation } from '@/i18n/server';
 import { isError } from '@/lib/error';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 import { getMap } from '@/query/map';
@@ -19,9 +20,9 @@ type Props = {
 const getCachedMap = cache((id: string) => serverApi((axios) => getMap(axios, { id })));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-	const { id } = await params;
+	const { id, locale } = await params;
+	const { t } = await getTranslation(locale, ['tags']);
 	const map = await getCachedMap(id);
-
 	if (isError(map)) {
 		return { title: 'Error' };
 	}
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		openGraph: {
 			type: 'article',
 			title: name,
-			description: `Author: ${user.name} ⬇️\n\n${downloadCount} 👍${likes} 👎${dislikes}\n\nTags: ${tags.map((tag) => tag.name)} \n\n \n\n${description}`,
+			description: `Author: ${user.name} ⬇️\n\n${downloadCount} 👍${likes} 👎${dislikes}\n\nTags: ${tags.map((tag) => t(tag.name))} \n\n \n\n${description}`,
 			images: `${env.url.image}/maps/${id}${env.imageFormat}`,
 			authors: [`${env.url.image}/users/${userId}`],
 			tags: tags.map((tag) => tag.name),
