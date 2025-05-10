@@ -81,7 +81,7 @@ export default function UserDetail({ user }: Props) {
 					<span className="font-bold">LV.{level}</span>
 					<div className="flex w-full items-center gap-1 text-xs">
 						<div className="h-3 max-h-3 w-full overflow-hidden rounded-full border">
-							<div className="h-full w-full rounded-full bg-success" style={{ width: `${progress}%` }} />
+							<div className="h-full w-full rounded-full bg-success-foreground" style={{ width: `${progress}%` }} />
 						</div>
 						{currentExp}/{levelUpExp}
 					</div>
