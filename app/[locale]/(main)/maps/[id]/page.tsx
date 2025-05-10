@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		return { title: 'Error' };
 	}
 
-	const { name, description, downloadCount, likes, dislikes, userId, tags } = map;
+	const { name, description, downloadCount, likes, dislikes, userId, tags, createdAt } = map;
 
 	return {
 		title: formatTitle(name),
@@ -37,6 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			images: `${env.url.image}/maps/${id}${env.imageFormat}`,
 			authors: [`${env.url.image}/users/${userId}`],
 			tags: tags.map((tag) => tag.name),
+			publishedTime: new Date(createdAt).toISOString(),
 		},
 		alternates: generateAlternate(`/maps/${id}`),
 	};
