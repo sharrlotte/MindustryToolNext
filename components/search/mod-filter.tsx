@@ -37,7 +37,11 @@ export default function ModFilter({ multiple, value, onValueSelected }: Props) {
 					isSelected={multiple ? value?.some((v) => v.id === mod.id) : value?.id === mod.id}
 					mod={mod}
 					onValueSelected={(selected) =>
-						multiple ? onValueSelected([...value, selected]) : onValueSelected(value?.id === selected.id ? undefined : selected)
+						multiple
+							? value.some((v) => v.id === selected.id)
+								? onValueSelected(value.filter((v) => v.id === selected.id))
+								: onValueSelected([...value, selected])
+							: onValueSelected(value?.id === selected.id ? undefined : selected)
 					}
 				/>
 			))}
