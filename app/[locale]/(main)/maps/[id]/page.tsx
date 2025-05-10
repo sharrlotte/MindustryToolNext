@@ -10,6 +10,7 @@ import { Locale } from '@/i18n/config';
 import { isError } from '@/lib/error';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 import { getMap } from '@/query/map';
+import { getUser } from '@/query/user';
 
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;
@@ -27,13 +28,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 	const { name, description, downloadCount, likes, dislikes, userId, tags, createdAt } = map;
 
+	const user = await serverApi((axios) => getUser(axios, { id: userId }));
+
+	if (isError(user)) {
+		return { title: 'Error', description: user.error?.message };
+	}
+
 	return {
 		title: formatTitle(name),
 		description: [name, description].join('|'),
 		openGraph: {
 			type: 'article',
 			title: name,
-			description: `⬇️${downloadCount} 👍${likes} 👎${dislikes} \n\n${description}`,
+			description: `Author: ${user.name} ⬇️\n\n${downloadCount} 👍${likes} 👎${dislikes}\n\nTags: ${tags.map((tag) => tag.name)} \n\n \n\n${description}`,
 			images: `${env.url.image}/maps/${id}${env.imageFormat}`,
 			authors: [`${env.url.image}/users/${userId}`],
 			tags: tags.map((tag) => tag.name),
