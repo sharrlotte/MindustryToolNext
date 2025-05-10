@@ -42,7 +42,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		openGraph: {
 			type: 'article',
 			title: name,
-			description: `Author: ${user.name}\n\n⬇️${downloadCount} 👍${likes} 👎${dislikes} \n\nTags: ${tags.map((tag) => t(tag.name))} \n\n${description}`,
+			description: `Author: ${user.name}\n\n⬇️${downloadCount} 👍${likes} 👎${dislikes} \n\nTags: ${tags.map((tag) =>
+				tag.name
+					.split('_')
+					.filter((v) => v)
+					.map((v) => t(v)),
+			)} \n\n${description}`,
 			images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
 			authors: [`${env.url.image}/users/${userId}`],
 			tags: tags.map((tag) => tag.name),
