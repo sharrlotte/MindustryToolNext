@@ -74,11 +74,13 @@ const initI18next = async (language: Locale, namespace?: string | string[]) => {
 export const getTranslation = cache(
 	async (locale: Locale, namespace: string | string[] = 'common', options: { keyPrefix?: string } = {}) => {
 		const language = locales.includes(locale as any) ? locale : defaultLocale;
+		namespace = Array.isArray(namespace)? namespace.map(n => n.toLowerCase()) : namespace.toLowerCase();
 
 		const i18nextInstance = await initI18next(language, namespace);
+		const t = i18nextInstance.getFixedT(language, namespace, options.keyPrefix)
 
 		return {
-			t: i18nextInstance.getFixedT(language, namespace, options.keyPrefix),
+			t: (key: string, options?: any) => t(key.toLowerCase(), options) as string,
 			i18n: i18nextInstance,
 		};
 	},
