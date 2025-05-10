@@ -17,5 +17,5 @@ export default function TranslationStatus({ status }: TranslationStatusProps) {
 		return <CheckIcon className="text-success" />;
 	}
 
-	return <XIcon className="text-destructive" />;
+	return <XIcon className="text-destructive-foreground" />;
 }

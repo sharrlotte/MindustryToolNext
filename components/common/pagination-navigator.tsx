@@ -167,7 +167,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
 								<SizeSelector sizes={sizes} />
 							</div>
 							{(selectedPage < 0 || selectedPage > lastPage) && (
-								<span className="text-sm text-destructive">
+								<span className="text-sm text-destructive-foreground">
 									<Tran text="page-constrain" args={{ max: lastPage }} />
 								</span>
 							)}

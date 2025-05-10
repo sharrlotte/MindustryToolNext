@@ -40,7 +40,7 @@ export default function ServerAdminCard({ id, admin }: ServerAdminCardProps) {
 		>
 			<IdUserCard id={admin.userId} />
 			<div onClick={() => mutate()}>
-				{isIdle && <XIcon className="group-hover:opacity-100 opacity-0 group-focus:opacity-100 text-destructive" />}
+				{isIdle && <XIcon className="group-hover:opacity-100 opacity-0 group-focus:opacity-100 text-destructive-foreground" />}
 				{isPending && <LoadingSpinner className="m-0" />}
 			</div>
 		</motion.div>
