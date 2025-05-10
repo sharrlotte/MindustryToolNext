@@ -19,7 +19,7 @@ export default function ServerStatus({ status }: Props) {
 			);
 		}
 
-		if (status === 'HOST') {
+		if (status ) {
 			return (
 				<Badge variant="success">
 					<Tran text="server.online" asChild />
