@@ -28,6 +28,7 @@ export type CreateModRequest = z.infer<typeof CreateModSchema>;
 export const UpdateModSchema = z.object({
   name: z.string().min(1).max(100),
   icon: z.any(),
+  position: z.number().default(0),
 });
 
 export type UpdateModRequest = z.infer<typeof UpdateModSchema>;
