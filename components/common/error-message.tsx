@@ -7,8 +7,8 @@ type Props = {
 };
 export default function ErrorMessage({ error }: Props) {
 	if (error && typeof error === 'object' && typeof error?.message === 'string') {
-		return <span className="text-destructive p-2">{error?.message}</span>;
+		return <span className="text-destructive-foreground p-2">{error?.message}</span>;
 	}
 
-	return <Tran className="text-destructive p-2" text="unknown-error" />;
+	return <Tran className="text-destructive-foreground p-2" text="unknown-error" />;
 }

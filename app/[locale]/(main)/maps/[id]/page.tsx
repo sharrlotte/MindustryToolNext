@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		openGraph: {
 			type: 'article',
 			title: name,
-			description: `⬇️${downloadCount} 👍${likes} 👎${dislikes}\n${description}`,
+			description: `⬇️${downloadCount} 👍${likes} 👎${dislikes} \n\n${description}`,
 			images: `${env.url.image}/maps/${id}${env.imageFormat}`,
 			authors: [`${env.url.image}/users/${userId}`],
 			tags: tags.map((tag) => tag.name),

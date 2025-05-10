@@ -91,7 +91,7 @@ export default function Page() {
 					</div>
 					<div>
 						{resultDimensions.width * resultDimensions.height > 500 * 500 && (
-							<Tran className="text-destructive" text="image-generator.too-big-may-fail" />
+							<Tran className="text-destructive-foreground" text="image-generator.too-big-may-fail" />
 						)}
 					</div>
 				</div>
@@ -172,7 +172,7 @@ function Preview({ data }: { data: string }) {
 	if (isError) {
 		return <ErrorMessage error={error} />;
 	}
-	
+
 	return (
 		<div className="object-cover w-full">
 			{preview && (
