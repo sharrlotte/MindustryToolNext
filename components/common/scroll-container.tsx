@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -15,11 +15,10 @@ type Props = {
 
 const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id, children }, forwardedRef) => {
 	const pathname = usePathname();
-	const [container, setContainer] = useState<HTMLDivElement | null>(null);
 	const lastScrollTop = React.useRef(0);
 
-	useEffect(() => {
-		if (container === null) return;
+	function handle(container: HTMLDivElement | null) {
+		if (!container) return;
 
 		const scrollTop = sessionStorage.getItem(`scroll-top-${pathname}-${id}`);
 		try {
@@ -31,7 +30,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
 		} catch (error) {
 			console.error(error);
 		}
-	}, [container, pathname, id]);
+	}
 
 	return (
 		<div
@@ -44,11 +43,11 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
 			ref={(current) => {
 				if (typeof forwardedRef === 'function') {
 					forwardedRef(current);
-					setContainer(current);
+					handle(current);
 				} else if (forwardedRef !== null) {
 					forwardedRef.current = current;
 				} else {
-					setContainer(current);
+					handle(current);
 				}
 			}}
 		>

@@ -82,7 +82,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 			setName(nameString ?? '');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [tags]);
+	}, []);
 
 	useEffect(() => {
 		const handleSearch = () => {
