@@ -25,15 +25,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		return { title: 'Error' };
 	}
 
-	const { name, description, downloadCount, likes, dislikes } = map;
+	const { name, description, downloadCount, likes, dislikes, userId, tags } = map;
 
 	return {
 		title: formatTitle(name),
 		description: [name, description].join('|'),
 		openGraph: {
+			type: 'article',
 			title: name,
 			description: `⬇️${downloadCount} 👍${likes} 👎${dislikes}\n${description}`,
 			images: `${env.url.image}/maps/${id}${env.imageFormat}`,
+			authors: [`${env.url.image}/users/${userId}`],
+			tags: tags.map((tag) => tag.name),
 		},
 		alternates: generateAlternate(`/maps/${id}`),
 	};
