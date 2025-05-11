@@ -41,7 +41,7 @@ export default async function Page({ params }: Props) {
 	const { id } = await params;
 
 	return (
-		<div className="bg-card rounded-md p-4 space-y-2 h-full overflow-hidden flex flex-col">
+		<div className="bg-card rounded-md p-2 space-y-2 h-full overflow-hidden flex flex-col">
 			<div className="flex gap-1 flex-col">
 				<h2 className="text-xl">
 					<Tran asChild text="admin" />

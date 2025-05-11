@@ -34,7 +34,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 	const isNotRoot = path !== '/';
 
 	return (
-		<div className="flex h-full w-full flex-col gap-2 overflow-hidden">
+		<div className="flex h-full w-full flex-col gap-2 overflow-hidden p-2">
 			<div className="rounded-md space-y-2">
 				<FileHierarchy path={path} onClick={setFilePath} />
 				<Divider />

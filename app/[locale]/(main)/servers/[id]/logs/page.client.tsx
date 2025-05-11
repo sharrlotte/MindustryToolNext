@@ -21,7 +21,7 @@ type Props = {
 };
 export default function PageClient({ id }: Props) {
 	return (
-		<ServerTabs className="gap-2" name="type" value="login-log" values={['login-log', 'kick-log', 'building-destroy-log']}>
+		<ServerTabs className="gap-2 p-2" name="type" value="login-log" values={['login-log', 'kick-log', 'building-destroy-log']}>
 			<div className="flex justify-between items-center">
 				<ServerTabsList className="w-fit rounded-md border">
 					<ServerTabsTrigger className="h-10" value="login-log">

@@ -30,7 +30,7 @@ type Props = {
 };
 export default function PageClient({ id }: Props) {
 	return (
-		<div className="bg-card p-4 space-y-2 h-full overflow-hidden flex flex-col rounded-md">
+		<div className="bg-card p-2 space-y-2 h-full overflow-hidden flex flex-col rounded-md">
 			<div className="flex gap-1 flex-col">
 				<h2 className="text-xl">
 					<Tran asChild text="env" />

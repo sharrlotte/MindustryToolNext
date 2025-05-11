@@ -19,7 +19,7 @@ type Props = {
 
 export default function ServerMaps({ id }: Props) {
 	return (
-		<>
+		<div className="h-full w-full overflow-hidden p-2">
 			<ScrollContainer>
 				<InfinitePage
 					paramSchema={PaginationQuerySchema}
@@ -36,6 +36,6 @@ export default function ServerMaps({ id }: Props) {
 					queryKey={['servers', id, 'maps', 'total']}
 				/>
 			</PaginationFooter>
-		</>
+		</div>
 	);
 }

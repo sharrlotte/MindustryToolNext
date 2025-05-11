@@ -77,7 +77,7 @@ export default async function Page({ params }: Props) {
 	});
 
 	return (
-		<ScrollContainer className="flex flex-col gap-2 h-full">
+		<ScrollContainer className="flex flex-col gap-2 h-full p-2">
 			<div className="h-full">
 				<div className="flex min-h-full w-full flex-col gap-2">
 					<div className="flex w-full min-w-80 flex-col gap-6 flex-1 overflow-hidden bg-card rounded-md p-4">
