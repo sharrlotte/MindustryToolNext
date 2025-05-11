@@ -45,7 +45,10 @@ export default function InternalLink({ className, variant, title, href, shallow,
 		return href;
 	})();
 
-	const localizedHref = `/${currentLocale}${hrefWithoutLocale.startsWith('/') ? '' : '/'}${hrefWithoutLocale}`.replaceAll('//', '/');
+	const localizedHref = `/${currentLocale}${hrefWithoutLocale.startsWith('/') ? '' : '/'}${hrefWithoutLocale}`.replaceAll(
+		'//',
+		'/',
+	);
 
 	if (href.startsWith('http') && !href.startsWith(env.url.base)) {
 		return (

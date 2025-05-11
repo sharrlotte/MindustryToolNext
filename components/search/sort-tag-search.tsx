@@ -8,17 +8,25 @@ import { useI18n } from '@/i18n/client';
 import SortTag, { sortTagGroup } from '@/types/response/SortTag';
 
 const defaultState = {
-  sort: defaultSortTag,
+	sort: defaultSortTag,
 };
 
 export default function SortTagSearch() {
-  const [{ selectedSortTag }, setSelectedSortTag] = useQueryState(defaultState);
-  const { t } = useI18n();
+	const [{ selectedSortTag }, setSelectedSortTag] = useQueryState(defaultState);
+	const { t } = useI18n();
 
-  const sortTags = sortTagGroup.values.map((value) => ({
-    label: value.name,
-    value: value.name as SortTag,
-  }));
+	const sortTags = sortTagGroup.values.map((value) => ({
+		label: value.name,
+		value: value.name as SortTag,
+	}));
 
-  return <ComboBox<SortTag> searchBar={false} value={{ label: t(selectedSortTag), value: selectedSortTag as SortTag }} values={sortTags} onChange={(sort) => setSelectedSortTag({ sort })} />;
+	return (
+		<ComboBox<SortTag>
+			required
+			searchBar={false}
+			value={{ label: t(selectedSortTag), value: selectedSortTag as SortTag }}
+			values={sortTags}
+			onChange={(sort) => setSelectedSortTag({ sort })}
+		/>
+	);
 }

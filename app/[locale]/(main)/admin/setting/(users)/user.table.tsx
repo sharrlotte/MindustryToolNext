@@ -62,7 +62,6 @@ export function UserTable() {
 					/>
 					<ComboBox
 						className="h-full"
-						nullable
 						searchBar={false}
 						placeholder="All"
 						value={{ value: isBanned, label: isBanned ?? '' }}
@@ -71,7 +70,6 @@ export function UserTable() {
 					/>
 					<ComboBox
 						className="h-full"
-						nullable
 						placeholder="Select role"
 						searchBar={false}
 						value={{ value: role, label: role?.name ? t(role.name) : '' }}

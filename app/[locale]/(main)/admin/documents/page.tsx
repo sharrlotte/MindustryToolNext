@@ -41,6 +41,7 @@ export default function Page() {
 						label: t(locale),
 						value: locale,
 					}))}
+					required
 					onChange={(language) => setLanguage(language ?? 'en')}
 				/>
 				<CreateDocumentTreeDialog />

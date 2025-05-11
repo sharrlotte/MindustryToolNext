@@ -98,7 +98,7 @@ export default async function Root({ children, params }: RootProps) {
 				<QueryProvider>
 					<ClientInit />
 					<ThemeProvider>
-						<SessionProvider>
+						<SessionProvider locale={locale}>
 							<SocketProvider>
 								<Toaster />
 								{children}

@@ -34,303 +34,329 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 const MarkdownEditor = dynamic(() => import('@/components/markdown/markdown-editor'));
 
 type Shared = {
-  title: string;
-  setTitle: (data: string) => void;
-  content: MarkdownData;
-  setContent: (data: MarkdownData) => void;
-  language: string;
-  setLanguage: (data: string) => void;
+	title: string;
+	setTitle: (data: string) => void;
+	content: MarkdownData;
+	setContent: (data: MarkdownData) => void;
+	language: string;
+	setLanguage: (data: string) => void;
 };
 
 export default function Page() {
-  // If post is not undefined then its a translate request
-  const [post, setPost] = useState<PostDetail>();
-  const [title, setTitle] = useState<string>('');
-  const [language, setLanguage] = useState('en');
-  const [content, setContent] = useState<MarkdownData>({
-    text: '',
-    files: [],
-  });
+	// If post is not undefined then its a translate request
+	const [post, setPost] = useState<PostDetail>();
+	const [title, setTitle] = useState<string>('');
+	const [language, setLanguage] = useState('en');
+	const [content, setContent] = useState<MarkdownData>({
+		text: '',
+		files: [],
+	});
 
-  function handlePostSelect(post: PostDetail) {
-    setPost(post);
-    setTitle(post.title);
-    setContent({ text: post.content, files: [] });
-  }
+	function handlePostSelect(post: PostDetail) {
+		setPost(post);
+		setTitle(post.title);
+		setContent({ text: post.content, files: [] });
+	}
 
-  function render() {
-    if (post === undefined) {
-      return (
-        <Fragment>
-          <div className="rounded-md">
-            <AddTranslationDialog onPostSelect={handlePostSelect} />
-          </div>
-          <UploadPage
-            shared={{
-              title,
-              setTitle,
-              content,
-              setContent,
-              language,
-              setLanguage,
-            }}
-          />
-        </Fragment>
-      );
-    }
+	function render() {
+		if (post === undefined) {
+			return (
+				<Fragment>
+					<div className="rounded-md">
+						<AddTranslationDialog onPostSelect={handlePostSelect} />
+					</div>
+					<UploadPage
+						shared={{
+							title,
+							setTitle,
+							content,
+							setContent,
+							language,
+							setLanguage,
+						}}
+					/>
+				</Fragment>
+			);
+		}
 
-    return (
-      <Fragment>
-        <div className="space-x-2 rounded-sm">
-          <Button title="Upload" variant="secondary" onClick={() => setPost(undefined)}>
-            <Tran text="upload.go-to-upload-page" />
-          </Button>
-          <AddTranslationDialog onPostSelect={handlePostSelect} />
-        </div>
-        <TranslatePage
-          post={post}
-          shared={{
-            title,
-            setTitle,
-            content,
-            setContent,
-            language,
-            setLanguage,
-          }}
-        />
-      </Fragment>
-    );
-  }
+		return (
+			<Fragment>
+				<div className="space-x-2 rounded-sm">
+					<Button title="Upload" variant="secondary" onClick={() => setPost(undefined)}>
+						<Tran text="upload.go-to-upload-page" />
+					</Button>
+					<AddTranslationDialog onPostSelect={handlePostSelect} />
+				</div>
+				<TranslatePage
+					post={post}
+					shared={{
+						title,
+						setTitle,
+						content,
+						setContent,
+						language,
+						setLanguage,
+					}}
+				/>
+			</Fragment>
+		);
+	}
 
-  return <div className="flex h-full flex-col gap-2 overflow-hidden p-2">{render()}</div>;
+	return <div className="flex h-full flex-col gap-2 overflow-hidden p-2">{render()}</div>;
 }
 
 function TranslatePage({
-  post,
-  shared: { title, setTitle, content, setContent, language, setLanguage },
+	post,
+	shared: { title, setTitle, content, setContent, language, setLanguage },
 }: {
-  shared: Shared;
+	shared: Shared;
 } & { post: PostDetail }) {
-  const axios = useClientApi();
+	const axios = useClientApi();
 
-  const { invalidateByKey } = useQueriesData();
-  const languages = useLanguages();
-  const { t } = useI18n();
+	const { invalidateByKey } = useQueriesData();
+	const languages = useLanguages();
+	const { t } = useI18n();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: TranslatePostRequest) => translatePost(axios, data),
-    onSuccess: () => {
-      toast.success(<Tran text="upload.success" />);
+	const { mutate, isPending } = useMutation({
+		mutationFn: (data: TranslatePostRequest) => translatePost(axios, data),
+		onSuccess: () => {
+			toast.success(<Tran text="upload.success" />);
 
-      setTitle('');
-      setContent({ text: '', files: [] });
-    },
-    onError(error) {
-      toast.error(<Tran text="upload.fail" />, { description: error?.message });
-    },
-    onSettled: () => {
-      invalidateByKey(['posts']);
-    },
-  });
+			setTitle('');
+			setContent({ text: '', files: [] });
+		},
+		onError(error) {
+			toast.error(<Tran text="upload.fail" />, { description: error?.message });
+		},
+		onSettled: () => {
+			invalidateByKey(['posts']);
+		},
+	});
 
-  function checkUploadRequirement() {
-    if (!title) return <Tran text="upload.no-title" />;
+	function checkUploadRequirement() {
+		if (!title) return <Tran text="upload.no-title" />;
 
-    if (!content) return <Tran text="upload.no-content" />;
+		if (!content) return <Tran text="upload.no-content" />;
 
-    if (!language) return <Tran text="upload.no-language" />;
+		if (!language) return <Tran text="upload.no-language" />;
 
-    return true;
-  }
+		return true;
+	}
 
-  const uploadCheck = checkUploadRequirement();
+	const uploadCheck = checkUploadRequirement();
 
-  const validLanguages = languages
-    .filter((language) => language !== post.lang)
-    .map((value) => ({
-      value,
-      label: t(value),
-    }));
+	const validLanguages = languages
+		.filter((language) => language !== post.lang)
+		.map((value) => ({
+			value,
+			label: t(value),
+		}));
 
-  return (
-    <div className="flex h-full overflow-hidden rounded-md">
-      <div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
-        <div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
-          <Input className="w-full rounded-sm outline-none hover:outline-none" placeholder="Title" value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
-          <MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
-        </div>
-        <div className="flex items-center justify-start gap-2 rounded-md ">
-          <ComboBox placeholder={t('select-language')} value={{ label: t(language || 'en'), value: language }} values={validLanguages} onChange={(value) => setLanguage(value ?? '')} />
-          <Button
-            className="ml-auto"
-            title="submit"
-            variant="primary"
-            disabled={isPending || uploadCheck !== true}
-            onClick={() =>
-              mutate({
-                id: post.id,
-                title,
-                content,
-                lang: language,
-              })
-            }
-          >
-            {uploadCheck === true ? <Tran text="upload" /> : uploadCheck}
-          </Button>
-        </div>
-      </div>
-      <span className="md:hidden">Mobile screen is not supported yet, please use a bigger screen</span>
-    </div>
-  );
+	return (
+		<div className="flex h-full overflow-hidden rounded-md">
+			<div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
+				<div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
+					<Input
+						className="w-full rounded-sm outline-none hover:outline-none"
+						placeholder="Title"
+						value={title}
+						onChange={(event) => setTitle(event.currentTarget.value)}
+					/>
+					<MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
+				</div>
+				<div className="flex items-center justify-start gap-2 rounded-md ">
+					<ComboBox
+						placeholder={t('select-language')}
+						value={{ label: t(language || 'en'), value: language }}
+						values={validLanguages}
+						onChange={(value) => setLanguage(value ?? '')}
+					/>
+					<Button
+						className="ml-auto"
+						title="submit"
+						variant="primary"
+						disabled={isPending || uploadCheck !== true}
+						onClick={() =>
+							mutate({
+								id: post.id,
+								title,
+								content,
+								lang: language,
+							})
+						}
+					>
+						{uploadCheck === true ? <Tran text="upload" /> : uploadCheck}
+					</Button>
+				</div>
+			</div>
+			<span className="md:hidden">Mobile screen is not supported yet, please use a bigger screen</span>
+		</div>
+	);
 }
 
 function UploadPage({ shared: { title, setTitle, content, setContent, language, setLanguage } }: { shared: Shared }) {
-  const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
-  const axios = useClientApi();
+	const [selectedTags, setSelectedTags] = useState<TagGroup[]>([]);
+	const axios = useClientApi();
 
-  const { invalidateByKey } = useQueriesData();
+	const { invalidateByKey } = useQueriesData();
 
-  const languages = useLanguages();
-  const { t } = useI18n();
+	const languages = useLanguages();
+	const { t } = useI18n();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: CreatePostRequest) => createPost(axios, data),
-    onSuccess: () => {
-      toast.success(<Tran text="upload.success" />);
-      setTitle('');
-      setContent({ text: '', files: [] });
-      setSelectedTags([]);
-    },
-    onError(error) {
-      toast.error(<Tran text="upload.fail" />, { description: error?.message });
-    },
-    onSettled: () => {
-      invalidateByKey(['posts']);
-    },
-  });
+	const { mutate, isPending } = useMutation({
+		mutationFn: (data: CreatePostRequest) => createPost(axios, data),
+		onSuccess: () => {
+			toast.success(<Tran text="upload.success" />);
+			setTitle('');
+			setContent({ text: '', files: [] });
+			setSelectedTags([]);
+		},
+		onError(error) {
+			toast.error(<Tran text="upload.fail" />, { description: error?.message });
+		},
+		onSettled: () => {
+			invalidateByKey(['posts']);
+		},
+	});
 
-  function checkUploadRequirement() {
-    if (!title) return <Tran text="upload.no-title" />;
+	function checkUploadRequirement() {
+		if (!title) return <Tran text="upload.no-title" />;
 
-    if (!content) return <Tran text="upload.no-content" />;
+		if (!content) return <Tran text="upload.no-content" />;
 
-    if (!language) return <Tran text="upload.no-language" />;
+		if (!language) return <Tran text="upload.no-language" />;
 
-    if (selectedTags.length === 0) return <Tran text="upload.no-tags" />;
+		if (selectedTags.length === 0) return <Tran text="upload.no-tags" />;
 
-    return true;
-  }
+		return true;
+	}
 
-  const uploadCheck = checkUploadRequirement();
+	const uploadCheck = checkUploadRequirement();
 
-  return (
-    <div className="flex h-full flex-col overflow-hidden rounded-md">
-      <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
-        <div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
-          <Input className="w-full rounded-sm  outline-none hover:outline-none" placeholder={t('upload.title')} value={title} onChange={(event) => setTitle(event.currentTarget.value)} />
-          <MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
-        </div>
-        <div className="flex items-center justify-start gap-2 overflow-hidden rounded-md ">
-          <ComboBox
-            placeholder={t('upload.select-language')}
-            value={{ label: t(language || 'en'), value: language }}
-            values={languages.map((value) => ({
-              value,
-              label: value,
-            }))}
-            onChange={(value) => setLanguage(value ?? '')}
-          />
-          <TagSelector type="post" value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
-          <Button
-            className="ml-auto"
-            title="submit"
-            variant="primary"
-            disabled={isPending || uploadCheck !== true}
-            onClick={() =>
-              mutate({
-                title,
-                content,
-                lang: language,
-                tags: TagGroups.toString(selectedTags),
-              })
-            }
-          >
-            {uploadCheck === true ? <Tran text="upload" /> : uploadCheck}
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className="flex h-full flex-col overflow-hidden rounded-md">
+			<div className="flex h-full w-full flex-col gap-2 overflow-hidden">
+				<div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
+					<Input
+						className="w-full rounded-sm  outline-none hover:outline-none"
+						placeholder={t('upload.title')}
+						value={title}
+						onChange={(event) => setTitle(event.currentTarget.value)}
+					/>
+					<MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
+				</div>
+				<div className="flex items-center justify-start gap-2 overflow-hidden rounded-md ">
+					<ComboBox
+						placeholder={t('upload.select-language')}
+						value={{ label: t(language || 'en'), value: language }}
+						values={languages.map((value) => ({
+							value,
+							label: t(value),
+						}))}
+						onChange={(value) => setLanguage(value ?? '')}
+					/>
+					<TagSelector type="post" value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
+					<Button
+						className="ml-auto"
+						title="submit"
+						variant="primary"
+						disabled={isPending || uploadCheck !== true}
+						onClick={() =>
+							mutate({
+								title,
+								content,
+								lang: language,
+								tags: TagGroups.toString(selectedTags),
+							})
+						}
+					>
+						{uploadCheck === true ? <Tran text="upload" /> : uploadCheck}
+					</Button>
+				</div>
+			</div>
+		</div>
+	);
 }
 
 type AddTranslationDialogProps = {
-  onPostSelect: (post: PostDetail) => void;
+	onPostSelect: (post: PostDetail) => void;
 };
 
 function AddTranslationDialog({ onPostSelect }: AddTranslationDialogProps) {
-  const [name, setName] = useDebounceValue('', 500);
-  const axios = useClientApi();
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['me-posts', name],
-    queryFn: () =>
-      getMePosts(axios, {
-        page: 0,
-        name,
-        size: 20,
-        tags: [],
-        sort: 'time_desc',
-        status: 'VERIFIED',
-      }),
-  });
+	const [name, setName] = useDebounceValue('', 500);
+	const axios = useClientApi();
+	const { data, isLoading, isError, error } = useQuery({
+		queryKey: ['me-posts', name],
+		queryFn: () =>
+			getMePosts(axios, {
+				page: 0,
+				name,
+				size: 20,
+				tags: [],
+				sort: 'time_desc',
+				status: 'VERIFIED',
+			}),
+	});
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (id: string) => getPost(axios, { id }),
-    onSuccess: (data) => onPostSelect(data),
-  });
+	const { mutate, isPending } = useMutation({
+		mutationFn: (id: string) => getPost(axios, { id }),
+		onSuccess: (data) => onPostSelect(data),
+	});
 
-  function render() {
-    if (isLoading) {
-      return <LoadingSpinner />;
-    }
+	function render() {
+		if (isLoading) {
+			return <LoadingSpinner />;
+		}
 
-    if (isError) {
-      return <span>{error?.message}</span>;
-    }
+		if (isError) {
+			return <span>{error?.message}</span>;
+		}
 
-    if (!data || data?.length === 0) {
-      return <NoResult />;
-    }
+		if (!data || data?.length === 0) {
+			return <NoResult />;
+		}
 
-    return data?.map(({ id, title }) => (
-      <Button className="h-full w-full items-center justify-start rounded-md border border-border text-start hover:bg-brand" variant="outline" key={id} title={title} onClick={() => mutate(id)}>
-        {title.trim()}
-      </Button>
-    ));
-  }
+		return data?.map(({ id, title }) => (
+			<Button
+				className="h-full w-full items-center justify-start rounded-md border border-border text-start hover:bg-brand"
+				variant="outline"
+				key={id}
+				title={title}
+				onClick={() => mutate(id)}
+			>
+				{title.trim()}
+			</Button>
+		));
+	}
 
-  if (isPending) {
-    return <LoadingScreen />;
-  }
+	if (isPending) {
+		return <LoadingScreen />;
+	}
 
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button title="upload.translate-post" variant="secondary">
-          <Tran text="upload.translate-post" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="p-6">
-        <DialogTitle>
-          <Tran text="upload.select-post" />
-        </DialogTitle>
-        <div className="flex flex-col gap-2">
-          <SearchBar>
-            <SearchInput placeholder="upload.post-name" value={name} onChange={(value) => setName(value)} onClear={() => setName('')} />
-            <SearchIcon />
-          </SearchBar>
-          <div className="flex w-full flex-col gap-1">{render()}</div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
+	return (
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button title="upload.translate-post" variant="secondary">
+					<Tran text="upload.translate-post" />
+				</Button>
+			</DialogTrigger>
+			<DialogContent className="p-6">
+				<DialogTitle>
+					<Tran text="upload.select-post" />
+				</DialogTitle>
+				<div className="flex flex-col gap-2">
+					<SearchBar>
+						<SearchInput
+							placeholder="upload.post-name"
+							value={name}
+							onChange={(value) => setName(value)}
+							onClear={() => setName('')}
+						/>
+						<SearchIcon />
+					</SearchBar>
+					<div className="flex w-full flex-col gap-1">{render()}</div>
+				</div>
+			</DialogContent>
+		</Dialog>
+	);
 }

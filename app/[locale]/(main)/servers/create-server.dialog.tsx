@@ -104,7 +104,6 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 							<div className="grid gap-1">
 								<ComboBox
 									searchBar={false}
-									nullable
 									value={{ label: selectedManager?.address, value: selectedManager?.id }}
 									values={
 										managers?.map((manager) => ({

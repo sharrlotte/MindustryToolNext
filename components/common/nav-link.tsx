@@ -27,16 +27,25 @@ export default function NavLink({ root, href, label, icon }: Props) {
 
 	return (
 		<InternalLink
-			className={cn('relative inline-flex h-12 min-w-fit items-center justify-center gap-2 text-nowrap px-0 py-4 text-sm text-foreground/70 hover:text-foreground', {
-				'text-foreground': isSelected,
-			})}
+			className={cn(
+				'relative inline-flex h-12 min-w-fit items-center justify-center gap-2 text-nowrap px-0 py-4 text-sm text-foreground/70 hover:text-foreground',
+				{
+					'text-foreground': isSelected,
+				},
+			)}
 			href={`/${root}/${href}`}
 			onMouseEnter={() => setHovered(href)}
 			onTouchStart={() => setHovered(href)}
 		>
 			<div className="relative w-full">
 				{isHovered && <motion.div layout layoutId="nav-link-hovered" className="absolute inset-0 z-0 rounded-sm bg-secondary" />}
-				{isSelected && <motion.div layout layoutId="nav-link-indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
+				{isSelected && (
+					<motion.div
+						layout
+						layoutId="nav-link-indicator"
+						className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground"
+					/>
+				)}
 				<div
 					className={cn('relative z-10 h-9 bg-transparent px-2 py-1 flex items-center text-foreground/70 hover:text-foreground', {
 						'text-foreground': isSelected,

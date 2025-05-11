@@ -37,7 +37,7 @@ export default function ProtectedRoute({ filter, children }: Props) {
 
 	if (!session) {
 		return (
-			<div className="flex h-full w-full justify-center items-center">
+			<div className="flex h-full mx-auto justify-center items-center">
 				<LoginButton />
 			</div>
 		);

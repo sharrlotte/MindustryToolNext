@@ -33,6 +33,7 @@ export default function SizeSelector({ sizes }: SizeSelectorProps) {
 		<ComboBox
 			className="w-20 rounded-md border-transparent h-9 bg-card"
 			searchBar={false}
+			required
 			value={{ label: size.toString(), value: size }}
 			values={sizes.map((size) => ({
 				label: size.toString(),

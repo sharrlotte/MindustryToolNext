@@ -22,6 +22,7 @@ import IsSmall from '@/layout/is-small';
 import ProtectedElement from '@/layout/protected-element';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
+
 export default function ChatPage() {
 	return (
 		<MemberPanelProvider>
@@ -87,7 +88,7 @@ function ChatInput() {
 			session={session}
 			filter={true}
 			alt={
-				<div className="h-full w-full whitespace-nowrap border-t p-2 text-center">
+				<div className="h-full mx-auto whitespace-nowrap border-t p-2 text-center">
 					<LoginButton className="justify-center">
 						<Tran text="chat.require-login" />
 					</LoginButton>
