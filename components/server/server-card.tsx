@@ -17,7 +17,7 @@ export default function ServerCard({
 }: MyServerInstancesCardProps) {
 	return (
 		<InternalLink
-			className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-4 h-60 relative"
+			className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-4 h-60 relative border"
 			href={`/servers/${id}`}
 		>
 			<Suspense>

@@ -58,7 +58,7 @@ export function ServerTabs<T extends string>({ className, value, name, values, c
 	}, [current, values, setQuery, setValue, value]);
 
 	return (
-		<div className={cn('flex h-full flex-col gap-2 overflow-hidden', className)}>
+		<div className={cn('flex h-full flex-col overflow-hidden', className)}>
 			<Context.Provider value={{ value: current || value, setValue, hovered, setHovered }}>{children}</Context.Provider>
 		</div>
 	);
@@ -133,7 +133,7 @@ export function ServerTabsList({ className, children }: ServerTabsListProps) {
 
 	return (
 		<div
-			className={cn('no-scrollbar flex min-h-9 items-center justify-center py-2 gap-2 overflow-x-auto overflow-y-hidden rounded-md bg-card px-2 text-muted-foreground', className)}
+			className={cn('no-scrollbar flex items-center py-2 gap-2 overflow-x-auto overflow-y-hidden bg-card px-2 text-muted-foreground w-full justify-start h-14 min-h-14 border-b', className)}
 			onMouseLeave={() => setHovered('')}
 		>
 			{children}

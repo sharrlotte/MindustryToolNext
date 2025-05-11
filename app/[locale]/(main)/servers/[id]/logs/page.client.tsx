@@ -4,13 +4,13 @@ import ServerBuildLogCard from '@/app/[locale]/(main)/servers/[id]/logs/server-b
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
-import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
+import { GridLayout, ListLayout, PaginationFooter, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
-import { getServerBuildLog, getServerBuildLogCount, getServerLoginCount, getServerLogins } from '@/query/server';
+import { getServerBuildLog, getServerLogins } from '@/query/server';
 import { ServerBuildLog } from '@/types/response/ServerBuildLog';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
 
@@ -21,21 +21,21 @@ type Props = {
 };
 export default function PageClient({ id }: Props) {
 	return (
-		<div className="flex flex-col h-full gap-2">
-			<ServerTabs name="type" value="login-log" values={['login-log', 'kick-log', 'building-destroy-log']}>
-				<div className="flex justify-between items-center">
-					<ServerTabsList className="px-0 py-0 gap-0">
-						<ServerTabsTrigger className="h-10" value="login-log">
-							<Tran text="server.login-log" />
-						</ServerTabsTrigger>
-						<ServerTabsTrigger className="h-10" value="kick-log">
-							<Tran text="server.kick-log" />
-						</ServerTabsTrigger>
-						<ServerTabsTrigger className="h-10" value="building-destroy-log">
-							<Tran text="server.building-destroy-log" />
-						</ServerTabsTrigger>
-					</ServerTabsList>
-				</div>
+		<ServerTabs className="gap-2" name="type" value="login-log" values={['login-log', 'kick-log', 'building-destroy-log']}>
+			<div className="flex justify-between items-center">
+				<ServerTabsList className="w-fit rounded-md border">
+					<ServerTabsTrigger className="h-10" value="login-log">
+						<Tran text="server.login-log" />
+					</ServerTabsTrigger>
+					<ServerTabsTrigger className="h-10" value="kick-log">
+						<Tran text="server.kick-log" />
+					</ServerTabsTrigger>
+					<ServerTabsTrigger className="h-10" value="building-destroy-log">
+						<Tran text="server.building-destroy-log" />
+					</ServerTabsTrigger>
+				</ServerTabsList>
+			</div>
+			<div className="border rounded-md p-2 h-full flex flex-col">
 				<ScrollContainer>
 					<ServerTabsContent className="space-y-2" value="login-log">
 						<ListLayout>
@@ -94,29 +94,22 @@ export default function PageClient({ id }: Props) {
 						</GridLayout>
 					</ServerTabsContent>
 				</ScrollContainer>
-				<div className="ml-auto mt-auto space-x-2 flex">
+				<PaginationFooter className="ml-auto mt-auto flex">
 					<PaginationLayoutSwitcher />
 					<GridLayout>
 						<ServerTabsContent className="space-y-2" value="login-log">
-							<div className="flex">
-								<PaginationNavigator
-									queryKey={['server', id, 'login']}
-									numberOfItems={(axios) => getServerLoginCount(axios, id)}
-								/>
-							</div>
+							<PaginationNavigator queryKey={['server', id, 'login']} numberOfItems={`/servers/${id}/logins/count`} />
 						</ServerTabsContent>
 						<ServerTabsContent className="space-y-2" value="building-destroy-log">
-							<div className="flex">
-								<PaginationNavigator
-									queryKey={['server', id, 'building-destroy-log']}
-									numberOfItems={(axios) => getServerBuildLogCount(axios, id)}
-								/>
-							</div>
+							<PaginationNavigator
+								queryKey={['server', id, 'building-destroy-log']}
+								numberOfItems={`/servers/${id}/build-log/count`}
+							/>
 						</ServerTabsContent>
 					</GridLayout>
-				</div>
-			</ServerTabs>
-		</div>
+				</PaginationFooter>
+			</div>
+		</ServerTabs>
 	);
 }
 

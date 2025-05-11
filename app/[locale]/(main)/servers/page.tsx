@@ -53,14 +53,9 @@ export default async function Page({ searchParams }: Props) {
 	const { create } = await searchParams;
 
 	return (
-		<div className="flex h-full flex-col overflow-hidden space-y-2 p-2">
-			<ServerTabs
-				className="flex h-full w-full flex-col overflow-hidden"
-				name="tab"
-				value="server-list"
-				values={['server-list', 'my-server']}
-			>
-				<ServerTabsList className="w-full justify-start h-14 min-h-14">
+		<div className="flex h-full flex-col overflow-hidden">
+			<ServerTabs name="tab" value="server-list" values={['server-list', 'my-server']}>
+				<ServerTabsList>
 					<ServerTabsTrigger value="server-list">
 						<Tran text="server.server-list" />
 					</ServerTabsTrigger>
@@ -68,12 +63,12 @@ export default async function Page({ searchParams }: Props) {
 						<Tran text="server.my-server" />
 					</ServerTabsTrigger>
 				</ServerTabsList>
-				<ServerTabsContent className="overflow-hidden" value="server-list">
+				<ServerTabsContent className="p-2" value="server-list">
 					<Suspense fallback={<ServersSkeleton />}>
 						<ServerList />
 					</Suspense>
 				</ServerTabsContent>
-				<ServerTabsContent className="overflow-hidden" value="my-server">
+				<ServerTabsContent className="p-2" value="my-server">
 					<ClientProtectedElement filter alt={<LoginToCreateServer />}>
 						<ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
 							<Suspense fallback={<ServersSkeleton />}>
