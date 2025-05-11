@@ -1,18 +1,25 @@
 'use client';
 
+import { Theme } from 'emoji-picker-react';
+import { useTheme } from 'next-themes';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import { FormEvent, KeyboardEvent, useState } from 'react';
 
-import Tran from '@/components/common/tran';
+import { SendIcon, SmileIcon } from '@/components/common/icons';
+import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { useSocket } from '@/context/socket.context';
 import useMessage from '@/hooks/use-message';
 
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
+
 export default function ConsoleInput() {
 	const { id } = useParams();
 	const { state } = useSocket();
+	const { theme } = useTheme();
 
 	const [message, setMessage] = useState<string>('');
 
@@ -24,7 +31,7 @@ export default function ConsoleInput() {
 		method: 'MESSAGE',
 	});
 
-	const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+	const handleFormSubmit = () => {
 		if (message.startsWith('/')) {
 			sendMessage(message.substring(1));
 		} else {
@@ -32,10 +39,9 @@ export default function ConsoleInput() {
 		}
 		setMessageHistory((prev) => [...prev, message]);
 		setMessage('');
-		event.preventDefault();
 	};
 
-	function handleKeyPress(event: KeyboardEvent<HTMLInputElement>) {
+	function handleKeyPress(event: KeyboardEvent<HTMLTextAreaElement>) {
 		if (messageHistory.length === 0) {
 			return;
 		}
@@ -66,20 +72,61 @@ export default function ConsoleInput() {
 				setMessage(messageHistory[messagesCursor]);
 				break;
 			}
+
+			case 'Enter': {
+				if (event.shiftKey) {
+					return;
+				}
+
+				event.preventDefault();
+				handleFormSubmit();
+				break;
+			}
 		}
 	}
 	return (
-		<form className="flex h-full flex-1 gap-1" name="text" onSubmit={handleFormSubmit}>
-			<Input
-				className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none"
-				value={message}
-				placeholder="/help"
-				onKeyDown={handleKeyPress}
-				onChange={(event) => setMessage(event.currentTarget.value)}
-			/>
-			<Button className="h-full" variant="primary" type="submit" title="send" disabled={state !== 'connected' || !message}>
-				<Tran text="send" />
-			</Button>
+		<form
+			className="flex min-h-13 flex-1 gap-2 p-2 border-t"
+			name="text"
+			onSubmit={(event) => {
+				handleFormSubmit();
+				event.preventDefault();
+			}}
+		>
+			<div className="border border-border flex gap-1 rounded-md w-full bg-card">
+				<AutosizeTextarea
+					className="h-full w-full bg-card px-2 outline-none border-none min-h-13 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+					value={message}
+					placeholder="/help"
+					onKeyDown={handleKeyPress}
+					onChange={(event) => setMessage(event.currentTarget.value)}
+				/>
+				<div className="m-1 mt-auto flex items-center gap-2 min-h-9">
+					<Popover>
+						<PopoverTrigger>
+							<SmileIcon />
+						</PopoverTrigger>
+						<PopoverContent className="border-transparent bg-transparent">
+							<EmojiPicker
+								theme={theme === 'light' ? Theme.LIGHT : Theme.DARK}
+								onEmojiClick={(emoji) => {
+									setMessage(message + emoji.emoji);
+								}}
+							/>
+						</PopoverContent>
+					</Popover>
+					<Button
+						className="text-brand"
+						variant="ghost"
+						size="icon"
+						type="submit"
+						title="send"
+						disabled={state !== 'connected' || !message}
+					>
+						<SendIcon />
+					</Button>
+				</div>
+			</div>
 		</form>
 	);
 }
