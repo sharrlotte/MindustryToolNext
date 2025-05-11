@@ -21,7 +21,7 @@ export default function Page() {
 	const [language, setLanguage] = useState<Locale>(defaultLocale);
 
 	const axios = useClientApi();
-	const { data, isLoading, error } = useQuery({
+	const { isLoading, error } = useQuery({
 		queryKey: ['documents', language],
 		queryFn: () => getDocumentByLanguage(axios, language),
 	});
