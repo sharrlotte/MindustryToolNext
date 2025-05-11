@@ -3,8 +3,15 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
-import { Config, DEFAULT_PAGINATION_SIZE, DEFAULT_PAGINATION_TYPE, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY, SESSION_ID_PERSISTENT_KEY } from '@/constant/constant';
-import { cookieName, defaultLocale } from '@/i18n/config';
+import {
+	Config,
+	DEFAULT_PAGINATION_SIZE,
+	DEFAULT_PAGINATION_TYPE,
+	PAGINATION_SIZE_PERSISTENT_KEY,
+	PAGINATION_TYPE_PERSISTENT_KEY,
+	SESSION_ID_PERSISTENT_KEY,
+} from '@/constant/constant';
+import { Locale, cookieName, defaultLocale } from '@/i18n/config';
 import axiosInstance from '@/query/config/config';
 import { Session } from '@/types/response/Session';
 
@@ -65,10 +72,18 @@ export function useMe() {
 	return { highestRole };
 }
 
-export function SessionProvider({ children }: { children: ReactNode }) {
-	const [{ Locale, paginationSize, paginationType }, _setConfig] = useCookies([PAGINATION_TYPE_PERSISTENT_KEY, PAGINATION_SIZE_PERSISTENT_KEY, SESSION_ID_PERSISTENT_KEY, cookieName]);
+export function SessionProvider({ locale, children }: { locale: Locale; children: ReactNode }) {
+	const [{ Locale, paginationSize, paginationType }, _setConfig] = useCookies([
+		PAGINATION_TYPE_PERSISTENT_KEY,
+		PAGINATION_SIZE_PERSISTENT_KEY,
+		SESSION_ID_PERSISTENT_KEY,
+		cookieName,
+	]);
 
-	const setConfig = useCallback(<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }), [_setConfig]);
+	const setConfig = useCallback(
+		<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }),
+		[_setConfig],
+	);
 	const [session, setSession] = useState<SessionContextType>(() => ({
 		session: null,
 		state: 'loading',
@@ -76,7 +91,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 		config: {
 			paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
 			paginationSize: paginationSize ? Number(paginationSize) : DEFAULT_PAGINATION_SIZE,
-			Locale: Locale ?? defaultLocale,
+			Locale: locale ?? Locale ?? defaultLocale,
 		},
 		setConfig: setConfig,
 	}));
@@ -89,7 +104,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 				Locale: Locale ?? defaultLocale,
 			};
 
-			if (prev.config.paginationSize === config.paginationSize && prev.config.paginationType === config.paginationType && prev.config.Locale === config.Locale) {
+			if (
+				prev.config.paginationSize === config.paginationSize &&
+				prev.config.paginationType === config.paginationType &&
+				prev.config.Locale === config.Locale
+			) {
 				return prev;
 			}
 
@@ -103,7 +122,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 			.then((r) => r.data)
 			.then((data) => data ?? null)
 			.catch(() => null)
-			.then((data) => setSession((prev) => (data ? { ...prev, session: data, state: 'authenticated' } : { ...prev, session: null, state: 'unauthenticated' })));
+			.then((data) =>
+				setSession((prev) =>
+					data ? { ...prev, session: data, state: 'authenticated' } : { ...prev, session: null, state: 'unauthenticated' },
+				),
+			);
 	}, []);
 
 	return <SessionContext.Provider value={session}>{children}</SessionContext.Provider>;

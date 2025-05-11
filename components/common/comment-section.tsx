@@ -70,6 +70,7 @@ function CommentSection({ itemId }: CommentSectionProps) {
 							value={{ label: sort, value: sort }}
 							values={commentSorts.map((value) => ({ label: value, value: value as CommentSort }))}
 							onChange={(value) => setSort(value ?? 'newest')}
+							required
 						/>
 					</div>
 				</div>

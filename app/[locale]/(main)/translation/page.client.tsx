@@ -82,6 +82,7 @@ export default function TranslationPage() {
 								label: t(format(value)),
 								value: value,
 							}))}
+							required
 							onChange={(value) => setState({ isTranslated: value })}
 						/>
 					)}
@@ -94,7 +95,6 @@ export default function TranslationPage() {
 								label: t(locale),
 								value: locale,
 							}))}
-							nullable
 							onChange={(language) => setState({ language })}
 						/>
 					) : (

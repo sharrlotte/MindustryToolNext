@@ -15,7 +15,14 @@ export default function ErrorScreen({ error }: { error: TError }) {
 		reportError(error);
 	}, [error]);
 
-	if (typeof error === 'object' && 'error' in error && 'status' in error.error && error.error.status === 404) return notFound();
+	if (
+		typeof error === 'object' &&
+		'error' in error &&
+		typeof error.error === 'object' &&
+		'status' in error.error &&
+		error.error.status === 404
+	)
+		return notFound();
 
 	return (
 		<div className="error flex h-full w-full flex-col items-center justify-center gap-2 bg-background p-2">

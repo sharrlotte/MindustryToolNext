@@ -29,6 +29,7 @@ export default function ChangeLocaleForm() {
           label: t(value || 'en'),
           value,
         }))}
+        required
         searchBar={false}
         onChange={onLanguageChange}
       />

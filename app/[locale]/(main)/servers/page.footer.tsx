@@ -2,6 +2,7 @@
 
 import CreateServerDialog from '@/app/[locale]/(main)/servers/create-server.dialog';
 
+import { ServerIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import RequireLogin from '@/components/common/require-login';
 import Tran from '@/components/common/tran';
@@ -16,6 +17,7 @@ export default function ServerFooter({ create }: { create?: boolean }) {
 		<footer className="flex w-full justify-end gap-2">
 			<ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
 				<InternalLink variant="button-secondary" href="/server-managers">
+					<ServerIcon />
 					<Tran text="server-manager" />
 				</InternalLink>
 				<CreateServerDialog defaultOpen={!!create} />

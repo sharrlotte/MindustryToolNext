@@ -35,7 +35,7 @@ export default function ServerAdminList({ id }: ServerAdminListProps) {
 
 	return (
 		<AnimatePresence>
-			<ScrollContainer className="flex flex-wrap gap-2">
+			<ScrollContainer className="flex flex-wrap gap-2 h-fit">
 				{data?.map((admin) => <ServerAdminCard key={admin.id} id={id} admin={admin} />)}
 				<AddAdminDialog id={id} />
 			</ScrollContainer>

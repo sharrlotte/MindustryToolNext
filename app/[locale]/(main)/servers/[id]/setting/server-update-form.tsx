@@ -119,6 +119,7 @@ export default function ServerUpdateForm({ server }: Props) {
 											label: value,
 											value,
 										}))}
+										required
 										onChange={(value) => field.onChange(value)}
 									/>
 								</FormControl>
@@ -150,6 +151,7 @@ export default function ServerUpdateForm({ server }: Props) {
 												value,
 											})) ?? []
 										}
+										required
 										onChange={(value) => field.onChange(value)}
 									/>
 								</FormControl>

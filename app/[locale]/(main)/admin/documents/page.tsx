@@ -21,7 +21,7 @@ export default function Page() {
 	const [language, setLanguage] = useState<Locale>(defaultLocale);
 
 	const axios = useClientApi();
-	const { data, isLoading, error } = useQuery({
+	const { isLoading, error } = useQuery({
 		queryKey: ['documents', language],
 		queryFn: () => getDocumentByLanguage(axios, language),
 	});
@@ -41,6 +41,7 @@ export default function Page() {
 						label: t(locale),
 						value: locale,
 					}))}
+					required
 					onChange={(language) => setLanguage(language ?? 'en')}
 				/>
 				<CreateDocumentTreeDialog />

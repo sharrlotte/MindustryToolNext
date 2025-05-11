@@ -145,7 +145,6 @@ export default function UpdateTagDialog({ tag }: Props) {
 											value={{ label: mods.find((mod) => mod.id === field.value)?.name, value: field.value }}
 											values={mods.map((mod) => ({ value: mod.id, label: mod.name }))}
 											onChange={field.onChange}
-											nullable
 										/>
 									</FormControl>
 									<FormMessage />
@@ -166,7 +165,6 @@ export default function UpdateTagDialog({ tag }: Props) {
 											value={{ label: categories.find((category) => category.id === field.value)?.name, value: field.value }}
 											values={categories.map((category) => ({ value: category.id, label: category.name }))}
 											onChange={field.onChange}
-											nullable
 										/>
 									</FormControl>
 									<FormMessage />

@@ -67,20 +67,10 @@ export async function getServerLogins(axios: AxiosInstance, id: string, params: 
 
 	return result.data;
 }
-export async function getServerLoginCount(axios: AxiosInstance, id: string): Promise<number> {
-	const result = await axios.get(`/servers/${id}/logins/count`);
-
-	return result.data;
-}
 export async function getServerBuildLog(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<ServerBuildLog[]> {
 	const result = await axios.get(`/servers/${id}/build-log`, {
 		params: params,
 	});
-
-	return result.data;
-}
-export async function getServerBuildLogCount(axios: AxiosInstance, id: string): Promise<number> {
-	const result = await axios.get(`/servers/${id}/build-log/count`);
 
 	return result.data;
 }

@@ -6,7 +6,7 @@ import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
 import { IconNotification } from '@/components/common/icon-notification';
-import { FilterIcon, XIcon } from '@/components/common/icons';
+import { FilterIcon, SendIcon, XIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import MessageList from '@/components/common/message-list';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
@@ -15,6 +15,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import LogCard from '@/components/log/log-card';
 import { MessageCard } from '@/components/messages/message-card';
+import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -33,8 +34,8 @@ import { LogEnvironment, LogPaginationQuerySchema, LogPaginationQueryType } from
 
 export default function LogPage() {
 	return (
-		<ServerTabs className="p-2 h-full" value="live" name={'tab'} values={['live', 'static']}>
-			<ServerTabsList className="justify-start">
+		<ServerTabs className="h-full" value="live" name={'tab'} values={['live', 'static']}>
+			<ServerTabsList>
 				<ServerTabsTrigger value="live">
 					<Tran text="log.live" />
 				</ServerTabsTrigger>
@@ -54,8 +55,8 @@ export default function LogPage() {
 
 function LiveLog() {
 	return (
-		<div className="grid h-full w-full grid-rows-[1fr_3rem] gap-2 overflow-hidden">
-			<div className="flex h-full w-full overflow-hidden rounded-md bg-card">
+		<div className="grid h-full w-full grid-rows-[1fr_auto] bg-card overflow-hidden">
+			<div className="flex h-full w-full overflow-hidden rounded-md">
 				<div className="flex h-full w-full overflow-hidden">
 					<MessageList
 						className="flex h-full w-full flex-col gap-2"
@@ -87,15 +88,18 @@ function SendMessageButton() {
 	};
 
 	return (
-		<form className="flex h-10 flex-1 gap-2" name="text" onSubmit={handleFormSubmit}>
-			<Input
-				className="h-full w-full border border-border bg-background px-2 outline-none"
-				value={message}
-				onChange={(event) => setMessage(event.currentTarget.value)}
-			/>
-			<Button className="h-full" variant="primary" type="submit" title="send" disabled={state !== 'connected' || !message}>
-				<Tran text="send" />
-			</Button>
+		<form className="flex min-h-13 flex-1 gap-2 p-2 border-t" name="text" onSubmit={handleFormSubmit}>
+			<div className="border border-border flex gap-1 rounded-md w-full bg-card items-end">
+				<AutosizeTextarea
+					className="h-full w-full bg-card px-2 outline-none border-none min-h-13 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+					value={message}
+					onChange={(event) => setMessage(event.currentTarget.value)}
+				/>
+				<Button className='m-1' variant="secondary" type="submit" title="send" disabled={state !== 'connected' || !message}>
+					<SendIcon />
+					<Tran text="send" />
+				</Button>
+			</div>
 		</form>
 	);
 }

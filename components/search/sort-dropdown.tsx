@@ -24,6 +24,7 @@ export function SortDropdown({ sortBy, handleSortChange }: SortDropdownProps) {
       }))}
       onChange={handleSortChange}
       searchBar={false}
+      required
     />
   );
 }

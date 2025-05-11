@@ -41,14 +41,14 @@ export default function Page() {
 
 	return (
 		<div className="h-full overflow-hidden flex flex-col gap-2">
-			<section className="py-2 h-fit flex w-full gap-1 items-center justify-between">
+			<section className="p-2 h-fit flex w-full gap-1 items-center justify-between border-b">
 				<div className="flex items-center gap-1">
 					<FileHierarchy path={path} onClick={setPath} />
 				</div>
 			</section>
 			<ScrollContainer>
 				<InfinitePage
-					className="flex flex-col gap-2 p-2 h-full"
+					className="flex flex-col gap-2 h-full"
 					queryKey={['images']}
 					end
 					paramSchema={PaginationQuerySchema}
