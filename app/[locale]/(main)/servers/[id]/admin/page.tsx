@@ -42,10 +42,10 @@ export default async function Page({ params }: Props) {
 
 	return (
 		<div className="bg-card rounded-md p-4 space-y-2 h-full overflow-hidden flex flex-col">
-			<div className="flex gap-2 flex-col">
-				<h1 className="text-xl">
+			<div className="flex gap-1 flex-col">
+				<h2 className="text-xl">
 					<Tran asChild text="admin" />
-				</h1>
+				</h2>
 				<p className="text-muted-foreground text-sm">
 					<Tran asChild text="server.admin-description" />
 				</p>
