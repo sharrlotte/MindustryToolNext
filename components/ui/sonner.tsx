@@ -56,7 +56,7 @@ function toast(title: ReactNode, options?: ToastOptions) {
 		</div>,
 		{
 			...options,
-			duration: 5000,
+			duration: process.env.NODE_ENV === 'development' ? 100000 : 5000,
 		},
 	);
 
