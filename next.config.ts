@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
 	experimental: {
 		reactCompiler: true,
 	},
-	pageExtensions: ['tsx', 'md', 'mdx'],
+	pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
 	crossOrigin: 'anonymous',
 	reactStrictMode: true,
 	images: {
