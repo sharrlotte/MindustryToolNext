@@ -42,7 +42,7 @@ export default async function Page({ params }: Props) {
 
 	return (
 		<div className="bg-card rounded-md p-4 space-y-2 h-full overflow-hidden flex flex-col">
-			<div className="flex gap-2 justify-between items-center">
+			<div className="flex gap-2 flex-col">
 				<h1 className="text-xl">
 					<Tran asChild text="admin" />
 				</h1>
