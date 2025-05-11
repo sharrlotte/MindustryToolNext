@@ -28,11 +28,14 @@ export default function NavbarLink({ name, icon, path, regex, filter }: Props) {
 		<Tooltip>
 			<TooltipTrigger asChild>
 				<InternalLink
-					className={cn('flex h-10 items-center capitalize justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
-						'bg-brand text-brand-foreground': regex.some((r) => currentPath.match(r)),
-						'justify-start gap-2 py-2': visible,
-						'w-10': !visible,
-					})}
+					className={cn(
+						'flex h-10 items-center text-foreground/60 capitalize justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground text-sm',
+						{
+							'bg-brand text-brand-foreground': regex.some((r) => currentPath.match(r)),
+							'justify-start gap-2 py-2': visible,
+							'w-10': !visible,
+						},
+					)}
 					href={path}
 					aria-label={path}
 					onClick={() => setVisible(false)}

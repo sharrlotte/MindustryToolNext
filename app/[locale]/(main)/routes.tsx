@@ -205,7 +205,7 @@ export const groups: readonly PathGroup[] = [
 	},
 	{
 		key: 'admin',
-		name: <Tran className="font-semibold" text="admin" />,
+		name: <Tran className="font-semibold" text="admin" asChild />,
 		paths: [
 			{
 				id: 'admin',

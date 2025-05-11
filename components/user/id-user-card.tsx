@@ -33,7 +33,7 @@ function FletchUserCard({ id }: IdUserCardProps) {
 	});
 
 	if (isError || error) {
-		if ('status' in error && error.status === 404) {
+		if (typeof error === 'object' && 'status' in error && error.status === 404) {
 			return undefined;
 		}
 
