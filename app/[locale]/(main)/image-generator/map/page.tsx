@@ -122,7 +122,7 @@ function DownloadButton({ data }: { data: Blob }) {
 	}
 
 	return (
-		<Button className="px-2" onClick={download}>
+		<Button className="px-2" variant='secondary' onClick={download}>
 			<DownloadIcon className="size-5" />
 			<Tran text="download" />
 		</Button>
