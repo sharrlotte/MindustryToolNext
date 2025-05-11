@@ -24,6 +24,7 @@ import { ServerModes } from '@/types/request/UpdateServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { PlusIcon } from '@/components/common/icons';
 
 export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: boolean }) {
 	const [managerId, setManagerId] = useState<string | undefined>('not-selected-yet');
@@ -79,6 +80,7 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 			<Dialog defaultOpen={defaultOpen} open={open} onOpenChange={setOpen}>
 				<DialogTrigger asChild>
 					<Button className="min-w-20" variant="primary" title="server.add">
+						<PlusIcon />
 						<Tran text="server.add" />
 					</Button>
 				</DialogTrigger>
