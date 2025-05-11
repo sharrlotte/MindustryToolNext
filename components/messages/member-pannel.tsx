@@ -33,6 +33,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				className,
 			)}
 			animate={state}
+			initial="closed"
 			variants={{
 				open: {
 					width: isSmall ? 'min(100%,300px)' : 300,
@@ -57,12 +58,12 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 			>
 				{(page) =>
 					groupUserByRole(page).map(([name, group]) => (
-						<div key={name} className="grid gap-2">
-							<h3 className="font-semibold">
+						<div key={name} className="grid gap-1">
+							<h4 className="font-semibold">
 								<ColorAsRole roles={[group.role]}>
 									<Tran text={name} asChild />
 								</ColorAsRole>
-							</h3>
+							</h4>
 							{group.users.map((user) => (
 								<MemberCard key={user.id} user={user} />
 							))}
@@ -123,9 +124,8 @@ function groupUserByRole(users: User[]) {
 				role,
 				users: [],
 			};
-		} else {
-			result[role.name].users.push(user);
 		}
+		result[role.name].users.push(user);
 	};
 
 	for (const user of users) {
