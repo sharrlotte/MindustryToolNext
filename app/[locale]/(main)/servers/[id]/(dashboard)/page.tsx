@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React, { Fragment } from 'react';
+import React, { Fragment, Suspense } from 'react';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 import { PlayerList } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/player-list';
@@ -160,7 +160,9 @@ export default async function Page({ params }: Props) {
 						<ProtectedElement session={session} filter={showPlayer}>
 							{status === 'HOST' && players > 0 && (
 								<div className="flex min-w-[300px] flex-col gap-1 bg-card rounded-md w-full md:w-fit">
-									<PlayerList id={id} />
+									<Suspense>
+										<PlayerList id={id} />
+									</Suspense>
 								</div>
 							)}
 						</ProtectedElement>
