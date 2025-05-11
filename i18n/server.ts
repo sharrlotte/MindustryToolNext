@@ -71,17 +71,19 @@ const initI18next = async (language: Locale, namespace?: string | string[]) => {
 	return i18nInstance;
 };
 
-export const getTranslation = cache(
-	async (locale: Locale, namespace: string | string[] = 'common', options: { keyPrefix?: string } = {}) => {
-		const language = locales.includes(locale as any) ? locale : defaultLocale;
-		namespace = Array.isArray(namespace)? namespace.map(n => n.toLowerCase()) : namespace.toLowerCase();
+export const getTranslation = async (
+	locale: Locale,
+	namespace: string | string[] = 'common',
+	options: { keyPrefix?: string } = {},
+) => {
+	const language = locales.includes(locale as any) ? locale : defaultLocale;
+	namespace = Array.isArray(namespace) ? namespace.map((n) => n.toLowerCase()) : namespace.toLowerCase();
 
-		const i18nextInstance = await initI18next(language, namespace);
-		const t = i18nextInstance.getFixedT(language, namespace, options.keyPrefix)
+	const i18nextInstance = await initI18next(language, namespace);
+	const t = i18nextInstance.getFixedT(language, namespace, options.keyPrefix);
 
-		return {
-			t: (key: string, options?: any) => t(key.toLowerCase(), options) as string,
-			i18n: i18nextInstance,
-		};
-	},
-);
+	return {
+		t: (key: string, options?: any) => t(key.toLowerCase(), options) as string,
+		i18n: i18nextInstance,
+	};
+};

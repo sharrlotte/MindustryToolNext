@@ -1,6 +1,5 @@
 import fs from 'fs';
 import p from 'path';
-import { cache } from 'react';
 import removeMd from 'remove-markdown';
 
 export type Doc = {
@@ -72,7 +71,7 @@ export function readDocsByLocale(locale: string) {
 	return readDocs(localeFolder);
 }
 
-const readDocs = cache((localeFolder: string): Doc[] => {
+const readDocs = (localeFolder: string): Doc[] => {
 	if (!fs.existsSync(localeFolder)) {
 		return [];
 	}
@@ -119,7 +118,7 @@ const readDocs = cache((localeFolder: string): Doc[] => {
 		.filter(Boolean) //
 		.reduce<Doc[]>((prev, curr) => (Array.isArray(curr) ? [...prev, ...curr] : [...prev, curr]), [])
 		.sort((a, b) => (a.metadata.position ?? 0) - (b.metadata.position ?? 0));
-});
+};
 
 function readDocFile(path: string, filename: string): Doc {
 	if (!fs.existsSync(path)) {
