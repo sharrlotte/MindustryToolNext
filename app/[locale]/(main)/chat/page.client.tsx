@@ -1,23 +1,17 @@
 'use client';
 
-import { Theme } from 'emoji-picker-react';
-import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
-import React, { FormEvent, useState } from 'react';
+import React from 'react';
 
 import LoginButton from '@/components/button/login.button';
-import { SearchIcon, SendIcon, SmileIcon } from '@/components/common/icons';
+import { SearchIcon } from '@/components/common/icons';
 import MessageList from '@/components/common/message-list';
 import Tran from '@/components/common/tran';
+import ChatInput from '@/components/messages/chat-input';
 import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/components/messages/member-pannel';
 import { MessageCard } from '@/components/messages/message-card';
-import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
-import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { useSession } from '@/context/session.context';
-import { useSocket } from '@/context/socket.context';
-import useMessage from '@/hooks/use-message';
 import IsSmall from '@/layout/is-small';
 import ProtectedElement from '@/layout/protected-element';
 
@@ -41,7 +35,7 @@ export default function ChatPage() {
 							<IsSmall small={<MemberPanel room="GLOBAL" />} />
 						</div>
 					</div>
-					<ChatInput />
+					<GlobalChatInput />
 				</div>
 				<IsSmall notSmall={<MemberPanel room="GLOBAL" />} />
 			</div>
@@ -66,22 +60,8 @@ function MessageContainer() {
 	);
 }
 
-function ChatInput() {
-	const [message, setMessage] = useState<string>('');
+function GlobalChatInput() {
 	const { session } = useSession();
-	const { state } = useSocket();
-
-	const { sendMessage } = useMessage({
-		room: 'GLOBAL',
-	});
-
-	const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-		sendMessage(message);
-		setMessage('');
-		event.preventDefault();
-	};
-
-	const { theme } = useTheme();
 
 	return (
 		<ProtectedElement
@@ -95,40 +75,7 @@ function ChatInput() {
 				</div>
 			}
 		>
-			<form className="flex min-h-13 flex-1 gap-2 p-2 border-t" name="text" onSubmit={handleFormSubmit}>
-				<div className="border border-border flex gap-1 rounded-md w-full bg-card">
-					<AutosizeTextarea
-						className="h-full w-full bg-card px-2 outline-none border-none min-h-13 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-						value={message}
-						onChange={(event) => setMessage(event.currentTarget.value)}
-					/>
-					<div className="m-1 mt-auto flex items-center gap-2 min-h-9">
-						<Popover>
-							<PopoverTrigger>
-								<SmileIcon />
-							</PopoverTrigger>
-							<PopoverContent className="border-transparent bg-transparent">
-								<EmojiPicker
-									theme={theme === 'light' ? Theme.LIGHT : Theme.DARK}
-									onEmojiClick={(emoji) => {
-										setMessage(message + emoji.emoji);
-									}}
-								/>
-							</PopoverContent>
-						</Popover>
-						<Button
-							className="text-brand"
-							variant="ghost"
-							size="icon"
-							type="submit"
-							title="send"
-							disabled={state !== 'connected' || !message}
-						>
-							<SendIcon />
-						</Button>
-					</div>
-				</div>
-			</form>
+			<ChatInput room="GLOBAL" />
 		</ProtectedElement>
 	);
 }

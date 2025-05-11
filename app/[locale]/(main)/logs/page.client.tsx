@@ -1,12 +1,12 @@
 'use client';
 
-import React, { FormEvent, useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
 import { IconNotification } from '@/components/common/icon-notification';
-import { FilterIcon, SendIcon, XIcon } from '@/components/common/icons';
+import { FilterIcon, XIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import MessageList from '@/components/common/message-list';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
@@ -14,8 +14,8 @@ import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import LogCard from '@/components/log/log-card';
+import ChatInput from '@/components/messages/chat-input';
 import { MessageCard } from '@/components/messages/message-card';
-import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -24,9 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
 import { LogType } from '@/constant/constant';
-import { useSocket } from '@/context/socket.context';
 import useClientQuery from '@/hooks/use-client-query';
-import useMessage from '@/hooks/use-message';
 import { cn } from '@/lib/utils';
 import { getLogCollections, getLogCount, getLogs } from '@/query/log';
 import { Log } from '@/types/Log';
@@ -69,38 +67,8 @@ function LiveLog() {
 					</MessageList>
 				</div>
 			</div>
-			<SendMessageButton />
+			<ChatInput room="LOG" />
 		</div>
-	);
-}
-function SendMessageButton() {
-	const [message, setMessage] = useState<string>('');
-	const { state } = useSocket();
-
-	const { sendMessage } = useMessage({
-		room: 'LOG',
-	});
-
-	const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-		sendMessage(message);
-		setMessage('');
-		event.preventDefault();
-	};
-
-	return (
-		<form className="flex min-h-13 flex-1 gap-2 p-2 border-t" name="text" onSubmit={handleFormSubmit}>
-			<div className="border border-border flex gap-1 rounded-md w-full bg-card items-end">
-				<AutosizeTextarea
-					className="h-full w-full bg-card px-2 outline-none border-none min-h-13 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-					value={message}
-					onChange={(event) => setMessage(event.currentTarget.value)}
-				/>
-				<Button className='m-1' variant="secondary" type="submit" title="send" disabled={state !== 'connected' || !message}>
-					<SendIcon />
-					<Tran text="send" />
-				</Button>
-			</div>
-		</form>
 	);
 }
 

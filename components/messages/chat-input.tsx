@@ -3,8 +3,7 @@
 import { Theme } from 'emoji-picker-react';
 import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
-import { useParams } from 'next/navigation';
-import { FormEvent, KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
 
 import { SendIcon, SmileIcon } from '@/components/common/icons';
 import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
@@ -13,11 +12,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 import { useSocket } from '@/context/socket.context';
 import useMessage from '@/hooks/use-message';
+import { cn } from '@/lib/utils';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
-export default function ConsoleInput() {
-	const { id } = useParams();
+export default function ChatInput({ className, room, placeholder }: { className?: string; placeholder?: string; room: string }) {
 	const { state } = useSocket();
 	const { theme } = useTheme();
 
@@ -27,27 +26,22 @@ export default function ConsoleInput() {
 	const [messagesCursor, setMessageCursor] = useState(0);
 
 	const { sendMessage } = useMessage({
-		room: `SERVER-${id}`,
+		room,
 		method: 'MESSAGE',
 	});
 
 	const handleFormSubmit = () => {
-		if (message.startsWith('/')) {
-			sendMessage(message.substring(1));
-		} else {
-			sendMessage('say ' + message);
-		}
+		sendMessage(message);
 		setMessageHistory((prev) => [...prev, message]);
 		setMessage('');
 	};
 
 	function handleKeyPress(event: KeyboardEvent<HTMLTextAreaElement>) {
-		if (messageHistory.length === 0) {
-			return;
-		}
-
 		switch (event.key) {
 			case 'ArrowUp': {
+				if (messageHistory.length === 0) {
+					return;
+				}
 				setMessageCursor((prev) => {
 					prev--;
 
@@ -62,6 +56,10 @@ export default function ConsoleInput() {
 			}
 
 			case 'ArrowDown': {
+				if (messageHistory.length === 0) {
+					return;
+				}
+
 				setMessageCursor((prev) => {
 					prev++;
 
@@ -86,7 +84,7 @@ export default function ConsoleInput() {
 	}
 	return (
 		<form
-			className="flex min-h-13 flex-1 gap-2 p-2 border-t"
+			className={cn('flex min-h-13 flex-1 gap-2 p-2 border-t', className)}
 			name="text"
 			onSubmit={(event) => {
 				handleFormSubmit();
@@ -97,7 +95,7 @@ export default function ConsoleInput() {
 				<AutosizeTextarea
 					className="h-full w-full bg-card px-2 outline-none border-none min-h-13 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
 					value={message}
-					placeholder="/help"
+					placeholder={placeholder}
 					onKeyDown={handleKeyPress}
 					onChange={(event) => setMessage(event.currentTarget.value)}
 				/>

@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 
-import ConsoleInput from '@/app/[locale]/(main)/servers/[id]/console/console-input';
 import ServerConsolePage from '@/app/[locale]/(main)/servers/[id]/console/page.client';
+
+import ChatInput from '@/components/messages/chat-input';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
@@ -24,7 +25,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	};
 }
 
-export default async function Page() {
+export default async function Page({ params }: Props) {
+	const { id } = await params;
+
 	return (
 		<div className="grid h-full w-full grid-rows-[1fr_auto] overflow-hidden">
 			<div className="grid h-full w-full overflow-hidden">
@@ -32,7 +35,7 @@ export default async function Page() {
 					<ServerConsolePage />
 				</div>
 			</div>
-			<ConsoleInput />
+			<ChatInput room={`SERVER-${id}`} placeholder="/help" />
 		</div>
 	);
 }
