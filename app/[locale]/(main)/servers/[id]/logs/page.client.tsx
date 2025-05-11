@@ -35,7 +35,7 @@ export default function PageClient({ id }: Props) {
 					</ServerTabsTrigger>
 				</ServerTabsList>
 			</div>
-			<div className="border rounded-md p-2 h-full flex flex-col">
+			<div className="h-full flex flex-col overflow-hidden gap-2">
 				<ScrollContainer>
 					<ServerTabsContent className="space-y-2" value="login-log">
 						<ListLayout>
