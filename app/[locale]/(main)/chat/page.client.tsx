@@ -5,13 +5,13 @@ import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
 import React, { FormEvent, useState } from 'react';
 
-import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/components/messages/member-pannel';
-
 import LoginButton from '@/components/button/login.button';
 import { SearchIcon, SendIcon, SmileIcon } from '@/components/common/icons';
 import MessageList from '@/components/common/message-list';
 import Tran from '@/components/common/tran';
+import { MemberPanel, MemberPanelProvider, MemberPanelTrigger } from '@/components/messages/member-pannel';
 import { MessageCard } from '@/components/messages/message-card';
+import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
@@ -56,7 +56,9 @@ function MessageContainer() {
 			queryKey={['global']}
 			room="GLOBAL"
 			params={{ size: 50 }}
-			noResult={<div className="flex h-full w-full items-center justify-center font-semibold">{"Let's start a conversation"}</div>}
+			noResult={
+				<div className="flex h-full w-full items-center justify-center font-semibold">{"Let's start a conversation"}</div>
+			}
 		>
 			{(data) => <MessageCard key={data.id} message={data} />}
 		</MessageList>
@@ -92,26 +94,39 @@ function ChatInput() {
 				</div>
 			}
 		>
-			<form className="flex h-14 flex-1 gap-2 border-t px-2 py-2" name="text" onSubmit={handleFormSubmit}>
-				<div className="flex w-full items-center gap-2 rounded-md border bg-background px-2">
-					<input className="h-full w-full bg-transparent outline-none" value={message} onChange={(event) => setMessage(event.currentTarget.value)} />
-					<Popover>
-						<PopoverTrigger>
-							<SmileIcon />
-						</PopoverTrigger>
-						<PopoverContent className="border-transparent bg-transparent">
-							<EmojiPicker
-								theme={theme === 'light' ? Theme.LIGHT : Theme.DARK}
-								onEmojiClick={(emoji) => {
-									setMessage(message + emoji.emoji);
-								}}
-							/>
-						</PopoverContent>
-					</Popover>
+			<form className="flex min-h-13 flex-1 gap-2 p-2 border-t" name="text" onSubmit={handleFormSubmit}>
+				<div className="border border-border flex gap-1 rounded-md w-full bg-card">
+					<AutosizeTextarea
+						className="h-full w-full bg-card px-2 outline-none border-none min-h-13 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+						value={message}
+						onChange={(event) => setMessage(event.currentTarget.value)}
+					/>
+					<div className="m-1 mt-auto flex items-center gap-2 min-h-9">
+						<Popover>
+							<PopoverTrigger>
+								<SmileIcon />
+							</PopoverTrigger>
+							<PopoverContent className="border-transparent bg-transparent">
+								<EmojiPicker
+									theme={theme === 'light' ? Theme.LIGHT : Theme.DARK}
+									onEmojiClick={(emoji) => {
+										setMessage(message + emoji.emoji);
+									}}
+								/>
+							</PopoverContent>
+						</Popover>
+						<Button
+							className="text-brand"
+							variant="ghost"
+							size="icon"
+							type="submit"
+							title="send"
+							disabled={state !== 'connected' || !message}
+						>
+							<SendIcon />
+						</Button>
+					</div>
 				</div>
-				<Button className="h-full" variant="outline" type="submit" title="send" disabled={state !== 'connected' || !message}>
-					<SendIcon />
-				</Button>
 			</form>
 		</ProtectedElement>
 	);

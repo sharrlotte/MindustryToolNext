@@ -42,6 +42,9 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				},
 			}}
 		>
+			<div className="px-4 flex items-center h-[45px] border-b w-full">
+				<Tran text="member" />
+			</div>
 			<InfinitePage
 				className="px-2 grid gap-2 w-full"
 				queryKey={['room', room, 'members']}
@@ -134,5 +137,7 @@ function groupUserByRole(users: User[]) {
 		}
 	}
 
-	return Object.entries(result).sort((a, b) => b[1].role.position - a[1].role.position);
+	return Object.entries(result)
+		.sort((a, b) => b[1].role.position - a[1].role.position)
+		.filter((r) => r[1].users.length > 0);
 }
