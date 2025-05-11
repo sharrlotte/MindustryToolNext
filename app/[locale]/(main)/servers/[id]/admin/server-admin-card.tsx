@@ -33,7 +33,7 @@ export default function ServerAdminCard({ id, admin }: ServerAdminCardProps) {
 	return (
 		<motion.div
 			layout
-			className="group h-fit cursor-pointer bg-secondary rounded-md p-2 gap-4 flex justify-between items-center border"
+			className="group h-fit cursor-pointer bg-secondary rounded-md p-1 gap-2 flex justify-between items-center border"
 			initial={{ opacity: 0, scale: 0 }}
 			animate={{ opacity: 1, scale: 1 }}
 			exit={{ opacity: 0, scale: 0 }}

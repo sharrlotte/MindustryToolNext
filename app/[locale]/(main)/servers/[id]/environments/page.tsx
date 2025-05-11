@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			description,
 			images: `${env.url.api}/servers/${id}/image`,
 		},
-		alternates: generateAlternate(`/servers/${id}/env`),
+		alternates: generateAlternate(`/servers/${id}/environments`),
 	};
 }
 export default async function Page({ params }: Props) {

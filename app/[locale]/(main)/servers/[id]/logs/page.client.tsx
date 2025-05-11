@@ -21,7 +21,7 @@ type Props = {
 };
 export default function PageClient({ id }: Props) {
 	return (
-		<ServerTabs className="gap-2" name="type" value="login-log" values={['login-log', 'kick-log', 'building-destroy-log']}>
+		<ServerTabs className="gap-2 p-2" name="type" value="login-log" values={['login-log', 'kick-log', 'building-destroy-log']}>
 			<div className="flex justify-between items-center">
 				<ServerTabsList className="w-fit rounded-md border">
 					<ServerTabsTrigger className="h-10" value="login-log">
@@ -35,7 +35,7 @@ export default function PageClient({ id }: Props) {
 					</ServerTabsTrigger>
 				</ServerTabsList>
 			</div>
-			<div className="border rounded-md p-2 h-full flex flex-col">
+			<div className="h-full flex flex-col overflow-hidden gap-2">
 				<ScrollContainer>
 					<ServerTabsContent className="space-y-2" value="login-log">
 						<ListLayout>

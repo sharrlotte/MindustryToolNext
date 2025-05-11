@@ -5,10 +5,11 @@ import { useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
 import ErrorMessage from '@/components/common/error-message';
-import { PlusIcon } from '@/components/common/icons';
+import { PlusIcon, SearchIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
@@ -44,7 +45,7 @@ export default function AddAdminDialog({ id }: AddAdminDialogProps) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<div className="group cursor-pointer bg-secondary rounded-md p-2 gap-4 flex justify-between items-center border">
+				<div className="group cursor-pointer bg-secondary rounded-md p-1 gap-2 flex justify-between items-center border">
 					<PlusIcon />
 					<Tran text="server.add-admin" />
 				</div>
@@ -54,7 +55,10 @@ export default function AddAdminDialog({ id }: AddAdminDialogProps) {
 					<Tran text="server.add-admin" />
 				</DialogTitle>
 				<DialogDescription></DialogDescription>
-				<Input value={name} onChange={(event) => setName(event.currentTarget.value)} />
+				<SearchBar>
+					<SearchIcon />
+					<SearchInput value={name} onChange={setName} />
+				</SearchBar>
 				<AnimatePresence>
 					<ScrollContainer className="space-y-1">
 						{isLoading ? ( //

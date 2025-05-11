@@ -19,7 +19,7 @@ type Props = {
 
 export default function ServerPluginPage({ id }: Props) {
 	return (
-		<>
+		<div className="h-full w-full overflow-hidden p-2">
 			<ScrollContainer>
 				<InfinitePage
 					className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
@@ -37,6 +37,6 @@ export default function ServerPluginPage({ id }: Props) {
 					queryKey={['servers', id, 'plugins', 'total']}
 				/>
 			</PaginationFooter>
-		</>
+		</div>
 	);
 }

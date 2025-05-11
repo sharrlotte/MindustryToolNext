@@ -96,7 +96,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 		},
 		{
 			id: 'env', //
-			href: '/env',
+			href: '/environments',
 			label: <Tran text="env" />,
 			icon: <KeyRoundIcon />,
 			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
@@ -128,7 +128,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 					))}
 				</NavLinkContainer>
 			</NavLinkProvider>
-			<div className="h-full w-full overflow-hidden flex flex-col p-2" key="child">
+			<div className="h-full w-full overflow-hidden flex flex-col" key="child">
 				{children}
 			</div>
 		</div>

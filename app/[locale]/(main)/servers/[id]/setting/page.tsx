@@ -50,7 +50,7 @@ export default async function Page({ params }: Props) {
 	}
 
 	return (
-		<ScrollContainer className="flex h-full flex-col gap-2">
+		<ScrollContainer className="flex h-full flex-col gap-6 bg-card divide-y">
 			<ServerUpdateForm server={server} />
 			<ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
 				<ServerUpdateAdminForm server={server} />
