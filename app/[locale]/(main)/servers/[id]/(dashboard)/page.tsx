@@ -146,17 +146,17 @@ export default async function Page({ params }: Props) {
 									<Tran text="server.server-is-not-running" />
 								)}
 							</div>
-							{status === 'HOST' && (
-								<Image
-									key={status}
-									className="flex p-4 max-w-[50dvw] h-auto rounded-sm landscape:max-h-[50dvh] landscape:max-w-none"
-									src={`${env.url.api}/servers/${id}/image`}
-									alt={name}
-									width={500}
-									height={500}
-								/>
-							)}
 						</div>
+						{status === 'HOST' && (
+							<Image
+								key={status}
+								className="flex max-w-[50dvw] h-auto rounded-md overflow-hidden landscape:max-h-[50dvh] landscape:max-w-none"
+								src={`${env.url.api}/servers/${id}/image`}
+								alt={name}
+								width={500}
+								height={500}
+							/>
+						)}
 						<ProtectedElement session={session} filter={showPlayer}>
 							{status === 'HOST' && players > 0 && (
 								<div className="flex min-w-[300px] flex-col gap-1 bg-card rounded-md w-full md:w-fit">
