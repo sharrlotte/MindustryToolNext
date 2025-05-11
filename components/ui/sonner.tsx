@@ -41,7 +41,7 @@ function toast(title: ReactNode, options?: ToastOptions) {
 	const id = defaultToast(
 		<div
 			className={cn(
-				'grid text-base text-foreground border-transparent w-full rounded-lg relative p-4 bg-card border',
+				'grid text-base text-foreground border-transparent w-full rounded-lg relative p-4 bg-card',
 				options?.className,
 			)}
 		>
