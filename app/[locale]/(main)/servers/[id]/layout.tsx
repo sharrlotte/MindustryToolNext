@@ -96,7 +96,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 		},
 		{
 			id: 'env', //
-			href: '/env',
+			href: '/environments',
 			label: <Tran text="env" />,
 			icon: <KeyRoundIcon />,
 			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
