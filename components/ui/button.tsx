@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { Slot } from '@radix-ui/react-slot';
 
 const buttonVariants = cva(
-	'inline-flex items-center gap-2 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 text-nowrap',
+	'inline-flex items-center gap-1 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 text-nowrap',
 	{
 		variants: {
 			variant: {
@@ -22,11 +22,10 @@ const buttonVariants = cva(
 				link: 'text-primary underline-offset-4 hover:underline',
 				icon: 'p-0',
 				command: 'hover:bg-destructive/20 justify-start gap-1 rounded-sm p-0 w-full',
-				'command-destructive':
-					'justify-start gap-1 hover:bg-destructive rounded-sm p-0 text-destructive-foreground w-full',
+				'command-destructive': 'justify-start gap-1 hover:bg-destructive rounded-sm p-0 text-destructive-foreground w-full',
 			},
 			size: {
-				default: 'h-9 px-4 py-2',
+				default: 'h-9 px-3 py-2',
 				sm: 'h-8 rounded-md px-3 text-xs',
 				lg: 'h-10 rounded-md px-8',
 				icon: 'h-7 w-7 aspect-square p-0',
