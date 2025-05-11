@@ -8,7 +8,10 @@ import { captureException } from '@sentry/nextjs';
 
 export function reportError(error: any) {
 	reportErrorToBackend(axiosInstance, getLoggedErrorMessage(error));
-	captureException(error);
+
+	if (process.env.SENTRY) {
+		captureException(error);
+	}
 }
 export type TError = Error | { error: { message: string; name?: string } | Error } | string | { message: string; name?: string };
 export type ApiError = {

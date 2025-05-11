@@ -76,7 +76,7 @@ type RootProps = {
 };
 
 export async function generateStaticParams() {
-	return locales.map((locale) => ({ locale }));
+	return process.env.SENTRY ? locales.map((locale) => ({ locale })) : [{ locale: 'en' }];
 }
 
 export default async function Root({ children, params }: RootProps) {
@@ -89,7 +89,13 @@ export default async function Root({ children, params }: RootProps) {
 
 	return (
 		<html
-			className={cn('dark h-full w-full overflow-hidden bg-background text-foreground antialiased', noto.variable, inter.variable, icon.variable, locale === 'kr' ? 'font-noto' : 'font-inter')}
+			className={cn(
+				'dark h-full w-full overflow-hidden bg-background text-foreground antialiased',
+				noto.variable,
+				inter.variable,
+				icon.variable,
+				locale === 'kr' ? 'font-noto' : 'font-inter',
+			)}
 			lang={locale}
 			data-color-mode="dark"
 			suppressHydrationWarning
