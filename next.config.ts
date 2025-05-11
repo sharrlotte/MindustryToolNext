@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
 	experimental: {
 		reactCompiler: true,
 	},
-	pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+	pageExtensions: ['tsx'],
 	crossOrigin: 'anonymous',
 	reactStrictMode: true,
 	images: {
@@ -104,12 +104,15 @@ const nextConfig: NextConfig = {
 	},
 };
 
-const withMDX = createMDX({
-	options: {
-		remarkPlugins: [[frontmatter, { type: 'yaml', marker: '-' }], [remarkGfm]],
-		rehypePlugins: [rehypeHighlight],
-	},
-});
+const withMDX =
+	process.env.NODE_ENV === 'development'
+		? (config: NextConfig) => config
+		: createMDX({
+				options: {
+					remarkPlugins: [[frontmatter, { type: 'yaml', marker: '-' }], [remarkGfm]],
+					rehypePlugins: [rehypeHighlight],
+				},
+			});
 
 const analyze = process.env.ANALYZE === 'true';
 

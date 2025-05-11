@@ -18,9 +18,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
 		<Sonner
 			theme={theme as ToasterProps['theme']}
 			className="toaster group p-4 m-1"
+			style={{
+				gap: 6,
+			}}
 			toastOptions={{
 				classNames: {
-					toast: 'group p-0 group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:shadow-lg',
+					toast: 'group p-0 group-[.toaster]:bg-card group-[.toaster]:text-foreground group-[.toaster]:shadow-lg',
 					description: 'group-[.toast]:text-muted-foreground',
 					actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
 					cancelButton: 'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground',
@@ -39,12 +42,7 @@ type ToastOptions = {
 
 function toast(title: ReactNode, options?: ToastOptions) {
 	const id = defaultToast(
-		<div
-			className={cn(
-				'grid text-base text-foreground border-transparent w-full rounded-lg relative p-4 bg-card',
-				options?.className,
-			)}
-		>
+		<div className={cn('grid text-base text-foreground w-full rounded-lg relative p-4 bg-card border-card', options?.className)}>
 			<div className="size-4 absolute top-2 right-2 cursor-pointer" onClick={() => defaultToast.dismiss(id)}>
 				<XIcon className="size-4" />
 			</div>
@@ -66,7 +64,7 @@ function toast(title: ReactNode, options?: ToastOptions) {
 toast.success = (title: ReactNode, options?: ToastOptions) => {
 	return toast(title, {
 		icon: <CheckCircleIcon className="size-4" />,
-		className: 'text-success-foreground bg-success',
+		className: 'text-success-foreground bg-success border-success',
 		...options,
 	});
 };
@@ -74,7 +72,7 @@ toast.success = (title: ReactNode, options?: ToastOptions) => {
 toast.error = (title: ReactNode, options?: ToastOptions) => {
 	return toast(title, {
 		icon: <XCircleIcon className="size-4" />,
-		className: 'text-destructive-foreground bg-destructive',
+		className: 'text-destructive-foreground bg-destructive border-destructive',
 		...options,
 	});
 };
@@ -82,7 +80,7 @@ toast.error = (title: ReactNode, options?: ToastOptions) => {
 toast.warning = (title: ReactNode, options?: ToastOptions) => {
 	return toast(title, {
 		icon: <AlertTriangleIcon className="size-4" />,
-		className: 'text-warning-foreground bg-warning',
+		className: 'text-warning-foreground bg-warning border-warning',
 		...options,
 	});
 };
