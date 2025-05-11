@@ -201,7 +201,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
 	const { invalidateByKey } = useQueriesData();
 
 	const languages = useLanguages();
-	const { t } = useI18n();
+	const { t } = useI18n(['upload', 'common']);
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: (data: CreatePostRequest) => createPost(axios, data),
@@ -239,7 +239,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
 				<div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
 					<Input
 						className="w-full rounded-sm  outline-none hover:outline-none"
-						placeholder={t('upload.title')}
+						placeholder={t('title')}
 						value={title}
 						onChange={(event) => setTitle(event.currentTarget.value)}
 					/>
@@ -247,7 +247,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
 				</div>
 				<div className="flex items-center justify-start gap-2 overflow-hidden rounded-md ">
 					<ComboBox
-						placeholder={t('upload.select-language')}
+						placeholder={t('select-language')}
 						value={{ label: t(language || 'en'), value: language }}
 						values={languages.map((value) => ({
 							value,
