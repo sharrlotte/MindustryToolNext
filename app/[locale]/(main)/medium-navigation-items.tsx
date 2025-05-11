@@ -81,12 +81,12 @@ export function PathGroupElement({ group }: PathGroupElementProps) {
 	const { key, name, paths } = group;
 
 	return (
-		<nav className="flex flex-col" key={key}>
+		<nav className="flex flex-col gap-1" key={key}>
 			{name && (
 				<>
 					<Divider />
 					<NavbarVisible>
-						<span className="px-1 uppercase py-2 font-semibold">{name}</span>
+						<span className="capitalize p-1 font-semibold">{name}</span>
 					</NavbarVisible>
 				</>
 			)}

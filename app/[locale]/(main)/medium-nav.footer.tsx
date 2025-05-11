@@ -22,7 +22,7 @@ export default function MediumNavFooter() {
 			<Divider />
 			<NotificationDialog />
 			<InternalLink
-				className={cn('flex h-10 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
+				className={cn('flex h-9 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
 					'justify-start gap-2 py-2': visible,
 				})}
 				href="/users/@me/setting"
