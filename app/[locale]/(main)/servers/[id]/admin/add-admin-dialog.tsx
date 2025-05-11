@@ -45,7 +45,7 @@ export default function AddAdminDialog({ id }: AddAdminDialogProps) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<div className="group cursor-pointer bg-secondary rounded-md p-2 gap-4 flex justify-between items-center border">
+				<div className="group cursor-pointer bg-secondary rounded-md p-1 gap-2 flex justify-between items-center border">
 					<PlusIcon />
 					<Tran text="server.add-admin" />
 				</div>
