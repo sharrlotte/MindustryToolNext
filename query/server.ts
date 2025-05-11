@@ -74,6 +74,7 @@ export async function getServerBuildLog(axios: AxiosInstance, id: string, params
 
 	return result.data;
 }
+
 export async function getServerMaps(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<ServerMap[]> {
 	const result = await axios.get(`/servers/${id}/maps`, {
 		params: params,

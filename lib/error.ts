@@ -13,7 +13,19 @@ export function reportError(error: any) {
 		captureException(error);
 	}
 }
-export type TError = Error | { error: { message: string; name?: string } | Error } | string | { message: string; name?: string };
+export type TError =
+	| Error
+	| { error: { message: string; name?: string } | Error }
+	| string
+	| { message: string; name?: string }
+	| {
+			response: {
+				data: {
+					status: number;
+					message: string;
+				};
+			};
+	  };
 export type ApiError = {
 	error: any;
 };
@@ -30,6 +42,12 @@ export function getErrorMessage(error: TError) {
 
 	if (typeof error === 'string') {
 		return error;
+	}
+
+	if ('response' in error) {
+		if (error.response?.data?.message) {
+			return error.response?.data?.message;
+		}
 	}
 
 	if ('error' in error) {
@@ -61,8 +79,14 @@ export function getLoggedErrorMessage(error: TError) {
 			return getLoggedErrorMessage(error.error);
 		}
 
+		if ('response' in error) {
+			if (error.response?.data?.message) {
+				return error.response?.data?.message;
+			}
+		}
+
 		if (typeof window !== 'undefined') {
-			if (/Loading chunk [\d]+ failed/.test(error?.message) || error.name === 'ChunkLoadError') {
+			if (typeof error === 'object' && 'name' in error && error.name === 'ChunkLoadError') {
 				const reloadAttemps = localStorage.getItem('RELOAD_ATTEMPTS');
 
 				if (reloadAttemps && parseInt(reloadAttemps) < 3) {

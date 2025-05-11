@@ -31,7 +31,7 @@ export function PlayerList({ id }: PlayerListProps) {
 	}
 
 	return (
-		<div className="grid gap-2 p-4 min-w-[300px]">
+		<div className="grid gap-2 p-4 min-w-[300px] max-w-[400px]">
 			{data
 				?.sort((a, b) => a.name.localeCompare(b.name))
 				?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
@@ -71,7 +71,7 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid }
 	return (
 		<div className="flex items-center gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1">
 			<div className="rounded-full size-2" style={{ backgroundColor: `#${team.color}` }} />
-			<div className="flex text-lg justify-between gap-1 items-center w-full">
+			<div className="flex justify-between gap-1 items-center w-full">
 				<ColorText className="font-semibold" text={name} />
 				<div className="flex gap-1 items-center">
 					{locale && (localeToFlag[locale] ?? locale)}
