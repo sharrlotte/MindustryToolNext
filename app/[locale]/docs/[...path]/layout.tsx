@@ -260,6 +260,8 @@ function NavBarDoc({
 }
 
 export function generateStaticParams() {
+	if (!process.env.SENTRY) return [];
+
 	const localeFolders = p.join(process.cwd(), 'docs');
 	const locales = fs.readdirSync(localeFolders);
 

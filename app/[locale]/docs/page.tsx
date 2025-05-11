@@ -8,38 +8,38 @@ import { getTranslation } from '@/i18n/server';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 
 export async function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+	return process.env.SENTRY ? locales.map((locale) => ({ locale })) : [];
 }
 
 type Props = {
-  params: Promise<{ locale: Locale }>;
+	params: Promise<{ locale: Locale }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const { t } = await getTranslation(locale, ['common', 'meta']);
-  const title = t('docs');
+	const { locale } = await params;
+	const { t } = await getTranslation(locale, ['common', 'meta']);
+	const title = t('docs');
 
-  return {
-    title: formatTitle(title),
-    description: t('docs-description'),
-    openGraph: {
-      title: formatTitle(title),
-      description: t('docs-description'),
-    },
-    alternates: generateAlternate(`/docs`),
-  };
+	return {
+		title: formatTitle(title),
+		description: t('docs-description'),
+		openGraph: {
+			title: formatTitle(title),
+			description: t('docs-description'),
+		},
+		alternates: generateAlternate(`/docs`),
+	};
 }
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+	const { locale } = await params;
 
-  const docs = readDocsByLocale(locale);
-  const paths = docs.flatMap((doc) => reduceDocs([], doc)).map((seg) => seg.join('/'));
+	const docs = readDocsByLocale(locale);
+	const paths = docs.flatMap((doc) => reduceDocs([], doc)).map((seg) => seg.join('/'));
 
-  if (paths.length === 0) {
-    return <div>No content</div>;
-  }
+	if (paths.length === 0) {
+		return <div>No content</div>;
+	}
 
-  redirect(`/${locale}/docs/${paths[0]}`);
+	redirect(`/${locale}/docs/${paths[0]}`);
 }
