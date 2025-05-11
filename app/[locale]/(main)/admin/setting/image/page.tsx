@@ -93,7 +93,7 @@ function DirCard({ data, setPath }: { data: ImageMetadata; setPath: (path: strin
 
 function FileCard({ data }: { data: ImageMetadata }) {
 	return (
-		<div className="px-2 py-1 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
+		<div className="px-2 py-1 border bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
 			<div className="flex items-center gap-1">
 				<FileIcon />
 				{data.name}
@@ -109,7 +109,7 @@ function FileCard({ data }: { data: ImageMetadata }) {
 function ImageCard({ data }: { data: ImageMetadata }) {
 	return (
 		<Dialog>
-			<div className="px-2 py-1 border-transparent bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
+			<div className="px-2 py-1 border bg-card border-md rounded-md flex gap-1 items-center cursor-pointer">
 				<DialogTrigger asChild>
 					<div className="flex items-center justify-start gap-1 w-full">
 						<motion.img

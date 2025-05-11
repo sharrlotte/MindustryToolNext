@@ -35,6 +35,7 @@ export function onRequestError(
 
 export async function register() {
 	if (process.env.SENTRY) {
+		console.log('Registering Sentry');
 		const { init } = await import('@sentry/nextjs');
 
 		if (process.env.NEXT_RUNTIME === 'nodejs') {

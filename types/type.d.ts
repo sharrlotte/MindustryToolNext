@@ -22,4 +22,10 @@ declare global {
 		any;
 
 	type TQueryKey = QueryKey;
+
+	namespace NodeJS {
+		interface ProcessEnv {
+			SENTRY: boolean;
+		}
+	}
 }
