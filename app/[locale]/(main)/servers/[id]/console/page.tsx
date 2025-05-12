@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 
+import ConsoleInput from '@/app/[locale]/(main)/servers/[id]/console/console-input';
 import ServerConsolePage from '@/app/[locale]/(main)/servers/[id]/console/page.client';
 
 import ChatInput from '@/components/messages/chat-input';
@@ -35,7 +36,7 @@ export default async function Page({ params }: Props) {
 					<ServerConsolePage />
 				</div>
 			</div>
-			<ChatInput room={`SERVER-${id}`} placeholder="/help" />
+			<ConsoleInput id={id} room={`SERVER-${id}`} />
 		</div>
 	);
 }

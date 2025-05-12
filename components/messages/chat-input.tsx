@@ -16,7 +16,16 @@ import { cn } from '@/lib/utils';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
-export default function ChatInput({ className, room, placeholder }: { className?: string; placeholder?: string; room: string }) {
+type ChatInputProps = {
+	className?: string;
+	placeholder?: string;
+	room: string;
+	autocomplete?: (message: string, setMessage: (data: string) => void) => React.ReactNode;
+	// Skip the default behavior of the form submit if result is true
+	onKeyPress?: (event: KeyboardEvent<HTMLTextAreaElement>) => boolean | void;
+} & React.ComponentPropsWithoutRef<HTMLTextAreaElement>;
+
+export default function ChatInput({ className, room, placeholder, autocomplete, onKeyPress, ...props }: ChatInputProps) {
 	const { state } = useSocket();
 	const { theme } = useTheme();
 
@@ -37,6 +46,14 @@ export default function ChatInput({ className, room, placeholder }: { className?
 	};
 
 	function handleKeyPress(event: KeyboardEvent<HTMLTextAreaElement>) {
+		if (onKeyPress) {
+			const result = onKeyPress(event);
+
+			if (result) {
+				return;
+			}
+		}
+
 		switch (event.key) {
 			case 'ArrowUp': {
 				if (messageHistory.length === 0) {
@@ -91,13 +108,15 @@ export default function ChatInput({ className, room, placeholder }: { className?
 				event.preventDefault();
 			}}
 		>
-			<div className="border border-border flex gap-1 rounded-md w-full bg-card">
+			<div className="border relative border-border flex gap-1 rounded-md w-full bg-card">
+				{autocomplete && autocomplete(message, setMessage)}
 				<AutosizeTextarea
 					className="h-full w-full bg-card px-2 outline-none border-none min-h-13 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
 					value={message}
 					placeholder={placeholder}
 					onKeyDown={handleKeyPress}
 					onChange={(event) => setMessage(event.currentTarget.value)}
+					{...props}
 				/>
 				<div className="m-1 mt-auto flex items-center gap-2 min-h-9">
 					<Popover>
