@@ -53,7 +53,7 @@ export default function MessageList({
 
 	const queryClient = useQueryClient();
 	const isEndReached = isReachedEnd(container.current, 500);
-	const { socket } = useSocket();
+	const { socket, state } = useSocket();
 
 	const clientHeight = list?.clientHeight || 0;
 	const lastHeight = lastHeightRef.current || 0;
@@ -132,10 +132,12 @@ export default function MessageList({
 	}, [pages, isEndReached, currentContainer]);
 
 	useEffect(() => {
-		socket.onRoom(room).send({
-			method: 'JOIN',
-		});
-	}, [room, socket]);
+		if (state === 'connected') {
+			socket.onRoom(room).send({
+				method: 'JOIN',
+			});
+		}
+	}, [room, socket, state]);
 
 	useEffect(() => {
 		const messageHandler = (message: SocketResult<'MESSAGE'>) => {
