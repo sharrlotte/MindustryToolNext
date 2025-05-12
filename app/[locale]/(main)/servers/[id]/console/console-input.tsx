@@ -36,12 +36,18 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 				}
 			}}
 			autocomplete={({ message, setMessage, ref }) => {
-				if (isError) {
-					return <ErrorMessage error={error} />;
-				}
-
 				if (!message.startsWith('/')) {
 					return null;
+				}
+
+				if (isError) {
+					return (
+						<AutocompleteContainer>
+							<AutocompleteCard>
+								<ErrorMessage error={error} />
+							</AutocompleteCard>
+						</AutocompleteContainer>
+					);
 				}
 
 				const parts = message.split(' ');
@@ -107,8 +113,8 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 
 				let options = param.name.split('/');
 
-				switch (param.name) {
-					case 'ID':
+				switch (param.name.toLowerCase()) {
+					case 'id':
 						options = players?.map((player) => player.uuid) ?? [];
 						break;
 
