@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next/dist/types';
 
-import { readDocsByLocale, reduceDocs } from '@/app/[locale]/docs/doc-type';
+import { readDocsByLocale, reduceDocs } from '@/app/[locale]/_docs/doc-type';
 
 import { getServerApi } from '@/action/common';
 import env from '@/constant/env';

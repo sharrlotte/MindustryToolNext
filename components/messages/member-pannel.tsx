@@ -59,7 +59,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				{(page) =>
 					groupUserByRole(page).map(([name, group]) => (
 						<div key={name} className="grid gap-1">
-							<h4 className="font-semibold">
+							<h4 className="font-semibold capitalize">
 								<ColorAsRole roles={[group.role]}>
 									<Tran text={name} asChild />
 								</ColorAsRole>

@@ -40,7 +40,7 @@ export default function Page() {
 	const setPath = (path: string) => setState({ path });
 
 	return (
-		<div className="h-full overflow-hidden flex flex-col gap-2">
+		<div className="h-full overflow-hidden flex flex-col gap-2 p-2">
 			<section className="p-2 h-fit flex w-full gap-1 items-center justify-between border-b">
 				<div className="flex items-center gap-1">
 					<FileHierarchy path={path} onClick={setPath} />

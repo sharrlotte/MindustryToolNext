@@ -144,10 +144,6 @@
 		@apply w-full;
 	}
 
-	p {
-		@apply text-secondary-foreground;
-	}
-
 	ul {
 		list-style-type: disc;
 		list-style-position: inside;

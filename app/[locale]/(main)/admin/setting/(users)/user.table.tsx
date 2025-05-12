@@ -51,9 +51,9 @@ export function UserTable() {
 	});
 
 	return (
-		<div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
+		<div className="flex h-full w-full flex-col space-y-2 overflow-hidden p-2">
 			<div>
-				<div className="flex h-14 gap-2 p-2 bg-card rounded-md">
+				<div className="flex h-10 gap-2">
 					<Input
 						className="h-full"
 						value={name}

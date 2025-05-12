@@ -72,12 +72,14 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid }
 		<div className="flex items-center gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1">
 			<div className="rounded-full size-2" style={{ backgroundColor: `#${team.color}` }} />
 			<div className="flex justify-between gap-1 items-center w-full">
-				<span className="flex items-center justify-center">
-					{locale && (localeToFlag[locale] ?? locale)}
-					<ColorText className="font-semibold" text={name} />
-				</span>
-				<div className="flex gap-1 items-center">
+				<div className="flex flex-col gap-2">
+					<span className="flex items-center justify-center gap-1">
+						<span>{locale && (localeToFlag[locale] ?? locale)}</span>
+						<ColorText className="font-semibold" text={name} />
+					</span>
 					{userId && <IdUserCard id={userId} />}
+				</div>
+				<div className="flex gap-1 items-center">
 					<EllipsisButton variant="ghost">
 						<BanButton id={serverId} uuid={uuid} username={name} ip={ip} />
 						<KickButton id={serverId} uuid={uuid} />

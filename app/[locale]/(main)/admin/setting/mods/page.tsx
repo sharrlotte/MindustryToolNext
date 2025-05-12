@@ -20,7 +20,7 @@ const UpdateModDialog = dynamic(() => import('@/app/[locale]/(main)/admin/settin
 
 export default function Page() {
 	return (
-		<div className="flex flex-col gap-2 w-full h-full overflow-hidden">
+		<div className="flex flex-col gap-2 w-full h-full overflow-hidden p-2">
 			<ModList />
 			<div className="flex mt-auto justify-end">
 				<CreateModDialog />
@@ -63,7 +63,7 @@ function ModCard({ mod }: ModCardProps) {
 	const { name, icon } = mod;
 
 	return (
-		<div className="bg-card rounded-lg overflow-hidden gap-2 w-full flex justify-between items-center p-2">
+		<div className="bg-card rounded-lg overflow-hidden gap-2 w-full flex justify-between items-center p-2 border h-14">
 			{icon && (
 				<Image
 					width={48}
@@ -73,7 +73,7 @@ function ModCard({ mod }: ModCardProps) {
 					alt={name}
 				/>
 			)}
-			<h2 className="w-full text-ellipsis overflow-hidden text-wrap">{name}</h2>
+			<h2 className="w-full text-xl text-ellipsis overflow-hidden text-wrap">{name}</h2>
 			<EllipsisButton variant="ghost">
 				<UpdateModDialog mod={mod} />
 				<DeleteModDialog mod={mod} />

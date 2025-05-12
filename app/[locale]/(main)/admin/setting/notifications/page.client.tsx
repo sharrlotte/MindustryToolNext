@@ -50,7 +50,7 @@ export default function PageClient() {
 	});
 
 	return (
-		<div className="w-full gap-6 h-full flex flex-col bg-card rounded-md p-4">
+		<div className="w-full gap-6 h-full flex flex-col bg-card p-2">
 			{userId && (
 				<div className="flex gap-2 items-center">
 					<Tran text="notification.to" />
@@ -59,7 +59,7 @@ export default function PageClient() {
 			)}
 			<Form {...form}>
 				<FormGlobalErrorMessage />
-				<form className="flex gap-4 flex-col h-full" onSubmit={form.handleSubmit((data) => mutate(data))}>
+				<form className="flex gap-2 flex-col h-full" onSubmit={form.handleSubmit((data) => mutate(data))}>
 					<FormField
 						control={form.control}
 						name="title"

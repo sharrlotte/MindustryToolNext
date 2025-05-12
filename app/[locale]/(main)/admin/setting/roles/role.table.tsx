@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import React, { Suspense } from 'react';
 
-import { RoleList } from '@/app/[locale]/(main)/admin/setting/roles/role-list';
+import RoleList from '@/app/[locale]/(main)/admin/setting/roles/role-list';
 import { RoleListSkeleton } from '@/app/[locale]/(main)/admin/setting/roles/role-list.skeleton';
 
 import ErrorScreen from '@/components/common/error-screen';
@@ -24,7 +24,10 @@ export async function RoleTable() {
 		return <ErrorScreen error={session} />;
 	}
 
-	const bestRole = session.roles === null || session.roles.length === 0 ? undefined : session.roles.sort((o1, o2) => o2.position - o1.position)[0];
+	const bestRole =
+		session.roles === null || session.roles.length === 0
+			? undefined
+			: session.roles.sort((o1, o2) => o2.position - o1.position)[0];
 
 	if (!bestRole) {
 		// Should never happen
@@ -32,7 +35,7 @@ export async function RoleTable() {
 	}
 
 	return (
-		<div className="flex h-full flex-col justify-between overflow-hidden">
+		<div className="flex h-full flex-col justify-between overflow-hidden p-2">
 			<Suspense fallback={<RoleListSkeleton />}>
 				<RoleList roles={data} bestRole={bestRole} />
 			</Suspense>

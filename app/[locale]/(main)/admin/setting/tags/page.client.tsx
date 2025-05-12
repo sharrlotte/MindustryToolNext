@@ -17,6 +17,7 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ModFilter from '@/components/search/mod-filter';
+import Divider from '@/components/ui/divider';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { toast } from '@/components/ui/sonner';
 
@@ -40,15 +41,16 @@ export default function PageClient() {
 	const [selectedMod, setSelectedMod] = useState<Mod | undefined>(undefined);
 
 	return (
-		<div className="space-y-2 h-full flex flex-col">
+		<div className="space-y-2 h-full flex flex-col p-2">
 			<ModFilter value={selectedMod} onValueSelected={setSelectedMod} />
-			<ScrollContainer className="space-y-4">
-				<div className="rounded-lg space-y-2">
-					<Tran className="py-2 text-lg font-semibold" text="tags.group" />
+			<ScrollContainer className="space-y-2">
+				<div className="space-y-2">
+					<Tran className="text-lg font-semibold" text="tags.group" />
 					<TagGroupList />
 				</div>
-				<div className="rounded-lg space-y-2">
-					<Tran className="py-2 text-lg font-semibold" text="tags.category" />
+				<Divider />
+				<div className="space-y-2">
+					<Tran className="text-lg font-semibold" text="tags.category" />
 					<TagList modId={selectedMod?.id} />
 				</div>
 			</ScrollContainer>
@@ -126,7 +128,7 @@ function GroupCard({ group }: GroupCardProps) {
 		mutate({ category1, category2 });
 	}
 	return (
-		<div className="p-4 bg-card rounded-lg grid md:grid-cols-[128px_1fr] gap-2">
+		<div className="p-4 bg-card rounded-lg grid md:grid-cols-[128px_1fr] gap-2 border">
 			<Tran className="text-lg" text={name} />
 			<div className="flex gap-2 flex-wrap">
 				<DndProvider backend={HTML5Backend}>
@@ -289,7 +291,7 @@ function TagCategoryCard({ category, modId }: TagCategoryCardProps) {
 	}
 
 	return (
-		<div className="grid p-4 gap-2 rounded-lg grid-cols-[128px_auto_40px] bg-card items-start">
+		<div className="grid p-4 gap-2 rounded-lg grid-cols-[128px_auto_40px] bg-card items-start border">
 			<Tran className="overflow-hidden text-ellipsis text-lg" style={{ color }} text={name} />
 			<div className="flex flex-wrap gap-2">
 				<DndProvider backend={HTML5Backend}>

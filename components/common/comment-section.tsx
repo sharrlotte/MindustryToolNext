@@ -35,6 +35,7 @@ import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useI18n } from '@/i18n/client';
 import { Batcher } from '@/lib/batcher';
+import { isError } from '@/lib/error';
 import { isNumeric } from '@/lib/utils';
 import { CreateCommentRequest, CreateCommentSchema, createComment, getComments } from '@/query/comment';
 import { persister } from '@/query/config/query-config';
@@ -177,7 +178,11 @@ function CommentInput({ itemId }: CommentInputProps) {
 	const inputRef = useRef<AutosizeTextAreaRef>(null);
 	const { t } = useI18n();
 
-	const { session } = useSession();
+	let { session } = useSession();
+
+	if (isError(session)) {
+		session = null;
+	}
 
 	const { pushByKey, invalidateByKey, filterByKey } = useQueriesData();
 	const { mutate, isPending } = useMutation({

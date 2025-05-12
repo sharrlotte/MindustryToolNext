@@ -4,6 +4,7 @@ import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
+import { hasProperty } from '@/lib/utils';
 
 function logError(error: unknown) {
 	try {
@@ -36,10 +37,15 @@ axiosInstance.interceptors.response.use(
 		if (typeof window !== 'undefined') {
 			if (typeof error === 'string') {
 				toast.error(error);
-			} else if (typeof error === 'object' && 'status' in error) {
-				const status = error.status;
+			} else if (hasProperty(error, 'response') && hasProperty(error.response, 'status')) {
+				const status = error.response.status;
+				const message = error.response.data.message;
 
-				if (status === 401) {
+				if (status === 400) {
+					toast.error(<Tran text="bad-request" />, {
+						description: message,
+					});
+				} else if (status === 401) {
 					toast.error(<Tran text="unauthorized" />);
 				} else if (status === 403) {
 					toast.error(<Tran text="forbidden" />);

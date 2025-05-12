@@ -29,6 +29,8 @@ import { CreateMapRequest, CreateMapSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import ErrorMessage from '@/components/common/error-message';
+import { isError } from '@/lib/error';
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -136,7 +138,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 			<form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
 				<ScrollContainer className="flex flex-col gap-2">
 					<img className="max-w-[60vw] max-h-[60vh]" src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
-					<UserCard user={session} />
+					{isError(session) ? <ErrorMessage error={session} /> : <UserCard user={session} />}
 					<FormField
 						control={form.control}
 						name="name"
