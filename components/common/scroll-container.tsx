@@ -11,11 +11,14 @@ type Props = {
 	className?: string;
 	additionalPadding?: AdditionalPadding;
 	children: ReactNode;
+	as?: 'div' | 'ul' | 'ol' | 'section';
 };
 
-const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id, children }, forwardedRef) => {
+const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id, children, as = 'div' }, forwardedRef) => {
 	const pathname = usePathname();
 	const lastScrollTop = React.useRef(0);
+
+	const Component = as
 
 	function handle(container: HTMLDivElement | null) {
 		if (!container) return;
@@ -33,14 +36,14 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
 	}
 
 	return (
-		<div
+		<Component
 			id={id}
 			className={cn('h-full scroll-container overflow-y-auto w-full', className)}
 			onScroll={(event) => {
 				lastScrollTop.current = event.currentTarget.scrollTop;
 				sessionStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());
 			}}
-			ref={(current) => {
+			ref={(current : any) => {
 				if (typeof forwardedRef === 'function') {
 					forwardedRef(current);
 					handle(current);
@@ -52,7 +55,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
 			}}
 		>
 			{children}
-		</div>
+		</Component>
 	);
 });
 
