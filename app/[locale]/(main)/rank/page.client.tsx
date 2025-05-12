@@ -1,5 +1,6 @@
 'use client';
 
+import ErrorMessage from '@/components/common/error-message';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { CrownIcon } from '@/components/common/icons';
 import { GridLayout } from '@/components/common/pagination-layout';
@@ -14,6 +15,7 @@ import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import ProtectedElement from '@/layout/protected-element';
+import { isError } from '@/lib/error';
 import { cn } from '@/lib/utils';
 import { getMyRank, getRank, getUsersCount } from '@/query/user';
 import { User } from '@/types/response/User';
@@ -78,6 +80,11 @@ export default function UserRankCard({ user, rank }: UserCardRankProps) {
 	const { session } = useSession();
 
 	const level = Math.floor(Math.sqrt(user.stats?.EXP ?? 0));
+
+	
+	if (isError(session)) {
+		return <ErrorMessage error={session} />;
+	}
 
 	return (
 		<TableRow className={cn({ 'bg-secondary': session?.id === user.id })}>

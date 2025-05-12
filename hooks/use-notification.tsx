@@ -5,16 +5,19 @@ import { toast } from '@/components/ui/sonner';
 
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
+import { isError } from '@/lib/error';
 import { getUser } from '@/query/user';
 
 export default function useNotification() {
 	const { session } = useSession();
-	const userId = session?.id;
 	const axios = useClientApi();
 
 	const processNotification = useCallback(
 		(message: string, sender: string, isGranted: boolean) => {
-			if (sender === userId) return;
+			if (isError(session)) {
+				return;
+			}
+			if (sender === session?.id) return;
 
 			if (isGranted) {
 				getUser(axios, { id: sender }).then((user) => new Notification(user.name, { body: message, icon: '/favicon.ico' }));
@@ -22,7 +25,7 @@ export default function useNotification() {
 				toast(<InternalLink href="/chat">{message}</InternalLink>);
 			}
 		},
-		[axios, userId],
+		[axios, session],
 	);
 
 	const postNotification = useCallback(

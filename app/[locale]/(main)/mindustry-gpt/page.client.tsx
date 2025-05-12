@@ -18,6 +18,8 @@ import { useSession } from '@/context/session.context';
 import useMindustryGpt from '@/hooks/use-mindustry-gpt';
 import ProtectedElement from '@/layout/protected-element';
 import { isReachedEnd } from '@/lib/utils';
+import ErrorMessage from '@/components/common/error-message';
+import { isError } from '@/lib/error';
 
 const url = `${env.url.api}/mindustry-gpt/chat`;
 
@@ -52,6 +54,10 @@ export default function GptPage() {
 		if (event.key === 'Enter') {
 			handleSubmit();
 		}
+	}
+
+	if (isError(session)) {
+		return <ErrorMessage error={session} />;
 	}
 
 	return (

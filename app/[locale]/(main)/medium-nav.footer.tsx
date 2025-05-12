@@ -4,6 +4,7 @@ import React from 'react';
 
 import NotificationDialog from '@/app/[locale]/(main)/notification.dialog';
 
+import ErrorMessage from '@/components/common/error-message';
 import { SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Divider from '@/components/ui/divider';
@@ -11,11 +12,16 @@ import UserAvatar from '@/components/user/user-avatar';
 
 import { useNavBar } from '@/context/navbar.context';
 import { useSession } from '@/context/session.context';
+import { isError } from '@/lib/error';
 import { cn } from '@/lib/utils';
 
 export default function MediumNavFooter() {
 	const { session } = useSession();
 	const { visible } = useNavBar();
+
+	if (isError(session)) {
+		return <ErrorMessage error={session} />;
+	}
 
 	return (
 		<div className="space-y-1 mt-auto">
