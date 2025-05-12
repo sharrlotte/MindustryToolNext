@@ -106,7 +106,7 @@ function StaticLog() {
 	});
 
 	return (
-		<div className="flex h-full w-full flex-col space-y-2 overflow-hidden">
+		<div className="flex h-full w-full flex-col space-y-2 overflow-hidden p-2">
 			<div className="flex justify-between gap-2 rounded-md">
 				<div className="flex items-center gap-2">
 					<ComboBox
