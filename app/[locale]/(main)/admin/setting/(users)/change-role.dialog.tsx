@@ -20,6 +20,7 @@ import { Authority, Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { isError } from '@/lib/error';
 
 type DialogProps = {
 	user: User;
@@ -28,9 +29,13 @@ type DialogProps = {
 export function ChangeRoleDialog({ user }: DialogProps) {
 	const { id, roles, name, authorities } = user;
 
-	const { session } = useSession();
+	let { session } = useSession();
 	const { highestRole } = useMe();
 	const { invalidateByKey } = useQueriesData();
+
+	if (isError(session)) {
+		session = null;
+	}
 
 	const [open, setOpen] = useState(false);
 	const [isChanged, setIsChanged] = useState(false);
