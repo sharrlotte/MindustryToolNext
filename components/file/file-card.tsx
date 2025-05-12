@@ -15,7 +15,9 @@ type Props = {
 export default function FileCard({ file, children, onClick }: Props) {
 	const { data, name, size, directory } = file;
 
-	if (data) return <p className="whitespace-pre-line">{data}</p>;
+	if (!directory) {
+		return <p className="whitespace-pre-line">{data}</p>;
+	}
 
 	return (
 		<ContextMenu>
