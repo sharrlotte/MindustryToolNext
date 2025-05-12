@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
+import ErrorMessage from '@/components/common/error-message';
 import LoadingScreen from '@/components/common/loading-screen';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -21,6 +22,7 @@ import UserCard from '@/components/user/user-card';
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
+import { isError } from '@/lib/error';
 import { createSchematic, getSchematicPreview } from '@/query/schematic';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
@@ -185,7 +187,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
 					<div className="max-h-[min(100dvh,100dvw)] w-auto">
 						<img className="max-w-[60vw] max-h-[60vh]" src={IMAGE_PREFIX + preview.image.trim()} alt="Schematic" />
 					</div>
-					<UserCard user={session} />
+					{isError(session) ? <ErrorMessage error={session} /> : <UserCard user={session} />}
 					<FormField
 						control={form.control}
 						name="name"
