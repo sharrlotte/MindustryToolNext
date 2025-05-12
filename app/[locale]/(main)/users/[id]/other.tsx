@@ -24,6 +24,7 @@ import { ItemPaginationQuery } from '@/types/schema/search-query';
 type TabProps = {
 	user: User;
 };
+
 export default function Other({ user }: TabProps) {
 	const id = user.id;
 

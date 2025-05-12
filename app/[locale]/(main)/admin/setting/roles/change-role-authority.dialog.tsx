@@ -12,6 +12,7 @@ import { revalidate } from '@/action/common';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
+import { isError } from '@/lib/error';
 import { groupBy } from '@/lib/utils';
 import { changeAuthorities, getAuthorities } from '@/query/authorities';
 import { Authority, RoleWithAuthorities } from '@/types/response/Role';
@@ -25,7 +26,12 @@ type Props = {
 export default function ChangeRoleAuthorityDialog({ role }: Props) {
 	const { id: roleId, name, authorities } = role;
 
-	const { session } = useSession();
+	let { session } = useSession();
+
+	if (isError(session)) {
+		session = null;
+	}
+
 	const axios = useClientApi();
 	const [open, setOpen] = useState(false);
 	const [selectedAuthorities, setSelectedAuthorities] = useState<Authority[]>(authorities);
