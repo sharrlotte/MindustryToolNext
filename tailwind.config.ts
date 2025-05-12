@@ -11,7 +11,7 @@ module.exports = {
 				screen: ['100vh /* fallback for Opera, IE and etc. */', '100dvh'],
 			},
 			fontFamily: {
-				icon: ['var(--font-icon)'],
+				noto: ['var(--font-icon)','var(--font-noto)', 'sans-serif'],
 			},
 			minHeight: (theme: any) => ({
 				...theme('spacing'),
