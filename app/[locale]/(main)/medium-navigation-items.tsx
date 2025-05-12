@@ -82,14 +82,7 @@ export function PathGroupElement({ group }: PathGroupElementProps) {
 
 	return (
 		<nav className="flex flex-col gap-1" key={key}>
-			{name && (
-				<>
-					<Divider />
-					<NavbarVisible>
-						<span className="capitalize p-1 font-semibold">{name}</span>
-					</NavbarVisible>
-				</>
-			)}
+			{name && <Divider />}
 			{paths.map((p) => {
 				const { path, ...rest } = p;
 
