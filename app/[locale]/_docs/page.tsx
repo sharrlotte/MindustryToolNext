@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import { readDocsByLocale, reduceDocs } from '@/app/[locale]/docs/doc-type';
+import { readDocsByLocale, reduceDocs } from '@/app/[locale]/_docs/doc-type';
 
 import { Locale, locales } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';

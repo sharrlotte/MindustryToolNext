@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 
-import { Heading } from '@/app/[locale]/docs/[...path]/table-of-contents';
+import { Heading } from '@/app/[locale]/_docs/[...path]/table-of-contents';
 
 import { useActiveHeading } from '@/hooks/use-active-heading';
 import { cn } from '@/lib/utils';

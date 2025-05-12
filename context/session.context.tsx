@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useInterval } from 'usehooks-ts';
 
 import {
 	Config,
@@ -116,7 +117,7 @@ export function SessionProvider({ locale, children }: { locale: Locale; children
 		});
 	}, [paginationType, paginationSize, Locale]);
 
-	useEffect(() => {
+	const fetchSession = useCallback(() => {
 		axiosInstance
 			.get('/auth/session')
 			.then((r) => r.data)
@@ -128,6 +129,12 @@ export function SessionProvider({ locale, children }: { locale: Locale; children
 				),
 			);
 	}, []);
+
+	useEffect(() => {
+		fetchSession();
+	}, [fetchSession]);
+
+	useInterval(fetchSession, 1000 * 60 * 5);
 
 	return <SessionContext.Provider value={session}>{children}</SessionContext.Provider>;
 }

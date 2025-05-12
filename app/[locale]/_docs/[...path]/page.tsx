@@ -1,23 +1,23 @@
 import fs from 'fs';
 import { Metadata } from 'next';
+import Link from 'next/link';
 import removeMd from 'remove-markdown';
 
-import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
-import { getDocFolderPath, getDocPath, getNextPrevDoc, isDocExists, readDoc, readDocFolder } from '@/app/[locale]/docs/doc-type';
+import TableOfContents from '@/app/[locale]/_docs/[...path]/table-of-contents';
+import { getDocFolderPath, getDocPath, getNextPrevDoc, isDocExists, readDoc, readDocFolder } from '@/app/[locale]/_docs/doc-type';
 
 import { CatchError } from '@/components/common/catch-error';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
+import BackButton from '@/components/ui/back-button';
 import Divider from '@/components/ui/divider';
 
 import { formatTitle, generateAlternate } from '@/lib/utils';
 import { shared } from '@/mdx-components';
 
 import './style.css';
-import Tran from '@/components/common/tran';
-import Link from 'next/link';
-import BackButton from '@/components/ui/back-button';
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
