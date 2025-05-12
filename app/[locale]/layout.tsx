@@ -85,8 +85,8 @@ export default async function Root({ children, params }: RootProps) {
 		<html
 			className={cn(
 				'dark h-full w-full overflow-hidden bg-background text-foreground antialiased',
-				noto.variable,
-				icon.variable,
+				noto.className,
+				icon.className,
 				'font-noto',
 			)}
 			lang={locale}
