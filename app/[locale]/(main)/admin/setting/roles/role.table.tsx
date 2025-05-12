@@ -35,7 +35,7 @@ export async function RoleTable() {
 	}
 
 	return (
-		<div className="flex h-full flex-col justify-between overflow-hidden">
+		<div className="flex h-full flex-col justify-between overflow-hidden p-2">
 			<Suspense fallback={<RoleListSkeleton />}>
 				<RoleList roles={data} bestRole={bestRole} />
 			</Suspense>

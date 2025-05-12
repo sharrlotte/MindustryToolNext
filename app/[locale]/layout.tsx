@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { Arimo, Noto_Sans_KR } from 'next/font/google';
+import { Arimo } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -19,17 +19,9 @@ import './../globals.css';
 
 const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
-const inter = Arimo({
-	variable: '--font-inter',
-	subsets: ['vietnamese'],
-	weight: '500',
-	display: 'swap',
-});
-
-const noto = Noto_Sans_KR({
+const noto = Arimo({
 	variable: '--font-noto',
-	subsets: ['cyrillic'],
-	weight: '700',
+	subsets: ['vietnamese', 'cyrillic'],
 	display: 'swap',
 });
 
@@ -82,19 +74,20 @@ export async function generateStaticParams() {
 export default async function Root({ children, params }: RootProps) {
 	const { locale } = await params;
 
-	ReactDOM.preconnect('https://image.mindustry-tool.com');
-	ReactDOM.preconnect('https://api.mindustry-tool.com');
-	ReactDOM.preconnect('https://fonts.googleapis.com');
-	ReactDOM.preconnect('https://fonts.gstatic.com', { crossOrigin: 'anonymous' });
+	if (process.env.NODE_ENV === 'production') {
+		ReactDOM.preconnect('https://image.mindustry-tool.com');
+		ReactDOM.preconnect('https://api.mindustry-tool.com');
+		ReactDOM.preconnect('https://fonts.googleapis.com');
+		ReactDOM.preconnect('https://fonts.gstatic.com', { crossOrigin: 'anonymous' });
+	}
 
 	return (
 		<html
 			className={cn(
 				'dark h-full w-full overflow-hidden bg-background text-foreground antialiased',
 				noto.variable,
-				inter.variable,
 				icon.variable,
-				locale === 'kr' ? 'font-noto' : 'font-inter',
+				'font-noto',
 			)}
 			lang={locale}
 			data-color-mode="dark"
@@ -102,11 +95,11 @@ export default async function Root({ children, params }: RootProps) {
 		>
 			<body className="h-full w-full overflow-hidden">
 				<QueryProvider>
-					<ClientInit />
 					<ThemeProvider>
 						<SessionProvider locale={locale}>
 							<SocketProvider>
 								<Toaster />
+								<ClientInit />
 								{children}
 							</SocketProvider>
 						</SessionProvider>

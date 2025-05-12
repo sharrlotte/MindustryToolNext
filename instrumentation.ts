@@ -1,5 +1,3 @@
-import { env } from 'process';
-
 export function onRequestError(
 	error: { digest: string } & Error,
 	request: {
@@ -29,29 +27,6 @@ export function onRequestError(
 			});
 		} catch (error) {
 			console.error(error);
-		}
-	}
-}
-
-export async function register() {
-	if (process.env.SENTRY) {
-		console.log('Registering Sentry');
-		const { init } = await import('@sentry/nextjs');
-
-		if (process.env.NEXT_RUNTIME === 'nodejs') {
-			init({
-				dsn: env.DSN,
-				tracesSampleRate: 1.0,
-				enabled: !!process.env.SENTRY,
-			});
-		}
-
-		if (process.env.NEXT_RUNTIME === 'edge') {
-			init({
-				dsn: env.DSN,
-				tracesSampleRate: 1.0,
-				enabled: !!process.env.SENTRY,
-			});
 		}
 	}
 }

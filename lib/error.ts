@@ -4,15 +4,10 @@ import { notFound } from 'next/navigation';
 import { reportErrorToBackend } from '@/query/api';
 import axiosInstance from '@/query/config/config';
 
-import { captureException } from '@sentry/nextjs';
-
 export function reportError(error: any) {
 	reportErrorToBackend(axiosInstance, getLoggedErrorMessage(error));
-
-	if (process.env.SENTRY) {
-		captureException(error);
-	}
 }
+
 export type TError =
 	| Error
 	| { error: { message: string; name?: string } | Error }

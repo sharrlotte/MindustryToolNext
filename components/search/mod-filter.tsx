@@ -67,13 +67,13 @@ function ModCard({ mod, isSelected, onValueSelected }: ModCardProps) {
 		>
 			{mod.icon && (
 				<Image
+					className="size-8 object-cover rounded-full overflow-hidden flex items-center justify-center"
 					key={mod.icon}
 					width={48}
 					height={48}
-					className="size-8 object-cover rounded-full"
 					src={mod.icon}
 					loader={({ src }) => src}
-					alt="preview"
+					alt={mod.name}
 				/>
 			)}
 			{mod.name}

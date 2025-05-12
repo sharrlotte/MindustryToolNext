@@ -90,7 +90,7 @@ export default function RoleCard({ index, role, bestRole, onDrop, onHover }: Rol
 
 	return (
 		<div
-			className={cn('grid bg-card border rounded-md p-2 grid-cols-[100px_140px_auto_40px] gap-2 items-center h-12', {
+			className={cn('grid bg-card border rounded-md p-2 grid-cols-[50px_140px_auto_40px] gap-2 items-center h-12', {
 				'opacity-50': isDragging,
 			})}
 			ref={ref}
