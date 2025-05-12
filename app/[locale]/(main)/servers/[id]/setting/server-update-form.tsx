@@ -62,7 +62,7 @@ export default function ServerUpdateForm({ server }: Props) {
 		<div className="relative flex h-full flex-col justify-between gap-2">
 			<Form {...form}>
 				<form
-					className="flex flex-1 flex-col justify-between bg-card rounded-md p-2 h-full"
+					className="flex space-y-6 flex-col justify-between bg-card rounded-md p-2 h-full"
 					onSubmit={form.handleSubmit((value) => mutate(value))}
 				>
 					<FormField
