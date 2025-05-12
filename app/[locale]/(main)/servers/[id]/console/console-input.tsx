@@ -1,85 +1,164 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { FormEvent, KeyboardEvent, useState } from 'react';
+import { ComponentPropsWithRef, ReactNode } from 'react';
 
+import ErrorMessage from '@/components/common/error-message';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import ChatInput from '@/components/messages/chat-input';
 
-import { useSocket } from '@/context/socket.context';
-import useMessage from '@/hooks/use-message';
+import useClientApi from '@/hooks/use-client';
+import { getServerCommands, getServerPlayers } from '@/query/server';
 
-export default function ConsoleInput() {
-	const { id } = useParams();
-	const { state } = useSocket();
+import { useQuery } from '@tanstack/react-query';
 
-	const [message, setMessage] = useState<string>('');
+export default function ConsoleInput({ id, room }: { room: string; id: string }) {
+	const axios = useClientApi();
 
-	const [messageHistory, setMessageHistory] = useState<string[]>([]);
-	const [messagesCursor, setMessageCursor] = useState(0);
-
-	const { sendMessage } = useMessage({
-		room: `SERVER-${id}`,
-		method: 'MESSAGE',
+	const { data, isError, error } = useQuery({
+		queryKey: ['server', id, 'command'],
+		queryFn: () => getServerCommands(axios, id),
 	});
 
-	const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-		if (message.startsWith('/')) {
-			sendMessage(message.substring(1));
-		} else {
-			sendMessage('say ' + message);
-		}
-		setMessageHistory((prev) => [...prev, message]);
-		setMessage('');
-		event.preventDefault();
-	};
+	const { data: players } = useQuery({
+		queryKey: ['server', id, 'player'],
+		queryFn: () => getServerPlayers(axios, id),
+	});
 
-	function handleKeyPress(event: KeyboardEvent<HTMLInputElement>) {
-		if (messageHistory.length === 0) {
-			return;
-		}
+	return (
+		<ChatInput
+			room={room}
+			placeholder="/help"
+			onKeyPress={(event) => {
+				if (event.key === 'Tab') {
+					event.preventDefault();
+					return true;
+				}
+			}}
+			autocomplete={({ message, setMessage, ref }) => {
+				if (isError) {
+					return <ErrorMessage error={error} />;
+				}
 
-		switch (event.key) {
-			case 'ArrowUp': {
-				setMessageCursor((prev) => {
-					prev--;
+				if (!message.startsWith('/')) {
+					return null;
+				}
 
-					if (prev < 0) {
-						return messageHistory.length - 1;
+				const parts = message.split(' ');
+
+				// Focusing on command
+				if (parts.length === 0 || parts.length === 1) {
+					const filteredCommands =
+						data?.filter(
+							(command) =>
+								command.text.includes(message.substring(1)) ||
+								command.paramText.includes(message.substring(1)) ||
+								command.description.includes(message.substring(1)),
+						) ?? [];
+
+					if (filteredCommands?.length === 0) {
+						return (
+							<AutocompleteContainer>
+								<AutocompleteCard>
+									<Tran text="no-option" />
+								</AutocompleteCard>
+							</AutocompleteContainer>
+						);
 					}
 
-					return prev;
-				});
-				setMessage(messageHistory[messagesCursor]);
-				break;
-			}
+					return (
+						<AutocompleteContainer>
+							{filteredCommands.map((command) => (
+								<AutocompleteCard
+									key={command.text}
+									onClick={() => {
+										setMessage('/' + command.text + ' ');
+										ref?.focus();
+									}}
+								>
+									<div className="space-x-2">
+										<span>{command.text}</span>
+										<span>{command.paramText}</span>
+									</div>
+									<p className="text-xs text-muted-foreground">{command.description}</p>
+								</AutocompleteCard>
+							))}
+						</AutocompleteContainer>
+					);
+				}
 
-			case 'ArrowDown': {
-				setMessageCursor((prev) => {
-					prev++;
+				const index = parts.filter(Boolean).length - 1;
 
-					prev = prev % messageHistory.length;
+				const command = data?.find((command) => command.text === parts[0].substring(1));
 
-					return prev;
-				});
-				setMessage(messageHistory[messagesCursor]);
-				break;
-			}
-		}
-	}
+				if (!command) {
+					return null;
+				}
+
+				if (index >= command.params.length) {
+					return null;
+				}
+
+				const param = command.params[index];
+
+				if (!param) {
+					return null;
+				}
+
+				let options = param.name.split('/');
+
+				switch (param.name) {
+					case 'ID':
+						options = players?.map((player) => player.uuid) ?? [];
+						break;
+
+					case 'command':
+						options = data?.map((command) => command.text) ?? [];
+						break;
+
+					case 'username':
+						options = players?.map((player) => player.name) ?? [];
+						break;
+				}
+
+				const isOption = options.length > 1;
+
+				if (isOption) {
+					return (
+						<AutocompleteContainer>
+							{options.map((option) => (
+								<AutocompleteCard
+									key={option}
+									onClick={() => {
+										setMessage(message + option + ' ');
+										ref?.focus();
+									}}
+								>
+									{option}
+								</AutocompleteCard>
+							))}
+						</AutocompleteContainer>
+					);
+				}
+			}}
+		/>
+	);
+}
+
+function AutocompleteContainer({ children }: { children: ReactNode }) {
 	return (
-		<form className="flex h-full flex-1 gap-1" name="text" onSubmit={handleFormSubmit}>
-			<Input
-				className="h-full w-full rounded-sm border border-border bg-background px-2 outline-none"
-				value={message}
-				placeholder="/help"
-				onKeyDown={handleKeyPress}
-				onChange={(event) => setMessage(event.currentTarget.value)}
-			/>
-			<Button className="h-full" variant="primary" type="submit" title="send" disabled={state !== 'connected' || !message}>
-				<Tran text="send" />
-			</Button>
-		</form>
+		<div className="p-1 absolute -top-1 left-0 right-0 -translate-y-full border rounded-md bg-background overflow-hidden">
+			<ScrollContainer id="console-autocomplete" className="flex flex-col gap-1 max-h-[50vh]">
+				{children}
+			</ScrollContainer>
+		</div>
+	);
+}
+
+function AutocompleteCard({ children, ...props }: ComponentPropsWithRef<'div'> & { children: ReactNode }) {
+	return (
+		<div className="p-2 bg-secondary/60 rounded-md hover:bg-secondary cursor-pointer" {...props}>
+			{children}
+		</div>
 	);
 }

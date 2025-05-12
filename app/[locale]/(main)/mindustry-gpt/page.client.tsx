@@ -2,7 +2,7 @@
 
 import { Fragment, KeyboardEvent, useEffect, useState } from 'react';
 
-import ChatInputField from '@/app/[locale]/(main)/mindustry-gpt/chat-input-field';
+import PromptInput from '@/app/[locale]/(main)/mindustry-gpt/prompt-input';
 
 import LoginButton from '@/components/button/login.button';
 import { SendIcon } from '@/components/common/icons';
@@ -89,7 +89,7 @@ export default function GptPage() {
 			>
 				<div className="flex flex-col gap-2">
 					<div className="mx-auto flex w-full items-end gap-2 rounded-md border p-2 md:w-2/3">
-						<ChatInputField reset={reset} handleKeyPress={handleKeyPress} setPrompt={setPrompt} />
+						<PromptInput reset={reset} handleKeyPress={handleKeyPress} setPrompt={setPrompt} />
 						<Button title="submit" variant="primary" disabled={isPending} onClick={handleSubmit}>
 							<SendIcon />
 						</Button>

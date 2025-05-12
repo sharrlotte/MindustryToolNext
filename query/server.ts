@@ -11,6 +11,7 @@ import { PostServerResponse } from '@/types/response/PostServerResponse';
 import Server from '@/types/response/Server';
 import ServerAdmin from '@/types/response/ServerAdmin';
 import { ServerBuildLog } from '@/types/response/ServerBuildLog';
+import { ServerCommandDto } from '@/types/response/ServerCommand';
 import { ServerDto } from '@/types/response/ServerDto';
 import ServerEnv from '@/types/response/ServerEnv';
 import { ServerFile } from '@/types/response/ServerFile';
@@ -31,6 +32,10 @@ export async function deleteServerFile(axios: AxiosInstance, id: string, path: s
 export async function getServerPlayers(axios: AxiosInstance, id: string): Promise<Player[]> {
 	const result = await axios.get(`/servers/${id}/players`);
 
+	return result.data;
+}
+export async function getServerCommands(axios: AxiosInstance, id: string): Promise<ServerCommandDto[]> {
+	const result = await axios.get(`/servers/${id}/commands`);
 	return result.data;
 }
 
