@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+
+
 import { colours } from '@/constant/constant';
 import { AuthorityEnum, UserRole } from '@/constant/constant';
 import env from '@/constant/env';
@@ -8,6 +10,7 @@ import { Locale, i18nCachePrefix } from '@/i18n/config';
 import { ApiError, isError } from '@/lib/error';
 import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
+
 
 export function uuid() {
 	return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) => (+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16));
@@ -360,6 +363,12 @@ const hrefLangs: Record<Locale, string> = {
 export function generateAlternate(path: string) {
 	return {
 		canonical: './',
-		languages: Object.fromEntries(env.locales.map((lang) => [hrefLangs[lang], env.url.base + `/${lang}/${path}`.replaceAll('//', '/')])),
+		languages: Object.fromEntries(
+			env.locales.map((lang) => [hrefLangs[lang], env.url.base + `/${lang}/${path}`.replaceAll('//', '/')]),
+		),
 	};
+}
+
+export function hasProperty(obj: any, key: string): obj is { [key: string]: any} {
+	return typeof obj === 'object' && obj !== null && key in obj;
 }

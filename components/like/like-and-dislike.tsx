@@ -1,11 +1,13 @@
 'use client';
 
+import ErrorMessage from '@/components/common/error-message';
 import DislikeButton from '@/components/like/dislike-button';
 import LikeButton from '@/components/like/like-button';
 import LikeComponent from '@/components/like/like-component';
 
 import { useSession } from '@/context/session.context';
 import { Batcher } from '@/lib/batcher';
+import { isError } from '@/lib/error';
 import { Like } from '@/types/response/Like';
 
 import { useQuery } from '@tanstack/react-query';
@@ -38,6 +40,10 @@ export default function LikeAndDislike({ itemId, like, dislike }: Props) {
 			})),
 		enabled: state === 'authenticated',
 	});
+
+	if (isError(session)) {
+		return <ErrorMessage error={session} />;
+	}
 
 	return (
 		<LikeComponent
