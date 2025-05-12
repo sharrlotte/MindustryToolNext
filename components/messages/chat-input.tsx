@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { KeyboardEvent, useRef, useState } from 'react';
 
 import { SendIcon, SmileIcon } from '@/components/common/icons';
-import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
+import { AutosizeTextAreaRef, AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
@@ -20,7 +20,11 @@ type ChatInputProps = {
 	className?: string;
 	placeholder?: string;
 	room: string;
-	autocomplete?: (value: { message: string; setMessage: (data: string) => void; ref: HTMLTextAreaElement }) => React.ReactNode;
+	autocomplete?: (value: {
+		message: string;
+		setMessage: (data: string) => void;
+		ref: AutosizeTextAreaRef | null;
+	}) => React.ReactNode;
 	// Skip the default behavior of the form submit if result is true
 	onKeyPress?: (event: KeyboardEvent<HTMLTextAreaElement>) => boolean | void;
 } & React.ComponentPropsWithoutRef<HTMLTextAreaElement>;
@@ -28,7 +32,7 @@ type ChatInputProps = {
 export default function ChatInput({ className, room, placeholder, autocomplete, onKeyPress, ...props }: ChatInputProps) {
 	const { state } = useSocket();
 	const { theme } = useTheme();
-	const ref = useRef<HTMLTextAreaElement>(null);
+	const ref = useRef<AutosizeTextAreaRef>(null);
 
 	const [message, setMessage] = useState<string>('');
 
@@ -110,7 +114,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 			}}
 		>
 			<div className="border relative border-border flex gap-1 rounded-md w-full bg-card">
-				{autocomplete && autocomplete({ message, setMessage, ref: ref.current as HTMLTextAreaElement })}
+				{autocomplete && autocomplete({ message, setMessage, ref: ref.current })}
 				<AutosizeTextarea
 					className="h-full w-full bg-card px-2 outline-none border-none min-h-13 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
 					value={message}
@@ -118,6 +122,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 					onKeyDown={handleKeyPress}
 					onChange={(event) => setMessage(event.currentTarget.value)}
 					ref={ref}
+					autoFocus
 					{...props}
 				/>
 				<div className="m-1 mt-auto flex items-center gap-2 min-h-9">

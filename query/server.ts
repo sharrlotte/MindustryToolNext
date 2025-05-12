@@ -35,10 +35,8 @@ export async function getServerPlayers(axios: AxiosInstance, id: string): Promis
 	return result.data;
 }
 export async function getServerCommands(axios: AxiosInstance, id: string): Promise<ServerCommandDto[]> {
-	
-
 	const result = await axios.get(`/servers/${id}/commands`);
-		return result.data;
+	return result.data;
 }
 
 export async function deleteServerMap(axios: AxiosInstance, id: string, mapId: string): Promise<void> {
