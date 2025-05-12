@@ -32,7 +32,7 @@ const EllipsisButton = ({ className, variant, children, ...props }: Props) => {
       </PopoverTrigger>
       <PopoverContent className="bg-transparent border-transparent p-0">
         <Suspense>
-          <div className="gap-1 p-1 text-sm font-light grid border bg-card rounded-md">{children}</div>
+          <div className="gap-1 p-1 text-sm grid border bg-card rounded-md">{children}</div>
         </Suspense>
       </PopoverContent>
     </Popover>
