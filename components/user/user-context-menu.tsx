@@ -1,26 +1,15 @@
 import React from 'react';
 
 import Tran from '@/components/common/tran';
-import {
-  ContextMenuCheckboxItem,
-  ContextMenuItem,
-  ContextMenuLabel,
-  ContextMenuRadioGroup,
-  ContextMenuRadioItem,
-  ContextMenuSeparator,
-  ContextMenuShortcut,
-  ContextMenuSub,
-  ContextMenuSubContent,
-  ContextMenuSubTrigger,
-} from '@/components/ui/context-menu';
+import { ContextMenuItem } from '@/components/ui/context-menu';
 
 export default function UserContextMenu() {
-  return (
-    <>
-      <ContextMenuItem inset>
-        <Tran text="admin.send-notification" />
-      </ContextMenuItem>
-      <ContextMenuItem inset disabled>
+	return (
+		<>
+			<ContextMenuItem inset>
+				<Tran text="admin.send-notification" />
+			</ContextMenuItem>
+			{/* <ContextMenuItem inset disabled>
         Forward
         <ContextMenuShortcut>⌘]</ContextMenuShortcut>
       </ContextMenuItem>
@@ -53,7 +42,7 @@ export default function UserContextMenu() {
         <ContextMenuSeparator />
         <ContextMenuRadioItem value="pedro">Pedro Duarte</ContextMenuRadioItem>
         <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
-      </ContextMenuRadioGroup>
-    </>
-  );
+      </ContextMenuRadioGroup> */}
+		</>
+	);
 }
