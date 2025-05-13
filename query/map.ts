@@ -68,6 +68,7 @@ export async function getMapPreview(axios: AxiosInstance, { file }: MapPreviewRe
 
 	const result = await axios.post('/maps/preview', form, {
 		data: form,
+		timeout: 300000,
 	});
 
 	return result.data;
@@ -80,6 +81,7 @@ export async function createMap(axios: AxiosInstance, { tags, ...data }: CreateM
 
 	return axios.post('/maps', form, {
 		data: form,
+		timeout: 300000,
 	});
 }
 

@@ -4,7 +4,7 @@ import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
-import { hasProperty } from '@/lib/utils';
+import { hasProperty, uuid } from '@/lib/utils';
 
 function logError(error: unknown) {
 	try {
@@ -30,7 +30,12 @@ const axiosInstance = Axios.create({
 });
 
 axiosInstance.interceptors.response.use(
-	(res) => res,
+	(res) => {
+		if (process.env.NODE_ENV !== 'production') {
+			console.timeEnd(`${res.config.headers['x-request-id']} ${res.config.method?.toUpperCase()} ${res.config.url}`);
+		}
+		return res;
+	},
 	(error) => {
 		logError(error);
 
@@ -67,5 +72,17 @@ axiosInstance.interceptors.response.use(
 		return Promise.reject(error);
 	},
 );
+
+
+axiosInstance.interceptors.request.use((config) => {
+	if (process.env.NODE_ENV !== 'production') {
+		const id = uuid();
+		config.headers['x-request-id'] = uuid()
+		console.time(`${id} ${config.method?.toUpperCase()} ${config.url}`);
+
+	}
+
+	return config;
+});
 
 export default axiosInstance;
