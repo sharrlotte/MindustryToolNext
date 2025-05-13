@@ -94,6 +94,7 @@ export async function createSchematic(axios: AxiosInstance, { data, tags, name, 
 
 	return axios.post('/schematics', form, {
 		data: form,
+		timeout: 300000,
 	});
 }
 export async function createMultipleSchematic(axios: AxiosInstance, { data, tags, name, description }: CreateSchematicRequest): Promise<void> {
