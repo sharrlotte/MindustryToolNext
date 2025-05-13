@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -15,49 +15,44 @@ import { createServerFile } from '@/query/file';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-const addFileSchema = z.object({
-	file: z.any().refine((files) => files.size <= 500000, `Max file size is 5MB.`),
-});
-
 type Props = {
 	path: string;
 };
 
-export default function AddFileDialog({ path }: Props) {
+const addFolderSchema = z.object({
+	name: z.string().nonempty().max(255),
+});
+
+type AddFolderRequest = z.infer<typeof addFolderSchema>;
+
+export default function AddFolderDialog({ path }: Props) {
 	const axios = useClientApi();
 	const { invalidateByKey } = useQueriesData();
 
-	type AddFileRequest = z.infer<typeof addFileSchema>;
-
-	const [resetFile, setResetFile] = useState(0);
-
-	const form = useForm<AddFileRequest>({
-		resolver: zodResolver(addFileSchema),
+	const form = useForm<AddFolderRequest>({
+		resolver: zodResolver(addFolderSchema),
 		defaultValues: {
-			file: undefined,
+			name: '',
 		},
 	});
 
-	const { mutate: addFile, isPending: isAddingFile } = useMutation({
-		mutationKey: ['add-file'],
-		mutationFn: async (file: File) => createServerFile(axios, path, { file }),
+	const { mutate: addFile, isPending } = useMutation({
+		mutationKey: ['add-folder'],
+		mutationFn: async (request: AddFolderRequest) => createServerFile(axios, path, request),
 		onSuccess: () => {
 			invalidateByKey(['server-files', path]);
 		},
 	});
 
-	const isPending = isAddingFile;
-
-	function handleSubmit(data: AddFileRequest) {
-		addFile(data.file);
+	function handleSubmit(data: AddFolderRequest) {
+		addFile(data);
 		form.reset();
-		setResetFile((prev) => prev + 1);
 	}
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button className="h-9 w-fit whitespace-nowrap" title="Add file" variant="outline">
-					<Tran text="upload.add-file" />
+				<Button className="h-9 w-fit whitespace-nowrap" title="Add folder" variant="outline">
+					<Tran text="upload.add-folder" />
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
@@ -65,27 +60,14 @@ export default function AddFileDialog({ path }: Props) {
 					<form className="space-y-4 p-6" onSubmit={form.handleSubmit(handleSubmit)}>
 						<FormField
 							control={form.control}
-							name="file"
+							name="name"
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>
-										<Tran text="upload.file-to-upload" />
+										<Tran text="upload.folder-name" />
 									</FormLabel>
 									<FormControl>
-										<div>
-											<Input
-												key={resetFile}
-												id="add-file"
-												name="file"
-												type="file"
-												onChange={(event) => {
-													const files = event.currentTarget.files;
-													if (files && files.length > 0) {
-														field.onChange(files[0]);
-													}
-												}}
-											/>
-										</div>
+										<Input {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
