@@ -122,6 +122,8 @@ function parse(text: string | undefined): ParseResult {
 		}
 	}
 
+	if (colors.length === 0) return [{ line: text, format: {} }];
+
 	const formatted: {
 		text: string;
 		color: string;
