@@ -140,7 +140,7 @@ export default async function Page({ params }: Props) {
 											<Tran text="server.cpu-usage" />
 											<span>{cpuUsage}%</span>
 										</div>
-										<RamUsageChart ramUsage={ramUsage} totalRam={totalRam} />
+										<RamUsageChart ramUsage={ramUsage * 1024 * 1024} totalRam={totalRam * 1024 * 1024} />
 									</div>
 								) : (
 									<Tran text="server.server-is-not-running" />

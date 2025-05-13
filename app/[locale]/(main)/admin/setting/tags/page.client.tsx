@@ -129,7 +129,7 @@ function GroupCard({ group }: GroupCardProps) {
 	}
 	return (
 		<div className="p-4 bg-card rounded-lg grid md:grid-cols-[128px_1fr] gap-2 border">
-			<Tran className="text-lg" text={name} />
+			<Tran className="text-lg" text={`tags.group-${name}`} />
 			<div className="flex gap-2 flex-wrap">
 				<DndProvider backend={HTML5Backend}>
 					{categories
@@ -213,7 +213,7 @@ function GroupCategoryCard({ group, category, isHovered, onDrop, onHover }: Grou
 			ref={ref}
 			data-handler-id={handlerId}
 		>
-			<Tran className="text-nowrap group-hover:mr-2" text={`tags.${category.name}`} />
+			<Tran className="text-nowrap group-hover:mr-2" text={`tags.${group.name}_${category.name}`} />
 			<DeleteGroupInfoDialog group={group} category={category} />
 		</div>
 	);
@@ -292,11 +292,18 @@ function TagCategoryCard({ category, modId }: TagCategoryCardProps) {
 
 	return (
 		<div className="grid p-4 gap-2 rounded-lg grid-cols-[128px_auto_40px] bg-card items-start border">
-			<Tran className="overflow-hidden text-ellipsis text-lg" style={{ color }} text={name} />
+			<Tran className="overflow-hidden text-ellipsis text-lg" style={{ color }} text={`tags.group-${name}`} />
 			<div className="flex flex-wrap gap-2">
 				<DndProvider backend={HTML5Backend}>
 					{values.map((tag) => (
-						<TagCard key={tag.id} isHovered={hoverId === tag.id} tag={tag} onDrop={onDrop} onHover={setHoverId} />
+						<TagCard
+							key={tag.id}
+							groupName={name}
+							isHovered={hoverId === tag.id}
+							tag={tag}
+							onDrop={onDrop}
+							onHover={setHoverId}
+						/>
 					))}
 					<CreateTagDialog key={modId} categoryId={category.id} modId={modId} />
 				</DndProvider>
@@ -316,12 +323,13 @@ interface DragItem {
 
 type TagCardProps = {
 	tag: TagDto;
+	groupName: string;
 	isHovered: boolean;
 	onDrop: (dragId: number, hoverId: number) => void;
 	onHover: (hoverIndex: number) => void;
 };
 
-function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
+function TagCard({ tag, groupName, isHovered, onDrop, onHover }: TagCardProps) {
 	const { id, icon, name, categoryId } = tag;
 
 	const ref = useRef<HTMLDivElement>(null);
@@ -373,7 +381,7 @@ function TagCard({ tag, isHovered, onDrop, onHover }: TagCardProps) {
 			data-handler-id={handlerId}
 		>
 			{icon && <Image className="size-6 rounded-lg" width={40} height={40} src={icon} alt={name} />}
-			<Tran text={name} />
+			<Tran text={`tags.${groupName}_${name}`} />
 			<div className="ml-auto">
 				<EllipsisButton variant="ghost" className="p-0 text-muted-foreground">
 					<UpdateTagDialog tag={tag} />

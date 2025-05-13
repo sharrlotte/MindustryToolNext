@@ -37,7 +37,7 @@ function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps
 			onClick={() => handleOnDelete(tag)}
 			{...props}
 		>
-			<TagTooltip value={value}>
+			<TagTooltip value={`${name}_${value}`}>
 				<TagIcon>{icon}</TagIcon>
 				<TagName>{`${name}_${value}`}</TagName>
 			</TagTooltip>
