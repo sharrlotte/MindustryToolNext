@@ -9,37 +9,39 @@ import { cn } from '@/lib/utils';
 import Tag, { DetailTagDto, Tags } from '@/types/response/Tag';
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
-  tag: DetailTagDto;
-  onDelete?: (tag: Tag) => void;
+	tag: DetailTagDto;
+	onDelete?: (tag: Tag) => void;
 };
 
 export default TagCard;
 
 function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps) {
-  const tag = Tags.parseString(tagDetail);
-  const { name, value, icon, color } = tag;
-  const hasDelete = !!onDelete;
+	const tag = Tags.parseString(tagDetail);
+	const { name, value, icon, color } = tag;
+	const hasDelete = !!onDelete;
 
-  const handleOnDelete = useCallback(
-    (tag: Tag) => {
-      if (onDelete) onDelete(tag);
-    },
-    [onDelete],
-  );
+	const handleOnDelete = useCallback(
+		(tag: Tag) => {
+			if (onDelete) onDelete(tag);
+		},
+		[onDelete],
+	);
 
-  return (
-    <span
-      className={cn('flex cursor-pointer items-center gap-0.5 flex-nowrap whitespace-nowrap rounded-full px-2 py-2 text-center text-xs text-brand-foreground', className)}
-      style={{ backgroundColor: color }}
-      onClick={() => handleOnDelete(tag)}
-      {...props}
-    >
-      <TagTooltip value={value}>
-        <TagIcon>{icon}</TagIcon>
-        <TagName>{name}</TagName>
-        <TagName>{value}</TagName>
-      </TagTooltip>
-      {hasDelete && <XIcon className="size-4" />}
-    </span>
-  );
+	return (
+		<span
+			className={cn(
+				'flex cursor-pointer items-center gap-0.5 flex-nowrap whitespace-nowrap rounded-full px-2 py-2 text-center text-xs text-brand-foreground',
+				className,
+			)}
+			style={{ backgroundColor: color }}
+			onClick={() => handleOnDelete(tag)}
+			{...props}
+		>
+			<TagTooltip value={value}>
+				<TagIcon>{icon}</TagIcon>
+				<TagName>{`${name}-${value}`}</TagName>
+			</TagTooltip>
+			{hasDelete && <XIcon className="size-4" />}
+		</span>
+	);
 }
