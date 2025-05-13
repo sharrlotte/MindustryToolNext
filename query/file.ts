@@ -19,8 +19,16 @@ export async function getServerFiles(axios: AxiosInstance, path: string): Promis
 	return result.data;
 }
 
-export async function createServerFile(axios: AxiosInstance, path: string, file: File): Promise<void> {
-	const form = toForm({ file });
+type UploadServerFile =
+	| {
+			file: File;
+	  }
+	| {
+			name: string;
+	  };
+
+export async function createServerFile(axios: AxiosInstance, path: string, body: UploadServerFile): Promise<void> {
+	const form = toForm(body);
 
 	return axios.post(`/files`, form, {
 		params: { path },
