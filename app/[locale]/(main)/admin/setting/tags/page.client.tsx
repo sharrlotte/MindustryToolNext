@@ -380,7 +380,7 @@ function TagCard({ tag, groupName, isHovered, onDrop, onHover }: TagCardProps) {
 			ref={ref}
 			data-handler-id={handlerId}
 		>
-			{icon && <Image className="size-6 rounded-lg" width={40} height={40} src={icon} alt={name} />}
+			{icon && <Image className="size-6" width={40} height={40} src={icon} alt={name} />}
 			<Tran text={`tags.${groupName}_${name}`} />
 			<div className="ml-auto">
 				<EllipsisButton variant="ghost" className="p-0 text-muted-foreground">
