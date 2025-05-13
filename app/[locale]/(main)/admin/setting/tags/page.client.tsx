@@ -205,7 +205,7 @@ function GroupCategoryCard({ group, category, isHovered, onDrop, onHover }: Grou
 
 	return (
 		<div
-			className={cn('p-2 bg-secondary rounded-lg text-sm text-muted-foreground group border flex group', {
+			className={cn('p-2 bg-secondary rounded-lg text-sm text-muted-foreground group border flex group h-11', {
 				'border-success border': isHovered,
 				'border-destructive border opacity-50': isDragging,
 			})}
