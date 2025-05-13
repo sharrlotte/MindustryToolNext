@@ -107,7 +107,9 @@ export function SessionProvider({ locale, children }: { locale: Locale; children
 			status === 'error'
 				? { session: { error }, state: 'unauthenticated' }
 				: status === 'success'
-					? { session: data, state: 'authenticated' }
+					? data
+						? { session: data, state: 'authenticated' }
+						: { session: null, state: 'unauthenticated' }
 					: { session: null, state: 'loading' };
 
 		return {

@@ -73,7 +73,7 @@ function LiveLog() {
 }
 
 const defaultFilter: Omit<LogPaginationQueryType, 'page' | 'size'> = {
-	collection: 'SERVER',
+	collection: 'SYSTEM',
 	env: 'Prod',
 	ip: '',
 	userId: '',
