@@ -96,16 +96,20 @@ function alternative(text: string | undefined) {
 	for (let i = 0; i < colors.length - 1; i++) {
 		const current = colors[i];
 		const next = colors[i + 1];
+		
 		formatted.push({
 			text: text.substring(current.index + current.rawColor.length, next.index),
 			color: current.color,
 			format: current.format,
 		});
 	}
+
+	const last = colors[colors.length - 1];
+
 	formatted.push({
-		text: text.substring(colors[colors.length - 1].index + colors[colors.length - 1].rawColor.length),
-		color: colors[colors.length - 1].color,
-		format: colors[colors.length - 1].format,
+		text: text.substring(last.index + last.rawColor.length),
+		color: last.color,
+		format: last.format,
 	});
 
 	const result: ReactNode[] = formatted
