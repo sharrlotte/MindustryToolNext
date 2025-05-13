@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo } from 'react';
 
 import { getColor } from '@/lib/utils';
 
-const COLOR_REGEX = /(\[[#a-zA-Z0-9]*\]|\\u001b\[[0-9;]*[0-9]+m[0-9]*)/gim;
+const COLOR_REGEX = /(\[[#]*[a-zA-Z0-9]*\]|\\u001b\[[0-9;]*[0-9]+m[0-9]*)/gim;
 
 const ANSI: Record<string, Format> = {
 	//ANSI color codes
@@ -51,12 +51,97 @@ type Format = {
 };
 
 export default function ColorText({ text, className }: ColorTextProps) {
-	const component = useMemo(() => render({ text }), [text]);
-  
+	const component = useMemo(() => alternative(text), [text]);
+
 	return <span className={className}>{component}</span>;
 }
 
-function addFormat(keys: string[]) {
+function alternative(text: string | undefined) {
+	if (!text) return <></>;
+
+	const arr = text.match(COLOR_REGEX);
+
+	if (!arr) return text;
+
+	const colors: {
+		rawColor: string;
+		color: string;
+		format: Format;
+		index: number;
+	}[] = [];
+
+	let index = 0;
+
+	for (let i = 0; i < arr.length; i++) {
+		index = text.indexOf(arr[i], index);
+		const rawColor = arr[i].toLocaleLowerCase();
+		const { color, format } = resolveColorAndFormat(rawColor);
+
+		if (color) {
+			colors.push({
+				rawColor,
+				color,
+				format,
+				index,
+			});
+		}
+	}
+
+	const formatted: {
+		text: string;
+		color: string;
+		format: Format;
+	}[] = [];
+
+	for (let i = 0; i < colors.length - 1; i++) {
+		const current = colors[i];
+		const next = colors[i + 1];
+		formatted.push({
+			text: text.substring(current.index + current.rawColor.length, next.index),
+			color: current.color,
+			format: current.format,
+		});
+	}
+	formatted.push({
+		text: text.substring(colors[colors.length - 1].index + colors[colors.length - 1].rawColor.length),
+		color: colors[colors.length - 1].color,
+		format: colors[colors.length - 1].format,
+	});
+
+	const result: ReactNode[] = formatted
+		.flatMap((f) => breakdownLine(f.text).map((line) => ({ ...f, line })))
+		.map(({ line, format }, index) => {
+			switch (line) {
+				case '\n':
+					return <br key={index} />;
+
+				// Reset color syntax
+				case '[]':
+					return '';
+
+				default: {
+					const style = {
+						color: format.foreground,
+						backgroundColor: format.background,
+						fontStyle: format.italic ? 'italic' : 'normal',
+						fontWeight: format.bold ? 'bold' : 'normal',
+						textDecoration: format.underline ? 'underline' : 'none',
+						textDecorationLine: format.strike ? 'line-through' : 'none',
+						opacity: format.dim ? 0.5 : 1,
+					};
+					return (
+						<span key={index} style={style}>
+							{line}
+						</span>
+					);
+				}
+			}
+		});
+
+	return result;
+}
+
+function resolveFormat(keys: string[]) {
 	let format = {};
 
 	for (const key of keys) {
@@ -75,62 +160,12 @@ function addFormat(keys: string[]) {
 	return format;
 }
 
-function render({ text }: { text?: string }) {
-	if (!text) return <></>;
+type ColorAndFormat = {
+	color: string;
+	format: Format;
+};
 
-	const index = text.search(COLOR_REGEX);
-	let key = 0;
-
-	if (index < 0) return text;
-
-	const result: ReactNode[] = [];
-
-	if (index !== 0) {
-		key = add(result, text.substring(0, index), {}, key);
-		text = text.substring(index);
-	}
-
-	const arr = text.match(COLOR_REGEX);
-
-	if (!arr) return text;
-
-	while (arr.length > 0) {
-		const rawColor = arr[0].toLocaleLowerCase();
-
-		const { color, format } = getColorAndFormat(rawColor);
-
-		if (arr.length === 1) {
-			if (color) {
-				key = add(result, text.substring(arr[0].length), format, key);
-			} else {
-				key = add(result, text, format, key);
-			}
-			break;
-		}
-
-		let nextIndex = text.length;
-
-		for (let i = 1; i < arr.length; i++) {
-			const test = getColorAndFormat(arr[i]);
-			if (test.color) {
-				nextIndex = text.indexOf(arr[i], arr[0].length);
-				break;
-			}
-		}
-
-		if (color) {
-			key = add(result, text.substring(arr[0].length, nextIndex), format, key);
-		} else {
-			key = add(result, text.substring(0, nextIndex), format, key);
-		}
-		text = text.substring(nextIndex);
-		arr.shift();
-	}
-
-	return result;
-}
-
-function getColorAndFormat(color: string) {
+function resolveColorAndFormat(color: string): ColorAndFormat {
 	if (color.startsWith('[')) {
 		color = color.substring(1, color.length - 1);
 		color = color.startsWith('#') ? color.padEnd(7, '0') : getColor(color.toLowerCase().trim());
@@ -148,83 +183,29 @@ function getColorAndFormat(color: string) {
 
 		return {
 			color,
-			format: addFormat(keys),
+			format: resolveFormat(keys),
 		};
 	}
 }
 
-function add(result: ReactNode[], text: string, format: Format, key: number) {
-	if (!text) {
-		return key + 1;
-	}
-	const r = breakdown(text, format, key);
-	result.push(...r.result);
-	key = r.key;
-	return key;
-}
-
-function breakdown(text: string, format: Format, key: number) {
+function breakdownLine(text: string): string[] {
 	if (text === '[]') {
-		return { result: [], key };
+		return [];
 	}
 
-	const style = {
-		color: format.foreground,
-		backgroundColor: format.background,
-		fontStyle: format.italic ? 'italic' : 'normal',
-		fontWeight: format.bold ? 'bold' : 'normal',
-		textDecoration: format.underline ? 'underline' : 'none',
-		textDecorationLine: format.strike ? 'line-through' : 'none',
-		opacity: format.dim ? 0.5 : 1,
-	};
+	const lines = text.split('\n');
+	const result = [];
 
-	const s = text.split('\n');
-	const r = [];
-	key += 1;
-
-	if (s.length === 1) {
-		if (!style) {
-			return {
-				result: [text],
-				key,
-			};
-		}
-		return {
-			result: [
-				<span key={key} style={style}>
-					{text}
-				</span>,
-			],
-			key,
-		};
+	if (lines.length === 1) {
+		return [text];
 	}
 
-	if (!style) {
-		r.push(s[0]);
-	} else {
-		r.push(
-			<span key={key} style={style}>
-				{s[0]}
-			</span>,
-		);
+	result.push(lines[0]);
+
+	for (let i = 1; i < lines.length; i++) {
+		result.push('\n');
+		result.push(lines[i]);
 	}
 
-	for (let i = 1; i < s.length; i++) {
-		key += 1;
-
-		r.push(<br key={key} />);
-
-		key += 1;
-
-		if (!style) {
-			r.push(s[i]);
-		} else {
-			r.push(
-				<span key={key} style={style}>
-					{s[i]}
-				</span>,
-			);
-		}
-	}
-	return { result: r, key };
+	return result;
 }

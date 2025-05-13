@@ -117,13 +117,6 @@ export const groups: readonly PathGroup[] = [
 				regex: [`^${localesRegex}/posts`],
 			},
 			{
-				id: 'docs',
-				path: '/docs',
-				name: <Tran asChild text="docs" />,
-				icon: <DocsIcon />,
-				regex: [`^${localesRegex}/docs`],
-			},
-			{
 				id: 'documents',
 				path: '/documents',
 				name: <Tran asChild text="documents" />,
