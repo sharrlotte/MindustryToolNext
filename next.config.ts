@@ -50,6 +50,7 @@ const nextConfig: NextConfig = {
 		reactCompiler: false,
 		optimizePackageImports: ['lucide-react', 'usehooks-ts', 'three', 'framer-motion'],
 	},
+	productionBrowserSourceMaps: true,
 	pageExtensions: ['ts', 'tsx'],
 	crossOrigin: 'anonymous',
 	reactStrictMode: true,
