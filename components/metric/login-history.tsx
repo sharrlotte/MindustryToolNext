@@ -43,15 +43,20 @@ type LoginHistoryCardProps = {
 	history: UserLoginHistory;
 };
 
-function LoginHistoryCard({ history: { id, counts, ip, userId, client } }: LoginHistoryCardProps) {
+function LoginHistoryCard({ history: { id, counts, ip, userId, client, browser, os } }: LoginHistoryCardProps) {
 	const username = userId ?? 'Anonymous';
 	const clientType = client === 1000 ? 'web' : 'mod';
 
 	return (
 		<span className="flex justify-between gap-8 rounded-sm bg-background p-4" key={id}>
-			<span>
-				User {username} ({ip}) on {clientType}
-			</span>
+			<div className="grid gap-1">
+				<span>
+					User {username} ({ip})
+				</span>
+				<span>
+					Client: {clientType} {os && `OS: ${os}`} {browser && `Browser: ${browser}`}
+				</span>
+			</div>
 			<span>Times {counts}</span>
 		</span>
 	);
