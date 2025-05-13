@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { getColor } from '@/lib/utils';
 
@@ -51,17 +51,52 @@ type Format = {
 };
 
 export default function ColorText({ text, className }: ColorTextProps) {
-	const component = useMemo(() => alternative(text), [text]);
+	const components = useMemo(() => parse(text), [text]);
 
-	return <span className={className}>{component}</span>;
+	return (
+		<span className={className}>
+			{components.map(({ line, format }, index) => {
+				switch (line) {
+					case '\n':
+						return <br key={index} />;
+
+					// Reset color syntax
+					case '[]':
+						return '';
+
+					default: {
+						const style = {
+							color: format.foreground,
+							backgroundColor: format.background,
+							fontStyle: format.italic ? 'italic' : 'normal',
+							fontWeight: format.bold ? 'bold' : 'normal',
+							textDecoration: format.underline ? 'underline' : 'none',
+							textDecorationLine: format.strike ? 'line-through' : 'none',
+							opacity: format.dim ? 0.5 : 1,
+						};
+						return (
+							<span key={index} style={style}>
+								{line}
+							</span>
+						);
+					}
+				}
+			})}
+		</span>
+	);
 }
 
-function alternative(text: string | undefined) {
-	if (!text) return <></>;
+type ParseResult = {
+	line: string;
+	format: Format;
+}[];
+
+function parse(text: string | undefined): ParseResult {
+	if (!text) return [];
 
 	const arr = text.match(COLOR_REGEX);
 
-	if (!arr) return text;
+	if (!arr) return [{ line: text, format: {} }];
 
 	const colors: {
 		rawColor: string;
@@ -96,7 +131,7 @@ function alternative(text: string | undefined) {
 	for (let i = 0; i < colors.length - 1; i++) {
 		const current = colors[i];
 		const next = colors[i + 1];
-		
+
 		formatted.push({
 			text: text.substring(current.index + current.rawColor.length, next.index),
 			color: current.color,
@@ -112,36 +147,7 @@ function alternative(text: string | undefined) {
 		format: last.format,
 	});
 
-	const result: ReactNode[] = formatted
-		.flatMap((f) => breakdownLine(f.text).map((line) => ({ ...f, line })))
-		.map(({ line, format }, index) => {
-			switch (line) {
-				case '\n':
-					return <br key={index} />;
-
-				// Reset color syntax
-				case '[]':
-					return '';
-
-				default: {
-					const style = {
-						color: format.foreground,
-						backgroundColor: format.background,
-						fontStyle: format.italic ? 'italic' : 'normal',
-						fontWeight: format.bold ? 'bold' : 'normal',
-						textDecoration: format.underline ? 'underline' : 'none',
-						textDecorationLine: format.strike ? 'line-through' : 'none',
-						opacity: format.dim ? 0.5 : 1,
-					};
-					return (
-						<span key={index} style={style}>
-							{line}
-						</span>
-					);
-				}
-			}
-		});
-
+	const result = formatted.flatMap((f) => breakdownLine(f.text).map((line) => ({ ...f, line })));
 	return result;
 }
 
