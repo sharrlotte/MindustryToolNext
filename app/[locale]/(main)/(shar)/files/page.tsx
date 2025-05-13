@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 
+import AddFolderDialog from '@/app/[locale]/(main)/(shar)/files/add-folder.dialog';
 import FileList from '@/app/[locale]/(main)/(shar)/files/file-list';
 
 import { ArrowLeftCircleIcon } from '@/components/common/icons';
@@ -38,6 +39,7 @@ export default function Page() {
 			<Divider />
 			<div className="flex gap-2">
 				<Input placeholder="Search file name" value={search} onChange={(event) => setSearch(event.target.value)} />
+				<AddFolderDialog path={path} />
 				<AddFileDialog path={path} />
 			</div>
 			<div className="flex h-full flex-col gap-2 overflow-hidden">

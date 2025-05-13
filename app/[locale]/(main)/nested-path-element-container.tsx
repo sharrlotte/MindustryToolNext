@@ -34,7 +34,7 @@ export function NestedPathElementContainer({ children, segment }: NestedPathElem
 				<AccordionItem className="w-full" value={id}>
 					<AccordionTrigger
 						className={cn(
-							'flex h-9 items-center justify-center text-base text-foreground/60 gap-0 rounded-md p-1 hover:bg-brand hover:text-brand-foreground',
+							'flex h-9 items-center justify-center text-foreground/60 gap-0 rounded-md p-1 hover:bg-brand hover:text-brand-foreground',
 							{
 								'justify-start gap-2 py-2': visible,
 								'bg-brand': regex.some((r) => currentPath.match(r)) && !visible,
