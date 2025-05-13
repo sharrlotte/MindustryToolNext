@@ -21,7 +21,7 @@ const getCachedSchematic = cache((id: string) => serverApi((axios) => getSchemat
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id, locale } = await params;
-	const { t } = await getTranslation(locale, ['tags']);
+	const { t } = await getTranslation(locale, 'tags');
 	const schematic = await getCachedSchematic(id);
 
 	if (isError(schematic)) {
@@ -43,13 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			type: 'article',
 			title: name,
 			description: `Author: ${user.name}\n\n⬇️${downloadCount} 👍${likes} 👎${dislikes} \n\nTags: ${tags
-				.map((tag) =>
-					tag.name
-						.split('_')
-						.filter((v) => v)
-						.map((v) => t(v))
-						.join(' '),
-				)
+				.map((tag) => t(tag.name))
 				.join(', ')} \n\n${description}`,
 			images: `${env.url.image}/schematics/${id}${env.imageFormat}`,
 			authors: [`${env.url.image}/users/${userId}`],
