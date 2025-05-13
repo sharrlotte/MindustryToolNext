@@ -2,12 +2,16 @@ import { NextConfig } from 'next';
 
 import bundleAnalyzer from '@next/bundle-analyzer';
 
+const now = new Date();
+const buildVersion = `v${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}.${String(now.getHours()).padStart(2, '0')}.${String(now.getMinutes()).padStart(2, '0')}`;
+
 const nextConfig: NextConfig = {
 	logging: {
 		fetches: {
 			fullUrl: true,
 		},
 	},
+	env: { NEXT_PUBLIC_BUILD_VERSION: buildVersion },
 	async headers() {
 		return [
 			{
