@@ -5,6 +5,8 @@ import React from 'react';
 import Tran from '@/components/common/tran';
 import PieChart from '@/components/metric/pie-chart';
 
+import { byteToSize } from '@/lib/utils';
+
 type Props = {
 	ramUsage: number;
 	totalRam: number;
@@ -27,7 +29,7 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 			<span className="font-bold">
 				<Tran text="metric.ram-usage" />
 			</span>
-			<div className="max-h-[200px] max-w-[200px] group/chart">
+			<div className="max-h-[200px] max-w-[200px] group/chart relative">
 				<PieChart
 					segments={[
 						{
@@ -45,19 +47,18 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 						},
 					]}
 				/>
-				<div className="grid">
-					<span>
-						<Tran text="server.total-ram" />
-						{totalRam}
-					</span>
-					<span>
-						<Tran text="server.ram-used" />
-						{ramUsage}
-					</span>
-					<span>
-						<Tran text="server.ram-left" />
-						{ramLeft}
-					</span>
+				<div className="hidden text-sm group-hover/chart:grid absolute inset-0 text-black">
+					<div className="h-full w-full justify-center items-center flex flex-col">
+						<span>
+							<Tran text="server.total-ram" />:<span>{byteToSize(totalRam)}</span>
+						</span>
+						<span>
+							<Tran text="server.ram-used" />:<span>{byteToSize(ramUsage)}</span>
+						</span>
+						<span>
+							<Tran text="server.ram-free" />:<span>{byteToSize(ramLeft)}</span>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>

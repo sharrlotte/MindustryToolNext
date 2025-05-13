@@ -19,7 +19,7 @@ type Props = {
 
 export default function ServerMaps({ id }: Props) {
 	return (
-		<div className="h-full w-full overflow-hidden p-2">
+		<div className="h-full w-full overflow-hidden p-2 flex flex-col gap-2">
 			<ScrollContainer>
 				<InfinitePage
 					paramSchema={PaginationQuerySchema}
