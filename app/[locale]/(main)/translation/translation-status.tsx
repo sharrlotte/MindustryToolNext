@@ -14,7 +14,7 @@ export default function TranslationStatus({ status }: TranslationStatusProps) {
 	}
 
 	if (status === 'success') {
-		return <CheckIcon className="text-success" />;
+		return <CheckIcon className="text-success-foreground" />;
 	}
 
 	return <XIcon className="text-destructive-foreground" />;

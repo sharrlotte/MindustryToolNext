@@ -11,44 +11,44 @@ import { cn } from '@/lib/utils';
 import TagGroup from '@/types/response/TagGroup';
 
 type MultipleFilerTagsProps = {
-  group: TagGroup;
-  selectedValue: FilterTag[];
-  handleTagGroupChange: (value: FilterTag[]) => void;
+	group: TagGroup;
+	selectedValue: FilterTag[];
+	handleTagGroupChange: (value: FilterTag[]) => void;
 };
 
 export default function MultipleFilerTags({ group, selectedValue, handleTagGroupChange }: MultipleFilerTagsProps) {
-  const [{ showTagName, showTagNumber }] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY, SHOW_TAG_NUMBER_PERSISTENT_KEY]);
+	const [{ showTagName, showTagNumber }] = useCookies([SHOW_TAG_NAME_PERSISTENT_KEY, SHOW_TAG_NUMBER_PERSISTENT_KEY]);
 
-  const handleClick = (value: FilterTag) => {
-    const index = selectedValue.map((v) => v.name).indexOf(value.name);
-    if (index === -1) {
-      handleTagGroupChange([...selectedValue, value]);
-    } else {
-      handleTagGroupChange([...selectedValue.slice(0, index), ...selectedValue.slice(index + 1)]);
-    }
-  };
+	const handleClick = (value: FilterTag) => {
+		const index = selectedValue.map((v) => v.name).indexOf(value.name);
+		if (index === -1) {
+			handleTagGroupChange([...selectedValue, value]);
+		} else {
+			handleTagGroupChange([...selectedValue.slice(0, index), ...selectedValue.slice(index + 1)]);
+		}
+	};
 
-  return (
-    <div className="flex w-full flex-wrap justify-start py-2 gap-1">
-      <TagName className="whitespace-nowrap text-lg capitalize">{group.name}</TagName>
-      <Separator className="border-[1px]" orientation="horizontal" />
-      {group.values.map((value) => (
-        <button
-          className={cn(
-            'capitalize flex items-center bg-secondary gap-1 hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground px-2 border border-border py-1 rounded-lg hover:border-brand',
-            {
-              'bg-brand text-brand-foreground border-brand': selectedValue.map((v) => v.name).includes(value.name),
-            },
-          )}
-          type="button"
-          key={value.name}
-          onClick={() => handleClick(value)}
-        >
-          <TagIcon>{value.icon}</TagIcon>
-          {(!value.icon || showTagName) && <TagName>{value.name}</TagName>}
-          {showTagNumber && `(${value.count})`}
-        </button>
-      ))}
-    </div>
-  );
+	return (
+		<div className="flex w-full flex-wrap justify-start py-2 gap-1">
+			<TagName className="whitespace-nowrap text-lg capitalize">{`group-${group.name}`}</TagName>
+			<Separator className="border-[1px]" orientation="horizontal" />
+			{group.values.map((value) => (
+				<button
+					className={cn(
+						'capitalize flex items-center bg-secondary gap-1 hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground px-2 border border-border py-1 rounded-lg hover:border-brand',
+						{
+							'bg-brand text-brand-foreground border-brand': selectedValue.map((v) => v.name).includes(value.name),
+						},
+					)}
+					type="button"
+					key={value.name}
+					onClick={() => handleClick(value)}
+				>
+					<TagIcon>{value.icon}</TagIcon>
+					{(!value.icon || showTagName) && <TagName>{`${group.name}-${value.name}`}</TagName>}
+					{showTagNumber && `(${value.count})`}
+				</button>
+			))}
+		</div>
+	);
 }
