@@ -108,15 +108,35 @@ function alternative(text: string | undefined) {
 		format: colors[colors.length - 1].format,
 	});
 
-	const result: ReactNode[] = [];
+	const result: ReactNode[] = formatted
+		.flatMap((f) => breakdownLine(f.text).map((line) => ({ ...f, line })))
+		.map(({ line, format }, index) => {
+			switch (line) {
+				case '\n':
+					return <br key={index} />;
 
-	let key = 0;
+				// Reset color syntax
+				case '[]':
+					return '';
 
-	for (const f of formatted) {
-		const lines = breakdownLine(f.text, f.format, key);
-		result.push(...lines);
-		key += lines.length;
-	}
+				default: {
+					const style = {
+						color: format.foreground,
+						backgroundColor: format.background,
+						fontStyle: format.italic ? 'italic' : 'normal',
+						fontWeight: format.bold ? 'bold' : 'normal',
+						textDecoration: format.underline ? 'underline' : 'none',
+						textDecorationLine: format.strike ? 'line-through' : 'none',
+						opacity: format.dim ? 0.5 : 1,
+					};
+					return (
+						<span key={index} style={style}>
+							{line}
+						</span>
+					);
+				}
+			}
+		});
 
 	return result;
 }
@@ -168,50 +188,23 @@ function resolveColorAndFormat(color: string): ColorAndFormat {
 	}
 }
 
-function breakdownLine(text: string, format: Format, key: number): ReactNode[] {
+function breakdownLine(text: string): string[] {
 	if (text === '[]') {
 		return [];
 	}
-
-	const style = {
-		color: format.foreground,
-		backgroundColor: format.background,
-		fontStyle: format.italic ? 'italic' : 'normal',
-		fontWeight: format.bold ? 'bold' : 'normal',
-		textDecoration: format.underline ? 'underline' : 'none',
-		textDecorationLine: format.strike ? 'line-through' : 'none',
-		opacity: format.dim ? 0.5 : 1,
-	};
 
 	const lines = text.split('\n');
 	const result = [];
 
 	if (lines.length === 1) {
-		return [
-			<span key={key} style={style}>
-				{text}
-			</span>,
-		];
+		return [text];
 	}
 
-	result.push(
-		<span key={key} style={style}>
-			{lines[0]}
-		</span>,
-	);
+	result.push(lines[0]);
 
 	for (let i = 1; i < lines.length; i++) {
-		key += 1;
-
-		result.push(<br key={key} />);
-
-		key += 1;
-
-		result.push(
-			<span key={key} style={style}>
-				{lines[i]}
-			</span>,
-		);
+		result.push('\n');
+		result.push(lines[i]);
 	}
 
 	return result;
