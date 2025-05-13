@@ -38,7 +38,7 @@ function TagBadge({ tag: tagDetail, className, onDelete, ...props }: TagBadgePro
 			{...props}
 		>
 			<TagIcon>{icon}</TagIcon>
-			<TagName>{`${name}-${value}`}</TagName>
+			<TagName>{`${name}_${value}`}</TagName>
 			{hasDelete && <XIcon className="size-4 group-hover:block group-focus:block hidden" />}
 		</div>
 	);

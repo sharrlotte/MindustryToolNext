@@ -39,7 +39,7 @@ function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps
 		>
 			<TagTooltip value={value}>
 				<TagIcon>{icon}</TagIcon>
-				<TagName>{`${name}-${value}`}</TagName>
+				<TagName>{`${name}_${value}`}</TagName>
 			</TagTooltip>
 			{hasDelete && <XIcon className="size-4" />}
 		</span>
