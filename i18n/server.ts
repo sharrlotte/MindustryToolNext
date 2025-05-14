@@ -17,7 +17,7 @@ const getTranslationCached = cache(
 					headers: {
 						Server: 'true',
 					},
-					timeout: 1000,
+					timeout: 3000,
 				})
 				.then((res) => res.data),
 		['translations'],
