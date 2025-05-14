@@ -1,8 +1,11 @@
+'use client';
+
+import dynamic from 'next/dynamic';
+
 import Tran from '@/components/common/tran';
 import { Skeleton } from '@/components/ui/skeleton';
 
 import useServerStats from '@/hooks/useServerStats';
-import dynamic from 'next/dynamic';
 
 type UsageCardProps = {
 	id: string;

@@ -1,3 +1,5 @@
+'use client';
+
 import { Fragment } from 'react';
 
 import ColorText from '@/components/common/color-text';
