@@ -1,11 +1,10 @@
-import ColorText from '@/components/common/color-text';
 import Markdown from '@/components/markdown/markdown';
 
 export default function Page() {
 	return (
 		<div>
 			<Markdown>{`
-			### ***Rules:***
+### ***Rules:***
 
 _1. No toxicity or bullying towards others._
 

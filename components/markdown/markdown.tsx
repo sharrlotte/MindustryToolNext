@@ -36,23 +36,36 @@ function toId(children: any): string {
 		return children.map(toId).join('-');
 	}
 
-	if (isValidElement(children) && typeof (children.props as any).children === 'string') {
+	if (isValidElement(children) && typeof (children?.props as any)?.children) {
 		return toId((children.props as any).children);
 	}
+
+	console.log(children);
 
 	throw new Error('Cannot extract ID from complex ReactNode on client');
 }
 
 const Heading = ({ as: Tag, children, ...props }: { as: any; children: React.ReactNode }) => {
-	const id = toId(children).toLowerCase().replaceAll(ID_REPlACE_REGEX, '-');
-	const count = shared['idMaps'][id] ?? 0;
-	shared['idMaps'][id] = count + 1;
+	try {
+		const id = toId(children).toLowerCase().replaceAll(ID_REPlACE_REGEX, '-');
 
-	return (
-		<Tag id={id + '-' + count} {...props} className="scroll-mt-20">
-			{children}
-		</Tag>
-	);
+		const count = shared['idMaps'][id] ?? 0;
+		shared['idMaps'][id] = count + 1;
+
+		return (
+			<Tag id={id + '-' + count} {...props} className="scroll-mt-20">
+				{children}
+			</Tag>
+		);
+	} catch (e: any) {
+		console.log(e);
+		return (
+			<span>
+				<Tag {...props}>{children}</Tag>
+				<span>{e.message}</span>
+			</span>
+		);
+	}
 };
 
 export const OTHER_WEBSITE_URL_REGEX = /^(https?:)?\/\//;
