@@ -3,7 +3,6 @@
 import dynamic from 'next/dynamic';
 
 import Tran from '@/components/common/tran';
-import { Skeleton } from '@/components/ui/skeleton';
 
 import useServerStats from '@/hooks/useServerStats';
 
@@ -17,7 +16,7 @@ export default function UsageCard({ id }: UsageCardProps) {
 	const { data, isLoading } = useServerStats(id);
 
 	if (isLoading || !data) {
-		return <Skeleton className="flex h-full w-full" />;
+		return null;
 	}
 
 	const { cpuUsage, ramUsage, totalRam } = data;
