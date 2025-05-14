@@ -4,8 +4,7 @@ import { HeadingCards } from '@/app/[locale]/_docs/[...path]/heading-card';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-
-import { ID_REPlACE_REGEX } from '@/mdx-components';
+import { ID_REPlACE_REGEX } from '@/components/markdown/markdown';
 
 export interface Heading {
 	id: string;
