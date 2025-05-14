@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
