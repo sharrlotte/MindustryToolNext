@@ -39,7 +39,7 @@ function toId(children: any): string {
 	}
 
 	if (isValidElement(children) && typeof (children.props as any).children === 'string') {
-		return (children.props as any).children;
+		return toId((children.props as any).children);
 	}
 
 	throw new Error('Cannot extract ID from complex ReactNode on client');
