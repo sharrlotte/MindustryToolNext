@@ -1,33 +1,33 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import LogPage from '@/app/[locale]/(main)/logs/page.client';
+import PageClient from '@/app/[locale]/(main)/logs/page.client';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 
 type Props = {
-  params: Promise<{
-    locale: Locale;
-  }>;
+	params: Promise<{
+		locale: Locale;
+	}>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const { t } = await getTranslation(locale);
-  const title = t('log');
+	const { locale } = await params;
+	const { t } = await getTranslation(locale);
+	const title = t('log');
 
-  return {
-    title: formatTitle(title),
-    alternates: generateAlternate('/logs'),
-  };
+	return {
+		title: formatTitle(title),
+		alternates: generateAlternate('/logs'),
+	};
 }
 
 export default function Page() {
-  return (
-    <Suspense>
-      <LogPage />
-    </Suspense>
-  );
+	return (
+		<Suspense>
+			<PageClient />
+		</Suspense>
+	);
 }

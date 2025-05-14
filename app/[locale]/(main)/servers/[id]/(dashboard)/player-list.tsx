@@ -30,15 +30,11 @@ export default function PlayerList({ id }: PlayerListProps) {
 		return <ErrorMessage error={error} />;
 	}
 
-	return (
-		<div className="grid gap-2 p-2 min-w-[300px] max-w-[400px]">
-			{data
-				?.sort((a, b) => a.name.localeCompare(b.name))
-				?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
-				?.sort((a, b) => a.team.name.localeCompare(b.team.name))
-				.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
-		</div>
-	);
+	return data
+		?.sort((a, b) => a.name.localeCompare(b.name))
+		?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
+		?.sort((a, b) => a.team.name.localeCompare(b.team.name))
+		.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />);
 }
 
 type PlayerListSkeletonProps = {

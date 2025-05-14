@@ -145,11 +145,11 @@ export default async function Page({ params }: Props) {
 						)}
 						<ProtectedElement session={session} filter={showPlayer}>
 							{status === 'HOST' && players > 0 && (
-								<div className="flex min-w-[300px] flex-col gap-1 bg-card rounded-md w-full md:w-fit">
+								<div className="grid gap-2 p-2 min-w-[300px] max-w-[400px] bg-card rounded-md w-full md:w-fit">
 									<Suspense
 										fallback={
 											<Skeletons number={players}>
-												<Skeleton className="h-11 w-full" />
+												<Skeleton className="h-11 w-full rounded-md" />
 											</Skeletons>
 										}
 									>
