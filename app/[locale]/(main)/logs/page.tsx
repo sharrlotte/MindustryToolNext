@@ -32,25 +32,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function Page() {
 	return (
-		<ServerTabs className="h-full" value="live" name={'tab'} values={['live', 'static']}>
-			<ServerTabsList>
-				<ServerTabsTrigger value="live">
-					<Tran text="log.live" />
-				</ServerTabsTrigger>
-				<ServerTabsTrigger value="static">
-					<Tran text="log.static" />
-				</ServerTabsTrigger>
-			</ServerTabsList>
-			<ServerTabsContent className="h-full" value="live">
-				<Suspense>
+		<Suspense>
+			<ServerTabs className="h-full" value="live" name={'tab'} values={['live', 'static']}>
+				<ServerTabsList>
+					<ServerTabsTrigger value="live">
+						<Tran text="log.live" />
+					</ServerTabsTrigger>
+					<ServerTabsTrigger value="static">
+						<Tran text="log.static" />
+					</ServerTabsTrigger>
+				</ServerTabsList>
+				<ServerTabsContent className="h-full" value="live">
 					<LiveLog />
-				</Suspense>
-			</ServerTabsContent>
-			<ServerTabsContent className="h-full" value="static">
-				<Suspense>
-					<StaticLog />
-				</Suspense>
-			</ServerTabsContent>
-		</ServerTabs>
+				</ServerTabsContent>
+				<ServerTabsContent className="h-full" value="static">
+					<Suspense>
+						<StaticLog />
+					</Suspense>
+				</ServerTabsContent>
+			</ServerTabs>
+		</Suspense>
 	);
 }
