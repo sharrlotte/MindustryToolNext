@@ -1,6 +1,9 @@
-'use client';
-
 import React, { useCallback, useRef, useState } from 'react';
+
+
+
+
+
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -8,20 +11,17 @@ import { Hidden } from '@/components/common/hidden';
 import { IconNotification } from '@/components/common/icon-notification';
 import { FilterIcon, XIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
-import MessageList from '@/components/common/message-list';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
-import Tran from '@/components/common/tran';
 import LogCard from '@/components/log/log-card';
-import ChatInput from '@/components/messages/chat-input';
-import { MessageCard } from '@/components/messages/message-card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
+
+
 
 import { LogType } from '@/constant/constant';
 import useClientQuery from '@/hooks/use-client-query';
@@ -30,47 +30,6 @@ import { getLogCollections, getLogCount, getLogs } from '@/query/log';
 import { Log } from '@/types/Log';
 import { LogEnvironment, LogPaginationQuerySchema, LogPaginationQueryType } from '@/types/schema/search-query';
 
-export default function LogPage() {
-	return (
-		<ServerTabs className="h-full" value="live" name={'tab'} values={['live', 'static']}>
-			<ServerTabsList>
-				<ServerTabsTrigger value="live">
-					<Tran text="log.live" />
-				</ServerTabsTrigger>
-				<ServerTabsTrigger value="static">
-					<Tran text="log.static" />
-				</ServerTabsTrigger>
-			</ServerTabsList>
-			<ServerTabsContent className="h-full" value="live">
-				<LiveLog />
-			</ServerTabsContent>
-			<ServerTabsContent className="h-full" value="static">
-				<StaticLog />
-			</ServerTabsContent>
-		</ServerTabs>
-	);
-}
-
-function LiveLog() {
-	return (
-		<div className="grid h-full w-full grid-rows-[1fr_auto] bg-card overflow-hidden">
-			<div className="flex h-full w-full overflow-hidden rounded-md">
-				<div className="flex h-full w-full overflow-hidden">
-					<MessageList
-						className="flex h-full w-full flex-col gap-2"
-						queryKey={['live-log']}
-						room="LOG"
-						params={{ size: 50 }}
-						showNotification={false}
-					>
-						{(data) => <MessageCard key={data.id} message={data} />}
-					</MessageList>
-				</div>
-			</div>
-			<ChatInput room="LOG" />
-		</div>
-	);
-}
 
 const defaultFilter: Omit<LogPaginationQueryType, 'page' | 'size'> = {
 	collection: 'SYSTEM',
@@ -83,7 +42,7 @@ const defaultFilter: Omit<LogPaginationQueryType, 'page' | 'size'> = {
 	after: '',
 };
 
-function StaticLog() {
+export default function StaticLog() {
 	const [filter, _setFilter] = useState<Omit<LogPaginationQueryType, 'page' | 'size'>>(defaultFilter);
 	const { env, ip, userId, url, content, before, after, collection } = filter;
 
