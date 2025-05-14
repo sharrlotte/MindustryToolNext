@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react';
-import { ReactNode } from 'react';
+import { isValidElement } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSanitize from 'rehype-sanitize';
@@ -29,12 +29,20 @@ export const shared = {
 	idMaps,
 };
 
-function toId(children: ReactNode): string {
-	if (typeof children === 'string') {
-		return children;
+function toId(children: any): string {
+	if (typeof children === 'string' || typeof children === 'number') {
+		return String(children);
 	}
 
-	throw new Error('Invalid heading: ' + children);
+	if (Array.isArray(children)) {
+		return children.map(toId).join('-');
+	}
+
+	if (isValidElement(children) && typeof (children.props as any).children === 'string') {
+		return (children.props as any).children;
+	}
+
+	throw new Error('Cannot extract ID from complex ReactNode on client');
 }
 
 const Heading = ({ as: Tag, children, ...props }: { as: any; children: React.ReactNode }) => {
