@@ -1,3 +1,4 @@
+import { ServerStatus } from '@/constant/constant';
 import { ServerMode } from '@/types/request/UpdateServerRequest';
 
 export default interface Server {
@@ -16,4 +17,6 @@ export default interface Server {
 	webhook: string | null;
 	isAutoTurnOff: boolean;
 	isHub: boolean;
+	status: ServerStatus;
+	players: number;
 }
