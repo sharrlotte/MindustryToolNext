@@ -98,9 +98,6 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: (data: VerifyPluginRequest) => verifyPlugin(axios, data),
-		onSuccess: () => {
-			toast(<Tran text="verify-success" />);
-		},
 		onError: (error) => {
 			toast(<Tran text="verify-fail" />, { description: error?.message });
 		},

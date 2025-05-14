@@ -6,8 +6,9 @@ import { Toaster as Sonner, toast as defaultToast } from 'sonner';
 
 import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon, XIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
+import Tran from '@/components/common/tran';
 
-import { cn } from '@/lib/utils';
+import { cn, hasProperty } from '@/lib/utils';
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
@@ -73,6 +74,38 @@ toast.error = (title: ReactNode, options?: ToastOptions) => {
 	return toast(title, {
 		icon: <XCircleIcon className="size-4" />,
 		className: 'text-destructive-foreground bg-destructive border-destructive',
+		...options,
+	});
+};
+
+const httpStatusMessage: {
+	[status: number]: string;
+} = {
+	400: 'bad-request',
+	401: 'unauthorized',
+	403: 'forbidden',
+	404: 'not-found',
+	409: 'conflict',
+	422: 'unprocessable-entity',
+	429: 'too-many-requests',
+	500: 'internal-server-error',
+	502: 'bad-gateway',
+};
+
+toast.httpError = (error: any, options?: Omit<ToastOptions, 'description'>) => {
+	if (hasProperty(error, 'response') && hasProperty(error.response, 'status')) {
+		const status = error.response.status as number;
+		const message = error.response.data.message;
+
+		const statusMessage = httpStatusMessage[status] ?? 'unknown';
+
+		return toast.error(<Tran text={statusMessage} />, {
+			description: message,
+		});
+	}
+
+	return toast.error(<Tran text="error" />, {
+		description: JSON.stringify(error),
 		...options,
 	});
 };
