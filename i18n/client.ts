@@ -30,7 +30,7 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
 			backends: [LocalStorageBackend, HttpApi],
 			backendOptions: [
 				{
-					expirationTime: 24 * 60 * 60 * 1000, // 7 days
+					expirationTime: 24 * 60 * 60 * 1000,
 					prefix: i18nCachePrefix,
 				},
 				{
