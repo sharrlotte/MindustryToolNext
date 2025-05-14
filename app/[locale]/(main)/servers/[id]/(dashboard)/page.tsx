@@ -145,16 +145,18 @@ export default async function Page({ params }: Props) {
 						)}
 						<ProtectedElement session={session} filter={showPlayer}>
 							{status === 'HOST' && players > 0 && (
-								<div className="grid gap-2 p-2 min-w-[300px] max-w-[400px] bg-card rounded-md w-full md:w-fit">
-									<Suspense
-										fallback={
-											<Skeletons number={players}>
-												<Skeleton className="h-11 w-full rounded-md" />
-											</Skeletons>
-										}
-									>
-										<PlayerList id={id} />
-									</Suspense>
+								<div className='flex bg-card rounded-md flex-col'>
+									<div className="grid gap-2 p-2 min-w-[300px] max-w-[400px] w-full md:w-fit">
+										<Suspense
+											fallback={
+												<Skeletons number={players}>
+													<Skeleton className="h-11 w-full rounded-md" />
+												</Skeletons>
+											}
+										>
+											<PlayerList id={id} />
+										</Suspense>
+									</div>
 								</div>
 							)}
 						</ProtectedElement>
