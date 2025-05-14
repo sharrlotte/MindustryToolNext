@@ -31,7 +31,7 @@ export default function Client() {
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error?.message });
+			toast.error(<Tran text="delete-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['maps']);

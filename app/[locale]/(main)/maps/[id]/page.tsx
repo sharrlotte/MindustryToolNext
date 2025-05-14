@@ -8,7 +8,7 @@ import { serverApi } from '@/action/common';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { isError } from '@/lib/error';
+import { getErrorMessage, isError } from '@/lib/error';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 import { getMap } from '@/query/map';
 import { getUser } from '@/query/user';
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const user = await serverApi((axios) => getUser(axios, { id: userId }));
 
 	if (isError(user)) {
-		return { title: 'Error', description: user.error?.message };
+		return { title: 'Error', description: getErrorMessage(user) };
 	}
 
 	return {

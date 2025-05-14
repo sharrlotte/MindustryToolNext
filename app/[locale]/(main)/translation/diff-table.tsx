@@ -14,12 +14,12 @@ import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
 import { Locale } from '@/i18n/config';
+import { clearTranslationCache } from '@/lib/utils';
 import { CreateTranslationRequest, createTranslation, getTranslationDiff, getTranslationDiffCount } from '@/query/translation';
 import { TranslationDiff } from '@/types/response/Translation';
 import { TranslationPaginationQuery } from '@/types/schema/search-query';
 
 import { useMutation } from '@tanstack/react-query';
-import { clearTranslationCache } from '@/lib/utils';
 
 type DiffTableProps = {
 	language: Locale;
@@ -81,7 +81,7 @@ function DiffCard({ translation, language }: DiffCardProps) {
 	const [isEdit, setEdit] = useState(false);
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 		onSuccess: () => clearTranslationCache(),
 	});
 

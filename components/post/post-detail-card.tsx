@@ -44,7 +44,7 @@ export default function PostDetailCard({
 			toast(<Tran text="take-down-success" />);
 		},
 		onError: (error) => {
-			toast(<Tran text="take-down-fail" />, { description: error?.message });
+			toast.error(<Tran text="take-down-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['posts']);
@@ -58,7 +58,7 @@ export default function PostDetailCard({
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error?.message });
+			toast.error(<Tran text="delete-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['posts']);

@@ -32,7 +32,7 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
 			toast(<Tran text="take-down-success" />);
 		},
 		onError: (error) => {
-			toast(<Tran text="take-down-fail" />, { description: error?.message });
+			toast.error(<Tran text="take-down-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['maps']);

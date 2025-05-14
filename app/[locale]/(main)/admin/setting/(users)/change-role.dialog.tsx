@@ -12,6 +12,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useMe, useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
+import { isError } from '@/lib/error';
 import { groupBy } from '@/lib/utils';
 import { getAuthorities } from '@/query/authorities';
 import { changeRoles, getRoles } from '@/query/role';
@@ -20,7 +21,6 @@ import { Authority, Role } from '@/types/response/Role';
 import { User } from '@/types/response/User';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { isError } from '@/lib/error';
 
 type DialogProps = {
 	user: User;
@@ -77,7 +77,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
 		mutationKey: ['update-user-role', id],
 		mutationFn: async (roleIds: number[]) => changeRoles(axios, { userId: id, roleIds }),
 		onError: (error) => {
-			toast.error(<Tran text="error" />, { description: error?.message });
+			toast.error(<Tran text="error" />, { error });
 			setSelectedRoles(roles);
 		},
 		onSettled: () => {
@@ -89,7 +89,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
 		mutationFn: async (authorityIds: string[]) => changeAuthorities(axios, { userId: id, authorityIds }),
 		mutationKey: ['update-user-authority', id],
 		onError: (error) => {
-			toast.error(<Tran text="error" />, { description: error?.message });
+			toast.error(<Tran text="error" />, { error });
 
 			setSelectedAuthorities(authorities);
 		},

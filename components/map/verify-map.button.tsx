@@ -31,7 +31,7 @@ export default function VerifyMapButton({ id, name, selectedTags }: VerifyMapBut
 		},
 		onError: (error) => {
 			toast(<Tran text="verify-fail" />, {
-				description: error?.message,
+				error,
 			});
 		},
 		onSettled: () => {

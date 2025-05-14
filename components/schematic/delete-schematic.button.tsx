@@ -34,7 +34,7 @@ export default function DeleteSchematicButton({ id, name, variant }: DeleteSchem
 			back();
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error?.message });
+			toast.error(<Tran text="delete-fail" />, { error });
 		},
 	});
 

@@ -42,7 +42,7 @@ export default function AddPluginDialog({ serverId }: AddPluginDialogProps) {
 			setAdded((prev) => [...prev, pluginId]);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="interval-server.add-plugin-fail" />, { description: error?.message });
+			toast.error(<Tran text="interval-server.add-plugin-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['servers', serverId, 'plugins']);

@@ -8,6 +8,7 @@ import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon, XIcon } from '@/compon
 import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 
+import { getErrorMessage, TError } from '@/lib/error';
 import { cn, hasProperty } from '@/lib/utils';
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
@@ -70,7 +71,22 @@ toast.success = (title: ReactNode, options?: ToastOptions) => {
 	});
 };
 
-toast.error = (title: ReactNode, options?: ToastOptions) => {
+toast.error = (
+	title: ReactNode,
+	options?: ToastOptions & {
+		error?: TError;
+	},
+) => {
+	
+	if (options?.error) {
+		return toast(title, {
+			icon: <XCircleIcon className="size-4" />,
+			className: 'text-destructive-foreground bg-destructive border-destructive',
+			...options,
+			description: getErrorMessage(options.error),
+		});
+	}
+
 	return toast(title, {
 		icon: <XCircleIcon className="size-4" />,
 		className: 'text-destructive-foreground bg-destructive border-destructive',

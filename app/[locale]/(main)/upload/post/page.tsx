@@ -126,7 +126,7 @@ function TranslatePage({
 			setContent({ text: '', files: [] });
 		},
 		onError(error) {
-			toast.error(<Tran text="upload.fail" />, { description: error?.message });
+			toast.error(<Tran text="upload.fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['posts']);
@@ -212,7 +212,7 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
 			setSelectedTags([]);
 		},
 		onError(error) {
-			toast.error(<Tran text="upload.fail" />, { description: error?.message });
+			toast.error(<Tran text="upload.fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['posts']);

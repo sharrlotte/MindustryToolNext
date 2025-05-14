@@ -42,7 +42,7 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
 			back();
 		},
 		onError: (error) => {
-			toast(<Tran text="verify-fail" />, { description: error?.message });
+			toast.error(<Tran text="verify-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['posts']);
@@ -56,7 +56,7 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error?.message });
+			toast.error(<Tran text="delete-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['posts']);

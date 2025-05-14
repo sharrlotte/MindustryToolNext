@@ -56,7 +56,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 			revalidate({ path: '/users' });
 		},
 		onError: (error) => {
-			toast.error('Error', { description: error?.message });
+			toast.error('Error', { error });
 			setSelectedAuthorities(authorities);
 		},
 		mutationKey: ['update-role-authority', roleId],

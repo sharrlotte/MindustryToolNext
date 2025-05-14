@@ -26,7 +26,7 @@ export default function ServerAdminCard({ id, admin }: ServerAdminCardProps) {
 	const { invalidateByKey } = useQueriesData();
 	const { mutate, isPending, isIdle } = useMutation({
 		mutationFn: async () => deleteServerAdmin(axios, id, admin.id),
-		onError: (error) => toast.error(<Tran text="error" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="error" />, { error }),
 		onSettled: () => invalidateByKey(['server']),
 	});
 

@@ -39,7 +39,7 @@ export function getErrorMessage(error: TError) {
 		return error;
 	}
 
-	if ('response' in error) {
+	if (typeof error === 'object' && 'response' in error) {
 		if (error.response?.data?.message) {
 			return error.response?.data?.message;
 		}

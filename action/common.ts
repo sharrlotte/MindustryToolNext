@@ -1,6 +1,6 @@
 'use server';
 
-import { AxiosInstance, isAxiosError } from 'axios';
+import { AxiosInstance } from 'axios';
 import { revalidatePath, revalidateTag, unstable_cache, unstable_noStore } from 'next/cache';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
@@ -42,17 +42,8 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
 		const data = 'queryFn' in queryFn ? await queryFn.queryFn(axios) : await queryFn(axios);
 		return data;
 	} catch (error) {
-		if (isAxiosError(error)) {
-			return {
-				error: {
-					status: error.response?.status,
-					data: error.response?.data,
-					message: error?.message + error.response?.config.url,
-				},
-			};
-		}
 		return {
-			error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+			error,
 		};
 	}
 }
@@ -119,7 +110,7 @@ export const getServerApi = async (): Promise<AxiosInstance> => {
 
 		return config;
 	});
-	
+
 	axiosInstance.defaults.headers['Server'] = true;
 
 	return axiosInstance;

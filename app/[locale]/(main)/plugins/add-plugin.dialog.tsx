@@ -68,7 +68,7 @@ function AddPluginForm() {
 			form.reset();
 		},
 		onError(error) {
-			toast.error(<Tran text="upload.fail" />, { description: error?.message });
+			toast.error(<Tran text="upload.fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['plugins']);

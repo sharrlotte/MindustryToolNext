@@ -1,13 +1,9 @@
 import dynamic from 'next/dynamic';
 import { Fragment, useState } from 'react';
 
-
-
 import HighLightTranslation from '@/app/[locale]/(main)/translation/highlight-translation';
 import { TranslationCardSkeleton } from '@/app/[locale]/(main)/translation/translation-card.skeleton';
 import TranslationStatus from '@/app/[locale]/(main)/translation/translation-status';
-
-
 
 import CopyButton from '@/components/button/copy.button';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -18,19 +14,19 @@ import { toast } from '@/components/ui/sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 
-
-
 import useClientApi from '@/hooks/use-client';
 import { Locale } from '@/i18n/config';
-import { CreateTranslationRequest, createTranslation, getTranslationCompare, getTranslationCompareCount } from '@/query/translation';
+import { clearTranslationCache } from '@/lib/utils';
+import {
+	CreateTranslationRequest,
+	createTranslation,
+	getTranslationCompare,
+	getTranslationCompareCount,
+} from '@/query/translation';
 import { TranslationCompare } from '@/types/response/Translation';
 import { TranslationPaginationQuery } from '@/types/schema/search-query';
 
-
-
 import { useMutation } from '@tanstack/react-query';
-import { clearTranslationCache } from '@/lib/utils';
-
 
 const DeleteTranslationDialog = dynamic(() => import('@/app/[locale]/(main)/translation/delete-translation.dialog'));
 
@@ -97,7 +93,7 @@ function CompareCard({ translation, language, target }: CompareCardProps) {
 	const axios = useClientApi();
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 		onSuccess: () => clearTranslationCache(),
 	});
 

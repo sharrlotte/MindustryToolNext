@@ -44,7 +44,7 @@ function UploadPluginCard({ plugin }: Props) {
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error?.message });
+			toast.error(<Tran text="delete-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['plugins']);
@@ -99,7 +99,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
 	const { mutate, isPending } = useMutation({
 		mutationFn: (data: VerifyPluginRequest) => verifyPlugin(axios, data),
 		onError: (error) => {
-			toast(<Tran text="verify-fail" />, { description: error?.message });
+			toast.error(<Tran text="verify-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['plugins']);

@@ -86,7 +86,7 @@ function SearchCard({ translation }: SearchCardProps) {
 	const [isEdit, setEdit] = useState(false);
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 		onSuccess: () => clearTranslationCache(),
 	});
 

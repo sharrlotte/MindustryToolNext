@@ -106,11 +106,10 @@ function ResetTokenButton({ id }: ResetTokenButtonProps) {
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['reset-token'],
-		mutationFn: async () =>
-			toast.promise(resetTokenServerManager(axios, id), {
-				success: <Tran text="server.reset-token-success" />,
-				error: (error) => <Tran text="error" args={{ message: error?.message }} />,
-			}),
+		mutationFn: async () => resetTokenServerManager(axios, id),
+		onSuccess: () => toast.success(<Tran text="server.reset-token-success" />),
+		onError: (error) => toast.error(<Tran text="server.shutdown-fail" />, { error }),
+
 		onSettled: () => {
 			invalidateByKey(['server-manager']);
 		},
