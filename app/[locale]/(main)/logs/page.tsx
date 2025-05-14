@@ -1,11 +1,7 @@
 import { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 
-import LiveLog from '@/app/[locale]/(main)/logs/live-log';
-
-import Tran from '@/components/common/tran';
-import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
+import PageClient from '@/app/[locale]/(main)/logs/page.client';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
@@ -16,8 +12,6 @@ type Props = {
 		locale: Locale;
 	}>;
 };
-
-const StaticLog = dynamic(() => import('@/app/[locale]/(main)/logs/static-log'));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale } = await params;
@@ -33,24 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default function Page() {
 	return (
 		<Suspense>
-			<ServerTabs className="h-full" value="live" name={'tab'} values={['live', 'static']}>
-				<ServerTabsList>
-					<ServerTabsTrigger value="live">
-						<Tran text="log.live" />
-					</ServerTabsTrigger>
-					<ServerTabsTrigger value="static">
-						<Tran text="log.static" />
-					</ServerTabsTrigger>
-				</ServerTabsList>
-				<ServerTabsContent className="h-full" value="live">
-					<LiveLog />
-				</ServerTabsContent>
-				<ServerTabsContent className="h-full" value="static">
-					<Suspense>
-						<StaticLog />
-					</Suspense>
-				</ServerTabsContent>
-			</ServerTabs>
+			<PageClient />
 		</Suspense>
 	);
 }
