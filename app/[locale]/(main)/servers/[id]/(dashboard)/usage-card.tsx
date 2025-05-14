@@ -23,7 +23,7 @@ export default function UsageCard({ id }: UsageCardProps) {
 	const { cpuUsage, ramUsage, totalRam } = data;
 
 	return (
-		<div>
+		<div className="h-full w-full flex flex-col">
 			<div className="space-x-1">
 				<Tran text="server.cpu-usage" />
 				<span>{cpuUsage}%</span>
