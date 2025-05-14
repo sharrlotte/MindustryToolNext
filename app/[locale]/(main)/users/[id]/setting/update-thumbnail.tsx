@@ -45,12 +45,8 @@ export default function UpdateThumbnail({ id }: UpdateThumbnailProps) {
 	const { invalidateByKey } = useQueriesData();
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['update-thumbnail'],
-		mutationFn: async (file: File) =>
-			toast.promise(updateThumbnail(axios, file), {
-				loading: <Tran text="upload.uploading" />,
-				error: (error) => ({ title: <Tran text="upload.fail" />, error }),
-				success: <Tran text="user.update-thumbnail-success" />,
-			}),
+		mutationFn: async (file: File) => updateThumbnail(axios, file),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 		onSuccess: () => {
 			invalidateByKey(['users']);
 			setFile(undefined);
