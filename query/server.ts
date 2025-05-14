@@ -20,6 +20,7 @@ import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManag
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { PaginationQuery } from '@/types/schema/search-query';
+import { ServerStats } from '@/types/response/ServerStats';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
 	const result = await axios.delete(`/servers/${id}/files`, {
@@ -111,8 +112,14 @@ export async function getServerPluginCount(axios: AxiosInstance, id: string, par
 	return result.data;
 }
 
-export async function getServer(axios: AxiosInstance, { id }: { id: string }): Promise<ServerDto> {
+export async function getServer(axios: AxiosInstance, { id }: { id: string }): Promise<Server> {
 	const result = await axios.get(`/servers/${id}`);
+
+	return result.data;
+}
+
+export async function getServerStats(axios: AxiosInstance, { id }: { id: string }): Promise<ServerStats> {
+	const result = await axios.get(`/servers/${id}/stats`);
 
 	return result.data;
 }

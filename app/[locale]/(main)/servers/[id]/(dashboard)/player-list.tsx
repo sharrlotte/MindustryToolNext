@@ -19,7 +19,7 @@ type PlayerListProps = {
 	id: string;
 };
 
-export function PlayerList({ id }: PlayerListProps) {
+export default function PlayerList({ id }: PlayerListProps) {
 	const axios = useClientApi();
 	const { data, isError, error } = useSuspenseQuery({
 		queryKey: ['server', id, 'player'],
