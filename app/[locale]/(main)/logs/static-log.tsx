@@ -1,9 +1,6 @@
+'use client';
+
 import React, { useCallback, useRef, useState } from 'react';
-
-
-
-
-
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -21,15 +18,12 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-
-
 import { LogType } from '@/constant/constant';
 import useClientQuery from '@/hooks/use-client-query';
 import { cn } from '@/lib/utils';
 import { getLogCollections, getLogCount, getLogs } from '@/query/log';
 import { Log } from '@/types/Log';
 import { LogEnvironment, LogPaginationQuerySchema, LogPaginationQueryType } from '@/types/schema/search-query';
-
 
 const defaultFilter: Omit<LogPaginationQueryType, 'page' | 'size'> = {
 	collection: 'SYSTEM',
