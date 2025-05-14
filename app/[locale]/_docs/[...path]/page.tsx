@@ -11,11 +11,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import Markdown, { shared } from '@/components/markdown/markdown';
 import BackButton from '@/components/ui/back-button';
 import Divider from '@/components/ui/divider';
 
 import { formatTitle, generateAlternate } from '@/lib/utils';
-import { shared } from '@/mdx-components';
 
 import './style.css';
 
@@ -67,16 +67,12 @@ export default async function Page({ params }: Props) {
 	const markdown = fs.readFileSync(markdownFilePath).toString();
 
 	const { next, previous } = getNextPrevDoc(locale, path);
-	const { Post } = await import(`@/docs/${locale}/${path.join('/')}.mdx`).then((result) => ({
-		Post: result.default,
-		metadata: result.metadata,
-	}));
 
 	return (
 		<CatchError>
 			<div className="max-w-[80ch] px-4 mb-4 mx-auto w-full flex flex-col">
 				<main id="docs-markdown">
-					<Post />
+					<Markdown>{markdown}</Markdown>
 				</main>
 				{(previous || next) && <Divider className="mt-6" />}
 				<nav className="flex flex-wrap gap-2 justify-between items-center py-4 overflow-hidden flex-col md:flex-row">
