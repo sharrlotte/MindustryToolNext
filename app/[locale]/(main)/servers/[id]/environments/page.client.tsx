@@ -88,7 +88,7 @@ function ServerEnvCard({ id, env }: ServerEnvCardProps) {
 	const { invalidateByKey } = useQueriesData();
 	const { mutate, isPending } = useMutation({
 		mutationFn: async () => deleteServerEnv(axios, id, env.id),
-		onError: (error) => toast.error(<Tran text="error" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="error" />, { error }),
 		onSuccess: () => {
 			form.reset();
 		},
@@ -175,7 +175,7 @@ function AddEnvCard({ id }: AddEnvCardProps) {
 	const { invalidateByKey } = useQueriesData();
 	const { mutate, isPending } = useMutation({
 		mutationFn: async (data: z.infer<typeof CreateServerEnvSchema>) => createServerEnv(axios, id, data),
-		onError: (error) => toast.error(<Tran text="error" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="error" />, { error }),
 		onSuccess: () => {
 			form.reset();
 		},

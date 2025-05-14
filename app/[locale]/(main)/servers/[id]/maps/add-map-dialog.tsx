@@ -45,7 +45,7 @@ export default function AddMapDialog({ serverId }: AddMapDialogProps) {
 			setAdded((prev) => [...prev, mapId]);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="interval-server.add-map-fail" />, { description: error?.message });
+			toast.error(<Tran text="interval-server.add-map-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['servers', serverId, 'maps']);

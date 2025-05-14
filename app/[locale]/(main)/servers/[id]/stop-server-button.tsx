@@ -4,7 +4,16 @@ import React from 'react';
 
 import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/sonner';
 
@@ -23,15 +32,11 @@ export default function StopServerButton({ id }: Props) {
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['servers'],
-		mutationFn: async () =>
-			toast.promise(stopServer(axios, id), {
-				loading: <Tran text="server.stopping" />,
-				success: <Tran text="server.stop-success" />,
-				error: (error) => ({ title: <Tran text="server.stop-fail" />, description: error?.message }),
-			}),
-		onSettled: () => {
-			revalidate({ path: '/servers' });
-		},
+		mutationFn: async () => stopServer(axios, id),
+		onMutate: () => toast.loading(<Tran text="server.stopping" />),
+		onSuccess: (_data, _variable, id) => toast.success(<Tran text="server.stop-success" />, { id }),
+		onError: (error, _variable, id) => toast.error(<Tran text="server.stop-fail" />, { error, id }),
+		onSettled: () => revalidate({ path: '/servers' }),
 	});
 
 	return (

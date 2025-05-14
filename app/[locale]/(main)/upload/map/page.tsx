@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
+import ErrorMessage from '@/components/common/error-message';
 import LoadingScreen from '@/components/common/loading-screen';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -21,6 +22,7 @@ import UserCard from '@/components/user/user-card';
 import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
+import { isError } from '@/lib/error';
 import { createMap, getMapPreview } from '@/query/map';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
@@ -29,8 +31,6 @@ import { CreateMapRequest, CreateMapSchema } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import ErrorMessage from '@/components/common/error-message';
-import { isError } from '@/lib/error';
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -46,7 +46,7 @@ export default function Page() {
 		},
 		onError: (error) => {
 			setFile(undefined);
-			toast.error(<Tran text="upload.get-preview-fail" />, { description: error?.message });
+			toast.error(<Tran text="upload.get-preview-fail" />, { error });
 		},
 	});
 
@@ -126,7 +126,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 
 			return toast.success(<Tran text="upload.success" />);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 	});
 
 	function handleSubmit(data: any) {

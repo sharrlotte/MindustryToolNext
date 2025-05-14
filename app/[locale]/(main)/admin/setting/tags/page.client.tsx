@@ -109,7 +109,7 @@ function GroupCard({ group }: GroupCardProps) {
 				updateGroupInfo(axios, group.id, category2.id, { position: category2Position }),
 			]);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 		onSettled: () => {
 			invalidateByKey(['tag-group']);
 		},
@@ -271,7 +271,7 @@ function TagCategoryCard({ category, modId }: TagCategoryCardProps) {
 
 			return Promise.all([updateTag(axios, tag1.id, tag1), updateTag(axios, tag2.id, tag2)]);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 		onSettled: () => {
 			invalidateByKey(['tags-detail']);
 		},

@@ -8,6 +8,7 @@ import CreateServerManagerDialog from '@/app/[locale]/(main)/servers/create-serv
 
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
+import { PlusIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -24,7 +25,6 @@ import { ServerModes } from '@/types/request/UpdateServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { PlusIcon } from '@/components/common/icons';
 
 export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: boolean }) {
 	const [managerId, setManagerId] = useState<string | undefined>('not-selected-yet');
@@ -67,7 +67,7 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 
 			router.push(`/servers/${data.id}`);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 
 		onSettled: () => {
 			invalidateByKey(['servers']);

@@ -50,7 +50,7 @@ function Preview() {
 		},
 		onError: (error) => {
 			setData(undefined);
-			toast.error(<Tran text="upload.get-preview-fail" />, { description: error?.message });
+			toast.error(<Tran text="upload.get-preview-fail" />, { error });
 		},
 	});
 
@@ -173,7 +173,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
 
 			return toast.success(<Tran text="upload.success" />);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 	});
 
 	function handleSubmit(data: any) {

@@ -372,3 +372,4 @@ export function generateAlternate(path: string) {
 export function hasProperty(obj: any, key: string): obj is { [key: string]: any} {
 	return typeof obj === 'object' && obj !== null && key in obj;
 }
+

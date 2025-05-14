@@ -45,7 +45,7 @@ export default function PageClient() {
 			toast.success(<Tran text="notification.send-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="notification.send-fail" />, { description: error?.message });
+			toast.error(<Tran text="notification.send-fail" />, { error });
 		},
 	});
 

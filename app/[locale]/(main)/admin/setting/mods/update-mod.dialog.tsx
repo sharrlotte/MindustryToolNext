@@ -49,7 +49,7 @@ export default function UpdateModDialog({ mod }: Props) {
 			form.reset();
 			setOpen(false);
 		},
-		onError: (error) => toast.error(<Tran text="delete.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="delete.fail" />, { error }),
 
 		onSettled: () => {
 			invalidateByKey(['mods']);

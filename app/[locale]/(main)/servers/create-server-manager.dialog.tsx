@@ -43,7 +43,7 @@ export default function CreateServerManagerDialog() {
 			form.reset();
 			setOpen(false);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 
 		onSettled: () => {
 			invalidateByKey(['server-managers']);

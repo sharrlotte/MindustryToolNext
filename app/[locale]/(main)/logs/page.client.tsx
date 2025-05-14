@@ -115,6 +115,7 @@ function StaticLog() {
 							label: item,
 							value: item,
 						}))}
+						searchBar={false}
 						onChange={(collection) => setFilter({ collection: collection ?? 'SERVER' })}
 					/>
 					<ComboBox<'Prod' | 'Dev'>

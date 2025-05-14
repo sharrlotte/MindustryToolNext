@@ -28,11 +28,10 @@ export default function VerifyMapButton({ id, name, selectedTags }: VerifyMapBut
 		mutationFn: (data: VerifyMapRequest) => verifyMap(axios, data),
 		onSuccess: () => {
 			back();
-			toast(<Tran text="verify-success" />);
 		},
 		onError: (error) => {
 			toast(<Tran text="verify-fail" />, {
-				description: error?.message,
+				error,
 			});
 		},
 		onSettled: () => {

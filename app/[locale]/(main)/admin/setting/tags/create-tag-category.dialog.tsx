@@ -46,7 +46,7 @@ export default function CreateTagCategoryDialog() {
 			form.reset();
 			setOpen(false);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 
 		onSettled: () => {
 			invalidateByKey(['tag-category']);

@@ -104,7 +104,7 @@ function ValueCard({ tKey: key, keyGroup, value, locale }: ValueCardProps) {
 
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 		onSuccess: () => clearTranslationCache(),
 	});
 

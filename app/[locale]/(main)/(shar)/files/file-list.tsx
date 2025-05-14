@@ -38,7 +38,7 @@ export default function FileList({ path, filter, setFilePath }: FileListProps) {
 		mutationKey: ['delete-file'],
 		mutationFn: async (path: string) => deleteServerFile(axios, path),
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error?.message });
+			toast.error(<Tran text="delete-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['server-files', path]);

@@ -32,7 +32,7 @@ export default function TakeDownSchematicButton({ id, name }: TakeDownSchematicB
 			toast(<Tran text="take-down-success" />);
 		},
 		onError: (error) => {
-			toast(<Tran text="take-down-fail" />, { description: error?.message });
+			toast.error(<Tran text="take-down-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['schematics']);

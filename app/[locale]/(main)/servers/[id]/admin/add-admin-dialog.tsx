@@ -11,7 +11,6 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import UserCard from '@/components/user/user-card';
 
@@ -87,7 +86,7 @@ function AddAdminUserCard({ id, user }: UserCardProps) {
 	const { invalidateByKey } = useQueriesData();
 	const { mutate, isPending } = useMutation({
 		mutationFn: async (userId: string) => createServerAdmin(axios, id, userId),
-		onError: (error) => toast.error(<Tran text="error" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="error" />, { error }),
 		onSettled: () => invalidateByKey(['server']),
 	});
 

@@ -109,7 +109,7 @@ export default function useMindustryGpt({ url }: MindustryGptConfig) {
 			setAbortController(null);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="error" />, { description: error?.message });
+			toast.error(<Tran text="error" />, { error });
 		},
 	});
 

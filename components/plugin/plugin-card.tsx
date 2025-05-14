@@ -37,7 +37,7 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error?.message });
+			toast.error(<Tran text="delete-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['plugins']);
@@ -49,7 +49,7 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
 			toast.success(<Tran text="delete-success" />);
 		},
 		onError: (error) => {
-			toast.error(<Tran text="delete-fail" />, { description: error?.message });
+			toast.error(<Tran text="delete-fail" />, { error });
 		},
 		onSettled: () => {
 			invalidateByKey(['plugins']);

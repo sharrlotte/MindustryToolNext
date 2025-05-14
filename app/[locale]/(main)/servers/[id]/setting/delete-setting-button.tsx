@@ -47,7 +47,7 @@ function DeleteServerButton({ id }: ServerSettingButtonProps) {
 
 			router.push('/servers');
 		},
-		onError: (error) => toast.error(<Tran text="delete-fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="delete-fail" />, { error }),
 		onSettled: () => {
 			revalidate({ path: '/servers' });
 			invalidateByKey(['servers']);
@@ -95,7 +95,7 @@ function TransferServerButton({ id }: ServerSettingButtonProps) {
 
 			router.push('/servers');
 		},
-		onError: (error) => toast.error(<Tran text="transfer-fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="transfer-fail" />, { error }),
 		onSettled: () => {
 			revalidate({ path: '/servers' });
 			invalidateByKey(['servers']);

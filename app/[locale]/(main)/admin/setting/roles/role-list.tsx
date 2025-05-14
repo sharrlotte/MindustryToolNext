@@ -5,6 +5,8 @@ import React from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import RoleCard from '@/app/[locale]/(main)/admin/setting/roles/role-card';
+
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
@@ -14,7 +16,6 @@ import { getRoles, moveRole } from '@/query/role';
 import { Role, RoleWithAuthorities } from '@/types/response/Role';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import RoleCard from '@/app/[locale]/(main)/admin/setting/roles/role-card';
 
 type Props = {
 	roles: RoleWithAuthorities[];
@@ -33,7 +34,7 @@ export default function RoleList({ roles, bestRole }: Props) {
 
 			return moveRole(axios, payload);
 		},
-		onError: (error) => toast.error(<Tran text="upload.fail" />, { description: error?.message }),
+		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 		onSettled: () => {
 			invalidateByKey(['roles']);
 		},

@@ -165,7 +165,7 @@ function DeleteFileAndFolderButton({ path }: { path: string }) {
 					queryClient.invalidateQueries({ queryKey: ['images'] });
 					toast.success('Image deleted successfully');
 				} catch (error: any) {
-					toast.error('Failed to delete image', { description: error?.message });
+					toast.error('Failed to delete image', { error });
 				}
 			}}
 		/>
@@ -202,7 +202,7 @@ function CreateFolderDialog({ path }: { path: string }) {
 			queryClient.invalidateQueries({ queryKey: ['images'] });
 		},
 		onError: (error: any) => {
-			toast.error('Failed to create folder', { description: error?.message });
+			toast.error('Failed to create folder', { error });
 		},
 	});
 
@@ -290,7 +290,7 @@ function UploadButton({ path }: { path: string }) {
 				delete updated[file.name];
 				return updated;
 			});
-			toast.error(`Failed to upload "${file.name}"`, { description: error?.message });
+			toast.error(`Failed to upload "${file.name}"`, { error });
 		},
 	});
 
