@@ -1,6 +1,8 @@
 import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
 
+
+
 import { SearchIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -14,12 +16,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+
+
 import { PresetType } from '@/constant/constant';
 import useTags from '@/hooks/use-tags';
 import { cn } from '@/lib/utils';
 import { Mod } from '@/types/response/Mod';
 import Tag from '@/types/response/Tag';
 import TagGroup from '@/types/response/TagGroup';
+import { useLocalStorage } from 'usehooks-ts';
+
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 
@@ -32,7 +38,7 @@ type TagSelectorProps = {
 };
 
 export default function TagSelector({ type, value, onChange, disabled = false, hideSelectedTag }: TagSelectorProps) {
-	const [selectedMod, setSelectedMod] = useState<Mod[]>([]);
+	const [selectedMod, setSelectedMod] = useLocalStorage<Mod[]>('mods', []);
 	const [filter, setFilter] = useState('');
 
 	const [showFilterDialog, setShowFilterDialog] = useState(false);

@@ -97,7 +97,9 @@ export function ServerTabsTrigger({ className, value, animate = true, children }
 					{children}
 				</div>
 			</div>
-			{animate && isSelected && <motion.div layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />}
+			{animate && isSelected && (
+				<motion.div layoutId="indicator" className="absolute bottom-0 left-0 right-0 h-0.5 border-b-[3px] border-foreground" />
+			)}
 		</Button>
 	);
 }
@@ -106,16 +108,17 @@ type ServerTabsContentProps = {
 	className?: string;
 	value: string;
 	children: ReactNode;
+	display?: 'block' | 'flex' | 'grid';
 };
 
-export function ServerTabsContent({ className, value, children }: ServerTabsContentProps) {
+export function ServerTabsContent({ className, value, children, display = 'block' }: ServerTabsContentProps) {
 	const { value: current } = useTab();
 
 	return (
 		<div
 			key={current}
 			className={cn('hidden overflow-hidden', className, {
-				block: value === current,
+				[display]: value === current,
 			})}
 		>
 			{children}
@@ -133,7 +136,10 @@ export function ServerTabsList({ className, children }: ServerTabsListProps) {
 
 	return (
 		<div
-			className={cn('no-scrollbar flex items-center py-2 gap-2 overflow-x-auto overflow-y-hidden bg-card px-2 text-muted-foreground w-full justify-start h-14 min-h-14 border-b', className)}
+			className={cn(
+				'no-scrollbar flex items-center py-2 gap-2 overflow-x-auto overflow-y-hidden bg-card px-2 text-muted-foreground w-full justify-start h-12 min-h-12 border-b',
+				className,
+			)}
 			onMouseLeave={() => setHovered('')}
 		>
 			{children}
