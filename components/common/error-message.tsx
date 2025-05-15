@@ -3,18 +3,20 @@ import React from 'react';
 import Tran from '@/components/common/tran';
 
 import { getErrorMessage } from '@/lib/error';
+import { cn } from '@/lib/utils';
 
 type Props = {
+	className?: string;
 	error: any;
 };
-export default function ErrorMessage({ error }: Props) {
+export default function ErrorMessage({ className, error }: Props) {
 	console.log(error);
 
 	const message = getErrorMessage(error);
 
 	if (message) {
-		return <span className="text-destructive-foreground p-2 text-sm">{message}</span>;
+		return <span className={cn('text-destructive-foreground p-2 text-sm', className)}>{message}</span>;
 	}
 
-	return <Tran className="text-destructive-foreground p-2 text-sm" text="unknown-error" />;
+	return <Tran className={cn('text-destructive-foreground p-2 text-sm', className)} text="unknown-error" />;
 }

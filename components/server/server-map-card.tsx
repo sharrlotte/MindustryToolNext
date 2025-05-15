@@ -18,15 +18,19 @@ import { ServerMap } from '@/types/response/ServerMap';
 import { useMutation } from '@tanstack/react-query';
 
 type ServerMapCardProps = {
+	serverId: string;
 	map: ServerMap;
 };
 
-export default function ServerMapCard({ map: { name, mapId, serverId } }: ServerMapCardProps) {
+export default function ServerMapCard({ serverId, map: { name, filename } }: ServerMapCardProps) {
 	const axios = useClientApi();
 	const { invalidateByKey } = useQueriesData();
 
+	const mapId = filename?.split('.')[0];
+	const isValidUuid = mapId?.length === 36;
+
 	const { mutate, isPending } = useMutation({
-		mutationFn: () => deleteServerMap(axios, serverId, mapId),
+		mutationFn: () => deleteServerMap(axios, serverId, filename),
 		onSuccess: () => {
 			toast(<Tran text="delete-success" />);
 		},
@@ -41,11 +45,13 @@ export default function ServerMapCard({ map: { name, mapId, serverId } }: Server
 	return (
 		<Preview className="group relative flex flex-col justify-between">
 			<InternalLink href={`/maps/${mapId}`}>
-				<PreviewImage
-					src={`${env.url.image}/map-previews/${mapId}${env.imageFormat}`}
-					errorSrc={`${env.url.api}/maps/${mapId}/image`}
-					alt={name ?? 'internal server map'}
-				/>
+				{isValidUuid && mapId && (
+					<PreviewImage
+						src={`${env.url.image}/map-previews/${mapId}${env.imageFormat}`}
+						errorSrc={`${env.url.api}/maps/${mapId}/image`}
+						alt={name ?? 'internal server map'}
+					/>
+				)}
 			</InternalLink>
 			<PreviewDescription>
 				<PreviewHeader className="h-12">

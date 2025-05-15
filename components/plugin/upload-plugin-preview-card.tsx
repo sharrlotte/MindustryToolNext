@@ -154,7 +154,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
 									</Button>
 								</DialogClose>
 								<Button className="w-fit" variant="primary" type="submit" title="upload" disabled={isPending}>
-									<Tran text="verify" />,
+									<Tran text="verify" />
 								</Button>
 							</div>
 						</form>

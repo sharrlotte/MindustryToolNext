@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
-import { useDebounceValue } from 'usehooks-ts';
+import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
 import ErrorMessage from '@/components/common/error-message';
 import { Hidden } from '@/components/common/hidden';
@@ -52,7 +52,7 @@ type NameTagSearchProps = {
 
 export default function NameTagSearch({ className, type, useSort = true, useTag = true }: NameTagSearchProps) {
 	const [filter, setFilter] = useState('');
-	const [selectedMod, setSelectedMod] = useState<Mod[]>([]);
+	const [selectedMod, setSelectedMod] = useLocalStorage<Mod[]>('mods',[]);
 
 	const params = useSearchQuery(ItemPaginationQuery);
 

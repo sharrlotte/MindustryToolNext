@@ -1,42 +1,40 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import React from 'react';
 
-import AddPluginDialog from '@/app/[locale]/(main)/servers/[id]/plugins/add-plugin-dialog';
 
-import InfinitePage from '@/components/common/infinite-page';
-import { PaginationFooter } from '@/components/common/pagination-layout';
-import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
-import ServerPluginCard from '@/components/server/server-plugin-card';
-
-import { getServerPluginCount, getServerPlugins } from '@/query/server';
-import { PaginationQuerySchema } from '@/types/schema/search-query';
+import Tran from '@/components/common/tran';
+import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
+import PluginList from '@/app/[locale]/(main)/servers/[id]/plugins/plugin-list';
 
 type Props = {
 	id: string;
 };
+const DownloadPluginList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/plugins/download-plugin-list'), { ssr: false });
 
 export default function ServerPluginPage({ id }: Props) {
 	return (
 		<div className="h-full w-full overflow-hidden p-2 flex flex-col gap-2">
-			<ScrollContainer>
-				<InfinitePage
-					className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
-					paramSchema={PaginationQuerySchema}
-					queryKey={['servers', id, 'plugins']}
-					queryFn={(axios, params) => getServerPlugins(axios, id, params)}
-				>
-					{(page) => page.map((data) => <ServerPluginCard key={data.id} plugin={data} />)}
-				</InfinitePage>
-			</ScrollContainer>
-			<PaginationFooter>
-				<AddPluginDialog serverId={id} />
-				<PaginationNavigator
-					numberOfItems={(axios, params) => getServerPluginCount(axios, id, params)}
-					queryKey={['servers', id, 'plugins', 'total']}
-				/>
-			</PaginationFooter>
+			<ServerTabs className="gap-2" name="tab" value="list" values={['list', 'download']}>
+				<ServerTabsList className="border-none rounded-lg w-fit">
+					<ServerTabsTrigger value="list">
+						<Tran text="list" />
+					</ServerTabsTrigger>
+					<ServerTabsTrigger value="download">
+						<Tran text="download" />
+					</ServerTabsTrigger>
+				</ServerTabsList>
+				<ScrollContainer>
+					<ServerTabsContent className="w-full gap-2 md:grid-cols-2 lg:grid-cols-3" display="grid" value="list">
+						<PluginList id={id} />
+					</ServerTabsContent>
+					<ServerTabsContent className="h-full" value="download">
+						<DownloadPluginList />
+					</ServerTabsContent>
+				</ScrollContainer>
+			</ServerTabs>
 		</div>
 	);
 }

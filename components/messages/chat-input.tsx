@@ -125,7 +125,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 					autoFocus
 					{...props}
 				/>
-				<div className="m-1 mt-auto flex items-center gap-2 min-h-9">
+				<div className="my-1 mx-2 mt-auto flex items-center gap-2 min-h-9">
 					<Popover>
 						<PopoverTrigger>
 							<SmileIcon />

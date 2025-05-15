@@ -63,12 +63,15 @@ export default async function Page({ searchParams }: Props) {
 						<Tran text="server.my-server" />
 					</ServerTabsTrigger>
 				</ServerTabsList>
-				<ServerTabsContent className="p-2" value="server-list">
+				<ServerTabsContent className="p-2 h-full flex-col justify-between" display="flex" value="server-list">
 					<Suspense fallback={<ServersSkeleton />}>
 						<ServerList />
 					</Suspense>
+					<Suspense>
+						<ServerFooter create={create} />
+					</Suspense>
 				</ServerTabsContent>
-				<ServerTabsContent className="p-2" value="my-server">
+				<ServerTabsContent className="p-2 h-full flex-col justify-between" display="flex" value="my-server">
 					<ClientProtectedElement filter alt={<LoginToCreateServer />}>
 						<ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2">
 							<Suspense fallback={<ServersSkeleton />}>
@@ -76,11 +79,11 @@ export default async function Page({ searchParams }: Props) {
 							</Suspense>
 						</ScrollContainer>
 					</ClientProtectedElement>
+					<Suspense>
+						<ServerFooter create={create} />
+					</Suspense>
 				</ServerTabsContent>
 			</ServerTabs>
-			<Suspense>
-				<ServerFooter create={create} />
-			</Suspense>
 		</div>
 	);
 }

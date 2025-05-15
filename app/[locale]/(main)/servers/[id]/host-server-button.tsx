@@ -14,22 +14,16 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } fr
 
 import { revalidate } from '@/action/common';
 import env from '@/constant/env';
-import useClientApi from '@/hooks/use-client';
 import useHttpStream from '@/hooks/use-http-stream';
-import { getServerMaps } from '@/query/server';
+import useServerMaps from '@/hooks/use-server-maps';
 
-import { useQuery } from '@tanstack/react-query';
 
 type Props = {
 	id: string;
 };
 
 function HasServerMap({ id, children }: { id: string; children: ReactNode }) {
-	const axios = useClientApi();
-	const { data, isError, isLoading } = useQuery({
-		queryFn: () => getServerMaps(axios, id, { size: 1, page: 0 }),
-		queryKey: ['server', id, 'maps-check'],
-	});
+	const { data, isError, isLoading } = useServerMaps(id);
 
 	if (isLoading) {
 		return <></>;
@@ -101,7 +95,14 @@ export default function HostServerButton({ id }: Props) {
 						<Tran text="server.hosting-server" asChild />
 					</DialogTitle>
 					<DialogDescription className="flex gap-1 overflow-hidden w-full text-ellipsis items-center">
-						{isPending ? <LoadingSpinner className="p-0 w-4 justify-start m-0" /> : isError ? <ErrorMessage error={error} /> : <CheckCircleIcon className="w-4" />} <ColorText text={last} />
+						{isPending ? (
+							<LoadingSpinner className="p-0 w-4 justify-start m-0" />
+						) : isError ? (
+							<ErrorMessage error={error} />
+						) : (
+							<CheckCircleIcon className="w-4" />
+						)}{' '}
+						<ColorText text={last} />
 					</DialogDescription>
 					<ScrollContainer className="h-full flex-1 flex w-full flex-col overflow-x-auto">
 						{data?.map((text, index) => <ColorText key={index} text={text} />)}

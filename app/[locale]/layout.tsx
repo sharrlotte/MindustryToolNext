@@ -87,6 +87,8 @@ export default async function Root({ children, params }: RootProps) {
 				'dark h-full w-full overflow-hidden bg-background text-foreground antialiased',
 				noto.className,
 				icon.className,
+				noto.variable,
+				icon.variable,
 				'font-noto',
 			)}
 			lang={locale}

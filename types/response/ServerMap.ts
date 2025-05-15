@@ -1,8 +1,7 @@
 export type ServerMap = {
-  id: string;
-  serverId: string;
-  mapId: string;
-  name: string;
-  createdAt: string;
-  createdBy: string;
-};
+    name: string;
+    filename: string;
+    width: number;
+    height: number;
+    isCustom: boolean;
+}
