@@ -61,11 +61,13 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 		socket.onError(() => {
 			setState(socket.getState());
 		});
+	}, [socket, authState]);
 
+	useEffect(() => {
 		return () => {
 			socket.close();
 		};
-	}, [socket, authState]);
+	}, [socket]);
 
 	return (
 		<SocketContext.Provider
