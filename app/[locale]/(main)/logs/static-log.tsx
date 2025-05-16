@@ -5,9 +5,9 @@ import React, { useCallback, useRef, useState } from 'react';
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
-import { IconNotification } from '@/components/common/icon-notification';
 import { FilterIcon, XIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
+import { NotificationNumber } from '@/components/common/notification-number';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -148,9 +148,9 @@ function FilterDialog({ filter, setFilter }: FilterDialogProps) {
 		<Dialog>
 			<DialogTrigger asChild>
 				<Button className="border-transparent bg-secondary shadow-md" variant="outline" title="Filter">
-					<IconNotification number={number}>
+					<NotificationNumber number={number}>
 						<FilterIcon />
-					</IconNotification>
+					</NotificationNumber>
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="grid w-fit max-w-full gap-2 p-6">

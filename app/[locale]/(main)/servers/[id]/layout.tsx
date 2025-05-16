@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import React, { ReactNode, use } from 'react';
 
 import {
@@ -15,11 +16,13 @@ import {
 } from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
+import { NotificationNumber } from '@/components/common/notification-number';
 import Tran from '@/components/common/tran';
 
 import { NavLinkProvider } from '@/context/nav-link.context';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
+import useServerPlugins from '@/hooks/use-server-plugins';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
 import { getServer } from '@/query/server';
@@ -32,6 +35,33 @@ type LayoutProps = {
 	}>;
 	children: ReactNode;
 };
+
+function PluginLabel() {
+	const { id } = useParams();
+	const { data } = useServerPlugins(id as string);
+	const axios = useClientApi();
+
+	const shouldCheckPlugins = data
+		?.map((p) => p.filename.replace('.jar', '').split('_)'))
+		.filter((p) => p.length === 2)
+		.map((p) => p[1])
+		.filter((p) => !!p);
+
+	const { data: version } = useQuery({
+		queryKey: ['server', id, 'plugin-version'],
+		queryFn: () =>
+			axios
+				.post('plugins/check-version', shouldCheckPlugins, { withCredentials: true })
+				.then((res) => res.data as { id: string; version: string }[]),
+		enabled: !!shouldCheckPlugins && shouldCheckPlugins.length > 0,
+	});
+
+	return (
+		<NotificationNumber number={version?.length ?? 0}>
+			<Tran text="plugin" />
+		</NotificationNumber>
+	);
+}
 
 export default function ServerLayout({ params, children }: LayoutProps) {
 	const { id } = use(params);
@@ -69,7 +99,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 		{
 			id: 'plugin',
 			href: '/plugins',
-			label: <Tran text="plugin" />,
+			label: <PluginLabel />,
 			icon: <PluginIcon />,
 			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
 		},

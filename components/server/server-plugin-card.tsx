@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React from 'react';
 
@@ -17,7 +16,7 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { Batcher } from '@/lib/batcher';
 import { omit } from '@/lib/utils';
-import { createServerMap, createServerPlugin, deleteServerPlugin } from '@/query/server';
+import { createServerPlugin, deleteServerPlugin } from '@/query/server';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
