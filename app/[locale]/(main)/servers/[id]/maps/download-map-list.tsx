@@ -108,8 +108,8 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 			onClick={() => mutate(map.id)}
 		>
 			<h3 className="absolute top-0 w-full overflow-hidden p-2 text-center backdrop-brightness-[20%]">{name}</h3>
-			<footer className="absolute bottom-0 w-full overflow-hidden p-2 text-center backdrop-brightness-[20%]"></footer>
 			<PreviewImage
+				className="h-full"
 				src={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
 				errorSrc={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
 				alt={name}
