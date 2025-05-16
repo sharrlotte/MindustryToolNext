@@ -18,12 +18,12 @@ import { deletePlugin, unverifyPlugin } from '@/query/plugin';
 import { Plugin } from '@/types/response/Plugin';
 
 import { useMutation } from '@tanstack/react-query';
+import { GITHUB_PATTERN } from '@/constant/constant';
 
 type Props = {
 	plugin: Plugin;
 };
 
-const GITHUB_PATTERN = /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
 export default function PluginCard({ plugin: { id, name, description, url, userId, isPrivate } }: Props) {
 	const { invalidateByKey } = useQueriesData();
 
