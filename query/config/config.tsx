@@ -6,17 +6,12 @@ import env from '@/constant/env';
 import { uuid } from '@/lib/utils';
 
 function logError(error: unknown) {
-	try {
-		console.log(
-			JSON.stringify(
-				error,
-				Object.getOwnPropertyNames(error as object).filter((field) => field !== 'stack'),
-			),
-		);
-	} catch (e) {
-		console.error(error);
-		console.error(e);
-	}
+	console.log(
+		JSON.stringify(
+			error,
+			Object.getOwnPropertyNames(error as object).filter((field) => field !== 'stack'),
+		),
+	);
 }
 
 const axiosInstance = Axios.create({
@@ -36,16 +31,17 @@ axiosInstance.interceptors.response.use(
 		return res;
 	},
 	(error) => {
-		logError(error);
+		try {
+			logError(error);
 
-		if (typeof window !== 'undefined') {
-			if (typeof error === 'string') {
-				toast.error(error);
+			if (typeof window !== 'undefined') {
+				if (typeof error === 'string') {
+					toast.error(error);
+				}
 			}
+		} catch (e) {
+			console.log(e);
 		}
-
-		console.log(error);
-
 		if (error?.response?.data?.message) {
 			return Promise.reject(error.response.data.message);
 		}
