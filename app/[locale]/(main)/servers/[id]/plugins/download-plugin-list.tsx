@@ -45,14 +45,7 @@ export default function DownloadPluginList() {
 							item: <Skeleton className="h-40 min-h-40" />,
 						}}
 					>
-						{(page) =>
-							page
-								.filter(
-									(plugin) =>
-										!added.some((a) => a.filename.startsWith(plugin.id + '_' + new Date(plugin.lastReleaseAt).getTime())),
-								)
-								.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)
-						}
+						{(page) => page.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)}
 					</InfinitePage>
 				</ListLayout>
 				<GridLayout>
@@ -65,14 +58,7 @@ export default function DownloadPluginList() {
 							item: <Skeleton className="h-40 min-h-40" />,
 						}}
 					>
-						{(page) =>
-							page
-								.filter(
-									(plugin) =>
-										!added.some((a) => a.filename.startsWith(plugin.id + '_' + new Date(plugin.lastReleaseAt).getTime())),
-								)
-								.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)
-						}
+						{(page) => page.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)}
 					</GridPaginationList>
 				</GridLayout>
 			</ScrollContainer>
@@ -100,10 +86,10 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 
 	const currentPlugin = added.find((a) => a.filename.startsWith(plugin.id + '_' + new Date(plugin.lastReleaseAt).getTime()));
 	let installedVersion = undefined;
-	let newestVersion = new Date(plugin.lastReleaseAt).toLocaleString();
+	const newestVersion = new Date(plugin.lastReleaseAt);
 
 	if (currentPlugin) {
-		installedVersion = new Date(currentPlugin.filename.split('_').at(-1) as string).toLocaleString();
+		installedVersion = new Date(Number(currentPlugin.filename.replace('.jar', '').split('_').at(-1) as string));
 	}
 
 	const { invalidateByKey } = useQueriesData();
@@ -147,21 +133,23 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			<p className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
 				<ColorText text={description} />
 			</p>
-			<div className="flex items-center">
-				{installedVersion && (
-					<>
-						<span className="text-sm text-destructive-foreground">{installedVersion}</span>
-						{'=>'}
-					</>
-				)}
-				<span
-					className={cn('text-sm', {
-						'text-success-foreground': !!installedVersion,
-					})}
-				>
-					{newestVersion}
-				</span>
-			</div>
+			{!!installedVersion && installedVersion.getTime() !== newestVersion.getTime() && (
+				<div className="flex items-center">
+					{installedVersion && (
+						<>
+							<span className="text-sm text-destructive-foreground">{installedVersion.toLocaleString()}</span>
+							{'=>'}
+						</>
+					)}
+					<span
+						className={cn('text-sm', {
+							'text-success-foreground': !!installedVersion,
+						})}
+					>
+						{newestVersion.toLocaleString()}
+					</span>
+				</div>
+			)}
 			{isPending && (
 				<div className="absolute inset-0 z-10 backdrop-brightness-50 flex items-center justify-center">
 					<LoadingSpinner className="m-auto" />

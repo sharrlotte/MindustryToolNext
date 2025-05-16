@@ -97,7 +97,7 @@ function PluginVersion({ id: pluginId, version }: { id: string; version: string 
 		queryKey: ['plugin', pluginId, version],
 		queryFn: () => Batcher.checkPluginVersion.get({ id: pluginId, version }),
 		retry: false,
-		initialData: { id: '', version: '' },
+		initialData: { id: '', version: Date.now().toString() },
 	});
 
 	const { id } = useParams() as { id: string };
