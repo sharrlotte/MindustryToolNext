@@ -95,6 +95,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			: 'outdated'
 		: 'not-installed';
 
+	console.log({ plugin: plugin.name, state, added, installedVersion, newestVersion, currentPlugin, parts });
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
@@ -117,7 +118,13 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 
 	return (
 		<motion.button
-			className="relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:border-brand cursor-pointer"
+			className={cn(
+				'relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start  cursor-pointer',
+				{
+					'hover:border-brand': state !== 'up-to-date',
+					'opacity-50': state === 'up-to-date',
+				},
+			)}
 			disabled={isPending || state === 'up-to-date'}
 			onClick={() => mutate(plugin.id)}
 			layout
@@ -136,13 +143,14 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			<p className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
 				<ColorText text={description} />
 			</p>
-			<div className="flex items-center mt-auto">
+			<div className="flex items-center mt-auto gap-1">
 				{state === 'outdated' && installedVersion && (
 					<>
 						<span className="text-sm text-destructive-foreground">{dateToId(installedVersion)}</span>
 						{'=>'}
 					</>
 				)}
+				{state === 'up-to-date' && <Tran text="plugin.up-to-date" />}
 				<span
 					className={cn('text-sm text-foreground', {
 						'text-success-foreground': state === 'outdated',
