@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useParams } from 'next/navigation';
 
 import ColorText from '@/components/common/color-text';
@@ -103,10 +104,11 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 	});
 
 	return (
-		<button
+		<motion.button
 			className="relative border flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:bg-brand/70 cursor-pointer"
 			disabled={isPending}
 			onClick={() => mutate(plugin.id)}
+			layout
 		>
 			<h2 className="line-clamp-1 w-full text-ellipsis whitespace-normal text-nowrap">{name}</h2>
 			<span className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
@@ -117,6 +119,6 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 					<LoadingSpinner className="m-auto" />
 				</div>
 			)}
-		</button>
+		</motion.button>
 	);
 }

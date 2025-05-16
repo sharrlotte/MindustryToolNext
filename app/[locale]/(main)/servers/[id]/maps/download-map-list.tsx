@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useParams } from 'next/navigation';
 
 import ColorText from '@/components/common/color-text';
@@ -6,10 +7,11 @@ import InfinitePage from '@/components/common/infinite-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
-import { PreviewImage } from '@/components/common/preview';
+import { Preview, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import NameTagSearch from '@/components/search/name-tag-search';
+import PreviewSkeleton from '@/components/skeleton/preview.skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/sonner';
 
@@ -40,7 +42,7 @@ export default function DownloadMapList() {
 						queryFn={(axios, params) => getMaps(axios, params)}
 						skeleton={{
 							amount: 20,
-							item: <Skeleton className="h-20" />,
+							item: <PreviewSkeleton />,
 						}}
 					>
 						{(page) =>
@@ -57,7 +59,7 @@ export default function DownloadMapList() {
 						queryFn={getMaps}
 						skeleton={{
 							amount: 20,
-							item: <Skeleton className="h-20" />,
+							item: <PreviewSkeleton />,
 						}}
 					>
 						{(page) =>
@@ -105,25 +107,30 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 	});
 
 	return (
-		<button
-			className="hover:zoom-in-110 relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start"
+		<motion.button
+			layout
+			className="relative h-full w-full overflow-hidden p-0"
 			disabled={isPending}
 			onClick={() => mutate(map.id)}
 		>
-			<h3 className="absolute top-0 w-full overflow-hidden p-2 text-center backdrop-brightness-[20%]">
-				<ColorText text={name} />
-			</h3>
-			<PreviewImage
-				className="h-full"
-				src={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
-				errorSrc={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
-				alt={name}
-			/>
+			<Preview className="group relative flex flex-col justify-between">
+				<PreviewImage
+					className="h-full"
+					src={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
+					errorSrc={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
+					alt={name}
+				/>
+				<PreviewDescription>
+					<PreviewHeader className="h-12">
+						<ColorText text={name} />
+					</PreviewHeader>
+				</PreviewDescription>
+			</Preview>
 			{isPending && (
 				<div className="absolute inset-0 z-10 backdrop-brightness-50 flex items-center justify-center">
 					<LoadingSpinner className="m-auto" />
 				</div>
 			)}
-		</button>
+		</motion.button>
 	);
 }
