@@ -18,7 +18,7 @@ import { GITHUB_PATTERN } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useServerPlugins from '@/hooks/use-server-plugins';
-import { cn } from '@/lib/utils';
+import { cn, dateToId } from '@/lib/utils';
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { createServerPlugin } from '@/query/server';
 import { Plugin } from '@/types/response/Plugin';
@@ -135,23 +135,21 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			<p className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
 				<ColorText text={description} />
 			</p>
-			{state === 'outdated' && (
-				<div className="flex items-center">
-					{installedVersion && (
-						<>
-							<span className="text-sm text-destructive-foreground">{installedVersion.toLocaleString()}</span>
-							{'=>'}
-						</>
-					)}
-					<span
-						className={cn('text-sm', {
-							'text-success-foreground': !!installedVersion,
-						})}
-					>
-						{newestVersion.toLocaleString()}
-					</span>
-				</div>
-			)}
+			<div className="flex items-center">
+				{state === 'outdated' && installedVersion && (
+					<>
+						<span className="text-sm text-destructive-foreground">{dateToId(installedVersion)}</span>
+						{'=>'}
+					</>
+				)}
+				<span
+					className={cn('text-sm text-foreground', {
+						'text-success-foreground': state === 'outdated',
+					})}
+				>
+					{dateToId(newestVersion)}
+				</span>
+			</div>
 			{isPending && (
 				<div className="absolute inset-0 z-10 backdrop-brightness-50 flex items-center justify-center">
 					<LoadingSpinner className="m-auto" />

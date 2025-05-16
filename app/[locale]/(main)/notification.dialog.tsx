@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 import React, { Suspense, useEffect } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
-import { IconNotification } from '@/components/common/icon-notification';
 import { NotificationIcon } from '@/components/common/icons';
+import { NotificationNumber } from '@/components/common/notification-number';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
@@ -33,10 +33,13 @@ export default function NotificationDialog() {
 		<ProtectedElement session={session} filter>
 			<Dialog>
 				<DialogTrigger
-					className={cn('flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand hover:text-brand-foreground rounded-md', {
-						'justify-start': expand,
-						'aspect-square': !expand,
-					})}
+					className={cn(
+						'flex items-center w-full flex-row col-span-full gap-2 justify-center hover:bg-brand hover:text-brand-foreground rounded-md',
+						{
+							'justify-start': expand,
+							'aspect-square': !expand,
+						},
+					)}
 				>
 					<NotificationDialogButton expand={expand} />
 				</DialogTrigger>
@@ -79,9 +82,9 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
 
 	return (
 		<>
-			<IconNotification number={data ?? 0}>
+			<NotificationNumber number={data ?? 0}>
 				<NotificationIcon />
-			</IconNotification>
+			</NotificationNumber>
 			{expand && <Tran text="notification" />}
 		</>
 	);

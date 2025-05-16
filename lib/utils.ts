@@ -1,8 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-
-
 import { colours } from '@/constant/constant';
 import { AuthorityEnum, UserRole } from '@/constant/constant';
 import env from '@/constant/env';
@@ -11,9 +9,10 @@ import { ApiError, isError } from '@/lib/error';
 import { ChartData, Metric } from '@/types/response/Metric';
 import { Session } from '@/types/response/Session';
 
-
 export function uuid() {
-	return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) => (+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16));
+	return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
+		(+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16),
+	);
 }
 
 export function stripColors(input: string): string {
@@ -49,7 +48,8 @@ export type GroupBy<T> = {
 	value: T[];
 };
 
-export const YOUTUBE_VIDEO_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+export const YOUTUBE_VIDEO_REGEX =
+	/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 export function extractYouTubeID(url: string) {
 	const match = url.match(YOUTUBE_VIDEO_REGEX);
@@ -102,7 +102,9 @@ export function fillMetric(start: Date, numberOfDays: number, array: Metric[] | 
 
 // Helper function to compare dates without considering time
 export function isSameDay(date1: Date, date2: Date): boolean {
-	return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
+	return (
+		date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
+	);
 }
 
 export function toForm(data: Record<string, string | number | File | undefined | null | boolean>) {
@@ -369,7 +371,10 @@ export function generateAlternate(path: string) {
 	};
 }
 
-export function hasProperty(obj: any, key: string): obj is { [key: string]: any} {
+export function hasProperty(obj: any, key: string): obj is { [key: string]: any } {
 	return typeof obj === 'object' && obj !== null && key in obj;
 }
 
+export function dateToId(date: Date) {
+	return `v${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}.${String(date.getHours()).padStart(2, '0')}.${String(date.getMinutes()).padStart(2, '0')}`;
+}
