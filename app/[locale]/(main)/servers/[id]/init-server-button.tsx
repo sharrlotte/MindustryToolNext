@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 
+
+
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
 import { CheckCircleIcon } from '@/components/common/icons';
@@ -11,9 +13,13 @@ import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 
+
+
 import { revalidate } from '@/action/common';
 import env from '@/constant/env';
 import useHttpStream from '@/hooks/use-http-stream';
+import useQueriesData from '@/hooks/use-queries-data';
+
 
 type Props = {
 	id: string;
@@ -21,11 +27,15 @@ type Props = {
 
 export default function InitServerButton({ id }: Props) {
 	const [visible, setVisible] = useState(false);
+	const { invalidateByKey } = useQueriesData();
 
 	const { data, last, mutate, isPending, isSuccess, isError, error } = useHttpStream({
 		url: `${env.url.api}/servers/${id}/init`,
 		method: 'POST',
 		mutationKey: ['servers', id, 'init'],
+		onSettled: () => {
+			invalidateByKey(['server']);
+		},
 	});
 
 	useEffect(() => {

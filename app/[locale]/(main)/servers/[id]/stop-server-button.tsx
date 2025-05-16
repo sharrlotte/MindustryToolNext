@@ -19,6 +19,7 @@ import { toast } from '@/components/ui/sonner';
 
 import { revalidate } from '@/action/common';
 import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
 import { stopServer } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
@@ -29,6 +30,7 @@ type Props = {
 
 export default function StopServerButton({ id }: Props) {
 	const axios = useClientApi();
+	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['servers'],
@@ -36,7 +38,10 @@ export default function StopServerButton({ id }: Props) {
 		onMutate: () => toast.loading(<Tran text="server.stopping" />),
 		onSuccess: (_data, _variable, id) => toast.success(<Tran text="server.stop-success" />, { id }),
 		onError: (error, _variable, id) => toast.error(<Tran text="server.stop-fail" />, { error, id }),
-		onSettled: () => revalidate({ path: '/servers' }),
+		onSettled: () => {
+			revalidate({ path: '/servers' });
+			invalidateByKey(['server']);
+		},
 	});
 
 	return (

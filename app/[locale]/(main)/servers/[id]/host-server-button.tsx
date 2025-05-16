@@ -15,8 +15,8 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } fr
 import { revalidate } from '@/action/common';
 import env from '@/constant/env';
 import useHttpStream from '@/hooks/use-http-stream';
+import useQueriesData from '@/hooks/use-queries-data';
 import useServerMaps from '@/hooks/use-server-maps';
-
 
 type Props = {
 	id: string;
@@ -45,11 +45,15 @@ function HasServerMap({ id, children }: { id: string; children: ReactNode }) {
 
 export default function HostServerButton({ id }: Props) {
 	const [visible, setVisible] = useState(false);
+	const { invalidateByKey } = useQueriesData();
 
 	const { data, last, mutate, isPending, isSuccess, isError, error } = useHttpStream({
 		url: `${env.url.api}/servers/${id}/host`,
 		method: 'POST',
 		mutationKey: ['servers', id, 'host'],
+		onSettled: () => {
+			invalidateByKey(['server']);
+		},
 	});
 
 	useEffect(() => {

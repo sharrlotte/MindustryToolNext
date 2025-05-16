@@ -135,7 +135,7 @@ toast.warning = (title: ReactNode, options?: ToastOptions) => {
 };
 
 toast.loading = (title: ReactNode, options?: ToastOptions) => {
-	return toast(title, { icon: <LoadingSpinner className="size-4 p-0" />, ...options });
+	return toast(title, { icon: <LoadingSpinner className="size-4 p-0 m-0" />, ...options });
 };
 
 toast.dismiss = (id?: number | string) => {
