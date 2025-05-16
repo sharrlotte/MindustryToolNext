@@ -6,7 +6,6 @@ export type DetailTagDto = {
 	icon: string;
 	color: string;
 	position: number;
-	categoryPosition: number;
 };
 
 type Tag = {

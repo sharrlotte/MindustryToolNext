@@ -3,16 +3,18 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
+import PluginList from '@/app/[locale]/(main)/servers/[id]/plugins/plugin-list';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
-import PluginList from '@/app/[locale]/(main)/servers/[id]/plugins/plugin-list';
 
 type Props = {
 	id: string;
 };
-const DownloadPluginList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/plugins/download-plugin-list'), { ssr: false });
+const DownloadPluginList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/plugins/download-plugin-list'), {
+	ssr: false,
+});
 
 export default function ServerPluginPage({ id }: Props) {
 	return (
@@ -27,7 +29,7 @@ export default function ServerPluginPage({ id }: Props) {
 					</ServerTabsTrigger>
 				</ServerTabsList>
 				<ScrollContainer>
-					<ServerTabsContent className="w-full gap-2 md:grid-cols-2 lg:grid-cols-3" display="grid" value="list">
+					<ServerTabsContent className="w-full gap-2 md:grid-cols-2 lg:grid-cols-3 grid-flow-row" display="grid" value="list">
 						<PluginList id={id} />
 					</ServerTabsContent>
 					<ServerTabsContent className="h-full" value="download">

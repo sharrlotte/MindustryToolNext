@@ -39,20 +39,5 @@ export default function useClientApi(): AxiosInstance {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (process.env.NODE_ENV === 'production') {
-			return;
-		}
-
-		const id = axiosInstance.interceptors.request.use(async (config) => {
-			console.log(`CLIENT ${config.method?.toUpperCase()} ${config.baseURL}/${config.url}`);
-			return config;
-		});
-
-		return () => {
-			axiosInstance.interceptors.request.eject(id);
-		};
-	}, []);
-
 	return axiosInstance;
 }
