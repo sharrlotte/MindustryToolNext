@@ -12,14 +12,9 @@ import NameTagSearch from '@/components/search/name-tag-search';
 
 import env from '@/constant/env';
 import { getPostCount, getPosts } from '@/query/post';
-import { Post } from '@/types/response/Post';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
 
-type Props = {
-	posts: Post[];
-};
-
-export default function Client({ posts }: Props) {
+export default function Client() {
 	const uploadLink = `${env.url.base}/upload/post`;
 
 	return (
@@ -31,7 +26,6 @@ export default function Client({ posts }: Props) {
 					paramSchema={ItemPaginationQuery}
 					queryKey={['posts']}
 					queryFn={getPosts}
-					initialData={posts}
 				>
 					{(page) => page.map((data) => <PostPreviewCard key={data.id} post={data} />)}
 				</InfinitePage>
