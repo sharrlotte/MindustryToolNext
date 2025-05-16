@@ -23,10 +23,23 @@ const axiosInstance = Axios.create({
 	withCredentials: true,
 });
 
+axiosInstance.interceptors.request.use((config) => {
+	if (process.env.NODE_ENV !== 'production') {
+		const id = uuid();
+		config.headers['x-request-id'] = uuid();
+		console.time(`${id} ${config.method?.toUpperCase()} ${config.url}`);
+	}
+
+	return config;
+});
+
 axiosInstance.interceptors.response.use(
 	(res) => {
 		if (process.env.NODE_ENV !== 'production') {
-			console.timeEnd(`${res.config.headers['x-request-id']} ${res.config.method?.toUpperCase()} ${res.config.url}`);
+			const id = res.config.headers['x-request-id'];
+			if (id) {
+				console.timeEnd(`${id} ${res.config.method?.toUpperCase()} ${res.config.url}`);
+			}
 		}
 		return res;
 	},
@@ -49,14 +62,5 @@ axiosInstance.interceptors.response.use(
 	},
 );
 
-axiosInstance.interceptors.request.use((config) => {
-	if (process.env.NODE_ENV !== 'production') {
-		const id = uuid();
-		config.headers['x-request-id'] = uuid();
-		console.time(`${id} ${config.method?.toUpperCase()} ${config.url}`);
-	}
-
-	return config;
-});
 
 export default axiosInstance;

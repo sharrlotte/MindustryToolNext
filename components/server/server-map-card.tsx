@@ -43,7 +43,7 @@ export default function ServerMapCard({ serverId, map: { name, filename } }: Ser
 	});
 
 	return (
-		<Preview className="group relative flex flex-col justify-between">
+		<Preview>
 			<InternalLink href={`/maps/${mapId}`}>
 				{isValidUuid && mapId && (
 					<PreviewImage
