@@ -61,6 +61,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 				<span className="text-base font-semibold">({version.startsWith('v') ? version : 'v' + version})</span>
 			</h2>
 			<span>{author}</span>
+			<span className="overflow-hidden text-ellipsis text-left text-secondary-foreground">{filename}</span>
 			<Popover>
 				<PopoverTrigger>
 					<p className="line-clamp-3 overflow-hidden text-ellipsis text-left text-secondary-foreground">
