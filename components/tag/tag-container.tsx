@@ -22,8 +22,8 @@ export default function TagContainer({ className, tagGroups, handleDeleteTag }: 
 	return (
 		<Suspense>
 			<section className={cn('flex w-full flex-wrap gap-1', className)}>
-				{groupBy(data, (t) => t.categoryPosition)
-					.sort((a, b) => a.key - b.key)
+				{groupBy(data, (t) => t.name)
+					.sort((a, b) => a.key.localeCompare(b.key))
 					.map((items) =>
 						items.value
 							.sort((a, b) => a.position - b.position)
