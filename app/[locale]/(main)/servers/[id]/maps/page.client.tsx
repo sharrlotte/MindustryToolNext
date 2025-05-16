@@ -29,7 +29,7 @@ export default function ServerMapPage({ id }: Props) {
 				</ServerTabsList>
 				<ScrollContainer>
 					<ServerTabsContent
-						className="w-full grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2"
+						className="w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-start gap-2"
 						display="grid"
 						value="list"
 					>

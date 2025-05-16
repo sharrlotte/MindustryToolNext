@@ -31,9 +31,6 @@ export default function ServerMapCard({ serverId, map: { name, filename } }: Ser
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: () => deleteServerMap(axios, serverId, filename),
-		onSuccess: () => {
-			toast(<Tran text="delete-success" />);
-		},
 		onError: (error) => {
 			toast.error(<Tran text="delete-fail" />, { error });
 		},
@@ -43,7 +40,7 @@ export default function ServerMapCard({ serverId, map: { name, filename } }: Ser
 	});
 
 	return (
-		<Preview className="group relative flex flex-col justify-between">
+		<Preview>
 			<InternalLink href={`/maps/${mapId}`}>
 				{isValidUuid && mapId && (
 					<PreviewImage

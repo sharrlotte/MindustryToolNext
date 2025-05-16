@@ -27,10 +27,6 @@ import { ItemPaginationQuery } from '@/types/schema/search-query';
 import { useMutation } from '@tanstack/react-query';
 
 export default function DownloadPluginList() {
-	const { id } = useParams() as { id: string };
-	const plugins = useServerPlugins(id);
-	const added = plugins.data ?? [];
-
 	return (
 		<div className="flex h-full flex-col gap-2 overflow-hidden">
 			<NameTagSearch type="plugin" />
@@ -92,6 +88,12 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 		installedVersion = new Date(Number(currentPlugin.filename.replace('.jar', '').split('_').at(-1) as string));
 	}
 
+	const state = installedVersion
+		? installedVersion.getTime() === newestVersion.getTime()
+			? 'up-to-date'
+			: 'outdated'
+		: 'not-installed';
+
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
@@ -115,7 +117,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 	return (
 		<motion.button
 			className="relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:border-brand cursor-pointer"
-			disabled={isPending}
+			disabled={isPending || state === 'up-to-date'}
 			onClick={() => mutate(plugin.id)}
 			layout
 		>
@@ -128,12 +130,12 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 					errorSrc="https://raw.githubusercontent.com/Anuken/Mindustry/master/core/assets/sprites/error.png"
 					alt={''}
 				/>
-				{name}
+				<span className="overflow-hidden text-ellipsis">{name}</span>
 			</h2>
 			<p className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
 				<ColorText text={description} />
 			</p>
-			{!!installedVersion && installedVersion.getTime() !== newestVersion.getTime() && (
+			{state === 'outdated' && (
 				<div className="flex items-center">
 					{installedVersion && (
 						<>
