@@ -66,7 +66,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 						<ColorText text={description} />
 						<div>
 							{Object.entries(omit(meta, 'description')).map(([key, value]) => (
-								<div>
+								<div key={key}>
 									<span>{key}</span>: <span>{JSON.stringify(value)}</span>
 								</div>
 							))}
