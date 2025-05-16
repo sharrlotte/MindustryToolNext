@@ -1,22 +1,26 @@
 'use client';
 
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete.button';
 import ColorText from '@/components/common/color-text';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from '@/components/ui/sonner';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
+import { Batcher } from '@/lib/batcher';
 import { omit } from '@/lib/utils';
-import { deleteServerPlugin } from '@/query/server';
+import { createServerMap, createServerPlugin, deleteServerPlugin } from '@/query/server';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 type Props = {
 	serverId: string;
@@ -27,6 +31,9 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 	const { invalidateByKey } = useQueriesData();
 
 	const { description, version, author, repo } = meta;
+
+	const parts = filename.replace('.jar', '').split('_');
+	const shouldCheckVersion = parts.length === 2;
 
 	const axios = useClientApi();
 	const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
@@ -81,6 +88,58 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 				isLoading={isDeleting}
 				onClick={() => deletePluginById()}
 			/>
+			{shouldCheckVersion && <PluginVersion id={parts[0]} version={parts[1]} />}
 		</div>
 	);
+}
+
+function PluginVersion({ id: pluginId, version }: { id: string; version: string }) {
+	const { data } = useQuery({
+		queryKey: ['plugin', pluginId, version],
+		queryFn: () => Batcher.checkPluginVersion.get({ id: pluginId, version }),
+		retry: false,
+	});
+
+	const { id } = useParams() as { id: string };
+	const axios = useClientApi();
+
+	const { invalidateByKey } = useQueriesData();
+	const { mutate, isPending } = useMutation({
+		mutationKey: ['server', id, 'plugin', pluginId],
+		mutationFn: (pluginId: string) => createServerPlugin(axios, id, { pluginId }),
+		onSuccess: () => {
+			toast.success(<Tran text="server.add-plugin-success" />);
+		},
+		onError: (error) => {
+			toast.error(<Tran text="server.add-plugin-fail" />, { error });
+		},
+		onSettled: () => {
+			invalidateByKey(['server', id, 'plugin']);
+		},
+	});
+
+	if (data) {
+		return (
+			<TooltipProvider>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						{isPending ? (
+							<LoadingSpinner />
+						) : (
+							<button className="flex items-center gap-2" onClick={() => mutate(pluginId)} disabled={isPending}>
+								<span className="text-warning-foreground">{new Date(Number(version)).toLocaleString()}</span>
+								<span>{'=>'}</span>
+								<span className="text-success-foreground">{new Date(data.version).toLocaleString()}</span>
+							</button>
+						)}
+					</TooltipTrigger>
+					<TooltipContent>
+						<Tran text="server.update-plugin" />
+					</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
+		);
+	}
+
+	return null;
 }

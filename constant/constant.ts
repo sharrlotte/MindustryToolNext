@@ -1,9 +1,11 @@
 import { Locale } from '@/i18n/config';
 import { AllTagGroup } from '@/types/response/TagGroup';
 
+
 export const dateFormat = 'dd-MM-yyyy hh:mm:ss';
 
 export const IMAGE_PREFIX = 'data:image/png;base64,';
+export const GITHUB_PATTERN = /https:\/\/api\.github\.com\/repos\/([a-zA-Z0-9-]+)\/([a-zA-Z0-9-]+)\/.+/;
 
 export const TAG_DEFAULT_COLOR = 'green';
 

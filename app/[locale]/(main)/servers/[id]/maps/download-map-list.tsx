@@ -93,7 +93,7 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['server', id, 'map', 'add', map.id],
+		mutationKey: ['server', id, 'map', map.id],
 		mutationFn: (mapId: string) => createServerMap(axios, id, { mapId }),
 		onSuccess: () => {
 			toast.success(<Tran text="server.add-map-success" />);
@@ -113,7 +113,7 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 			disabled={isPending}
 			onClick={() => mutate(map.id)}
 		>
-			<Preview className="group relative flex flex-col justify-between">
+			<Preview className="group relative flex flex-col justify-between hover:border-brand">
 				<PreviewImage
 					className="h-full"
 					src={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
