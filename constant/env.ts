@@ -6,7 +6,7 @@ const env = {
 	locales: ['en', 'vi', 'kr', 'cn', 'jp', 'ru', 'uk'] as const,
 	defaultLocale: 'en',
 	imageFormat: '.webp',
-	requestTimeout: parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT || '0') || 3000,
+	requestTimeout: parseInt(process.env.NEXT_PUBLIC_REQUEST_TIMEOUT || '3000') || 3000,
 	url: {
 		socket: process.env.NEXT_PUBLIC_BACKEND_SOCKET_URL as string,
 		base: process.env.NEXT_PUBLIC_FRONTEND_URL as string,

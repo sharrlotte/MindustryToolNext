@@ -1,6 +1,5 @@
 'use client';
 
-import { notFound } from 'next/navigation';
 import { useEffect } from 'react';
 
 import Tran from '@/components/common/tran';
@@ -14,15 +13,6 @@ export default function ErrorScreen({ error }: { error: TError }) {
 	useEffect(() => {
 		reportError(error);
 	}, [error]);
-
-	if (
-		typeof error === 'object' &&
-		'error' in error &&
-		typeof error.error === 'object' &&
-		'status' in error.error &&
-		error.error.status === 404
-	)
-		return notFound();
 
 	return (
 		<div className="error flex h-full w-full flex-col items-center justify-center gap-2 bg-background p-2">

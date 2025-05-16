@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
+import { CatchError } from '@/components/common/catch-error';
+
 import { cn } from '@/lib/utils';
 
 type AdditionalPadding = `pr-${number}`;
@@ -18,7 +20,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
 	const pathname = usePathname();
 	const lastScrollTop = React.useRef(0);
 
-	const Component = as
+	const Component = as;
 
 	function handle(container: HTMLDivElement | null) {
 		if (!container) return;
@@ -36,26 +38,28 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
 	}
 
 	return (
-		<Component
-			id={id}
-			className={cn('h-full scroll-container overflow-y-auto w-full', className)}
-			onScroll={(event) => {
-				lastScrollTop.current = event.currentTarget.scrollTop;
-				sessionStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());
-			}}
-			ref={(current : any) => {
-				if (typeof forwardedRef === 'function') {
-					forwardedRef(current);
-					handle(current);
-				} else if (forwardedRef !== null) {
-					forwardedRef.current = current;
-				} else {
-					handle(current);
-				}
-			}}
-		>
-			{children}
-		</Component>
+		<CatchError>
+			<Component
+				id={id}
+				className={cn('h-full scroll-container overflow-y-auto w-full', className)}
+				onScroll={(event) => {
+					lastScrollTop.current = event.currentTarget.scrollTop;
+					sessionStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());
+				}}
+				ref={(current: any) => {
+					if (typeof forwardedRef === 'function') {
+						forwardedRef(current);
+						handle(current);
+					} else if (forwardedRef !== null) {
+						forwardedRef.current = current;
+					} else {
+						handle(current);
+					}
+				}}
+			>
+				{children}
+			</Component>
+		</CatchError>
 	);
 });
 
