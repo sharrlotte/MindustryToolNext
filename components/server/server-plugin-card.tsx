@@ -6,6 +6,7 @@ import React from 'react';
 
 import DeleteButton from '@/components/button/delete.button';
 import ColorText from '@/components/common/color-text';
+import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -31,8 +32,8 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 
 	const { description, version, author, repo } = meta;
 
-	// const parts = filename.replace('.jar', '').split('_');
-	// const shouldCheckVersion = parts.length === 2;
+	const parts = filename.replace('.jar', '').split('_');
+	const shouldCheckVersion = parts.length === 2;
 
 	const axios = useClientApi();
 	const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
@@ -87,7 +88,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 				isLoading={isDeleting}
 				onClick={() => deletePluginById()}
 			/>
-			{/* {shouldCheckVersion && <PluginVersion id={parts[0]} version={parts[1]} />} */}
+			{shouldCheckVersion && <PluginVersion id={parts[0]} version={parts[1]} />}
 		</div>
 	);
 }
@@ -97,7 +98,6 @@ function PluginVersion({ id: pluginId, version }: { id: string; version: string 
 		queryKey: ['plugin', pluginId, version],
 		queryFn: () => Batcher.checkPluginVersion.get({ id: pluginId, version }),
 		retry: false,
-		initialData: { id: '', version: Date.now().toString() },
 	});
 
 	const { id } = useParams() as { id: string };
@@ -123,11 +123,15 @@ function PluginVersion({ id: pluginId, version }: { id: string; version: string 
 			<TooltipProvider>
 				<Tooltip>
 					<TooltipTrigger asChild>
-						<button className="flex items-center gap-2" onClick={() => mutate(pluginId)} disabled={isPending}>
-							<span className="text-warning-foreground">{new Date(version).toLocaleString()}</span>
-							<span>{'=>'}</span>
-							<span className="text-success-foreground">{new Date(data.version).toLocaleString()}</span>
-						</button>
+						{isPending ? (
+							<LoadingSpinner />
+						) : (
+							<button className="flex items-center gap-2" onClick={() => mutate(pluginId)} disabled={isPending}>
+								<span className="text-warning-foreground">{new Date(Number(version)).toLocaleString()}</span>
+								<span>{'=>'}</span>
+								<span className="text-success-foreground">{new Date(data.version).toLocaleString()}</span>
+							</button>
+						)}
 					</TooltipTrigger>
 					<TooltipContent>
 						<Tran text="server.update-plugin" />
