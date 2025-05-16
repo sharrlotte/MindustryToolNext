@@ -15,6 +15,7 @@ import { SearchBar, SearchInput } from '@/components/search/search-input';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import Divider from '@/components/ui/divider';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
@@ -62,9 +63,13 @@ export default function Page() {
 		if (post === undefined) {
 			return (
 				<Fragment>
-					<div className="rounded-md">
+					<div className="flex justify-between gap-2 items-center">
+						<h2>
+							<Tran text="post.upload" />
+						</h2>
 						<AddTranslationDialog onPostSelect={handlePostSelect} />
 					</div>
+					<Divider />
 					<UploadPage
 						shared={{
 							title,
@@ -82,10 +87,18 @@ export default function Page() {
 		return (
 			<Fragment>
 				<div className="space-x-2 rounded-sm">
-					<Button title="Upload" variant="secondary" onClick={() => setPost(undefined)}>
-						<Tran text="upload.go-to-upload-page" />
-					</Button>
-					<AddTranslationDialog onPostSelect={handlePostSelect} />
+					<div className="flex justify-between gap-2 items-center">
+						<h2>
+							<Tran text="post.translate" />
+						</h2>
+						<div className="flex justify-between gap-2 items-center">
+							<Button title="Upload" variant="secondary" onClick={() => setPost(undefined)}>
+								<Tran text="upload.go-to-upload-page" />
+							</Button>
+							<AddTranslationDialog onPostSelect={handlePostSelect} />
+						</div>
+					</div>
+					<Divider />
 				</div>
 				<TranslatePage
 					post={post}
@@ -156,15 +169,26 @@ function TranslatePage({
 		<div className="flex h-full overflow-hidden rounded-md">
 			<div className="hidden h-full w-full flex-col justify-between gap-2 overflow-hidden md:flex">
 				<div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
-					<Input
-						className="w-full rounded-sm outline-none hover:outline-none"
-						placeholder="Title"
-						value={title}
-						onChange={(event) => setTitle(event.currentTarget.value)}
-					/>
-					<MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
+					<div className="space-y-1">
+						<h4>
+							<Tran text="upload.post-title" asChild />
+						</h4>
+						<Input
+							className="w-full rounded-sm outline-none hover:outline-none"
+							placeholder="Title"
+							value={title}
+							onChange={(event) => setTitle(event.currentTarget.value)}
+						/>
+					</div>
+					<div className="space-y-1 h-full flex flex-col">
+						<h4>
+							<Tran text="upload.post-content" asChild />
+						</h4>
+						<MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
+					</div>
 				</div>
-				<div className="flex items-center justify-start gap-2 rounded-md ">
+				<Divider />
+				<div className="flex items-center justify-start gap-2">
 					<ComboBox
 						placeholder={t('select-language')}
 						value={{ label: t(language || 'en'), value: language }}
@@ -237,15 +261,26 @@ function UploadPage({ shared: { title, setTitle, content, setContent, language, 
 		<div className="flex h-full flex-col overflow-hidden rounded-md">
 			<div className="flex h-full w-full flex-col gap-2 overflow-hidden">
 				<div className="flex h-full flex-col gap-2 overflow-hidden rounded-md">
-					<Input
-						className="w-full rounded-sm  outline-none hover:outline-none"
-						placeholder={t('title')}
-						value={title}
-						onChange={(event) => setTitle(event.currentTarget.value)}
-					/>
-					<MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
+					<div className="space-y-1">
+						<h4>
+							<Tran text="upload.post-title" asChild />
+						</h4>
+						<Input
+							className="w-full rounded-sm  outline-none hover:outline-none"
+							placeholder={t('title')}
+							value={title}
+							onChange={(event) => setTitle(event.currentTarget.value)}
+						/>
+					</div>
+					<div className="space-y-1 h-full flex flex-col">
+						<h4>
+							<Tran text="upload.post-content" asChild />
+						</h4>
+						<MarkdownEditor value={content} onChange={(value) => setContent(value(content))} />
+					</div>
 				</div>
-				<div className="flex items-center justify-start gap-2 overflow-hidden rounded-md ">
+				<Divider />
+				<div className="flex items-center justify-start gap-2">
 					<ComboBox
 						placeholder={t('select-language')}
 						value={{ label: t(language || 'en'), value: language }}
