@@ -80,17 +80,6 @@ export function getLoggedErrorMessage(error: TError) {
 			}
 		}
 
-		if (typeof window !== 'undefined') {
-			if (typeof error === 'object' && 'name' in error && error.name === 'ChunkLoadError') {
-				const reloadAttemps = localStorage.getItem('RELOAD_ATTEMPTS');
-
-				if (reloadAttemps && parseInt(reloadAttemps) < 3) {
-					localStorage.setItem('RELOAD_ATTEMPTS', '' + (parseInt(reloadAttemps) + 1));
-					window.location.reload();
-				}
-			}
-		}
-
 		if (isAxiosError(error)) {
 			return JSON.stringify({
 				request: JSON.stringify(error.request),

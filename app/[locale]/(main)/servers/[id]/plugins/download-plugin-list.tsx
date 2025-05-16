@@ -15,7 +15,6 @@ import { toast } from '@/components/ui/sonner';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useServerPlugins from '@/hooks/use-server-plugins';
-import { cn } from '@/lib/utils';
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { createServerPlugin } from '@/query/server';
 import { Plugin } from '@/types/response/Plugin';
@@ -24,6 +23,10 @@ import { ItemPaginationQuery } from '@/types/schema/search-query';
 import { useMutation } from '@tanstack/react-query';
 
 export default function DownloadPluginList() {
+	const { id } = useParams() as { id: string };
+	const plugins = useServerPlugins(id);
+	const added = plugins.data ?? [];
+
 	return (
 		<div className="flex h-full flex-col gap-2 overflow-hidden">
 			<NameTagSearch type="plugin" />
@@ -38,7 +41,11 @@ export default function DownloadPluginList() {
 							item: <Skeleton className="h-20" />,
 						}}
 					>
-						{(page) => page.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)}
+						{(page) =>
+							page
+								.filter((plugin) => !added.some((a) => a.filename.startsWith(plugin.id)))
+								.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)
+						}
 					</InfinitePage>
 				</ListLayout>
 				<GridLayout>
@@ -51,7 +58,11 @@ export default function DownloadPluginList() {
 							item: <Skeleton className="h-20" />,
 						}}
 					>
-						{(page) => page.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)}
+						{(page) =>
+							page
+								.filter((plugin) => !added.some((a) => a.filename.startsWith(plugin.id)))
+								.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)
+						}
 					</GridPaginationList>
 				</GridLayout>
 			</ScrollContainer>
@@ -74,10 +85,6 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 
 	const { id } = useParams() as { id: string };
 	const axios = useClientApi();
-	const plugins = useServerPlugins(id);
-	const added = plugins.data ?? [];
-
-	const isAdded = added.some((add) => add.filename.startsWith(plugin.id));
 
 	const { invalidateByKey } = useQueriesData();
 
@@ -97,13 +104,8 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 
 	return (
 		<button
-			className={cn(
-				'relative border flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:bg-brand/70 cursor-pointer',
-				{
-					'border-success': isAdded,
-				},
-			)}
-			disabled={isPending || isAdded}
+			className="relative border flex h-32 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:bg-brand/70 cursor-pointer"
+			disabled={isPending}
 			onClick={() => mutate(plugin.id)}
 		>
 			<h2 className="line-clamp-1 w-full text-ellipsis whitespace-normal text-nowrap">{name}</h2>

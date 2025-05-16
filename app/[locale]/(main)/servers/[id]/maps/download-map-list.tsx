@@ -17,7 +17,6 @@ import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useServerMaps from '@/hooks/use-server-maps';
-import { cn } from '@/lib/utils';
 import { getMapCount, getMaps } from '@/query/map';
 import { createServerMap } from '@/query/server';
 import { Map } from '@/types/response/Map';
@@ -26,6 +25,10 @@ import { ItemPaginationQuery } from '@/types/schema/search-query';
 import { useMutation } from '@tanstack/react-query';
 
 export default function DownloadMapList() {
+	const { id } = useParams() as { id: string };
+	const maps = useServerMaps(id);
+	const added = maps.data ?? [];
+
 	return (
 		<div className="flex h-full flex-col gap-2 overflow-hidden">
 			<NameTagSearch type="map" />
@@ -40,7 +43,11 @@ export default function DownloadMapList() {
 							item: <Skeleton className="h-20" />,
 						}}
 					>
-						{(page) => page.map((map) => <AddServerMapCard key={map.id} map={map} />)}
+						{(page) =>
+							page
+								.filter((map) => !added.some((a) => a.filename.startsWith(map.id)))
+								.map((map) => <AddServerMapCard key={map.id} map={map} />)
+						}
 					</InfinitePage>
 				</ListLayout>
 				<GridLayout>
@@ -53,7 +60,11 @@ export default function DownloadMapList() {
 							item: <Skeleton className="h-20" />,
 						}}
 					>
-						{(page) => page.map((map) => <AddServerMapCard key={map.id} map={map} />)}
+						{(page) =>
+							page
+								.filter((map) => !added.some((a) => a.filename.startsWith(map.id)))
+								.map((map) => <AddServerMapCard key={map.id} map={map} />)
+						}
 					</GridPaginationList>
 				</GridLayout>
 			</ScrollContainer>
@@ -76,10 +87,6 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 
 	const { id } = useParams() as { id: string };
 	const axios = useClientApi();
-	const maps = useServerMaps(id);
-	const added = maps.data ?? [];
-
-	const isAdded = added.some((add) => add.filename.startsWith(map.id));
 
 	const { invalidateByKey } = useQueriesData();
 
@@ -99,13 +106,8 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 
 	return (
 		<button
-			className={cn(
-				'hover:zoom-in-110 relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start',
-				{
-					'border-success': isAdded,
-				},
-			)}
-			disabled={isPending || isAdded}
+			className="hover:zoom-in-110 relative h-full max-h-preview-height min-h-preview-height w-full overflow-hidden rounded-md border-2 border-border p-0 text-start"
+			disabled={isPending}
 			onClick={() => mutate(map.id)}
 		>
 			<h3 className="absolute top-0 w-full overflow-hidden p-2 text-center backdrop-brightness-[20%]">

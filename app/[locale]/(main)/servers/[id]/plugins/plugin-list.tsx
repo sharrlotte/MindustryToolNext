@@ -15,5 +15,5 @@ export default function PluginList({ id }: { id: string }) {
 		return <ErrorMessage className="col-span-full" error={error} />;
 	}
 
-	return data?.map((plugin) => <ServerPluginCard serverId={id} key={plugin.filename} plugin={plugin} />);
+	return data?.map((plugin) => <ServerPlugdowinCard serverId={id} key={plugin.filename} plugin={plugin} />);
 }
