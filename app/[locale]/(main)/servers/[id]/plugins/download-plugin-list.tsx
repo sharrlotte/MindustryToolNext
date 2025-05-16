@@ -18,6 +18,7 @@ import { GITHUB_PATTERN } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useServerPlugins from '@/hooks/use-server-plugins';
+import { cn } from '@/lib/utils';
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { createServerPlugin } from '@/query/server';
 import { Plugin } from '@/types/response/Plugin';
@@ -46,7 +47,10 @@ export default function DownloadPluginList() {
 					>
 						{(page) =>
 							page
-								.filter((plugin) => !added.some((a) => a.filename === plugin.id + '_' + new Date(plugin.lastReleaseAt).getTime()))
+								.filter(
+									(plugin) =>
+										!added.some((a) => a.filename.startsWith(plugin.id + '_' + new Date(plugin.lastReleaseAt).getTime())),
+								)
 								.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)
 						}
 					</InfinitePage>
@@ -63,7 +67,10 @@ export default function DownloadPluginList() {
 					>
 						{(page) =>
 							page
-								.filter((plugin) => !added.some((a) => a.filename === plugin.id + '_' + new Date(plugin.lastReleaseAt).getTime()))
+								.filter(
+									(plugin) =>
+										!added.some((a) => a.filename.startsWith(plugin.id + '_' + new Date(plugin.lastReleaseAt).getTime())),
+								)
 								.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)
 						}
 					</GridPaginationList>
@@ -87,7 +94,17 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 	const { name, description, url } = plugin;
 
 	const { id } = useParams() as { id: string };
+	const plugins = useServerPlugins(id);
+	const added = plugins.data ?? [];
 	const axios = useClientApi();
+
+	const currentPlugin = added.find((a) => a.filename.startsWith(plugin.id + '_' + new Date(plugin.lastReleaseAt).getTime()));
+	let installedVersion = undefined;
+	let newestVersion = new Date(plugin.lastReleaseAt).toLocaleString();
+
+	if (currentPlugin) {
+		installedVersion = new Date(currentPlugin.filename.split('_').at(-1) as string).toLocaleString();
+	}
 
 	const { invalidateByKey } = useQueriesData();
 
@@ -111,7 +128,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 
 	return (
 		<motion.button
-			className="relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:bg-brand/70 cursor-pointer"
+			className="relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:border-brand cursor-pointer"
 			disabled={isPending}
 			onClick={() => mutate(plugin.id)}
 			layout
@@ -130,7 +147,21 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			<p className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
 				<ColorText text={description} />
 			</p>
-			<span className="text-sm">{new Date(plugin.lastReleaseAt).toLocaleString()}</span>
+			<div className="flex items-center">
+				{installedVersion && (
+					<>
+						<span className="text-sm text-destructive-foreground">{installedVersion}</span>
+						{'=>'}
+					</>
+				)}
+				<span
+					className={cn('text-sm', {
+						'text-success-foreground': !!installedVersion,
+					})}
+				>
+					{newestVersion}
+				</span>
+			</div>
 			{isPending && (
 				<div className="absolute inset-0 z-10 backdrop-brightness-50 flex items-center justify-center">
 					<LoadingSpinner className="m-auto" />

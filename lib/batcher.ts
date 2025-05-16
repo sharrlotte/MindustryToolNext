@@ -3,74 +3,79 @@ import { Like } from '@/types/response/Like';
 import { User } from '@/types/response/User';
 
 export class Batcher<T, R> {
-  private static batchers: Batcher<any, any>[] = [];
+	private static batchers: Batcher<any, any>[] = [];
 
-  static like = new Batcher<string, Like>(
-    async (ids) => axiosInstance.post('likes/batch', ids, { withCredentials: true }).then((res) => res.data),
-    (results, id) => results.find((result) => result.itemId === id),
-  );
+	static like = new Batcher<string, Like>(
+		async (ids) => axiosInstance.post('likes/batch', ids, { withCredentials: true }).then((res) => res.data),
+		(results, id) => results.find((result) => result.itemId === id),
+	);
 
-  static user = new Batcher<string, User>(
-    async (ids) => axiosInstance.post('users/batch', ids, { withCredentials: true }).then((res) => res.data),
-    (results, id) => results.find((result) => result.id === id),
-  );
+	static user = new Batcher<string, User>(
+		async (ids) => axiosInstance.post('users/batch', ids, { withCredentials: true }).then((res) => res.data),
+		(results, id) => results.find((result) => result.id === id),
+	);
 
-  static async process() {
-    for (const batcher of Batcher.batchers) {
-      await batcher.batch();
-    }
-  }
+	static checkPluginVersion = new Batcher<{ id: string; version: string }, { id: string; version: string }>(
+		async (ids) => axiosInstance.post('plugins/check-version', ids, { withCredentials: true }).then((res) => res.data),
+		(results, id) => results.find((result) => result.id === id.id),
+	);
 
-  private promises = new Map<
-    T,
-    {
-      resolve: Parameters<ConstructorParameters<typeof Promise<R>>[0]>[0];
-      reject: Parameters<ConstructorParameters<typeof Promise<R>>[0]>[1];
-    }
-  >();
+	static async process() {
+		for (const batcher of Batcher.batchers) {
+			await batcher.batch();
+		}
+	}
 
-  constructor(
-    private readonly batchFn: (ids: T[]) => Promise<R[]>,
-    private readonly extractor: (result: R[], id: T) => R | undefined,
-  ) {
-    Batcher.batchers.push(this);
-  }
+	private promises = new Map<
+		T,
+		{
+			resolve: Parameters<ConstructorParameters<typeof Promise<R>>[0]>[0];
+			reject: Parameters<ConstructorParameters<typeof Promise<R>>[0]>[1];
+		}
+	>();
 
-  private async batch() {
-    const copy = new Map(this.promises);
-    this.promises.clear();
+	constructor(
+		private readonly batchFn: (ids: T[]) => Promise<R[]>,
+		private readonly extractor: (result: R[], id: T) => R | undefined,
+	) {
+		Batcher.batchers.push(this);
+	}
 
-    if (copy.size === 0) {
-      return;
-    }
+	private async batch() {
+		const copy = new Map(this.promises);
+		this.promises.clear();
 
-    const ids = Array.from(copy.keys());
+		if (copy.size === 0) {
+			return;
+		}
 
-    await this.batchFn(ids)
-      .then((results) => {
-        ids.forEach((id) => {
-          const result = this.extractor(results, id);
-          if (result) {
-            const promise = copy.get(id);
-            if (promise) {
-              promise.resolve(result);
-            }
-          }
-        });
-      })
-      .catch((error) => {
-        ids.forEach((id) => {
-          copy.get(id)?.reject(error);
-        });
-      })
-      .finally(() => copy.clear());
-  }
+		const ids = Array.from(copy.keys());
 
-  get(id: T) {
-    const promise = new Promise<R>((resolve, reject) => {
-      this.promises.set(id, { resolve, reject });
-    });
+		await this.batchFn(ids)
+			.then((results) => {
+				ids.forEach((id) => {
+					const result = this.extractor(results, id);
+					if (result) {
+						const promise = copy.get(id);
+						if (promise) {
+							promise.resolve(result);
+						}
+					}
+				});
+			})
+			.catch((error) => {
+				ids.forEach((id) => {
+					copy.get(id)?.reject(error);
+				});
+			})
+			.finally(() => copy.clear());
+	}
 
-    return promise;
-  }
+	get(id: T) {
+		const promise = new Promise<R>((resolve, reject) => {
+			this.promises.set(id, { resolve, reject });
+		});
+
+		return promise;
+	}
 }

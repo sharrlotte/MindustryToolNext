@@ -113,7 +113,7 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 			disabled={isPending}
 			onClick={() => mutate(map.id)}
 		>
-			<Preview className="group relative flex flex-col justify-between">
+			<Preview className="group relative flex flex-col justify-between hover:border-brand">
 				<PreviewImage
 					className="h-full"
 					src={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
