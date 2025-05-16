@@ -46,7 +46,7 @@ export default function Page({ params }: Props) {
 
 	if (isLoading) {
 		return (
-			<div className="grid w-full h-full items-center grid-cols-[repeat(auto-fit,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2">
+			<div className="grid w-full h-full items-center grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2">
 				<LoadingSpinner />
 			</div>
 		);

@@ -31,9 +31,6 @@ export default function ServerMapCard({ serverId, map: { name, filename } }: Ser
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: () => deleteServerMap(axios, serverId, filename),
-		onSuccess: () => {
-			toast(<Tran text="delete-success" />);
-		},
 		onError: (error) => {
 			toast.error(<Tran text="delete-fail" />, { error });
 		},
