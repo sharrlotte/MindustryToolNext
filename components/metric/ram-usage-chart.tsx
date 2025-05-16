@@ -25,7 +25,7 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 	const ramLeft = ramUsage === 0 && totalRam === 0 ? 100 : totalRam - ramUsage;
 
 	return (
-		<div className="space-y-2 rounded-lg bg-card p-2">
+		<div className="space-y-2 rounded-lg bg-card">
 			<span className="font-bold">
 				<Tran text="metric.ram-usage" />
 			</span>
@@ -47,8 +47,8 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 						},
 					]}
 				/>
-				<div className="hidden text-sm group-hover/chart:grid absolute inset-0 text-black">
-					<div className="h-full w-full justify-center items-center flex flex-col">
+				<div className="text-sm grid">
+					<div className="h-full w-full flex flex-col">
 						<span>
 							<Tran text="server.total-ram" />:<span>{byteToSize(totalRam)}</span>
 						</span>
