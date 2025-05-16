@@ -135,23 +135,21 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			<p className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
 				<ColorText text={description} />
 			</p>
-			{state === 'outdated' && (
-				<div className="flex items-center">
-					{installedVersion && (
-						<>
-							<span className="text-sm text-destructive-foreground">{dateToId(installedVersion)}</span>
-							{'=>'}
-						</>
-					)}
-					<span
-						className={cn('text-sm', {
-							'text-success-foreground': !!installedVersion,
-						})}
-					>
-						{dateToId(newestVersion)}
-					</span>
-				</div>
-			)}
+			<div className="flex items-center">
+				{state === 'outdated' && installedVersion && (
+					<>
+						<span className="text-sm text-destructive-foreground">{dateToId(installedVersion)}</span>
+						{'=>'}
+					</>
+				)}
+				<span
+					className={cn('text-sm text-foreground', {
+						'text-success-foreground': state === 'outdated',
+					})}
+				>
+					{dateToId(newestVersion)}
+				</span>
+			</div>
 			{isPending && (
 				<div className="absolute inset-0 z-10 backdrop-brightness-50 flex items-center justify-center">
 					<LoadingSpinner className="m-auto" />
