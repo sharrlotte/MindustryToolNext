@@ -22,6 +22,7 @@ import useClientApi from '@/hooks/use-client';
 import { shutdownServer } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
+import useQueriesData from '@/hooks/use-queries-data';
 
 type Props = {
 	id: string;
@@ -29,6 +30,7 @@ type Props = {
 
 export default function ShutdownServerButton({ id }: Props) {
 	const axios = useClientApi();
+	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['servers'],
@@ -36,7 +38,9 @@ export default function ShutdownServerButton({ id }: Props) {
 		onMutate: () => toast.loading(<Tran text="server.shutting-down" />),
 		onSuccess: (_data, _variable, id) => toast.success(<Tran text="server.shutdown-success" />, { id }),
 		onError: (error, _variable, id) => toast.error(<Tran text="server.shutdown-fail" />, { error, id }),
-		onSettled: () => revalidate({ path: '/servers' }),
+		onSettled: () => {
+			revalidate({ path: '/servers' });
+			invalidateByKey(['server']);},
 	});
 
 	return (
