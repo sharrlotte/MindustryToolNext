@@ -95,7 +95,6 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			: 'outdated'
 		: 'not-installed';
 
-	console.log({ plugin: plugin.name, state, added, installedVersion, newestVersion, currentPlugin, parts });
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
