@@ -15,7 +15,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { Batcher } from '@/lib/batcher';
-import { omit } from '@/lib/utils';
+import { dateToId, omit } from '@/lib/utils';
 import { createServerPlugin, deleteServerPlugin } from '@/query/server';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 
@@ -126,9 +126,9 @@ function PluginVersion({ id: pluginId, version }: { id: string; version: string 
 							<LoadingSpinner />
 						) : (
 							<button className="flex items-center gap-2" onClick={() => mutate(pluginId)} disabled={isPending}>
-								<span className="text-warning-foreground">{new Date(Number(version)).toLocaleString()}</span>
+								<span className="text-warning-foreground">{dateToId(new Date(Number(version)))}</span>
 								<span>{'=>'}</span>
-								<span className="text-success-foreground">{new Date(data.version).toLocaleString()}</span>
+								<span className="text-success-foreground">{dateToId(new Date(data.version))}</span>
 							</button>
 						)}
 					</TooltipTrigger>

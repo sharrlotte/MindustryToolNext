@@ -18,7 +18,7 @@ import { GITHUB_PATTERN } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useServerPlugins from '@/hooks/use-server-plugins';
-import { cn } from '@/lib/utils';
+import { cn, dateToId } from '@/lib/utils';
 import { getPluginCount, getPlugins } from '@/query/plugin';
 import { createServerPlugin } from '@/query/server';
 import { Plugin } from '@/types/response/Plugin';
@@ -139,7 +139,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 				<div className="flex items-center">
 					{installedVersion && (
 						<>
-							<span className="text-sm text-destructive-foreground">{installedVersion.toLocaleString()}</span>
+							<span className="text-sm text-destructive-foreground">{dateToId(installedVersion)}</span>
 							{'=>'}
 						</>
 					)}
@@ -148,7 +148,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 							'text-success-foreground': !!installedVersion,
 						})}
 					>
-						{newestVersion.toLocaleString()}
+						{dateToId(newestVersion)}
 					</span>
 				</div>
 			)}
