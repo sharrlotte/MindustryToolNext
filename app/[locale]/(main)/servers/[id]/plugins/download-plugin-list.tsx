@@ -1,5 +1,6 @@
 import { useParams } from 'next/navigation';
 
+import ColorText from '@/components/common/color-text';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -106,7 +107,9 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			onClick={() => mutate(plugin.id)}
 		>
 			<h2 className="line-clamp-1 w-full text-ellipsis whitespace-normal text-nowrap">{name}</h2>
-			<span className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">{description}</span>
+			<span className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
+				<ColorText text={description} />
+			</span>
 			{isPending && (
 				<div className="absolute inset-0 z-10 backdrop-brightness-50 flex items-center justify-center">
 					<LoadingSpinner className="m-auto" />

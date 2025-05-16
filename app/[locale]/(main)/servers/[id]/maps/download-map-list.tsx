@@ -1,5 +1,6 @@
 import { useParams } from 'next/navigation';
 
+import ColorText from '@/components/common/color-text';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -107,7 +108,9 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 			disabled={isPending || isAdded}
 			onClick={() => mutate(map.id)}
 		>
-			<h3 className="absolute top-0 w-full overflow-hidden p-2 text-center backdrop-brightness-[20%]">{name}</h3>
+			<h3 className="absolute top-0 w-full overflow-hidden p-2 text-center backdrop-brightness-[20%]">
+				<ColorText text={name} />
+			</h3>
 			<PreviewImage
 				className="h-full"
 				src={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
