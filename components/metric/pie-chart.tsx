@@ -84,7 +84,7 @@ const PieChart: React.FC<PieChartProps> = ({
 			return 'conic-gradient(transparent 0% 100%)';
 		}
 
-		let gradientParts: string[] = [];
+		const gradientParts: string[] = [];
 		let accumulatedPercentage = 0;
 
 		segsToRender.forEach(segment => {
