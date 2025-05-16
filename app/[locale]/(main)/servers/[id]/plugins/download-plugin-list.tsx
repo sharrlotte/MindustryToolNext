@@ -92,7 +92,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['server', id, 'plugin', 'add', plugin.id],
+		mutationKey: ['server', id, 'plugin', plugin.id],
 		mutationFn: (pluginId: string) => createServerPlugin(axios, id, { pluginId }),
 		onSuccess: () => {
 			toast.success(<Tran text="server.add-plugin-success" />);

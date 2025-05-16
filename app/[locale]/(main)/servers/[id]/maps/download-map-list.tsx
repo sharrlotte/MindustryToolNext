@@ -93,7 +93,7 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['server', id, 'map', 'add', map.id],
+		mutationKey: ['server', id, 'map', map.id],
 		mutationFn: (mapId: string) => createServerMap(axios, id, { mapId }),
 		onSuccess: () => {
 			toast.success(<Tran text="server.add-map-success" />);
