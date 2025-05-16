@@ -1,6 +1,6 @@
 'use server';
 
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, isAxiosError } from 'axios';
 import { revalidatePath, revalidateTag, unstable_cache, unstable_noStore } from 'next/cache';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
@@ -42,6 +42,16 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
 		const data = 'queryFn' in queryFn ? await queryFn.queryFn(axios) : await queryFn(axios);
 		return data;
 	} catch (error) {
+		if (isAxiosError(error)) {
+			return {
+				error: new Error(
+					`${error.config?.method?.toUpperCase()} ${error.config?.url} ${error.message}\n${error.response?.data.message}`,
+					{
+						cause: error,
+					},
+				),
+			};
+		}
 		return {
 			error,
 		};

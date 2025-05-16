@@ -27,7 +27,7 @@ axiosInstance.interceptors.request.use((config) => {
 	if (process.env.NODE_ENV !== 'production') {
 		const id = uuid();
 		config.headers['x-request-id'] = uuid();
-		console.time(`${id} ${config.method?.toUpperCase()} ${config.url}`);
+		console.log(`${id} ${config.method?.toUpperCase()} ${config.url}`);
 	}
 
 	return config;
@@ -35,12 +35,6 @@ axiosInstance.interceptors.request.use((config) => {
 
 axiosInstance.interceptors.response.use(
 	(res) => {
-		if (process.env.NODE_ENV !== 'production') {
-			const id = res.config.headers['x-request-id'];
-			if (id) {
-				console.timeEnd(`${id} ${res.config.method?.toUpperCase()} ${res.config.url}`);
-			}
-		}
 		return res;
 	},
 	(error) => {
@@ -61,6 +55,5 @@ axiosInstance.interceptors.response.use(
 		return Promise.reject(error);
 	},
 );
-
 
 export default axiosInstance;

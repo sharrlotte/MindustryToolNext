@@ -80,12 +80,13 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 	const added = plugins.data ?? [];
 	const axios = useClientApi();
 
-	const currentPlugin = added.find((a) => a.filename.startsWith(plugin.id + '_' + new Date(plugin.lastReleaseAt).getTime()));
-	let installedVersion = undefined;
 	const newestVersion = new Date(plugin.lastReleaseAt);
+	const currentPlugin = added.find((a) => a.filename.startsWith(plugin.id + '_' + newestVersion.getTime()));
 
-	if (currentPlugin) {
-		installedVersion = new Date(Number(currentPlugin.filename.replace('.jar', '').split('_').at(-1) as string));
+	let installedVersion = undefined;
+	const parts = currentPlugin?.filename.replace('.jar', '').split('_');
+	if (currentPlugin && parts && parts.length === 2) {
+		installedVersion = new Date(Number(parts[1] as string));
 	}
 
 	const state = installedVersion
@@ -94,6 +95,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			: 'outdated'
 		: 'not-installed';
 
+	console.log({ plugin: plugin.name, state, added, installedVersion, newestVersion, currentPlugin, parts });
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
@@ -116,7 +118,13 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 
 	return (
 		<motion.button
-			className="relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start hover:border-brand cursor-pointer"
+			className={cn(
+				'relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start  cursor-pointer',
+				{
+					'hover:border-brand': state !== 'up-to-date',
+					'opacity-50': state === 'up-to-date',
+				},
+			)}
 			disabled={isPending || state === 'up-to-date'}
 			onClick={() => mutate(plugin.id)}
 			layout
@@ -135,13 +143,14 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			<p className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
 				<ColorText text={description} />
 			</p>
-			<div className="flex items-center">
+			<div className="flex items-center mt-auto gap-1">
 				{state === 'outdated' && installedVersion && (
 					<>
 						<span className="text-sm text-destructive-foreground">{dateToId(installedVersion)}</span>
 						{'=>'}
 					</>
 				)}
+				{state === 'up-to-date' && <Tran text="plugin.up-to-date" />}
 				<span
 					className={cn('text-sm text-foreground', {
 						'text-success-foreground': state === 'outdated',

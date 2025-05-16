@@ -6,6 +6,7 @@ import React, { Suspense } from 'react';
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 
 import CopyButton from '@/components/button/copy.button';
+import { CatchError } from '@/components/common/catch-error';
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import { ServerIcon } from '@/components/common/icons';
@@ -83,97 +84,103 @@ export default async function Page({ params }: Props) {
 		<ScrollContainer className="flex flex-col gap-2 h-full p-2">
 			<div className="h-full">
 				<div className="flex min-h-full w-full flex-col gap-2">
-					<div className="flex w-full min-w-80 flex-col gap-6 flex-1 overflow-hidden bg-card rounded-md p-4">
-						<div className="flex items-center gap-2">
-							<ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
-							<ColorText className="text-2xl font-bold" text={name} />
+					<CatchError>
+						<div className="flex w-full min-w-80 flex-col gap-6 flex-1 overflow-hidden bg-card rounded-md p-4">
+							<div className="flex items-center gap-2">
+								<ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
+								<ColorText className="text-2xl font-bold" text={name} />
+							</div>
+							<div className="grid grid-cols-2 gap-3 text-sm font-medium capitalize">
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.description" />
+									<ColorText text={description} />
+								</div>
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.owner" />
+									<IdUserCard id={userId} />
+								</div>
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.game-mode" />
+									<span className="capitalize">{mode.toLocaleLowerCase()}</span>
+								</div>
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.status" />
+									<ServerStatus status={status} />
+								</div>
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.players" />
+									<span>{players}/30</span>
+								</div>
+								{status === 'HOST' && <MapName id={id} />}
+								<div className="flex flex-col gap-0.5">
+									{address && (
+										<div className="flex gap-1 flex-col">
+											<Tran text="server.address" />
+											<CopyButton variant="none" data={`${address}:${port}`}>
+												<span className="lowercase">
+													{address}:{port}
+												</span>
+											</CopyButton>
+										</div>
+									)}
+								</div>
+							</div>
 						</div>
-						<div className="grid grid-cols-2 gap-3 text-sm font-medium capitalize">
-							<div className="flex flex-col gap-0.5">
-								<Tran text="server.description" />
-								<ColorText text={description} />
+					</CatchError>
+					<CatchError>
+						<div className="flex gap-2 justify-between flex-col md:flex-row">
+							<div className="flex flex-wrap items-start justify-start gap-1 p-4 shadow-lg flex-1 bg-card rounded-md">
+								<div className="flex h-full flex-col items-start justify-start gap-1 w-full">
+									<h3 className="text-xl">
+										<Tran text="server.system-status" />
+									</h3>
+									{status === 'HOST' ? <UsageCard id={id} /> : <Tran text="server.server-is-not-running" />}
+								</div>
 							</div>
-							<div className="flex flex-col gap-0.5">
-								<Tran text="server.owner" />
-								<IdUserCard id={userId} />
-							</div>
-							<div className="flex flex-col gap-0.5">
-								<Tran text="server.game-mode" />
-								<span className="capitalize">{mode.toLocaleLowerCase()}</span>
-							</div>
-							<div className="flex flex-col gap-0.5">
-								<Tran text="server.status" />
-								<ServerStatus status={status} />
-							</div>
-							<div className="flex flex-col gap-0.5">
-								<Tran text="server.players" />
-								<span>{players}/30</span>
-							</div>
-							{status === 'HOST' && <MapName id={id} />}
-							<div className="flex flex-col gap-0.5">
-								{address && (
-									<div className="flex gap-1 flex-col">
-										<Tran text="server.address" />
-										<CopyButton variant="none" data={`${address}:${port}`}>
-											<span className="lowercase">
-												{address}:{port}
-											</span>
-										</CopyButton>
+							{status === 'HOST' && (
+								<Image
+									key={status}
+									className="flex md:max-w-[50dvw] h-auto rounded-md overflow-hidden landscape:max-h-[50dvh] landscape:max-w-none"
+									src={`${env.url.api}/servers/${id}/image`}
+									alt={name}
+									width={500}
+									height={500}
+								/>
+							)}
+							<ProtectedElement session={session} filter={showPlayer}>
+								{status === 'HOST' && players > 0 && (
+									<div className="flex bg-card rounded-md flex-col">
+										<div className="grid gap-2 p-2 min-w-[300px] max-w-[400px] w-full md:w-fit">
+											<Suspense
+												fallback={
+													<Skeletons number={players}>
+														<Skeleton className="h-11 w-full rounded-md" />
+													</Skeletons>
+												}
+											>
+												<PlayerList id={id} />
+											</Suspense>
+										</div>
 									</div>
 								)}
-							</div>
+							</ProtectedElement>
 						</div>
-					</div>
-					<div className="flex gap-2 justify-between flex-col md:flex-row">
-						<div className="flex flex-wrap items-start justify-start gap-1 p-4 shadow-lg flex-1 bg-card rounded-md">
-							<div className="flex h-full flex-col items-start justify-start gap-1 w-full">
-								<h3 className="text-xl">
-									<Tran text="server.system-status" />
-								</h3>
-								{status === 'HOST' ? <UsageCard id={id} /> : <Tran text="server.server-is-not-running" />}
+					</CatchError>
+					<CatchError>
+						<ProtectedElement session={session} filter={canAccess}>
+							<div className={cn('flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg mt-auto')}>
+								{status !== 'DELETED' && <RemoveServerButton id={id} />}
+								{status !== 'DOWN' && <ShutdownServerButton id={id} />}
+								{status === 'HOST' ? (
+									<StopServerButton id={id} />
+								) : status === 'UP' ? (
+									<HostServerButton id={id} />
+								) : (
+									<InitServerButton id={id} />
+								)}
 							</div>
-						</div>
-						{status === 'HOST' && (
-							<Image
-								key={status}
-								className="flex md:max-w-[50dvw] h-auto rounded-md overflow-hidden landscape:max-h-[50dvh] landscape:max-w-none"
-								src={`${env.url.api}/servers/${id}/image`}
-								alt={name}
-								width={500}
-								height={500}
-							/>
-						)}
-						<ProtectedElement session={session} filter={showPlayer}>
-							{status === 'HOST' && players > 0 && (
-								<div className='flex bg-card rounded-md flex-col'>
-									<div className="grid gap-2 p-2 min-w-[300px] max-w-[400px] w-full md:w-fit">
-										<Suspense
-											fallback={
-												<Skeletons number={players}>
-													<Skeleton className="h-11 w-full rounded-md" />
-												</Skeletons>
-											}
-										>
-											<PlayerList id={id} />
-										</Suspense>
-									</div>
-								</div>
-							)}
 						</ProtectedElement>
-					</div>
-					<ProtectedElement session={session} filter={canAccess}>
-						<div className={cn('flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg mt-auto')}>
-							{status !== 'DELETED' && <RemoveServerButton id={id} />}
-							{status !== 'DOWN' && <ShutdownServerButton id={id} />}
-							{status === 'HOST' ? (
-								<StopServerButton id={id} />
-							) : status === 'UP' ? (
-								<HostServerButton id={id} />
-							) : (
-								<InitServerButton id={id} />
-							)}
-						</div>
-					</ProtectedElement>
+					</CatchError>
 				</div>
 			</div>
 		</ScrollContainer>

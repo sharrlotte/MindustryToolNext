@@ -7,6 +7,7 @@ import { reportError } from '@/lib/error';
 import ErrorMessage from './error-message';
 
 interface Props {
+	label?: string;
 	children: React.ReactNode;
 }
 
@@ -30,15 +31,22 @@ export class CatchError extends React.Component<Props, State> {
 		return { hasError: true, error };
 	}
 
-	componwentDidCatch(error: Error, _errorInfo: React.ErrorInfo): void {
+	componentDidCatch(error: Error, _errorInfo: React.ErrorInfo): void {
 		this.setState({ error });
 		reportError(error);
 	}
 
 	render() {
 		if (this.state.hasError) {
-			return <ErrorMessage error={this.state.error} />;
+			return (
+				<div>
+					<span>Label: {this.props.label}</span>
+					<ErrorMessage error={this.state.error} />
+					<p>{JSON.stringify(this.props.children, null, 4)}</p>
+				</div>
+			);
 		}
+
 		return this.props.children;
 	}
 }
