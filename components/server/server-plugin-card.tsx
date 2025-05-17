@@ -52,6 +52,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 		},
 		onSettled: () => {
 			invalidateByKey(['servers', serverId, 'plugins']);
+			invalidateByKey(['server', serverId, 'plugin-version']);
 		},
 	});
 
