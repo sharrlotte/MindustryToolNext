@@ -132,13 +132,6 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
 		},
 		{
-			id: 'admin', //
-			href: '/admin',
-			label: <Tran text="admin" />,
-			icon: <UsersIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
-		},
-		{
 			id: 'setting', //
 			href: '/setting',
 			label: <Tran text="setting" />,
