@@ -55,7 +55,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
 		socket.onConnect(() => {
 			setState('connected');
-			isShowDisconnected.current = false;
 		});
 
 		socket.onError(() => {
