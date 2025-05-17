@@ -3,6 +3,8 @@
 import { useParams } from 'next/navigation';
 import React from 'react';
 
+
+
 import DeleteButton from '@/components/button/delete.button';
 import ColorText from '@/components/common/color-text';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -12,6 +14,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { toast } from '@/components/ui/sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
+
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { Batcher } from '@/lib/batcher';
@@ -19,7 +23,10 @@ import { dateToId, omit } from '@/lib/utils';
 import { createServerPlugin, deleteServerPlugin } from '@/query/server';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 
+
+
 import { useMutation, useQuery } from '@tanstack/react-query';
+
 
 type Props = {
 	serverId: string;
@@ -114,6 +121,7 @@ function PluginVersion({ id: pluginId, version }: { id: string; version: string 
 		},
 		onSettled: () => {
 			invalidateByKey(['server', id, 'plugin']);
+			invalidateByKey(['server', id, 'plugin-version']);
 		},
 	});
 
