@@ -4,6 +4,8 @@ export type Player = {
 	userId?: string;
 	locale?: string;
 	ip: string;
+	isAdmin: boolean;
+	joinedAt: number;
 	team: {
 		name: string;
 		color: string;
