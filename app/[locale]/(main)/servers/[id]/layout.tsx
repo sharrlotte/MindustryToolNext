@@ -43,8 +43,11 @@ function PluginLabel() {
 	const shouldCheckPlugins = data
 		?.map((p) => p.filename.replace('.jar', '').split('_'))
 		.filter((p) => p.length === 2)
-		.map((p) => p[1])
-		.filter((p) => !!p);
+		.filter((p) => !!p[1])
+		.map((p) => ({
+			id: p[0],
+			version: p[1],
+		}));
 
 	const { data: version } = useQuery({
 		queryKey: ['server', id, 'plugin-version'],
