@@ -93,7 +93,7 @@ export async function getServerPlugins(axios: AxiosInstance, id: string): Promis
 	return result.data;
 }
 
-export async function getServer(axios: AxiosInstance, { id }: { id: string }): Promise<Server> {
+export async function getServer(axios: AxiosInstance, { id }: { id: string }): Promise<ServerDto> {
 	const result = await axios.get(`/servers/${id}`);
 
 	return result.data;

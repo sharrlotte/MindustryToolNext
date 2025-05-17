@@ -406,7 +406,7 @@ async function StatisticSection({ locale }: { locale: Locale }) {
 					<InternalLink
 						href={item.link}
 						shallow
-						className={`text-center p-6 text-brand-foreground bg-secondary/50 backdrop-blur-sm h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}
+						className={`text-center p-6 text-foreground bg-secondary/50 backdrop-blur-sm h-full rounded-xl grid place-content-center text-xl md:text-4xl font-bold gap-0.5 items-center justify-center`}
 					>
 						<div className={`flex justify-center items-center flex-col gap-2 ${item.color}`}>
 							<item.icon className="size-12" />

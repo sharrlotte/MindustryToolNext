@@ -9,7 +9,6 @@ import InfinitePage from '@/components/common/infinite-page';
 import Tran from '@/components/common/tran';
 import { MemberCard } from '@/components/messages/member-card';
 import { Button } from '@/components/ui/button';
-import ColorAsRole from '@/components/user/color-as-role';
 
 import { cn } from '@/lib/utils';
 import { getMembers } from '@/query/message';
@@ -60,9 +59,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 					groupUserByRole(page).map(([name, group]) => (
 						<div key={name} className="grid gap-1">
 							<h4 className="font-semibold capitalize">
-								<ColorAsRole roles={[group.role]}>
-									<Tran text={name} asChild />
-								</ColorAsRole>
+								<Tran text={name} asChild />
 							</h4>
 							{group.users.map((user) => (
 								<MemberCard key={user.id} user={user} />
