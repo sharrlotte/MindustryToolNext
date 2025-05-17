@@ -16,6 +16,7 @@ import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
 import { formatTitle, generateAlternate } from '@/lib/utils';
 import { getServerSetting } from '@/query/server';
+import ServerAdminList from '@/app/[locale]/(main)/servers/[id]/setting/server-admin-list';
 
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;
@@ -55,6 +56,7 @@ export default async function Page({ params }: Props) {
 			<ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
 				<ServerUpdateAdminForm server={server} />
 			</ProtectedElement>
+			<ServerAdminList id={id} />
 			<ProtectedElement session={session} filter={{ any: [{ authority: 'EDIT_ADMIN_SERVER' }, { authorId: server.userId }] }}>
 				<ServerSettingButton id={id} />
 			</ProtectedElement>
