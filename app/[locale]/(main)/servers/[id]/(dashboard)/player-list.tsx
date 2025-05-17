@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { useInterval } from 'usehooks-ts';
 
@@ -33,11 +34,15 @@ export default function PlayerList({ id }: PlayerListProps) {
 		return <ErrorMessage error={error} />;
 	}
 
-	return data
-		?.sort((a, b) => a.name.localeCompare(b.name))
-		?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
-		?.sort((a, b) => a.team.name.localeCompare(b.team.name))
-		.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />);
+	return (
+		<AnimatePresence>
+			{data
+				?.sort((a, b) => a.name.localeCompare(b.name))
+				?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
+				?.sort((a, b) => a.team.name.localeCompare(b.team.name))
+				.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
+		</AnimatePresence>
+	);
 }
 
 type PlayerListSkeletonProps = {
@@ -68,7 +73,12 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 	locale = getCountryCode(locale ?? 'EN');
 
 	return (
-		<div className="flex items-center gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1">
+		<motion.div
+			exit={{
+				translateX: '-200%',
+			}}
+			className="flex items-center gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1"
+		>
 			<div className="rounded-full size-2" style={{ backgroundColor: `#${team.color}` }} />
 			<div className="flex justify-between gap-1 items-center w-full">
 				<div className="flex flex-col gap-2">
@@ -87,7 +97,7 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 					</EllipsisButton>
 				</div>
 			</div>
-		</div>
+		</motion.div>
 	);
 }
 
@@ -111,7 +121,7 @@ function TimeFrom({ time }: { time: number }) {
 		} else {
 			setRelative(`${seconds}s`);
 		}
-	}, 1000 * 60);
+	}, 1000);
 
 	return <span>{relative}</span>;
 }

@@ -6,7 +6,9 @@ import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
 import { CreateServerManagerRequest, CreateServerRequest } from '@/types/request/CreateServerRequest';
 import { PutServerPortRequest, PutServerRequest } from '@/types/request/UpdateServerRequest';
+import { KickInfo } from '@/types/response/KickInfo';
 import { Player } from '@/types/response/Player';
+import { PlayerInfo } from '@/types/response/PlayerInfo';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
 import Server from '@/types/response/Server';
 import ServerAdmin from '@/types/response/ServerAdmin';
@@ -35,6 +37,27 @@ export async function getServerPlayers(axios: AxiosInstance, id: string): Promis
 
 	return result.data;
 }
+
+export async function getServerPlayerInfos(
+	axios: AxiosInstance,
+	id: string,
+	params: {
+		page: number;
+		size: number;
+		banned?: boolean;
+	},
+): Promise<PlayerInfo[]> {
+	const result = await axios.get(`/servers/${id}/player-infos`, { params });
+
+	return result.data;
+}
+
+export async function getServerKicks(axios: AxiosInstance, id: string): Promise<KickInfo> {
+	const result = await axios.get(`/servers/${id}/kicks`);
+
+	return result.data;
+}
+
 export async function getServerCommands(axios: AxiosInstance, id: string): Promise<ServerCommandDto[]> {
 	const result = await axios.get(`/servers/${id}/commands`);
 	return result.data;
