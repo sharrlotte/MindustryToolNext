@@ -1,5 +1,8 @@
 'use client';
 
+import { useState } from 'react';
+import { useInterval } from 'usehooks-ts';
+
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
 import { BanButton } from '@/components/server/ban.button';
@@ -61,7 +64,7 @@ function getCountryCode(locale: string): string {
 	return parts.length > 1 ? parts[1].toUpperCase() : parts[0].toUpperCase();
 }
 
-function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid } }: PlayerCardProps) {
+function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, isAdmin, joinedAt } }: PlayerCardProps) {
 	locale = getCountryCode(locale ?? 'EN');
 
 	return (
@@ -71,11 +74,13 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid }
 				<div className="flex flex-col gap-2">
 					<span className="flex items-center justify-center gap-1">
 						<span>{locale && (localeToFlag[locale] ?? locale)}</span>
-						<ColorText className="font-semibold" text={name} />
+						{userId && <IdUserCard id={userId} />}
+						{isAdmin && ''}
+						(<ColorText className="font-semibold" text={name} />)
 					</span>
-					{userId && <IdUserCard id={userId} />}
 				</div>
 				<div className="flex gap-1 items-center">
+					{}
 					<EllipsisButton variant="ghost">
 						<BanButton id={serverId} uuid={uuid} username={name} ip={ip} />
 						<KickButton id={serverId} uuid={uuid} />
@@ -84,4 +89,29 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid }
 			</div>
 		</div>
 	);
+}
+
+function TimeFrom({ time }: { time: number }) {
+	const [relative, setRelative] = useState('');
+
+	useInterval(() => {
+		const now = Date.now();
+		const diff = now - time;
+		const seconds = Math.floor(diff / 1000);
+		const minutes = Math.floor(seconds / 60);
+		const hours = Math.floor(minutes / 60);
+		const days = Math.floor(hours / 24);
+
+		if (days > 0) {
+			setRelative(`${days}d${hours % 24}h${minutes % 60}m`);
+		} else if (hours > 0) {
+			setRelative(`${hours}h${minutes % 60}m`);
+		} else if (minutes > 0) {
+			setRelative(`${minutes}m${seconds % 60}s`);
+		} else {
+			setRelative(`${seconds}s`);
+		}
+	}, 1000 * 60);
+
+	return <span>{relative}</span>;
 }
