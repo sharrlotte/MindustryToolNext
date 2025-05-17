@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { useParams } from 'next/navigation';
 import { Fragment, useCallback, useState } from 'react';
 
 import AllTable from '@/app/[locale]/(main)/translation/all.table';
@@ -51,7 +52,8 @@ function format(key: null | boolean) {
 }
 
 export default function TranslationPage() {
-	const [{ language, target, mode, key, isTranslated }, _setState] = useState(defaultState);
+	const { locale } = useParams();
+	const [{ language, target, mode, key, isTranslated }, _setState] = useState({ ...defaultState, language: locale as Locale });
 	const { t } = useI18n(['translation']);
 
 	const setState = useCallback((value: Partial<typeof defaultState>) => _setState((prev) => ({ ...prev, ...value })), []);
