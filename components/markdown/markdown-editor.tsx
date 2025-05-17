@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 import { EditPanelIcon, FullScreenIcon, LivePanelIcon, PreviewPanelIcon } from '@/components/common/icons';
-import { htmlProcessor, markdownProcessor, useMarkdown } from '@/components/markdown/markdown';
+import { htmlProcessor, markdownProcessor } from '@/components/markdown/markdown';
 import {
 	BoldButton,
 	CheckListButton,
@@ -41,7 +41,6 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
 	const [mode, setMode] = useState<EditorMode>(defaultMode);
 	const [isFullscreen, setFullscreen] = useState(false);
 	const [html, setHtml] = useState('');
-	const markdown = useMarkdown(value.text);
 
 	const toggleFullscreen = () => setFullscreen((prev) => !prev);
 

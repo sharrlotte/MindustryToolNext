@@ -1,7 +1,7 @@
-import React, { createElement, useEffect, useState } from 'react';
+import React from 'react';
 import { isValidElement } from 'react';
 import ReactMarkdown, { Options } from 'react-markdown';
-import { Fragment, jsx, jsxs } from 'react/jsx-runtime';
+import { jsx, jsxs } from 'react/jsx-runtime';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeParse from 'rehype-parse';
 import rehypeReact from 'rehype-react';
@@ -138,16 +138,6 @@ export const htmlProcessor = unified() //
 	.use(rehypeParse)
 	.use(rehypeRemark)
 	.use(remarkStringify);
-
-export function useMarkdown(text: string) {
-	const [content, setContent] = useState(createElement(Fragment));
-
-	useEffect(() => {
-		markdownProcessor.process(text).then(({ result }) => setContent(result));
-	}, [text]);
-
-	return content;
-}
 
 type MarkdownProps = {
 	className?: string;
