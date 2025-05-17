@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 import { EditPanelIcon, FullScreenIcon, LivePanelIcon, PreviewPanelIcon } from '@/components/common/icons';
-import { htmlProcessor, useMarkdown } from '@/components/markdown/markdown';
+import { htmlProcessor, markdownProcessor, useMarkdown } from '@/components/markdown/markdown';
 import {
 	BoldButton,
 	CheckListButton,
@@ -84,70 +84,6 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
 				'fixed inset-0 z-50 rounded-none': isFullscreen,
 			})}
 		>
-			<section className="flex divide-x">
-				<div className="flex justify-center items-center p-1 gap-1">
-					<BoldButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
-					<ItalicButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
-					<StrikethroughButton
-						callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))}
-					/>
-					<HRButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
-					<TitleButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
-				</div>
-				<div className="flex justify-center items-center p-1 gap-1">
-					<LinkDialog callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
-					<QuoteButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
-					<CodeBlockButton
-						callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))}
-					/>
-					<ImageDialog
-						callback={(fn) =>
-							onChange((prev) => {
-								const result = fn(inputRef.current, prev.text);
-
-								if (result.file) {
-									return { files: [...prev.files, result.file], text: result.text };
-								}
-
-								return { files: prev.files, text: result.text };
-							})
-						}
-					/>
-				</div>
-				<div className="flex justify-center items-center p-1 gap-1">
-					<ListButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
-					<OrderedListButton
-						callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))}
-					/>
-					<CheckListButton
-						callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))}
-					/>
-				</div>
-				<div className="ml-auto flex divide-x">
-					<div className="flex justify-center items-center p-1 gap-1">
-						<Button size="icon" disabled={mode === 'edit'} title="edit-mode" variant="icon" onClick={() => setMode('edit')}>
-							<EditPanelIcon className="size-4" />
-						</Button>
-						<Button disabled={mode === 'live'} size="icon" title="live-mode" variant="icon" onClick={() => setMode('live')}>
-							<LivePanelIcon className="size-4" />
-						</Button>
-						<Button
-							disabled={mode === 'preview'}
-							size="icon"
-							title="preview-mode"
-							variant="icon"
-							onClick={() => setMode('preview')}
-						>
-							<PreviewPanelIcon className="size-4" />
-						</Button>
-					</div>
-					<div className="px-1 flex justify-center items-center">
-						<Button size="icon" title="fullscreen" variant="icon" onClick={toggleFullscreen}>
-							<FullScreenIcon className="size-4" />
-						</Button>
-					</div>
-				</div>
-			</section>
 			<div
 				className={cn('grid h-full w-full grid-cols-1 divide-y overflow-hidden  md:divide-x md:divide-y-0', {
 					'grid-rows-2 md:grid-cols-2 md:grid-rows-1': mode === 'live',
@@ -185,15 +121,13 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
 						dangerouslySetInnerHTML={{ __html: html }}
 						onInput={(event) => {
 							setHtml(event.currentTarget.innerHTML);
-							htmlProcessor.process(event.currentTarget.innerHTML).then(({ result }) =>
+							htmlProcessor.process(event.currentTarget.innerHTML).then(({ result }) => {
+								console.log({ result });
 								onChange(({ files }) => ({
 									text: result as string,
 									files,
-								})),
-							);
-						}}
-						onBlur={(event) => {
-							console.log(event);
+								}));
+							});
 						}}
 					/>
 				)}
@@ -201,3 +135,74 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
 		</div>
 	);
 }
+
+// function Toolbar({
+// 	setMode,
+// 	onChange,
+// }: {
+// 	setMode: React.Dispatch<React.SetStateAction<EditorMode>>;
+// 	onChange: (func: (_value: MarkdownData) => MarkdownData) => void;
+// }) {
+// 	return (
+// 		<section className="flex divide-x">
+// 			<div className="flex justify-center items-center p-1 gap-1">
+// 				<BoldButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
+// 				<ItalicButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
+// 				<StrikethroughButton
+// 					callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))}
+// 				/>
+// 				<HRButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
+// 				<TitleButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
+// 			</div>
+// 			<div className="flex justify-center items-center p-1 gap-1">
+// 				<LinkDialog callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
+// 				<QuoteButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
+// 				<CodeBlockButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
+// 				<ImageDialog
+// 					callback={(fn) =>
+// 						onChange((prev) => {
+// 							const result = fn(inputRef.current, prev.text);
+
+// 							if (result.file) {
+// 								return { files: [...prev.files, result.file], text: result.text };
+// 							}
+
+// 							return { files: prev.files, text: result.text };
+// 						})
+// 					}
+// 				/>
+// 			</div>
+// 			<div className="flex justify-center items-center p-1 gap-1">
+// 				<ListButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
+// 				<OrderedListButton
+// 					callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))}
+// 				/>
+// 				<CheckListButton callback={(fn) => onChange((prev) => ({ files: prev.files, text: fn(inputRef.current, prev.text) }))} />
+// 			</div>
+// 			<div className="ml-auto flex divide-x">
+// 				<div className="flex justify-center items-center p-1 gap-1">
+// 					<Button size="icon" disabled={mode === 'edit'} title="edit-mode" variant="icon" onClick={() => setMode('edit')}>
+// 						<EditPanelIcon className="size-4" />
+// 					</Button>
+// 					<Button disabled={mode === 'live'} size="icon" title="live-mode" variant="icon" onClick={() => setMode('live')}>
+// 						<LivePanelIcon className="size-4" />
+// 					</Button>
+// 					<Button
+// 						disabled={mode === 'preview'}
+// 						size="icon"
+// 						title="preview-mode"
+// 						variant="icon"
+// 						onClick={() => setMode('preview')}
+// 					>
+// 						<PreviewPanelIcon className="size-4" />
+// 					</Button>
+// 				</div>
+// 				<div className="px-1 flex justify-center items-center">
+// 					<Button size="icon" title="fullscreen" variant="icon" onClick={toggleFullscreen}>
+// 						<FullScreenIcon className="size-4" />
+// 					</Button>
+// 				</div>
+// 			</div>
+// 		</section>
+// 	);
+// }

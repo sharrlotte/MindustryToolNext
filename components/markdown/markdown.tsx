@@ -111,7 +111,7 @@ const Code = ({ className, children, ...props }: any) => (
 	</>
 );
 
-const markdownProcessor = unified() //
+export const markdownProcessor = unified() //
 	.use(remarkParse)
 	.use(remarkRehype)
 	.use(rehypeSanitize)
@@ -132,8 +132,7 @@ const markdownProcessor = unified() //
 			h5: (props: any) => <Heading as="h5" {...props} />,
 			h6: (props: any) => <Heading as="h6" {...props} />,
 		},
-	})
-	.use(remarkStringify);
+	});
 
 export const htmlProcessor = unified() //
 	.use(rehypeParse)
@@ -144,7 +143,7 @@ export function useMarkdown(text: string) {
 	const [content, setContent] = useState(createElement(Fragment));
 
 	useEffect(() => {
-		markdownProcessor.process(text).then(({ result }) => setContent(result as string));
+		markdownProcessor.process(text).then(({ result }) => setContent(result));
 	}, [text]);
 
 	return content;
