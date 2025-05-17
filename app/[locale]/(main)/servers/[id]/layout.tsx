@@ -12,6 +12,7 @@ import {
 	MapIcon,
 	PluginIcon,
 	SettingIcon,
+	UsersIcon,
 } from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
@@ -103,6 +104,13 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			href: '/plugins',
 			label: <PluginLabel />,
 			icon: <PluginIcon />,
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+		},
+		{
+			id: 'player',
+			href: '/players',
+			label: <Tran text="player" />,
+			icon: <UsersIcon />,
 			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
 		},
 		{

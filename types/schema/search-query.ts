@@ -20,6 +20,7 @@ export const nameSchema = z.string().optional();
 export const roleSchema = z.enum(userRoles).optional();
 export const isBannedSchema = z.boolean().optional();
 export const authorIdSchema = z.string().optional();
+export const bannedSchema = z.boolean().optional();
 export const tagsSchema = z
 	.any()
 	.transform((value) => (Array.isArray(value) ? value : [value]))
@@ -55,6 +56,11 @@ const ItemSearchParam = {
 
 export const PaginationQuerySchema = z.object({
 	...PaginationParam,
+});
+
+export const PlayerInfoQuerySchema = z.object({
+	...PaginationParam,
+	banned: bannedSchema,
 });
 
 export const ItemPaginationQuery = z.object({
