@@ -19,4 +19,5 @@ export type ServerDto = {
 	isAutoTurnOff: boolean;
 	isHub: boolean;
 	hostCommand?: string;
+	kicks: number;
 };

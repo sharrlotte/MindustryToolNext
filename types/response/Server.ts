@@ -18,6 +18,5 @@ export default interface Server {
 	isAutoTurnOff: boolean;
 	isHub: boolean;
 	status: ServerStatus;
-	kicks: number;
 	players: number;
 }
