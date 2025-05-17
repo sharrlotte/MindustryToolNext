@@ -80,7 +80,7 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 					</span>
 				</div>
 				<div className="flex gap-1 items-center">
-					{}
+					<TimeFrom time={joinedAt} />
 					<EllipsisButton variant="ghost">
 						<BanButton id={serverId} uuid={uuid} username={name} ip={ip} />
 						<KickButton id={serverId} uuid={uuid} />
