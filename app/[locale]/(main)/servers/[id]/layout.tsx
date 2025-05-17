@@ -12,7 +12,6 @@ import {
 	MapIcon,
 	PluginIcon,
 	SettingIcon,
-	UsersIcon,
 } from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
