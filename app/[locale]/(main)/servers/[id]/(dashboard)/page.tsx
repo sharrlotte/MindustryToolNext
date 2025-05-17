@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React, { Suspense } from 'react';
+import React, { Fragment, Suspense } from 'react';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 
@@ -12,6 +12,7 @@ import ErrorScreen from '@/components/common/error-screen';
 import { ServerIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import RamUsageChart from '@/components/metric/ram-usage-chart';
 import ServerStatus from '@/components/server/server-status';
 import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
@@ -29,14 +30,12 @@ type Props = {
 	params: Promise<{ id: string; locale: string }>;
 };
 
-const MapName = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/map-name-card'));
 const HostServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/host-server-button'));
 const InitServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/init-server-button'));
 const RemoveServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/remove-server-button'));
 const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/shutdown-server-button'));
 const StopServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/stop-server-button'));
 const PlayerList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/player-list'));
-const UsageCard = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/usage-card'));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id } = await params;
@@ -73,7 +72,7 @@ export default async function Page({ params }: Props) {
 		return <ErrorScreen error={session} />;
 	}
 
-	const { name, description, port, mode, players, status, userId, address } = server;
+	const { name, description, port, mode, players, status, userId, address, mapName, ramUsage, cpuUsage, totalRam } = server;
 
 	const canAccess = hasAccess(session, { any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: server.userId }] });
 	const showPlayer = hasAccess(session, {
@@ -111,7 +110,16 @@ export default async function Page({ params }: Props) {
 									<Tran text="server.players" />
 									<span>{players}/30</span>
 								</div>
-								{status === 'HOST' && <MapName id={id} />}
+								{status === 'HOST' && (
+									<div className="flex flex-col gap-0.5">
+										{mapName && (
+											<Fragment>
+												<Tran text="server.map" />
+												<ColorText text={mapName} />
+											</Fragment>
+										)}
+									</div>
+								)}
 								<div className="flex flex-col gap-0.5">
 									{address && (
 										<div className="flex gap-1 flex-col">
@@ -134,7 +142,17 @@ export default async function Page({ params }: Props) {
 									<h3 className="text-xl">
 										<Tran text="server.system-status" />
 									</h3>
-									{status === 'HOST' ? <UsageCard id={id} /> : <Tran text="server.server-is-not-running" />}
+									{status === 'HOST' ? (
+										<div className="h-full w-full flex flex-col">
+											<div className="space-x-1">
+												<Tran text="server.cpu-usage" />
+												<span>{cpuUsage}%</span>
+											</div>
+											<RamUsageChart ramUsage={ramUsage * 1024 * 1024} totalRam={totalRam * 1024 * 1024} />
+										</div>
+									) : (
+										<Tran text="server.server-is-not-running" />
+									)}
 								</div>
 							</div>
 							{status === 'HOST' && (
