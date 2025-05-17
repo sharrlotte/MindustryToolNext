@@ -3,12 +3,15 @@ import { isValidElement } from 'react';
 import ReactMarkdown, { Options } from 'react-markdown';
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime';
 import rehypeHighlight from 'rehype-highlight';
+import rehypeParse from 'rehype-parse';
 import rehypeReact from 'rehype-react';
+import rehypeRemark from 'rehype-remark';
 import rehypeSanitize from 'rehype-sanitize';
 import frontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
+import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 
 import CopyButton from '@/components/button/copy.button';
@@ -108,6 +111,45 @@ const Code = ({ className, children, ...props }: any) => (
 	</>
 );
 
+const markdownProcessor = unified() //
+	.use(remarkParse)
+	.use(remarkRehype)
+	.use(rehypeSanitize)
+	.use(rehypeReact, {
+		createElement: React.createElement,
+		Fragment: React.Fragment,
+		jsx,
+		jsxs,
+		components: {
+			a: A,
+			img: MarkdownImage,
+			pre: Pre,
+			code: Code,
+			h1: (props: any) => <Heading as="h1" {...props} />,
+			h2: (props: any) => <Heading as="h2" {...props} />,
+			h3: (props: any) => <Heading as="h3" {...props} />,
+			h4: (props: any) => <Heading as="h4" {...props} />,
+			h5: (props: any) => <Heading as="h5" {...props} />,
+			h6: (props: any) => <Heading as="h6" {...props} />,
+		},
+	})
+	.use(remarkStringify);
+
+export const htmlProcessor = unified() //
+	.use(rehypeParse)
+	.use(rehypeRemark)
+	.use(remarkStringify);
+
+export function useMarkdown(text: string) {
+	const [content, setContent] = useState(createElement(Fragment));
+
+	useEffect(() => {
+		markdownProcessor.process(text).then(({ result }) => setContent(result as string));
+	}, [text]);
+
+	return content;
+}
+
 type MarkdownProps = {
 	className?: string;
 	children: string;
@@ -136,37 +178,4 @@ export default function Markdown({ className, children, ...props }: MarkdownProp
 			{children}
 		</ReactMarkdown>
 	);
-}
-
-const processor = unified() //
-	.use(remarkParse)
-	.use(remarkRehype)
-	.use(rehypeSanitize)
-	.use(rehypeReact, {
-		createElement: React.createElement,
-		Fragment: React.Fragment,
-		jsx,
-		jsxs,
-		components: {
-			a: A,
-			img: MarkdownImage,
-			pre: Pre,
-			code: Code,
-			h1: (props: any) => <Heading as="h1" {...props} />,
-			h2: (props: any) => <Heading as="h2" {...props} />,
-			h3: (props: any) => <Heading as="h3" {...props} />,
-			h4: (props: any) => <Heading as="h4" {...props} />,
-			h5: (props: any) => <Heading as="h5" {...props} />,
-			h6: (props: any) => <Heading as="h6" {...props} />,
-		},
-	});
-
-export function useMarkdown(text: string) {
-	const [content, setContent] = useState(createElement(Fragment));
-
-	useEffect(() => {
-		processor.process(text).then(({ result }) => setContent(result));
-	}, [text]);
-
-	return content;
 }

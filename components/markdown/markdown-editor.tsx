@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 import { EditPanelIcon, FullScreenIcon, LivePanelIcon, PreviewPanelIcon } from '@/components/common/icons';
-import { useMarkdown } from '@/components/markdown/markdown';
+import { htmlProcessor, useMarkdown } from '@/components/markdown/markdown';
 import {
 	BoldButton,
 	CheckListButton,
@@ -40,7 +40,7 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
 	const [focused, setFocused] = useState<HTMLElement | null>(null);
 	const [mode, setMode] = useState<EditorMode>(defaultMode);
 	const [isFullscreen, setFullscreen] = useState(false);
-
+	const [html, setHtml] = useState('');
 	const markdown = useMarkdown(value.text);
 
 	const toggleFullscreen = () => setFullscreen((prev) => !prev);
@@ -182,9 +182,20 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
 						onTouchMove={(event) => setFocused(event.currentTarget)}
 						contentEditable
 						suppressContentEditableWarning={true}
-					>
-						{markdown}
-					</div>
+						dangerouslySetInnerHTML={{ __html: html }}
+						onInput={(event) => {
+							setHtml(event.currentTarget.innerHTML);
+							htmlProcessor.process(event.currentTarget.innerHTML).then(({ result }) =>
+								onChange(({ files }) => ({
+									text: result as string,
+									files,
+								})),
+							);
+						}}
+						onBlur={(event) => {
+							console.log(event);
+						}}
+					/>
 				)}
 			</div>
 		</div>
