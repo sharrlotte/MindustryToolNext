@@ -41,7 +41,7 @@ function PluginLabel() {
 	const axios = useClientApi();
 
 	const shouldCheckPlugins = data
-		?.map((p) => p.filename.replace('.jar', '').split('_)'))
+		?.map((p) => p.filename.replace('.jar', '').split('_'))
 		.filter((p) => p.length === 2)
 		.map((p) => p[1])
 		.filter((p) => !!p);
