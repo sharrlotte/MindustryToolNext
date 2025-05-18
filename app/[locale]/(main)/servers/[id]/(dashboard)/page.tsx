@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { Fragment, Suspense } from 'react';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
+import KickList from '@/app/[locale]/(main)/servers/[id]/(dashboard)/kick-list';
 
 import CopyButton from '@/components/button/copy.button';
 import { CatchError } from '@/components/common/catch-error';
@@ -23,7 +24,6 @@ import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
 import { cn, formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
-import KickList from '@/app/[locale]/(main)/servers/[id]/(dashboard)/kick-list';
 
 export const experimental_ppr = true;
 
@@ -85,58 +85,58 @@ export default async function Page({ params }: Props) {
 		<ScrollContainer className="flex flex-col gap-2 h-full p-2">
 			<div className="h-full">
 				<div className="flex min-h-full w-full flex-col gap-2">
-					<CatchError>
-						<div className="flex flex-1 md:flex-row flex-col gap-2">
-							<div className="flex w-full min-w-80 flex-col gap-6 flex-1 overflow-hidden bg-card rounded-md p-4">
-								<div className="flex items-center gap-2">
-									<ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
-									<ColorText className="text-2xl font-bold" text={name} />
+					<div className="flex flex-1 md:flex-row flex-col gap-2">
+						<div className="flex w-full min-w-80 flex-col gap-6 flex-1 overflow-hidden bg-card rounded-md p-4">
+							<div className="flex items-center gap-2">
+								<ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
+								<ColorText className="text-2xl font-bold" text={name} />
+							</div>
+							<div className="grid grid-cols-2 gap-3 text-sm font-medium capitalize">
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.description" />
+									<ColorText text={description} />
 								</div>
-								<div className="grid grid-cols-2 gap-3 text-sm font-medium capitalize">
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.owner" />
+									<IdUserCard id={userId} />
+								</div>
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.game-mode" />
+									<span className="capitalize">{mode.toLocaleLowerCase()}</span>
+								</div>
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.status" />
+									<ServerStatus status={status} />
+								</div>
+								<div className="flex flex-col gap-0.5">
+									<Tran text="server.players" />
+									<span>{players}/30</span>
+								</div>
+								{status === 'HOST' && (
 									<div className="flex flex-col gap-0.5">
-										<Tran text="server.description" />
-										<ColorText text={description} />
-									</div>
-									<div className="flex flex-col gap-0.5">
-										<Tran text="server.owner" />
-										<IdUserCard id={userId} />
-									</div>
-									<div className="flex flex-col gap-0.5">
-										<Tran text="server.game-mode" />
-										<span className="capitalize">{mode.toLocaleLowerCase()}</span>
-									</div>
-									<div className="flex flex-col gap-0.5">
-										<Tran text="server.status" />
-										<ServerStatus status={status} />
-									</div>
-									<div className="flex flex-col gap-0.5">
-										<Tran text="server.players" />
-										<span>{players}/30</span>
-									</div>
-									{status === 'HOST' && (
-										<div className="flex flex-col gap-0.5">
-											{mapName && (
-												<Fragment>
-													<Tran text="server.map" />
-													<ColorText text={mapName} />
-												</Fragment>
-											)}
-										</div>
-									)}
-									<div className="flex flex-col gap-0.5">
-										{address && (
-											<div className="flex gap-1 flex-col">
-												<Tran text="server.address" />
-												<CopyButton variant="none" data={`${address}:${port}`}>
-													<span className="lowercase">
-														{address}:{port}
-													</span>
-												</CopyButton>
-											</div>
+										{mapName && (
+											<Fragment>
+												<Tran text="server.map" />
+												<ColorText text={mapName} />
+											</Fragment>
 										)}
 									</div>
+								)}
+								<div className="flex flex-col gap-0.5">
+									{address && (
+										<div className="flex gap-1 flex-col">
+											<Tran text="server.address" />
+											<CopyButton variant="none" data={`${address}:${port}`}>
+												<span className="lowercase">
+													{address}:{port}
+												</span>
+											</CopyButton>
+										</div>
+									)}
 								</div>
 							</div>
+						</div>
+						<CatchError>
 							<ProtectedElement session={session} filter={showPlayer}>
 								{status === 'HOST' && kicks > 0 && (
 									<div className="flex bg-card rounded-md flex-col">
@@ -154,8 +154,8 @@ export default async function Page({ params }: Props) {
 									</div>
 								)}
 							</ProtectedElement>
-						</div>
-					</CatchError>
+						</CatchError>
+					</div>
 					<CatchError>
 						<div className="flex gap-2 justify-between flex-col md:flex-row">
 							<div className="flex flex-wrap items-start justify-start gap-1 p-4 shadow-lg flex-1 bg-card rounded-md">
