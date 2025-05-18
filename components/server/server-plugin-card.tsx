@@ -50,7 +50,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 	});
 
 	return (
-		<div className="relative flex flex-col min-h-40 h-40 gap-1 overflow-hidden rounded-md bg-card p-2 border">
+		<div className="relative flex flex-col min-h-48 h-48 gap-1 overflow-hidden rounded-md bg-card p-2 border">
 			<h2 className="line-clamp-1 overflow-hidden text-ellipsis whitespace-normal text-nowrap space-x-1">
 				{repo ? (
 					<a href={`https://github.com/${repo}`}>

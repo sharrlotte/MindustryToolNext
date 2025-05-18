@@ -38,7 +38,7 @@ export default function DownloadPluginList() {
 						queryFn={(axios, params) => getPlugins(axios, params)}
 						skeleton={{
 							amount: 20,
-							item: <Skeleton className="h-40 min-h-40" />,
+							item: <Skeleton className="h-48 min-h-48" />,
 						}}
 					>
 						{(page) => page.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)}
@@ -51,7 +51,7 @@ export default function DownloadPluginList() {
 						queryFn={getPlugins}
 						skeleton={{
 							amount: 20,
-							item: <Skeleton className="h-40 min-h-40" />,
+							item: <Skeleton className="h-48 min-h-48" />,
 						}}
 					>
 						{(page) => page.map((plugin) => <AddServerPluginCard key={plugin.id} plugin={plugin} />)}
@@ -119,7 +119,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 	return (
 		<motion.button
 			className={cn(
-				'relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start',
+				'relative border flex h-48 min-h-48 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start',
 				{
 					'hover:border-brand': state !== 'up-to-date',
 					'opacity-50': state === 'up-to-date',
