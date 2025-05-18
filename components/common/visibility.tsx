@@ -16,9 +16,7 @@ export function Visibility({ children }: { children: React.ReactNode }) {
 
 	return (
 		<VisibilityContext.Provider value={visible}>
-			<button className="group-hover:opacity-100 group-focus:opacity-100 opacity-0" onClick={() => setVisible((prev) => !prev)}>
-				{children}
-			</button>
+			<button onClick={() => setVisible((prev) => !prev)}>{children}</button>
 		</VisibilityContext.Provider>
 	);
 }
@@ -26,9 +24,11 @@ export function Visibility({ children }: { children: React.ReactNode }) {
 export function VisibilityOff({ children }: { children: React.ReactNode }) {
 	const visible = useVisibility();
 
+	if (visible) return;
+
 	return (
 		<>
-			{visible ? null : children}
+			{children}
 			<EyeOffIcon />
 		</>
 	);
@@ -37,9 +37,11 @@ export function VisibilityOff({ children }: { children: React.ReactNode }) {
 export function VisibilityOn({ children }: { children: React.ReactNode }) {
 	const visible = useVisibility();
 
+	if (!visible) return;
+
 	return (
 		<>
-			{visible ? children : null}
+			{children}
 			<EyeIcon />
 		</>
 	);
