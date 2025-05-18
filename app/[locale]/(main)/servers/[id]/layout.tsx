@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import React, { ReactNode, use } from 'react';
 
+import ErrorMessage from '@/components/common/error-message';
 import {
 	CmdIcon,
 	FileIcon,
@@ -18,6 +19,7 @@ import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
 import { NotificationNumber } from '@/components/common/notification-number';
 import Tran from '@/components/common/tran';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { NavLinkProvider } from '@/context/nav-link.context';
 import { useSession } from '@/context/session.context';
@@ -70,13 +72,26 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 	const { id } = use(params);
 	const { session } = useSession();
 	const axios = useClientApi();
-	const { data: server } = useQuery({
+	const {
+		data: server,
+		isLoading,
+		isError,
+		error,
+	} = useQuery({
 		queryKey: ['server', id],
 		queryFn: () => getServer(axios, { id }),
 	});
 
+	if (isError) {
+		return <ErrorMessage error={error} />;
+	}
+
+	if (isLoading) {
+		return <Skeleton className="w-full h-full" />;
+	}
+
 	if (!server) {
-		return null;
+		throw Error('Should suppose to happen');
 	}
 
 	const links: {
