@@ -108,6 +108,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 		},
 		onSettled: () => {
 			invalidateByKey(['server', id, 'plugin']);
+			invalidateByKey(['server', id, 'plugin-version']);
 		},
 	});
 
