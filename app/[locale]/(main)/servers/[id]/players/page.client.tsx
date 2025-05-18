@@ -6,6 +6,7 @@ import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
+import { Visibility, VisibilityOff, VisibilityOn } from '@/components/common/visibility';
 import { BanButton } from '@/components/server/ban.button';
 import { KickButton } from '@/components/server/kick.button';
 import Divider from '@/components/ui/divider';
@@ -90,7 +91,13 @@ function PlayerInfoCard({ serverId, info }: PlayerInfoCardProps) {
 					<h4 className="font-medium text-lg">
 						<ColorText text={lastName} />
 					</h4>
-					<div className="text-sm text-muted-foreground">ID: {id}</div>
+					<div className="text-sm text-muted-foreground">
+						ID:
+						<Visibility>
+							<VisibilityOff>{id.replace(/./g, '*')}</VisibilityOff>
+							<VisibilityOn>{id}</VisibilityOn>
+						</Visibility>
+					</div>
 				</div>
 				<div className="flex gap-2">
 					{admin && <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Admin</span>}
@@ -101,11 +108,21 @@ function PlayerInfoCard({ serverId, info }: PlayerInfoCardProps) {
 			<div className="mt-4 grid grid-cols-2 gap-4 text-sm">
 				<div>
 					<div className="text-muted-foreground">Last IP</div>
-					<div className="font-mono">{lastIP}</div>
+					<div className="font-mono">
+						<Visibility>
+							<VisibilityOff>{lastIP.replace(/\d{1,3}\.\d{1,3}/g, '*')}</VisibilityOff>
+							<VisibilityOn>{lastIP}</VisibilityOn>
+						</Visibility>
+					</div>
 				</div>
 				<div>
 					<div className="text-muted-foreground">IPs</div>
-					<div className="font-mono">{ips.join(', ')}</div>
+					<div className="font-mono">
+						<Visibility>
+							<VisibilityOff>{ips.map((ip) => ip.replace(/\d{1,3}\.\d{1,3}/g, '*')).join(', ')}</VisibilityOff>
+							<VisibilityOn>{ips.join(', ')}</VisibilityOn>
+						</Visibility>
+					</div>
 				</div>
 				<div>
 					<div className="text-muted-foreground">Admin USID</div>
