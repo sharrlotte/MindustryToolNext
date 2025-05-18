@@ -140,7 +140,7 @@ export default async function Page({ params }: Props) {
 							<ProtectedElement session={session} filter={showPlayer}>
 								{status === 'HOST' && kicks > 0 && (
 									<div className="flex bg-card rounded-md flex-col">
-										<div className="grid gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit">
+										<ScrollContainer className="grid gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit max-h-[50vh]">
 											<Suspense
 												fallback={
 													<Skeletons number={kicks}>
@@ -150,7 +150,7 @@ export default async function Page({ params }: Props) {
 											>
 												<KickList id={id} />
 											</Suspense>
-										</div>
+										</ScrollContainer>
 									</div>
 								)}
 							</ProtectedElement>
@@ -209,7 +209,7 @@ export default async function Page({ params }: Props) {
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className={cn('flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg mt-auto')}>
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
-								{status !== 'DOWN' && <ShutdownServerButton id={id} />}
+								{(status === 'HOST' || status === 'UP') && <ShutdownServerButton id={id} />}
 								{status === 'HOST' ? (
 									<StopServerButton id={id} />
 								) : status === 'UP' ? (
