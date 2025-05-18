@@ -19,7 +19,7 @@ export default function ServerList() {
 	const [debounced] = useDebounceValue(name, 200);
 
 	return (
-		<div className="flex h-full w-full gap-2 flex-col">
+		<div className="flex h-full w-full gap-2 flex-col overflow-hidden">
 			<SearchBar className="bg-card">
 				<SearchIcon />
 				<SearchInput value={name} onChange={setName} />

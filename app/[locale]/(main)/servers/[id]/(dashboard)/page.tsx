@@ -209,7 +209,7 @@ export default async function Page({ params }: Props) {
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className={cn('flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg mt-auto')}>
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
-								{status !== 'DOWN' && <ShutdownServerButton id={id} />}
+								{(status === 'HOST' || status === 'UP') && <ShutdownServerButton id={id} />}
 								{status === 'HOST' ? (
 									<StopServerButton id={id} />
 								) : status === 'UP' ? (
