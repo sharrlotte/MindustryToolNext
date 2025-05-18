@@ -69,7 +69,15 @@ function KickCard({ kick: { ip, untilTime } }: KickCardProps) {
 	return (
 		<motion.div
 			exit={{
-				translateX: '200%',
+				x: 1000, // move far right
+				y: -300, // and up
+				rotate: 720, // spin
+				opacity: 0, // fade out
+				scale: 0.5, // shrink
+				transition: {
+					duration: 1,
+					ease: 'easeOut',
+				},
 			}}
 			className="flex items-center justify-between gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1 h-10"
 		>
