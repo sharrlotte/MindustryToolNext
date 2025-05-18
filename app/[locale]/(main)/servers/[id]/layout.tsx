@@ -51,7 +51,7 @@ function PluginLabel() {
 		}));
 
 	const { data: version } = useQuery({
-		queryKey: ['server', id, 'plugin-version'],
+		queryKey: ['server', id, 'plugin-version', data],
 		queryFn: () =>
 			axios
 				.post('plugins/check-version', shouldCheckPlugins, { withCredentials: true })

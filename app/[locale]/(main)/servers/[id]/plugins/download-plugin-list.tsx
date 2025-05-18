@@ -119,13 +119,13 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 	return (
 		<motion.button
 			className={cn(
-				'relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start  cursor-pointer',
+				'relative border flex h-40 min-h-40 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start',
 				{
 					'hover:border-brand': state !== 'up-to-date',
 					'opacity-50': state === 'up-to-date',
 				},
 			)}
-			disabled={isPending || state === 'up-to-date'}
+			disabled={isPending}
 			onClick={() => mutate(plugin.id)}
 			layout
 		>
