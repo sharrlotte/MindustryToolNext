@@ -75,7 +75,15 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 	return (
 		<motion.div
 			exit={{
-				translateX: '-200%',
+				x: 1000, // move far right
+				y: -300, // and up
+				rotate: 720, // spin
+				opacity: 0, // fade out
+				scale: 0.5, // shrink
+				transition: {
+					duration: 1,
+					ease: 'easeOut',
+				},
 			}}
 			className="flex items-center gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1"
 		>

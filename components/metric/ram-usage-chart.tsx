@@ -29,7 +29,7 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 			<span className="font-bold">
 				<Tran text="metric.ram-usage" />
 			</span>
-			<div className="max-w-[200px] group/chart relative">
+			<div className="max-w-[200px] group/chart relative space-y-2">
 				<PieChart
 					segments={[
 						{
