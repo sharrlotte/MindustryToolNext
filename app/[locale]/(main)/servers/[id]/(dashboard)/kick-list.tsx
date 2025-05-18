@@ -10,7 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import useClientApi from '@/hooks/use-client';
 import { getServerKicks } from '@/query/server';
 
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 type KickListProps = {
 	id: string;
@@ -18,7 +18,7 @@ type KickListProps = {
 
 export default function KickList({ id }: KickListProps) {
 	const axios = useClientApi();
-	const { data, isError, error } = useSuspenseQuery({
+	const { data, isError, error } = useQuery({
 		queryKey: ['server', id, 'kick'],
 		queryFn: () => getServerKicks(axios, id),
 	});
@@ -29,7 +29,7 @@ export default function KickList({ id }: KickListProps) {
 
 	return (
 		<AnimatePresence>
-			{Object.entries(data) //
+			{Object.entries(data ?? []) //
 				.map(([ip, untilTime]) => (
 					<KickCard key={ip} serverId={id} kick={{ ip, untilTime }} />
 				))}
