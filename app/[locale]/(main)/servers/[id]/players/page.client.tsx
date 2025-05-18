@@ -6,7 +6,11 @@ import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
+import { Visibility, VisibilityOff, VisibilityOn } from '@/components/common/visibility';
+import { BanButton } from '@/components/server/ban.button';
+import { KickButton } from '@/components/server/kick.button';
 import Divider from '@/components/ui/divider';
+import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
 import { cn } from '@/lib/utils';
 import { getServerPlayerInfos } from '@/query/server';
@@ -61,55 +65,73 @@ export default function PageClient({ id }: Props) {
 				paramSchema={PlayerInfoQuerySchema}
 				queryFn={(axios, params) => getServerPlayerInfos(axios, id, params)}
 			>
-				{(data) => data.map((item) => <PlayerInfoCard key={item.id} info={item} />)}
+				{(data) => data.map((item) => <PlayerInfoCard key={item.id} serverId={id} info={item} />)}
 			</InfinitePage>
 		</ScrollContainer>
 	);
 }
 
 type PlayerInfoCardProps = {
+	serverId: string;
 	info: PlayerInfo;
 };
 
-function PlayerInfoCard({ info }: PlayerInfoCardProps) {
-	const lastKickedDate = info.lastKicked ? new Date(info.lastKicked).toLocaleString() : 'Never';
+function PlayerInfoCard({ serverId, info }: PlayerInfoCardProps) {
+	const { lastKicked, lastIP, lastName, id, names, banned, admin, adminUsid, ips, timesJoined, timesKicked } = info;
+	const lastKickedDate = lastKicked ? new Date(lastKicked).toLocaleString() : 'Never';
 
 	return (
 		<div
-			className={cn('p-2 border bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow', {
-				'bg-destructive border-destructive-foreground': info.banned,
+			className={cn('p-2 border bg-card rounded-lg shadow-sm hover:shadow-md transition-shadow relative', {
+				'bg-destructive border-destructive-foreground': banned,
 			})}
 		>
 			<div className="flex justify-between items-start">
 				<div>
 					<h4 className="font-medium text-lg">
-						<ColorText text={info.lastName} />
+						<ColorText text={lastName} />
 					</h4>
-					<div className="text-sm text-muted-foreground">ID: {info.id}</div>
+					<div className="text-sm text-muted-foreground">
+						ID:
+						<Visibility>
+							<VisibilityOff>{id.replace(/./g, '*')}</VisibilityOff>
+							<VisibilityOn>{id}</VisibilityOn>
+						</Visibility>
+					</div>
 				</div>
 				<div className="flex gap-2">
-					{info.admin && <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Admin</span>}
-					{info.banned && <span className="px-2 py-1 text-xs bg-red-200 text-red-800 rounded-full">Banned</span>}
+					{admin && <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Admin</span>}
+					{banned && <span className="px-2 py-1 text-xs bg-red-200 text-red-800 rounded-full">Banned</span>}
 				</div>
 			</div>
 
 			<div className="mt-4 grid grid-cols-2 gap-4 text-sm">
 				<div>
 					<div className="text-muted-foreground">Last IP</div>
-					<div className="font-mono">{info.lastIP}</div>
+					<div className="font-mono">
+						<Visibility>
+							<VisibilityOff>{lastIP.replace(/\d{1,3}\.\d{1,3}/g, '*')}</VisibilityOff>
+							<VisibilityOn>{lastIP}</VisibilityOn>
+						</Visibility>
+					</div>
 				</div>
 				<div>
 					<div className="text-muted-foreground">IPs</div>
-					<div className="font-mono">{info.ips.join(', ')}</div>
+					<div className="font-mono">
+						<Visibility>
+							<VisibilityOff>{ips.map((ip) => ip.replace(/\d{1,3}\.\d{1,3}/g, '*')).join(', ')}</VisibilityOff>
+							<VisibilityOn>{ips.join(', ')}</VisibilityOn>
+						</Visibility>
+					</div>
 				</div>
 				<div>
 					<div className="text-muted-foreground">Admin USID</div>
-					<div className="font-mono truncate">{info.adminUsid || 'N/A'}</div>
+					<div className="font-mono truncate">{adminUsid || 'N/A'}</div>
 				</div>
 				<div>
 					<div className="text-sm text-muted-foreground mb-1">Known Names</div>
 					<div className="flex flex-wrap gap-2">
-						{info.names.map((name, index) => (
+						{names.map((name, index) => (
 							<span key={index} className="px-2 py-1 text-xs rounded-full bg-secondary border">
 								<ColorText text={name} />
 							</span>
@@ -118,16 +140,16 @@ function PlayerInfoCard({ info }: PlayerInfoCardProps) {
 				</div>
 				<div>
 					<div className="text-muted-foreground">Times Joined</div>
-					<div>{info.timesJoined}</div>
+					<div>{timesJoined}</div>
 				</div>
 				<div>
 					<div className="text-muted-foreground">Times Kicked</div>
-					<div>{info.timesKicked}</div>
+					<div>{timesKicked}</div>
 				</div>
 			</div>
 			<div className="mt-4 grid grid-cols-2 gap-4 text-sm">
 				<div>
-					{info.lastKicked && (
+					{lastKicked > 0 && (
 						<>
 							<div className="text-sm text-muted-foreground mb-1">Last Kicked</div>
 							<div className="text-xs font-mono">{lastKickedDate}</div>
@@ -135,6 +157,10 @@ function PlayerInfoCard({ info }: PlayerInfoCardProps) {
 					)}
 				</div>
 			</div>
+			<EllipsisButton className="absolute m-2 top-0 right-0" variant="ghost">
+				<KickButton id={serverId} uuid={id} />
+				<BanButton id={serverId} ip={lastIP} username={lastName} uuid={id} />
+			</EllipsisButton>
 		</div>
 	);
 }
