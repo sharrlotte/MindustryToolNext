@@ -110,7 +110,7 @@ function PlayerInfoCard({ serverId, info }: PlayerInfoCardProps) {
 					<div className="text-muted-foreground">Last IP</div>
 					<div className="font-mono">
 						<Visibility>
-							<VisibilityOff>{lastIP.replace(/\d{1,3}\.\d{1,3}/g, '*')}</VisibilityOff>
+							<VisibilityOff>{lastIP.replace(/\d/g, '*')}</VisibilityOff>
 							<VisibilityOn>{lastIP}</VisibilityOn>
 						</Visibility>
 					</div>

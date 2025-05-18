@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-
 import ColorText from '@/components/common/color-text';
-import { EyeIcon, EyeOffIcon } from '@/components/common/icons';
 import { RelativeTime } from '@/components/common/relative-time';
+import { Visibility, VisibilityOff, VisibilityOn } from '@/components/common/visibility';
 import { BanButton } from '@/components/server/ban.button';
 import { KickButton } from '@/components/server/kick.button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
@@ -26,8 +24,6 @@ type ServerBuildLogCardProps = {
 };
 
 export default function ServerBuildLogCard({ serverId, data: { player, events }, index }: ServerBuildLogCardProps) {
-	const [showUuid, setShowUuid] = useState(false);
-
 	const { name, uuid } = player;
 
 	return (
@@ -46,10 +42,10 @@ export default function ServerBuildLogCard({ serverId, data: { player, events },
 					</div>
 					<div className="flex gap-2">
 						<span className="font-semibold">UUID:</span>
-						<span>{showUuid ? uuid : '*'.repeat(27)}</span>
-						<button className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => setShowUuid((prev) => !prev)}>
-							{showUuid ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
-						</button>
+						<Visibility>
+							<VisibilityOn>{uuid}</VisibilityOn>
+							<VisibilityOff>{'*'.repeat(27)}</VisibilityOff>
+						</Visibility>
 					</div>
 				</div>
 				<div className="flex items-start">

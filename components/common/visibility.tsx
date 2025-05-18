@@ -8,10 +8,6 @@ const VisibilityContext = React.createContext(false);
 export function useVisibility() {
 	const context = React.useContext(VisibilityContext);
 
-	if (!context) {
-		throw new Error('useVisibility must be used within a VisibilityProvider');
-	}
-
 	return context;
 }
 
