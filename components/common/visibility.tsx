@@ -16,7 +16,9 @@ export function Visibility({ children }: { children: React.ReactNode }) {
 
 	return (
 		<VisibilityContext.Provider value={visible}>
-			<button onClick={() => setVisible((prev) => !prev)}>{children}</button>
+			<button className="flex gap-1 items-center" onClick={() => setVisible((prev) => !prev)}>
+				{children}
+			</button>
 		</VisibilityContext.Provider>
 	);
 }
@@ -29,7 +31,7 @@ export function VisibilityOff({ children }: { children: React.ReactNode }) {
 	return (
 		<>
 			{children}
-			<EyeOffIcon />
+			<EyeOffIcon className="size-4" />
 		</>
 	);
 }
@@ -42,7 +44,7 @@ export function VisibilityOn({ children }: { children: React.ReactNode }) {
 	return (
 		<>
 			{children}
-			<EyeIcon />
+			<EyeIcon className="size-4" />
 		</>
 	);
 }
