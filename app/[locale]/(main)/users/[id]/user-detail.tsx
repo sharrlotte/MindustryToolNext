@@ -40,7 +40,7 @@ export default function UserDetail({ user }: Props) {
 	const [hasThumbnail, setHasThumbnail] = React.useState(thumbnail !== undefined);
 
 	return (
-		<div className="relative flex flex-col gap-2 rounded-md bg-card bg-cover bg-center p-2 group" style={style}>
+		<div className="relative flex flex-col gap-2 rounded-md bg-card bg-cover bg-center overflow-hidden group" style={style}>
 			{thumbnail && (
 				<Dialog>
 					<DialogTrigger>
@@ -65,7 +65,7 @@ export default function UserDetail({ user }: Props) {
 			<CopyButton data={`${env.url.base}/users/${id}`} variant="ghost" position="absolute">
 				<ShareIcon />
 			</CopyButton>
-			<div className="relative flex gap-2 bg-card bg-cover bg-center p-2">
+			<div className="absolute bottom-0 left-0 right-0 flex gap-2 bg-card bg-cover bg-center p-2">
 				<UserAvatar className="h-20 w-20 min-w-20 min-h-20" user={user} />
 				<EllipsisButton className="absolute right-2 top-2 aspect-square border-transparent bg-transparent" variant="ghost">
 					<ProtectedElement session={session} filter={{ authorId: user.id }}>
