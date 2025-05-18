@@ -3,8 +3,6 @@
 import { useParams } from 'next/navigation';
 import React from 'react';
 
-
-
 import DeleteButton from '@/components/button/delete.button';
 import ColorText from '@/components/common/color-text';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -14,8 +12,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { toast } from '@/components/ui/sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-
-
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { Batcher } from '@/lib/batcher';
@@ -23,10 +19,7 @@ import { dateToId, omit } from '@/lib/utils';
 import { createServerPlugin, deleteServerPlugin } from '@/query/server';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 
-
-
 import { useMutation, useQuery } from '@tanstack/react-query';
-
 
 type Props = {
 	serverId: string;
@@ -95,12 +88,12 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 				isLoading={isDeleting}
 				onClick={() => deletePluginById()}
 			/>
-			{shouldCheckVersion && <PluginVersion id={parts[0]} version={parts[1]} />}
+			{shouldCheckVersion && <PluginVersion id={parts[0]} version={parts[1]} filename={filename} />}
 		</div>
 	);
 }
 
-function PluginVersion({ id: pluginId, version }: { id: string; version: string }) {
+function PluginVersion({ id: pluginId, version, filename }: { id: string; version: string; filename: string }) {
 	const { data } = useQuery({
 		queryKey: ['plugin', pluginId, version],
 		queryFn: () => Batcher.checkPluginVersion.get({ id: pluginId, version }),
@@ -113,7 +106,8 @@ function PluginVersion({ id: pluginId, version }: { id: string; version: string 
 	const { invalidateByKey } = useQueriesData();
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['server', id, 'plugin', pluginId],
-		mutationFn: (pluginId: string) => createServerPlugin(axios, id, { pluginId }),
+		mutationFn: (pluginId: string) =>
+			Promise.allSettled([createServerPlugin(axios, id, { pluginId }), deleteServerPlugin(axios, id, filename)]),
 		onSuccess: () => {
 			toast.success(<Tran text="server.add-plugin-success" />);
 		},
