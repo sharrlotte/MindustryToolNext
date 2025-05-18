@@ -94,8 +94,12 @@ function PlayerInfoCard({ serverId, info }: PlayerInfoCardProps) {
 					<div className="text-sm text-muted-foreground">
 						ID:
 						<Visibility>
-							<VisibilityOff>{id.replace(/./g, '*')}</VisibilityOff>
-							<VisibilityOn>{id}</VisibilityOn>
+							<VisibilityOff>
+								<span>{id.replace(/./g, '*')}</span>
+							</VisibilityOff>
+							<VisibilityOn>
+								<span>{id}</span>
+							</VisibilityOn>
 						</Visibility>
 					</div>
 				</div>
@@ -110,8 +114,12 @@ function PlayerInfoCard({ serverId, info }: PlayerInfoCardProps) {
 					<div className="text-muted-foreground">Last IP</div>
 					<div className="font-mono">
 						<Visibility>
-							<VisibilityOff>{lastIP.replace(/\d/g, '*')}</VisibilityOff>
-							<VisibilityOn>{lastIP}</VisibilityOn>
+							<VisibilityOff>
+								<span>{lastIP.replace(/\d/g, '*')}</span>
+							</VisibilityOff>
+							<VisibilityOn>
+								<span>{lastIP}</span>
+							</VisibilityOn>
 						</Visibility>
 					</div>
 				</div>
@@ -119,8 +127,12 @@ function PlayerInfoCard({ serverId, info }: PlayerInfoCardProps) {
 					<div className="text-muted-foreground">IPs</div>
 					<div className="font-mono">
 						<Visibility>
-							<VisibilityOff>{ips.map((ip) => ip.replace(/\d/g, '*')).join(', ')}</VisibilityOff>
-							<VisibilityOn>{ips.join(', ')}</VisibilityOn>
+							<VisibilityOff>
+								<span>{ips.map((ip) => ip.replace(/\d/g, '*')).join(', ')}</span>
+							</VisibilityOff>
+							<VisibilityOn>
+								<span>{ips.join(', ')}</span>
+							</VisibilityOn>
 						</Visibility>
 					</div>
 				</div>

@@ -27,15 +27,23 @@ export default function ServerLoginLogCard({ serverId, data: { name, uuid, ip, c
 				<div className="flex items-center gap-2 group">
 					<span className="font-semibold">UUID: </span>
 					<Visibility>
-						<VisibilityOff>{'*'.repeat(27)}</VisibilityOff>
-						<VisibilityOn>{uuid}</VisibilityOn>
+						<VisibilityOff>
+							<span>{'*'.repeat(27)}</span>
+						</VisibilityOff>
+						<VisibilityOn>
+							<span>{uuid}</span>
+						</VisibilityOn>
 					</Visibility>
 				</div>
 				<div className="flex items-center gap-2 group">
 					<span className="font-semibold">IP: </span>
 					<Visibility>
-						<VisibilityOff>{ip.replaceAll(/\d/g, '*')}</VisibilityOff>
-						<VisibilityOn>{ip}</VisibilityOn>
+						<VisibilityOff>
+							<span>{ip.replaceAll(/\d/g, '*')}</span>
+						</VisibilityOff>
+						<VisibilityOn>
+							<span>{ip}</span>
+						</VisibilityOn>
 					</Visibility>
 				</div>
 				<RelativeTime date={new Date(createdAt)} />

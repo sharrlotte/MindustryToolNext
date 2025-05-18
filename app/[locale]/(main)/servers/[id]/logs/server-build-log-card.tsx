@@ -43,8 +43,12 @@ export default function ServerBuildLogCard({ serverId, data: { player, events },
 					<div className="flex gap-2">
 						<span className="font-semibold">UUID:</span>
 						<Visibility>
-							<VisibilityOn>{uuid}</VisibilityOn>
-							<VisibilityOff>{'*'.repeat(27)}</VisibilityOff>
+							<VisibilityOn>
+								<span>{uuid}</span>
+							</VisibilityOn>
+							<VisibilityOff>
+								<span>{'*'.repeat(27)}</span>
+							</VisibilityOff>
 						</Visibility>
 					</div>
 				</div>
