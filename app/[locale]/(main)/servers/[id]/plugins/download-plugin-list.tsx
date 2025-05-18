@@ -125,7 +125,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 					'opacity-50': state === 'up-to-date',
 				},
 			)}
-			disabled={isPending || state === 'up-to-date'}
+			disabled={isPending}
 			onClick={() => mutate(plugin.id)}
 			layout
 		>
