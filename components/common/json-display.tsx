@@ -1,3 +1,3 @@
-export default function JsonDisplay({ json }: { json: string }) {
-	return <pre>{JSON.stringify(JSON.parse(json), null, 2)}</pre>;
+export default function JsonDisplay({ json }: { json: any }) {
+	return <pre>{JSON.stringify(json, null, 2)}</pre>;
 }
