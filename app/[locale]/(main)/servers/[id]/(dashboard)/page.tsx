@@ -177,11 +177,13 @@ export default async function Page({ params }: Props) {
 								</div>
 							</div>
 							{status === 'HOST' && (
-								<img
+								<Image
 									key={status}
 									className="flex md:max-w-[50dvw] h-auto rounded-md overflow-hidden landscape:max-h-[50dvh] landscape:max-w-none"
 									src={`${env.url.api}/servers/${id}/image`}
 									alt={name}
+									width={500}
+									height={500}
 								/>
 							)}
 							<ProtectedElement session={session} filter={showPlayer}>
