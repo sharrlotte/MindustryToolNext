@@ -1,3 +1,3 @@
 export default function JsonDisplay({ json }: { json: any }) {
-	return <pre>{JSON.stringify(json, null, 2)}</pre>;
+	return <pre className="text-wrap w-full">{JSON.stringify(json, null, '\t')}</pre>;
 }
