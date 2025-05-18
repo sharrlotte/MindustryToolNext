@@ -38,13 +38,8 @@ export class CatchError extends React.Component<Props, State> {
 
 	render() {
 		if (this.state.hasError) {
-			return (
-				<div>
-					<span>Label: {this.props.label}</span>
-					<ErrorMessage error={this.state.error} />
-					<p>{JSON.stringify(this.props.children, null, 4)}</p>
-				</div>
-			);
+			console.log({ [this.props.label ?? 'default']: JSON.stringify(this.props.children, null, 4) });
+			return <ErrorMessage error={this.state.error} />;
 		}
 
 		return this.props.children;

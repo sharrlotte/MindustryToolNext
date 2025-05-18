@@ -118,7 +118,7 @@ function TimeFrom({ time }: { time: number }) {
 			setRelative(`${hours}h${minutes % 60}m`);
 		} else if (minutes > 0) {
 			setRelative(`${minutes}m${seconds % 60}s`);
-		} else {
+		} else if (seconds > 0) {
 			setRelative(`${seconds}s`);
 		}
 	}, 1000);
