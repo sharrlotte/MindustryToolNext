@@ -15,6 +15,7 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
 import { User } from '@/types/response/User';
+import { cn } from '@/lib/utils';
 
 type Props = {
 	user: User;
@@ -65,7 +66,11 @@ export default function UserDetail({ user }: Props) {
 			<CopyButton data={`${env.url.base}/users/${id}`} variant="ghost" position="absolute">
 				<ShareIcon />
 			</CopyButton>
-			<div className="absolute bottom-0 left-0 right-0 flex gap-2 bg-card bg-cover bg-center p-2">
+			<div
+				className={cn('bottom-0 left-0 right-0 flex gap-2 bg-card bg-cover bg-center p-2', {
+					absolute: !!thumbnail,
+				})}
+			>
 				<UserAvatar className="h-20 w-20 min-w-20 min-h-20" user={user} />
 				<EllipsisButton className="absolute right-2 top-2 aspect-square border-transparent bg-transparent" variant="ghost">
 					<ProtectedElement session={session} filter={{ authorId: user.id }}>
