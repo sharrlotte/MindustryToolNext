@@ -20,6 +20,7 @@ import {
 } from '@/components/common/detail';
 import DetailSwipeToNavigate from '@/components/common/detail-swipe-to-navigate';
 import { ShareIcon } from '@/components/common/icons';
+import JsonDisplay from '@/components/common/json-display';
 import SizeCard from '@/components/common/size-card';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import { DeleteMapButton } from '@/components/map/delete-map.button';
@@ -54,6 +55,7 @@ export default function MapDetailCard({
 		height,
 		downloadCount,
 		createdAt,
+		meta,
 	},
 }: MapDetailCardProps) {
 	const { session } = useSession();
@@ -80,6 +82,7 @@ export default function MapDetailCard({
 							<Verifier verifierId={verifierId} />
 							<SizeCard size={{ width, height }} />
 							<DetailDescription>{description}</DetailDescription>
+							<JsonDisplay json={meta} />
 							<CreatedAt createdAt={createdAt} />
 							<DetailTagsCard tags={tags} type="map" />
 						</DetailHeader>
