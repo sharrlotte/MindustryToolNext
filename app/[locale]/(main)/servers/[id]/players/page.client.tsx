@@ -119,7 +119,7 @@ function PlayerInfoCard({ serverId, info }: PlayerInfoCardProps) {
 					<div className="text-muted-foreground">IPs</div>
 					<div className="font-mono">
 						<Visibility>
-							<VisibilityOff>{ips.map((ip) => ip.replace(/\d{1,3}\.\d{1,3}/g, '*')).join(', ')}</VisibilityOff>
+							<VisibilityOff>{ips.map((ip) => ip.replace(/\d/g, '*')).join(', ')}</VisibilityOff>
 							<VisibilityOn>{ips.join(', ')}</VisibilityOn>
 						</Visibility>
 					</div>
