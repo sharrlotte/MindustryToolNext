@@ -140,7 +140,7 @@ export default async function Page({ params }: Props) {
 							<ProtectedElement session={session} filter={showPlayer}>
 								{status === 'HOST' && kicks > 0 && (
 									<div className="flex bg-card rounded-md flex-col">
-										<ScrollContainer className="flex flex-col gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit max-h-[500px]">
+										<ScrollContainer className="flex flex-col gap-2 p-4 min-w-[300px] md:max-w-[500px] w-full md:w-fit max-h-[500px]">
 											<Suspense
 												fallback={
 													<Skeletons number={kicks}>
@@ -189,7 +189,7 @@ export default async function Page({ params }: Props) {
 							<ProtectedElement session={session} filter={showPlayer}>
 								{status === 'HOST' && players > 0 && (
 									<div className="flex bg-card rounded-md flex-col">
-										<div className="grid gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit">
+										<div className="grid gap-2 p-4 min-w-[300px] md:max-w-[500px] w-full md:w-fit">
 											<Suspense
 												fallback={
 													<Skeletons number={players}>
