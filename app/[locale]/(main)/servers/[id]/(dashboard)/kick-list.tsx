@@ -69,7 +69,7 @@ function KickCard({ kick: { ip, untilTime } }: KickCardProps) {
 	return (
 		<motion.div
 			exit={{
-				translateX: '-200%',
+				translateX: '200%',
 			}}
 			className="flex items-center justify-between gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1 h-10"
 		>

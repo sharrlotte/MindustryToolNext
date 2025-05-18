@@ -75,7 +75,7 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 	return (
 		<motion.div
 			exit={{
-				translateX: '-200%',
+				translateX: '200%',
 			}}
 			className="flex items-center gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1"
 		>
