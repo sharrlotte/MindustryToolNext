@@ -125,19 +125,21 @@ function PluginVersion({ id: pluginId, version, filename }: { id: string; versio
 			<TooltipProvider>
 				<Tooltip>
 					<TooltipTrigger asChild>
-						{isPending ? (
-							<LoadingSpinner />
-						) : (
-							<button
-								className="flex items-center gap-1 border p-2 rounded-md w-fit bg-secondary"
-								onClick={() => mutate(pluginId)}
-								disabled={isPending}
-							>
-								<span className="text-destructive-foreground">{dateToId(new Date(Number(version)))}</span>
-								<span>{'=>'}</span>
-								<span className="text-success-foreground">{dateToId(new Date(data.version))}</span>
-							</button>
-						)}
+						<button
+							className="flex items-center gap-1 border p-2 rounded-md w-fit bg-secondary mt-auto"
+							onClick={() => mutate(pluginId)}
+							disabled={isPending}
+						>
+							{isPending ? (
+								<LoadingSpinner />
+							) : (
+								<>
+									<span className="text-destructive-foreground">{dateToId(new Date(Number(version)))}</span>
+									<span>{'=>'}</span>
+									<span className="text-success-foreground">{dateToId(new Date(data.version))}</span>
+								</>
+							)}
+						</button>
 					</TooltipTrigger>
 					<TooltipContent>
 						<Tran text="server.update-plugin" />
