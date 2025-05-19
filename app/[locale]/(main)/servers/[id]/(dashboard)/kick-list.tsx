@@ -107,7 +107,7 @@ function TimeFrom({ time }: { time: number }) {
 		} else if (seconds > 0) {
 			setRelative(`${seconds}s`);
 		} else {
-			setRelative('0s');
+			setRelative(`${seconds}s`);
 		}
 	}, 1000);
 
