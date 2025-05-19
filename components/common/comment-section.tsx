@@ -61,7 +61,7 @@ function CommentSection({ itemId }: CommentSectionProps) {
 
 	return (
 		<Suspense>
-			<div className="space-y-2 h-full overflow-hidden w-full grid grid-rows-[auto_auto_auto_1fr]">
+			<div className="bg-background space-y-2 h-full overflow-hidden w-full grid grid-rows-[auto_auto_auto_1fr]">
 				<CommentInput itemId={itemId} />
 				<Divider />
 				<div className="flex justify-between items-center">

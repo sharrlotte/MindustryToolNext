@@ -1,16 +1,22 @@
 import React, { HTMLAttributes, Suspense, useMemo } from 'react';
 
 import ColorText from '@/components/common/color-text';
+import ErrorMessage from '@/components/common/error-message';
 import FallbackImage from '@/components/common/fallback-image';
+import InternalLink from '@/components/common/internal-link';
 import MindustryIcon, { parseIconString } from '@/components/common/mindustry-icon';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import TagContainer from '@/components/tag/tag-container';
 import BackButton from '@/components/ui/back-button';
+import { Skeleton } from '@/components/ui/skeleton';
+import ColorAsRole from '@/components/user/color-as-role';
 import IdUserCard from '@/components/user/id-user-card';
+import UserAvatar from '@/components/user/user-avatar';
 
 import { TagType } from '@/constant/constant';
-import { cn } from '@/lib/utils';
+import useUser from '@/hooks/use-user';
+import { cn, findBestRole } from '@/lib/utils';
 import { DetailTagDto } from '@/types/response/Tag';
 import { TagGroups } from '@/types/response/TagGroup';
 
@@ -39,7 +45,11 @@ export function DetailContent({ className, children }: ContentProps) {
 type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailInfo({ className, children }: InfoProps) {
-	return <div className={cn('flex flex-col gap-2 w-full text-muted-foreground text-sm', className)}>{children}</div>;
+	return (
+		<div className={cn('flex flex-col gap-2 w-full text-muted-foreground text-sm h-full overflow-y-auto', className)}>
+			{children}
+		</div>
+	);
 }
 
 type TitleProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
@@ -63,13 +73,9 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
 	return (
 		<div className="p-2 h-full overflow-auto flex justify-center max-h-[50vh] lg:max-h-full">
-			<FallbackImage
-				className="object-contain object-top w-auto h-auto rounded-lg overflow-hidden"
-				src={src}
-				alt={alt}
-				errorSrc={errorSrc}
-				loading="eager"
-			/>
+			<div className="w-full h-auto">
+				<FallbackImage className="w-full rounded-lg" src={src} alt={alt} errorSrc={errorSrc} loading="eager" />
+			</div>
 		</div>
 	);
 }
@@ -145,11 +151,43 @@ type AuthorProps = {
 
 export function DetailAuthor({ authorId }: AuthorProps) {
 	if (authorId) {
+		return <AuthorCard id={authorId} />;
+	}
+}
+function AuthorCard({ id }: { id: string }) {
+	const { data, isLoading, isError, error } = useUser(id);
+
+	if (isLoading) {
 		return (
-			<DetailRow>
-				<Tran text="author" />
-				<IdUserCard avatar={false} id={authorId} />
-			</DetailRow>
+			<div className="flex items-center gap-2 overflow-hidden h-10">
+				<Skeleton className="size-8 rounded-full" />
+				<div className="space-y-1">
+					<Skeleton className="w-32 h-3" />
+					<Skeleton className="w-20 h-3" />
+				</div>
+			</div>
 		);
 	}
+
+	if (isError) {
+		return <ErrorMessage error={error} />;
+	}
+
+	if (!data) {
+		return;
+	}
+
+	const { name, roles } = data;
+
+	return (
+		<div className="flex items-center gap-2 overflow-hidden">
+			<UserAvatar user={data} url />
+			<InternalLink className="cursor-pointer hover:underline flex flex-col gap-0" href={`/users/${data.id}`}>
+				<span>{name}</span>
+				<ColorAsRole className="font-semibold capitalize" roles={roles}>
+					{findBestRole(roles)?.name}
+				</ColorAsRole>
+			</InternalLink>
+		</div>
+	);
 }
