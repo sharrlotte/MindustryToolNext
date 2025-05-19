@@ -36,6 +36,7 @@ export default function KickList({ id }: KickListProps) {
 			</h3>
 			<Divider />
 			{Object.entries(data) //
+				.filter(([_, untilTime]) => untilTime > Date.now()) //
 				.map(([ip, untilTime]) => (
 					<KickCard key={ip} serverId={id} kick={{ ip, untilTime }} />
 				))}
