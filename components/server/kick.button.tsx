@@ -1,26 +1,26 @@
 'use client';
 
 import { BanIcon } from 'lucide-react';
+import { useState } from 'react';
+
+
 
 import Tran from '@/components/common/tran';
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
+
 
 import { revalidate } from '@/action/common';
 import { useSocket } from '@/context/socket.context';
 import useMessage from '@/hooks/use-message';
 
+
+
 import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+
 
 type BanButtonProps = {
 	id: string;
@@ -38,7 +38,7 @@ export function KickButton({ id, uuid }: BanButtonProps) {
 	const queryClient = useQueryClient();
 
 	function handleKick() {
-		sendMessage(`kickWithReason ${uuid} ${reason}`);
+		sendMessage(`/kickWithReason ${uuid} ${reason}`);
 
 		setTimeout(() => {
 			revalidate({

@@ -37,15 +37,15 @@ export function BanButton({ id, ip, uuid, username }: BanButtonProps) {
 
 	function handleBan() {
 		if (ip) {
-			sendMessage(`ban add ip ${ip}`);
+			sendMessage(`/ban add ip ${ip}`);
 		}
 
 		if (uuid) {
-			sendMessage(`ban add id ${uuid}`);
+			sendMessage(`/ban add id ${uuid}`);
 		}
 
 		if (username) {
-			sendMessage(`ban add name ${username}`);
+			sendMessage(`/ban add name ${username}`);
 		}
 
 		setTimeout(() => {
