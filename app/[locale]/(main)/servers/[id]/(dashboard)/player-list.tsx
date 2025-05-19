@@ -18,6 +18,8 @@ import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
+import Divider from '@/components/ui/divider';
+import Tran from '@/components/common/tran';
 
 type PlayerListProps = {
 	id: string;
@@ -36,6 +38,10 @@ export default function PlayerList({ id }: PlayerListProps) {
 
 	return (
 		<AnimatePresence>
+			<h3>
+				<Tran text="server.player-list" />
+			</h3>
+			<Divider />
 			{data
 				?.sort((a, b) => a.name.localeCompare(b.name))
 				?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
