@@ -16,17 +16,21 @@ import {
 	DetailInfo,
 	DetailTitle,
 } from '@/components/common/detail';
+import { Hidden } from '@/components/common/hidden';
 import { ShareIcon } from '@/components/common/icons';
 import JsonDisplay from '@/components/common/json-display';
+import ScrollContainer from '@/components/common/scroll-container';
 import SizeCard from '@/components/common/size-card';
+import Tran from '@/components/common/tran';
 import { DeleteMapButton } from '@/components/map/delete-map.button';
 import VerifyMapButton from '@/components/map/verify-map.button';
 import TagSelector from '@/components/search/tag-selector';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
-import { MapDetail } from '@/types/response/MapDetail';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { MapDetail } from '@/types/response/MapDetail';
 
 type UploadMapDetailCardProps = {
 	map: MapDetail;
@@ -58,7 +62,20 @@ export default function UploadMapDetailCard({
 						<IdUserCard id={userId} />
 						<SizeCard size={{ width, height }} />
 						<DetailDescription>{description}</DetailDescription>
-						<JsonDisplay json={meta} />
+						<Dialog>
+							<DialogTrigger>
+								<Tran text="map.stats" />
+							</DialogTrigger>
+							<DialogContent>
+								<Hidden>
+									<DialogTitle />
+									<DialogDescription />
+								</Hidden>
+								<ScrollContainer>
+									<JsonDisplay json={meta} />
+								</ScrollContainer>
+							</DialogContent>
+						</Dialog>
 						<CreatedAt createdAt={createdAt} />
 						<TagSelector type="map" value={selectedTags} onChange={setSelectedTags} />
 					</DetailHeader>
