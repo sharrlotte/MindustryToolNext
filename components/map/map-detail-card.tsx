@@ -34,6 +34,10 @@ import ProtectedElement from '@/layout/protected-element';
 import { getMaps } from '@/query/map';
 import { MapDetail } from '@/types/response/MapDetail';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import Tran from '@/components/common/tran';
+import { Hidden } from '@/components/common/hidden';
+import ScrollContainer from '@/components/common/scroll-container';
 
 type MapDetailCardProps = {
 	map: MapDetail;
@@ -82,7 +86,20 @@ export default function MapDetailCard({
 							<Verifier verifierId={verifierId} />
 							<SizeCard size={{ width, height }} />
 							<DetailDescription>{description}</DetailDescription>
-							<JsonDisplay json={meta} />
+							<Dialog>
+								<DialogTrigger>
+									<Tran text="map.stats" />
+								</DialogTrigger>
+								<DialogContent>
+									<Hidden>
+										<DialogTitle />
+										<DialogDescription />
+									</Hidden>
+									<ScrollContainer>
+										<JsonDisplay json={meta} />
+									</ScrollContainer>
+								</DialogContent>
+							</Dialog>
 							<CreatedAt createdAt={createdAt} />
 							<DetailTagsCard tags={tags} type="map" />
 						</DetailHeader>
