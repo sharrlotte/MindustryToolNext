@@ -159,7 +159,7 @@ function AuthorCard({ id }: { id: string }) {
 
 	if (isLoading) {
 		return (
-			<div className="flex items-center gap-2 overflow-hidden h-10">
+			<div className="flex items-center gap-2 overflow-hidden h-10 min-h-10">
 				<Skeleton className="size-8 rounded-full" />
 				<div className="space-y-1">
 					<Skeleton className="w-32 h-3" />
@@ -180,11 +180,11 @@ function AuthorCard({ id }: { id: string }) {
 	const { name, roles } = data;
 
 	return (
-		<div className="flex items-center gap-2 overflow-hidden">
+		<div className="flex items-center gap-2 min-h-10">
 			<UserAvatar user={data} url />
 			<InternalLink className="cursor-pointer hover:underline flex flex-col gap-0" href={`/users/${data.id}`}>
 				<span>{name}</span>
-				<ColorAsRole className="font-semibold capitalize" roles={roles}>
+				<ColorAsRole className="font-semibold capitalize text-xs" roles={roles}>
 					{findBestRole(roles)?.name}
 				</ColorAsRole>
 			</InternalLink>
