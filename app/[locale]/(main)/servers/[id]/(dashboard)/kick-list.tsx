@@ -20,6 +20,10 @@ type KickListProps = {
 
 export default function KickList({ id }: KickListProps) {
 	const axios = useClientApi();
+	const [currentTime, setCurrentTime] = useState(Date.now());
+
+	useInterval(() => setCurrentTime(Date.now()), 1000);
+
 	const { data, isError, error } = useSuspenseQuery({
 		queryKey: ['server', id, 'kick'],
 		queryFn: () => getServerKicks(axios, id),
@@ -36,9 +40,9 @@ export default function KickList({ id }: KickListProps) {
 			</h3>
 			<Divider />
 			{Object.entries(data) //
-				.filter(([_, untilTime]) => untilTime > Date.now()) //
+				.filter(([_, untilTime]) => untilTime > currentTime) //
 				.map(([ip, untilTime]) => (
-					<KickCard key={ip} serverId={id} kick={{ ip, untilTime }} />
+					<KickCard key={ip} serverId={id} kick={{ ip, untilTime }} currentTime={currentTime} />
 				))}
 		</AnimatePresence>
 	);
@@ -60,13 +64,14 @@ export function KickListSkeleton({ kicks }: KickListSkeletonProps) {
 
 type KickCardProps = {
 	serverId: string;
+	currentTime: number;
 	kick: {
 		ip: string;
 		untilTime: number;
 	};
 };
 
-function KickCard({ kick: { ip, untilTime } }: KickCardProps) {
+function KickCard({ currentTime, kick: { ip, untilTime } }: KickCardProps) {
 	return (
 		<motion.div
 			exit={{
@@ -83,34 +88,32 @@ function KickCard({ kick: { ip, untilTime } }: KickCardProps) {
 			className="flex items-center justify-between gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1 h-10"
 		>
 			<span>{ip}</span>
-			<TimeFrom time={untilTime} />
+			<TimeFrom time={untilTime} currentTime={currentTime} />
 		</motion.div>
 	);
 }
 
-function TimeFrom({ time }: { time: number }) {
-	const [relative, setRelative] = useState('');
+function TimeFrom({ time, currentTime }: { time: number; currentTime: number }) {
+	let relative = '';
 
-	useInterval(() => {
-		const now = Date.now();
-		const diff = time - now;
-		const seconds = Math.floor(diff / 1000);
-		const minutes = Math.floor(seconds / 60);
-		const hours = Math.floor(minutes / 60);
-		const days = Math.floor(hours / 24);
+	const now = currentTime;
+	const diff = time - now;
+	const seconds = Math.floor(diff / 1000);
+	const minutes = Math.floor(seconds / 60);
+	const hours = Math.floor(minutes / 60);
+	const days = Math.floor(hours / 24);
 
-		if (days > 0) {
-			setRelative(`${days}d${hours % 24}h${minutes % 60}m`);
-		} else if (hours > 0) {
-			setRelative(`${hours}h${minutes % 60}m`);
-		} else if (minutes > 0) {
-			setRelative(`${minutes}m${seconds % 60}s`);
-		} else if (seconds > 0) {
-			setRelative(`${seconds}s`);
-		} else {
-			setRelative(`${seconds}s`);
-		}
-	}, 1000);
+	if (days > 0) {
+		relative = `${days}d${hours % 24}h${minutes % 60}m`;
+	} else if (hours > 0) {
+		relative = `${hours}h${minutes % 60}m`;
+	} else if (minutes > 0) {
+		relative = `${minutes}m${seconds % 60}s`;
+	} else if (seconds > 0) {
+		relative = `${seconds}s`;
+	} else {
+		relative = `${seconds}s`;
+	}
 
 	return <span>{relative}</span>;
 }
