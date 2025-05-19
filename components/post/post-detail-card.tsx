@@ -7,6 +7,7 @@ import DeleteButton from '@/components/button/delete.button';
 import TakeDownButton from '@/components/button/take-down.button';
 import CommentSection from '@/components/common/comment-section';
 import { Detail, DetailContent, DetailTagsCard } from '@/components/common/detail';
+import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import Markdown from '@/components/markdown/markdown';
@@ -68,10 +69,10 @@ export default function PostDetailCard({
 	const isLoading = isDeleting || isRemoving;
 
 	return (
-		<Detail>
-			<DetailContent>
-				<header className="grid gap-2 pb-4">
-					<p className="text-4xl">{title}</p>
+		<Detail className="p-2">
+			<ScrollContainer>
+				<div className="flex flex-col gap-2 pb-4 min-h-[90dvh]">
+					<h2 className="text-4xl">{title}</h2>
 					<div className="grid gap-2">
 						<IdUserCard id={userId} />
 						<span>{new Date(createdAt).toLocaleString()}</span>
@@ -80,7 +81,7 @@ export default function PostDetailCard({
 					<div className="flex h-full flex-1">
 						<Markdown>{content}</Markdown>
 					</div>
-				</header>
+				</div>
 				<footer className="flex justify-between rounded-md p-2">
 					<div className="grid grid-flow-col w-fit gap-2">
 						<LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
@@ -114,8 +115,8 @@ export default function PostDetailCard({
 					</div>
 					<BackButton className="ml-auto" />
 				</footer>
-			</DetailContent>
-			<CommentSection itemId={itemId} />
+				<CommentSection itemId={itemId} />
+			</ScrollContainer>
 		</Detail>
 	);
 }

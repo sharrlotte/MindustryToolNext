@@ -17,104 +17,139 @@ import { TagGroups } from '@/types/response/TagGroup';
 type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 export function Detail({ className, children }: DetailProps) {
-  return (
-    <ScrollContainer className="absolute inset-0 w-full bg-background p-2 h-full" additionalPadding="pr-4">
-      <div className={cn('relative flex flex-col min-h-full gap-6', className)}>{children}</div>
-    </ScrollContainer>
-  );
+	return (
+		<ScrollContainer className="absolute inset-0 w-full h-full" additionalPadding="pr-4">
+			<div className={cn('relative flex flex-col h-full gap-6 overflow-hidden', className)}>{children}</div>
+		</ScrollContainer>
+	);
 }
 
 type ContentProps = {
-  className?: string;
-  children: React.ReactNode;
+	className?: string;
+	children: React.ReactNode;
 };
 
 export function DetailContent({ className, children }: ContentProps) {
-  return <div className={cn('flex min-h-[calc(100dvh-16px-var(--nav))] sm:min-h-[calc(100dvh-16px)] h-full w-full flex-col justify-between gap-6 lg:items-stretch', className)}>{children}</div>;
+	return (
+		<div className={cn('relative h-full flex flex-col lg:grid lg:grid-cols-[1fr_400px] lg:divide-x overflow-auto', className)}>
+			{children}
+		</div>
+	);
 }
-
 type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailInfo({ className, children }: InfoProps) {
-  return <div className={cn('relative flex flex-col items-start gap-2 lg:flex-row', className)}>{children}</div>;
+	return <div className={cn('flex flex-col gap-2 w-full text-muted-foreground text-sm', className)}>{children}</div>;
 }
 
 type TitleProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
-  children: string;
+	children: string;
 };
 
 export function DetailTitle({ className, children }: TitleProps) {
-  return (
-    <h1 className={cn('text-2xl capitalize', className)}>
-      <ColorText text={children} />
-    </h1>
-  );
+	return (
+		<h1 className={cn('text-2xl capitalize border-b', className)}>
+			<ColorText text={children} />
+		</h1>
+	);
 }
 
 type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
-  src: string;
-  alt: string;
-  errorSrc: string;
+	src: string;
+	alt: string;
+	errorSrc: string;
 };
 
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
-  return <FallbackImage className="object-cover w-full md:w-[min(40vw,80vh)] rounded-lg" src={src} alt={alt} errorSrc={errorSrc} loading="eager" />;
+	return (
+		<div className="p-2 h-full overflow-auto flex justify-center max-h-[50vh]">
+			<FallbackImage
+				className="object-contain object-top w-auto h-auto rounded-lg overflow-hidden"
+				src={src}
+				alt={alt}
+				errorSrc={errorSrc}
+				loading="eager"
+			/>
+		</div>
+	);
 }
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
+
 export function DetailHeader({ className, children }: HeaderProps) {
-  return <section className={cn('flex flex-col gap-1', className)}>{children}</section>;
+	return <section className={cn('flex flex-col gap-2 p-2 h-full overflow-hidden', className)}>{children}</section>;
 }
 
-type ActionsProps = React.HTMLAttributes<HTMLDivElement> & {
-  back?: boolean;
-};
-export function DetailActions({ className, children, back = true }: ActionsProps) {
-  return (
-    <Suspense>
-      <section className={cn('flex items-end justify-between gap-1', className)}>
-        <div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">{children}</div>
-        {back && <BackButton />}
-      </section>
-    </Suspense>
-  );
+export function DetailRow({ children }: { children: React.ReactNode }) {
+	return <div className="flex justify-between gap-1 items-center">{children}</div>;
+}
+
+type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
+
+export function DetailActions({ children }: ActionsProps) {
+	return (
+		<Suspense>
+			<div className="mt-auto flex w-full gap-2 [&>*]:flex-1 border-t pt-2">{children}</div>
+		</Suspense>
+	);
 }
 
 type TagsProps = React.HTMLAttributes<HTMLDivElement> & {
-  tags: DetailTagDto[];
-  type: TagType;
+	tags: DetailTagDto[];
+	type: TagType;
 };
 
 export function DetailTagsCard({ className, tags }: TagsProps) {
-  const values = useMemo(() => TagGroups.parsTagDto(tags), [tags]);
+	const values = useMemo(() => TagGroups.parsTagDto(tags), [tags]);
 
-  return (
-    <Suspense>
-      <TagContainer className={className} tagGroups={values} />
-    </Suspense>
-  );
+	return (
+		<Suspense>
+			<TagContainer className={className} tagGroups={values} />
+		</Suspense>
+	);
 }
 
 type DescriptionProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
-  children?: string;
+	children?: string;
 };
 
 export function DetailDescription({ className, children }: DescriptionProps) {
-  const result = parseIconString(children);
+	const result = parseIconString(children);
 
-  return <section className={cn('flex flex-wrap gap-0.5 max-w-[75ch]', className)}>{result.map((item, index) => (typeof item === 'string' ? <ColorText key={index} text={item} /> : <MindustryIcon key={index} name={item.name} />))}</section>;
+	return (
+		<p className={cn('flex flex-wrap gap-0.5 text-muted-foreground text-sm', className)}>
+			{result.map((item, index) =>
+				typeof item === 'string' ? <ColorText key={index} text={item} /> : <MindustryIcon key={index} name={item.name} />,
+			)}
+		</p>
+	);
 }
 
 type VerifierProps = {
-  verifierId?: string;
+	verifierId?: string;
 };
 
 export function Verifier({ verifierId }: VerifierProps) {
-  if (verifierId) {
-    return (
-      <div className="flex items-end gap-2">
-        <Tran text="verified-by" />
-        <IdUserCard id={verifierId} />
-      </div>
-    );
-  }
+	if (verifierId) {
+		return (
+			<DetailRow>
+				<Tran text="verified-by" />
+				<IdUserCard avatar={false} id={verifierId} />
+			</DetailRow>
+		);
+	}
+}
+
+type AuthorProps = {
+	authorId?: string;
+};
+
+export function DetailAuthor({ authorId }: AuthorProps) {
+	if (authorId) {
+		return (
+			<DetailRow>
+				<Tran text="author" />
+				<IdUserCard avatar={false} id={authorId} />
+			</DetailRow>
+		);
+	}
 }

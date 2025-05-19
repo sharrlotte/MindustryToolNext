@@ -1,3 +1,4 @@
+import { DetailRow } from '@/components/common/detail';
 import Tran from '@/components/common/tran';
 
 export default function CreatedAt({ createdAt }: { createdAt: string }) {
@@ -6,9 +7,9 @@ export default function CreatedAt({ createdAt }: { createdAt: string }) {
 	const isSameDay =
 		created.getFullYear() === now.getFullYear() && created.getMonth() === now.getMonth() && created.getDate() === now.getDate();
 	return (
-		<span className="text-muted-foreground space-x-2">
+		<DetailRow>
 			<Tran text="created-at" />
-			<span>{isSameDay ? created.toLocaleTimeString() : created.toLocaleDateString()}</span>
-		</span>
+			<span className="text-foreground">{isSameDay ? created.toLocaleTimeString() : created.toLocaleDateString()}</span>
+		</DetailRow>
 	);
 }

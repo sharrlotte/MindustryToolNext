@@ -53,6 +53,7 @@ export default function SwipeToNavigate({
 				touchAction: 'pan-y',
 				x,
 				y,
+				height: '100%',
 			}}
 			{...props}
 		>

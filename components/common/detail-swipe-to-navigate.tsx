@@ -17,6 +17,7 @@ import { QuerySchema } from '@/types/schema/search-query';
 import { QueryKey, useQuery, useQueryClient } from '@tanstack/react-query';
 
 type Props<T, P extends QuerySchema> = {
+	className?: string;
 	queryKey: QueryKey;
 	paramSchema: P;
 	params?: Omit<z.infer<P>, 'page' | 'size'>;
@@ -38,6 +39,7 @@ export default function DetailSwipeToNavigate<T extends { id: any }, P extends Q
 }
 
 function ListDetailSwipeToNavigate<T extends { id: any }, P extends QuerySchema>({
+	className,
 	children,
 	paramSchema,
 	params,
@@ -59,7 +61,11 @@ function ListDetailSwipeToNavigate<T extends { id: any }, P extends QuerySchema>
 		children,
 	});
 
-	return <SwipeToNavigate {...state}>{children}</SwipeToNavigate>;
+	return (
+		<SwipeToNavigate className={className} {...state}>
+			{children}
+		</SwipeToNavigate>
+	);
 }
 function GridDetailSwipeToNavigate<T extends { id: any }, P extends QuerySchema>({
 	children,
@@ -67,6 +73,7 @@ function GridDetailSwipeToNavigate<T extends { id: any }, P extends QuerySchema>
 	params,
 	queryKey,
 	queryFn,
+	className,
 }: Props<T, P>) {
 	const p = useSearchQuery(paramSchema, params);
 	const queryClient = useQueryClient();
@@ -105,7 +112,11 @@ function GridDetailSwipeToNavigate<T extends { id: any }, P extends QuerySchema>
 		children,
 	});
 
-	return <SwipeToNavigate {...state}>{children}</SwipeToNavigate>;
+	return (
+		<SwipeToNavigate className={className} {...state}>
+			{children}
+		</SwipeToNavigate>
+	);
 }
 
 type DetailSwipeToNavigateInternalProps<T extends { id: any }> = {

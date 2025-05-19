@@ -61,9 +61,10 @@ function CommentSection({ itemId }: CommentSectionProps) {
 
 	return (
 		<Suspense>
-			<div className="space-y-2 pt-6">
+			<div className="space-y-2 h-full overflow-hidden w-full grid grid-rows-[auto_auto_auto_1fr]">
+				<CommentInput itemId={itemId} />
+				<Divider />
 				<div className="flex justify-between items-center">
-					<Tran text="comments" />
 					<div className="flex gap-2 justify-center items-center">
 						<ComboBox
 							className="bg-transparent min-w-0 w-fit p-0 px-2 hover:bg-transparent shadow-none"
@@ -75,8 +76,6 @@ function CommentSection({ itemId }: CommentSectionProps) {
 						/>
 					</div>
 				</div>
-				<CommentInput itemId={itemId} />
-				<Divider className="border-2" />
 				<Comments itemId={itemId} sort={sort} />
 			</div>
 		</Suspense>
@@ -85,7 +84,7 @@ function CommentSection({ itemId }: CommentSectionProps) {
 
 CommentSection.displayName = 'CommentSection';
 
-export default dynamic(() => Promise.resolve(CommentSection), { ssr: false });
+export default CommentSection;
 
 type CommentsProps = {
 	itemId: string;
@@ -94,7 +93,7 @@ type CommentsProps = {
 
 function Comments({ itemId, sort }: CommentsProps) {
 	return (
-		<ScrollContainer className="py-2 p-2">
+		<ScrollContainer className="py-2 p-2 flex flex-col">
 			<InfinitePage
 				className="flex gap-6 flex-col" //
 				queryKey={[`comments-${itemId}`]}
@@ -108,7 +107,7 @@ function Comments({ itemId, sort }: CommentsProps) {
 				}
 				end
 				skeleton={{
-					amount: 10,
+					amount: 3,
 					item: <CommentLoadingCard />,
 				}}
 			>
@@ -162,7 +161,7 @@ export function CommentLoadingCard() {
 		<div className="flex gap-2">
 			<Skeleton className="block h-8 w-8 rounded-full border border-border" />
 			<div className="flex flex-col w-full justify-start gap-2">
-				<Skeleton className="min-h-8 h-8 w-56" />
+				<Skeleton className="min-h-8 h-8 w-full" />
 				<Skeleton className="h-8 w-full rounded-md" />
 			</div>
 		</div>

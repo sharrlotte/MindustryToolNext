@@ -66,10 +66,10 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
 	const isLoading = isVerifying || isDeleting;
 
 	return (
-		<Detail>
+		<Detail className="p-2">
 			<DetailContent>
-				<header className="grid gap-2 pb-10">
-					<p className="text-4xl">{title}</p>
+				<div className="grid gap-2 pb-10 min-h-[100dvh]">
+					<h2 className="text-4xl">{title}</h2>
 					<div className="grid gap-2">
 						<IdUserCard id={userId} />
 						<span>{new Date(createdAt).toLocaleString()}</span>
@@ -78,8 +78,8 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
 					<div>
 						<Markdown>{content}</Markdown>
 					</div>
-				</header>
-				<footer className="flex justify-start gap-1 rounded-md bg-card p-2">
+				</div>
+				<footer className="flex justify-start gap-1 rounded-md bg-card p-2 mt-auto">
 					<TagSelector type="post" value={selectedTags} onChange={setSelectedTags} hideSelectedTag />
 					<DeleteButton
 						variant="default"

@@ -10,6 +10,7 @@ import CreatedAt from '@/components/common/created-at';
 import {
 	Detail,
 	DetailActions,
+	DetailAuthor,
 	DetailContent,
 	DetailDescription,
 	DetailHeader,
@@ -26,6 +27,7 @@ import Tran from '@/components/common/tran';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
@@ -83,53 +85,67 @@ export default function SchematicDetailCard({
 	return (
 		<Detail>
 			<DetailSwipeToNavigate paramSchema={ItemPaginationQuery} queryKey={['schematics']} queryFn={getSchematics}>
+				<CopyButton position="absolute" variant="ghost" data={link} content={link}>
+					<ShareIcon />
+				</CopyButton>
 				<DetailContent>
-					<DetailInfo>
-						<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-						<CopyButton position="absolute" variant="ghost" data={link} content={link}>
-							<ShareIcon />
-						</CopyButton>
-						<DetailHeader>
-							<DetailTitle>{name}</DetailTitle>
-							<IdUserCard id={userId} />
-							<Verifier verifierId={verifierId} />
-							<SizeCard size={{ width, height }} />
-							<DetailDescription>{description}</DetailDescription>
-							<ItemRequirementCard requirements={requirements} />
-							<CreatedAt createdAt={createdAt} />
-							<DetailTagsCard tags={tags} type="schematic" />
-						</DetailHeader>
-					</DetailInfo>
-					<DetailActions>
-						<CopyButton title={copyContent} data={getData} />
-						<DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
-						<LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
-						<EllipsisButton>
-							<ProtectedElement
-								session={session}
-								filter={{
-									all: [
-										{
-											any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
-										},
-										isVerified,
-									],
-								}}
-							>
-								<TakeDownSchematicButton id={id} name={name} />
-							</ProtectedElement>
-							<ProtectedElement
-								session={session}
-								filter={{
-									any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
-								}}
-							>
-								<DeleteSchematicButton variant="command" id={id} name={name} />
-							</ProtectedElement>
-						</EllipsisButton>
-					</DetailActions>
+					<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
+					<DetailHeader>
+						<DetailTitle>{name}</DetailTitle>
+						<Tabs defaultValue="info" className="overflow-hidden flex flex-col">
+							<TabsList className="grid w-full grid-cols-2">
+								<TabsTrigger value="info">
+									<Tran text="info" />
+								</TabsTrigger>
+								<TabsTrigger value="comment">
+									<Tran text="comment" />
+								</TabsTrigger>
+							</TabsList>
+							<TabsContent value="info">
+								<DetailInfo>
+									<DetailAuthor authorId={userId} />
+									<Verifier verifierId={verifierId} />
+									<SizeCard size={{ width, height }} />
+									<DetailDescription>{description}</DetailDescription>
+									<CreatedAt createdAt={createdAt} />
+									<ItemRequirementCard requirements={requirements} />
+									<DetailTagsCard tags={tags} type="schematic" />
+								</DetailInfo>
+							</TabsContent>
+							<TabsContent value="comment">
+								<CommentSection itemId={itemId} />
+							</TabsContent>
+						</Tabs>
+						<DetailActions>
+							<CopyButton title={copyContent} data={getData} />
+							<DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
+							<LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
+							<EllipsisButton>
+								<ProtectedElement
+									session={session}
+									filter={{
+										all: [
+											{
+												any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
+											},
+											isVerified,
+										],
+									}}
+								>
+									<TakeDownSchematicButton id={id} name={name} />
+								</ProtectedElement>
+								<ProtectedElement
+									session={session}
+									filter={{
+										any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
+									}}
+								>
+									<DeleteSchematicButton variant="command" id={id} name={name} />
+								</ProtectedElement>
+							</EllipsisButton>
+						</DetailActions>
+					</DetailHeader>
 				</DetailContent>
-				<CommentSection itemId={itemId} />
 			</DetailSwipeToNavigate>
 		</Detail>
 	);

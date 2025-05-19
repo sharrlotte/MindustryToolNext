@@ -6,10 +6,12 @@ import React, { useState } from 'react';
 
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
+import CommentSection from '@/components/common/comment-section';
 import CreatedAt from '@/components/common/created-at';
 import {
 	Detail,
 	DetailActions,
+	DetailAuthor,
 	DetailContent,
 	DetailDescription,
 	DetailHeader,
@@ -23,7 +25,7 @@ import Tran from '@/components/common/tran';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import VerifySchematicButton from '@/components/schematic/verify-schematic.button';
 import TagSelector from '@/components/search/tag-selector';
-import IdUserCard from '@/components/user/id-user-card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
@@ -49,6 +51,7 @@ export default function UploadSchematicDetailCard({
 		width,
 		height,
 		createdAt,
+		itemId,
 	},
 }: UploadSchematicDetailCardProps) {
 	const axios = useClientApi();
@@ -72,28 +75,43 @@ export default function UploadSchematicDetailCard({
 
 	return (
 		<Detail>
+			<CopyButton position="absolute" variant="ghost" data={link} content={link}>
+				<ShareIcon />
+			</CopyButton>
 			<DetailContent>
-				<DetailInfo>
-					<CopyButton position="absolute" variant="ghost" data={link} content={link}>
-						<ShareIcon />
-					</CopyButton>
-					<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
-					<DetailHeader>
-						<DetailTitle>{name}</DetailTitle>
-						<IdUserCard id={userId} />
-						<SizeCard size={{ width, height }} />
-						<DetailDescription>{description}</DetailDescription>
-						<ItemRequirementCard requirements={requirements} />
-						<CreatedAt createdAt={createdAt} />
-						<TagSelector type="schematic" value={selectedTags} onChange={setSelectedTags} />
-					</DetailHeader>
-				</DetailInfo>
-				<DetailActions>
-					<CopyButton content={copyMessage} data={getData} />
-					<DownloadButton href={downloadUrl} fileName={downloadName} />
-					<DeleteSchematicButton id={id} name={name} />
-					<VerifySchematicButton id={id} name={name} selectedTags={selectedTags} />
-				</DetailActions>
+				<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
+				<DetailHeader>
+					<DetailTitle>{name}</DetailTitle>
+					<Tabs defaultValue="info" className="overflow-hidden flex flex-col">
+						<TabsList className="grid w-full grid-cols-2">
+							<TabsTrigger value="info">
+								<Tran text="info" />
+							</TabsTrigger>
+							<TabsTrigger value="comment">
+								<Tran text="comment" />
+							</TabsTrigger>
+						</TabsList>
+						<TabsContent value="info">
+							<DetailInfo>
+								<DetailAuthor authorId={userId} />
+								<SizeCard size={{ width, height }} />
+								<DetailDescription>{description}</DetailDescription>
+								<CreatedAt createdAt={createdAt} />
+								<ItemRequirementCard requirements={requirements} />
+								<TagSelector type="schematic" value={selectedTags} onChange={setSelectedTags} />
+							</DetailInfo>
+						</TabsContent>
+						<TabsContent value="comment">
+							<CommentSection itemId={itemId} />
+						</TabsContent>
+					</Tabs>
+					<DetailActions>
+						<CopyButton content={copyMessage} data={getData} />
+						<DownloadButton href={downloadUrl} fileName={downloadName} />
+						<DeleteSchematicButton id={id} name={name} />
+						<VerifySchematicButton id={id} name={name} selectedTags={selectedTags} />
+					</DetailActions>
+				</DetailHeader>
 			</DetailContent>
 		</Detail>
 	);
