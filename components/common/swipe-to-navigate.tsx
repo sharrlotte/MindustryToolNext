@@ -54,6 +54,7 @@ export default function SwipeToNavigate({
 				x,
 				y,
 				height: '100%',
+				overflow: 'hidden',
 			}}
 			{...props}
 		>

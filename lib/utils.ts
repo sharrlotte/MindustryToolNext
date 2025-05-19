@@ -7,7 +7,14 @@ import env from '@/constant/env';
 import { Locale, i18nCachePrefix } from '@/i18n/config';
 import { ApiError, isError } from '@/lib/error';
 import { ChartData, Metric } from '@/types/response/Metric';
+import { Role } from '@/types/response/Role';
 import { Session } from '@/types/response/Session';
+
+export function findBestRole(roles: Role[] | undefined) {
+	if (!roles) return undefined;
+
+	return roles.sort((a, b) => b.position - a.position)[0];
+}
 
 export function uuid() {
 	return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>

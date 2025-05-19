@@ -6,11 +6,7 @@ import ErrorMessage from '@/components/common/error-message';
 import UserCardSkeleton from '@/components/skeleton/user-card.skeleton';
 import UserCard from '@/components/user/user-card';
 
-import { Batcher } from '@/lib/batcher';
-import { persister } from '@/query/config/query-config';
-import { User } from '@/types/response/User';
-
-import { useQuery } from '@tanstack/react-query';
+import useUser from '@/hooks/use-user';
 
 type IdUserCardProps = {
 	id: string | 'community';
@@ -26,12 +22,7 @@ export default function IdUserCard({ id, avatar = true }: IdUserCardProps) {
 }
 
 function FletchUserCard({ id, avatar }: IdUserCardProps) {
-	const { data, isLoading, isError, error } = useQuery<User>({
-		queryKey: ['users', id],
-		queryFn: () => Batcher.user.get(id),
-		retry: false,
-		persister,
-	});
+	const { data, isLoading, isError, error } = useUser(id);
 
 	if (isError || error) {
 		if (typeof error === 'object' && 'status' in error && error.status === 404) {
@@ -45,5 +36,5 @@ function FletchUserCard({ id, avatar }: IdUserCardProps) {
 		return <UserCardSkeleton avatar={avatar} />;
 	}
 
-	return <UserCard user={data} />;
+	return <UserCard user={data} avatar={avatar} />;
 }
