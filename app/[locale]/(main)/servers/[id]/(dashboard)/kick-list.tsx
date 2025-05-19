@@ -40,7 +40,6 @@ export default function KickList({ id }: KickListProps) {
 			</h3>
 			<Divider />
 			{Object.entries(data) //
-				.filter(([_, untilTime]) => untilTime > currentTime) //
 				.map(([ip, untilTime]) => (
 					<KickCard key={ip} serverId={id} kick={{ ip, untilTime }} currentTime={currentTime} />
 				))}
@@ -112,7 +111,7 @@ function TimeFrom({ time, currentTime }: { time: number; currentTime: number }) 
 	} else if (seconds > 0) {
 		relative = `${seconds}s`;
 	} else {
-		relative = `${seconds}s`;
+		relative = `Expired`;
 	}
 
 	return <span>{relative}</span>;
