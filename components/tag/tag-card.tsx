@@ -30,10 +30,10 @@ function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps
 	return (
 		<span
 			className={cn(
-				'flex cursor-pointer items-center capitalize min-w-12 gap-0.5 flex-nowrap whitespace-nowrap rounded-full px-2 py-2 text-center text-xs text-brand-foreground',
+				'flex cursor-pointer font-semibold items-center capitalize min-w-12 gap-0.5 flex-nowrap whitespace-nowrap rounded-full px-2 py-1 text-center text-xs text-brand-foreground',
 				className,
 			)}
-			style={{ backgroundColor: color }}
+			style={{ color: color, backgroundColor: color + '30', borderColor: color, borderWidth: 1 }}
 			onClick={() => handleOnDelete(tag)}
 			{...props}
 		>

@@ -125,15 +125,19 @@ function parseCustomJson(str: any) {
 }
 
 function parseCustomJsonNested(json: any) {
-	switch (typeof json) {
-		case 'string':
-			return parseCustomJson(json);
+	if (json === null) {
+		return null;
+	}
 
+	switch (typeof json) {
 		case 'bigint':
 		case 'boolean':
 		case 'number':
 		case 'undefined':
 			return json;
+
+		case 'string':
+			return parseCustomJson(json);
 
 		case 'object': {
 			if (Array.isArray(json)) {
@@ -151,6 +155,10 @@ function parseCustomJsonNested(json: any) {
 }
 
 export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: number }) {
+	if (json === null) {
+		return null;
+	}
+
 	json = parseCustomJsonNested(json);
 
 	switch (typeof json) {

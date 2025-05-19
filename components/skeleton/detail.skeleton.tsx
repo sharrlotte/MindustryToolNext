@@ -1,19 +1,29 @@
 import React from 'react';
 
 import UserCardSkeleton from '@/components/skeleton/user-card.skeleton';
+import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function DetailSkeleton() {
 	return (
 		<div className="absolute h-full w-full bg-background p-2 backdrop-blur-sm">
-			<div className="relative flex h-full w-full flex-1 flex-col justify-between gap-2 overflow-x-hidden lg:items-stretch">
-				<div className="flex flex-col gap-2 md:flex-row">
-					<div className="relative overflow-hidden rounded-lg">
-						<Skeleton className="object-cover w-full md:w-[min(40vw,80vh)] aspect-square rounded-lg" />
-					</div>
-					<div className="flex flex-col gap-1">
-						<Skeleton className="h-8 w-80 text-xl capitalize" />
-						<UserCardSkeleton />
+			<div className="relative h-full flex flex-col lg:grid lg:grid-cols-[1fr_400px] lg:divide-x overflow-auto">
+				<div className="p-2 h-full overflow-auto flex justify-center max-h-[50vh]">
+					<Skeleton className="object-cover w-full aspect-square rounded-lg" />
+				</div>
+				<div className="flex flex-col gap-2 p-2 h-full">
+					<Skeleton className="h-12 w-full rounded-md" />
+					<Divider />
+					<UserCardSkeleton />
+					<Skeleton className="h-8 w-[80%] rounded-md" />
+					<Skeleton className="h-8 w-full rounded-md" />
+					<Skeleton className="h-8 w-[70%] rounded-md" />
+					<Skeleton className="h-8 w-full rounded-md" />
+					<div className="grid gap-2 mt-auto grid-cols-4 border-t pt-2">
+						<Skeleton className="h-8 w-full rounded-md" />
+						<Skeleton className="h-8 w-full rounded-md" />
+						<Skeleton className="h-8 w-full rounded-md" />
+						<Skeleton className="h-8 w-full rounded-md" />
 					</div>
 				</div>
 			</div>

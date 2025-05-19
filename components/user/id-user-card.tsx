@@ -14,17 +14,18 @@ import { useQuery } from '@tanstack/react-query';
 
 type IdUserCardProps = {
 	id: string | 'community';
+	avatar?: boolean;
 };
 
-export default function IdUserCard({ id }: IdUserCardProps) {
+export default function IdUserCard({ id, avatar = true }: IdUserCardProps) {
 	if (id === 'null' || id == null || id == undefined || id.length === 0) {
 		return <span></span>;
 	}
 
-	return <FletchUserCard id={id} />;
+	return <FletchUserCard id={id} avatar={avatar} />;
 }
 
-function FletchUserCard({ id }: IdUserCardProps) {
+function FletchUserCard({ id, avatar }: IdUserCardProps) {
 	const { data, isLoading, isError, error } = useQuery<User>({
 		queryKey: ['users', id],
 		queryFn: () => Batcher.user.get(id),
@@ -41,7 +42,7 @@ function FletchUserCard({ id }: IdUserCardProps) {
 	}
 
 	if (isLoading || !data) {
-		return <UserCardSkeleton />;
+		return <UserCardSkeleton avatar={avatar} />;
 	}
 
 	return <UserCard user={data} />;
