@@ -23,6 +23,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 			style={{
 				gap: 6,
 			}}
+			position='top-right'
 			toastOptions={{
 				classNames: {
 					toast: 'group p-0 group-[.toaster]:bg-card group-[.toaster]:text-foreground group-[.toaster]:shadow-lg',
