@@ -41,14 +41,14 @@ const defaultState: {
 
 function format(key: null | boolean) {
 	if (key === null) {
-		return 'translation.all';
+		return 'all';
 	}
 
 	if (key === true) {
-		return 'translation.translated';
+		return 'translated';
 	}
 
-	return 'translation.untranslated';
+	return 'untranslated';
 }
 
 export default function TranslationPage() {
