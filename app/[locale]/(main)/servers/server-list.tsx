@@ -19,14 +19,14 @@ export default function ServerList() {
 	const [debounced] = useDebounceValue(name, 200);
 
 	return (
-		<div className="flex h-full w-full gap-2 flex-col overflow-hidden">
+		<div className="flex h-full w-full gap-2 flex-col overflow-hidden p-2">
 			<SearchBar className="bg-card">
 				<SearchIcon />
 				<SearchInput value={name} onChange={setName} />
 			</SearchBar>
 			<ScrollContainer>
 				<InfinitePage
-					className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 p-2"
+					className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2"
 					queryKey={['server', debounced]}
 					skeleton={{ item: <ServerCardSkeleton />, amount: 20 }}
 					paramSchema={PaginationQuerySchema}
