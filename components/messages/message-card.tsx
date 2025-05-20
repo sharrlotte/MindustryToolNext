@@ -40,7 +40,7 @@ export function MessageCard({ className, message }: Props) {
           )}
           <RelativeTime date={new Date(createdAt)} />
         </div>
-        <div className="no-scrollbar grid w-full gap-1 overflow-hidden">
+        <div className="no-scrollbar grid w-full overflow-hidden">
           <TooltipProvider>
             {contents.map(({ text, createdAt }, index) => (
               <Tooltip key={index}>

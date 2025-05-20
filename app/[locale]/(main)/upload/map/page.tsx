@@ -137,7 +137,9 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 		<Form {...form}>
 			<form className="flex h-full flex-col p-6" onSubmit={form.handleSubmit(handleSubmit)}>
 				<ScrollContainer className="flex flex-col gap-2">
-					<img className="max-w-[60vw] max-h-[60vh]" src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
+					<div className="max-w-[60vw] max-h-[60vh] h-auto">
+						<img src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
+					</div>
 					{isError(session) ? <ErrorMessage error={session} /> : <UserCard user={session} />}
 					<FormField
 						control={form.control}

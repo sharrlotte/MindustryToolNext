@@ -14,7 +14,7 @@ export default function ServerFooter({ create }: { create?: boolean }) {
 	const { session } = useSession();
 
 	return (
-		<footer className="flex w-full justify-end gap-2">
+		<footer className="flex w-full justify-end gap-2 pt-2 border-t">
 			<ProtectedElement session={session} filter={true} alt={<RequireLogin />}>
 				<InternalLink variant="button-secondary" href="/server-managers">
 					<ServerIcon />

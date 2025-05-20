@@ -26,7 +26,7 @@ export default function ServerList() {
 			</SearchBar>
 			<ScrollContainer>
 				<InfinitePage
-					className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2"
+					className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 p-2"
 					queryKey={['server', debounced]}
 					skeleton={{ item: <ServerCardSkeleton />, amount: 20 }}
 					paramSchema={PaginationQuerySchema}
