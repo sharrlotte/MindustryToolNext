@@ -71,7 +71,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
 	return (
-		<div className="p-2 h-full lg:overflow-auto flex justify-center lg:max-h-full">
+		<div className="p-2 h-auto lg:overflow-auto flex justify-center lg:max-h-full">
 			<div className="w-full h-auto">
 				<FallbackImage className="w-full rounded-lg" src={src} alt={alt} errorSrc={errorSrc} loading="eager" />
 			</div>
