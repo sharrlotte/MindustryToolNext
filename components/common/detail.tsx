@@ -71,7 +71,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
 	return (
-		<div className="p-2 h-full overflow-auto flex justify-center aspect-square lg:max-h-full">
+		<div className="p-2 h-full lg:overflow-auto flex justify-center lg:max-h-full">
 			<div className="w-full h-auto">
 				<FallbackImage className="w-full rounded-lg" src={src} alt={alt} errorSrc={errorSrc} loading="eager" />
 			</div>
@@ -81,7 +81,7 @@ export function DetailImage({ src, errorSrc, alt }: ImageProps) {
 type HeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailHeader({ className, children }: HeaderProps) {
-	return <section className={cn('flex flex-col gap-2 p-2 h-full overflow-hidden', className)}>{children}</section>;
+	return <section className={cn('flex flex-col gap-2 p-2 h-full lg:overflow-hidden', className)}>{children}</section>;
 }
 
 export function DetailRow({ children }: { children: React.ReactNode }) {
