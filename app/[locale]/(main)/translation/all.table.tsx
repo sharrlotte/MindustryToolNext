@@ -64,7 +64,7 @@ type AllCardProps = {
 };
 
 function AllCard({ translation }: AllCardProps) {
-	const { key, value, keyGroup } = translation;
+	const { id, key, value, keyGroup } = translation;
 
 	return (
 		<div className="flex flex-col gap-1 bg-card p-2 rounded-md border">
@@ -73,6 +73,7 @@ function AllCard({ translation }: AllCardProps) {
 			</div>
 			{locales.map((locale) => (
 				<ValueCard
+					keyId={id}
 					key={locale}
 					tKey={key}
 					keyGroup={keyGroup}
@@ -91,13 +92,14 @@ function AllCard({ translation }: AllCardProps) {
 }
 
 type ValueCardProps = {
+	keyId: string;
 	tKey: string;
 	keyGroup: string;
 	locale: Locale;
 	value: TranslationAllValue;
 };
 
-function ValueCard({ tKey: key, keyGroup, value, locale }: ValueCardProps) {
+function ValueCard({ keyId, tKey: key, keyGroup, value, locale }: ValueCardProps) {
 	const [currentValue, setCurrentValue] = useState(value);
 	const [isEdit, setEdit] = useState(false);
 	const axios = useClientApi();
@@ -144,7 +146,7 @@ function ValueCard({ tKey: key, keyGroup, value, locale }: ValueCardProps) {
 				{currentValue.id && (
 					<EllipsisButton>
 						<Suspense>
-							<DeleteTranslationDialog value={{ key, id: currentValue.id }} />
+							<DeleteTranslationDialog value={{ key, id: keyId }} />
 						</Suspense>
 					</EllipsisButton>
 				)}
