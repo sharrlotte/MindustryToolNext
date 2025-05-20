@@ -42,7 +42,7 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 		ns,
 		preload: locales,
 		backend: {
-			loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
+			loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=1`,
 			addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
 			request(options, url, payload, callback) {
 				if (url.includes('create-missing')) {

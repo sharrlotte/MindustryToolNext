@@ -136,7 +136,7 @@ export default function ServerUpdateForm({ server }: Props) {
 						render={({ field, fieldState }) => (
 							<FormItem className="grid">
 								<FormLabel>
-									<Tran text="server.image" />
+									<Tran text="server.image"  />
 								</FormLabel>
 								<FormControl>
 									<ComboBox
