@@ -34,7 +34,7 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
 					prefix: i18nCachePrefix,
 				},
 				{
-					loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}`,
+					loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=1`,
 					addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
 				} as HttpBackendOptions,
 			],
