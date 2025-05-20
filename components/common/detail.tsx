@@ -8,7 +8,6 @@ import MindustryIcon, { parseIconString } from '@/components/common/mindustry-ic
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import TagContainer from '@/components/tag/tag-container';
-import BackButton from '@/components/ui/back-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import ColorAsRole from '@/components/user/color-as-role';
 import IdUserCard from '@/components/user/id-user-card';
@@ -72,7 +71,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
 	return (
-		<div className="p-2 h-full overflow-auto flex justify-center max-h-[50vh] lg:max-h-full">
+		<div className="p-2 h-full overflow-auto flex justify-center aspect-square lg:max-h-full">
 			<div className="w-full h-auto">
 				<FallbackImage className="w-full rounded-lg" src={src} alt={alt} errorSrc={errorSrc} loading="eager" />
 			</div>
