@@ -79,7 +79,7 @@ type SearchCardProps = {
 };
 
 function SearchCard({ translation }: SearchCardProps) {
-	const { key, id, value, keyGroup, isTranslated, language: translationLanguage } = translation;
+	const { key, keyId, value, keyGroup, isTranslated, language: translationLanguage } = translation;
 	const [currentValue, setCurrentValue] = useState(value);
 
 	const axios = useClientApi();
@@ -130,7 +130,7 @@ function SearchCard({ translation }: SearchCardProps) {
 			<TableCell>
 				<EllipsisButton variant="ghost">
 					<Suspense>
-						<DeleteTranslationDialog value={{ key, id }} />
+						<DeleteTranslationDialog value={{ key, id: keyId }} />
 					</Suspense>
 				</EllipsisButton>
 			</TableCell>

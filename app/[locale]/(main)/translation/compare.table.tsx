@@ -86,7 +86,7 @@ type CompareCardProps = {
 };
 
 function CompareCard({ translation, language, target }: CompareCardProps) {
-	const { key, id, value, keyGroup } = translation;
+	const { key, keyId, value, keyGroup } = translation;
 	const [currentValue, setCurrentValue] = useState(value[language]);
 
 	const [isEdit, setEdit] = useState(false);
@@ -141,7 +141,7 @@ function CompareCard({ translation, language, target }: CompareCardProps) {
 			</TableCell>
 			<TableCell className="flex justify-center">
 				<EllipsisButton variant="ghost">
-					<DeleteTranslationDialog value={{ key, id }} />
+					<DeleteTranslationDialog value={{ key, id: keyId }} />
 				</EllipsisButton>
 			</TableCell>
 		</TableRow>
