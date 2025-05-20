@@ -30,7 +30,7 @@ export default function PlayerList({ id }: PlayerListProps) {
 	const { data, isError, error } = useSuspenseQuery({
 		queryKey: ['server', id, 'player'],
 		queryFn: () => getServerPlayers(axios, id),
-		refetchInterval: 10000,
+		refetchInterval: 30000,
 	});
 
 	if (isError) {
