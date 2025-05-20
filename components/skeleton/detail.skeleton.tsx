@@ -8,7 +8,7 @@ export default function DetailSkeleton() {
 	return (
 		<div className="absolute h-full w-full bg-background p-2 backdrop-blur-sm">
 			<div className="relative h-full flex flex-col lg:grid lg:grid-cols-[1fr_400px] lg:divide-x overflow-auto">
-				<div className="p-2 h-full overflow-auto flex justify-center max-h-[50vh]">
+				<div className="p-2 h-full overflow-auto flex justify-center max-h-[50vh] lg:max-h-full">
 					<Skeleton className="object-cover w-full aspect-square rounded-lg" />
 				</div>
 				<div className="flex flex-col gap-2 p-2 h-full">
