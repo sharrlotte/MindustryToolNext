@@ -193,19 +193,19 @@ export default async function Page({ params }: Props) {
 									</div>
 								)}
 							</ProtectedElement>
-							{status === 'HOST' && (
-								<div className="flex md:max-w-[50dvw] h-auto rounded-md overflow-hidden landscape:max-h-[50dvh] landscape:max-w-none">
-									<Image
-										className="w-full"
-										key={status}
-										src={`${env.url.api}/servers/${id}/image`}
-										alt={name}
-										width={500}
-										height={500}
-									/>
-								</div>
-							)}
 						</div>
+						{status === 'HOST' && (
+							<div className="flex md:max-w-[50dvw] h-auto rounded-md overflow-hidden landscape:max-h-[50dvh] landscape:max-w-none">
+								<Image
+									className="w-full"
+									key={status}
+									src={`${env.url.api}/servers/${id}/image`}
+									alt={name}
+									width={500}
+									height={500}
+								/>
+							</div>
+						)}
 					</CatchError>
 					<CatchError>
 						<ProtectedElement session={session} filter={canAccess}>
