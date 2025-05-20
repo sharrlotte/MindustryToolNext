@@ -195,7 +195,7 @@ export default async function Page({ params }: Props) {
 							</ProtectedElement>
 						</div>
 						{status === 'HOST' && (
-							<div className="flex md:max-w-[50dvw] h-auto rounded-md overflow-hidden landscape:max-h-[50dvh] landscape:max-w-none">
+							<div className="flex h-auto rounded-md overflow-hidden">
 								<Image
 									className="w-full"
 									key={status}
