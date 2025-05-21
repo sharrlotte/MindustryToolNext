@@ -63,7 +63,7 @@ export default async function Page({ searchParams }: Props) {
 						<Tran text="server.my-server" />
 					</ServerTabsTrigger>
 				</ServerTabsList>
-				<ServerTabsContent className="h-full flex-col justify-between gap-2" display="flex" value="server-list">
+				<ServerTabsContent className="h-full flex-col justify-between" display="flex" value="server-list">
 					<Suspense fallback={<ServersSkeleton />}>
 						<ServerList />
 					</Suspense>
@@ -71,7 +71,7 @@ export default async function Page({ searchParams }: Props) {
 						<ServerFooter create={create} />
 					</Suspense>
 				</ServerTabsContent>
-				<ServerTabsContent className="h-full flex-col justify-between gap-2" display="flex" value="my-server">
+				<ServerTabsContent className="h-full flex-col justify-between" display="flex" value="my-server">
 					<ClientProtectedElement filter alt={<LoginToCreateServer />}>
 						<ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 p-2">
 							<Suspense fallback={<ServersSkeleton />}>
