@@ -120,6 +120,8 @@ function PluginVersion({ id: pluginId, version, filename }: { id: string; versio
 		},
 	});
 
+	if (data?.version === version) return null;
+
 	if (data) {
 		return (
 			<TooltipProvider>
