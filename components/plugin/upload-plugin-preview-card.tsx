@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 
 import DeleteButton from '@/components/button/delete.button';
@@ -127,39 +127,41 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
 					<DialogTitle />
 					<DialogDescription />
 				</Hidden>
-				<ScrollContainer className="flex h-full w-full flex-col justify-between gap-2 rounded-md p-6">
-					<Form {...form}>
-						<form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
-							<div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
-								<FormField
-									control={form.control}
-									name="tags"
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>
-												<Tran text="plugin.tags" />
-											</FormLabel>
-											<FormControl>
-												<TagSelector type="plugin" value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-							<div className="flex items-end justify-end gap-2 p-2">
-								<DialogClose asChild>
-									<Button>
-										<Tran text="cancel" />
+				<Suspense>
+					<ScrollContainer className="flex h-[50vh] w-full flex-col justify-between gap-2 rounded-md p-6">
+						<Form {...form}>
+							<form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
+								<div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
+									<FormField
+										control={form.control}
+										name="tags"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>
+													<Tran text="plugin.tags" />
+												</FormLabel>
+												<FormControl>
+													<TagSelector type="plugin" value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
+								<div className="flex items-end justify-end gap-2 p-2">
+									<DialogClose asChild>
+										<Button>
+											<Tran text="cancel" />
+										</Button>
+									</DialogClose>
+									<Button className="w-fit" variant="primary" type="submit" title="upload" disabled={isPending}>
+										<Tran text="verify" />
 									</Button>
-								</DialogClose>
-								<Button className="w-fit" variant="primary" type="submit" title="upload" disabled={isPending}>
-									<Tran text="verify" />
-								</Button>
-							</div>
-						</form>
-					</Form>
-				</ScrollContainer>
+								</div>
+							</form>
+						</Form>
+					</ScrollContainer>
+				</Suspense>
 			</DialogContent>
 		</Dialog>
 	);
