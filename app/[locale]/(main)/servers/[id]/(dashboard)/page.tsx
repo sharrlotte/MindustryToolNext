@@ -176,6 +176,19 @@ export default async function Page({ params }: Props) {
 									)}
 								</div>
 							</div>
+
+							{status === 'HOST' && (
+								<div className="flex h-auto rounded-md overflow-hidden">
+									<Image
+										className="w-full"
+										key={status}
+										src={`${env.url.api}/servers/${id}/image`}
+										alt={name}
+										width={500}
+										height={500}
+									/>
+								</div>
+							)}
 							<ProtectedElement session={session} filter={showPlayer}>
 								{status === 'HOST' && players > 0 && (
 									<div className="flex bg-card rounded-md flex-col">
@@ -194,18 +207,6 @@ export default async function Page({ params }: Props) {
 								)}
 							</ProtectedElement>
 						</div>
-						{status === 'HOST' && (
-							<div className="flex h-auto rounded-md overflow-hidden">
-								<Image
-									className="w-full"
-									key={status}
-									src={`${env.url.api}/servers/${id}/image`}
-									alt={name}
-									width={500}
-									height={500}
-								/>
-							</div>
-						)}
 					</CatchError>
 					<CatchError>
 						<ProtectedElement session={session} filter={canAccess}>
