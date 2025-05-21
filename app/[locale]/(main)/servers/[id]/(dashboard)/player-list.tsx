@@ -6,8 +6,10 @@ import { useInterval } from 'usehooks-ts';
 
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
+import Tran from '@/components/common/tran';
 import { BanButton } from '@/components/server/ban.button';
 import { KickButton } from '@/components/server/kick.button';
+import Divider from '@/components/ui/divider';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import IdUserCard from '@/components/user/id-user-card';
@@ -18,8 +20,6 @@ import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
-import Divider from '@/components/ui/divider';
-import Tran from '@/components/common/tran';
 
 type PlayerListProps = {
 	id: string;
@@ -92,26 +92,26 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 					ease: 'easeOut',
 				},
 			}}
-			className="flex items-center gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1"
+			className="flex flex-col gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1"
 		>
-			<div className="rounded-full size-2" style={{ backgroundColor: `#${team.color}` }} />
-			<div className="flex justify-between gap-1 items-center w-full">
-				<div className="flex flex-col gap-2">
+			<div className="flex gap-1 items-center">
+				<div className="rounded-full size-2" style={{ backgroundColor: `#${team.color}` }} />
+				<div className="flex justify-between gap-1 items-center w-full">
 					<span className="flex items-center justify-center gap-1">
 						<span>{locale && (localeToFlag[locale] ?? locale)}</span>
-						{userId && <IdUserCard id={userId} />}
+						<ColorText className="font-semibold" text={name} />
 						{isAdmin && ''}
-						(<ColorText className="font-semibold" text={name} />)
 					</span>
-				</div>
-				<div className="flex gap-1 items-center">
-					<TimeFrom time={joinedAt} />
-					<EllipsisButton variant="ghost">
-						<BanButton id={serverId} uuid={uuid} username={name} ip={ip} />
-						<KickButton id={serverId} uuid={uuid} />
-					</EllipsisButton>
+					<div className="flex gap-1 items-center">
+						<TimeFrom time={joinedAt} />
+						<EllipsisButton variant="ghost">
+							<BanButton id={serverId} uuid={uuid} username={name} ip={ip} />
+							<KickButton id={serverId} uuid={uuid} />
+						</EllipsisButton>
+					</div>
 				</div>
 			</div>
+			<div className="flex items-center">{userId && <IdUserCard id={userId} />}</div>
 		</motion.div>
 	);
 }

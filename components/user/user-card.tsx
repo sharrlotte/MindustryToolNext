@@ -10,7 +10,7 @@ type UserCardProps = {
 	avatar?: boolean;
 	user: Omit<User, 'authorities'> | null;
 };
-function UserCard({ user, avatar }: UserCardProps) {
+function UserCard({ user, avatar = true }: UserCardProps) {
 	if (!user) {
 		return;
 	}
