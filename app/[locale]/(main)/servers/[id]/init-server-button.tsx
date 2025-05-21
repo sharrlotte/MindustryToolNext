@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 
-
-
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
 import { CheckCircleIcon } from '@/components/common/icons';
@@ -13,13 +11,10 @@ import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 
-
-
 import { revalidate } from '@/action/common';
 import env from '@/constant/env';
 import useHttpStream from '@/hooks/use-http-stream';
 import useQueriesData from '@/hooks/use-queries-data';
-
 
 type Props = {
 	id: string;
@@ -35,6 +30,7 @@ export default function InitServerButton({ id }: Props) {
 		mutationKey: ['servers', id, 'init'],
 		onSettled: () => {
 			invalidateByKey(['server']);
+			revalidate({ path: '/[locale]/(main)/servers/[id]' });
 		},
 	});
 
@@ -81,7 +77,14 @@ export default function InitServerButton({ id }: Props) {
 						<Tran text="server.initiating-server" asChild />
 					</DialogTitle>
 					<DialogDescription className="flex gap-1 overflow-hidden w-full text-ellipsis items-center">
-						{isPending ? <LoadingSpinner className="p-0 w-4 justify-start m-0" /> : isError ? <ErrorMessage error={error} /> : <CheckCircleIcon className="w-4" />} <ColorText text={last} />
+						{isPending ? (
+							<LoadingSpinner className="p-0 w-4 justify-start m-0" />
+						) : isError ? (
+							<ErrorMessage error={error} />
+						) : (
+							<CheckCircleIcon className="w-4" />
+						)}{' '}
+						<ColorText text={last} />
 					</DialogDescription>
 					<ScrollContainer className="h-full flex-1 flex w-full flex-col overflow-x-auto">
 						{data?.map((text, index) => <ColorText key={index} text={text} />)} {isError && <ErrorMessage error={error} />}
