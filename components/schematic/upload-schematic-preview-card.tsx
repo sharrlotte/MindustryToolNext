@@ -15,6 +15,7 @@ import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import { getSchematicData } from '@/query/schematic';
 import { Schematic } from '@/types/response/Schematic';
+import DeleteSchematicButton from '@/components/schematic/delete-schematic.button';
 
 type UploadSchematicPreviewCardProps = {
 	schematic: Schematic;
@@ -44,7 +45,7 @@ function UploadSchematicPreviewCard({ schematic: { id, name } }: UploadSchematic
 				<ShareIcon />
 			</CopyButton>
 			<BulkActionSelector value={id}>
-				<InternalLink className='flex' href={detailLink}>
+				<InternalLink className="flex" href={detailLink}>
 					<PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
 				</InternalLink>
 				<PreviewDescription>
@@ -54,6 +55,7 @@ function UploadSchematicPreviewCard({ schematic: { id, name } }: UploadSchematic
 					<PreviewActions>
 						<CopyButton content={copyContent} data={getData} />
 						<DownloadButton href={downloadLink} fileName={downloadName} />
+						<DeleteSchematicButton id={id} name={name} />
 					</PreviewActions>
 				</PreviewDescription>
 			</BulkActionSelector>

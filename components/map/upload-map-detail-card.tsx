@@ -18,7 +18,6 @@ import {
 	DetailInfo,
 	DetailTitle,
 } from '@/components/common/detail';
-import { Hidden } from '@/components/common/hidden';
 import { ShareIcon } from '@/components/common/icons';
 import JsonDisplay from '@/components/common/json-display';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -27,9 +26,7 @@ import Tran from '@/components/common/tran';
 import { DeleteMapButton } from '@/components/map/delete-map.button';
 import VerifyMapButton from '@/components/map/verify-map.button';
 import TagSelector from '@/components/search/tag-selector';
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
 import { MapDetail } from '@/types/response/MapDetail';
@@ -61,8 +58,8 @@ export default function UploadMapDetailCard({
 				<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
 				<DetailHeader>
 					<DetailTitle>{name}</DetailTitle>
-					<Tabs defaultValue="info" className="overflow-hidden flex flex-col">
-						<TabsList className="grid w-full grid-cols-3">
+					<Tabs defaultValue="info" className="flex overflow-hidden flex-col">
+						<TabsList className="grid grid-cols-3 w-full">
 							<TabsTrigger value="info">
 								<Tran text="info" />
 							</TabsTrigger>
