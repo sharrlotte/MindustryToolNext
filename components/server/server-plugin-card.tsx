@@ -3,6 +3,8 @@
 import { useParams } from 'next/navigation';
 import React from 'react';
 
+
+
 import DeleteButton from '@/components/button/delete.button';
 import ColorText from '@/components/common/color-text';
 import { DownloadIcon } from '@/components/common/icons';
@@ -14,6 +16,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { toast } from '@/components/ui/sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
+
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { Batcher } from '@/lib/batcher';
@@ -21,7 +25,10 @@ import { dateToId, omit } from '@/lib/utils';
 import { createServerPlugin, deleteServerPlugin } from '@/query/server';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 
+
+
 import { useMutation, useQuery } from '@tanstack/react-query';
+
 
 type Props = {
 	serverId: string;
@@ -86,7 +93,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 			{isMindustryToolPlugin && (
 				<div className="flex gap-1 justify-end items-center w-full">
 					<PluginVersion id={parts[0]} version={parts[1]} filename={filename} />
-					<RedownloadPlugin id={parts[0]} />
+					<RedownloadPlugin serverId={serverId} pluginId={parts[0]} />
 					<DeleteButton
 						variant="secondary"
 						size="secondary"
@@ -100,13 +107,13 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 	);
 }
 
-function RedownloadPlugin({ id }: { id: string }) {
+function RedownloadPlugin({ serverId, pluginId }: { serverId: string, pluginId: string  }) {
 	const { invalidateByKey } = useQueriesData();
 
 	const axios = useClientApi();
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['server', id, 'plugin', id],
-		mutationFn: (pluginId: string) => createServerPlugin(axios, id, { pluginId }),
+		mutationKey: ['server', serverId, 'plugin', pluginId],
+		mutationFn: (pluginId: string) => createServerPlugin(axios, serverId, { pluginId }),
 		onSuccess: () => {
 			toast.success(<Tran text="server.add-plugin-success" />);
 		},
@@ -114,13 +121,13 @@ function RedownloadPlugin({ id }: { id: string }) {
 			toast.error(<Tran text="server.add-plugin-fail" />, { error });
 		},
 		onSettled: () => {
-			invalidateByKey(['server', id, 'plugin']);
-			invalidateByKey(['server', id, 'plugin-version']);
+			invalidateByKey(['server', serverId, 'plugin']);
+			invalidateByKey(['server', serverId, 'plugin-version']);
 		},
 	});
 
 	return (
-		<Button variant="outline" disabled={isPending} onClick={() => mutate(id)}>
+		<Button variant="outline" disabled={isPending} onClick={() => mutate(pluginId)}>
 			<DownloadIcon />
 		</Button>
 	);
