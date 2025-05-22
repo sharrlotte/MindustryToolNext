@@ -22,7 +22,7 @@ const buttonVariants = cva('hover:bg-destructive/80', {
 	variants: {
 		variant: {
 			command: 'w-full',
-			default: 'border border-border bg-transparent bg-secondary hover:border-destructive h-9 w-fit',
+			default: 'border border-border bg-transparent bg-secondary hover:border-destructive',
 			ghost: 'border-transparent absolute w-fit backdrop-brightness-50 hover:border-transparent',
 			secondary:
 				'inline-flex items-center gap-1 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 text-nowrap bg-secondary shadow-md border border-border',
