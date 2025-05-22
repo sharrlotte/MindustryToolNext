@@ -50,11 +50,16 @@ export type DeleteButtonProps = {
 	onClick: () => void;
 } & VariantProps<typeof buttonVariants>;
 
-export default function DeleteButton({ className, isLoading, variant, description, children, onClick }: DeleteButtonProps) {
+export default function DeleteButton({ className, size, isLoading, variant, description, children, onClick }: DeleteButtonProps) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button className={cn(buttonVariants({ className, variant }))} variant={variant} size="command" disabled={isLoading}>
+				<Button
+					className={cn(buttonVariants({ className, variant, size }))}
+					variant={variant}
+					size="command"
+					disabled={isLoading}
+				>
 					{children ?? <TrashIcon />}
 					{variant === 'command' && <Tran text="delete" />}
 				</Button>
