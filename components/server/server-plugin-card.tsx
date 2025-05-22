@@ -84,11 +84,11 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 				</PopoverContent>
 			</Popover>
 			{isMindustryToolPlugin && (
-				<div className="flex justify-end items-center w-full">
+				<div className="flex gap-1 justify-end items-center w-full">
 					<PluginVersion id={parts[0]} version={parts[1]} filename={filename} />
 					<RedownloadPlugin id={parts[0]} />
 					<DeleteButton
-						variant="default"
+						variant="secondary"
 						description={<Tran text="delete-alert" args={{ name }} />}
 						isLoading={isDeleting}
 						onClick={() => deletePluginById()}
@@ -156,21 +156,17 @@ function PluginVersion({ id: pluginId, version, filename }: { id: string; versio
 			<TooltipProvider>
 				<Tooltip>
 					<TooltipTrigger asChild>
-						<button
-							className="flex gap-1 items-center p-2 mt-auto rounded-md border w-fit bg-secondary"
-							onClick={() => mutate(pluginId)}
-							disabled={isPending}
-						>
+						<Button variant="secondary" onClick={() => mutate(pluginId)} disabled={isPending}>
 							{isPending ? (
 								<LoadingSpinner />
 							) : (
-								<>
+								<span className="text-sm">
 									<span className="text-destructive-foreground">{dateToId(new Date(Number(version)))}</span>
 									<span>{'=>'}</span>
 									<span className="text-success-foreground">{dateToId(new Date(data.version))}</span>
-								</>
+								</span>
 							)}
-						</button>
+						</Button>
 					</TooltipTrigger>
 					<TooltipContent>
 						<Tran text="server.update-plugin" />

@@ -1,29 +1,26 @@
 import { VariantProps, cva } from 'class-variance-authority';
 import React, { ReactNode, Suspense } from 'react';
 
+
+
 import { TrashIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
+
+
 import { cn } from '@/lib/utils';
+
 
 const buttonVariants = cva('hover:bg-destructive/80', {
 	variants: {
 		variant: {
 			command: '',
-			default: 'border border-border bg-transparent bg-secondary hover:border-destructive',
+			default: 'border border-border bg-transparent bg-secondary hover:border-destructive h-9 w-fit',
 			ghost: 'border-transparent absolute w-fit backdrop-brightness-50 hover:border-transparent',
+			secondary:
+				'inline-flex items-center gap-1 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 text-nowrap bg-secondary shadow-md border border-border',
 		},
 	},
 	defaultVariants: {
