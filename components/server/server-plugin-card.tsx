@@ -5,9 +5,11 @@ import React from 'react';
 
 import DeleteButton from '@/components/button/delete.button';
 import ColorText from '@/components/common/color-text';
+import { DownloadIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from '@/components/ui/sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -32,7 +34,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 	const { description, version, author, repo } = meta;
 
 	const parts = filename.replace('.jar', '').split('_');
-	const shouldCheckVersion = parts.length === 2;
+	const isMindustryToolPlugin = parts.length === 2;
 
 	const axios = useClientApi();
 	const { mutate: deletePluginById, isPending: isDeleting } = useMutation({
@@ -50,8 +52,8 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 	});
 
 	return (
-		<div className="relative flex flex-col min-h-48 h-48 gap-1 overflow-hidden rounded-md bg-card p-2 border">
-			<h2 className="line-clamp-1 overflow-hidden text-ellipsis whitespace-normal text-nowrap space-x-1">
+		<div className="flex overflow-hidden relative flex-col gap-1 p-2 h-48 rounded-md border min-h-48 bg-card">
+			<h2 className="overflow-hidden space-x-1 whitespace-normal line-clamp-1 text-ellipsis text-nowrap">
 				{repo ? (
 					<a href={`https://github.com/${repo}`}>
 						<ColorText text={name} />
@@ -64,7 +66,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 			<span>{author}</span>
 			<Popover>
 				<PopoverTrigger>
-					<p className="line-clamp-3 overflow-hidden text-ellipsis text-left text-secondary-foreground">
+					<p className="overflow-hidden text-left line-clamp-3 text-ellipsis text-secondary-foreground">
 						<ColorText text={description} />
 					</p>
 				</PopoverTrigger>
@@ -81,15 +83,45 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 					</ScrollContainer>
 				</PopoverContent>
 			</Popover>
-			<DeleteButton
-				className="right-1 top-1 backdrop-brightness-100"
-				variant="ghost"
-				description={<Tran text="delete-alert" args={{ name }} />}
-				isLoading={isDeleting}
-				onClick={() => deletePluginById()}
-			/>
-			{shouldCheckVersion && <PluginVersion id={parts[0]} version={parts[1]} filename={filename} />}
+			{isMindustryToolPlugin && (
+				<div className="flex justify-end items-center">
+					<PluginVersion id={parts[0]} version={parts[1]} filename={filename} />
+					<RedownloadPlugin id={parts[0]} />
+					<DeleteButton
+						variant="default"
+						description={<Tran text="delete-alert" args={{ name }} />}
+						isLoading={isDeleting}
+						onClick={() => deletePluginById()}
+					/>
+				</div>
+			)}
 		</div>
+	);
+}
+
+function RedownloadPlugin({ id }: { id: string }) {
+	const { invalidateByKey } = useQueriesData();
+
+	const axios = useClientApi();
+	const { mutate, isPending } = useMutation({
+		mutationKey: ['server', id, 'plugin', id],
+		mutationFn: (pluginId: string) => createServerPlugin(axios, id, { pluginId }),
+		onSuccess: () => {
+			toast.success(<Tran text="server.add-plugin-success" />);
+		},
+		onError: (error) => {
+			toast.error(<Tran text="server.add-plugin-fail" />, { error });
+		},
+		onSettled: () => {
+			invalidateByKey(['server', id, 'plugin']);
+			invalidateByKey(['server', id, 'plugin-version']);
+		},
+	});
+
+	return (
+		<Button variant="outline" disabled={isPending} onClick={() => mutate(id)}>
+			<DownloadIcon />
+		</Button>
 	);
 }
 
@@ -97,7 +129,6 @@ function PluginVersion({ id: pluginId, version, filename }: { id: string; versio
 	const { data } = useQuery({
 		queryKey: ['plugin-version', 'plugin', pluginId, version],
 		queryFn: () => Batcher.checkPluginVersion.get({ id: pluginId, version }),
-		retry: false,
 	});
 
 	const { id } = useParams() as { id: string };
@@ -126,7 +157,7 @@ function PluginVersion({ id: pluginId, version, filename }: { id: string; versio
 				<Tooltip>
 					<TooltipTrigger asChild>
 						<button
-							className="flex items-center gap-1 border p-2 rounded-md w-fit bg-secondary mt-auto"
+							className="flex gap-1 items-center p-2 mt-auto rounded-md border w-fit bg-secondary"
 							onClick={() => mutate(pluginId)}
 							disabled={isPending}
 						>
