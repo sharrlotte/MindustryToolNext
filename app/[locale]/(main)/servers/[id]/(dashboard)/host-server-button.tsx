@@ -13,9 +13,9 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } fr
 
 import { revalidate } from '@/action/common';
 import env from '@/constant/env';
-import useHttpStream from '@/hooks/use-http-stream';
 import useQueriesData from '@/hooks/use-queries-data';
-import HasServerMap from '@/app/[locale]/(main)/servers/[id]/has-server-map';
+import HasServerMap from '@/app/[locale]/(main)/servers/[id]/(dashboard)/has-server-map';
+import useHttpStream from '@/hooks/use-http-stream';
 
 type Props = {
 	id: string;
@@ -60,7 +60,7 @@ export default function HostServerButton({ id }: Props) {
 	return (
 		<HasServerMap id={id}>
 			<Button
-				className="w-20"
+				className="w-20 border"
 				title="Start"
 				variant="primary"
 				disabled={isPending}

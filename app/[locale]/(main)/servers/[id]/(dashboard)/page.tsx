@@ -31,11 +31,11 @@ type Props = {
 	params: Promise<{ id: string; locale: string }>;
 };
 
-const HostServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/host-server-button'));
-const InitServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/init-server-button'));
-const RemoveServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/remove-server-button'));
-const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/shutdown-server-button'));
-const StopServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/stop-server-button'));
+const HostServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/host-server-button'));
+const InitServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/init-server-button'));
+const RemoveServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/remove-server-button'));
+const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/shutdown-server-button'));
+const StopServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/stop-server-button'));
 const PlayerList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/player-list'));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -209,7 +209,7 @@ export default async function Page({ params }: Props) {
 					</CatchError>
 					<CatchError>
 						<ProtectedElement session={session} filter={canAccess}>
-							<div className={cn('flex flex-row gap-2 justify-end items-center p-2 mt-auto rounded-md shadow-lg bg-card')}>
+							<div className={cn('flex flex-row gap-2 justify-end items-center p-2 mt-auto rounded-md border shadow-lg bg-card')}>
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
 								{(status === 'HOST' || status === 'UP') && <ShutdownServerButton id={id} />}
 								{status === 'HOST' ? (
