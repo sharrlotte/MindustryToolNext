@@ -84,7 +84,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 				</PopoverContent>
 			</Popover>
 			{isMindustryToolPlugin && (
-				<div className="flex gap-1 justify-end items-center w-full">
+				<div className="flex gap-1 justify-end items-center mt-auto w-full">
 					<PluginVersion id={parts[0]} version={parts[1]} filename={filename} />
 					<RedownloadPlugin serverId={serverId} pluginId={parts[0]} />
 					<DeleteButton
@@ -161,7 +161,7 @@ function PluginVersion({ id: pluginId, version, filename }: { id: string; versio
 			<TooltipProvider>
 				<Tooltip>
 					<TooltipTrigger asChild>
-						<Button variant="secondary" onClick={() => mutate(pluginId)} disabled={isPending}>
+						<Button className='animate-bounce' variant="secondary" onClick={() => mutate(pluginId)} disabled={isPending}>
 							{isPending ? (
 								<LoadingSpinner />
 							) : (
