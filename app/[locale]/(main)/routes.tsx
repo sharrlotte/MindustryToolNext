@@ -18,6 +18,8 @@ import {
 	DocsIcon,
 	DocumentIcon,
 	FileIcon,
+	GoogleIcon,
+	GrafanaIcon,
 	HomeIcon,
 	ImageIcon,
 	LogIcon,
@@ -305,7 +307,22 @@ export const groups: readonly PathGroup[] = [
 			},
 			{
 				id: 'analytic',
-				path: 'https://analytic.mindustry-tool.com',
+				path: [
+					{
+						id: 'grafana',
+						name: 'Grafana',
+						path: 'https://analytic.mindustry-tool.com',
+						icon: <GrafanaIcon />,
+						regex: [`^${localesRegex}/analytic/grafana`],
+					},
+					{
+						id: 'google',
+						name: 'Google',
+						path: 'https://analytics.google.com/analytics/web/#/p376179457/reports/intelligenthome',
+						icon: <GoogleIcon />,
+						regex: [`^${localesRegex}/analytic/google`],
+					},
+				],
 				name: <Tran asChild text="analytic" />,
 				icon: <AnalyticIcon />,
 				filter: { authority: 'VIEW_DASH_BOARD' },
