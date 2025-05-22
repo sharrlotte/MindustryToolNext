@@ -3,8 +3,6 @@
 import { useParams } from 'next/navigation';
 import React from 'react';
 
-
-
 import DeleteButton from '@/components/button/delete.button';
 import ColorText from '@/components/common/color-text';
 import { DownloadIcon } from '@/components/common/icons';
@@ -16,8 +14,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { toast } from '@/components/ui/sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-
-
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { Batcher } from '@/lib/batcher';
@@ -25,10 +21,7 @@ import { dateToId, omit } from '@/lib/utils';
 import { createServerPlugin, deleteServerPlugin } from '@/query/server';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 
-
-
 import { useMutation, useQuery } from '@tanstack/react-query';
-
 
 type Props = {
 	serverId: string;
@@ -107,7 +100,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 	);
 }
 
-function RedownloadPlugin({ serverId, pluginId }: { serverId: string, pluginId: string  }) {
+function RedownloadPlugin({ serverId, pluginId }: { serverId: string; pluginId: string }) {
 	const { invalidateByKey } = useQueriesData();
 
 	const axios = useClientApi();
@@ -134,7 +127,7 @@ function RedownloadPlugin({ serverId, pluginId }: { serverId: string, pluginId: 
 }
 
 function PluginVersion({ id: pluginId, version, filename }: { id: string; version: string; filename: string }) {
-	const { data } = useQuery({
+	const { data, isFetching } = useQuery({
 		queryKey: ['plugin-version', 'plugin', pluginId, version],
 		queryFn: () => Batcher.checkPluginVersion.get({ id: pluginId, version }),
 	});
@@ -158,6 +151,10 @@ function PluginVersion({ id: pluginId, version, filename }: { id: string; versio
 			invalidateByKey(['server', id, 'plugin-version']);
 		},
 	});
+
+	if (isFetching) {
+		return null;
+	}
 
 	if (data && new Date(Number(version)).getTime() !== new Date(data.version).getTime()) {
 		return (
