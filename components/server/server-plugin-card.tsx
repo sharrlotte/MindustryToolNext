@@ -86,7 +86,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 			{isMindustryToolPlugin && (
 				<div className="flex gap-1 justify-end items-center w-full">
 					<PluginVersion id={parts[0]} version={parts[1]} filename={filename} />
-					<RedownloadPlugin id={parts[0]} />
+					<RedownloadPlugin serverId={serverId} pluginId={parts[0]} />
 					<DeleteButton
 						variant="secondary"
 						size="secondary"
@@ -100,13 +100,13 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 	);
 }
 
-function RedownloadPlugin({ id }: { id: string }) {
+function RedownloadPlugin({ serverId, pluginId }: { serverId: string; pluginId: string }) {
 	const { invalidateByKey } = useQueriesData();
 
 	const axios = useClientApi();
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['server', id, 'plugin', id],
-		mutationFn: (pluginId: string) => createServerPlugin(axios, id, { pluginId }),
+		mutationKey: ['server', serverId, 'plugin', pluginId],
+		mutationFn: (pluginId: string) => createServerPlugin(axios, serverId, { pluginId }),
 		onSuccess: () => {
 			toast.success(<Tran text="server.add-plugin-success" />);
 		},
@@ -114,20 +114,20 @@ function RedownloadPlugin({ id }: { id: string }) {
 			toast.error(<Tran text="server.add-plugin-fail" />, { error });
 		},
 		onSettled: () => {
-			invalidateByKey(['server', id, 'plugin']);
-			invalidateByKey(['server', id, 'plugin-version']);
+			invalidateByKey(['server', serverId, 'plugin']);
+			invalidateByKey(['server', serverId, 'plugin-version']);
 		},
 	});
 
 	return (
-		<Button variant="outline" disabled={isPending} onClick={() => mutate(id)}>
+		<Button variant="outline" disabled={isPending} onClick={() => mutate(pluginId)}>
 			<DownloadIcon />
 		</Button>
 	);
 }
 
 function PluginVersion({ id: pluginId, version, filename }: { id: string; version: string; filename: string }) {
-	const { data } = useQuery({
+	const { data, isFetching } = useQuery({
 		queryKey: ['plugin-version', 'plugin', pluginId, version],
 		queryFn: () => Batcher.checkPluginVersion.get({ id: pluginId, version }),
 	});
@@ -151,6 +151,10 @@ function PluginVersion({ id: pluginId, version, filename }: { id: string; versio
 			invalidateByKey(['server', id, 'plugin-version']);
 		},
 	});
+
+	if (isFetching) {
+		return null;
+	}
 
 	if (data && new Date(Number(version)).getTime() !== new Date(data.version).getTime()) {
 		return (
