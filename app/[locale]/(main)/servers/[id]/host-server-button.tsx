@@ -1,11 +1,10 @@
 'use client';
 
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
 import { CheckCircleIcon } from '@/components/common/icons';
-import InternalLink from '@/components/common/internal-link';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -16,32 +15,11 @@ import { revalidate } from '@/action/common';
 import env from '@/constant/env';
 import useHttpStream from '@/hooks/use-http-stream';
 import useQueriesData from '@/hooks/use-queries-data';
-import useServerMaps from '@/hooks/use-server-maps';
+import HasServerMap from '@/app/[locale]/(main)/servers/[id]/has-server-map';
 
 type Props = {
 	id: string;
 };
-
-function HasServerMap({ id, children }: { id: string; children: ReactNode }) {
-	const { data, isError, isLoading } = useServerMaps(id);
-
-	if (isLoading) {
-		return <></>;
-	}
-
-	if (isError || !data || data.length === 0) {
-		return (
-			<div className="rounded-md px-2 py-1 h-9 space-x-2">
-				<Tran className="text-warning" text="server.no-map-warning" />
-				<InternalLink className="text-brand underline" href={`/servers/${id}/maps`}>
-					<Tran text="internal-server.add-map" />
-				</InternalLink>
-			</div>
-		);
-	}
-
-	return children;
-}
 
 export default function HostServerButton({ id }: Props) {
 	const [visible, setVisible] = useState(false);
@@ -94,13 +72,13 @@ export default function HostServerButton({ id }: Props) {
 				<Tran text="server.host" />
 			</Button>
 			<Dialog open={visible} onOpenChange={handleVisible}>
-				<DialogContent className="h-full w-full p-6 flex flex-col">
+				<DialogContent className="flex flex-col p-6 w-full h-full">
 					<DialogTitle>
 						<Tran text="server.hosting-server" asChild />
 					</DialogTitle>
-					<DialogDescription className="flex gap-1 overflow-hidden w-full text-ellipsis items-center">
+					<DialogDescription className="flex overflow-hidden gap-1 items-center w-full text-ellipsis">
 						{isPending ? (
-							<LoadingSpinner className="p-0 w-4 justify-start m-0" />
+							<LoadingSpinner className="justify-start p-0 m-0 w-4" />
 						) : isError ? (
 							<ErrorMessage error={error} />
 						) : (
@@ -108,7 +86,7 @@ export default function HostServerButton({ id }: Props) {
 						)}{' '}
 						<ColorText text={last} />
 					</DialogDescription>
-					<ScrollContainer className="h-full flex-1 flex w-full flex-col overflow-x-auto">
+					<ScrollContainer className="flex overflow-x-auto flex-col flex-1 w-full h-full">
 						{data?.map((text, index) => <ColorText key={index} text={text} />)}
 						{isError && <ErrorMessage error={error} />}
 					</ScrollContainer>
