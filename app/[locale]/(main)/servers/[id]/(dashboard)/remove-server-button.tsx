@@ -47,7 +47,7 @@ export default function RemoveServerButton({ id }: Props) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button className="border min-w-20" title="Delete" variant="destructive" disabled={isPending}>
+				<Button className="min-w-20" title="Delete" variant="destructive" disabled={isPending}>
 					<Tran text="server.remove" />
 				</Button>
 			</AlertDialogTrigger>
