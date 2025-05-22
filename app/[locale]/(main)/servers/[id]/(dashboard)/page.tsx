@@ -179,7 +179,7 @@ export default async function Page({ params }: Props) {
 							{status === 'HOST' && (
 								<div className="flex h-auto w-full md:max-w-[30vw] rounded-md overflow-hidden">
 									<Image
-										className="object-contain w-full h-auto border"
+										className="object-contain overflow-hidden w-full h-auto rounded-md border"
 										key={status}
 										src={`${env.url.api}/servers/${id}/image`}
 										alt={name}
