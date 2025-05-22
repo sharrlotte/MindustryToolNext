@@ -242,7 +242,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 								<FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
 							</ScrollContainer>
 							<Divider />
-							<CardFooter className="flex gap-1 justify-between p-0 w-full">
+							<CardFooter className="flex gap-1 justify-between px-0 pt-1 pb-0 w-full border-t">
 								<TagSettingDialog />
 								<Button onClick={handleHideFilterDialog} variant="primary">
 									{isChanged ? <Tran text="search" /> : <Tran text="close" />}
