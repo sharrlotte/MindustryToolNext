@@ -24,7 +24,7 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 export function Detail({ className, children }: DetailProps) {
 	return (
 		<ScrollContainer className="absolute inset-0 w-full h-full" additionalPadding="pr-4">
-			<div className={cn('relative flex flex-col h-full gap-6 overflow-hidden', className)}>{children}</div>
+			<div className={cn('flex overflow-hidden relative flex-col gap-6 h-full', className)}>{children}</div>
 		</ScrollContainer>
 	);
 }
@@ -36,7 +36,7 @@ type ContentProps = {
 
 export function DetailContent({ className, children }: ContentProps) {
 	return (
-		<div className={cn('relative h-full flex flex-col lg:grid lg:grid-cols-[1fr_400px] lg:divide-x overflow-auto', className)}>
+		<div className={cn('flex overflow-auto relative flex-col h-full lg:grid lg:grid-cols-[1fr_500px] lg:divide-x', className)}>
 			{children}
 		</div>
 	);
@@ -45,7 +45,7 @@ type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailInfo({ className, children }: InfoProps) {
 	return (
-		<div className={cn('flex flex-col gap-2 w-full text-muted-foreground text-sm h-full overflow-y-auto', className)}>
+		<div className={cn('flex overflow-y-auto flex-col gap-2 w-full h-full text-sm text-muted-foreground', className)}>
 			{children}
 		</div>
 	);
@@ -71,7 +71,7 @@ type ImageProps = React.HTMLAttributes<HTMLImageElement> & {
 
 export function DetailImage({ src, errorSrc, alt }: ImageProps) {
 	return (
-		<div className="p-2 h-auto lg:overflow-auto flex justify-center lg:max-h-full">
+		<div className="flex justify-center p-2 h-auto lg:overflow-auto lg:max-h-full">
 			<div className="w-full h-auto">
 				<FallbackImage className="w-full rounded-lg" src={src} alt={alt} errorSrc={errorSrc} loading="eager" />
 			</div>
@@ -85,7 +85,7 @@ export function DetailHeader({ className, children }: HeaderProps) {
 }
 
 export function DetailRow({ children }: { children: React.ReactNode }) {
-	return <div className="flex justify-between gap-1 items-center">{children}</div>;
+	return <div className="flex gap-1 justify-between items-center">{children}</div>;
 }
 
 type ActionsProps = React.HTMLAttributes<HTMLDivElement>;
@@ -158,8 +158,8 @@ function AuthorCard({ id }: { id: string }) {
 
 	if (isLoading) {
 		return (
-			<div className="flex items-center gap-2 overflow-hidden h-10 min-h-10">
-				<Skeleton className="size-8 rounded-full" />
+			<div className="flex overflow-hidden gap-2 items-center h-10 min-h-10">
+				<Skeleton className="rounded-full size-8" />
 				<div className="space-y-1">
 					<Skeleton className="w-32 h-3" />
 					<Skeleton className="w-20 h-3" />
@@ -179,11 +179,11 @@ function AuthorCard({ id }: { id: string }) {
 	const { name, roles } = data;
 
 	return (
-		<div className="flex items-center gap-2 min-h-10">
+		<div className="flex gap-2 items-center min-h-10">
 			<UserAvatar user={data} url />
-			<InternalLink className="cursor-pointer hover:underline flex flex-col gap-0" href={`/users/${data.id}`}>
+			<InternalLink className="flex flex-col gap-0 cursor-pointer hover:underline" href={`/users/${data.id}`}>
 				<span>{name}</span>
-				<ColorAsRole className="font-semibold capitalize text-xs" roles={roles}>
+				<ColorAsRole className="text-xs font-semibold capitalize" roles={roles}>
 					{findBestRole(roles)?.name}
 				</ColorAsRole>
 			</InternalLink>
