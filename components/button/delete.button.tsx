@@ -21,13 +21,24 @@ import { cn } from '@/lib/utils';
 const buttonVariants = cva('hover:bg-destructive/80', {
 	variants: {
 		variant: {
-			command: '',
-			default: 'border border-border bg-transparent bg-secondary hover:border-destructive',
+			command: 'w-full',
+			default: 'border border-border bg-transparent bg-secondary hover:border-destructive h-9 w-fit',
 			ghost: 'border-transparent absolute w-fit backdrop-brightness-50 hover:border-transparent',
+			secondary:
+				'inline-flex items-center gap-1 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 text-nowrap bg-secondary shadow-md border border-border',
+		},
+		size: {
+			default: '',
+			secondary: 'h-9 px-3 py-2',
+			sm: 'h-8 rounded-md px-3 text-xs',
+			lg: 'h-10 rounded-md px-8',
+			icon: 'h-7 w-7 aspect-square p-0',
+			command: 'w-full p-2',
 		},
 	},
 	defaultVariants: {
 		variant: 'default',
+		size: 'default',
 	},
 });
 

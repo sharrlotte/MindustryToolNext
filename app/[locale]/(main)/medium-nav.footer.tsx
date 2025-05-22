@@ -7,7 +7,6 @@ import NotificationDialog from '@/app/[locale]/(main)/notification.dialog';
 import ErrorMessage from '@/components/common/error-message';
 import { SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
-import Divider from '@/components/ui/divider';
 import UserAvatar from '@/components/user/user-avatar';
 
 import { useNavBar } from '@/context/navbar.context';
@@ -24,12 +23,11 @@ export default function MediumNavFooter() {
 	}
 
 	return (
-		<div className="space-y-1 mt-auto">
-			<Divider />
+		<div className="mt-auto space-y-1">
 			<NotificationDialog />
 			<InternalLink
-				className={cn('flex h-9 items-center justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground', {
-					'justify-start gap-2 py-2': visible,
+				className={cn('flex justify-center items-center p-1 h-9 rounded-md hover:bg-brand hover:text-brand-foreground', {
+					'gap-2 justify-start py-2': visible,
 				})}
 				href="/users/@me/setting"
 				aria-label="Setting"
