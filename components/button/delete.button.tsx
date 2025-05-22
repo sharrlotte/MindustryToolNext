@@ -29,7 +29,7 @@ const buttonVariants = cva('hover:bg-destructive/80', {
 		},
 		size: {
 			default: '',
-			secondary: 'h-9 px-3 py-2',
+			secondary: 'h-9 px-3 py-2 w-fit',
 			sm: 'h-8 rounded-md px-3 text-xs',
 			lg: 'h-10 rounded-md px-8',
 			icon: 'h-7 w-7 aspect-square p-0',
