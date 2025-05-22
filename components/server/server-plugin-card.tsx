@@ -84,7 +84,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 				</PopoverContent>
 			</Popover>
 			{isMindustryToolPlugin && (
-				<div className="flex justify-end items-center">
+				<div className="flex justify-end items-center w-full">
 					<PluginVersion id={parts[0]} version={parts[1]} filename={filename} />
 					<RedownloadPlugin id={parts[0]} />
 					<DeleteButton
