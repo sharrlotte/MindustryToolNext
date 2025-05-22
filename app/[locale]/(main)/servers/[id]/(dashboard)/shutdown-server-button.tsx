@@ -19,25 +19,25 @@ import { toast } from '@/components/ui/sonner';
 
 import { revalidate } from '@/action/common';
 import useClientApi from '@/hooks/use-client';
-import { removeServer } from '@/query/server';
+import useQueriesData from '@/hooks/use-queries-data';
+import { shutdownServer } from '@/query/server';
 
 import { useMutation } from '@tanstack/react-query';
-import useQueriesData from '@/hooks/use-queries-data';
 
 type Props = {
 	id: string;
 };
 
-export default function RemoveServerButton({ id }: Props) {
+export default function ShutdownServerButton({ id }: Props) {
 	const axios = useClientApi();
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['servers'],
-		mutationFn: async () => removeServer(axios, id),
+		mutationFn: async () => shutdownServer(axios, id),
 		onMutate: () => toast.loading(<Tran text="server.shutting-down" />),
-		onSuccess: (_data, _variable, id) => toast.success(<Tran text="server.remove-success" />, { id }),
-		onError: (error, _variable, id) => toast.error(<Tran text="server.remove-fail" />, { error, id }),
+		onSuccess: (_data, _variable, id) => toast.success(<Tran text="server.shutdown-success" />, { id }),
+		onError: (error, _variable, id) => toast.error(<Tran text="server.shutdown-fail" />, { error, id }),
 		onSettled: () => {
 			revalidate({ path: '/servers' });
 			invalidateByKey(['server']);
@@ -47,13 +47,13 @@ export default function RemoveServerButton({ id }: Props) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button className="min-w-20" title="Delete" variant="destructive" disabled={isPending}>
-					<Tran text="server.remove" />
+				<Button className="border min-w-20" title="Delete" variant="destructive" disabled={isPending}>
+					<Tran text="server.shutdown" />
 				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogTitle>
-					<Tran text="server.remove-confirm" />
+					<Tran text="server.shutdown-confirm" />
 				</AlertDialogTitle>
 				<Hidden>
 					<AlertDialogDescription></AlertDialogDescription>
@@ -63,8 +63,8 @@ export default function RemoveServerButton({ id }: Props) {
 						<Tran text="cancel" />
 					</AlertDialogCancel>
 					<AlertDialogAction variant="destructive" asChild>
-						<Button title="remove" disabled={isPending} onClick={() => mutate()}>
-							<Tran text="server.remove" />
+						<Button title="Shutdown" disabled={isPending} onClick={() => mutate()}>
+							<Tran text="server.shutdown" />
 						</Button>
 					</AlertDialogAction>
 				</AlertDialogFooter>
