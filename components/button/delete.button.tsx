@@ -1,30 +1,43 @@
 import { VariantProps, cva } from 'class-variance-authority';
 import React, { ReactNode, Suspense } from 'react';
 
-
-
 import { TrashIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
-
-
 import { cn } from '@/lib/utils';
-
 
 const buttonVariants = cva('hover:bg-destructive/80', {
 	variants: {
 		variant: {
-			command: '',
+			command: 'w-full',
 			default: 'border border-border bg-transparent bg-secondary hover:border-destructive h-9 w-fit',
 			ghost: 'border-transparent absolute w-fit backdrop-brightness-50 hover:border-transparent',
 			secondary:
 				'inline-flex items-center gap-1 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 text-nowrap bg-secondary shadow-md border border-border',
 		},
+		size: {
+			default: 'h-9 px-3 py-2',
+			sm: 'h-8 rounded-md px-3 text-xs',
+			lg: 'h-10 rounded-md px-8',
+			icon: 'h-7 w-7 aspect-square p-0',
+			command: 'w-full p-2',
+		},
 	},
 	defaultVariants: {
 		variant: 'default',
+		size: 'default',
 	},
 });
 
