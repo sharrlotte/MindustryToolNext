@@ -82,13 +82,13 @@ export default async function Page({ params }: Props) {
 	});
 
 	return (
-		<ScrollContainer className="flex flex-col gap-2 h-full p-2">
+		<ScrollContainer className="flex flex-col gap-2 p-2 h-full">
 			<div className="h-full">
-				<div className="flex min-h-full w-full flex-col gap-2">
-					<div className="flex flex-1 md:flex-row flex-col gap-2">
-						<div className="flex w-full min-w-80 flex-col gap-6 flex-1 overflow-hidden bg-card rounded-md p-4">
-							<div className="flex items-center gap-2">
-								<ServerIcon className="size-8 rounded-sm bg-foreground p-1 text-background" />
+				<div className="flex flex-col gap-2 w-full min-h-full">
+					<div className="flex flex-col flex-1 gap-2 md:flex-row">
+						<div className="flex overflow-hidden flex-col flex-1 gap-6 p-4 w-full rounded-md border min-w-80 bg-card">
+							<div className="flex gap-2 items-center">
+								<ServerIcon className="p-1 rounded-sm size-8 bg-foreground text-background" />
 								<ColorText className="text-2xl font-bold" text={name} />
 							</div>
 							<div className="grid grid-cols-2 gap-3 text-sm font-medium capitalize">
@@ -124,7 +124,7 @@ export default async function Page({ params }: Props) {
 								)}
 								<div className="flex flex-col gap-0.5">
 									{address && (
-										<div className="flex gap-1 flex-col">
+										<div className="flex flex-col gap-1">
 											<Tran text="server.address" />
 											<CopyButton variant="none" data={`${address}:${port}`}>
 												<span className="lowercase">
@@ -139,12 +139,12 @@ export default async function Page({ params }: Props) {
 						<CatchError>
 							<ProtectedElement session={session} filter={showPlayer}>
 								{status === 'HOST' && kicks > 0 && (
-									<div className="flex bg-card rounded-md flex-col">
+									<div className="flex flex-col rounded-md border bg-card">
 										<ScrollContainer className="flex flex-col gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit max-h-[500px]">
 											<Suspense
 												fallback={
 													<Skeletons number={kicks}>
-														<Skeleton className="h-10 w-full rounded-md" />
+														<Skeleton className="w-full h-10 rounded-md" />
 													</Skeletons>
 												}
 											>
@@ -157,14 +157,14 @@ export default async function Page({ params }: Props) {
 						</CatchError>
 					</div>
 					<CatchError>
-						<div className="flex gap-2 justify-between flex-col md:flex-row">
-							<div className="flex flex-wrap items-start justify-start gap-1 p-4 shadow-lg flex-1 bg-card rounded-md">
-								<div className="flex h-full flex-col items-start justify-start gap-1 w-full">
+						<div className="flex flex-col gap-2 justify-between md:flex-row">
+							<div className="flex flex-wrap flex-1 gap-1 justify-start items-start p-4 rounded-md border shadow-lg bg-card">
+								<div className="flex flex-col gap-1 justify-start items-start w-full h-full">
 									<h3>
 										<Tran text="server.system-status" />
 									</h3>
 									{status === 'HOST' || status === 'UP' ? (
-										<div className="h-full w-full flex flex-col">
+										<div className="flex flex-col w-full h-full">
 											<div className="space-x-1">
 												<Tran text="server.cpu-usage" />
 												<span>{cpuUsage}%</span>
@@ -176,15 +176,26 @@ export default async function Page({ params }: Props) {
 									)}
 								</div>
 							</div>
-
+							{status === 'HOST' && (
+								<div className="flex h-auto w-full md:max-w-[30vw] rounded-md overflow-hidden">
+									<Image
+										className="object-contain w-full h-auto border"
+										key={status}
+										src={`${env.url.api}/servers/${id}/image`}
+										alt={name}
+										width={500}
+										height={500}
+									/>
+								</div>
+							)}
 							<ProtectedElement session={session} filter={showPlayer}>
 								{status === 'HOST' && players > 0 && (
-									<div className="flex bg-card rounded-md flex-col">
+									<div className="flex flex-col rounded-md border bg-card">
 										<div className="grid gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit">
 											<Suspense
 												fallback={
 													<Skeletons number={players}>
-														<Skeleton className="h-11 w-full rounded-md" />
+														<Skeleton className="w-full h-11 rounded-md" />
 													</Skeletons>
 												}
 											>
@@ -194,23 +205,11 @@ export default async function Page({ params }: Props) {
 									</div>
 								)}
 							</ProtectedElement>
-							{status === 'HOST' && (
-								<div className="flex h-auto w-full md:max-w-[30vw] rounded-md overflow-hidden">
-									<Image
-										className="w-full"
-										key={status}
-										src={`${env.url.api}/servers/${id}/image`}
-										alt={name}
-										width={500}
-										height={500}
-									/>
-								</div>
-							)}
 						</div>
 					</CatchError>
 					<CatchError>
 						<ProtectedElement session={session} filter={canAccess}>
-							<div className={cn('flex flex-row items-center justify-end gap-2 bg-card rounded-md p-2 shadow-lg mt-auto')}>
+							<div className={cn('flex flex-row gap-2 justify-end items-center p-2 mt-auto rounded-md shadow-lg bg-card')}>
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
 								{(status === 'HOST' || status === 'UP') && <ShutdownServerButton id={id} />}
 								{status === 'HOST' ? (
