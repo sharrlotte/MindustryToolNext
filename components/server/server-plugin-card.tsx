@@ -95,7 +95,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 
 function PluginVersion({ id: pluginId, version, filename }: { id: string; version: string; filename: string }) {
 	const { data } = useQuery({
-		queryKey: ['plugin', pluginId, version],
+		queryKey: ['plugin-version', 'plugin', pluginId, version],
 		queryFn: () => Batcher.checkPluginVersion.get({ id: pluginId, version }),
 		retry: false,
 	});
