@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			description: t('schematic-description'),
 		},
 		alternates: generateAlternate('/schematics'),
+	
 	};
 }
 
@@ -40,7 +41,7 @@ export default async function Page() {
 	const uploadLink = `${env.url.base}/upload/schematic`;
 
 	return (
-		<div className="flex h-full flex-col gap-2 overflow-hidden p-2">
+		<div className="flex overflow-hidden flex-col gap-2 p-2 h-full">
 			<NameTagSearch type="schematic" />
 			<Client />
 			<PaginationFooter>
@@ -48,7 +49,7 @@ export default async function Page() {
 					<UploadIcon />
 					<Tran text="upload-schematic" />
 				</InternalLink>
-				<div className="flex justify-end items-center gap-2 flex-wrap">
+				<div className="flex flex-wrap gap-2 justify-end items-center">
 					<PaginationLayoutSwitcher />
 					<GridLayout>
 						<PaginationNavigator numberOfItems="/schematics/total" queryKey={['schematics', 'total']} />

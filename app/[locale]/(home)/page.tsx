@@ -17,7 +17,7 @@ import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 import LoginButton from '@/components/button/login.button';
 import ErrorScreen from '@/components/common/error-screen';
 import Hydrated from '@/components/common/hydrated';
-import { DiscordIcon, MindustryToolIcon, SchematicIcon } from '@/components/common/icons';
+import { DiscordIcon, GithubIcon, MindustryToolIcon, SchematicIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
 import Tran from '@/components/common/tran';
@@ -139,7 +139,7 @@ export default async function Page({ params }: Props) {
 	const { locale } = await params;
 
 	return (
-		<div className="h-full w-full overflow-y-auto no-scrollbar flex flex-col text-foreground">
+		<div className="flex overflow-y-auto flex-col w-full h-full no-scrollbar text-foreground">
 			<Header locale={locale} />
 			<Hero locale={locale} />
 			<AboutMindustrySection locale={locale} />
@@ -158,11 +158,11 @@ export default async function Page({ params }: Props) {
 async function Header({ locale }: { locale: Locale }) {
 	return (
 		<NavBarProvider>
-			<header className="sticky top-0 z-50 bg-background border-b border-border">
-				<div className="container mx-auto px-4 py-4 flex justify-between items-center">
+			<header className="sticky top-0 z-50 border-b bg-background border-border">
+				<div className="container flex justify-between items-center px-4 py-4 mx-auto">
 					<div className="flex items-center space-x-2">
-						<div className="w-10 h-10 text-brand rounded-md flex items-center justify-center">
-							<span className="font-bold text-xl">
+						<div className="flex justify-center items-center w-10 h-10 rounded-md text-brand">
+							<span className="text-xl font-bold">
 								<SmallNavbarToggle className="px-0 py-0">
 									<MindustryToolIcon />
 								</SmallNavbarToggle>
@@ -171,10 +171,10 @@ async function Header({ locale }: { locale: Locale }) {
 						<span className="text-xl font-bold">Mindustry Tool</span>
 					</div>
 					<SmallNavbarCollapse>
-						<div className="flex h-full flex-col justify-between overflow-hidden p-2">
-							<div className="flex h-full flex-col overflow-hidden">
+						<div className="flex overflow-hidden flex-col justify-between p-2 h-full">
+							<div className="flex overflow-hidden flex-col h-full">
 								<span className="flex flex-col gap-2">
-									<span className="flex justify-between items-start rounded-sm p-1">
+									<span className="flex justify-between items-start p-1 rounded-sm">
 										<NavHeader />
 										<SmallNavbarInsideToggle />
 									</span>
@@ -205,7 +205,7 @@ async function HeaderLogin({ locale }: { locale: Locale }) {
 
 	return (
 		<div>
-			<LoginButton className="w-fit px-6 border-brand">
+			<LoginButton className="px-6 w-fit border-brand">
 				<T locale={locale} text="login" />
 			</LoginButton>
 		</div>
@@ -215,22 +215,22 @@ async function HeaderLogin({ locale }: { locale: Locale }) {
 async function Hero({ locale }: { locale: Locale }) {
 	return (
 		<section className="bg-background text-foreground">
-			<div className="container mx-auto px-4 text-center">
-				<h1 className="text-4xl md:text-6xl font-bold mb-6">Mindustry Tool</h1>
-				<p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8">
+			<div className="container px-4 mx-auto text-center">
+				<h1 className="mb-6 text-4xl font-bold md:text-6xl">Mindustry Tool</h1>
+				<p className="mx-auto mb-8 max-w-3xl text-xl md:text-2xl">
 					<T locale={locale} text="home.hero-title" />
 					{/* Your comprehensive platform for Mindustry schematics, maps, servers, and community resources */}
 				</p>
-				<div className="grid grid-cols-2 w-fit mx-auto justify-center gap-4 text-sm">
+				<div className="grid grid-cols-2 gap-4 justify-center mx-auto text-sm w-fit">
 					<InternalLink
-						className="bg-brand/90 text-brand-foreground hover:bg-brand p-4 py-2 rounded-md text-center justify-center items-center"
+						className="justify-center items-center p-4 py-2 text-center rounded-md bg-brand/90 text-brand-foreground hover:bg-brand"
 						href="/schematics"
 					>
 						<T locale={locale} text="home.explore-schematics" asChild />
 						{/* Explore Schematics */}
 					</InternalLink>
 					<InternalLink
-						className="border border-brand text-brand p-4 py-2 rounded-md text-center justify-center items-center"
+						className="justify-center items-center p-4 py-2 text-center rounded-md border border-brand text-brand"
 						href="/maps"
 					>
 						<T locale={locale} text="home.browse-map" asChild />
@@ -246,13 +246,13 @@ async function Hero({ locale }: { locale: Locale }) {
 async function AboutMindustrySection({ locale }: { locale: Locale }) {
 	return (
 		<section className="py-16 text-foreground bg-card">
-			<div className="container mx-auto px-4">
-				<h2 className="text-3xl font-bold mb-8 text-center">
+			<div className="container px-4 mx-auto">
+				<h2 className="mb-8 text-3xl font-bold text-center">
 					<T locale={locale} text="home.about-mindustry" />
 					{/* About Mindustry */}
 				</h2>
-				<div className="flex flex-col md:flex-row gap-8">
-					<div className="w-full md:w-1/2 aspect-video overflow-hidden rounded-lg">
+				<div className="flex flex-col gap-8 md:flex-row">
+					<div className="overflow-hidden w-full rounded-lg md:w-1/2 aspect-video">
 						<YouTubeEmbed videoid="gUu3AhqpyHo" />
 					</div>
 					<div className="md:w-1/2">
@@ -279,13 +279,13 @@ async function AboutMindustrySection({ locale }: { locale: Locale }) {
 async function AboutMindustryToolSection({ locale }: { locale: Locale }) {
 	return (
 		<section className="py-16">
-			<div className="container mx-auto px-4">
-				<h2 className="text-3xl font-bold mb-8 text-center">
+			<div className="container px-4 mx-auto">
+				<h2 className="mb-8 text-3xl font-bold text-center">
 					<T locale={locale} text="home.about-mindustry-tool" />
 					{/* About Mindustry Tool */}
 				</h2>
-				<div className="flex flex-col md:flex-row-reverse gap-8">
-					<div className="w-full md:w-1/2 aspect-video overflow-hidden rounded-lg">
+				<div className="flex flex-col gap-8 md:flex-row-reverse">
+					<div className="overflow-hidden w-full rounded-lg md:w-1/2 aspect-video">
 						<YouTubeEmbed videoid="gUu3AhqpyHo" />
 					</div>
 					<div className="md:w-1/2">
@@ -310,7 +310,7 @@ async function AboutMindustryToolSection({ locale }: { locale: Locale }) {
 
 function CheckCircleIcon() {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+		<svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
 			<path
 				fillRule="evenodd"
 				d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -331,17 +331,17 @@ const serverFeatures = [
 async function ServerSection({ locale }: { locale: Locale }) {
 	return (
 		<section className="py-16 bg-background text-foreground">
-			<div className="container mx-auto px-4">
-				<h2 className="text-3xl font-bold mb-8 text-center">
+			<div className="container px-4 mx-auto">
+				<h2 className="mb-8 text-3xl font-bold text-center">
 					<T locale={locale} text="home.create-server-for-free" />
 					{/* Create Your Mindustry Server For Free */}
 				</h2>
-				<div className="flex flex-col md:flex-row gap-8 items-stretch">
-					<div id="server" className="md:w-1/2 h-full">
+				<div className="flex flex-col gap-8 items-stretch md:flex-row">
+					<div id="server" className="h-full md:w-1/2">
 						<HomeServerPreview />
 					</div>
 					<div className="md:w-1/2">
-						<h3 className="text-2xl font-semibold mb-4 text-brand">
+						<h3 className="mb-4 text-2xl font-semibold text-brand">
 							<T locale={locale} text="home.host-title" asChild />
 							{/* Powerful Server Hosting at No Cost */}
 						</h3>
@@ -349,10 +349,10 @@ async function ServerSection({ locale }: { locale: Locale }) {
 							<T locale={locale} text="home.host-description" asChild />
 							{/* Launch your own Mindustry server completely free with our powerful hosting platform. Whether you want to play with friends or build a community, we've got you covered. */}
 						</p>
-						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+						<div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2">
 							{serverFeatures.map((item, index) => (
 								<div className="flex items-start" key={index}>
-									<div className="mr-2 mt-1 bg-brand text-brand-foreground p-1 rounded-full">
+									<div className="p-1 mt-1 mr-2 rounded-full bg-brand text-brand-foreground">
 										<CheckCircleIcon />
 									</div>
 									<T locale={locale} text={item} />
@@ -361,7 +361,7 @@ async function ServerSection({ locale }: { locale: Locale }) {
 						</div>
 						<InternalLink
 							href="/servers?create=true"
-							className="bg-brand/90 text-brand-foreground hover:bg-brand w-full md:w-auto px-4 py-2 rounded-md"
+							className="px-4 py-2 w-full rounded-md bg-brand/90 text-brand-foreground hover:bg-brand md:w-auto"
 						>
 							<T locale={locale} text="home.create-free-server" asChild />
 							{/* Create Your Free Server */}
@@ -376,8 +376,8 @@ async function ServerSection({ locale }: { locale: Locale }) {
 async function Statistic({ locale }: { locale: Locale }) {
 	return (
 		<section className="py-16">
-			<div className="container mx-auto px-4">
-				<h2 className="text-3xl font-bold mb-12 text-center text-brand-foreground">
+			<div className="container px-4 mx-auto">
+				<h2 className="mb-12 text-3xl font-bold text-center text-brand-foreground">
 					<T locale={locale} text="home.explore-our-collection" />
 				</h2>
 				<Suspense fallback={<div className="h-[300px]"></div>}>
@@ -396,7 +396,7 @@ async function StatisticSection({ locale }: { locale: Locale }) {
 	const [schematics, maps] = await Promise.all([getCachedSchematicCount(axios), getCachedMapCount(axios)]);
 
 	return (
-		<FlyIn className="grid grid-cols-1 md:grid-cols-3 gap-8">
+		<FlyIn className="grid grid-cols-1 gap-8 md:grid-cols-3">
 			{[
 				{ icon: SchematicIcon, text: 'home.schematics-count', count: schematics, color: 'text-brand', link: '#new-schematics' },
 				{ icon: MapIcon, text: 'home.maps-count', count: maps, color: 'text-cyan-400', link: '#new-maps' },
@@ -428,19 +428,19 @@ async function LoginAction({ locale }: { locale: Locale }) {
 	}
 
 	return (
-		<section className="mx-auto p-4">
-			<h2 className="text-3xl text-center font-bold text-card-foreground">
+		<section className="p-4 mx-auto">
+			<h2 className="text-3xl font-bold text-center text-card-foreground">
 				<T locale={locale} text="home.ready-to-start" asChild />
 			</h2>
-			<p className="text-center mb-4">
+			<p className="mb-4 text-center">
 				<T locale={locale} text="home.register-and-join" asChild />
 			</p>
-			<div className="flex flex-col md:flex-row justify-center gap-4">
+			<div className="flex flex-col gap-4 justify-center md:flex-row">
 				<a
 					className=" rounded-md bg-[rgb(88,101,242)] text-white p-2 transition-colors hover:bg-[rgb(76,87,214)]"
 					href={`${env.url.api}/oauth2/discord`}
 				>
-					<div className="flex items-center justify-center gap-1">
+					<div className="flex gap-1 justify-center items-center">
 						<DiscordIcon /> <T locale={locale} text="home.login-with-discord" />
 					</div>
 				</a>
@@ -452,7 +452,7 @@ async function LoginAction({ locale }: { locale: Locale }) {
 async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryType }) {
 	return (
 		<section id="new-schematics" className="py-16 bg-background text-foreground">
-			<div className="container mx-auto px-4">
+			<div className="container px-4 mx-auto">
 				<div className="flex justify-between items-center mb-8 w-full">
 					<h2 className="text-3xl font-bold text-nowrap">
 						<Tran text="home.new-schematics" asChild />
@@ -461,7 +461,7 @@ async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryTy
 						<Tran className="text-base" text="see-all" /> {'->'}
 					</InternalLink>
 				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 					<Suspense>
 						<InternalHomeSchematicPreview queryParam={queryParam} />
 					</Suspense>
@@ -473,7 +473,7 @@ async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryTy
 async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) {
 	return (
 		<section id="new-maps" className="py-16">
-			<div className="container mx-auto px-4">
+			<div className="container px-4 mx-auto">
 				<div className="flex justify-between items-center mb-8 w-full">
 					<h2 className="text-3xl font-bold text-nowrap">
 						<Tran text="home.new-maps" asChild />
@@ -482,7 +482,7 @@ async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) 
 						<Tran className="text-base" text="see-all" /> {'->'}
 					</InternalLink>
 				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 					<Suspense>
 						<InternalHomeMapPreview queryParam={queryParam} />
 					</Suspense>
@@ -494,19 +494,23 @@ async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) 
 
 function Footer({ locale }: { locale: Locale }) {
 	return (
-		<footer className="bg-background border-t border-border py-12 text-foreground">
-			<div className="container mx-auto px-4">
-				<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+		<footer className="py-12 border-t bg-background border-border text-foreground">
+			<div className="container px-4 mx-auto">
+				<div className="grid grid-cols-1 gap-8 md:grid-cols-4">
 					<div>
-						<h3 className="text-xl font-bold mb-4">Mindustry Tool</h3>
+						<h3 className="mb-4 text-xl font-bold">Mindustry Tool</h3>
 						<p className="text-gray-400">
 							<T locale={locale} text="home.footer-description" />
-							{/* Your comprehensive platform for Mindustry schematics, maps, servers, and community resources. */}
+						</p>
+						<p>
+							<InternalLink href="https://github.com/MindustryVN">
+								<GithubIcon />
+							</InternalLink>
 						</p>
 					</div>
 					{groups.map((group, index) => (
 						<div key={index}>
-							<h4 className="font-semibold mb-4">
+							<h4 className="mb-4 font-semibold">
 								<T locale={locale} text={group.key} />
 							</h4>
 							<ul className="space-y-2 text-gray-400">
@@ -521,7 +525,7 @@ function Footer({ locale }: { locale: Locale }) {
 						</div>
 					))}
 				</div>
-				<div className="border-t border-border mt-8 pt-8 text-center ">
+				<div className="pt-8 mt-8 text-center border-t border-border">
 					<p>© {new Date().getFullYear()} Mindustry Tool. All rights reserved.</p>
 				</div>
 			</div>
@@ -553,7 +557,7 @@ async function InternalHomeSchematicPreview({ queryParam }: { queryParam: ItemPa
 	}
 
 	return result.slice(0, 3).map((schematic, index) => (
-		<div key={schematic.id} className="m-0 snap-center p-0 list-none">
+		<div key={schematic.id} className="p-0 m-0 list-none snap-center">
 			<FadeIn delay={index}>
 				<SchematicPreviewCard schematic={schematic} />
 			</FadeIn>
@@ -569,7 +573,7 @@ async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginati
 	}
 
 	return result.slice(0, 3).map((map, index) => (
-		<div key={map.id} className="m-0 snap-center p-0 list-none">
+		<div key={map.id} className="p-0 m-0 list-none snap-center">
 			<FadeIn delay={index}>
 				<MapPreviewCard map={map} />
 			</FadeIn>

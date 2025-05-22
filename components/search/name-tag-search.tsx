@@ -52,7 +52,7 @@ type NameTagSearchProps = {
 
 export default function NameTagSearch({ className, type, useSort = true, useTag = true }: NameTagSearchProps) {
 	const [filter, setFilter] = useState('');
-	const [selectedMod, setSelectedMod] = useLocalStorage<Mod[]>('mods',[]);
+	const [selectedMod, setSelectedMod] = useLocalStorage<Mod[]>('mods', []);
 
 	const params = useSearchQuery(ItemPaginationQuery);
 
@@ -203,27 +203,27 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 	return (
 		<div className={cn('flex flex-col gap-2 text-sm', className)}>
 			<div className="flex justify-center gap-1.5 overflow-hidden rounded-sm">
-				<SearchBar className="bg-card overflow-hidden">
+				<SearchBar className="overflow-hidden bg-card">
 					<SearchIcon className="size-5 shrink-0" />
 					<TagBadgeContainer tagGroups={filterBy} handleDeleteTag={handleDeleteTag} />
 					<SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
 				</SearchBar>
 				{useTag && (
-					<Button className="h-10 shadow-md bg-card ml-auto" title="filter" variant="outline" onClick={handleShowFilterDialog}>
+					<Button className="ml-auto h-10 shadow-md bg-card" title="filter" variant="outline" onClick={handleShowFilterDialog}>
 						<FilterIcon className="size-5" />
 					</Button>
 				)}
 			</div>
 			<Suspense>
-				{useTag && showFilterDialog && (
+				{useTag && (
 					<div
-						className={cn('fixed bottom-0 left-0 right-0 top-0 z-50 hidden items-center justify-center backdrop-blur-sm', {
+						className={cn('hidden fixed top-0 right-0 bottom-0 left-0 z-50 justify-center items-center backdrop-blur-sm', {
 							flex: showFilterDialog,
 						})}
 					>
-						<Card className="flex h-screen w-screen items-center md:h-4/5 md:w-4/5 flex-col gap-2 rounded-none p-4 md:rounded-lg">
+						<Card className="flex flex-col gap-2 items-center p-4 w-screen h-screen rounded-none md:h-4/5 md:w-4/5 md:rounded-lg">
 							<div className="flex gap-1 w-full">
-								<SearchBar className="w-full p-1">
+								<SearchBar className="p-1 w-full">
 									<SearchIcon className="p-1" />
 									<SearchInput
 										placeholder="filter"
@@ -242,7 +242,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 								<FilterTags filter={filter} filterBy={filterBy} tags={tags} handleTagGroupChange={handleTagGroupChange} />
 							</ScrollContainer>
 							<Divider />
-							<CardFooter className="flex w-full justify-between gap-1 p-0">
+							<CardFooter className="flex gap-1 justify-between p-0 w-full">
 								<TagSettingDialog />
 								<Button onClick={handleHideFilterDialog} variant="primary">
 									{isChanged ? <Tran text="search" /> : <Tran text="close" />}
@@ -317,7 +317,7 @@ function AuthorFilter({
 									key={user.id}
 									onClick={() => handleAuthorChange(user.id === authorId ? null : user.id)}
 								>
-									<div className="flex h-8 min-h-8 items-end gap-2 overflow-hidden">
+									<div className="flex overflow-hidden gap-2 items-end h-8 min-h-8">
 										<UserAvatar user={user} />
 										<ColorAsRole className="font-semibold capitalize" roles={user.roles}>
 											{user.name}

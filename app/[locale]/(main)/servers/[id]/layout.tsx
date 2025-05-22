@@ -91,7 +91,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 	}
 
 	if (!server) {
-		throw Error('Should suppose to happen');
+		throw Error('Should never happen');
 	}
 
 	const links: {
@@ -176,7 +176,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 					))}
 				</NavLinkContainer>
 			</NavLinkProvider>
-			<div className="h-full w-full overflow-hidden flex flex-col" key="child">
+			<div className="flex overflow-hidden flex-col w-full h-full" key="child">
 				{children}
 			</div>
 		</div>
