@@ -15,6 +15,8 @@ import { Locale, locales } from '@/i18n/config';
 import { cn, generateAlternate } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 
+import { GoogleAnalytics } from '@next/third-parties/google';
+
 import './../globals.css';
 
 const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
@@ -95,11 +97,12 @@ export default async function Root({ children, params }: RootProps) {
 			data-color-mode="dark"
 			suppressHydrationWarning
 		>
-			<body className="h-full w-full overflow-hidden">
+			<body className="overflow-hidden w-full h-full">
 				<QueryProvider>
 					<ThemeProvider>
 						<SessionProvider locale={locale}>
 							<SocketProvider>
+								<GoogleAnalytics gaId="G-CGKXS6096G" />
 								<Toaster />
 								<ClientInit />
 								{children}
