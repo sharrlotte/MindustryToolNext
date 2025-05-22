@@ -89,6 +89,7 @@ export default function ServerPluginCard({ serverId, plugin: { name, filename, m
 					<RedownloadPlugin id={parts[0]} />
 					<DeleteButton
 						variant="secondary"
+						size="secondary"
 						description={<Tran text="delete-alert" args={{ name }} />}
 						isLoading={isDeleting}
 						onClick={() => deletePluginById()}
