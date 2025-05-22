@@ -209,7 +209,7 @@ export default async function Page({ params }: Props) {
 					</CatchError>
 					<CatchError>
 						<ProtectedElement session={session} filter={canAccess}>
-							<div className={cn('flex flex-row gap-2 justify-end items-center p-2 mt-auto rounded-md shadow-lg bg-card')}>
+							<div className={cn('flex flex-row gap-2 justify-end items-center p-2 mt-auto rounded-md border shadow-lg bg-card')}>
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
 								{(status === 'HOST' || status === 'UP') && <ShutdownServerButton id={id} />}
 								{status === 'HOST' ? (
