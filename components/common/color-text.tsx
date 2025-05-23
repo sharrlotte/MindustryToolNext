@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { getColor } from '@/lib/utils';
 
-const COLOR_REGEX = /(\[[#]*[a-zA-Z0-9]*\]|\\u001b\[[0-9;]*[0-9]+m[0-9]*)/gim;
+const COLOR_REGEX = /(\[[#]*[a-zA-Z0-9]*\]|\[[0-9;]*[0-9]+m[0-9]*)/gim;
 
 const ANSI: Record<string, Format> = {
 	//ANSI color codes
@@ -178,7 +178,7 @@ type ColorAndFormat = {
 };
 
 function resolveColorAndFormat(color: string): ColorAndFormat {
-	if (color.startsWith('[')) {
+	if (color.startsWith('[') && !color.includes('m')) {
 		color = color.substring(1, color.length - 1);
 		color = color.startsWith('#') ? color.padEnd(7, '0') : getColor(color.toLowerCase().trim());
 
@@ -189,7 +189,7 @@ function resolveColorAndFormat(color: string): ColorAndFormat {
 			color,
 		};
 	} else {
-		color = color.substring('\\u001b['.length);
+		color = color.substring('['.length);
 
 		const keys = color.substring(0, color.indexOf('m')).split(';').filter(Boolean);
 
