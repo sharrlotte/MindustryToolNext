@@ -63,7 +63,7 @@ export function PlayerListSkeleton({ players }: PlayerListSkeletonProps) {
 
 	return Array(players)
 		.fill(1)
-		.map((_, index) => <Skeleton className="h-10 w-full" key={index} />);
+		.map((_, index) => <Skeleton className="w-full h-10" key={index} />);
 }
 
 type PlayerCardProps = {
@@ -92,12 +92,12 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 					ease: 'easeOut',
 				},
 			}}
-			className="flex flex-col gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1"
+			className="flex overflow-hidden flex-col gap-2 px-2 py-1 rounded-md bg-secondary"
 		>
 			<div className="flex gap-1 items-center">
 				<div className="rounded-full size-2" style={{ backgroundColor: `#${team.color}` }} />
-				<div className="flex justify-between gap-1 items-center w-full">
-					<span className="flex items-center justify-center gap-1">
+				<div className="flex gap-1 justify-between items-center w-full">
+					<span className="flex gap-1 justify-center items-center">
 						<span>{locale && (localeToFlag[locale] ?? locale)}</span>
 						<ColorText className="font-semibold" text={name} />
 						{isAdmin && ''}
@@ -111,7 +111,7 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 					</div>
 				</div>
 			</div>
-			<div className="flex items-center">{userId && <IdUserCard id={userId} />}</div>
+			{userId && <IdUserCard id={userId} />}
 		</motion.div>
 	);
 }
