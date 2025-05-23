@@ -74,7 +74,7 @@ export default function InitServerButton({ id }: Props) {
 				<Tran text="server.init" />
 			</Button>
 			<Dialog open={visible} onOpenChange={handleVisible}>
-				<DialogContent className="flex flex-col p-6 w-full h-full">
+				<DialogContent className="flex flex-col p-6 w-full h-full border rounded-lg">
 					<DialogTitle>
 						<Tran text="server.initiating-server" asChild />
 					</DialogTitle>

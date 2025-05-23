@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { getColor } from '@/lib/utils';
 
-const COLOR_REGEX = /(\[[#]*[a-zA-Z0-9]*\]|\[[0-9;]*[0-9]+m[0-9]*)/gim;
+const COLOR_REGEX = /(\[[#]*[a-fA-F0-9]*\]|\[[#]*[a-zA-Z]*\]|\[[0-9;]*[0-9]+m[0-9]*)/gim;
 
 const ANSI: Record<string, Format> = {
 	//ANSI color codes

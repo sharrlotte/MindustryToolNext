@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -12,9 +10,7 @@ import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from
 type Props = {
 	id: string;
 };
-const DownloadPluginList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/plugins/download-plugin-list'), {
-	ssr: false,
-});
+const DownloadPluginList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/plugins/download-plugin-list'));
 
 export default function ServerPluginPage({ id }: Props) {
 	return (
@@ -29,10 +25,10 @@ export default function ServerPluginPage({ id }: Props) {
 					</ServerTabsTrigger>
 				</ServerTabsList>
 				<ScrollContainer>
-					<ServerTabsContent className="w-full gap-2 md:grid-cols-2 lg:grid-cols-3 grid-flow-row" display="grid" value="list">
+					<ServerTabsContent value="list">
 						<PluginList id={id} />
 					</ServerTabsContent>
-					<ServerTabsContent className="h-full" value="download">
+					<ServerTabsContent value="download">
 						<DownloadPluginList />
 					</ServerTabsContent>
 				</ScrollContainer>

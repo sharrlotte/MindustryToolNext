@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -13,7 +11,7 @@ type Props = {
 	id: string;
 };
 
-const DownloadMapList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/maps/download-map-list'), { ssr: false });
+const DownloadMapList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/maps/download-map-list'));
 
 export default function ServerMapPage({ id }: Props) {
 	return (
@@ -28,14 +26,10 @@ export default function ServerMapPage({ id }: Props) {
 					</ServerTabsTrigger>
 				</ServerTabsList>
 				<ScrollContainer>
-					<ServerTabsContent
-						className="w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-start gap-2"
-						display="grid"
-						value="list"
-					>
+					<ServerTabsContent value="list">
 						<MapList id={id} />
 					</ServerTabsContent>
-					<ServerTabsContent className="h-full" value="download">
+					<ServerTabsContent value="download">
 						<DownloadMapList />
 					</ServerTabsContent>
 				</ScrollContainer>

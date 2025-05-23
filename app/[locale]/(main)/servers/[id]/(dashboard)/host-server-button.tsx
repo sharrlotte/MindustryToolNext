@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 
+import HasServerMap from '@/app/[locale]/(main)/servers/[id]/(dashboard)/has-server-map';
+
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
 import { CheckCircleIcon } from '@/components/common/icons';
@@ -13,9 +15,8 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } fr
 
 import { revalidate } from '@/action/common';
 import env from '@/constant/env';
-import useQueriesData from '@/hooks/use-queries-data';
-import HasServerMap from '@/app/[locale]/(main)/servers/[id]/(dashboard)/has-server-map';
 import useHttpStream from '@/hooks/use-http-stream';
+import useQueriesData from '@/hooks/use-queries-data';
 
 type Props = {
 	id: string;
@@ -72,7 +73,7 @@ export default function HostServerButton({ id }: Props) {
 				<Tran text="server.host" />
 			</Button>
 			<Dialog open={visible} onOpenChange={handleVisible}>
-				<DialogContent className="flex flex-col p-6 w-full h-full">
+				<DialogContent className="flex flex-col p-6 w-full h-full border rounded-lg">
 					<DialogTitle>
 						<Tran text="server.hosting-server" asChild />
 					</DialogTitle>
