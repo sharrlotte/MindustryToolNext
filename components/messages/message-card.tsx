@@ -42,7 +42,7 @@ export function MessageCard({ className, message }: Props) {
 					) : (
 						<Skeleton className="w-24 h-4 max-h-4" />
 					)}
-					<RelativeTime className="text-muted-foreground" date={new Date(createdAt)} />
+					<RelativeTime className="text-muted-foreground text-sm" date={new Date(createdAt)} />
 				</div>
 				<div className="grid overflow-hidden w-full no-scrollbar">
 					<TooltipProvider>
