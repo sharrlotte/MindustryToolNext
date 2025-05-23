@@ -177,7 +177,7 @@ export default async function Page({ params }: Props) {
 								</div>
 							</div>
 							{status === 'HOST' && (
-								<div className="flex h-auto w-full md:max-w-[30vw] rounded-md overflow-hidden">
+								<div className="flex h-auto w-full md:max-w-[40vw] rounded-md overflow-hidden">
 									<Image
 										className="object-contain overflow-hidden w-full h-auto rounded-md border"
 										key={status}

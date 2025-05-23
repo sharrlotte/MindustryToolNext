@@ -20,7 +20,7 @@ type DeleteMapButtonProps = {
 
 export function DeleteMapButton({ id, name, variant }: DeleteMapButtonProps) {
 	const axios = useClientApi();
-	const { back } = useRouter();
+	const router = useRouter();
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
@@ -29,8 +29,8 @@ export function DeleteMapButton({ id, name, variant }: DeleteMapButtonProps) {
 		},
 		mutationFn: (id: string) => deleteMap(axios, id),
 		onSuccess: () => {
-			back();
 			toast.success(<Tran text="delete-success" />);
+			router.push('/admin/maps');
 		},
 		onError: (error) => {
 			toast.error(<Tran text="delete-fail" />, { error });
