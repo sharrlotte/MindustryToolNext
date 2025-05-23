@@ -16,16 +16,7 @@ export default function Page() {
 		<div className="overflow-y-auto p-8 h-full">
 			{/* <MarkdownEditor value={content} onChange={(value) => setContent(value(content))} /> */}
 			<ColorText
-				text="[1mServer started.[0m
-
-[1mGame over! Reached wave 1 with 0 players online on map Interitus 1.[0m
-
-[1mSelected next map to be Spore_Erosion_6.3v.[0m
-
-[1mExecute: say Mahiru Shiina: hello[0m
-
-[1m[3m[96mServer: [0m[97mMahiru Shiina: hello[0m
-"
+				text="[1m[90m[1m[93m[0m<[3m[96maaaaaawdawdaw[0m: [1m[97m:v[0m>[0m"
 			></ColorText>
 		</div>
 	);
