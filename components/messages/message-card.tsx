@@ -27,8 +27,8 @@ export function MessageCard({ className, message }: Props) {
   });
 
   return (
-    <div className={cn('flex w-full gap-2 text-wrap rounded-lg p-2 text-base hover:bg-secondary/50', className)}>
-      {data ? <UserAvatar url={`/users/${userId}`} user={data} /> : <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />}
+    <div className={cn('flex gap-2 p-2 w-full text-base rounded-lg text-wrap hover:bg-secondary/50', className)}>
+      {data ? <UserAvatar url={`/users/${userId}`} user={data} /> : <Skeleton className="flex justify-center items-center capitalize rounded-full border size-8 min-h-8 min-w-8 border-border" />}
       <div className="overflow-hidden">
         <div className="flex gap-2">
           {data ? (
@@ -36,16 +36,16 @@ export function MessageCard({ className, message }: Props) {
               {data.name}
             </ColorAsRole>
           ) : (
-            <Skeleton className="h-4 max-h-4 w-24" />
+            <Skeleton className="w-24 h-4 max-h-4" />
           )}
-          <RelativeTime date={new Date(createdAt)} />
+          <RelativeTime className='text-muted-foreground' date={new Date(createdAt)} />
         </div>
-        <div className="no-scrollbar grid w-full overflow-hidden">
+        <div className="grid overflow-hidden w-full no-scrollbar">
           <TooltipProvider>
             {contents.map(({ text, createdAt }, index) => (
               <Tooltip key={index}>
-                <TooltipTrigger className="flex text-start w-fit p-0 items-start justify-start cursor-default pointer-events-auto select-text">
-                  <ColorText className="overflow-hidden break-words text-base" text={text} />
+                <TooltipTrigger className="flex justify-start items-start p-0 cursor-default pointer-events-auto select-text text-start w-fit">
+                  <ColorText className="overflow-hidden text-base break-words" text={text} />
                 </TooltipTrigger>
                 <TooltipContent>{new Date(createdAt).toLocaleString()}</TooltipContent>
               </Tooltip>
@@ -59,14 +59,14 @@ export function MessageCard({ className, message }: Props) {
 
 export function MessageCardSkeleton() {
   return (
-    <div className="h-16 flex w-full gap-2 text-wrap rounded-lg p-2 text-base">
-      <Skeleton className="flex size-8 min-h-8 min-w-8 items-center justify-center rounded-full border border-border capitalize" />
+    <div className="flex gap-2 p-2 w-full h-16 text-base rounded-lg text-wrap">
+      <Skeleton className="flex justify-center items-center capitalize rounded-full border size-8 min-h-8 min-w-8 border-border" />
       <div className="overflow-hidden">
         <div className="flex gap-2">
-          <Skeleton className="h-4 max-h-4 w-24" />
+          <Skeleton className="w-24 h-4 max-h-4" />
         </div>
-        <div className="no-scrollbar grid w-full gap-1 overflow-hidden">
-          <Skeleton className="h-6 w-full rounded-md" />
+        <div className="grid overflow-hidden gap-1 w-full no-scrollbar">
+          <Skeleton className="w-full h-6 rounded-md" />
         </div>
       </div>
     </div>
