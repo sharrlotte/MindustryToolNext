@@ -11,6 +11,7 @@ import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImag
 
 import env from '@/constant/env';
 import { Map } from '@/types/response/Map';
+import { DeleteMapButton } from '@/components/map/delete-map.button';
 
 type UploadMapPreviewCardProps = {
 	map: Map;
@@ -42,6 +43,7 @@ function UploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCardProps) 
 				</PreviewHeader>
 				<PreviewActions>
 					<DownloadButton href={downloadLink} fileName={downloadName} />
+					<DeleteMapButton id={id} name={name} />
 				</PreviewActions>
 			</PreviewDescription>
 		</Preview>
