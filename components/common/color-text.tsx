@@ -33,6 +33,14 @@ const ANSI: Record<string, Format> = {
 	'45': { background: 'magenta' },
 	'46': { background: 'cyan' },
 	'47': { background: 'white' },
+	'90': { foreground: '#555555' },
+	'91': { foreground: '#FF5555' },
+	'92': { foreground: '#55FF55' },
+	'93': { foreground: '#FFFF55' },
+	'94': { foreground: '#5555FF' },
+	'95': { foreground: '#FF55FF' },
+	'96': { foreground: '#55FFFF' },
+	'97': { foreground: '#FFFFFF' },
 };
 
 type ColorTextProps = {
@@ -108,7 +116,7 @@ function parse(text: string | undefined): ParseResult {
 	let index = 0;
 
 	for (let i = 0; i < arr.length; i++) {
-		index = text.indexOf(arr[i], index);
+		index = text.indexOf(arr[i], index + 1);
 		const rawColor = arr[i].toLocaleLowerCase();
 		const { color, format } = resolveColorAndFormat(rawColor);
 
@@ -178,7 +186,7 @@ type ColorAndFormat = {
 };
 
 function resolveColorAndFormat(color: string): ColorAndFormat {
-	if (color.startsWith('[') && !color.includes('m')) {
+	if (color.startsWith('[') && color.endsWith(']')) {
 		color = color.substring(1, color.length - 1);
 		color = color.startsWith('#') ? color.padEnd(7, '0') : getColor(color.toLowerCase().trim());
 
@@ -189,9 +197,9 @@ function resolveColorAndFormat(color: string): ColorAndFormat {
 			color,
 		};
 	} else {
-		color = color.substring('['.length);
+		color = color.substring(color.indexOf('['));
 
-		const keys = color.substring(0, color.indexOf('m')).split(';').filter(Boolean);
+		const keys = color.replaceAll('m', ' ').replace('[', '').split(' ').filter(Boolean);
 
 		return {
 			color,
