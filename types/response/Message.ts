@@ -24,10 +24,6 @@ export function groupMessage(messages: Message[]): MessageGroup[] {
 	const result: MessageGroup[] = [];
 
 	for (const message of messages) {
-		if (message.content === '' || message.content === '\n') {
-			continue;
-		}
-
 		if (result.length === 0) {
 			result.push({
 				id: message.id,
