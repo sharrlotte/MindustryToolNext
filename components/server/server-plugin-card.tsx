@@ -161,7 +161,12 @@ function PluginVersion({ id: pluginId, version, filename }: { id: string; versio
 			<TooltipProvider>
 				<Tooltip>
 					<TooltipTrigger asChild>
-						<Button className="animate-bounce" variant="secondary" onClick={() => mutate(pluginId)} disabled={isPending}>
+						<Button
+							className={isPending ? '' : 'animate-bounce'}
+							variant="secondary"
+							onClick={() => mutate(pluginId)}
+							disabled={isPending}
+						>
 							{isPending ? (
 								<LoadingSpinner />
 							) : (
