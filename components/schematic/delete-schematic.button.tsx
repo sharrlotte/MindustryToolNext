@@ -20,7 +20,7 @@ type DeleteSchematicButtonProps = {
 
 export default function DeleteSchematicButton({ id, name, variant }: DeleteSchematicButtonProps) {
 	const axios = useClientApi();
-	const { back } = useRouter();
+	const router = useRouter();
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
@@ -31,7 +31,7 @@ export default function DeleteSchematicButton({ id, name, variant }: DeleteSchem
 		onSuccess: () => {
 			invalidateByKey(['schematics']);
 			toast.success(<Tran text="delete-success" />);
-			back();
+			router.push('/admin/schematics');
 		},
 		onError: (error) => {
 			toast.error(<Tran text="delete-fail" />, { error });
