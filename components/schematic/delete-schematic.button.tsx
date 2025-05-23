@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import DeleteButton, { DeleteButtonProps } from '@/components/button/delete.button';
 import Tran from '@/components/common/tran';
@@ -20,6 +20,7 @@ type DeleteSchematicButtonProps = {
 
 export default function DeleteSchematicButton({ id, name, variant }: DeleteSchematicButtonProps) {
 	const axios = useClientApi();
+	const params = useSearchParams();
 	const router = useRouter();
 	const { invalidateByKey } = useQueriesData();
 
@@ -31,7 +32,7 @@ export default function DeleteSchematicButton({ id, name, variant }: DeleteSchem
 		onSuccess: () => {
 			invalidateByKey(['schematics']);
 			toast.success(<Tran text="delete-success" />);
-			router.push('/admin/schematics');
+			router.push('/admin/schematics?' + params.toString());
 		},
 		onError: (error) => {
 			toast.error(<Tran text="delete-fail" />, { error });
