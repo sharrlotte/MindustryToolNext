@@ -118,7 +118,7 @@ export function ServerTabsContent({ className, value, children, display = 'block
 		<div
 			key={current}
 			className={cn('hidden overflow-hidden', className, {
-				[display]: value === current,
+				[`${display} h-full`]: value === current,
 			})}
 		>
 			{children}
