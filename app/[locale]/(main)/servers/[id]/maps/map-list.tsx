@@ -19,7 +19,7 @@ export default function MapList({ id }: { id: string }) {
 	}
 
 	return (
-		<ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-start gap-2">
+		<ScrollContainer className="grid w-full h-fit grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-start gap-2">
 			{data?.map((map) => <ServerMapCard serverId={id} key={map.filename} map={map} />)}
 		</ScrollContainer>
 	);

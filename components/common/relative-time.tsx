@@ -25,7 +25,7 @@ function RelativeTimeInternal({ className, date }: RelativeTimeProps) {
 	const [currentTime, setCurrentTime] = useState(Date.now());
 	const target = typeof date === 'number' ? date : date.getTime();
 	const delta = Math.floor((currentTime - target) / 1000); // Difference in seconds
-	const tick = delta < 60 ? 1000 : 1000 * 60;
+	const tick = delta <= 60 ? 1000 : 1000 * 60;
 
 	useInterval(() => setCurrentTime(Date.now()), tick);
 

@@ -113,12 +113,14 @@ function parse(text: string | undefined): ParseResult {
 		index: number;
 	}[] = [];
 
-	let index = 0;
+	let index = -1;
 
 	for (let i = 0; i < arr.length; i++) {
 		index = text.indexOf(arr[i], index + 1);
 		const rawColor = arr[i].toLocaleLowerCase();
 		const { color, format } = resolveColorAndFormat(rawColor);
+
+		console.log({ rawColor, color, format });
 
 		if (color) {
 			colors.push({
