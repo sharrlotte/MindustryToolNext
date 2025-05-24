@@ -20,8 +20,8 @@ function UserCard({ user, avatar = true }: UserCardProps) {
 	return (
 		<div className="flex items-center gap-2 overflow-hidden">
 			{avatar && <UserAvatar user={user} url />}
-			<InternalLink className="cursor-pointer hover:underline" href={`/users/${user.id}`}>
-				<ColorAsRole className="font-semibold capitalize" roles={roles}>
+			<InternalLink className="cursor-pointer" href={`/users/${user.id}`}>
+				<ColorAsRole className="font-semibold capitalize hover:underline" roles={roles}>
 					{name}
 				</ColorAsRole>
 			</InternalLink>

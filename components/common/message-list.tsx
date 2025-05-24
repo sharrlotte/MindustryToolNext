@@ -3,10 +3,8 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
-import { LoaderIcon } from '@/components/common/icons';
 import NoResult from '@/components/common/no-result';
 import ScrollContainer from '@/components/common/scroll-container';
-import Tran from '@/components/common/tran';
 
 import { useSocket } from '@/context/socket.context';
 import useMessageQuery from '@/hooks/use-message-query';
@@ -210,17 +208,6 @@ export default function MessageList({
 			list?.removeEventListener('scroll', checkIfNeedFetchMore);
 		};
 	}, [checkIfNeedFetchMore, list, scrollTopRef]);
-
-	if (!loader) {
-		loader = (
-			<LoaderIcon
-				key="loading"
-				className="col-span-full m-auto flex h-full w-full items-center justify-center animate-spin size-6 max-w-6 max-h-6"
-			/>
-		);
-	}
-
-	end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
 
 	if (!data) {
 		return undefined;
