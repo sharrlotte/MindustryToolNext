@@ -84,7 +84,21 @@ export function fillMetric(
 	array: ServerMetric[] | undefined,
 	defaultValue: number,
 ): ChartData[] {
-	if (!array) return [];
+	if (!array)
+		return Array(interval).map((i) => {
+			const targetDay = new Date(start);
+			if (unit === 'DAY') {
+				targetDay.setDate(start.getDate() + i); // Increment day-by-day from the start date
+			} else if (unit === 'HOUR') {
+				targetDay.setHours(start.getHours() + i); // Increment hour-by-hour from the start date
+			} else if (unit === 'MINUTE') {
+				targetDay.setMinutes(start.getMinutes() + i); // Increment minute-by-minute from the start date
+			}
+			return {
+				value: defaultValue,
+				createdAt: targetDay,
+			};
+		});
 
 	const result: ChartData[] = [];
 

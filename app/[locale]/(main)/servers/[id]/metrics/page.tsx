@@ -1,12 +1,13 @@
 'use client';
 
 import { CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
-import { use, useState } from 'react';
+import { use, useMemo, useRef, useState } from 'react';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import ComboBox from '@/components/common/combo-box';
 import ErrorMessage from '@/components/common/error-message';
+import ScrollContainer from '@/components/common/scroll-container';
 import Divider from '@/components/ui/divider';
 
 import { metricFilters } from '@/constant/constant';
@@ -43,32 +44,32 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 				/>
 			</div>
 			<Divider />
-			<div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
+			<ScrollContainer className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
 				<LoginLogChart serverId={id} filter={filter} />
-			</div>
+			</ScrollContainer>
 		</div>
 	);
 }
 
 function LoginLogChart({ serverId, filter }: { serverId: string; filter: Filter }) {
 	const axios = useClientApi();
-	const start = new Date();
+	const start = useRef(new Date());
 	const { unit, interval } = filter;
 	const { t } = useI18n('metric');
 
 	const { data, isError, error } = useQuery({
 		queryKey: ['login-log', filter],
-		queryFn: () => getServerLoginMetrics(axios, serverId, { ...filter, start }),
+		queryFn: () => getServerLoginMetrics(axios, serverId, { ...filter, start: start.current }),
 	});
+
+	const metrics = useMemo(() => fillMetric(start.current, unit, interval, data, 0), [data, interval, start, unit]);
 
 	if (isError) {
 		return <ErrorMessage error={error} />;
 	}
 
-	const metrics = fillMetric(start, unit, interval, data, 0);
-
 	return (
-		<div className="w-full aspect-video">
+		<div className="aspect-video h-auto w-full flex">
 			<Line
 				className="bg-card rounded-lg p-2"
 				options={{
@@ -85,7 +86,11 @@ function LoginLogChart({ serverId, filter }: { serverId: string; filter: Filter 
 				}}
 				data={{
 					labels: metrics.map(({ createdAt }) =>
-						unit === 'DAY' ? createdAt.toLocaleDateString() : createdAt.toLocaleTimeString(),
+						unit === 'DAY'
+							? `${createdAt.getDate()}/${createdAt.getMonth() + 1}`
+							: unit === 'HOUR'
+								? `${createdAt.getHours()}:${createdAt.getMinutes()}`
+								: `${createdAt.getHours()}:${createdAt.getMinutes()}`,
 					),
 					datasets: [
 						{
