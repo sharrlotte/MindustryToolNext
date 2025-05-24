@@ -174,7 +174,10 @@ function List({ state }: { state: UploadState }) {
 	const queryClient = useQueryClient();
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: (filename: string) => axios.delete(`/upload/${filename}`),
+		mutationFn: (filename: string) =>
+			axios.delete(`/upload`, {
+				params: { filename },
+			}),
 		onError: (error) => {
 			toast.error(error?.message);
 		},
