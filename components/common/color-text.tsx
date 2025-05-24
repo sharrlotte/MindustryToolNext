@@ -120,8 +120,6 @@ function parse(text: string | undefined): ParseResult {
 		const rawColor = arr[i].toLocaleLowerCase();
 		const { color, format } = resolveColorAndFormat(rawColor);
 
-		console.log({ rawColor, color, format });
-
 		if (color) {
 			colors.push({
 				rawColor,
