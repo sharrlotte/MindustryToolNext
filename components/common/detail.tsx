@@ -45,7 +45,7 @@ type InfoProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function DetailInfo({ className, children }: InfoProps) {
 	return (
-		<div className={cn('flex overflow-y-auto flex-col gap-2 w-full h-full text-sm text-muted-foreground', className)}>
+		<div className={cn('flex lg:overflow-y-auto flex-col gap-2 w-full h-full text-sm text-muted-foreground', className)}>
 			{children}
 		</div>
 	);
