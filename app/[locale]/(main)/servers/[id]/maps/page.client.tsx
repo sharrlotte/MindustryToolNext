@@ -5,6 +5,7 @@ import MapList from '@/app/[locale]/(main)/servers/[id]/maps/map-list';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import Divider from '@/components/ui/divider';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
 type Props = {
@@ -25,6 +26,7 @@ export default function ServerMapPage({ id }: Props) {
 						<Tran text="download" />
 					</ServerTabsTrigger>
 				</ServerTabsList>
+				<Divider />
 				<ScrollContainer>
 					<ServerTabsContent value="list">
 						<MapList id={id} />

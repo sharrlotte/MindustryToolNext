@@ -108,6 +108,13 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			icon: <LayoutDashboardIcon className="size-5" />,
 		},
 		{
+			id: 'console',
+			href: '/console',
+			label: <Tran text="console" />,
+			icon: <CmdIcon />,
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+		},
+		{
 			id: 'map', //
 			href: '/maps',
 			label: <Tran text="map" />,
@@ -126,13 +133,6 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			href: '/players',
 			label: <Tran text="player" />,
 			icon: <UsersIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
-		},
-		{
-			id: 'console',
-			href: '/console',
-			label: <Tran text="console" />,
-			icon: <CmdIcon />,
 			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
 		},
 		{

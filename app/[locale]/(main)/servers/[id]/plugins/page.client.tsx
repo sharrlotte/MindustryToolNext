@@ -5,6 +5,7 @@ import PluginList from '@/app/[locale]/(main)/servers/[id]/plugins/plugin-list';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
+import Divider from '@/components/ui/divider';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
 type Props = {
@@ -24,6 +25,7 @@ export default function ServerPluginPage({ id }: Props) {
 						<Tran text="download" />
 					</ServerTabsTrigger>
 				</ServerTabsList>
+				<Divider />
 				<ScrollContainer>
 					<ServerTabsContent value="list">
 						<PluginList id={id} />

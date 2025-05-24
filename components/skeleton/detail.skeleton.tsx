@@ -6,7 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function DetailSkeleton() {
 	return (
-		<div className="absolute p-2 w-full h-full backdrop-blur-sm bg-background">
+		<div className="absolute w-full h-full backdrop-blur-sm bg-background">
 			<div className="relative h-full flex flex-col lg:grid lg:grid-cols-[1fr_500px] lg:divide-x overflow-auto">
 				<div className="p-2 h-full overflow-auto flex justify-center max-h-[50vh] lg:max-h-full">
 					<Skeleton className="object-cover w-full rounded-lg aspect-square" />
