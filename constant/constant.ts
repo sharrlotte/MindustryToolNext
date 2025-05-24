@@ -517,3 +517,38 @@ const localeToFlag: Record<string, string> = {
 };
 
 export default localeToFlag;
+
+export const metricUnits = ['MINUTE', 'HOUR', 'DAY'] as const;
+
+export type MetricUnit = (typeof metricUnits)[number];
+
+export const metricFilters: { unit: MetricUnit; interval: number }[] = [
+	{
+		unit: 'MINUTE',
+		interval: 15,
+	},
+	{
+		unit: 'MINUTE',
+		interval: 30,
+	},
+	{
+		unit: 'MINUTE',
+		interval: 60,
+	},
+	{
+		unit: 'HOUR',
+		interval: 12,
+	},
+	{
+		unit: 'HOUR',
+		interval: 24,
+	},
+	{
+		unit: 'DAY',
+		interval: 7,
+	},
+	{
+		unit: 'DAY',
+		interval: 30,
+	},
+] as const;

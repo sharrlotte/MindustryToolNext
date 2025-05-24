@@ -56,7 +56,7 @@ export default function ComboBox<T>({
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<Button
-					className={cn('w-[200px] gap-2 items-center border border-border justify-between shadow-md', className)}
+					className={cn('w-[200px] gap-1 items-center border border-border justify-between shadow-md', className)}
 					aria-label="combobox"
 					role="combobox"
 					variant="outline"

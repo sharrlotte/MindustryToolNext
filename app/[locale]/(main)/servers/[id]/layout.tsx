@@ -3,22 +3,16 @@
 import { useParams } from 'next/navigation';
 import React, { ReactNode, use } from 'react';
 
+
+
 import ErrorMessage from '@/components/common/error-message';
-import {
-	CmdIcon,
-	FileIcon,
-	KeyRoundIcon,
-	LayoutDashboardIcon,
-	LogIcon,
-	MapIcon,
-	PluginIcon,
-	SettingIcon,
-	UsersIcon,
-} from '@/components/common/icons';
+import { AnalyticIcon, CmdIcon, FileIcon, KeyRoundIcon, LayoutDashboardIcon, LogIcon, MapIcon, PluginIcon, SettingIcon, UsersIcon } from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
 import { NotificationNumber } from '@/components/common/notification-number';
 import Tran from '@/components/common/tran';
+
+
 
 import { NavLinkProvider } from '@/context/nav-link.context';
 import { useSession } from '@/context/session.context';
@@ -28,7 +22,10 @@ import useServerPlugins from '@/hooks/use-server-plugins';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
 
+
+
 import { useQuery } from '@tanstack/react-query';
+
 
 type LayoutProps = {
 	params: Promise<{
@@ -124,6 +121,13 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			href: '/logs',
 			label: <Tran text="log" />,
 			icon: <LogIcon />,
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+		},
+		{
+			id: 'metric',
+			href: '/metrics',
+			label: <Tran text="metric" />,
+			icon: <AnalyticIcon />,
 			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{

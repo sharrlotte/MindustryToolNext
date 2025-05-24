@@ -93,7 +93,7 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 				},
 			}}
 			layout="position"
-			className="flex overflow-hidden flex-col gap-2 px-2 py-1 rounded-md bg-secondary"
+			className="flex overflow-hidden flex-col px-2 py-1 rounded-md bg-secondary"
 		>
 			<div className="flex gap-1 items-center">
 				<div className="rounded-full size-2" style={{ backgroundColor: `#${team.color}` }} />

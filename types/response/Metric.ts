@@ -6,6 +6,5 @@ export type Metric = {
 
 export type ChartData = {
   value: number;
-  metricKey: string;
   createdAt: Date;
 };

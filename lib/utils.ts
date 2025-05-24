@@ -1,13 +1,14 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import { colours } from '@/constant/constant';
+import { MetricUnit, colours } from '@/constant/constant';
 import { AuthorityEnum, UserRole } from '@/constant/constant';
 import env from '@/constant/env';
 import { Locale, i18nCachePrefix } from '@/i18n/config';
 import { ApiError, isError } from '@/lib/error';
-import { ChartData, Metric } from '@/types/response/Metric';
+import { ChartData } from '@/types/response/Metric';
 import { Role } from '@/types/response/Role';
+import { ServerMetric } from '@/types/response/ServerMetric';
 import { Session } from '@/types/response/Session';
 
 export function findBestRole(roles: Role[] | undefined) {
@@ -76,30 +77,66 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export function fillMetric(start: Date, numberOfDays: number, array: Metric[] | undefined, defaultValue: number): ChartData[] {
-	if (!array) return [];
+export function fillMetric(
+	start: Date,
+	unit: MetricUnit,
+	interval: number,
+	array: ServerMetric[] | undefined,
+	defaultValue: number,
+): ChartData[] {
+	if (!array)
+		return Array(interval).map((i) => {
+			const targetDay = new Date(start);
+			if (unit === 'DAY') {
+				targetDay.setDate(start.getDate() + i); // Increment day-by-day from the start date
+			} else if (unit === 'HOUR') {
+				targetDay.setHours(start.getHours() + i); // Increment hour-by-hour from the start date
+			} else if (unit === 'MINUTE') {
+				targetDay.setMinutes(start.getMinutes() + i); // Increment minute-by-minute from the start date
+			}
+			return {
+				value: defaultValue,
+				createdAt: targetDay,
+			};
+		});
 
 	const result: ChartData[] = [];
 
 	// Iterate over the number of days
-	for (let i = 0; i < numberOfDays; i++) {
+	for (let i = 0; i < interval; i++) {
 		const targetDay = new Date(start);
-		targetDay.setDate(start.getDate() + i); // Increment day-by-day from the start date
+		if (unit === 'DAY') {
+			targetDay.setDate(start.getDate() + i); // Increment day-by-day from the start date
+		} else if (unit === 'HOUR') {
+			targetDay.setHours(start.getHours() + i); // Increment hour-by-hour from the start date
+		} else if (unit === 'MINUTE') {
+			targetDay.setMinutes(start.getMinutes() + i); // Increment minute-by-minute from the start date
+		}
 
 		// Ensure we compare dates without time components
-		const value = array.find((v) => isSameDay(v.createdAt, targetDay));
+		let value = null;
+
+		switch (unit) {
+			case 'DAY':
+				value = array.find((v) => isSameDay(new Date(v.createdAt), targetDay));
+				break;
+			case 'HOUR':
+				value = array.find((v) => isSameHour(new Date(v.createdAt), targetDay));
+				break;
+			case 'MINUTE':
+				value = array.find((v) => isSameMinute(new Date(v.createdAt), targetDay));
+				break;
+		}
 
 		result.push(
 			value
 				? {
 						value: value.value,
 						createdAt: new Date(value.createdAt),
-						metricKey: value.metricKey,
 					}
 				: {
 						value: defaultValue,
 						createdAt: targetDay,
-						metricKey: '',
 					},
 		);
 	}
@@ -110,7 +147,27 @@ export function fillMetric(start: Date, numberOfDays: number, array: Metric[] | 
 // Helper function to compare dates without considering time
 export function isSameDay(date1: Date, date2: Date): boolean {
 	return (
-		date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
+		date1.getFullYear() === date2.getFullYear() && //
+		date1.getMonth() === date2.getMonth() &&
+		date1.getDate() === date2.getDate()
+	);
+}
+
+export function isSameHour(date1: Date, date2: Date): boolean {
+	return (
+		date1.getFullYear() === date2.getFullYear() &&
+		date1.getMonth() === date2.getMonth() &&
+		date1.getDate() === date2.getDate() &&
+		date1.getHours() === date2.getHours()
+	);
+}
+export function isSameMinute(date1: Date, date2: Date): boolean {
+	return (
+		date1.getFullYear() === date2.getFullYear() &&
+		date1.getMonth() === date2.getMonth() &&
+		date1.getDate() === date2.getDate() &&
+		date1.getHours() === date2.getHours() &&
+		date1.getMinutes() === date2.getMinutes()
 	);
 }
 

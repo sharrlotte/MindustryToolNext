@@ -6,12 +6,7 @@ import env from '@/constant/env';
 import { uuid } from '@/lib/utils';
 
 function logError(error: unknown) {
-	console.error(
-		JSON.stringify(
-			error,
-			Object.getOwnPropertyNames(error as object).filter((field) => field !== 'stack'),
-		),
-	);
+	console.error(JSON.stringify(error));
 }
 
 const axiosInstance = Axios.create({
