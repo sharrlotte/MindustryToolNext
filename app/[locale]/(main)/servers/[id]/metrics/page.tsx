@@ -89,7 +89,7 @@ function LoginLogChart({ serverId, filter }: { serverId: string; filter: Filter 
 						unit === 'DAY'
 							? `${createdAt.getDate()}/${createdAt.getMonth() + 1}`
 							: unit === 'HOUR'
-								? `${createdAt.getHours()}:${createdAt.getMinutes()}`
+								? `${createdAt.getHours()}:00`
 								: `${createdAt.getHours()}:${createdAt.getMinutes()}`,
 					),
 					datasets: [
