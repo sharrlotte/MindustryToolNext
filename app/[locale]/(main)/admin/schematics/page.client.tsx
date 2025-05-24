@@ -5,7 +5,7 @@ import React from 'react';
 import { BulkActionContainer, BulkDeleteToggle } from '@/components/common/bulk-action';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';
-import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
+import { GridLayout, ListLayout, PaginationFooter, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -73,7 +73,7 @@ export default function Client() {
 						</GridPaginationList>
 					</GridLayout>
 				</ScrollContainer>
-				<div className="flex items-center gap-2 justify-between">
+				<PaginationFooter>
 					<BulkDeleteToggle />
 					<div className="flex items-center gap-2">
 						<PaginationLayoutSwitcher />
@@ -81,7 +81,7 @@ export default function Client() {
 							<PaginationNavigator numberOfItems={getSchematicUploadCount} queryKey={['schematics', 'total', 'upload']} />
 						</GridLayout>
 					</div>
-				</div>
+				</PaginationFooter>
 			</div>
 		</BulkActionContainer>
 	);
