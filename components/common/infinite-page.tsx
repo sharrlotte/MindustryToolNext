@@ -1,7 +1,7 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, { JSXElementConstructor, ReactElement, ReactNode, useCallback, useMemo } from 'react';
+import React, { JSXElementConstructor, ReactElement, ReactNode, useCallback, useMemo, useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { z } from 'zod';
 
@@ -53,6 +53,7 @@ const InfinitePage = <T, P extends QuerySchema>({
 	children,
 }: InfinitePageProps<T, P>) => {
 	const p = useSearchQuery(paramSchema, params);
+	const componentRef = useRef<HTMLDivElement>(null);
 
 	const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(
 		queryFn,
@@ -98,6 +99,7 @@ const InfinitePage = <T, P extends QuerySchema>({
 	if (isLoading || !data) {
 		return (
 			<div
+				ref={componentRef}
 				className={
 					className ?? 'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
 				}
@@ -112,32 +114,35 @@ const InfinitePage = <T, P extends QuerySchema>({
 	}
 
 	return (
-		<InfiniteScroll
-			className={
-				className ?? 'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
-			}
-			loadMore={loadMore}
-			hasMore={hasNextPage}
-			loader={loader}
-			useWindow={false}
-			threshold={400}
-			getScrollParent={() => {
-				{
-					const containers = document.getElementsByClassName('scroll-container');
+		<div ref={componentRef}>
+			<InfiniteScroll
+				className={
+					className ?? 'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
+				}
+				loadMore={loadMore}
+				hasMore={hasNextPage}
+				loader={loader}
+				useWindow={false}
+				threshold={400}
+				getScrollParent={() => {
+					if (!componentRef.current) return null;
+					
+					const containers = componentRef.current.closest('.scroll-container') || 
+					                   componentRef.current.getElementsByClassName('scroll-container')[0];
 
 					if (containers) {
-						return containers[0] as HTMLElement;
+						return containers as HTMLElement;
 					}
 
 					return null;
-				}
-			}}
-			isReverse={reversed}
-		>
-			{children(data.pages.flatMap((page) => page))}
-			{isFetching && skeleton && loadingSkeleton}
-			{!hasNextPage && end}
-		</InfiniteScroll>
+				}}
+				isReverse={reversed}
+			>
+				{children(data.pages.flatMap((page) => page))}
+				{isFetching && skeleton && loadingSkeleton}
+				{!hasNextPage && end}
+			</InfiniteScroll>
+		</div>
 	);
 };
 
