@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
+import { MetricUnit } from '@/constant/constant';
 import { toForm } from '@/lib/utils';
 import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
@@ -20,6 +21,7 @@ import { ServerFile } from '@/types/response/ServerFile';
 import ServerLoginLog from '@/types/response/ServerLoginLog';
 import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManager';
 import { ServerMap } from '@/types/response/ServerMap';
+import { ServerMetric } from '@/types/response/ServerMetric';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { ServerStats } from '@/types/response/ServerStats';
 import { PaginationQuery } from '@/types/schema/search-query';
@@ -304,5 +306,19 @@ export async function updateServerEnv(
 export async function deleteServerEnv(axios: AxiosInstance, serverId: string, envId: string): Promise<void> {
 	const result = await axios.delete(`/servers/${serverId}/env/${envId}`);
 
+	return result.data;
+}
+
+export async function getServerLoginMetrics(
+	axios: AxiosInstance,
+	serverId: string,
+	params: {
+		unit: MetricUnit;
+		interval: number;
+		start: Date;
+	},
+): Promise<ServerMetric[]> {
+	const result = await axios.get(`/servers/${serverId}/metrics/login`, { params });
+	
 	return result.data;
 }

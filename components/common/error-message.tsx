@@ -10,8 +10,6 @@ type Props = {
 	error: any;
 };
 export default function ErrorMessage({ className, error }: Props) {
-	console.error(error);
-
 	const message = getErrorMessage(error);
 
 	if (message) {
