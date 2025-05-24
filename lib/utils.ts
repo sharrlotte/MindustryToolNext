@@ -103,17 +103,16 @@ export function fillMetric(
 	const result: ChartData[] = [];
 
 	// Iterate over the number of days
-	for (let i = 0; i < interval; i++) {
+	for (let i = interval - 1; i >= 0; i--) {
 		const targetDay = new Date(start);
 		if (unit === 'DAY') {
-			targetDay.setDate(start.getDate() + i); // Increment day-by-day from the start date
+			targetDay.setDate(start.getDate() - i); // Increment day-by-day from the start date
 		} else if (unit === 'HOUR') {
-			targetDay.setHours(start.getHours() + i); // Increment hour-by-hour from the start date
+			targetDay.setHours(start.getHours() - i); // Increment hour-by-hour from the start date
 		} else if (unit === 'MINUTE') {
-			targetDay.setMinutes(start.getMinutes() + i); // Increment minute-by-minute from the start date
+			targetDay.setMinutes(start.getMinutes() - i); // Increment minute-by-minute from the start date
 		}
 
-		// Ensure we compare dates without time components
 		let value = null;
 
 		switch (unit) {
