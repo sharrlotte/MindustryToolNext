@@ -211,17 +211,6 @@ export default function MessageList({
 		};
 	}, [checkIfNeedFetchMore, list, scrollTopRef]);
 
-	if (!loader) {
-		loader = (
-			<LoaderIcon
-				key="loading"
-				className="col-span-full m-auto flex h-full w-full items-center justify-center animate-spin size-6 max-w-6 max-h-6"
-			/>
-		);
-	}
-
-	end = end ?? <Tran className="col-span-full flex w-full items-center justify-center" text="end-of-page" />;
-
 	if (!data) {
 		return undefined;
 	}

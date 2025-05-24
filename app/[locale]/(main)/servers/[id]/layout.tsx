@@ -19,15 +19,14 @@ import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
 import { NotificationNumber } from '@/components/common/notification-number';
 import Tran from '@/components/common/tran';
-import { Skeleton } from '@/components/ui/skeleton';
 
 import { NavLinkProvider } from '@/context/nav-link.context';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
+import useServer from '@/hooks/use-server';
 import useServerPlugins from '@/hooks/use-server-plugins';
 import ProtectedElement from '@/layout/protected-element';
 import { Filter } from '@/lib/utils';
-import { getServer } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -71,28 +70,13 @@ function PluginLabel() {
 export default function ServerLayout({ params, children }: LayoutProps) {
 	const { id } = use(params);
 	const { session } = useSession();
-	const axios = useClientApi();
-	const {
-		data: server,
-		isLoading,
-		isError,
-		error,
-	} = useQuery({
-		queryKey: ['server', id],
-		queryFn: () => getServer(axios, { id }),
-	});
+	const { data: server, isError, error } = useServer(id);
 
 	if (isError) {
 		return <ErrorMessage error={error} />;
 	}
 
-	if (isLoading) {
-		return <Skeleton className="w-full h-full" />;
-	}
-
-	if (!server) {
-		throw Error('Should never happen');
-	}
+	const ownerId = server?.userId;
 
 	const links: {
 		id: string;
@@ -112,56 +96,56 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			href: '/console',
 			label: <Tran text="console" />,
 			icon: <CmdIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{
 			id: 'map', //
 			href: '/maps',
 			label: <Tran text="map" />,
 			icon: <MapIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{
 			id: 'plugin',
 			href: '/plugins',
 			label: <PluginLabel />,
 			icon: <PluginIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{
 			id: 'player',
 			href: '/players',
 			label: <Tran text="player" />,
 			icon: <UsersIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{
 			id: 'log',
 			href: '/logs',
 			label: <Tran text="log" />,
 			icon: <LogIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{
 			id: 'file', //
 			href: '/files',
 			label: <Tran text="file" />,
 			icon: <FileIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{
 			id: 'env', //
 			href: '/environments',
 			label: <Tran text="env" />,
 			icon: <KeyRoundIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{
 			id: 'setting', //
 			href: '/setting',
 			label: <Tran text="setting" />,
 			icon: <SettingIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: server.userId }] },
+			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 	];
 

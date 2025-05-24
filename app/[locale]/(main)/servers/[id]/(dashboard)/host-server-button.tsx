@@ -12,6 +12,7 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import Divider from '@/components/ui/divider';
 
 import { revalidate } from '@/action/common';
 import env from '@/constant/env';
@@ -86,6 +87,7 @@ export default function HostServerButton({ id }: Props) {
 							<CheckCircleIcon className="w-4" />
 						)}{' '}
 						<ColorText text={last} />
+						<Divider />
 					</DialogDescription>
 					<ScrollContainer className="flex overflow-x-auto flex-col flex-1 w-full h-full">
 						{data?.map((text, index) => <ColorText key={index} text={text} />)}

@@ -27,7 +27,7 @@ export function MessageCard({ className, message }: Props) {
 	});
 
 	return (
-		<div className={cn('flex gap-2 p-2 w-full text-base rounded-lg text-wrap hover:bg-secondary/50', className)}>
+		<div className={cn('flex gap-2 p-2 w-full text-base text-wrap hover:bg-secondary/50', className)}>
 			{data ? (
 				<UserAvatar url={`/users/${userId}`} user={data} />
 			) : (

@@ -55,6 +55,8 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 			const result = onKeyPress(event);
 
 			if (result) {
+				event.preventDefault();
+				event.stopPropagation();
 				return;
 			}
 		}
@@ -106,7 +108,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 	}
 	return (
 		<form
-			className={cn('flex min-h-13 flex-1 gap-2 p-2 border-t', className)}
+			className={cn('flex min-h-12 flex-1 gap-2 p-2 border-t h-fit', className)}
 			name="text"
 			onSubmit={(event) => {
 				handleFormSubmit();
@@ -116,7 +118,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 			<div className="border relative border-border flex gap-1 rounded-md w-full bg-card">
 				{autocomplete && autocomplete({ message, setMessage, ref: ref.current })}
 				<AutosizeTextarea
-					className="h-full w-full bg-card px-2 outline-none border-none min-h-13 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+					className="h-full w-full bg-card px-2 outline-none border-none min-h-12 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
 					value={message}
 					placeholder={placeholder}
 					onKeyDown={handleKeyPress}
@@ -125,7 +127,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 					autoFocus
 					{...props}
 				/>
-				<div className="my-1 mx-2 mt-auto flex items-center gap-2 min-h-9">
+				<div className="mt-auto mb-1 mx-1 flex items-center gap-2 min-h-9">
 					<Popover>
 						<PopoverTrigger>
 							<SmileIcon />
@@ -140,9 +142,8 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 						</PopoverContent>
 					</Popover>
 					<Button
-						className="text-brand"
+						className="bg-brand rounded-sm"
 						variant="ghost"
-						size="icon"
 						type="submit"
 						title="send"
 						disabled={state !== 'connected' || !message}

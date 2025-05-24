@@ -8,21 +8,27 @@ import Tran from '@/components/common/tran';
 import ChatInput from '@/components/messages/chat-input';
 
 import useClientApi from '@/hooks/use-client';
+import useServerStatus from '@/hooks/use-server-status';
 import { getServerCommands, getServerPlayers } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';
 
 export default function ConsoleInput({ id, room }: { room: string; id: string }) {
 	const axios = useClientApi();
+	const status = useServerStatus(id);
 
 	const { data, isError, error } = useQuery({
 		queryKey: ['server', id, 'command'],
 		queryFn: () => getServerCommands(axios, id),
+		enabled: status === 'AVAILABLE',
+		placeholderData: [],
 	});
 
 	const { data: players } = useQuery({
 		queryKey: ['server', id, 'player'],
 		queryFn: () => getServerPlayers(axios, id),
+		enabled: status === 'AVAILABLE',
+		placeholderData: [],
 	});
 
 	return (
@@ -31,7 +37,6 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 			placeholder="/help"
 			onKeyPress={(event) => {
 				if (event.key === 'Tab') {
-					event.preventDefault();
 					return true;
 				}
 			}}

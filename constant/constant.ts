@@ -1,7 +1,6 @@
 import { Locale } from '@/i18n/config';
 import { AllTagGroup } from '@/types/response/TagGroup';
 
-
 export const dateFormat = 'dd-MM-yyyy hh:mm:ss';
 
 export const IMAGE_PREFIX = 'data:image/png;base64,';
@@ -61,7 +60,7 @@ export const userRoles = ['ADMIN', 'USER', 'SHAR', 'CONTRIBUTOR'] as const;
 
 export type UserRole = (typeof userRoles)[number];
 
-export const serverStatus = ['DOWN', 'UP', 'HOST', 'DELETED', 'NOT_RESPONSE'] as const;
+export const serverStatus = ['DOWN', 'UP', 'HOST', 'DELETED', 'NOT_RESPONSE', 'ERROR'] as const;
 export type ServerStatus = (typeof serverStatus)[number];
 
 export const uploadStates = ['QUEUING', 'PROCESSING', 'ERROR', 'RETRY'] as const;
