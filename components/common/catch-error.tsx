@@ -38,7 +38,7 @@ export class CatchError extends React.Component<Props, State> {
 
 	render() {
 		if (this.state.hasError) {
-			console.log({ [this.props.label ?? 'default']: this.props.children });
+			console.error({ [this.props.label ?? 'default']: this.props.children });
 			return <ErrorMessage error={this.state.error} />;
 		}
 

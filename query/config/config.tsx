@@ -6,7 +6,7 @@ import env from '@/constant/env';
 import { uuid } from '@/lib/utils';
 
 function logError(error: unknown) {
-	console.log(
+	console.error(
 		JSON.stringify(
 			error,
 			Object.getOwnPropertyNames(error as object).filter((field) => field !== 'stack'),
@@ -47,7 +47,7 @@ axiosInstance.interceptors.response.use(
 				}
 			}
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 		}
 		if (error?.response?.data?.message) {
 			return Promise.reject(error.response.data.message);

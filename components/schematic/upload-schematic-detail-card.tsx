@@ -108,7 +108,7 @@ export default function UploadSchematicDetailCard({
 					<DetailActions>
 						<CopyButton content={copyMessage} data={getData} />
 						<DownloadButton href={downloadUrl} fileName={downloadName} />
-						<DeleteSchematicButton id={id} name={name} />
+						<DeleteSchematicButton id={id} name={name} goBack />
 						<VerifySchematicButton id={id} name={name} selectedTags={selectedTags} />
 					</DetailActions>
 				</DetailHeader>

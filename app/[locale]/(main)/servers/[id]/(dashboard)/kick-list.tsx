@@ -84,6 +84,7 @@ function KickCard({ currentTime, kick: { ip, untilTime } }: KickCardProps) {
 					ease: 'easeOut',
 				},
 			}}
+			layout="position"
 			className="flex items-center justify-between gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1 h-10"
 		>
 			<span>{ip}</span>

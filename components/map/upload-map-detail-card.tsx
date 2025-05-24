@@ -90,7 +90,7 @@ export default function UploadMapDetailCard({
 					</Tabs>
 					<DetailActions>
 						<DownloadButton href={downloadUrl} fileName={downloadName} />
-						<DeleteMapButton id={id} name={name} />
+						<DeleteMapButton id={id} name={name} goBack />
 						<VerifyMapButton id={id} name={name} selectedTags={selectedTags} />
 					</DetailActions>
 				</DetailHeader>

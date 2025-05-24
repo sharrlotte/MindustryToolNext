@@ -92,6 +92,7 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 					ease: 'easeOut',
 				},
 			}}
+			layout="position"
 			className="flex overflow-hidden flex-col gap-2 px-2 py-1 rounded-md bg-secondary"
 		>
 			<div className="flex gap-1 items-center">
