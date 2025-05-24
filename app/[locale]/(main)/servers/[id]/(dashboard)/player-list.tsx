@@ -112,7 +112,7 @@ function PlayerCard({ serverId, player: { locale, userId, name, team, ip, uuid, 
 					</div>
 				</div>
 			</div>
-			{userId && <IdUserCard id={userId} />}
+			{userId && <IdUserCard id={userId} avatar={false} />}
 		</motion.div>
 	);
 }
