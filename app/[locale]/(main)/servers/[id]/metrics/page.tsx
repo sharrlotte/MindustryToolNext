@@ -24,7 +24,7 @@ type Filter = (typeof metricFilters)[number];
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
 	const { id } = use(params);
-	const [filter, setFilter] = useState<Filter>(metricFilters[0]);
+	const [filter, setFilter] = useState<Filter>(metricFilters[4]);
 
 	return (
 		<div className="p-2 flex flex-col gap-2">
