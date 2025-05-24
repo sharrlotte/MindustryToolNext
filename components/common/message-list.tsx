@@ -3,10 +3,8 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
-import { LoaderIcon } from '@/components/common/icons';
 import NoResult from '@/components/common/no-result';
 import ScrollContainer from '@/components/common/scroll-container';
-import Tran from '@/components/common/tran';
 
 import { useSocket } from '@/context/socket.context';
 import useMessageQuery from '@/hooks/use-message-query';
