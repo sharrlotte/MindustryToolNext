@@ -58,5 +58,5 @@ export function GridLayout({ children }: Props) {
 }
 
 export function PaginationFooter({ className, children }: { className?: string; children: ReactNode }) {
-	return <div className={cn('flex justify-between gap-2 items-center', className)}>{children}</div>;
+	return <div className={cn('flex justify-between gap-2 items-end', className)}>{children}</div>;
 }
