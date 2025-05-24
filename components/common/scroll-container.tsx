@@ -41,7 +41,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id
 		<CatchError>
 			<Component
 				id={id}
-				className={cn('h-full scroll-container overflow-y-auto w-full', className)}
+				className={cn('h-fit scroll-container overflow-y-auto w-full', className)}
 				onScroll={(event) => {
 					lastScrollTop.current = event.currentTarget.scrollTop;
 					sessionStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());

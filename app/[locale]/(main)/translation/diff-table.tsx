@@ -75,7 +75,7 @@ type DiffCardProps = {
 
 function DiffCard({ translation, language }: DiffCardProps) {
 	const { key, value, keyGroup } = translation;
-	const [currentValue, setCurrentValue] = useState(value);
+	const [currentValue, setCurrentValue] = useState('');
 
 	const axios = useClientApi();
 	const [isEdit, setEdit] = useState(false);
