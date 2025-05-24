@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import DeleteButton, { DeleteButtonProps } from '@/components/button/delete.button';
 import Tran from '@/components/common/tran';
@@ -16,12 +16,12 @@ type DeleteMapButtonProps = {
 	id: string;
 	name: string;
 	variant?: DeleteButtonProps['variant'];
+	goBack?: boolean;
 };
 
-export function DeleteMapButton({ id, name, variant }: DeleteMapButtonProps) {
+export function DeleteMapButton({ id, name, variant, goBack }: DeleteMapButtonProps) {
 	const axios = useClientApi();
-	const params = useSearchParams();
-	const router = useRouter();
+	const { back } = useRouter();
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
@@ -31,7 +31,9 @@ export function DeleteMapButton({ id, name, variant }: DeleteMapButtonProps) {
 		mutationFn: (id: string) => deleteMap(axios, id),
 		onSuccess: () => {
 			toast.success(<Tran text="delete-success" />);
-			router.push('/admin/maps?' + params.toString());
+			if (goBack) {
+				back();
+			}
 		},
 		onError: (error) => {
 			toast.error(<Tran text="delete-fail" />, { error });
