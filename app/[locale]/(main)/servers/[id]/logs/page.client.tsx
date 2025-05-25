@@ -40,7 +40,7 @@ export default function PageClient({ id }: Props) {
 					<ServerTabsContent className="space-y-2" value="login-log">
 						<ListLayout>
 							<InfinitePage
-								className="grid grid-cols-1"
+								className="grid grid-cols-1 gap-2"
 								paramSchema={PaginationQuerySchema}
 								queryKey={['server', id, 'login']}
 								queryFn={(axios, params) => getServerLogins(axios, id, params)}
@@ -52,7 +52,7 @@ export default function PageClient({ id }: Props) {
 						</ListLayout>
 						<GridLayout>
 							<GridPaginationList
-								className="grid grid-cols-1"
+								className="grid grid-cols-1 gap-2"
 								paramSchema={PaginationQuerySchema}
 								queryKey={['server', id, 'login']}
 								queryFn={(axios, params) => getServerLogins(axios, id, params)}
@@ -66,7 +66,7 @@ export default function PageClient({ id }: Props) {
 					<ServerTabsContent className="space-y-2" value="building-destroy-log">
 						<ListLayout>
 							<InfinitePage
-								className="grid grid-cols-1"
+								className="grid grid-cols-1 gap-2"
 								paramSchema={PaginationQuerySchema}
 								queryKey={['server', id, 'building-destroy-log']}
 								queryFn={(axios, params) => getServerBuildLog(axios, id, params)}
@@ -80,7 +80,7 @@ export default function PageClient({ id }: Props) {
 						</ListLayout>
 						<GridLayout>
 							<GridPaginationList
-								className="grid grid-cols-1"
+								className="grid grid-cols-1 gap-2"
 								paramSchema={PaginationQuerySchema}
 								queryKey={['server', id, 'building-destroy-log']}
 								queryFn={(axios, params) => getServerBuildLog(axios, id, params)}

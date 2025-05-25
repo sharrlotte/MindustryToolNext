@@ -124,7 +124,6 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 					onKeyDown={handleKeyPress}
 					onChange={(event) => setMessage(event.currentTarget.value)}
 					ref={ref}
-					autoFocus
 					{...props}
 				/>
 				<div className="mt-auto mb-1 mx-1 flex items-center gap-2 min-h-9">

@@ -69,13 +69,18 @@ function LoginLogChart({ serverId, filter }: { serverId: string; filter: Filter 
 	}
 
 	return (
-		<div className="aspect-video h-auto w-full flex">
+		<div className="aspect-video h-auto w-full flex bg-card overflow-hidden rounded-lg">
 			<Line
-				className="bg-card rounded-lg p-2"
+				className="p-2"
 				options={{
 					responsive: true,
 					aspectRatio: 16 / 9,
 					scales: {
+						x: {
+							ticks: {
+								maxTicksLimit: 15,
+							},
+						},
 						y: {
 							beginAtZero: true,
 							ticks: {
