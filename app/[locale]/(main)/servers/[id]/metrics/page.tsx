@@ -76,6 +76,11 @@ function LoginLogChart({ serverId, filter }: { serverId: string; filter: Filter 
 					responsive: true,
 					aspectRatio: 16 / 9,
 					scales: {
+						x: {
+							ticks: {
+								maxTicksLimit: 10,
+							},
+						},
 						y: {
 							beginAtZero: true,
 							ticks: {
@@ -85,15 +90,13 @@ function LoginLogChart({ serverId, filter }: { serverId: string; filter: Filter 
 					},
 				}}
 				data={{
-					labels: metrics
-						.filter((_, index) => index % Math.round(metrics.length / 10) === 0)
-						.map(({ createdAt }) =>
-							unit === 'DAY'
-								? `${createdAt.getDate()}/${createdAt.getMonth() + 1}`
-								: unit === 'HOUR'
-									? `${createdAt.getHours()}:00`
-									: `${createdAt.getHours()}:${createdAt.getMinutes()}`,
-						),
+					labels: metrics.map(({ createdAt }) =>
+						unit === 'DAY'
+							? `${createdAt.getDate()}/${createdAt.getMonth() + 1}`
+							: unit === 'HOUR'
+								? `${createdAt.getHours()}:00`
+								: `${createdAt.getHours()}:${createdAt.getMinutes()}`,
+					),
 					datasets: [
 						{
 							label: t('login'),
