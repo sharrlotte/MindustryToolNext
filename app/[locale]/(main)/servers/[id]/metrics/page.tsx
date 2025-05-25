@@ -78,7 +78,7 @@ function LoginLogChart({ serverId, filter }: { serverId: string; filter: Filter 
 					scales: {
 						x: {
 							ticks: {
-								maxTicksLimit: 10,
+								maxTicksLimit: 15,
 							},
 						},
 						y: {
