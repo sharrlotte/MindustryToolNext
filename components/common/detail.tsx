@@ -74,7 +74,6 @@ export function DetailImage({ src, errorSrc, alt }: ImageProps) {
 		<div className="flex justify-center p-2 object-contain h-auto lg:overflow-auto lg:max-h-full">
 			<figure className="w-full h-full">
 				<FallbackImage className="w-full rounded-lg" src={src} alt={alt} errorSrc={errorSrc} loading="eager" />
-				<caption>{alt}</caption>
 			</figure>
 		</div>
 	);
