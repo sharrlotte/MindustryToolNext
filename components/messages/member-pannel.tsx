@@ -52,8 +52,6 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				queryFn={(axios: AxiosInstance, params: { page: number; size: number }) =>
 					getMembers(axios, room, params).then((result) => result.filter((v, i, a) => a.findIndex((v2) => v.id === v2.id) === i))
 				}
-				noResult={<div></div>}
-				end={<div></div>}
 			>
 				{(page) =>
 					groupUserByRole(page).map(([name, group]) => (
