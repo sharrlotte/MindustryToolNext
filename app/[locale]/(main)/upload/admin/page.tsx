@@ -3,6 +3,7 @@
 import { AxiosInstance } from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import ErrorMessage from '@/components/common/error-message';
 import { TrashIcon } from '@/components/common/icons';
@@ -10,7 +11,9 @@ import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import Divider from '@/components/ui/divider';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/components/ui/sonner';
@@ -18,6 +21,7 @@ import { toast } from '@/components/ui/sonner';
 import { UploadState } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const fetchFiles = async (axios: AxiosInstance, state: UploadState) => {
@@ -51,6 +55,17 @@ const uploadFile = async (
 	return data;
 };
 
+const uploadGithubUrl = async (axios: AxiosInstance, url: string) => {
+	const formData = new FormData();
+	formData.append('url', url);
+	const { data } = await axios.post('/upload/github', formData, {
+		data: formData,
+		headers: { 'Content-Type': 'multipart/form-data' },
+	});
+
+	return data;
+};
+
 function useUpload(state: UploadState) {
 	const axios = useClientApi();
 	return useQuery({
@@ -61,6 +76,33 @@ function useUpload(state: UploadState) {
 }
 
 export default function Page() {
+	return (
+		<ScrollContainer className="p-2 w-full items-center flex flex-col">
+			<h2 className="text-xl font-bold mb-4">Upload Admin Panel</h2>
+			<Dialog>
+				<DialogTrigger>
+					<Button>Upload</Button>
+				</DialogTrigger>
+				<DialogContent className="p-8">
+					<FileUploadForm />
+					<Divider />
+					<GithubUrlUploadForm />
+				</DialogContent>
+			</Dialog>
+			<div className="mt-6 space-y-2 w-full mx-auto max-w-xl flex justify-end">
+				<RetryButton />
+			</div>
+			<div className="mt-6 space-y-2 w-full mx-auto max-w-xl">
+				<List state="PROCESSING" />
+				<List state="RETRY" />
+				<List state="ERROR" />
+				<List state="QUEUING" />
+			</div>
+		</ScrollContainer>
+	);
+}
+
+function FileUploadForm() {
 	const queryClient = useQueryClient();
 	const axios = useClientApi();
 
@@ -98,7 +140,6 @@ export default function Page() {
 			setEta(null);
 		},
 	});
-
 	const onSubmit = ({ file }: { file: File | null | undefined }) => {
 		if (!file) return;
 
@@ -111,60 +152,99 @@ export default function Page() {
 		mutation.mutate(file);
 		form.reset();
 	};
-
 	return (
-		<ScrollContainer className="p-2 w-full items-center flex flex-col">
-			<h2 className="text-xl font-bold mb-4">Upload Admin Panel</h2>
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="mb-4 space-y-2">
-					<FormField
-						control={form.control}
-						name="file"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>File</FormLabel>
-								<FormControl>
-									<Input
-										type="file"
-										accept=".msch,.msav,.zip"
-										onChange={(e) => field.onChange(e.target.files?.[0])}
-										className=""
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
+		<Form {...form}>
+			<header>
+				<h3 className="font-semibold mb-2">Via .msav, .msch or .zip</h3>
+			</header>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="mb-4 space-y-2">
+				<FormField
+					control={form.control}
+					name="file"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>File</FormLabel>
+							<FormControl>
+								<Input type="file" accept=".msch,.msav,.zip" onChange={(e) => field.onChange(e.target.files?.[0])} className="" />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<Button type="submit" disabled={mutation.isPending}>
+					<Tran text="upload" />
+				</Button>
+			</form>
+			{progress !== null && (
+				<div className="w-full mt-2">
+					<Progress value={progress} />
+					<div className="text-xs text-gray-600 mt-1 text-right">
+						{progress}%
+						{speed !== null && (
+							<span className="min-w-[40px]">
+								| Speed: {speed > 1024 * 1024 ? (speed / 1024 / 1024).toFixed(2) + ' MB/s' : (speed / 1024).toFixed(2) + ' KB/s'}
+							</span>
 						)}
-					/>
-					<Button type="submit" disabled={mutation.isPending}>
-						<Tran text="upload" />
-					</Button>
-				</form>
-				{progress !== null && (
-					<div className="w-full mt-2">
-						<Progress value={progress} />
-						<div className="text-xs text-gray-600 mt-1 text-right">
-							{progress}%
-							{speed !== null && (
-								<span className="min-w-[40px]">
-									| Speed:{' '}
-									{speed > 1024 * 1024 ? (speed / 1024 / 1024).toFixed(2) + ' MB/s' : (speed / 1024).toFixed(2) + ' KB/s'}
-								</span>
-							)}
-							<span className="min-w-[40px]">{eta !== null && eta > 0 && <> | ETA: {Math.ceil(eta)}s</>}</span>
-						</div>
+						<span className="min-w-[40px]">{eta !== null && eta > 0 && <> | ETA: {Math.ceil(eta)}s</>}</span>
 					</div>
-				)}
-			</Form>
-			<div className="mt-6 space-y-2 w-full mx-auto max-w-xl flex justify-end">
-				<RetryButton />
-			</div>
-			<div className="mt-6 space-y-2 w-full mx-auto max-w-xl">
-				<List state="PROCESSING" />
-				<List state="RETRY" />
-				<List state="ERROR" />
-				<List state="QUEUING" />
-			</div>
-		</ScrollContainer>
+				</div>
+			)}
+		</Form>
+	);
+}
+
+function GithubUrlUploadForm() {
+	const queryClient = useQueryClient();
+	const axios = useClientApi();
+
+	const form = useForm<{ url: string }>({
+		defaultValues: {
+			url: '',
+		},
+		resolver: zodResolver(
+			z.object({
+				url: z
+					.string()
+					.url()
+					.regex(/^https:\/\/github.com\/.+/),
+			}),
+		),
+	});
+
+	const mutation = useMutation({
+		mutationFn: (url: string) => uploadGithubUrl(axios, url),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-upload'] }),
+		onError: (error) => toast.error(error?.message),
+	});
+	const onSubmit = ({ url }: { url: string }) => {
+		mutation.mutate(url);
+		form.reset();
+	};
+	return (
+		<Form {...form}>
+			<header>
+				<h3 className="font-semibold mb-2">Via Github Url</h3>
+			</header>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="mb-4 space-y-2">
+				<FormField
+					control={form.control}
+					name="url"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Github Url</FormLabel>
+							<FormControl>
+								<Input {...field} placeholder="https://github.com/sharrlotte/MindustryToolNext" />
+							</FormControl>
+							<FormDescription>Url to github repository that contain schematics, maps</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<Button type="submit" disabled={mutation.isPending}>
+					<Tran text="upload" />
+				</Button>
+			</form>
+		</Form>
 	);
 }
 
@@ -176,7 +256,7 @@ function List({ state }: { state: UploadState }) {
 	const { mutate, isPending } = useMutation({
 		mutationFn: (filename: string) =>
 			axios.delete(`/upload`, {
-				params: { filename },
+				params: { path: filename },
 			}),
 		onError: (error) => {
 			toast.error(error?.message);
