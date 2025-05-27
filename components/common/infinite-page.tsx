@@ -114,7 +114,7 @@ const InfinitePage = <T, P extends QuerySchema>({
 	}
 
 	return (
-		<div ref={componentRef}>
+		<div className="w-full" ref={componentRef}>
 			<InfiniteScroll
 				className={
 					className ?? 'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2'
@@ -126,9 +126,10 @@ const InfinitePage = <T, P extends QuerySchema>({
 				threshold={400}
 				getScrollParent={() => {
 					if (!componentRef.current) return null;
-					
-					const containers = componentRef.current.closest('.scroll-container') || 
-					                   componentRef.current.getElementsByClassName('scroll-container')[0];
+
+					const containers =
+						componentRef.current.closest('.scroll-container') ||
+						componentRef.current.getElementsByClassName('scroll-container')[0];
 
 					if (containers) {
 						return containers as HTMLElement;

@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import LoginButton from '@/components/button/login.button';
@@ -14,8 +13,6 @@ import { MessageCard } from '@/components/messages/message-card';
 import { useSession } from '@/context/session.context';
 import IsSmall from '@/layout/is-small';
 import ProtectedElement from '@/layout/protected-element';
-
-const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
 export default function ChatPage() {
 	return (
