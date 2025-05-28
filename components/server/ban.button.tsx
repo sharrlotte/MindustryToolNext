@@ -29,7 +29,7 @@ type BanButtonProps = {
 export function BanButton({ id, ip, uuid, username }: BanButtonProps) {
 	const { state } = useSocket();
 	const { sendMessage } = useMessage({
-		room: `SERVER-${id}`,
+		room: `SERVER_CONSOLE-${id}`,
 		method: 'MESSAGE',
 	});
 

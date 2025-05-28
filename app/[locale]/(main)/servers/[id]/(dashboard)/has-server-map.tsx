@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
+
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 
 import useServerMaps from '@/hooks/use-server-maps';
-import { ReactNode } from 'react';
 
 export default function HasServerMap({ id, children }: { id: string; children: ReactNode }) {
 	const { data, isError, isLoading } = useServerMaps(id);
@@ -15,7 +16,7 @@ export default function HasServerMap({ id, children }: { id: string; children: R
 		return (
 			<div className="px-2 py-1 space-x-2 h-9 rounded-md">
 				<Tran className="text-warning" text="server.no-map-warning" />
-				<InternalLink className="underline text-brand" href={`/servers/${id}/maps`}>
+				<InternalLink className="underline text-brand" href={`/servers/${id}/maps?tab=download`}>
 					<Tran text="internal-server.add-map" />
 				</InternalLink>
 			</div>

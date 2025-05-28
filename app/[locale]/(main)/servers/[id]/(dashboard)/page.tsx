@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { Fragment, Suspense } from 'react';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
+import ChatPanel from '@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-panel';
 import KickList from '@/app/[locale]/(main)/servers/[id]/(dashboard)/kick-list';
 
 import CopyButton from '@/components/button/copy.button';
@@ -207,6 +208,7 @@ export default async function Page({ params }: Props) {
 							</ProtectedElement>
 						</div>
 					</CatchError>
+					<ChatPanel id={id} />
 					<CatchError>
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className={cn('flex flex-row gap-2 justify-end items-center p-2 mt-auto rounded-md border shadow-lg bg-card')}>
