@@ -17,7 +17,7 @@ export default async function ChatPanel({ id }: Props) {
 			<div className="overflow-x-hidden bg-card">
 				<ServerConsolePage />
 			</div>
-			<ChatInput room={`SERVER_CONSOLE-${id}`} />
+			<ChatInput room={`SERVER_CHAT-${id}`} />
 		</div>
 	);
 }
