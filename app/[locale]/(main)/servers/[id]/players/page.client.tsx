@@ -12,6 +12,7 @@ import { KickButton } from '@/components/server/kick.button';
 import Divider from '@/components/ui/divider';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
+import useServerStatus from '@/hooks/use-server-status';
 import { cn } from '@/lib/utils';
 import { getServerPlayerInfos } from '@/query/server';
 import { PlayerInfo } from '@/types/response/PlayerInfo';
@@ -29,6 +30,11 @@ const state = {
 
 export default function PageClient({ id }: Props) {
 	const [banned, setBanned] = useState<boolean | undefined>(undefined);
+	const status = useServerStatus(id);
+
+	if (status === 'UNAVAILABLE') {
+		return <div>Server is offline</div>;
+	}
 
 	return (
 		<ScrollContainer className="p-2 flex flex-col gap-2">
