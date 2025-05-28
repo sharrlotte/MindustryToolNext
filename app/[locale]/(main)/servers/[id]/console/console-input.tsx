@@ -33,6 +33,7 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 
 	return (
 		<ChatInput
+			className="p-2"
 			room={room}
 			placeholder="/help"
 			onKeyPress={(event) => {

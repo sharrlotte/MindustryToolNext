@@ -72,7 +72,7 @@ function GlobalChatInput() {
 				</div>
 			}
 		>
-			<ChatInput room="GLOBAL" />
+			<ChatInput room="GLOBAL" className="p-2" />
 		</ProtectedElement>
 	);
 }

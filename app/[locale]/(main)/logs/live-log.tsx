@@ -18,7 +18,7 @@ export default function LiveLog() {
 					</MessageList>
 				</div>
 			</div>
-			<ChatInput room="LOG" />
+			<ChatInput room="LOG" className="p-2" />
 		</div>
 	);
 }

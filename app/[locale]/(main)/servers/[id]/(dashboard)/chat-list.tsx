@@ -11,7 +11,7 @@ export default function ServerConsolePage() {
 
 	return (
 		<MessageList
-			className="flex h-full flex-col gap-1"
+			className="flex h-full flex-col gap-1 max-h-screen"
 			queryKey={['servers', id, 'chat']}
 			room={`SERVER_CHAT-${id}`}
 			params={{ size: 50 }}
