@@ -31,7 +31,7 @@ export function KickButton({ id, uuid }: BanButtonProps) {
 	const { state } = useSocket();
 	const [reason, setReason] = useState('');
 	const { sendMessage } = useMessage({
-		room: `SERVER-${id}`,
+		room: `SERVER_CONSOLE-${id}`,
 		method: 'MESSAGE',
 	});
 

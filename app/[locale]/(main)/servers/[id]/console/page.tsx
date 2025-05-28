@@ -39,7 +39,7 @@ export default async function Page({ params }: Props) {
 			<div className="overflow-x-hidden bg-card">
 				<ServerConsolePage />
 			</div>
-			<ConsoleInput id={id} room={`SERVER-${id}`} />
+			<ConsoleInput id={id} room={`SERVER_CONSOLE-${id}`} />
 		</div>
 	);
 }
