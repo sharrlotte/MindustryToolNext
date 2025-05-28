@@ -5,17 +5,15 @@ import React, { Fragment, Suspense } from 'react';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 import ChatPanel from '@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-panel';
-import KickList from '@/app/[locale]/(main)/servers/[id]/(dashboard)/kick-list';
 
 import CopyButton from '@/components/button/copy.button';
-import { CatchError } from '@/components/common/catch-error';
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
-import { ServerIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
 import ServerStatusBadge from '@/components/server/server-status-badge';
+import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
 import IdUserCard from '@/components/user/id-user-card';
@@ -24,7 +22,7 @@ import { getSession } from '@/action/common';
 import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
-import { cn, formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
+import { formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
 
 export const experimental_ppr = true;
 
@@ -38,6 +36,7 @@ const RemoveServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[
 const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/shutdown-server-button'));
 const StopServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/stop-server-button'));
 const PlayerList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/player-list'));
+const KickList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/kick-list'));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id } = await params;
@@ -74,91 +73,106 @@ export default async function Page({ params }: Props) {
 		return <ErrorScreen error={session} />;
 	}
 
-	const { name, description, port, mode, players, kicks, status, userId, address, mapName, ramUsage, cpuUsage, totalRam } =
-		server;
+	const {
+		name,
+		avatar,
+		description,
+		port,
+		mode,
+		players,
+		kicks,
+		status,
+		userId,
+		address,
+		mapName,
+		ramUsage,
+		cpuUsage,
+		totalRam,
+	} = server;
 
 	const canAccess = hasAccess(session, { any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: server.userId }] });
-	const showPlayer = hasAccess(session, {
-		all: [canAccess, status === 'HOST'],
-	});
 
 	return (
-		<ScrollContainer className="flex flex-col gap-2 p-2 h-full">
-			<div className="h-full">
-				<div className="flex flex-col gap-2 w-full min-h-full">
-					<div className="flex flex-col flex-1 gap-2 md:flex-row">
-						<div className="flex overflow-hidden flex-col flex-1 gap-6 p-4 w-full rounded-md border min-w-80 bg-card">
-							<div className="flex gap-2 items-center">
-								<ServerIcon className="p-1 rounded-sm size-8 bg-foreground text-background" />
-								<ColorText className="text-2xl font-bold" text={name} />
-							</div>
-							<div className="grid grid-cols-2 gap-3 text-sm font-medium capitalize">
-								<div className="flex flex-col gap-0.5">
-									<Tran text="server.description" />
-									<ColorText text={description} />
+		<ScrollContainer className="flex p-2 flex-col gap-2 h-full">
+			<div className="h-full flex flex-col">
+				<div className="grid grid-rows-1 md:grid-rows-[auto_1fr] gap-2 w-full min-h-full">
+					<div className="flex flex-col gap-2 md:flex-row">
+						<div className="flex overflow-hidden flex-col gap-4 p-4 w-full rounded-md border bg-card">
+							<header className="flex gap-2 items-center">
+								{avatar && <Image className="size-16 object-cover rounded-md" src={avatar} width={64} height={64} alt={name} />}
+								<div className="flex flex-col gap-1">
+									<ColorText className="text-3xl font-extrabold" text={name} />
+									<span className="flex gap-1 items-center">
+										<Tran text="server.owner" />
+										<IdUserCard id={userId} />
+									</span>
 								</div>
-								<div className="flex flex-col gap-0.5">
-									<Tran text="server.owner" />
-									<IdUserCard id={userId} />
-								</div>
-								<div className="flex flex-col gap-0.5">
-									<Tran text="server.game-mode" />
-									<span className="capitalize">{mode.toLocaleLowerCase()}</span>
-								</div>
-								<div className="flex flex-col gap-0.5">
-									<Tran text="server.status" />
+							</header>
+							<main className="flex flex-wrap sm:gap-x-40 gap-x-20 gap-y-8 text-sm font-medium capitalize">
+								<div className="flex flex-col gap-1">
+									<Tran className="text-muted-foreground" text="server.status" />
 									<ServerStatusBadge status={status} />
 								</div>
-								<div className="flex flex-col gap-0.5">
-									<Tran text="server.players" />
-									<span>{players}/30</span>
+								<div className="flex flex-col gap-1">
+									<Tran className="text-muted-foreground" text="server.description" />
+									<ColorText className="font-semibold" text={description} />
+								</div>
+								<div className="flex flex-col gap-1">
+									<Tran className="text-muted-foreground" text="server.game-mode" />
+									<span className="capitalize font-semibold">{mode.toLocaleLowerCase()}</span>
+								</div>
+								<div className="flex flex-col gap-1">
+									<Tran className="text-muted-foreground" text="server.players" />
+									<span className="font-semibold">{players}/30</span>
 								</div>
 								{status === 'HOST' && (
-									<div className="flex flex-col gap-0.5">
+									<div className="flex flex-col gap-1">
 										{mapName && (
 											<Fragment>
-												<Tran text="server.map" />
-												<ColorText text={mapName} />
+												<Tran className="text-muted-foreground" text="server.map" />
+												<ColorText className="font-semibold" text={mapName} />
 											</Fragment>
 										)}
 									</div>
 								)}
-								<div className="flex flex-col gap-0.5">
-									{address && (
-										<div className="flex flex-col gap-1">
-											<Tran text="server.address" />
-											<CopyButton variant="none" data={`${address}:${port}`}>
-												<span className="lowercase">
-													{address}:{port}
-												</span>
-											</CopyButton>
-										</div>
-									)}
+							</main>
+							<Divider />
+							{address && (
+								<div className="flex items-center">
+									<Tran className="text-muted-foreground" text="server.address" />
+									<span className="text-muted-foreground mr-2">:</span>
+									<CopyButton
+										className="px-3 h-6 py-0 border text-sm border-foreground font-semibold rounded-full"
+										variant="none"
+										data={`${address}:${port}`}
+										title={`${address}:${port}`}
+									>
+										<span className="lowercase">
+											{address}:{port}
+										</span>
+									</CopyButton>
 								</div>
-							</div>
-						</div>
-						<CatchError>
-							<ProtectedElement session={session} filter={showPlayer}>
-								{status === 'HOST' && kicks > 0 && (
-									<div className="flex flex-col rounded-md border bg-card">
-										<ScrollContainer className="flex flex-col gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit max-h-[500px]">
-											<Suspense
-												fallback={
-													<Skeletons number={kicks}>
-														<Skeleton className="w-full h-10 rounded-md" />
-													</Skeletons>
-												}
-											>
-												<KickList id={id} />
-											</Suspense>
-										</ScrollContainer>
+							)}
+							<Divider />
+							<footer className="flex gap-8 flex-wrap justify-between h-9">
+								<ProtectedElement session={session} filter={canAccess}>
+									<div className="flex flex-row gap-2 justify-end items-center ml-auto">
+										{status !== 'DELETED' && <RemoveServerButton id={id} />}
+										{(status === 'HOST' || status === 'UP') && <ShutdownServerButton id={id} />}
+										{status === 'HOST' ? (
+											<StopServerButton id={id} />
+										) : status === 'UP' ? (
+											<HostServerButton id={id} />
+										) : (
+											<InitServerButton id={id} />
+										)}
 									</div>
-								)}
-							</ProtectedElement>
-						</CatchError>
+								</ProtectedElement>
+							</footer>
+						</div>
 					</div>
-					<CatchError>
-						<div className="flex flex-col gap-2 justify-between md:flex-row">
+					<div className="gap-2 grid grid-cols-1 md:grid-cols-2">
+						<div className="flex-1 flex flex-col gap-2">
 							<div className="flex flex-wrap flex-1 gap-1 justify-start items-start p-4 rounded-md border shadow-lg bg-card">
 								<div className="flex flex-col gap-1 justify-start items-start w-full h-full">
 									<h3>
@@ -178,7 +192,7 @@ export default async function Page({ params }: Props) {
 								</div>
 							</div>
 							{status === 'HOST' && (
-								<div className="flex h-auto w-full md:max-w-[40vw] rounded-md overflow-hidden">
+								<div className="flex min-w-[30vw] h-auto w-full rounded-md overflow-hidden">
 									<Image
 										className="object-contain overflow-hidden w-full h-auto rounded-md border"
 										key={status}
@@ -189,41 +203,45 @@ export default async function Page({ params }: Props) {
 									/>
 								</div>
 							)}
-							<ProtectedElement session={session} filter={showPlayer}>
-								{status === 'HOST' && players > 0 && (
-									<div className="flex flex-col rounded-md border bg-card">
-										<div className="grid gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit">
-											<Suspense
-												fallback={
-													<Skeletons number={players}>
-														<Skeleton className="w-full h-11 rounded-md" />
-													</Skeletons>
-												}
-											>
-												<PlayerList id={id} />
-											</Suspense>
-										</div>
-									</div>
-								)}
-							</ProtectedElement>
 						</div>
-					</CatchError>
-					<ChatPanel id={id} />
-					<CatchError>
 						<ProtectedElement session={session} filter={canAccess}>
-							<div className={cn('flex flex-row gap-2 justify-end items-center p-2 mt-auto rounded-md border shadow-lg bg-card')}>
-								{status !== 'DELETED' && <RemoveServerButton id={id} />}
-								{(status === 'HOST' || status === 'UP') && <ShutdownServerButton id={id} />}
-								{status === 'HOST' ? (
-									<StopServerButton id={id} />
-								) : status === 'UP' ? (
-									<HostServerButton id={id} />
-								) : (
-									<InitServerButton id={id} />
-								)}
-							</div>
+							{status === 'HOST' && (kicks > 0 || players > 0) && (
+								<div>
+									{players > 0 && (
+										<div className="flex flex-col rounded-md border bg-card">
+											<div className="grid gap-2 p-2 w-full md:w-fit">
+												<Suspense
+													fallback={
+														<Skeletons number={players}>
+															<Skeleton className="w-full h-11 rounded-md" />
+														</Skeletons>
+													}
+												>
+													<PlayerList id={id} />
+												</Suspense>
+											</div>
+										</div>
+									)}
+									{kicks > 0 && (
+										<div className="flex flex-col rounded-md border bg-card">
+											<ScrollContainer className="flex flex-col gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit max-h-[500px]">
+												<Suspense
+													fallback={
+														<Skeletons number={kicks}>
+															<Skeleton className="w-full h-10 rounded-md" />
+														</Skeletons>
+													}
+												>
+													<KickList id={id} />
+												</Suspense>
+											</ScrollContainer>
+										</div>
+									)}
+								</div>
+							)}
 						</ProtectedElement>
-					</CatchError>
+						<ChatPanel id={id} />
+					</div>
 				</div>
 			</div>
 		</ScrollContainer>

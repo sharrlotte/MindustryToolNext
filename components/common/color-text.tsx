@@ -76,10 +76,10 @@ export default function ColorText({ text, className }: ColorTextProps) {
 						const style = {
 							color: format.foreground,
 							backgroundColor: format.background,
-							fontStyle: format.italic ? 'italic' : 'normal',
-							fontWeight: format.bold ? 'bold' : 'normal',
-							textDecoration: format.underline ? 'underline' : 'none',
-							textDecorationLine: format.strike ? 'line-through' : 'none',
+							fontStyle: format.italic ? 'italic' : 'inherit',
+							fontWeight: format.bold ? 'bold' : 'inherit',
+							textDecoration: format.underline ? 'underline' : 'inherit',
+							textDecorationLine: format.strike ? 'line-through' : 'inherit',
 							opacity: format.dim ? 0.5 : 1,
 						};
 						return (

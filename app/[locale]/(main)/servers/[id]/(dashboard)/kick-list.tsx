@@ -35,7 +35,7 @@ export default function KickList({ id }: KickListProps) {
 
 	return (
 		<AnimatePresence>
-			<h3>
+			<h3 className='font-semibold'>
 				<Tran text="server.kick-list" />
 			</h3>
 			<Divider />

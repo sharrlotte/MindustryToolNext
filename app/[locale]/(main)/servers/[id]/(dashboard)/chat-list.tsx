@@ -15,7 +15,7 @@ export default function ServerConsolePage() {
 			queryKey={['servers', id, 'chat']}
 			room={`SERVER_CHAT-${id}`}
 			params={{ size: 50 }}
-			showNotification={false}
+			showNotification
 		>
 			{(data) => <MessageCard key={data.id} message={data} />}
 		</MessageList>

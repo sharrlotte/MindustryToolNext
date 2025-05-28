@@ -16,6 +16,7 @@ export type ServerDto = {
 	players: number;
 	mapName: string;
 	address: string;
+	avatar: string;
 	isAutoTurnOff: boolean;
 	isHub: boolean;
 	hostCommand?: string;

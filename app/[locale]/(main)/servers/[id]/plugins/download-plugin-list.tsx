@@ -121,7 +121,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 	return (
 		<motion.button
 			className={cn(
-				'relative border flex h-48 min-h-48 w-full flex-col items-start justify-start gap-2 overflow-hidden rounded-md bg-card p-4 text-start',
+				'relative border flex h-48 min-h-48 w-full flex-col items-start justify-start gap-1 overflow-hidden rounded-md bg-card p-4 text-start',
 				{
 					'hover:border-brand': state !== 'up-to-date',
 					'opacity-50': state === 'up-to-date',
@@ -131,7 +131,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 			onClick={() => mutate(plugin.id)}
 			layout
 		>
-			<h2 className="line-clamp-1 w-full text-ellipsis whitespace-normal text-nowrap flex gap-1 items-center">
+			<h2 className="line-clamp-1 w-full whitespace-normal text-nowrap flex gap-1 items-center">
 				<FallbackImage
 					width={20}
 					height={20}
@@ -140,7 +140,10 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 					errorSrc="https://raw.githubusercontent.com/Anuken/Mindustry/master/core/assets/sprites/error.png"
 					alt={''}
 				/>
-				<span className="overflow-hidden text-ellipsis">{name}</span>
+				<span className="font-semibold">{name}</span>
+				<span className="text-base overflow-hidden text-ellipsis">
+					({user} / {repo})
+				</span>
 			</h2>
 			<p className="line-clamp-2 w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
 				<ColorText text={description} />

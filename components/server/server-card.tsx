@@ -30,7 +30,7 @@ export default function ServerCard({
 					)}
 				</div>
 				<div
-					className={cn('grid grid-cols-2 gap-3 text-sm font-medium capitalize text-muted-foreground', {
+					className={cn('grid grid-cols-2 w-full gap-3 text-sm font-medium capitalize text-muted-foreground', {
 						'text-foreground': status === 'HOST',
 					})}
 				>

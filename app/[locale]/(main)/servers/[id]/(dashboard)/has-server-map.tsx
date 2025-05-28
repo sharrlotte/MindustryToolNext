@@ -14,7 +14,7 @@ export default function HasServerMap({ id, children }: { id: string; children: R
 
 	if (isError || !data || data.length === 0) {
 		return (
-			<div className="px-2 space-x-2 h-9 rounded-md">
+			<div className="space-x-2 h-9 rounded-md">
 				<Tran className="text-warning-foreground" text="server.no-map-warning" />
 				<InternalLink variant="button-primary" href={`/servers/${id}/maps?tab=download`}>
 					<Tran text="internal-server.add-map" />

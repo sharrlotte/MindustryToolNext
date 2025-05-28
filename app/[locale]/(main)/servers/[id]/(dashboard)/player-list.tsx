@@ -39,7 +39,7 @@ export default function PlayerList({ id }: PlayerListProps) {
 
 	return (
 		<AnimatePresence>
-			<h3>
+			<h3 className="font-semibold">
 				<Tran text="server.player-list" />
 			</h3>
 			<Divider />

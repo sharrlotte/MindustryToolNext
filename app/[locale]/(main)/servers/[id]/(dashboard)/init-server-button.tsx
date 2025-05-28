@@ -88,8 +88,8 @@ export default function InitServerButton({ id }: Props) {
 							<CheckCircleIcon className="w-4" />
 						)}{' '}
 						<ColorText text={last} />
-						<Divider />
 					</DialogDescription>
+					<Divider />
 					<ScrollContainer className="flex overflow-x-auto flex-col flex-1 w-full h-full">
 						{data?.map((text, index) => <ColorText key={index} text={text} />)} {isError && <ErrorMessage error={error} />}
 					</ScrollContainer>
