@@ -15,7 +15,7 @@ import { ServerIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
-import ServerStatus from '@/components/server/server-status';
+import ServerStatusBadge from '@/components/server/server-status-badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
 import IdUserCard from '@/components/user/id-user-card';
@@ -107,7 +107,7 @@ export default async function Page({ params }: Props) {
 								</div>
 								<div className="flex flex-col gap-0.5">
 									<Tran text="server.status" />
-									<ServerStatus status={status} />
+									<ServerStatusBadge status={status} />
 								</div>
 								<div className="flex flex-col gap-0.5">
 									<Tran text="server.players" />

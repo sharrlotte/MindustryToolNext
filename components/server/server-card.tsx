@@ -3,7 +3,7 @@ import React, { Fragment, Suspense } from 'react';
 import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
-import ServerStatus from '@/components/server/server-status';
+import ServerStatusBadge from '@/components/server/server-status-badge';
 
 import { cn } from '@/lib/utils';
 import { ServerDto } from '@/types/response/ServerDto';
@@ -36,7 +36,7 @@ export default function ServerCard({
 				>
 					<div className="flex flex-col gap-0.5">
 						<Tran asChild text="server.status" />
-						<ServerStatus status={status} />
+						<ServerStatusBadge status={status} />
 					</div>
 					<div className="flex flex-col gap-0.5">
 						<Tran asChild text="server.game-mode" />

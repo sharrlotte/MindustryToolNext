@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import Image from 'next/image';
+import React, { Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
+import ImageUploader from '@/components/common/image-uploader';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -136,7 +138,7 @@ export default function ServerUpdateForm({ server }: Props) {
 						render={({ field, fieldState }) => (
 							<FormItem className="grid">
 								<FormLabel>
-									<Tran text="server.image"  />
+									<Tran text="server.image" />
 								</FormLabel>
 								<FormControl>
 									<ComboBox
@@ -193,6 +195,34 @@ export default function ServerUpdateForm({ server }: Props) {
 								</FormControl>
 								<FormDescription>
 									<Tran text="server.webhook-description" />
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="avatar"
+						render={({ field }) => (
+							<FormItem className="grid">
+								<FormLabel>
+									<Tran text="server.avatar" />
+								</FormLabel>
+								<FormControl>
+									<div className="flex gap-2 flex-col">
+										<div className="flex gap-2">
+											<Input {...field} value={field.value ?? ''} />
+											<Suspense>
+												<ImageUploader onUpload={(url) => field.onChange(url)} />
+											</Suspense>
+										</div>
+										{field.value && (
+											<Image className="size-16 object-cover rounded-md" src={field.value} height={64} width={64} alt="server avatar" />
+										)}
+									</div>
+								</FormControl>
+								<FormDescription>
+									<Tran text="server.avatar-description" />
 								</FormDescription>
 								<FormMessage />
 							</FormItem>

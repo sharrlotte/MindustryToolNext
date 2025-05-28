@@ -86,7 +86,6 @@ export function getLoggedErrorMessage(error: TError) {
 				response: JSON.stringify(error.response),
 				config: JSON.stringify(error.config, Object.keys(error.config ?? {})),
 				url: error.config?.url,
-				stacktrace: error.stack,
 				message: error?.message,
 			});
 		}
