@@ -1,4 +1,4 @@
-import { isSameDay } from '@/lib/utils';
+import { isSameDay } from '@/lib/metric.utils';
 
 export type Message = {
 	id: string;

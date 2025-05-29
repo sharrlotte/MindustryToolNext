@@ -4,7 +4,7 @@ import React, { HTMLAttributes } from 'react';
 import { Button } from '@/components/ui/button';
 
 import { useI18n } from '@/i18n/client';
-import { cn, extractTranslationKey } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 type SearchProps = HTMLAttributes<HTMLDivElement>;
 
@@ -30,15 +30,14 @@ type InputProps = Omit<HTMLAttributes<HTMLInputElement>, 'onChange'> & {
 };
 
 export function SearchInput({ className, placeholder = 'search-by-name', value, onChange, onClear, ...props }: InputProps) {
-	const { key, group } = extractTranslationKey(placeholder);
-	const { t } = useI18n(group);
+	const { t } = useI18n();
 
 	return (
 		<>
 			<input
 				className={cn('h-full w-full bg-transparent hover:outline-none focus:outline-none', className)}
 				suppressHydrationWarning
-				placeholder={t(key)} //
+				placeholder={t(placeholder)} //
 				value={value}
 				onChange={(event) => onChange(event.currentTarget.value)}
 				{...props}

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { getColor } from '@/lib/utils';
+import { colours } from '@/constant/constant';
 
 const COLOR_REGEX = /(\[[#]*[a-fA-F0-9]*\]|\[[#]*[a-zA-Z]*\]|\[[0-9;]*[0-9]+m[0-9]*)/gim;
 
@@ -188,7 +188,7 @@ type ColorAndFormat = {
 function resolveColorAndFormat(color: string): ColorAndFormat {
 	if (color.startsWith('[') && color.endsWith(']')) {
 		color = color.substring(1, color.length - 1);
-		color = color.startsWith('#') ? color.padEnd(7, '0') : getColor(color.toLowerCase().trim());
+		color = color.startsWith('#') ? color.padEnd(7, '0') : colours[color.toLowerCase().trim()];
 
 		return {
 			format: {

@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { useI18n } from '@/i18n/client';
-import { extractTranslationKey } from '@/lib/utils';
+import { extractTranslationKey } from '@/lib/i18n.utils';
 
 type Props = {
 	className?: string;

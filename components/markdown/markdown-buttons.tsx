@@ -26,7 +26,7 @@ import { toast } from '@/components/ui/sonner';
 
 import { acceptedImageFormats } from '@/constant/constant';
 import env from '@/constant/env';
-import { insertAtCaret, wrapAtCaret } from '@/lib/utils';
+import { insertAtCaret, wrapAtCaret } from '@/lib/markdown.utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
