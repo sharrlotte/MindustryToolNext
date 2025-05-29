@@ -1,11 +1,11 @@
 'use client';
 
+import { ArrowDownToLine } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete.button';
 import ColorText from '@/components/common/color-text';
-import { DownloadIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -121,7 +121,7 @@ function RedownloadPlugin({ serverId, pluginId }: { serverId: string; pluginId: 
 
 	return (
 		<Button variant="outline" disabled={isPending} onClick={() => mutate(pluginId)}>
-			{isPending ? <LoadingSpinner className="w-fit size-5" /> : <DownloadIcon />}
+			{isPending ? <LoadingSpinner className="w-fit size-5" /> : <ArrowDownToLine />}
 		</Button>
 	);
 }

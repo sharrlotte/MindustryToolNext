@@ -1,8 +1,9 @@
 'use client';
 
+import { CrownIcon } from 'lucide-react';
+
 import ErrorMessage from '@/components/common/error-message';
 import GridPaginationList from '@/components/common/grid-pagination-list';
-import { CrownIcon } from '@/components/common/icons';
 import { GridLayout } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import Tran from '@/components/common/tran';
@@ -81,7 +82,6 @@ export default function UserRankCard({ user, rank }: UserCardRankProps) {
 
 	const level = Math.floor(Math.sqrt(user.stats?.EXP ?? 0));
 
-	
 	if (isError(session)) {
 		return <ErrorMessage error={session} />;
 	}

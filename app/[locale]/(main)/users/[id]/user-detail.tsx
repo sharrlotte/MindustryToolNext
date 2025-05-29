@@ -1,8 +1,8 @@
+import { Pencil, Share2Icon } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
 import CopyButton from '@/components/button/copy.button';
-import { EditIcon, ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -14,8 +14,8 @@ import UserRoleCard from '@/components/user/user-role';
 import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
-import { User } from '@/types/response/User';
 import { cn } from '@/lib/utils';
+import { User } from '@/types/response/User';
 
 type Props = {
 	user: User;
@@ -64,7 +64,7 @@ export default function UserDetail({ user }: Props) {
 				</Dialog>
 			)}
 			<CopyButton data={`${env.url.base}/users/${id}`} variant="ghost" position="absolute">
-				<ShareIcon />
+				<Share2Icon />
 			</CopyButton>
 			<div
 				className={cn('bottom-0 left-0 right-0 flex gap-2 bg-card bg-cover bg-center p-2', {
@@ -75,7 +75,7 @@ export default function UserDetail({ user }: Props) {
 				<EllipsisButton className="absolute right-2 top-2 aspect-square border-transparent bg-transparent" variant="ghost">
 					<ProtectedElement session={session} filter={{ authorId: user.id }}>
 						<InternalLink variant="command" href="/users/@me/setting">
-							<EditIcon />
+							<Pencil />
 							<Tran text="edit" />
 						</InternalLink>
 					</ProtectedElement>

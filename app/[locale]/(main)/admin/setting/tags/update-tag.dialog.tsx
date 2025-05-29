@@ -1,12 +1,12 @@
 'use client';
 
+import { ImageIcon, Pencil } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import ComboBox from '@/components/common/combo-box';
 import { Hidden } from '@/components/common/hidden';
-import { EditIcon, ImageIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -81,7 +81,7 @@ export default function UpdateTagDialog({ tag }: Props) {
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button className="min-w-20 p-2" variant="command" title="server.edit">
-					<EditIcon />
+					<Pencil />
 					<Tran text="tag.edit" />
 				</Button>
 			</DialogTrigger>

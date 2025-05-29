@@ -1,11 +1,11 @@
 'use client';
 
+import { CheckIcon } from 'lucide-react';
 import React, { Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 
 import DeleteButton from '@/components/button/delete.button';
 import { Hidden } from '@/components/common/hidden';
-import { CheckIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';

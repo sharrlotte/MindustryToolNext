@@ -1,5 +1,6 @@
 'use client';
 
+import { Share2Icon } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -18,7 +19,6 @@ import {
 	DetailInfo,
 	DetailTitle,
 } from '@/components/common/detail';
-import { ShareIcon } from '@/components/common/icons';
 import JsonDisplay from '@/components/common/json-display';
 import ScrollContainer from '@/components/common/scroll-container';
 import SizeCard from '@/components/common/size-card';
@@ -52,7 +52,7 @@ export default function UploadMapDetailCard({
 	return (
 		<Detail>
 			<CopyButton position="absolute" variant="ghost" data={link} content={link}>
-				<ShareIcon />
+				<Share2Icon />
 			</CopyButton>
 			<DetailContent>
 				<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />

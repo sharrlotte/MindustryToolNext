@@ -1,6 +1,6 @@
+import { FileIcon, FolderIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
-import { FileIcon, FolderIcon } from '@/components/common/icons';
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 
 import { byteToSize } from '@/lib/utils';

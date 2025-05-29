@@ -1,9 +1,8 @@
 'use client';
 
+import { MessageCircleIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
-
-import { ChatIcon } from '@/components/common/icons';
 
 import { useSocket } from '@/context/socket.context';
 import useClientApi from '@/hooks/use-client';
@@ -13,7 +12,7 @@ import { cn } from '@/lib/utils';
 import { getLastMessage } from '@/query/message';
 import { SocketResult } from '@/types/data/SocketClient';
 
-export function ChatIconPath() {
+export function MessageCircleIconPath() {
 	const { socket } = useSocket();
 	const axios = useClientApi();
 	const { postNotification } = useNotification();
@@ -51,9 +50,17 @@ export function ChatIconPath() {
 
 	return (
 		<div className="relative">
-			<ChatIcon />
-			<span className={cn('absolute -right-2 -top-2 hidden h-3 w-3 animate-ping rounded-full bg-red-500 opacity-75', { 'inline-flex': hasNewMessage })} />
-			<span className={cn('absolute -right-2 -top-2 hidden h-3 w-3 rounded-full bg-red-500 opacity-75', { 'inline-flex ': hasNewMessage })} />
+			<MessageCircleIcon />
+			<span
+				className={cn('absolute -right-2 -top-2 hidden h-3 w-3 animate-ping rounded-full bg-red-500 opacity-75', {
+					'inline-flex': hasNewMessage,
+				})}
+			/>
+			<span
+				className={cn('absolute -right-2 -top-2 hidden h-3 w-3 rounded-full bg-red-500 opacity-75', {
+					'inline-flex ': hasNewMessage,
+				})}
+			/>
 		</div>
 	);
 }

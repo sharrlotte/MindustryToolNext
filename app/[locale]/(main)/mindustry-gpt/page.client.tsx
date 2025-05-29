@@ -1,11 +1,12 @@
 'use client';
 
+import { SendIcon } from 'lucide-react';
 import { Fragment, KeyboardEvent, useEffect, useState } from 'react';
 
 import PromptInput from '@/app/[locale]/(main)/mindustry-gpt/prompt-input';
 
 import LoginButton from '@/components/button/login.button';
-import { SendIcon } from '@/components/common/icons';
+import ErrorMessage from '@/components/common/error-message';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import Markdown from '@/components/markdown/markdown';
@@ -17,9 +18,8 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
 import useMindustryGpt from '@/hooks/use-mindustry-gpt';
 import ProtectedElement from '@/layout/protected-element';
-import { isReachedEnd } from '@/lib/utils';
-import ErrorMessage from '@/components/common/error-message';
 import { isError } from '@/lib/error';
+import { isReachedEnd } from '@/lib/utils';
 
 const url = `${env.url.api}/mindustry-gpt/chat`;
 

@@ -1,8 +1,8 @@
+import { UploadIcon } from 'lucide-react';
 import { Metadata } from 'next/dist/types';
 
 import Client from '@/app/[locale]/(main)/maps/page.client';
 
-import { UploadIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { GridLayout, PaginationFooter, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface PieSegment {
 	percentage: number;
@@ -24,7 +24,7 @@ const PieChart: React.FC<PieChartProps> = ({
 	const animationFrameIdRef = useRef<number | null>(null);
 
 	useEffect(() => {
-		const initialSegmentsForAnimation = segments.map(s => ({ ...s, percentage: 0 }));
+		const initialSegmentsForAnimation = segments.map((s) => ({ ...s, percentage: 0 }));
 		const targetSegments = segments;
 
 		let startTime: number | null = null;
@@ -36,7 +36,7 @@ const PieChart: React.FC<PieChartProps> = ({
 			const elapsedTime = timestamp - startTime;
 			const progress = Math.min(elapsedTime / animationDuration, 1);
 
-			const nextAnimatedSegments = targetSegments.map((targetSegment, index) => {
+			const nextAnimatedSegments = targetSegments.map((targetSegment) => {
 				const initialPercentage = 0; // Animation always starts from 0 for each segment's part
 				const newPercentage = initialPercentage + (targetSegment.percentage - initialPercentage) * progress;
 				return {
@@ -87,7 +87,7 @@ const PieChart: React.FC<PieChartProps> = ({
 		const gradientParts: string[] = [];
 		let accumulatedPercentage = 0;
 
-		segsToRender.forEach(segment => {
+		segsToRender.forEach((segment) => {
 			if (segment.percentage <= 0.001) return; // Skip segments with negligible percentage
 
 			const startAngle = accumulatedPercentage;

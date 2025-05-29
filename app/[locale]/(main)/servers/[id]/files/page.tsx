@@ -1,11 +1,11 @@
 'use client';
 
+import { ArrowLeftCircleIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import React, { use, useState } from 'react';
 
 import FileList from '@/app/[locale]/(main)/servers/[id]/files/file-list';
 
-import { ArrowLeftCircleIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import FileHierarchy from '@/components/file/file-hierarchy';
 import { Button } from '@/components/ui/button';

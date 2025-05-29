@@ -1,8 +1,9 @@
 'use client';
 
+import { ServerIcon } from 'lucide-react';
+
 import CreateServerDialog from '@/app/[locale]/(main)/servers/create-server.dialog';
 
-import { ServerIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import RequireLogin from '@/components/common/require-login';
 import Tran from '@/components/common/tran';

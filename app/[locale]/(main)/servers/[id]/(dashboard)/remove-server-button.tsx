@@ -1,9 +1,9 @@
 'use client';
 
+import { Trash2 } from 'lucide-react';
 import React from 'react';
 
 import { Hidden } from '@/components/common/hidden';
-import { TrashIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
 	AlertDialog,
@@ -54,7 +54,7 @@ export default function RemoveServerButton({ id }: Props) {
 					variant="destructive"
 					disabled={isPending}
 				>
-					<TrashIcon className="size-4 stoke-1" />
+					<Trash2 className="size-4 stoke-1" />
 					<Tran text="server.remove" />
 				</Button>
 			</AlertDialogTrigger>

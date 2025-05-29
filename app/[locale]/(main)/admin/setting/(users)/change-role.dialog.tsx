@@ -1,7 +1,7 @@
+import { CheckSquare2, SquareIcon } from 'lucide-react';
 import { Fragment, Suspense, useMemo, useState } from 'react';
 
 import { Hidden } from '@/components/common/hidden';
-import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -158,7 +158,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
 									<span key={id} style={{ color }}>
 										{name}
 									</span>
-									{selectedRole.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
+									{selectedRole.map((r) => r.id).includes(id) ? <CheckSquare2 /> : <SquareIcon />}
 								</ToggleGroupItem>
 							))}
 						</ToggleGroup>
@@ -184,7 +184,7 @@ export function ChangeRoleDialog({ user }: DialogProps) {
 											<div className="w-full space-y-1">
 												<div className="flex w-full justify-between gap-1">
 													<span className="text-sm lowercase">{name}</span>
-													{selectedAuthorities.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
+													{selectedAuthorities.map((r) => r.id).includes(id) ? <CheckSquare2 /> : <SquareIcon />}
 												</div>
 												<p className="text-start text-xs lowercase">{description}</p>
 											</div>

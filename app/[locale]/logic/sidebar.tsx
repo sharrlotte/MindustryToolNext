@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { FileIcon, FolderIcon, LayoutGrid } from 'lucide-react';
+import { PlusIcon, SearchIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { ReactNode, Suspense } from 'react';
 
@@ -10,7 +11,6 @@ import PlusPanel from '@/app/[locale]/logic/plus.panel';
 import SearchPanel from '@/app/[locale]/logic/search.panel';
 
 import { CatchError } from '@/components/common/catch-error';
-import { PlusIcon, SearchIcon } from '@/components/common/icons';
 
 import useQueryState from '@/hooks/use-query-state';
 import { cn } from '@/lib/utils';

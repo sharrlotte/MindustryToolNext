@@ -1,11 +1,11 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
 
-import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Plus } from 'lucide-react';
+import { FileIcon, FolderIcon, LinkIcon, UploadIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -9,7 +10,6 @@ import * as z from 'zod';
 import CopyButton from '@/components/button/copy.button';
 import RemoveButton from '@/components/button/remove.button';
 import { Hidden } from '@/components/common/hidden';
-import { FileIcon, FolderIcon, LinkIcon, UploadIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';

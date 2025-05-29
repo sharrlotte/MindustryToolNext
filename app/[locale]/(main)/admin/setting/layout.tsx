@@ -1,10 +1,10 @@
 'use client';
 
+import { BellIcon, ChevronsLeftRight, GanttChartSquareIcon, ImageIcon, SettingsIcon, TagIcon, UsersIcon } from 'lucide-react';
 import { ReactNode } from 'react';
 import React from 'react';
 
 import { CatchError } from '@/components/common/catch-error';
-import { GanttChartIcon, ImageIcon, ModIcon, NotificationIcon, SettingIcon, TagIcon, UsersIcon } from '@/components/common/icons';
 import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
 import Tran from '@/components/common/tran';
@@ -25,7 +25,7 @@ const links: {
 		id: 'users',
 		href: '',
 		label: <Tran text="user" />,
-		icon: <GanttChartIcon />,
+		icon: <GanttChartSquareIcon />,
 		filter: { authority: 'EDIT_USER_AUTHORITY' },
 	},
 	{
@@ -46,21 +46,21 @@ const links: {
 		id: 'mod',
 		href: 'mods',
 		label: <Tran text="mod" />,
-		icon: <ModIcon />,
+		icon: <ChevronsLeftRight />,
 		filter: { authority: 'MANAGE_TAG' },
 	},
 	{
 		id: 'notification',
 		href: 'notifications',
 		label: <Tran text="notification" />,
-		icon: <NotificationIcon />,
+		icon: <BellIcon />,
 		filter: { authority: 'CREATE_NOTIFICATION' },
 	},
 	{
 		id: 'config',
 		label: <Tran text="setting" />,
 		href: 'config',
-		icon: <SettingIcon />,
+		icon: <SettingsIcon />,
 		filter: { authority: 'VIEW_SETTING' },
 	},
 	{

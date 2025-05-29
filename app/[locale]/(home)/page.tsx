@@ -1,4 +1,5 @@
 import { MapIcon, ServerIcon } from 'lucide-react';
+import { ClipboardList, GithubIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
 import React, { Suspense, cache } from 'react';
@@ -17,7 +18,6 @@ import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 import LoginButton from '@/components/button/login.button';
 import ErrorScreen from '@/components/common/error-screen';
 import Hydrated from '@/components/common/hydrated';
-import { DiscordIcon, GithubIcon, MindustryToolIcon, SchematicIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import T from '@/components/common/server-tran';
 import Tran from '@/components/common/tran';
@@ -42,8 +42,10 @@ import { getServers } from '@/query/server';
 import { ItemPaginationQueryType } from '@/types/schema/search-query';
 
 import { YouTubeEmbed } from '@next/third-parties/google';
+import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
 import './style.css';
+import { MindustryToolIcon } from '@/components/common/icons';
 
 export const experimental_ppr = true;
 
@@ -398,7 +400,7 @@ async function StatisticSection({ locale }: { locale: Locale }) {
 	return (
 		<FlyIn className="grid grid-cols-1 gap-8 md:grid-cols-3">
 			{[
-				{ icon: SchematicIcon, text: 'home.schematics-count', count: schematics, color: 'text-brand', link: '#new-schematics' },
+				{ icon: ClipboardList, text: 'home.schematics-count', count: schematics, color: 'text-brand', link: '#new-schematics' },
 				{ icon: MapIcon, text: 'home.maps-count', count: maps, color: 'text-cyan-400', link: '#new-maps' },
 				{ icon: ServerIcon, text: 'home.free-servers-count', count: 3, color: 'text-purple-400', link: '#server' },
 			].map((item, index) => (
@@ -441,7 +443,7 @@ async function LoginAction({ locale }: { locale: Locale }) {
 					href={`${env.url.api}/oauth2/discord`}
 				>
 					<div className="flex gap-1 justify-center items-center">
-						<DiscordIcon /> <T locale={locale} text="home.login-with-discord" />
+						<DiscordLogoIcon /> <T locale={locale} text="home.login-with-discord" />
 					</div>
 				</a>
 			</div>

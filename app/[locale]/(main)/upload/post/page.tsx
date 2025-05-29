@@ -1,11 +1,11 @@
 'use client';
 
+import { SearchIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { Fragment, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
 import ComboBox from '@/components/common/combo-box';
-import { SearchIcon } from '@/components/common/icons';
 import LoadingScreen from '@/components/common/loading-screen';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';

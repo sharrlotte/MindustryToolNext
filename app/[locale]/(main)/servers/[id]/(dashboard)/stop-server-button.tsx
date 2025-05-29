@@ -1,9 +1,9 @@
 'use client';
 
+import { SquareIcon } from 'lucide-react';
 import React from 'react';
 
 import { Hidden } from '@/components/common/hidden';
-import { SquareIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
 	AlertDialog,

@@ -1,9 +1,9 @@
 'use client';
 
+import { SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
-import { SearchIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 import { SearchBar, SearchInput } from '@/components/search/search-input';

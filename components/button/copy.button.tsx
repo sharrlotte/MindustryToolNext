@@ -1,9 +1,9 @@
 'use client';
 
 import { VariantProps, cva } from 'class-variance-authority';
+import { CopyIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
-import { CopyIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { ButtonProps } from '@/components/ui/button';
 

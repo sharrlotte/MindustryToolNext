@@ -1,6 +1,6 @@
+import { CheckIcon } from 'lucide-react';
 import React, { ReactNode, Suspense } from 'react';
 
-import { CheckIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
 	AlertDialog,

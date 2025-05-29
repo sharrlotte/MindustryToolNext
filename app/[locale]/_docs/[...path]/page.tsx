@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import removeMd from 'remove-markdown';
@@ -7,7 +8,6 @@ import TableOfContents from '@/app/[locale]/_docs/[...path]/table-of-contents';
 import { getDocFolderPath, getDocPath, getNextPrevDoc, isDocExists, readDoc, readDocFolder } from '@/app/[locale]/_docs/doc-type';
 
 import { CatchError } from '@/components/common/catch-error';
-import { ChevronLeftIcon, ChevronRightIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';

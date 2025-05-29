@@ -1,11 +1,10 @@
 'use client';
 
+import { SettingsIcon } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
-import NotificationDialog from '@/app/[locale]/(main)/notification.dialog';
-
 import ErrorMessage from '@/components/common/error-message';
-import { SettingIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import UserAvatar from '@/components/user/user-avatar';
 
@@ -13,6 +12,10 @@ import { useNavBar } from '@/context/navbar.context';
 import { useSession } from '@/context/session.context';
 import { isError } from '@/lib/error';
 import { cn } from '@/lib/utils';
+
+const NotificationDialog = dynamic(() => import('@/app/[locale]/(main)/notification.dialog'), {
+	ssr: false,
+});
 
 export default function MediumNavFooter() {
 	const { session } = useSession();
@@ -32,7 +35,7 @@ export default function MediumNavFooter() {
 				href="/users/@me/setting"
 				aria-label="Setting"
 			>
-				<SettingIcon />
+				<SettingsIcon />
 			</InternalLink>
 			{session && <UserAvatar className="size-10" url="/users/@me" user={session} />}
 		</div>

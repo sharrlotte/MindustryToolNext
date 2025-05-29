@@ -1,10 +1,10 @@
 'use client';
 
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import React, { use, useState } from 'react';
 
 import ErrorMessage from '@/components/common/error-message';
-import { EyeIcon, EyeOffIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';

@@ -1,6 +1,7 @@
 'use client';
 
 import { Eraser, MapIcon, PlusCircleIcon, RedoIcon, UndoIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
+import { LivePanelIcon } from 'lucide-react';
 import { ReactNode, Suspense, useEffect, useState } from 'react';
 
 import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
@@ -8,7 +9,6 @@ import { nodeOptions } from '@/app/[locale]/logic/node';
 
 import { CatchError } from '@/components/common/catch-error';
 import { Hidden } from '@/components/common/hidden';
-import { LivePanelIcon } from '@/components/common/icons';
 import Shortcut from '@/components/common/shortcut';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';

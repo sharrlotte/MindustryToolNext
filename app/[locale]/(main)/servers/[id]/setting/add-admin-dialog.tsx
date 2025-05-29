@@ -1,11 +1,11 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import { PlusIcon, SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
 import ErrorMessage from '@/components/common/error-message';
-import { PlusIcon, SearchIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';

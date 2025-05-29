@@ -1,5 +1,6 @@
 'use client';
 
+import { PlusIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,7 +9,6 @@ import CreateServerManagerDialog from '@/app/[locale]/(main)/servers/create-serv
 
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
-import { PlusIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';

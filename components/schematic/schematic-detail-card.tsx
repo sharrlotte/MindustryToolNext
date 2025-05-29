@@ -1,5 +1,6 @@
 'use client';
 
+import { Share2Icon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 
@@ -21,14 +22,12 @@ import {
 	Verifier,
 } from '@/components/common/detail';
 import DetailSwipeToNavigate from '@/components/common/detail-swipe-to-navigate';
-import { ShareIcon } from '@/components/common/icons';
 import SizeCard from '@/components/common/size-card';
 import Tran from '@/components/common/tran';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import IdUserCard from '@/components/user/id-user-card';
 
 import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
@@ -86,7 +85,7 @@ export default function SchematicDetailCard({
 		<Detail>
 			<DetailSwipeToNavigate paramSchema={ItemPaginationQuery} queryKey={['schematics']} queryFn={getSchematics}>
 				<CopyButton position="absolute" variant="ghost" data={link} content={link}>
-					<ShareIcon />
+					<Share2Icon />
 				</CopyButton>
 				<DetailContent>
 					<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />

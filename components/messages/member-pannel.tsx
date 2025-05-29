@@ -1,10 +1,10 @@
 import { AxiosInstance } from 'axios';
 import { motion } from 'framer-motion';
+import { UsersIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
-import { UsersIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import Tran from '@/components/common/tran';
 import { MemberCard } from '@/components/messages/member-card';

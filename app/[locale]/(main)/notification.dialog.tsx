@@ -1,10 +1,10 @@
 'use client';
 
+import { BellIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import React, { Suspense, useEffect } from 'react';
 import { useMediaQuery } from 'usehooks-ts';
 
-import { NotificationIcon } from '@/components/common/icons';
 import { NotificationNumber } from '@/components/common/notification-number';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -83,7 +83,7 @@ function NotificationDialogButton({ expand }: NotificationDialogButtonProps) {
 	return (
 		<>
 			<NotificationNumber number={data ?? 0}>
-				<NotificationIcon />
+				<BellIcon />
 			</NotificationNumber>
 			{expand && <Tran text="notification" />}
 		</>

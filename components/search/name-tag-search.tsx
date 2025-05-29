@@ -1,12 +1,12 @@
 'use client';
 
+import { FilterIcon, SearchIcon, XIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
 import ErrorMessage from '@/components/common/error-message';
 import { Hidden } from '@/components/common/hidden';
-import { FilterIcon, SearchIcon, XIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';

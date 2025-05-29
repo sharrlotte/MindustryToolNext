@@ -1,6 +1,5 @@
+import { ChevronRightIcon, HomeIcon } from 'lucide-react';
 import React from 'react';
-
-import { ChevronRightIcon, HomeIcon } from '@/components/common/icons';
 
 import { cn } from '@/lib/utils';
 

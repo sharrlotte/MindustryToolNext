@@ -1,8 +1,7 @@
 'use client';
 
+import { FilterIcon, SearchIcon } from 'lucide-react';
 import React from 'react';
-
-import { FilterIcon, SearchIcon } from '@/components/common/icons';
 
 import { useI18n } from '@/i18n/client';
 

@@ -1,10 +1,10 @@
+import { FileIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import AddFileDialog from '@/app/[locale]/logic/add-file.dialog';
 import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
 
 import { Hidden } from '@/components/common/hidden';
-import { FileIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';

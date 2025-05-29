@@ -1,6 +1,7 @@
 'use client';
 
-import { LikeIcon } from '@/components/common/icons';
+import { ThumbsUp } from 'lucide-react';
+
 import { useLike } from '@/components/like/like-component';
 import { ButtonProps } from '@/components/ui/button';
 
@@ -25,7 +26,7 @@ export default function LikeButton({ className, ...props }: LikeButtonProps) {
 			disabled={isLoading}
 			onClick={() => handleAction('LIKE')}
 		>
-			<LikeIcon className="size-5" />
+			<ThumbsUp className="size-5" />
 			{like}
 		</button>
 	);

@@ -1,4 +1,5 @@
-import { CheckIcon, XIcon } from '@/components/common/icons';
+import { CheckIcon, XIcon } from 'lucide-react';
+
 import LoadingSpinner from '@/components/common/loading-spinner';
 
 import { useMutation } from '@tanstack/react-query';

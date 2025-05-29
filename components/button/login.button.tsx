@@ -1,8 +1,8 @@
 'use client';
 
+import { LogIn } from 'lucide-react';
 import { ReactNode } from 'react';
 
-import { LoginIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 
@@ -19,7 +19,7 @@ export default function LoginButton({ className, children }: { className?: strin
 		>
 			{children || (
 				<>
-					<LoginIcon className="size-5" />
+					<LogIn className="size-5" />
 					<Tran text="login" />
 				</>
 			)}

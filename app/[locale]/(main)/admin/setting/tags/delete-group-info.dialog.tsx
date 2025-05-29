@@ -1,7 +1,7 @@
+import { XIcon } from 'lucide-react';
 import React from 'react';
 
 import DeleteButton from '@/components/button/delete.button';
-import { XIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 

@@ -1,11 +1,11 @@
 'use client';
 
+import { ImageIcon, PlusIcon } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Hidden } from '@/components/common/hidden';
-import { ImageIcon, PlusIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';

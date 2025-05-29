@@ -1,9 +1,9 @@
 'use client';
 
+import { PlusIcon } from 'lucide-react';
 import React, { Suspense } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
-import { PlusIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';

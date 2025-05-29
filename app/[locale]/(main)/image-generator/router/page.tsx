@@ -1,11 +1,11 @@
 'use client';
 
 import saveAs from 'file-saver';
+import { ArrowDownToLine, CopyIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import CopyButton from '@/components/button/copy.button';
 import ErrorMessage from '@/components/common/error-message';
-import { CopyIcon, DownloadIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -194,7 +194,7 @@ function DownloadButton({ data }: { data: string }) {
 
 	return (
 		<Button className="px-2" variant="secondary" onClick={download}>
-			<DownloadIcon className="size-5" />
+			<ArrowDownToLine className="size-5" />
 			<Tran text="download" />
 		</Button>
 	);

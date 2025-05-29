@@ -1,12 +1,21 @@
 'use client';
 
+import { LogOut } from 'lucide-react';
+
 import { UserActions } from '@/app/[locale]/(main)/user-sheet';
 
 import LoginButton from '@/components/button/login.button';
 import LogoutButton from '@/components/button/logout.button';
-import { LogoutIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import Divider from '@/components/ui/divider';
 import UserAvatar from '@/components/user/user-avatar';
 import UserRoleCard from '@/components/user/user-role';
@@ -43,7 +52,7 @@ export function Internal() {
 					</div>
 					<div className="cursor-pointer justify-start pr-1">
 						<AlertDialogTrigger>
-							<LogoutIcon />
+							<LogOut />
 						</AlertDialogTrigger>
 					</div>
 				</div>

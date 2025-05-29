@@ -1,8 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { XIcon } from 'lucide-react';
 
-import { XIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';

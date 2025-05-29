@@ -1,6 +1,6 @@
+import { XIcon } from 'lucide-react';
 import React, { HTMLAttributes, useCallback } from 'react';
 
-import { XIcon } from '@/components/common/icons';
 import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 
