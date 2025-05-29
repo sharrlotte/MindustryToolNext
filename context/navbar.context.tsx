@@ -2,38 +2,32 @@
 
 import React, { ReactNode, createContext, useContext, useState } from 'react';
 
-import { TooltipProvider } from '@/components/ui/tooltip';
-
 interface NavBarContextType {
-  visible: boolean;
-  setVisible: (data: boolean) => void;
+	visible: boolean;
+	setVisible: (data: boolean) => void;
 }
 
 const NavBarContext = createContext<NavBarContextType | null>(null);
 
 interface NavBarProviderProps {
-  children: ReactNode;
+	children: ReactNode;
 }
 
 export const NavBarProvider: React.FC<NavBarProviderProps> = ({ children }) => {
-  const [visible, setVisible] = useState(false);
+	const [visible, setVisible] = useState(false);
 
-  const value: NavBarContextType = {
-    visible,
-    setVisible,
-  };
+	const value: NavBarContextType = {
+		visible,
+		setVisible,
+	};
 
-  return (
-    <TooltipProvider>
-      <NavBarContext.Provider value={value}>{children}</NavBarContext.Provider>
-    </TooltipProvider>
-  );
+	return <NavBarContext.Provider value={value}>{children}</NavBarContext.Provider>;
 };
 
 export const useNavBar = (): NavBarContextType => {
-  const context = useContext(NavBarContext);
-  if (!context) {
-    throw new Error('useNavBar must be used within a NavBarProvider');
-  }
-  return context;
+	const context = useContext(NavBarContext);
+	if (!context) {
+		throw new Error('useNavBar must be used within a NavBarProvider');
+	}
+	return context;
 };

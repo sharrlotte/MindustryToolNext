@@ -52,9 +52,9 @@ import {
 	Moon,
 	Paperclip,
 	Pencil,
-	Power,
 	Plug,
 	Plus,
+	Power,
 	Search,
 	Send,
 	Server,
@@ -80,8 +80,6 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 
-import mindustryToolIcon from '@/app/favicon.ico';
-
 import { cn } from '@/lib/utils';
 
 import { DiscordLogoIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
@@ -98,7 +96,7 @@ export const MindustryToolIcon = ({
 }: Props & {
 	width?: number;
 	height?: number;
-}) => <Image className={className} width={width ?? 32} height={height ?? 32} src={mindustryToolIcon} alt="MindustryToolIcon" />;
+}) => <Image className={className} width={width ?? 32} height={height ?? 32} src={'/favicon.ico'} alt="MindustryToolIcon" />;
 export const DocsIcon = ({ className }: Props) => <Book className={className ?? 'lucide'} />;
 export const PowerIcon = ({ className }: Props) => <Power className={className ?? 'lucide'} />;
 export const KeyRoundIcon = ({ className }: Props) => <KeyRound className={className ?? 'lucide'} />;

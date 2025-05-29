@@ -1,12 +1,13 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
-
-import StarScene from '@/components/common/star-scene';
 
 import { TError, getErrorMessage, reportError } from '@/lib/error';
 
 import './globals.css';
+
+const StarScene = dynamic(() => import('@/components/common/star-scene'), { ssr: false });
 
 export default function Error({ error }: { error: TError }) {
 	const message = getErrorMessage(error);

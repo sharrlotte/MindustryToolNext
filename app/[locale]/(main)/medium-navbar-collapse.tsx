@@ -28,7 +28,9 @@ export default function MediumNavbarCollapse({ children }: Props) {
 
 	return (
 		<motion.div
-			className={cn('flex overflow-hidden relative flex-col gap-2 p-1 w-full h-full border-r divide-y bg-card min-w-nav', { 'p-2': visible })}
+			className={cn('flex overflow-hidden relative flex-col gap-2 p-1 w-full h-full divide-y min-w-nav', {
+				'p-2': visible,
+			})}
 			variants={sidebarVariants}
 			initial={visible ? { width: sidebarVariants.open.width } : { width: sidebarVariants.closed.width }}
 			animate={visible ? 'open' : 'closed'}

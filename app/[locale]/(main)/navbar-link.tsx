@@ -6,7 +6,6 @@ import React from 'react';
 import NavbarVisible from '@/app/[locale]/(main)/navbar-visible';
 
 import InternalLink from '@/components/common/internal-link';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 import { useNavBar } from '@/context/navbar.context';
 import { useSession } from '@/context/session.context';
@@ -25,26 +24,21 @@ export default function NavbarLink({ name, icon, path, regex, filter }: Props) {
 	const currentPath = usePathname();
 
 	return hasAccess(session, filter) ? (
-		<Tooltip>
-			<TooltipTrigger asChild>
-				<InternalLink
-					className={cn(
-						'flex h-9 items-center text-foreground/60 capitalize justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground text-sm',
-						{
-							'bg-brand text-brand-foreground': regex.some((r) => currentPath.match(r)),
-							'justify-start gap-2 py-2': visible,
-							'w-10': !visible,
-						},
-					)}
-					href={path}
-					aria-label={path}
-					onClick={() => setVisible(false)}
-				>
-					{icon}
-					<NavbarVisible>{name}</NavbarVisible>
-				</InternalLink>
-			</TooltipTrigger>
-			{!visible && <TooltipContent>{name}</TooltipContent>}
-		</Tooltip>
+		<InternalLink
+			className={cn(
+				'flex h-9 items-center text-foreground/60 capitalize justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground text-sm',
+				{
+					'bg-brand text-brand-foreground': regex.some((r) => currentPath.match(r)),
+					'justify-start gap-2 py-2': visible,
+					'w-10': !visible,
+				},
+			)}
+			href={path}
+			aria-label={path}
+			onClick={() => setVisible(false)}
+		>
+			{icon}
+			<NavbarVisible>{name}</NavbarVisible>
+		</InternalLink>
 	) : undefined;
 }
