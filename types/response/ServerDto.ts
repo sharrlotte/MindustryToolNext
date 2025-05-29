@@ -20,6 +20,7 @@ export type ServerDto = {
 	avatar: string;
 	isAutoTurnOff: boolean;
 	isHub: boolean;
+	isPaused: boolean;
 	hostCommand?: string;
 	kicks: number;
 };

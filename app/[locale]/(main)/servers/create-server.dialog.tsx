@@ -131,7 +131,7 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 					<Tran text="server.add" />
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="p-6">
+			<DialogContent className="p-8 border">
 				<Form {...form}>
 					<DialogTitle>
 						<Tran text="server.add" />

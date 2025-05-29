@@ -216,6 +216,12 @@ export async function removeServer(axios: AxiosInstance, id: string): Promise<Po
 	return result.data;
 }
 
+export async function pauseServer(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
+	const result = await axios.post(`/servers/${id}/pause`);
+
+	return result.data;
+}
+
 export async function stopServer(axios: AxiosInstance, id: string): Promise<PostServerResponse> {
 	const result = await axios.post(`/servers/${id}/stop`);
 

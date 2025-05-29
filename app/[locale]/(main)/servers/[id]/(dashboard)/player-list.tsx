@@ -6,10 +6,8 @@ import { useInterval } from 'usehooks-ts';
 
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
-import Tran from '@/components/common/tran';
 import { BanButton } from '@/components/server/ban.button';
 import { KickButton } from '@/components/server/kick.button';
-import Divider from '@/components/ui/divider';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
@@ -47,19 +45,13 @@ export default function PlayerList({ id, players }: PlayerListProps) {
 	}
 
 	return (
-		<>
-			<h3 className="font-semibold">
-				<Tran text="server.player-list" />
-			</h3>
-			<Divider />
-			<AnimatePresence>
-				{data
-					?.sort((a, b) => a.name.localeCompare(b.name))
-					?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
-					?.sort((a, b) => a.team.name.localeCompare(b.team.name))
-					.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
-			</AnimatePresence>
-		</>
+		<AnimatePresence>
+			{data
+				?.sort((a, b) => a.name.localeCompare(b.name))
+				?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
+				?.sort((a, b) => a.team.name.localeCompare(b.team.name))
+				.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
+		</AnimatePresence>
 	);
 }
 
