@@ -1,7 +1,6 @@
 'use client';
 
 import { Eraser, MapIcon, PlusCircleIcon, RedoIcon, UndoIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
-import { LivePanelIcon } from 'lucide-react';
 import { ReactNode, Suspense, useEffect, useState } from 'react';
 
 import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
@@ -22,6 +21,7 @@ import useShortcut from '@/hooks/use-shortcut';
 
 import { PopoverClose } from '@radix-ui/react-popover';
 import { useReactFlow } from '@xyflow/react';
+import { LivePanelIcon } from '@/components/common/icons';
 
 type TabType = {
 	label: string;
