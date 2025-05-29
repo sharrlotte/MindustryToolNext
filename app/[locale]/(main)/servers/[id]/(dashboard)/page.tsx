@@ -5,6 +5,7 @@ import React, { Fragment, Suspense } from 'react';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 import ChatPanel from '@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-panel';
+import PauseServerButton from '@/app/[locale]/(main)/servers/[id]/(dashboard)/pause-server-button';
 
 import CopyButton from '@/components/button/copy.button';
 import { CatchError } from '@/components/common/catch-error';
@@ -163,6 +164,7 @@ export default async function Page({ params }: Props) {
 					<footer className="flex gap-8 flex-wrap justify-between h-9">
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className="flex flex-row gap-2 justify-end items-center ml-auto">
+								{status === 'HOST' && <PauseServerButton id={id} />}
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
 								{(status === 'HOST' || status === 'UP') && <ShutdownServerButton id={id} />}
 								{status === 'HOST' ? (

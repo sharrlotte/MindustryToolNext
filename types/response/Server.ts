@@ -18,6 +18,7 @@ export default interface Server {
 	webhook: string | null;
 	isAutoTurnOff: boolean;
 	isHub: boolean;
+	isPaused: boolean;
 	status: ServerStatus;
 	players: number;
 }
