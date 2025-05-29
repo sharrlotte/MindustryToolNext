@@ -63,7 +63,7 @@ export default function InitServerButton({ id }: Props) {
 	return (
 		<HasServerMap id={id}>
 			<Button
-				className="w-20 border-none"
+				className="min-w-20 border-none"
 				title="Init"
 				variant="primary"
 				disabled={isPending}
