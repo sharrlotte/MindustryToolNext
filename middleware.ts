@@ -10,7 +10,6 @@ export const config = {
 };
 
 export function middleware(req: NextRequest) {
-	console.time(req.url);
 	const { isBot } = userAgent(req);
 
 	let language;
@@ -20,19 +19,16 @@ export function middleware(req: NextRequest) {
 
 	// Ignore auto local for google bot
 	if (locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && isBot) {
-		console.timeEnd(req.url);
 		return NextResponse.next();
 	}
 
 	if (!locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && !req.nextUrl.pathname.startsWith('/_next')) {
 		if (isBot) {
-			console.timeEnd(req.url);
 			return NextResponse.next();
 		}
 
 		req.nextUrl.pathname = `/${language}${req.nextUrl.pathname}`;
 
-		console.timeEnd(req.url);
 		return NextResponse.redirect(req.nextUrl);
 	}
 
@@ -43,11 +39,8 @@ export function middleware(req: NextRequest) {
 
 		if (languageInReferer) response.cookies.set(cookieName, languageInReferer);
 
-		console.timeEnd(req.url);
-
 		return response;
 	}
 
-	console.timeEnd(req.url);
 	return NextResponse.next();
 }
