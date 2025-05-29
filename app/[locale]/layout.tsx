@@ -16,9 +16,10 @@ import { generateAlternate } from '@/lib/i18n.utils';
 import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 
+import { GoogleAnalytics } from '@next/third-parties/google';
+
 import './../globals.css';
 
-const GoogleAnalytics = dynamic(() => import('@next/third-parties/google').then((mod) => mod.GoogleAnalytics));
 const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
 const noto = Arimo({
