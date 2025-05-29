@@ -9,7 +9,7 @@ export default interface Server {
 	name: string;
 	description: string;
 	mode: ServerMode;
-	gamemode: string | null;
+	gamemode: string | undefined;
 	isOfficial: boolean;
 	hostCommand: string | null;
 	address: string;
