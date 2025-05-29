@@ -51,8 +51,7 @@ const nextConfig: NextConfig = {
 		];
 	},
 	experimental: {
-		reactCompiler: false,
-		optimizePackageImports: ['lucide-react', 'usehooks-ts', 'three', 'framer-motion'],
+		reactCompiler: true,
 	},
 	productionBrowserSourceMaps: true,
 	pageExtensions: ['ts', 'tsx'],

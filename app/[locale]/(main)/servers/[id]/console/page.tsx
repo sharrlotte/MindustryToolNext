@@ -7,7 +7,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 const ServerConsolePage = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/console/page.client'), {
 	loading: () => <Skeleton className="h-full w-full" />,

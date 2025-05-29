@@ -1,3 +1,4 @@
+import { Share2Icon } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React from 'react';
 
@@ -5,13 +6,12 @@ import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
 import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
-import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
+import { DeleteMapButton } from '@/components/map/delete-map.button';
 
 import env from '@/constant/env';
 import { Map } from '@/types/response/Map';
-import { DeleteMapButton } from '@/components/map/delete-map.button';
 
 type UploadMapPreviewCardProps = {
 	map: Map;
@@ -30,7 +30,7 @@ function UploadMapPreviewCard({ map: { id, name } }: UploadMapPreviewCardProps) 
 	return (
 		<Preview>
 			<CopyButton position="absolute" variant="ghost" data={link} content={link}>
-				<ShareIcon />
+				<Share2Icon />
 			</CopyButton>
 			<BulkActionSelector value={id}>
 				<InternalLink className="flex" href={detailLink}>

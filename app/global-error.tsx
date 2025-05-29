@@ -2,11 +2,7 @@
 
 import { useEffect } from 'react';
 
-import StarScene from '@/components/common/star-scene';
-
 import { TError, getErrorMessage, reportError } from '@/lib/error';
-
-import './globals.css';
 
 export default function Error({ error }: { error: TError }) {
 	const message = getErrorMessage(error);
@@ -15,9 +11,5 @@ export default function Error({ error }: { error: TError }) {
 		reportError(error);
 	}, [error]);
 
-	return (
-		<div className="h-full w-full bg-black">
-			<StarScene message={message} />
-		</div>
-	);
+	return <div className="h-full w-full text-destructive-foreground">{message}</div>;
 }

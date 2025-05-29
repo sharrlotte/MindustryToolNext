@@ -1,3 +1,4 @@
+import { Share2Icon } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React from 'react';
 
@@ -5,17 +6,16 @@ import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
 import { BulkActionSelector } from '@/components/common/bulk-action';
 import ColorText from '@/components/common/color-text';
-import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import Tran from '@/components/common/tran';
+import DeleteSchematicButton from '@/components/schematic/delete-schematic.button';
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import { getSchematicData } from '@/query/schematic';
 import { Schematic } from '@/types/response/Schematic';
-import DeleteSchematicButton from '@/components/schematic/delete-schematic.button';
 
 type UploadSchematicPreviewCardProps = {
 	schematic: Schematic;
@@ -42,7 +42,7 @@ function UploadSchematicPreviewCard({ schematic: { id, name } }: UploadSchematic
 	return (
 		<Preview>
 			<CopyButton position="absolute" variant="ghost" data={link} content={link}>
-				<ShareIcon />
+				<Share2Icon />
 			</CopyButton>
 			<BulkActionSelector value={id}>
 				<InternalLink className="flex" href={detailLink}>

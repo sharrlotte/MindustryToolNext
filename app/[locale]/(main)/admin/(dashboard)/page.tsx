@@ -10,7 +10,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { cn, formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { cn, formatTitle } from '@/lib/utils';
 
 export const experimental_ppr = true;
 

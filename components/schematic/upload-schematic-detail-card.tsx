@@ -1,5 +1,6 @@
 'use client';
 
+import { Share2Icon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
@@ -19,7 +20,6 @@ import {
 	DetailInfo,
 	DetailTitle,
 } from '@/components/common/detail';
-import { ShareIcon } from '@/components/common/icons';
 import SizeCard from '@/components/common/size-card';
 import Tran from '@/components/common/tran';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
@@ -76,7 +76,7 @@ export default function UploadSchematicDetailCard({
 	return (
 		<Detail>
 			<CopyButton position="absolute" variant="ghost" data={link} content={link}>
-				<ShareIcon />
+				<Share2Icon />
 			</CopyButton>
 			<DetailContent>
 				<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />

@@ -1,12 +1,12 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
+import { Trash2 } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import ErrorMessage from '@/components/common/error-message';
-import { TrashIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -297,7 +297,7 @@ function List({ state }: { state: UploadState }) {
 							}}
 							disabled={isPending}
 						>
-							<TrashIcon className="w-5 h-5" />
+							<Trash2 className="w-5 h-5" />
 						</Button>
 					</div>
 				))}

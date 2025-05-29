@@ -1,11 +1,11 @@
 'use client';
 
 import { Theme } from 'emoji-picker-react';
+import { SendIcon, SmileIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
 import { KeyboardEvent, useRef, useState } from 'react';
 
-import { SendIcon, SmileIcon } from '@/components/common/icons';
 import { AutosizeTextAreaRef, AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';

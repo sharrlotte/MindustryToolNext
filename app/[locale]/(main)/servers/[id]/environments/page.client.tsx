@@ -1,13 +1,13 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import DeleteButton from '@/components/button/delete.button';
 import ErrorMessage from '@/components/common/error-message';
-import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';

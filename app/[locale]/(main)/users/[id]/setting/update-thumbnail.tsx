@@ -1,8 +1,8 @@
 'use client';
 
+import { ImageIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-import { ImageIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/sonner';

@@ -6,7 +6,7 @@ import React from 'react';
 import DeleteButton from '@/components/button/delete.button';
 import TakeDownButton from '@/components/button/take-down.button';
 import CommentSection from '@/components/common/comment-section';
-import { Detail, DetailContent, DetailTagsCard } from '@/components/common/detail';
+import { Detail, DetailTagsCard } from '@/components/common/detail';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import LikeAndDislike from '@/components/like/like-and-dislike';

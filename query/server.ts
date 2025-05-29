@@ -1,7 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { z } from 'zod';
 
-import { MetricUnit } from '@/constant/constant';
 import { toForm } from '@/lib/utils';
 import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
@@ -25,6 +24,7 @@ import { ServerMetric } from '@/types/response/ServerMetric';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { ServerStats } from '@/types/response/ServerStats';
 import { PaginationQuery } from '@/types/schema/search-query';
+import { MetricUnit } from '@/lib/metric.utils';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
 	const result = await axios.delete(`/servers/${id}/files`, {

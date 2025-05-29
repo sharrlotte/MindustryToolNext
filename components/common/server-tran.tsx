@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { extractTranslationKey } from '@/lib/utils';
+import { extractTranslationKey } from '@/lib/i18n.utils';
 
 type Props = {
   className?: string;

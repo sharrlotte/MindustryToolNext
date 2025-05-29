@@ -134,6 +134,24 @@ export default function ServerUpdateForm({ server }: Props) {
 					/>
 					<FormField
 						control={form.control}
+						name="gamemode"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>
+									<Tran text="server.game-mode-name" />
+								</FormLabel>
+								<FormControl>
+									<Input placeholder="Flood" {...field} />
+								</FormControl>
+								<FormDescription>
+									<Tran text="server.game-mode-name-description" />
+								</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
 						name="image"
 						render={({ field, fieldState }) => (
 							<FormItem className="grid">
@@ -217,7 +235,13 @@ export default function ServerUpdateForm({ server }: Props) {
 											</Suspense>
 										</div>
 										{field.value && (
-											<Image className="size-16 object-cover rounded-md" src={field.value} height={64} width={64} alt="server avatar" />
+											<Image
+												className="size-16 object-cover rounded-md"
+												src={field.value}
+												height={64}
+												width={64}
+												alt="server avatar"
+											/>
 										)}
 									</div>
 								</FormControl>

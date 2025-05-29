@@ -1,8 +1,8 @@
+import { Share2Icon } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { HTMLAttributes } from 'react';
 
 import CopyButton from '@/components/button/copy.button';
-import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import IdUserCard from '@/components/user/id-user-card';
@@ -15,7 +15,11 @@ type PostPreviewCardProps = HTMLAttributes<HTMLDivElement> & {
 	post: Post;
 };
 
-function PostPreviewCard({ className, post: { id, imageUrls, title, likes, dislikes, itemId, createdAt, userId }, ...rest }: PostPreviewCardProps) {
+function PostPreviewCard({
+	className,
+	post: { id, imageUrls, title, likes, dislikes, itemId, createdAt, userId },
+	...rest
+}: PostPreviewCardProps) {
 	const { locale } = useParams();
 
 	const link = `${env.url.base}/${locale}/posts/${id}`;
@@ -25,7 +29,10 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, disli
 		<div className="bg-card overflow-hidden rounded-md h-[212px] relative group border">
 			<div
 				style={{ backgroundImage: `url(${firstImage})` }}
-				className={cn('relative backdrop-blur-sm backdrop-brightness-75 flex flex-col h-full overflow-hidden rounded-lg text-white bg-cover bg-center', className)}
+				className={cn(
+					'relative backdrop-blur-sm backdrop-brightness-75 flex flex-col h-full overflow-hidden rounded-lg text-white bg-cover bg-center',
+					className,
+				)}
 				{...rest}
 			>
 				<div className="flex h-full flex-col justify-between gap-2 p-4">
@@ -40,7 +47,7 @@ function PostPreviewCard({ className, post: { id, imageUrls, title, likes, disli
 						<div className="grid w-full grid-cols-[repeat(auto-fit,4rem)] gap-2">
 							<LikeAndDislike like={likes} dislike={dislikes} itemId={itemId} />
 							<CopyButton position="absolute-right" variant="ghost" data={link} content={link}>
-								<ShareIcon />
+								<Share2Icon />
 							</CopyButton>
 						</div>
 					</div>

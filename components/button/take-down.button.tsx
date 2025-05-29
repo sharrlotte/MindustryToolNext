@@ -1,7 +1,7 @@
 import { VariantProps, cva } from 'class-variance-authority';
+import { ArrowDownFromLine } from 'lucide-react';
 import React, { ReactNode, Suspense } from 'react';
 
-import { TakeDownIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
 	AlertDialog,
@@ -43,7 +43,7 @@ export default function TakeDownButton({ className, variant, isLoading, descript
 		<AlertDialog>
 			<AlertDialogTrigger asChild disabled={isLoading}>
 				<Button className={cn(buttonVariants({ className, variant }))} variant={variant} size="command" disabled={isLoading}>
-					<TakeDownIcon className="size-5" />
+					<ArrowDownFromLine className="size-5" />
 					{variant === 'command' && <Tran text="take-down" />}
 				</Button>
 			</AlertDialogTrigger>

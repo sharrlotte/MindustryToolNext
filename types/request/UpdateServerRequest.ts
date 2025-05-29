@@ -8,6 +8,7 @@ export const PutServerSchema = z.object({
 	name: z.string().min(1).max(100),
 	description: z.string().min(1).max(200),
 	mode: z.enum(ServerModes).default('SURVIVAL'),
+	gamemode: z.string().max(100).optional(),
 	hostCommand: z.string().max(1000).optional().nullable(),
 	webhook: z.string().max(1000).optional().nullable(),
 	avatar: z.string().max(1000).optional().nullable(),

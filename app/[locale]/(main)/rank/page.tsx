@@ -8,7 +8,8 @@ import { serverApi } from '@/action/common';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { isError } from '@/lib/error';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 import { getRank } from '@/query/user';
 import { ItemPaginationQuery, ItemPaginationQueryType } from '@/types/schema/search-query';
 

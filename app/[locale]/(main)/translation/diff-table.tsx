@@ -14,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
 import { Locale } from '@/i18n/config';
-import { clearTranslationCache } from '@/lib/utils';
+import { clearTranslationCache } from '@/lib/i18n.utils';
 import { CreateTranslationRequest, createTranslation, getTranslationDiff, getTranslationDiffCount } from '@/query/translation';
 import { TranslationDiff } from '@/types/response/Translation';
 import { TranslationPaginationQuery } from '@/types/schema/search-query';

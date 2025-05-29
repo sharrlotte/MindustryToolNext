@@ -8,9 +8,10 @@ import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
 import BackButton from '@/components/ui/back-button';
 
 import { serverApi } from '@/action/common';
-import { YOUTUBE_VIDEO_REGEX, formatTitle, generateAlternate } from '@/lib/utils';
-import { getPostUpload } from '@/query/post';
 import { isError } from '@/lib/error';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { YOUTUBE_VIDEO_REGEX, formatTitle } from '@/lib/utils';
+import { getPostUpload } from '@/query/post';
 
 type Props = {
 	params: Promise<{ id: string }>;

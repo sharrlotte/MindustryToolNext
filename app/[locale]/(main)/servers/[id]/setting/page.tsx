@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import React from 'react';
 
 import { ServerSettingButton } from '@/app/[locale]/(main)/servers/[id]/setting/delete-setting-button';
+import ServerAdminList from '@/app/[locale]/(main)/servers/[id]/setting/server-admin-list';
 import ServerUpdateAdminForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-admin-form';
 import ServerUpdateForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-form';
 
@@ -14,9 +15,9 @@ import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 import { getServerSetting } from '@/query/server';
-import ServerAdminList from '@/app/[locale]/(main)/servers/[id]/setting/server-admin-list';
 
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;

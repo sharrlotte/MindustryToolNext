@@ -1,10 +1,10 @@
+import { FileIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import AddFileDialog from '@/app/[locale]/logic/add-file.dialog';
 import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
 
 import RemoveButton from '@/components/button/remove.button';
-import { FileIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Input } from '@/components/ui/input';

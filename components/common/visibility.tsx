@@ -1,7 +1,6 @@
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import React from 'react';
 import { useState } from 'react';
-
-import { EyeIcon, EyeOffIcon } from '@/components/common/icons';
 
 const VisibilityContext = React.createContext(false);
 

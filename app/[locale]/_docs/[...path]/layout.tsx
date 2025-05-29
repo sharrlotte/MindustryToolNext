@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { MenuIcon } from 'lucide-react';
 import p from 'path';
 import path from 'path';
 import { ReactNode, Suspense } from 'react';
@@ -18,8 +19,8 @@ import Aurora from '@/components/common/aurora';
 import { CatchError } from '@/components/common/catch-error';
 import { Hidden } from '@/components/common/hidden';
 import Hydrated from '@/components/common/hydrated';
-import { MenuIcon, MindustryToolIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
+import { MindustryToolIcon } from '@/components/common/mindustrytool-icon';
 import ScrollContainer from '@/components/common/scroll-container';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';

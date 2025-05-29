@@ -1,3 +1,4 @@
+import { XIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -15,7 +16,6 @@ import {
 	QuoteIcon,
 	StrikethroughIcon,
 	TitleIcon,
-	XIcon,
 } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -26,7 +26,7 @@ import { toast } from '@/components/ui/sonner';
 
 import { acceptedImageFormats } from '@/constant/constant';
 import env from '@/constant/env';
-import { insertAtCaret, wrapAtCaret } from '@/lib/utils';
+import { insertAtCaret, wrapAtCaret } from '@/lib/markdown.utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 

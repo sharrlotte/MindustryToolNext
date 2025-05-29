@@ -9,7 +9,8 @@ import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { getErrorMessage, isError } from '@/lib/error';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 import { getSchematic } from '@/query/schematic';
 import { getUser } from '@/query/user';
 

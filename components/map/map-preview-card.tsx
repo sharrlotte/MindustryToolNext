@@ -1,12 +1,12 @@
 'use client';
 
+import { Share2Icon } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React from 'react';
 
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
 import ColorText from '@/components/common/color-text';
-import { ShareIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
 import LikeAndDislike from '@/components/like/like-and-dislike';
@@ -31,7 +31,7 @@ function MapPreviewCard({ map: { id, name, likes, dislikes, downloadCount, itemI
 	return (
 		<Preview>
 			<CopyButton position="absolute" variant="ghost" data={link} content={link}>
-				<ShareIcon />
+				<Share2Icon />
 			</CopyButton>
 			<InternalLink href={detailLink}>
 				<PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />

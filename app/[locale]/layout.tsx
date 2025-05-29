@@ -12,7 +12,8 @@ import env from '@/constant/env';
 import { SessionProvider } from '@/context/session.context';
 import { SocketProvider } from '@/context/socket.context';
 import { Locale, locales } from '@/i18n/config';
-import { cn, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { cn } from '@/lib/utils';
 import QueryProvider from '@/query/config/query-provider';
 
 import { GoogleAnalytics } from '@next/third-parties/google';

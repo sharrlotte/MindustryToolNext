@@ -1,11 +1,9 @@
-import { isAxiosError } from 'axios';
-import { notFound } from 'next/navigation';
-
-import { reportErrorToBackend } from '@/query/api';
-import axiosInstance from '@/query/config/config';
+import env from "@/constant/env";
 
 export function reportError(error: any) {
-	reportErrorToBackend(axiosInstance, getLoggedErrorMessage(error));
+	if (process.env.NODE_ENV === 'production') {
+		fetch(`${env.url.api}/error`, { method: 'POST', body: getLoggedErrorMessage(error) });
+	}
 }
 
 export type TError =
@@ -81,16 +79,6 @@ export function getLoggedErrorMessage(error: TError) {
 			}
 		}
 
-		if (isAxiosError(error)) {
-			return JSON.stringify({
-				request: JSON.stringify(error.request),
-				response: JSON.stringify(error.response),
-				config: JSON.stringify(error.config, Object.keys(error.config ?? {})),
-				url: error.config?.url,
-				message: error?.message,
-			});
-		}
-
 		return JSON.stringify(error, Object.getOwnPropertyNames(error));
 	} catch (e) {
 		return JSON.stringify(error, Object.getOwnPropertyNames(error));
@@ -98,16 +86,6 @@ export function getLoggedErrorMessage(error: TError) {
 }
 
 export function isError<T extends Record<string, any> | number>(req: T | ApiError | null): req is ApiError {
-	if (
-		req &&
-		typeof req === 'object' &&
-		'error' in req &&
-		typeof req.error === 'object' &&
-		'status' in req.error &&
-		req.error.status === 404
-	)
-		notFound();
-
 	const isError = !!req && typeof req === 'object' && 'error' in req;
 
 	if (isError) {

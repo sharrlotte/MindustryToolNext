@@ -1,9 +1,8 @@
+import { XIcon } from 'lucide-react';
 import React, { HTMLAttributes, useCallback } from 'react';
 
-import { XIcon } from '@/components/common/icons';
 import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
-import TagTooltip from '@/components/tag/tag-tooltip';
 
 import { cn } from '@/lib/utils';
 import Tag, { DetailTagDto, Tags } from '@/types/response/Tag';
@@ -37,10 +36,8 @@ function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps
 			onClick={() => handleOnDelete(tag)}
 			{...props}
 		>
-			<TagTooltip value={`${name}_${value}`}>
-				<TagIcon>{icon}</TagIcon>
-				<TagName>{`${name}_${value}`}</TagName>
-			</TagTooltip>
+			<TagIcon>{icon}</TagIcon>
+			<TagName>{`${name}_${value}`}</TagName>
 			{hasDelete && <XIcon className="size-4" />}
 		</span>
 	);

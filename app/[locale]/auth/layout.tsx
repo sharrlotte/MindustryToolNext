@@ -8,7 +8,7 @@ import SmallNavbarToggle from '@/app/[locale]/(main)/small-navbar-toggle';
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 
 import Hydrated from '@/components/common/hydrated';
-import { MindustryToolIcon } from '@/components/common/icons';
+import { MindustryToolIcon } from '@/components/common/mindustrytool-icon';
 import Divider from '@/components/ui/divider';
 
 import { NavBarProvider } from '@/context/navbar.context';

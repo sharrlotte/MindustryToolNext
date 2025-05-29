@@ -24,7 +24,8 @@ import { getSession } from '@/action/common';
 import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
-import { byteToSize, formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { byteToSize, formatTitle, hasAccess } from '@/lib/utils';
 
 export const experimental_ppr = true;
 
@@ -211,45 +212,43 @@ export default async function Page({ params }: Props) {
 								</div>
 							)}
 						</div>
-						<ProtectedElement session={session} filter={canAccess}>
-							{status === 'HOST' && (kicks > 0 || players > 0) && (
-								<CatchError>
-									<div className="flex-1 flex flex-col gap-2">
-										{players > 0 && (
-											<div className="flex flex-col rounded-md border bg-card">
-												<div className="grid gap-2 p-2 w-full">
-													<Suspense
-														fallback={
-															<Skeletons number={players}>
-																<Skeleton className="w-full h-11 rounded-md" />
-															</Skeletons>
-														}
-													>
-														<PlayerList id={id} players={players} />
-													</Suspense>
-												</div>
+						<CatchError>
+							<div className="flex-1 flex flex-col gap-2">
+								<ProtectedElement session={session} filter={canAccess}>
+									{status === 'HOST' && players > 0 && (
+										<div className="flex flex-col rounded-md border bg-card">
+											<div className="grid gap-2 p-2 w-full">
+												<Suspense
+													fallback={
+														<Skeletons number={players}>
+															<Skeleton className="w-full h-11 rounded-md" />
+														</Skeletons>
+													}
+												>
+													<PlayerList id={id} players={players} />
+												</Suspense>
 											</div>
-										)}
-										{kicks > 0 && (
-											<div className="flex flex-col rounded-md border bg-card">
-												<ScrollContainer className="flex flex-col gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full max-h-[500px]">
-													<Suspense
-														fallback={
-															<Skeletons number={kicks}>
-																<Skeleton className="w-full h-10 rounded-md" />
-															</Skeletons>
-														}
-													>
-														<KickList id={id} kicks={kicks} />
-													</Suspense>
-												</ScrollContainer>
-											</div>
-										)}
-										<ChatPanel id={id} />
-									</div>
-								</CatchError>
-							)}
-						</ProtectedElement>
+										</div>
+									)}
+									{status === 'HOST' && kicks > 0 && (
+										<div className="flex flex-col rounded-md border bg-card">
+											<ScrollContainer className="flex flex-col gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full max-h-[500px]">
+												<Suspense
+													fallback={
+														<Skeletons number={kicks}>
+															<Skeleton className="w-full h-10 rounded-md" />
+														</Skeletons>
+													}
+												>
+													<KickList id={id} kicks={kicks} />
+												</Suspense>
+											</ScrollContainer>
+										</div>
+									)}
+								</ProtectedElement>
+								<ChatPanel id={id} />
+							</div>
+						</CatchError>
 					</div>
 				</div>
 			</div>

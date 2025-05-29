@@ -10,10 +10,10 @@ import ErrorMessage from '@/components/common/error-message';
 import ScrollContainer from '@/components/common/scroll-container';
 import Divider from '@/components/ui/divider';
 
-import { metricFilters } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import { useI18n } from '@/i18n/client';
-import { fillMetric } from '@/lib/utils';
+import { metricFilters } from '@/lib/metric.utils';
+import { fillMetric } from '@/lib/metric.utils';
 import { getServerLoginMetrics } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';

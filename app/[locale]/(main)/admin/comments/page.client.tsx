@@ -1,9 +1,9 @@
 'use client';
 
+import { Trash2 } from 'lucide-react';
 import React from 'react';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
-import { TrashIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
@@ -128,7 +128,7 @@ function DeleteCommentButton({ id }: DeleteCommentButtonProps) {
 				<LoadingSpinner className="p-0" />
 			) : (
 				<>
-					<TrashIcon />
+					<Trash2 />
 					<Tran className="text-base" text="delete" />
 				</>
 			)}

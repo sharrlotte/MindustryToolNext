@@ -1,12 +1,12 @@
 'use client';
 
+import { CheckCircleIcon, PowerIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 import HasServerMap from '@/app/[locale]/(main)/servers/[id]/(dashboard)/has-server-map';
 
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
-import { CheckCircleIcon, PowerIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -62,7 +62,7 @@ export default function HostServerButton({ id }: Props) {
 	return (
 		<HasServerMap id={id}>
 			<Button
-				className="w-20 border-none text-foreground bg-primary-foreground"
+				className="w-20 border-none text-foreground"
 				title="Start"
 				variant="primary"
 				disabled={isPending}

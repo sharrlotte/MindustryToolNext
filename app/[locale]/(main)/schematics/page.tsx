@@ -1,8 +1,8 @@
+import { UploadIcon } from 'lucide-react';
 import { Metadata } from 'next/dist/types';
 
 import Client from '@/app/[locale]/(main)/schematics/page.client';
 
-import { UploadIcon } from '@/components/common/icons';
 import InternalLink from '@/components/common/internal-link';
 import { GridLayout, PaginationFooter, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';
 import PaginationNavigator from '@/components/common/pagination-navigator';
@@ -12,7 +12,8 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 export const revalidate = 3600;
 
@@ -29,7 +30,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			description: t('schematic-description'),
 		},
 		alternates: generateAlternate('/schematics'),
-	
 	};
 }
 

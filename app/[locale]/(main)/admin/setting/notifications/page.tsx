@@ -5,28 +5,29 @@ import PageClient from '@/app/[locale]/(main)/admin/setting/notifications/page.c
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 type Props = {
-  params: Promise<{ locale: Locale }>;
+	params: Promise<{ locale: Locale }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const { t } = await getTranslation(locale, ['common', 'meta']);
-  const title = t('notification');
+	const { locale } = await params;
+	const { t } = await getTranslation(locale, ['common', 'meta']);
+	const title = t('notification');
 
-  return {
-    title: formatTitle(title),
-    description: t('notification-description'),
-    openGraph: {
-      title: formatTitle(title),
-      description: t('notification-description'),
-    },
-    alternates: generateAlternate('/admin/setting/notifications'),
-  };
+	return {
+		title: formatTitle(title),
+		description: t('notification-description'),
+		openGraph: {
+			title: formatTitle(title),
+			description: t('notification-description'),
+		},
+		alternates: generateAlternate('/admin/setting/notifications'),
+	};
 }
 
 export default function Page() {
-  return <PageClient />;
+	return <PageClient />;
 }

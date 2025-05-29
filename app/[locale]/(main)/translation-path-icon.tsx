@@ -1,6 +1,7 @@
 'use client';
 
-import { GlobIcon } from '@/components/common/icons';
+import { Globe } from 'lucide-react';
+
 import { NotificationNumber } from '@/components/common/notification-number';
 
 import useClientQuery from '@/hooks/use-client-query';
@@ -10,7 +11,7 @@ import { getTranslationDiffCount, getTranslationSearchCount } from '@/query/tran
 export function TranslationPathIcon() {
 	const { currentLocale } = useLocaleStore();
 
-	const { data : search} = useClientQuery({
+	const { data: search } = useClientQuery({
 		queryKey: ['translations', 'search', 'total', currentLocale],
 		queryFn: (axios) =>
 			getTranslationSearchCount(axios, {
@@ -19,7 +20,7 @@ export function TranslationPathIcon() {
 			}),
 		placeholderData: 0,
 	});
-	
+
 	const { data: diff } = useClientQuery({
 		queryKey: ['translations', 'diff', 'total', currentLocale, 'en'],
 		queryFn: (axios) =>
@@ -32,7 +33,7 @@ export function TranslationPathIcon() {
 
 	return (
 		<NotificationNumber number={diff + search}>
-			<GlobIcon />
+			<Globe />
 		</NotificationNumber>
 	);
 }

@@ -1,8 +1,7 @@
 'use client';
 
+import { LayoutGridIcon, List } from 'lucide-react';
 import { ReactNode } from 'react';
-
-import { LayoutGridIcon, LayoutListIcon } from '@/components/common/icons';
 
 import { useSession } from '@/context/session.context';
 import { cn } from '@/lib/utils';
@@ -35,7 +34,7 @@ export function PaginationLayoutSwitcher() {
 				onClick={() => setConfig('paginationType', 'infinite-scroll')}
 				title="List"
 			>
-				<LayoutListIcon className="h-full" />
+				<List className="h-full" />
 			</button>
 		</div>
 	);

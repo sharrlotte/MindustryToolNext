@@ -35,7 +35,7 @@ export default function MultipleFilerTags({ group, selectedValue, handleTagGroup
 			{group.values.map((value) => (
 				<button
 					className={cn(
-						'capitalize flex items-center bg-secondary gap-1 hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground px-2 border border-border py-2 rounded-lg hover:border-brand',
+						'capitalize flex hover:scale-105 transition-all items-center bg-secondary gap-1 hover:bg-brand hover:text-brand-foreground text-muted-foreground data-[state=on]:bg-brand data-[state=on]:text-brand-foreground px-2 border border-border py-2 rounded-lg hover:border-brand',
 						{
 							'bg-brand text-brand-foreground border-brand': selectedValue.map((v) => v.name).includes(value.name),
 						},

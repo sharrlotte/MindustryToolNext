@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { clearTranslationCache } from '@/lib/utils';
+import { clearTranslationCache } from '@/lib/i18n.utils';
 import { CreateTranslationRequest, CreateTranslationSchema, createTranslation } from '@/query/translation';
 
 import { zodResolver } from '@hookform/resolvers/zod';

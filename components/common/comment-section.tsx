@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import React, { Suspense, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 

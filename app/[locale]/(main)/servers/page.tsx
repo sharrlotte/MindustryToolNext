@@ -14,7 +14,8 @@ import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ClientProtectedElement from '@/layout/client-protected-element';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 const MeServer = dynamic(() => import('@/app/[locale]/(main)/servers/my-server'));
 
@@ -73,7 +74,7 @@ export default async function Page({ searchParams }: Props) {
 				</ServerTabsContent>
 				<ServerTabsContent className="flex-col justify-between overflow-hidden" display="flex" value="my-server">
 					<ClientProtectedElement filter alt={<LoginToCreateServer />}>
-						<ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2 p-2">
+						<ScrollContainer className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(400px,100%),1fr))] gap-2 p-2">
 							<Suspense fallback={<ServersSkeleton />}>
 								<MeServer />
 							</Suspense>

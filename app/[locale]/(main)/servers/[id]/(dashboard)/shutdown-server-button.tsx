@@ -1,9 +1,9 @@
 'use client';
 
+import { PowerIcon } from 'lucide-react';
 import React from 'react';
 
 import { Hidden } from '@/components/common/hidden';
-import { PowerIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
 	AlertDialog,

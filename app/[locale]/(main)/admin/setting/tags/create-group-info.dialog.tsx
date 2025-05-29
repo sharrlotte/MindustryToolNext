@@ -1,6 +1,6 @@
+import { PlusIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { PlusIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';

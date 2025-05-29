@@ -1,8 +1,8 @@
 'use client';
 
+import { CheckSquare2, SquareIcon } from 'lucide-react';
 import React, { Fragment, useMemo, useState } from 'react';
 
-import { SquareCheckedIcon, SquareIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/components/ui/sonner';
@@ -119,7 +119,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 										<div className="w-full space-y-1">
 											<div className="flex w-full justify-between gap-1">
 												<span className="text-sm lowercase">{name}</span>
-												{selectedAuthorities.map((r) => r.id).includes(id) ? <SquareCheckedIcon /> : <SquareIcon />}
+												{selectedAuthorities.map((r) => r.id).includes(id) ? <CheckSquare2 /> : <SquareIcon />}
 											</div>
 											<p className="text-start text-xs lowercase">{description}</p>
 										</div>

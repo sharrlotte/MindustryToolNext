@@ -1,11 +1,11 @@
 'use client';
 
+import { FilterIcon, XIcon } from 'lucide-react';
 import React, { useCallback, useRef, useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import { Hidden } from '@/components/common/hidden';
-import { FilterIcon, XIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import { NotificationNumber } from '@/components/common/notification-number';
 import { GridLayout, ListLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';

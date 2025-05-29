@@ -1,6 +1,7 @@
 'use client';
 
-import { VerifyIcon } from '@/components/common/icons';
+import { ShieldCheckIcon } from 'lucide-react';
+
 import { NotificationNumber } from '@/components/common/notification-number';
 
 import useClientApi from '@/hooks/use-client';
@@ -43,7 +44,7 @@ export function VerifyPathIcon() {
 
 	return (
 		<NotificationNumber number={total}>
-			<VerifyIcon />
+			<ShieldCheckIcon />
 		</NotificationNumber>
 	);
 }

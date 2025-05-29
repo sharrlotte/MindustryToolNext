@@ -1,9 +1,9 @@
 'use client';
 
+import { SearchIcon } from 'lucide-react';
 import React from 'react';
 
 import LoginButton from '@/components/button/login.button';
-import { SearchIcon } from '@/components/common/icons';
 import MessageList from '@/components/common/message-list';
 import Tran from '@/components/common/tran';
 import ChatInput from '@/components/messages/chat-input';

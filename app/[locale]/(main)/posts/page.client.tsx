@@ -1,6 +1,7 @@
 'use client';
 
-import { UploadIcon } from '@/components/common/icons';
+import { UploadIcon } from 'lucide-react';
+
 import InfinitePage from '@/components/common/infinite-page';
 import InternalLink from '@/components/common/internal-link';
 import { GridLayout, PaginationLayoutSwitcher } from '@/components/common/pagination-layout';

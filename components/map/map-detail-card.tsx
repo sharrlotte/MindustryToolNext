@@ -1,5 +1,6 @@
 'use client';
 
+import { Share2Icon } from 'lucide-react';
 import { useParams } from 'next/navigation';
 
 import CopyButton from '@/components/button/copy.button';
@@ -20,8 +21,6 @@ import {
 	Verifier,
 } from '@/components/common/detail';
 import DetailSwipeToNavigate from '@/components/common/detail-swipe-to-navigate';
-import { Hidden } from '@/components/common/hidden';
-import { ShareIcon } from '@/components/common/icons';
 import JsonDisplay from '@/components/common/json-display';
 import ScrollContainer from '@/components/common/scroll-container';
 import SizeCard from '@/components/common/size-card';
@@ -75,7 +74,7 @@ export default function MapDetailCard({
 		<Detail>
 			<DetailSwipeToNavigate paramSchema={ItemPaginationQuery} queryKey={['maps']} queryFn={getMaps}>
 				<CopyButton position="absolute" variant="ghost" data={link} content={link}>
-					<ShareIcon />
+					<Share2Icon />
 				</CopyButton>
 				<DetailContent>
 					<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />

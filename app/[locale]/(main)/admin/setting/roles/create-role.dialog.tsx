@@ -1,11 +1,11 @@
 'use client';
 
+import { Pencil } from 'lucide-react';
 import React, { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { useForm } from 'react-hook-form';
 
 import { Hidden } from '@/components/common/hidden';
-import { EditIcon } from '@/components/common/icons';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -127,7 +127,7 @@ export default function CreateRoleDialog() {
 												<div className="flex gap-2">
 													<Input {...field} />
 													<DialogTrigger className="aspect-square justify-center items-center flex border rounded-md size-9">
-														<EditIcon />
+														<Pencil />
 													</DialogTrigger>
 												</div>
 											</FormControl>

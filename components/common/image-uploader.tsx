@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
+import { ImageIcon, UploadIcon } from 'lucide-react';
 import { useState } from 'react';
 
-import { ImageIcon, UploadIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';

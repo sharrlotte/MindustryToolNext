@@ -1,4 +1,5 @@
 import { LanguagesIcon } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { Fragment, Suspense, useState } from 'react';
 
@@ -7,7 +8,6 @@ import { TranslationCardSkeleton } from '@/app/[locale]/(main)/translation/trans
 import TranslationStatus from '@/app/[locale]/(main)/translation/translation-status';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
-import { EditIcon } from '@/components/common/icons';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 import useClientApi from '@/hooks/use-client';
 import { Locale, locales } from '@/i18n/config';
-import { clearTranslationCache } from '@/lib/utils';
+import { clearTranslationCache } from '@/lib/i18n.utils';
 import { CreateTranslationRequest, createTranslation, getTranslationAll, getTranslationAllCount } from '@/query/translation';
 import { TranslationAll, TranslationAllValue } from '@/types/response/Translation';
 import { AllTranslationPaginationQuery } from '@/types/schema/search-query';
@@ -122,7 +122,7 @@ function ValueCard({ keyId, tKey: key, keyGroup, value, locale }: ValueCardProps
 	return (
 		<div className="w-full flex justify-between text-xs p-2 bg-secondary rounded-md">
 			<div className="flex gap-1 items-start w-full" onClick={() => setEdit(true)}>
-				{currentValue.isTranslated ? <EditIcon className="size-4" /> : <LanguagesIcon />}
+				{currentValue.isTranslated ? <Pencil className="size-4" /> : <LanguagesIcon />}
 				<Tran className="text-nowrap text-foreground uppercase" text={locale} />
 				{isEdit ? ( //
 					<Textarea

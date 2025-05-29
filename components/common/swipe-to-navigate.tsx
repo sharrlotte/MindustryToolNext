@@ -1,7 +1,6 @@
 import { ArrowRightCircleIcon } from 'lucide-react';
+import { ArrowLeftCircleIcon } from 'lucide-react';
 import { ComponentPropsWithoutRef, useState } from 'react';
-
-import { ArrowLeftCircleIcon } from '@/components/common/icons';
 
 import { animated, useSpring } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';

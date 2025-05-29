@@ -1,9 +1,9 @@
 'use client';
 
+import { SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
-import { SearchIcon } from '@/components/common/icons';
 import InfinitePage from '@/components/common/infinite-page';
 import ScrollContainer from '@/components/common/scroll-container';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
@@ -26,7 +26,7 @@ export default function ServerList() {
 			</SearchBar>
 			<ScrollContainer>
 				<InfinitePage
-					className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2"
+					className="grid w-full grid-cols-[repeat(auto-fill,minmax(min(400px,100%),1fr))] gap-2"
 					queryKey={['server', debounced]}
 					skeleton={{ item: <ServerCardSkeleton />, amount: 20 }}
 					paramSchema={PaginationQuerySchema}

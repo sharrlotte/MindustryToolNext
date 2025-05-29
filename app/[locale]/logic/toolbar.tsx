@@ -8,7 +8,6 @@ import { nodeOptions } from '@/app/[locale]/logic/node';
 
 import { CatchError } from '@/components/common/catch-error';
 import { Hidden } from '@/components/common/hidden';
-import { LivePanelIcon } from '@/components/common/icons';
 import Shortcut from '@/components/common/shortcut';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -22,6 +21,7 @@ import useShortcut from '@/hooks/use-shortcut';
 
 import { PopoverClose } from '@radix-ui/react-popover';
 import { useReactFlow } from '@xyflow/react';
+import { LivePanelIcon } from '@/components/common/icons';
 
 type TabType = {
 	label: string;

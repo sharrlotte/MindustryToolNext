@@ -1,7 +1,7 @@
 import { VariantProps, cva } from 'class-variance-authority';
+import { Trash2 } from 'lucide-react';
 import React, { Suspense } from 'react';
 
-import { TrashIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
 	AlertDialog,
@@ -41,7 +41,7 @@ export default function RemoveButton({ className, variant, isLoading, descriptio
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger className={cn(buttonVariants({ className, variant }))} disabled={isLoading}>
-				<TrashIcon className="size-5" />
+				<Trash2 className="size-5" />
 				{variant === 'command' && <Tran text="remove" />}
 			</AlertDialogTrigger>
 			<Suspense>

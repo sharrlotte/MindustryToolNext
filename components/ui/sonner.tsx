@@ -1,14 +1,14 @@
 'use client';
 
+import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon, XIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { ReactNode } from 'react';
 import { Toaster as Sonner, toast as defaultToast } from 'sonner';
 
-import { AlertTriangleIcon, CheckCircleIcon, XCircleIcon, XIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 
-import { getErrorMessage, TError } from '@/lib/error';
+import { TError, getErrorMessage } from '@/lib/error';
 import { cn, hasProperty } from '@/lib/utils';
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
@@ -23,7 +23,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 			style={{
 				gap: 6,
 			}}
-			position='top-right'
+			position="top-right"
 			toastOptions={{
 				classNames: {
 					toast: 'group p-0 group-[.toaster]:bg-card group-[.toaster]:text-foreground group-[.toaster]:shadow-lg',
@@ -78,7 +78,6 @@ toast.error = (
 		error?: TError;
 	},
 ) => {
-	
 	if (options?.error) {
 		return toast(title, {
 			icon: <XCircleIcon className="size-4" />,
