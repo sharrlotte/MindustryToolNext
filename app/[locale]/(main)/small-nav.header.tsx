@@ -1,5 +1,5 @@
-import { MindustryToolIcon } from 'lucide-react';
 
+import { MindustryToolIcon } from '@/components/common/mindustrytool-icon';
 import env from '@/constant/env';
 
 export default function NavHeader() {

@@ -19,6 +19,7 @@ import LoginButton from '@/components/button/login.button';
 import ErrorScreen from '@/components/common/error-screen';
 import Hydrated from '@/components/common/hydrated';
 import InternalLink from '@/components/common/internal-link';
+import { MindustryToolIcon } from '@/components/common/mindustrytool-icon';
 import T from '@/components/common/server-tran';
 import Tran from '@/components/common/tran';
 import MapPreviewCard from '@/components/map/map-preview-card';
@@ -45,7 +46,6 @@ import { YouTubeEmbed } from '@next/third-parties/google';
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
 import './style.css';
-import { MindustryToolIcon } from '@/components/common/icons';
 
 export const experimental_ppr = true;
 

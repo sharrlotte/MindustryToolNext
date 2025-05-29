@@ -1,4 +1,3 @@
-import { MindustryToolIcon } from 'lucide-react';
 import { ReactNode } from 'react';
 
 import { MediumNavItems } from '@/app/[locale]/(main)/medium-navigation-items';
@@ -9,6 +8,7 @@ import SmallNavbarToggle from '@/app/[locale]/(main)/small-navbar-toggle';
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 
 import Hydrated from '@/components/common/hydrated';
+import { MindustryToolIcon } from '@/components/common/mindustrytool-icon';
 import Divider from '@/components/ui/divider';
 
 import { NavBarProvider } from '@/context/navbar.context';

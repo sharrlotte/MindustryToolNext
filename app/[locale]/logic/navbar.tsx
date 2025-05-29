@@ -1,7 +1,5 @@
 'use client';
 
-import { MindustryToolIcon } from 'lucide-react';
-
 import { MediumNavItems } from '@/app/[locale]/(main)/medium-navigation-items';
 import NavHeader from '@/app/[locale]/(main)/small-nav.header';
 import SmallNavbarCollapse from '@/app/[locale]/(main)/small-navbar-collapse';
@@ -10,6 +8,7 @@ import SmallNavbarToggle from '@/app/[locale]/(main)/small-navbar-toggle';
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 
 import Hydrated from '@/components/common/hydrated';
+import { MindustryToolIcon } from '@/components/common/mindustrytool-icon';
 
 import { NavBarProvider } from '@/context/navbar.context';
 

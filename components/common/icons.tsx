@@ -6,15 +6,6 @@ type Props = {
 	className?: string;
 };
 
-export const MindustryToolIcon = ({
-	className,
-	width,
-	height,
-}: Props & {
-	width?: number;
-	height?: number;
-}) => <Image className={className} width={width ?? 32} height={height ?? 32} src={'/favicon.ico'} alt="MindustryToolIcon" />;
-
 export function HRIcon({ className }: Props) {
 	return (
 		<svg className={cn(className)} role="img" viewBox="0 0 175 175">
