@@ -61,7 +61,7 @@ export default function ServerUpdateForm({ server }: Props) {
 	const isChanged = form.formState.isDirty;
 
 	return (
-		<div className="relative flex h-full flex-col justify-between gap-2">
+		<div className="relative flex flex-col justify-between gap-2">
 			<Form {...form}>
 				<form
 					className="flex space-y-6 flex-col justify-between bg-card rounded-md p-2 h-full"
