@@ -24,7 +24,8 @@ import { getSession } from '@/action/common';
 import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
-import { byteToSize, formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { byteToSize, formatTitle, hasAccess } from '@/lib/utils';
 
 export const experimental_ppr = true;
 

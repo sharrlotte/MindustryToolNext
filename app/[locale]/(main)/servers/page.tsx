@@ -14,7 +14,8 @@ import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import ClientProtectedElement from '@/layout/client-protected-element';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 const MeServer = dynamic(() => import('@/app/[locale]/(main)/servers/my-server'));
 

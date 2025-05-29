@@ -5,7 +5,8 @@ import ServerMaps from '@/app/[locale]/(main)/servers/[id]/maps/page.client';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 type Props = {
 	params: Promise<{

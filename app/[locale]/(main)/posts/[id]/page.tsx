@@ -8,7 +8,8 @@ import PostDetailCard from '@/components/post/post-detail-card';
 import { serverApi } from '@/action/common';
 import { Locale } from '@/i18n/config';
 import { isError } from '@/lib/error';
-import { YOUTUBE_VIDEO_REGEX, formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { YOUTUBE_VIDEO_REGEX, formatTitle } from '@/lib/utils';
 import { getPost } from '@/query/post';
 
 type Props = {

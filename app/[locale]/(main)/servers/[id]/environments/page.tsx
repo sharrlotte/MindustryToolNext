@@ -1,11 +1,13 @@
 import { Metadata } from 'next';
 
+import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
+
 import env from '@/constant/env';
 import { isError } from '@/lib/error';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 import PageClient from './page.client';
-import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 
 type Props = {
 	params: Promise<{ id: string; locale: string }>;

@@ -12,7 +12,8 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 export const revalidate = 3600;
 

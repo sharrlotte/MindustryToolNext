@@ -4,7 +4,6 @@ import { twMerge } from 'tailwind-merge';
 import { MetricUnit, colours } from '@/constant/constant';
 import { AuthorityEnum, UserRole } from '@/constant/constant';
 import env from '@/constant/env';
-import { Locale, i18nCachePrefix } from '@/i18n/config';
 import { ApiError, isError } from '@/lib/error';
 import { ChartData } from '@/types/response/Metric';
 import { Role } from '@/types/response/Role';
@@ -38,14 +37,6 @@ export function stripColors(input: string): string {
 	return input.trim();
 }
 
-export function clearTranslationCache() {
-	for (let i = localStorage.length - 1; i >= 0; i--) {
-		const key = localStorage.key(i);
-		if (key && key.startsWith(i18nCachePrefix)) {
-			localStorage.removeItem(key);
-		}
-	}
-}
 
 export function getColor(color: string) {
 	return colours[color];
@@ -415,24 +406,7 @@ export const groupParamsByKey = (params: URLSearchParams) =>
 		return acc;
 	}, {});
 
-const hrefLangs: Record<Locale, string> = {
-	en: 'en',
-	kr: 'ko',
-	cn: 'zh',
-	jp: 'ja',
-	ru: 'ru',
-	uk: 'uk',
-	vi: 'vi',
-};
 
-export function generateAlternate(path: string) {
-	return {
-		canonical: './',
-		languages: Object.fromEntries(
-			env.locales.map((lang) => [hrefLangs[lang], env.url.base + `/${lang}/${path}`.replaceAll('//', '/')]),
-		),
-	};
-}
 
 export function hasProperty(obj: any, key: string): obj is { [key: string]: any } {
 	return typeof obj === 'object' && obj !== null && key in obj;

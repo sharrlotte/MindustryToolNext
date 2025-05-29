@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useI18n } from '@/i18n/client';
 import { Locale, locales } from '@/i18n/config';
-import { clearTranslationCache } from '@/lib/utils';
+import { clearTranslationCache } from '@/lib/i18n.utils';
 
 const DiffTable = dynamic(() => import('@/app/[locale]/(main)/translation/diff-table'));
 const CompareTable = dynamic(() => import('@/app/[locale]/(main)/translation/compare.table'));

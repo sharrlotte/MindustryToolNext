@@ -9,9 +9,10 @@ import BackButton from '@/components/ui/back-button';
 import { serverApi } from '@/action/common';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { formatTitle } from '@/lib/utils';
 import { getMapUpload } from '@/query/map';
 import { isError } from '@/lib/error';
+import { generateAlternate } from '@/lib/i18n.utils';
 
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;

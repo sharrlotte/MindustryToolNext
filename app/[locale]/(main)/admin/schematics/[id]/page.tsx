@@ -10,7 +10,8 @@ import { serverApi } from '@/action/common';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { isError } from '@/lib/error';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 import { getSchematicUpload } from '@/query/schematic';
 
 type Props = {

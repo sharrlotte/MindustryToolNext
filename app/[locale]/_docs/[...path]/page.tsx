@@ -15,7 +15,8 @@ import Markdown, { shared } from '@/components/markdown/markdown';
 import BackButton from '@/components/ui/back-button';
 import Divider from '@/components/ui/divider';
 
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 import './style.css';
 

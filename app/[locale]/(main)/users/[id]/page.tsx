@@ -8,7 +8,8 @@ import ErrorScreen from '@/components/common/error-screen';
 
 import { serverApi } from '@/action/common';
 import { isError } from '@/lib/error';
-import { formatTitle, generateAlternate } from '@/lib/utils';
+import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 import { getMe, getUser } from '@/query/user';
 
 type Props = {
