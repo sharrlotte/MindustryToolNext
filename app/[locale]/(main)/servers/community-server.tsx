@@ -10,7 +10,7 @@ import { PaginationQuerySchema } from '@/types/schema/search-query';
 export default function CommunityServer() {
 	return (
 		<InfinitePage
-			className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(350px,100%),1fr))] gap-2"
+			className="grid h-full w-full grid-cols-[repeat(auto-fill,minmax(min(420px,100%),1fr))] gap-2"
 			queryKey={['community-server']}
 			skeleton={{ item: <ServerCardSkeleton />, amount: 20 }}
 			paramSchema={PaginationQuerySchema}
