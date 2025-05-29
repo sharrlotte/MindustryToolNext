@@ -100,7 +100,7 @@ export default async function Page({ params }: Props) {
 			<div className="h-full flex flex-col">
 				<div className="grid grid-rows-1 md:grid-rows-[auto_1fr] gap-2 w-full min-h-full">
 					<div className="flex flex-col gap-2 md:flex-row">
-						<div className="flex overflow-hidden flex-col gap-4 p-2 w-full rounded-md border bg-card">
+						<div className="flex overflow-hidden flex-col gap-4 p-2 w-full rounded-md border bg- h-full">
 							<header className="flex gap-2 items-center">
 								{avatar && <Image className="size-16 object-cover rounded-md" src={avatar} width={64} height={64} alt={name} />}
 								<div className="flex flex-col gap-1">
