@@ -141,11 +141,11 @@ export default async function Page({ params }: Props) {
 							</main>
 							<Divider />
 							{address && (
-								<div className="flex items-center">
+								<div className="flex items-center text-sm">
 									<Tran className="text-muted-foreground" text="server.address" />
 									<span className="text-muted-foreground mr-2">:</span>
 									<CopyButton
-										className="px-3 h-6 py-0 border text-sm border-foreground font-semibold rounded-full"
+										className="px-3 h-6 py-0 border border-foreground font-semibold rounded-full"
 										variant="none"
 										data={`${address}:${port}`}
 										title={`${address}:${port}`}

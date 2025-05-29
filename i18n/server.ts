@@ -17,7 +17,7 @@ const getTranslationCached = cache(
 					headers: {
 						Server: 'true',
 					},
-					timeout: 3000,
+					timeout: process.env.NODE_ENV === 'production' ? 3000 : 100,
 				})
 				.then((res) => res.data),
 		['translations'],

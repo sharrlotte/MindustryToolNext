@@ -56,7 +56,7 @@ const nextConfig: NextConfig = {
 	productionBrowserSourceMaps: true,
 	pageExtensions: ['ts', 'tsx'],
 	crossOrigin: 'anonymous',
-	reactStrictMode: true,
+	reactStrictMode: process.env.NODE_ENV === 'development',
 	images: {
 		unoptimized: true,
 		remotePatterns: [
