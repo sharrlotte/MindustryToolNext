@@ -28,14 +28,12 @@ export default function TakeDownSchematicButton({ id, name }: TakeDownSchematicB
 		},
 		mutationFn: (id: string) => unverifySchematic(axios, id),
 		onSuccess: () => {
-			back();
+			invalidateByKey(['schematics']);
 			toast(<Tran text="take-down-success" />);
+			back();
 		},
 		onError: (error) => {
 			toast.error(<Tran text="take-down-fail" />, { error });
-		},
-		onSettled: () => {
-			invalidateByKey(['schematics']);
 		},
 	});
 

@@ -31,15 +31,13 @@ export function DeleteMapButton({ id, name, variant, goBack }: DeleteMapButtonPr
 		mutationFn: (id: string) => deleteMap(axios, id),
 		onSuccess: () => {
 			toast.success(<Tran text="delete-success" />);
+			invalidateByKey(['maps']);
 			if (goBack) {
 				back();
 			}
 		},
 		onError: (error) => {
 			toast.error(<Tran text="delete-fail" />, { error });
-		},
-		onSettled: () => {
-			invalidateByKey(['maps']);
 		},
 	});
 

@@ -41,14 +41,12 @@ export default function PostDetailCard({
 	const { mutate: removePost, isPending: isRemoving } = useMutation({
 		mutationFn: (id: string) => unverifyPost(axios, id),
 		onSuccess: () => {
-			back();
+			invalidateByKey(['posts']);
 			toast(<Tran text="take-down-success" />);
+			back();
 		},
 		onError: (error) => {
 			toast.error(<Tran text="take-down-fail" />, { error });
-		},
-		onSettled: () => {
-			invalidateByKey(['posts']);
 		},
 	});
 

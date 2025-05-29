@@ -39,13 +39,11 @@ export default function UploadPostDetailCard({ post }: UploadPostDetailCardProps
 	const { mutate: verifyPostById, isPending: isVerifying } = useMutation({
 		mutationFn: (data: VerifyPostRequest) => verifyPost(axios, data),
 		onSuccess: () => {
+			invalidateByKey(['posts']);
 			back();
 		},
 		onError: (error) => {
 			toast.error(<Tran text="verify-fail" />, { error });
-		},
-		onSettled: () => {
-			invalidateByKey(['posts']);
 		},
 	});
 
