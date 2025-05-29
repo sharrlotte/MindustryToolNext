@@ -141,7 +141,7 @@ export default function ServerUpdateForm({ server }: Props) {
 									<Tran text="server.game-mode-name" />
 								</FormLabel>
 								<FormControl>
-									<Input placeholder="Flood" {...field} />
+									<Input placeholder="Flood" {...field} value={field.value ?? ''} />
 								</FormControl>
 								<FormDescription>
 									<Tran text="server.game-mode-name-description" />
