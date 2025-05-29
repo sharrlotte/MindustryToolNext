@@ -9,6 +9,7 @@ export type ServerDto = {
 	port: number;
 	isOfficial: boolean;
 	mode: ServerMode;
+	gamemode?: string;
 	status: ServerStatus;
 	ramUsage: number;
 	cpuUsage: number;
