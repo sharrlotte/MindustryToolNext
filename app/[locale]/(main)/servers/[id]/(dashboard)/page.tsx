@@ -82,6 +82,7 @@ export default async function Page({ params }: Props) {
 		description,
 		port,
 		mode,
+		gamemode,
 		players,
 		kicks,
 		status,
@@ -120,7 +121,11 @@ export default async function Page({ params }: Props) {
 						</div>
 						<div className="flex flex-col gap-1">
 							<Tran className="text-muted-foreground" text="server.game-mode" />
-							<span className="capitalize font-semibold">{mode.toLocaleLowerCase()}</span>
+							<span className="capitalize font-semibold">
+								{mode.toLowerCase()}
+								{gamemode && '/'}
+								{gamemode?.toLowerCase()}
+							</span>
 						</div>
 						<div className="flex flex-col gap-1">
 							<Tran className="text-muted-foreground" text="server.players" />
