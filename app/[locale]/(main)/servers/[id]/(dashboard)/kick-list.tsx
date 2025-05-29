@@ -5,8 +5,6 @@ import { useState } from 'react';
 import { useInterval } from 'usehooks-ts';
 
 import ErrorMessage from '@/components/common/error-message';
-import Tran from '@/components/common/tran';
-import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
 
@@ -45,10 +43,6 @@ export default function KickList({ id, kicks }: KickListProps) {
 
 	return (
 		<AnimatePresence>
-			<h3 className="font-semibold">
-				<Tran text="server.kick-list" />
-			</h3>
-			<Divider />
 			{Object.entries(data ?? {}) //
 				.map(([ip, untilTime]) => (
 					<KickCard key={ip} serverId={id} kick={{ ip, untilTime }} currentTime={currentTime} />

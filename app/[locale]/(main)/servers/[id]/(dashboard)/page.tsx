@@ -178,7 +178,7 @@ export default async function Page({ params }: Props) {
 				</div>
 				<div className="gap-2 grid grid-cols-1 md:grid-cols-[1fr_auto] h-full">
 					<div className="flex-1 flex flex-col gap-2">
-						<div className="flex flex-col flex-1 gap-2 justify-start items-start p-2 rounded-md border shadow-lg bg-card">
+						<div className="flex flex-col gap-2 justify-start items-start p-2 rounded-md border shadow-lg bg-card">
 							<h3>
 								<Tran text="server.system-status" />
 							</h3>
@@ -220,6 +220,10 @@ export default async function Page({ params }: Props) {
 								{status === 'HOST' && players > 0 && (
 									<div className="flex flex-col rounded-md border bg-card">
 										<div className="grid gap-2 p-2 w-full">
+											<h3 className="font-semibold">
+												<Tran text="server.player-list" />
+											</h3>
+											<Divider />
 											<Suspense
 												fallback={
 													<Skeletons number={players}>
@@ -235,6 +239,10 @@ export default async function Page({ params }: Props) {
 								{status === 'HOST' && kicks > 0 && (
 									<div className="flex flex-col rounded-md border bg-card">
 										<ScrollContainer className="flex flex-col gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full max-h-[500px]">
+											<h3 className="font-semibold">
+												<Tran text="server.kick-list" />
+											</h3>
+											<Divider />
 											<Suspense
 												fallback={
 													<Skeletons number={kicks}>
