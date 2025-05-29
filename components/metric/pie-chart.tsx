@@ -15,7 +15,7 @@ interface PieChartProps {
 
 const PieChart: React.FC<PieChartProps> = ({
 	segments,
-	size = '100px',
+	size = '200px',
 	label,
 	labelColor = 'white',
 	animationDuration = 500,
