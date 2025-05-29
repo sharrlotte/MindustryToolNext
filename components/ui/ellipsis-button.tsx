@@ -28,7 +28,7 @@ const EllipsisButton = ({ className, variant, children, ...props }: Props) => {
 		<Popover>
 			<PopoverTrigger asChild>
 				<Button className={cn(ellipsisVariants({ className, variant }))} variant={variant} type="button" {...props}>
-					<DotsHorizontalIcon />
+					<DotsHorizontalIcon className='size-4' />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="bg-transparent border-transparent p-0">
