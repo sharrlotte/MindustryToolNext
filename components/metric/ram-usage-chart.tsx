@@ -30,10 +30,10 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 	return (
 		<ProgressPrimitive.Root className={cn('relative h-2 w-full overflow-hidden rounded-full bg-primary/20')}>
 			<ProgressPrimitive.Indicator
-				className="h-full w-full flex-1 bg-primary transition-all duration-500"
+				className="h-full w-full flex-1 transition-all duration-500"
 				style={{
 					transform: `translateX(-${100 - (percent || 0)}%)`,
-					color:
+					backgroundColor:
 						percentUsage < 50
 							? 'green' //
 							: percentUsage < 70
