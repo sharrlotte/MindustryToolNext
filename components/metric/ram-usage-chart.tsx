@@ -2,7 +2,9 @@
 
 import React from 'react';
 
-import PieChart from '@/components/metric/pie-chart';
+import { cn } from '@/lib/utils';
+
+import * as ProgressPrimitive from '@radix-ui/react-progress';
 
 type Props = {
 	ramUsage: number;
@@ -17,25 +19,28 @@ export default function RamUsageChart({ ramUsage, totalRam }: Props) {
 
 	percentUsage = isNaN(percentUsage) ? 0 : percentUsage;
 
-	const percentFree = Math.round((100 - percentUsage) * 100) / 100;
+	const [percent, setPercent] = React.useState(0);
+
+	React.useEffect(() => {
+		const timeout = setTimeout(() => setPercent(percentUsage || 0), 100);
+
+		return () => clearTimeout(timeout);
+	}, [percentUsage]);
 
 	return (
-		<PieChart
-			segments={[
-				{
-					percentage: percentUsage,
+		<ProgressPrimitive.Root className={cn('relative h-2 w-full overflow-hidden rounded-full bg-primary/20')}>
+			<ProgressPrimitive.Indicator
+				className="h-full w-full flex-1 bg-primary transition-all duration-500"
+				style={{
+					transform: `translateX(-${100 - (percent || 0)}%)`,
 					color:
 						percentUsage < 50
 							? 'green' //
 							: percentUsage < 70
 								? 'gold'
 								: 'red',
-				},
-				{
-					percentage: percentFree,
-					color: 'white',
-				},
-			]}
-		/>
+				}}
+			/>
+		</ProgressPrimitive.Root>
 	);
 }
