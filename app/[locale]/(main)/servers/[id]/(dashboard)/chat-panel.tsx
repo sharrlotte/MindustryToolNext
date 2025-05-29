@@ -14,8 +14,8 @@ type Props = {
 
 export default async function ChatPanel({ id }: Props) {
 	return (
-		<div className="grid w-full grid-rows-[1fr_auto] overflow-hidden bg-card rounded-md border min-h-[50dvh]">
-			<div className="overflow-x-hidden p-4 space-y-2">
+		<div className="grid flex-1 w-full grid-rows-[1fr_auto] overflow-hidden bg-card rounded-md border min-h-[50dvh]">
+			<div className="overflow-x-hidden p-2 space-y-2">
 				<h3 className="font-semibold">
 					<Tran asChild text="server.chat" />
 				</h3>

@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { Hidden } from '@/components/common/hidden';
+import { PowerIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
 	AlertDialog,
@@ -47,7 +48,13 @@ export default function ShutdownServerButton({ id }: Props) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button className="min-w-20" title="Delete" variant="destructive" disabled={isPending}>
+				<Button
+					className="min-w-20 text-foreground bg-destructive-foreground"
+					title="Delete"
+					variant="destructive"
+					disabled={isPending}
+				>
+					<PowerIcon className="size-4" />
 					<Tran text="server.shutdown" />
 				</Button>
 			</AlertDialogTrigger>

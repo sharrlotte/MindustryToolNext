@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { TError, getErrorMessage } from '@/lib/error';
 
 export default function ErrorScreen({ error }: { error: TError }) {
-	const message = getErrorMessage(error);
+	const message = useMemo(() => getErrorMessage(error), [error]);
 
 	useEffect(() => {
 		reportError(error);

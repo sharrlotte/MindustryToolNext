@@ -38,7 +38,6 @@ import { Batcher } from '@/lib/batcher';
 import { isError } from '@/lib/error';
 import { isNumeric } from '@/lib/utils';
 import { CreateCommentRequest, CreateCommentSchema, createComment, getComments } from '@/query/comment';
-import { persister } from '@/query/config/query-config';
 import { Comment } from '@/types/response/Comment';
 import { CommentPaginationQuerySchema, CommentSort, commentSorts } from '@/types/schema/search-query';
 
@@ -127,7 +126,6 @@ export function CommentCard({ comment }: CommentCardProps) {
 	const { data } = useClientQuery({
 		queryKey: ['users', userId],
 		queryFn: () => Batcher.user.get(userId),
-		persister,
 	});
 
 	return (

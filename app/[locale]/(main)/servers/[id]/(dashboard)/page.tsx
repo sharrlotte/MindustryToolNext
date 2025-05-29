@@ -7,11 +7,13 @@ import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/
 import ChatPanel from '@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-panel';
 
 import CopyButton from '@/components/button/copy.button';
+import { CatchError } from '@/components/common/catch-error';
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
+import { CpuProgress } from '@/components/server/cpu-progress';
 import ServerStatusBadge from '@/components/server/server-status-badge';
 import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -22,7 +24,7 @@ import { getSession } from '@/action/common';
 import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
-import { formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
+import { byteToSize, formatTitle, generateAlternate, hasAccess } from '@/lib/utils';
 
 export const experimental_ppr = true;
 
@@ -97,7 +99,7 @@ export default async function Page({ params }: Props) {
 			<div className="h-full flex flex-col">
 				<div className="grid grid-rows-1 md:grid-rows-[auto_1fr] gap-2 w-full min-h-full">
 					<div className="flex flex-col gap-2 md:flex-row">
-						<div className="flex overflow-hidden flex-col gap-4 p-4 w-full rounded-md border bg-card">
+						<div className="flex overflow-hidden flex-col gap-4 p-2 w-full rounded-md border bg-card">
 							<header className="flex gap-2 items-center">
 								{avatar && <Image className="size-16 object-cover rounded-md" src={avatar} width={64} height={64} alt={name} />}
 								<div className="flex flex-col gap-1">
@@ -171,25 +173,30 @@ export default async function Page({ params }: Props) {
 							</footer>
 						</div>
 					</div>
-					<div className="gap-2 grid grid-cols-1 md:grid-cols-2">
+					<div className="gap-2 grid grid-cols-1 md:grid-cols-[1fr_auto]">
 						<div className="flex-1 flex flex-col gap-2">
-							<div className="flex flex-wrap flex-1 gap-1 justify-start items-start p-4 rounded-md border shadow-lg bg-card">
-								<div className="flex flex-col gap-1 justify-start items-start w-full h-full">
-									<h3>
-										<Tran text="server.system-status" />
-									</h3>
-									{status === 'HOST' || status === 'UP' ? (
-										<div className="flex flex-col w-full h-full">
-											<div className="space-x-1">
-												<Tran text="server.cpu-usage" />
-												<span>{cpuUsage}%</span>
-											</div>
-											<RamUsageChart ramUsage={ramUsage * 1024 * 1024} totalRam={totalRam * 1024 * 1024} />
+							<div className="flex flex-col flex-1 gap-2 justify-start items-start p-2 rounded-md border shadow-lg bg-card">
+								<h3>
+									<Tran text="server.system-status" />
+								</h3>
+								{status === 'HOST' || status === 'UP' ? (
+									<div className="flex flex-col w-full h-full text-sm max-w-[300px] gap-2">
+										<div className="flex gap-2 justify-between w-full">
+											<Tran className="font-bold" text="server.cpu-usage" />
+											<span className="text-muted-foreground">{Math.round(cpuUsage * 100) / 100}%</span>
 										</div>
-									) : (
-										<Tran text="server.server-is-not-running" />
-									)}
-								</div>
+										<CpuProgress value={cpuUsage} />
+										<div className="flex gap-2 justify-between w-full">
+											<Tran className="font-bold" text="metric.ram-usage" />
+											<span className="text-muted-foreground">
+												{byteToSize(ramUsage * 1024 * 1024)} / {byteToSize(totalRam * 1024 * 1024)}
+											</span>
+										</div>
+										<RamUsageChart ramUsage={ramUsage * 1024 * 1024} totalRam={totalRam * 1024 * 1024} />
+									</div>
+								) : (
+									<Tran text="server.server-is-not-running" />
+								)}
 							</div>
 							{status === 'HOST' && (
 								<div className="flex min-w-[30vw] h-auto w-full rounded-md overflow-hidden">
@@ -206,41 +213,43 @@ export default async function Page({ params }: Props) {
 						</div>
 						<ProtectedElement session={session} filter={canAccess}>
 							{status === 'HOST' && (kicks > 0 || players > 0) && (
-								<div>
-									{players > 0 && (
-										<div className="flex flex-col rounded-md border bg-card">
-											<div className="grid gap-2 p-2 w-full md:w-fit">
-												<Suspense
-													fallback={
-														<Skeletons number={players}>
-															<Skeleton className="w-full h-11 rounded-md" />
-														</Skeletons>
-													}
-												>
-													<PlayerList id={id} />
-												</Suspense>
+								<CatchError>
+									<div className="flex-1 flex flex-col gap-2">
+										{players > 0 && (
+											<div className="flex flex-col rounded-md border bg-card">
+												<div className="grid gap-2 p-2 w-full">
+													<Suspense
+														fallback={
+															<Skeletons number={players}>
+																<Skeleton className="w-full h-11 rounded-md" />
+															</Skeletons>
+														}
+													>
+														<PlayerList id={id} players={players} />
+													</Suspense>
+												</div>
 											</div>
-										</div>
-									)}
-									{kicks > 0 && (
-										<div className="flex flex-col rounded-md border bg-card">
-											<ScrollContainer className="flex flex-col gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full md:w-fit max-h-[500px]">
-												<Suspense
-													fallback={
-														<Skeletons number={kicks}>
-															<Skeleton className="w-full h-10 rounded-md" />
-														</Skeletons>
-													}
-												>
-													<KickList id={id} />
-												</Suspense>
-											</ScrollContainer>
-										</div>
-									)}
-								</div>
+										)}
+										{kicks > 0 && (
+											<div className="flex flex-col rounded-md border bg-card">
+												<ScrollContainer className="flex flex-col gap-2 p-2 min-w-[300px] md:max-w-[500px] w-full max-h-[500px]">
+													<Suspense
+														fallback={
+															<Skeletons number={kicks}>
+																<Skeleton className="w-full h-10 rounded-md" />
+															</Skeletons>
+														}
+													>
+														<KickList id={id} kicks={kicks} />
+													</Suspense>
+												</ScrollContainer>
+											</div>
+										)}
+										<ChatPanel id={id} />
+									</div>
+								</CatchError>
 							)}
 						</ProtectedElement>
-						<ChatPanel id={id} />
 					</div>
 				</div>
 			</div>

@@ -12,6 +12,7 @@ import { KickButton } from '@/components/server/kick.button';
 import Divider from '@/components/ui/divider';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Skeleton } from '@/components/ui/skeleton';
+import Skeletons from '@/components/ui/skeletons';
 import IdUserCard from '@/components/user/id-user-card';
 
 import localeToFlag from '@/constant/constant';
@@ -19,15 +20,16 @@ import useClientApi from '@/hooks/use-client';
 import { getServerPlayers } from '@/query/server';
 import { Player } from '@/types/response/Player';
 
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 type PlayerListProps = {
 	id: string;
+	players: number;
 };
 
-export default function PlayerList({ id }: PlayerListProps) {
+export default function PlayerList({ id, players }: PlayerListProps) {
 	const axios = useClientApi();
-	const { data, isError, error } = useSuspenseQuery({
+	const { data, isError, error, isLoading } = useQuery({
 		queryKey: ['server', id, 'player'],
 		queryFn: () => getServerPlayers(axios, id),
 		refetchInterval: 30000,
@@ -37,18 +39,28 @@ export default function PlayerList({ id }: PlayerListProps) {
 		return <ErrorMessage error={error} />;
 	}
 
+	if (isLoading) {
+		return (
+			<Skeletons number={players}>
+				<Skeleton className="w-full h-11 rounded-md" />
+			</Skeletons>
+		);
+	}
+
 	return (
-		<AnimatePresence>
+		<>
 			<h3 className="font-semibold">
 				<Tran text="server.player-list" />
 			</h3>
 			<Divider />
-			{data
-				?.sort((a, b) => a.name.localeCompare(b.name))
-				?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
-				?.sort((a, b) => a.team.name.localeCompare(b.team.name))
-				.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
-		</AnimatePresence>
+			<AnimatePresence>
+				{data
+					?.sort((a, b) => a.name.localeCompare(b.name))
+					?.sort((a, b) => (a.locale ?? 'EN').localeCompare(b.locale ?? 'EN'))
+					?.sort((a, b) => a.team.name.localeCompare(b.team.name))
+					.map((player) => <PlayerCard key={player.uuid} serverId={id} player={player} />)}
+			</AnimatePresence>
+		</>
 	);
 }
 

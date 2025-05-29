@@ -58,6 +58,7 @@ export type MetricType =
 
 export const userRoles = ['ADMIN', 'USER', 'SHAR', 'CONTRIBUTOR'] as const;
 
+export const maxMessageLength = 1000;
 export type UserRole = (typeof userRoles)[number];
 
 export const serverStatus = ['DOWN', 'UP', 'HOST', 'DELETED', 'NOT_RESPONSE', 'ERROR'] as const;

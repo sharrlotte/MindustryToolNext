@@ -8,23 +8,25 @@ import ErrorMessage from '@/components/common/error-message';
 import Tran from '@/components/common/tran';
 import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
+import Skeletons from '@/components/ui/skeletons';
 
 import useClientApi from '@/hooks/use-client';
 import { getServerKicks } from '@/query/server';
 
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 type KickListProps = {
 	id: string;
+	kicks: number;
 };
 
-export default function KickList({ id }: KickListProps) {
+export default function KickList({ id, kicks }: KickListProps) {
 	const axios = useClientApi();
 	const [currentTime, setCurrentTime] = useState(Date.now());
 
 	useInterval(() => setCurrentTime(Date.now()), 1000);
 
-	const { data, isError, error } = useSuspenseQuery({
+	const { data, isError, error, isLoading } = useQuery({
 		queryKey: ['server', id, 'kick'],
 		queryFn: () => getServerKicks(axios, id),
 	});
@@ -33,13 +35,21 @@ export default function KickList({ id }: KickListProps) {
 		return <ErrorMessage error={error} />;
 	}
 
+	if (isLoading) {
+		return (
+			<Skeletons number={kicks}>
+				<Skeleton className="w-full h-10 rounded-md" />
+			</Skeletons>
+		);
+	}
+
 	return (
 		<AnimatePresence>
-			<h3 className='font-semibold'>
+			<h3 className="font-semibold">
 				<Tran text="server.kick-list" />
 			</h3>
 			<Divider />
-			{Object.entries(data) //
+			{Object.entries(data ?? {}) //
 				.map(([ip, untilTime]) => (
 					<KickCard key={ip} serverId={id} kick={{ ip, untilTime }} currentTime={currentTime} />
 				))}

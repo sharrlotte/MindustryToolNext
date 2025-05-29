@@ -52,6 +52,7 @@ import {
 	Moon,
 	Paperclip,
 	Pencil,
+	Power,
 	Plug,
 	Plus,
 	Search,
@@ -99,6 +100,7 @@ export const MindustryToolIcon = ({
 	height?: number;
 }) => <Image className={className} width={width ?? 32} height={height ?? 32} src={mindustryToolIcon} alt="MindustryToolIcon" />;
 export const DocsIcon = ({ className }: Props) => <Book className={className ?? 'lucide'} />;
+export const PowerIcon = ({ className }: Props) => <Power className={className ?? 'lucide'} />;
 export const KeyRoundIcon = ({ className }: Props) => <KeyRound className={className ?? 'lucide'} />;
 export const ShareIcon = ({ className }: Props) => <Share2 className={className ?? 'lucide'} />;
 export const EyeIcon = ({ className }: Props) => <Eye className={className ?? 'lucide'} />;

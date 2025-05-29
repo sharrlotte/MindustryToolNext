@@ -22,7 +22,6 @@ import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
 import { Batcher } from '@/lib/batcher';
 import { deleteCommentById, getAllCommentCount, getAllComments } from '@/query/comment';
-import { persister } from '@/query/config/query-config';
 import { Comment } from '@/types/response/Comment';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
 
@@ -77,7 +76,6 @@ function CommentCard({ comment }: CommentCardProps) {
 	const { data } = useClientQuery({
 		queryKey: ['users', userId],
 		queryFn: () => Batcher.user.get(userId),
-		persister,
 	});
 
 	return (

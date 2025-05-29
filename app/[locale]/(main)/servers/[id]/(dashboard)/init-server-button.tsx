@@ -6,7 +6,7 @@ import HasServerMap from '@/app/[locale]/(main)/servers/[id]/(dashboard)/has-ser
 
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
-import { CheckCircleIcon } from '@/components/common/icons';
+import { CheckCircleIcon, PowerIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -63,7 +63,7 @@ export default function InitServerButton({ id }: Props) {
 	return (
 		<HasServerMap id={id}>
 			<Button
-				className="w-20 border"
+				className="w-20 border-none text-foreground bg-primary-foreground"
 				title="Init"
 				variant="primary"
 				disabled={isPending}
@@ -72,6 +72,7 @@ export default function InitServerButton({ id }: Props) {
 					setVisible(true);
 				}}
 			>
+				<PowerIcon className="size-4" />
 				<Tran text="server.init" />
 			</Button>
 			<Dialog open={visible} onOpenChange={handleVisible}>

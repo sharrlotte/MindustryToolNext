@@ -33,12 +33,12 @@ export class CatchError extends React.Component<Props, State> {
 
 	componentDidCatch(error: Error, _errorInfo: React.ErrorInfo): void {
 		this.setState({ error });
+		console.error({ [this.props.label ?? 'error']: this.props.children });
 		reportError(error);
 	}
 
 	render() {
 		if (this.state.hasError) {
-			console.error({ [this.props.label ?? 'default']: this.props.children });
 			return <ErrorMessage error={this.state.error} />;
 		}
 

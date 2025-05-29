@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { Hidden } from '@/components/common/hidden';
+import { SquareIcon } from '@/components/common/icons';
 import Tran from '@/components/common/tran';
 import {
 	AlertDialog,
@@ -47,7 +48,8 @@ export default function StopServerButton({ id }: Props) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button className="min-w-20" title="shutdown" variant="secondary" disabled={isPending}>
+				<Button className="min-w-20 border-none" title="shutdown" variant="secondary" disabled={isPending}>
+					<SquareIcon className="size-4" />
 					<Tran text="server.stop" />
 				</Button>
 			</AlertDialogTrigger>
