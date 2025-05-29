@@ -8,6 +8,7 @@
         "start": "next start",
         "prod": "next build & next start",
         "lint": "next lint",
+        "trace": "next trace",
         "preinstall": "npx only-allow pnpm",
         "analyze": "set ANALYZE=true & pnpm build"
     },
