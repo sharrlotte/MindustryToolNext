@@ -102,7 +102,7 @@ export default async function Root({ children, params }: RootProps) {
 					<ThemeProvider>
 						<SessionProvider locale={locale}>
 							<SocketProvider>
-								<GoogleAnalytics gaId="G-CGKXS6096G" />
+								{process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-CGKXS6096G" />}
 								<Toaster />
 								<ClientInit />
 								{children}

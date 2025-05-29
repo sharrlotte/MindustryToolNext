@@ -6,7 +6,7 @@ import HasServerMap from '@/app/[locale]/(main)/servers/[id]/(dashboard)/has-ser
 
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
-import { CheckCircleIcon } from '@/components/common/icons';
+import { CheckCircleIcon, PowerIcon } from '@/components/common/icons';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -62,7 +62,7 @@ export default function HostServerButton({ id }: Props) {
 	return (
 		<HasServerMap id={id}>
 			<Button
-				className="w-20 border"
+				className="w-20 border-none text-foreground bg-primary-foreground"
 				title="Start"
 				variant="primary"
 				disabled={isPending}
@@ -71,6 +71,7 @@ export default function HostServerButton({ id }: Props) {
 					setVisible(true);
 				}}
 			>
+				<PowerIcon className="size-4" />
 				<Tran text="server.host" />
 			</Button>
 			<Dialog open={visible} onOpenChange={handleVisible}>
@@ -87,8 +88,8 @@ export default function HostServerButton({ id }: Props) {
 							<CheckCircleIcon className="w-4" />
 						)}{' '}
 						<ColorText text={last} />
-						<Divider />
 					</DialogDescription>
+					<Divider />
 					<ScrollContainer className="flex overflow-x-auto flex-col flex-1 w-full h-full">
 						{data?.map((text, index) => <ColorText key={index} text={text} />)}
 						{isError && <ErrorMessage error={error} />}

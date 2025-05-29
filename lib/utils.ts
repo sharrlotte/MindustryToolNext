@@ -224,7 +224,7 @@ export function makeArray(size: number) {
 }
 
 export function byteToSize(bytes: number) {
-	const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+	const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
 
 	if (bytes === 0) return '0 Byte';
 

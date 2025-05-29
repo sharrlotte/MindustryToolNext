@@ -10,6 +10,7 @@ import { AutosizeTextAreaRef, AutosizeTextarea } from '@/components/ui/autoresiz
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
+import { maxMessageLength } from '@/constant/constant';
 import { useSocket } from '@/context/socket.context';
 import useMessage from '@/hooks/use-message';
 import { cn } from '@/lib/utils';
@@ -108,7 +109,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 	}
 	return (
 		<form
-			className={cn('flex min-h-12 flex-1 gap-2 border-t h-fit', className)}
+			className={cn('flex min-h-12 flex-1 border-t h-fit flex-col gap-1', className)}
 			name="text"
 			onSubmit={(event) => {
 				handleFormSubmit();
@@ -145,11 +146,16 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 						variant="ghost"
 						type="submit"
 						title="send"
-						disabled={state !== 'connected' || !message}
+						disabled={state !== 'connected' || !message || message.length > maxMessageLength}
 					>
 						<SendIcon />
 					</Button>
 				</div>
+			</div>
+			<div className="flex justify-end text-sm w-full">
+				<span className={cn('text-muted-foreground', { 'text-destructive-foreground': message.length > maxMessageLength })}>
+					<span>{message.length}</span>/<span className="text-foreground">{maxMessageLength}</span>
+				</span>
 			</div>
 		</form>
 	);

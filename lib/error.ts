@@ -40,6 +40,7 @@ export function getErrorMessage(error: TError) {
 	}
 
 	if (typeof error === 'object' && 'response' in error) {
+		console.log(error.response);
 		if (error.response?.data?.message) {
 			return error.response?.data?.message;
 		}
@@ -86,7 +87,6 @@ export function getLoggedErrorMessage(error: TError) {
 				response: JSON.stringify(error.response),
 				config: JSON.stringify(error.config, Object.keys(error.config ?? {})),
 				url: error.config?.url,
-				stacktrace: error.stack,
 				message: error?.message,
 			});
 		}

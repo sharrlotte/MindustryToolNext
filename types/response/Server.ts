@@ -14,6 +14,7 @@ export default interface Server {
 	hostCommand: string | null;
 	address: string;
 	image: string;
+	avatar: string;
 	webhook: string | null;
 	isAutoTurnOff: boolean;
 	isHub: boolean;

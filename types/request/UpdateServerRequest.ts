@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-
 export const ServerModes = ['SURVIVAL', 'ATTACK', 'PVP', 'SANDBOX'] as const;
 
 export type ServerMode = (typeof ServerModes)[number];
@@ -11,6 +10,7 @@ export const PutServerSchema = z.object({
 	mode: z.enum(ServerModes).default('SURVIVAL'),
 	hostCommand: z.string().max(1000).optional().nullable(),
 	webhook: z.string().max(1000).optional().nullable(),
+	avatar: z.string().max(1000).optional().nullable(),
 	image: z.string().max(1000),
 });
 

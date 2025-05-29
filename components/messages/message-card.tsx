@@ -7,7 +7,6 @@ import UserAvatar from '@/components/user/user-avatar';
 
 import { Batcher } from '@/lib/batcher';
 import { cn } from '@/lib/utils';
-import { persister } from '@/query/config/query-config';
 import { MessageGroup } from '@/types/response/Message';
 
 import { useQuery } from '@tanstack/react-query';
@@ -23,7 +22,6 @@ export function MessageCard({ className, message }: Props) {
 	const { data } = useQuery({
 		queryKey: ['users', userId],
 		queryFn: () => Batcher.user.get(userId),
-		persister,
 	});
 
 	return (

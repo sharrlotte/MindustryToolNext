@@ -53,7 +53,7 @@ export default function CopyButton({ className, title, content, data, children, 
 	}
 
 	return (
-		<button className={cn(copyButtonVariants({ className, variant, position }))} title="copy" {...props} onClick={handleClick}>
+		<button className={cn(copyButtonVariants({ variant, position, className }))} title="copy" {...props} onClick={handleClick}>
 			{children ?? (
 				<>
 					<CopyIcon className="size-5 text-foreground group group-hover/copy-button:text-background dark:group-hover/copy-button:text-foreground" />

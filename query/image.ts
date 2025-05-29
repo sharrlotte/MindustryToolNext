@@ -11,7 +11,10 @@ export interface ImageUploadRequest {
 	onUploadProgress: (AxiosProgressEvent: any) => void;
 }
 
-export async function uploadImage(axios: AxiosInstance, { file, folder, id, format, onUploadProgress }: ImageUploadRequest): Promise<void> {
+export async function uploadImage(
+	axios: AxiosInstance,
+	{ file, folder, id, format, onUploadProgress }: ImageUploadRequest,
+): Promise<void> {
 	const form = new FormData();
 	form.append('file', file);
 
@@ -24,6 +27,32 @@ export async function uploadImage(axios: AxiosInstance, { file, folder, id, form
 		},
 		onUploadProgress,
 	});
+}
+
+export interface MediaUploadRequest {
+	file: File;
+	id: string;
+	format: string;
+	onUploadProgress: (AxiosProgressEvent: any) => void;
+}
+
+export async function uploadMedia(
+	axios: AxiosInstance,
+	{ format, file, id, onUploadProgress }: MediaUploadRequest,
+): Promise<string> {
+	const form = new FormData();
+	form.append('file', file);
+
+	return axios
+		.post('/images/media', form, {
+			data: form,
+			params: {
+				id,
+				format,
+			},
+			onUploadProgress,
+		})
+		.then((res) => res.data as string);
 }
 
 export async function deleteImage(axios: AxiosInstance, path: string): Promise<void> {

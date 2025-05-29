@@ -9,7 +9,7 @@ type Props = {
 	status: ServerStatus;
 };
 
-export default function ServerStatus({ status }: Props) {
+export default function ServerStatusBadge({ status }: Props) {
 	function render() {
 		if (status === 'UP') {
 			return (

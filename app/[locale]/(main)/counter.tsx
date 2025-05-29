@@ -1,21 +1,13 @@
 'use client';
 
-import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
-import { useEffect } from 'react';
+import { motion } from 'framer-motion';
+
+import useCounter from '@/hooks/use-counter';
 
 const Counter = ({ from, to, duration = 2 }: { from: number; to: number; duration?: number }) => {
-  const count = useMotionValue(from);
-  const rounded = useTransform(count, (latest) => Math.floor(latest));
+	const rounded = useCounter(from, to, duration);
 
-  useEffect(() => {
-    count.set(from);
-    const controls = animate(count, to, { duration });
-
-    return () => controls.stop();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [from, to, duration]);
-
-  return <motion.p>{rounded}</motion.p>;
+	return <motion.p>{rounded}</motion.p>;
 };
 
 export default Counter;

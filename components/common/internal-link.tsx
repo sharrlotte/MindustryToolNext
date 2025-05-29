@@ -8,12 +8,12 @@ import env from '@/constant/env';
 import useLocaleStore from '@/hooks/use-current-locale';
 import { cn } from '@/lib/utils';
 
-const linkVariants = cva('inline-flex gap-2', {
+const linkVariants = cva('inline-flex gap-2 items-center', {
 	variants: {
 		variant: {
 			default: '',
 			primary: 'text-brand hover:text-brand',
-			'button-primary': 'rounded-sm border bg-brand p-2 text-sm text-brand-foreground border-brand',
+			'button-primary': 'rounded-sm border bg-brand px-2 py-1.5 text-sm text-brand-foreground border-brand',
 			'button-secondary': 'items-center flex gap-2 rounded-sm bg-secondary px-2 py-1.5',
 			command: 'hover:bg-accent justify-start gap-1 flex items-center p-2 w-full rounded-sm',
 		},

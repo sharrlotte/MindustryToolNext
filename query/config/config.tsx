@@ -5,10 +5,6 @@ import { toast } from '@/components/ui/sonner';
 import env from '@/constant/env';
 import { uuid } from '@/lib/utils';
 
-function logError(error: unknown) {
-	console.error(JSON.stringify(error));
-}
-
 const axiosInstance = Axios.create({
 	baseURL: env.url.api,
 	timeout: env.requestTimeout,
@@ -33,16 +29,10 @@ axiosInstance.interceptors.response.use(
 		return res;
 	},
 	(error) => {
-		try {
-			logError(error);
-
-			if (typeof window !== 'undefined') {
-				if (typeof error === 'string') {
-					toast.error(error);
-				}
+		if (typeof window !== 'undefined') {
+			if (typeof error === 'string') {
+				toast.error(error);
 			}
-		} catch (e) {
-			console.error(e);
 		}
 		if (error?.response?.data?.message) {
 			return Promise.reject(error.response.data.message);
