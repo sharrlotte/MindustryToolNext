@@ -1,8 +1,8 @@
-import { DiscordLogoIcon } from 'lucide-react';
 
 import Tran from '@/components/common/tran';
 
 import env from '@/constant/env';
+import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
 export default function Page() {
 	return (
