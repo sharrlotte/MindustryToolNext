@@ -161,7 +161,7 @@ export const groups: readonly PathGroup[] = [
 			{
 				id: '/image-generator',
 				name: <Tran asChild text="image-generator" />,
-				icon: <ImageIcon className="size-5" />,
+				icon: <ImageIcon className="size-6" />,
 				regex: [`^${localesRegex}/image-generator`],
 				path: [
 					{
