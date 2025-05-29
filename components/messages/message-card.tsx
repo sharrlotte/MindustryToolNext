@@ -32,7 +32,7 @@ export function MessageCard({ className, message }: Props) {
 				<Skeleton className="flex justify-center items-center capitalize rounded-full border size-8 min-h-8 min-w-8 border-border" />
 			)}
 			<div className="overflow-hidden">
-				<div className="flex gap-2 justify-between">
+				<div className="flex gap-2">
 					{data ? (
 						<ColorAsRole className="capitalize" roles={data.roles}>
 							{data.name}
