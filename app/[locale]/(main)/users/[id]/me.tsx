@@ -25,7 +25,7 @@ type TabProps = {
 };
 export default function Me({ me }: TabProps) {
 	return (
-		<div className="absolute inset-0 space-y-2 overflow-auto bg-background p-2">
+		<div className="absolute inset-0 h-full space-y-2 overflow-auto bg-background p-2">
 			<UserDetail user={me} />
 			<Tabs className="w-full" defaultValue="schematic">
 				<TabsList className="w-full justify-start bg-card">
@@ -39,7 +39,7 @@ export default function Me({ me }: TabProps) {
 						<Tran text="post" />
 					</TabsTrigger>
 				</TabsList>
-				<TabsContent value="schematic">
+				<TabsContent className='overflow-visible' value="schematic">
 					<div className="relative flex h-full flex-col gap-2 min-h-dvh">
 						<NameTagSearch type="schematic" />
 						<InfinitePage
@@ -63,7 +63,7 @@ export default function Me({ me }: TabProps) {
 						</InfinitePage>
 					</div>
 				</TabsContent>
-				<TabsContent value="map">
+				<TabsContent className='overflow-visible' value="map">
 					<div className="flex h-full w-full flex-col gap-2 min-h-dvh">
 						<NameTagSearch type="map" />
 						<InfinitePage
@@ -83,7 +83,7 @@ export default function Me({ me }: TabProps) {
 						</InfinitePage>
 					</div>
 				</TabsContent>
-				<TabsContent value="post">
+				<TabsContent className='overflow-visible' value="post">
 					<div className="flex h-full w-full flex-col gap-2 min-h-dvh">
 						<NameTagSearch type="post" />
 						<InfinitePage

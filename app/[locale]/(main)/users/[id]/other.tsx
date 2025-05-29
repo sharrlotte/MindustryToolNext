@@ -29,7 +29,7 @@ export default function Other({ user }: TabProps) {
 	const id = user.id;
 
 	return (
-		<ScrollContainer className="absolute inset-0 space-y-2 bg-background p-2">
+		<ScrollContainer className="absolute h-full inset-0 space-y-2 bg-background p-2">
 			<UserDetail user={user} />
 			<Tabs className="w-full" defaultValue="schematic">
 				<TabsList className="w-full justify-start bg-card">
@@ -43,7 +43,7 @@ export default function Other({ user }: TabProps) {
 						<Tran text="post" />
 					</TabsTrigger>
 				</TabsList>
-				<TabsContent value="schematic">
+				<TabsContent className="overflow-visible" value="schematic">
 					<div className="relative flex h-full flex-col gap-2 min-h-dvh">
 						<NameTagSearch type="schematic" />
 						<InfinitePage
@@ -67,7 +67,7 @@ export default function Other({ user }: TabProps) {
 						</InfinitePage>
 					</div>
 				</TabsContent>
-				<TabsContent value="map">
+				<TabsContent className="overflow-visible" value="map">
 					<div className="flex h-full w-full flex-col gap-2 min-h-dvh">
 						<NameTagSearch type="map" />
 						<InfinitePage
@@ -87,7 +87,7 @@ export default function Other({ user }: TabProps) {
 						</InfinitePage>
 					</div>
 				</TabsContent>
-				<TabsContent value="post">
+				<TabsContent className="overflow-visible" value="post">
 					<div className="flex h-full w-full flex-col gap-2 min-h-dvh">
 						<NameTagSearch type="post" />
 						<InfinitePage

@@ -25,7 +25,7 @@ export default function VerifyButton({ isLoading, description, onClick }: Verify
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger
-				className="flex items-center justify-center rounded-md border p-2 hover:bg-success-foreground hover:border-transparent border-border bg-secondary"
+				className="flex items-center h-9 justify-center rounded-md border p-2 hover:bg-success-foreground hover:border-transparent border-border bg-secondary"
 				disabled={isLoading}
 			>
 				<CheckIcon className="size-5" />

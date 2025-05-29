@@ -28,7 +28,7 @@ const buttonVariants = cva('hover:bg-destructive/80', {
 				'inline-flex items-center gap-1 justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-70 text-nowrap bg-secondary shadow-md border border-border',
 		},
 		size: {
-			default: '',
+			default: 'h-9',
 			secondary: 'h-9 px-3 py-2 w-fit',
 			sm: 'h-8 rounded-md px-3 text-xs',
 			lg: 'h-10 rounded-md px-8',

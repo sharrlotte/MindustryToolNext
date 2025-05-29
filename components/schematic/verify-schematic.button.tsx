@@ -33,7 +33,7 @@ export default function VerifySchematicButton({ id, name, selectedTags }: Verify
 			toast.error(<Tran text="verify-fail" />, { error });
 		},
 		onSettled: () => {
-			invalidateByKey(['schematics']);
+			invalidateByKey(['schematics', 'upload']);
 		},
 	});
 
