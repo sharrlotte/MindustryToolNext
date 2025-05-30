@@ -1,7 +1,9 @@
 'use client';
 
 import { LayoutGridIcon, List } from 'lucide-react';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
+
+import Hydrated from '@/components/common/hydrated';
 
 import { useSession } from '@/context/session.context';
 import { cn } from '@/lib/utils';
@@ -18,24 +20,26 @@ export function PaginationLayoutSwitcher() {
 
 	return (
 		<div className="bg-card rounded-md overflow-hidden shadow-md flex">
-			<button
-				className={cn('p-2 h-full', {
-					'bg-secondary hover:bg-secondary bg-opacity-80 text-secondary-foreground': paginationType === 'grid',
-				})}
-				onClick={() => setConfig('paginationType', 'grid')}
-				title="Grid"
-			>
-				<LayoutGridIcon className="h-full" />
-			</button>
-			<button
-				className={cn('p-2 h-full', {
-					'bg-secondary hover:bg-secondary text-secondary-foreground bg-opacity-80': paginationType === 'infinite-scroll',
-				})}
-				onClick={() => setConfig('paginationType', 'infinite-scroll')}
-				title="List"
-			>
-				<List className="h-full" />
-			</button>
+			<Hydrated>
+				<button
+					className={cn('p-2 h-full', {
+						'bg-secondary hover:bg-secondary bg-opacity-80 text-secondary-foreground': paginationType === 'grid',
+					})}
+					onClick={() => setConfig('paginationType', 'grid')}
+					title="Grid"
+				>
+					<LayoutGridIcon className="h-full" />
+				</button>
+				<button
+					className={cn('p-2 h-full', {
+						'bg-secondary hover:bg-secondary text-secondary-foreground bg-opacity-80': paginationType === 'infinite-scroll',
+					})}
+					onClick={() => setConfig('paginationType', 'infinite-scroll')}
+					title="List"
+				>
+					<List className="h-full" />
+				</button>
+			</Hydrated>
 		</div>
 	);
 }
@@ -45,6 +49,12 @@ export function ListLayout({ children }: Props) {
 		config: { paginationType },
 	} = useSession();
 
+	const [hydrated, setHydrated] = useState(false);
+
+	useEffect(() => setHydrated(true), []);
+
+	if (hydrated === false) return null;
+
 	return paginationType === 'infinite-scroll' ? children : undefined;
 }
 
@@ -52,6 +62,12 @@ export function GridLayout({ children }: Props) {
 	const {
 		config: { paginationType },
 	} = useSession();
+
+	const [hydrated, setHydrated] = useState(false);
+
+	useEffect(() => setHydrated(true), []);
+
+	if (hydrated === false) return null;
 
 	return paginationType === 'grid' ? children : undefined;
 }
