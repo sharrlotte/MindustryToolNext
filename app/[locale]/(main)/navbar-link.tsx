@@ -26,7 +26,7 @@ export default function NavbarLink({ name, icon, path, regex, filter }: Props) {
 	return hasAccess(session, filter) ? (
 		<InternalLink
 			className={cn(
-				'flex h-9 items-center text-foreground/60 capitalize justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground text-sm',
+				'flex h-9 animate-appear items-center text-foreground/60 capitalize justify-center rounded-md p-1 hover:bg-brand hover:text-brand-foreground text-sm',
 				{
 					'bg-brand text-brand-foreground': regex.some((r) => currentPath.match(r)),
 					'justify-start gap-2 py-2': visible,
