@@ -7,8 +7,6 @@ import { getTranslation } from '@/i18n/server';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
 
-export const revalidate = 3600;
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale } = await params;
 	const { t } = await getTranslation(locale);

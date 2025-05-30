@@ -33,7 +33,11 @@ export default function PageClient({ id }: Props) {
 	const status = useServerStatus(id);
 
 	if (status === 'UNAVAILABLE') {
-		return <div>Server is offline</div>;
+		return (
+			<div className="flex items-center justify-center h-full w-full text-destructive-foreground text-xl p-2">
+				Server is offline
+			</div>
+		);
 	}
 
 	return (
