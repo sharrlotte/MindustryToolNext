@@ -12,7 +12,7 @@ import {
 	UsersIcon,
 } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import React, { ReactNode, use } from 'react';
+import React, { ReactNode, use, useMemo } from 'react';
 
 import { CatchError } from '@/components/common/catch-error';
 import ErrorMessage from '@/components/common/error-message';
@@ -73,10 +73,6 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 	const { session } = useSession();
 	const { data: server, isError, error } = useServer(id);
 
-	if (isError) {
-		return <ErrorMessage error={error} />;
-	}
-
 	const ownerId = server?.userId;
 
 	const links: {
@@ -85,70 +81,77 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 		label: ReactNode;
 		icon: ReactNode;
 		filter?: Filter;
-	}[] = [
-		{
-			id: 'dashboard',
-			href: '',
-			label: <Tran text="dashboard" />,
-			icon: <LayoutDashboardIcon className="size-5" />,
-		},
-		{
-			id: 'console',
-			href: '/console',
-			label: <Tran text="console" />,
-			icon: <TerminalIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-		},
-		{
-			id: 'map', //
-			href: '/maps',
-			label: <Tran text="map" />,
-			icon: <MapIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-		},
-		{
-			id: 'plugin',
-			href: '/plugins',
-			label: <PluginLabel />,
-			icon: <PlugIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-		},
-		{
-			id: 'player',
-			href: '/players',
-			label: <Tran text="player" />,
-			icon: <UsersIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-		},
-		{
-			id: 'log',
-			href: '/logs',
-			label: <Tran text="log" />,
-			icon: <HistoryIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-		},
-		{
-			id: 'metric',
-			href: '/metrics',
-			label: <Tran text="metric" />,
-			icon: <BarChart4 />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-		},
-		{
-			id: 'file', //
-			href: '/files',
-			label: <Tran text="file" />,
-			icon: <FileIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-		},
-		{
-			id: 'setting', //
-			href: '/setting',
-			label: <Tran text="setting" />,
-			icon: <SettingsIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-		},
-	];
+	}[] = useMemo(
+		() => [
+			{
+				id: 'dashboard',
+				href: '',
+				label: <Tran text="dashboard" />,
+				icon: <LayoutDashboardIcon className="size-5" />,
+			},
+			{
+				id: 'console',
+				href: '/console',
+				label: <Tran text="console" />,
+				icon: <TerminalIcon />,
+				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+			},
+			{
+				id: 'map', //
+				href: '/maps',
+				label: <Tran text="map" />,
+				icon: <MapIcon />,
+				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+			},
+			{
+				id: 'plugin',
+				href: '/plugins',
+				label: <PluginLabel />,
+				icon: <PlugIcon />,
+				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+			},
+			{
+				id: 'player',
+				href: '/players',
+				label: <Tran text="player" />,
+				icon: <UsersIcon />,
+				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+			},
+			{
+				id: 'log',
+				href: '/logs',
+				label: <Tran text="log" />,
+				icon: <HistoryIcon />,
+				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+			},
+			{
+				id: 'metric',
+				href: '/metrics',
+				label: <Tran text="metric" />,
+				icon: <BarChart4 />,
+				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+			},
+			{
+				id: 'file', //
+				href: '/files',
+				label: <Tran text="file" />,
+				icon: <FileIcon />,
+				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+			},
+			{
+				id: 'setting', //
+				href: '/setting',
+				label: <Tran text="setting" />,
+				icon: <SettingsIcon />,
+				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+			},
+		],
+		[ownerId],
+	);
+
+	if (isError) {
+		return <ErrorMessage error={error} />;
+	}
 
 	return (
 		<div className="grid h-full grid-flow-row grid-rows-[48px_1fr] overflow-hidden">
