@@ -32,7 +32,7 @@ export default function MismatchPanel() {
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<span className="text-sm text-destructive-foreground">
+				<span className="text-sm text-destructive-foreground overflow-hidden text-ellipsis">
 					<span>{data[0]}</span>
 					{data.length > 1 && (
 						<span className="inline-flex size-4 min-w-4 rounded-md bg-destructive-foreground">{data.length - 1}+</span>
@@ -40,7 +40,7 @@ export default function MismatchPanel() {
 				</span>
 			</PopoverTrigger>
 			<PopoverContent>
-				<section className="flex gap-2 text-sm w-full overflow-hidden text-ellipsis flex-col max-h-[50vh] overflow-y-auto">
+				<section className="flex mt-2 gap-2 text-sm w-full overflow-hidden text-ellipsis flex-col max-h-[50vh] overflow-y-auto">
 					{data.map((mismatch) => (
 						<div className="border rounded-full border-destructive-foreground text-ellipsis" key={mismatch}>
 							{mismatch}
