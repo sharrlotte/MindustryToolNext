@@ -14,6 +14,7 @@ import {
 import { useParams } from 'next/navigation';
 import React, { ReactNode, use } from 'react';
 
+import { CatchError } from '@/components/common/catch-error';
 import ErrorMessage from '@/components/common/error-message';
 import NavLink from '@/components/common/nav-link';
 import NavLinkContainer from '@/components/common/nav-link-container';
@@ -161,7 +162,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 				</NavLinkContainer>
 			</NavLinkProvider>
 			<div className="flex overflow-hidden flex-col w-full h-full" key="child">
-				{children}
+				<CatchError>{children}</CatchError>
 			</div>
 		</div>
 	);
