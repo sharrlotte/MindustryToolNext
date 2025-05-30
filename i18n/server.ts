@@ -1,30 +1,30 @@
 import { createInstance } from 'i18next';
 import { InitOptions } from 'i18next';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
-import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
 import env from '@/constant/env';
 import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config';
-import axiosInstance from '@/query/config/config';
 
-const getTranslationCached = cache(
-	unstable_cache(
-		(url: string) =>
-			axiosInstance
-				.get(url, {
-					headers: {
-						Server: 'true',
-					},
-					timeout: process.env.NODE_ENV === 'production' ? 3000 : 100,
-				})
-				.then((res) => res.data),
-		['translations'],
-		{
-			revalidate: 3600,
+const getTranslationCached = cache((url: string) =>
+	fetch(url, {
+		headers: {
+			Server: 'true',
 		},
-	),
+		cache: 'force-cache',
+		next: {
+			revalidate: 3600,
+			tags: ['translations'],
+		},
+		signal: AbortSignal.timeout(process.env.NODE_ENV === 'production' ? 3000 : 100),
+	}).then(async (res) => {
+		if (!res.ok) {
+			throw new Error('Failed to fetch data');
+		}
+
+		return await res.json();
+	}),
 );
 
 export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
@@ -46,9 +46,18 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 			addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
 			request(options, url, payload, callback) {
 				if (url.includes('create-missing')) {
-					axiosInstance
-						.post(url, payload, { data: payload })
-						.then((result) => callback(undefined, { status: 200, data: result }))
+					fetch(url, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(payload),
+					})
+						.then(async (response) => {
+							if (!response.ok) throw new Error('Network response was not ok');
+							const result = await response.json();
+							callback(undefined, { status: response.status, data: result });
+						})
 						.catch((error) => callback(error, undefined));
 				} else {
 					getTranslationCached(url)

@@ -105,6 +105,8 @@ export async function getAuthSession() {
 	return session;
 }
 
+
+
 export const getServerApi = async (): Promise<AxiosInstance> => {
 	const cookie = await cookies();
 

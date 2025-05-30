@@ -114,6 +114,10 @@ type ServerTabsContentProps = {
 export function ServerTabsContent({ className, value, children, display = 'block' }: ServerTabsContentProps) {
 	const { value: current } = useTab();
 
+	if (value !== current) {
+		return null;
+	}
+
 	return (
 		<div
 			key={current}
