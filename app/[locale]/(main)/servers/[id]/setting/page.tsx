@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import React from 'react';
 
 import { ServerSettingButton } from '@/app/[locale]/(main)/servers/[id]/setting/delete-setting-button';
+import Environment from '@/app/[locale]/(main)/servers/[id]/setting/server-environment';
 import ServerAdminList from '@/app/[locale]/(main)/servers/[id]/setting/server-admin-list';
 import ServerUpdateAdminForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-admin-form';
 import ServerUpdateForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-form';
@@ -58,6 +59,7 @@ export default async function Page({ params }: Props) {
 				<ServerUpdateAdminForm server={server} />
 			</ProtectedElement>
 			<ServerAdminList id={id} />
+			<Environment id={id} />
 			<ProtectedElement session={session} filter={{ any: [{ authority: 'EDIT_ADMIN_SERVER' }, { authorId: server.userId }] }}>
 				<ServerSettingButton id={id} />
 			</ProtectedElement>

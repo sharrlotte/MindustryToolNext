@@ -3,7 +3,6 @@
 import {
 	FileIcon,
 	HistoryIcon,
-	KeyRoundIcon,
 	LayoutDashboardIcon,
 	LineChart,
 	MapIcon,
@@ -139,13 +138,6 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			href: '/files',
 			label: <Tran text="file" />,
 			icon: <FileIcon />,
-			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-		},
-		{
-			id: 'env', //
-			href: '/environments',
-			label: <Tran text="env" />,
-			icon: <KeyRoundIcon />,
 			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{

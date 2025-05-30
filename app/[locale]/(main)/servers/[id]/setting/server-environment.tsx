@@ -28,9 +28,9 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 type Props = {
 	id: string;
 };
-export default function PageClient({ id }: Props) {
+export default function Environment({ id }: Props) {
 	return (
-		<div className="bg-card p-2 space-y-2 h-full overflow-hidden flex flex-col rounded-md">
+		<div className="bg-card space-y-2 h-full overflow-hidden flex flex-col rounded-md p-2">
 			<div className="flex gap-1 flex-col">
 				<h2 className="text-xl">
 					<Tran asChild text="env" />
