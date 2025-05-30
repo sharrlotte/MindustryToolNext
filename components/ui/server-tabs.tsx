@@ -49,6 +49,7 @@ export function ServerTabs<T extends string>({ className, value, name, values, c
 
 	const current = query[name];
 
+
 	const setValue = useCallback((value: string) => setQuery({ [name]: value }), [name, setQuery]);
 
 	useEffect(() => {

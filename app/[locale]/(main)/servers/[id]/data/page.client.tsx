@@ -10,19 +10,24 @@ import Tran from '@/components/common/tran';
 import Divider from '@/components/ui/divider';
 import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
-const BuildDestroyList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/logs/build-destroy-list'), {
+const PlayerList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/data/player-list'), {
 	ssr: false,
 	loading: () => <LoadingSpinner />,
 });
-const BuildDestroyListFooter = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/logs/build-destroy-list-footer'), {
+
+const BuildDestroyList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/data/build-destroy-list'), {
 	ssr: false,
 	loading: () => <LoadingSpinner />,
 });
-const LoginLogList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/logs/login-log-list'), {
+const BuildDestroyListFooter = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/data/build-destroy-list-footer'), {
 	ssr: false,
 	loading: () => <LoadingSpinner />,
 });
-const LoginLogListFooter = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/logs/login-log-list-footer'), {
+const LoginLogList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/data/login-log-list'), {
+	ssr: false,
+	loading: () => <LoadingSpinner />,
+});
+const LoginLogListFooter = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/data/login-log-list-footer'), {
 	ssr: false,
 	loading: () => <LoadingSpinner />,
 });
@@ -42,11 +47,21 @@ const tabs: {
 		body: <BuildDestroyList />,
 		footer: <BuildDestroyListFooter />,
 	},
+	{
+		key: 'kick-log',
+		body: <LoginLogList />,
+		footer: <LoginLogListFooter />,
+	},
+	{
+		key: 'player',
+		body: <PlayerList />,
+		footer: null,
+	},
 ];
 
 export default function PageClient() {
 	return (
-		<ServerTabs className="gap-2 p-2" name="type" value="login-log" values={['login-log', 'kick-log', 'building-destroy-log']}>
+		<ServerTabs className="gap-2 p-2" name="type" value="login-log" values={tabs.map(({ key }) => key)}>
 			<div className="flex justify-between items-center">
 				<ServerTabsList className="w-fit rounded-md border">
 					{tabs.map(({ key }) => (
@@ -66,6 +81,8 @@ export default function PageClient() {
 							</ServerTabsContent>
 						))}
 					</ScrollContainer>
+				</Suspense>
+				<Suspense>
 					<PaginationFooter className="ml-auto mt-auto flex">
 						<PaginationLayoutSwitcher />
 						<GridLayout>

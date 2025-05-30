@@ -9,7 +9,6 @@ import {
 	PlugIcon,
 	SettingsIcon,
 	TerminalIcon,
-	UsersIcon,
 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { ReactNode, use, useMemo } from 'react';
@@ -111,16 +110,9 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 			},
 			{
-				id: 'player',
-				href: '/players',
-				label: <Tran text="player" />,
-				icon: <UsersIcon />,
-				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-			},
-			{
-				id: 'log',
-				href: '/logs',
-				label: <Tran text="log" />,
+				id: 'data',
+				href: '/data',
+				label: <Tran text="data" />,
 				icon: <HistoryIcon />,
 				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 			},

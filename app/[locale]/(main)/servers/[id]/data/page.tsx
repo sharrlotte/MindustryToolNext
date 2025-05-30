@@ -17,11 +17,11 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id, locale } = await params;
 	const { t } = await getTranslation(locale);
-	const title = t('log');
+	const title = t('data');
 
 	return {
 		title: formatTitle(title),
-		alternates: generateAlternate(`/servers/${id}/log`),
+		alternates: generateAlternate(`/servers/${id}/data`),
 	};
 }
 

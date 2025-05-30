@@ -1,6 +1,6 @@
 'use client';
 
-import ServerBuildLogCard from '@/app/[locale]/(main)/servers/[id]/logs/server-build-log-card';
+import ServerBuildLogCard from '@/app/[locale]/(main)/servers/[id]/data/server-build-log-card';
 
 import GridPaginationList from '@/components/common/grid-pagination-list';
 import InfinitePage from '@/components/common/infinite-page';

@@ -12,15 +12,12 @@ import { KickButton } from '@/components/server/kick.button';
 import Divider from '@/components/ui/divider';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
+import usePathId from '@/hooks/use-path-id';
 import useServerStatus from '@/hooks/use-server-status';
 import { cn } from '@/lib/utils';
 import { getServerPlayerInfos } from '@/query/server';
 import { PlayerInfo } from '@/types/response/PlayerInfo';
 import { PlayerInfoQuerySchema } from '@/types/schema/search-query';
-
-type Props = {
-	id: string;
-};
 
 const state = {
 	true: 'Banned',
@@ -28,7 +25,8 @@ const state = {
 	undefined: 'All',
 };
 
-export default function PageClient({ id }: Props) {
+export default function PlayerList() {
+	const id = usePathId();
 	const [banned, setBanned] = useState<boolean | undefined>(undefined);
 	const status = useServerStatus(id);
 
@@ -41,7 +39,7 @@ export default function PageClient({ id }: Props) {
 	}
 
 	return (
-		<ScrollContainer className="p-2 flex flex-col gap-2">
+		<>
 			<div>
 				<ComboBox
 					searchBar={false}
@@ -77,7 +75,7 @@ export default function PageClient({ id }: Props) {
 			>
 				{(data) => data.map((item) => <PlayerInfoCard key={item.id} serverId={id} info={item} />)}
 			</InfinitePage>
-		</ScrollContainer>
+		</>
 	);
 }
 
