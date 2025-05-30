@@ -15,6 +15,10 @@ export const TAG_SEPARATOR = '_';
 
 export const itemTypes = ['schematic', 'map', 'post', 'server', 'plugin'];
 
+export const errorStatus = ['PENDING', 'RESOLVED', 'FEATURE', 'INSPECTING'] as const;
+
+export type ErrorStatus = (typeof errorStatus)[number];
+
 export type ItemType = (typeof itemTypes)[number];
 
 export type TagType = keyof AllTagGroup;

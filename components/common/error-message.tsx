@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect } from 'react';
 
 import ReportErrorDialog from '@/components/common/report-error.dialog';
@@ -20,7 +22,7 @@ export default function ErrorMessage({ className, error }: Props) {
 	if (message) {
 		return (
 			<span className={cn('text-destructive-foreground font-semibold p-2 text-sm space-x-1', className)}>
-				{message}
+				<span>{message}</span>
 				<ReportErrorDialog />
 			</span>
 		);

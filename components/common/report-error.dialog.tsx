@@ -9,7 +9,7 @@ export default function ReportErrorDialog() {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<span className="underline text-foreground">Report Error</span>
+				<span className="underline text-foreground cursor-pointer">Report Error</span>
 			</DialogTrigger>
 			<Suspense>
 				<DialogContent>

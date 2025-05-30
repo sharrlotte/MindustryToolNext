@@ -4,6 +4,8 @@ import { useInterval } from 'usehooks-ts';
 import Tran from '@/components/common/tran';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
+import { cn } from '@/lib/utils';
+
 type RelativeTimeProps = {
 	className?: string;
 	date: Date;
@@ -13,8 +15,8 @@ export function RelativeTime({ className, date }: RelativeTimeProps) {
 	return (
 		<TooltipProvider>
 			<Tooltip>
-				<TooltipTrigger className="w-fit p-0">
-					<RelativeTimeInternal className={className} date={date} />
+				<TooltipTrigger className="w-fit p-0" asChild>
+					<RelativeTimeInternal className={cn('text-nowrap', className)} date={date} />
 				</TooltipTrigger>
 				<TooltipContent>{date.toLocaleString()}</TooltipContent>
 			</Tooltip>

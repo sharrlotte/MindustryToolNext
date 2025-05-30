@@ -28,7 +28,7 @@ export default function NavLink({ root, href, label, icon }: Props) {
 	return (
 		<InternalLink
 			className={cn(
-				'relative inline-flex h-12 min-w-fit items-center justify-center gap-2 text-nowrap px-0 py-4 text-sm text-foreground/50 hover:text-foreground',
+				'relative animate-appear inline-flex h-12 min-w-fit items-center justify-center gap-2 text-nowrap px-0 py-4 text-sm text-foreground/50 hover:text-foreground',
 				{
 					'text-foreground': isSelected,
 				},
