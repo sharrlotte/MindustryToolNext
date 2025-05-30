@@ -40,7 +40,6 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 		fallbackNS: defaultNamespace,
 		defaultNS: defaultNamespace,
 		ns,
-		preload: locales,
 		backend: {
 			loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=1`,
 			addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
@@ -50,6 +49,11 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
+						},
+						cache: 'force-cache',
+						next: {
+							revalidate: 3600,
+							tags: ['translations'],
 						},
 						body: JSON.stringify(payload),
 					})

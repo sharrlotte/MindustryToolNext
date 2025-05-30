@@ -1,10 +1,10 @@
 'use client';
 
 import {
+	BarChart4,
 	FileIcon,
 	HistoryIcon,
 	LayoutDashboardIcon,
-	LineChart,
 	MapIcon,
 	PlugIcon,
 	SettingsIcon,
@@ -130,7 +130,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			id: 'metric',
 			href: '/metrics',
 			label: <Tran text="metric" />,
-			icon: <LineChart />,
+			icon: <BarChart4 />,
 			filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 		},
 		{
