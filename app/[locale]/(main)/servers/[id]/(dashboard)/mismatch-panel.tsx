@@ -1,7 +1,6 @@
 'use client';
 
-import ShutdownServerButton from '@/app/[locale]/(main)/servers/[id]/(dashboard)/shutdown-server-button';
-
+import RemoveServerButton from '@/app/[locale]/(main)/servers/[id]/(dashboard)/remove-server-button';
 import ErrorMessage from '@/components/common/error-message';
 import Tran from '@/components/common/tran';
 import Divider from '@/components/ui/divider';
@@ -49,10 +48,10 @@ export default function MismatchPanel() {
 			<PopoverContent>
 				<section className="flex mt-2 gap-2 text-sm w-full overflow-hidden flex-col max-h-[50vh] overflow-y-auto">
 					<Tran text="server.restart-required" />
-					<ShutdownServerButton id={id} />
+					<RemoveServerButton id={id} />
 					<Divider />
 					{data.map((mismatch) => (
-						<p className="rounded-md text-destructive-foreground p-2 bg-destructive" key={mismatch}>
+						<p className="rounded-md text-destructive-foreground p-2 bg-destructive text-wrap wrap break-words" key={mismatch}>
 							{mismatch}
 						</p>
 					))}
