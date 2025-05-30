@@ -103,7 +103,7 @@ export default async function Page({ params }: Props) {
 
 	return (
 		<ScrollContainer className="flex p-2 flex-col gap-2 h-full">
-			<div className="flex flex-col gap-2 w-full h-full">
+			<div className="flex flex-col gap-2 w-full">
 				<div className="flex flex-col gap-2 p-2 w-full rounded-md border bg-card">
 					<header className="flex gap-2 items-center relative">
 						{avatar && <Image className="size-16 object-cover rounded-md" src={avatar} width={64} height={64} alt={name} />}
