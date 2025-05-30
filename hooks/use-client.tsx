@@ -3,7 +3,7 @@
 import { AxiosInstance } from 'axios';
 import { useEffect } from 'react';
 
-import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/constant/constant';
+import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY, isClient } from '@/constant/constant';
 import axiosInstance from '@/query/config/config';
 
 function getCookie(name: string): string | null {
@@ -23,11 +23,12 @@ export default function useClientApi(): AxiosInstance {
 	useEffect(() => {
 		const id = axiosInstance.interceptors.request.use(async (config) => {
 			const params = config.params;
+
 			if (!params || !('size' in params) || 'autoSize' in params) {
 				return config;
 			}
 
-			if (typeof window !== 'undefined') {
+			if (isClient) {
 				config.params['size'] = getCookie(PAGINATION_SIZE_PERSISTENT_KEY) ?? DEFAULT_PAGINATION_SIZE;
 			}
 

@@ -114,6 +114,10 @@ type ServerTabsContentProps = {
 export function ServerTabsContent({ className, value, children, display = 'block' }: ServerTabsContentProps) {
 	const { value: current } = useTab();
 
+	if (value !== current) {
+		return null;
+	}
+
 	return (
 		<div
 			key={current}
@@ -137,7 +141,7 @@ export function ServerTabsList({ className, children }: ServerTabsListProps) {
 	return (
 		<div
 			className={cn(
-				'flex items-center py-2 gap-2 overflow-x-auto overflow-y-hidden bg-card px-2 text-muted-foreground w-full justify-start h-12 min-h-12 border-b',
+				'flex items-center py-2 gap-1 overflow-x-auto overflow-y-hidden bg-card px-2 text-muted-foreground w-full justify-start h-12 min-h-12 border-b',
 				className,
 			)}
 			onMouseLeave={() => setHovered('')}

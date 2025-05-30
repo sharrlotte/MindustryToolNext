@@ -19,6 +19,25 @@ type ServerAdminListProps = {
 	id: string;
 };
 export default function ServerAdminList({ id }: ServerAdminListProps) {
+	return (
+		<AnimatePresence>
+			<div className="flex flex-col gap-4 p-4 bg-card rounded-md">
+				<div className="flex gap-1 flex-col">
+					<h2 className="text-xl">
+						<Tran asChild text="admin" />
+					</h2>
+					<p className="text-muted-foreground text-sm">
+						<Tran asChild text="server.admin-description" />
+					</p>
+				</div>
+				<Divider />
+				<Admins id={id} />
+			</div>
+		</AnimatePresence>
+	);
+}
+
+function Admins({ id }: { id: string }) {
 	const axios = useClientApi();
 
 	const { data, isLoading, isError, error } = useQuery({
@@ -35,22 +54,9 @@ export default function ServerAdminList({ id }: ServerAdminListProps) {
 	}
 
 	return (
-		<AnimatePresence>
-			<div className="flex flex-col gap-2 p-2">
-				<div className="flex gap-1 flex-col">
-					<h2 className="text-xl">
-						<Tran asChild text="admin" />
-					</h2>
-					<p className="text-muted-foreground text-sm">
-						<Tran asChild text="server.admin-description" />
-					</p>
-				</div>
-				<Divider />
-				<div className="flex flex-wrap gap-2 h-fit">
-					{data?.map((admin) => <ServerAdminCard key={admin.id} id={id} admin={admin} />)}
-					<AddAdminDialog id={id} />
-				</div>
-			</div>
-		</AnimatePresence>
+		<div className="flex flex-wrap gap-2 h-fit">
+			{data?.map((admin) => <ServerAdminCard key={admin.id} id={id} admin={admin} />)}
+			<AddAdminDialog id={id} />
+		</div>
 	);
 }

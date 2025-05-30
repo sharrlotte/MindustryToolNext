@@ -6,12 +6,32 @@ import Backend, { ChainedBackendOptions } from 'i18next-chained-backend';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
 import LocalStorageBackend from 'i18next-localstorage-backend';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { cache, useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
 import env from '@/constant/env';
 import { Locale, cookieName, defaultLocale, defaultNamespace, i18nCachePrefix, locales } from '@/i18n/config';
+
+const getTranslationCached = cache((url: string) =>
+	fetch(url, {
+		headers: {
+			Server: 'true',
+		},
+		cache: 'force-cache',
+		next: {
+			revalidate: 3600,
+			tags: ['translations'],
+		},
+		signal: AbortSignal.timeout(process.env.NODE_ENV === 'production' ? 3000 : 100),
+	}).then(async (res) => {
+		if (!res.ok) {
+			throw new Error('Failed to fetch data');
+		}
+
+		return await res.json();
+	}),
+);
 
 export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
 	const options: InitOptions<ChainedBackendOptions> = {
@@ -36,6 +56,32 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
 				{
 					loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=1`,
 					addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
+					request(options, url, payload, callback) {
+						if (url.includes('create-missing')) {
+							fetch(url, {
+								method: 'POST',
+								cache: 'force-cache',
+								next: {
+									revalidate: 3600,
+									tags: ['translations'],
+								},
+								headers: {
+									'Content-Type': 'application/json',
+								},
+								body: JSON.stringify(payload),
+							})
+								.then(async (response) => {
+									if (!response.ok) throw new Error('Network response was not ok');
+									const result = await response.json();
+									callback(undefined, { status: response.status, data: result });
+								})
+								.catch((error) => callback(error, undefined));
+						} else {
+							getTranslationCached(url)
+								.then((result) => callback(undefined, { status: 200, data: result }))
+								.catch((error) => callback(error, undefined));
+						}
+					},
 				} as HttpBackendOptions,
 			],
 		},

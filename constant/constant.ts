@@ -1,6 +1,8 @@
 import { Locale } from '@/i18n/config';
 import { AllTagGroup } from '@/types/response/TagGroup';
 
+export const isServer = typeof window === 'undefined';
+export const isClient = !isServer;
 
 export const dateFormat = 'dd-MM-yyyy hh:mm:ss';
 

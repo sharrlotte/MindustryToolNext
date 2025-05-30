@@ -3,6 +3,8 @@
 import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
 
+import { CatchError } from '@/components/common/catch-error';
+
 import { NavBarProvider } from '@/context/navbar.context';
 import IsSmall from '@/layout/is-small';
 
@@ -25,7 +27,9 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
 				<div className="flex-col h-full hidden sm:flex min-w-nav bg-card border-r">
 					<IsSmall notSmall={<MediumScreenNavigationBar />} />
 				</div>
-				<div className="relative h-full w-full overflow-hidden">{children}</div>
+				<div className="relative h-full w-full overflow-hidden">
+					<CatchError>{children}</CatchError>
+				</div>
 			</div>
 		</NavBarProvider>
 	);

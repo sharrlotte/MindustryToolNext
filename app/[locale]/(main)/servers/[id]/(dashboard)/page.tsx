@@ -1,3 +1,4 @@
+import { CogIcon } from 'lucide-react';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -11,6 +12,7 @@ import CopyButton from '@/components/button/copy.button';
 import { CatchError } from '@/components/common/catch-error';
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
+import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
@@ -101,7 +103,7 @@ export default async function Page({ params }: Props) {
 		<ScrollContainer className="flex p-2 flex-col gap-2 h-full">
 			<div className="grid grid-rows-[auto_1fr] gap-2 w-full h-full">
 				<div className="flex flex-col gap-4 p-2 w-full rounded-md border bg-card">
-					<header className="flex gap-2 items-center">
+					<header className="flex gap-2 items-center relative">
 						{avatar && <Image className="size-16 object-cover rounded-md" src={avatar} width={64} height={64} alt={name} />}
 						<div className="flex flex-col gap-1">
 							<ColorText className="text-3xl font-extrabold" text={name} />
@@ -109,6 +111,11 @@ export default async function Page({ params }: Props) {
 								<Tran text="server.owner" />
 								<IdUserCard id={userId} />
 							</span>
+						</div>
+						<div className="absolute top-1 left-1 p-2">
+							<InternalLink href="/setting">
+								<CogIcon className="size-4" />
+							</InternalLink>
 						</div>
 					</header>
 					<main className="flex flex-wrap sm:gap-x-40 gap-x-20 gap-y-8 text-sm font-medium capitalize">
@@ -178,14 +185,14 @@ export default async function Page({ params }: Props) {
 						</ProtectedElement>
 					</footer>
 				</div>
-				<div className="gap-2 grid grid-cols-1 md:grid-cols-[1fr_auto] h-full">
+				<div className="gap-2 flex flex-col md:flex-row w-full h-full">
 					<div className="flex-1 flex flex-col gap-2">
 						<div className="flex flex-col gap-2 justify-start items-start p-2 rounded-md border shadow-lg bg-card">
 							<h3>
 								<Tran text="server.system-status" />
 							</h3>
 							{status === 'HOST' || status === 'UP' ? (
-								<div className="flex flex-col w-full h-full text-sm max-w-[300px] gap-2">
+								<div className="flex flex-col w-full text-sm max-w-[300px] gap-2 h-[130px]">
 									<div className="flex gap-2 justify-between w-full">
 										<Tran className="font-bold" text="server.cpu-usage" />
 										<span className="text-muted-foreground">{Math.round(cpuUsage * 100) / 100}%</span>
@@ -217,7 +224,7 @@ export default async function Page({ params }: Props) {
 						)}
 					</div>
 					<CatchError>
-						<div className="flex-1 flex flex-col gap-2">
+						<div className="flex flex-col gap-2 grow-0 md:max-h-[calc(100vw-350px-var(--nav)+130px+40px)]">
 							<ProtectedElement session={session} filter={canAccess}>
 								{status === 'HOST' && players > 0 && (
 									<div className="flex flex-col rounded-md border bg-card">

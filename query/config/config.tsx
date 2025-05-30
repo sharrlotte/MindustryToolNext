@@ -2,6 +2,7 @@ import Axios from 'axios';
 
 import { toast } from '@/components/ui/sonner';
 
+import { isClient } from '@/constant/constant';
 import env from '@/constant/env';
 import { uuid } from '@/lib/utils';
 
@@ -14,22 +15,43 @@ const axiosInstance = Axios.create({
 	withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use((config) => {
-	if (process.env.NODE_ENV !== 'production') {
-		const id = uuid();
-		config.headers['x-request-id'] = uuid();
-		console.log(`${id} ${config.method?.toUpperCase()} ${config.url}`);
+const map: Record<
+	string,
+	{
+		start: number;
 	}
+> = {};
 
-	return config;
-});
+if (process.env.NODE_ENV !== 'production') {
+	axiosInstance.interceptors.request.use((config) => {
+		const id = `${config.method?.toUpperCase()} ${config.url}`;
+
+		map[id] = {
+			start: Date.now(),
+		};
+
+		return config;
+	});
+
+	axiosInstance.interceptors.response.use((res) => {
+		const id = `${res.config.method?.toUpperCase()} ${res.config.url}`;
+
+		if (id && map[id]) {
+			const end = Date.now();
+			const start = map[id].start;
+			delete map[id];
+
+			console.log(`[${res.status}] ${res.config.method?.toUpperCase()} ${end - start}ms ${res.config.url}`);
+		}
+
+		return res;
+	});
+}
 
 axiosInstance.interceptors.response.use(
-	(res) => {
-		return res;
-	},
+	(res) => res,
 	(error) => {
-		if (typeof window !== 'undefined') {
+		if (isClient) {
 			if (typeof error === 'string') {
 				toast.error(error);
 			}

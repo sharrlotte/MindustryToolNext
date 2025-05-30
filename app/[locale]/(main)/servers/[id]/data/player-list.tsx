@@ -5,22 +5,18 @@ import { useState } from 'react';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
-import ScrollContainer from '@/components/common/scroll-container';
 import { Visibility, VisibilityOff, VisibilityOn } from '@/components/common/visibility';
 import { BanButton } from '@/components/server/ban.button';
 import { KickButton } from '@/components/server/kick.button';
 import Divider from '@/components/ui/divider';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
+import usePathId from '@/hooks/use-path-id';
 import useServerStatus from '@/hooks/use-server-status';
 import { cn } from '@/lib/utils';
 import { getServerPlayerInfos } from '@/query/server';
 import { PlayerInfo } from '@/types/response/PlayerInfo';
 import { PlayerInfoQuerySchema } from '@/types/schema/search-query';
-
-type Props = {
-	id: string;
-};
 
 const state = {
 	true: 'Banned',
@@ -28,16 +24,21 @@ const state = {
 	undefined: 'All',
 };
 
-export default function PageClient({ id }: Props) {
+export default function PlayerList() {
 	const [banned, setBanned] = useState<boolean | undefined>(undefined);
+	const id = usePathId();
 	const status = useServerStatus(id);
 
 	if (status === 'UNAVAILABLE') {
-		return <div>Server is offline</div>;
+		return (
+			<div className="flex items-center justify-center h-full w-full text-destructive-foreground text-xl p-2">
+				Server is offline
+			</div>
+		);
 	}
 
 	return (
-		<ScrollContainer className="p-2 flex flex-col gap-2">
+		<>
 			<div>
 				<ComboBox
 					searchBar={false}
@@ -73,7 +74,7 @@ export default function PageClient({ id }: Props) {
 			>
 				{(data) => data.map((item) => <PlayerInfoCard key={item.id} serverId={id} info={item} />)}
 			</InfinitePage>
-		</ScrollContainer>
+		</>
 	);
 }
 
