@@ -21,7 +21,6 @@ const BuildDestroyList = dynamic(() => import('@/app/[locale]/(main)/servers/[id
 });
 const BuildDestroyListFooter = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/data/build-destroy-list-footer'), {
 	ssr: false,
-	loading: () => <LoadingSpinner />,
 });
 const LoginLogList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/data/login-log-list'), {
 	ssr: false,
@@ -29,7 +28,6 @@ const LoginLogList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/da
 });
 const LoginLogListFooter = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/data/login-log-list-footer'), {
 	ssr: false,
-	loading: () => <LoadingSpinner />,
 });
 
 const tabs: {
@@ -86,11 +84,14 @@ export default function PageClient() {
 					<PaginationFooter className="ml-auto mt-auto flex">
 						<PaginationLayoutSwitcher />
 						<GridLayout>
-							{tabs.map(({ key, footer }) => (
-								<ServerTabsContent className="space-y-2" key={key} value={key}>
-									{footer}
-								</ServerTabsContent>
-							))}
+							{tabs.map(
+								({ key, footer }) =>
+									footer && (
+										<ServerTabsContent className="space-y-2" key={key} value={key}>
+											{footer}
+										</ServerTabsContent>
+									),
+							)}
 						</GridLayout>
 					</PaginationFooter>
 				</Suspense>
