@@ -30,7 +30,7 @@ type Props = {
 };
 export default function Environment({ id }: Props) {
 	return (
-		<div className="bg-card space-y-2 h-full overflow-hidden flex flex-col rounded-md p-2">
+		<div className="bg-card gap-4 h-full flex flex-col rounded-md p-4">
 			<div className="flex gap-1 flex-col">
 				<h2 className="text-xl">
 					<Tran asChild text="env" />
@@ -42,7 +42,6 @@ export default function Environment({ id }: Props) {
 			<Divider />
 			<ScrollContainer className="space-y-2">
 				<ServerEnvList id={id} />
-				<Divider />
 				<Tran text="server.add-env" />
 				<AddEnvCard id={id} />
 			</ScrollContainer>
@@ -69,7 +68,12 @@ function ServerEnvList({ id }: ServerEnvListProps) {
 		return <ErrorMessage error={error} />;
 	}
 
-	return <AnimatePresence>{data?.map((env) => <ServerEnvCard key={env.id} id={id} env={env} />)}</AnimatePresence>;
+	return (
+		<>
+			<AnimatePresence>{data?.map((env) => <ServerEnvCard key={env.id} id={id} env={env} />)}</AnimatePresence>
+			{data && data.length > 0 && <Divider />}
+		</>
+	);
 }
 
 type ServerEnvCardProps = {
@@ -212,8 +216,15 @@ function AddEnvCard({ id }: AddEnvCardProps) {
 						</FormItem>
 					)}
 				/>
-				<Button className="aspect-square" variant="outline" type="submit">
-					{isPending ? <LoadingSpinner className="m-0" /> : <CheckIcon />}
+				<Button variant={form.formState.isValid ? 'primary' : 'outline'} type="submit">
+					{isPending ? (
+						<LoadingSpinner className="m-0" />
+					) : (
+						<>
+							<CheckIcon className="size-4" />
+							<Tran text="add" />
+						</>
+					)}
 				</Button>
 			</form>
 		</Form>

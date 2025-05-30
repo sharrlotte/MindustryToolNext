@@ -57,7 +57,7 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 	return (
 		<Form {...form}>
 			<form
-				className="relative flex flex-1 flex-col justify-between gap-4 p-2"
+				className="relative flex flex-1 flex-col justify-between gap-4 p-4 bg-card rounded-md"
 				onSubmit={form.handleSubmit((value) => mutate(value))}
 			>
 				<FormMessage />

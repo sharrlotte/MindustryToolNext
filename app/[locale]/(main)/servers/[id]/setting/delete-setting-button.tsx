@@ -27,7 +27,7 @@ type ServerSettingButtonProps = {
 
 export function ServerSettingButton({ id }: ServerSettingButtonProps) {
 	return (
-		<div className="flex justify-end gap-2 p-2">
+		<div className="flex justify-end gap-2 p-4 bg-card rounded-md">
 			<TransferServerButton id={id} />
 			<DeleteServerButton id={id} />
 		</div>
