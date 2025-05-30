@@ -13,7 +13,7 @@ const CpuProgress = React.forwardRef<
 	const [percent, setPercent] = React.useState(0);
 
 	React.useEffect(() => {
-		const timeout = setTimeout(() => setPercent(value || 0), 100);
+		const timeout = setTimeout(() => setPercent(Math.min(100, value || 0)), 50);
 
 		return () => clearTimeout(timeout);
 	}, [value]);
@@ -33,4 +33,4 @@ const CpuProgress = React.forwardRef<
 });
 CpuProgress.displayName = 'CpuProgress';
 
-export { CpuProgress };
+export default CpuProgress;

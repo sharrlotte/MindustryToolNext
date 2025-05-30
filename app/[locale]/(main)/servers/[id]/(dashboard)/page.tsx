@@ -6,7 +6,6 @@ import React, { Fragment, Suspense } from 'react';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 import ChatPanel from '@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-panel';
-import PauseServerButton from '@/app/[locale]/(main)/servers/[id]/(dashboard)/pause-server-button';
 
 import CopyButton from '@/components/button/copy.button';
 import { CatchError } from '@/components/common/catch-error';
@@ -16,7 +15,7 @@ import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
-import { CpuProgress } from '@/components/server/cpu-progress';
+import CpuProgress from '@/components/server/cpu-progress';
 import ServerStatusBadge from '@/components/server/server-status-badge';
 import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -29,6 +28,9 @@ import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { byteToSize, formatTitle, hasAccess } from '@/lib/utils';
+
+const MismatchPanel = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/mismatch-panel'));
+const PauseServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/pause-server-button'));
 
 export const experimental_ppr = true;
 
@@ -102,7 +104,7 @@ export default async function Page({ params }: Props) {
 	return (
 		<ScrollContainer className="flex p-2 flex-col gap-2 h-full">
 			<div className="grid grid-rows-[auto_1fr] gap-2 w-full h-full">
-				<div className="flex flex-col gap-4 p-2 w-full rounded-md border bg-card">
+				<div className="flex flex-col gap-2 p-2 w-full rounded-md border bg-card">
 					<header className="flex gap-2 items-center relative">
 						{avatar && <Image className="size-16 object-cover rounded-md" src={avatar} width={64} height={64} alt={name} />}
 						<div className="flex flex-col gap-1">
@@ -112,7 +114,7 @@ export default async function Page({ params }: Props) {
 								<IdUserCard id={userId} />
 							</span>
 						</div>
-						<div className="absolute top-1 left-1 p-2">
+						<div className="absolute top-1 right-1 p-2 backdrop-brightness-50 backdrop-blur-sm">
 							<InternalLink href="/setting">
 								<CogIcon className="size-4" />
 							</InternalLink>
@@ -169,6 +171,11 @@ export default async function Page({ params }: Props) {
 					)}
 					<Divider />
 					<footer className="flex gap-8 flex-wrap justify-between h-9">
+						<ProtectedElement session={session} filter={canAccess}>
+							<Suspense>
+								<MismatchPanel />
+							</Suspense>
+						</ProtectedElement>
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className="flex flex-row gap-2 justify-end items-center ml-auto">
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
