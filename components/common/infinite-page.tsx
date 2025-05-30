@@ -5,22 +5,29 @@ import React, { JSXElementConstructor, ReactElement, ReactNode, useCallback, use
 import InfiniteScroll from 'react-infinite-scroller';
 import { z } from 'zod';
 
+
+
 import EndOfPage from '@/components/common/end-of-page';
 import ErrorMessage from '@/components/common/error-message';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 
+
+
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { QuerySchema } from '@/types/schema/search-query';
 
+
+
 import { QueryKey } from '@tanstack/react-query';
 
-type InfinitePageProps<T, P extends QuerySchema> = {
+
+type InfinitePageProps<T, P extends QuerySchema, P2> = {
 	className?: string;
 	queryKey: QueryKey;
 	paramSchema: P;
-	params?: Omit<z.infer<P>, 'page' | 'size'>;
+	params?: P2;
 	loader?: ReactElement<any, string | JSXElementConstructor<any>>;
 	noResult?: ReactNode;
 	end?: ReactNode;
@@ -32,11 +39,11 @@ type InfinitePageProps<T, P extends QuerySchema> = {
 	enabled?: boolean;
 	initialData?: T[];
 	initialParams?: z.infer<P>;
-	queryFn: (axios: AxiosInstance, params: z.infer<P>) => Promise<T[]>;
+	queryFn: (axios: AxiosInstance, params: z.infer<P> & P2) => Promise<T[]>;
 	children: (data: T[]) => ReactNode;
 };
 
-const InfinitePage = <T, P extends QuerySchema>({
+const InfinitePage = <T, P extends QuerySchema, P2 extends Record<string, any>>({
 	className,
 	queryKey,
 	paramSchema,
@@ -51,8 +58,8 @@ const InfinitePage = <T, P extends QuerySchema>({
 	params,
 	queryFn,
 	children,
-}: InfinitePageProps<T, P>) => {
-	const p = useSearchQuery(paramSchema, params);
+}: InfinitePageProps<T, P, P2>) => {
+	const p = useSearchQuery(paramSchema, params) as z.infer<P> & P2;
 	const componentRef = useRef<HTMLDivElement>(null);
 
 	const { data, isLoading, error, isError, hasNextPage, isFetching, fetchNextPage } = useInfinitePageQuery(

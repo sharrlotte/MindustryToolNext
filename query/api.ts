@@ -1,12 +1,24 @@
 import { AxiosInstance } from 'axios';
 
-export async function reportErrorToBackend(axios: AxiosInstance, message: string) {
-  
-  try {
-    const result = await axios.post('/error', { message });
+import { ErrorStatus } from '@/constant/constant';
+import { ErrorReport } from '@/types/response/ErrorReport';
+import { PaginationQuery } from '@/types/schema/search-query';
 
-    return result.data;
-  } catch {
-    // Ignore
-  }
+export async function reportErrorToBackend(axios: AxiosInstance, message: string) {
+	try {
+		const result = await axios.post('/error', { message });
+
+		return result.data;
+	} catch {
+		// Ignore
+	}
+}
+
+export async function getError(
+	axios: AxiosInstance,
+	params: PaginationQuery & { status?: ErrorStatus[] },
+): Promise<ErrorReport[]> {
+	const result = await axios.get('/error-report', { params });
+
+	return result.data;
 }
