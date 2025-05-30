@@ -115,7 +115,7 @@ export default async function Page({ params }: Props) {
 							</span>
 						</div>
 						<div className="absolute top-1 right-1 p-2 backdrop-brightness-50 backdrop-blur-sm">
-							<InternalLink href="/setting">
+							<InternalLink href="setting">
 								<CogIcon className="size-4" />
 							</InternalLink>
 						</div>
@@ -222,8 +222,9 @@ export default async function Page({ params }: Props) {
 						{status === 'HOST' && (
 							<div className="flex min-w-[30vw] h-auto w-full rounded-md overflow-hidden">
 								<Image
-									className="object-contain overflow-hidden w-full h-auto rounded-md border"
 									key={status}
+									id="server-map-preview"
+									className="object-contain overflow-hidden w-full h-auto rounded-md border"
 									src={`${env.url.api}/servers/${id}/image`}
 									alt={name}
 									width={500}
