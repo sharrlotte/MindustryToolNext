@@ -1,6 +1,7 @@
 import { Locale } from '@/i18n/config';
 import { AllTagGroup } from '@/types/response/TagGroup';
 
+
 export const dateFormat = 'dd-MM-yyyy hh:mm:ss';
 
 export const IMAGE_PREFIX = 'data:image/png;base64,';
@@ -110,7 +111,8 @@ export type AuthorityEnum =
 	| 'DELETE_DOCUMENT' //
 	| 'EDIT_USER' //
 	| 'MANAGE_TAG' //
-	| 'MANAGE_COMMENT';
+	| 'MANAGE_COMMENT'
+	| 'MANAGE_SERVER_MANAGER';
 
 export type LikeAction = 'LIKE' | 'DISLIKE';
 

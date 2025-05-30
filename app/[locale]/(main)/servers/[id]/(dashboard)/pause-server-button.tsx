@@ -37,7 +37,6 @@ export default function PauseServerButton({ id }: Props) {
 
 	return (
 		<Button className="min-w-20 border-none" title="Pause" variant="secondary" disabled={isPending} onClick={() => mutate()}>
-			<PauseIcon className="size-4 stoke-1" />
 			{isPaused ? (
 				<>
 					<PlayIcon className="size-4 stoke-1" />

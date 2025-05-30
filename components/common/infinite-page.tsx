@@ -127,15 +127,8 @@ const InfinitePage = <T, P extends QuerySchema>({
 				getScrollParent={() => {
 					if (!componentRef.current) return null;
 
-					const containers =
-						componentRef.current.closest('.scroll-container') ||
-						componentRef.current.getElementsByClassName('scroll-container')[0];
-
-					if (containers) {
-						return containers as HTMLElement;
-					}
-
-					return null;
+					return (componentRef.current.closest('.scroll-container') ||
+						componentRef.current.getElementsByClassName('scroll-container')[0]) as HTMLElement;
 				}}
 				isReverse={reversed}
 			>

@@ -28,14 +28,12 @@ export function TakeDownMapButton({ id, name }: TakeDownMapButtonProps) {
 		},
 		mutationFn: (id: string) => unverifyMap(axios, id),
 		onSuccess: () => {
-			back();
+			invalidateByKey(['maps']);
 			toast(<Tran text="take-down-success" />);
+			back();
 		},
 		onError: (error) => {
 			toast.error(<Tran text="take-down-fail" />, { error });
-		},
-		onSettled: () => {
-			invalidateByKey(['maps']);
 		},
 	});
 

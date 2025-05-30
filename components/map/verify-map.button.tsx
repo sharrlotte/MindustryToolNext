@@ -27,15 +27,13 @@ export default function VerifyMapButton({ id, name, selectedTags }: VerifyMapBut
 	const { mutate, isPending } = useMutation({
 		mutationFn: (data: VerifyMapRequest) => verifyMap(axios, data),
 		onSuccess: () => {
+			invalidateByKey(['maps']);
 			back();
 		},
 		onError: (error) => {
 			toast(<Tran text="verify-fail" />, {
 				error,
 			});
-		},
-		onSettled: () => {
-			invalidateByKey(['maps']);
 		},
 	});
 
