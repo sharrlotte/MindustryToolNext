@@ -15,24 +15,33 @@ const axiosInstance = Axios.create({
 	withCredentials: true,
 });
 
+const map: Record<
+	string,
+	{
+		start: number;
+	}
+> = {};
+
 if (process.env.NODE_ENV !== 'production') {
 	axiosInstance.interceptors.request.use((config) => {
-		const id = uuid();
-		config.headers['x-request-id'] = uuid().substring(0, 5);
-		config.headers['x-request-start'] = Date.now();
+		const id = `${config.method?.toUpperCase()} ${config.url}`;
 
-		console.log(`${id} ${config.method?.toUpperCase()} ${config.url}`);
+		map[id] = {
+			start: Date.now(),
+		};
 
 		return config;
 	});
 
 	axiosInstance.interceptors.response.use((res) => {
-		if (res.headers['x-request-id']) {
-			const id = res.headers['x-request-id'];
-			const start = res.headers['x-request-start'];
-			const end = Date.now();
+		const id = `${res.config.method?.toUpperCase()} ${res.config.url}`;
 
-			console.log(`${id} [${res.status}] ${res.config.method?.toUpperCase()} ${end - start}ms ${res.config.url}`);
+		if (id && map[id]) {
+			const end = Date.now();
+			const start = map[id].start;
+			delete map[id];
+
+			console.log(`[${res.status}] ${res.config.method?.toUpperCase()} ${end - start}ms ${res.config.url}`);
 		}
 
 		return res;

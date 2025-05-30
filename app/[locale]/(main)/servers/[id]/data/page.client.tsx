@@ -63,7 +63,7 @@ export default function PageClient() {
 			<div className="flex justify-between items-center">
 				<ServerTabsList className="w-fit rounded-md border">
 					{tabs.map(({ key }) => (
-						<ServerTabsTrigger key={key} className="h-10" value={key}>
+						<ServerTabsTrigger key={key} className="h-10 px-1" value={key}>
 							<Tran text={`server.${key}`} />
 						</ServerTabsTrigger>
 					))}
