@@ -153,29 +153,31 @@ export default async function Page({ params }: Props) {
 						)}
 					</main>
 					<Divider />
-					{address && (
-						<div className="flex items-center text-sm text-ellipsis overflow-hidden">
-							<Tran className="text-muted-foreground" text="server.address" />
-							<span className="text-muted-foreground mr-2">:</span>
-							<CopyButton
-								className="px-3 h-6 py-0 border border-foreground font-semibold rounded-full"
-								variant="none"
-								data={`${address}:${port}`}
-								title={`${address}:${port}`}
-							>
-								<span className="lowercase">
-									{address}:{port}
-								</span>
-							</CopyButton>
-						</div>
-					)}
-					<Divider />
-					<footer className="flex gap-8 flex-wrap justify-between h-9">
+					<div className="flex items-start justify-between gap-4">
+						{address && (
+							<div className="flex items-center text-sm text-ellipsis overflow-hidden">
+								<Tran className="text-muted-foreground" text="server.address" />
+								<span className="text-muted-foreground mr-2">:</span>
+								<CopyButton
+									className="px-3 h-6 py-0 border border-foreground font-semibold rounded-full"
+									variant="none"
+									data={`${address}:${port}`}
+									title={`${address}:${port}`}
+								>
+									<span className="lowercase">
+										{address}:{port}
+									</span>
+								</CopyButton>
+							</div>
+						)}
 						<ProtectedElement session={session} filter={canAccess}>
 							<Suspense>
 								<MismatchPanel />
 							</Suspense>
 						</ProtectedElement>
+					</div>
+					<Divider />
+					<footer className="flex gap-8 flex-wrap justify-between h-9">
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className="flex flex-row gap-2 justify-end items-center ml-auto">
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
