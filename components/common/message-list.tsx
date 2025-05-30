@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -218,7 +216,7 @@ export default function MessageList({
 	}
 
 	return (
-		<ScrollContainer className={cn('flex h-full w-full overflow-x-hidden', className)} ref={container}>
+		<ScrollContainer id={queryKey.join('_')} className={cn('flex h-full w-full overflow-x-hidden', className)} ref={container}>
 			<section className="h-fit w-full" ref={(ref) => setList(ref)}>
 				{!hasNextPage && end}
 				{isFetching && loader}

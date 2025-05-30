@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 
-const ellipsisVariants = cva('', {
+const ellipsisVariants = cva('p-0', {
 	variants: {
 		variant: {
 			default: 'bg-secondary',

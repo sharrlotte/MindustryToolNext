@@ -187,12 +187,12 @@ export default async function Page({ params }: Props) {
 				</div>
 				<div className="gap-2 flex flex-col md:flex-row w-full h-full">
 					<div className="flex-1 flex flex-col gap-2">
-						<div className="flex flex-col gap-2 justify-start items-start p-2 rounded-md border shadow-lg bg-card">
+						<div className="flex flex-col gap-2 justify-start items-start p-2 rounded-md border shadow-lg bg-card h-[180px]">
 							<h3>
 								<Tran text="server.system-status" />
 							</h3>
 							{status === 'HOST' || status === 'UP' ? (
-								<div className="flex flex-col w-full text-sm max-w-[300px] gap-2 h-[130px]">
+								<div className="flex flex-col w-full text-sm max-w-[300px] gap-2">
 									<div className="flex gap-2 justify-between w-full">
 										<Tran className="font-bold" text="server.cpu-usage" />
 										<span className="text-muted-foreground">{Math.round(cpuUsage * 100) / 100}%</span>
@@ -224,7 +224,7 @@ export default async function Page({ params }: Props) {
 						)}
 					</div>
 					<CatchError>
-						<div className="flex flex-col gap-2 grow-0 md:max-h-[calc(100vw-350px-var(--nav)+130px+40px)]">
+						<div className="flex flex-col gap-2 grow-0 md:max-h-[calc(100vw-350px-var(--nav)+180px+40px)]">
 							<ProtectedElement session={session} filter={canAccess}>
 								{status === 'HOST' && players > 0 && (
 									<div className="flex flex-col rounded-md border bg-card">
