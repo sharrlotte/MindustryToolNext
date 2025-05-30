@@ -103,7 +103,7 @@ export default async function Page({ params }: Props) {
 
 	return (
 		<ScrollContainer className="flex p-2 flex-col gap-2 h-full">
-			<div className="grid grid-rows-[auto_1fr] gap-2 w-full h-full">
+			<div className="flex flex-col gap-2 w-full h-full">
 				<div className="flex flex-col gap-2 p-2 w-full rounded-md border bg-card">
 					<header className="flex gap-2 items-center relative">
 						{avatar && <Image className="size-16 object-cover rounded-md" src={avatar} width={64} height={64} alt={name} />}
@@ -153,9 +153,9 @@ export default async function Page({ params }: Props) {
 						)}
 					</main>
 					<Divider />
-					<div className="flex items-start justify-between gap-4">
+					<div className="flex items-start justify-between gap-4 flex-wrap">
 						{address && (
-							<div className="flex items-center text-sm text-ellipsis overflow-hidden">
+							<div className="flex items-center text-sm text-ellipsis text-nowrap">
 								<Tran className="text-muted-foreground" text="server.address" />
 								<span className="text-muted-foreground mr-2">:</span>
 								<CopyButton
@@ -177,7 +177,7 @@ export default async function Page({ params }: Props) {
 						</ProtectedElement>
 					</div>
 					<Divider />
-					<footer className="flex gap-8 flex-wrap justify-between h-9">
+					<footer className="flex gap-8 flex-wrap justify-between h-9 overflow-x-auto">
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className="flex flex-row gap-2 justify-end items-center ml-auto">
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
