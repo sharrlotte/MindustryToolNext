@@ -1,8 +1,11 @@
-import env from "@/constant/env";
+import env from '@/constant/env';
+
+export const errors: string[] = [];
 
 export function reportError(error: any) {
 	if (process.env.NODE_ENV === 'production') {
 		fetch(`${env.url.api}/error`, { method: 'POST', body: getLoggedErrorMessage(error) });
+		errors.push(error);
 	}
 }
 

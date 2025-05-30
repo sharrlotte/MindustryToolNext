@@ -14,7 +14,7 @@ type MyServerInstancesCardProps = {
 };
 
 export default function ServerCard({
-	server: { id, name, players, port, status, mapName, mode, isOfficial, avatar },
+	server: { id, name, players, port, status, mapName, mode, gamemode, isOfficial, avatar },
 }: MyServerInstancesCardProps) {
 	return (
 		<InternalLink
@@ -44,7 +44,11 @@ export default function ServerCard({
 					</div>
 					<div className="flex flex-col gap-0.5">
 						<Tran asChild text="server.game-mode" />
-						<span className="capitalize">{mode.toLocaleLowerCase()}</span>
+						<span>
+							<span>{mode}</span>
+							{gamemode && '/'}
+							{gamemode && <span>{gamemode}</span>}
+						</span>
 					</div>
 					<div className="flex flex-col gap-0.5">
 						<Tran asChild text="server.players" />

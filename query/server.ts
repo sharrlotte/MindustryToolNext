@@ -40,8 +40,14 @@ export async function getServerPlayers(axios: AxiosInstance, id: string): Promis
 	return result.data;
 }
 
-export async function getServerState(axios: AxiosInstance, id: string): Promise<Object> {
+export async function getServerState(axios: AxiosInstance, id: string): Promise<any> {
 	const result = await axios.get(`/servers/${id}/json`);
+
+	return result.data;
+}
+
+export async function getServerMismatch(axios: AxiosInstance, id: string): Promise<string[]> {
+	const result = await axios.get(`/servers/${id}/mismatch`);
 
 	return result.data;
 }
