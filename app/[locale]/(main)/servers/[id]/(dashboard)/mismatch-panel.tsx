@@ -46,7 +46,7 @@ export default function MismatchPanel() {
 				</div>
 			</PopoverTrigger>
 			<PopoverContent>
-				<section className="flex mt-2 gap-2 text-sm w-full overflow-hidden flex-col max-h-[50vh] overflow-y-auto">
+				<section className="flex mt-2 gap-2 text-sm w-full overflow-hidden flex-col max-h-[50vh] overflow-y-auto p-2">
 					<Tran text="server.restart-required" />
 					<RemoveServerButton id={id} />
 					<Divider />
