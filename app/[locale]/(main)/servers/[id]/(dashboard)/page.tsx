@@ -155,7 +155,7 @@ export default async function Page({ params }: Props) {
 					<Divider />
 					<div className="flex items-start justify-between gap-4 flex-wrap">
 						{address && (
-							<div className="flex items-center text-sm text-ellipsis text-nowrap">
+							<div className="flex items-center text-sm text-ellipsis text-nowrap flex-wrap">
 								<Tran className="text-muted-foreground" text="server.address" />
 								<span className="text-muted-foreground mr-2">:</span>
 								<CopyButton
@@ -177,7 +177,7 @@ export default async function Page({ params }: Props) {
 						</ProtectedElement>
 					</div>
 					<Divider />
-					<footer className="flex gap-8 flex-wrap justify-between h-9 overflow-x-auto">
+					<footer className="flex gap-8 flex-wrap justify-between h-9 w-full overflow-x-auto">
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className="flex flex-row gap-2 justify-end items-center ml-auto">
 								{status !== 'DELETED' && <RemoveServerButton id={id} />}
