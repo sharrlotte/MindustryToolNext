@@ -1,4 +1,7 @@
+'use client';
+
 import PaginationNavigator from '@/components/common/pagination-navigator';
+
 import usePathId from '@/hooks/use-path-id';
 
 export default function LoginLogListFooter() {

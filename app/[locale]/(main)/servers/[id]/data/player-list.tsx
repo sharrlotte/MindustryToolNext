@@ -5,7 +5,6 @@ import { useState } from 'react';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import InfinitePage from '@/components/common/infinite-page';
-import ScrollContainer from '@/components/common/scroll-container';
 import { Visibility, VisibilityOff, VisibilityOn } from '@/components/common/visibility';
 import { BanButton } from '@/components/server/ban.button';
 import { KickButton } from '@/components/server/kick.button';
@@ -26,8 +25,8 @@ const state = {
 };
 
 export default function PlayerList() {
-	const id = usePathId();
 	const [banned, setBanned] = useState<boolean | undefined>(undefined);
+	const id = usePathId();
 	const status = useServerStatus(id);
 
 	if (status === 'UNAVAILABLE') {
