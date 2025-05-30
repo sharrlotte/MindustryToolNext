@@ -5,23 +5,16 @@ import React, { JSXElementConstructor, ReactElement, ReactNode, useCallback, use
 import InfiniteScroll from 'react-infinite-scroller';
 import { z } from 'zod';
 
-
-
 import EndOfPage from '@/components/common/end-of-page';
 import ErrorMessage from '@/components/common/error-message';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
 
-
-
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { QuerySchema } from '@/types/schema/search-query';
 
-
-
 import { QueryKey } from '@tanstack/react-query';
-
 
 type InfinitePageProps<T, P extends QuerySchema, P2> = {
 	className?: string;
@@ -43,7 +36,7 @@ type InfinitePageProps<T, P extends QuerySchema, P2> = {
 	children: (data: T[]) => ReactNode;
 };
 
-const InfinitePage = <T, P extends QuerySchema, P2 extends Record<string, any>>({
+const InfinitePage = <T, P extends QuerySchema, P2 extends Record<string, any> = Record<string, any>>({
 	className,
 	queryKey,
 	paramSchema,
