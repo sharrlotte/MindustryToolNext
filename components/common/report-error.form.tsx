@@ -39,7 +39,7 @@ export default function ReportErrorForm() {
 
 			return axios.post('/error-report', data, {
 				headers: {
-					'Content-Type': 'aplication/json',
+					'Content-Type': 'application/json',
 				},
 			});
 		},
