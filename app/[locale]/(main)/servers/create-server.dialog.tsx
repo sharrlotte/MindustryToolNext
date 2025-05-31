@@ -19,7 +19,8 @@ import { toast } from '@/components/ui/sonner';
 import { revalidate } from '@/action/common';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { createServer, getMyServerManager } from '@/query/server';
+import { createServer } from '@/query/server';
+import { getMyServerManager } from '@/query/server-manager';
 import { CreateServerRequest, CreateServerSchema } from '@/types/request/CreateServerRequest';
 import { ServerModes } from '@/types/request/UpdateServerRequest';
 

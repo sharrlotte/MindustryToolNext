@@ -8,6 +8,7 @@ import ErrorMessage from '@/components/common/error-message';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
+import Divider from '@/components/ui/divider';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,24 +16,22 @@ import { Textarea } from '@/components/ui/textarea';
 import useClientApi from '@/hooks/use-client';
 import useClipboard from '@/hooks/use-clipboard';
 import useQueriesData from '@/hooks/use-queries-data';
-import { getMyServerManagerById, resetTokenServerManager } from '@/query/server';
+import useServerManager from '@/hooks/use-server-manager';
+import { resetTokenServerManager } from '@/query/server-manager';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 type Props = {
 	params: Promise<{ id: string }>;
 };
+
 export default function Page({ params }: Props) {
 	const { id } = use(params);
 
 	const [showAccessToken, setShowAccessToken] = useState(false);
 	const [showSecurityKey, setShowSecurityKey] = useState(false);
-	const axios = useClientApi();
 
-	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ['server-manager', id],
-		queryFn: () => getMyServerManagerById(axios, id),
-	});
+	const { data, isLoading, isError, error } = useServerManager(id);
 
 	const copy = useClipboard();
 
@@ -59,13 +58,15 @@ export default function Page({ params }: Props) {
 	const { name, address, accessToken, securityKey } = data;
 
 	return (
-		<div className="grid p-2 space-y-2">
-			<h1>{name}</h1>
-			<p className="text-sm text-muted-foreground">{address}</p>
+		<div className="flex flex-col p-2 gap-2">
+			<h2>{name}</h2>
+			<p className="px-3 w-fit py-0.5 border-foreground text-xs rounded-full border">{address}</p>
+			<Divider />
 			<Tran text="server.security-key" />
 			<div className="flex gap-2">
 				<Input
 					className="w-80 cursor-pointer text-muted-foreground" //
+					key={showSecurityKey + ''}
 					defaultValue={showSecurityKey ? securityKey : '**********************************************'}
 					onClick={() => handleCopy(securityKey)}
 					readOnly
@@ -77,7 +78,8 @@ export default function Page({ params }: Props) {
 			<Tran text="server.access-token" />
 			<div className="flex gap-2">
 				<Textarea
-					className="w-80 min-h-40 cursor-pointer text-muted-foreground"
+					className="w-80 min-h-20 cursor-pointer text-muted-foreground"
+					key={showAccessToken + ''}
 					defaultValue={
 						showAccessToken
 							? accessToken
@@ -90,7 +92,7 @@ export default function Page({ params }: Props) {
 					{showAccessToken ? <EyeOffIcon /> : <EyeIcon />}
 				</Button>
 			</div>
-			<div className="flex justify-end">
+			<div className="flex">
 				<ResetTokenButton id={id} />
 			</div>
 		</div>

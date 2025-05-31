@@ -144,6 +144,7 @@ export const colours: Record<string, string> = {
 	cornsilk: '#fff8dc',
 	crimson: '#dc143c',
 	cyan: '#00ffff',
+	sky: '#87ceeb',
 	darkblue: '#00008b',
 	darkcyan: '#008b8b',
 	darkgoldenrod: '#b8860b',
