@@ -4,14 +4,13 @@ import {
 	BarChart4,
 	FileIcon,
 	HardDriveIcon,
-	HistoryIcon,
 	LayoutDashboardIcon,
 	MapIcon,
 	PlugIcon,
 	SettingsIcon,
 	TerminalIcon,
 } from 'lucide-react';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import React, { ReactNode, use, useMemo } from 'react';
 
 import { CatchError } from '@/components/common/catch-error';
@@ -27,6 +26,7 @@ import useClientApi from '@/hooks/use-client';
 import useServer from '@/hooks/use-server';
 import useServerPlugins from '@/hooks/use-server-plugins';
 import ProtectedElement from '@/layout/protected-element';
+import ProtectedRoute from '@/layout/protected-route';
 import { Filter } from '@/lib/utils';
 
 import { useQuery } from '@tanstack/react-query';
@@ -72,7 +72,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 	const { id } = use(params);
 	const { session } = useSession();
 	const { data: server, isError, error } = useServer(id);
-
+	const pathname = usePathname();
 	const ownerId = server?.userId;
 
 	const links: {
@@ -146,6 +146,8 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 		return <ErrorMessage error={error} />;
 	}
 
+	const filter = links.find((link) => pathname.endsWith(link.href))?.filter;
+
 	return (
 		<div className="grid h-full grid-flow-row grid-rows-[48px_1fr] overflow-hidden">
 			<NavLinkProvider>
@@ -158,7 +160,9 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 				</NavLinkContainer>
 			</NavLinkProvider>
 			<div className="flex overflow-hidden flex-col w-full h-full" key="child">
-				<CatchError>{children}</CatchError>
+				<CatchError>
+					<ProtectedRoute filter={filter}>{children}</ProtectedRoute>
+				</CatchError>
 			</div>
 		</div>
 	);
