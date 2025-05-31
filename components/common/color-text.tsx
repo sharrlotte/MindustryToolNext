@@ -1,8 +1,12 @@
 import React, { useMemo } from 'react';
 
+
+
 import { colours } from '@/constant/constant';
 
-const COLOR_REGEX = /(\[[#]*[a-fA-F0-9]*\]|\[[#]*[a-zA-Z]*\]|\[[0-9;]*[0-9]+m[0-9]*)/gim;
+
+// eslint-disable-next-line no-control-regex
+const COLOR_REGEX = /(\[[#]*[a-fA-F0-9]*\]|\[[#]*[a-zA-Z]*\]|\u001B\[[0-9;]*m)/gim;
 
 const ANSI: Record<string, Format> = {
 	//ANSI color codes
@@ -70,7 +74,10 @@ export default function ColorText({ text, className }: ColorTextProps) {
 
 					// Reset color syntax
 					case '[]':
-						return '';
+						return null;
+
+					case '':
+						return null;
 
 					default: {
 						const style = {
@@ -199,7 +206,7 @@ function resolveColorAndFormat(color: string): ColorAndFormat {
 	} else {
 		color = color.substring(color.indexOf('['));
 
-		const keys = color.replaceAll('m', ' ').replace('[', '').split(' ').filter(Boolean);
+		const keys = color.replaceAll('m', ' ').replace('\u001B[', '').split(' ').filter(Boolean);
 
 		return {
 			color,

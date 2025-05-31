@@ -1,4 +1,3 @@
-import { CogIcon } from 'lucide-react';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -11,7 +10,6 @@ import CopyButton from '@/components/button/copy.button';
 import { CatchError } from '@/components/common/catch-error';
 import ColorText from '@/components/common/color-text';
 import ErrorScreen from '@/components/common/error-screen';
-import InternalLink from '@/components/common/internal-link';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
@@ -113,11 +111,6 @@ export default async function Page({ params }: Props) {
 								<Tran text="server.owner" />
 								<IdUserCard id={userId} />
 							</span>
-						</div>
-						<div className="absolute top-1 right-1 p-2 backdrop-brightness-50 backdrop-blur-sm">
-							<InternalLink href="setting">
-								<CogIcon className="size-4" />
-							</InternalLink>
 						</div>
 					</header>
 					<main className="flex flex-wrap sm:gap-x-40 gap-x-20 gap-y-8 text-sm font-medium capitalize">
@@ -234,7 +227,7 @@ export default async function Page({ params }: Props) {
 						)}
 					</div>
 					<CatchError>
-						<div className="flex flex-col gap-2 grow-0 md:max-h-[calc(100vw-350px-var(--nav)+180px+40px)]">
+						<div className="flex flex-col gap-2 grow-0 md:max-h-[calc(100vw-350px-var(--nav)+180px+40px)] max-h-screen">
 							<ProtectedElement session={session} filter={canAccess}>
 								{status === 'HOST' && players > 0 && (
 									<div className="flex flex-col rounded-md border bg-card">

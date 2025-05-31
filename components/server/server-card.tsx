@@ -9,16 +9,16 @@ import ServerStatusBadge from '@/components/server/server-status-badge';
 import { cn } from '@/lib/utils';
 import { ServerDto } from '@/types/response/ServerDto';
 
-type MyServerInstancesCardProps = {
+type ServerCardProps = {
 	server: ServerDto;
 };
 
 export default function ServerCard({
 	server: { id, name, players, port, status, mapName, mode, gamemode, isOfficial, avatar },
-}: MyServerInstancesCardProps) {
+}: ServerCardProps) {
 	return (
 		<InternalLink
-			className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-4 h-60 relative border"
+			className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-4 h-72 relative border"
 			href={`/servers/${id}`}
 		>
 			<Suspense>
@@ -45,7 +45,7 @@ export default function ServerCard({
 					<div className="flex flex-col gap-0.5">
 						<Tran asChild text="server.game-mode" />
 						<span>
-							<span>{mode}</span>
+							<span className="capitalize">{mode.toLowerCase()}</span>
 							{gamemode && '/'}
 							{gamemode && <span>{gamemode}</span>}
 						</span>
