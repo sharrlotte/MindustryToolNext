@@ -5,7 +5,7 @@ import { MetricUnit } from '@/lib/metric.utils';
 import { toForm } from '@/lib/utils';
 import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
-import { CreateServerManagerRequest, CreateServerRequest } from '@/types/request/CreateServerRequest';
+import { CreateServerRequest } from '@/types/request/CreateServerRequest';
 import { PutServerPortRequest, PutServerRequest } from '@/types/request/UpdateServerRequest';
 import { KickInfo } from '@/types/response/KickInfo';
 import { Player } from '@/types/response/Player';
@@ -19,7 +19,6 @@ import { ServerDto } from '@/types/response/ServerDto';
 import ServerEnv from '@/types/response/ServerEnv';
 import { ServerFile } from '@/types/response/ServerFile';
 import ServerLoginLog from '@/types/response/ServerLoginLog';
-import { ServerManager, ServerManagerDetail } from '@/types/response/ServerManager';
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerMetric } from '@/types/response/ServerMetric';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
@@ -153,30 +152,6 @@ export async function getServers(
 	params: { official?: boolean; name?: string } & PaginationQuery,
 ): Promise<ServerDto[]> {
 	const result = await axios.get(`/servers`, { params });
-
-	return result.data;
-}
-
-export async function getMyServerManager(axios: AxiosInstance): Promise<ServerManager[]> {
-	const result = await axios.get(`/users/@me/server-managers`);
-
-	return result.data;
-}
-
-export async function getMyServerManagerById(axios: AxiosInstance, id: string): Promise<ServerManagerDetail> {
-	const result = await axios.get(`/server-managers/${id}`);
-
-	return result.data;
-}
-
-export async function createServerManager(axios: AxiosInstance, payload: CreateServerManagerRequest): Promise<void> {
-	const result = await axios.post(`/server-managers`, payload);
-
-	return result.data;
-}
-
-export async function resetTokenServerManager(axios: AxiosInstance, id: string): Promise<void> {
-	const result = await axios.post(`/server-managers/${id}/reset-token`);
 
 	return result.data;
 }

@@ -13,7 +13,7 @@ import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { createServerManager } from '@/query/server';
+import { createServerManager } from '@/query/server-manager';
 import { CreateServerManagerRequest, CreateServerManagerSchema } from '@/types/request/CreateServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
