@@ -70,7 +70,10 @@ export default function ColorText({ text, className }: ColorTextProps) {
 
 					// Reset color syntax
 					case '[]':
-						return '';
+						return null;
+
+					case '':
+						return null;
 
 					default: {
 						const style = {

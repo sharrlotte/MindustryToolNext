@@ -234,7 +234,7 @@ export default async function Page({ params }: Props) {
 						)}
 					</div>
 					<CatchError>
-						<div className="flex flex-col gap-2 grow-0 md:max-h-[calc(100vw-350px-var(--nav)+180px+40px)]">
+						<div className="flex flex-col gap-2 grow-0 md:max-h-[calc(100vw-350px-var(--nav)+180px+40px)] max-h-screen">
 							<ProtectedElement session={session} filter={canAccess}>
 								{status === 'HOST' && players > 0 && (
 									<div className="flex flex-col rounded-md border bg-card">
