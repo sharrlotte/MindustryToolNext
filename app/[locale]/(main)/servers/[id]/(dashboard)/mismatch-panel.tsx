@@ -1,6 +1,7 @@
 'use client';
 
-import RemoveServerButton from '@/app/[locale]/(main)/servers/[id]/(dashboard)/remove-server-button';
+import dynamic from 'next/dynamic';
+
 import ErrorMessage from '@/components/common/error-message';
 import Tran from '@/components/common/tran';
 import Divider from '@/components/ui/divider';
@@ -12,6 +13,10 @@ import useServerStatus from '@/hooks/use-server-status';
 import { getServerMismatch } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';
+
+const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/shutdown-server-button'), {
+	ssr: false,
+});
 
 export default function MismatchPanel() {
 	const id = usePathId();
@@ -48,7 +53,7 @@ export default function MismatchPanel() {
 			<PopoverContent>
 				<section className="flex mt-2 gap-2 text-sm w-full overflow-hidden flex-col max-h-[50vh] overflow-y-auto p-2">
 					<Tran text="server.restart-required" />
-					<RemoveServerButton id={id} />
+					<ShutdownServerButton id={id} />
 					<Divider />
 					{data.map((mismatch) => (
 						<p className="rounded-md text-destructive-foreground p-2 bg-destructive text-wrap wrap break-words" key={mismatch}>
