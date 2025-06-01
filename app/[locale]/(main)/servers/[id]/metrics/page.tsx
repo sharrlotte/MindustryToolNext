@@ -58,7 +58,7 @@ function LoginLogChart({ serverId, filter }: { serverId: string; filter: Filter 
 	const { t } = useI18n('metric');
 
 	const { data, isError, error } = useQuery({
-		queryKey: ['login-log', filter],
+		queryKey: ['login-log', filter, serverId],
 		queryFn: () => getServerLoginMetrics(axios, serverId, { ...filter, start: start.current }),
 	});
 
