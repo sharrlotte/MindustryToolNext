@@ -78,7 +78,6 @@ function DiffCard({ translation, language }: DiffCardProps) {
 	const [currentValue, setCurrentValue] = useState('');
 
 	const axios = useClientApi();
-	const [isEdit, setEdit] = useState(false);
 	const { mutate, status } = useMutation({
 		mutationFn: (payload: CreateTranslationRequest) => createTranslation(axios, payload),
 		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
@@ -111,21 +110,16 @@ function DiffCard({ translation, language }: DiffCardProps) {
 				</div>
 			</TableCell>
 			<TableCell>
-				<div className="flex items-center gap-2" onClick={() => setEdit(true)}>
-					{isEdit ? ( //
-						<Textarea
-							className="border-transparent p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
-							placeholder={currentValue ?? key}
-							defaultValue={currentValue ?? key}
-							onChange={(event) => setCurrentValue(event.target.value)}
-							onBlur={() => {
-								setEdit(false);
-								create();
-							}}
-						/>
-					) : (
-						<HighLightTranslation text={currentValue ?? key} />
-					)}
+				<div className="flex items-center gap-2">
+					<Textarea
+						className="border-transparent p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
+						placeholder={currentValue ?? key}
+						defaultValue={currentValue ?? key}
+						onChange={(event) => setCurrentValue(event.target.value)}
+						onBlur={() => {
+							create();
+						}}
+					/>
 					<TranslationStatus status={status} />
 				</div>
 			</TableCell>
